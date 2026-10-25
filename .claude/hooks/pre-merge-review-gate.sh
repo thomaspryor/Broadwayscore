@@ -117,42 +117,15 @@ GATE="$CANONICAL_ROOT/scripts/lib/review-gate.mjs"
 # starve the other into a false block — that starvation was the only real cost
 # of double-firing.
 
-# ── Cross-repo guards (same shape as pre-push-review-gate.sh:97-130) ─────────
-# `(` in the prefix class: `(cd repo && git merge x)` subshells must hit the
-# guard too.
-_FIRST_CD=$(printf '%s' "$command" | grep -oE '(^|[[:space:];&|(])cd[[:space:]]+[^[:space:];&|<>)]+' | head -1 | sed 's/^[[:space:];&|(]*cd[[:space:]]*//')
-EVAL_ROOT="$SESSION_ROOT"
-if [ -n "$_FIRST_CD" ]; then
-  case "$_FIRST_CD" in
-    \~/*)  _FIRST_CD="$HOME/${_FIRST_CD#\~/}" ;;
-    \~)    _FIRST_CD="$HOME" ;;
-  esac
-  if [ -d "$_FIRST_CD" ]; then
-    _CD_REPO=$(git -C "$_FIRST_CD" rev-parse --show-toplevel 2>/dev/null)
-    if [ -n "$_CD_REPO" ]; then
-      if [ "$_CD_REPO" != "$CANONICAL_ROOT" ] && [ "$_CD_REPO" != "$SESSION_ROOT" ]; then
-        _CD_CANON=$(cd "$_CD_REPO" && dirname "$(git rev-parse --git-common-dir 2>/dev/null)" 2>/dev/null)
-        [ "$_CD_CANON" != "$CANONICAL_ROOT" ] && exit 0  # different repo — not our gate
-      fi
-      EVAL_ROOT="$_CD_REPO"  # same repo family: evaluate where the command runs
-    fi
-  fi
-fi
-# -C target resolved above; route evaluation there (same repo family) or skip
-# entirely (different repo — e.g. the review-texts/core-data repos, which merge
-# constantly and are none of this gate's business).
-if [ -n "$GIT_C_REPO" ]; then
-  _C_COMMON=$(git -C "$GIT_C_REPO" rev-parse --git-common-dir 2>/dev/null)
-  case "$_C_COMMON" in
-    /*) _C_CANON=$(dirname "$_C_COMMON") ;;
-    *)  _C_CANON="$GIT_C_REPO" ;;
-  esac
-  if [ "$_C_CANON" = "$CANONICAL_ROOT" ]; then
-    EVAL_ROOT="$GIT_C_REPO"
-  else
-    exit 0
-  fi
-fi
+# BRO-6136: resolve every operation's directory, including successive cds
+# and generated shell scripts. Only exempt commands whose targets ALL belong
+# to other repo families; unknown contexts keep the gate in scope.
+_REPO_TARGET=$(node "$CANONICAL_ROOT/scripts/lib/command-repo.mjs" \
+  --command="$command" --cwd="$PWD" --canonical-root="$CANONICAL_ROOT" \
+  --operation=merge 2>/dev/null)
+[ "$(printf '%s' "$_REPO_TARGET" | jq -r '.outOfScope // false' 2>/dev/null)" = "true" ] && exit 0
+EVAL_ROOT=$(printf '%s' "$_REPO_TARGET" | jq -r '.evalRoot // empty' 2>/dev/null)
+[ -z "$EVAL_ROOT" ] && EVAL_ROOT="$SESSION_ROOT"
 
 # ── Decide ──────────────────────────────────────────────────────────────────
 RESULT=$(node "$GATE" --query=merge-gate --repo="$EVAL_ROOT" --ledger-root="$CANONICAL_ROOT" --command="$command" 2>/dev/null)

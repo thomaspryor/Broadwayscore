@@ -1646,6 +1646,9 @@ async function main(): Promise<void> {
               require('../lib/score-source-provenance.js').setScoreSourcePreservingProvenance(scoredAny, 'manual-cleared-haiku-fallback');
               scoredAny.scoreSourceReason =
                 `ensemble rejected as ${rejection} but file is human-cleared (${humanClear}); Haiku single-model scored the text directly`;
+              // BRO-6121: apply the star band the ensemble would have (clamp + llmScore.band), or the
+              // star-band detector re-flags this file as unanchored on every pass.
+              require('../lib/anchor-fallback-score.js').anchorFallbackScore(scoredAny, reviewFile);
               scoredAny.scoredAt = new Date().toISOString();
               // Retire the rescore queue entry here too. Without this the file
               // scores successfully but stays needsRescore:true and is re-scored

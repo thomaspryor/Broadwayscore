@@ -477,7 +477,7 @@ function runTickProcess(dir, { hold = false, fail = false, empty = false, argv =
     cp.execFileSync = () => {
       if (${hold}) {
         fs.writeFileSync(path.join(root, 'entered'), 'fetching');
-        const deadline = Date.now() + 10000;
+        const deadline = Date.now() + 60000;
         while (!fs.existsSync(path.join(root, 'release'))) {
           if (Date.now() > deadline) throw new Error('barrier timed out');
           Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 10);
@@ -494,7 +494,7 @@ function runTickProcess(dir, { hold = false, fail = false, empty = false, argv =
       console.error(e.message); process.exitCode = 1;
     });
   `;
-  return new Promise(resolve => execFile(process.execPath, ['-e', code], { timeout: 15000 },
+  return new Promise(resolve => execFile(process.execPath, ['-e', code], { timeout: 90000 },
     (error, stdout, stderr) => resolve({ error, stdout, stderr })));
 }
 
@@ -503,8 +503,13 @@ test('main: overlapping ticks skip the busy singleton before reading tasks or di
   let first;
   try {
     first = runTickProcess(dir, { hold: true });
-    const deadline = Date.now() + 10000;
+    let firstDone = null;
+    first.then(r => { firstDone = r; });
+    // Generous: on a loaded CI runner the child's cold node start + module load
+    // took >10s (BRO-6125). Fail fast with the child's stderr if it exits early.
+    const deadline = Date.now() + 60000;
     while (!fs.existsSync(path.join(dir, 'entered'))) {
+      assert.equal(firstDone, null, `first tick exited before the card fetch: ${firstDone && firstDone.stderr}`);
       assert.ok(Date.now() < deadline, 'first tick never reached the card fetch');
       await new Promise(resolve => setTimeout(resolve, 10));
     }

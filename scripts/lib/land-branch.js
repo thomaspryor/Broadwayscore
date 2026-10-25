@@ -89,7 +89,9 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
 // The merged-tree suite is minutes, not seconds (~4min for scripts/lib, per
 // merge-post-merge-test-gate.js) — it gets the build's budget, not a check's.
-const MERGED_TREE_TIMEOUT_MS = 20 * 60 * 1000;
+// 30 min (BRO-6184): the gate's worst case is merged run + unparseable retry + baseline run,
+// 3 spawns x TEST_GATE_TIMEOUT_MS (8 min) = 24 min plus checkout setup.
+const MERGED_TREE_TIMEOUT_MS = 30 * 60 * 1000;
 const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
 // Blobless-clone rebase failure (BRO-4141 class, 2026-09-27 our-sinatra land):

@@ -261,6 +261,7 @@ function parsePdfReviews(text, showTitle, stats) {
 function parseRawPdfReviews(text, showTitle) {
   const lines = text.split('\n');
   const allReviews = [];
+  const runs = productionRuns(lines);
 
   let i = 0;
   while (i < lines.length) {
@@ -274,6 +275,7 @@ function parseRawPdfReviews(text, showTitle) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
+        const owned = sectionOwnedBy(runs, i, showTitle, lines);
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -289,7 +291,7 @@ function parseRawPdfReviews(text, showTitle) {
         let fullText = cutAtProductionHeader(textLines).map(l => l.trim()).filter(l => l).join('\n');
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
 
-        if (fullText.length > 200 && fullText.length < 15000) {
+        if (owned !== false && fullText.length > 200 && fullText.length < 15000) {
           // Cap at 15K chars — longer means multiple reviews concatenated
           allReviews.push({ outlet, date, critic, fullText });
         }
@@ -464,6 +466,7 @@ function parseDefaultPdfReviews(text, showTitle) {
   }
 
   const all = [];
+  const runs = productionRuns(lines);
   markers.forEach((m, idx) => {
     let end = idx + 1 < markers.length ? markers[idx + 1].start : lines.length;
     // Any further date line is another review's header (an outlet we do not
@@ -486,7 +489,7 @@ function parseDefaultPdfReviews(text, showTitle) {
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
     const fullText = cutAtProductionHeader(body).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS) {
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -531,6 +534,60 @@ function maskPdfText(text, keepWords) {
 }
 
 
+// BRO-6154: -raw and default text carry no "Previews / Opens" line, but every
+// production starts with "<VENUE>\n<run dates>\n<TITLE>", e.g.
+// "03 October - 02 December 2017". A review belongs to the latest such block
+// above it. The issue's running header ("Theatre Record 18 September - 17
+// October 2017") starts with letters, so a line that begins with the day is
+// the production's run. Before this, a common-word title (All About Eve,
+// After Life) matched the prose of whichever production followed ours.
+const RUN_DATES_LINE = /^\d{1,2}( [A-Za-z]+)?( \d{4})? [\u2013-] \d{1,2} [A-Za-z]+ \d{4}$/;
+const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length > 2 && !isDateLine(l) && !/[.,;:]$/.test(l) && !isKnownOutletLine(l);
+
+const { trTitleMatches } = require('./tr-production-pick');
+const { foldDiacritics } = require('./title-match');
+
+function productionRuns(lines) {
+  const runs = [];
+  lines.forEach((l, i) => {
+    if (!RUN_DATES_LINE.test(l.trim())) return;
+    // A long title wraps over up to three caps lines.
+    const parts = [];
+    for (let k = i + 1, seen = 0; k < Math.min(i + 6, lines.length) && seen < 4; k++) {
+      const t = lines[k].trim();
+      if (!t) continue;
+      seen++;
+      if (isCapsTitle(t) && parts.length < 3) parts.push(t); else if (parts.length) break;
+    }
+    const title = parts.length ? parts.join(' ') : null;
+    runs.push({ line: i, title });
+  });
+  return runs;
+}
+
+// true: the review sits under our production's block; false: under another
+// production's; null: the block cannot be told (no run line above, no title).
+function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
+  let run = null;
+  for (const r of runs) { if (r.line <= lineIdx) run = r; else break; }
+  if (!run || !run.title) return null;
+  if (trTitleMatches(run.title, showTitle)) return true;
+  // TR spells titles its own way ("PRIDE AND PREJUDICE* (*SORT OF)"), so a block
+  // that shares a real word with ours stays "unknown" instead of being dropped.
+  const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
+  const ours = new Set(words(showTitle));
+  if (words(run.title).some(w => ours.has(w))) return null;
+  // Our own run line may have been missed ("onwards", "01-28 February"): when our
+  // title appears as a caps line after the other block's run line, we cannot tell.
+  if (lines) {
+    for (let k = run.line + 1; k < lineIdx && k < lines.length; k++) {
+      const t = lines[k].trim();
+      if (isCapsTitle(t) && trTitleMatches(t, showTitle)) return null;
+    }
+  }
+  return false;
+}
+
 // BRO-6154 diagnostic: which production's section of the issue each parsed
 // review sits in. Structure only (production titles, outlets, dates, line
 // numbers), never review prose, so the result can be committed in a probe file.
@@ -548,19 +605,24 @@ function productionSections(lines) {
 function locateReviews(text, reviews, showTitle) {
   const lines = text.split('\n');
   const trimmed = lines.map(l => l.trim());
+  const runs = productionRuns(lines);
   const sections = productionSections(lines);
-  const ourUpper = String(showTitle || '').toUpperCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  const mk = (x) => maskPdfText(x, []).trim().slice(0, 60);
   return reviews.map(r => {
     const first = String(r.fullText || '').split('\n')[0].trim().slice(0, 40);
     const line = first.length >= 15 ? trimmed.findIndex(t => t.startsWith(first)) : -1;
     let section = null;
-    for (const s of sections) if (s.line <= line) section = s.title; else break;
-    const secNorm = section ? section.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toUpperCase() : null;
-    return { outlet: r.outlet, date: r.date, line, section, ours: secNorm == null ? null : (secNorm === ourUpper || secNorm === 'THE ' + ourUpper || secNorm.includes(ourUpper)) };
+    for (const x of sections) if (x.line <= line) section = x.title; else break;
+    let run = null;
+    for (const x of runs) { if (x.line <= line) run = x; else break; }
+    const tail = String(r.fullText || '').split('\n').filter(Boolean).slice(-2).map(mk);
+    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle, lines) };
   });
 }
 
 module.exports = {
+  productionRuns,
+  sectionOwnedBy,
   productionSections,
   locateReviews,
   maskPdfText,

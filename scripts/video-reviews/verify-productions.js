@@ -64,6 +64,7 @@ Do NOT answer "different" because of:
 - venue or theater-company names inside the same city (companies have several stages, shows transfer between houses, and our venue data can be imprecise);
 - cast names, run length, "limited run", or plot details you cannot verify: your knowledge of casts and plots is incomplete, so an unfamiliar detail is not evidence.
 - where the STORY is set (a play set in England or Paris can be performed in New York): only where the PERFORMANCE happens counts.
+- a title, venue or city that SOUNDS LIKE the assigned one: the transcript is auto-captions and mishears names ("Loyer Playhouse" for La Jolla Playhouse). A video title or hashtag naming the assigned show outweighs a misheard transcript. This never excuses a named different city or country, a tour, or a concert.
 
 Answer "same" when nothing explicit points elsewhere and the city fits. Answer "unsure" only when the city itself is ambiguous.
 
@@ -129,7 +130,7 @@ function parseVerdict(text) {
 const CONFIRM_PROMPT = `A video review has been filed under one stage production. A first checker thinks the video is about a DIFFERENT production and cites evidence. Decide whether the evidence really shows that.
 
 Say "yes" only if the evidence shows the video is about a performance in a different city or country, an out-of-town pre-Broadway tryout, a concert or one-night staging, a community/school/amateur production, or the film.
-Say "no" if the evidence is a different theater, venue or theater company in the SAME city (companies have several stages; shows transfer), a tour or production that is playing the assigned city, a cast or plot detail, where the story is SET (a play set in England can be performed in New York), or anything else.
+Say "no" if the evidence is a different theater, venue or theater company in the SAME city (companies have several stages; shows transfer), a tour or production that is playing the assigned city, a cast or plot detail, where the story is SET (a play set in England can be performed in New York), a name that only sounds like the assigned title, venue or city (the transcript is auto-captions and mishears names; a clearly named other city, country, tour or concert is still evidence), or anything else.
 
 Output JSON only: {"confirm":"yes"|"no","reason":"<one sentence>"}`;
 
@@ -206,6 +207,8 @@ async function main() {
       // same production was recorded since) goes back through the full check.
       const staleDateFlag = isStaleDateFlag(t, show);
       if (t.wrongProduction === true && !staleDateFlag) continue;
+      // a person cleared the flag (BRO-6179): --refresh must not re-flag it
+      if (t.wrongProductionManualClear === true || t.wrongProductionOverride === true) continue;
       if (t.productionCheck && !REFRESH && !staleDateFlag) continue;
       jobs.push({ file, showId, show, t, staleDateFlag });
     }

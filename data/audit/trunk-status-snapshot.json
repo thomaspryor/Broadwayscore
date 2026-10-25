@@ -1,68 +1,30 @@
 {
-  "generatedAt": "2026-10-24T07:40:51.217Z",
+  "generatedAt": "2026-10-25T13:08:43.412Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
-  "state": "RED",
-  "consecutiveFailures": 19,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "8aaead6e44f1d0d26aa5eb710ebc94fe69eb8b7c",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 6,
+  "greenSince": "2026-10-25T12:16:46Z",
+  "greenForHours": 0.8659477777777778,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-24T00:59:00Z",
-  "redForHours": 6.697560277777778,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-24T00:29:58Z",
-  "latestFailedRunId": "40071566180",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40071566180",
-  "decidedRuns": 100,
+  "lastSuccessAt": "2026-10-25T12:37:11Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 98,
   "verdictLag": {
-    "verdictSha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
-    "verdictAt": "2026-10-24T06:47:04Z",
-    "verdictAgeHours": 0.8964491666666666,
+    "verdictSha": "8aaead6e44f1d0d26aa5eb710ebc94fe69eb8b7c",
+    "verdictAt": "2026-10-25T12:37:11Z",
+    "verdictAgeHours": 0.52567,
     "newerHeads": 0,
     "runsInFlight": 0,
     "lagging": false
   },
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit non-review content (weather/sports/junk pages)"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run unit tests (no-data-dependency)"
-      ]
-    },
-    {
-      "name": "E2E Tests",
-      "steps": [
-        "Run unit tests"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "tests/unit/show-id-market-suffix.test.mjs",
-      "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 12874 - every shows.json id suffix matches its category"
-    },
-    {
-      "path": "tests/unit/biz-data-functions.test.mjs",
-      "job": "E2E Tests",
-      "step": "Run unit tests",
-      "evidence": "not ok 2 - should have valid designation values"
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }

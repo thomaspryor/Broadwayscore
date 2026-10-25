@@ -7,9 +7,78 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { isNationalTourRoundupSlug, tourCandidateFor } = require('../../scripts/lib/tour-roundup-candidate.js');
+
+test('retired tour ids settle candidates without hiding other launch years or undated roundups', t => {
+  const { openTourCandidates, retiredTourCandidateId } = require('../../scripts/lib/tour-roundup-candidate.js');
+  const { isRetiredId } = require('../../scripts/lib/retired-show-ids.js');
+  const { buildTourEntry } = require('../../scripts/lib/tour-entry.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'retired-tour-candidates-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const listPath = path.join(dir, 'retired.json');
+  fs.writeFileSync(listPath, JSON.stringify([
+    { id: 'liberation-tour-2026' }, { id: 'mexodus-tour-2026' }, { id: 'dolly-partons-tour-2026' },
+  ]));
+  const options = { retiredIds: { has: id => isRetiredId(id, { listPath }) } };
+  const parent = { id: 'liberation-2025', title: 'Liberation', type: 'play' };
+  const regional = { id: 'mexodus-off-broadway-2026', title: 'Mexodus', category: 'off-broadway', type: 'musical' };
+  const shows = [parent, regional];
+  const retired = { parentId: parent.id, title: parent.title, source: 'tourstoyou', segmentStart: '2026-10-23', notifiedAt: '2026-10-23T00:00:00Z' };
+  const market = { parentId: regional.id, title: regional.title, source: 'tourstoyou', segmentStart: '2026-09-20' };
+  const standalone = { key: 'page:dolly-partons:2026-09-20', title: 'Dolly Parton’s', type: 'musical', source: 'tourstoyou', segmentStart: '2026-09-20' };
+  const later = { ...retired, segmentStart: '2027-10-23' };
+  const control = { ...standalone, title: 'Other Show', key: 'page:other-show:2026-09-20' };
+  const undated = { broadwayShowId: parent.id, title: parent.title, slug: 'Review-Roundup-LIBERATION-Launches-National-Tour-20261023' };
+  assert.deepEqual(openTourCandidates([retired, market, standalone, later, control, undated], shows, options), [later, control, undated]);
+  for (const [row, production] of [[retired, parent], [market, regional], [standalone, null]]) {
+    const built = buildTourEntry({ parent: production, title: row.title, type: 'musical', shows,
+      scheduleUrl: 'https://tourstoyou.org/shows/fixture/', now: new Date('2026-10-24'),
+      decision: { write: { openingDate: row.segmentStart }, launchSource: 'tourstoyou-fresh', notes: [] } });
+    assert.ok(built.entry, built.skip);
+    assert.equal(retiredTourCandidateId(row, shows, options), built.entry.id, 'same id as the real tour writer');
+  }
+  assert.equal(retiredTourCandidateId({ ...retired, parentId: 'missing-2025' }, shows, options), null);
+  assert.equal(retiredTourCandidateId({ ...retired, segmentStart: undefined }, shows, options), null);
+});
+
+test('retired candidates resolve existing source and digest conditions and remove only their queued reminders', t => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'resolve-retired-tours-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const row = { parentId: 'liberation-2025', title: 'Liberation', source: 'tourstoyou', segmentStart: '2026-10-23', notifiedAt: '2026-10-23T00:00:00Z' };
+  const ended = { ...row, segmentStart: '2026-01-01', ended: true };
+  const control = { parentId: 'other-2025', title: 'Other', source: 'tourstoyou', segmentStart: '2026-10-23' };
+  const keys = ['tour-candidate:liberation-2025:2026-10-23', 'digest-needs-you:Tour candidate: Liberation national tour',
+    'tour-candidate:liberation-2025:2026-01-01', 'digest-needs-you:Tour candidate: Liberation national tour (2026-01-01)'];
+  const controlKey = 'tour-candidate:other-2025:2026-10-23';
+  const entry = { status: 'open', lastSeen: '2026-10-23T00:00:00Z' };
+  const write = (name, value) => { const file = path.join(dir, name); fs.writeFileSync(file, JSON.stringify(value)); return file; };
+  const ledger = write('ledger.json', { conditions: Object.fromEntries([...keys, controlKey].map(k => [k, { ...entry }])) });
+  const queue = write('queue.json', [...keys, controlKey].map(conditionKey => ({ conditionKey })));
+  const retired = write('retired.json', [{ id: 'liberation-tour-2026' }]);
+  const input = write('input.json', { rows: [row, ended, control], shows: [{ id: 'liberation-2025', title: 'Liberation' }, { id: 'other-2025', title: 'Other' }] });
+  execFileSync(process.execPath, ['-e', `
+    const { resolveRetiredTourCandidates } = require('./scripts/lib/tour-roundup-candidate');
+    const router = require('./scripts/lib/owner-alert-router');
+    const input = require(process.env.TOUR_TEST_INPUT);
+    resolveRetiredTourCandidates(input.rows, input.shows, router);
+    resolveRetiredTourCandidates(input.rows, input.shows, router);
+  `], { cwd: path.resolve(import.meta.dirname, '../..'), env: { ...process.env,
+    ALERT_LEDGER_PATH: ledger, ALERT_DIGEST_QUEUE_PATH: queue, RETIRED_IDS_PATH: retired, TOUR_TEST_INPUT: input } });
+  const result = JSON.parse(fs.readFileSync(ledger, 'utf8')).conditions;
+  for (const key of keys) {
+    assert.equal(result[key].status, 'resolved', key);
+    assert.ok(Date.parse(result[key].resolvedAt));
+    assert.match(result[key].resolveReason, /liberation-tour-2026 is retired/);
+  }
+  assert.deepEqual(result[controlKey], entry);
+  assert.deepEqual(JSON.parse(fs.readFileSync(queue, 'utf8')), [{ conditionKey: controlKey }]);
+});
 
 test('national tour roundup slugs are recognised; UK tours and look-alike words are not', () => {
   for (const s of [

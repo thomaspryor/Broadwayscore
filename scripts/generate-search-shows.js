@@ -15,6 +15,7 @@ const path = require('path');
 const { buildShowsWithScores, isTourIndexableSlim } = require('./lib/search-shows-scores');
 const { isCategoryEnabled } = require('./lib/markets');
 const { castNamesForSearch } = require('./lib/show-search-match');
+const { versionedImagePath } = require('./lib/versioned-image-path');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -78,7 +79,7 @@ const searchShows = visibleShows.map(show => {
   if (Array.isArray(show.akaTitles) && show.akaTitles.length) entry.akaTitles = show.akaTitles;
 
   if (show.images && show.images.thumbnail) {
-    entry.images = { thumbnail: show.images.thumbnail };
+    entry.images = { thumbnail: versionedImagePath(show.images.thumbnail) };
   }
 
   // Don't mark pre-2005 closed shows as having scores (reviews hidden)

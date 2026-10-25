@@ -279,3 +279,51 @@ test('BRO-6076: removing an empty gate between mkdir and marker creation cannot 
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// BRO-6189: timeoutMs smaller than the time to the first check (slow CI
+// runner, timeoutMs: 1) used to skip the acquire loop and report a FREE lock
+// as busy. At least one attempt must always be made.
+test('withFileLock makes one attempt even when the deadline has already passed', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-lock-deadline-'));
+  const lock = path.join(dir, 'x.lock');
+  try {
+    const realNow = Date.now;
+    let calls = 0;
+    // First call (deadline calc) is real; every later call is 1h in the future.
+    t.mock.method(Date, 'now', () => (calls++ === 0 ? realNow() : realNow() + 3_600_000));
+    let held;
+    withFileLock(lock, h => { held = h; }, { timeoutMs: 1, waitMs: 0 });
+    t.mock.restoreAll();
+    assert.equal(held, true, 'free lock must be acquired despite an expired deadline');
+    assert.equal(fs.existsSync(lock), false, 'lock released on exit');
+  } finally {
+    t.mock.restoreAll();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+// BRO-6189 (review follow-up): clearing an abandoned steal gate must not use up
+// the guaranteed attempt, or the now-free lock is still reported busy.
+test('withFileLock still acquires after clearing an abandoned gate past the deadline', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-lock-gate-deadline-'));
+  const lock = path.join(dir, 'x.lock');
+  const gate = `${lock}.steal-gate`;
+  try {
+    fs.mkdirSync(gate);
+    const old = new Date(Date.now() - 60 * 60_000);
+    fs.utimesSync(gate, old, old);
+    const realNow = Date.now;
+    let calls = 0;
+    // First Date.now() call MUST be the deadline calc in withFileLock; later calls are 1h ahead.
+    t.mock.method(Date, 'now', () => (calls++ === 0 ? realNow() : realNow() + 3_600_000));
+    let held;
+    withFileLock(lock, h => { held = h; }, { timeoutMs: 1, waitMs: 0 });
+    t.mock.restoreAll();
+    assert.equal(held, true);
+    assert.equal(fs.existsSync(gate), false);
+    assert.equal(fs.existsSync(lock), false, 'lock released on exit');
+  } finally {
+    t.mock.restoreAll();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});

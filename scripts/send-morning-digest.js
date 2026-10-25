@@ -155,7 +155,20 @@ const CYRUS_STATUS_PATH = path.join(
   process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
   'webhook-drain-status.json'
 );
+// BRO-6110: the owner retired Cyrus. A retired Mac job stops writing its status file, which the
+// two readers below would report as "has not checked in" every morning, so they stay silent for
+// a label listed in config/mac-retired.json (the entry names these readers as its watchers).
+function macLabelRetired(label, file = path.join(REPO, 'config', 'mac-retired.json')) {
+  try {
+    const entries = JSON.parse(fs.readFileSync(file, 'utf8')).entries;
+    return Array.isArray(entries) && entries.some((e) => e && e.label === label);
+  } catch {
+    return false; // unreadable list: keep alerting rather than hide a real outage
+  }
+}
+
 function localCyrusRelayMessage() {
+  if (macLabelRetired('com.broadwayscore.cyrus-webhook-drain')) return null;
   let status;
   try {
     status = JSON.parse(fs.readFileSync(CYRUS_STATUS_PATH, 'utf8'));
@@ -270,6 +283,7 @@ function localDispatchWatchdogLeakMessage() {
 }
 
 function localRunnerHealthMessage() {
+  if (macLabelRetired('com.broadwayscore.cyrus-runner')) return null;
   let state;
   try {
     state = JSON.parse(fs.readFileSync(RUNNER_STATUS_PATH, 'utf8'));
@@ -1571,4 +1585,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

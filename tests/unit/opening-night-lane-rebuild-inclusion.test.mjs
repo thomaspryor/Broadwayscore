@@ -87,8 +87,8 @@ test('isScoreable: scraper_garbage / showNotMentioned-without-excerpt exclude an
   }
 });
 
-test('the TS twin of is-scoreable and the parity audit call the same predicate (they cannot be imported from node:test)', () => {
-  for (const f of ['scripts/llm-scoring/is-scoreable.ts', 'scripts/audit-llm-scoring-parity.js']) {
+test('the TS twin of is-scoreable and the parity classifier call the same predicate', () => {
+  for (const f of ['scripts/llm-scoring/is-scoreable.ts', 'scripts/lib/llm-scoring-parity.js']) {
     const text = fs.readFileSync(path.join(ROOT, f), 'utf8');
     assert.match(text, /laneBypasses/, f);
     assert.match(text, /laneBypasses\(data, 'scraperGarbage'|laneOk\('scraperGarbage'\)/, `${f}: scraper_garbage gate`);

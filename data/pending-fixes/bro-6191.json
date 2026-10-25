@@ -1,0 +1,71 @@
+{
+  "issueNumber": "bro-6191",
+  "planId": "58b9ebf8-a546-430b-85a0-e46efd67f1b2",
+  "status": "applied",
+  "createdAt": "2026-10-25T15:01:07.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6191: Oedipus's AI-guessed ~$950K weekly running cost stays cleared: end its deep-research verified listing and flag it cleared",
+    "steps": [
+      "commercial.json: oedipus.weeklyRunningCostCleared",
+      "commercial.json: oedipus.deepResearch"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "weeklyRunningCostCleared",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: oedipus.weeklyRunningCostCleared"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "oedipus",
+        "field": "deepResearch",
+        "oldValue": {
+          "verifiedFields": [
+            "capitalization",
+            "weeklyRunningCost",
+            "recouped",
+            "designation"
+          ],
+          "verifiedDate": "2026-02-03",
+          "verifiedBy": "manual",
+          "notes": "GPT Deep Research: $6.5M cap (SEC), ~$950K weekly, did not recoup. Mark Strong London transfer."
+        },
+        "newValue": {
+          "verifiedFields": [
+            "capitalization",
+            "recouped",
+            "designation"
+          ],
+          "verifiedDate": "2026-02-03",
+          "verifiedBy": "manual",
+          "notes": "GPT Deep Research: $6.5M cap (SEC), did not recoup. Mark Strong London transfer. Weekly running cost cleared (BRO-6178): the ~$950K figure was an AI guess with no source."
+        },
+        "description": "commercial.json: oedipus.deepResearch"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T15:46:40.403Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostCleared updated for oedipus"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: deepResearch updated for oedipus"
+    }
+  ],
+  "executedIn": "ci"
+}

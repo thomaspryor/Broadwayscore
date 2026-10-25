@@ -262,6 +262,36 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
  */
 const NOT_A_PRODUCTION = new Set(['event', 'aggregator', 'template', 'company']);
 const candidateParentId = r => r.parentId || r.broadwayShowId || null;
+const { tourEntryId } = require('./tour-entry');
+const retiredRegistry = { has: id => require('./retired-show-ids').isRetiredId(id) };
+
+const tourCandidateTitle = c => `Tour candidate: ${c.title} national tour${c.ended ? ` (${c.segmentStart})` : ''}`;
+
+/** Match only the proposed id, never every future tour of a retired title. */
+function retiredTourCandidateId(row, shows, { retiredIds = retiredRegistry } = {}) {
+  // A roundup without a schedule has no launch year yet. Do not guess one
+  // from its publication date or firstSeen time.
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(row.segmentStart || '')) return null;
+  const parentId = candidateParentId(row);
+  const parent = parentId ? (shows || []).find(s => s.id === parentId) : null;
+  if (parentId ? !parent : row.source !== 'tourstoyou' || !row.title) return null;
+  const id = tourEntryId(parent, row.title, row.segmentStart);
+  return retiredIds.has(id) ? id : null;
+}
+
+/** Close already-sent suggestions as well as their morning-digest mirrors. */
+function resolveRetiredTourCandidates(rows, shows, router, options) {
+  let dropped = 0;
+  for (const row of rows || []) {
+    const id = retiredTourCandidateId(row, shows, options);
+    if (!id) continue;
+    const keys = [`tour-candidate:${candidateKey(row)}`, `digest-needs-you:${tourCandidateTitle(row)}`];
+    for (const key of keys) router.resolveCondition(key, { reason: `Tour id ${id} is retired` });
+    router.removeDigestLines(keys);
+    dropped++;
+  }
+  return dropped;
+}
 
 /**
  * Rows still worth suggesting. A row with a tracked parent: the parent exists
@@ -273,9 +303,10 @@ const candidateParentId = r => r.parentId || r.broadwayShowId || null;
  * rows (key roundup:..., no page yet) are not suggestions: they wait for a
  * Tours To You page to pair with.
  */
-function openTourCandidates(rows, shows) {
+function openTourCandidates(rows, shows, options) {
   const byId = new Map((shows || []).map(s => [s.id, s]));
   return (rows || []).filter(r => {
+    if (retiredTourCandidateId(r, shows, options)) return false;
     if (r.createdTourId) return false; // create-tour-entries.js made its entry (BRO-4262)
     if (String(r.key || '').startsWith('roundup:')) return false;
     // create-tour-entries.js read the page's Wikipedia infobox and found it is no stage production.
@@ -310,4 +341,4 @@ function sortForCreate(candidates) {
   return [...candidates].sort((a, b) => rank(a) - rank(b));
 }
 
-module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates };
+module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, tourCandidateTitle };

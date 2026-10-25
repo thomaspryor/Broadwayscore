@@ -208,3 +208,18 @@ test('preflight FAILs a handoff encrypted to a stale key and passes one for the 
   assert.match(run(plan(stale.publicKey)).out, /FAIL .*committed key/);
   assert.match(run(plan(committed.publicKey), path.join(dir, 'missing.pem')).out, /FAIL .*dispatch html-handoff-key/);
 });
+
+// BRO-6182: an add-commercial-entry behind an unreplayed add-show only WARNed, so a field the
+// executor refuses (humanReviewedDesignation) failed in CI after the land.
+test('preflight() fails an add-commercial-entry with a disallowed field even behind an unreplayed add-show', () => {
+  const { core, rt, write } = dataEditFixture();
+  fs.writeFileSync(path.join(core, 'commercial.json'), JSON.stringify({ shows: {} }));
+  const entry = { designation: 'Windfall', humanReviewedDesignation: true };
+  const addShow = { type: 'add-show', show: { id: 'n-2009', slug: 'n-2009' } };
+  const bad = write('bad', [addShow, { type: 'add-commercial-entry', slug: 'n-2009', entry }]);
+  const lines = [];
+  assert.equal(preflight([bad], { reviewTextsDir: rt, coreDataDir: core, log: (l) => lines.push(l) }).failed, 1);
+  assert.ok(lines.some((l) => /FAIL bad add-commercial-entry n-2009: field "humanReviewedDesignation" not allowed/.test(l)));
+  const good = write('good', [addShow, { type: 'add-commercial-entry', slug: 'n-2009', entry: { designation: 'Windfall' } }]);
+  assert.equal(preflight([good], { reviewTextsDir: rt, coreDataDir: core, log: () => {} }).failed, 0);
+});

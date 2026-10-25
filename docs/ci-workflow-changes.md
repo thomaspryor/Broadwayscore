@@ -37,3 +37,13 @@ The 10-19 dip (74 reds, 04:00Z to 21:50Z) was one class-A hit in `audit-review-c
 branch has been green since. The class-A gate stays blocking by design: it flags real mis-filed reviews that
 need a human call (marked heal-exempt in test.yml). The 7d window will clear 80% once 10-19 ages out
 (10-27); `autonomous-acceptance-recheck.js` owns the 14-day confirmation.
+
+## Reading 2026-10-24
+7d rate 40.8% (278 green / 403 red of 681); the window still holds 10-21 and 10-22 (0 green, 102 and 104 reds)
+plus 10-19. Failing steps on those days were a mix: unit-test batches (code regressions), the
+BRO-1397 former-cast sweep and "Audit non-review content" (data-state), and "Audit review contamination"
+(class-A, blocking by design). Main has been green continuously since ~16:00Z on 10-24 (10+ consecutive
+completed runs). The 7d rate cannot reach 80% until 10-21/22 age out (~10-29); the 14-day confirmation
+stays with `scripts/autonomous-acceptance-recheck.js`. Open follow-up: the BRO-1397 sweep and the
+non-review-content audit still sit in the blocking Data Validation path and are candidates for the next
+move into `check-corpus-drift.yml` if they red again.

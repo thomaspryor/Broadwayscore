@@ -34,6 +34,8 @@
  */
 'use strict';
 
+const { hasInlineDecision } = require('./decision-card-parse.js');
+
 // The digest-autofix / canary pipeline files its own recurring rows as issues
 // and dispatches them itself. They legitimately live in In Review and are not
 // work the owner reviews, so counting them would inflate every number here.
@@ -88,25 +90,41 @@ function isRealInReview(issue) {
   return !isAutofixFiledIssue(issue);
 }
 
-// Owner markers (BRO-5433). A card parked In Review is a decision FOR THE
-// OWNER only when it says so: the awaiting-owner label (BRO-282), a DECISION
-// NEEDED line, "owner-only", or the 👑 OWNER prefix. Everything else is
-// technical work a worker finished; the owner never reviews it, so it must
-// not be counted as "decisions for you" (2026-10-16 digest: 3 of 4 Review
-// queue rows were technical). The open-issues query carries no description or
-// comments, so the digest first runs enrichForOwnerMarkers() on the idle cards
-// that have no marker yet; stuck-card-closer reads the same fields from the
-// full card. A card whose text cannot be read counts as owner-marked (shown),
-// never as technical.
+// Owner markers (BRO-5433, tightened by BRO-6166). A card parked In Review is a decision FOR THE
+// OWNER only when it says so: the awaiting-owner label (BRO-282), a real DECISION NEEDED line, an
+// OWNER-ONLY: line, or an owner/crown card title. Everything else is technical work a worker
+// finished; the owner never reviews it, so it must not be counted as "decisions for you"
+// (2026-10-16 digest: 3 of 4 Review queue rows were technical).
+// BRO-6166 (owner 2026-10-24: "are you sure those things actually need me?"): the old marker was a
+// bare regex over title + description + every comment, so a card that merely MENTIONED the Mac
+// coordinator tab ("check the 👑 OWNER watchdog tab") or the phrase "owner-only" in prose (as
+// "owner-only stop", "Owner-only signed links") counted as the owner's. Now:
+//   * DECISION NEEDED uses decision-card-parse.js hasInlineDecision(), the digest's own filters for a
+//     real decision (needs ": <content>", skips code, placeholders and settled stubs), so "no
+//     DECISION NEEDED here" and an echoed template do not count, while a worker's inline
+//     "Report. DECISION NEEDED: pick A or B" still does;
+//   * the crown/OWNER test applies to the TITLE only, and needs OWNER after the crown (OWNER_TITLE_RE);
+//   * "owner-only" counts only as the start of a line ("OWNER-ONLY: why").
+// The open-issues query carries no description or comments, so the digest first runs
+// enrichForOwnerMarkers() on the idle cards that have no marker yet; stuck-card-closer reads the
+// same fields from the full card. A card whose text cannot be read counts as owner-marked
+// (shown), never as technical.
 const AWAITING_OWNER_LABEL = 'awaiting-owner';
-const OWNER_MARKER_RE = /DECISION NEEDED|owner[- ]only|👑\s*OWNER/i;
+// A card TITLE addressed to the owner: a crown (then optional status emoji) followed by OWNER, or a title
+// that starts with OWNER, as cmux tab titles and owner cards are written ("👑 OWNER: x", "❓ 👑 OWNER: x",
+// "👑 🤖 OWNER: x"). Narrower than the reclaim sweep's OWNER_CARD_RE, which treats ANY crown in a title as an
+// owner card: here a technical card whose title merely has a crown must not be shown to the human owner.
+const OWNER_TITLE_RE = /\u{1F451}\s*(?:[^\w\s]\s*)*OWNER\b|^\W*OWNER\b/u;
+const OWNER_ONLY_LINE_RE = /^\s*(?:[-*>]\s+)?\**OWNER[- ]ONLY\**\s*:/im;
 
 function hasOwnerMarker(issue) {
   if (!issue) return false;
   const labels = (issue.labels && issue.labels.nodes) || [];
   if (labels.some((l) => l && l.name === AWAITING_OWNER_LABEL)) return true;
   if (issue.ownerMarkerUnknown) return true;
-  return OWNER_MARKER_RE.test(`${issue.title || ''}\n${issue.description || ''}\n${issue.commentText || ''}`);
+  if (OWNER_TITLE_RE.test(issue.title || '')) return true;
+  const text = `${issue.title || ''}\n${issue.description || ''}\n${issue.commentText || ''}`;
+  return hasInlineDecision(text) || OWNER_ONLY_LINE_RE.test(text);
 }
 
 const OWNER_MARKER_QUERY = `query($id: String!) {

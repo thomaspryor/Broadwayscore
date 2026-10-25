@@ -22,6 +22,7 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { mayServeDiskImage } = require('./lib/image-source-match');
+const { versionedImagePath } = require('./lib/versioned-image-path');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -136,6 +137,20 @@ function computePerShowHash(show, globalHash, ctx) {
     hash.update(fs.readFileSync(castFile));
   } else {
     hash.update('cast=absent');
+  }
+  // Hero bytes (BRO-5736): detail.hi carries ?v=<md5 of the file>, so replaced
+  // art must change this show's hash or the skip gate keeps the stale suffix.
+  // Hash every candidate file: the recorded path and the on-disk fallbacks.
+  const heroDir = path.join(__dirname, '..', 'public', 'images', 'shows', String(show.id));
+  const heroFiles = new Set(['webp', 'jpg', 'png'].map(ext => path.join(heroDir, `hero.${ext}`)));
+  if (typeof show.images?.hero === 'string' && show.images.hero.startsWith('/images/') && !show.images.hero.includes('..')) {
+    heroFiles.add(path.join(__dirname, '..', 'public', show.images.hero));
+  }
+  for (const hf of [...heroFiles].sort()) {
+    if (fs.existsSync(hf)) {
+      hash.update(`hero=${path.basename(hf)}`);
+      hash.update(fs.readFileSync(hf));
+    }
   }
   return hash.digest('hex');
 }
@@ -763,7 +778,7 @@ for (const show of visibleShows) {
     }
   }
   if (heroPath) {
-    detail.hi = heroPath;
+    detail.hi = versionedImagePath(heroPath);
   }
 
   // Theater address

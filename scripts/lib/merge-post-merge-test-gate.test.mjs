@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -472,6 +472,33 @@ test('runTestGate: a spawn-layer failure names the errno and the signal instead 
   assert.equal(result.passed, false);
   assert.match(result.reason, /ENOBUFS/, 'the errno must survive into the reason — it was discarded before BRO-2874');
   assert.match(result.reason, /SIGTERM/, 'a timeout kill must be named, not reported as status=null');
+});
+
+test('runTestGate: a timeout-killed merged run is NOT retried (BRO-6184), and the kill is named', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  let spawns = 0;
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => {
+      spawns++;
+      return { status: null, signal: 'SIGTERM', error: Object.assign(new Error('spawnSync node ETIMEDOUT'), { code: 'ETIMEDOUT' }), stdout: '', stderr: '' };
+    },
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(spawns, 1, 'a timeout kill must not double the wait with an unparseable-death retry');
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /killed before finishing/);
+  assert.doesNotMatch(result.reason, /twice|re-ran/);
+});
+
+test('TEST_GATE_TIMEOUT_MS stays 8 min (BRO-6184): above the 5 min that killed a loaded-runner merged run, 3 spawns fit the 30 min land cap', () => {
+  assert.equal(TEST_GATE_TIMEOUT_MS, 8 * 60 * 1000);
+  const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
+  const outer = Number(/MERGED_TREE_TIMEOUT_MS = (\d+) \* 60 \* 1000/.exec(land)[1]) * 60 * 1000;
+  assert.ok(outer > 3 * TEST_GATE_TIMEOUT_MS, 'outer land cap must cover merged + retry + baseline spawns');
 });
 
 test('runTestGate: surfacing spawn error/signal changes NO pass/fail decision — status 0 still passes', () => {

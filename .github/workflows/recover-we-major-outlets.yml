@@ -45,6 +45,11 @@ on:
         required: false
         type: string
         default: '200'
+      debug:
+        description: 'Print every SERP query and verdict, and skip the Google date filter'
+        required: false
+        default: false
+        type: boolean
       dry_run:
         description: 'List the queue only, spend nothing, push nothing'
         required: false
@@ -102,6 +107,7 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          GUARDIAN_API_KEY: ${{ secrets.GUARDIAN_API_KEY }}
           INPUT_SHOWS: ${{ inputs.shows }}
           INPUT_SLOTS: ${{ inputs.slots }}
           INPUT_SEASONS: ${{ inputs.seasons }}
@@ -110,13 +116,20 @@ jobs:
           INPUT_MAX_CALLS: ${{ inputs.max_calls }}
           INPUT_MODE: ${{ inputs.mode }}
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
+          INPUT_DEBUG: ${{ inputs.debug }}
         run: |
           set -o pipefail
           FLAGS="--seasons=$INPUT_SEASONS --max-usd=$INPUT_MAX_USD --reserve-usd=$INPUT_RESERVE_USD --max-calls=$INPUT_MAX_CALLS --out=$RUNNER_TEMP/recovery.json"
           [ -n "$INPUT_SHOWS" ] && FLAGS="$FLAGS --shows=$INPUT_SHOWS"
           [ -n "$INPUT_SLOTS" ] && FLAGS="$FLAGS --slots=$INPUT_SLOTS"
           [ "$INPUT_DRY_RUN" = "true" ] && FLAGS="$FLAGS --dry-run"
+          [ "$INPUT_DEBUG" = "true" ] && FLAGS="$FLAGS --debug"
           node scripts/we-major-recovery.js wos --seasons="$INPUT_SEASONS" --out=$RUNNER_TEMP/wos.json
+          # Guardian Content API: production-specific by construction (date window around opening). Free.
+          if [ -n "$GUARDIAN_API_KEY" ] && { [ -z "$INPUT_SLOTS" ] || echo ",$INPUT_SLOTS," | grep -q ',guardian,'; }; then
+            node scripts/we-major-recovery.js guardian --seasons="$INPUT_SEASONS" ${INPUT_SHOWS:+--shows="$INPUT_SHOWS"} --out=$RUNNER_TEMP/guardian.json | tee -a $RUNNER_TEMP/recovery.log || echo '[]' > $RUNNER_TEMP/guardian.json
+            node -e "const f=require('fs'),d=process.env.RUNNER_TEMP;f.writeFileSync(d+'/wos.json',JSON.stringify([...JSON.parse(f.readFileSync(d+'/wos.json')),...JSON.parse(f.readFileSync(d+'/guardian.json'))],null,1))"
+          fi
           [ "$INPUT_MODE" = "run" ] && FLAGS="$FLAGS --serp"
           node scripts/we-major-recovery.js run --candidates=$RUNNER_TEMP/wos.json $FLAGS 2>&1 | tee $RUNNER_TEMP/recovery.log
           { echo '### Recovery'; grep -E 'COST TALLY|OUTCOMES|STOPPED' $RUNNER_TEMP/recovery.log | tail -4; } >> "$GITHUB_STEP_SUMMARY"
@@ -130,6 +143,7 @@ jobs:
             ${{ runner.temp }}/recovery.json
             ${{ runner.temp }}/recovery.log
             ${{ runner.temp }}/wos.json
+            ${{ runner.temp }}/guardian.json
           if-no-files-found: ignore
 
       - name: Commit new review files

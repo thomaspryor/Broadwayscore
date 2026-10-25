@@ -70,6 +70,8 @@ on:
       - 'scripts/check-grosses-integrity.js'
       # BRO-5626: daily unpark drain, tested by scripts/linear-unpark-drain.test.mjs.
       - 'scripts/linear-unpark-drain.js'
+      # BRO-6168: owner-reply drain, tested by tests/unit/decision-reply.test.mjs.
+      - 'scripts/linear-decision-reply-drain.js'
       # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
       - 'scripts/codex-lane-alarm.js'
       # BRO-6139: its replay() is the change-safety gate, tests/unit/codex-lane-backtest-replay.test.mjs.
@@ -512,6 +514,8 @@ on:
       - 'scripts/audit-errexit-unguarded-substitution.js'
       - 'scripts/check-cross-outlet-attribution-drift.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
+      # BRO-2484: advisory guard call-site audit (test: tests/unit/audit-guard-call-sites.test.mjs).
+      - 'scripts/audit-guard-call-sites.js'
       - 'scripts/audit-coverage-slot-drops.js'
       # BRO-5261 (BRO-3087 retro-review): top-level scripts a collected test
       # names by path (a 'scripts/x.js' literal or path.join(here, '..', 'x.js'))
@@ -1144,6 +1148,10 @@ on:
       - 'scripts/verify-feedback-requests-live.js'
       # BRO-4719: owner decision email; its test (tests/unit/owner-decision-notify.test.mjs) is manifest-registered.
       - 'scripts/notify-owner-decisions.js'
+      - 'scripts/send-owner-decision-emails.js'
+      - 'scripts/lib/owner-decision-email.js'
+      - 'src/lib/owner-decision-link.js'
+      - 'src/app/api/owner-decision/route.ts'
       # What the owner actually reads. Added 2026-08-05 after a shipped report
       # linked /shows/{slug} — a route that does not exist — and nothing failed:
       # both report builders were exported but had no test at all. This file

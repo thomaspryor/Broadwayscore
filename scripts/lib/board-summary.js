@@ -136,7 +136,7 @@ function weekdayLabel(day, tz = TZ) {
 function bar(value, max, color) {
   const pct = max > 0 ? Math.max(value > 0 ? 2 : 0, Math.round((value / max) * 100)) : 0;
   const fill = pct > 0
-    ? `<td width="${pct}%" style="background:${color};height:8px;line-height:8px;font-size:0;border-radius:0 4px 4px 0;">&nbsp;</td>`
+    ? `<td width="${pct}%" style="background-color:${color};height:8px;line-height:8px;font-size:0;border-radius:0 4px 4px 0;">&nbsp;</td>`
     : '';
   return `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;"><tr>${fill}<td style="height:8px;line-height:8px;font-size:0;">&nbsp;</td></tr></table>`;
 }
@@ -151,7 +151,7 @@ function renderChart(daily, esc, { now = new Date(), tz = TZ } = {}) {
 <td style="width:64px;padding:5px 0 5px 8px;font-size:12px;color:${INK};text-align:right;vertical-align:middle;white-space:nowrap;">+${r.added} / &minus;${r.closed}</td>
 </tr>`;
   }).join('');
-  const key = (color, text) => `<span style="white-space:nowrap;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:${color};vertical-align:middle;"></span> <span style="vertical-align:middle;">${text}</span></span>`;
+  const key = (color, text) => `<span style="white-space:nowrap;"><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background-color:${color};vertical-align:middle;"></span> <span style="vertical-align:middle;">${text}</span></span>`;
   return `<p style="font-size:13px;font-weight:700;color:${INK};margin:16px 0 2px;">Cards added vs closed, last 7 full days</p>
 <p style="font-size:12px;color:${MUTED};margin:0 0 4px;">${key(ADDED_COLOR, 'added (+)')} &nbsp;&nbsp; ${key(CLOSED_COLOR, 'closed (&minus;)')}</p>
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">${rows}</table>
@@ -159,7 +159,7 @@ function renderChart(daily, esc, { now = new Date(), tz = TZ } = {}) {
 }
 
 function tile(big, label, note, esc, side) {
-  return `<td width="50%" style="padding:${side === 'left' ? '4px 4px 4px 0' : '4px 0 4px 4px'};vertical-align:top;"><div style="background:#f4f4f1;border-radius:8px;padding:10px 12px;">
+  return `<td width="50%" style="padding:${side === 'left' ? '4px 4px 4px 0' : '4px 0 4px 4px'};vertical-align:top;"><div style="background-color:#f4f4f1;border-radius:8px;padding:10px 12px;">
 <div style="font-size:12px;color:${MUTED};">${esc(label)}</div>
 <div style="font-size:20px;font-weight:700;color:${INK};line-height:1.3;">${esc(big)}</div>
 <div style="font-size:11px;color:${MUTED};">${esc(note)}</div></div></td>`;
@@ -203,8 +203,8 @@ function renderBoardSummaryHtml(m, daily, esc = (s) => String(s), { now = new Da
 <tr>${tile(t[2][1], t[2][0], t[2][2], esc, 'left')}${tile(t[3][1], t[3][0], t[3][2], esc, 'right')}</tr></table>`;
   return `<div style="margin:0 0 18px;">
 <p style="font-size:15px;font-weight:700;color:${INK};margin:0 0 8px;">How the board is doing</p>
-<div style="background:${tone.bg};border-radius:8px;padding:10px 12px;">
-<div style="font-size:15px;font-weight:700;color:${INK};"><span style="display:inline-block;width:18px;height:18px;line-height:18px;border-radius:9px;background:${tone.dot};color:#fff;font-size:12px;text-align:center;margin-right:6px;">${tone.icon}</span>${esc(v.headline)}</div>
+<div style="background-color:${tone.bg};border-radius:8px;padding:10px 12px;">
+<div style="font-size:15px;font-weight:700;color:${INK};"><span style="display:inline-block;width:18px;height:18px;line-height:18px;border-radius:9px;background-color:${tone.dot};color:#fff;font-size:12px;text-align:center;margin-right:6px;">${tone.icon}</span>${esc(v.headline)}</div>
 <div style="font-size:13px;color:${INK};margin-top:4px;">${esc(v.sentence)}</div></div>
 ${Array.isArray(daily) && daily.length ? renderChart(daily, esc, { now }) : ''}
 ${tiles}

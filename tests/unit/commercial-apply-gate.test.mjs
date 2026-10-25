@@ -824,3 +824,22 @@ describe('buildCommercialEntry: a brand-new record always has a designation (BRO
     assert.equal(gate.buildCommercialEntry({ recouped: true }, { designation: 'Windfall', recouped: true, recoupedDate: '2020-01' }, { isClaimAutoApply: true }).designation, 'Windfall');
   });
 });
+
+describe('model-estimate designations give way to a verified recoupment (BRO-6158)', () => {
+  const est = (designation) => ({ designation, recouped: null, designationBasis: 'model-estimate' });
+  it('resets an estimate on loss and recouped-side tiers, but not a locked one', () => {
+    for (const d of ['Flop', 'Fizzle', 'Trickle', 'Windfall']) {
+      assert.equal(gate.recoupClaimDesignationAction(est(d)), 'reset', d);
+    }
+    assert.equal(gate.recoupClaimDesignationAction({ ...est('Windfall'), humanReviewedDesignation: true }), 'keep');
+    assert.equal(gate.recoupClaimDesignationAction({ designation: 'Windfall', recouped: true }), 'keep', 'a reported Windfall is untouched');
+  });
+  it('stampDesignationBasis keeps the estimate basis on Trickle/Windfall and drops it once recouped is true', () => {
+    const a = { designation: 'Windfall', recouped: null };
+    gate.stampDesignationBasis(a, { designationBasis: 'model-estimate' }, undefined);
+    assert.equal(a.designationBasis, 'model-estimate');
+    const b = { designation: 'Windfall', recouped: true };
+    gate.stampDesignationBasis(b, { designationBasis: 'model-estimate' }, undefined);
+    assert.equal('designationBasis' in b, false);
+  });
+});

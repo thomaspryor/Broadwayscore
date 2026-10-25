@@ -187,9 +187,12 @@ fi
 
 # ── TypeScript Check ───────────────────────────────────────────────────────
 # Full-repo tsc OOMs at the default ~2GB heap in cloud containers (BRO-6004).
-TSC_NODE_OPTIONS="$(bash "$(dirname "${BASH_SOURCE[0]}")/tsc-node-options.sh")" || TSC_NODE_OPTIONS=""
-# land.yml / land-local-check copy ONLY this script to a temp dir, so the helper may be
-# absent there; fall back to the same floor rather than the 2GB default.
+TSC_HELPER="$(dirname "${BASH_SOURCE[0]}")/tsc-node-options.sh"
+TSC_NODE_OPTIONS=""
+[ -f "$TSC_HELPER" ] && { TSC_NODE_OPTIONS="$(bash "$TSC_HELPER")" || TSC_NODE_OPTIONS=""; }
+# A temp copy of this script (land.yml, land-local-check, the codex runner) should come with
+# the helper (stageGauntletHarness), but an older stager may copy this script alone; fall back
+# to the same floor rather than the 2GB default, without a "No such file" error (BRO-6152).
 [ -n "$TSC_NODE_OPTIONS" ] || TSC_NODE_OPTIONS="${NODE_OPTIONS:-} --max-old-space-size=6144"
 # BRO-6043: which tracked files differ from HEAD at the moment tsc starts (the
 # gold-lists prep always dirties one), so tsc-stamp.js seed-export can tell what

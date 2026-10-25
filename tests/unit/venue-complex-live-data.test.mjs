@@ -77,7 +77,7 @@ test('every registered market is orphan-free — covers a third market with no n
 
 test('an emptied subVenueSlugs array is legitimate when the complex slug is itself a venue', () => {
   // Pins the shape of the actual 2026-09-05 fix so nobody "restores" the slug.
-  // new-world-stages carries subVenueSlugs: [] and that is CORRECT: four shows
+  // new-world-stages carries subVenueSlugs: [] was CORRECT: four shows
   // use the venue string "New World Stages" verbatim, so data-core.ts's
   // buildComplexIndex renders the complex from ownTheater and still groups all
   // four. An empty array is therefore never on its own evidence of a problem —
@@ -85,7 +85,17 @@ test('an emptied subVenueSlugs array is legitimate when the complex slug is itse
   // venue-complex-audit.js: data-core.ts:885 emits zero-show complexes by design).
   const def = complexDefs['new-world-stages'];
   assert.ok(def, 'new-world-stages complex must still exist');
-  assert.deepEqual(def.subVenueSlugs, [], 'new-world-stages.subVenueSlugs must stay empty — the Stage 5 slug was orphaned by a core-data merge');
+  // Stage 3 was linked 2026-10-25 (BRO-6201) when a real show used it. Emptiness is
+  // legitimate, not required: the guard is that no linked slug is orphaned (test 1).
+  assert.ok(Array.isArray(def.subVenueSlugs), 'new-world-stages.subVenueSlugs must be an array');
   const nwsShows = showsData.shows.filter(s => isOffBroadway(s) && slugify(normalizeVenueName(s.venue || '')) === 'new-world-stages');
   assert.ok(nwsShows.length > 0, 'the complex now depends entirely on ownTheater, so at least one show must use the bare "New World Stages" venue string');
+});
+
+test('no complex lists its own slug in subVenueSlugs (buildComplexIndex would double-count its shows)', () => {
+  // data-core.ts buildComplexIndex concatenates ownTheater.allShows with sub-venue shows,
+  // so a self-reference duplicates every show on the complex's own venue (BRO-6201).
+  const selfRefs = [complexDefs, westEndComplexDefs]
+    .flatMap(defs => Object.entries(defs).filter(([slug, d]) => (d.subVenueSlugs || []).includes(slug)).map(([slug]) => slug));
+  assert.deepEqual(selfRefs, []);
 });

@@ -475,6 +475,8 @@ test('decideSweep: only gate-verifiable evidence closes, a refused runnable chec
   assert.equal(d(fullCard({ description: evid, comments: [{ body: 'worker note', createdAt: iso(NOW - 1 * DAY) }] })).reason, 'recent-activity');
   // an ask to the owner in a comment (where worker reports live) keeps the card out of the sweep
   assert.equal(d(fullCard({ description: evid, comments: [{ body: 'Report. DECISION NEEDED: pick A or B', createdAt: iso(NOW - 6 * DAY) }] })).reason, 'owner-marker');
+  // BRO-6166: a worker comment that merely NAMES the Mac coordinator tab is not an ask to the owner
+  assert.equal(d(fullCard({ description: evid, comments: [{ body: "Crown passed to cmux tab '\u{1F451} OWNER \u2014 main-green keep-green watch' with a brief", createdAt: iso(NOW - 6 * DAY) }] })).action, 'try-close');
   // refused recently: cooldown; refused long ago: tries again
   assert.equal(d(fullCard({ description: evid, comments: [{ body: sweepMod.buildSweepRefusedComment(), createdAt: iso(NOW - 4 * DAY) }] })).reason, 'refused-recently');
   assert.equal(d(fullCard({ description: evid, comments: [{ body: sweepMod.buildSweepRefusedComment(), createdAt: iso(NOW - 9 * DAY) }] })).action, 'try-close');

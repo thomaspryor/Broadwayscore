@@ -29,11 +29,11 @@ const {
   hasBadSynopsisContent,
   resolveVariantContent,
   pickSearchCandidate,
+  selectSynopsisTargets,
 } = require('./lib/wikipedia-synopsis-match');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { setSynopsis } = require('./lib/synopsis-source');
-const { isValidSynopsis, classifyBadSynopsis, synopsisAuthorMismatch } = require('./lib/synopsis-validation');
-const { isTourShow } = require('./lib/tour-family');
+const { isValidSynopsis, synopsisAuthorMismatch } = require('./lib/synopsis-validation');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { CLAUDE_OPUS } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -213,19 +213,15 @@ async function main() {
   // pre-opening sat live forever (1536 incident, 2026-06-21).
   // National tours take their Broadway parent's synopsis (same story); a
   // Wikipedia title search found the wrong article for them (BRO-4262).
-  let targets = shows.filter(s => !isTourShow(s) && classifyBadSynopsis(s).bad);
-
-  if (ONLY_SHOW) {
-    targets = targets.filter(s => s.id === ONLY_SHOW);
-  }
+  const targets = selectSynopsisTargets(shows, {
+    onlyShow: ONLY_SHOW, category: CATEGORY_FILTER, limit: LIMIT,
+  });
 
   if (CATEGORY_FILTER) {
-    targets = targets.filter(s => (s.category || 'broadway') === CATEGORY_FILTER);
     console.log(`Filtering to category: ${CATEGORY_FILTER}`);
   }
 
   if (LIMIT > 0) {
-    targets = targets.slice(0, LIMIT);
     console.log(`Limiting to ${LIMIT} shows`);
   }
 

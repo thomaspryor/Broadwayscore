@@ -43,7 +43,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
 const { guardRejectionWarning } = require('./lib/recoupment-production-guard');
 const { pickRecoupmentCandidates, RSS_SCOPE } = require('./lib/recoupment-scan-scope');
-const { TRUSTED_RECOUPMENT_HOSTS } = require('./lib/trusted-recoupment-domains');
+const { hostGate, shouldAlertDeadFeed, deadFeedAlertOpts, untrustedClaimAlertOpts, alertLanded } = require('./lib/commercial-feed-health');
 const { runMain } = require('./lib/run-main');
 const { MAIN_REPO_ROOT } = require('./lib/repo-root');
 
@@ -175,7 +175,9 @@ async function processFeed(feed, state, candidates, counters) {
     feedState.errorCount = (feedState.errorCount || 0) + 1;
     feedState.lastError = e.message;
     state.feeds[feed.outletId] = feedState;
-    return [];
+    // Same shape as success so main() can read .findings (BRO-6167: a bare [] made
+    // main throw before writeState, so errorCount never persisted).
+    return { findings: [], capHit: false, mostRecentGuid: null, error: e.message };
   }
 
   // Reset error count on success
@@ -226,7 +228,8 @@ async function processFeed(feed, state, candidates, counters) {
     if (verdict.confidence !== 'high') continue;
 
     const host = hostnameOf(item.link);
-    if (!TRUSTED_RECOUPMENT_HOSTS.has(host)) {
+    const gate = hostGate(feed, host);
+    if (gate === 'skip') {
       log(`      ⏭️  ${host} not in TRUSTED_RECOUPMENT_HOSTS — skipping auto-apply path`);
       continue;
     }
@@ -238,7 +241,7 @@ async function processFeed(feed, state, candidates, counters) {
       }
     }
 
-    matched.push({ show, url: item.link, host, verdict, rssItem: item });
+    matched.push({ show, url: item.link, host, verdict, rssItem: item, gate });
   }
 
   return { findings: matched, capHit: false, mostRecentGuid: items[0]?.guid };
@@ -292,7 +295,11 @@ async function main() {
       console.log(`::warning::RSS poller burned ${n} LLM calls on feed "${outletId}" (threshold ${PER_FEED_LLM_WARN_THRESHOLD}). Likely a title collision with a film/TV franchise — audit recent classifications.`);
     }
   }
-  log(`Promotable findings: ${allFindings.length}`);
+  // Untrusted-host claims (Broadway Journal) never touch pending/commercial data:
+  // they go to a human via one aggregate alert (BRO-6167).
+  const reviewFindings = allFindings.filter(f => f.gate === 'review');
+  const pendingFindings = allFindings.filter(f => f.gate !== 'review');
+  log(`Promotable findings: ${pendingFindings.length} (+${reviewFindings.length} for human review)`);
   for (const f of allFindings) {
     log(`  ✅ ${f.show.slug}: ${f.verdict.recoupedDate || 'date?'} (${f.host})`);
     log(`     ${f.url}`);
@@ -303,8 +310,26 @@ async function main() {
     return;
   }
 
+  // A review finding exists only as this alert. If it cannot be delivered, hold
+  // the feed's lastSeenGuid so the next poll sees the item again.
+  const heldFeeds = new Set();
+  if (reviewFindings.length > 0) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    let landed = false;
+    try {
+      const res = await routeAlert(untrustedClaimAlertOpts(reviewFindings));
+      landed = alertLanded(res);
+    } catch (e) { log(`  ⚠️  untrusted-claim alert failed: ${e.message}`); }
+    if (!landed) {
+      for (const [outletId, r] of Object.entries(feedResults)) {
+        if (r && (r.findings || []).some(f => f.gate === 'review')) heldFeeds.add(outletId);
+      }
+      log(`  ⚠️  holding lastSeenGuid for: ${[...heldFeeds].join(', ')}`);
+    }
+  }
+
   // Write pending FIRST; bump state lastSeenGuid only on success (transactional).
-  if (allFindings.length > 0) {
+  if (pendingFindings.length > 0) {
     const pending = loadPending();
     pending.shows = pending.shows || {};
     const now = new Date().toISOString();
@@ -312,7 +337,7 @@ async function main() {
     // normalize to real null so downstream apply/validate never see a bad date.
     const { cleanNullish } = require('./lib/commercial-apply-gate');
     let written = 0;
-    for (const f of allFindings) {
+    for (const f of pendingFindings) {
       pending.shows[f.show.slug] = {
         ...(pending.shows[f.show.slug] || {}),
         recouped: true,
@@ -341,17 +366,32 @@ async function main() {
     const result = feedResults[feed.outletId];
     const feedState = state.feeds[feed.outletId] || { lastSeenGuid: null, errorCount: 0 };
     feedState.lastPolledAt = nowIso;
-    if (result && !result.capHit && result.mostRecentGuid) {
+    if (result && !result.capHit && result.mostRecentGuid && !heldFeeds.has(feed.outletId)) {
       feedState.lastSeenGuid = result.mostRecentGuid;
     }
     state.feeds[feed.outletId] = feedState;
   }
   writeState(state);
+
+  // Dead-source alert (BRO-6167): a tracked feed failing 3+ polls in a row.
+  for (const feed of feeds) {
+    const fs_ = state.feeds[feed.outletId];
+    if (!shouldAlertDeadFeed(fs_)) {
+      // Recovered feed: close the incident so a second outage alerts again.
+      if (feedResults[feed.outletId] && !feedResults[feed.outletId].error) {
+        require('./lib/owner-alert-router').resolveCondition(`commercial-feed-dead:${feed.outletId}`, { reason: 'feed polled successfully' });
+      }
+      continue;
+    }
+    const { routeAlert } = require('./lib/owner-alert-router');
+    try { await routeAlert(deadFeedAlertOpts(feed, fs_)); }
+    catch (e) { log(`  ⚠️  dead-feed alert failed for ${feed.outletId}: ${e.message}`); }
+  }
   log(`State written to ${path.relative(process.cwd(), STATE_PATH)}`);
 }
 
 // Export pure helpers for unit tests.
-module.exports = { diffNewItems, matchShow, pickCandidates, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS, PER_FEED_LLM_WARN_THRESHOLD };
+module.exports = { processFeed, diffNewItems, matchShow, pickCandidates, RECOUP_REGEX, SIXTY_DAYS_MS, ARTICLE_DATE_MAX_AGE_MS, PER_FEED_LLM_WARN_THRESHOLD };
 
 if (require.main === module) {
   // BRO-4623: runMain awaits scraper cleanup() and exits explicitly; a bare

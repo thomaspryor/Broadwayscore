@@ -413,6 +413,13 @@ if (!show) {
     process.exit(1);
   }
   text = iso.text;
+  // A registration wall rendered into the body is not the review: drop the text so
+  // the star-rating fallback below (or the extraction-failed exit) decides, instead of
+  // scoring the stub (Telegraph Cinderella stub scored 86, BRO-6183).
+  if (require('./lib/paywall-detector').hasRegistrationWallTail(text)) {
+    console.error('Extracted body ends in a registration wall (sign-up form text); discarding it');
+    text = '';
+  }
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.

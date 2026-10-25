@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-24T20:10:58.737Z",
+  "generated": "2026-10-25T16:41:14.715Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 33,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -211,6 +211,13 @@
       "loserFile": "metro-uk--unknown.json",
       "targetFile": "metro-uk--tori-brazier.json",
       "reason": "orphaned-duplicate-heal: metro-uk--tori-brazier.json was flagged invalid after metro-uk--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-price-2017",
+      "loserFile": "dailybeast--tim-teeman.json",
+      "targetFile": "dailybeast--chris-jones.json",
+      "reason": "orphaned-duplicate-heal: dailybeast--chris-jones.json was flagged invalid after dailybeast--tim-teeman.json was pointed at it",
       "field": "duplicateOf"
     },
     {

@@ -46,7 +46,8 @@ concurrency:
 
 permissions:
   contents: read
-  actions: read
+  # write: the runner dispatches execute-approved-fix.yml / rebuild-fast.yml for a landed data-fix plan (BRO-6175)
+  actions: write
 
 jobs:
   run:

@@ -12,6 +12,7 @@ Rules that apply to you:
 - Content-quality regex edits (scripts/lib/content-quality.js pattern arrays): run `node scripts/audit-regex-patterns.js --full`.
 - Data rules: never extract metadata from URLs; star ratings map to score bands (2/5 -> 31-50, 3/5 -> 51-70, 4/5 -> 71-90, 5/5 -> 91-100) and are never overridden outside them; critic scores for external claims come from getCriticScore() in scripts/lib/canonical-critic-scores.ts.
 - UI work: follow CLAUDE.md section 4 (shared components in src/components/show-cards/, design tokens with no zinc-*/slate-*/hardcoded hex, `.card` classes, getScoreBucket() for score colors, src/config/branding.ts for brand colors); score badges never change size. Run `npx tsc --noEmit` and `npx next lint` on changes under src/.
+{{DATA_FIX_RULE}}
 - No em dashes in prose you write; never commit or print secrets or anything from ~/.codex; do not edit files outside this repo checkout.
 
 Real data in this checkout (the runner put it there; use these paths):

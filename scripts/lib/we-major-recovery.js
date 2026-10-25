@@ -135,6 +135,34 @@ function matchWosPosts(rows, shows, posts) {
   return out;
 }
 
+
+// ---- Guardian Content API search results -> missing guardian slots ---------
+
+/**
+ * Candidates for a show's missing Guardian slot from Content API search results (section=stage,
+ * queried over the show's opening window with show-tags=tone and show-fields=headline,publication,bodyText).
+ * A result counts when it is tagged tone/reviews, published by The Guardian (not The Observer, which shares
+ * theguardian.com/stage and is filed under another outlet), its headline names the show title, it is dated in
+ * [opening-14d, opening+60d], and its text names the show's venue (a same-titled regional or Broadway
+ * production is another production). More than one such result means the title is ambiguous, so none is kept.
+ */
+function matchGuardianResults(show, results) {
+  if (!show || !show.openingDate) return [];
+  const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
+  const t = norm(show.title);
+  if (!t || t.length < 4) return [];
+  const v = venueNorm(show.venue);
+  const hits = results.filter(r => {
+    const date = String(r.webPublicationDate || '').slice(0, 10);
+    if (date < lo || date > hi) return false;
+    if (!/^(the guardian|theguardian\.com)$/i.test((r.fields && r.fields.publication) || '')) return false;
+    if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
+    if (!` ${norm(r.fields && r.fields.headline || r.webTitle)} `.includes(` ${t} `)) return false;
+    return !v || ` ${norm(r.fields && r.fields.bodyText)} `.includes(` ${v} `);
+  });
+  return hits.length === 1 ? [{ url: hits[0].webUrl, date: String(hits[0].webPublicationDate).slice(0, 10) }] : [];
+}
+
 // ---- spend tally ----------------------------------------------------------
 
 /**
@@ -194,5 +222,5 @@ function hostMatchesSlot(m, host) {
 
 module.exports = {
   hostMatchesSlot, MAJOR, BY_SLOT, SLOT_OF, buildSlots, summarize, orderQueue, showWindow,
-  norm, venueAgrees, matchWosPosts, ledgerUsd, CostTally, addDays,
+  norm, venueAgrees, matchWosPosts, matchGuardianResults, ledgerUsd, CostTally, addDays,
 };

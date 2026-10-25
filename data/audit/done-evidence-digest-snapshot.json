@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-24T07:27:56.228Z",
-  "bannerText": "142/221 Done(14d) verified on main · 13 FAILED · 1 vacuous · 36 stuck-but-done — PARTIAL RUN: 43 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-25T12:48:50.822Z",
+  "bannerText": "92/148 Done(14d) verified on main · 4 FAILED · 1 vacuous · 23 stuck-but-done — PARTIAL RUN: 57 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-5779 — Show-page recoupment headline prints the report month as 'Recouped, <month>' (Kimberly Akimbo: April 2026 is the Playbill report date)",
-      "detail": "not ok: <checkout>/tests/unit/commercial-displa… | first failure: TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension \".ts\" for /tmp/do",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5779/show-page-recoupment-headline-prints-the-report-month-as-recouped"
+      "title": "FAILED BRO-6108 — BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/we-historical-tr-coverage.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through"
     },
     {
-      "title": "FAILED BRO-5695 — BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2174/1750 reqs)",
-      "detail": "[check-health-row-absent] FAIL: \"Bright Data daily breaker TRIPPED: web_unlocker2 (2174/1750 reqs)\" still listed in the 2026-10-24T07:20:32.685Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5695/bsc-daily-bright-data-daily-breaker-tripped-web-unlocker2-21741750"
-    },
-    {
-      "title": "FAILED BRO-5663 — Methodology: explain NY Post / Daily News T2 outlet vs T1 top critics",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/methodology-outlet-tiers.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5663/methodology-explain-ny-post-daily-news-t2-outlet-vs-t1-top-critics"
-    },
-    {
-      "title": "FAILED BRO-5300 — iOS app re-derives the score display gate from the bare market minimum (disagrees with site on T3-only and curated shows)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/mobile-score-display-parity.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5300/ios-app-re-derives-the-score-display-gate-from-the-bare-market-minimum"
-    },
-    {
-      "title": "FAILED BRO-4490 — Cleared and LLM-misread star ratings still steer some shipped scores (31 tier-1.5-cleared llm-v6 files; FT multi-review star runs)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/late-star-anchor.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4490/cleared-and-llm-misread-star-ratings-still-steer-some-shipped-scores"
-    },
-    {
-      "title": "FAILED BRO-3156 — Audit script: flag execFileSync('git', ['show'...]) calls missing maxBuffer",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-git-show-maxbuffer.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3156/audit-script-flag-execfilesyncgit-show-calls-missing-maxbuffer"
-    },
-    {
-      "title": "FAILED BRO-2496 — iOS Maestro E2E nightly has failed every run for 2+ weeks on 3-4 unrelated flows",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: docs/maestro-e2e-failure-diagnosis.md",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2496/ios-maestro-e2e-nightly-has-failed-every-run-for-2-weeks-on-3-4"
+      "title": "FAILED BRO-6075 — Write grounded synopses for the 62 West End historical shows left empty (from collected review texts)",
+      "detail": "FAIL 1506: show missing FAIL 1507: show missing FAIL 1508: show missing FAIL 1509: show missing FAIL 1510: show missing FAIL 1511: show missing FAIL 1512: show missing FAIL 1513: …",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6075/write-grounded-synopses-for-the-62-west-end-historical-shows-left"
     },
     {
       "title": "FAILED BRO-5993 — Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-lane-parallel-publish.test.mjs",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is"
+    },
+    {
+      "title": "FAILED BRO-4776 — P3: 8 tour runtimes copied from the Broadway parent disagree with the tour's own page by 5 to 10 minutes",
+      "detail": "not ok: the-sound-of-music-1998 has a synopsis of at least 40 chara… | first failure: the-sound-of-music-1998: missing synopsis (run the verified Wikipedia enricher,",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4776/p3-8-tour-runtimes-copied-from-the-broadway-parent-disagree-with-the"
+    },
+    {
+      "title": "STUCK BRO-6105 — BSC Daily: Sync: baseline drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6105/bsc-daily-sync-baseline-drift"
+    },
+    {
+      "title": "STUCK BRO-6089 — Wrong-production round-up archives: quarantine TR orphans and apply date-window matching to LBO/Stage round-up scrapers",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6089/wrong-production-round-up-archives-quarantine-tr-orphans-and-apply"
+    },
+    {
+      "title": "STUCK BRO-6088 — Flag create_session from a plan-only session (BRO-6083 follow-up)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6088/flag-create-session-from-a-plan-only-session-bro-6083-follow-up"
+    },
+    {
+      "title": "STUCK BRO-6087 — Claude board worker runs at about half its ceiling (20-33 claims/day vs 48) while 194 cards are eligible",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6087/claude-board-worker-runs-at-about-half-its-ceiling-20-33-claimsday-vs"
     }
   ],
-  "moreCount": 42
+  "moreCount": 20
 }

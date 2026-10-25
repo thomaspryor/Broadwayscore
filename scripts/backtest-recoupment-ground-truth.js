@@ -32,6 +32,9 @@
  *     or above 500% while not marked recouped, on either side: a sign of a
  *     broken input (Cabaret's -735).
  *
+ * Near-miss losers (BRO-6191, advisory, never gates): failed-truth rows whose new central is >= 90% while old was below, and records
+ *   with no outcome on file crossing 100%. Logic: lib/near-miss-losers.js.
+ *
  * --strict exits 1 when any group gets worse (higher mean error or fewer
  * inside the reported range) or on any new false recouped.
  * --displayable-only keeps the rows the site would show a model bar for
@@ -47,9 +50,10 @@ const { liveModelRun } = require('./lib/model-drift');
 const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { execFileSync } = require('child_process');
 const { eitherBasis, basisLine, rangeError, category, summarize, worseGroups, truthRows, newFalseRecouped: falseRecoupedRows, advisoryLine, formatMarkdown, fmtTruth } = require('./lib/recoupment-ground-truth');
+const { nearMissLosers, unsourcedCrossings, nearMissLine, noOutcomeOnFile } = require('./lib/near-miss-losers');
 const { displaysModel, playedWeeks, MIN_PLAYED_WEEKS } = require('./lib/model-display-guard');
 
-const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'varBandMusicalsCited', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals', 'impliedCost', 'eraIndex', 'capMaxHaircut', 'capComparables', 'varBandMusicalsWaltz', 'varBandMusicalsReported'];
+const KNOWN_OPTS = ['previewsFromWeekly', 'playedWeeksOnly', 'eraAdjust', 'taxCreditCitedOnly', 'datedCosts', 'ownRunOnly', 'costSplit', 'stepSmall', 'stepLate', 'costGrowth', 'reserveLag', 'creditBasis', 'varBand', 'varOverage', 'varBandMusicals', 'varOverageMusicals', 'varBandMusicalsRamp', 'varBandMusicalsCited', 'noReserve', 'reserveIfStated', 'costSourcedOnly', 'svogCredit', 'costBasis', 'sourcedStarDeals', 'impliedCost', 'eraIndex', 'capMaxHaircut', 'capComparables', 'varBandMusicalsWaltz', 'varBandMusicalsReported', 'capScaledMusicals'];
 const args = process.argv.slice(2);
 const USAGE = `Usage: node scripts/backtest-recoupment-ground-truth.js (--opt=${KNOWN_OPTS.join('|')}[=false] [--opt=...] | --base=<git ref> | --timing [--lag=<weeks>] [--crossing]) [--truth=reported|all] [--as-of-report] [--displayed] [--displayable-only] [--markdown] [--json] [--strict]`;
 if (require('./lib/cli-help').hasHelpFlag(args)) { console.log(USAGE); process.exit(0); }
@@ -110,7 +114,11 @@ const L = makeGrossesLookup(load('grosses.json'), load('grosses-history.json'));
 const by = {};
 for (const s of shows) { if (s.slug) by[s.slug] = s; if (s.id) by[s.id] = s; }
 // --opt=capComparables (BRO-5849): a record with no capitalization runs on a comparables figure.
-if (OPTS.capComparables) OPTS.capEstimator = require('./lib/cap-comparables').makeCapEstimator(shows, commercial);
+// Live since BRO-5849 (merge-model-recoupment.js, model-drift.js). The scored rows keep their
+// established basis (a cap-less record is skipped, and the MAE gates in musical-model-backtest.test.mjs
+// rest on it); only the advisory near-miss line also runs the cap-less records with it (Misery 2015
+// reads 57 -> 97 at a 450K star-play default), unless --opt=capComparables=false (BRO-6191).
+const CAP_OPTS = OPTS.capComparables === false ? {} : { capComparables: true, capEstimator: require('./lib/cap-comparables').makeCapEstimator(shows, commercial) };
 
 if (TIMING) {
   require('./lib/recoupment-timing-report').runTiming({
@@ -119,7 +127,8 @@ if (TIMING) {
     aggregateOnly: AGGREGATE_ONLY, markdown: MARKDOWN,
     lagWeeks: Number((args.find((a) => a.startsWith('--lag=')) || '--lag=0').slice(6)) || 0, crossing: args.includes('--crossing'),
   });
-  process.exit(process.exitCode || 0);
+  // Not process.exit(): it truncates piped stdout at 64KB (the --json rows), BRO-6184.
+  return;
 }
 
 const rows = [];
@@ -129,6 +138,8 @@ const skipped = { noShow: 0, noModel: 0, notDisplayable: 0, inference: 0, newOnl
 const advisorySkipped = { noModel: 0, notDisplayable: 0, newOnly: 0, superseded: 0 };
 const SANITY_LIMIT = 500;
 const insane = [];
+const capOnlyLosers = []; // failed-truth rows only a comparables cap lets the model run (near-miss line only)
+const unsourced = []; // records with no outcome on file: old/new central, for the near-miss line (BRO-6191)
 for (const [key, comm] of Object.entries(commercial)) {
   const show = by[key] || by[comm.slug] || by[key.replace(/-\d{4}$/, '')];
   if (!show) { skipped.noShow++; continue; }
@@ -163,6 +174,7 @@ for (const [key, comm] of Object.entries(commercial)) {
     }
   }
   if (at.asOf && live.tier !== 'weekly-model') { skip.noModel++; continue; }
+  if (truth.kind === 'failed' && (!live.result || !fixed.result)) capOnlyLosers.push(...capFilledRow(key, show, comm, at, truth.kind));
   // A row only the new side fails is a regression, not a skip: counted and blocking.
   if (live.result && !fixed.result) { skip.newOnly++; continue; }
   if (!live.result || !fixed.result) { skip.noModel++; continue; }
@@ -190,6 +202,20 @@ function sanityCheck(slug, show, comm) {
   const o = baseRun(show, comm, L, {});
   const n = liveModelRun(show, comm, L, OPTS);
   flagInsane(slug, o.result && o.result.recoupmentPctCentral, n.result && n.result.recoupmentPctCentral);
+  if (!noOutcomeOnFile(comm)) return;
+  const capped = o.result && n.result ? { o, n } : capRuns(show, comm, {});
+  if (capped) unsourced.push({ slug, oldPct: shown(capped.o.result.recoupmentPctCentral), newPct: shown(capped.n.result.recoupmentPctCentral) });
+}
+// Both sides on the live comparables cap; null when either still has no result.
+function capRuns(show, comm, at) {
+  if (!CAP_OPTS.capComparables) return null;
+  const o = baseRun(show, comm, L, { ...CAP_OPTS, ...at });
+  const n = liveModelRun(show, comm, L, { ...CAP_OPTS, ...OPTS, ...at });
+  return o.result && n.result ? { o, n } : null;
+}
+function capFilledRow(slug, show, comm, at, kind) {
+  const c = capRuns(show, comm, at);
+  return c ? [{ slug, kind, oldPct: shown(c.o.result.recoupmentPctCentral), newPct: shown(c.n.result.recoupmentPctCentral) }] : [];
 }
 
 // A truth that says "never recouped" (failed, or a reported range under 100)
@@ -197,6 +223,8 @@ function sanityCheck(slug, show, comm) {
 const newFalseRecouped = falseRecoupedRows(rows);
 const detail = (list, fmt) => (list.length && !AGGREGATE_ONLY ? ` (${list.map(fmt).join(', ')})` : '');
 const falseRecoupedLine = `New false recouped vs truth: ${newFalseRecouped.length}${detail(newFalseRecouped, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}${newFalseRecouped.length ? '; blocks any switch' : ''}`;
+const nearMiss = nearMissLosers(rows.concat(advisoryRows, capOnlyLosers));
+const nearMissOut = nearMissLine(nearMiss, unsourcedCrossings(unsourced), { names: !AGGREGATE_ONLY });
 const sanityLine = `Sanity, model central below -${SANITY_LIMIT}% (or above ${SANITY_LIMIT}% while not recouped): ${insane.length}${detail(insane, (r) => `${r.slug} ${r.oldPct} -> ${r.newPct}`)}`;
 const newOnlyLine = `Rows only the new side failed to model: ${skipped.newOnly}${skipped.newOnly ? '; blocks any switch' : ''}`;
 const truthLine = `Truth set: ${TRUTH === 'reported' ? `reported rows decide pass or fail; ${skipped.inference} inference-only records go to the Advisory line instead (--truth=all mixes them in)` : 'reported and inference'}`;
@@ -211,12 +239,13 @@ const scope = `${AS_OF_REPORT ? ', dated ranges scored as of their report date' 
 if (process.env.GITHUB_ACTIONS && worse.length) console.log(`::warning title=Recoupment backtest::${label}${scope}: less accurate in ${worse.join(', ')}`);
 if (process.env.GITHUB_ACTIONS && (newFalseRecouped.length || skipped.newOnly)) console.log(`::error title=Recoupment backtest::${label}${scope}: ${falseRecoupedLine}; ${newOnlyLine}`);
 if (args.includes('--json')) {
-  const detailOut = AGGREGATE_ONLY ? { newFalseRecouped: newFalseRecouped.length, insane: insane.length } : { newFalseRecouped, insane, rows };
+  const nearMissJson = { nearMissLosers: AGGREGATE_ONLY ? nearMiss.length : nearMiss, unsourcedCrossings: AGGREGATE_ONLY ? unsourcedCrossings(unsourced).length : unsourcedCrossings(unsourced) };
+  const detailOut = AGGREGATE_ONLY ? { newFalseRecouped: newFalseRecouped.length, insane: insane.length, ...nearMissJson } : { newFalseRecouped, insane, rows, ...nearMissJson };
   const advisoryJson = showAdvisory ? { advisory: { line: advisoryOut, summary: summarize(advisoryRows), skipped: advisorySkipped, ...(AGGREGATE_ONLY ? {} : { rows: advisoryRows }) } } : {};
   console.log(JSON.stringify({ base: BASE || null, opts: OPTS, truth: TRUTH, summary, worse, skipped, ...detailOut, ...advisoryJson }, null, 2));
 } else if (MARKDOWN) {
   console.log(formatMarkdown({ title: `Recoupment ground-truth backtest: ${label}${scope} (${rows.length} shows)`, summary, rows, worse, aggregateOnly: AGGREGATE_ONLY }));
-  console.log([truthLine, ...(OPTS.creditBasis ? [basisLine(rows)] : []), `**${falseRecoupedLine}**`, `**${newOnlyLine}**`, sanityLine, ...(advisoryOut ? [advisoryOut] : []), ''].join('\n\n'));
+  console.log([truthLine, ...(OPTS.creditBasis ? [basisLine(rows)] : []), `**${falseRecoupedLine}**`, nearMissOut, `**${newOnlyLine}**`, sanityLine, ...(advisoryOut ? [advisoryOut] : []), ''].join('\n\n'));
 } else {
   console.log(truthLine);
   if (OPTS.creditBasis) console.log(basisLine(rows));
@@ -235,8 +264,9 @@ if (args.includes('--json')) {
   }
   console.log(worse.length ? `WORSE in: ${worse.join(', ')}` : `No group${MIN_GROUP > 1 ? ` of ${MIN_GROUP}+ rows` : ''} got worse.`);
   console.log(falseRecoupedLine);
+  console.log(nearMissOut);
   console.log(newOnlyLine);
   console.log(sanityLine);
   if (advisoryOut) console.log(advisoryOut);
 }
-if (args.includes('--strict') && (worse.length || newFalseRecouped.length || skipped.newOnly)) process.exit(1);
+if (args.includes('--strict') && (worse.length || newFalseRecouped.length || skipped.newOnly)) process.exitCode = 1;

@@ -190,10 +190,9 @@ async function main() {
     const showsPath = path.join(__dirname, '../../data/shows.json');
     let matchableTitle = null;
     if (fs.existsSync(showsPath)) {
-      const { indexShowsByTitle } = require('../lib/video-review-selection');
-      const { normalizeTitle } = require('../lib/title-match');
+      const { indexShowsByTitle, titleMatches } = require('../lib/video-review-selection');
       const byTitle = indexShowsByTitle(JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows);
-      matchableTitle = t => byTitle.has(normalizeTitle(t || ''));
+      matchableTitle = t => titleMatches(t, byTitle).length > 0;
     }
     const bf = await backfillPublishedDates({
       transcriptsDir: path.dirname(RAW_TRANSCRIPTS_DIR),

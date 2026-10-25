@@ -20,7 +20,6 @@ const COMMENT = /^\s*(?:\/\/|\*|\/\*|#)/;
 // owner-decision-notify.js is a reply to a decision the owner must make.
 const BASELINE = {
   'scripts/health-check.js': 28,
-  'scripts/lib/owner-decision-notify.js': 1,
 };
 
 function walk(dir, out = []) {

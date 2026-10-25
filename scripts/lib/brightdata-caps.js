@@ -314,7 +314,7 @@ function _statePath(env = process.env) {
 
 /** Read + cache the breaker state file. Any read/parse failure = no breaker. */
 function readBreakerState(env = process.env, now = Date.now()) {
-  if (_stateCache.value !== null && now - _stateCache.at < STATE_CACHE_MS) {
+  if (_stateCache.value !== null && _stateCache.at <= now && now - _stateCache.at < STATE_CACHE_MS) {
     return _stateCache.value;
   }
   let value = null;

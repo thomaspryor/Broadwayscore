@@ -1,75 +1,115 @@
 {
-  "updatedAt": "2026-10-24T20:05:00.895Z",
-  "processed": 33,
-  "failed": 4,
-  "successRate": "89.2%",
+  "updatedAt": "2026-10-25T17:11:23.601Z",
+  "processed": 101,
+  "failed": 86,
+  "successRate": "54.0%",
   "tierBreakdown": {
-    "playwright": 16,
-    "amp": 2,
-    "browserbase": 10,
+    "playwright": 64,
+    "amp": 0,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 7,
+    "brightdata": 9,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 15
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-10-24T19:54:39.382Z",
+      "t": "2026-10-25T16:00:44.757Z",
       "event": "bb-session",
-      "session": "71ccd935",
-      "url": "https://www.nytimes.com/2025/03/05/theater/sumo-review-public-theater.html"
+      "session": "98568c84",
+      "url": "https://www.nytimes.com/2025/12/16/theater/tartuffe-review-matthew-broderick-dav"
     },
     {
-      "t": "2026-10-24T19:54:40.059Z",
+      "t": "2026-10-25T16:00:45.231Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-24T19:55:09.142Z",
+      "t": "2026-10-25T16:03:33.993Z",
       "event": "bb-session",
-      "session": "fa9452f7",
-      "url": "https://www.nytimes.com/2025/03/05/theater/sumo-review-public-theater.html"
+      "session": "4dd61bf3",
+      "url": "https://www.wsj.com/articles/anna-christie-review-michelle-williamss-scorching-s"
     },
     {
-      "t": "2026-10-24T19:55:09.745Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-24T19:57:33.406Z",
-      "event": "bb-session",
-      "session": "a76a1f34",
-      "url": "https://www.nytimes.com/2024/10/16/theater/hold-on-to-me-darling-review-driver.h"
-    },
-    {
-      "t": "2026-10-24T19:57:34.088Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-24T19:58:01.960Z",
-      "event": "bb-session",
-      "session": "acbabb7a",
-      "url": "https://www.nytimes.com/2024/10/16/theater/hold-on-to-me-darling-review-driver.h"
-    },
-    {
-      "t": "2026-10-24T19:58:02.599Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-24T20:01:08.056Z",
-      "event": "bb-session",
-      "session": "5d40d2c5",
-      "url": "https://www.wsj.com/articles/hold-on-to-me-darling-review-adam-drivers-grieving-"
-    },
-    {
-      "t": "2026-10-24T20:01:08.631Z",
+      "t": "2026-10-25T16:03:34.476Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T16:06:05.563Z",
+      "event": "bb-session",
+      "session": "2693ed86",
+      "url": "https://www.nytimes.com/2025/11/23/theater/gruesome-playground-injuries-review.h"
+    },
+    {
+      "t": "2026-10-25T16:06:06.048Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T16:07:56.490Z",
+      "event": "bb-session",
+      "session": "b4d47375",
+      "url": "https://www.wsj.com/articles/gruesome-playground-injuries-review-a-painful-bond-"
+    },
+    {
+      "t": "2026-10-25T16:07:56.941Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T16:19:13.818Z",
+      "event": "bb-session",
+      "session": "b1390cb6",
+      "url": "https://www.nytimes.com/2025/09/15/theater/prince-faggot-off-broadway-royals.htm"
+    },
+    {
+      "t": "2026-10-25T16:19:14.330Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T16:22:56.438Z",
+      "event": "bb-session",
+      "session": "d74cf755",
+      "url": "https://www.wsj.com/articles/the-weir-review-conor-mcphersons-menu-of-spirits-c6"
+    },
+    {
+      "t": "2026-10-25T16:22:56.968Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T16:36:44.855Z",
+      "event": "bb-session",
+      "session": "f8049d08",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-25T16:36:58.236Z",
+      "event": "bb-session",
+      "session": "1e7e0815",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-25T16:36:58.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-25T16:37:40.219Z",
+      "event": "bb-session",
+      "session": "e50104f0",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T16:37:47.949Z",
+      "event": "bb-session",
+      "session": "4b0257ed",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
     }
   ]
 }

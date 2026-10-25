@@ -35,4 +35,22 @@ function rankTrendingShowPages(rows, { limit = 5, excludeDirect = true } = {}) {
   return climbers.slice(0, limit);
 }
 
-module.exports = { rankTrendingShowPages };
+// BRO-2503: what share of this week's /show/ page views arrive on the Direct
+// channel (the one BRO-44 found to be mostly bot traffic).
+function directShareOfShowViews(rows) {
+  const showRe = /^\/show\/([a-z0-9-]+)\/?$/i;
+  let total = 0;
+  let direct = 0;
+  for (const row of rows) {
+    const rangeName = row.dimensionValues?.[2]?.value || '';
+    if (rangeName !== 'thisWeek' && rangeName !== 'date_range_0') continue;
+    if (!showRe.test(row.dimensionValues?.[0]?.value || '')) continue;
+    const views = parseInt(row.metricValues?.[0]?.value || '0', 10);
+    if (!Number.isFinite(views) || views < 0) continue;
+    total += views;
+    if (row.dimensionValues?.[1]?.value === 'Direct') direct += views;
+  }
+  return { total, direct, share: total ? direct / total : null };
+}
+
+module.exports = { rankTrendingShowPages, directShareOfShowViews };

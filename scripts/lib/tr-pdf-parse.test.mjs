@@ -321,15 +321,88 @@ test('default mode reads bare mastheads on masked real 2018 skeletons', async ()
   assert.ok(kite.some(r => /guardian/i.test(r.outlet)), 'Kite Runner: Guardian');
 });
 
-// BRO-6154 diagnostic helpers
-import { createRequire as __cr } from 'node:module';
-{
-  const { productionSections, locateReviews } = __cr(import.meta.url)('./tr-pdf-parse.js');
+// BRO-6154: -raw and default text have no "Previews / Opens" line, so reviews
+// of the production after ours (whose prose reuses our title words) were
+// filed under our show. Each production starts with "VENUE / run dates /
+// TITLE"; a review belongs to the block above it.
+const { productionRuns, sectionOwnedBy, locateReviews, productionSections } = require('./tr-pdf-parse.js');
+const sectionProse = (t) => `${t} was staged with great energy and the company gave a long, detailed, memorable performance throughout the evening, `.repeat(4);
+const issue = (outlet, date, critic, body) => [outlet, date, critic, body, ''].join('\n');
+const TWO_PRODUCTIONS = [
+  'LYTTELTON, NATIONAL THEATRE', '11 June - 14 August 2021', 'AFTER LIFE', 'A new play', '',
+  issue('GUARDIAN', '11.06.21', 'Arifa Akbar', sectionProse('After Life')),
+  issue('DAILY MAIL', '11.06.21', 'Quentin Letts', sectionProse('After Life')),
+  'DERBY THEATRE', '17 July - 7 August 2021', 'ALL ABOUT EVE', 'A new musical', '',
+  issue('OBSERVER', '18.07.21', 'Susannah Clapp', sectionProse('This play, after the life of Eve Harrington,')),
+].join('\n');
+
+test('BRO-6154 productionRuns reads title from the block under the run dates', () => {
+  const runs = productionRuns(TWO_PRODUCTIONS.split('\n'));
+  assert.deepEqual(runs.map(r => r.title), ['AFTER LIFE', 'ALL ABOUT EVE']);
+});
+
+test('BRO-6154 the running header is not a production run', () => {
+  const runs = productionRuns(['Theatre Record 18 September - 17 October 2017', 'LONDON', '03 October - 02 December 2017', 'LABOUR OF LOVE']);
+  assert.deepEqual(runs.map(r => r.title), ['LABOUR OF LOVE']);
+});
+
+test('BRO-6154 raw mode drops the next production\'s reviews that reuse our title words', () => {
+  const got = parseRawPdfReviews(TWO_PRODUCTIONS, 'After Life');
+  assert.deepEqual(got.map(r => r.outlet).sort(), ['Daily Mail', 'Guardian']);
+});
+
+test('BRO-6154 default mode keeps a review whose block cannot be told', () => {
+  const noRuns = TWO_PRODUCTIONS.split('\n').filter(l => !/ - /.test(l)).join('\n');
+  assert.equal(sectionOwnedBy(productionRuns(noRuns.split('\n')), 5, 'After Life'), null);
+  assert.ok(parseRawPdfReviews(noRuns, 'After Life').length >= 2);
+});
+
+test('BRO-6154 ownership on the real masked Band issue (raw + default)', async () => {
+  const { readFileSync } = await import('node:fs');
+  for (const mode of ['raw', 'default']) {
+    const L = readFileSync(new URL(`../../data/audit/we-historical-tr-skeletons/the-band-west-end-2018.${mode}.txt`, import.meta.url), 'utf8').split('\n');
+    const runs = productionRuns(L);
+    assert.ok(runs.some(r => r.title === 'LABOUR OF LOVE'), `${mode}: Labour of Love block found`);
+    const at = runs.find(r => r.title === 'LABOUR OF LOVE').line + 80;
+    assert.equal(sectionOwnedBy(runs, at, 'Labour of Love'), true);
+    const own = runs.find(r => r.title === 'THE BAND');
+    if (mode === 'raw') {
+      assert.ok(own, 'The Band own block found (same-month run line)');
+      assert.equal(sectionOwnedBy(runs, own.line + 40, 'The Band'), true);
+    }
+    assert.equal(sectionOwnedBy(runs, at, 'The Band'), false);
+  }
+});
+
+test('BRO-6154 locateReviews attributes a review to its production section', () => {
   const t = ['ANNA X    Index', 'Previews / Opens   Press night', 'THE GUARDIAN', '1 May 2021', 'Some long first line of review text here', 'BE MORE CHILL', 'Previews / Opens'].join('\n');
-  test('BRO-6154 locateReviews attributes a review to its production section', () => {
-    assert.equal(productionSections(t.split('\n')).length, 2);
-    const [r] = locateReviews(t, [{ outlet: 'The Guardian', date: '1 May 2021', fullText: 'Some long first line of review text here' }], 'Anna X');
-    assert.equal(r.line, 4);
-    assert.equal(r.ours, true);
-  });
-}
+  assert.equal(productionSections(t.split('\n')).length, 2);
+  const [r] = locateReviews(t, [{ outlet: 'The Guardian', date: '1 May 2021', fullText: 'Some long first line of review text here' }], 'Anna X');
+  assert.equal(r.line, 4);
+  assert.equal(r.owned, null);
+  const t2 = ['x', '01 May \u2013 30 June 2021', 'ANNA X', 'The Guardian', 'Some long first line of review text here'].join('\n');
+  assert.equal(locateReviews(t2, [{ outlet: 'The Guardian', fullText: 'Some long first line of review text here' }], 'Anna X')[0].owned, true);
+  assert.equal(locateReviews(t2, [{ outlet: 'The Guardian', fullText: 'Some long first line of review text here' }], 'Other Show')[0].owned, false);
+});
+
+test('BRO-6154 a block sharing a real word with our title stays unknown, a disjoint one is dropped', () => {
+  const runs = productionRuns(['X', '03 October - 02 December 2017', 'PRIDE AND PREJUDICE* (*SORT OF)', 'a'].concat(['y', '', '04 December - 02 January 2018', 'ALL ABOUT EVE']));
+  assert.equal(sectionOwnedBy(runs, 3, 'Pride & Prejudice (Sort Of)'), true);
+  assert.equal(sectionOwnedBy(runs, 3, 'Pride and Joy'), null);
+  assert.equal(sectionOwnedBy(runs, 9, 'After Life'), false);
+});
+
+test('BRO-6154 run blocks: same-month dates, wrapped titles, outlet lines are not titles', () => {
+  const L = ['x', '26 \u2013 30 September 2017', 'THE TRACKERS OF', 'OXYRHYNCHUS', 'text', '03 October \u2013 02 December 2017', 'GUARDIAN', 'THE BAND'];
+  const runs = productionRuns(L);
+  assert.equal(runs.length, 2);
+  assert.equal(runs[0].title, 'THE TRACKERS OF OXYRHYNCHUS');
+  assert.equal(runs[1].title, 'THE BAND');
+});
+
+test('BRO-6154 a missed run line for our own show leaves the review unknown, not dropped', () => {
+  const L = ['x', '03 October \u2013 02 December 2017', 'OTHER SHOW', 'a', 'NOVELLO', '03 October 2017 onwards', 'ALL ABOUT EVE', 'review text'];
+  const runs = productionRuns(L);
+  assert.equal(sectionOwnedBy(runs, 7, 'All About Eve', L), null);
+  assert.equal(sectionOwnedBy(runs, 7, 'After Life', L), false);
+});

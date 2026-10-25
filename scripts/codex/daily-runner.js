@@ -61,9 +61,12 @@ const linear = require(path.join(ROOT, 'scripts/lib/linear-client.js'));
 const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-parked.js'));
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
+const DF = require(path.join(ROOT, 'scripts/lib/codex-data-fixes.js'));
 const PF = require(path.join(ROOT, 'scripts/lib/codex-sandbox-preflight.js'));
 const { createSandbox, sandboxUser, judgeLandSandboxed, readSandboxFile, JSON_MARK } = require(path.join(ROOT, 'scripts/lib/codex-sandbox.js'));
 
+// BRO-6175: shown to Codex only while the data-fix route is on (CODEX_DATA_FIXES_DISABLED unset).
+const DATA_FIX_RULE = `- Private data (shows.json, commercial.json, review fields) is never edited directly. Fix it with a plan: \`node scripts/new-fix-plan.js --id=<card id lowercase, e.g. bro-1234> --summary="..." --edit='<showId>.<field>=VALUE' --review-edit='<show>/<file>.json:<field>=VALUE'\` (--help for more; shape in scripts/pending-fix-actions.md). Allowed action types: data-edit, review-field-edit, drop-orphan-key, retitle-show, outlet-registry-flag; at most 25 actions. Keep the generated data/pending-fixes/<id>.json in your change (the runner applies it after the landing and checks it). Never put review text or reader contact details in a plan: the file is public. A fix needing anything else (add-show, retire-show, file moves, scraping) is not yours: say it in a REMAINING: line.`;
 const RUNNER_CARD = process.env.CODEX_RUNNER_CARD || 'BRO-4745';
 // --slot k (set by the --slots launcher): this runner's worktrees and lock (BRO-5384).
 const SLOT = Number(arg('slot', 0)) || 0;
@@ -177,9 +180,15 @@ const runStop = () => LAUNCH.stopped();
 const stopAllSlots = (why) => LAUNCH.stopAll(why);
 const takeCardInRun = (id) => LAUNCH.takeCard(id);
 // Re-stamp the run lock every 10 min while waiting for the land-check mutexes.
+// A wait that would leave no time to run the checks before the hard stop gives up (LandWaitTimeout)
+// instead of holding the run past it: the card is handed back unjudged, not crashed mid-land-checks.
+class LandWaitTimeout extends Error {}
 const withLandMutex = (fn) => {
   let lastStamp = Date.now();
-  const onWait = () => { if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); } };
+  const onWait = () => {
+    if (!fitsBeforeHardStop(landChecksMs)) throw new LandWaitTimeout('no time left to wait for the land-check slot before the hard stop');
+    if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); }
+  };
   // Slots of this launch first, then any other land check in the container (land-local-check.js).
   return LAUNCH.withMutex('land-checks', () => R.withFileMutex(R.CONTAINER_LAND_MUTEX, fn, { onWait }), onWait);
 };
@@ -520,9 +529,12 @@ function newLandFailures() {
 function newLandFailuresNow() {
   const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
   // The branch's own harness copy judges both trees, as land.yml does.
-  const gauntlet = path.join(os.tmpdir(), `codex-land-gauntlet-${process.pid}.sh`);
-  fs.copyFileSync(path.join(WT, 'scripts/lib/land-gauntlet.sh'), gauntlet);
-  try { return landFailuresWith(D, gauntlet); } finally { fs.rmSync(gauntlet, { force: true }); }
+  // Its own dir, with the gauntlet's siblings (BRO-6152: a lone copy lost tsc-node-options.sh).
+  const harnessDir = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-land-gauntlet-'));
+  try {
+    const gauntlet = require(path.join(ROOT, 'scripts/lib/land-local-check.js')).stageGauntletHarness(WT, harnessDir);
+    return landFailuresWith(D, gauntlet);
+  } finally { fs.rmSync(harnessDir, { recursive: true, force: true }); }
 }
 function landFailuresWith(D, gauntlet) {
   requireSandbox();
@@ -635,7 +647,49 @@ function landedOnMain(id, sinceMs, { onError = false } = {}) {
  * Review if refused), or, for a partial fix (PARTIAL_MARKER on the card since the claim),
  * back to Todo for the Claude worker with what is left. -> true when the card was moved.
  */
+/** Runs the runner-side apply of the card's landed data-fix plans (codex-data-fixes.js); never throws. */
+async function applyLandedPlans(id, opts = {}) {
+  const io = {
+    git: (args) => git(args, ROOT),
+    log,
+    dispatch: (args) => new Promise((resolve) => {
+      const p = spawn('node', ['scripts/cloud-dispatch.js', ...args], { cwd: ROOT, stdio: ['ignore', 'pipe', 'pipe'], env: process.env });
+      let out = '';
+      p.stdout.on('data', (d) => { out += d; });
+      p.stderr.on('data', (d) => { out += d; });
+      p.on('error', (e) => resolve({ code: -1, out: String(e.message) }));
+      p.on('close', (code) => resolve({ code: code == null ? -1 : code, out: R.redactSecrets(out, process.env) }));
+    }),
+  };
+  try { return await DF.applyCardFixPlans(id, io, opts); } catch (e) { return { kind: 'failed', why: `could not check or apply the plan: ${String(e.message).split('\n')[0]}`, lines: [] }; }
+}
+
+// Starts with the heading reconcileLanded looks for, so a deferred apply is retried by a dispatch-capable runner.
+const DEFER_HEADING = '## Codex runner: landing did not finish (data-fix apply deferred)';
+
 async function settleLanded(id, stats, { partial, remaining = [], body, countRefusal = false }) {
+  // BRO-6175: a data-fix plan this card landed is applied before the card closes. Every path that settles a
+  // landing comes through here, so a recovered or reconciled landing cannot reach Done unapplied.
+  // With the kill switch on, a pending plan still bounces the card (never Done unapplied), it is just not dispatched.
+  if (!OPTS.dryRun) {
+    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled(), canDispatch: DF.canDispatchWorkflows() });
+    if (ap.kind === 'deferred') {
+      // Not a failure and not a bounce (a bounce would hide the card from the GHA lane for 14 days): the card stays
+      // In Progress with its landing on main, and a runner that can dispatch applies it on its next reconcile.
+      log(`${id}: data-fix apply deferred: ${ap.why}`);
+      // reconcileLanded picks a card up only when the runner's newest note says the landing did not finish, so leave
+      // that note (once: a runner that cannot dispatch re-reads the same card every run).
+      const notes = ((await linear.listIssueComments([id]).catch(() => new Map())).get(id) || []).filter((c) => String(c.body || '').startsWith('## Codex runner'));
+      if (!notes.length || !notes[0].body.startsWith(DEFER_HEADING)) await linearBrain(['update', id, '--comment', `${DEFER_HEADING}\n\n${ap.why}\n\nThe plan is on main and the card stays In Progress; a runner that can dispatch workflows applies it and closes the card.`]);
+      return false;
+    }
+    if (ap.kind === 'failed') {
+      stats.bounced.push(id);
+      const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: landed, but the data-fix plan was not applied\n${R.bounceClassLine('genuine-failure')}\n\n${ap.why}\n\n${fence(tail(ap.lines.join('\n'), 800))}\n\nThe plan file is on main. Fix the plan (a stale oldValue, a refused action) or apply it by hand per .claude/CLOUD.md "Fixing private data from cloud".\n\n${body}`);
+      return r.code === 0;
+    }
+    if (ap.kind === 'applied') body = `${body}\n\n### Data-fix plan applied\n${ap.lines.map((l) => `- ${l}`).join('\n')}\n\nAny item above that asks to approve or apply this plan is already done; only the other items remain.`;
+  }
   if (partial) {
     const left = remaining.length ? `Still open on this card:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n` : 'Some card items are still open (see the runner\'s "landing a partial fix" note).\n\n';
     const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n${R.PARTIAL_HEADING}\n\n${left}${body}\n\n${R.PARTIAL_MARKER}`);
@@ -761,7 +815,7 @@ async function workCard(pick, stats, inFlight) {
       const v = makeVerifyCmdEvidence({ timeoutMs: 600_000 })(cmd);
       onMain = `\`${cmd}\` on fresh main: ${v.allowed ? 'PASSES already (the card may be fixed; confirm before changing code)' : `does not pass (${v.verdict}): ${String(v.reason).slice(0, 600)}`}`;
     }
-    const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8');
+    const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8').replace('{{DATA_FIX_RULE}}', DF.dataFixesEnabled() && DF.canDispatchWorkflows() ? DATA_FIX_RULE : '');
     const prompt = (extra) => R.fillPrompt(tpl, { id, title: card.title, body, extra, data: data.lines.join('\n') });
     // A fix-round exec starts only while 15 min of exec plus the review after it still fit the
     // card budget. The land checks and review after the last exec still run, so
@@ -838,7 +892,8 @@ async function workCard(pick, stats, inFlight) {
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
       if (c.hasDiff && !fitsBeforeHardStop(landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
       keepLock(MAX_STAMP_GAP_MS, 'land-checks');
-      let landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null;
+      let landFails;
+      try { landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null; } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
       if (landFails && execFits()) {
         log(`${id}: attempt ${attempt} land checks red, back to Codex`);
         const fx = await exec(prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`));
@@ -847,7 +902,7 @@ async function workCard(pick, stats, inFlight) {
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
         keepLock(MAX_STAMP_GAP_MS, 'land-checks');
-        landFails = throwIfDisk(newLandFailures(), 'the land checks');
+        try { landFails = throwIfDisk(newLandFailures(), 'the land checks'); } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
       }
       envBlocked = null;
       if (landFails) {
@@ -1351,7 +1406,7 @@ function landedPerLane() {
 }
 
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
-async function reconcileLanded(stats) {
+async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
   let subjects = '';
   try { subjects = git(['log', 'origin/main', '--since=4.days', '--author=Codex runner', '--format=%s'], ROOT); } catch { return; }
   const ids = [...new Set(subjects.split('\n').map((l) => (l.match(/^fix\((BRO-\d+)\):/) || [])[1]).filter(Boolean))];
@@ -1362,6 +1417,9 @@ async function reconcileLanded(stats) {
     const notes = ((await linear.listIssueComments([id]).catch(() => new Map())).get(id) || [])
       .filter((c) => String(c.body || '').startsWith('## Codex runner'));
     if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
+    // A deferred data-fix apply is for a runner that can dispatch; a cloud slot re-reading it would only defer again.
+    const deferred = notes[0].body.startsWith(DEFER_HEADING);
+    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canDispatchWorkflows() })) continue;
     await settleLanded(id, stats, { partial: await partialLanding(id, NaN), body: 'The runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.' });
   }
 }
@@ -1411,7 +1469,7 @@ async function runLocked(startedMs) {
   const stats = { claimed: [], landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], outOfTime: [], carried: [], wouldLand: [], rejectStreak: 0, doneRefusals: 0 };
   // Tidying an earlier run's cards needs only git and Linear, so it runs even without a Codex login.
   // reconcileLanded scans every runner commit on main, so one slot does it (two would settle a card twice).
-  if (!OPTS.dryRun) { if (SLOT === 0) await reconcileLanded(stats); await recoverOrphans(stats); }
+  if (!OPTS.dryRun) { if (SLOT === 0) await reconcileLanded(stats); else if (SLOT === R.LANES[OPTS.lane].base) await reconcileLanded(stats, { onlyDeferred: true }); await recoverOrphans(stats); }
   const restore = sh('node', ['scripts/codex/auth-store.js', 'restore'], { timeoutMs: 900_000 });
   log(restore.out.trim());
   if (restore.code !== 0) {

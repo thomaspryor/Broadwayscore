@@ -1,0 +1,332 @@
+{
+  "issueNumber": "bro-6153-gap-d",
+  "planId": "d8048fed-daaf-48d1-9176-c03b06c42194",
+  "status": "applied",
+  "createdAt": "2026-10-25T01:26:42.375Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "OB historical backfill gap window (2025-06 to 2026-02): Playbill-validated productions from TheaterMania listings (BRO-6153) (part 4 of 5)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "weather-girl-off-broadway-2025",
+          "title": "Weather Girl",
+          "slug": "weather-girl-off-broadway-2025",
+          "venue": "St. Ann's Warehouse",
+          "previewsStartDate": "2025-09-16",
+          "openingDate": "2025-09-21",
+          "closingDate": "2025-10-12",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/weather-girl-off-broadway-st-anns-warehouse-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/weather-girl_1785011/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dilaria-off-broadway-2025",
+          "title": "Dilaria",
+          "slug": "dilaria-off-broadway-2025",
+          "venue": "DR2 Theatre",
+          "previewsStartDate": "2025-06-13",
+          "openingDate": "2025-06-18",
+          "closingDate": "2025-08-08",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/dilaria-off-broadway-dr2-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/dilaria_1780943/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "wesley-off-broadway-2025",
+          "title": "Wesley",
+          "slug": "wesley-off-broadway-2025",
+          "venue": "The Theater Center/ Anne L. Bernstein Theater",
+          "previewsStartDate": "2025-06-11",
+          "openingDate": "2025-06-25",
+          "closingDate": "2025-07-18",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/wesley-off-broadway-the-theater-center-anne-l-bernstein-theater-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/wesley_1780663/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "this-world-of-tomorrow-off-broadway-2025",
+          "title": "This World of Tomorrow",
+          "slug": "this-world-of-tomorrow-off-broadway-2025",
+          "venue": "The Shed",
+          "previewsStartDate": "2025-10-30",
+          "openingDate": "2025-11-18",
+          "closingDate": "2025-12-21",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/this-world-of-tomorrow-off-broadway-the-shed-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/this-world-of-tomorrow_1780402/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "father-anonymous-off-broadway-2025",
+          "title": "Father Anonymous",
+          "slug": "father-anonymous-off-broadway-2025",
+          "venue": "AMT Theater",
+          "previewsStartDate": "2025-06-12",
+          "openingDate": "2025-06-13",
+          "closingDate": "2025-07-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/father-anonymous-off-broadway-amt-theater-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/father-anonymous_1778325/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ginger-twinsies-off-broadway-2025",
+          "title": "Ginger Twinsies",
+          "slug": "ginger-twinsies-off-broadway-2025",
+          "venue": "Orpheum Theatre",
+          "previewsStartDate": "2025-07-10",
+          "openingDate": "2025-07-24",
+          "closingDate": "2025-10-26",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/ginger-twinsies-off-broadway-orpheum-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/ginger-twinsies_1777614/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "ta-da-off-broadway-2025",
+          "title": "Ta-Da!",
+          "slug": "ta-da-off-broadway-2025",
+          "venue": "Greenwich House Theater",
+          "previewsStartDate": "2025-07-07",
+          "openingDate": "2025-07-21",
+          "closingDate": "2025-09-27",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/ta-da-off-broadway-greenwich-house-theater-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/ta-da_1777278/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "dreadful-episodes-off-broadway-2025",
+          "title": "Dreadful Episodes",
+          "slug": "dreadful-episodes-off-broadway-2025",
+          "venue": "59E59 Theater B",
+          "previewsStartDate": "2025-10-08",
+          "openingDate": "2025-10-10",
+          "closingDate": "2025-11-02",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/dreadful-episodes-off-broadway-59e59-theater-b-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/dreadful-episodes_1776874/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "this-much-i-know-off-broadway-2025",
+          "title": "This Much I Know",
+          "slug": "this-much-i-know-off-broadway-2025",
+          "venue": "59E59 Theater A",
+          "previewsStartDate": "2025-09-20",
+          "openingDate": "2025-09-30",
+          "closingDate": "2025-10-19",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/this-much-i-know-off-broadway-59e59-theater-a-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/this-much-i-know_1776863/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "this-is-government-off-broadway-2025",
+          "title": "This is Government",
+          "slug": "this-is-government-off-broadway-2025",
+          "venue": "59E59 Theater B",
+          "previewsStartDate": "2025-09-05",
+          "openingDate": "2025-09-06",
+          "closingDate": "2025-09-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-bro-6153",
+          "closingDateSource": "playbill-bro-6153",
+          "evidenceUrls": [
+            "https://playbill.com/production/this-is-government-off-broadway-59e59-theater-b-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/this-is-government_1776859/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T01:45:48.892Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added weather-girl-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dilaria-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wesley-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-world-of-tomorrow-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added father-anonymous-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ginger-twinsies-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ta-da-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dreadful-episodes-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-much-i-know-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-is-government-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

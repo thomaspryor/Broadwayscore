@@ -199,6 +199,8 @@ const FLAG_FIELDS = new Set([
   'scoreSource', 'humanReviewScore', 'firstSeenAt', 'outletHeadline', 'outletStandfirst',
   // BRO-5238: decideInclusion's rejectionReason / rejectedBy branches.
   'rejectionReason', 'rejectedBy',
+  // BRO-6193: rejected manual tiers and cleared markup stars affect body-stub inclusion.
+  'manualContentTier', 'originalScoreCleared',
   // BRO-3963: cycle edges/evidence, inherited-flag override, and syndication.
   'duplicateTextOf', 'duplicateOfFlagInheritanceCleared', 'fullText',
   'isSyndicatedDuplicate', 'crossOutletDuplicate', 'crossOutletPrimaryFile',
@@ -1279,6 +1281,13 @@ function decideInclusion(review, show, guards, filePath) {
       return { included: false, reason: 'rejectedAt' };
     }
   }
+  // BRO-6193: use each replay side's canonical guard, including older baselines.
+  // It reads fullText, manualContentTier and originalScoreCleared as well as
+  // the score provenance fields already tracked by FLAG_FIELDS.
+  const bodyStubReason = typeof guards.getBodyStubExclusionReason === 'function'
+    ? guards.getBodyStubExclusionReason(review)
+    : guards.isRegistrationWallStubExclusion?.(review) ? 'registrationWallStub' : null;
+  if (bodyStubReason) return { included: false, reason: bodyStubReason };
   // duplicateTextOf is a cycle edge, not a flat exclusion. fullText + url
   // confirm matching copies; duplicateOfFlagInheritanceCleared lifts a twin's
   // wrong-content flag. Delegate the exact gate the rebuild runs.
@@ -1828,6 +1837,8 @@ function main() {
         // BRO-5238: rejection helpers decideInclusion / explainExclusion delegate to.
         && (baseline.isRejectedByReasonExclusion?.toString() || '') === (working.isRejectedByReasonExclusion?.toString() || '')
         && (baseline.isRejectedAtExclusion?.toString() || '') === (working.isRejectedAtExclusion?.toString() || '')
+        && (baseline.isRegistrationWallStubExclusion?.toString() || '') === (working.isRegistrationWallStubExclusion?.toString() || '')
+        && (baseline.getBodyStubExclusionReason?.toString() || '') === (working.getBodyStubExclusionReason?.toString() || '')
         && (baseline.rejectedAtHumanCleared?.toString() || '') === (working.rejectedAtHumanCleared?.toString() || '')
         // Threshold constants are free variables of the pre-opening gate — a
         // constant-only edit leaves the function source identical (same trap

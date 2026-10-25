@@ -52,7 +52,9 @@ const ROOT = path.resolve(__dirname, '..', '..');
 // checks them out; without them both the base and the branch run fail data-dependent tests in
 // slightly different sets, which reads as "new failures" (BRO-6037 session, 2026-10-23: 24 min
 // spent to report 13 false failures in show-identity / show-venue / review-file-writer tests).
-const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json'];
+// The generated cast manifests are also static imports in src/: tsc fails without them,
+// even when setup-local-data.sh found the private core data in a cloud checkout.
+const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json', 'data/cast-manifest.json', 'data/actor-slugs.json'];
 
 /** -> list of CORE_DATA_FILES missing under root */
 function missingCoreData(root, exists = fs.existsSync) {
@@ -117,6 +119,26 @@ function newFailureFiles(deltaText) {
   return [...files];
 }
 
+// The base run checks out an older tree, so the gauntlet runs from a copy outside it. That copy
+// needs every sibling the gauntlet calls via $(dirname "${BASH_SOURCE[0]}")/... (BRO-6152: a lone
+// copy lost tsc-node-options.sh). land.yml's "Stage the branch's gauntlet harness" step mirrors
+// this list; land-local-check.test.mjs fails if either drifts from the gauntlet's references.
+const HARNESS_FILES = ['land-gauntlet.sh', 'tsc-node-options.sh'];
+
+/** Copy the harness from <fromRoot>/scripts/lib into <dir>; returns the gauntlet copy's path.
+ * A helper missing from the source tree is skipped (the gauntlet has a fallback); the gauntlet is not. */
+function stageGauntletHarness(fromRoot, dir) {
+  fs.mkdirSync(dir, { recursive: true });
+  // mkdtemp dirs are 0700; the codex runner runs the copy as the sandbox user, which must be able to read it.
+  // 0755, not 0777: the sandbox must not be able to rewrite the harness.
+  fs.chmodSync(dir, 0o755);
+  for (const name of HARNESS_FILES) {
+    const src = path.join(fromRoot, 'scripts/lib', name);
+    if (name === 'land-gauntlet.sh' || fs.existsSync(src)) fs.copyFileSync(src, path.join(dir, name));
+  }
+  return path.join(dir, 'land-gauntlet.sh');
+}
+
 function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   if (opts.help) {
@@ -133,7 +155,8 @@ function main(argv = process.argv.slice(2)) {
   if (missing.length) {
     console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
       + 'Data-dependent tests would fail on both sides and report false new failures. '
-      + 'Run ./scripts/setup-local-data.sh --link-only in this checkout (installs only the gitignored data set).');
+      + 'Run ./scripts/setup-local-data.sh --link-only for core data. With data/cast/ available, generate the manifests with '
+      + 'node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js.');
     return 3;
   }
   const fetch = git('fetch', '-q', 'origin', 'main');
@@ -164,8 +187,7 @@ function main(argv = process.argv.slice(2)) {
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
       if (red) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
-        const copy = path.join(out, 'land-gauntlet.sh');
-        fs.copyFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), copy);
+        const copy = stageGauntletHarness(ROOT, out);
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
         if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${branch || head}`);
@@ -200,6 +222,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { parseArgs, newFailureFiles, missingCoreData, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { main, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());

@@ -70,7 +70,7 @@ const { assertCorpusScanned } = require('./lib/corpus-scan-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
-const { findSiblingSameUrlPairs } = require('./lib/sibling-same-url');
+const { findSiblingSameUrlPairs, haveDistinctTexts } = require('./lib/sibling-same-url');
 const { computeStaleBaselineKeys, reportStaleBaseline, pruneStaleEntries, runStaleModes } = require('./lib/stale-baseline');
 
 const USAGE = `audit-sibling-title-misroute.js — backfill audit for the same-title sibling class of cross-show contamination.
@@ -276,7 +276,7 @@ function main() {
   // A clear on ONE copy says that copy belongs where it is, which makes the
   // other copy the suspect, so only a pair cleared on both sides is skipped.
   const isCounted = (d) => !isAlreadyFlagged(d) && !d.duplicateOf && d.isRoundupArticle !== true;
-  const bothCleared = (l, r) => isHumanCleared(l) && isHumanCleared(r);
+  const bothCleared = (l, r) => (isHumanCleared(l) && isHumanCleared(r)) || haveDistinctTexts(l, r);
   for (const p of findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, bothCleared)) {
     if (ONLY_SHOW && p.showId !== ONLY_SHOW && p.targetShowId !== ONLY_SHOW) continue;
     hits.push({

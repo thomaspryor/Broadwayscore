@@ -1,9 +1,10 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { mkdtempSync, writeFileSync, existsSync } from 'node:fs';
+import fs, { mkdtempSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = require('./land-local-check.js');
@@ -40,8 +41,9 @@ test('newFailureFiles: a tsx-gate failure is not re-run under plain node', () =>
   assert.equal(newFailureFiles(report), null);
 });
 
-test('withFileMutex: a throwing onWait gives up without taking or deleting the held lock', () => {
+test('withFileMutex: a throwing onWait gives up without taking or deleting the held lock', (t) => {
   const dir = mkdtempSync(join(tmpdir(), 'llc-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
   const p = join(dir, 'm.lock');
   writeFileSync(p, String(process.ppid)); // a live holder that is not us
   let ran = false;
@@ -76,10 +78,146 @@ test('missingCoreData: a worktree without data/*.json is not ready (false "new f
   assert.deepEqual(missingCoreData('/r', () => true), []);
   assert.deepEqual(missingCoreData('/r', () => false), CORE_DATA_FILES);
   assert.deepEqual(missingCoreData('/r', (p) => !p.endsWith('reviews.json')), ['data/reviews.json']);
+  assert.deepEqual(missingCoreData('/r', (p) => !p.endsWith('cast-manifest.json') && !p.endsWith('actor-slugs.json')),
+    ['data/cast-manifest.json', 'data/actor-slugs.json']);
 });
+
+// Mock process boundaries, not the checker: run its real main(), file copies, readiness
+// check and return-to handling without checking out this checkout or running whole batches.
+function checkerWithRunner(t, spawn) {
+  t.mock.method(require('node:child_process'), 'spawnSync', spawn);
+  const filename = require.resolve('./land-local-check.js');
+  const cached = require.cache[filename];
+  delete require.cache[filename];
+  try { return require(filename); }
+  finally { require.cache[filename] = cached; }
+}
+
+test('generated manifests missing: main exits 3 with build commands before fetch or gates', (t) => {
+  const messages = [];
+  t.mock.method(console, 'error', (message) => messages.push(message));
+  t.mock.method(fs, 'existsSync', (p) => !/data\/(cast-manifest|actor-slugs)\.json$/.test(String(p)));
+  const checker = checkerWithRunner(t, (cmd, args) => {
+    assert.equal(cmd, 'git');
+    assert.equal(args[0], 'status', 'missing data must stop before fetch, mutex or gauntlet');
+    return { status: 0, stdout: '', stderr: '' };
+  });
+  assert.equal(checker.main([]), 3);
+  const message = messages.join('\n');
+  assert.match(message, /data\/cast-manifest\.json/);
+  assert.match(message, /data\/actor-slugs\.json/);
+  assert.match(message, /node scripts\/build-cast-manifest\.js/);
+  assert.match(message, /node scripts\/build-actor-slugs-manifest\.js/);
+});
+
+for (const branch of ['codex/test-branch', '']) {
+  test(`base comparison copies the helper and restores ${branch ? 'the starting branch' : 'a detached HEAD'}`, (t) => {
+    const head = 'a'.repeat(40);
+    const base = 'b'.repeat(40);
+    const checkouts = [];
+    const messages = [];
+    let compared = false;
+    t.mock.method(console, 'log', (message) => messages.push(message));
+    t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
+    const exists = fs.existsSync;
+    t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$/.test(String(p)) || exists(p));
+    const checker = checkerWithRunner(t, (cmd, args) => {
+      const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
+      if (cmd === 'git') {
+        switch (args[0]) {
+          case 'status': case 'fetch': return result();
+          case 'rev-parse': return result(head);
+          case 'symbolic-ref': return { ...result(branch), status: branch ? 0 : 1 };
+          case 'merge-base': return result(base);
+          case 'rev-list': return result('0');
+          case 'checkout': checkouts.push(args); return result();
+        }
+      }
+      if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh') {
+        fs.mkdirSync(args[1], { recursive: true });
+        fs.writeFileSync(join(args[1], 'meta.json'), '{}');
+        t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true }));
+        return result();
+      }
+      if (cmd === 'bash') {
+        compared = true;
+        assert.deepEqual(args.slice(2), ['--checkout', base, '--return-to', head]);
+        for (const name of ['land-gauntlet.sh', 'tsc-node-options.sh']) {
+          assert.equal(fs.readFileSync(join(args[0], '..', name), 'utf8'),
+            fs.readFileSync(new URL(`./${name}`, import.meta.url), 'utf8'));
+        }
+        return result();
+      }
+      if (cmd === 'node' && args[1] === '--red-gates') return result('tsc');
+      if (cmd === 'node' && args[1] === '--base-dir') return result('no new failures');
+      assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
+    });
+    assert.equal(checker.main(['--gates', 'tsc']), 0);
+    assert.ok(compared, 'the red gate was compared against the base');
+    assert.deepEqual(checkouts, branch ? [['checkout', '-q', branch]] : []);
+    assert.ok(messages.some((message) => message.includes('CLEAN, no new failures')));
+  });
+}
 
 test('main exits 3 (not ready) when core data is missing, before any gate runs', () => {
   const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
   const main = src.slice(src.indexOf('function main('));
   assert.ok(main.indexOf('missingCoreData(ROOT)') > 0 && main.indexOf('missingCoreData(ROOT)') < main.indexOf('mkdtempSync'));
+});
+
+// BRO-6152: the base run executes a COPY of land-gauntlet.sh outside the tree it checks out.
+// Every sibling it calls via $(dirname "${BASH_SOURCE[0]}")/<file> must be staged next to it,
+// by stageGauntletHarness (land-local-check, codex daily runner) and by land.yml's harness step.
+test('harness list covers every sibling the gauntlet calls, and land.yml stages all of them', () => {
+  const { HARNESS_FILES } = require('./land-local-check.js');
+  const g = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+  const siblings = [...g.matchAll(/\$\(dirname "\$\{BASH_SOURCE\[0\]\}"\)\/([\w.-]+)/g)].map((m) => m[1]);
+  assert.ok(siblings.includes('tsc-node-options.sh'), 'the sibling pattern still matches the tsc helper reference');
+  for (const s of siblings) assert.ok(HARNESS_FILES.includes(s), `${s} is in HARNESS_FILES`);
+  const yml = fs.readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const step = yml.slice(yml.indexOf("name: Stage the branch's gauntlet harness"));
+  const run = step.slice(0, step.indexOf('\n      - ')).match(/run: (.*)/)[1];
+  for (const f of HARNESS_FILES) assert.ok(run.includes(`scripts/lib/${f}`), `land.yml stages ${f}: ${run}`);
+  assert.match(run, /"\$RUNNER_TEMP\/"$/, 'land.yml copies into $RUNNER_TEMP, where the base step runs land-gauntlet.sh');
+});
+
+test('stageGauntletHarness copies the gauntlet and its siblings; a helper absent from the source is skipped', () => {
+  const { stageGauntletHarness, HARNESS_FILES } = require('./land-local-check.js');
+  const root = new URL('../..', import.meta.url).pathname;
+  const dir = mkdtempSync(join(tmpdir(), 'stage-harness-'));
+  try {
+    const out = join(dir, 'h');
+    assert.equal(stageGauntletHarness(root, out), join(out, 'land-gauntlet.sh'));
+    for (const f of HARNESS_FILES) assert.equal(fs.readFileSync(join(out, f), 'utf8'), fs.readFileSync(join(root, 'scripts/lib', f), 'utf8'));
+    // The codex runner runs the copy as another user: a 0700 mkdtemp dir would be unreadable to it.
+    const private700 = mkdtempSync(join(tmpdir(), 'stage-harness-700-'));
+    try {
+      stageGauntletHarness(root, private700);
+      assert.equal(fs.statSync(private700).mode & 0o755, 0o755, 'harness dir readable and searchable by others, not writable');
+    } finally { rmSync(private700, { recursive: true, force: true }); }
+    const old = join(dir, 'old');
+    fs.mkdirSync(join(old, 'scripts/lib'), { recursive: true });
+    writeFileSync(join(old, 'scripts/lib/land-gauntlet.sh'), '# old\n');
+    stageGauntletHarness(old, join(dir, 'h2'));
+    assert.ok(existsSync(join(dir, 'h2/land-gauntlet.sh')));
+    assert.ok(!existsSync(join(dir, 'h2/tsc-node-options.sh')));
+    assert.throws(() => stageGauntletHarness(join(dir, 'nowhere'), join(dir, 'h3')), /ENOENT/, 'a missing gauntlet is an error');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('gauntlet copied alone resolves tsc NODE_OPTIONS quietly to the floor', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'lone-gauntlet-'));
+  try {
+    const g = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+    const start = g.indexOf('TSC_HELPER=');
+    const block = g.slice(start, g.indexOf('\n', g.indexOf('[ -n "$TSC_NODE_OPTIONS" ]')));
+    for (const [name, withHelper] of [['alone', false], ['staged', true]]) {
+      const d = join(dir, name); fs.mkdirSync(d);
+      writeFileSync(join(d, 'probe.sh'), `${block}\nprintf '%s' "$TSC_NODE_OPTIONS"\n`);
+      if (withHelper) fs.copyFileSync(new URL('./tsc-node-options.sh', import.meta.url), join(d, 'tsc-node-options.sh'));
+      const r = spawnSync('bash', [join(d, 'probe.sh')], { encoding: 'utf8', env: { ...process.env, NODE_OPTIONS: '' } });
+      assert.equal(r.stderr, '', `${name}: no stderr (BRO-6152 saw "No such file or directory")`);
+      assert.match(r.stdout, /--max-old-space-size=6144/, name);
+    }
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });

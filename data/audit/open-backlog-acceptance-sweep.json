@@ -1,22 +1,40 @@
 {
-  "generatedAt": "2026-10-24T07:27:47.339Z",
+  "generatedAt": "2026-10-25T12:48:38.091Z",
   "shadow": true,
-  "checkoutSha": "f2fa0f898c2048b12d6724ae533518a6017584c4",
-  "totalCandidates": 530,
-  "eligibleCandidates": 85,
+  "checkoutSha": "fc459a351c0ef9adb9e2c4742dde78aaaa9ea3b7",
+  "totalCandidates": 514,
+  "eligibleCandidates": 81,
   "checked": 14,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 9,
-    "fail": 1,
-    "unverifiable": 4
+    "pass": 8,
+    "fail": 0,
+    "unverifiable": 6
   },
   "alreadyDone": [
     {
-      "id": "BRO-6103",
-      "name": "Sweep stale refused land/* branches on origin (247 present, none pruned by a workflow)",
-      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
+      "id": "BRO-6197",
+      "name": "Version site-page image refs (src/) so replaced art busts caches",
+      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6187",
+      "name": "Commercial estimates: drift re-sizing pass, getRecentClosings, stunt-casting class, 2 over-100% DNR keepers, 39 locked entries",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6165",
+      "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
+      "verifyCmd": "test -f scripts/backtest-recoupment-bucknell.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6131",
+      "name": "Redesign morning digest decision cards: clickable, plain-English, one-tap actions",
+      "verifyCmd": "node --test scripts/lib/decision-card-parse.test.mjs",
       "detail": null
     },
     {
@@ -26,9 +44,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6090",
-      "name": "Morning digest 'Added' overstates real inflow: show the 7-day daily average and split out test alarms and session self-tracking cards",
-      "verifyCmd": "node --test scripts/lib/board-numbers.test.js",
+      "id": "BRO-6097",
+      "name": "Theatre Record: recover missing reviews for 2016-2022 West End shows (PDF extraction under-yields)",
+      "verifyCmd": "node --test scripts/lib/we-historical-tr-coverage.test.js",
       "detail": null
     },
     {
@@ -38,71 +56,80 @@
       "detail": null
     },
     {
-      "id": "BRO-6076",
-      "name": "Abandoned ledger lock is never cleared: backlog-drain and digest-autofix run unlocked on every later run",
-      "verifyCmd": "node --test scripts/lib/digest-autofix.test.mjs scripts/backlog-drain.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6056",
-      "name": "Outlets with a defaultCritic but many other bylines fill blank bylines with the wrong critic",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
       "id": "BRO-6038",
       "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
       "verifyCmd": "node --test tests/unit/audit-script-wiring.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6035",
-      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
-      "verifyCmd": "test -f scripts/generate-workflow-dependencies.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "verifyCmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
-      "detail": null
     }
   ],
-  "failing": [
-    {
-      "id": "BRO-6031",
-      "name": "Land queue holds ~285 land/* refs; runs park and cancel for hours (BRO-5528 and BRO-3552 needed 6 and 2 re-runs)",
-      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
-      "detail": "TAP version 13\n# Subtest: ticket names round-trip and sort main-red first, then FIFO\nok 1 - ticket names round-trip and sort main-red first, then FIFO\n  ---\n  duration_ms: 1.425266\n  ...\n# Subtest: no ticket of ours → enqueue; head with no lock → acquire; lock on our ticket → held\nok 2 - no ticket of ours → enqueue; head with no lock → acquire; lock on our ticket → held\n  ---\n  duration_ms: 0.2631"
-    }
-  ],
+  "failing": [],
   "unverifiable": [
     {
-      "id": "BRO-6104",
-      "name": "Code-checkout auto-sync leaves a half-applied tree when its fast-forward times out at 20s",
-      "verifyCmd": "node --test tests/unit/code-checkout-staleness.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/code-checkout-staleness.test.mjs"
+      "id": "BRO-6191",
+      "name": "Recoupment backtest: add a loss-side gate; stop deep research re-adding an uncited weekly cost to a record whose cost was cleared",
+      "verifyCmd": "node --test scripts/lib/deep-research-cleared-cost.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/deep-research-cleared-cost.test.mjs"
+    },
+    {
+      "id": "BRO-6159",
+      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
+      "verifyCmd": "node --test scripts/audit-biz-og-coverage.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-biz-og-coverage.test.mjs"
+    },
+    {
+      "id": "BRO-6128",
+      "name": "Fix: Tour candidate: Liberation national tour",
+      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 ZGlnZXN0LW5lZWRzLXlvdTpUb3VyIGNhbmRpZGF0ZTogTGliZXJhdGlvbiBuYXRpb25hbCB0b3Vy",
+      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-koULgZ/main/data/audit/alert-ledger.json) — never"
     },
     {
       "id": "BRO-6102",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"silentGapBacklogResults: real audit report shape\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 146870ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 131554ms (timeout — no verdict)"
     },
     {
-      "id": "BRO-6045",
-      "name": "Publish britishtheatre.com Broadway Thérèse Raquin review; verify-review-recovery false positives",
-      "verifyCmd": "node --test scripts/verify-review-recovery.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-review-recovery.test.mjs"
+      "id": "BRO-6098",
+      "name": "Aggregator health: fix The Stage (failing since Oct), Stagedoor (stopped June), LBO/BWW-London yield drops; add coverage-drop alarm",
+      "verifyCmd": "node --test scripts/audit-aggregator-health.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-aggregator-health.test.mjs"
     },
     {
       "id": "BRO-6044",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 77863ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 65438ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-6165",
+      "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
+      "branch": "land/codex-bro-6165",
+      "sha": "2cea37952976c2db252f963258be74be8f396cbd",
+      "landedAt": "2026-10-25T11:40:01.792Z"
+    },
+    {
+      "id": "BRO-6131",
+      "name": "Redesign morning digest decision cards: clickable, plain-English, one-tap actions",
+      "branch": "land/bro-6131-link-hardening",
+      "sha": "b39813e2bc53707789c9a329658b4237384a7585",
+      "landedAt": "2026-10-24T16:58:14.848Z"
+    },
+    {
+      "id": "BRO-6099",
+      "name": "Bound the 60 inline git clone/fetch/pull/push calls rule (z) now flags (BRO-6029 follow-up)",
+      "branch": "land/codex-bro-6099",
+      "sha": "8ad40b05d26666ce62060770a9d3a32d3e7297b8",
+      "landedAt": "2026-10-24T21:41:32.419Z"
+    },
+    {
+      "id": "BRO-6097",
+      "name": "Theatre Record: recover missing reviews for 2016-2022 West End shows (PDF extraction under-yields)",
+      "branch": "land/bro-6097-title",
+      "sha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
+      "landedAt": "2026-10-24T06:47:03.918Z"
+    },
     {
       "id": "BRO-6082",
       "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
@@ -116,13 +143,6 @@
       "branch": "land/codex-bro-6038",
       "sha": "cdca40aa73b4913b62a02f53fbc099f1c5b18f0d",
       "landedAt": "2026-10-23T11:37:31.712Z"
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "branch": "land/bro-6033-poller-first-wave",
-      "sha": "979fa74f85bc25c76d7f23d2b2771df211a14ae5",
-      "landedAt": "2026-10-23T05:02:28.175Z"
     }
   ]
 }

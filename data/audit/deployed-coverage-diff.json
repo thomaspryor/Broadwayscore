@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-24T18:58:10.281Z",
+  "generatedAt": "2026-10-25T14:53:28.636Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 264,
-  "clean": 264,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 255,
+  "clean": 254,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "openingDate": "2026-10-22",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 72.29 vs local 71.36 (Δ0.93)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 20,
+      "deployedCount": 23,
+      "firstDefectAt": "2026-10-25T14:53:24.092Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

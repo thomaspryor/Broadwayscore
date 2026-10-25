@@ -1,0 +1,356 @@
+{
+  "issueNumber": "bro-6153-gap2",
+  "planId": "8dca22cc-1b64-4608-8201-b4aea297b25b",
+  "status": "applied",
+  "createdAt": "2026-10-25T13:04:57.582Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "OB historical backfill gap window, second pass with plan-ob-historical-cohort.js: revivals and & titles the first pass missed (BRO-6153) (part 1 of 2)",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show",
+      "add-show"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "tartuffe-off-broadway-2025",
+          "title": "Tartuffe",
+          "slug": "tartuffe-off-broadway-2025",
+          "venue": "New York Theatre Workshop",
+          "previewsStartDate": "2025-11-28",
+          "openingDate": "2025-12-16",
+          "closingDate": "2026-01-25",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/tartuffe-off-broadway-new-york-theatre-workshop-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/tartuffe_1809783/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "gruesome-playground-injuries-off-broadway-2025",
+          "title": "Gruesome Playground Injuries",
+          "slug": "gruesome-playground-injuries-off-broadway-2025",
+          "venue": "Lucille Lortel Theatre",
+          "previewsStartDate": "2025-11-07",
+          "openingDate": "2025-11-23",
+          "closingDate": "2025-12-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/gruesome-playground-injuries-off-broadway-lucille-lortel-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/gruesome-playground-injuries_1804919/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hannah-senesh-off-broadway-2025",
+          "title": "Hannah Senesh",
+          "slug": "hannah-senesh-off-broadway-2025",
+          "venue": "Theatre Row Theatre",
+          "previewsStartDate": "2025-10-19",
+          "openingDate": "2025-10-23",
+          "closingDate": "2025-11-09",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/hannah-senesh-off-broadway-theatre-row-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/hannah-senesh_1799101/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "44-off-broadway-2025",
+          "title": "44",
+          "slug": "44-off-broadway-2025",
+          "venue": "Daryl Roth Theatre",
+          "previewsStartDate": "2025-10-14",
+          "openingDate": "2025-11-06",
+          "closingDate": "2026-01-04",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "musical",
+          "tags": [
+            "new"
+          ],
+          "isRevival": false,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/44-the-musical-off-broadway-daryl-roth-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/44_1795581/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "prince-faggot-off-broadway-2025",
+          "title": "Prince Faggot",
+          "slug": "prince-faggot-off-broadway-2025",
+          "venue": "Studio Seaview",
+          "previewsStartDate": "2025-09-10",
+          "openingDate": "2025-09-10",
+          "closingDate": "2025-12-13",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/prince-faggot-off-broadway-studio-seaview-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/prince-faggot_1795489/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "pygmalion-off-broadway-2025",
+          "title": "Pygmalion",
+          "slug": "pygmalion-off-broadway-2025",
+          "venue": "Theatre Five @ Theatre Row",
+          "previewsStartDate": "2025-10-22",
+          "openingDate": "2025-10-22",
+          "closingDate": "2025-11-22",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/pygmalion-off-broadway-theatre-five-theatre-row-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/pygmalion_1794907/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "anna-christie-off-broadway-2025",
+          "title": "Anna Christie",
+          "slug": "anna-christie-off-broadway-2025",
+          "venue": "St. Ann's Warehouse",
+          "previewsStartDate": "2025-11-25",
+          "openingDate": "2025-12-11",
+          "closingDate": "2026-02-01",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/anna-christie-off-broadway-st-anns-warehouse-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/anna-christie_1785041/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-weir-off-broadway-2025",
+          "title": "The Weir",
+          "slug": "the-weir-off-broadway-2025",
+          "venue": "Irish Repertory Theatre",
+          "previewsStartDate": "2025-07-09",
+          "openingDate": "2025-07-17",
+          "closingDate": "2025-08-31",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-weir-off-broadway-irish-repertory-theatre-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-weir_1780265/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "the-brothers-size-off-broadway-2025",
+          "title": "The Brothers Size",
+          "slug": "the-brothers-size-off-broadway-2025",
+          "venue": "The Shed",
+          "previewsStartDate": "2025-08-30",
+          "openingDate": "2025-09-10",
+          "closingDate": "2025-09-28",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/the-brothers-size-off-broadway-the-shed-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/the-brothers-size_1780176/"
+          ]
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "endgame-off-broadway-2025",
+          "title": "Endgame",
+          "slug": "endgame-off-broadway-2025",
+          "venue": "Irish Arts Center",
+          "previewsStartDate": "2025-10-22",
+          "openingDate": "2025-10-22",
+          "closingDate": "2025-11-23",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [
+            "revival"
+          ],
+          "isRevival": true,
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/endgame-off-broadway-irish-arts-center-2025",
+            "https://www.theatermania.com/shows/new-york-city-theater/off-broadway/endgame_1769344/"
+          ]
+        }
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T13:11:19.649Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added tartuffe-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added gruesome-playground-injuries-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hannah-senesh-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 44-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added prince-faggot-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pygmalion-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added anna-christie-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-weir-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-brothers-size-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added endgame-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
+}

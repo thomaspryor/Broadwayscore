@@ -275,6 +275,14 @@ function splitRaw(src) {
       continue;
     }
     const two = src.slice(i, i + 2);
+    // Descriptor duplication (2>&1, <&0) and Bash's &> are redirections,
+    // not background separators. Consume the operator before splitting '&'.
+    if (two === '>&' || two === '<&' || two === '&>') {
+      word += two;
+      inWord = true;
+      i++;
+      continue;
+    }
     if (two === '&&' || two === '||') {
       endCommand(two);
       i++;

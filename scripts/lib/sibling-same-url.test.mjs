@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findSiblingSameUrlPairs } = require('./sibling-same-url.js');
+const { findSiblingSameUrlPairs, haveDistinctTexts } = require('./sibling-same-url.js');
 const { buildSiblingIndex } = require('./market-routing.js');
 
 const shows = [
@@ -60,4 +60,25 @@ test('BRO-4674: the same url under a show with a different title is not this aud
     'unrelated-2026': { 'b.json': { url: TIMES } },
   });
   assert.equal(pairs.length, 0);
+});
+
+test('BRO-6113: haveDistinctTexts separates a recycled url slug from a double count', () => {
+  const para = (w) => Array.from({ length: 80 }, (_, i) => `${w}${i}`).join(' ');
+  const a = { fullText: para('alpha') };
+  assert.equal(haveDistinctTexts(a, { fullText: para('beta') }), true);
+  assert.equal(haveDistinctTexts(a, { fullText: a.fullText }), false, 'identical text is one article');
+  assert.equal(haveDistinctTexts(a, { fullText: 'x' }), false, 'no real text stays reported');
+  assert.equal(haveDistinctTexts(a, {}), false);
+  const folders = {
+    'the-comedy-about-spies-west-end-2025': { 'a.json': { url: TIMES, fullText: para('alpha') } },
+    'the-comedy-about-spies-west-end-2026': { 'b.json': { url: TIMES, fullText: para('beta') } },
+  };
+  assert.equal(run(folders, haveDistinctTexts).length, 0);
+  assert.equal(run(folders).length, 1);
+  // same article behind different headers / markup / truncation is still one article
+  const article = Array.from({ length: 120 }, (_, i) => `sentence${i}`).join(' ');
+  const header = 'The best of London straight to your inbox By entering your email address you agree to our Terms of Use and Privacy Policy and consent to receive emails from Time Out about news events offers and partner promotions';
+  assert.equal(haveDistinctTexts({ fullText: header + ' ' + article }, { fullText: article.split(' ').slice(0, 70).join(' ') }), false, 'header on one copy');
+  assert.equal(haveDistinctTexts({ fullText: `<p>${article}</p>` }, { fullText: 'Photograph: Courtesy of X ' + article }), false, 'markup vs plain');
+  assert.equal(haveDistinctTexts({ fullText: header + ' ' + para('alpha').repeat(1) + ' ' + Array.from({ length: 400 }, (_, i) => `a${i}`).join(' ') }, { fullText: header + ' ' + para('beta') + ' ' + Array.from({ length: 400 }, (_, i) => `b${i}`).join(' ') }), true, 'shared header, different articles');
 });

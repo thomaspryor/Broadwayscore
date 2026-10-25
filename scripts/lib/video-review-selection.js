@@ -19,7 +19,7 @@
  * Pure so tests can require() it (CLAUDE.md §15).
  */
 
-const { normalizeTitle } = require('./title-match');
+const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
 const { productionStartMs, isStaleDateFlag, parseYmd, PREDATE_GRACE_DAYS } = require('./video-production-context');
 const { isPaidPromotion } = require('./video-review-guards');
 
@@ -66,18 +66,56 @@ function indexShowsByTitle(shows) {
   return byTitle;
 }
 
+// A near-miss title ("John Proctor as the Villain", "The Wild Party" for
+// "Encores! The Wild Party") still needs this share of title words in common.
+const FUZZY_TITLE_MIN = 0.6;
+const FUZZY_MAX = 3;
+const tokenCache = new WeakMap();
+function showTokens(s) {
+  if (!tokenCache.has(s)) tokenCache.set(s, titleTokens(s.title));
+  return tokenCache.get(s);
+}
+
+/** Shows whose title is close to the classifier's title, best first (BRO-6172). */
+function closeTitleMatches(title, byTitle) {
+  const exactKey = normalizeTitle(title || '');
+  const words = titleTokens(String(title || '').replace(/\([^)]*\)/g, ' '));
+  if (!words.size) return [];
+  const out = [];
+  for (const [key, shows] of byTitle) {
+    if (key === exactKey) continue;
+    for (const s of shows) {
+      const j = jaccard(words, showTokens(s));
+      if (j >= FUZZY_TITLE_MIN) out.push([s, j]);
+    }
+  }
+  // ties by id, so the candidate list (the re-match cache key) is stable
+  return out.sort((a, b) => b[1] - a[1] || a[0].id.localeCompare(b[0].id)).map(([s]) => s);
+}
+
+/** Shows whose title is the classifier's title, else close to it. */
+function titleMatches(title, byTitle) {
+  const exact = byTitle.get(normalizeTitle(title || '')) || [];
+  return exact.length ? exact : closeTitleMatches(title, byTitle);
+}
+
 /**
  * Productions an unmatched review could be about: the classifier's title
- * matches and the video was posted during the run. Needs a known post date and
- * a known run start, otherwise every revival of the title would qualify.
+ * matches and the video was posted during the run. When no exact-title run
+ * fits the date ("The Wild Party" matched only the 2000 Broadway run, not
+ * Encores! The Wild Party 2026), close titles are tried (BRO-6172). Needs a
+ * known post date and a known run start, otherwise every revival of the
+ * title would qualify. Close-title candidates are only ever confirmed by the
+ * model in classify-reviews.js, never taken as matched.
  * @param {{showTitle?: string, date?: string}} c a classified transcript
  * @param {Map<string, object[]>} byTitle from indexShowsByTitle()
  */
 function rematchCandidates(c, byTitle) {
-  if (!c || parseYmd(c.date) === null) return [];
-  const key = normalizeTitle(c.showTitle || '');
-  if (!key) return [];
-  return (byTitle.get(key) || []).filter(s => windowStartMs(s) !== null && inProductionWindow(c.date, s));
+  if (!c || parseYmd(c.date) === null || !normalizeTitle(c.showTitle || '')) return [];
+  const fits = s => windowStartMs(s) !== null && inProductionWindow(c.date, s);
+  const exact = (byTitle.get(normalizeTitle(c.showTitle)) || []).filter(fits);
+  if (exact.length) return exact;
+  return closeTitleMatches(c.showTitle, byTitle).filter(fits).slice(0, FUZZY_MAX);
 }
 
 /**
@@ -248,6 +286,7 @@ module.exports = {
   SUBSTANTIAL_WORDS,
   inProductionWindow,
   indexShowsByTitle,
+  titleMatches,
   rematchCandidates,
   isDeadEnd,
   selectionCandidates,

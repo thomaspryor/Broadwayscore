@@ -1,0 +1,188 @@
+{
+  "issueNumber": "bro-6182",
+  "planId": "2c81ed16-6485-453d-b3e9-d7bc0583671f",
+  "status": "partial",
+  "createdAt": "2026-10-25T10:08:53.370Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6182: add Hair 2009 and Spider-Man 2011 (show + commercial); date-source Next to Normal recoupment",
+    "steps": [
+      "add-show",
+      "add-show",
+      "add-commercial-entry",
+      "add-commercial-entry",
+      "commercial.json: next-to-normal-2009.recoupedSource",
+      "commercial.json: next-to-normal-2009.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "hair-2009",
+          "title": "Hair",
+          "slug": "hair-2009",
+          "venue": "Al Hirschfeld Theatre",
+          "openingDate": "2009-03-31",
+          "closingDate": "2010-06-27",
+          "previewsStartDate": "2009-03-06",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": true,
+          "category": "broadway",
+          "market": "broadway",
+          "season": "2008-2009",
+          "tags": [
+            "historical",
+            "revival"
+          ],
+          "ibdbRevivalChecked": true,
+          "openingDateSource": "manual: Playbill/New York Theatre Guide (2009-08-07) opened 31 Mar 2009 at the Al Hirschfeld Theatre",
+          "discoverySource": "manual-user-request"
+        }
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "spider-man-turn-off-the-dark-2011",
+          "title": "Spider-Man: Turn Off the Dark",
+          "slug": "spider-man-turn-off-the-dark-2011",
+          "venue": "Foxwoods Theatre",
+          "openingDate": "2011-06-14",
+          "closingDate": "2014-01-04",
+          "previewsStartDate": "2010-11-28",
+          "status": "closed",
+          "type": "musical",
+          "isRevival": false,
+          "category": "broadway",
+          "market": "broadway",
+          "season": "2010-2011",
+          "tags": [
+            "historical"
+          ],
+          "ibdbRevivalChecked": true,
+          "openingDateSource": "manual: Playbill (2013-11-20) officially opened June 14, 2011, closed Jan 4, 2014",
+          "discoverySource": "manual-user-request"
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "hair-2009",
+        "entry": {
+          "designation": "Windfall",
+          "recouped": true,
+          "recoupedDate": "2009-08",
+          "capitalization": 5760000,
+          "capitalizationSource": "New York Theatre Guide: Hair \"recoups its entire $5,760,000 investment\" (producers' announcement, 2009-08-07)",
+          "recoupedSource": "TheaterMania (2009-08-07): the Hair revival recouped its investment in just four months; producers announced it August 7, 2009",
+          "notes": "Hair (Al Hirschfeld Theatre, opened Mar 31, 2009, closed Jun 27, 2010). The Public Theater transfer from Shakespeare in the Park recouped about four months after opening. Capitalization is $5.76M per New York Theatre Guide and Broadway.com closing coverage; TheaterMania prints $5.67M, which looks like a transposition.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.theatermania.com/news/broadways-hair-recoups-investment_18251/",
+              "date": "2009-08-07"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.newyorktheatreguide.com/theatre-news/news/hair-recoups-its-entire-5760000-investment",
+              "date": "2009-08-07"
+            }
+          ],
+          "humanReviewedDesignation": true
+        }
+      },
+      {
+        "type": "add-commercial-entry",
+        "slug": "spider-man-turn-off-the-dark-2011",
+        "entry": {
+          "designation": "Did Not Recoup",
+          "designationBasis": "reported-loss",
+          "recouped": false,
+          "capitalization": 75000000,
+          "capitalizationSource": "Playbill (2013-11-20): the musical was \"capitalized at $75 million\"",
+          "notes": "Spider-Man: Turn Off the Dark (Foxwoods Theatre, previews began Nov 28, 2010, officially opened Jun 14, 2011, closed Jan 4, 2014). Playbill, citing the New York Times, reported it would have \"historic losses of up to $60 million\" at closing and averaged a weekly cost of over $1 million. A show representative called the Times' math \"dubious\" and confirmed no financials.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://playbill.com/article/broadways-spider-man-turn-off-the-dark-will-have-lost-nearly-60-million-by-closing-date-com-211971",
+              "date": "2013-11-20"
+            }
+          ],
+          "humanReviewedDesignation": true
+        }
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "next-to-normal-2009",
+        "field": "recoupedSource",
+        "oldValue": "Playbill (2011-04-06): Next to Normal recouped its $4 million Broadway investment",
+        "newValue": "Playbill (2011-04-06): Next to Normal recouped its $4 million Broadway investment; recoupment announced March 2010 (Ken Davenport blog, linking Patrick Healy, New York Times, 2010-03-29)",
+        "description": "commercial.json: next-to-normal-2009.recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "next-to-normal-2009",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/pulitzer-winning-musical-next-to-normal-lines-up-robust-regional-life-com-178003",
+            "date": "2011-04-06"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.playbill.com/article/pulitzer-winning-musical-next-to-normal-lines-up-robust-regional-life-com-178003",
+            "date": "2011-04-06"
+          },
+          {
+            "type": "manual",
+            "url": "https://kendavenport.com/surprise-surprise-a-show-recoups-sans-star/",
+            "date": "2010-03-29"
+          }
+        ],
+        "description": "commercial.json: next-to-normal-2009.sources"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T10:18:53.250Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hair-2009"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added spider-man-turn-off-the-dark-2011"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: field \"humanReviewedDesignation\" not allowed"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: field \"humanReviewedDesignation\" not allowed"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for next-to-normal-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for next-to-normal-2009"
+    }
+  ],
+  "executedIn": "ci"
+}

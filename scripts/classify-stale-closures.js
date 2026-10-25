@@ -1,11 +1,12 @@
 #!/usr/bin/env node
 /**
- * Classify stale closures (owner policy B, BRO-5020 2026-10-11). A researched
- * Broadway show with no recoupment news:
- *   - closed 30 to ~183 days: stays TBD, flagged needsLossEvidence;
- *   - closed ~183+ days: labelled Fizzle/Flop (returned-% rule, Fizzle when no
- *     estimate) with designationBasis 'no-recoupment-announced', which the
- *     site shows as "Based on no recoupment being announced".
+ * Classify stale closures (owner decision 2026-10-24, BRO-6158, superseding
+ * policy B's 183-day wait). A closed Broadway show with no recoupment news
+ * gets our best-estimate designation right away (Flop under 30% returned,
+ * Fizzle 30%+, Trickle or Windfall at 100%+), from the record's own estimate
+ * or our model, stamped designationBasis 'model-estimate', which the site
+ * shows as our estimate. With no figure at all it stays TBD, flagged
+ * needsLossEvidence.
  * Kill switch: --require-loss-evidence or STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE=1
  * flags every such row and labels none. Later recoupment news clears the
  * label automatically (commercial-apply-gate.js recoupClaimDesignationAction).
@@ -30,7 +31,6 @@ const fs = require('fs');
 const path = require('path');
 const { classifyStaleClosure, buildClassifiedClosureEntry, undoAutoFizzleOnRunningShow } = require('./lib/classify-stale-closure');
 const { isCommercialScope } = require('./lib/commercial-scope');
-const { LOSS_LABEL_MIN_DAYS } = require('./lib/commercial-designations');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildClosureReviewItems } = require('./lib/stale-closure-review-card');
 
@@ -62,10 +62,9 @@ const intOr = (k, def) => {
 };
 const MAX_SHOWS = intOr('max-shows', 50);
 const thresholds = {
-  graceDays: intOr('grace-days', 30),
+  graceDays: intOr('grace-days', 7),
   maxAgeDays: intOr('max-age-days', 365),
   recentSignalDays: intOr('recent-signal-days', 30),
-  lossLabelMinDays: intOr('loss-label-min-days', LOSS_LABEL_MIN_DAYS),
   // Kill switch for policy B: never label a loss on silence, only flag.
   requireLossEvidence: ['1', 'true'].includes(String(flags['require-loss-evidence'])) || process.env.STALE_CLOSURE_REQUIRE_LOSS_EVIDENCE === '1',
 };

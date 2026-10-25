@@ -921,14 +921,22 @@ async function main() {
   }
 
   console.log(`Sending opening digest to ${SEND_TO}...`);
-  const res = await postJSON('https://api.resend.com/emails', {
+  // BRO-6157: one 15s Resend timeout cost the 2026-10-23 send. Retry transient
+  // failures; the shared Idempotency-Key keeps a timed-out-but-accepted attempt
+  // from double-sending.
+  const { sendWithRetry, buildIdempotencyKey } = require('./lib/resend-send-retry.js');
+  const todayET = new Date().toLocaleDateString('en-CA', { timeZone: 'America/New_York' });
+  const idempotencyKey = buildIdempotencyKey('opening-digest', todayET, SEND_TO,
+    require('crypto').createHash('sha256').update(subject + html).digest('hex').slice(0, 16));
+  const res = await sendWithRetry(() => postJSON('https://api.resend.com/emails', {
     from: `${FROM_NAME} <${FROM_EMAIL}>`,
     to: [SEND_TO],
     subject,
     html,
   }, {
     'Authorization': `Bearer ${RESEND_API_KEY}`,
-  });
+    'Idempotency-Key': idempotencyKey,
+  }));
   console.log(`Sent. ${subject} (id ${res?.id || '?'})`);
 }
 

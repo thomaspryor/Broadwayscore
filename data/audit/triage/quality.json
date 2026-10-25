@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-24T07:20:17.595Z",
+  "lastChecked": "2026-10-25T12:25:51.439Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,23 +13,23 @@
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "warn",
-      "message": "2 NEW review(s) whose explicit rating contradicts the score (worst: trainspotting-the-musical-west-end-2026 Daily Mail 5/5 stars→100 vs LLM 19, gap 81)"
+      "status": "pass",
+      "message": "No new star/score contradictions (32 known/baselined)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.1% scored (31495/32098)"
+      "message": "98.4% scored (32705/33232)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "24 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+      "message": "23 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "15184 messages, 0 auth failures (p=reject)"
+      "message": "15778 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -48,18 +48,18 @@
     },
     {
       "name": "Quality: outlet stub rate",
-      "status": "warn",
-      "message": "1 outlet(s) show a broken-extractor signature (worst: new-york-city-theatre — 6/10 recent stubs, 60%)"
+      "status": "pass",
+      "message": "No broken-extractor signature in 1700 outlet(s), 61302 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1689 outlet(s), 59757 review(s)"
+      "message": "No broken-extractor signature in 1700 outlet(s), 61302 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
-      "status": "warn",
-      "message": "1 outlet(s) drifted from outlet-registry.json standingCoverage flags (promote: talkinbroadway)"
+      "status": "pass",
+      "message": "No standingCoverage drift"
     },
     {
       "name": "Quality: coverageExpectation drift",
@@ -69,7 +69,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 5d ago)"
+      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 6d ago)"
     }
   ]
 }

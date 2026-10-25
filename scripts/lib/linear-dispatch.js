@@ -426,8 +426,15 @@ function generateCorrelationId() {
 // localeCompare — ISO-8601 timestamps sort correctly by codepoint order and
 // localeCompare's result depends on locale/ICU collation, which has no
 // business deciding which correction is newest.
+// BRO-3157: keep legacy ordering for undated comments, but warn once per
+// read rather than silently trusting API order for their timestamp ties.
 function sortedCommentBodies(issue) {
   const nodes = (issue && issue.comments && issue.comments.nodes) || [];
+  const undatedCount = nodes.filter((c) => c && c.body && !c.createdAt).length;
+  if (undatedCount) {
+    const issueLabel = issue.identifier || issue.id || '(unknown issue)';
+    console.warn(`[linear-dispatch] WARN ${issueLabel}: ${undatedCount} comment${undatedCount === 1 ? '' : 's'} missing createdAt; comment ordering falls back to API order for timestamp ties.`);
+  }
   return nodes
     .slice()
     .sort((a, b) => {

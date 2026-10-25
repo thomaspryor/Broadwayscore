@@ -24,6 +24,17 @@
 const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to rating__stars DOM boundary (was v6: Guardian class-attribute anchoring, Radio Times <use>-anchored SVG matching)
 
 /**
+ * Remove star glyphs that sit inside <style>…</style> blocks: icon CSS draws
+ * them as `content:"★★★★★"`, never a review's rating. The rest of the CSS is
+ * kept (the Guardian extractor resolves filled/empty stars via custom props).
+ */
+function stripStyleStarGlyphs(html) {
+  if (typeof html !== 'string') return html || '';
+  if (!/[★☆⭐🌟]/u.test(html)) return html;
+  return html.replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, block => block.replace(/[★☆⭐🌟]/gu, ''));
+}
+
+/**
  * Clean HTML of scripts, styles, and CSS to avoid false positives
  */
 function cleanHtmlForScoring(html) {
@@ -794,6 +805,7 @@ function extractReviewsHubScore(html, text) {
  *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
  */
 function extractUKStarRating(html, text) {
+  html = stripStyleStarGlyphs(html || ''); // BRO-305: icon CSS stars are not a rating
   // 1. Structured data: JSON-LD ("ratingValue": 5) or meta/itemprop ("ratingValue" content="5")
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/) ||
                       html.match(/"ratingValue"\s+content="(\d+(?:\.\d+)?)"/);
@@ -1739,7 +1751,11 @@ function isForeignStarGroup(text, g, prevGroupEnd, wantedTitle, normalizeLabel) 
  * @returns {object|null} - { originalScore, normalizedScore, source } or null
  */
 function extractScore(html, text, outletId, showTitle) {
-  html = html || '';
+  // BRO-305: <style> blocks never carry a review's rating, but icon CSS can
+  // carry star glyphs (inews.co.uk's Jetpack widget: content:"★★★★★"), which
+  // the raw-HTML outlet-extractor pass below read as 5/5 on a ★★★ review.
+  // Drop those glyphs up front so every extractor (raw and cleaned) is covered.
+  html = stripStyleStarGlyphs(html || '');
   text = text || '';
   outletId = (outletId || '').toLowerCase();
 
