@@ -30,6 +30,27 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 
 **Exclusions on TM rows.** Drop rows with no opening or preview date, runs under 14 days, titles matching festival or reading or benefit or concert or cabaret patterns, and venues outside OB (TM market 98 includes some off-off spaces). Dedup against shows.json by normalized title and opening date within 120 days, and refuse an id that exists (the add-show action already does).
 
+## Calibration results (2026-10-25, BRO-6153): measured, supersede earlier estimates
+
+21 shows went through add, gather (`max_tier=3`), text collection, scoring and rebuild: 2 hand shows, 16 award-signal 2024-25 shows, 3 random gap-window shows that had a Playbill page.
+
+- **17 of 21 (81 percent) reached 3 or more reviews.** 146 reviews in total, about 7 a show. Range: Hold On to Me Darling 23, The Antiquities 13, Archduke 11, Sumo 10, the 3 random gap shows 8 to 11. Of the 4 below 3, three (Good Bones, Becoming Eve, Garside's Career) were deferred by the gather time budget and re-dispatched, and were still collecting text when measured.
+- **Cost: about $0.18 a show.** Scraping $1.41 for 21 shows ($0.067 a show, ledger rows priced with `provider-pricing.json`). LLM scoring $0.0154 a review (8 ensemble runs, 466 reviews, $7.17, `llm-scoring-runs.json`), so about $0.11 a show. The $0.80 planning figure was 4 times too high.
+- **Measuring too early misleads.** A review counts in `reviews.json` only after text collection (cron 04:30, 10:30, 18:30 UTC) and scoring. Right after gather, most files are `incompleteReason: not_attempted` URL stubs. The first count (Sumo 2, most award shows 0) was pipeline lag. Measure after text collection, scoring and rebuild, or dispatch `collect-review-texts.yml` with `show_filter` to skip the wait.
+- **A Playbill production page is the notability filter.** Of 10 random TheaterMania gap listings, 3 had a Playbill page with matching dates, 1 had dates a year off (a different run), and 6 had none. The 3 with pages scored 8 to 11 reviews each. So "has a Playbill production page with matching dates" passes the shows worth scoring and drops most tiny runs, for about $0.001 a show. The SERP press screen from v3/v3.1 is not needed. If later cohorts show many Playbill-page shows under 3 reviews, revisit.
+- **TheaterMania dates drift.** Lowcountry: TM 2025-06-25, Playbill opening 2025-06-10. Dates always come from Playbill.
+
+Revised projection:
+| Cohort | TM listings not in catalog | Expected with Playbill page (about 35 to 40 percent) | Cost at $0.18 |
+|---|---|---|---|
+| Gap 2025-06 to 2026-02 | up to 168 | about 55 to 65 | about $12 |
+| 2024-06 to 2025-05 | up to 247 (16 done) | about 85 to 95 | about $17 |
+| 2023-06 to 2024-05 | up to 250 | about 85 to 100 | about $18 |
+| 2022-01 to 2023-05 | up to 293 | about 100 to 115 | about $20 |
+| **Total** | | **about 330 to 375** | **about $65 to $70** |
+
+Time is set by the pipeline, not money: about 1 to 1.5 hours of gather per 16 shows, plus text collection and scoring. Roughly 2 to 3 cohorts a week at the current queue.
+
 ## v3.1: plan-review outcome on v3 (2026-10-24, Opus reviewers + GPT-5.4-mini + Gemini Flash; supersedes v3 where they conflict)
 
 **Ramp change (adopted).** The first gap run is **10 shows picked at random from the 168, unscreened**: Playbill-validate, add, gather, rebuild. Their real review counts calibrate the press screen before it gates the other ~158. Cost: about $0.50 scraping plus LLM. [structure reviewer, GPT, Phase 0]
