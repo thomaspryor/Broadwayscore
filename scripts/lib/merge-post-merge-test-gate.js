@@ -697,7 +697,7 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   // BRO-6184: a spawn killed by the timeout is not retried. The retry just
   // doubles the wait (and the cap) on the same loaded runner; the kill is
   // reported by the fail-safe below with its real cause.
-  const killedByTimeout = !!(result.signal || (result.error && result.error.code === 'ETIMEDOUT'));
+  const killedByTimeout = !!(result.error && result.error.code === 'ETIMEDOUT');
   if (retryUnparseable && !killedByTimeout && result.status !== 0 && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
     retriedUnparseable = true;
     const first = describeExit(result);
