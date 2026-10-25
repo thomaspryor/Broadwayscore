@@ -352,6 +352,37 @@
     "queuedAt": "2026-10-25T11:41:55.916Z"
   },
   {
+    "conditionKey": "land:land/bro-2503-direct-share",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2503-direct-share",
+    "description": "land.yml did not land land/bro-2503-direct-share: the unit-tests-node gate went red at 3c4cea88b2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40189285758",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2503-direct-share"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3c4cea88b222ab13b3ac90c241b79f3865235b80"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40189285758"
+      }
+    ],
+    "queuedAt": "2026-10-25T11:51:55.818Z"
+  },
+  {
     "conditionKey": "land:land/bro-2498-smart-union-recovery",
     "title": "Landing blocked: unit-tests-node red on land/bro-2498-smart-union-recovery",
     "description": "land.yml did not land land/bro-2498-smart-union-recovery: the unit-tests-node gate went red at b68e74d42c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40189226264",
