@@ -3,7 +3,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -1174,4 +1175,18 @@ test('structural bounce: the Claude worker\'s own reports and an old CODEX-OK do
   const paused = { body: buildOutcomeCommentBody ? buildOutcomeCommentBody({ status: 'paused', summary: 'waiting on owner' }) : '**Session report (paused)**\nwaiting', createdAt: '2026-11-02T00:00:00Z' };
   assert.equal(r.codexBouncedRecently([note, paused], now), true);
   assert.equal(r.codexBouncedRecently([{ body: 'CODEX-OK', createdAt: '2026-10-01T00:00:00Z' }, note], now), true);
+});
+
+// BRO-5694: a land-check mutex wait must give up before the hard stop, not outlive it (two runs
+// were killed in "land-checks" past their hard stop on 2026-10-24/25, then reported as crashes).
+test('land-check mutex wait: giving up via onWait leaves the held lock alone; the card is handed back as out of time', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'bro5694-'));
+  const p = join(dir, 'held.lock');
+  writeFileSync(p, String(process.pid));
+  class Timeout extends Error {}
+  assert.throws(() => r.withFileMutex(p, () => {}, { pollMs: 10, onWait: () => { throw new Timeout('x'); } }), Timeout);
+  assert.equal(readFileSync(p, 'utf8'), String(process.pid));
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /fitsBeforeHardStop\(landChecksMs\)\) throw new LandWaitTimeout/);
+  assert.equal((src.match(/instanceof LandWaitTimeout\) \{ outOfTime = 'the land checks'; break; \}/g) || []).length, 2);
 });

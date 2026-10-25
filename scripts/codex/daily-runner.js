@@ -180,9 +180,15 @@ const runStop = () => LAUNCH.stopped();
 const stopAllSlots = (why) => LAUNCH.stopAll(why);
 const takeCardInRun = (id) => LAUNCH.takeCard(id);
 // Re-stamp the run lock every 10 min while waiting for the land-check mutexes.
+// A wait that would leave no time to run the checks before the hard stop gives up (LandWaitTimeout)
+// instead of holding the run past it: the card is handed back unjudged, not crashed mid-land-checks.
+class LandWaitTimeout extends Error {}
 const withLandMutex = (fn) => {
   let lastStamp = Date.now();
-  const onWait = () => { if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); } };
+  const onWait = () => {
+    if (!fitsBeforeHardStop(landChecksMs)) throw new LandWaitTimeout('no time left to wait for the land-check slot before the hard stop');
+    if (Date.now() - lastStamp > 10 * 60_000) { keepLock(); lastStamp = Date.now(); }
+  };
   // Slots of this launch first, then any other land check in the container (land-local-check.js).
   return LAUNCH.withMutex('land-checks', () => R.withFileMutex(R.CONTAINER_LAND_MUTEX, fn, { onWait }), onWait);
 };
@@ -886,7 +892,8 @@ async function workCard(pick, stats, inFlight) {
       // moved on; catch them here and hand them straight back to Codex in the same attempt.
       if (c.hasDiff && !fitsBeforeHardStop(landChecksMs + REVIEW_RESERVE_MS)) { outOfTime = 'the land checks and the review'; break; }
       keepLock(MAX_STAMP_GAP_MS, 'land-checks');
-      let landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null;
+      let landFails;
+      try { landFails = c.hasDiff ? throwIfDisk(newLandFailures(), 'the land checks') : null; } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
       if (landFails && execFits()) {
         log(`${id}: attempt ${attempt} land checks red, back to Codex`);
         const fx = await exec(prompt(`${onMain}\n\nYour change is committed on this branch, but the checks land runs found failures it adds over fresh main. Fix them (or, if one is not caused by your change, show the evidence in your report), then report as before:\n${fence(landFails)}${check ? `\n\nThe reviewer's earlier findings still apply:\n${fence(check.text)}` : ''}`));
@@ -895,7 +902,7 @@ async function workCard(pick, stats, inFlight) {
         c = commitAttempt(card, attempt);
         if (c.blocked) { check = { verdict: 'REJECT', text: `Blocked before review: ${c.blocked}.` }; step = 'bounce'; break; }
         keepLock(MAX_STAMP_GAP_MS, 'land-checks');
-        landFails = throwIfDisk(newLandFailures(), 'the land checks');
+        try { landFails = throwIfDisk(newLandFailures(), 'the land checks'); } catch (e) { if (e instanceof LandWaitTimeout) { outOfTime = 'the land checks'; break; } throw e; }
       }
       envBlocked = null;
       if (landFails) {
