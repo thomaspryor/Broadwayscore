@@ -31,7 +31,7 @@ const EXTRACTOR_VERSION = 7;  // v7 (BRO-922): NY Post css-stars re-scoped to ra
 function stripStyleStarGlyphs(html) {
   if (typeof html !== 'string') return html || '';
   if (!/[★☆⭐🌟]/u.test(html)) return html;
-  return html.replace(/<style[^>]*>[\s\S]*?<\/style>/gi, block => block.replace(/[★☆⭐🌟]/gu, ''));
+  return html.replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, block => block.replace(/[★☆⭐🌟]/gu, ''));
 }
 
 /**
@@ -805,6 +805,7 @@ function extractReviewsHubScore(html, text) {
  *          Musical Theatre Review, London Theatre, All That Dazzles, etc.
  */
 function extractUKStarRating(html, text) {
+  html = stripStyleStarGlyphs(html || ''); // BRO-305: icon CSS stars are not a rating
   // 1. Structured data: JSON-LD ("ratingValue": 5) or meta/itemprop ("ratingValue" content="5")
   const jsonLdMatch = html.match(/"ratingValue"\s*:\s*"?(\d+(?:\.\d+)?)"?/) ||
                       html.match(/"ratingValue"\s+content="(\d+(?:\.\d+)?)"/);
@@ -1549,24 +1550,6 @@ const OUTLET_EXTRACTORS = {
   'slantmagazine': noScoreExtractor,        // Theater reviews have no star ratings; film uses stars but theater doesn't
   'slant-magazine': noScoreExtractor,
 };
-
-// BRO-305: callers outside extractScore (collect-review-texts.js,
-// retry-pending-scores.js, backfill-extractor-rescore.js, …) invoke these
-// directly on raw page HTML, so strip <style> star glyphs here too. One wrapper per
-// function keeps shared-extractor identity, and the name is kept for
-// recollect-for-scores.js's `.name === 'noScoreExtractor'` check.
-{
-  const wrapped = new Map();
-  for (const key of Object.keys(OUTLET_EXTRACTORS)) {
-    const fn = OUTLET_EXTRACTORS[key];
-    if (!wrapped.has(fn)) {
-      const w = function (html, ...rest) { return fn(stripStyleStarGlyphs(html), ...rest); };
-      Object.defineProperty(w, 'name', { value: fn.name });
-      wrapped.set(fn, w);
-    }
-    OUTLET_EXTRACTORS[key] = wrapped.get(fn);
-  }
-}
 
 // One printed rating: 1-5 star glyphs, contiguous or separated by spaces on the
 // same line ("★★★☆☆", "★ ★ ★ ★ ☆", "★★ ★★★" from a wrapped run), with an

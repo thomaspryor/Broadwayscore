@@ -376,11 +376,11 @@ test('BRO-305: star glyphs inside <style> CSS are not a rating (extractScore)', 
   assert.equal(r.originalScore, '3/5 stars');
 });
 
-test('BRO-305: direct OUTLET_EXTRACTORS callers also skip <style> CSS stars', () => {
-  const { OUTLET_EXTRACTORS } = require('./score-extractors.js');
+test('BRO-305: extractUKStarRating itself skips <style> CSS stars (named export and registry agree)', () => {
+  const { extractUKStarRating, OUTLET_EXTRACTORS } = require('./score-extractors.js');
+  assert.equal(extractUKStarRating(INEWS_HTML, '').originalScore, '3/5 stars');
   assert.equal(OUTLET_EXTRACTORS['i-paper'](INEWS_HTML, '').originalScore, '3/5 stars');
-  const cssOnly = '<style>.r:before{content:"★★★★★"}</style><p>No rating printed.</p>';
-  assert.equal(OUTLET_EXTRACTORS['i-paper'](cssOnly, 'No rating printed.'), null);
-  assert.equal(OUTLET_EXTRACTORS['i-paper'].name, 'extractUKStarRating', 'wrapper keeps the name');
-  assert.equal(OUTLET_EXTRACTORS['nbcny'].name, 'noScoreExtractor');
+  const cssOnly = '<style>.r:before{content:"★★★★★"}</style ><p>No rating printed.</p>';
+  assert.equal(extractUKStarRating(cssOnly, 'No rating printed.'), null, 'closing tag with whitespace');
+  assert.equal(extractScore(cssOnly, 'No rating printed.', 'i-paper'), null);
 });
