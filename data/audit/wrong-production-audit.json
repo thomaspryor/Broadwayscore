@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T03:36:37.537Z",
+  "timestamp": "2026-10-25T04:23:15.688Z",
   "stats": {
-    "totalReviews": 60869,
+    "totalReviews": 60906,
     "alreadyFlagged": 21351,
     "dateGuardCatches": 222,
     "directorMismatch": 2210,
-    "tvFilmSignals": 1719,
+    "tvFilmSignals": 1720,
     "londonSignals": 2963,
-    "offBroadwaySignals": 535,
+    "offBroadwaySignals": 537,
     "yearMismatch": 201,
-    "noPublishDate": 5497
+    "noPublishDate": 5474
   },
   "findings": [
     {
@@ -34748,6 +34748,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "playing-shylock-off-broadway-2025",
+      "file": "new-york-sun--elysa-gardner.json",
+      "publishDate": "2025-10-23",
+      "url": "https://www.nysun.com/article/antisemitism-is-focus-of-playing-shylock-as-well-as-several-new-off-broadway-productions-tackling-the-subject",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -84084,6 +84097,20 @@
       ]
     },
     {
+      "showId": "picnic-at-hanging-rock-off-broadway-2025",
+      "file": "one-minute-critic--emily-chackerian.json",
+      "score": null,
+      "publishDate": "2025-12-19",
+      "url": "https://1minutecritic.com/picnic-hanging-rock-off-broadway-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "pigeon-english-west-end-2016",
       "file": "londontheatre1--louise-amelia-czupich.json",
       "score": 96,
@@ -100915,6 +100942,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "watch-me-walk-off-broadway-2026",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2026-02-01",
+      "url": "https://exeuntnyc.com/reviews/review-watch-me-walk-at-playwrights-horizons/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"soho rep\""
         }
       ]
     },
