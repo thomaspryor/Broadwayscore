@@ -84,8 +84,10 @@ test.describe('My Shows — Page Structure', () => {
     page.on('response', response => {
       if (response.status() === 404) {
         const url = response.url();
-        // Ignore expected 404s: favicon, analytics, external services
-        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase') && !url.includes('_vercel')) {
+        // Ignore expected 404s: favicon, analytics, external services.
+        // /ingest/* is the PostHog proxy, a vercel.json rewrite that doesn't
+        // exist under `next start` in test-ugc.yml, so it always 404s there.
+        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('/ingest/') && !url.includes('supabase') && !url.includes('_vercel')) {
           notFoundUrls.push(`404: ${url}`);
         }
       }
