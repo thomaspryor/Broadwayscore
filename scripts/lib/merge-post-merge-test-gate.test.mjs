@@ -494,8 +494,11 @@ test('runTestGate: a timeout-killed merged run is NOT retried (BRO-6184), and th
   assert.doesNotMatch(result.reason, /twice|re-ran/);
 });
 
-test('TEST_GATE_TIMEOUT_MS stays 8 min (BRO-6184): above the 5 min that killed a loaded-runner merged run, under the 20 min land cap', () => {
+test('TEST_GATE_TIMEOUT_MS stays 8 min (BRO-6184): above the 5 min that killed a loaded-runner merged run, 3 spawns fit the 30 min land cap', () => {
   assert.equal(TEST_GATE_TIMEOUT_MS, 8 * 60 * 1000);
+  const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
+  const outer = Number(/MERGED_TREE_TIMEOUT_MS = (\d+) \* 60 \* 1000/.exec(land)[1]) * 60 * 1000;
+  assert.ok(outer > 3 * TEST_GATE_TIMEOUT_MS, 'outer land cap must cover merged + retry + baseline spawns');
 });
 
 test('runTestGate: surfacing spawn error/signal changes NO pass/fail decision — status 0 still passes', () => {

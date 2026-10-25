@@ -90,17 +90,16 @@ test('timing backtest: the play-only options leave musicals untouched', { skip }
   }
 });
 
-test('reported-truth backtest: musicals hold MAE <= 7.8 and >= 62 inside; plays MAE <= 6.5 and >= 24 inside', { skip }, () => {
+test('reported-truth backtest: musicals hold MAE <= 7.8 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside', { skip }, () => {
   const { summary } = backtest('--base=HEAD');
   const m = summary['type:musical'];
-  assert.ok(m.n >= 65, `musical rows ${m.n}`);
-  // BRO-6184 (2026-10-24): the truth set grew 70 -> 88 musicals with 2008-2017
-  // closings (cloud-run-script, 20:01-20:09Z). Two are model misses on a type-default
-  // running cost, not bad data: next-to-normal-2009 (recouped, modelled -218%) and
-  // memphis-2009 (recouped, modelled 36%); without them MAE is ~3.1. Re-pinned
-  // with slack until a sourced running cost lands for those two.
-  assert.ok(m.newMae <= 7.8, `musical reported-truth MAE ${m.newMae} (was 4.6 before BRO-5598)`);
-  assert.ok(m.newInside >= 62, `musical reported-truth inside ${m.newInside}/${m.n} (was 61/70)`);
+  assert.ok(m.n >= 86, `musical rows ${m.n}`);
+  // BRO-6184 (2026-10-24): the truth set grew from 70 to 88 musicals (2008-2017
+  // closings, public aggregates only: two model misses on a type-default running
+  // cost lift MAE to 7.4; without them it is ~3.1). Re-pinned with slack until a
+  // sourced running cost lands for those two. Floors raised to the new cohort.
+  assert.ok(m.newMae <= 7.8, `musical reported-truth MAE ${m.newMae} (4.6 before BRO-5598, 7.4 after the BRO-6184 cohort growth)`);
+  assert.ok(m.newInside >= 73, `musical reported-truth inside ${m.newInside}/${m.n} (was 61/70)`);
   const p = summary['type:play'];
   assert.ok(p.n >= 26, `play rows ${p.n}`);
   assert.ok(p.newMae <= 6.5, `play reported-truth MAE ${p.newMae} (9.7 before BRO-5651)`);

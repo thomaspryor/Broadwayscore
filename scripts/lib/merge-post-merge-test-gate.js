@@ -142,8 +142,8 @@ const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('
 
 // "A hang is worse than a failure" applies to this gate's two spawns. 8 min
 // per spawn (BRO-6184: a merged run was killed at 5 min / 648s on a loaded
-// runner before the baseline was consulted); the outer land cap is 20 min and
-// the land.yml job budget 125 min, so a merged run + baseline fits twice over.
+// runner before the baseline was consulted); the outer land cap (land-branch.js MERGED_TREE_TIMEOUT_MS) is 30 min, enough
+// for 3 spawns (merged + retry + baseline); the land.yml job budget is 125 min.
 const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
 
 // node's TAP `location:` line reports the REAL (symlink-resolved) path, but a
