@@ -4696,28 +4696,33 @@ function isRejectedByReasonExclusion(data) {
 }
 
 /**
- * Canonical rejectedAt exclusion (BRO-4404); see isRejectedByReasonExclusion.
- * Returns true when the file must be excluded.
- */
-/**
  * BRO-6190: the body is a registration-wall stub (Telegraph sign-up form behind
- * a byline) so the LLM rated boilerplate. Excluded unless a score exists that
- * never read that body: markup stars (hasStructuralStarScore) or an aggregator
- * excerpt score (hasIndependentExcerptScore). The invalid tier alone does not
- * exclude in the rebuild, so this is the exclusion. Pure.
+ * a byline) or a short paywall page under a manual "complete" stamp (NYDN, FT),
+ * so the LLM rated boilerplate. Excluded unless a score exists that never read
+ * that body: page-markup stars (telegraph-svg-stars etc.) or aggregator stars.
+ * Own carve-out, not hasStructuralStarScore: that one only applies to files
+ * already carrying a not_a_review/garbage_text rejection, which these lack.
+ * The invalid tier alone does not exclude in the rebuild, so this is the
+ * exclusion. Pure.
  */
 function isRegistrationWallStubExclusion(data) {
   if (!data) return false;
   const wallStub = require('./paywall-detector').isRegistrationWallStub(data.fullText);
-  // A manual "complete" stamp over a short paywall/registration page (NYDN, FT) is
-  // downgraded to invalid by classifyContentTier; the rebuild does not exclude on
-  // tier, so exclude the same rows here.
   const manualOverrideStub = !wallStub && data.manualContentTier === 'complete' &&
     require('./content-quality').classifyContentTier(data).manualOverrideRejected === true;
   if (!wallStub && !manualOverrideStub) return false;
-  return !hasStructuralStarScore(data) && !hasIndependentExcerptScore(data);
+  const source = data.scoreSource || data.originalScoreSource;
+  const markupStar = STRUCTURAL_STAR_SOURCES.has(source) && data.originalScoreCleared !== true
+    && typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+  const aggregatorStar = data.aggregatorStars != null && data.aggregatorStars !== '';
+  return !markupStar && !aggregatorStar && !hasIndependentExcerptScore(data);
 }
 
+/**
+ * Canonical rejectedAt exclusion (BRO-4404); see isRejectedByReasonExclusion.
+ * Returns true when the file must be excluded.
+ */
 function isRejectedAtExclusion(data) {
   if (!data) return false;
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {

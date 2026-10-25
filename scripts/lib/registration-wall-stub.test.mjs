@@ -5,7 +5,7 @@ import { test } from 'node:test';
 const require = createRequire(import.meta.url);
 const { isRegistrationWallStub } = require('./paywall-detector.js');
 const { isGarbageContent, classifyContentTier } = require('./content-quality.js');
-const { isRegistrationWallStubExclusion } = require('./review-guards.js');
+const { isRegistrationWallStubExclusion, explainExclusion } = require('./review-guards.js');
 
 const WALL = 'Create a free account to continue reading. A minimum of 8 characters At least 1 letter At least 1 number Youll receive regular news updates';
 const BYLINE = 'Avenue Q review: puppets are gleefully outrageous. Marianka Swain has been a culture and features writer for the Telegraph since 2018. ';
@@ -25,7 +25,7 @@ test('isGarbageContent flags the stub with the Registration wall reason, not the
   const g = isGarbageContent(stub);
   assert.equal(g.isGarbage, true);
   assert.match(g.reason, /^Registration wall stub/);
-  assert.notEqual(isGarbageContent(longArticleWithFooterWall).reason && /^Registration wall stub/.test(isGarbageContent(longArticleWithFooterWall).reason), true);
+  assert.doesNotMatch(isGarbageContent(longArticleWithFooterWall).reason || '', /^Registration wall stub/);
 });
 
 test('classifyContentTier: stub is invalid with a Garbage content reason', () => {
@@ -53,4 +53,34 @@ test('isRegistrationWallStubExclusion: excluded unless a score never read the bo
   assert.equal(isRegistrationWallStubExclusion({ fullText: prose }), false);
   assert.equal(isRegistrationWallStubExclusion({ fullText: longArticleWithFooterWall }), false);
   assert.equal(isRegistrationWallStubExclusion(null), false);
+});
+
+test('isRegistrationWallStubExclusion: page-markup or aggregator stars keep a stub, a cleared one does not', () => {
+  const base = { fullText: stub, originalScoreNormalized: 80 };
+  assert.equal(isRegistrationWallStubExclusion({ ...base, originalScoreSource: 'telegraph-svg-stars' }), false);
+  assert.equal(isRegistrationWallStubExclusion({ ...base, originalScoreSource: 'telegraph-svg-stars', originalScoreCleared: true }), true);
+  assert.equal(isRegistrationWallStubExclusion({ ...base, originalScoreSource: 'llm-gemini' }), true);
+  assert.equal(isRegistrationWallStubExclusion({ fullText: stub, aggregatorStars: 4 }), false);
+});
+
+test('wall cutoff: wall starting before 2500 chars is a stub, at 2500 or later is not', () => {
+  const pre = (n) => 'x'.repeat(n);
+  const off = WALL.search(/A minimum of 8 characters/);
+  assert.equal(isRegistrationWallStub(pre(2499 - off) + WALL), true);
+  assert.equal(isRegistrationWallStub(pre(2500 - off) + WALL), false);
+});
+
+test('short paywall cutoff under a manual complete stamp: 2999 chars invalid, 3000 kept', () => {
+  const pw = (n) => ('Subscribe to unlock this article Try unlimited access Only $1 for 4 weeks. ' + 'y '.repeat(n)).slice(0, n);
+  assert.equal(classifyContentTier({ fullText: pw(2999), outletId: 'financialtimes', manualContentTier: 'complete' }).contentTier, 'invalid');
+  assert.notEqual(classifyContentTier({ fullText: pw(3000), outletId: 'financialtimes', manualContentTier: 'complete' }).manualOverrideRejected, true);
+});
+
+test('manual-complete 404 page is rejected and excluded; explainExclusion reports it', () => {
+  const nf = '404 PAGE NOT FOUND Sorry, the link you are trying to access is either broken or no longer exists. Please use the search bar.';
+  const c = classifyContentTier({ fullText: nf, outletId: 'columbus-dispatch', manualContentTier: 'complete' });
+  assert.equal(c.contentTier, 'invalid');
+  assert.equal(c.manualOverrideRejected, true);
+  assert.equal(isRegistrationWallStubExclusion({ fullText: nf, manualContentTier: 'complete' }), true);
+  assert.equal(explainExclusion({ fullText: stub, outletId: 'telegraph', showId: 'x' }) !== null, true);
 });
