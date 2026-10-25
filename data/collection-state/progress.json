@@ -32,7 +32,18 @@
     "betrayal-2013/independent--tom-teodorczuk.json",
     "caroline-or-change-2004/artsfuse--unknown.json",
     "caroline-or-change-2004/exeunt-magazine--unknown.json",
-    "hairspray-2002/musical-theatre-review--unknown.json"
+    "hairspray-2002/musical-theatre-review--unknown.json",
+    "hairspray-2002/the-globe-and-mail--kelly-nestruck.json",
+    "master-class-1995/theatermania--unknown.json",
+    "miss-saigon-1991/musical-theatre-review--unknown.json",
+    "miss-saigon-1991/theatermania--unknown.json",
+    "miss-saigon-1991/bloomberg--unknown.json",
+    "sunday-in-the-park-with-george-1984/talkinbroadway--unknown.json",
+    "sunday-in-the-park-with-george-1984/the-globe-and-mail--kelly-nestruck.json",
+    "west-side-story-1980/theatermania--unknown.json",
+    "west-side-story-1980/theatrely--unknown.json",
+    "west-side-story-1980/philadelphia-inquirer--toby-zinman.json",
+    "west-side-story-1980/village-voice--unknown.json"
   ],
   "failed": [
     "kiss-me-kate-2019/theater-news-online--jeremy-gerard.json",
@@ -61,7 +72,11 @@
     "betrayal-2013/ew--thom-geier.json",
     "betrayal-2013/nydailynews--joe-dziemianowicz.json",
     "betrayal-2013/ap--mark-kennedy.json",
-    "betrayal-2013/bloomberg--jeremy-gerard.json"
+    "betrayal-2013/bloomberg--jeremy-gerard.json",
+    "hairspray-2002/sioux-city-journal--bruce-miller.json",
+    "falsettos-1992/sunday-times--unknown.json",
+    "miss-saigon-1991/sunday-times--unknown.json",
+    "evita-1979/nytimes--ben-brantley.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -87,7 +102,12 @@
       "betrayal-2013/financialtimes--brendan-lemon.json",
       "betrayal-2013/independent--tom-teodorczuk.json",
       "caroline-or-change-2004/artsfuse--unknown.json",
-      "caroline-or-change-2004/exeunt-magazine--unknown.json"
+      "caroline-or-change-2004/exeunt-magazine--unknown.json",
+      "master-class-1995/theatermania--unknown.json",
+      "miss-saigon-1991/theatermania--unknown.json",
+      "miss-saigon-1991/bloomberg--unknown.json",
+      "west-side-story-1980/theatermania--unknown.json",
+      "west-side-story-1980/village-voice--unknown.json"
     ],
     "amp": [
       "data/review-texts/the-price-2017/chicagotribune--chris-jones.json"
@@ -96,13 +116,17 @@
     "directCookies": [],
     "scrapingdog": [
       "natasha-pierre-and-the-great-comet-of-1812-2016/the-globe-and-mail--kelly-nestruck.json",
-      "hairspray-2002/musical-theatre-review--unknown.json"
+      "hairspray-2002/musical-theatre-review--unknown.json",
+      "hairspray-2002/the-globe-and-mail--kelly-nestruck.json",
+      "miss-saigon-1991/musical-theatre-review--unknown.json",
+      "sunday-in-the-park-with-george-1984/the-globe-and-mail--kelly-nestruck.json"
     ],
     "scrapingbee": [
       "gypsy-2024/broadwaynews--brittani-samuel.json",
       "cabaret-2024/broadwaynews--brittani-samuel.json",
       "the-price-2017/backstage--casey-mink.json",
-      "natasha-pierre-and-the-great-comet-of-1812-2016/njcom--christopher-kelly.json"
+      "natasha-pierre-and-the-great-comet-of-1812-2016/njcom--christopher-kelly.json",
+      "west-side-story-1980/theatrely--unknown.json"
     ],
     "brightdata": [
       "betrayal-2013/variety--marilyn-stasio.json",
@@ -111,13 +135,15 @@
       "betrayal-2013/nytimes--ben-brantley.json",
       "once-upon-a-one-more-time-2023/rollingstone--unknown.json",
       "fat-ham-2023/hollywood-reporter--lovia-gyarkye.json",
-      "kiss-me-kate-2019/vulture--sara-holdren.json"
+      "kiss-me-kate-2019/vulture--sara-holdren.json",
+      "sunday-in-the-park-with-george-1984/talkinbroadway--unknown.json",
+      "west-side-story-1980/philadelphia-inquirer--toby-zinman.json"
     ],
     "archiveToday": [],
     "archive": []
   },
   "startTime": "2026-10-25T13:34:17.972Z",
-  "lastProcessed": "hairspray-2002/musical-theatre-review--unknown.json",
+  "lastProcessed": "evita-1979/nytimes--ben-brantley.json",
   "log": [
     {
       "t": "2026-10-25T13:35:39.093Z",
@@ -173,6 +199,17 @@
       "t": "2026-10-25T13:48:49.887Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T14:17:55.386Z",
+      "event": "bb-session",
+      "session": "60540c40",
+      "url": "https://www.nytimes.com/1979/09/26/archives/stage-evita-a-musical-peron-ambition"
+    },
+    {
+      "t": "2026-10-25T14:17:56.049Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
