@@ -74,7 +74,8 @@
     "duke-and-roya-off-broadway-2025/culturesauce--thom-geier.json",
     "duke-and-roya-off-broadway-2025/dailybeast--tim-teeman.json",
     "duke-and-roya-off-broadway-2025/nysr--melissa-rose-bernardo.json",
-    "duke-and-roya-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+    "duke-and-roya-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "anna-christie-off-broadway-2025/thewrap--robert-hofler.json",
@@ -102,7 +103,15 @@
     "44-off-broadway-2025/thestage--unknown.json",
     "44-off-broadway-2025/usatoday--unknown.json",
     "44-off-broadway-2025/washpost--unknown.json",
-    "44-off-broadway-2025/whatsonstage--unknown.json"
+    "44-off-broadway-2025/whatsonstage--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--unknown.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -155,7 +164,8 @@
       "duke-and-roya-off-broadway-2025/theatermania--rachel-graham.json",
       "duke-and-roya-off-broadway-2025/culturesauce--thom-geier.json",
       "duke-and-roya-off-broadway-2025/nysr--melissa-rose-bernardo.json",
-      "duke-and-roya-off-broadway-2025/one-minute-critic--matthew-wexler.json"
+      "duke-and-roya-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
@@ -168,10 +178,14 @@
       "data/review-texts/gruesome-playground-injuries-off-broadway-2025/wsj--unknown.json",
       "gruesome-playground-injuries-off-broadway-2025/wsj--unknown.json",
       "data/review-texts/the-weir-off-broadway-2025/wsj--charles-isherwood.json",
-      "the-weir-off-broadway-2025/wsj--charles-isherwood.json"
+      "the-weir-off-broadway-2025/wsj--charles-isherwood.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--unknown.json"
+    ],
     "scrapingbee": [
       "gruesome-playground-injuries-off-broadway-2025/cititour--brian-scott-lipton.json",
       "the-brothers-size-off-broadway-2025/newyorker--helen-shaw.json",
@@ -202,7 +216,7 @@
     ]
   },
   "startTime": "2026-10-25T15:59:57.484Z",
-  "lastProcessed": "duke-and-roya-off-broadway-2025/one-minute-critic--matthew-wexler.json",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-25T16:00:44.757Z",
@@ -269,6 +283,35 @@
       "t": "2026-10-25T16:22:56.968Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T16:36:44.855Z",
+      "event": "bb-session",
+      "session": "f8049d08",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-25T16:36:58.236Z",
+      "event": "bb-session",
+      "session": "1e7e0815",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-25T16:36:58.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-25T16:37:40.219Z",
+      "event": "bb-session",
+      "session": "e50104f0",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T16:37:47.949Z",
+      "event": "bb-session",
+      "session": "4b0257ed",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
     }
   ]
 }
