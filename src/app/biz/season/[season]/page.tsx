@@ -16,6 +16,7 @@ import {
   getShowsBySeasonWithCommercial,
   getSeasonComparison,
   getSeasonProfiles,
+  isIndexedCommercialSeason,
 } from '@/lib/data-commercial';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
 import MixCard from '@/components/biz/MixCard';
@@ -42,6 +43,7 @@ export async function generateMetadata(props: { params: Promise<{ season: string
     alternates: {
       canonical: `${BASE_URL}/biz/season/${params.season}`,
     },
+    ...(isIndexedCommercialSeason(params.season) ? {} : { robots: { index: false, follow: true } }),
     openGraph: {
       images: [seasonOgImage(params.season)],
       title: `${params.season} Broadway Season`,
