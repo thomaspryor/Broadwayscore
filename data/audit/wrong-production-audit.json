@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T20:33:49.859Z",
+  "timestamp": "2026-10-25T20:47:11.454Z",
   "stats": {
     "totalReviews": 61679,
-    "alreadyFlagged": 21467,
+    "alreadyFlagged": 21468,
     "dateGuardCatches": 223,
-    "directorMismatch": 2238,
+    "directorMismatch": 2239,
     "tvFilmSignals": 1753,
-    "londonSignals": 2977,
+    "londonSignals": 2978,
     "offBroadwaySignals": 543,
     "yearMismatch": 202,
-    "noPublishDate": 5498
+    "noPublishDate": 5496
   },
   "findings": [
     {
@@ -13065,6 +13065,19 @@
       "score": 89,
       "publishDate": "2026-08-21",
       "url": "https://playoffthepage.com/2026/08/dirty-dancing-the-musical-north-american-tour-launching-at-the-ordway-in-st-paul-mn/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "variety--payton-turkeltaub.json",
+      "publishDate": "2026-10-06",
+      "url": "https://variety.com/2026/legit/news/dirty-dancing-the-musical-broadway-run-1236899887/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -93055,6 +93068,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "mail-on-sunday--sonia-horon.json",
+      "publishDate": "2026-10-22",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16227989/Teri-Hatcher-Devil-Wears-Prada-transformation-trolled.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
