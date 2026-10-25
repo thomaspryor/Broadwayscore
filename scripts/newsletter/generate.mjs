@@ -24,6 +24,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // Bridge to the canonical CJS email-templates lib. Imports use repo-relative
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
+const { scoreFromSlimShow } = cjsRequire('../lib/newsletter-score.js');
 // Shared show-format labels (mirror of src/lib/show-format.ts) so newsletter
 // pills agree with the site and the digest emails — `special` is EVENT, not
 // a raw uppercased type string.
@@ -280,25 +281,20 @@ const _compositeCache = new Map();
 function loadCompositeScore(showId) {
   if (_compositeCache.has(showId)) return _compositeCache.get(showId);
   const p = path.join(repo, 'public/data/shows', `${showId}.json`);
-  let result = null;
-  try {
-    const d = JSON.parse(fs.readFileSync(p, 'utf8'));
-    if (typeof d.cs === 'number' && typeof d.rc === 'number') {
-      result = { avg: Math.round(d.cs), count: d.rc, raw: d.cs };
-    }
-  } catch {}
+  let slim = null;
+  try { slim = JSON.parse(fs.readFileSync(p, 'utf8')); } catch {}
+  const result = scoreFromSlimShow(slim);
   _compositeCache.set(showId, result);
   return result;
 }
 
 function aggregateScore(showId) {
-  // Prefer the canonical compositeScore (tier-weighted). This matches every
-  // place the score is displayed on the site. Falls back to arithmetic mean
-  // only if the per-show JSON is missing — in that case the show wouldn't be
-  // renderable on the site either, so a fallback is acceptable for the
-  // newsletter to still emit something.
+  // The canonical compositeScore (tier-weighted), same number the site shows.
+  // A slim file without `cs` means the site withholds the score: no score
+  // here either (scripts/lib/newsletter-score.js). Falls back to arithmetic
+  // mean only if the per-show JSON is missing entirely.
   const composite = loadCompositeScore(showId);
-  if (composite) return composite;
+  if (composite !== undefined) return composite;
   const rs = reviews.filter(r => r.showId === showId && r.assignedScore != null && (r.publishDate || '').slice(0, 10) <= weekEndStr);
   if (!rs.length) return null;
   return { avg: Math.round(rs.reduce((a, r) => a + r.assignedScore, 0) / rs.length), count: rs.length };
