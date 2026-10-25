@@ -66,3 +66,10 @@ test('an ancestor that is a FILE does not qualify', () => {
   const r = resolveCheckPaths('test -f src/blocker/deep/x.ts', { repoRoot: root });
   assert.equal(r.ok, false);
 });
+
+test('directory-shaped or traversal paths are not forgiven as new files', () => {
+  const root = repo(['scripts']);
+  for (const cmd of ['test -f scripts/a/b/', 'test -f scripts/newdir/.', 'node --test scripts/../tests/phantom/x.test.mjs']) {
+    assert.equal(resolveCheckPaths(cmd, { repoRoot: root }).ok, false, cmd);
+  }
+});

@@ -111,8 +111,7 @@ test('already-armed card is skipped with zero LLM calls and zero writes', async 
   };
   const r = await enrichOneCard(card, {
     callLLM: async () => { llmCalled = true; return '{}'; },
-    notionBrain: fakeNotionBrain(calls),
-  });
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'skipped');
   assert.equal(llmCalled, false);
   assert.equal(calls.length, 0);
@@ -124,7 +123,7 @@ test('already auto-enriched card is skipped unless --force', async () => {
     id: 'a2', name: 'Some prose card', category: 'Product', tags: ['auto-enriched'],
     notes: 'Just prose, no criteria.',
   };
-  const r = await enrichOneCard(card, { callLLM: async () => '{}', notionBrain: fakeNotionBrain(calls) });
+  const r = await enrichOneCard(card, { callLLM: async () => '{}', notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'skipped');
   assert.equal(calls.length, 0);
 });
@@ -233,8 +232,7 @@ test('eligible card: LLM drafts a phantom test path with no real parent dir — 
       command: 'node --test tests/totally-made-up-dir/thing.test.mjs',
       acceptanceCriteria: '## Acceptance criteria\n`node --test tests/totally-made-up-dir/thing.test.mjs` passes',
     }),
-    notionBrain: fakeNotionBrain(calls),
-  });
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'failed');
   assert.match(r.detail, /phantom path rejected/);
   assert.equal(calls.length, 0);
@@ -251,8 +249,7 @@ test('eligible card: LLM drafts a mutating command — rejected before ever writ
       command: 'node scripts/rebuild-all-reviews.js',
       acceptanceCriteria: '## Acceptance criteria\nrun `node scripts/rebuild-all-reviews.js` and check the diff',
     }),
-    notionBrain: fakeNotionBrain(calls),
-  });
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'failed');
   // BRO-2546: the refusal now names the CAUSE the validator actually gave.
   // `node scripts/rebuild-all-reviews.js` really is a shape refusal (it
@@ -696,8 +693,7 @@ test('eligible card: LLM call throws — failed, zero writes', async () => {
   const card = { id: 'c4', name: 'Fix scoring bug', category: 'Product', tags: [], notes: '## Problem\nBug.' };
   const r = await enrichOneCard(card, {
     callLLM: async () => { throw new Error('ECONNRESET'); },
-    notionBrain: fakeNotionBrain(calls),
-  });
+    notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'failed');
   assert.match(r.detail, /LLM call failed/);
   assert.equal(calls.length, 0);
@@ -729,8 +725,7 @@ test('dry-run mode never calls notionBrain even on a successful enrichment', asy
   const r = await enrichOneCard(card, {
     callLLM: async () => JSON.stringify({ command: 'npx next lint', acceptanceCriteria: '## Acceptance criteria\n`npx next lint` is clean' }),
     notionBrain: fakeNotionBrain(calls),
-    dryRun: true,
-  });
+    dryRun: true, logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'llm-enriched');
   assert.equal(calls.length, 0);
 });
@@ -983,8 +978,7 @@ test('enrichOneCard: dry-run mode never calls opts.writeCard either', async () =
   const r = await enrichOneCard(card, {
     callLLM: async () => JSON.stringify({ command: 'npx next lint', acceptanceCriteria: '## Acceptance criteria\n`npx next lint` is clean' }),
     writeCard: async (c, newNotes) => { writeCalls.push({ id: c.id, newNotes }); },
-    dryRun: true,
-  });
+    dryRun: true, logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'llm-enriched');
   assert.equal(writeCalls.length, 0);
 });
@@ -1006,8 +1000,7 @@ test('guardrail 2b: test -f on a file that already exists is rejected, zero writ
       acceptanceCriteria: '## Acceptance criteria\n`test -f scripts/opening-night-poller.js` passes',
     }),
     notionBrain: fakeNotionBrain(calls),
-    existsOnOriginMain: () => true,
-  });
+    existsOnOriginMain: () => true, logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'failed');
   assert.match(r.detail, /test-f-satisfied/);
   assert.match(r.detail, /after 1 retry/);
@@ -1029,8 +1022,7 @@ test('guardrail 2b: the retry is told to name a file that does not exist yet', a
       });
     },
     notionBrain: fakeNotionBrain([]),
-    existsOnOriginMain: () => true,
-  });
+    existsOnOriginMain: () => true, logPath: SCRATCH_LOG_PATH });
   assert.equal(prompts.length, 2, 'the vacuous rejection must spend its one retry');
   // The retry must carry the vacuity-specific instruction, not just the
   // generic safe-form advice — being told to fix a SHAPE that was already

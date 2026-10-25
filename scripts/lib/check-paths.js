@@ -635,7 +635,8 @@ function resolveCheckPaths(checkableDone, opts = {}) {
     // present). tests/ is excluded on purpose: new tests belong in tests/unit/, and an invented
     // tests/<dir>/ is the card #171 phantom. Deeper chains and a missing top-level root stay vetoed.
     const grandparent = path.dirname(path.dirname(p));
-    if (/^(src|scripts|docs|memory)\//.test(p) && grandparent !== '.' && isDir(grandparent)) {
+    const fileShaped = !/\/\.?$/.test(p) && !p.split('/').includes('..');
+    if (fileShaped && /^(src|scripts|docs|memory)\//.test(p) && grandparent !== '.' && isDir(grandparent)) {
       newPaths.push(p);
       continue;
     }
