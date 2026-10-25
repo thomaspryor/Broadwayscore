@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T21:41:07.021Z",
+  "runDate": "2026-10-25T21:58:30.569Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 54,
+    "processed": 1,
+    "failed": 62,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "1.6%"
   },
   "tierBreakdown": {
     "playwright": 17,
@@ -28,24 +28,24 @@
     "archive": 20
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 7,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier1_9Attempts": 2,
+    "tier1_9Success": 1,
+    "tier2Attempts": 3,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
-    "tier4Success": 0,
-    "totalFailed": 54,
-    "scrapingBeePageCredits": 0,
+    "tier4Attempts": 5,
+    "tier4Success": 3,
+    "totalFailed": 62,
+    "scrapingBeePageCredits": 30,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,8 +54,8 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 54,
+    "processed": 1,
+    "failed": 62,
     "shows": [
       "aint-no-mo-2022",
       "all-my-sons-2008",
@@ -66,6 +66,7 @@
       "escape-to-margaritaville-2018",
       "farinelli-and-the-king-2017",
       "ghost-the-musical-2012",
+      "girls-off-west-end-2026",
       "grey-house-2023",
       "hamlet-2009",
       "harmony-2023",
@@ -78,6 +79,8 @@
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
+      "not-ready-for-prime-time-off-broadway-2025",
+      "oh-mary-off-broadway-2024",
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
@@ -85,13 +88,17 @@
       "reasons-to-be-pretty-2009",
       "red-2010",
       "rodgers-hammersteins-cinderella-2013",
+      "romeo-and-juliet-west-end-2024",
       "sea-wall-a-life-2019",
+      "shifters-west-end-2024",
       "shrek-the-musical-2008",
       "suffs-2024",
       "tammy-faye-2024",
       "the-collaboration-2022",
+      "the-constituent-west-end-2024",
       "the-hills-of-california-2024",
       "the-inheritance-2019",
+      "the-land-of-the-living-west-end-2025",
       "the-lieutenant-of-inishmore-2006",
       "the-little-mermaid-2008",
       "the-nap-2018",
@@ -109,10 +116,12 @@
     "outOfScopeShows": [],
     "inheritedFromResume": {
       "processed": 40,
-      "failed": 29
+      "failed": 83
     }
   },
-  "processed": [],
+  "processed": [
+    "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
+  ],
   "failed": [
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
@@ -154,9 +163,17 @@
     "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
     "kiss-me-kate-2019/usatoday--david-rooney.json",
     "clybourne-park-2012/usatoday--elysa-gardner.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "the-land-of-the-living-west-end-2025/i-paper--fiona-mountford.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
+    "shifters-west-end-2024/thestage--tom-wicker.json",
+    "shifters-west-end-2024/times-uk--rachel-halliburton.json",
+    "the-constituent-west-end-2024/independent--tim-bano.json",
+    "the-constituent-west-end-2024/times-uk--clive-davis.json",
+    "romeo-and-juliet-west-end-2024/sunday-times--dominic-maxwell.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
+    "oh-mary-off-broadway-2024/chicago-sun-times--richard-roeper.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
     "grey-house-2023/stageandcinema--simi-horwitz.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
@@ -210,7 +227,8 @@
       "mama-im-a-big-girl-now-off-broadway-2024/timeout--raven-snook.json",
       "good-bones-off-broadway-2024/timeout--raven-snook.json",
       "good-bones-off-broadway-2024/front-row-center--david-walters.json",
-      "blood-of-the-lamb-off-broadway-2024/broadwayworld--marina-kennedy.json"
+      "blood-of-the-lamb-off-broadway-2024/broadwayworld--marina-kennedy.json",
+      "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
     ],
     "failed": [
       "hold-on-to-me-darling-off-broadway-2024/thewrap--robert-hofler.json",
@@ -233,7 +251,6 @@
       "44-off-broadway-2025/washpost--naveen-kumar.json",
       "reunions-off-broadway-2025/wsj--zachary-barnes.json",
       "pygmalion-off-broadway-2025/theater-life--ellis-nassour.json",
-      "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json",
       "other-off-broadway-2025/observer--wendy-ide.json",
       "other-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
       "other-off-broadway-2025/chicagotribune--unknown.json",
@@ -295,7 +312,15 @@
       "indecent-2017/usatoday--elysa-gardner.json",
       "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
       "hamlet-2009/nydailynews--joe-dziemianowicz.json",
-      "is-he-dead-2007/nypost--clive-barnes.json"
+      "is-he-dead-2007/nypost--clive-barnes.json",
+      "girls-off-west-end-2026/radio-times--molly-moss.json",
+      "the-land-of-the-living-west-end-2025/i-paper--fiona-mountford.json",
+      "shifters-west-end-2024/thestage--tom-wicker.json",
+      "shifters-west-end-2024/times-uk--rachel-halliburton.json",
+      "the-constituent-west-end-2024/independent--tim-bano.json",
+      "the-constituent-west-end-2024/times-uk--clive-davis.json",
+      "romeo-and-juliet-west-end-2024/sunday-times--dominic-maxwell.json",
+      "oh-mary-off-broadway-2024/chicago-sun-times--richard-roeper.json"
     ]
   },
   "tierDetails": {
@@ -362,6 +387,14 @@
       "300-paintings-off-broadway-2024/culturesauce--thom-geier.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "The Sunday Times": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
