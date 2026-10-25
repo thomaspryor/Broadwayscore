@@ -19,6 +19,14 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 
+// A snapshot older than this is treated as missing (fail open): the weekly refresh is
+// advisory, so a broken secret must not leave stale data deciding noindex forever.
+const MAX_SNAPSHOT_AGE_DAYS = 35;
+function isStale(generated, now = Date.now()) {
+  const t = Date.parse(generated);
+  return !Number.isFinite(t) || now - t > MAX_SNAPSHOT_AGE_DAYS * 86400000;
+}
+
 const LANDINGS_FILE = path.join(__dirname, '..', '..', 'data', 'seo-search-landings.json');
 
 // Shows that must be indexable before / while they are reviewed.
@@ -36,10 +44,11 @@ function loadSearchLandings(file = LANDINGS_FILE) {
   try {
     // The default list is a static require so Next/webpack bundles it into the
     // sitemap and page renders; a runtime path.join read is not traced.
-    const paths = (file === LANDINGS_FILE
+    const snap = file === LANDINGS_FILE
       ? require('../../data/seo-search-landings.json')
-      : JSON.parse(fs.readFileSync(file, 'utf8'))).paths;
-    set = Array.isArray(paths) && paths.length > 0 ? new Set(paths) : null;
+      : JSON.parse(fs.readFileSync(file, 'utf8'));
+    const paths = snap.paths;
+    set = Array.isArray(paths) && paths.length > 0 && !isStale(snap.generated) ? new Set(paths) : null;
   } catch {
     set = null;
   }
@@ -62,10 +71,11 @@ function loadGscImpressions(file = GSC_FILE) {
   if (file === GSC_FILE && _gsc !== undefined) return _gsc;
   let map;
   try {
-    const pages = (file === GSC_FILE
+    const snap = file === GSC_FILE
       ? require('../../data/seo-gsc-impressions.json')
-      : JSON.parse(fs.readFileSync(file, 'utf8'))).pages;
-    map = pages && typeof pages === 'object' && Object.keys(pages).length > 0 ? pages : null;
+      : JSON.parse(fs.readFileSync(file, 'utf8'));
+    const pages = snap.pages;
+    map = pages && typeof pages === 'object' && Object.keys(pages).length > 0 && !isStale(snap.generated) ? pages : null;
   } catch {
     map = null;
   }
@@ -117,6 +127,8 @@ function inFrozenCohort(slug, env = process.env, cohort = loadCohort()) {
 }
 
 /**
+ * Env: SEO_THIN_NOINDEX=1 turns the full rule on for every candidate (overrides the cohort);
+ * SEO_THIN_COHORT_OFF=1 disables only the cohort.
  * Show-page decision used by page robots and the sitemap: the full rule when
  * SEO_THIN_NOINDEX=1, otherwise only for a slug in the frozen cohort. Either way
  * the page must still be a candidate (closed, 0 reviews, 0 landings, 0 GSC impressions).
@@ -153,5 +165,5 @@ function isThinCritic(c, enabled = thinRulesEnabled()) {
 
 module.exports = {
   thinRulesEnabled, isThinClosedShow, isThinCritic, hasSearchLanding, loadSearchLandings, ALWAYS_INDEXABLE_STATUSES,
-  loadGscImpressions, hasGscImpressions, cohortBucket, inCohortHash, loadCohort, inFrozenCohort, isThinShowRollout, COHORT_PERCENT,
+  loadGscImpressions, hasGscImpressions, isStale, MAX_SNAPSHOT_AGE_DAYS, cohortBucket, inCohortHash, loadCohort, inFrozenCohort, isThinShowRollout, COHORT_PERCENT,
 };
