@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6158-hd2",
   "planId": "217a3ba0-7f06-4da7-9d7e-ed0132ebcc41",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T00:20:46.302Z",
   "submitter": {
     "name": null,
@@ -96,5 +96,49 @@
         "description": "commercial.json: hello-dolly-2017.recouped"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T00:29:19.601Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: isEstimate updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for hello-dolly-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
