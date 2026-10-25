@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6218",
   "planId": "74ff9935-d8d8-418a-8119-587a92b54e97",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T18:23:46.597Z",
   "submitter": {
     "name": null,
@@ -1579,5 +1579,59 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T19:46:01.458Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for cabaret-2024"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added a-christmas-carol-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added girl-from-the-north-country-2022 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added slave-play-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added is-this-a-room-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added waitress-2021 (TBD)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added pass-over-2021 (TBD)"
+    }
+  ],
+  "executedIn": "ci"
 }
