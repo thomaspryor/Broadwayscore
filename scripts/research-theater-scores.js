@@ -178,7 +178,6 @@ async function fetchSeatPlan(theaterName) {
 // When adding a new theater, check aviewfrommyseat.com for the actual venue slug.
 const AVFMS_NAME_OVERRIDES = {
   'Helen Hayes Theater': 'Hayes Theater',
-  'Harold and Miriam Steinberg Center for Theatre': 'Black Box Theatre at the Steinberg Center for Theatre',
 };
 
 async function fetchAVFMS(theaterName) {

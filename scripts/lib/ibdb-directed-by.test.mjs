@@ -23,3 +23,10 @@ test('a plain "Directed by" credit anywhere in the list still counts', () => {
   assert.deepEqual(directors('Original production directed by Moss Hart; Directed by Howard Davies'), ['Howard Davies']);
   assert.deepEqual(directors('Fight directed by B. H. Barry; Directed by Jane Roe'), ['Jane Roe']);
 });
+
+// BRO-5088: Good Evening (1973) listed Joe McGrath, who directed the film
+// sequences, as a second Director.
+test('film-sequence and similar partial-direction credits are not the director', () => {
+  assert.deepEqual(directors('Directed by Jerry Adler; Film Sequences Directed by Joe McGrath'), ['Jerry Adler']);
+  assert.deepEqual(directors('Directed by Jerry Adler; Vocal directed by A Person'), ['Jerry Adler']);
+});
