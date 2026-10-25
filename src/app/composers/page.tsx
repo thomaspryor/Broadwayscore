@@ -33,7 +33,8 @@ export default function ComposersIndexPage() {
       name: p.name,
       url: `${BASE_URL}/creative/${getUnifiedSlugForName(p.name) || p.slug}`,
     })),
-    `Broadway ${config.labelPlural}`
+    `Broadway ${config.labelPlural}`,
+    'Person'
   );
 
   const summaries = profiles.map(({ shows, ...rest }) => ({ ...rest, unifiedSlug: getUnifiedSlugForName(rest.name) }));
