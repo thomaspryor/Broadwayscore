@@ -30,6 +30,22 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 
 **Exclusions on TM rows.** Drop rows with no opening or preview date, runs under 14 days, titles matching festival or reading or benefit or concert or cabaret patterns, and venues outside OB (TM market 98 includes some off-off spaces). Dedup against shows.json by normalized title and opening date within 120 days, and refuse an id that exists (the add-show action already does).
 
+## Gap cohort results (2026-10-25, BRO-6153): June 2025 to February 2026
+
+Process (all existing tools, no new code): TheaterMania WP JSON listings for the window, minus shows already in the catalog, minus festival/reading/benefit titles, closed 90+ days, run 14+ days, giving 125 candidates. `validate-show-venue.js --candidates-file` via `cloud-run-script.js` gave 55 Playbill matches, 22 mismatches (mostly classics where Playbill points at another production) and 48 with no Playbill page. Playbill pages were fetched directly (curl, free) and parsed with `parseFactDates` / `parseTitleVenueYear`. `findTmSameTitleShow` + `checkForDuplicate` dropped 4 already-catalogued runs. 48 add-show actions in five 10-action plans (`buildPlans` from `new-fix-plan.js`), applied, gathered in 4 groups of 12, then `collect-review-texts.yml` and a show-scoped `llm-ensemble-score.yml` per group, then `rebuild-fast.yml`.
+
+| | Shows | 3+ reviews | Reviews |
+|---|---|---|---|
+| Gap cohort | 48 | 35 (73 percent) | 388 |
+| Calibration (2 hand, 16 award 2024-25, 3 random gap) | 21 | 21 (100 percent) | 184 |
+| **Total added** | **69** | **56 (81 percent)** | **572** |
+
+- Cost: gap scraping $4.02, LLM about $5.40 (388 reviews at $0.014, 10 ensemble runs measured since 00:00). About $0.20 a show all in.
+- Wall-clock: about 9 hours for the gap cohort, nearly all pipeline wait. Gather about 1.5 to 2 hours per 12 shows. One group gather was cancelled by the queue and re-run.
+- Scoring is the bottleneck: text is fetched hours before the scheduled ensemble run scores it. A show-scoped `llm-ensemble-score.yml` dispatch after each text collection cut that to under 30 minutes.
+- Gaps left in this window: 6 Playbill matches whose titles contain "&" or a subtitle (title-slug pairing missed them, e.g. Gene & Gilda, Duke & Roya), and 18 mismatches to hand-check. Both are small follow-ups for the cohort script.
+- The catalog now has about 80 OB openings for 2025-06 to 2026-02, against 14 before.
+
 ## Calibration results (2026-10-25, BRO-6153): measured, supersede earlier estimates
 
 21 shows went through add, gather (`max_tier=3`), text collection, scoring and rebuild: 2 hand shows, 16 award-signal 2024-25 shows, 3 random gap-window shows that had a Playbill page.
