@@ -1,1 +1,33 @@
-[]
+[
+  {
+    "conditionKey": "land:land/bro-6242-social-autopost",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6242-social-autopost",
+    "description": "land.yml did not land land/bro-6242-social-autopost: the unit-tests-node gate went red at aec2941795. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40244505381",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6242-social-autopost"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "aec29417951b49e9573875f300d3fce01ce62f82"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40244505381"
+      }
+    ],
+    "queuedAt": "2026-10-25T23:43:39.601Z"
+  }
+]
