@@ -7,53 +7,36 @@
     "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
     "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
     "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
     "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
-    "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
-    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
-    "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
-    "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
-    "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
-    "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
-    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
-    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
+    "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
   ],
   "failed": [
     "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
-    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
     "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
     "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
-    "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
-    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
-    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
-    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json"
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "garry-starr-classic-penguins-off-west-end-2026/thereviewshub--steven-wang.json",
-      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
       "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
       "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
       "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
       "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
-      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
       "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
-      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
-      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
-      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
-      "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
-      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
-      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
-      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
+    ],
     "scrapingbee": [
       "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
     ],
@@ -64,32 +47,25 @@
       "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
     ]
   },
-  "startTime": "2026-10-25T23:10:36.264Z",
-  "lastProcessed": "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+  "startTime": "2026-10-25T23:31:36.313Z",
+  "lastProcessed": "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
   "log": [
     {
-      "t": "2026-10-25T23:26:28.677Z",
+      "t": "2026-10-25T23:33:03.581Z",
       "event": "bb-session",
-      "session": "a65c2519",
+      "session": "ea5d5bf5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-25T23:33:04.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-25T23:33:40.111Z",
+      "event": "bb-session",
+      "session": "37fbcbb8",
       "url": "https://soundsandstage.com/show/cirque-berserk"
-    },
-    {
-      "t": "2026-10-25T23:33:32.249Z",
-      "event": "bb-session",
-      "session": "5b3c07b6",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-25T23:33:39.834Z",
-      "event": "bb-session",
-      "session": "7953afc7",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-25T23:34:37.069Z",
-      "event": "bb-session",
-      "session": "3d6e6924",
-      "url": "https://soundsandstage.com/show/dirty-dancing"
     }
   ]
 }

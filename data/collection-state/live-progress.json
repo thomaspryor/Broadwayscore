@@ -1,44 +1,37 @@
 {
-  "updatedAt": "2026-10-25T23:35:19.655Z",
-  "processed": 19,
+  "updatedAt": "2026-10-25T23:41:54.562Z",
+  "processed": 9,
   "failed": 8,
-  "successRate": "70.4%",
+  "successRate": "52.9%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 7,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 1,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-25T23:26:28.677Z",
+      "t": "2026-10-25T23:33:03.581Z",
       "event": "bb-session",
-      "session": "a65c2519",
+      "session": "ea5d5bf5",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-25T23:33:04.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-25T23:33:40.111Z",
+      "event": "bb-session",
+      "session": "37fbcbb8",
       "url": "https://soundsandstage.com/show/cirque-berserk"
-    },
-    {
-      "t": "2026-10-25T23:33:32.249Z",
-      "event": "bb-session",
-      "session": "5b3c07b6",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-25T23:33:39.834Z",
-      "event": "bb-session",
-      "session": "7953afc7",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-25T23:34:37.069Z",
-      "event": "bb-session",
-      "session": "3d6e6924",
-      "url": "https://soundsandstage.com/show/dirty-dancing"
     }
   ]
 }
