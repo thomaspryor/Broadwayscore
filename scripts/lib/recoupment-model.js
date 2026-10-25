@@ -923,8 +923,11 @@ function calculateRecoupment(show, commercial, grossesAllTime, grossesWeekly, op
   if (runNut > 0) {
     const profitAt = (g) => calcWeeklyProfit(g, runNut, baseVarRate, false, 27, false, null, weeklySchedule.length, show.type || 'musical', category, costPath).profit;
     let lo = 0, hi = runNut * 10;
-    for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (profitAt(mid) < 0) lo = mid; else hi = mid; }
-    breakeven = hi;
+    // Keep the closed form unless the bounds bracket the zero.
+    if (profitAt(lo) < 0 && profitAt(hi) >= 0) {
+      for (let i = 0; i < 60; i++) { const mid = (lo + hi) / 2; if (profitAt(mid) < 0) lo = mid; else hi = mid; }
+      breakeven = hi;
+    }
   }
 
   // --- Data quality ---
