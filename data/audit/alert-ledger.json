@@ -244,7 +244,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-24T21:45:31.431Z",
-      "lastSeen": "2026-10-25T00:20:24.291Z",
+      "lastSeen": "2026-10-25T00:22:34.550Z",
       "lastNotifiedAt": "2026-10-24T21:45:31.431Z",
       "lastSurfacedAt": "2026-10-24T21:45:31.431Z",
       "notifyCount": 166,
@@ -252,7 +252,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26112,7 +26112,10 @@
         "runId": "40132155159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
-      "silentRefires": 5
+      "silentRefires": 5,
+      "absentRunIds": [
+        "40145323365"
+      ]
     },
     "land:land/bro-6158-plans": {
       "status": "resolved",
@@ -26235,6 +26238,25 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "test-yml:red:Unit Tests:196541b4": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"main: tick lock releases on empty tasks and errors; help never acquires it\"",
+      "firstSeen": "2026-10-25T00:22:32.607Z",
+      "incidentOpenedAt": "2026-10-25T00:22:32.607Z",
+      "lastSeen": "2026-10-25T00:22:32.607Z",
+      "lastNotifiedAt": "2026-10-25T00:22:32.607Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6189",
+      "dispatch": {
+        "requestedAt": "2026-10-25T00:22:32.607Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40145323365",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40145323365"
+      }
     }
   }
 }
