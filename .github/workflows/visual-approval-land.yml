@@ -34,7 +34,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          # Full commit graph (patch-id needs the merge-base with main) but no
+          # historical blobs: a plain fetch-depth 0 takes ~35 min on this repo
+          # and hit the 10 min timeout on both dry runs (land.yml, BRO-423).
           fetch-depth: 0
+          filter: blob:none
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node.js
