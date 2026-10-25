@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5919",
   "planId": "c01268b7-3181-4be7-b0b7-bb282bf11172",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-22T12:00:17.758Z",
   "submitter": {
     "name": null,
@@ -114,5 +114,34 @@
       "checkedOn": "2026-10-22",
       "access": "Search-indexed article; direct fetch returned 403"
     }
-  ]
+  ],
+  "executedAt": "2026-10-25T20:57:10.513Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: status updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: runtime updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: intermissions updated for queen-of-hearts-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: theaterAddress updated for queen-of-hearts-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
