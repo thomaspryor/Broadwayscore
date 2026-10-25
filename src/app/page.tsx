@@ -356,7 +356,7 @@ export default function HomePage() {
       ))}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema(stats)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema({ totalShows: siteStats.scoredShows, totalReviews: siteStats.totalReviews })) }}
       />
       {/* Server-rendered hero + featured row — LCP image appears in initial HTML, no JS needed */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">

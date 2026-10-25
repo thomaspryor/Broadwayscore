@@ -692,7 +692,13 @@ export function getDataStats() {
  * iOS home line, which counts the same way over the mobile feed, agrees.
  */
 export function getSiteStats() {
-  const listed = getAllShows().filter(regionalSlugAllowed);
+  // Same listing rules as the market pages: flag-enabled category, not a hidden
+  // London id (ABBA Voyage), and tours only when listed.
+  const listed = getAllShows().filter(show =>
+    regionalSlugAllowed(show) &&
+    !HIDDEN_LONDON_IDS.has(show.id) &&
+    (show.category !== 'tour' || isTourListed(show))
+  );
   return {
     scoredShows: listed.filter(displaysCriticScore).length,
     totalReviews: listed.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0),

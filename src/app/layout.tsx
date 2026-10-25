@@ -11,7 +11,7 @@ import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { siteRobots } from '@/lib/indexable-deploy';
-import { getDataStats, getMarketStats } from '@/lib/data-core';
+import { getSiteStats, getMarketStats } from '@/lib/data-core';
 import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
@@ -70,7 +70,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const { totalReviews } = getDataStats();
+  const { totalReviews } = getSiteStats();
   const marketStats = getMarketStats();
 
   return (
