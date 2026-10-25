@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-gap",
   "planId": "67458fbd-da70-4361-8ca5-9ba4ecbd2ede",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T01:26:42.375Z",
   "submitter": {
     "name": null,
@@ -274,5 +274,59 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T01:33:27.965Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bookstore-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added just-desserts-a-musical-bake-off-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added going-bacharach-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added picnic-at-hanging-rock-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added watch-me-walk-off-broadway-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-burning-cauldron-of-fiery-fire-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added laowang-a-chinatown-king-lear-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added reunions-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-glitch-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added heaux-church-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
