@@ -8,8 +8,8 @@
  * the URL with the most clicks (then impressions) is the canonical candidate
  * for src/config/search-intents.ts.
  *
- * Read-only. Run in CI (needs GOOGLE_INDEXING_KEY):
- *   node scripts/cloud-run-script.js scripts/analyze-intent-page-overlap.js
+ * Read-only. Run in CI (needs GOOGLE_INDEXING_KEY, which run-script.yml lacks):
+ *   dispatch .github/workflows/analyze-intent-page-overlap.yml (output is in the job log)
  * Flags: --days=N (default 90), --min-imp=N (default 10), --json (machine output)
  */
 
@@ -27,7 +27,7 @@ const arg = (name, dflt) => {
 const DAYS = arg('days', 90);
 const MIN_IMP = arg('min-imp', 10);
 const AS_JSON = process.argv.includes('--json');
-const LIST_PAGE = /\/(guides|best|browse)\//;
+const LIST_PAGE = /^https?:\/\/[^/]+\/(guides|best|browse)\//;
 let clientEmail;
 
 async function gsc(token, body) {
@@ -54,7 +54,7 @@ function normalizePath(url) {
   return p || '/';
 }
 
-/** Group query+page rows by query, keeping only queries that hit 2+ list URLs. */
+/** Group query+page rows by query (list pages only); the 2+ URL filter is applied in main(). */
 function groupByQuery(rows) {
   const byQuery = new Map();
   for (const r of rows) {
@@ -81,7 +81,7 @@ async function main() {
   const end = new Date();
   end.setDate(end.getDate() - 3);
   const start = new Date(end);
-  start.setDate(start.getDate() - DAYS);
+  start.setDate(start.getDate() - DAYS + 1); // GSC dates are inclusive
   const fmt = d => d.toISOString().slice(0, 10);
 
   // Page by path prefix so the 25k row cap is spent on list pages only.
@@ -91,7 +91,7 @@ async function main() {
     for (let startRow = 0; ; startRow += 25000) {
       const data = await gsc(token, {
         startDate: fmt(start), endDate: fmt(end), dimensions: ['query', 'page'], rowLimit: 25000, startRow,
-        dimensionFilterGroups: [{ filters: [{ dimension: 'page', operator: 'contains', expression: prefix }] }],
+        dimensionFilterGroups: [{ filters: [{ dimension: 'page', operator: 'includingRegex', expression: `^https?://[^/]+${prefix}` }] }],
       });
       const got = data.rows || [];
       rows.push(...got);
