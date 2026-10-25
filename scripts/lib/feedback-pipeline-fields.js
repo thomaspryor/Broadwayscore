@@ -106,6 +106,10 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // that finds the credit must be able to record it (BRO-5520). Values and
     // the Tour Stop pairing are checked by commercial-record-checks.js.
     'productionType',
+    // BRO-6191: a plan that clears an AI-guessed cost also ends its deep-research
+    // listing (deepResearch, whole object) and sets weeklyRunningCostCleared so a
+    // later uncited sweep answer cannot refill it (cleared-field-guard.js).
+    'deepResearch', 'weeklyRunningCostCleared',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

@@ -3,6 +3,7 @@
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
+const { refuseClearedField } = require('./cleared-field-guard');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
 const { capitalizationBasisFromText, retagCapitalizationBasis } = require('./public-source-text');
@@ -207,6 +208,8 @@ function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null
   for (const field of ['capitalization', 'weeklyRunningCost']) {
     if (entry[field] == null) continue;
     const evidence = figureEvidence[field];
+    // BRO-6191: a figure a person cleared is not refilled by an uncited answer.
+    if (refuseClearedField(existing, entry, field, evidence)) continue;
     const verified = evidence?.found === true && Boolean(evidence.quote && evidence.source?.url);
     result.isEstimate = { ...result.isEstimate, [field]: !verified || entry.isEstimate?.[field] === true };
     const sourceField = field === 'capitalization' ? 'capitalizationSource' : 'weeklyRunningCostSource';
@@ -273,7 +276,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   }
   if (entry.capitalization != null) result.capitalization = entry.capitalization;
   if (capitalizationSource) result.capitalizationSource = capitalizationSource;
-  if (entry.weeklyRunningCost != null) result.weeklyRunningCost = entry.weeklyRunningCost;
+  if (entry.weeklyRunningCost != null && !refuseClearedField(existing, entry, 'weeklyRunningCost', figureEvidence.weeklyRunningCost)) result.weeklyRunningCost = entry.weeklyRunningCost;
   if (costMethodology) result.costMethodology = costMethodology;
   // An auto-apply claim never rewrites a recoupment already on record, dated
   // or human-locked: the claim's date is usually the article's month, later

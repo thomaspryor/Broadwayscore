@@ -35,6 +35,7 @@ const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-sc
 const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR, staleClosuresNeedingResearch } = require('./lib/commercial-queue');
 const { holdForBackfill, carryHumanReviewHold, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
 const { rejectedClaimSource: rejectedClaimSourceIn } = require('./lib/commercial-claim-triage');
+const { refuseClearedField } = require('./lib/cleared-field-guard');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -940,6 +941,12 @@ async function main() {
         if (existingShow) {
           const fieldsToCheck = ['capitalization', 'weeklyRunningCost', 'recouped', 'designation'];
           for (const field of fieldsToCheck) {
+            // BRO-6191: a figure a person cleared stays cleared unless the answer cites it.
+            if (refuseClearedField(existingShow, analysis, field)) {
+              console.log(`    Guardian blocked ${field}: cleared on record (BRO-6191), uncited AI figure refused`);
+              delete analysis[field];
+              continue;
+            }
             if (analysis[field] != null && existingShow[field] != null) {
               const conflict = guardian.detectConflict(
                 { slug, field, newValue: analysis[field], oldValue: existingShow[field], source: 'deep-research-openai' },
