@@ -89,3 +89,18 @@ test('Express Reach newsletter signup mid-article is not garbage', () => {
 test('negatives: Express signup as the whole text stays garbage', () => {
   assert.equal(isGarbageContent(`Review ${EXPRESS}`).isGarbage, true);
 });
+
+// Older Express template: same block, ends "Read our Privacy Policy" (im-not-being-funny, romeo-and-juliet 2026).
+const EXPRESS_OLD = 'Get the latest news and gossip from the Royal Family plus selected offers and competitions Subscribe Invalid email You agree you are 18 or over. We use your sign-up to provide content in ways you\'ve consented to and to improve our understanding of you. This may include adverts from us and third parties based on our knowledge of you. You can unsubscribe at any time. Read our Privacy Policy';
+
+test('Express older signup wording (Read our Privacy Policy) mid-article is not garbage', () => {
+  const t = `Romeo and Juliet review ${PROSE} ${EXPRESS_OLD} ${PROSE}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/Royal Family/i.test(stripMidTextChromeBlocks(t)));
+  const r = classifyContentTier({ fullText: t, url: 'https://www.express.co.uk/entertainment/theatre/1/x-review' });
+  assert.equal(r.contentTier, 'complete', r.tierReason);
+});
+
+test('negatives: Express older signup as the whole text stays garbage', () => {
+  assert.equal(isGarbageContent(`Review ${EXPRESS_OLD}`).isGarbage, true);
+});
