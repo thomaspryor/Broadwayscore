@@ -1,0 +1,113 @@
+{
+  "processed": [
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "other-desert-cities-2026/new-york-city-theatre--unknown.json"
+  ],
+  "failed": [
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
+    "other-desert-cities-2026/cbsnews--unknown.json"
+  ],
+  "skipped": [],
+  "tierBreakdown": {
+    "playwright": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
+    ],
+    "amp": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": [
+      "other-desert-cities-2026/new-york-city-theatre--unknown.json"
+    ]
+  },
+  "startTime": "2026-10-25T03:32:33.923Z",
+  "lastProcessed": "other-desert-cities-2026/new-york-city-theatre--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-25T03:34:39.461Z",
+      "event": "bb-session",
+      "session": "b46db99f",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-25T03:35:21.303Z",
+      "event": "bb-session",
+      "session": "3bba2fc9",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T03:35:29.996Z",
+      "event": "bb-session",
+      "session": "9ea34dc2",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T03:36:05.232Z",
+      "event": "bb-session",
+      "session": "d9eb8917",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T03:36:14.016Z",
+      "event": "bb-session",
+      "session": "90c3760c",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T03:37:04.247Z",
+      "event": "bb-session",
+      "session": "9029cfc9",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T03:37:04.945Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T03:37:13.640Z",
+      "event": "bb-session",
+      "session": "a2a4a463",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T03:37:14.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T03:38:41.518Z",
+      "event": "bb-session",
+      "session": "2787a7f1",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T03:38:49.638Z",
+      "event": "bb-session",
+      "session": "c6716059",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T03:40:00.885Z",
+      "event": "bb-session",
+      "session": "38b06d38",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
+    }
+  ]
+}
