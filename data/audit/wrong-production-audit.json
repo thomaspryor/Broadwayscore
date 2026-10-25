@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T17:49:44.909Z",
+  "timestamp": "2026-10-25T18:23:16.018Z",
   "stats": {
-    "totalReviews": 61620,
-    "alreadyFlagged": 21452,
+    "totalReviews": 61639,
+    "alreadyFlagged": 21468,
     "dateGuardCatches": 223,
     "directorMismatch": 2237,
     "tvFilmSignals": 1752,
     "londonSignals": 2977,
     "offBroadwaySignals": 540,
     "yearMismatch": 202,
-    "noPublishDate": 5524
+    "noPublishDate": 5512
   },
   "findings": [
     {
@@ -52179,38 +52179,24 @@
     },
     {
       "showId": "the-weir-off-broadway-2025",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2025-07-18",
+      "url": "https://exeuntnyc.com/reviews/review-the-weir-at-irish-repertory-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
       "file": "front-row-center--stanford-friedman.json",
       "score": 78,
       "publishDate": "2025-07-17",
       "url": "https://thefrontrowcenter.com/2025/07/the-weir-3/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
-        }
-      ]
-    },
-    {
-      "showId": "the-weir-off-broadway-2025",
-      "file": "huffpost--michael-giltz.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.huffingtonpost.com/michael-giltz/theater-the-weir-still-ha_b_3333163.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
-        }
-      ]
-    },
-    {
-      "showId": "the-weir-off-broadway-2025",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.nydailynews.com/entertainment/music-arts/weir-theater-review-article-1.1352715",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52267,6 +52253,20 @@
       "score": 87,
       "publishDate": "2025-07-15",
       "url": "https://theaterpizzazz.com/the-weir-camaraderie-alcohol-and-ghost-stories/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "theatrely--andrew-martini.json",
+      "score": null,
+      "publishDate": "2025-07-18",
+      "url": "https://www.theatrely.com/post/ghostly-tragedies---the-weir-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -92824,7 +92824,8 @@
     {
       "showId": "the-curious-case-of-benjamin-button-west-end-2024",
       "file": "express-uk--george-simpson.json",
-      "publishDate": null,
+      "score": 95,
+      "publishDate": "2024-11-12",
       "url": "https://www.express.co.uk/entertainment/theatre/1975202/Curious-Case-of-Benjamin-Button-musical-review",
       "findings": [
         {
