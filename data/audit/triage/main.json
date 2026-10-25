@@ -1,7 +1,7 @@
 {
   "system": "main",
   "status": "error",
-  "lastChecked": "2026-10-25T07:38:29.490Z",
+  "lastChecked": "2026-10-25T12:25:51.442Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Main: red streak",
       "status": "error",
-      "message": "main's Test Suite has had no confirmed-green run in 5.1h (4 failing runs) — first red commit 1db4c02b4, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "message": "main's Test Suite has had no confirmed-green run in 9.8h (16 failing runs) — first red commit 1db4c02b4, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 38.1% (green 256 / red 416, 672 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 70.3%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 36.5% (green 245 / red 426, 671 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 70.3%, day 0 of 14 at ≥80% → FAIL"
     }
   ]
 }
