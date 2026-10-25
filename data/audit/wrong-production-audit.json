@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T22:31:35.772Z",
+  "timestamp": "2026-10-25T22:46:41.842Z",
   "stats": {
-    "totalReviews": 61697,
-    "alreadyFlagged": 21477,
-    "dateGuardCatches": 223,
+    "totalReviews": 61680,
+    "alreadyFlagged": 21478,
+    "dateGuardCatches": 224,
     "directorMismatch": 2242,
     "tvFilmSignals": 1754,
     "londonSignals": 2979,
-    "offBroadwaySignals": 544,
+    "offBroadwaySignals": 545,
     "yearMismatch": 202,
-    "noPublishDate": 5496
+    "noPublishDate": 5476
   },
   "findings": [
     {
@@ -85882,6 +85882,24 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "prince-faggot-off-broadway-2025",
+      "file": "theatre-reviews-limited--david-roberts.json",
+      "publishDate": "2025-07-18",
+      "url": "https://www.theatrereviews.com/off-broadway-review-prince-faggot-at-playwrights-horizons-extended-through-sunday-august-3-2025/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 54d before show (2025-07-18 vs 2025-09-10)"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
