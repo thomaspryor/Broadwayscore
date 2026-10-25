@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T18:51:46.935Z",
+  "timestamp": "2026-10-25T19:25:33.081Z",
   "stats": {
     "totalReviews": 61644,
     "alreadyFlagged": 21468,
     "dateGuardCatches": 223,
-    "directorMismatch": 2237,
+    "directorMismatch": 2238,
     "tvFilmSignals": 1752,
     "londonSignals": 2977,
-    "offBroadwaySignals": 540,
+    "offBroadwaySignals": 542,
     "yearMismatch": 202,
-    "noPublishDate": 5508
+    "noPublishDate": 5507
   },
   "findings": [
     {
@@ -7251,7 +7251,7 @@
     {
       "showId": "caroline-or-change-2021",
       "file": "artsfuse--arts-fuse-editor.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2021-11-15",
       "url": "https://artsfuse.org/241011/theater-review-caroline-or-change-reflects-how-far-weve-come-and-how-far-we-havent-come-regarding-race/",
       "findings": [
@@ -30636,6 +30636,7 @@
     {
       "showId": "my-first-ex-husband-off-broadway-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 62,
       "publishDate": "2025-02-14",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=9ZBDEF",
       "findings": [
@@ -31912,7 +31913,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "frontmezzjunkies--unknown.json",
-      "score": null,
+      "score": 91,
       "publishDate": "2024-05-08",
       "url": "https://frontmezzjunkies.com/2024/05/08/oh-mary-off-broadway/",
       "findings": [
@@ -31978,7 +31979,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "nyt-theater--jonathan-mandell.json",
-      "score": null,
+      "score": 62,
       "publishDate": "2024-04-09",
       "url": "https://newyorktheater.me/2024/04/09/oh-mary-review-cole-escola-as-mrs-lincoln/",
       "findings": [
@@ -33660,6 +33661,20 @@
       "score": 80,
       "publishDate": "March 16, 2023",
       "url": "https://broadwaynews.com/2023/03/16/review-broadways-parade-resurrects-the-soured-and-shameful-dream-of-atlanta/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-2023",
+      "file": "dailybeast--tim-teeman.json",
+      "score": 42,
+      "publishDate": "2023-03-16",
+      "url": "https://www.thedailybeast.com/parade-is-a-strange-broadway-musical-puzzle-lost-in-time?ref=home",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -52180,7 +52195,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2025-07-18",
       "url": "https://exeuntnyc.com/reviews/review-the-weir-at-irish-repertory-theatre/",
       "findings": [
@@ -52264,7 +52279,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "theatrely--andrew-martini.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2025-07-18",
       "url": "https://www.theatrely.com/post/ghostly-tragedies---the-weir-review",
       "findings": [
@@ -70703,6 +70718,20 @@
       "score": 82,
       "publishDate": "April 20th, 2015",
       "url": "https://www.northjersey.com/arts-and-entertainment/theater/complex-fabric-of-a-family-s-life-1.1312774?page=all",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fun-home-2015",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": 91,
+      "publishDate": "2015-04-19",
+      "url": "http://www.nydailynews.com/entertainment/theater-arts/fun-home-shines-broadway-residency-article-1.2189141",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -102027,6 +102056,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"soho rep\""
+        }
+      ]
+    },
+    {
+      "showId": "watch-me-walk-off-broadway-2026",
+      "file": "nytimes--helen-shaw.json",
+      "score": null,
+      "publishDate": "2026-01-28",
+      "url": "https://www.nytimes.com/2026/01/28/theater/watch-me-walk-ulysses-under-the-radar.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
