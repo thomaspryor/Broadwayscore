@@ -25,6 +25,7 @@ const repo = path.resolve(__dirname, '..', '..');
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
 const { scoreFromSlimShow } = cjsRequire('../lib/newsletter-score.js');
+const { grossesWeekLabel } = cjsRequire('../lib/grosses-week-label.js');
 // Shared show-format labels (mirror of src/lib/show-format.ts) so newsletter
 // pills agree with the site and the digest emails — `special` is EVENT, not
 // a raw uppercased type string.
@@ -2014,14 +2015,10 @@ function boxOfficeSection() {
   const wowStr = fmtPct(_md.wow);
   const yoyStr = fmtPct(_md.yoy);
   const marketDelta = [wowStr ? `${wowStr} WoW` : null, yoyStr ? `${yoyStr} YoY` : null].filter(Boolean).join(' · ');
-  // Broadway grosses weeks end Sunday; our data keys the following Monday. Display the
-  // Sunday so the date matches how BWW/Playbill label the week (6/28, not 6/29).
-  function sundayLabel(curKey, fallback) {
-    if (!curKey) return fallback;
-    const d = new Date(Date.parse(curKey + 'T00:00:00Z') - 864e5); // Monday key − 1 day = Sunday
-    return `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
-  }
-  const weekLabel = sundayLabel(_md.curKey, grosses.weekEnding);
+  // Broadway grosses weeks end Sunday; label the week by that Sunday, as
+  // BWW/Playbill do (scripts/lib/grosses-week-label.js handles Sunday keys
+  // and legacy Monday keys).
+  const weekLabel = grossesWeekLabel(_md.curKey, grosses.weekEnding);
   function row(label, entry, valueStr, sublabel, metric, isLast = false) {
     const vsm = wowChange(entry, metric);
     const borderStyle = isLast ? '' : 'border-bottom:1px solid rgba(255,255,255,0.05);';
