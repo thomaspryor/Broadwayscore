@@ -79,7 +79,14 @@ COMPS.reveal = {
     const g3 = this.g3 = $('abs', 'inset:0');
     g3.append($('abs cap', 'left:0;right:0;top:72px;font-size:17px', 'Critics vs. audience'));
     const mk = (x, label, val, sub) => { const c = $('abs card', `left:${x}px;width:150px;top:150px;height:220px;display:flex;flex-direction:column;align-items:center;padding-top:18px`, `<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">${label}</div>`); const w = badgeEl('lg', 'margin-top:36px'); c.append(w); c.append($('', 'margin-top:20px;font-size:12px;color:#9ca3af;text-align:center', sub)); c._w = w; c._v = val; return c; };
-    this.ca = mk(20, 'Critics', sc, `${d.count} reviews`); this.cb = mk(190, 'Audience', d.audience, 'Audience score');
+    this.ca = mk(20, 'Critics', sc, `${d.count} reviews`);
+    // Audience is a letter grade (tile like BlendedTrioDisplay), never a number
+    const ag = d.audienceGrade, aplus = ag.grade === 'A+';
+    this.cb = $('abs card', 'left:190px;width:150px;top:150px;height:220px;display:flex;flex-direction:column;align-items:center;padding-top:18px',
+      `<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">Audience</div>
+       <div class="${aplus ? 'audience-top-grade' : ''}" style="margin-top:36px;width:80px;height:80px;border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.3);${aplus ? '' : `background:${ag.color};color:${ag.textColor}`}">${ag.grade}</div>
+       <div style="margin-top:20px;font-size:12px;color:#9ca3af;text-align:center">Audience grade</div>`);
+    this.cb._grade = this.cb.children[1]; this.cb._w = null;
     g3.append(this.ca, this.cb);
     this.cap3 = $('abs cap', 'left:24px;right:24px;top:392px;font-size:17px;line-height:1.3', d.gapLine); g3.append(this.cap3);
     const g4 = this.g4 = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center');
@@ -111,7 +118,7 @@ COMPS.reveal = {
     // vs
     const g3in = seg(t, 15.0, 15.5), g3out = 1 - seg(t, 19.4, 19.9);
     this.g3.style.opacity = Math.min(g3in, g3out); this.g3.style.display = (t < 14.9 || t > 20) ? 'none' : 'block';
-    [this.ca, this.cb].forEach((c, i) => { const x = seg(t, 15.4 + i * 0.9, 17.0 + i * 0.9); setBadge(c._w, c._v * eo(x)); fade(c, seg(t, 15.2 + i * 0.4, 15.7 + i * 0.4)); });
+    [this.ca, this.cb].forEach((c, i) => { const x = seg(t, 15.4 + i * 0.9, 17.0 + i * 0.9); if (c._w) setBadge(c._w, c._v * eo(x)); else c._grade.style.opacity = eo(x); fade(c, seg(t, 15.2 + i * 0.4, 15.7 + i * 0.4)); });
     fade(this.cap3, seg(t, 18.1, 18.6), (1 - seg(t, 18.1, 18.6)) * 8);
     const g4 = seg(t, 20, 20.6); this.g4.style.opacity = g4; this.g4.style.display = t < 19.9 ? 'none' : 'flex';
   },
