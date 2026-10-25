@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-10-25T08:12:05.712Z",
-  "scanned": 2794,
-  "showsWithViolations": 115,
-  "totalViolations": 145,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-10-25T13:05:57.118Z",
+  "scanned": 2806,
+  "showsWithViolations": 116,
+  "totalViolations": 146,
+  "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 798,
+    "temporal-override-low-confidence": 801,
     "not-shipped": 55,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 31,
@@ -13,8 +13,7 @@
     "prior-run-or-tour-leg": 45
   },
   "newViolationKeys": [
-    "into-the-woods-2022::thestage--neil-norman.json",
-    "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json"
+    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -161,7 +160,8 @@
     "the-upstart-crow-west-end-2020::timeout-london--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
-    "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json"
+    "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
+    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json"
   ],
   "hits": [
     {
@@ -2625,7 +2625,7 @@
     {
       "showId": "dr-semmelweis-west-end-2023",
       "title": "Dr Semmelweis",
-      "openingDate": null,
+      "openingDate": "2023-07-11",
       "message": "daily-mail/Patrick Marmion (daily-mail--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review by Patrick Marmion (Daily Mail), but it reviews the Dr Semmelweis production at Bris — https://www.dailymail.com/tvshowbiz/article-10450549/Mark-Rylances-doomed-doctor-modern-message-PATRICK-MARMION-reviews-Dr-Semmelweis.html",
       "violations": [
         {
@@ -2917,6 +2917,27 @@
           "cvIssues": [
             "Venue mismatch: Review describes performance at Irene Diamond Stage, but expected venue is Signature Center",
             "No critic byline found in scraped content (expected: David Roberts from Theatre Reviews Limited)"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "angry-alan-off-broadway-2025",
+      "title": "Angry Alan",
+      "openingDate": "2025-06-11",
+      "message": "pages-on-stages/Mason Pilevsky (pages-on-stages--mason-pilevsky.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 37d of opening, likely correct production] This is a genuine review (critic attended and evalua — https://pagesonstages.com/2025/07/18/angry-alan/",
+      "violations": [
+        {
+          "filename": "pages-on-stages--mason-pilevsky.json",
+          "url": "https://pagesonstages.com/2025/07/18/angry-alan/",
+          "outletId": "pages-on-stages",
+          "criticName": "Mason Pilevsky",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 37d of opening, likely correct production] This is a genuine review (critic attended and evalua",
+          "cvIssues": [
+            "Review describes John Krasinski in the lead role; Krasinski is a major film/TV star and any Off-Broadway production with him would be extensively documented and cross-verifiable. No credible Off-Broadway production of 'Angry Alan' with Krasinski exists in records for June 2025.",
+            "The review contains detailed performance analysis of a specific actor in a specific staging, but the production details do not match any known Off-Broadway 'Angry Alan' production."
           ]
         }
       ]
