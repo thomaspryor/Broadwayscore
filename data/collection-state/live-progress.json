@@ -1,29 +1,46 @@
 {
-  "updatedAt": "2026-10-25T09:27:50.394Z",
-  "processed": 75,
-  "failed": 8,
-  "successRate": "90.4%",
+  "updatedAt": "2026-10-25T09:48:13.591Z",
+  "processed": 76,
+  "failed": 50,
+  "successRate": "60.3%",
   "tierBreakdown": {
-    "playwright": 47,
+    "playwright": 54,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 3,
-    "scrapingbee": 6,
-    "brightdata": 5,
+    "scrapingdog": 0,
+    "scrapingbee": 2,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 17
+    "archive": 10
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-25T09:08:05.536Z",
       "event": "bb-session",
-      "session": "4b51b48e",
+      "session": "78cc09d6",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
+    },
+    {
+      "t": "2026-10-25T09:32:12.407Z",
+      "event": "bb-session",
+      "session": "4cfe2515",
+      "url": "https://www.nytimes.com/2025/10/09/theater/jen-tullock-severance-hand-of-god.htm"
+    },
+    {
+      "t": "2026-10-25T09:32:13.283Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T09:42:18.768Z",
+      "event": "bb-session",
+      "session": "477e8c0b",
       "url": "https://www.nytimes.com/2025/08/07/theater/downton-abbey-elizabeth-mcgovern-ava-"
     },
     {
-      "t": "2026-10-25T09:08:06.426Z",
+      "t": "2026-10-25T09:42:19.658Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
