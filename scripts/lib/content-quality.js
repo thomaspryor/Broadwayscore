@@ -2298,6 +2298,7 @@ function classifyContentTier(review) {
           contentTier: 'invalid',
           wordCount: countWords(review.fullText || ''),
           truncationSignals: [],
+          manualOverrideRejected: true,
           tierReason: 'Garbage content: Registration wall stub: sign-up form text instead of a review (overrides manualContentTier: complete)'
         };
       }
@@ -2330,6 +2331,7 @@ function classifyContentTier(review) {
           contentTier: 'invalid',
           wordCount: countWords(review.fullText),
           truncationSignals: [],
+          manualOverrideRejected: true,
           tierReason: `Garbage content: ${garbage.reason} (overrides manualContentTier: ${review.manualContentTier})`
         };
       }

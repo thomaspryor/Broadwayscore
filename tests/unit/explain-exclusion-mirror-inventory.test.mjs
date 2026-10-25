@@ -40,6 +40,7 @@ const INVENTORY = {
   // BRO-5795: rebuild and explainExclusion both call this stale-flag check.
   isFullTextWrongAuthorActive: 'live',
   isRejectedAtExclusion: 'live',
+  isRegistrationWallStubExclusion: 'live',
   isRejectedByReasonExclusion: 'live',
   isRoundupPageAsReview: 'live',
   isUnverifiableWebSearchRow: 'live',

@@ -4713,7 +4713,7 @@ function isRegistrationWallStubExclusion(data) {
   // downgraded to invalid by classifyContentTier; the rebuild does not exclude on
   // tier, so exclude the same rows here.
   const manualOverrideStub = !wallStub && data.manualContentTier === 'complete' &&
-    /overrides manualContentTier/.test(require('./content-quality').classifyContentTier(data).tierReason || '');
+    require('./content-quality').classifyContentTier(data).manualOverrideRejected === true;
   if (!wallStub && !manualOverrideStub) return false;
   return !hasStructuralStarScore(data) && !hasIndependentExcerptScore(data);
 }
