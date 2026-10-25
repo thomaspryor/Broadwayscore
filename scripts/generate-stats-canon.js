@@ -29,6 +29,24 @@ const outputPath = path.join(__dirname, '../public/data/stats-canon.json');
 const SCHEMA_VERSION = 1;
 const WINNER_CATEGORIES = { 'Best Musical': 'bestMusical', 'Best Play': 'bestPlay' };
 
+/**
+ * The winner's art path, or null. shows.json lists art that was never
+ * downloaded for ~270 shows (doubt-2005, i-am-my-own-wife-2003, ...), and a
+ * listed-but-missing file 404s on the web Stats page and in the app. Only a
+ * local /images/ file that exists counts; remote URLs pass through.
+ */
+function pickWinnerImage(images, publicDir = path.join(__dirname, '../public')) {
+  for (const p of [images?.poster, images?.thumbnail]) {
+    if (typeof p !== 'string' || !p) continue;
+    if (p.startsWith('/images/')) {
+      if (!fs.existsSync(path.join(publicDir, p.split('?')[0]))) continue;
+      return versionedImagePath(p, publicDir);
+    }
+    return p;
+  }
+  return null;
+}
+
 function loadJson(file) {
   return JSON.parse(fs.readFileSync(path.join(dataDir, file), 'utf-8'));
 }
@@ -80,8 +98,8 @@ function main() {
       id: nom.showId,
       t: show.title,
     };
-    if (show.images?.poster) entry.img = versionedImagePath(show.images.poster);
-    else if (show.images?.thumbnail) entry.img = versionedImagePath(show.images.thumbnail);
+    const img = pickWinnerImage(show.images);
+    if (img) entry.img = img;
     winners[key].push(entry);
   }
   winners.bestMusical.sort((a, b) => a.ceremony - b.ceremony);
@@ -119,4 +137,6 @@ function main() {
   console.log(`✓ stats-canon.json: ${ceremonies.length} ceremonies, ${winners.bestMusical.length} Best Musical + ${winners.bestPlay.length} Best Play winners (${kb} KB)`);
 }
 
-main();
+if (require.main === module) main();
+
+module.exports = { pickWinnerImage };
