@@ -118,8 +118,11 @@ function staggerEvents(events, history, now) {
   events.sort((a, b) => a.dueAt - b.dueAt || (a.type === 'opening' ? -1 : 1));
   for (const ev of events) {
     let t = ev.dueAt.getTime();
-    // Openings keep their slot (the date is the news); only score posts move.
-    if (ev.type === 'score') {
+    if (ev.type === 'opening') {
+      // Same-day openings go out 90 minutes apart, from noon local.
+      while (taken.some(x => Math.abs(x - t) < gap)) t += gap;
+      ev.dueAt = new Date(t);
+    } else {
       const tz = C.MARKETS[ev.show.category].tz;
       const inWindow = x => { const h = localParts(new Date(x), tz).hour; return h >= C.SCORE_POST_WINDOW.start && h < C.SCORE_POST_WINDOW.end; };
       for (let guard = 0; guard < 50 && (!inWindow(t) || taken.some(x => Math.abs(x - t) < gap)); guard++) {

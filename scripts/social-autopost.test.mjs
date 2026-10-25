@@ -6,7 +6,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const sel = require('./social-autopost/select.js');
-const { buildCaptions, atVenue, LIMITS } = require('./social-autopost/captions.js');
+const { buildCaptions, postMarkers, atVenue, LIMITS } = require('./social-autopost/captions.js');
 const { chooseLayout, originalUrl } = require('./social-autopost/art.js');
 const { buildCardHtml } = require('./social-autopost/render.js');
 const { metadataFor } = require('./social-autopost/buffer.js');
@@ -26,19 +26,19 @@ test('zonedTime handles both sides of a DST change', () => {
   assert.equal(sel.zonedTime('2026-07-01', 12, 'Europe/London').toISOString(), '2026-07-01T11:00:00.000Z');
 });
 
-test('opening post: queued 36h ahead for noon local, dropped after 18:00 on the day', () => {
+test('opening post: queued up to 6h ahead of noon local, dropped after 18:00 on the day', () => {
   const s = show();
   const at = iso => sel.findOpeningEvents({ shows: [s], history: empty, now: Date.parse(iso) });
-  assert.equal(at('2026-11-03T12:00:00Z').length, 0, 'too early');
-  const ev = at('2026-11-04T10:00:00Z');
+  assert.equal(at('2026-11-05T10:00:00Z').length, 0, 'too early');
+  const ev = at('2026-11-05T12:00:00Z');
   assert.equal(ev.length, 1);
   assert.equal(ev[0].dueAt.toISOString(), '2026-11-05T17:00:00.000Z'); // noon EST
   assert.equal(at('2026-11-05T23:30:00Z').length, 0, 'after 18:00 local');
-  assert.equal(sel.findOpeningEvents({ shows: [s], history: { posts: [{ type: 'opening', showId: s.id }] }, now: Date.parse('2026-11-04T10:00:00Z') }).length, 0, 'deduped');
+  assert.equal(sel.findOpeningEvents({ shows: [s], history: { posts: [{ type: 'opening', showId: s.id }] }, now: Date.parse('2026-11-05T12:00:00Z') }).length, 0, 'deduped');
 });
 
 test('off-Broadway openings post only at major houses; opera and provisional shows never', () => {
-  const now = Date.parse('2026-11-04T10:00:00Z');
+  const now = Date.parse('2026-11-05T12:00:00Z');
   const ids = sel.findOpeningEvents({ now, history: empty, shows: [
     show({ id: 'a', category: 'off-broadway', venue: 'The Public Theater/LuEsther Hall' }),
     show({ id: 'b', category: 'off-broadway', venue: 'SoHo Playhouse' }),
@@ -106,6 +106,9 @@ test('captions fit every network, carry the site numbers, and use no em dashes',
     }
     assert.match(c.facebook, /https:\/\/broadwayscorecard\.com\/show\/x\?utm_source=facebook/);
     assert.ok(!/https?:\/\//.test(c.instagram), 'Instagram captions cannot link');
+    for (const net of Object.keys(LIMITS)) {
+      for (const m of postMarkers(p.type, s)) assert.ok(c[net].includes(m), `${net} lacks dedupe marker ${m}`);
+    }
   }
 });
 

@@ -8,6 +8,7 @@
  *   node scripts/social-autopost/run.js --dry-run       # render + captions only
  *   node scripts/social-autopost/run.js --dry-run --show=ID --event=score|opening
  *   node scripts/social-autopost/run.js --list-channels # check the Buffer connection
+ *   node scripts/social-autopost/run.js --check         # count due posts (writes due= to GITHUB_OUTPUT)
  *
  * Options: --now=ISO (pretend time), --out=DIR (where cards are written).
  * Env: BUFFER_API_KEY, NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY,
@@ -20,7 +21,7 @@ const path = require('path');
 const { getScoreTierId, getScoreTierLabel } = require('../lib/score-tiers');
 const { evaluateScoreConfidence } = require('../lib/score-confidence-gate');
 const { findOpeningEvents, findScoreEvents, staggerEvents, splitBacklog, localParts } = require('./select');
-const { buildCaptions } = require('./captions');
+const { buildCaptions, postMarkers } = require('./captions');
 const { resolveArt } = require('./art');
 const { renderCard, closeBrowser } = require('./render');
 const { MARKETS } = require('./config');
@@ -143,66 +144,104 @@ async function main() {
     events = staggerEvents(post, ctx.history, now);
   }
   console.log(`[autopost] ${events.length} post(s) due${dryRun ? ' (dry run)' : ''}`);
+  const configured = !!process.env.BUFFER_API_KEY;
+  if (flag('check')) {
+    // Workflow gate: install the browser only when a card will be rendered. Without
+    // a key, scheduled runs render nothing (a manual dispatch still renders as a check).
+    const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch';
+    const due = configured || manual ? events.length : 0;
+    if (!configured) console.log('::notice::BUFFER_API_KEY not set: nothing will be posted');
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\n`);
+    for (const ev of events) console.log(`  ${ev.type} ${ev.show.id} due ${ev.dueAt.toISOString()}`);
+    return;
+  }
   if (!events.length) {
     if (backlogRecorded) writeHistory(ctx.history);
     return;
   }
 
-  const configured = !!process.env.BUFFER_API_KEY;
   if (!dryRun && !configured) console.log('::notice::BUFFER_API_KEY not set: cards are rendered as a check, nothing is posted');
   const live = !dryRun && configured;
+  const buffer = live ? require('./buffer') : null;
 
   let channels = [];
   if (live) {
-    const { listChannels } = require('./buffer');
-    channels = (await listChannels()).filter(c => c.network && !c.isQueuePaused);
+    channels = (await buffer.listChannels()).filter(c => c.network && !c.isQueuePaused);
     if (!channels.length) throw new Error('Buffer has no active Instagram/Facebook/X/Threads/Bluesky channel');
     console.log(`[autopost] channels: ${channels.map(c => c.service).join(', ')}`);
+    if (backlogRecorded) writeHistory(ctx.history);
   }
 
-  const results = [];
-  let failed = 0;
+  let failedEvents = 0, channelErrors = 0;
   try {
     for (const ev of events) {
-      const desc = describe(ev, ctx);
-      const captions = buildCaptions(desc);
-      const card = await buildCard(desc, outDir);
-      console.log(`\n[autopost] ${ev.type} ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} layout=${card.layout} art=${card.artSize || '-'}`);
-      console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
-      if (!live) { results.push({ ev, card, captions }); continue; }
+      // One event's failure must not lose the record of events already scheduled:
+      // each is written to history as soon as Buffer accepts it.
+      try {
+        const desc = describe(ev, ctx);
+        const captions = buildCaptions(desc);
+        const card = await buildCard(desc, outDir);
+        console.log(`\n[autopost] ${ev.type} ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} layout=${card.layout} art=${card.artSize || '-'}`);
+        console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
+        if (!live) continue;
 
-      const { encodeForSocial, hostImage } = require('./host');
-      const jpeg = await encodeForSocial(card.path);
-      const ymd = new Date(now).toISOString().slice(0, 10);
-      const imageUrl = await hostImage(jpeg.buffer, `${ymd.slice(0, 7)}/${ev.show.id}-${ev.type}-${Date.now()}.jpg`);
-      const { createImagePost } = require('./buffer');
-      const posted = {}, errors = {};
-      for (const ch of channels) {
-        try {
-          const post = await createImagePost({ channel: ch, text: captions[ch.network], imageUrl, altText: captions.altText, dueAt: ev.dueAt });
-          posted[ch.service] = post.id;
-          console.log(`  ✓ ${ch.service} scheduled (${post.id})`);
-        } catch (e) {
-          errors[ch.service] = e.message.slice(0, 300);
-          console.log(`::warning::${ev.show.id} ${ev.type} on ${ch.service}: ${e.message}`);
+        const { encodeForSocial, hostImage } = require('./host');
+        const jpeg = await encodeForSocial(card.path);
+        const ymd = new Date(now).toISOString().slice(0, 10);
+        const imageUrl = await hostImage(jpeg.buffer, `${ymd.slice(0, 7)}/${ev.show.id}-${ev.type}.jpg`);
+
+        if (!ctx.history._meta || !ctx.history._meta.bufferValidatedAt) {
+          // First live post ever: prove every channel accepts this exact post shape
+          // with throwaway drafts before anything is published.
+          const problems = await buffer.validateChannels(channels, { imageUrl, altText: captions.altText });
+          if (problems.length) throw new Error(`Buffer self-test failed, nothing posted: ${problems.join(' | ')}`);
+          ctx.history._meta = { ...(ctx.history._meta || {}), bufferValidatedAt: new Date().toISOString() };
+          writeHistory(ctx.history);
+          console.log('[autopost] Buffer self-test passed on every channel');
         }
+
+        const markers = postMarkers(ev.type, ev.show);
+        const sinceIso = new Date(now - 4 * 864e5).toISOString();
+        const posted = {}, errors = {};
+        for (const ch of channels) {
+          try {
+            const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso });
+            if (existing) {
+              posted[ch.service] = existing.id;
+              console.log(`  = ${ch.service} already in Buffer (${existing.id}, ${existing.status})`);
+              continue;
+            }
+            const post = await buffer.createImagePost({ channel: ch, text: captions[ch.network], imageUrl, altText: captions.altText, dueAt: ev.dueAt });
+            posted[ch.service] = post.id;
+            console.log(`  ✓ ${ch.service} scheduled (${post.id})`);
+          } catch (e) {
+            errors[ch.service] = e.message.slice(0, 300);
+            channelErrors++;
+            console.log(`::error::${ev.show.id} ${ev.type} on ${ch.service}: ${e.message}`);
+          }
+        }
+        if (!Object.keys(posted).length) { failedEvents++; continue; } // nothing went out: retry next run
+        ctx.history.posts.push({
+          date: ymd, type: ev.type, showId: ev.show.id, dueAt: ev.dueAt.toISOString(), imageUrl,
+          text: captions.twitter, buffer: posted, ...(Object.keys(errors).length ? { errors } : {}),
+        });
+        writeHistory(ctx.history);
+      } catch (e) {
+        failedEvents++;
+        console.log(`::error::${ev.type} ${ev.show.id}: ${e.message}`);
+        if (/self-test failed|BUFFER_API_KEY|HTTP 401|rate limit/i.test(e.message)) break; // account-level: stop
       }
-      if (!Object.keys(posted).length) { failed++; continue; } // nothing went out: retry next run
-      ctx.history.posts.push({
-        date: ymd, type: ev.type, showId: ev.show.id, dueAt: ev.dueAt.toISOString(), imageUrl,
-        text: captions.twitter, buffer: posted, ...(Object.keys(errors).length ? { errors } : {}),
-      });
-      results.push({ ev, card, captions, posted, errors });
     }
   } finally {
     await closeBrowser();
   }
 
-  if (live && (results.length || backlogRecorded)) {
-    writeHistory(ctx.history);
-    console.log(`[autopost] recorded ${results.length} post(s) in data/social-post-history.json`);
+  // Partial failures are recorded (so the working channels are not re-posted) and
+  // still fail the job, so notify-failure tells the owner a network stopped posting.
+  if (failedEvents || channelErrors) {
+    console.error(`[autopost] ${failedEvents} post(s) failed, ${channelErrors} channel error(s)`);
+    process.exitCode = 1;
   }
-  if (failed) { console.error(`[autopost] ${failed} post(s) failed on every channel`); process.exitCode = 1; }
 }
 
 if (require.main === module) {

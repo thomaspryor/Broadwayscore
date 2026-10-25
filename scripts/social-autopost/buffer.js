@@ -5,7 +5,7 @@
  * failures arrive in `errors` or as a MutationError union member.
  */
 
-const ENDPOINT = 'https://api.buffer.com';
+const ENDPOINT = process.env.BUFFER_API_URL || 'https://api.buffer.com'; // override for local tests
 // Buffer `service` values this system posts to, mapped to our caption keys.
 const SERVICE_TO_NETWORK = { twitter: 'twitter', bluesky: 'bluesky', threads: 'threads', instagram: 'instagram', facebook: 'facebook' };
 
@@ -46,7 +46,7 @@ function metadataFor(network) {
  * Schedule one image post on one channel. Returns the Buffer post id.
  * dueAt: Date. Buffer publishes at that time (UTC).
  */
-async function createImagePost({ channel, text, imageUrl, altText, dueAt }) {
+async function createImagePost({ channel, text, imageUrl, altText, dueAt, draft = false }) {
   const input = {
     channelId: channel.id,
     text,
@@ -55,6 +55,7 @@ async function createImagePost({ channel, text, imageUrl, altText, dueAt }) {
     dueAt: dueAt.toISOString(),
     assets: [{ image: { url: imageUrl, metadata: { altText: altText.slice(0, 1000) } } }],
   };
+  if (draft) input.saveToDraft = true;
   const meta = metadataFor(channel.network);
   if (meta) input.metadata = meta;
   const data = await gql(`mutation Create($input: CreatePostInput!) {
@@ -68,4 +69,43 @@ async function createImagePost({ channel, text, imageUrl, altText, dueAt }) {
   return r.post;
 }
 
-module.exports = { listChannels, createImagePost, metadataFor, SERVICE_TO_NETWORK };
+/**
+ * Idempotency: a post for this channel created or due since `sinceIso` whose
+ * text contains every marker string. Guards against a re-run after a crash or a
+ * failed history push posting the same thing twice. Returns the post or null.
+ */
+async function findExistingPost({ channel, markers, sinceIso }) {
+  const data = await gql(`query Posts($input: PostsInput!) {
+    posts(input: $input, first: 100) { edges { node { id text status dueAt } } }
+  }`, { input: { organizationId: channel.organizationId, filter: { channelIds: [channel.id], startDate: sinceIso } } });
+  const nodes = ((data.posts && data.posts.edges) || []).map(e => e.node);
+  return nodes.find(n => n.status !== 'error' && markers.every(m => (n.text || '').includes(m))) || null;
+}
+
+async function deletePost(id) {
+  const data = await gql(`mutation Del($input: DeletePostInput!) {
+    deletePost(input: $input) { __typename ... on MutationError { message } }
+  }`, { input: { id } });
+  const r = data.deletePost;
+  if (r && r.message) throw new Error(`Buffer deletePost ${id}: ${r.message}`);
+}
+
+/**
+ * Live self-test, run once before the first real post: create a DRAFT image
+ * post on every channel (drafts are never published), then delete it. Proves
+ * the key, the channels, the image hosting and each network's metadata.
+ */
+async function validateChannels(channels, { imageUrl, altText }) {
+  const problems = [];
+  for (const ch of channels) {
+    try {
+      const post = await createImagePost({ channel: ch, text: 'Broadway Scorecard autopost self-test (draft, deleted automatically).', imageUrl, altText, dueAt: new Date(Date.now() + 7 * 864e5), draft: true });
+      await deletePost(post.id);
+    } catch (e) {
+      problems.push(`${ch.service}: ${e.message}`);
+    }
+  }
+  return problems;
+}
+
+module.exports = { listChannels, createImagePost, findExistingPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };

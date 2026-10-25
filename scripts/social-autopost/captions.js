@@ -12,9 +12,21 @@ const { MARKETS } = require('./config');
 const LIMITS = { twitter: 280, bluesky: 300, threads: 500, instagram: 2196, facebook: 5000 };
 const SHORT_BUDGET = 270; // fits X and Bluesky with margin
 
+function showPath(show) {
+  return `/show/${show.slug || show.id}`;
+}
+
 function showUrl(show, network) {
-  const base = `https://${MARKETS[show.category].domain}/show/${show.slug || show.id}`;
-  return `${base}?utm_source=${network}&utm_medium=social&utm_campaign=autopost`;
+  return `https://${MARKETS[show.category].domain}${showPath(show)}?utm_source=${network}&utm_medium=social&utm_campaign=autopost`;
+}
+
+/**
+ * Strings every caption of this post contains on every network: the show path
+ * and the event phrase. buffer.js findExistingPost matches on them to avoid
+ * posting the same event twice.
+ */
+function postMarkers(type, show) {
+  return [showPath(show), type === 'score' ? 'has a Critic Score of' : 'opens tonight'];
 }
 
 /** "at the Palace Theatre" / "at The Public Theater" / "at Shakespeare's Globe" */
@@ -85,10 +97,10 @@ function buildCaptions(p) {
     bluesky: fitShort('bluesky'),
     threads: withUrl(long, 'threads'),
     // Instagram captions cannot carry live links; point at the site by name.
-    instagram: `${long}\n\nFull reviews at broadwayscorecard.com (link in bio).\n\n${hashtagLine(show)} #Theatre`,
+    instagram: `${long}\n\nFull reviews: ${MARKETS[show.category].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)} #Theatre`,
     facebook: withUrl(long, 'facebook'),
     altText: alt,
   };
 }
 
-module.exports = { buildCaptions, showUrl, atVenue, LIMITS };
+module.exports = { buildCaptions, showUrl, postMarkers, atVenue, LIMITS };

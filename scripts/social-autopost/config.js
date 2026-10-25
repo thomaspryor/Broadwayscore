@@ -54,7 +54,9 @@ const SKIP_TYPES = new Set(['opera', 'dance', 'concert']);
 
 const OPENING_POST_LOCAL_HOUR = 12; // noon on opening day
 const OPENING_LATEST_LOCAL_HOUR = 18; // after this, an unsent opening post is stale
-const OPENING_SCHEDULE_AHEAD_HOURS = 36; // queue it in Buffer up to this far ahead
+// Queue it in Buffer at most this far ahead: short enough that a last-minute
+// postponement rarely catches a queued "opens tonight" post (the cron is hourly).
+const OPENING_SCHEDULE_AHEAD_HOURS = 6;
 const SCORE_LOOKBACK_DAYS = 21;
 const FIRST_RUN_FRESH_DAYS = 3; // first live run only: older score posts are skipped (select.js splitBacklog)
 const SCORE_POST_WINDOW = { start: 9, end: 21 }; // local hours; outside it, wait for 9:00
