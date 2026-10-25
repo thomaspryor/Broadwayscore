@@ -180,5 +180,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T08:19:40.100Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/sound-of-music-synopsis.test.mjs::the-sound-of-music-1998 has a synopsis of at least 40 characters",
+    "title": "Live-data test failing: the-sound-of-music-1998 has a synopsis of at least 40 characters (tests/unit/sound-of-music-synopsis.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"the-sound-of-music-1998 has a synopsis of at least 40 characters\" in tests/unit/sound-of-music-synopsis.test.mjs is red against the live corpus.\n\nthe-sound-of-music-1998: missing synopsis (run the verified Wikipedia enricher, then tour inheritance)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T08:30:14.677Z"
   }
 ]
