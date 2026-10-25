@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T11:43:58.286Z",
+  "runDate": "2026-10-25T11:56:36.834Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -17,9 +17,9 @@
     "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 68,
+    "playwright": 81,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 2,
     "scrapingbee": 1,
@@ -108,8 +108,8 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 87,
-      "failed": 80
+      "processed": 100,
+      "failed": 82
     }
   },
   "processed": [],
@@ -257,7 +257,20 @@
       "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json",
       "laowang-a-chinatown-king-lear-off-broadway-2025/the-interested-bystander--cary-wong.json",
       "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025/nytimes--elisabeth-vincentelli.json"
+      "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025/nytimes--elisabeth-vincentelli.json",
+      "garry-starr-classic-penguins-off-west-end-2026/a-youngish-perspective--graceboagmatthews.json",
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "some-woman-west-end-2026/islingtontribune--unknown.json",
+      "some-woman-west-end-2026/lbc--johnny-jenkins.json",
+      "some-woman-west-end-2026/revstanstheatreblog--unknown.json"
     ],
     "failed": [
       "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
@@ -339,7 +352,9 @@
       "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
       "some-woman-west-end-2026/guardian--unknown.json",
       "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
-      "the-other-americans-off-broadway-2025/thewrap--robert-hofler.json"
+      "the-other-americans-off-broadway-2025/thewrap--robert-hofler.json",
+      "some-woman-west-end-2026/momentsapp--unknown.json",
+      "some-woman-west-end-2026/sunday-times--clive-davis.json"
     ]
   },
   "tierDetails": {
@@ -411,10 +426,25 @@
       "dog-mom-off-west-end-2026/onin--caitlin-neal.json",
       "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
       "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
-      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json"
+      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json",
+      "garry-starr-classic-penguins-off-west-end-2026/a-youngish-perspective--graceboagmatthews.json",
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "some-woman-west-end-2026/islingtontribune--unknown.json",
+      "some-woman-west-end-2026/lbc--johnny-jenkins.json",
+      "some-woman-west-end-2026/revstanstheatreblog--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/some-woman-west-end-2026/momentsapp--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "angry-alan-off-broadway-2025/digital-journal--markos-papadatos.json",
