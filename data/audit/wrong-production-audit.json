@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T05:18:27.622Z",
+  "timestamp": "2026-10-25T05:49:30.861Z",
   "stats": {
-    "totalReviews": 60981,
-    "alreadyFlagged": 21381,
+    "totalReviews": 61011,
+    "alreadyFlagged": 21377,
     "dateGuardCatches": 222,
-    "directorMismatch": 2217,
-    "tvFilmSignals": 1722,
+    "directorMismatch": 2222,
+    "tvFilmSignals": 1723,
     "londonSignals": 2969,
-    "offBroadwaySignals": 537,
+    "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5495
+    "noPublishDate": 5511
   },
   "findings": [
     {
@@ -6367,6 +6367,19 @@
       "score": null,
       "publishDate": "2023-12-20",
       "url": "https://www.theaterscene.net/musicals/offbway/buena-vista-social-club/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "timeout--adam-feldman.json",
+      "publishDate": "2023-12-13",
+      "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31600,6 +31613,50 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
+      "file": "nypost--johnny-oleksinski.json",
+      "publishDate": "2024-02-08",
+      "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2024-02-08",
+      "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "nysr--steven-suskin.json",
+      "publishDate": "2024-02-08",
+      "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
       "file": "nytg--amelia-merrill.json",
       "score": 76,
       "publishDate": "2024-02-09",
@@ -31651,6 +31708,19 @@
       "score": 91,
       "publishDate": "2024-02-09",
       "url": "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": "2024-02-08",
+      "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -90298,6 +90368,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bakers-wife-off-broadway-2025",
+      "file": "amny--matt-windman.json",
+      "score": null,
+      "publishDate": "2025-12-09",
+      "url": "https://www.amny.com/entertainment/theater/review-the-bakers-wife/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"csc\""
         }
       ]
     },
