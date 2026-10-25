@@ -4,7 +4,7 @@
     "audit-star-bands.js": {
       "bucket": "a",
       "rank": 1,
-      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+      "reason": "CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
     },
     "audit-announced-cast.js": {
       "bucket": "a",
@@ -450,6 +450,11 @@
       "bucket": "a",
       "rank": 99,
       "reason": "Finds Promise.race timeout wrappers whose timers are never cleared, causing scripts to linger after work ends; schedule the offline source scan as a regression signal, using withTimeout as the repair."
+    },
+    "audit-guard-call-sites.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-2484 advisory heuristic: flags audience-facing guards with a unit test but no test proving the call site; run by hand (--strict to fail), exercised by tests/unit/audit-guard-call-sites.test.mjs"
     }
   }
 }
