@@ -602,7 +602,7 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -706,6 +706,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   if (loopDeadMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
+  } else if (fixing && reportOnly) {
+    // BRO-6230: --no-autofix builds a report-only plan; nothing was queued, so say so.
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. This digest only reports them; it did not start any automatic fix. Details below.</p>`);
   } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
   }
@@ -887,7 +890,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, reportOnly = false, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -921,7 +924,7 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, loopDeadMsg, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, loopDeadMsg, reportOnly, now });
   return { subject, html };
 }
 
@@ -1572,7 +1575,7 @@ async function main() {
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
   }
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, reportOnly: noAutofix, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn

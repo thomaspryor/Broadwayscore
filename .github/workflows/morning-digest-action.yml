@@ -19,7 +19,8 @@ name: Morning Digest (Action dry-run)
 # Flags: --no-autofix (no dispatch fleet on a runner), --skip-mac-local (Mac-only
 # ledgers and tabs, named in one line in the email), --resend-sent-guard (the
 # send-once guard a second machine can see; dry-run reports its verdict).
-# Schedule: off. At cutover uncomment it AND set repo variable
+# Schedule: off. The cron is UTC: 11:30 is 07:30 EDT but 06:30 EST (after
+# early November), so pick the cutover-season value. At cutover uncomment it AND set repo variable
 # MORNING_DIGEST_ACTION_ENABLED=true; the job refuses schedule events without it.
 on:
   # schedule:
@@ -38,6 +39,7 @@ concurrency:
 permissions:
   contents: read
   statuses: read
+  actions: read  # login-sources reads workflow runs (gh run list)
 
 jobs:
   digest:
@@ -73,6 +75,7 @@ jobs:
           echo "Snapshots pinned to $SHA (main as of $SENT)."
 
       - name: Build the digest (dry run, output kept off the public log)
+        # lint-allow-swallow: not swallowed; '|| status=$?' keeps the exit code and the step ends with exit "$status"
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -101,4 +104,6 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Morning Digest (Action dry-run) Failed'
-          severity: 'warning'
+          # Manual dry-runs warn; a scheduled (post-cutover) run that fails means no
+          # digest, and with MAC_ALIVE_SIGNAL=heartbeat nothing else would notice.
+          severity: ${{ github.event_name == 'schedule' && 'critical' || 'warning' }}

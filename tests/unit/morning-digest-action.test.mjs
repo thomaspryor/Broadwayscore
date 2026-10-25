@@ -38,12 +38,13 @@ test('digest workflow: never sends, never publishes the digest', () => {
   assert.match(WF, /PUBKEY_B64: \$\{\{ inputs\.pubkey_b64 \}\}/);
 });
 
-test('digest workflow: read-only permissions, no npm install, notify-failure last as warning', () => {
-  assert.match(WF, /^permissions:\n {2}contents: read\n {2}statuses: read\n/m);
+test('digest workflow: read-only permissions, no npm install, notify-failure last (critical only when scheduled)', () => {
+  assert.match(WF, /^permissions:\n {2}contents: read\n {2}statuses: read\n {2}actions: read\b/m);
+  assert.doesNotMatch(WF.replace(/^\s*#.*$/gm, ''), /: write\b/);
   assert.doesNotMatch(WF.replace(/^\s*#.*$/gm, ''), /npm (ci|install)/);
   const last = steps[steps.length - 1];
   assert.match(last, /uses: \.\/\.github\/actions\/notify-failure/);
-  assert.match(last, /severity: 'warning'/);
+  assert.match(last, /severity: \$\{\{ github\.event_name == 'schedule' && 'critical' \|\| 'warning' \}\}/);
 });
 
 test('pager workflow: heartbeat step is report-only until MAC_ALIVE_SIGNAL=heartbeat, and then replaces the digest check', () => {
@@ -248,4 +249,21 @@ test('--no-autofix plans and marks tracked but never calls runAutofix or the can
   assert.match(branch, /markTrackedReportOnly\(planAutofix\(/);
   assert.doesNotMatch(branch, /runAutofix\(|fileCard|dispatch\w*\(/);
   assert.match(src, /if \(!noAutofix\) try \{\s*const \{ runAutofixCanary \}/);
+});
+
+test('report-only email says no fix was started; the Mac email keeps its queued wording', () => {
+  const { buildHtml } = require(path.join(ROOT, 'scripts/send-morning-digest.js'));
+  const rows = [{ state: 'needs-card', title: 'X broken', severity: 'error' }];
+  const sections = { health: { errors: [{ name: 'X broken', message: 'm' }], warnings: [], queued: [] } };
+  const ro = buildHtml({ sections, autofixRows: rows, reportOnly: true, loopDeadMsg: '' });
+  assert.match(ro, /did not start any automatic fix/);
+  assert.doesNotMatch(ro, /queued for automated fix/);
+  const mac = buildHtml({ sections, autofixRows: rows, loopDeadMsg: '' });
+  assert.match(mac, /all queued for automated fix sessions/);
+  assert.doesNotMatch(mac, /did not start any automatic fix/);
+});
+
+test('pager: heartbeat step runs even when the digest check went red', () => {
+  const pager = read('.github/workflows/check-morning-digest-sent.yml');
+  assert.match(pager, /name: Check the Mac heartbeat[^\n]*\n {8}if: always\(\)/);
 });

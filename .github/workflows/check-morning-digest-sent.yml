@@ -72,6 +72,7 @@ jobs:
           node scripts/check-morning-digest-sent.js $ARGS
 
       - name: Check the Mac heartbeat (report-only unless MAC_ALIVE_SIGNAL=heartbeat)
+        if: always()
         continue-on-error: ${{ vars.MAC_ALIVE_SIGNAL != 'heartbeat' }}
         env:
           GH_TOKEN: ${{ github.token }}

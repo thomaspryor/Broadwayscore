@@ -15,7 +15,8 @@
  *       (exit 0, found:false): the compare step then says there is nothing to compare.
  *   node scripts/morning-digest-compare.js --diff --mac=FILE --action=FILE [--log=FILE] [--pubkey-b64=B64]
  *       Prints a summary that is safe for a public log (line counts and which
- *       section headings each side has; section headings are fixed template text)
+ *       section headings each side has; headings are template text plus a few
+ *       short status lines such as the CI trunk line, digits masked)
  *       and, with --pubkey-b64, the full line diff sealed to that key between the
  *       run-script markers (decode with cloud-run-script.js's extractOutput + sealed-output open).
  *       --log adds the digest run's own output to the sealed text only.
