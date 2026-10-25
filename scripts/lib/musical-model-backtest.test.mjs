@@ -100,6 +100,11 @@ test('reported-truth backtest: musicals hold MAE <= 7.8 and >= 73 inside; plays 
   // sourced running cost lands for those two. Floors raised to the new cohort.
   assert.ok(m.newMae <= 7.8, `musical reported-truth MAE ${m.newMae} (4.6 before BRO-5598, 7.4 after the BRO-6184 cohort growth)`);
   assert.ok(m.newInside >= 73, `musical reported-truth inside ${m.newInside}/${m.n} (was 61/70)`);
+  // An absolute bound only catches an undo at the current row count (all five
+  // options off reads 6.3 vs 2.9 on 74 rows, under the bound), so also assert the
+  // live options' own gain: it must stay visible however many truth rows are added.
+  const allOff = backtest('--base=HEAD', ...Object.keys(MUSICAL_LIVE_OPTS).map((k) => `--opt=${k}=false`)).summary['type:musical'];
+  assert.ok(allOff.newMae - m.newMae >= 2, `MUSICAL_LIVE_OPTS gain ${(allOff.newMae - m.newMae).toFixed(1)} pts (live ${m.newMae}, all off ${allOff.newMae})`);
   const p = summary['type:play'];
   assert.ok(p.n >= 26, `play rows ${p.n}`);
   assert.ok(p.newMae <= 6.5, `play reported-truth MAE ${p.newMae} (9.7 before BRO-5651)`);
