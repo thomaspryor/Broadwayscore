@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T00:43:12.634Z",
+  "timestamp": "2026-10-25T00:56:13.303Z",
   "stats": {
-    "totalReviews": 60769,
-    "alreadyFlagged": 21304,
+    "totalReviews": 60833,
+    "alreadyFlagged": 21305,
     "dateGuardCatches": 223,
-    "directorMismatch": 2183,
-    "tvFilmSignals": 1718,
+    "directorMismatch": 2199,
+    "tvFilmSignals": 1719,
     "londonSignals": 2950,
     "offBroadwaySignals": 534,
-    "yearMismatch": 198,
-    "noPublishDate": 5598
+    "yearMismatch": 200,
+    "noPublishDate": 5601
   },
   "findings": [
     {
@@ -599,6 +599,19 @@
       "score": 58,
       "publishDate": "2026-05-03",
       "url": "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "virginian-pilot--page-laws.json",
+      "publishDate": "2025-09-04",
+      "url": "https://www.pilotonline.com/2025/09/04/review-a-beautiful-noise-neil-diamond-musical/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -3923,6 +3936,7 @@
     {
       "showId": "archduke-off-broadway-2025",
       "file": "vulture--sara-holdren.json",
+      "score": 87,
       "publishDate": "2025-11-12",
       "url": "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
       "findings": [
@@ -4327,6 +4341,19 @@
       "file": "fwtx--john-henry.json",
       "publishDate": "2026-03-23",
       "url": "https://fwtx.com/culture/back-to-the-future-musical-lands-at-bass-hall/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "leagueofcincytheatres--liz-eichler.json",
+      "publishDate": "2025-09-10",
+      "url": "https://www.leagueofcincytheatres.info/review-buckle-up-for-a-great-ride-in-back-to-the-future-the-musical/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -5052,6 +5079,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2022 (1x). 2019 matches production: beetlejuice-2019"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "magnetmagazine--magnet-staff.json",
+      "publishDate": "2025-07-30",
+      "url": "https://magnetmagazine.com/2025/07/30/live-review-beetlejuice-the-musical-the-musical-the-musical-philadelphia-pa-july-29-2025/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
         }
       ]
     },
@@ -11066,6 +11106,19 @@
       "score": 88,
       "publishDate": "2026-09-21",
       "url": "https://www.clevescene.com/arts/death-becomes-her-begins-a-new-life-with-tour-launch-at-playhouse-square/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "ladue-news--mark-bretz.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.laduenews.com/arts-and-culture/fox-theater-theatre-stl-st-louis-death-becomes-her-musical-play-film-october-spooky/article_bfda44b8-f2a4-43a8-8bf9-4252670d8960.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -26109,6 +26162,19 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2025-08-06",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "pioneer-press--rob-hubbard.json",
       "score": 87,
       "publishDate": "2026-02-18",
@@ -29357,6 +29423,19 @@
     },
     {
       "showId": "mrs-doubtfire-tour-2025",
+      "file": "theater-mirror--shelley-a-sackett.json",
+      "publishDate": "2025-09-14",
+      "url": "https://www.theatermirror.net/broadway-in-bostons-mrs-doubtfire-is-a-raucous-good-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "mrs-doubtfire-tour-2025",
       "file": "thetangential--jean-gabler.json",
       "score": 74,
       "publishDate": "2026-03-18",
@@ -30121,7 +30200,7 @@
     {
       "showId": "my-first-ex-husband-off-broadway-2025",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": null,
+      "score": 39,
       "publishDate": "2025-02-06",
       "url": "https://nystagereview.com/2025/02/06/my-first-ex-husband-divorce-comedian-style/",
       "findings": [
@@ -30135,7 +30214,7 @@
     {
       "showId": "my-first-ex-husband-off-broadway-2025",
       "file": "off-off-online--adrienne-onofri.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2025-02-07",
       "url": "https://www.offoffonline.com/offoffonline/2025/2/4/my-first-ex-husband",
       "findings": [
@@ -30988,6 +31067,20 @@
       ]
     },
     {
+      "showId": "not-ready-for-prime-time-off-broadway-2025",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 42,
+      "publishDate": "2025-10-20",
+      "url": "https://www.theatermania.com/news/review-not-ready-for-prime-time-an-expensive-and-dull-drama-about-snl_1808362/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "oedipus-west-end-2024",
       "file": "plays-international--maryam-philpott.json",
       "score": 89,
@@ -31509,6 +31602,19 @@
       "score": 91,
       "publishDate": "2026-09-25",
       "url": "https://joshatthemovies.com/2026/09/25/theater-review-oh-mary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "kqed--unknown.json",
+      "publishDate": "2026-10-16",
+      "url": "https://www.kqed.org/arts/13994824/in-oh-mary-a-closeted-presidents-unhinged-wife-draws-cackles",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32264,6 +32370,19 @@
       "score": 79,
       "publishDate": null,
       "url": "https://www.bostonglobe.com/2026/09/24/metro/review-ri-operation-mincemeat-review-providence/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "broadwayworld--r-scott-reedy.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.broadwayworld.com/boston/article/Review-OPERATION-MINCEMEAT-Is-Slice-of-Pie-20261021",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33169,6 +33288,19 @@
     },
     {
       "showId": "parade-tour-2025",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": "2025-08-07",
+      "url": "https://www.chicagotribune.com/2025/08/07/review-parade-musical-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
       "file": "dc-theater-arts--jennifer-georgia.json",
       "score": 76,
       "publishDate": "2025-08-25",
@@ -33197,6 +33329,24 @@
     },
     {
       "showId": "parade-tour-2025",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2025-08-19",
+      "url": "https://mdtheatreguide.com/2025/08/a-quick-5-with-ben-cherington-actor-in-parade-at-the-kennedy-center/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
       "file": "new-city-stage--dennis-polkow.json",
       "score": 90,
       "publishDate": "2025-08-11",
@@ -33211,6 +33361,29 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "splash-magazines--susan-lillis.json",
+      "publishDate": "2025-08-06",
+      "url": "https://splashmags.com/2025/08/cibc-theatre-presents-parade-a-story-significant-and-vital-to-our-times/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (4x) more than 2025 (2x). 2023 matches production: parade-2023"
         }
       ]
     },
@@ -40022,6 +40195,19 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "localnewsmatters--leslie-katz-bay-city-news.json",
+      "publishDate": "2025-10-24",
+      "url": "https://localnewsmatters.org/2025/10/24/review-suffs-tunefully-tells-story-of-womens-fight-to-vote-in-america/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "marin-independent-journal--john-chavez.json",
       "score": 87,
       "publishDate": "2025-10-28",
@@ -40166,6 +40352,19 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "showsiveseen--unknown.json",
+      "publishDate": "2025-09-22",
+      "url": "https://www.showsiveseen.com/suffs-musical-review-the-5th-avenue-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "socal-thrills--russell-tom.json",
       "score": 89,
       "publishDate": "2025-11-21",
@@ -40226,6 +40425,19 @@
       "score": 78,
       "publishDate": "2025-11-20",
       "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-reminds-us-to-keep-marching_1812851/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "thesoundonstage--greg-heilman.json",
+      "publishDate": "2025-10-01",
+      "url": "https://www.thesoundonstage.org/stage-reviews/stage-review-suffs-5th-avenue-theatre-national-tour",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40326,7 +40538,7 @@
     {
       "showId": "sumo-off-broadway-2025",
       "file": "this-week-in-new-york--mark-rifkin.json",
-      "score": null,
+      "score": 71,
       "publishDate": null,
       "url": "https://twi-ny.com/2025/03/07/body-positivity-and-negativity-sumo-at-the-public/",
       "findings": [
@@ -48951,6 +49163,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-phantom-of-the-opera-tour-2025",
+      "file": "broadwaywithaj--aj-jaffari.json",
+      "publishDate": "2026-10-10",
+      "url": "https://broadwaywithaj.com/2026/10/10/review-the-phantom-of-the-opera-at-broadway-san-jose/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from the-phantom-of-the-opera-1988"
         }
       ]
     },
@@ -73688,7 +73913,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/ilford-boy-review-donmar-warehouse",
       "findings": [
@@ -73771,7 +73996,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-22",
       "url": "https://www.standard.co.uk/culture/theatre/ilford-boy-donmar-review-b1301897.html",
       "findings": [
@@ -78069,6 +78294,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "monstagigz--unknown.json",
+      "score": 69,
       "publishDate": "2026-10-24",
       "url": "https://monstagigz.com/2026/10/24/theatre-review-man-to-man-starring-tilda-swinton-at-the-royal-court-theatre/",
       "findings": [
@@ -78579,7 +78805,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 60,
+      "score": 64,
       "publishDate": "2026-10-22",
       "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
       "findings": [
@@ -78607,7 +78833,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
-      "score": 63,
+      "score": 62,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
       "findings": [
@@ -78647,7 +78873,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "musical-theatre-review--scott-matthewman.json",
-      "score": 62,
+      "score": 65,
       "publishDate": "2026-10-21",
       "url": "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
       "findings": [
