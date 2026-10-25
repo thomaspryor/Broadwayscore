@@ -13,6 +13,12 @@
  *                                               resume entries (those stay with the Claude worker);
  *                                               P0/P1 picks first, then P2, then P3.
  *
+ * Spend breaker (BRO-6229, scripts/lib/cloud-worker-breaker.js): the single pick
+ * carries `breaker` ({ mode, dailyClaims, dailyCap, cardAttemptCap, skipped,
+ * wouldSkip }). Advisory by default; CLOUD_WORKER_BREAKER_ENFORCE=true skips
+ * non-P0 cards past a cap (a null pick then carries `breakerReason`),
+ * CLOUD_WORKER_BREAKER_DISABLED=true turns it off. --list is not metered.
+ *
  * `pick` is null when nothing is eligible; the worker then ends with no
  * changes. Each pick carries `tier` ("p0p1" | "p2-fallback" | "p3-fallback") and `model`
  * ("opus" | "sonnet", the linear-next.js policy: pickLinearModel) with
@@ -113,13 +119,16 @@ const MAX_HISTORY_CHECKS = 15;
  * in `historySkipped`. A failed comment read keeps a Todo card (pause memory is
  * advisory) but skips a paused Backlog card, which is there because of a pause.
  */
-async function firstUnpaused(queue, nowMs, historySkipped) {
+async function firstUnpaused(queue, nowMs, historySkipped, breakerSkip = () => false) {
   const { getIssue } = require('./lib/linear-client.js');
   const { historySkipReason, mayTakeUnchecked, isPausedBacklog } = require('./lib/cloud-worker-pick.js');
   let fetches = 0;
   for (let i = 0; i < queue.length; i++) {
     // main() already read comments for every candidate (needsComments); fetch only when it could not.
     const pre = queue[i].issue.comments && queue[i].issue.comments.nodes;
+    // Spend breaker before any comment read (BRO-6229): the daily cap needs none, and the
+    // per-card cap uses the prefetched comments when there are any.
+    if (breakerSkip(queue[i], pre || [])) continue;
     if (!pre && fetches >= MAX_HISTORY_CHECKS && mayTakeUnchecked(queue[i])) {
       console.error(`[cloud-worker-pick] ${MAX_HISTORY_CHECKS} history checks used; ${queue[i].issue.identifier} taken unchecked`);
       return queue[i];
@@ -132,6 +141,8 @@ async function firstUnpaused(queue, nowMs, historySkipped) {
       // Both reads cap at 50 comments; past that the latest report may be cut off.
       if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
       reason = historySkipReason(queue[i].issue, nodes, nowMs);
+      // Comments fetched just now: the per-card cap can apply only here.
+      if (!reason && !pre && breakerSkip(queue[i], nodes)) continue;
     } catch (err) {
       console.error(`[cloud-worker-pick] history check skipped for ${queue[i].issue.identifier}: ${err && err.message ? err.message.split('\n')[0] : err}`);
       if (isPausedBacklog(queue[i].issue)) reason = 'history-unreadable';
@@ -220,7 +231,8 @@ async function main() {
     const { leaveCodexCards } = require('./lib/cloud-worker-pick.js');
     ({ queue: claudeQueue, left: leftToCodex } = leaveCodexCards(queue, { nowMs, verifyOf: verifyCommand, cap: codexCap }));
   }
-  const chosen = await firstUnpaused(claudeQueue, nowMs, historySkipped);
+  const breaker = await cloudBreaker(nowMs);
+  const chosen = await firstUnpaused(claudeQueue, nowMs, historySkipped, breaker.skip);
   const pick = chosen && chosen.issue;
   const resume = chosen && chosen.resume;
   const out = {
@@ -230,13 +242,88 @@ async function main() {
     leftToCodex,
     // Resume candidates and eligible cards passed over for an earlier pause.
     historySkipped,
+    breaker: breaker.report,
+    ...(!chosen && Object.keys(breaker.report.skipped).length && { breakerReason: Object.keys(breaker.report.skipped).join(',') }),
   };
+  // Before the JSON: stdout must stay one parseable document.
+  await breaker.alert();
   console.log(JSON.stringify(out, null, 2));
   if (resume) {
     // The routine prompt says "new branch"; .claude/CLOUD.md says pick.resume
     // overrides that. Repeat it where a skimming worker will see it.
     console.error(`[cloud-worker-pick] RESUME ${pick.identifier}: follow pick.resume.instructions (land ref ${resume.ref}), not a new branch.`);
   }
+}
+
+/**
+ * The spend breaker for this firing (BRO-6229, scripts/lib/cloud-worker-breaker.js): reads the
+ * last 24h of Claude-lane claims from Linear once, and returns
+ *   skip(entry, nodes) -> true when the breaker (enforce mode) skips the card; advisory mode
+ *     records it in report.wouldSkip and returns false. Resume entries are never metered.
+ *   report -> the `breaker` JSON field.
+ *   alert() -> routes the owner alert when the daily cap is reached; never throws.
+ */
+async function cloudBreaker(nowMs) {
+  const brk = require('./lib/cloud-worker-breaker.js');
+  const config = brk.breakerConfig();
+  const report = { mode: config.mode, dailyCap: config.dailyCap, cardAttemptCap: config.cardAttemptCap, dailyClaims: null, skipped: {}, wouldSkip: [] };
+  const noted = new Set(); // a card is checked twice when its comments are fetched late
+  if (config.mode === 'off') return { skip: () => false, report, alert: async () => {} };
+  try {
+    const { listRecentCommentsContaining } = require('./lib/linear-client.js');
+    const sinceIso = new Date(nowMs - brk.DAY_MS).toISOString();
+    // One query per model: "Worker model:" alone also matches the Codex lane's claims.
+    const parts = await Promise.all(brk.CLAUDE_LANE_MODELS.map((m) => listRecentCommentsContaining({ sinceIso, text: `Worker model: ${m}`, max: 2000 })));
+    report.dailyClaims = brk.countDailyClaims(parts.flat(), nowMs);
+  } catch (err) {
+    report.dailyClaimsError = String(err && err.message || err).split('\n')[0];
+    console.error(`[cloud-worker-pick] breaker daily count unreadable, daily cap not applied: ${report.dailyClaimsError}`);
+  }
+  const skip = (entry, nodes) => {
+    if (entry.resume) return false;
+    const d = brk.breakerDecision({ issue: entry.issue, dailyClaims: report.dailyClaims, cardAttempts: brk.cardAttempts(nodes, nowMs), config });
+    if (d.wouldSkip && !noted.has(entry.issue.identifier)) {
+      noted.add(entry.issue.identifier);
+      report.wouldSkip.push({ identifier: entry.issue.identifier, reason: d.wouldSkip });
+      console.error(`[cloud-worker-pick] breaker (advisory) would skip ${entry.issue.identifier}: ${d.wouldSkip}`);
+    }
+    if (!d.skip) return false;
+    report.skipped[d.reason] = (report.skipped[d.reason] || 0) + 1;
+    console.error(`[cloud-worker-pick] breaker skip ${entry.issue.identifier}: ${d.reason}`);
+    return true;
+  };
+  const alert = async () => {
+    if (!brk.dailyCapReached(report.dailyClaims, config)) return;
+    // Off a runner the router's ledger, attempt log and digest queue default to a home-dir file
+    // and tracked repo files; neither survives (or belongs in) a cloud worker checkout. The Linear search on
+    // the conditionKey is the dedupe that holds here.
+    if (!process.env.GITHUB_ACTIONS && !process.env.CI) {
+      const tmp = require('os').tmpdir();
+      process.env.ALERT_LEDGER_PATH = process.env.ALERT_LEDGER_PATH || require('path').join(tmp, 'cloud-worker-breaker-alert-ledger.json');
+      process.env.ALERT_ATTEMPTS_LOG_PATH = process.env.ALERT_ATTEMPTS_LOG_PATH || require('path').join(tmp, 'cloud-worker-breaker-alert-attempts.jsonl');
+      process.env.ALERT_DIGEST_QUEUE_PATH = process.env.ALERT_DIGEST_QUEUE_PATH || require('path').join(tmp, 'cloud-worker-breaker-alert-digest.json');
+    }
+    // The router logs to stdout; the pick JSON owns stdout. Bounded so a Linear retry storm
+    // cannot hold the worker's pick.
+    const log = console.log;
+    console.log = (...a) => console.error(...a);
+    let timer;
+    let timedOut = false;
+    try {
+      const { routeAlert } = require('./lib/owner-alert-router.js');
+      await Promise.race([
+        routeAlert(brk.tripAlert({ dailyClaims: report.dailyClaims, config })),
+        new Promise((_, rej) => { timer = setTimeout(() => { timedOut = true; rej(new Error('timed out after 90s')); }, 90_000); }),
+      ]);
+    } catch (err) {
+      console.error(`[cloud-worker-pick] breaker alert failed: ${String(err && err.message || err).split('\n')[0]}`);
+    } finally {
+      clearTimeout(timer);
+      // A timed-out route keeps running and logging: leave it on stderr for good.
+      if (!timedOut) console.log = log;
+    }
+  };
+  return { skip, report, alert };
 }
 
 // Cards one Codex firing works per lane (docs/cloud-routines/board-workers.md: --slots 3 --limit 9;

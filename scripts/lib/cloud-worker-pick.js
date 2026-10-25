@@ -10,7 +10,9 @@
  * headless blockers).
  *
  * NOT applied here: the Mac's dispatch-ledger guards (attempt memory, spend
- * breaker, per-card retry limits). The ledger lives on the Mac. What keeps a
+ * breaker, per-card retry limits). The ledger lives on the Mac. The cloud's own
+ * spend breaker (daily and per-card claim caps read from Linear, BRO-6229) is
+ * scripts/lib/cloud-worker-breaker.js, applied by the CLI. What keeps a
  * cloud worker from looping on one card is the routine prompt: the worker
  * claims the card first (linear-session.js claim), which moves it to a started
  * state, so the next firing's state filter skips it. A card that fails ends

@@ -82,6 +82,10 @@ For each card:
    START-NOW cards, and everything once Codex stops). Cards Codex would skip
    for their pause history stay in this lane's queue (BRO-5407). A null pick then means
    nothing is left for this lane: that is the saving, not a problem.
+   A null pick with `breakerReason` means the spend breaker stopped the lane
+   (BRO-6229: daily or per-card claim cap, P0 exempt; advisory unless
+   CLOUD_WORKER_BREAKER_ENFORCE=true): stop this lane. A daily-cap trip has
+   already filed the owner's card; a per-card skip is quiet by design.
 2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier> --worker-model=<pick.model>`. A
    `"action": "noop"` or a failure means the Codex lane or another worker has
    it: pick again once, then stop this lane.
