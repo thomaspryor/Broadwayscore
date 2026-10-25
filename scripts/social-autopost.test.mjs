@@ -116,6 +116,7 @@ test('venue phrasing', () => {
   assert.equal(atVenue('Palace Theatre'), 'at the Palace Theatre');
   assert.equal(atVenue('The Public Theater/LuEsther Hall'), 'at The Public Theater/LuEsther Hall');
   assert.equal(atVenue("Shakespeare's Globe"), "at Shakespeare's Globe");
+  assert.equal(atVenue('Riverside Studios'), 'at Riverside Studios');
 });
 
 test('art layout never upscales: square key art >=1000px, else native-size inset, else type', () => {

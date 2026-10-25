@@ -34,7 +34,7 @@ function atVenue(venue) {
   if (!venue) return '';
   const v = String(venue).trim();
   if (/^the\s/i.test(v)) return `at ${v}`;
-  if (/(theat(er|re)|playhouse|hall|centre|center|warehouse|studios?|house|armory|stage)$/i.test(v)) return `at the ${v}`;
+  if (/(theat(er|re)|playhouse|hall|centre|center|warehouse|house|armory|stage)$/i.test(v)) return `at the ${v}`;
   return `at ${v}`;
 }
 
