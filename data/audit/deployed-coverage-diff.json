@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-25T19:50:37.756Z",
+  "generatedAt": "2026-10-25T20:06:35.409Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 255,
-  "clean": 255,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 254,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
+      "title": "The Curious Case of Benjamin Button",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.38 vs local 77.48 (Δ0.1)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-10-25T20:06:31.377Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

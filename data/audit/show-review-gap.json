@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-25T19:50:18.268Z",
+  "generatedAt": "2026-10-25T20:06:04.714Z",
   "windowDays": 21,
   "targets": 12,
   "auditedThisRun": 12,
-  "carriedForward": 816,
+  "carriedForward": 828,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 410,
-    "missingCurrentRun": 583,
+    "withGap": 414,
+    "missingCurrentRun": 602,
     "totalCitedNoUrl": 2,
     "totalFlaggedMisses": 701,
-    "totalRecoverable": 3,
-    "totalRecovered": 16,
+    "totalRecoverable": 6,
+    "totalRecovered": 17,
     "humanExcluded": 4,
-    "automatedExcluded": 365,
+    "automatedExcluded": 368,
     "automatedExcludedListed": 302,
-    "priorProductionCitations": 5674
+    "priorProductionCitations": 5759
   },
   "results": [
     {
@@ -1163,6 +1163,339 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-25T22:17:08.499Z"
+    },
+    {
+      "showId": "a-midsummer-nights-dream-off-broadway-2025",
+      "title": "A Midsummer Night's Dream",
+      "openingDate": "2025-10-15",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-a-midsummers-night-dream-starring-game-of-thrones-gwendoline-christie",
+        "https://www.broadwayworld.com/article/Review-Roundup-A-MIDSUMMER-NIGHTS-DREAM-Starring-Annaleigh-Ashford-Danny-Burstein-and-More-at-Shakespeare-in-the-Park-20170801"
+      ],
+      "aggregatorListedUrls": [
+        "https://theartsdesk.com/theatre/midsummer-nights-dream-bridge-theatre-review-%E2%80%93-gender-juggling-romp",
+        "https://www.standard.co.uk/go/london/theatre/a-midsummer-nights-dream-review-gwendoline-christie-bridge-theatre-a4165146.html",
+        "https://www.theguardian.com/stage/2019/jun/11/a-midsummer-nights-dream-review-bridge-theatre-london-gwendoline-christie-nicholas-hytner",
+        "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre",
+        "https://www.radiotimes.com/news/2019-06-11/nicholas-hytners-a-midsummer-nights-dream-at-the-bridge-theatre-is-politically-sound-but-lacks-coherence-and-magic/",
+        "https://www.thestage.co.uk/reviews/2019/a-midsummer-nights-dream-gwendoline-christie-review-at-the-bridge-theatre-london",
+        "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-bridge-theatre-erotic-enchanting/",
+        "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1",
+        "https://www.thetimes.co.uk/article/review-a-midsummer-nights-dream-bridge-theatre-se1-llhrswdg7",
+        "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+        "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+        "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
+        "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+        "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+        "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+        "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+        "http://www.vulture.com/2017/07/a-midsummer-nights-dream-that-never-touches-earth.html",
+        "http://www.thewrap.com/midsummer-nights-dream-theater-review-phylicia-rashad-leads-sitcom-version-bard/"
+      ],
+      "dirFiles": 5,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://theartsdesk.com/theatre/midsummer-nights-dream-bridge-theatre-review-%E2%80%93-gender-juggling-romp",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/a-midsummer-nights-dream-review-gwendoline-christie-bridge-theatre-a4165146.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/jun/11/a-midsummer-nights-dream-review-bridge-theatre-london-gwendoline-christie-nicholas-hytner",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.radiotimes.com/news/2019-06-11/nicholas-hytners-a-midsummer-nights-dream-at-the-bridge-theatre-is-politically-sound-but-lacks-coherence-and-magic/",
+          "host": "radiotimes.com",
+          "knownOutletId": "radio-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2019/a-midsummer-nights-dream-gwendoline-christie-review-at-the-bridge-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-bridge-theatre-erotic-enchanting/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/review-a-midsummer-nights-dream-bridge-theatre-se1-llhrswdg7",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2017/07/a-midsummer-nights-dream-that-never-touches-earth.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/midsummer-nights-dream-theater-review-phylicia-rashad-leads-sitcom-version-bard/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 453,
+        "byReason": {
+          "aggregator-internal-nav": 299,
+          "not-http-url": 101,
+          "production-database-listing": 10,
+          "aggregator-section-root": 8,
+          "non-review-host": 35
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-a-midsummers-night-dream-starring-game-of-thrones-gwendoline-christie",
+          "publishDate": "2019-06-12"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-A-MIDSUMMER-NIGHTS-DREAM-Starring-Annaleigh-Ashford-Danny-Burstein-and-More-at-Shakespeare-in-the-Park-20170801",
+          "publishDate": "2017-08-01"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://theartsdesk.com/theatre/midsummer-nights-dream-bridge-theatre-review-%E2%80%93-gender-juggling-romp",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/a-midsummer-nights-dream-review-gwendoline-christie-bridge-theatre-a4165146.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/jun/11/a-midsummer-nights-dream-review-bridge-theatre-london-gwendoline-christie-nicholas-hytner",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-a-midsummer-nights-dream-starring-gwendoline-christie-at-the-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.radiotimes.com/news/2019-06-11/nicholas-hytners-a-midsummer-nights-dream-at-the-bridge-theatre-is-politically-sound-but-lacks-coherence-and-magic/",
+          "host": "radiotimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2019/a-midsummer-nights-dream-gwendoline-christie-review-at-the-bridge-theatre-london",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/midsummer-nights-dream-review-bridge-theatre-erotic-enchanting/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/a-midsummer-nights-dream-review-1",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.co.uk/article/review-a-midsummer-nights-dream-bridge-theatre-se1-llhrswdg7",
+          "host": "thetimes.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2017/07/31/theater/midsummer-nights-dream-review.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-midsummer-night-s-dream-review-terrific-cast-delights-in-shakespeare-classic-1.13892431",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/a-midsummer-nights-dream-theater-review-1025277",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/entertainment-news/Review-Midsummer-Night-Annaleigh-Ashford-437395173.html",
+          "host": "nbcnewyork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/a-midsummer-night-s-dream-review-puckish-one-note-romp-1.13896933",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/midsummer-night-dream-central-park-theater-review-article-1.3372083",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/a-midsummer-nights-dream-23",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2017/07/a-midsummer-nights-dream-that-never-touches-earth.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/midsummer-nights-dream-theater-review-phylicia-rashad-leads-sitcom-version-bard/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
     },
     {
       "showId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
@@ -68465,6 +68798,261 @@
       "computedAt": "2026-09-26T02:16:13.920Z"
     },
     {
+      "showId": "going-bacharach-off-broadway-2026",
+      "title": "GOING BACHARACH",
+      "openingDate": "2026-01-12",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-going-bacharach-the-songs-of-an-icon-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-GOING-BACHARACH-Opens-Off-Broadway-20260113"
+      ],
+      "aggregatorListedUrls": [
+        "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350",
+        "https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/",
+        "https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/",
+        "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/",
+        "https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/",
+        "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center"
+        },
+        {
+          "url": "https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 415,
+        "byReason": {
+          "aggregator-internal-nav": 284,
+          "not-http-url": 69,
+          "production-database-listing": 17,
+          "aggregator-section-root": 10,
+          "non-review-host": 35
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "going-bacharach-off-broadway-2026: https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350 is already owned by going-bacharach-the-songs-of-an-icon-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/",
+          "host": "thefrontrowcenter.com",
+          "outletId": "front-row-center",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "going-bacharach-off-broadway-2026: https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/ is already owned by going-bacharach-the-songs-of-an-icon-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "going-bacharach-off-broadway-2026: https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/ is already owned by going-bacharach-the-songs-of-an-icon-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "going-bacharach-off-broadway-2026: https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/ is already owned by going-bacharach-the-songs-of-an-icon-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "going-bacharach-off-broadway-2026: https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/ is already owned by going-bacharach-the-songs-of-an-icon-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/going-bacharach-the-songs-of-an-icon-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/",
+            "outletId": "times-square-chronicles",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
       "title": "Going Bacharach: The Songs of an Icon",
       "openingDate": "2026-09-16",
@@ -85355,6 +85943,100 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-20T12:57:21.255Z"
+    },
+    {
+      "showId": "heaux-church-off-broadway-2025",
+      "title": "Heaux Church",
+      "openingDate": "2025-10-19",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-brandon-kyle-goodman-invites-you-to-come-inside-their-heaux-church_1808293/",
+        "https://www.theaterscene.net/plays/offbway-plays/heaux-church/tony-marinelli/",
+        "https://www.offoffonline.com/offoffonline/2025/10/15/heaux-church"
+      ],
+      "dirFiles": 2,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2025/10/15/heaux-church",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2025/10/15/heaux-church",
+          "host": "offoffonline.com",
+          "outletId": "off-off-online",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2025/10/15/heaux-church"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-brandon-kyle-goodman-invites-you-to-come-inside-their-heaux-church_1808293/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/heaux-church/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/10/15/heaux-church",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 2,
+        "candidateCount": 3
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
     },
     {
       "showId": "hells-kitchen-tour-2025",
@@ -107792,6 +108474,81 @@
       "computedAt": "2026-08-13T04:13:42.713Z"
     },
     {
+      "showId": "laowang-a-chinatown-king-lear-off-broadway-2025",
+      "title": "Laowang: A Chinatown King Lear",
+      "openingDate": "2025-11-11",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-laowang-cooks-up-a-shakespearean-tragedy-in-chinatown_1812325/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-PUTRLU",
+        "https://exeuntnyc.com/reviews/review-laowang-a-chinatown-king-lear-at-primary-stages/",
+        "https://www.offoffonline.com/offoffonline/2025/11/15/laowang-a-chinatown-king-lear",
+        "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html"
+      ],
+      "dirFiles": 5,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-laowang-cooks-up-a-shakespearean-tragedy-in-chinatown_1812325/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-PUTRLU",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-laowang-a-chinatown-king-lear-at-primary-stages/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/11/15/laowang-a-chinatown-king-lear",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2025/12/reviews-catching-up-on-theater.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 5,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026",
       "title": "Larger Than Life: Starring Wallace & Gromit, Shaun and More",
       "openingDate": "2026-10-14",
@@ -127182,6 +127939,119 @@
       "computedAt": "2026-08-16T23:13:35.325Z"
     },
     {
+      "showId": "messy-white-gays-off-broadway-2025",
+      "title": "Messy White Gays",
+      "openingDate": "2025-11-02",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-MESSY-WHITE-GAYS-Opens-Off-Broadway-20251103"
+      ],
+      "aggregatorListedUrls": [
+        "https://nystagereview.com/2025/11/02/messy-white-gays-boys-being-boys-badly/",
+        "https://www.thewrap.com/messy-white-gays-off-broadway-review-drew-droege/",
+        "https://www.newyorktheatreguide.com/reviews/messy-white-gays-off-broadway-review",
+        "https://www.thedailybeast.com/obsessed/the-messy-white-gays-finally-get-their-comeuppance/",
+        "https://www.nytimes.com/2025/11/04/theater/messy-white-gays-review-drew-droege.html",
+        "https://www.theatermania.com/news/review-in-messy-white-gays-you-better-love-jean-smart-or-else_1810185/",
+        "https://www.offoffonline.com/offoffonline/2025/11/7/messy-white-gays"
+      ],
+      "dirFiles": 12,
+      "dirClean": 11,
+      "inReviewsJson": 12,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "thequeerreview.com",
+          "count": 1
+        },
+        {
+          "host": "therecs.co.uk",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 301,
+        "byReason": {
+          "aggregator-internal-nav": 223,
+          "not-http-url": 59,
+          "aggregator-section-root": 4,
+          "non-review-host": 15
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2025/11/02/messy-white-gays-boys-being-boys-badly/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.thewrap.com/messy-white-gays-off-broadway-review-drew-droege/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/messy-white-gays-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/the-messy-white-gays-finally-get-their-comeuppance/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/04/theater/messy-white-gays-review-drew-droege.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-in-messy-white-gays-you-better-love-jean-smart-or-else_1810185/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/11/7/messy-white-gays",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 7,
+        "candidateCount": 7
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "mexodus-off-broadway-2026",
       "title": "Mexodus",
       "openingDate": "2026-03-10",
@@ -140626,6 +141496,157 @@
       "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
+      "showId": "nothing-can-take-you-from-the-hand-of-god-off-broadway-2025",
+      "title": "Nothing Can Take You From the Hand of God",
+      "openingDate": "2025-10-13",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/nothing-can-take-you-from-the-hand-of-god-off-broadway-review-jen-tullock",
+        "https://www.theatermania.com/news/review-nothing-can-take-you-from-the-hand-of-god_1807338/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YCTZ14",
+        "https://www.talkinbroadway.com/page/ob/10_13_25.html",
+        "https://www.theaterscene.net/plays/solo-plays/nothing-can-take-you-from-the-hand-of-god/tony-marinelli/",
+        "https://exeuntnyc.com/reviews/review-nothing-can-take-you-from-the-hand-of-god-at-playwrights-horizons/",
+        "https://www.theatrereviews.com/off-broadway-review-nothing-can-take-you-from-the-hand-of-god-at-playwrights-horizons-peter-jay-sharp-theater-through-sunday-november-9-2025/",
+        "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/"
+      ],
+      "dirFiles": 11,
+      "dirClean": 9,
+      "inReviewsJson": 9,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nystagereview.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "recoverable": true,
+          "recoverableFile": "nyt-theater--jonathan-mandell.json",
+          "recoverableOutletId": "nyt-theater",
+          "recoverableCritic": "Jonathan Mandell",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nyt-theater--jonathan-mandell.json",
+              "flag": "nonReview",
+              "urlInDir": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/",
+          "host": "newyorktheater.me",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nyt-theater",
+            "outlet": "nyt-theater",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/nothing-can-take-you-from-the-hand-of-god-off-broadway-review-jen-tullock",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-nothing-can-take-you-from-the-hand-of-god_1807338/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-YCTZ14",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_13_25.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/solo-plays/nothing-can-take-you-from-the-hand-of-god/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-nothing-can-take-you-from-the-hand-of-god-at-playwrights-horizons/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-nothing-can-take-you-from-the-hand-of-god-at-playwrights-horizons-peter-jay-sharp-theater-through-sunday-november-9-2025/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/10/29/nothing-can-take-you-from-the-hand-of-god-review/",
+            "outletId": "nyt-theater",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 7,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "noughts-and-crosses-off-west-end-2026",
       "title": "Noughts and Crosses",
       "openingDate": null,
@@ -152046,6 +153067,1500 @@
       "computedAt": "2026-10-25T00:00:48.604Z"
     },
     {
+      "showId": "other-off-broadway-2025",
+      "title": "Other",
+      "openingDate": "2025-10-19",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-what-do-the-critics-think-of-other-desert-cities-on-broadway",
+        "https://playbill.com/article/what-are-the-reviews-for-the-other-place-off-broadway-starring-house-of-the-dragons-emma-darcy",
+        "https://playbill.com/article/reviews-sound-off-on-john-leguizamos-the-other-americans-off-broadway",
+        "https://playbill.com/article/read-reviews-for-off-broadway-return-of-the-other-josh-cohen",
+        "https://playbill.com/article/read-reviews-for-londons-when-we-have-sufficiently-tortured-each-other-starring-cate-blanchett",
+        "https://playbill.com/article/read-reviews-for-broadways-significant-other",
+        "https://playbill.com/article/read-reviews-for-hbos-the-outsider-starring-cynthia-erivo-and-other-broadway-names",
+        "https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITES-Returns-to-Broadway-Updating-Live-20261019"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/other-desert-cities-broadway-review/",
+        "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
+        "https://cititour.com/NYC_Broadway/Other-Desert-Cities/1401",
+        "https://deadline.com/2026/10/other-desert-cities-broadway-review-julia-louis-dreyfus-1237165682/",
+        "https://ew.com/other-desert-cities-review-family-dysfunction-on-broadway-12178243",
+        "https://www.theguardian.com/stage/2026/oct/19/other-desert-cities-review-julia-louis-dreyfus-ed-harris-broadway",
+        "https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-theater-review-julia-louis-dreyfus-1236734079/",
+        "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney-b3068662.html",
+        "https://www.latimes.com/entertainment-arts/story/2026-10-19/other-desert-cities-review-julia-louis-dreyfus-debuts-broadway",
+        "https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again",
+        "https://www.nytimes.com/2026/10/18/theater/other-desert-cities-review-julia-louis-dreyfus.html",
+        "https://newyorktheater.me/2026/10/18/other-desert-cities-broadway-review-julia-louis-dreyfus-spars/",
+        "https://www.newyorktheatreguide.com/reviews/other-desert-cities-broadway-review-julia-louis-dreyfus-ed-harris-allison-janney-joe-keery-lily-rabe",
+        "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
+        "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
+        "https://www.theatermania.com/news/review-other-desert-cities-revival-a-triumphant-broadway-debut-for-julia-louis-dreyfus_1857335/",
+        "https://www.theatrely.com/post/a-starry-thrilling-other-desert-cities-returns-to-broadway-review",
+        "https://www.timeout.com/newyork/news/broadway-review-julia-louis-dreyfus-and-ed-harris-in-other-desert-cities-101926",
+        "https://www.usatoday.com/story/entertainment/music/2026/10/19/other-desert-cities-broadway-review/92220190007/",
+        "https://variety.com/2026/legit/reviews/other-desert-cities-broadway-review-1236915150/",
+        "https://lavocedinewyork.com/en/new-york/2026/10/19/in-other-desert-cities-a-family-grapples-with-speaking-the-unspeakable/",
+        "https://www.wsj.com/articles/other-desert-cities-review-julia-louis-dreyfuss-slashing-wit-on-broadway-d27e51fe",
+        "https://www.thewrap.com/creative-content/theater/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney/",
+        "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+        "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+        "https://newyorktheater.me/2026/02/11/the-other-place-review/",
+        "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
+        "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
+        "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
+        "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
+        "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+        "https://1minutecritic.com/the-other-americans-john-leguizamo-review/",
+        "https://cititour.com/NYC_Broadway/The-Other-Americans/1323",
+        "https://culturesauce.com/2025/09/25/john-leguizamo-the-other-americans-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/",
+        "https://thefrontrowcenter.com/2025/09/the-other-americans/",
+        "https://www.vulture.com/article/the-other-americans-leguizamo-review.html",
+        "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/",
+        "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/",
+        "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky",
+        "https://newyorktheater.me/2025/09/25/the-other-americans-review-john-leguizamo-writes-a-tragedy/",
+        "https://www.newyorktheatreguide.com/reviews/the-other-americans-off-broadway-review-john-leguizamo",
+        "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html",
+        "https://therecs.co.uk/the-other-americans/",
+        "https://www.theatermania.com/news/review-the-other-americans-and-the-profound-loneliness-of-dad_1804942/",
+        "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16",
+        "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+        "https://www.thedailybeast.com/the-other-josh-cohen-has-its-modest-heart-in-the-right-place",
+        "https://dcmetrotheaterarts.com/2018/11/12/review-the-other-josh-cohen-at-the-westside-theatre/",
+        "https://nystagereview.com/2018/11/12/the-other-josh-cohen/",
+        "https://nystagereview.com/2018/11/12/the-other-josh-cohen-see-a-loser-be-a-winner-by-doing-the-right-thing/",
+        "https://www.nytimes.com/2018/11/12/theater/other-josh-cohen-review-westside-theater.html",
+        "https://theartsdesk.com/theatre/when-we-have-sufficiently-tortured-each-other-dorfman-theatre-review-cate-blanchetts",
+        "https://www.standard.co.uk/go/london/theatre/when-we-have-sufficiently-tortured-each-other-review-cate-blanchett-a4047386.html",
+        "https://www.theguardian.com/stage/2019/jan/24/when-we-have-sufficiently-tortured-each-other-review-enjoyable-not-shocking",
+        "https://www.hollywoodreporter.com/review/when-we-have-sufficiently-tortured-each-other-theater-1178724",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cate-blanchett-play-review-when-we-have-sufficiently-tortured-each-other-national-theatre-tickets-a8742966.html",
+        "https://inews.co.uk/culture/when-we-have-sufficiently-tortured-each-other-national-theatre-review-cate-blanchett/",
+        "https://www.nytimes.com/2019/01/24/theater/cate-blanchett-london-when-we-have-sufficiently-tortured-each-other.html",
+        "https://www.timeout.com/london/theatre/when-we-have-sufficiently-tortured-each-other-review",
+        "http://www.amny.com/entertainment/significant-other-review-trip-cullman-s-production-improves-with-move-to-broadway-1.13200732",
+        "http://www.thedailybeast.com/articles/2017/03/02/the-modern-gay-way-to-lose-out-in-love-review-of-significant-other-on-broadway.html",
+        "http://deadline.com/2017/03/broadway-review-significant-other-1202035014/",
+        "http://ew.com/theater/2017/03/02/significant-other-broadway-review/",
+        "http://www.nbcnewyork.com/entertainment/the-scene/Review-Significant-Other-Joshua-Harmon-415146063.html",
+        "http://www.newsday.com/entertainment/theater/significant-other-review-a-lovely-finely-tuned-party-play-1.13195307",
+        "http://www.vulture.com/2017/03/theater-review-significant-other-is-still-a-too-long-wedding-reception.html",
+        "https://www.nytimes.com/2017/03/02/theater/significant-other-review.html",
+        "https://www.timeout.com/newyork/blog/broadway-review-significant-other-is-a-bittersweet-comic-delight-030217",
+        "http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/",
+        "http://www.thewrap.com/significant-other-broadway-review-bridesmaids-meets-the-40-year-old-virgin-only-gay/",
+        "https://people.com/other-desert-cities-review-julia-louis-dreyfus-lights-up-broadway-revival-12181227",
+        "https://nypost.com/2026/10/19/entertainment/other-desert-cities-review-julia-louis-dreyfus-and-allison-janneys-play-has-laughs-no-bite/",
+        "https://www.slantmagazine.com/theater/other-desert-cities-review-julia-louis-dreyfuss/",
+        "https://www.vulture.com/article/other-desert-cities-dreyfus-janney-harris-rabe.html",
+        "https://www.chicagotribune.com/2026/10/18/review-other-desert-cities-broadway/",
+        "https://www.newyorktheatreguide.com/reviews/other-off-broadway-review-ariel-stachel",
+        "https://www.theatermania.com/news/review-ariel-stachel-delivers-inspiration-and-perspiration-in-his-solo-show-other_1808204/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WZQ6OW",
+        "https://www.theaterscene.net/plays/solo-plays/other/tony-marinelli/",
+        "https://www.theatrereviews.com/off-broadway-review-other-at-greenwich-house-theatre-through-saturday-december-6-2025/",
+        "https://newyorktheater.me/2025/10/19/other-review-ariel-stacher-on-his-anxiety-and-identity/",
+        "https://culturesauce.com/2025/10/19/ariel-stachel-other-off-broadway-review/",
+        "https://www.offoffonline.com/offoffonline/2025/10/26/other"
+      ],
+      "dirFiles": 12,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "https://1minutecritic.com/other-desert-cities-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Other-Desert-Cities/1401",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://deadline.com/2026/10/other-desert-cities-broadway-review-julia-louis-dreyfus-1237165682/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://ew.com/other-desert-cities-review-family-dysfunction-on-broadway-12178243",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/oct/19/other-desert-cities-review-julia-louis-dreyfus-ed-harris-broadway",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-theater-review-julia-louis-dreyfus-1236734079/",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney-b3068662.html",
+          "host": "the-independent.com",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2026-10-19/other-desert-cities-review-julia-louis-dreyfus-debuts-broadway",
+          "host": "latimes.com",
+          "knownOutletId": "latimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-starry-thrilling-other-desert-cities-returns-to-broadway-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-julia-louis-dreyfus-and-ed-harris-in-other-desert-cities-101926",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2026/10/19/other-desert-cities-broadway-review/92220190007/",
+          "host": "usatoday.com",
+          "knownOutletId": "usatoday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2026/legit/reviews/other-desert-cities-broadway-review-1236915150/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://lavocedinewyork.com/en/new-york/2026/10/19/in-other-desert-cities-a-family-grapples-with-speaking-the-unspeakable/",
+          "host": "lavocedinewyork.com",
+          "knownOutletId": "la-voce-di-new-york",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.wsj.com/articles/other-desert-cities-review-julia-louis-dreyfuss-slashing-wit-on-broadway-d27e51fe",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/the-other-americans-john-leguizamo-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Other-Americans/1323",
+          "host": "cititour.com",
+          "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/09/the-other-americans/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center"
+        },
+        {
+          "url": "https://www.vulture.com/article/the-other-americans-leguizamo-review.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun"
+        },
+        {
+          "url": "https://therecs.co.uk/the-other-americans/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        },
+        {
+          "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-other-josh-cohen-has-its-modest-heart-in-the-right-place",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2018/11/12/review-the-other-josh-cohen-at-the-westside-theatre/",
+          "host": "dcmetrotheaterarts.com",
+          "knownOutletId": "dc-theater-arts",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2018/11/12/the-other-josh-cohen/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2018/11/12/the-other-josh-cohen-see-a-loser-be-a-winner-by-doing-the-right-thing/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/when-we-have-sufficiently-tortured-each-other-dorfman-theatre-review-cate-blanchetts",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/when-we-have-sufficiently-tortured-each-other-review-cate-blanchett-a4047386.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/jan/24/when-we-have-sufficiently-tortured-each-other-review-enjoyable-not-shocking",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/when-we-have-sufficiently-tortured-each-other-theater-1178724",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cate-blanchett-play-review-when-we-have-sufficiently-tortured-each-other-national-theatre-tickets-a8742966.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/culture/when-we-have-sufficiently-tortured-each-other-national-theatre-review-cate-blanchett/",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/when-we-have-sufficiently-tortured-each-other-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/significant-other-review-trip-cullman-s-production-improves-with-move-to-broadway-1.13200732",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/02/the-modern-gay-way-to-lose-out-in-love-review-of-significant-other-on-broadway.html",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2017/03/broadway-review-significant-other-1202035014/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://ew.com/theater/2017/03/02/significant-other-broadway-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Significant-Other-Joshua-Harmon-415146063.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/significant-other-review-a-lovely-finely-tuned-party-play-1.13195307",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2017/03/theater-review-significant-other-is-still-a-too-long-wedding-reception.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/blog/broadway-review-significant-other-is-a-bittersweet-comic-delight-030217",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/significant-other-broadway-review-bridesmaids-meets-the-40-year-old-virgin-only-gay/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://people.com/other-desert-cities-review-julia-louis-dreyfus-lights-up-broadway-revival-12181227",
+          "host": "people.com",
+          "knownOutletId": "people",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nypost.com/2026/10/19/entertainment/other-desert-cities-review-julia-louis-dreyfus-and-allison-janneys-play-has-laughs-no-bite/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/other-desert-cities-review-julia-louis-dreyfuss/",
+          "host": "slantmagazine.com",
+          "knownOutletId": "slantmagazine",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.vulture.com/article/other-desert-cities-dreyfus-janney-harris-rabe.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.nytimes.com/2026/10/18/theater/other-desert-cities-review-julia-louis-dreyfus.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--robin-pogrebin.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Robin Pogrebin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--robin-pogrebin.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--robin-pogrebin.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Robin Pogrebin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--robin-pogrebin.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2018/11/12/theater/other-josh-cohen-review-westside-theater.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--robin-pogrebin.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Robin Pogrebin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--robin-pogrebin.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2019/01/24/theater/cate-blanchett-london-when-we-have-sufficiently-tortured-each-other.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--robin-pogrebin.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Robin Pogrebin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--robin-pogrebin.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2017/03/02/theater/significant-other-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": true,
+          "recoverableFile": "nytimes--robin-pogrebin.json",
+          "recoverableOutletId": "nytimes",
+          "recoverableCritic": "Robin Pogrebin",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--robin-pogrebin.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/10/18/review-other-desert-cities-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "recoverable": true,
+          "recoverableFile": "chicagotribune--unknown.json",
+          "recoverableOutletId": "chicagotribune",
+          "recoverableCritic": "Unknown",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "chicagotribune--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.chicagotribune.com/2025/11/18/review-this-world-of-tomorrow-off-broadway-stars-a-warm-and-likable-tom-hanks-could-it-be-any-other-way/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2025/10/26/other",
+          "host": "offoffonline.com",
+          "knownOutletId": "off-off-online",
+          "recoverable": true,
+          "recoverableFile": "off-off-online--deirdre-donovan.json",
+          "recoverableOutletId": "off-off-online",
+          "recoverableCritic": "Deirdre Donovan",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "off-off-online--deirdre-donovan.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.offoffonline.com/offoffonline/2025/10/26/other"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 1063,
+        "byReason": {
+          "aggregator-internal-nav": 626,
+          "not-http-url": 120,
+          "production-database-listing": 68,
+          "aggregator-section-root": 36,
+          "non-review-host": 160,
+          "bare-host": 1,
+          "roundup-page": 52
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-what-do-the-critics-think-of-other-desert-cities-on-broadway",
+          "publishDate": "2026-10-19"
+        },
+        {
+          "url": "https://playbill.com/article/what-are-the-reviews-for-the-other-place-off-broadway-starring-house-of-the-dragons-emma-darcy",
+          "publishDate": "2026-02-12"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-off-broadway-return-of-the-other-josh-cohen",
+          "publishDate": "2018-11-13"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-londons-when-we-have-sufficiently-tortured-each-other-starring-cate-blanchett",
+          "publishDate": "2019-01-24"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-broadways-significant-other",
+          "publishDate": "2017-03-02"
+        },
+        {
+          "url": "https://playbill.com/article/read-reviews-for-hbos-the-outsider-starring-cynthia-erivo-and-other-broadway-names",
+          "publishDate": "2020-01-08"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-OTHER-DESERT-CITES-Returns-to-Broadway-Updating-Live-20261019",
+          "publishDate": "2026-10-19"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://1minutecritic.com/other-desert-cities-broadway-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Other-Desert-Cities/1401",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://deadline.com/2026/10/other-desert-cities-broadway-review-julia-louis-dreyfus-1237165682/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://ew.com/other-desert-cities-review-family-dysfunction-on-broadway-12178243",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/oct/19/other-desert-cities-review-julia-louis-dreyfus-ed-harris-broadway",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/lifestyle/arts/other-desert-cities-theater-review-julia-louis-dreyfus-1236734079/",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney-b3068662.html",
+          "host": "the-independent.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.latimes.com/entertainment-arts/story/2026-10-19/other-desert-cities-review-julia-louis-dreyfus-debuts-broadway",
+          "host": "latimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nysun.com/article/republican-family-fireworks-in-other-desert-cities-set-broadway-alight-again",
+          "host": "nysun.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/10/19/other-desert-cities-star-power-in-action/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/10/19/other-desert-cities-a-piercing-revival-of-jon-robin-baitzs-best-play/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-starry-thrilling-other-desert-cities-returns-to-broadway-review",
+          "host": "theatrely.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/news/broadway-review-julia-louis-dreyfus-and-ed-harris-in-other-desert-cities-101926",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.usatoday.com/story/entertainment/music/2026/10/19/other-desert-cities-broadway-review/92220190007/",
+          "host": "usatoday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/reviews/other-desert-cities-broadway-review-1236915150/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://lavocedinewyork.com/en/new-york/2026/10/19/in-other-desert-cities-a-family-grapples-with-speaking-the-unspeakable/",
+          "host": "lavocedinewyork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.wsj.com/articles/other-desert-cities-review-julia-louis-dreyfuss-slashing-wit-on-broadway-d27e51fe",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/other-desert-cities-broadway-review-julia-louis-dreyfus-allison-janney/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://1minutecritic.com/the-other-place-review-emma-darcy-tobias-menzies-shed/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/02/11/the-other-place-ancient-greek-tragedy-meets-modern-family-drama/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theaterpizzazz.com/the-secrets-of-the-other-place/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/the-other-place-review-off-broadway-antigone-emma-darcy-tobias-menzies",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/the-other-place-review-off-broadway-tobias-menzies-emma-darcy/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/the-other-josh-cohen-has-its-modest-heart-in-the-right-place",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://dcmetrotheaterarts.com/2018/11/12/review-the-other-josh-cohen-at-the-westside-theatre/",
+          "host": "dcmetrotheaterarts.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2018/11/12/the-other-josh-cohen/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2018/11/12/the-other-josh-cohen-see-a-loser-be-a-winner-by-doing-the-right-thing/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/when-we-have-sufficiently-tortured-each-other-dorfman-theatre-review-cate-blanchetts",
+          "host": "theartsdesk.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/go/london/theatre/when-we-have-sufficiently-tortured-each-other-review-cate-blanchett-a4047386.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2019/jan/24/when-we-have-sufficiently-tortured-each-other-review-enjoyable-not-shocking",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.hollywoodreporter.com/review/when-we-have-sufficiently-tortured-each-other-theater-1178724",
+          "host": "hollywoodreporter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/cate-blanchett-play-review-when-we-have-sufficiently-tortured-each-other-national-theatre-tickets-a8742966.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/when-we-have-sufficiently-tortured-each-other-national-theatre-review-cate-blanchett/",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/when-we-have-sufficiently-tortured-each-other-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.amny.com/entertainment/significant-other-review-trip-cullman-s-production-improves-with-move-to-broadway-1.13200732",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/02/the-modern-gay-way-to-lose-out-in-love-review-of-significant-other-on-broadway.html",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2017/03/broadway-review-significant-other-1202035014/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://ew.com/theater/2017/03/02/significant-other-broadway-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-Significant-Other-Joshua-Harmon-415146063.html",
+          "host": "nbcnewyork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/significant-other-review-a-lovely-finely-tuned-party-play-1.13195307",
+          "host": "newsday.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2017/03/theater-review-significant-other-is-still-a-too-long-wedding-reception.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/newyork/blog/broadway-review-significant-other-is-a-bittersweet-comic-delight-030217",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/http://variety.com/2017/legit/reviews/significant-other-review-broadway-1202001337/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/significant-other-broadway-review-bridesmaids-meets-the-40-year-old-virgin-only-gay/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://people.com/other-desert-cities-review-julia-louis-dreyfus-lights-up-broadway-revival-12181227",
+          "host": "people.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nypost.com/2026/10/19/entertainment/other-desert-cities-review-julia-louis-dreyfus-and-allison-janneys-play-has-laughs-no-bite/",
+          "host": "nypost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.slantmagazine.com/theater/other-desert-cities-review-julia-louis-dreyfuss/",
+          "host": "slantmagazine.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.vulture.com/article/other-desert-cities-dreyfus-janney-harris-rabe.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://1minutecritic.com/the-other-americans-john-leguizamo-review/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "other-off-broadway-2025: https://1minutecritic.com/the-other-americans-john-leguizamo-review/ is already owned by the-other-americans-off-broadway-2025 — one of the two is contaminated. Inspect data/review-texts/the-other-americans-off-broadway-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/The-Other-Americans/1323",
+          "host": "cititour.com",
+          "outletId": "cititour",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "other-off-broadway-2025: https://cititour.com/NYC_Broadway/The-Other-Americans/1323 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "other-off-broadway-2025: https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/ is already owned by the-other-americans-off-broadway-2025 — one of the two is contaminated. Inspect data/review-texts/the-other-americans-off-broadway-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/09/the-other-americans/",
+          "host": "thefrontrowcenter.com",
+          "outletId": "front-row-center",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "other-off-broadway-2025: https://thefrontrowcenter.com/2025/09/the-other-americans/ is already owned by the-other-americans-off-broadway-2025 — one of the two is contaminated. Inspect data/review-texts/the-other-americans-off-broadway-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.vulture.com/article/the-other-americans-leguizamo-review.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "other-off-broadway-2025: https://www.vulture.com/article/the-other-americans-leguizamo-review.html is already owned by the-other-americans-off-broadway-2025 — one of the two is contaminated. Inspect data/review-texts/the-other-americans-off-broadway-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/",
+          "host": "nystagereview.com",
+          "outletId": "nysr"
+        },
+        {
+          "url": "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky",
+          "host": "nysun.com",
+          "outletId": "new-york-sun"
+        },
+        {
+          "url": "https://therecs.co.uk/the-other-americans/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs"
+        },
+        {
+          "url": "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16",
+          "host": "wsj.com",
+          "outletId": "wsj"
+        },
+        {
+          "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        }
+      ],
+      "recoveryResults": [],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html",
+          "host": "nytimes.com",
+          "file": "nytimes--robin-pogrebin.json"
+        },
+        {
+          "url": "https://www.offoffonline.com/offoffonline/2025/10/26/other",
+          "host": "offoffonline.com",
+          "file": "off-off-online--deirdre-donovan.json"
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "one-minute-critic",
+            "outlet": "one-minute-critic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.com/the-other-americans-john-leguizamo-review/"
+          },
+          {
+            "outletId": "cititour",
+            "outlet": "cititour",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://cititour.com/NYC_Broadway/The-Other-Americans/1323"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2025/09/the-other-americans/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/the-other-americans-leguizamo-review.html"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky"
+          },
+          {
+            "outletId": "the-recs",
+            "outlet": "the-recs",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://therecs.co.uk/the-other-americans/"
+          },
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/"
+          },
+          {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html"
+          },
+          {
+            "outletId": "off-off-online",
+            "outlet": "off-off-online",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.offoffonline.com/offoffonline/2025/10/26/other"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://newyorktheater.me/2026/10/18/other-desert-cities-broadway-review-julia-louis-dreyfus-spars/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/other-desert-cities-broadway-review-julia-louis-dreyfus-ed-harris-allison-janney-joe-keery-lily-rabe",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-other-desert-cities-revival-a-triumphant-broadway-debut-for-julia-louis-dreyfus_1857335/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2026/02/11/the-other-place-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-other-place-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-other-place-rises-from-the-ashes-of-antigone_1824072/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/09/25/john-leguizamo-the-other-americans-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/09/25/the-other-americans-review-john-leguizamo-writes-a-tragedy/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-other-americans-off-broadway-review-john-leguizamo",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-other-americans-and-the-profound-loneliness-of-dad_1804942/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/other-off-broadway-review-ariel-stachel",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-ariel-stachel-delivers-inspiration-and-perspiration-in-his-solo-show-other_1808204/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-WZQ6OW",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/solo-plays/other/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-other-at-greenwich-house-theatre-through-saturday-december-6-2025/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/10/19/other-review-ariel-stacher-on-his-anxiety-and-identity/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/10/19/ariel-stachel-other-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://1minutecritic.com/the-other-americans-john-leguizamo-review/",
+            "outletId": "one-minute-critic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Other-Americans/1323",
+            "outletId": "cititour",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/",
+            "outletId": "dailybeast",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/09/the-other-americans/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/the-other-americans-leguizamo-review.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky",
+            "outletId": "new-york-sun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://therecs.co.uk/the-other-americans/",
+            "outletId": "the-recs",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/10/26/other",
+            "outletId": "off-off-online",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 7,
+        "candidateCount": 19
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
       "title": "Our Sinatra: A Musical Celebration",
       "openingDate": "2026-09-15",
@@ -154224,6 +156739,152 @@
       "computedAt": "2026-10-25T18:34:20.132Z"
     },
     {
+      "showId": "picnic-at-hanging-rock-off-broadway-2025",
+      "title": "Picnic at Hanging Rock",
+      "openingDate": "2025-12-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-the-critics-think-of-picnic-at-hanging-rock-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-PICNIC-AT-HANGING-ROCK-at-Greenwich-House-Theatre-20251222"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/picnic-hanging-rock-off-broadway-review/",
+        "https://culturesauce.com/2025/12/18/picnic-at-hanging-rock-sets-a-dreamy-mystery-to-music-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/picnic-at-hanging-rock-haunting-australian-story-about-girls-disappearance/",
+        "https://newyorknotebook.substack.com/p/picnic-at-hanging-rock",
+        "https://nystagereview.com/2025/12/21/picnic-at-hanging-rock-tasty-picnic-some-ants-intruding/",
+        "https://www.nysun.com/article/endearing-and-moving-performances-from-a-mostly-young-cast-lift-picnic-at-hanging-rock-the-musical",
+        "https://www.newyorktheatreguide.com/reviews/picnic-at-hanging-rock-off-broadway-review",
+        "https://www.nytimes.com/2025/12/21/theater/picnic-at-hanging-rock-musical-review.html",
+        "https://therecs.co.uk/picnic-at-hanging-rock-the-musical/",
+        "https://www.theatermania.com/news/review-picnic-at-hanging-rock-an-australian-unsolved-mystery_1815663/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GP141O",
+        "https://www.theaterscene.net/musicals/offbway/picnic-at-hanging-rock/victor-gluck/",
+        "https://pagesonstages.com/2025/12/20/picnic-at-hanging-rock/"
+      ],
+      "dirFiles": 15,
+      "dirClean": 14,
+      "inReviewsJson": 14,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 400,
+        "byReason": {
+          "aggregator-internal-nav": 282,
+          "not-http-url": 61,
+          "production-database-listing": 11,
+          "aggregator-section-root": 10,
+          "non-review-host": 35,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/picnic-hanging-rock-off-broadway-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/12/18/picnic-at-hanging-rock-sets-a-dreamy-mystery-to-music-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/picnic-at-hanging-rock-haunting-australian-story-about-girls-disappearance/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://newyorknotebook.substack.com/p/picnic-at-hanging-rock",
+            "outletId": "newyorknotebook.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/12/21/picnic-at-hanging-rock-tasty-picnic-some-ants-intruding/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/endearing-and-moving-performances-from-a-mostly-young-cast-lift-picnic-at-hanging-rock-the-musical",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/picnic-at-hanging-rock-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/12/21/theater/picnic-at-hanging-rock-musical-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://therecs.co.uk/picnic-at-hanging-rock-the-musical/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-picnic-at-hanging-rock-an-australian-unsolved-mystery_1815663/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GP141O",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/offbway/picnic-at-hanging-rock/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/12/20/picnic-at-hanging-rock/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 13,
+        "candidateCount": 13
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "pied-a-terre-off-broadway-2026",
       "title": "Pied à Terre",
       "openingDate": "2026-03-04",
@@ -154503,6 +157164,161 @@
         "candidateCount": 15
       },
       "computedAt": "2026-09-26T20:27:22.812Z"
+    },
+    {
+      "showId": "playing-shylock-off-broadway-2025",
+      "title": "Playing Shylock",
+      "openingDate": "2025-10-25",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-are-out-for-playing-shylock-starring-saul-rubinek",
+        "https://www.broadwayworld.com/article/Review-Roundup-Saul-Rubinek-in-PLAYING-SHYLOCK-at-Polonsky-Shakespeare-Center-20251024"
+      ],
+      "aggregatorListedUrls": [
+        "https://nystagereview.com/2025/10/23/playing-shylock-a-meta-exploration-of-cancel-culture/",
+        "https://www.nysun.com/article/antisemitism-is-focus-of-playing-shylock-as-well-as-several-new-off-broadway-productions-tackling-the-subject",
+        "https://newyorktheater.me/2025/10/23/playing-shylock-review/",
+        "https://www.newyorktheatreguide.com/reviews/playing-shylock-off-broadway-review-saul-rubinek",
+        "https://www.theatermania.com/news/review-in-playing-shylock-saul-rubinek-confronts-a-theater-ruled-by-fear_1808842/",
+        "https://www.theaterscene.net/plays/solo-plays/playing-shylock/victor-gluck/",
+        "https://theaterlife.com/playing-shylock-2/",
+        "https://twiny.substack.com/p/hath-not-a-jew-eyes-saul-rubinek",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=6IW04A"
+      ],
+      "dirFiles": 11,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [
+        {
+          "url": "https://twiny.substack.com/p/hath-not-a-jew-eyes-saul-rubinek",
+          "host": "twiny.substack.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 372,
+        "byReason": {
+          "aggregator-internal-nav": 274,
+          "not-http-url": 41,
+          "production-database-listing": 11,
+          "aggregator-section-root": 8,
+          "non-review-host": 37,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://twiny.substack.com/p/hath-not-a-jew-eyes-saul-rubinek",
+          "host": "twiny.substack.com",
+          "outletId": "twiny",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "twiny.substack.com",
+            "outlet": "twiny.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://twiny.substack.com/p/hath-not-a-jew-eyes-saul-rubinek"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2025/10/23/playing-shylock-a-meta-exploration-of-cancel-culture/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/antisemitism-is-focus-of-playing-shylock-as-well-as-several-new-off-broadway-productions-tackling-the-subject",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/10/23/playing-shylock-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/playing-shylock-off-broadway-review-saul-rubinek",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-in-playing-shylock-saul-rubinek-confronts-a-theater-ruled-by-fear_1808842/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/solo-plays/playing-shylock/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://theaterlife.com/playing-shylock-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=6IW04A",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://twiny.substack.com/p/hath-not-a-jew-eyes-saul-rubinek",
+            "outletId": "twiny.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 8,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
     },
     {
       "showId": "poet-on-a-string-off-broadway-2026",
@@ -161857,6 +164673,333 @@
         "candidateCount": 14
       },
       "computedAt": "2026-10-22T19:07:18.841Z"
+    },
+    {
+      "showId": "richard-ii-off-broadway-2025",
+      "title": "Richard II",
+      "openingDate": "2025-11-10",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-richard-ii-at-londons-bridge-theatre-starring-jonathan-bailey",
+        "https://playbill.com/article/what-are-the-reviews-for-richard-ii-starring-michael-urie",
+        "https://www.broadwayworld.com/article/Review-Roundup-Michael-Urie-Stars-In-RICHARD-II-At-Astor-Place-Theatre-20251110",
+        "https://www.broadwayworld.com/article/Review-Roundup-RICHARD-II-at-Donmar-Warehouse-20111208"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-II-review-bridge-theatre-london-tickets-wicked-bridgerton",
+        "https://www.theguardian.com/stage/2025/feb/18/richard-ii-review-bridgerton-jonathan-bailey-bridge-theatre-london",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/richard-ii-jonathan-bailey-review-b2700182.html",
+        "https://inews.co.uk/culture/arts/jonathan-bailey-coke-snorting-richard-ii-review-3542486",
+        "https://www.thejc.com/life/richard-ii-review-has-lessons-for-trump-arqi6db5",
+        "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+        "https://www.londontheatredirect.com/news/richard-ii-jonathan-bailey-review-2025",
+        "https://www.nytimes.com/2025/02/18/theater/richard-ii-jonathan-bailey-bridge-theatre-london.html",
+        "https://variety.com/2025/legit/reviews/richard-ii-review-jonathan-bailey-1236312255/",
+        "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+        "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+        "https://www.timeout.com/london/theatre/richard-ii-10-review",
+        "https://www.thetimes.com/culture/theatre-dance/article/richard-ii-review-jonathan-bailey-3sgzwn32k",
+        "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+        "https://cititour.com/NYC_Broadway/Richard-II/1336",
+        "https://exeuntnyc.com/reviews/review-richard-ii-at-the-astor-place-theatre/",
+        "https://www.newyorktheatreguide.com/reviews/richard-ii-off-broadway-review-michael-urie",
+        "https://www.nytimes.com/2025/11/10/theater/richard-ii-review-michael-urie.html",
+        "https://nystagereview.com/2025/11/10/richard-ii-michael-urie-plays-shakespeares-materialistic-superficial-king/",
+        "https://nystagereview.com/2025/11/10/richard-ii-this-campy-breed-this-england/",
+        "https://www.theatermania.com/news/review-michael-urie-in-a-clear-and-queer-richard-ii-off-broadway_1811463/",
+        "https://culturesauce.com/2025/11/10/richard-ii-michael-urie-off-broadway-review/"
+      ],
+      "dirFiles": 14,
+      "dirClean": 9,
+      "inReviewsJson": 9,
+      "missing": [
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-II-review-bridge-theatre-london-tickets-wicked-bridgerton",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/feb/18/richard-ii-review-bridgerton-jonathan-bailey-bridge-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/richard-ii-jonathan-bailey-review-b2700182.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/jonathan-bailey-coke-snorting-richard-ii-review-3542486",
+          "host": "inews.co.uk",
+          "knownOutletId": "i-paper",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thejc.com/life/richard-ii-review-has-lessons-for-trump-arqi6db5",
+          "host": "thejc.com",
+          "knownOutletId": "the-jewish-chronicle",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/richard-ii-jonathan-bailey-review-2025",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/richard-ii-review-jonathan-bailey-1236312255/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/richard-ii-10-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/richard-ii-review-jonathan-bailey-3sgzwn32k",
+          "host": "thetimes.com",
+          "knownOutletId": "sunday-times",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 529,
+        "byReason": {
+          "aggregator-internal-nav": 349,
+          "not-http-url": 88,
+          "production-database-listing": 21,
+          "aggregator-section-root": 14,
+          "non-review-host": 55,
+          "bare-host": 1,
+          "write-path-blocked": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-richard-ii-at-londons-bridge-theatre-starring-jonathan-bailey",
+          "publishDate": "2025-02-19"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-II-review-bridge-theatre-london-tickets-wicked-bridgerton",
+          "host": "express.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/feb/18/richard-ii-review-bridgerton-jonathan-bailey-bridge-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/richard-ii-jonathan-bailey-review-b2700182.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://inews.co.uk/culture/arts/jonathan-bailey-coke-snorting-richard-ii-review-3542486",
+          "host": "inews.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thejc.com/life/richard-ii-review-has-lessons-for-trump-arqi6db5",
+          "host": "thejc.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatredirect.com/news/richard-ii-jonathan-bailey-review-2025",
+          "host": "londontheatredirect.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2025/legit/reviews/richard-ii-review-jonathan-bailey-1236312255/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/richard-ii-10-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/richard-ii-review-jonathan-bailey-3sgzwn32k",
+          "host": "thetimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2025/02/18/theater/richard-ii-jonathan-bailey-bridge-theatre-london.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/Richard-II/1336",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-richard-ii-at-the-astor-place-theatre/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/richard-ii-off-broadway-review-michael-urie",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/10/theater/richard-ii-review-michael-urie.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/10/richard-ii-michael-urie-plays-shakespeares-materialistic-superficial-king/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/10/richard-ii-this-campy-breed-this-england/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-michael-urie-in-a-clear-and-queer-richard-ii-off-broadway_1811463/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/10/richard-ii-michael-urie-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 7,
+        "candidateCount": 7
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
     },
     {
       "showId": "ride-the-cyclone-off-west-end-2026",
@@ -189916,6 +193059,79 @@
       "automatedExcludedListed": 0
     },
     {
+      "showId": "the-bookstore-off-broadway-2026",
+      "title": "The Bookstore",
+      "openingDate": "2026-01-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-the-bookstore-a-love-letter-to-readers_1819332/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GJZZ0T",
+        "https://thefrontrowcenter.com/2026/01/the-bookstore/",
+        "https://pagesonstages.com/2026/01/18/the-bookstore/"
+      ],
+      "dirFiles": 5,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-the-bookstore-a-love-letter-to-readers_1819332/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-GJZZ0T",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/01/the-bookstore/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/01/18/the-bookstore/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 4,
+        "candidateCount": 4
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
+    },
+    {
       "showId": "the-bridge-off-west-end-2026",
       "title": "The Bridge",
       "openingDate": null,
@@ -190468,6 +193684,122 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-25T05:34:17.491Z"
+    },
+    {
+      "showId": "the-burning-cauldron-of-fiery-fire-off-broadway-2025",
+      "title": "The Burning Cauldron of Fiery Fire",
+      "openingDate": "2025-11-09",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-anne-washburns-the-burning-cauldron-of-fiery-fire-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://nystagereview.com/2025/11/09/the-burning-cauldron-of-fiery-fire-what-the-hell-was-that-all-about/",
+        "https://culturesauce.com/2025/11/09/the-burning-cauldron-of-fiery-fire-peters-out-after-an-intriguing-premise-off-broadway-review/",
+        "https://www.nytimes.com/2025/11/10/theater/burning-cauldron-of-fiery-fire-review-washburn.html",
+        "https://www.newyorktheatreguide.com/reviews/the-burning-cauldron-of-fiery-fire-off-broadway-review",
+        "https://www.theatermania.com/news/review-the-burning-cauldron-of-fiery-fire-anne-washburns-hippie-commune-mystery_1811311/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-JME0G4",
+        "https://www.talkinbroadway.com/page/ob/11_09_25.html",
+        "https://www.theaterscene.net/plays/offbway-plays/the-burning-cauldron-of-fiery-fire/victor-gluck/",
+        "https://exeuntnyc.com/reviews/review-the-burning-cauldron-of-fiery-fire-at-the-vineyard-theatre/"
+      ],
+      "dirFiles": 10,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "interestedbystander.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 109,
+        "byReason": {
+          "aggregator-internal-nav": 68,
+          "not-http-url": 5,
+          "production-database-listing": 11,
+          "aggregator-section-root": 4,
+          "non-review-host": 21
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2025/11/09/the-burning-cauldron-of-fiery-fire-what-the-hell-was-that-all-about/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/09/the-burning-cauldron-of-fiery-fire-peters-out-after-an-intriguing-premise-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/10/theater/burning-cauldron-of-fiery-fire-review-washburn.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-burning-cauldron-of-fiery-fire-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-burning-cauldron-of-fiery-fire-anne-washburns-hippie-commune-mystery_1811311/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-JME0G4",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_09_25.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/the-burning-cauldron-of-fiery-fire/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-the-burning-cauldron-of-fiery-fire-at-the-vineyard-theatre/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:06:04.714Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 9,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-25T20:06:04.714Z"
     },
     {
       "showId": "the-car-man-west-end-2026",

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T19:50:38.347Z",
+  "generatedAt": "2026-10-25T20:06:35.784Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,10 @@
       "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -149,11 +153,15 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 687,
+  "itemsScanned": 647,
   "matchedGaps": 2,
-  "possibleGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "machine-learning-off-broadway-2026",
@@ -172,15 +180,6 @@
       "url": "https://stageandcinema.com/2026/10/23/phyl-mint-theater-review/",
       "headline": "Off-Broadway Review: PHYL (Mint Theater Company at Theatre Row)",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
