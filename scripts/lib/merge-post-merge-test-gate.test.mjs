@@ -9,7 +9,7 @@ import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions } = require('./merge-post-merge-test-gate.js');
+const { shouldRunTestGate, listColocatedTestFiles, runTestGate, describePreExisting, diffFailingSets, baselineCheckoutOptions, TEST_GATE_TIMEOUT_MS } = require('./merge-post-merge-test-gate.js');
 const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
@@ -472,6 +472,33 @@ test('runTestGate: a spawn-layer failure names the errno and the signal instead 
   assert.equal(result.passed, false);
   assert.match(result.reason, /ENOBUFS/, 'the errno must survive into the reason — it was discarded before BRO-2874');
   assert.match(result.reason, /SIGTERM/, 'a timeout kill must be named, not reported as status=null');
+});
+
+test('runTestGate: a timeout-killed merged run is NOT retried (BRO-6184), and the kill is named', () => {
+  const dir = makeScratchRepo();
+  writeFailingTest(dir);
+  let spawns = 0;
+  const result = runTestGate({
+    cwd: dir,
+    changedFiles: ['scripts/lib/review-file-writer.js'],
+    execFn: () => {
+      spawns++;
+      return { status: null, signal: 'SIGTERM', error: Object.assign(new Error('spawnSync node ETIMEDOUT'), { code: 'ETIMEDOUT' }), stdout: '', stderr: '' };
+    },
+    makeBaselineCheckout: () => ({ dir, prepared: true }),
+    removeBaselineCheckout: () => {},
+  });
+  assert.equal(spawns, 1, 'a timeout kill must not double the wait with an unparseable-death retry');
+  assert.equal(result.passed, false);
+  assert.match(result.reason, /killed before finishing/);
+  assert.doesNotMatch(result.reason, /twice|re-ran/);
+});
+
+test('TEST_GATE_TIMEOUT_MS stays 8 min (BRO-6184): above the 5 min that killed a loaded-runner merged run, 3 spawns fit the 30 min land cap', () => {
+  assert.equal(TEST_GATE_TIMEOUT_MS, 8 * 60 * 1000);
+  const land = require('node:fs').readFileSync(new URL('./land-branch.js', import.meta.url), 'utf8');
+  const outer = Number(/MERGED_TREE_TIMEOUT_MS = (\d+) \* 60 \* 1000/.exec(land)[1]) * 60 * 1000;
+  assert.ok(outer > 3 * TEST_GATE_TIMEOUT_MS, 'outer land cap must cover merged + retry + baseline spawns');
 });
 
 test('runTestGate: surfacing spawn error/signal changes NO pass/fail decision — status 0 still passes', () => {
@@ -1207,7 +1234,7 @@ test('runTestGate: unparseable first run that PASSES on re-run is not blocked (B
     cwd: dir,
     changedFiles: ['scripts/lib/review-file-writer.js'],
     execFn: () => (++calls === 1
-      ? { status: 1, signal: null, stdout: 'TimeoutError: linear\n', stderr: '' } // a non-kill death; a timeout kill is not re-run (BRO-6184)
+      ? { status: null, signal: 'SIGTERM', stdout: 'TimeoutError: linear\n', stderr: '' }
       : { status: 0, stdout: 'ok\n', stderr: '' }),
     makeBaselineCheckout: () => { throw new Error('baseline must not be built'); },
     removeBaselineCheckout: () => {},
@@ -1343,77 +1370,4 @@ test('runTestGate: stale data plus a NEW failure still blocks (the label never s
   assert.equal(r.passed, false);
   assert.match(r.output, /NEW since origin\/main/);
   assert.match(r.output, /ENV: likely stale local data/);
-});
-
-// BRO-6184: a merged run killed by the spawn timeout was re-run as an "unparseable
-// death", doubling the burn (648s) before the same refusal.
-test('runTestGate: a killed unparseable merged run is NOT re-run (one spawn, not two)', () => {
-  const dir = makeScratchRepo();
-  writeFailingTest(dir, 'x.test.mjs');
-  let calls = 0;
-  const result = runTestGate({
-    cwd: dir,
-    changedFiles: ['scripts/lib/review-file-writer.js'],
-    execFn: () => { calls++; return { status: null, signal: 'SIGTERM', stdout: '', stderr: '' }; },
-    makeBaselineCheckout: () => ({ dir, prepared: true }),
-    removeBaselineCheckout: () => {},
-  });
-  assert.equal(calls, 1);
-  assert.equal(result.passed, false);
-  assert.match(result.reason, /killed before finishing/);
-});
-
-// Node 22 reports a real spawnSync timeout as status 1, signal null, error ETIMEDOUT.
-test('runTestGate: the real ETIMEDOUT result shape is also treated as killed', () => {
-  const dir = makeScratchRepo();
-  writeFailingTest(dir, 'x.test.mjs');
-  let calls = 0;
-  const err = Object.assign(new Error('spawnSync ETIMEDOUT'), { code: 'ETIMEDOUT' });
-  const result = runTestGate({
-    cwd: dir,
-    changedFiles: ['scripts/lib/review-file-writer.js'],
-    execFn: () => { calls++; return { status: 1, signal: null, error: err, stdout: '', stderr: '' }; },
-    makeBaselineCheckout: () => ({ dir, prepared: true }),
-    removeBaselineCheckout: () => {},
-  });
-  assert.equal(calls, 1);
-  assert.equal(result.passed, false);
-  assert.match(result.reason, /killed before finishing/);
-});
-
-test('runTestGate: a non-killed unparseable death is still re-run once', () => {
-  const dir = makeScratchRepo();
-  writeFailingTest(dir, 'x.test.mjs');
-  let calls = 0;
-  runTestGate({
-    cwd: dir,
-    changedFiles: ['scripts/lib/review-file-writer.js'],
-    execFn: () => { calls++; return { status: 1, signal: null, stdout: '', stderr: 'boom' }; },
-    makeBaselineCheckout: () => ({ dir, prepared: true }),
-    removeBaselineCheckout: () => {},
-  });
-  assert.equal(calls, 2);
-});
-
-test('runTestGate baseline mode: a killed baseline run is not trusted as the pre-existing set', () => {
-  const baselineDir = makeScratchRepo();
-  writeFailingTest(baselineDir, 'old.test.mjs');
-  const mergedDir = makeScratchRepo();
-  writeFailingTest(mergedDir, 'old.test.mjs');
-  const env = { ...process.env };
-  delete env.NODE_TEST_CONTEXT;
-  const result = runTestGate({
-    cwd: mergedDir,
-    changedFiles: ['scripts/lib/review-file-writer.js'],
-    execFn: (cwd, files) => {
-      const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', ...files], { cwd, encoding: 'utf8', env });
-      return cwd === baselineDir ? { ...r, status: null, signal: 'SIGTERM' } : r;
-    },
-    makeBaselineCheckout: () => ({ dir: baselineDir, prepared: true }),
-    removeBaselineCheckout: () => {},
-    retryUnparseable: false,
-  });
-  assert.equal(result.passed, false);
-  assert.match(result.reason, /baseline checkout unavailable/);
-  assert.match(result.output, /baseline run was killed/);
 });

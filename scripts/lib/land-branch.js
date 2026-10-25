@@ -89,7 +89,9 @@ const REPO_ROOT = path.join(__dirname, '..', '..');
 const GIT_NET_TIMEOUT_MS = Number(process.env.GIT_NET_TIMEOUT_SEC || 90) * 1000;
 // The merged-tree suite is minutes, not seconds (~4min for scripts/lib, per
 // merge-post-merge-test-gate.js) — it gets the build's budget, not a check's.
-const MERGED_TREE_TIMEOUT_MS = 20 * 60 * 1000;
+// 30 min (BRO-6184): the gate's worst case is merged run + unparseable retry + baseline run,
+// 3 spawns x TEST_GATE_TIMEOUT_MS (8 min) = 24 min plus checkout setup.
+const MERGED_TREE_TIMEOUT_MS = 30 * 60 * 1000;
 const CHECK_OUTPUT_MAX_BYTES = 256 * 1024 * 1024;
 
 // Blobless-clone rebase failure (BRO-4141 class, 2026-09-27 our-sinatra land):
@@ -351,7 +353,7 @@ function makeVerifiedBaseChecks({ verifiedBase, checks = defaultChecks, git = nu
       // its helper or data file on main is still not selected.
       // A test main deleted is absent here; dropping it keeps it from arming
       // the whole scripts/lib suite for nothing. An intervening scripts/lib
-      // test still does arm it (~4-9 min, within MERGED_TREE_TIMEOUT_MS).
+      // test still does arm it (~4 min, within MERGED_TREE_TIMEOUT_MS).
       const interveningTests = intervening.filter(f => isRunnableTestFile(f) && (!cwd || fs.existsSync(path.join(cwd, f))));
       // BRO-5732: a capped doc changed on main selects no test by name, so run the cap test explicitly.
       if (intervening.some(f => CAPPED_DOCS_RE.test(f)) && (!cwd || fs.existsSync(path.join(cwd, CAPPED_DOCS_TEST))) && !interveningTests.includes(CAPPED_DOCS_TEST)) interveningTests.push(CAPPED_DOCS_TEST);

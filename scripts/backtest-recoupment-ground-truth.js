@@ -119,7 +119,8 @@ if (TIMING) {
     aggregateOnly: AGGREGATE_ONLY, markdown: MARKDOWN,
     lagWeeks: Number((args.find((a) => a.startsWith('--lag=')) || '--lag=0').slice(6)) || 0, crossing: args.includes('--crossing'),
   });
-  process.exit(process.exitCode || 0);
+  // Not process.exit(): it truncates piped stdout at 64KB (the --json rows), BRO-6184.
+  return;
 }
 
 const rows = [];
@@ -239,4 +240,4 @@ if (args.includes('--json')) {
   console.log(sanityLine);
   if (advisoryOut) console.log(advisoryOut);
 }
-if (args.includes('--strict') && (worse.length || newFalseRecouped.length || skipped.newOnly)) process.exit(1);
+if (args.includes('--strict') && (worse.length || newFalseRecouped.length || skipped.newOnly)) process.exitCode = 1;
