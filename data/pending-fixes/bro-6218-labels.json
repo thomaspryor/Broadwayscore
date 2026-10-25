@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6218-labels",
   "planId": "41b0789a-b67a-4cec-b949-66a358535689",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T20:16:00.127Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "commercial.json: pass-over-2021.designation"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T20:27:21.865Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-christmas-carol-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for is-this-a-room-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for is-this-a-room-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for pass-over-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for pass-over-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
