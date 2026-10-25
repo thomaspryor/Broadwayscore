@@ -244,7 +244,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-25T06:20:00.816Z",
-      "lastSeen": "2026-10-25T09:29:24.357Z",
+      "lastSeen": "2026-10-25T10:13:54.750Z",
       "lastNotifiedAt": "2026-10-25T06:20:00.816Z",
       "lastSurfacedAt": "2026-10-25T06:20:00.816Z",
       "notifyCount": 167,
@@ -252,7 +252,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26182,7 +26182,9 @@
         "runId": "40132155159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
-      "absentRunIds": [],
+      "absentRunIds": [
+        "40182559853"
+      ],
       "silentRefires": 3
     },
     "land:land/bro-6158-plans": {
@@ -26436,6 +26438,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:ba804f4f": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no two unrelated shows serve byte-identical hero images\"",
+      "firstSeen": "2026-10-25T10:13:52.807Z",
+      "incidentOpenedAt": "2026-10-25T10:13:52.807Z",
+      "lastSeen": "2026-10-25T10:13:52.807Z",
+      "lastNotifiedAt": "2026-10-25T10:13:52.807Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6198",
+      "dispatch": {
+        "requestedAt": "2026-10-25T10:13:52.807Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40182559853",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40182559853"
+      }
     }
   }
 }
