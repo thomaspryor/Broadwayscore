@@ -1,21 +1,20 @@
 {
-  "updatedAt": "2026-10-24T07:38:39.391Z",
-  "scanned": 2737,
+  "updatedAt": "2026-10-25T08:12:05.712Z",
+  "scanned": 2794,
   "showsWithViolations": 115,
-  "totalViolations": 147,
-  "newSinceLastRun": 3,
+  "totalViolations": 145,
+  "newSinceLastRun": 2,
   "handled": {
-    "temporal-override-low-confidence": 795,
-    "not-shipped": 54,
+    "temporal-override-low-confidence": 798,
+    "not-shipped": 55,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 31,
-    "manual-clear-reason": 14,
-    "prior-run-or-tour-leg": 44
+    "manual-clear-reason": 13,
+    "prior-run-or-tour-leg": 45
   },
   "newViolationKeys": [
-    "derren-brown-only-human-west-end-2026::thereviewshub--katherine-gannon.json",
-    "the-years-west-end-2025::timeout-london--andrzej-lukowski.json",
-    "dance-is-not-for-us-off-west-end-2026::thereviewshub--the-reviews-hub-london.json"
+    "into-the-woods-2022::thestage--neil-norman.json",
+    "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -25,6 +24,7 @@
     "the-sign-in-sidney-brusteins-window-2023::nytg--brian-scott-lipton.json",
     "a-dolls-house-2023::talkinbroadway--matthew-murray.json",
     "between-riverside-and-crazy-2022::vulture--jackson-mchenry.json",
+    "into-the-woods-2022::thestage--neil-norman.json",
     "the-rose-tattoo-2019::broadwayworld--michael-dale.json",
     "all-my-sons-2019::cititour--brian-scott-lipton.json",
     "all-my-sons-2019::latimes--charles-mcnulty.json",
@@ -40,7 +40,6 @@
     "anything-goes-2011::new-jersey-newsroom--michael-sommers.json",
     "west-side-story-2009::latimes--charles-mcnulty.json",
     "cymbeline-2007::nytimes--ben-brantley.json",
-    "the-color-purple-2005::nytimes--alissa-wilkinson.json",
     "rent-1996::newyorker--john-lahr-1996.json",
     "titanic-1997::vulture--jackson-mchenry.json",
     "a-raisin-in-the-sun-2004::huffpost--david-finkle.json",
@@ -113,7 +112,6 @@
     "the-curious-case-of-benjamin-button-west-end-2024::broadwayworld--unknown.json",
     "robin-hood-west-end-2024::whatsonstage--tom-millward.json",
     "the-years-west-end-2025::telegraph--dominic-cavendish.json",
-    "the-years-west-end-2025::timeout-london--andrzej-lukowski.json",
     "more-life-west-end-2025::everything-theatre--nathan-blue.json",
     "clueless-west-end-2025::timeout-london--andrzej-lukowski.json",
     "manhunt-west-end-2025::london-theatre--olivia-rook.json",
@@ -135,7 +133,6 @@
     "plaza-suite-west-end-2024::whatsonstage--sarah-crompton.json",
     "a-mirror-west-end-2024::thestage--anya-ryan.json",
     "nye-west-end-2024::broadwayworld--persson-gary-naylor.json",
-    "nye-west-end-2024::i-paper--unknown.json",
     "harry-clarke-west-end-2024::whatsonstage--sarah-crompton.json",
     "red-pitch-west-end-2024::thestage--sam-marlowe.json",
     "romeo-and-juliet-west-end-2024::thestage--sam-marlowe.json",
@@ -164,7 +161,7 @@
     "the-upstart-crow-west-end-2020::timeout-london--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
-    "dance-is-not-for-us-off-west-end-2026::thereviewshub--the-reviews-hub-london.json"
+    "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json"
   ],
   "hits": [
     {
@@ -297,6 +294,27 @@
           "cvIssues": [
             "Off-Broadway review",
             "Truncated"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-2022",
+      "title": "Into the Woods",
+      "openingDate": "2022-07-10",
+      "message": "thestage/Neil Norman (thestage--neil-norman.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 46d of opening, likely correct production] This is a legitimate theater review with critical as — https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
+      "violations": [
+        {
+          "filename": "thestage--neil-norman.json",
+          "url": "https://www.thestage.co.uk/long-reviews/into-the-woods-directed-by-terry-gilliam-review-at-theatre-royal-bath",
+          "outletId": "thestage",
+          "criticName": "Neil Norman",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 46d of opening, likely correct production] This is a legitimate theater review with critical as",
+          "cvIssues": [
+            "Review evaluates a production at Theatre Royal Bath, not the Broadway production at St. James Theatre",
+            "The scraped text explicitly states the show 'was originally slated to open at the Old Vic in April this year' but 'was abruptly cancelled' and 'The show now makes its premiere at Theatre Royal Bath'"
           ]
         }
       ]
@@ -580,27 +598,6 @@
           "cvIssues": [
             "Wrong production",
             "Truncated"
-          ]
-        }
-      ]
-    },
-    {
-      "showId": "the-color-purple-2005",
-      "title": "The Color Purple",
-      "openingDate": "2005-12-01",
-      "message": "nytimes/Alissa Wilkinson (nytimes--alissa-wilkinson.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: While this is a legitimate Broadway review of 'The Color Purple' at the Broadway Theatre, it reviews a 2007 replacement  — https://www.nytimes.com/2007/05/18/theater/reviews/18purp.html",
-      "violations": [
-        {
-          "filename": "nytimes--alissa-wilkinson.json",
-          "url": "https://www.nytimes.com/2007/05/18/theater/reviews/18purp.html",
-          "outletId": "nytimes",
-          "criticName": "Alissa Wilkinson",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "While this is a legitimate Broadway review of 'The Color Purple' at the Broadway Theatre, it reviews a 2007 replacement ",
-          "cvIssues": [
-            "Review is for Fantasia Barrino's 2007 run as Celie, not the original 2005 production",
-            "Expected opening date is 2005-12-01, but review explicitly states the show 'yawned open a year and a half ago' from May 2007, placing original opening around late 2005/early 2006"
           ]
         }
       ]
@@ -1953,7 +1950,7 @@
       "showId": "the-years-west-end-2025",
       "title": "The Years",
       "openingDate": "2025-02-04",
-      "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Although the byline is Dominic Cavendish (Telegraph) and the review mentions the Harold Pinter Theatre, the opinion-bear — https://www.telegraph.co.uk/theatre/what-to-see/the-years-harold-pinter-theatre/\ntimeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews the pre-transfer Almeida Theatre production from August 2024, not the Wes — https://www.timeout.com/london/theatre/the-years-review",
+      "message": "telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: Although the byline is Dominic Cavendish (Telegraph) and the review mentions the Harold Pinter Theatre, the opinion-bear — https://www.telegraph.co.uk/theatre/what-to-see/the-years-harold-pinter-theatre/",
       "violations": [
         {
           "filename": "telegraph--dominic-cavendish.json",
@@ -1966,19 +1963,6 @@
           "cvIssues": [
             "Review describes the Almeida Theatre production, not the West End production at Harold Pinter Theatre. The critic states 'the Almeida's contribution to theatreland's enticements is further bolstered by the transfer of a less predictably successful affair, first mounted last summer' — indicating this is a review OF the Almeida production that later transferred to the West End, written before or during the Almeida run.",
             "The review is truncated mid-sentence ('Full marks to Harmony Rose-Bremner and Anjli Mohindra for conjurin[...]') and again later ('theatrical minimalism – the dominant motif being white sheets whipped from a central table and strung from washing-lines to den[...]'), indicating incomplete scraping."
-          ]
-        },
-        {
-          "filename": "timeout-london--andrzej-lukowski.json",
-          "url": "https://www.timeout.com/london/theatre/the-years-review",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review, but it reviews the pre-transfer Almeida Theatre production from August 2024, not the Wes",
-          "cvIssues": [
-            "Review evaluates the Almeida Theatre production (August 2024), not the West End Harold Pinter Theatre run (January 2025)",
-            "Opening sentence explicitly states: 'This review is from the Almeida Theatre in August 2024; The Years transfers to the Harold Pinter Theatre in January 2025'"
           ]
         }
       ]
@@ -2343,7 +2327,7 @@
       "showId": "nye-west-end-2024",
       "title": "Nye",
       "openingDate": "2024-03-06",
-      "message": "broadwayworld/Gary Naylor (broadwayworld--persson-gary-naylor.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of 'Nye', but it reviews the National Theatre production (explicitly named in the closing li — https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307\ni-paper/Fiona Mountford (i-paper--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review with strong critical assessment, but it reviews 'Nye' at the National Theatre (specifical — https://inews.co.uk/culture/arts/nye-national-theatre-review-2944267?srsltid=AU7gw4X0RYUn-knLoo0r4Lzr_dkDeywuiQ47xcYYL7-HKHDb81GwzeXv",
+      "message": "broadwayworld/Gary Naylor (broadwayworld--persson-gary-naylor.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate review of 'Nye', but it reviews the National Theatre production (explicitly named in the closing li — https://www.broadwayworld.com/westend/article/Review-NYE-National-Theatre-20240307",
       "violations": [
         {
           "filename": "broadwayworld--persson-gary-naylor.json",
@@ -2356,19 +2340,6 @@
           "cvIssues": [
             "Review describes production at The National Theatre, not the Olivier Theatre (West End)",
             "Review publish date (2026-10-11) is 2.5+ years after West End opening date (2024-03-06), suggesting review is of a different production or anachronistic metadata"
-          ]
-        },
-        {
-          "filename": "i-paper--unknown.json",
-          "url": "https://inews.co.uk/culture/arts/nye-national-theatre-review-2944267?srsltid=AU7gw4X0RYUn-knLoo0r4Lzr_dkDeywuiQ47xcYYL7-HKHDb81GwzeXv",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "This is a valid theater review with strong critical assessment, but it reviews 'Nye' at the National Theatre (specifical",
-          "cvIssues": [
-            "Review describes production at National Theatre, not West End venue",
-            "Text explicitly states 'To 11 May (nationaltheatre.org.uk)' and mentions Wales Millennium Centre tour dates"
           ]
         }
       ]
@@ -2930,22 +2901,22 @@
       ]
     },
     {
-      "showId": "dance-is-not-for-us-off-west-end-2026",
-      "title": "Dance Is Not for Us",
-      "openingDate": "2026-10-18",
-      "message": "thereviewshub/The Reviews Hub - London (thereviewshub--the-reviews-hub-london.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a well-written review of Omar Rajeh's 'Dance  — https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
+      "showId": "aint-done-bad-off-broadway-2024",
+      "title": "Ain't Done Bad",
+      "openingDate": "2024-07-14",
+      "message": "theatre-reviews-limited/David Roberts (theatre-reviews-limited--david-roberts.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 40d of opening, likely correct production] This is a legitimate theater review evaluating a liv — https://www.theatrereviews.com/off-broadway-dance-review-aint-done-bad-at-the-pershing-square-signature-centers-irene-diamond-stage-through-sunday-september-1-2024/",
       "violations": [
         {
-          "filename": "thereviewshub--the-reviews-hub-london.json",
-          "url": "https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
-          "outletId": "thereviewshub",
-          "criticName": "The Reviews Hub - London",
+          "filename": "theatre-reviews-limited--david-roberts.json",
+          "url": "https://www.theatrereviews.com/off-broadway-dance-review-aint-done-bad-at-the-pershing-square-signature-centers-irene-diamond-stage-through-sunday-september-1-2024/",
+          "outletId": "theatre-reviews-limited",
+          "criticName": "David Roberts",
           "matchedBy": "url",
-          "cvConfidence": "high",
-          "cvReasoning": "[OVERRIDE: review within 1d of opening, likely correct production] This is a well-written review of Omar Rajeh's 'Dance ",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 40d of opening, likely correct production] This is a legitimate theater review evaluating a liv",
           "cvIssues": [
-            "Review evaluates a Dance Umbrella Festival production, not an Off-West End theater production at Barbican Theatre",
-            "Text explicitly states 'playing in this year's Dance Umbrella Festival' and 'Dance Umbrella continues until 27 October 2026', indicating this is a festival production, not a Barbican Theatre Off-West End production"
+            "Venue mismatch: Review describes performance at Irene Diamond Stage, but expected venue is Signature Center",
+            "No critic byline found in scraped content (expected: David Roberts from Theatre Reviews Limited)"
           ]
         }
       ]
