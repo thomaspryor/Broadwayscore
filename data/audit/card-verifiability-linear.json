@@ -1,20 +1,27 @@
 {
-  "generatedAt": "2026-10-24T09:41:38.125Z",
-  "total": 524,
-  "armedCount": 522,
-  "refusedCount": 2,
+  "generatedAt": "2026-10-25T10:06:47.018Z",
+  "total": 519,
+  "armedCount": 516,
+  "refusedCount": 3,
   "byKind": {
-    "no-section": 1,
-    "shape": 1
+    "shape": 3
   },
   "refused": [
     {
-      "id": "BRO-6018",
-      "name": "BRO-5951 follow-up: recover 146 verified-missing T1/T2 reviews in WE historical, adjudicate ~400 fact verdicts",
+      "id": "BRO-6153",
+      "name": "OB historical backfill: season 2024-25 at scope S (hand ramp first, then tooling)",
       "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6018/bro-5951-follow-up-recover-146-verified-missing-t1t2-reviews-in-we",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6153/ob-historical-backfill-season-2024-25-at-scope-s-hand-ramp-first-then",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -s docs/specs/ob-historical-backfill-v2.md)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6146",
+      "name": "Plan: gradual historical backfill for notable Off-Broadway shows (pre-March 2026)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6146/plan-gradual-historical-backfill-for-notable-off-broadway-shows-pre",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: test -s docs/specs/ob-historical-backfill-v1.md)",
+      "kind": "shape"
     },
     {
       "id": "BRO-5680",
@@ -27,21 +34,93 @@
   ],
   "missingCheckPaths": [
     {
-      "id": "BRO-6108",
-      "name": "BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through",
-      "cmd": "node --test scripts/lib/we-historical-tr-coverage.test.mjs scripts/lib/tr-pdf-parse.test.mjs",
+      "id": "BRO-6192",
+      "name": "Launch the Money Scorecard (/biz) publicly on Mon Oct 26: prepare and verify the release change, land at the agreed time",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6192/launch-the-money-scorecard-biz-publicly-on-mon-oct-26-prepare-and",
+      "cmd": "node --test tests/unit/commercial-release.test.mjs",
       "missingPaths": [
-        "scripts/lib/we-historical-tr-coverage.test.mjs"
+        "tests/unit/commercial-release.test.mjs"
       ]
     },
     {
-      "id": "BRO-6104",
-      "name": "Code-checkout auto-sync leaves a half-applied tree when its fast-forward times out at 20s",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6104/code-checkout-auto-sync-leaves-a-half-applied-tree-when-its-fast",
-      "cmd": "node --test tests/unit/code-checkout-staleness.test.mjs",
+      "id": "BRO-6191",
+      "name": "Recoupment backtest: add a loss-side gate; stop deep research re-adding an uncited weekly cost to a record whose cost was cleared",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6191/recoupment-backtest-add-a-loss-side-gate-stop-deep-research-re-adding",
+      "cmd": "node --test scripts/lib/deep-research-cleared-cost.test.mjs",
       "missingPaths": [
-        "tests/unit/code-checkout-staleness.test.mjs"
+        "scripts/lib/deep-research-cleared-cost.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6185",
+      "name": "DECISION NEEDED: TEST: try the reply flow (changes nothing, safe to answer)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6185/decision-needed-test-try-the-reply-flow-changes-nothing-safe-to-answer",
+      "cmd": "test -f memory/test-reply-flow-decision.md",
+      "missingPaths": [
+        "memory/test-reply-flow-decision.md"
+      ]
+    },
+    {
+      "id": "BRO-6176",
+      "name": "iOS design round: ideas from the inspiration app (stats strip, feature cards, numbered Top 10, quick-log +)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6176/ios-design-round-ideas-from-the-inspiration-app-stats-strip-feature",
+      "cmd": "node --test tests/unit/inspiration-ideas-variants.test.mjs",
+      "missingPaths": [
+        "tests/unit/inspiration-ideas-variants.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6171",
+      "name": "commercial-pending-hello-dolly-2017 — recoupment claim needs review",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6171/commercial-pending-hello-dolly-2017-recoupment-claim-needs-review",
+      "cmd": "node --test scripts/verify-commercial-pending.test.mjs",
+      "missingPaths": [
+        "scripts/verify-commercial-pending.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6170",
+      "name": "Web My Shows: add Stats and Feed (Timeline + Photo wall) tabs to match the iOS app",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6170/web-my-shows-add-stats-and-feed-timeline-photo-wall-tabs-to-match-the",
+      "cmd": "node --test tests/unit/my-shows-stats-feed.test.mjs",
+      "missingPaths": [
+        "tests/unit/my-shows-stats-feed.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6159",
+      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6159/money-scorecard-auto-flag-a-season-page-that-has-no-custom-share-card",
+      "cmd": "node --test scripts/audit-biz-og-coverage.test.mjs",
+      "missingPaths": [
+        "scripts/audit-biz-og-coverage.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6142",
+      "name": "Finish 24 October manual checklist and Post recovery",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6142/finish-24-october-manual-checklist-and-post-recovery",
+      "cmd": "test -f scripts/post-recovery-checklist.mjs",
+      "missingPaths": [
+        "scripts/post-recovery-checklist.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6112",
+      "name": "DECISION NEEDED: Add the 8 missing cloud Tier-1 secrets? (BRIGHTDATA, SCRAPINGBEE, BROWSERBASE, RESEND, ANTHROPIC)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6112/decision-needed-add-the-8-missing-cloud-tier-1-secrets-brightdata",
+      "cmd": "test -f memory/cloud-secrets-decision.md",
+      "missingPaths": [
+        "memory/cloud-secrets-decision.md"
+      ]
+    },
+    {
+      "id": "BRO-6111",
+      "name": "DECISION NEEDED: Cut over the Mac dispatch fleet to cloud workers? (BRO-4622 remainder)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6111/decision-needed-cut-over-the-mac-dispatch-fleet-to-cloud-workers-bro",
+      "cmd": "test -f memory/BRO-4622-cutover-decision.md",
+      "missingPaths": [
+        "memory/BRO-4622-cutover-decision.md"
       ]
     },
     {
@@ -63,24 +142,6 @@
       ]
     },
     {
-      "id": "BRO-6088",
-      "name": "Flag create_session from a plan-only session (BRO-6083 follow-up)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6088/flag-create-session-from-a-plan-only-session-bro-6083-follow-up",
-      "cmd": "node --test tests/unit/plan-only-create-session.test.mjs",
-      "missingPaths": [
-        "tests/unit/plan-only-create-session.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6066",
-      "name": "Opening-night lane misses 8 of 19 Broadway reviews in shadow (WSJ, Deadline, Time Out, TheaterMania, Tribune, Vulture, Talkin' Broadway, singleticket)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6066/opening-night-lane-misses-8-of-19-broadway-reviews-in-shadow-wsj",
-      "cmd": "node --test scripts/lib/opening-night-lane/opening-night-lane.test.mjs",
-      "missingPaths": [
-        "scripts/lib/opening-night-lane/opening-night-lane.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6057",
       "name": "Opening-night audit 2026-10-23",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6057/opening-night-audit-2026-10-23",
@@ -90,30 +151,12 @@
       ]
     },
     {
-      "id": "BRO-6045",
-      "name": "Publish britishtheatre.com Broadway Thérèse Raquin review; verify-review-recovery false positives",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6045/publish-britishtheatrecom-broadway-therese-raquin-review-verify-review",
-      "cmd": "node --test scripts/verify-review-recovery.test.mjs",
-      "missingPaths": [
-        "scripts/verify-review-recovery.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6034",
       "name": "Opening-night watch 2026-10-22",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6034/opening-night-watch-2026-10-22",
       "cmd": "test -f memory/opening-night-watch-2026-10-22.md",
       "missingPaths": [
         "memory/opening-night-watch-2026-10-22.md"
-      ]
-    },
-    {
-      "id": "BRO-6026",
-      "name": "Land retry sweep can land a held change: a re-run replays the cancelled run's original commit, not the ref's current tip",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6026/land-retry-sweep-can-land-a-held-change-a-re-run-replays-the-cancelled",
-      "cmd": "node --test tests/unit/land-retry-cancelled.test.mjs",
-      "missingPaths": [
-        "tests/unit/land-retry-cancelled.test.mjs"
       ]
     },
     {
@@ -288,15 +331,6 @@
       ]
     },
     {
-      "id": "BRO-5846",
-      "name": "Finish Mac-to-cloud move: file+run BRO-4622 steps 3-5, fix dead launchd jobs, rescue unlanded branches",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5846/finish-mac-to-cloud-move-filerun-bro-4622-steps-3-5-fix-dead-launchd",
-      "cmd": "node --test tests/unit/mac-cloud-routines-verification.test.mjs",
-      "missingPaths": [
-        "tests/unit/mac-cloud-routines-verification.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5840",
       "name": "Owner to-dos: SEO and domain-authority manual tasks (pitches, signups, Wikipedia, Bing key)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5840/owner-to-dos-seo-and-domain-authority-manual-tasks-pitches-signups",
@@ -324,15 +358,6 @@
       ]
     },
     {
-      "id": "BRO-5810",
-      "name": "Opening-night watch 2026-10-20",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5810/opening-night-watch-2026-10-20",
-      "cmd": "node --test scripts/opening-night-watch.test.mjs",
-      "missingPaths": [
-        "scripts/opening-night-watch.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5806",
       "name": "iOS app CI never runs its website-parity contracts (no Broadwayscore checkout): add an advisory parity job",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5806/ios-app-ci-never-runs-its-website-parity-contracts-no-broadwayscore",
@@ -351,15 +376,6 @@
       ]
     },
     {
-      "id": "BRO-5748",
-      "name": "Opening-night audit 2026-10-20",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5748/opening-night-audit-2026-10-20",
-      "cmd": "test -f memory/opening-night-audit-2026-10-20.md",
-      "missingPaths": [
-        "memory/opening-night-audit-2026-10-20.md"
-      ]
-    },
-    {
       "id": "BRO-5714",
       "name": "commercial-pending-moulin-rouge — recoupment claim needs review",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5714/commercial-pending-moulin-rouge-recoupment-claim-needs-review",
@@ -375,6 +391,15 @@
       "cmd": "node --test tests/unit/springsteen-search-fix.test.mjs",
       "missingPaths": [
         "tests/unit/springsteen-search-fix.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5673",
+      "name": "Progress per dollar: more Codex, cap batch sessions, stop dead filers, consolidate watchers (owner chose A, 2026-10-19)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5673/progress-per-dollar-more-codex-cap-batch-sessions-stop-dead-filers",
+      "cmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
+      "missingPaths": [
+        "scripts/verify-bro-5384-codex-throughput.test.mjs"
       ]
     },
     {
@@ -459,6 +484,15 @@
       ]
     },
     {
+      "id": "BRO-5485",
+      "name": "Codex lane v2: run cards on OpenAI Codex Cloud (owner's ChatGPT plan) instead of codex exec in our cloud container",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5485/codex-lane-v2-run-cards-on-openai-codex-cloud-owners-chatgpt-plan",
+      "cmd": "node --test scripts/verify-bro-5384-codex-throughput.test.mjs",
+      "missingPaths": [
+        "scripts/verify-bro-5384-codex-throughput.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-5411",
       "name": "Server-side backstop for the cloud review gate (stale-container sessions) + gate telemetry digest",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5411/server-side-backstop-for-the-cloud-review-gate-stale-container",
@@ -519,6 +553,15 @@
       "cmd": "node --test scripts/lib/date-extractor.test.mjs",
       "missingPaths": [
         "scripts/lib/date-extractor.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-5287",
+      "name": "P1: Codex runner lands nothing (0 cards in 19h): runs steal each other's lock, crash mid-card, and pick cards the check rejects",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5287/p1-codex-runner-lands-nothing-0-cards-in-19h-runs-steal-each-others",
+      "cmd": "node --test scripts/verify-codex-runner-health.test.mjs",
+      "missingPaths": [
+        "scripts/verify-codex-runner-health.test.mjs"
       ]
     },
     {
@@ -711,15 +754,6 @@
       ]
     },
     {
-      "id": "BRO-4937",
-      "name": "Triage the last 20 baselined orphaned-wrongProduction files (missing date, no url, pre-opening, already excluded)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4937/triage-the-last-20-baselined-orphaned-wrongproduction-files-missing",
-      "cmd": "node --test tests/unit/orphaned-wrongprod-baseline-empty.test.mjs",
-      "missingPaths": [
-        "tests/unit/orphaned-wrongprod-baseline-empty.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4904",
       "name": "Accounts: deleted-account ghost session keeps failing saves for up to an hour; OAuth return page shows a false Sign-in failed after 10 s on slow phones",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4904/accounts-deleted-account-ghost-session-keeps-failing-saves-for-up-to",
@@ -753,15 +787,6 @@
       "cmd": "node --test tests/unit/star-rating-ref.test.mjs",
       "missingPaths": [
         "tests/unit/star-rating-ref.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4763",
-      "name": "P2: Sound of Music tour has no synopsis: its Broadway parent (1998 revival) was never filled by the Wikipedia enricher",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4763/p2-sound-of-music-tour-has-no-synopsis-its-broadway-parent-1998",
-      "cmd": "node --test tests/unit/sound-of-music-synopsis.test.mjs",
-      "missingPaths": [
-        "tests/unit/sound-of-music-synopsis.test.mjs"
       ]
     },
     {
@@ -873,15 +898,6 @@
       ]
     },
     {
-      "id": "BRO-4305",
-      "name": "La Voce di New York roundup counted under only 1 of the 3 shows it reviews (Disruption, The Pass missing)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4305/la-voce-di-new-york-roundup-counted-under-only-1-of-the-3-shows-it",
-      "cmd": "node --test tests/unit/la-voce-roundup-multi-show.test.mjs",
-      "missingPaths": [
-        "tests/unit/la-voce-roundup-multi-show.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-4303",
       "name": "P2 trio from BRO-4294 ship-check: dropdown inset overflow, avatar img fallback, suggestedDateSeen format",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4303/p2-trio-from-bro-4294-ship-check-dropdown-inset-overflow-avatar-img",
@@ -969,15 +985,6 @@
       "cmd": "node --test scripts/lib/dead-page-content.test.mjs",
       "missingPaths": [
         "scripts/lib/dead-page-content.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-3911",
-      "name": "review-file-writer.js merge loop can silently accept externally-supplied wrongShow/stale wrongProductionAutoCleared without invalidating",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3911/review-file-writerjs-merge-loop-can-silently-accept-externally",
-      "cmd": "node --test tests/unit/review-file-writer-merge-flags.test.mjs",
-      "missingPaths": [
-        "tests/unit/review-file-writer-merge-flags.test.mjs"
       ]
     },
     {
@@ -1224,15 +1231,6 @@
       ]
     },
     {
-      "id": "BRO-2491",
-      "name": "Generalize recover-we-historical-s1-s2.mjs into a reusable multi-session-pilot state recovery pattern",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2491/generalize-recover-we-historical-s1-s2mjs-into-a-reusable-multi",
-      "cmd": "node --test scripts/lib/pilot-state-recovery.test.mjs",
-      "missingPaths": [
-        "scripts/lib/pilot-state-recovery.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-2485",
       "name": "OB discovery S4-T3..T6: getCity/type-union/venue-list/sitemap gate for off-off-broadway",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2485/ob-discovery-s4-t3t6-getcitytype-unionvenue-listsitemap-gate-for-off",
@@ -1411,18 +1409,21 @@
       "missingPaths": [
         "scripts/ci-health-check.test.mjs"
       ]
-    },
-    {
-      "id": "BRO-2428",
-      "name": "Same unclamped now-t<window freshness idiom in 4 in-memory caches (brightdata-caps, scrapingdog-caps, browserbase-session x2)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2428/same-unclamped-now-twindow-freshness-idiom-in-4-in-memory-caches",
-      "cmd": "node --test tests/unit/cache-clamp.test.mjs",
-      "missingPaths": [
-        "tests/unit/cache-clamp.test.mjs"
-      ]
     }
   ],
   "vacuousChecks": [
+    {
+      "id": "BRO-6165",
+      "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6165/rerun-bucknell-recoupment-backtest-after-bro-6137-capitalization-fills",
+      "cmd": "test -f scripts/backtest-recoupment-bucknell.js",
+      "kind": "test-f-satisfied",
+      "polarity": "never-fails",
+      "paths": [
+        "scripts/backtest-recoupment-bucknell.js"
+      ],
+      "reason": "`test -f scripts/backtest-recoupment-bucknell.js` already passes on origin/main, so re-running it at Done time cannot distinguish finished work from untouched work"
+    },
     {
       "id": "BRO-6035",
       "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
