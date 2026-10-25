@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T17:22:46.292Z",
+  "runDate": "2026-10-25T17:36:59.192Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
+    "processed": 1,
     "failed": 54,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "1.8%"
   },
   "tierBreakdown": {
-    "playwright": 64,
+    "playwright": 83,
     "amp": 0,
     "browserbase": 11,
     "directCookies": 0,
@@ -25,7 +25,7 @@
     "scrapingbee": 7,
     "brightdata": 9,
     "archiveToday": 0,
-    "archive": 15
+    "archive": 18
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -36,7 +36,7 @@
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
@@ -45,7 +45,7 @@
     "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 54,
-    "scrapingBeePageCredits": 0,
+    "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,7 +54,7 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
+    "processed": 1,
     "failed": 54,
     "shows": [
       "aint-no-mo-2022",
@@ -63,6 +63,7 @@
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
       "eclipsed-2016",
+      "endgame-off-broadway-2025",
       "escape-to-margaritaville-2018",
       "farinelli-and-the-king-2017",
       "ghost-the-musical-2012",
@@ -108,11 +109,13 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 101,
-      "failed": 86
+      "processed": 122,
+      "failed": 94
     }
   },
-  "processed": [],
+  "processed": [
+    "endgame-off-broadway-2025/nytimes--unknown.json"
+  ],
   "failed": [
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
@@ -271,7 +274,29 @@
       "fun-home-2015/onstage-blog--tara-kennedy.json",
       "laowang-a-chinatown-king-lear-off-broadway-2025/the-interested-bystander--cary-wong.json",
       "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "aftermath-art-new-york-off-broadway-2026/new-york-sun--unknown.json"
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "dance-is-not-for-us-off-west-end-2026/guardian--lyndsey-winship.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+      "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "dog-mom-off-west-end-2026/onin--caitlin-neal.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json",
+      "endgame-off-broadway-2025/nytimes--unknown.json"
     ],
     "failed": [
       "anna-christie-off-broadway-2025/thewrap--robert-hofler.json",
@@ -359,7 +384,15 @@
       "indecent-2017/usatoday--elysa-gardner.json",
       "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
       "hamlet-2009/nydailynews--joe-dziemianowicz.json",
-      "is-he-dead-2007/nypost--clive-barnes.json"
+      "is-he-dead-2007/nypost--clive-barnes.json",
+      "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+      "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
+      "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+      "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+      "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json"
     ]
   },
   "tierDetails": {
@@ -427,7 +460,26 @@
       "fun-home-2015/nyt-theater--jonathan-mandell.json",
       "fun-home-2015/onstage-blog--tara-kennedy.json",
       "laowang-a-chinatown-king-lear-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
+      "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json",
+      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/onin--caitlin-neal.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "dance-is-not-for-us-off-west-end-2026/guardian--lyndsey-winship.json",
+      "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "dog-mom-off-west-end-2026/onin--caitlin-neal.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -455,7 +507,7 @@
       "the-devil-wears-prada-west-end-2024/mail-on-sunday--unknown.json",
       "the-brothers-size-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "duke-and-roya-off-broadway-2025/new-york-sun--elysa-gardner.json",
-      "aftermath-art-new-york-off-broadway-2026/new-york-sun--unknown.json"
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
     ],
     "brightdata": [
       "anna-christie-off-broadway-2025/observer--david-cote.json",
@@ -484,7 +536,10 @@
       "the-weir-off-broadway-2025/talkinbroadway--marc-miller.json",
       "the-weir-off-broadway-2025/theater-pizzazz--alix-cohen.json",
       "duke-and-roya-off-broadway-2025/dailybeast--tim-teeman.json",
-      "fun-home-2015/broadwayworld--unknown.json"
+      "fun-home-2015/broadwayworld--unknown.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "endgame-off-broadway-2025/nytimes--unknown.json"
     ]
   },
   "failuresByOutlet": {},
