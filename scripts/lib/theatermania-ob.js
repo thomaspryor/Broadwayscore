@@ -404,8 +404,9 @@ async function fetchTmOffBroadway({
     } catch (e) {
       // WordPress answers a page past the last one with HTTP 400
       // (rest_post_invalid_page_number), not an empty array. Only a full scan
-      // reaches it; page 1 failing is still a real error.
-      if (page > 1 && /HTTP 400\b/.test(e.message)) break;
+      // (stopWhenPageEmpty false) reaches it. The default current-show scan
+      // keeps failing loudly on any error, as before.
+      if (!stopWhenPageEmpty && page > 1 && /HTTP 400\b/.test(e.message)) break;
       throw e;
     }
     pagesFetched++;
