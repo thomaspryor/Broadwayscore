@@ -53,6 +53,7 @@ test('sign-ups go to their own store, never the main list or accounts', () => {
   const sql = read('supabase/migrations/20261025_money_scorecard_signups.sql');
   assert.match(sql, /REVOKE ALL ON public\.money_scorecard_signups FROM anon, authenticated/);
   assert.match(sql, /SECURITY DEFINER/);
+  assert.match(sql, /interval '1 minute'\) >= 60 THEN/, 'new-row rate cap');
 });
 
 test('generic popups are off on /biz and held while a money gate is on screen', () => {
@@ -67,6 +68,7 @@ test('paywall structured data points at the gated wrapper class', () => {
   assert.equal(schema.isAccessibleForFree, false);
   assert.equal(schema.hasPart.cssSelector, '.money-gated');
   assert.match(read('src/components/biz/MoneyGate.tsx'), /className="money-gated money-gate-content"/);
+  assert.match(read('src/components/BizBuzzCard.tsx'), /<MoneyGate page="show-page" preview="short" schema=\{false\}>/, 'show pages are not marked paywalled');
 });
 
 test('every show-level money surface is gated', () => {

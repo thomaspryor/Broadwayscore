@@ -49,6 +49,15 @@ BEGIN
   IF v_role IS NOT NULL AND v_role NOT IN ('producer', 'investor', 'industry', 'press', 'fan') THEN
     v_role := NULL;
   END IF;
+  -- Abuse cap: the function is open to anon with no confirmation step, so a
+  -- scripted flood of new addresses stops at 60 new rows a minute (dropped
+  -- quietly; the browser unlocks the reader either way). Repeat sign-ups of
+  -- an existing address are never capped.
+  IF NOT EXISTS (SELECT 1 FROM public.money_scorecard_signups WHERE email = v_email)
+     AND (SELECT count(*) FROM public.money_scorecard_signups
+          WHERE created_at > now() - interval '1 minute') >= 60 THEN
+    RETURN TRUE;
+  END IF;
 
   INSERT INTO public.money_scorecard_signups (email, role, first_page)
   VALUES (v_email, v_role, v_page)
