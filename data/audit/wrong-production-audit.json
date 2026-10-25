@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T15:40:53.736Z",
+  "timestamp": "2026-10-25T16:12:06.364Z",
   "stats": {
-    "totalReviews": 61482,
-    "alreadyFlagged": 21437,
+    "totalReviews": 61603,
+    "alreadyFlagged": 21442,
     "dateGuardCatches": 223,
-    "directorMismatch": 2226,
-    "tvFilmSignals": 1747,
-    "londonSignals": 2976,
-    "offBroadwaySignals": 541,
+    "directorMismatch": 2228,
+    "tvFilmSignals": 1748,
+    "londonSignals": 2977,
+    "offBroadwaySignals": 539,
     "yearMismatch": 202,
-    "noPublishDate": 5488
+    "noPublishDate": 5583
   },
   "findings": [
     {
@@ -42111,6 +42111,20 @@
       ]
     },
     {
+      "showId": "tartuffe-off-broadway-2025",
+      "file": "cititour--unknown.json",
+      "score": null,
+      "publishDate": "2025-12-17",
+      "url": "https://cititour.com/NYC_News/Review-NYTWs-Tartuffe-Needs-More-Bite/10233",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
       "showId": "tartuffe-remixed-off-west-end-2026",
       "file": "marylebonetheatre--unknown.json",
       "publishDate": null,
@@ -52071,6 +52085,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": null,
+      "url": "https://culturesauce.com/2025/07/17/the-weir-irish-rep-off-broadway-review/#:~:text=Ever%20since%20its%201997%20debut,knocks%20at%20the%20window%20panes.",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "front-row-center--stanford-friedman.json",
+      "publishDate": null,
+      "url": "https://thefrontrowcenter.com/2025/07/the-weir-3/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
         }
       ]
     },
@@ -67787,6 +67827,19 @@
       ]
     },
     {
+      "showId": "dog-mom-off-west-end-2026",
+      "file": "onin--caitlin-neal.json",
+      "publishDate": "2026-10-23",
+      "url": "https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&utm_medium=rss&utm_campaign=dog-mom-at-southwark-playhouse",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "don-juan-in-soho-west-end-2017",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 82,
@@ -70484,38 +70537,10 @@
     },
     {
       "showId": "fun-home-2015",
-      "file": "nbcny--robert-kahn.json",
-      "score": 80,
-      "publishDate": "April 19, 2015",
-      "url": "https://www.nbcnewyork.com/entertainment/the-scene/public-fun-home-review-228760481.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "fun-home-2015",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 82,
       "publishDate": "April 20th, 2015",
       "url": "https://www.northjersey.com/arts-and-entertainment/theater/complex-fabric-of-a-family-s-life-1.1312774?page=all",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "fun-home-2015",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 91,
-      "publishDate": "2015-04-20",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/fun-home-shines-broadway-residency-article-1.2189141",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -74909,6 +74934,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "revstanstheatreblog--unknown.json",
+      "score": 94,
       "publishDate": "2026-10-25",
       "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
       "findings": [
