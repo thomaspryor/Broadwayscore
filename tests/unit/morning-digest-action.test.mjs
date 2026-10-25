@@ -69,6 +69,8 @@ test('digest and compare load only node built-ins and repo files', () => {
     for (const m of src.matchAll(/require\(\s*['"]([^'"]+)['"]\s*\)/g)) {
       const spec = m[1];
       if (spec.startsWith('.')) {
+        // data/*.json is data, not an npm package; core data is absent from a fresh clone.
+        if (path.relative(ROOT, path.resolve(path.dirname(file), spec)).startsWith('data' + path.sep)) continue;
         let dep;
         try { dep = require.resolve(path.resolve(path.dirname(file), spec)); } catch { bad.push(`${path.relative(ROOT, file)} -> ${spec} (unresolvable)`); continue; }
         if (dep.endsWith('.js') || dep.endsWith('.cjs')) walk(dep);
