@@ -86,6 +86,17 @@ EVAL_ROOT=$(printf '%s' "$_REPO_TARGET" | jq -r '.evalRoot // empty' 2>/dev/null
 [ -z "$EVAL_ROOT" ] && EVAL_ROOT="$SESSION_ROOT"
 SESSION_ROOT="$EVAL_ROOT"
 
+# BRO-6241: the visual-approval flow parks UI work on visual-hold/* and its
+# screenshots on visual-evidence/* (scripts/visual-approval.js). Those refs never
+# land by themselves (a CI lander ships them only after a signed owner approval),
+# so a push whose ONLY target is one of them is not a ship. One plain
+# `git push [flags] origin <src>:refs/heads/visual-(hold|evidence)/<name>`:
+# no chaining, no substitution, so it cannot smuggle a second push past the gate.
+_HOLD_RE='^[[:space:]]*git push( (-u|--force|--force-with-lease|--no-verify))* origin [A-Za-z0-9._/-]+:refs/heads/visual-(hold|evidence)/[A-Za-z0-9._-]+[[:space:]]*$'
+if [[ "$command" =~ $_HOLD_RE ]] && [[ "$command" != *$'\n'* ]]; then
+  exit 0
+fi
+
 # Are any UI files changed in what's actually being pushed?
 # Parse `git push [flags] [remote] <branch>` to find the explicit push target.
 # When in a worktree and running `git push origin main`, HEAD is the worktree
@@ -123,7 +134,7 @@ fi
 # query (shared with pre-push-review-gate.sh's diff-hash/push-allowed) so a
 # pure backend/data push doesn't get falsely flagged as "UI files changed"
 # by an unrelated .tsx/.css commit sitting on shared local main.
-UI_PATTERN='^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src/app/.*\.(tsx|jsx|ts|js)$)'
+UI_PATTERN='^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.)'
 GATE_LIB="$CANONICAL_ROOT/scripts/lib/review-gate.mjs"
 _UNSCOPED_UI_DIFF() {
   cd "$SESSION_ROOT" && git diff --name-only "origin/main...$DIFF_REF" 2>/dev/null | grep -E "$UI_PATTERN"

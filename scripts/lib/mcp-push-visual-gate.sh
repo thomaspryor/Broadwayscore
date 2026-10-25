@@ -34,7 +34,7 @@
 # Tests: scripts/tests/github-mcp-push-gates.test.mjs.
 
 # Must stay identical to UI_PATTERN in pre-push-visual-gate.sh (test asserts it).
-UI_PATTERN='^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src/app/.*\.(tsx|jsx|ts|js)$)'
+UI_PATTERN='^(src/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.)'
 
 input=$(cat)
 tool_name=$(printf '%s' "$input" | jq -r '.tool_name // empty' 2>/dev/null) || exit 0

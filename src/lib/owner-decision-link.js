@@ -87,6 +87,16 @@ const LABEL_RES = {
   defaultText: /^\s*(?:[-*>]\s+)?\**Default\**\s*:\s*\**\s*(.+)$/i,
 };
 
+// "Evidence: <label> | <https://raw.githubusercontent.com/thomaspryor/Broadwayscore/...png>"
+// (BRO-6241). Only that host and repo can be shown as an image on the owner pages.
+const EVIDENCE_RE = /^\s*(?:[-*>]\s+)?\**Evidence\**\s*:\s*\**\s*(?:([^|]{1,120})\|\s*)?(\S+)\s*$/i;
+const MAX_EVIDENCE = 8;
+const EVIDENCE_URL_RE = /^https:\/\/raw\.githubusercontent\.com\/thomaspryor\/Broadwayscore\/[A-Za-z0-9._\/-]{1,200}\.(?:png|jpe?g)$/;
+function safeEvidenceUrl(raw) {
+  const u = collapseSelfLinks(unescapeMarkdown(raw)).replace(/^<|>$/g, '');
+  return EVIDENCE_URL_RE.test(u) && !u.includes('..') ? u : null;
+}
+
 function plain(s) {
   return collapseSelfLinks(unescapeMarkdown(s)).replace(/\*\*/g, '').replace(/\s*—\s*/g, ', ').replace(/\s+/g, ' ').trim();
 }
@@ -101,9 +111,15 @@ function splitUpDown(rest) {
 
 /** Parse the plain-English parts of a decision card. Never throws. */
 function parseDecisionBlock(description) {
-  const out = { why: null, options: [], recommendation: null, defaultText: null };
+  const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [] };
   const seen = new Set();
   for (const line of stripCode(description)) {
+    const ev = EVIDENCE_RE.exec(line);
+    if (ev) {
+      const url = safeEvidenceUrl(ev[2]);
+      if (url && out.evidence.length < MAX_EVIDENCE) out.evidence.push({ label: plain(ev[1]).slice(0, 80) || 'Screenshot', url });
+      continue;
+    }
     const opt = OPTION_RE.exec(line);
     if (opt) {
       const key = opt[1].toLowerCase();
@@ -173,6 +189,62 @@ const answerMarker = (ref) => `Decision ref ODA${ref}`;
 const emailMarker = (ref) => `Decision email ref ODE${ref}`;
 function bodyHasMarker(body, marker) { return unescapeMarkdown(body).includes(marker); }
 
+
+// ── visual approvals (BRO-6241) ──────────────────────────────────────────────
+// A worker that changed the website asks the owner "does this look right?" as
+// an ordinary decision card. The card carries a machine line
+//   VISUAL-APPROVAL: patch=<git patch-id> verdict=<hex> hold=<branch>
+// and its question ends with "(ref <12 hex>)" = binding(patch, verdict), so the
+// owner's tap covers exactly that diff and check (the question hash is what the
+// link signs). Approve additionally writes "Visual approval ref VQA<mac>"; the
+// MAC has its own domain because the ODA/ODE refs are readable by any worker.
+// Only the CI lander (which holds the secret) acts on it.
+const VISUAL_DOMAIN = 'owner-visual-approval:v1:';
+const VISUAL_TTL_MS = 14 * 24 * 60 * 60 * 1000;
+const VISUAL_LINE_RE = /^\s*(?:[-*>]\s+)?\**VISUAL-APPROVAL\**\s*:\s*(.+)$/i;
+const HEX_RE = /^[0-9a-f]{40,64}$/;
+const HOLD_RE = /^visual-hold\/[a-z0-9][a-z0-9-]{0,60}$/;
+
+function visualBinding(patch, verdict) {
+  return crypto.createHash('sha256').update(`${patch}:${verdict}`).digest('hex').slice(0, 32);
+}
+
+/** {patch, verdict, hold} from the card's machine line, or null when absent or malformed. */
+function parseVisualApproval(description) {
+  for (const line of stripCode(description)) {
+    const m = VISUAL_LINE_RE.exec(line);
+    if (!m) continue;
+    const kv = {};
+    for (const part of m[1].trim().split(/\s+/)) {
+      const i = part.indexOf('=');
+      if (i > 0) kv[part.slice(0, i).toLowerCase()] = part.slice(i + 1);
+    }
+    if (HEX_RE.test(kv.patch || '') && /^[0-9a-f]{12,64}$/.test(kv.verdict || '') && HOLD_RE.test(kv.hold || '')) {
+      return { patch: kv.patch, verdict: kv.verdict, hold: kv.hold };
+    }
+  }
+  return null;
+}
+
+/** The visual binding for a decision, only when the question's own "(ref ...)" tag matches the machine line. */
+function visualBindingFor(description, question) {
+  const v = parseVisualApproval(description);
+  if (!v) return null;
+  const tag = /\(ref ([0-9a-f]{32})\)\s*$/.exec(String(question || ''));
+  return tag && tag[1] === visualBinding(v.patch, v.verdict) ? v : null;
+}
+
+function visualMac(secret, id, patch, verdict) {
+  return crypto.createHmac('sha256', secret).update(`${VISUAL_DOMAIN}${id}:${patch}:${verdict}`).digest('hex').slice(0, 32);
+}
+const visualMarker = (mac) => `Visual approval ref VQA${mac}`;
+
+/** True when a comment on the card carries the valid, unexpired approval for exactly this diff and check. */
+function hasVisualApproval({ comments, secret, id, patch, verdict, now = Date.now() }) {
+  const marker = visualMarker(visualMac(secret, id, patch, verdict));
+  return commentNodes(comments).some((c) => bodyHasMarker(c.body, marker) && now - new Date(c.createdAt).getTime() <= VISUAL_TTL_MS);
+}
+
 // ── the answer comment ─────────────────────────────────────────────────────
 // Free text is owner input but the link is bearer-authority, so treat it as
 // untrusted: cap, drop control chars, break every marker the board reads,
@@ -184,7 +256,10 @@ const NEUTRALISE = [
   [/\bVERIFY\s*:/gi, 'verify -'],
   [/Acceptance criteria/gi, 'acceptance-criteria'],
   [/Decision (?:email )?ref\s*OD[AE]/gi, 'decision-ref'],
+  [/Visual approval (?:ref|landed)\s*VQ[AL]/gi, 'visual-ref'],
+  [/VISUAL-APPROVAL/gi, 'visual-approval'],
   [/\bOD[AE][0-9a-f]{8,}/gi, 'ref'],
+  [/\bVQ[AL][0-9a-f]{8,}/gi, 'ref'],
   [/@/g, '(at)'],
 ];
 
@@ -291,6 +366,16 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
     return { ...loaded, status: 'answered', recorded: summarizeAnswerComment(winner.body) };
   }
 
+  // Visual approval (BRO-6241): Approve writes the signed approval the CI lander acts on.
+  const visual = visualBindingFor(issue.description, loaded.question);
+  const approved = Boolean(visual) && choice.key === 'a' && /^Option A: approve\b/i.test(String(choice.label || ''))
+    && /^Does the change to .+ look right\? \(ref [0-9a-f]{32}\)$/.test(String(loaded.question || ''));
+  if (approved) {
+    const vbody = `Visual change approved by the owner. The lander will ship the held change (${visual.hold}).\n\n${visualMarker(visualMac(secret, id, visual.patch, visual.verdict))}`;
+    const vc = await graphql(COMMENT_CREATE, { input: { issueId: issue.id, body: vbody } });
+    if (!vc || !vc.commentCreate || !vc.commentCreate.success) throw new Error('visual approval comment was not created');
+  }
+
   const input = {};
   const answeredLine = 'ANSWERED by the owner (see the "Owner decision" comment on this card).';
   const lines = String(issue.description || '').split('\n');
@@ -302,7 +387,9 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   const labels = (issue.labels && issue.labels.nodes) || [];
   if (labels.some((l) => l.name === AWAITING_OWNER_LABEL)) input.labelIds = labels.filter((l) => l.name !== AWAITING_OWNER_LABEL).map((l) => l.id);
   const stateName = String((issue.state && issue.state.name) || '');
-  if (/^(backlog|triage)$/i.test(stateName)) {
+  // A rejected visual change goes back to the queue from any state (the worker reads the note).
+  // An approved change stays where it is: the lander ships it, so no worker should pick the card up.
+  if (!approved && (/^(backlog|triage)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) {
     const todo = commentNodes({ nodes: issue.team && issue.team.states && issue.team.states.nodes }).find((s) => /^todo$/i.test(s.name));
     if (todo) input.stateId = todo.id;
   }
@@ -414,6 +501,7 @@ module.exports = {
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
   parseDecisionBlock, answerChoices,
+  VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
   loadDecision, recordAnswer, markerComments,

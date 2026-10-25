@@ -14,7 +14,7 @@ export const HEADERS = {
   'Referrer-Policy': 'no-referrer',
   'X-Robots-Tag': 'noindex, nofollow',
   'X-Content-Type-Options': 'nosniff',
-  'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
+  'Content-Security-Policy': "default-src 'none'; style-src 'unsafe-inline'; img-src https://raw.githubusercontent.com; form-action 'self'; base-uri 'none'; frame-ancestors 'none'",
 };
 
 export function page(title: string, body: string, status = 200): Response {
@@ -33,12 +33,21 @@ a.btn.alt{background:#2c2c38;color:#fff}
 textarea{width:100%;box-sizing:border-box;min-height:140px;font-size:16px;padding:12px;border-radius:10px;border:1px solid #444;background:#15151c;color:#fff;margin:0 0 12px}
 a{color:#d4a574}
 pre{white-space:pre-wrap;word-wrap:break-word;font:inherit;margin:0}
+.shot{margin:0 0 12px}
+.shot img{display:block;width:100%;height:auto;border-radius:8px;border:1px solid #2c2c38;background:#fff}
+.shot figcaption{font-size:13px;color:rgba(255,255,255,.6);margin:4px 0 0}
 .opt{margin:0 0 4px;font-weight:700}
 .up{color:#7bd88f;font-size:14px;margin:0 0 2px}
 .down{color:#ff8f8f;font-size:14px;margin:0 0 8px}
 h2{font-size:17px;margin:0 0 6px}
 </style></head><body><main>${body}</main></body></html>`;
   return new Response(html, { status, headers: HEADERS });
+}
+
+/** Screenshots a visual-approval card carries (BRO-6241). The parser only keeps raw.githubusercontent.com URLs of this repo; esc() covers the rest. */
+export function evidenceHtml(evidence: { label: string; url: string }[] | undefined): string {
+  if (!evidence || !evidence.length) return '';
+  return evidence.slice(0, 8).map((e) => `<figure class="shot"><a href="${esc(e.url)}" rel="noreferrer"><img src="${esc(e.url)}" alt="${esc(e.label)}" loading="lazy"></a><figcaption>${esc(e.label)}</figcaption></figure>`).join('');
 }
 
 export function notice(title: string, text: string, status = 200): Response {

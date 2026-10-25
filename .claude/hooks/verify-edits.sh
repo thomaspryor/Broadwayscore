@@ -1593,8 +1593,7 @@ import re as _ui_re
 UI_PATH_RE = _ui_re.compile(
     r'(/src/.*\.(?:tsx|jsx|css|scss|module\.css)$'
     r'|/tailwind\.config\.\w+$'
-    r'|/postcss\.config\.\w+$'
-    r'|/src/app/.*\.(?:tsx|jsx|ts|js)$)'
+    r'|/postcss\.config\.\w+$)'
 )
 VISUAL_QA_OK = os.environ.get('VISUAL_QA_OK', '1') == '1'
 

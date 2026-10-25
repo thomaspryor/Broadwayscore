@@ -224,14 +224,14 @@ test('BRO-6080: mac-only Todo cards are selected at any triaged priority, with -
     issue(13, line, { state: { type: 'backlog' } }), // parked/backlog: not this path
     issue(14, `MAC-ONLY: needs the Mac\n\nno verify here`, { state: todo }),
     issue(15, `NO-DISPATCH: hold\n${line}`, { state: todo }),
-    issue(16, `${line}\nRun /visual-qa and get the owner's approval before pushing.`, { state: todo }),
+    issue(16, `${line}\nRun /visual-qa and get the owner's approval before pushing.`, { state: todo }), // a UI card is dispatchable now (BRO-6241)
     issue(17, `plain${VERIFY}`, { state: todo }), // ordinary Todo: cloud's, not the drain's
     issue(18, `Docs mention MAC-ONLY: mid-line${VERIFY}`, { state: todo }),
     issue(22, line, { state: todo, labels: { nodes: [{ name: 'mac-only' }, { name: 'awaiting-owner' }] } }), // owner hold
     issue(23, `**MAC-ONLY:** needs the Mac launchd agent${VERIFY}`, { state: todo, ...label, priority: 1 }),
   ];
   // BRO-10 has the label only (older meaning: hands-on GUI work), so the unattended drain leaves it.
-  assert.deepEqual(lib.selectDrainCandidates(cards, { limit: 20 }).map((i) => i.identifier), ['BRO-23', 'BRO-11']);
+  assert.deepEqual(lib.selectDrainCandidates(cards, { limit: 20 }).map((i) => i.identifier), ['BRO-23', 'BRO-16', 'BRO-11']);
   assert.deepEqual(lib.drainDispatchOpts(cards[1]), { macHeadless: true });
   // An auto-filed tracker keeps its waivers; a MAC-ONLY line adds --mac-headless, a label alone does not.
   assert.deepEqual(lib.drainDispatchOpts(issue(19, lib.AUTO_FILED_MARKER + VERIFY, label)), { allowAutofixFiled: true, allowAutomationParked: true });

@@ -77,10 +77,9 @@ function titleFor(finding) {
   return `UX audit: ${finding && finding.summary ? finding.summary : ''}`.slice(0, 120);
 }
 
-// Every walkthrough card is a "UX audit:" UI card, the class the headless
-// dispatcher refuses (headless-dispatchability.js UI_CARD_CLASS_RE: the fix
-// needs owner visual QA). Filing high-severity ones at 2 put them in the P1
-// lane where nothing unattended can move them: 18 piled up, 1 real (BRO-340).
+// Every walkthrough card is a "UX audit:" UI card whose worth is an owner
+// taste call, so it stays parked. Filing high-severity ones at 2 put them in
+// the P1 lane where nothing unattended can move them: 18 piled up, 1 real (BRO-340).
 // linear-issue-create.js already clamps parked creates to 3 (BRO-4487); this
 // says so at the source instead of relying on the clamp's warning.
 function priorityFor(_finding) {

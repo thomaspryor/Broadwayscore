@@ -1,6 +1,6 @@
 import { NextRequest } from 'next/server';
 import * as linkModule from '@/lib/owner-decision-link';
-import { esc, page, notice, linearGraphql, rateLimited } from '@/lib/owner-decision-page';
+import { esc, page, notice, linearGraphql, rateLimited, evidenceHtml } from '@/lib/owner-decision-page';
 
 // BRO-6235: one private page listing every decision waiting on the owner.
 // Read-only. Each option is a GET link to the existing confirm page
@@ -69,6 +69,7 @@ export async function GET(req: NextRequest) {
       : d.choices.map((c: any) => `<a class="btn" href="${base}&o=${encodeURIComponent(c.key)}">${esc(c.label)}</a>`).join('');
     return `<section class="box"><p class="q">${esc(d.question)}</p>
 ${d.title && d.title !== d.question ? `<p class="small">About: ${esc(d.title)}</p>` : ''}
+${evidenceHtml(b.evidence)}
 ${b.why ? `<p><strong>Why this is your call:</strong> ${esc(b.why)}</p>` : ''}
 ${options}
 ${b.recommendation ? `<p><strong>My recommendation:</strong> ${esc(b.recommendation)}</p>` : ''}

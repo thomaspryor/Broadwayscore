@@ -197,6 +197,8 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # BRO-6241: cron lander, required by scripts/lib/visual-approval.test.mjs
+      - 'scripts/visual-approval-land.js'
       # tests/unit/serp-review-acceptance.test.mjs requires scan-serp-adoptions.js (BRO-4546)
       - 'scripts/scan-serp-adoptions.js'
       # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs

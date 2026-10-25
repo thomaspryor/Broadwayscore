@@ -57,6 +57,7 @@ function buildDecisionEmail({ decision, description, secret, now = Date.now(), b
 <p style="margin:0 0 6px;color:#666;font-size:14px;">${reminder ? 'Still waiting on you' : 'Waiting on you'}. Work on this is paused until you answer.</p>
 <h2 style="margin:0 0 12px;font-size:20px;line-height:1.3;">${esc(question)}</h2>
 ${decision.title && decision.title !== decision.question ? `<p style="margin:0 0 12px;color:#666;font-size:14px;">About: ${esc(noDash(decision.title))}</p>` : ''}
+${(block.evidence || []).map((e) => `<p style="margin:0 0 10px;"><a href="${esc(e.url)}"><img src="${esc(e.url)}" alt="${esc(noDash(e.label))}" style="display:block;width:100%;max-width:520px;height:auto;border:1px solid #ddd;border-radius:8px;"></a><span style="font-size:13px;color:#666;">${esc(noDash(e.label))}</span></p>`).join('')}
 ${block.why ? `<p style="margin:0 0 12px;"><strong>Why this is your call:</strong> ${esc(noDash(block.why))}</p>` : ''}
 ${optionHtml}
 ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendation:</strong> ${esc(noDash(block.recommendation))}</p>` : ''}

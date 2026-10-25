@@ -93,8 +93,8 @@ test('skips P2+, started cards, recent activity, and cards without a safe VERIFY
   assert.equal(skipReason(issue({ updatedAt: undefined }), NOW), 'no-updatedAt');
 });
 
-test('skips headless blockers: visual QA, owner decision, async wait', () => {
-  assert.match(skipReason(issue({ description: `${BODY}\nTouches src/components/Foo.tsx` }), NOW), /^blocker-VISUAL_QA_GATE/);
+test('skips headless blockers: owner decision, async wait (a UI card is no longer one, BRO-6241)', () => {
+  assert.equal(skipReason(issue({ description: `${BODY}\nTouches src/components/Foo.tsx` }), NOW), null);
   assert.equal(skipReason(issue({ description: `${BODY}\n\nDECISION NEEDED: owner picks the copy.` }), NOW), 'blocker-OWNER_DECISION_GATE');
   assert.equal(skipReason(issue({ description: `${BODY}\n\nRECHECK-AFTER: 2026-12-01` }), NOW), 'blocker-ASYNC_WAIT_GATE');
 });
@@ -245,7 +245,6 @@ test('no resume for successful, ancient, unstarted, P2, or unrelated refs', () =
 test('no resume for a card a headless worker cannot finish', () => {
   const none = (cards) => assert.equal(findResumeCard(cards, [landRef()], { nowMs: NOW }), null);
   none([startedCard({ description: '## Acceptance criteria\nLooks right.' })]);
-  none([startedCard({ description: `${BODY}\nTouches src/components/Foo.tsx` })]);
   none([startedCard({ description: `${BODY}\n\nDECISION NEEDED: owner picks the copy.` })]);
 });
 

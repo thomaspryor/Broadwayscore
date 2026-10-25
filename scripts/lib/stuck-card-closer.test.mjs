@@ -270,7 +270,7 @@ test('decideBounce sends an idle failing card back, and gives up after MAX_BOUNC
   assert.deepEqual(d({ priority: 2 }), { bounce: true, priorBounces: 0 });
   assert.equal(d({ priority: 3 }).reason, 'no-auto-worker');
   assert.equal(d({ priority: 0 }).reason, 'no-auto-worker');
-  assert.equal(d({ description: `needs /visual-qa\n${'## Acceptance criteria\n`node --test scripts/lib/x.test.mjs` passes'}` }).reason, 'no-auto-worker');
+  assert.deepEqual(d({ description: `needs /visual-qa\n${'## Acceptance criteria\n`node --test scripts/lib/x.test.mjs` passes'}` }), { bounce: true, priorBounces: 0 }); // BRO-6241: a UI card is dispatchable
   const old = (n) => Array.from({ length: n }, () => ({ body: `${BOUNCE_MARKER} (1 of 2).`, createdAt: iso(NOW - 5 * DAY) }));
   assert.deepEqual(d({ comments: old(MAX_BOUNCES - 1) }), { bounce: true, priorBounces: MAX_BOUNCES - 1 });
   assert.equal(d({ comments: old(MAX_BOUNCES) }).reason, 'bounce-exhausted');
