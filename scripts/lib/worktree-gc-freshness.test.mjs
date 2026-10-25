@@ -43,3 +43,12 @@ test('warn between 6h and 24h', () => {
   const r = checkWorktreeGcFreshnessByRepo('[2026-10-25 03:00:00] DIGEST[ios]: ok', NOW);
   assert.equal(r[0].severity, 'warn');
 });
+
+test('expected list restricts the check: a stale name no longer configured is ignored', () => {
+  const log = '[2026-10-01 00:00:00] DIGEST[old]: ok\n[2026-10-25 11:30:00] DIGEST[web]: ok';
+  assert.deepEqual(checkWorktreeGcFreshnessByRepo(log, NOW, ['web']), []);
+});
+
+test('lastTimestampsByRepo sees a skipped-repo heartbeat', () => {
+  assert.deepEqual(lastTimestampsByRepo('[2026-10-25 11:30:00] DIGEST[ios]: skipped (no .git at /x)'), { ios: '2026-10-25 11:30:00' });
+});

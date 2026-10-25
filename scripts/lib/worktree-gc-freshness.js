@@ -84,15 +84,16 @@ function lastTimestampsByRepo(logText) {
 /**
  * @param {string|null|undefined} logText
  * @param {number} nowMs
- * @param {string[]} [expectedRepos] repos that must have a heartbeat even if the log has none yet
+ * @param {string[]} [expectedRepos] when non-empty, the only repos checked (each must have a heartbeat)
  * @returns {Array<{repo:string, hoursStale:number|null, severity:'warn'|'error'}>} stale repos only.
  *   A repo with no heartbeat at all reports hoursStale null, severity error. Empty when the
- *   log has no DIGEST lines and nothing is expected (older log format), so this never fires on
- *   a log the overall check already covers.
+ *   log has no DIGEST lines and nothing is expected.
  */
 function checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos = []) {
   const byRepo = lastTimestampsByRepo(logText);
-  const names = new Set([...Object.keys(byRepo), ...expectedRepos]);
+  // When the caller names the repos, check only those: a name left in the log by a renamed or
+  // removed repo would otherwise alarm forever.
+  const names = new Set(expectedRepos.length ? expectedRepos : Object.keys(byRepo));
   const stale = [];
   for (const repo of names) {
     if (!byRepo[repo]) { stale.push({ repo, hoursStale: null, severity: 'error' }); continue; }

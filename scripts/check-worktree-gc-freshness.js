@@ -45,7 +45,9 @@ async function main() {
   const payload = evaluate(logText, Date.now());
   let expected = [];
   try { expected = require('./lib/worktree-gc-repos').DEFAULT_REPOS.map((r) => r.name); } catch { /* none */ }
-  const repoPayloads = evaluateRepos(logText, Date.now(), expected);
+  // Per-repo alerts add information only while the overall log is still fresh; a total outage
+  // already raises the overall alert (one outage, one alert).
+  const repoPayloads = payload ? [] : evaluateRepos(logText, Date.now(), expected);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
   for (const rp of repoPayloads) {
     console.log(`[worktree-gc-freshness] FAIL ${rp.title}`);

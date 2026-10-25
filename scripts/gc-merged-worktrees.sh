@@ -872,6 +872,7 @@ gc_one_repo() {
 
   if [ ! -d "$repo_path/.git" ]; then
     log "WARN  repo '$repo_name' — no .git at $repo_path, skipping"
+    log "DIGEST[$repo_name]: skipped (no .git at $repo_path)"
     return
   fi
 
@@ -882,6 +883,7 @@ gc_one_repo() {
 
   if ! cd "$REPO"; then
     log "WARN  repo '$repo_name' — cd to $REPO failed, skipping"
+    log "DIGEST[$repo_name]: skipped (cd to $REPO failed)"
     return
   fi
 
