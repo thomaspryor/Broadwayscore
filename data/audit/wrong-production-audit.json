@@ -1,13 +1,13 @@
 {
-  "timestamp": "2026-10-25T22:46:41.842Z",
+  "timestamp": "2026-10-25T23:06:58.071Z",
   "stats": {
-    "totalReviews": 61680,
-    "alreadyFlagged": 21478,
-    "dateGuardCatches": 224,
-    "directorMismatch": 2242,
+    "totalReviews": 61681,
+    "alreadyFlagged": 21480,
+    "dateGuardCatches": 223,
+    "directorMismatch": 2243,
     "tvFilmSignals": 1754,
     "londonSignals": 2979,
-    "offBroadwaySignals": 545,
+    "offBroadwaySignals": 544,
     "yearMismatch": 202,
     "noPublishDate": 5476
   },
@@ -51294,6 +51294,20 @@
       ]
     },
     {
+      "showId": "the-score-west-end-2025",
+      "file": "whatsonstage--lucinda-everett.json",
+      "score": 59,
+      "publishDate": "February 28th, 2025",
+      "url": "https://www.whatsonstage.com/news/the-score-starring-brian-cox-in-the-west-end-review_1666965/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from the-score-regional-2026"
+        }
+      ]
+    },
+    {
       "showId": "the-seagull-globe-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
       "findings": [
@@ -85882,24 +85896,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "prince-faggot-off-broadway-2025",
-      "file": "theatre-reviews-limited--david-roberts.json",
-      "publishDate": "2025-07-18",
-      "url": "https://www.theatrereviews.com/off-broadway-review-prince-faggot-at-playwrights-horizons-extended-through-sunday-august-3-2025/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 54d before show (2025-07-18 vs 2025-09-10)"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
