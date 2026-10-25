@@ -514,6 +514,8 @@ on:
       - 'scripts/audit-errexit-unguarded-substitution.js'
       - 'scripts/check-cross-outlet-attribution-drift.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
+      # BRO-2484: advisory guard call-site audit (test: tests/unit/audit-guard-call-sites.test.mjs).
+      - 'scripts/audit-guard-call-sites.js'
       - 'scripts/audit-coverage-slot-drops.js'
       # BRO-5261 (BRO-3087 retro-review): top-level scripts a collected test
       # names by path (a 'scripts/x.js' literal or path.join(here, '..', 'x.js'))
