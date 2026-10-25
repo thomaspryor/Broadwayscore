@@ -1,62 +1,51 @@
 {
-  "updatedAt": "2026-10-25T07:25:49.221Z",
-  "processed": 164,
-  "failed": 77,
-  "successRate": "68.0%",
+  "updatedAt": "2026-10-25T07:45:43.996Z",
+  "processed": 70,
+  "failed": 12,
+  "successRate": "85.4%",
   "tierBreakdown": {
-    "playwright": 131,
+    "playwright": 50,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 10,
+    "scrapingdog": 1,
+    "scrapingbee": 5,
     "brightdata": 7,
     "archiveToday": 0,
-    "archive": 18
+    "archive": 6
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-25T05:34:45.858Z",
+      "t": "2026-10-25T07:23:55.461Z",
       "event": "bb-session",
-      "session": "2d75208b",
-      "url": "https://www.nytimes.com/2025/11/18/theater/meet-the-cartozians-review.html"
+      "session": "951cda5f",
+      "url": "https://www.nytimes.com/2025/11/18/theater/this-world-of-tomorrow-review-tom-han"
     },
     {
-      "t": "2026-10-25T05:34:46.781Z",
+      "t": "2026-10-25T07:23:55.788Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-25T05:36:58.680Z",
+      "t": "2026-10-25T07:25:47.088Z",
       "event": "bb-session",
-      "session": "a83f520f",
-      "url": "https://www.nytimes.com/2025/11/12/theater/the-bakers-wife-review-ariana-debose."
+      "session": "07750573",
+      "url": "https://www.wsj.com/articles/this-world-of-tomorrow-review-tom-hankss-nostalgia-"
     },
     {
-      "t": "2026-10-25T05:36:59.527Z",
+      "t": "2026-10-25T07:25:47.417Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-25T05:40:46.902Z",
+      "t": "2026-10-25T07:35:23.741Z",
       "event": "bb-session",
-      "session": "77ac893c",
-      "url": "https://www.nytimes.com/2025/11/10/theater/richard-ii-review-michael-urie.html"
+      "session": "39ffe3ae",
+      "url": "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-"
     },
     {
-      "t": "2026-10-25T05:40:47.731Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T05:44:18.065Z",
-      "event": "bb-session",
-      "session": "afcf7574",
-      "url": "https://www.wsj.com/articles/queens-review-martyna-majoks-play-of-immigrant-live"
-    },
-    {
-      "t": "2026-10-25T05:44:18.920Z",
+      "t": "2026-10-25T07:35:24.117Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
