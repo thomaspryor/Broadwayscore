@@ -92,6 +92,8 @@ test('cleanup labels a closed TBD row from its estimate with no age wait, and fl
     { action: 'label', designation: 'Fizzle', designationBasis: 'model-estimate' });
   assert.equal(closedTbdLossAction(estimate(55, { productionType: 'international-transfer' }), show, { now }), null);
   assert.equal(closedTbdLossAction(estimate(55, { productionType: 'tour-stop' }), show, { now }), null);
+  assert.equal(closedTbdLossAction(estimate(55, { productionType: 'International Transfer' }), show, { now }), null);
+  assert.deepEqual(closedTbdLossAction({ designation: 'TBD', productionType: 'return-engagement' }, show, { now }), { action: 'flag' });
 });
 
 test('a recoupment announced later resets an estimate, and a reopened show undoes it', () => {
