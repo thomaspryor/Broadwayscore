@@ -1,46 +1,40 @@
 {
-  "generatedAt": "2026-10-24T07:40:51.217Z",
+  "generatedAt": "2026-10-25T08:14:37.792Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
+  "latestRunHeadSha": "373c6909f5db790081801d6612021491c0d30a7e",
   "state": "RED",
-  "consecutiveFailures": 19,
+  "consecutiveFailures": 4,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-24T00:59:00Z",
-  "redForHours": 6.697560277777778,
+  "redSince": "2026-10-25T03:35:35Z",
+  "redForHours": 4.650775555555556,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-24T00:29:58Z",
-  "latestFailedRunId": "40071566180",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40071566180",
-  "decidedRuns": 100,
+  "lastSuccessAt": "2026-10-25T02:33:28Z",
+  "latestFailedRunId": "40167373734",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40167373734",
+  "decidedRuns": 97,
   "verdictLag": {
-    "verdictSha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
-    "verdictAt": "2026-10-24T06:47:04Z",
-    "verdictAgeHours": 0.8964491666666666,
-    "newerHeads": 0,
-    "runsInFlight": 0,
+    "verdictSha": "373c6909f5db790081801d6612021491c0d30a7e",
+    "verdictAt": "2026-10-25T05:57:18Z",
+    "verdictAgeHours": 2.288831111111111,
+    "newerHeads": 1,
+    "runsInFlight": 1,
     "lagging": false
   },
   "failingJobs": [
     {
-      "name": "Data Validation",
-      "steps": [
-        "Audit non-review content (weather/sports/junk pages)"
-      ]
-    },
-    {
       "name": "Unit Tests",
       "steps": [
-        "Run unit tests (no-data-dependency)"
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
       ]
     },
     {
-      "name": "E2E Tests",
+      "name": "Data Validation",
       "steps": [
-        "Run unit tests"
+        "Audit outlet-registry gaps"
       ]
     },
     {
@@ -52,16 +46,34 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/unit/show-id-market-suffix.test.mjs",
+      "path": "tests/unit/rendered-copy-voice.test.mjs",
       "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 12874 - every shows.json id suffix matches its category"
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 2 - on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules"
     },
     {
-      "path": "tests/unit/biz-data-functions.test.mjs",
-      "job": "E2E Tests",
-      "step": "Run unit tests",
-      "evidence": "not ok 2 - should have valid designation values"
+      "path": "scripts/lib/audit-ledger-merge-attrs.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 582 - REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption"
+    },
+    {
+      "path": "scripts/lib/dummy-helper.test.mjs",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "not ok 1 - foo returns the contracted value"
+    },
+    {
+      "path": "scripts/merge-worktree-to-main.sh",
+      "job": "Unit Tests",
+      "step": "UNKNOWN STEP",
+      "evidence": "❌ post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure "
+    },
+    {
+      "path": "scripts/audit-broadway-category-predicate.js",
+      "job": "Data Validation",
+      "step": "UNKNOWN STEP",
+      "evidence": "##[error]Process completed with exit code 1."
     }
   ],
   "topFailingJob": "Unit Tests"
