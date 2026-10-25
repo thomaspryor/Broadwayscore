@@ -14,7 +14,7 @@ const link = linkModule as unknown as {
   LIST_QUERY: string;
   verifyListToken: (token: string | null, secret: string, now?: number) => { ok: boolean; reason?: string; expires?: number };
   mintDecisionToken: (args: { id: string; hash: string; secret: string; listExpires?: number }) => string;
-  listOpenDecisions: (issues: unknown[]) => any[];
+  listOpenDecisions: (issues: unknown[]) => any[] & { omitted?: number };
 };
 const { verifyListToken, mintDecisionToken, listOpenDecisions, LIST_QUERY } = link;
 
@@ -48,7 +48,7 @@ export async function GET(req: NextRequest) {
     return notice('Link not valid', 'This link could not be verified. Nothing was changed.', 400);
   }
 
-  let decisions: any[];
+  let decisions: any[] & { omitted?: number };
   try {
     decisions = listOpenDecisions(await openIssues());
   } catch (e) {
