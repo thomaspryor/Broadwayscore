@@ -71,7 +71,7 @@ async function createImagePost({ channel, text, imageUrl, altText, dueAt, draft 
 
 /**
  * Idempotency: a post for this channel created or due since `sinceIso` whose
- * text contains every marker string. Guards against a re-run after a crash or a
+ * text matches every marker pattern (captions.js postMarkers). Guards against a re-run after a crash or a
  * failed history push posting the same thing twice. Returns the post or null.
  */
 async function findExistingPost({ channel, markers, sinceIso }) {
@@ -79,7 +79,7 @@ async function findExistingPost({ channel, markers, sinceIso }) {
     posts(input: $input, first: 100) { edges { node { id text status dueAt } } }
   }`, { input: { organizationId: channel.organizationId, filter: { channelIds: [channel.id], startDate: sinceIso } } });
   const nodes = ((data.posts && data.posts.edges) || []).map(e => e.node);
-  return nodes.find(n => n.status !== 'error' && markers.every(m => (n.text || '').includes(m))) || null;
+  return nodes.find(n => n.status !== 'error' && markers.every(m => m.test(n.text || ''))) || null;
 }
 
 async function deletePost(id) {
@@ -100,7 +100,15 @@ async function validateChannels(channels, { imageUrl, altText }) {
   for (const ch of channels) {
     try {
       const post = await createImagePost({ channel: ch, text: 'Broadway Scorecard autopost self-test (draft, deleted automatically).', imageUrl, altText, dueAt: new Date(Date.now() + 7 * 864e5), draft: true });
-      await deletePost(post.id);
+      try {
+        await deletePost(post.id);
+      } catch (e) {
+        problems.push(`${ch.service}: self-test post ${post.id} (status ${post.status}) could not be deleted, remove it in Buffer: ${e.message}`);
+        continue;
+      }
+      // A draft is never published. If Buffer scheduled it instead, say so: the
+      // real posts would behave the same way.
+      if (post.status && post.status !== 'draft') problems.push(`${ch.service}: self-test came back as '${post.status}', not a draft (deleted)`);
     } catch (e) {
       problems.push(`${ch.service}: ${e.message}`);
     }

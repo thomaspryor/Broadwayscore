@@ -5,6 +5,7 @@
 
 const { evaluateScoreConfidence } = require('../lib/score-confidence-gate');
 const { hasEnoughReviews } = require('../lib/min-reviews');
+const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const C = require('./config');
 
 const DAY_MS = 864e5;
@@ -32,6 +33,10 @@ function addDaysYmd(ymd, n) {
   const d = new Date(`${ymd}T12:00:00Z`);
   d.setUTCDate(d.getUTCDate() + n);
   return d.toISOString().slice(0, 10);
+}
+
+function curtainTime(show, hour, tz) {
+  return zonedTime(String(show.openingDate).slice(0, 10), hour, tz).getTime();
 }
 
 function isEligibleShow(show) {
@@ -91,17 +96,27 @@ function findScoreEvents({ shows, history, now, reviewsByShow, slim, getOutletTi
   for (const show of shows) {
     if (!isEligibleShow(show)) continue;
     if (done.has(`score:${show.id}`)) continue;
-    const opened = Date.parse(`${String(show.openingDate).slice(0, 10)}T00:00:00Z`);
-    if (!(opened <= now && now - opened <= C.SCORE_LOOKBACK_DAYS * DAY_MS)) continue;
+    const tz = C.MARKETS[show.category].tz;
+    // No score post before curtain on opening night: reviews are not out yet, and
+    // the "opens tonight" post promises the score comes after.
+    const curtain = curtainTime(show, C.SCORE_EARLIEST_LOCAL_HOUR, tz);
+    if (!(curtain <= now && now - curtain <= C.SCORE_LOOKBACK_DAYS * DAY_MS)) continue;
     const pub = slim[show.id];
     if (!pub || !Number.isFinite(pub.cs) || !pub.rc) continue;
     const showReviews = reviewsByShow[show.id] || [];
-    const gate = evaluateScoreConfidence({ showReviews, category: show.category, getOutletTier });
+    // BRO-4954: a transfer or return carries its earlier run's reviews; require
+    // reviews of THIS run, exactly as the opening-night email does.
+    let newReviewCount = null;
+    if (Array.isArray(show.priorRuns) && show.priorRuns.length) {
+      const runs = priorRunClassifier(show, shows);
+      if (runs.windows.length) newReviewCount = showReviews.filter(r => Number.isFinite(r.assignedScore)).filter(runs.isCurrent).length;
+    }
+    const gate = evaluateScoreConfidence({ showReviews, category: show.category, getOutletTier, newReviewCount });
     if (!gate.ok) continue;
     const extra = C.SCORE_FLOORS[show.category];
     if (extra && (gate.counts.total < (extra.total || 0) || gate.counts.t1 < (extra.t1 || 0))) continue;
     if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) continue;
-    out.push({ type: 'score', show, gate, dueAt: nextScoreSlot(now, C.MARKETS[show.category].tz) });
+    out.push({ type: 'score', show, gate, dueAt: nextScoreSlot(now, tz) });
   }
   return out;
 }
@@ -119,8 +134,10 @@ function staggerEvents(events, history, now) {
   for (const ev of events) {
     let t = ev.dueAt.getTime();
     if (ev.type === 'opening') {
-      // Same-day openings go out 90 minutes apart, from noon local.
-      while (taken.some(x => Math.abs(x - t) < gap)) t += gap;
+      // Same-day openings go out 90 minutes apart from noon local, never after
+      // OPENING_LATEST_LOCAL_HOUR (then they share the last slot).
+      const latest = zonedTime(String(ev.show.openingDate).slice(0, 10), C.OPENING_LATEST_LOCAL_HOUR, C.MARKETS[ev.show.category].tz).getTime();
+      while (taken.some(x => Math.abs(x - t) < gap) && t + gap <= latest) t += gap;
       ev.dueAt = new Date(t);
     } else {
       const tz = C.MARKETS[ev.show.category].tz;

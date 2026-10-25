@@ -76,7 +76,7 @@ function chooseLayout(measured) {
  * Resolve artwork for a show. Returns {layout, dataUri, width, height, role, source}.
  * Images are re-encoded as high-quality JPEG/PNG data URIs so the renderer needs no network.
  */
-async function resolveArt(show, { sources = loadImageSources() } = {}) {
+async function resolveArt(show, { sources = loadImageSources(), checkArt: check = checkArt } = {}) {
   const sharp = require('sharp');
   const measured = [];
   const seenRoles = new Set();
@@ -94,6 +94,14 @@ async function resolveArt(show, { sources = loadImageSources() } = {}) {
   }
   const { layout, pick } = chooseLayout(measured);
   if (!pick) return { layout, dataUri: null };
+  // Title-matched sources sometimes carry another production's poster (the 2026
+  // West End Cherry Orchard had the 2016 Broadway one). A wrong poster on five
+  // networks is worse than none: only art the vision check confirms is used.
+  const verdict = await check(show, pick.buf);
+  if (!verdict.ok) {
+    console.log(`  [art] ${show.id}: ${pick.role} art not confirmed (${verdict.reason}); using the typographic card`);
+    return { layout: 'type', dataUri: null, rejected: { source: pick.source, reason: verdict.reason } };
+  }
   // Re-encode to PNG at native size: lossless, and Chromium decodes it everywhere.
   const png = await require('sharp')(pick.buf).rotate().png().toBuffer();
   return {
@@ -106,4 +114,24 @@ async function resolveArt(show, { sources = loadImageSources() } = {}) {
   };
 }
 
-module.exports = { resolveArt, chooseLayout, originalUrl, MIN_KEYART_PX, MIN_INSET_PX };
+/**
+ * Gemini vision check shared with the site's image pipeline (scripts/lib/verify-image.js).
+ * Only a positive match passes: a low-confidence "no", an API error or a missing
+ * GEMINI_API_KEY all fall back to the typographic card.
+ */
+async function checkArt(show, buf, { verify = require('../lib/verify-image') } = {}) {
+  const r = await verify.verifyImage(buf, show.title, {
+    market: show.category, venue: show.venue, openingDate: show.openingDate,
+    creatives: verify.creativesForVerify(show), mimeType: 'image/png',
+  });
+  return artVerdict(r);
+}
+
+/** Pure: verifyImage result -> {ok, reason}. Exported for tests. */
+function artVerdict(r) {
+  if (!r || r.skipped) return { ok: false, reason: 'not verified (no GEMINI_API_KEY)' };
+  if (r.match === true) return { ok: true, reason: 'match' };
+  return { ok: false, reason: `${r.confidence || 'unknown'}: ${String(r.description || (r.issues || []).join(',')).slice(0, 160)}` };
+}
+
+module.exports = { resolveArt, artVerdict, chooseLayout, originalUrl, MIN_KEYART_PX, MIN_INSET_PX };

@@ -107,7 +107,7 @@ test('captions fit every network, carry the site numbers, and use no em dashes',
     assert.match(c.facebook, /https:\/\/broadwayscorecard\.com\/show\/x\?utm_source=facebook/);
     assert.ok(!/https?:\/\//.test(c.instagram), 'Instagram captions cannot link');
     for (const net of Object.keys(LIMITS)) {
-      for (const m of postMarkers(p.type, s)) assert.ok(c[net].includes(m), `${net} lacks dedupe marker ${m}`);
+      for (const m of postMarkers(p.type, s)) assert.ok(m.test(c[net]), `${net} lacks dedupe marker ${m}`);
     }
   }
 });
@@ -148,4 +148,37 @@ test('a network that failed is retried, at most 3 attempts and within 12h of the
   assert.equal(pendingRetries({ posts: [e({ attempts: 3 })] }, now).length, 0, 'gave up');
   assert.equal(pendingRetries({ posts: [e({ dueAt: '2026-11-04T15:00:00Z' })] }, now).length, 0, 'stale');
   assert.equal(pendingRetries({ posts: [e({ pending: {} }), { type: 'score', showId: 'y', skipped: 'backlog' }] }, now).length, 0);
+});
+
+test('a long title is shortened on X and Bluesky; the score sentence never is', () => {
+  const s = show({ slug: 'the-matter-of-the-disappearance-of-michael-anthony-smith-jr-off-broadway', title: 'The Matter of the Disappearance of Michael Anthony Smith Jr.', category: 'off-broadway' });
+  const c = buildCaptions({ type: 'score', show: s, score: 72, tierId: 'worth-seeing', tierLabel: 'Worth Seeing', reviewCount: 14 });
+  for (const net of ['twitter', 'bluesky']) {
+    assert.ok(c[net].length <= 270, `${net} ${c[net].length}`);
+    assert.match(c[net], /has a Critic Score of 72 \(Worth Seeing\) from 14 critics' reviews\./);
+  }
+});
+
+test('dedupe path marker does not match a longer slug', () => {
+  const [path] = postMarkers('score', { slug: 'proof' });
+  assert.equal(path.test('see /show/proof-2000?utm_source=x'), false);
+  assert.equal(path.test('see /show/proof?utm_source=x'), true);
+  assert.equal(path.test('Full reviews: broadwayscorecard.com/show/proof (link in bio)'), true);
+});
+
+test('no score post before curtain on opening night', () => {
+  const s = show({ openingDate: '2026-11-05' });
+  const base = { shows: [s], history: empty, slim: { [s.id]: { cs: 80, rc: 14 } }, getOutletTier, reviewsByShow: { [s.id]: reviews(3, 3, 8) } };
+  assert.equal(sel.findScoreEvents({ ...base, now: Date.parse('2026-11-05T20:00:00Z') }).length, 0, '15:00 New York');
+  assert.equal(sel.findScoreEvents({ ...base, now: Date.parse('2026-11-06T01:00:00Z') }).length, 1, '20:00 New York');
+});
+
+test('a transfer needs reviews of this run, not its earlier run', () => {
+  const prior = show({ id: 'p-2025', openingDate: '2025-03-01', closingDate: '2025-06-01', category: 'west-end', venue: 'Apollo Theatre' });
+  const s = show({ id: 't-2026', category: 'west-end', openingDate: '2026-10-20', venue: 'Gielgud Theatre', priorRuns: [{ id: 'p-2025', venue: 'Apollo Theatre', openingDate: '2025-03-01', closingDate: '2025-06-01' }] });
+  const old = reviews(3, 3, 8).map(r => ({ ...r, showId: s.id, publishDate: '2025-03-05' }));
+  const args = { shows: [prior, s], history: empty, now: Date.parse('2026-10-25T12:00:00Z'), slim: { [s.id]: { cs: 80, rc: 14 } }, getOutletTier };
+  assert.equal(sel.findScoreEvents({ ...args, reviewsByShow: { [s.id]: old } }).length, 0, 'only old-run reviews');
+  const fresh = reviews(3, 3, 8).map(r => ({ ...r, showId: s.id, publishDate: '2026-10-21' }));
+  assert.equal(sel.findScoreEvents({ ...args, reviewsByShow: { [s.id]: fresh } }).length, 1, 'reviews of this run');
 });

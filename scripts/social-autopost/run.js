@@ -62,6 +62,7 @@ function loadContext() {
 }
 
 const MAX_CHANNEL_ATTEMPTS = 3;
+const MAX_EVENT_FAILURES = 3;
 const RETRY_WINDOW_MS = 12 * 36e5; // a failed network is retried until 12h after the post's slot
 
 /** History entries with networks still owed a post (an earlier run's channel error). */
@@ -235,7 +236,10 @@ async function main() {
         const { encodeForSocial, hostImage } = require('./host');
         const jpeg = await encodeForSocial(card.path);
         const ymd = new Date(now).toISOString().slice(0, 10);
-        const imageUrl = await hostImage(jpeg.buffer, `${ymd.slice(0, 7)}/${ev.show.id}-${ev.type}.jpg`);
+        // Content-addressed key: a re-render never replaces the image under a post
+        // that is already scheduled.
+        const hash = require('crypto').createHash('sha1').update(jpeg.buffer).digest('hex').slice(0, 10);
+        const imageUrl = await hostImage(jpeg.buffer, `${ymd.slice(0, 7)}/${ev.show.id}-${ev.type}-${hash}.jpg`);
 
         if (!ctx.history._meta || !ctx.history._meta.bufferValidatedAt) {
           // First live post ever: prove every channel accepts this exact post shape
@@ -267,7 +271,21 @@ async function main() {
             console.log(`::error::${ev.show.id} ${ev.type} on ${ch.service}: ${e.message}`);
           }
         }
-        if (!Object.keys(posted).length) { failedEvents++; continue; } // nothing went out: retry next run
+        if (!Object.keys(posted).length) {
+          // Nothing went out: retry next run, but stop after MAX_EVENT_FAILURES so one
+          // broken show does not fail the job every hour for three weeks.
+          failedEvents++;
+          const key = `${ev.type}:${ev.show.id}`;
+          const fails = { ...((ctx.history._meta || {}).failures || {}) };
+          fails[key] = (fails[key] || 0) + 1;
+          ctx.history._meta = { ...(ctx.history._meta || {}), failures: fails };
+          if (fails[key] >= MAX_EVENT_FAILURES) {
+            ctx.history.posts.push({ date: ymd, type: ev.type, showId: ev.show.id, skipped: `failed on every network ${fails[key]} times`, errors });
+            console.log(`::error::${key} gave up after ${fails[key]} attempts on every network`);
+          }
+          writeHistory(ctx.history);
+          continue;
+        }
         const entry = { date: ymd, type: ev.type, showId: ev.show.id, slug: ev.show.slug || ev.show.id, dueAt: ev.dueAt.toISOString(), imageUrl, text: captions.twitter, buffer: posted };
         if (Object.keys(errors).length) {
           // Retried by retryFailedChannels() on later runs with these exact texts, so

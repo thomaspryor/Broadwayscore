@@ -21,12 +21,14 @@ function showUrl(show, network) {
 }
 
 /**
- * Strings every caption of this post contains on every network: the show path
+ * Patterns every caption of this post matches on every network: the show path
  * and the event phrase. buffer.js findExistingPost matches on them to avoid
  * posting the same event twice.
  */
 function postMarkers(type, show) {
-  return [showPath(show), type === 'score' ? 'has a Critic Score of' : 'opens tonight'];
+  const escaped = showPath(show).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // The path must end at "?" or whitespace, so /show/proof never matches /show/proof-2000.
+  return [new RegExp(`${escaped}(?=[?\\s]|$)`), type === 'score' ? /has a Critic Score of \d/ : /opens tonight/];
 }
 
 /** "at the Palace Theatre" / "at The Public Theater" / "at Shakespeare's Globe" */
@@ -67,28 +69,37 @@ function breakdownLine(b) {
  */
 function buildCaptions(p) {
   const { show } = p;
+  // The sentence for a given title. X and Bluesky first drop the lead-in (score) or
+  // the closing promise (opening), then shorten the title; never the numbers.
+  const sentence = (title, withLead = true) => {
+    if (p.type === 'score') {
+      const lead = withLead ? TIER_LEAD[p.tierId] || '' : '';
+      return `${lead} ${title} has a Critic Score of ${p.score} (${p.tierLabel}) from ${p.reviewCount} critics' reviews.`.trim();
+    }
+    const promise = withLead ? " We'll have the Critic Score once the reviews are in." : '';
+    return `${title} opens tonight ${atVenue(show.venue)}.${promise}`.replace(/\s+/g, ' ');
+  };
   const title = show.title;
-  let short, long, alt;
-
+  let long = sentence(title);
+  let alt;
   if (p.type === 'score') {
-    const lead = TIER_LEAD[p.tierId] || '';
-    const core = `${title} has a Critic Score of ${p.score} (${p.tierLabel}) from ${p.reviewCount} critics' reviews.`;
-    short = `${lead} ${core}`.trim();
     const bd = breakdownLine(p.breakdown);
-    long = `${short}${bd ? `\n\nThe tally: ${bd}.` : ''}`;
+    if (bd) long += `\n\nThe tally: ${bd}.`;
     alt = `${title} key art with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}, from ${p.reviewCount} critics' reviews.`;
   } else {
-    short = `${title} opens tonight ${atVenue(show.venue)}. We'll have the Critic Score once the reviews are in.`.replace(/\s+/g, ' ');
-    long = short;
     alt = `${title} key art. Opening tonight ${atVenue(show.venue)}.`;
   }
 
   const withUrl = (text, network) => `${text}\n\n${showUrl(show, network)}`;
   const fitShort = (network) => {
     const url = showUrl(show, network);
-    let t = short;
     const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - url.length - 2;
-    if (t.length > budget) t = `${t.slice(0, budget - 1).replace(/\s+\S*$/, '')}…`;
+    let t = sentence(title);
+    if (t.length > budget) t = sentence(title, false);
+    if (t.length > budget) {
+      const room = Math.max(12, title.length - (t.length - budget) - 1);
+      t = sentence(`${title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`, false);
+    }
     return `${t}\n\n${url}`;
   };
 
