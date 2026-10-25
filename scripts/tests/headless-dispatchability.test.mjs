@@ -435,3 +435,28 @@ describe('isDrainableSessionParked (BRO-4535)', () => {
     assert.strictEqual(isDrainableSessionParked(autoParked), false);
   });
 });
+
+// BRO-6238: work-reason parks ("own session", "research batch", "profiling pass")
+// must not be held by incidental words, while real holds stay held.
+describe('BRO-6238 worker-takeable work-reason parks', () => {
+  const { isWorkerTakeableParkReason } = require('../lib/headless-dispatchability.js');
+  test('work reasons with incidental hold words are takeable', () => {
+    for (const r of [
+      'Not urgent after BRO-5426 raised the poller step budget to 15 min; needs a profiling pass, no owner input',
+      'Research batch of 2-3 hours (EDGAR search plus entity matching per show); BRO-5527 covered only the 41 tax-credit shows',
+      'needs its own session',
+    ]) assert.strictEqual(isWorkerTakeableParkReason(r), true, r);
+  });
+  test('real holds stay held', () => {
+    for (const r of [
+      'Pick up after BRO-6000 merged',
+      'Resume after BRO-6000 landed and verified',
+      'waits for time budget',
+      'needs its own session and an A/B on the weekly run',
+      'hook change needs its own session',
+      'needs its own session and the owner\'s Mac',
+      'research batch needs scraper spend',
+      'needs a profiling pass over review-texts',
+    ]) assert.strictEqual(isWorkerTakeableParkReason(r), false, r);
+  });
+});
