@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6212-b",
   "planId": "d9776067-f2c1-40bc-a2f8-7d9526b9ad73",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T17:57:08.977Z",
   "submitter": {
     "name": null,
@@ -21,5 +21,14 @@
         "args": "--file=the-curious-case-of-benjamin-button-west-end-2024/express-uk--george-simpson.json --apply"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T18:03:41.758Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ],
+  "executedIn": "ci"
 }
