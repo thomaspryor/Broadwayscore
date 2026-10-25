@@ -541,7 +541,6 @@ const AUTOCLOSE_STATE_TYPES = Object.freeze(['backlog', 'unstarted']);
 const AUTOCLOSE_STRONG_FORMS = Object.freeze([
   /^node --test\b/,
   /^npx tsx --test\b/,
-  /^npx tsc --noEmit$/,
   /^bash scripts\/lib\/[A-Za-z0-9_.-]+\.test\.sh$/,
   /^node scripts\/lib\/verify-data-backfill\.js\b/,
   // Card-specific live-state probes: exit 0 only when the named row/alert/gap is gone; exit 3 (stale evidence) is 'unverifiable', never a pass.
@@ -559,13 +558,22 @@ function isStrongAutoCloseCommand(cmd) {
  * @param {{card?:{stateType?:string,notes?:string,comments?:string[]}, target?:{skip?:string|null,verifyCmd?:string|null}, result?:{status?:string,detail?:string|null}}} o
  * @returns {{close:boolean, reason:string}}
  */
-function decideAutoClose({ card, target, result } = {}) {
+function decideAutoClose({ card, target, result, now = new Date() } = {}) {
   const no = (reason) => ({ close: false, reason });
   if (!card || !target || !result) return no('missing card, target or result');
   if (target.skip) return no(`skipped: ${target.skip}`);
   if (result.status !== 'pass') return no(`check did not pass (${result.status || 'no status'})`);
   if (/retry/i.test(String(result.detail || ''))) return no('passed only on the flake retry, not proof');
-  if (parseRecheckAfterFromCard(card) == null) return no('no RECHECK-AFTER stamp: the author never asked for a re-check');
+  const stamp = parseRecheckAfterFromCard(card);
+  if (stamp == null) return no('no RECHECK-AFTER stamp: the author never asked for a re-check');
+  if (stamp > now.getTime()) return no('RECHECK-AFTER date has not arrived yet');
+  // A stamp comment followed by newer comments means the card was worked or
+  // reopened after the pause, so the old stamp no longer vouches for it.
+  if (Array.isArray(card.comments)) {
+    let last = -1;
+    for (let i = card.comments.length - 1; i >= 0; i--) { if (parseRecheckAfter(card.comments[i]) != null) { last = i; break; } }
+    if (last >= 0 && last < card.comments.length - 1) return no('comments were added after the RECHECK-AFTER stamp comment');
+  }
   if (!AUTOCLOSE_STATE_TYPES.includes(card.stateType)) return no(`card state type is ${card.stateType || 'unknown'}, not an open backlog/unstarted card`);
   if (!isStrongAutoCloseCommand(target.verifyCmd)) return no('command is not a real test (file-exists or generic check)');
   return { close: true, reason: 'real test passed on fresh origin/main' };

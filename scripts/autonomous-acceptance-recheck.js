@@ -430,13 +430,13 @@ async function main(argv = process.argv.slice(2)) {
 
       // BRO-6240: close a card whose real test just passed. Decision is pure
       // (decideAutoClose); the close goes through linear-brain's Done gate.
-      if (autoclose && !r.skip && r.status === 'pass') {
+      if (autoclose && !r.skip && r.status === 'pass' && deadline - Date.now() >= MIN_REMAINING_MS_TO_START) {
         const verdict = decideAutoClose({ card: cardsById.get(t.cardId), target: t, result: r });
         if (!verdict.close) {
           keptOpen.push({ cardId: t.cardId, reason: verdict.reason });
           console.error(`[recheck] ${t.cardId} stays open: ${verdict.reason}`);
         } else {
-          const out = await closeCardAfterPass({ identifier: t.cardId, cmd: t.verifyCmd, sha: checkout && checkout.sha, runUrl });
+          const out = await closeCardAfterPass({ identifier: t.cardId, expectStateType: (cardsById.get(t.cardId) || {}).stateType, cmd: t.verifyCmd, sha: checkout && checkout.sha, runUrl });
           if (out.closed) closed.push(t.cardId); else keptOpen.push({ cardId: t.cardId, reason: out.error });
           ledger.appendEntry({ event: 'recheck-autoclose', runId, cardId: t.cardId, name: t.name, closed: out.closed, verifyCmd: t.verifyCmd, sha: (checkout && checkout.sha) || null, runUrl, note: out.closed ? 'closed on a passing real test' : `close refused: ${out.error}` }, RECHECK_LEDGER_PATH);
           console.error(`[recheck] ${t.cardId} ${out.closed ? 'CLOSED' : `close refused (${out.error})`}`);

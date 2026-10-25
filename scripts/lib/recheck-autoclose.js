@@ -39,7 +39,7 @@ function makeCachedVerifier({ cmd, sha, fallback }) {
  *          linearBrainMain?:Function, verifyFallback?:Function, now?:Date}} o
  * @returns {Promise<{closed:boolean, exitCode:number|null, error:string|null, comment:string}>}
  */
-async function closeCardAfterPass({ identifier, cmd, sha = null, runUrl = null, linearBrainMain, verifyFallback, now } = {}) {
+async function closeCardAfterPass({ identifier, cmd, sha = null, runUrl = null, linearBrainMain, verifyFallback, now, expectStateType, getIssue } = {}) {
   const comment = buildAutoCloseComment({ cmd, sha, runUrl, now });
   const main = linearBrainMain || require('../linear-brain.js').main;
   const realExit = process.exit;
@@ -51,8 +51,19 @@ async function closeCardAfterPass({ identifier, cmd, sha = null, runUrl = null, 
     throw new ExitTrap(firstCode);
   };
   try {
+    const realGetIssue = getIssue || require('./linear-client').getIssue;
+    // The recheck can run for 90 minutes: refuse if the card left its open
+    // state (someone started it) between the fetch and this write.
+    const guardedGetIssue = async (...a) => {
+      const issue = await realGetIssue(...a);
+      if (expectStateType && issue && issue.state && issue.state.type !== expectStateType) {
+        throw new Error(`card state changed to ${issue.state.type} during the run`);
+      }
+      return issue;
+    };
     await main(['update', identifier, '--state', 'Done', '--comment', comment], {
       verifyCmdEvidence: makeCachedVerifier({ cmd, sha, fallback: verifyFallback }),
+      getIssue: guardedGetIssue,
     });
     return { closed: true, exitCode: 0, error: null, comment };
   } catch (err) {

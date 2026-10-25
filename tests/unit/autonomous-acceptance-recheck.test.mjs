@@ -39,11 +39,11 @@ const pass = { status: 'pass', detail: null };
 
 test('decideAutoClose closes an open stamped card whose real test passed', () => {
   assert.equal(core.decideAutoClose({ card: goodCard, target: goodTarget, result: pass }).close, true);
-  assert.equal(core.decideAutoClose({ card: { ...goodCard, stateType: 'backlog' }, target: { ...goodTarget, verifyCmd: 'npx tsc --noEmit' }, result: pass }).close, true);
+  assert.equal(core.decideAutoClose({ card: { ...goodCard, stateType: 'backlog' }, target: { ...goodTarget, verifyCmd: 'npx tsx --test scripts/lib/a.test.ts' }, result: pass }).close, true);
 });
 
 test('decideAutoClose keeps file-exists and generic checks open', () => {
-  for (const verifyCmd of ['test -f docs/a.md', 'npx next lint', 'node scripts/validate-data.js', 'node scripts/run-unit-tests.js', 'node scripts/check-canary-marker.js --date=2026-10-01', 'node scripts/audit-orphan-tests.js']) {
+  for (const verifyCmd of ['test -f docs/a.md', 'npx next lint', 'node scripts/validate-data.js', 'node scripts/run-unit-tests.js', 'node scripts/check-canary-marker.js --date=2026-10-01', 'node scripts/audit-orphan-tests.js', 'npx tsc --noEmit']) {
     const d = core.decideAutoClose({ card: goodCard, target: { ...goodTarget, verifyCmd }, result: pass });
     assert.equal(d.close, false, verifyCmd);
   }
@@ -66,6 +66,13 @@ test('decideAutoClose leaves an unstamped card open, stamp read from notes or co
   assert.equal(core.decideAutoClose({ card: unstamped, target: goodTarget, result: pass }).close, false);
   const viaComment = { ...unstamped, comments: ['Paused.\nRECHECK-AFTER: 2026-10-01'] };
   assert.equal(core.decideAutoClose({ card: viaComment, target: goodTarget, result: pass }).close, true);
+});
+
+test('decideAutoClose refuses a not-yet-due stamp and a stamp followed by newer comments', () => {
+  const future = { ...goodCard, notes: 'RECHECK-AFTER: 2026-12-01' };
+  assert.equal(core.decideAutoClose({ card: future, target: goodTarget, result: pass, now: new Date('2026-10-25') }).close, false);
+  const reopened = { id: 'BRO-3', stateType: 'unstarted', notes: '', comments: ['Paused.\nRECHECK-AFTER: 2026-10-01', 'Fix did not hold, redo'] };
+  assert.equal(core.decideAutoClose({ card: reopened, target: goodTarget, result: pass }).close, false);
 });
 
 test('buildAutoCloseComment names command, commit, run URL and the VERIFY line', () => {
@@ -100,6 +107,17 @@ test('closeCardAfterPass closes through the real Done gate without re-running th
   assert.equal(reran, 0);
   assert.deepEqual(calls.state, ['s-done']);
   assert.match(calls.comment[0], /abc123/);
+});
+
+test('closeCardAfterPass refuses when the card left its open state mid-run', async () => {
+  const { calls, run } = fakeBrain();
+  const out = await closeCardAfterPass({
+    identifier: 'BRO-1', cmd: 'node --test tests/unit/a.test.mjs', expectStateType: 'backlog',
+    linearBrainMain: (argv, deps) => run(argv, deps),
+    getIssue: async () => ({ state: { type: 'started' } }),
+  });
+  assert.equal(out.closed, false);
+  assert.deepEqual(calls.state, []);
 });
 
 test('closeCardAfterPass turns a gate refusal into a result instead of exiting the process', async () => {

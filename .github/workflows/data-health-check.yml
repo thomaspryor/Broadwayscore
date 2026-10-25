@@ -605,7 +605,7 @@ jobs:
         # at all, silently losing that night's coverage instead of reporting
         # it truncated.
         # BRO-6240: a manual recheck_backlog dispatch gets a 95min step cap for its 90min budget.
-        timeout-minutes: ${{ inputs.recheck_backlog == 'true' && 95 || 8 }}
+        timeout-minutes: 95
         env:
           # BRO-6240: owner-approved 2026-10-25. The script closes an open, RECHECK-AFTER-stamped
           # card only when its real test passed on fresh origin/main (decideAutoClose). Turn it
