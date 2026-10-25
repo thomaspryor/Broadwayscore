@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6225",
   "planId": "6fa9ba90-a0b5-45f1-9329-5aee2ff62457",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T19:07:59.393Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,24 @@
         "description": "crooked-cross-off-broadway-2025/theatermania--zachary-stewart.json: rejectionReason"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T20:15:36.583Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "crooked-cross-off-broadway-2025/theatermania--zachary-stewart.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ],
+  "executedIn": "ci"
 }
