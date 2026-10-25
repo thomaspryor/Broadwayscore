@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T06:07:34.343Z",
+  "timestamp": "2026-10-25T06:22:19.316Z",
   "stats": {
     "totalReviews": 61029,
-    "alreadyFlagged": 21383,
+    "alreadyFlagged": 21387,
     "dateGuardCatches": 222,
     "directorMismatch": 2222,
-    "tvFilmSignals": 1725,
+    "tvFilmSignals": 1726,
     "londonSignals": 2971,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5450
+    "noPublishDate": 5440
   },
   "findings": [
     {
@@ -28318,6 +28318,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "meet-the-cartozians-off-broadway-2025",
+      "file": "nysr--michael-sommers.json",
+      "score": null,
+      "publishDate": "2025-11-17",
+      "url": "https://nystagereview.com/2025/11/17/meet-the-cartozians-armenians-in-america-then-and-now/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
