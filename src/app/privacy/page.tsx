@@ -28,7 +28,7 @@ export default function PrivacyPage() {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
       <div className="text-center mb-10">
         <h1 className="text-4xl sm:text-5xl font-extrabold text-white">Privacy Policy</h1>
-        <p className="text-gray-400 mt-3">Last updated: October 22, 2026</p>
+        <p className="text-gray-400 mt-3">Last updated: October 25, 2026</p>
       </div>
 
       <div className="card p-6 sm:p-8 space-y-6">
@@ -71,7 +71,10 @@ export default function PrivacyPage() {
             <div>
               <h3 className={h3}>Watchlist and plans</h3>
               <p>
-                Shows you want to see and the dates you plan to go. These are visible only to you.
+                Shows you want to see and the dates you plan to go are private unless you turn on a shared link.
+                Anyone with the link can then see the sections you choose: upcoming shows (dates only, no
+                curtain times) and your not-yet-booked watchlist, without an account. Turning the link off
+                stops access to the page. Previews already sent in chats may stay visible there.
               </p>
             </div>
             <div>
