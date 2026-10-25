@@ -58,7 +58,8 @@ test('sign-ups go to their own store, never the main list or accounts', () => {
 test('generic popups are off on /biz and held while a money gate is on screen', () => {
   assert.ok(emailCaptureConfig.excludedPaths.includes('/biz'));
   assert.match(read('src/contexts/ProGateContext.tsx'), /if \(isMoneyGateInView\(\)\) return false;/);
-  assert.match(read('src/components/ShowFollowBanner.tsx'), /!isMoneyGateInView\(\)/);
+  assert.match(read('src/components/ShowFollowBanner.tsx'), /const gateInView = isMoneyGateInView\(\);/);
+  assert.match(read('src/components/ShowFollowBanner.tsx'), /\|\| moneyGateInView\) return null;/, 'an already-open banner hides over the gate');
 });
 
 test('paywall structured data points at the gated wrapper class', () => {
