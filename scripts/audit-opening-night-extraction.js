@@ -320,6 +320,7 @@ function auditCriticCollisions(show) {
     // the stale-slug source doesn't trip this audit. Same gate as
     // validate-review-texts.js line 185 + rebuild-all-reviews. Aligned with
     // the topology-rename redesign (Notion 34f637c5-416f-81a1).
+    // BRO-2613: advisory skip, see docs/duplicate-text-of-exclusion.md
     if (f.data?.duplicateOf || f.data?.duplicateTextOf) continue;
     if (f.data?.wrongShow || f.data?.wrongProduction || f.data?.wrongAttribution) continue;
     const key = `${outletId}|${name}`;
