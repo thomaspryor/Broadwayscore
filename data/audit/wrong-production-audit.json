@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T07:41:53.467Z",
+  "timestamp": "2026-10-25T08:06:38.969Z",
   "stats": {
-    "totalReviews": 61160,
+    "totalReviews": 61168,
     "alreadyFlagged": 21391,
     "dateGuardCatches": 222,
     "directorMismatch": 2223,
-    "tvFilmSignals": 1734,
+    "tvFilmSignals": 1739,
     "londonSignals": 2971,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5482
+    "noPublishDate": 5455
   },
   "findings": [
     {
@@ -20536,6 +20536,19 @@
       "score": null,
       "publishDate": "2025-09-10",
       "url": "https://www.nysun.com/article/a-designer-who-drew-inspiration-from-violence-and-despair-alexander-mcqueen-is-subject-of-off-broadways-house-of-mcqueen",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "house-of-mcqueen-off-broadway-2025",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2025-09-10",
+      "url": "https://t2conline.com/the-house-of-mcqueen-fashion-icon-reduced-to-flatline/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -41757,6 +41770,19 @@
       ]
     },
     {
+      "showId": "ta-da-off-broadway-2025",
+      "file": "vulture--jackson-mchenry.json",
+      "publishDate": "2025-07-22",
+      "url": "https://www.vulture.com/article/new-show-review-ta-da-out-of-order-and-open.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "take-me-out-2022",
       "file": "medium--david-cote.json",
       "score": 79,
@@ -48433,6 +48459,19 @@
       ]
     },
     {
+      "showId": "the-other-americans-off-broadway-2025",
+      "file": "the-recs--randall-david-cook.json",
+      "publishDate": "2025-09-26",
+      "url": "https://therecs.co.uk/the-other-americans/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "the-other-place-2013",
       "file": "newsday--linda-winer.json",
       "score": 89,
@@ -52165,6 +52204,19 @@
       ]
     },
     {
+      "showId": "this-world-of-tomorrow-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2025-11-18",
+      "url": "https://newyorktheater.me/2025/11/18/this-world-of-tomorrow-review-tom-hanks-writes-a-play/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "thoughts-of-a-colored-man-2021",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 78,
@@ -55767,6 +55819,19 @@
       "score": null,
       "publishDate": "2025-09-24",
       "url": "https://www.timeout.com/newyork/theater/weather-girl-review-play-julia-mcdermott-brian-watkins-climate-change",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "weather-girl-off-broadway-2025",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": "2025-09-23",
+      "url": "https://www.vulture.com/article/theater-review-weather-girl-watkins-mcdermott.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
