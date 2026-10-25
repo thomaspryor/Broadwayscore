@@ -1387,37 +1387,6 @@
     "queuedAt": "2026-10-24T21:06:39.029Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40134222913",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40134222913)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40133383797)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "5"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-24T21:45:31.432Z"
-  },
-  {
     "conditionKey": "land:land/bro-6168-decision-reply-drain",
     "title": "Landing blocked: rebase red on land/bro-6168-decision-reply-drain",
     "description": "land.yml did not land land/bro-6168-decision-reply-drain: the rebase gate went red at cc6809824e. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6168-decision-reply-drain @ cc6809824e (origin/land/bro-6168-decision-reply-drain) → origin/main @ e6047562ec REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e6047562ec: Rebasing (1/1) error: could not apply cc6809824ec... feat: act on the owner's reply to a DECISION NEEDED card (BRO-6168) hint: Resolve all conflicts manually, mark them as resolved with hint: \"g Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40129351809",
@@ -1920,5 +1889,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T05:31:20.529Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40167373734",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40167373734)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40167164922)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "4"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-25T06:20:00.817Z"
   }
 ]

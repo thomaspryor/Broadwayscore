@@ -238,22 +238,20 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-24T21:45:31.431Z",
-      "lastSeen": "2026-10-25T00:22:34.550Z",
-      "lastNotifiedAt": "2026-10-24T21:45:31.431Z",
-      "lastSurfacedAt": "2026-10-24T21:45:31.431Z",
-      "notifyCount": 166,
+      "incidentOpenedAt": "2026-10-25T06:20:00.816Z",
+      "lastSeen": "2026-10-25T06:20:00.816Z",
+      "lastNotifiedAt": "2026-10-25T06:20:00.816Z",
+      "lastSurfacedAt": "2026-10-25T06:20:00.816Z",
+      "notifyCount": 167,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "silentRefires": 5,
-      "resolvedAt": "2026-10-25T01:11:14.068Z"
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26115,7 +26113,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
       "firstSeen": "2026-10-24T21:18:01.551Z",
       "incidentOpenedAt": "2026-10-25T04:19:37.696Z",
-      "lastSeen": "2026-10-25T06:11:39.295Z",
+      "lastSeen": "2026-10-25T06:20:00.805Z",
       "lastNotifiedAt": "2026-10-25T04:19:37.696Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
