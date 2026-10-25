@@ -439,6 +439,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     ...(commercial.capitalizationBasis ? { capitalizationBasis: commercial.capitalizationBasis } : {}),
     weeklyRunningCost: commercial.weeklyRunningCost,
     weeklyRunningCostSource: publicSourceText(commercial.weeklyRunningCostSource),
+    ...(commercial.weeklyRunningCostBasis ? { weeklyRunningCostBasis: commercial.weeklyRunningCostBasis } : {}),
     costMethodology: commercial.costMethodology,
     isEstimate: commercial.isEstimate,
     ...(estimatedInputs.length ? { estimatedInputs } : {}),

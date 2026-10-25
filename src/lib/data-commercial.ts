@@ -845,6 +845,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     weeklyAtp: running ? positiveOrNull(grossData?.thisWeek?.atp) : null,
     weeklyCost: data.weeklyRunningCost || null,
     weeklyCostIsEstimate: isEstimatedRunningCost(data),
+    weeklyCostBasis: data.weeklyRunningCostBasis ?? null,
     nonprofitOrg: getNonprofitProducer(data),
     totalGross: grossData?.allTime?.gross || null,
     modelRecoupmentPct: data.modelRecoupmentPct || null,

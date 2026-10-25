@@ -18,7 +18,7 @@ import {
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialShowRow } from '@/lib/data-types';
-import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import {
   getRecoupedCellSummary,
   getDesignationDisplay,
@@ -382,7 +382,12 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {show.weeklyCost == null ? (
                       <span className="text-gray-500">—</span>
                     ) : (
-                      `${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`
+                      <>
+                        {`${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`}
+                        {show.weeklyCostBasis && show.weeklyCostBasis !== 'running' && (
+                          <span className="block text-[10px] text-gray-500">{weeklyCostLabel(show.weeklyCostBasis)}</span>
+                        )}
+                      </>
                     )}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">
