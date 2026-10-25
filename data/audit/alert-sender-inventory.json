@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-24T17:47:32.615Z",
+  "generatedAt": "2026-10-25T18:03:56.247Z",
   "counts": {
-    "router": 196,
+    "router": 199,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -100,21 +100,21 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4409,
+      "line": 4421,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4418,
+      "line": 4430,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6514,
+      "line": 6526,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -485,14 +485,14 @@
     },
     {
       "file": "scripts/check-corpus-drift.js",
-      "line": 718,
+      "line": 728,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/check-corpus-drift.js",
-      "line": 862,
+      "line": 872,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -688,7 +688,7 @@
     },
     {
       "file": "scripts/detect-star-band-regressions.js",
-      "line": 188,
+      "line": 190,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -891,14 +891,14 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5560,
+      "line": 5601,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5592,
+      "line": 5633,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -1212,6 +1212,20 @@
       "disposition": "unknown"
     },
     {
+      "file": "scripts/poll-trade-press-rss.js",
+      "line": 320,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": "scripts/poll-trade-press-rss.js",
+      "line": 387,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": "scripts/promote-ob-venue-candidates.js",
       "line": 1157,
       "kind": "routeAlert",
@@ -1283,7 +1297,7 @@
     },
     {
       "file": "scripts/route-tour-candidates.js",
-      "line": 58,
+      "line": 59,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -1331,6 +1345,13 @@
       "disposition": "digest"
     },
     {
+      "file": "scripts/sweep-broadway-journal.js",
+      "line": 104,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
       "file": "scripts/time-to-publish-sla.js",
       "line": 368,
       "kind": "routeAlert",
@@ -1346,7 +1367,7 @@
     },
     {
       "file": "scripts/validate-shows-prebuild.js",
-      "line": 55,
+      "line": 60,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
