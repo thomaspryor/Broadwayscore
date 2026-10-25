@@ -64,8 +64,8 @@ const TIER_1 = [
 // The scraper and Resend keys were withheld until the owner added them to the
 // Default environment (BRO-6112). In cloud (and only there) the check treats
 // these as expected-absent, not as a failure. Still Tier 1 everywhere else.
-// BRIGHTDATA_CUSTOMER is not required: only scripts/evaluate-brightdata-serp.js
-// reads it, with a hardcoded default.
+// BRIGHTDATA_CUSTOMER is not required: its readers (evaluate-brightdata-serp.js,
+// lib/url-discovery.js) fall back to a hardcoded default.
 const CLOUD_WITHHELD = [
   'ANTHROPIC_API_KEY',
 ];
@@ -118,7 +118,7 @@ const TIER_2 = [
 ];
 
 // Shortest value we will show a 3-char prefix for. A 40-char token loses
-// nothing to 3 characters; BRIGHTDATA_ZONE / BRIGHTDATA_CUSTOMER are short
+// nothing to 3 characters; BRIGHTDATA_ZONE is short
 // enough that a prefix is a meaningful fraction of the secret, and this script
 // now reads values off disk that it previously never touched, so the exposure
 // is wider than it was. Below the floor we print the length only.

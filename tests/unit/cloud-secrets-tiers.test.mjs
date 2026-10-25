@@ -37,11 +37,13 @@ test('the accounts and deploy keys are listed, so a cloud session sees when it l
 // BRO-6112: SCRAPINGDOG_API_KEY (the main scraper) was never in TIER_1, so nobody
 // asked the owner for it. Requires the real provider list, never a copy.
 const { SCRAPER_CREDENTIAL_KEYS } = require('../../scripts/lib/opening-night-monitor.js');
+const { CLOUD_WITHHELD: WITHHELD_KEYS } = require('../../scripts/check-cloud-secrets.js');
 
 test('every scraper provider credential is Tier 1 (BRO-6112)', () => {
   assert.ok(SCRAPER_CREDENTIAL_KEYS.length > 0);
   for (const k of SCRAPER_CREDENTIAL_KEYS) {
     assert.ok(TIER_1.includes(k), `${k} authenticates a fetchPage() provider but is not in TIER_1 of check-cloud-secrets.js`);
+    assert.ok(!WITHHELD_KEYS.includes(k), `${k} must not be withheld in cloud: that would hide a missing scraper key (BRO-6112)`);
   }
 });
 
