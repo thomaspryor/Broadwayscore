@@ -19,6 +19,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
   const bannerEnabled = emailCaptureConfig.showFollowBanner.enabled;
 
   const [visible, setVisible] = useState(false);
+  const [moneyGateInView, setMoneyGateInView] = useState(false);
   const [dismissed, setDismissed] = useState(true);
   const [alreadyFollowing, setAlreadyFollowing] = useState(false);
   const [email, setEmail] = useState('');
@@ -56,8 +57,11 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (scrollHeight > 0) {
         const pct = window.scrollY / scrollHeight;
-        // Held while the Money Scorecard's own sign-up is on screen (BRO-6210).
-        if (pct >= emailCaptureConfig.showFollowBanner.scrollThreshold && !isMoneyGateInView()) {
+        // Held, and hidden if already up, while the Money Scorecard's own
+        // sign-up is on screen (BRO-6210).
+        const gateInView = isMoneyGateInView();
+        setMoneyGateInView(gateInView);
+        if (pct >= emailCaptureConfig.showFollowBanner.scrollThreshold && !gateInView) {
           setVisible(true);
         }
       }
@@ -96,7 +100,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
   // Show "Following" pill if already following this show
   if (alreadyFollowing) return null;
 
-  if (dismissed || isSubscribed || !visible) return null;
+  if (dismissed || isSubscribed || !visible || moneyGateInView) return null;
 
   // Success state
   if (status === 'success' || status === 'already_subscribed') {
