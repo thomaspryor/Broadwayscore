@@ -94,7 +94,7 @@ interface EmailCaptureConfig {
 
 const presets: Record<string, EmailCaptureConfig> = {
   soft: {
-    excludedPaths: ['/feedback', '/submit-review', '/methodology', '/beat-the-critics'],
+    excludedPaths: ['/feedback', '/submit-review', '/methodology', '/beat-the-critics', '/biz'],
     exitIntent: { enabled: false, minTimeOnPageSec: 8 },
     pageViewGate: { threshold: 8 },
     homepageBanner: {
@@ -119,7 +119,9 @@ const presets: Record<string, EmailCaptureConfig> = {
     },
   },
   aggressive: {
-    excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics'],
+    // /biz is the Money Scorecard's own sub-site with its own sign-up
+    // (BRO-6210); the main-list popups never fire there.
+    excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics', '/biz'],
     // Raised 5 -> 30 (BRO-1959, 2026-08-21): gate-cold-start (started
     // 2026-07-21) cleared its pre-registered 28-day minimum runtime on
     // 2026-08-18 with no guardrail trips (data/audit/gate-cold-start-monitor-state.json,
