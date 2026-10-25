@@ -26,6 +26,9 @@ const DAY_MS = 86400 * 1000;
 function decideObHistoricalEntry(entry, { todayIso, minClosedDays = BACKFILL_CLOSED_DAYS, minRunDays = MIN_RUN_DAYS }) {
   if (!entry || !entry.id) return { ok: false, reason: 'no entry' };
   if (entry.idYearProvisional) return { ok: false, reason: 'id year not from Playbill dates' };
+  // buildShowEntry falls back to the first preview when Playbill prints no
+  // opening date, so the entry alone cannot tell. The caller marks it.
+  if (entry.openingFromPlaybill === false) return { ok: false, reason: 'Playbill page has no opening date' };
   const start = entry.previewsStartDate || entry.openingDate;
   if (!entry.openingDate || !entry.closingDate) return { ok: false, reason: 'Playbill opening or closing date missing' };
   const closed = Date.parse(entry.closingDate);
@@ -33,6 +36,30 @@ function decideObHistoricalEntry(entry, { todayIso, minClosedDays = BACKFILL_CLO
   if (!(today - closed > minClosedDays * DAY_MS)) return { ok: false, reason: `closed ${minClosedDays} days ago or less` };
   if (!(closed - Date.parse(start) >= minRunDays * DAY_MS)) return { ok: false, reason: `run shorter than ${minRunDays} days` };
   return { ok: true, reason: 'promotable' };
+}
+
+/**
+ * A validate-show-venue result whose only mismatches are structural facts the
+ * candidate never asserted (isRevival, type). The plan's target carries no
+ * claim about either, so Playbill's value is a fact to take, not a conflict.
+ * Without this every Playbill-tagged revival reads as a mismatch.
+ */
+const STRUCTURAL_FIELDS = new Set(['isRevival', 'type']);
+function isStructuralOnlyMismatch(r) {
+  return !!r && r.result === 'mismatch' && Array.isArray(r.mismatches) && r.mismatches.length > 0
+    && r.mismatches.every(m => STRUCTURAL_FIELDS.has(m.field));
+}
+
+/**
+ * Playbill's own play/musical and revival labels for an entry, from the
+ * validate result's parsed tag-line. Falls back to the entry's title guess.
+ */
+function playbillFacts(r, entry) {
+  const tag = (r && r.parsed && r.parsed.tagLine) || {};
+  const type = tag.showType === 'play' || tag.showType === 'musical' ? tag.showType : entry.type;
+  const isRevival = tag.revivalStatus === 'revival' ? true : tag.revivalStatus === 'original' ? false : null;
+  const openingFromPlaybill = !!(r && r.parsed && r.parsed.dates && r.parsed.dates.openingDate);
+  return { type, isRevival, openingFromPlaybill };
 }
 
 /**
@@ -52,7 +79,10 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
     category: 'off-broadway',
     market: 'broadway',
     type: entry.type,
-    tags: [],
+    // 'historical' is what the OB historical audits select on
+    // (audit-review-crossmodel.js isHist, fact-check samples).
+    tags: ['historical', entry.isRevival ? 'revival' : 'new'],
+    ...(typeof entry.isRevival === 'boolean' ? { isRevival: entry.isRevival } : {}),
     discoverySource: 'ob-historical:tm',
     discoveredAt,
     openingDateSource: dateSource,
@@ -62,4 +92,4 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
   return { type: 'add-show', show };
 }
 
-module.exports = { decideObHistoricalEntry, toAddShowAction, MIN_RUN_DAYS };
+module.exports = { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };

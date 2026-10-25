@@ -62,7 +62,7 @@ async function main() {
   const { checkForDuplicate } = require('./lib/deduplication');
   const { isNonTheaterContent, isOneNightShow } = require('./discover-new-shows');
   const { selectPromotable } = require('./promote-ob-historical');
-  const { decideObHistoricalEntry, toAddShowAction } = require('./lib/ob-historical-cohort');
+  const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts } = require('./lib/ob-historical-cohort');
 
   const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
   const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
@@ -77,6 +77,7 @@ async function main() {
     orderby: 'id',
   });
   console.log(`TheaterMania: ${feed.rawCount} rows over ${feed.pagesFetched} pages; ${feed.rows.length} start in ${fromIso}..${toIso}`);
+  if (feed.pagesFetched >= 120) console.log('::warning::hit the 120-page cap; the scan may be truncated');
   if (feed.rawCount === 0) {
     console.error('::error::TheaterMania returned no rows (feed blind) — not a real empty cohort');
     process.exit(1);
@@ -93,7 +94,7 @@ async function main() {
     const c = r.candidate;
     if (findTmSameTitleShow(c, shows)) { note('in-catalog'); continue; }
     let dup = null;
-    try { dup = checkForDuplicate(c, shows); } catch (_) { dup = null; }
+    try { dup = checkForDuplicate(c, shows); } catch (e) { note('dedup-error'); console.log(`  ! checkForDuplicate failed for "${c.title}": ${e.message}`); dup = null; }
     if (dup && dup.isDuplicate) { note('in-catalog'); continue; }
     candidates.push(c);
   }
@@ -118,6 +119,7 @@ async function main() {
     };
     let r;
     try { r = await validateOne(target, () => {}); } catch (e) { r = { result: 'error', error: e.message }; }
+    if (isStructuralOnlyMismatch(r)) r = { ...r, result: 'match', structuralOnly: r.mismatches.map(m => m.field) };
     verdicts[r.result] = (verdicts[r.result] || 0) + 1;
     if (r.result === 'match' && r.playbillUrl && r.parsed && r.parsed.dates) {
       results.push({ ...r, title: c.title, venue: c.venue, tmUrl: c.theatermaniaUrl });
@@ -129,9 +131,11 @@ async function main() {
   // 4-5. Guards, then cohort rules.
   const { toPromote, skipped } = selectPromotable(results, shows);
   const tmById = new Map(results.map(r => [r.playbillUrl, r.tmUrl]));
+  const resultByUrl = new Map(results.map(r => [r.playbillUrl, r]));
   const actions = [];
   const ruleSkips = [];
-  for (const e of toPromote) {
+  for (const raw of toPromote) {
+    const e = { ...raw, ...playbillFacts(resultByUrl.get(raw.playbillUrl), raw) };
     const d = decideObHistoricalEntry(e, { todayIso });
     if (!d.ok) { ruleSkips.push(`${e.title}: ${d.reason}`); continue; }
     actions.push(toAddShowAction(e, {
