@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5874",
+  "planId": "e0869dd5-f8d6-4190-89a9-28e3b2389e4d",
+  "status": "partial",
+  "createdAt": "2026-10-21T23:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5874: recover the Innocence Bachtrack review from its existing Wayback snapshot (20260409195415), keeping the original Bachtrack url. Parent decision: no Save Page Now, Lincoln stays without a Bachtrack file.",
+    "steps": [
+      "Re-ingest innocence-off-broadway-2026 bachtrack review from the pinned snapshot"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=innocence-off-broadway-2026 --url=https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 --outlet=bachtrack --archive-snapshot=20260409195415",
+        "description": "BRO-5874: replace the 313-char invalid text; fetched from the existing Wayback snapshot, row keeps the Bachtrack url"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T23:51:34.716Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=innocence-off-broadway-2026 --url=https://bachtrack.com/review-saariaho-innocence-malkki-didonato-metropolitan-opera-april-2026 --outlet=bachtrack --archive-snapshot=20260409195415"
+    }
+  ],
+  "executedIn": "ci"
+}

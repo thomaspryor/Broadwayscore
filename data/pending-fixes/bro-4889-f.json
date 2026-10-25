@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-4889-f",
+  "planId": "693b5c04-c486-408f-a33e-19bb53396351",
+  "status": "applied",
+  "createdAt": "2026-10-22T15:11:40.086Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4889: correct two Evita bylines: 2012 TheaterMania review is David Finkle (not David Rooney), 1979 NYT review is Walter Kerr (not Ben Brantley)",
+    "steps": [
+      "BRO-4889: theatermania.com/news/review-evita_54031 (2012-04-05) is bylined David Finkle (verified on the page 2026-10-22); Rooney reviewed Evita for The Hollywood Reporter",
+      "BRO-4889: the 1979-09-26 NYT archive page reads 'By Walter Kerr' (fetched via fetch-page-probe, run 39797453761); Brantley joined the Times in 1993"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/theatermania--david-rooney.json",
+        "field": "criticName",
+        "oldValue": "David Rooney",
+        "newValue": "David Finkle",
+        "description": "BRO-4889: theatermania.com/news/review-evita_54031 (2012-04-05) is bylined David Finkle (verified on the page 2026-10-22); Rooney reviewed Evita for The Hollywood Reporter"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-1979/nytimes--ben-brantley.json",
+        "field": "criticName",
+        "oldValue": "Ben Brantley",
+        "newValue": "Walter Kerr",
+        "description": "BRO-4889: the 1979-09-26 NYT archive page reads 'By Walter Kerr' (fetched via fetch-page-probe, run 39797453761); Brantley joined the Times in 1993"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T18:48:05.709Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/theatermania--david-rooney.json criticName: \"David Rooney\" -> \"David Finkle\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-1979/nytimes--ben-brantley.json criticName: \"Ben Brantley\" -> \"Walter Kerr\""
+    }
+  ],
+  "executedIn": "ci"
+}

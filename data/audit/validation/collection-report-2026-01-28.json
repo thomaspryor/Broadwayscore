@@ -1,0 +1,76 @@
+{
+  "runDate": "2026-01-28T23:53:47.537Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 30,
+    "priority": "all",
+    "showFilter": "mj-2022",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 3,
+    "failed": 21,
+    "skipped": 0,
+    "successRate": "12.5%"
+  },
+  "tierBreakdown": {
+    "playwright": 0,
+    "scrapingbee": 0,
+    "brightdata": 2,
+    "archive": 1
+  },
+  "statistics": {
+    "tier1Attempts": 24,
+    "tier1Success": 0,
+    "tier2Attempts": 24,
+    "tier2Success": 0,
+    "tier3Attempts": 24,
+    "tier3Success": 2,
+    "tier4Attempts": 50,
+    "tier4Success": 1,
+    "totalFailed": 21,
+    "scrapingBeeCreditsUsed": 60
+  },
+  "processed": [
+    "mj-2022/nytg--ayanna-prescod.json",
+    "mj-2022/dailybeast--tim-teeman.json",
+    "mj-2022/usatoday--david-rooney.json"
+  ],
+  "failed": [
+    "mj-2022/hollywood-reporter--angie-han.json",
+    "mj-2022/hollywood-reporter--david-rooney.json",
+    "mj-2022/variety--aramide-tinubu.json",
+    "mj-2022/variety--charles-isherwood.json",
+    "mj-2022/variety--frank-rizzo.json",
+    "mj-2022/vulture--jackson-mchenry.json",
+    "mj-2022/deadline--pete-hammond.json",
+    "mj-2022/ew--david-rooney.json",
+    "mj-2022/ew--kristen-baldwin.json",
+    "mj-2022/guardian--adrian-horton.json",
+    "mj-2022/nydailynews--joe-dziemianowicz.json",
+    "mj-2022/theatermania--adam-feldman.json",
+    "mj-2022/theatermania--david-gordon.json",
+    "mj-2022/theatermania--jesse-green.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/wsj--terry-teachout.json",
+    "mj-2022/ap--mark-kennedy.json",
+    "mj-2022/nysr--mark-dundas-wood.json",
+    "mj-2022/talkinbroadway--john-olson.json",
+    "mj-2022/talkinbroadway--matthew-murray.json",
+    "mj-2022/usatoday--charles-isherwood.json"
+  ],
+  "tierDetails": {
+    "playwright": [],
+    "scrapingbee": [],
+    "brightdata": [
+      "mj-2022/dailybeast--tim-teeman.json",
+      "mj-2022/usatoday--david-rooney.json"
+    ],
+    "archive": [
+      "mj-2022/nytg--ayanna-prescod.json"
+    ]
+  }
+}

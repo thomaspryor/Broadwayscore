@@ -1,0 +1,65 @@
+{
+  "consecutiveBelowCaptureFloor": 0,
+  "lastRunAt": "2026-09-14T18:27:45.455Z",
+  "lastSummary": {
+    "recent": {
+      "days": 7,
+      "flagHealthy": true,
+      "arms": {
+        "control": {
+          "exposed": 1268,
+          "shown": 233,
+          "dismissed": 152,
+          "captured": 2
+        },
+        "cold-start": {
+          "exposed": 1326,
+          "shown": 95,
+          "dismissed": 70,
+          "captured": 0
+        },
+        "unexposed": {
+          "exposed": 41,
+          "shown": 41,
+          "dismissed": 27,
+          "captured": 1
+        }
+      },
+      "flagHealthProblem": null,
+      "effectiveDays": 7,
+      "experimentStart": "2026-07-21",
+      "totalCapturesPerWeek": 2
+    },
+    "cumulative": {
+      "days": 180,
+      "flagHealthy": true,
+      "arms": {
+        "control": {
+          "exposed": 10593,
+          "shown": 2626,
+          "dismissed": 1598,
+          "captured": 15
+        },
+        "cold-start": {
+          "exposed": 10705,
+          "shown": 1053,
+          "dismissed": 811,
+          "captured": 11
+        },
+        "unexposed": {
+          "exposed": 56,
+          "shown": 55,
+          "dismissed": 36,
+          "captured": 0
+        }
+      },
+      "flagHealthProblem": null,
+      "effectiveDays": 55.77,
+      "experimentStart": "2026-07-21",
+      "totalCapturesPerWeek": 3.26
+    }
+  },
+  "primaryReadyAlertedAt": 1787579762280,
+  "everReachedTrafficFloor": true,
+  "lastSplitAlertAt": 1788804646011
+}

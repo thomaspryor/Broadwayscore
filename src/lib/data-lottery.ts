@@ -1,0 +1,90 @@
+// Lottery & Rush data module
+// Imports: lottery-rush.json (~3 KB) + shows.json (~1.3 MB for slug→id lookup)
+
+import type { ShowLotteryRush } from './data-types';
+import lotteryRushData from '../../data/lottery-rush.json';
+import showsData from '../../data/shows.json';
+import { partitionShowRows } from '../../scripts/lib/show-row-guard';
+import { ticketPolicyCheckedAt } from './lottery-rush-freshness';
+
+interface LotteryRushFile {
+  lastUpdated: string;
+  /** Last successful scrape, stamped even when no policy changed (BRO-5261). */
+  lastCheckedAt?: string;
+  source: string;
+  shows: Record<string, ShowLotteryRush>;
+}
+
+const lotteryRush = lotteryRushData as unknown as LotteryRushFile;
+const rawShows = partitionShowRows(showsData.shows).valid as Array<{ id: string; slug: string }>;
+
+/**
+ * Get lottery/rush data for a specific show by ID
+ */
+export function getLotteryRush(showId: string): ShowLotteryRush | undefined {
+  return lotteryRush.shows[showId];
+}
+
+/**
+ * Get lottery/rush data by slug (looks up show ID first)
+ */
+export function getLotteryRushBySlug(slug: string): ShowLotteryRush | undefined {
+  const show = rawShows.find(s => s.slug === slug);
+  if (!show) return undefined;
+  return lotteryRush.shows[show.id];
+}
+
+/**
+ * Check if a show has any lottery/rush options
+ */
+export function hasLotteryOrRush(showId: string): { hasLottery: boolean; hasRush: boolean; hasSRO: boolean } {
+  const data = lotteryRush.shows[showId];
+  if (!data) return { hasLottery: false, hasRush: false, hasSRO: false };
+
+  return {
+    hasLottery: !!data.lottery || !!data.specialLottery,
+    hasRush: !!data.rush || !!data.digitalRush || !!data.studentRush,
+    hasSRO: !!data.standingRoom,
+  };
+}
+
+/**
+ * When the lottery/rush data was last confirmed current: the last successful
+ * scrape (lastCheckedAt), falling back to the last change (lastUpdated).
+ * Drives the pages' "Updated" line and the staleness banner (BRO-901/5261).
+ */
+export function getLotteryRushLastUpdated(): string {
+  return ticketPolicyCheckedAt(lotteryRush);
+}
+
+/**
+ * Get all show IDs that have lottery programs
+ */
+function getAllLotteryShowIds(): string[] {
+  return Object.entries(lotteryRush.shows)
+    .filter(([_, data]) => data.lottery || data.specialLottery)
+    .map(([id]) => id);
+}
+
+/**
+ * Get all show IDs that have rush programs
+ */
+function getAllRushShowIds(): string[] {
+  return Object.entries(lotteryRush.shows)
+    .filter(([_, data]) => data.rush || data.digitalRush || data.studentRush)
+    .map(([id]) => id);
+}
+
+/**
+ * Get count of shows with lottery programs
+ */
+export function getLotteryShowCount(): number {
+  return getAllLotteryShowIds().length;
+}
+
+/**
+ * Get count of shows with rush programs
+ */
+export function getRushShowCount(): number {
+  return getAllRushShowIds().length;
+}

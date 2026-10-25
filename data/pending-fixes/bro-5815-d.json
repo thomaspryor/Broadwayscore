@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-5815-d",
+  "planId": "efc1c145-b436-4b4a-852e-741631d5df4e",
+  "status": "applied",
+  "createdAt": "2026-10-21T04:23:25.860Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5815: tag capitalizationBasis on 1 records whose capitalizationSource names a publication but quotes nothing (part 4 of 4). \"reported\" = the figure is press-reported with no stated raise/ceiling nature; \"sold\" = source wording says it was raised. Neither prints \"up to\", so no displayed figure changes. Records whose only source is an SEC filing without stated wording stay untagged until the Form D is read.",
+    "steps": [
+      "Set capitalizationBasis on 1 commercial.json records"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-piano-lesson-2022",
+        "showId": "the-piano-lesson-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "BRO-5815: the source names a publication and reports the $7M without saying whether it is a raise or a ceiling; tag it reported (prints as the amount reported, unchanged)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T05:54:23.992Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-piano-lesson-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

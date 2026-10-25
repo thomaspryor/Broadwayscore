@@ -1,0 +1,52 @@
+{
+  "issueNumber": "bro-6158-hd",
+  "planId": "987b742b-afdb-48e9-9d88-ce20d5c02dc3",
+  "status": "applied",
+  "createdAt": "2026-10-24T23:49:52.450Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Hello, Dolly! closed TBD gets our estimate: Trickle (trade report of a 5 percent investor profit)",
+    "steps": [
+      "commercial.json: hello-dolly-2017.designation",
+      "commercial.json: hello-dolly-2017.designationBasis"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Trickle",
+        "description": "commercial.json: hello-dolly-2017.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hello-dolly-2017",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate",
+        "description": "commercial.json: hello-dolly-2017.designationBasis"
+      }
+    ]
+  },
+  "executedAt": "2026-10-24T23:57:23.667Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for hello-dolly-2017"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hello-dolly-2017"
+    }
+  ],
+  "executedIn": "ci"
+}

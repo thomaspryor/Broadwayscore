@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-5895",
+  "planId": "16754d31-9d17-4440-9e56-a342cc2cf0db",
+  "status": "applied",
+  "createdAt": "2026-10-22T06:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5895: split five critic articles that review two or three shows, so every reviewed show gets its own section scored on its own text (joint fan-out strategy that landed with this issue).",
+    "steps": [
+      "Run the multi-show splitter with the joint strategy on each of the five parent files; each parent is trimmed to its own section and a child row is written for every sibling show",
+      "Scoring and rebuild then pick up the trimmed parents and the new child rows"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=the-curious-case-of-benjamin-button-off-broadway-2026 --file=nytimes--helen-shaw.json",
+        "description": "NYT Helen Shaw double review: Benjamin Button -> Midnight section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=school-pictures-off-broadway-2026 --file=nytimes--helen-shaw.json",
+        "description": "NYT Helen Shaw double review: School Pictures -> Two Girls section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=memoirs-of-amorous-gentlemen-off-broadway-2026 --file=vulture--jackson-mchenry.json",
+        "description": "Vulture Jackson McHenry: Memoirs -> A Ghost in Your Ear section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=a-ghost-in-your-ear-off-broadway-2026 --file=wsj--charles-isherwood.json",
+        "description": "WSJ Charles Isherwood: A Ghost in Your Ear -> ANON section"
+      },
+      {
+        "type": "run-script",
+        "script": "split-multi-show-roundups.js",
+        "args": "--apply --scan-all --joint --show=good-time-charlie-off-broadway-2026 --file=theater-life--david-sheward.json",
+        "description": "Theater Life David Sheward: Good Time Charlie -> Fish and ANON sections"
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T08:10:53.574Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran split-multi-show-roundups.js successfully"
+    }
+  ],
+  "executedIn": "ci"
+}

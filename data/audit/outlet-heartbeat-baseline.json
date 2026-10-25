@@ -1,0 +1,211 @@
+{
+  "_meta": {
+    "description": "Known/acknowledged outlet\u00d7market pairs already silent beyond cadence (card #643). The \"Quality: outlet-heartbeat red flags\" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) \u2014 a merely-red-this-week row is left off so it can still alert once triaged. Each ack expires after ttlDays (BRO-3364) and the pair re-enters the normal 2-week streak. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline (keeps existing acks' dates); --renew-baseline=<outlet>::<market> re-acks one pair from today, bare --renew-baseline every listed pair.",
+    "count": 40,
+    "ttlDays": 90
+  },
+  "keys": [
+    "ap::broadway",
+    "backstage::broadway",
+    "bloomberg::broadway",
+    "britishtheatrecom::west-end",
+    "broadway-blog::broadway",
+    "broadwaynews::broadway",
+    "broadwayworld::broadway",
+    "cititour::broadway",
+    "curtainup::broadway",
+    "curtainup::off-broadway",
+    "daily-mail::broadway",
+    "dailybeast::broadway",
+    "dailybeast::off-broadway",
+    "dctheatrescene::broadway",
+    "ew::off-broadway",
+    "financialtimes::broadway",
+    "hollywood-reporter::broadway",
+    "hollywood-reporter::off-broadway",
+    "huffpost::broadway",
+    "independent::broadway",
+    "latimes::broadway",
+    "nbcny::broadway",
+    "newsday::broadway",
+    "newyorker::broadway",
+    "njcom::broadway",
+    "northjerseycom::broadway",
+    "ny1::broadway",
+    "observer::broadway",
+    "observer::off-broadway",
+    "philadelphia-inquirer::broadway",
+    "playbill::broadway",
+    "rollingstone::broadway",
+    "telegraph::broadway",
+    "thestage::broadway",
+    "time::broadway",
+    "usatoday::broadway",
+    "variety::west-end",
+    "village-voice::broadway",
+    "washpost::broadway",
+    "wnyc::broadway"
+  ],
+  "entries": {
+    "ap::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "backstage::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "bloomberg::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "britishtheatrecom::west-end": {
+      "timestamp": "2026-10-18T22:32:50.565Z",
+      "ttlDays": 90
+    },
+    "broadway-blog::broadway": {
+      "timestamp": "2026-10-18T22:32:50.565Z",
+      "ttlDays": 90
+    },
+    "broadwaynews::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "broadwayworld::broadway": {
+      "timestamp": "2026-10-18T22:32:50.565Z",
+      "ttlDays": 90
+    },
+    "curtainup::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "dailybeast::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "dailybeast::off-broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "dctheatrescene::broadway": {
+      "timestamp": "2026-10-18T22:32:50.565Z",
+      "ttlDays": 90
+    },
+    "financialtimes::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "hollywood-reporter::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "hollywood-reporter::off-broadway": {
+      "timestamp": "2026-10-16T18:32:33.260Z",
+      "ttlDays": 90
+    },
+    "huffpost::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "independent::broadway": {
+      "timestamp": "2026-10-18T22:32:50.565Z",
+      "ttlDays": 90
+    },
+    "latimes::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "nbcny::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "newsday::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "newyorker::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "njcom::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "northjerseycom::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "ny1::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "observer::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "observer::off-broadway": {
+      "timestamp": "2026-10-16T18:32:33.260Z",
+      "ttlDays": 90
+    },
+    "philadelphia-inquirer::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "playbill::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "rollingstone::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "telegraph::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "thestage::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "time::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "usatoday::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "variety::west-end": {
+      "timestamp": "2026-10-18T22:32:50.565Z",
+      "ttlDays": 90
+    },
+    "village-voice::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "washpost::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "wnyc::broadway": {
+      "timestamp": "2026-09-14T18:59:36Z",
+      "ttlDays": 90
+    },
+    "daily-mail::broadway": {
+      "timestamp": "2026-10-21T14:31:54.428Z",
+      "ttlDays": 90
+    },
+    "cititour::broadway": {
+      "timestamp": "2026-10-23T19:00:00Z",
+      "ttlDays": 90
+    },
+    "curtainup::off-broadway": {
+      "timestamp": "2026-10-23T19:00:00Z",
+      "ttlDays": 90
+    },
+    "ew::off-broadway": {
+      "timestamp": "2026-10-23T19:00:00Z",
+      "ttlDays": 90
+    }
+  }
+}

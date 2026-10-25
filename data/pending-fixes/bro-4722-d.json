@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-4722-d",
+  "planId": "4c3f8838-025d-4cdb-9ac7-fecfd0cecb8d",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4722 follow-up: Six recouped December 2022 per its cited article (stored 2021-12 from a misquote); Betrayal 2013 shows the year only since no source gives the month.",
+    "steps": [
+      "Correct Six recoupedDate and source line",
+      "Reduce Betrayal recoupedDate to year"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "recoupedDate",
+        "oldValue": "2021-12",
+        "newValue": "2022-12",
+        "description": "cited BroadwayWorld (Mar 23, 2023) and Broadway News both say December 2022"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "six",
+        "showId": "six",
+        "field": "recoupedSource",
+        "oldValue": "Playbill (Mar 23, 2023): \"As of December 2021, Broadway's SIX has recouped its investment.\"",
+        "newValue": "BroadwayWorld (Mar 23, 2023): \"The show recouped in December 2022\"",
+        "description": "old line misquoted the cited article as December 2021"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "betrayal-2013",
+        "showId": "betrayal-2013",
+        "field": "recoupedDate",
+        "oldValue": "2013-12",
+        "newValue": "2013",
+        "description": "source says about ten weeks into the run, no month; show the year only"
+      }
+    ]
+  },
+  "executedAt": "2026-10-05T17:49:12.633Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for six"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for betrayal-2013"
+    }
+  ]
+}

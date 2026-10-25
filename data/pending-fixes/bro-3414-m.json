@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-3414-m",
+  "planId": "9c09814d-b42a-4bcc-aca8-cfa7abee81fa",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:32:33.183569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct placeholder bylines on live reviews (BRO-3414). \"Eric March\" is the theaterlife.com WordPress import account shown as post author on every Drupal-imported review; each live page names the real critic in a \"By X\" line, or carries no byline. theaterscene.net \"Archive\"/\"Unknown\" files take the JSON-LD author (matching the URL author slug); New Yorker \"Condé Nast\" files take the \"By X\" critic, or Unknown where only the house byline appears. Every page was fetched live on 2026-10-12 and its canonical URL matched the file URL. Also un-glues 9 theaterlife bylines fused to the first word of the article. (part 12 of 12, split for the 25-action cap)",
+    "steps": [
+      "Set criticName to the byline printed on each live page",
+      "Set Unknown where the page names no critic",
+      "Strip the article word glued onto 9 theaterlife bylines"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "i-remember-mama-1979/theater-life--david-shewardentering.json",
+        "field": "criticName",
+        "oldValue": "David ShewardEntering",
+        "newValue": "David Sheward",
+        "description": "byline was glued to the first word of the article (\"David Sheward\" + \"Entering\")"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grease-2007/theater-life--paulanne-simmonswhen.json",
+        "field": "criticName",
+        "oldValue": "Paulanne SimmonsWhen",
+        "newValue": "Paulanne Simmons",
+        "description": "byline was glued to the first word of the article (\"Paulanne Simmons\" + \"When\")"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T18:42:47.045Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "i-remember-mama-1979/theater-life--david-shewardentering.json criticName: \"David ShewardEntering\" -> \"David Sheward\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grease-2007/theater-life--paulanne-simmonswhen.json criticName: \"Paulanne SimmonsWhen\" -> \"Paulanne Simmons\""
+    }
+  ]
+}

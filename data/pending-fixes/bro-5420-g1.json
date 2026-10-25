@@ -1,0 +1,327 @@
+{
+  "issueNumber": "bro-5420-g1",
+  "planId": "bb2aec5c-12a8-4907-a3d5-31f007dced13",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (g1): London reviews live on Broadway shows (audit-uk-rows-on-broadway: UK outlet or Theatre Record, dated outside the Broadway opening window and priorRuns; each url hand-checked and names a London venue or production). This plan: move to the London show, 25 actions.",
+    "steps": [
+      "move"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
+        "destPath": "john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json",
+        "description": "BRO-5420: new-statesman 2026-03-27 review of the London production (https://www.newstatesman.com/culture/2026/03/john-proctor-is-the-villain-is-a-thrilling-teenage-girl-take-on-the-crucible); filed under the Broadway id john-proctor-is-the-villain-2025 (run 2025-04-14..2025-09-07). Moves to john-proctor-is-the-villain-west-end-2026, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "machinal-2014/all-that-dazzles-uk--daz-gale.json",
+        "destPath": "machinal-west-end-2024/all-that-dazzles-uk--daz-gale.json",
+        "description": "BRO-5420: all-that-dazzles-uk 2024-04-20 review of the London production (https://www.allthatdazzles.co.uk/post/review-machinal-the-old-vic); filed under the Broadway id machinal-2014 (run 2014-01-16..2014-03-02). Moves to machinal-west-end-2024, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "machinal-2014/artsdesk--david-nice.json",
+        "destPath": "machinal-west-end-2024/artsdesk--david-nice.json",
+        "description": "BRO-5420: artsdesk 2024-04-19 review of the London production (https://theartsdesk.com/theatre/machinal-old-vic-review-note-perfect-pity-and-terror); filed under the Broadway id machinal-2014 (run 2014-01-16..2014-03-02). Moves to machinal-west-end-2024, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "machinal-2014/london-theatre--olivia-rook.json",
+        "destPath": "machinal-west-end-2024/london-theatre--olivia-rook.json",
+        "description": "BRO-5420: london-theatre 2024-04-19 review of the London production (https://www.londontheatre.co.uk/reviews/machinal-review-rosie-sheehys-restless-urgent-performance-is-astonishing); filed under the Broadway id machinal-2014 (run 2014-01-16..2014-03-02). Moves to machinal-west-end-2024, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "machinal-2014/timeout-london--andrzej-lukowski.json",
+        "destPath": "machinal-west-end-2024/timeout-london--andrzej-lukowski.json",
+        "description": "BRO-5420: timeout-london 2024-04-19 review of the London production (https://www.timeout.com/london/theatre/machinal-1-review); filed under the Broadway id machinal-2014 (run 2014-01-16..2014-03-02). Moves to machinal-west-end-2024, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oleanna-2009/artsdesk--aleks-sierz.json",
+        "destPath": "oleanna-west-end-2021/artsdesk--aleks-sierz.json",
+        "description": "BRO-5420: artsdesk 2021-07-29 review of the London production (https://theartsdesk.com/theatre/oleanna-arts-theatre-review-mamet-power-and-tragedy); filed under the Broadway id oleanna-2009 (run 2009-10-11..2009-12-06). Moves to oleanna-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oleanna-2009/london-theatre--matt-wolf.json",
+        "destPath": "oleanna-west-end-2021/london-theatre--matt-wolf.json",
+        "description": "BRO-5420: london-theatre 2021-07-30 review of the London production (https://www.londontheatre.co.uk/reviews/review-oleanna-at-the-arts-theatre); filed under the Broadway id oleanna-2009 (run 2009-10-11..2009-12-06). Moves to oleanna-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "oleanna-2009/standard--jessie-thompson.json",
+        "destPath": "oleanna-west-end-2021/standard--jessie-thompson.json",
+        "description": "BRO-5420: standard 2021-07-28 review of the London production (https://www.standard.co.uk/culture/theatre/oleanna-review-arts-theatre-david-mamet-b948081.html); filed under the Broadway id oleanna-2009 (run 2009-10-11..2009-12-06). Moves to oleanna-west-end-2021, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "orphans-2013/all-that-dazzles-uk--daz-gale.json",
+        "destPath": "orphans-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+        "description": "BRO-5420: all-that-dazzles-uk 2026-01-08 review of the London production (https://www.allthatdazzles.co.uk/post/review-orphans-jermyn-street-theatre); filed under the Broadway id orphans-2013 (run 2013-04-18..2013-05-19). Moves to orphans-off-west-end-2026, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "orphans-2013/everything-theatre--dave-b.json",
+        "destPath": "orphans-off-west-end-2026/everything-theatre--dave-b.json",
+        "description": "BRO-5420: everything-theatre 2026-01-10 review of the London production (https://everything-theatre.co.uk/2026/01/review-orphans-jermyn-street-theatre/); filed under the Broadway id orphans-2013 (run 2013-04-18..2013-05-19). Moves to orphans-off-west-end-2026, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "orphans-2013/standard--nick-curtis.json",
+        "destPath": "orphans-off-west-end-2026/standard--nick-curtis.json",
+        "description": "BRO-5420: standard 2026-01-08 review of the London production (https://www.standard.co.uk/culture/theatre/orphans-jermyn-street-theatre-review-b1265522.html); filed under the Broadway id orphans-2013 (run 2013-04-18..2013-05-19). Moves to orphans-off-west-end-2026, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "orphans-2013/theatre-weekly--nick-wayne.json",
+        "destPath": "orphans-off-west-end-2026/theatre-weekly--nick-wayne.json",
+        "description": "BRO-5420: theatre-weekly 2026-01-07 review of the London production (https://theatreweekly.com/review-orphans-at-jermyn-street-theatre/); filed under the Broadway id orphans-2013 (run 2013-04-18..2013-05-19). Moves to orphans-off-west-end-2026, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stereophonic-2024/londontheatredirect--london-theatre-direct-limited.json",
+        "destPath": "stereophonic-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
+        "description": "BRO-5420: londontheatredirect 2025-06-16 review of the London production (https://www.londontheatredirect.com/news/stereophonic-review-2025); filed under the Broadway id stereophonic-2024 (run 2024-04-19..2025-01-12). Moves to stereophonic-west-end-2025, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stereophonic-2024/theatreandtonic--emmie-newitt.json",
+        "destPath": "stereophonic-west-end-2025/theatreandtonic--emmie-newitt.json",
+        "description": "BRO-5420: theatreandtonic 2025-06-16 review of the London production (https://theatreandtonic.co.uk/blog/stereophonic-duke-of-yorks-theatre-review); filed under the Broadway id stereophonic-2024 (run 2024-04-19..2025-01-12). Moves to stereophonic-west-end-2025, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stranger-things-2024/city-am--adam-bloodworth.json",
+        "destPath": "stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json",
+        "description": "BRO-5420: city-am 2023-12-15 review of the London production (https://www.cityam.com/stranger-things-the-first-shadow-review-gorgeous-shocking-thrillfest/); filed under the Broadway id stranger-things-2024 (run 2025-04-22..2027-01-03). Moves to stranger-things-the-first-shadow-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stranger-things-2024/i-paper--emily-baker.json",
+        "destPath": "stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json",
+        "description": "BRO-5420: i-paper 2023-12-14 review of the London production (https://inews.co.uk/culture/television/stranger-things-the-first-shadow-review-a-cash-cow-but-a-mesmerising-one-2809768); filed under the Broadway id stranger-things-2024 (run 2025-04-22..2027-01-03). Moves to stranger-things-the-first-shadow-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stranger-things-2024/independent--unknown.json",
+        "destPath": "stranger-things-the-first-shadow-west-end-2023/independent--unknown.json",
+        "description": "BRO-5420: independent 2023-12-15 review of the London production (https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/stranger-things-the-first-shadow-review-b2464017.html); filed under the Broadway id stranger-things-2024 (run 2025-04-22..2027-01-03). Moves to stranger-things-the-first-shadow-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "stranger-things-2024/standard--nick-curtis.json",
+        "destPath": "stranger-things-the-first-shadow-west-end-2023/standard--nick-curtis.json",
+        "description": "BRO-5420: standard 2023-12-14 review of the London production (https://www.standard.co.uk/culture/theatre/stranger-things-the-first-shadow-review-west-end-netflix-phoenix-theatre-b1127020.html); filed under the Broadway id stranger-things-2024 (run 2025-04-22..2027-01-03). Moves to stranger-things-the-first-shadow-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "sunset-boulevard-2024/all-that-dazzles-uk--daz-gale.json",
+        "destPath": "sunset-boulevard-west-end-2023/all-that-dazzles-uk--daz-gale.json",
+        "description": "BRO-5420: all-that-dazzles-uk 2023-10-12 review of the London production (https://www.allthatdazzles.co.uk/post/review-sunset-boulevard-savoy-theatre); filed under the Broadway id sunset-boulevard-2024 (run 2024-10-20..2025-07-20). Moves to sunset-boulevard-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "sunset-boulevard-2024/attitude--simon-button.json",
+        "destPath": "sunset-boulevard-west-end-2023/attitude--simon-button.json",
+        "description": "BRO-5420: attitude 2023-10-13 review of the London production (https://www.attitude.co.uk/culture/sunset-boulevard-review-449951/); filed under the Broadway id sunset-boulevard-2024 (run 2024-10-20..2025-07-20). Moves to sunset-boulevard-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "sunset-boulevard-2024/city-am--adam-bloodworth.json",
+        "destPath": "sunset-boulevard-west-end-2023/city-am--adam-bloodworth.json",
+        "description": "BRO-5420: city-am 2023-10-13 review of the London production (https://www.cityam.com/sunset-boulevard-review-nicole-scherzinger-roars-but-its-more-star-than-substance/); filed under the Broadway id sunset-boulevard-2024 (run 2024-10-20..2025-07-20). Moves to sunset-boulevard-west-end-2023, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-great-gatsby-2024/london-theatre--unknown.json",
+        "destPath": "the-great-gatsby-west-end-2025/london-theatre--unknown.json",
+        "description": "BRO-5420: london-theatre 2025-04-25 review of the London production (https://www.londontheatre.co.uk/reviews/the-great-gatsby-review-london-coliseum); filed under the Broadway id the-great-gatsby-2024 (run 2024-04-25..2027-03-20). Moves to the-great-gatsby-west-end-2025, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-great-gatsby-2024/mail-on-sunday--mark-cook.json",
+        "destPath": "the-great-gatsby-west-end-2025/mail-on-sunday--mark-cook.json",
+        "description": "BRO-5420: mail-on-sunday 2025-04-27 review of the London production (https://www.theatrerecord.com/archive/2025/4/27043-the-great-gatsby); filed under the Broadway id the-great-gatsby-2024 (run 2024-04-25..2027-03-20). Moves to the-great-gatsby-west-end-2025, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-great-gatsby-2024/theupcoming--antonia-georgiou.json",
+        "destPath": "the-great-gatsby-west-end-2025/theupcoming--antonia-georgiou.json",
+        "description": "BRO-5420: theupcoming 2025-04-25 review of the London production (https://www.theupcoming.co.uk/2025/04/25/the-great-gatsby-at-london-coliseum-theatre-review/); filed under the Broadway id the-great-gatsby-2024 (run 2024-04-25..2027-03-20). Moves to the-great-gatsby-west-end-2025, whose run contains the date."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-hills-of-california-2024/express-uk--george-simpson.json",
+        "destPath": "the-hills-of-california-west-end-2024/express-uk--george-simpson.json",
+        "description": "BRO-5420: express-uk 2024-02-08 review of the London production (https://www.express.co.uk/entertainment/theatre/1864762/The-Hills-of-California-review-Jez-Butterworth-Laura-Donnelly); filed under the Broadway id the-hills-of-california-2024 (run 2024-09-29..2024-12-22). Moves to the-hills-of-california-west-end-2024, whose run contains the date."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:20:04.129Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: john-proctor-is-the-villain-west-end-2026/new-statesman--emily-lawford.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): machinal-2014/all-that-dazzles-uk--daz-gale.json → machinal-west-end-2024/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: machinal-west-end-2024/artsdesk--david-nice.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: machinal-west-end-2024/london-theatre--olivia-rook.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: machinal-west-end-2024/timeout-london--andrzej-lukowski.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: oleanna-west-end-2021/artsdesk--aleks-sierz.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: oleanna-west-end-2021/london-theatre--matt-wolf.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: oleanna-west-end-2021/standard--jessie-thompson.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved orphans-2013/all-that-dazzles-uk--daz-gale.json → orphans-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: orphans-off-west-end-2026/everything-theatre--dave-b.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved orphans-2013/standard--nick-curtis.json → orphans-off-west-end-2026/standard--nick-curtis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: orphans-off-west-end-2026/theatre-weekly--nick-wayne.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved stereophonic-2024/londontheatredirect--london-theatre-direct-limited.json → stereophonic-west-end-2025/londontheatredirect--london-theatre-direct-limited.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved stereophonic-2024/theatreandtonic--emmie-newitt.json → stereophonic-west-end-2025/theatreandtonic--emmie-newitt.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/city-am--adam-bloodworth.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/i-paper--emily-baker.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/independent--unknown.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: stranger-things-the-first-shadow-west-end-2023/standard--nick-curtis.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): sunset-boulevard-2024/all-that-dazzles-uk--daz-gale.json → sunset-boulevard-west-end-2023/all-that-dazzles-uk--daz-gale.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: sunset-boulevard-west-end-2023/attitude--simon-button.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: sunset-boulevard-west-end-2023/city-am--adam-bloodworth.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Move refused (same-url-exists): the-great-gatsby-2024/london-theatre--unknown.json → the-great-gatsby-west-end-2025/london-theatre--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-great-gatsby-west-end-2025/mail-on-sunday--mark-cook.json (delete it first or set overwrite: true)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-great-gatsby-2024/theupcoming--antonia-georgiou.json → the-great-gatsby-west-end-2025/theupcoming--antonia-georgiou.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Destination exists: the-hills-of-california-west-end-2024/express-uk--george-simpson.json (delete it first or set overwrite: true)"
+    }
+  ]
+}

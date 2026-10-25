@@ -1,0 +1,128 @@
+{
+  "generatedAt": "2026-10-24T07:27:47.339Z",
+  "shadow": true,
+  "checkoutSha": "f2fa0f898c2048b12d6724ae533518a6017584c4",
+  "totalCandidates": 530,
+  "eligibleCandidates": 85,
+  "checked": 14,
+  "truncated": true,
+  "fetchError": null,
+  "counts": {
+    "pass": 9,
+    "fail": 1,
+    "unverifiable": 4
+  },
+  "alreadyDone": [
+    {
+      "id": "BRO-6103",
+      "name": "Sweep stale refused land/* branches on origin (247 present, none pruned by a workflow)",
+      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6099",
+      "name": "Bound the 60 inline git clone/fetch/pull/push calls rule (z) now flags (BRO-6029 follow-up)",
+      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6090",
+      "name": "Morning digest 'Added' overstates real inflow: show the 7-day daily average and split out test alarms and session self-tracking cards",
+      "verifyCmd": "node --test scripts/lib/board-numbers.test.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6082",
+      "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
+      "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 UXVhbGl0eTogY29ycHVzIGRyaWZ0",
+      "detail": null
+    },
+    {
+      "id": "BRO-6076",
+      "name": "Abandoned ledger lock is never cleared: backlog-drain and digest-autofix run unlocked on every later run",
+      "verifyCmd": "node --test scripts/lib/digest-autofix.test.mjs scripts/backlog-drain.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6056",
+      "name": "Outlets with a defaultCritic but many other bylines fill blank bylines with the wrong critic",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6038",
+      "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
+      "verifyCmd": "node --test tests/unit/audit-script-wiring.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6035",
+      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
+      "verifyCmd": "test -f scripts/generate-workflow-dependencies.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "verifyCmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-6031",
+      "name": "Land queue holds ~285 land/* refs; runs park and cancel for hours (BRO-5528 and BRO-3552 needed 6 and 2 re-runs)",
+      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
+      "detail": "TAP version 13\n# Subtest: ticket names round-trip and sort main-red first, then FIFO\nok 1 - ticket names round-trip and sort main-red first, then FIFO\n  ---\n  duration_ms: 1.425266\n  ...\n# Subtest: no ticket of ours → enqueue; head with no lock → acquire; lock on our ticket → held\nok 2 - no ticket of ours → enqueue; head with no lock → acquire; lock on our ticket → held\n  ---\n  duration_ms: 0.2631"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-6104",
+      "name": "Code-checkout auto-sync leaves a half-applied tree when its fast-forward times out at 20s",
+      "verifyCmd": "node --test tests/unit/code-checkout-staleness.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/code-checkout-staleness.test.mjs"
+    },
+    {
+      "id": "BRO-6102",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"silentGapBacklogResults: real audit report shape\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 146870ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-6045",
+      "name": "Publish britishtheatre.com Broadway Thérèse Raquin review; verify-review-recovery false positives",
+      "verifyCmd": "node --test scripts/verify-review-recovery.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-review-recovery.test.mjs"
+    },
+    {
+      "id": "BRO-6044",
+      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)\"",
+      "verifyCmd": "node scripts/run-unit-tests.js",
+      "detail": "check killed by SIGTERM after 77863ms (timeout — no verdict)"
+    }
+  ],
+  "landedButOpen": [
+    {
+      "id": "BRO-6082",
+      "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
+      "branch": "land/bro-6082-digest-parked-selfheal",
+      "sha": "85cd643a7eaddf087a39dbfedcbc4d8fd1160bb7",
+      "landedAt": "2026-10-23T23:05:05.686Z"
+    },
+    {
+      "id": "BRO-6038",
+      "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
+      "branch": "land/codex-bro-6038",
+      "sha": "cdca40aa73b4913b62a02f53fbc099f1c5b18f0d",
+      "landedAt": "2026-10-23T11:37:31.712Z"
+    },
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "branch": "land/bro-6033-poller-first-wave",
+      "sha": "979fa74f85bc25c76d7f23d2b2771df211a14ae5",
+      "landedAt": "2026-10-23T05:02:28.175Z"
+    }
+  ]
+}

@@ -1,0 +1,141 @@
+{
+  "issueNumber": "bro-5232-a",
+  "planId": "875ea1af-a71e-4534-bc23-a9ed2846d12e",
+  "status": "applied",
+  "createdAt": "2026-10-13T08:58:52.342Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5232 trial (5 rows, all counted): byline/outlet/production fixes backed by the live page, Playbill roundup or Wikipedia. Removes two double counts, a wrong-production excerpt and a reader-comment score; fixes one critic name.",
+    "steps": [
+      "wrongAttribution on cross-outlet phantoms",
+      "wrongProduction on the Job excerpt",
+      "criticName fix on Cabaret 2014"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2019/guardian--jesse-green.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: the Guardian review at this url is bylined Alexis Soloski (Guardian JSON-LD author; https://www.theguardian.com/stage/2019/apr/04/king-lear-review-glenda-jackson-cort-theatre-broadway) and is already counted as guardian--alexis-soloski.json. Jesse Green reviewed for the NYT in 2019. This web-search row double counts the Guardian."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2019/guardian--jesse-green.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Guardian review is by Alexis Soloski (guardian--alexis-soloski.json), evidence https://www.theguardian.com/stage/2019/apr/04/king-lear-review-glenda-jackson-cort-theatre-broadway",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "job-2024/new-jersey-newsroom--michael-sommers.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: the excerpt is Michael Sommers s November 2010 New Jersey Newsroom review of A Free Man of Color (all 14 sampled 6-word runs appear in the quote on https://en.wikipedia.org/wiki/A_Free_Man_of_Color). It is not a review of Job."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "job-2024/new-jersey-newsroom--michael-sommers.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: excerpt is Sommers s 2010 review of A Free Man of Color, evidence https://en.wikipedia.org/wiki/A_Free_Man_of_Color",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cabaret-2014/timeout--david-cote.json",
+        "field": "criticName",
+        "oldValue": "David Cote",
+        "newValue": "Adam Feldman",
+        "description": "BRO-5232: the Time Out page at this url (dated 2014-04-24) reads Theater review by Adam Feldman: http://www.timeout.com/newyork/theater/cabaret-1. Outlet, url and score are right; only the critic name was wrong."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/usatoday--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: Playbill s roundup lists Charles Isherwood under Broadway News and no USA Today review (https://playbill.com/article/read-reviews-for-broadway-revival-of-betrayal-starring-zawe-ashton-charlie-cox-and-tom-hiddleston). Isherwood wrote for Broadway News 2017-2022. Web-search row with a 191-char text; not a USA Today review by him. Career dates: https://en.wikipedia.org/wiki/Charles_Isherwood"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2019/usatoday--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: Isherwood reviewed Betrayal for Broadway News, not USA Today; evidence https://playbill.com/article/read-reviews-for-broadway-revival-of-betrayal-starring-zawe-ashton-charlie-cox-and-tom-hiddleston",
+        "description": "Reason for the flag above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-fly-away-2010/staten-island-advance--michael-kuchwara.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5232: silive.com carried the AP wire review by Michael Kuchwara; this row s DTLI excerpt is identical to ap--michael-kuchwara.json, and BroadwayWorld s roundup credits Kuchwara at AP (https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325). The stored text is reader comments from the silive page (archived http://web.archive.org/web/20111120210155/http://www.silive.com/entertainment/arts/index.ssf/2010/03/broadway_review_come_fly_away.html), which produced a bogus score of 15."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-fly-away-2010/staten-island-advance--michael-kuchwara.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5232: syndicated AP copy (ap--michael-kuchwara.json, same excerpt) whose stored text is reader comments; evidence https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325",
+        "description": "Reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T11:57:50.342Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-2019/guardian--jesse-green.json wrongAttribution: null -> true (write guard stripped cloned dtliExcerpt, showScoreExcerpt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-2019/guardian--jesse-green.json wrongAttributionReason: null -> \"BRO-5232: Guardian review is by Alexis Soloski (guardian--alexis-soloski.json), evidence https://www.theguardian.com/stage/2019/apr/04/king-lear-review-glenda-jackson-cort-theatre-broadway\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "job-2024/new-jersey-newsroom--michael-sommers.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "job-2024/new-jersey-newsroom--michael-sommers.json wrongProductionReason: null -> \"BRO-5232: excerpt is Sommers s 2010 review of A Free Man of Color, evidence https://en.wikipedia.org/wiki/A_Free_Man_of_Color\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cabaret-2014/timeout--david-cote.json criticName: \"David Cote\" -> \"Adam Feldman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2019/usatoday--charles-isherwood.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2019/usatoday--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5232: Isherwood reviewed Betrayal for Broadway News, not USA Today; evidence https://playbill.com/article/read-reviews-for-broadway-revival-of-betrayal-starring-zawe-ashton-charlie-cox-and-tom-hiddleston\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-fly-away-2010/staten-island-advance--michael-kuchwara.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-fly-away-2010/staten-island-advance--michael-kuchwara.json wrongAttributionReason: null -> \"BRO-5232: syndicated AP copy (ap--michael-kuchwara.json, same excerpt) whose stored text is reader comments; evidence https://www.broadwayworld.com/article/Broadway-Blog-COME-FLY-AWAY-Review-Roundup-20100325\""
+    }
+  ]
+}

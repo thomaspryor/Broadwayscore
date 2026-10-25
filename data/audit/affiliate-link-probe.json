@@ -1,0 +1,121 @@
+{
+  "base": "https://broadwayscorecard.com",
+  "pagesChecked": 5,
+  "pagesFailed": 0,
+  "destinationsChecked": 3,
+  "destinationsBroken": 0,
+  "destinationsSkipped": 0,
+  "allDestinationsSkipped": false,
+  "results": [
+    {
+      "id": "aladdin-2014",
+      "slug": "aladdin",
+      "status": "open",
+      "todaytixId": 105,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/aladdin",
+      "verdict": "pass",
+      "linksFound": 10,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470329",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470330",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470331",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470332",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470334",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470333",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470336",
+        "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470335",
+        "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway"
+      ]
+    },
+    {
+      "id": "and-juliet-2022",
+      "slug": "and-juliet",
+      "status": "open",
+      "todaytixId": 25598,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/and-juliet",
+      "verdict": "pass",
+      "linksFound": 12,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352762",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352764",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2480949",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352775",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352791",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352793",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352924",
+        "https://www.todaytix.com/booking/seating-plan?showId=25598&showtimeId=2352927",
+        "https://www.todaytix.com/nyc/shows/25598-and-juliet-on-broadway",
+        "https://www.todaytix.com/nyc/shows/25598-&-juliet-on-broadway"
+      ]
+    },
+    {
+      "id": "austentatious-an-improvised-jane-austen-novel-west-end-2025",
+      "slug": "austentatious-an-improvised-jane-austen-novel-west-end",
+      "status": "open",
+      "todaytixId": 43897,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/austentatious-an-improvised-jane-austen-novel-west-end",
+      "verdict": "pass",
+      "linksFound": 1,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/london/shows/43897-austentatious-an-improvised-jane-austen-novel"
+      ]
+    },
+    {
+      "id": "a-ghost-in-your-ear-off-broadway-2026",
+      "slug": "a-ghost-in-your-ear-off-broadway",
+      "status": "open",
+      "todaytixId": 47577,
+      "expectLinks": true,
+      "url": "https://broadwayscorecard.com/show/a-ghost-in-your-ear-off-broadway",
+      "verdict": "pass",
+      "linksFound": 1,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": [
+        "https://www.todaytix.com/nyc/shows/47577-a-ghost-in-your-ear"
+      ]
+    },
+    {
+      "id": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
+      "slug": "crazy-mama-a-true-story-of-love-and-madness-off-broadway",
+      "status": "closed",
+      "todaytixId": 47944,
+      "expectLinks": false,
+      "url": "https://broadwayscorecard.com/show/crazy-mama-a-true-story-of-love-and-madness-off-broadway",
+      "verdict": "pass",
+      "linksFound": 0,
+      "clientOnly": false,
+      "problems": [],
+      "destinations": []
+    }
+  ],
+  "destChecks": [
+    {
+      "dest": "https://www.todaytix.com/nyc/shows/105-aladdin-on-broadway",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470329",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    },
+    {
+      "dest": "https://www.todaytix.com/booking/seating-plan?showId=105&showtimeId=2470330",
+      "verdict": "ok",
+      "detail": "HTTP 200"
+    }
+  ],
+  "updatedAt": "2026-10-19T18:55:33.414Z"
+}

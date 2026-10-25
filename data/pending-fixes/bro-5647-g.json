@@ -1,0 +1,175 @@
+{
+  "issueNumber": "bro-5647-g",
+  "planId": "271759ab-5415-4f4f-aa1b-0d0e4137e3fe",
+  "status": "partial",
+  "createdAt": "2026-10-19T02:53:58.754140Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Corrections from Dots' Oct 19 audit of the Gemini addendum, each checked at its primary source: The Cottage moves from its $6M Form D maximum to the $4,108,500 the filing says it capitalized at; Mrs. Doubtfire's note stops saying no outcome was reported (Broadway Journal: closed at a loss); John Proctor Is the Villain is marked Did Not Recoup on BroadwayWorld's Jul 17, 2026 statement; Proof's source and note give the filing's $5.5M minimum. Old values read from the live demo pages on 2026-10-19.",
+    "steps": [
+      "The Cottage capitalization and source from the Form D/A",
+      "Mrs. Doubtfire notes",
+      "John Proctor recouped, source, designation, basis and notes",
+      "Proof source and notes"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "showId": "the-cottage",
+        "field": "capitalization",
+        "oldValue": 6000000,
+        "newValue": 4108500,
+        "description": "The Form D/A says the offering capitalized at $4,108,500; $6M was the maximum."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-cottage",
+        "showId": "the-cottage",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D/A filing (Cottage Play Ltd Liability Co, CIK 0001961857, filed Jul 26, 2023): total offering amount $6,000,000 ($4,108,500 sold by then). Matched to the show by its related persons Victoria Lang, Andrew Bogner and Tracey McFarland (Broadway & Beyond Theatricals) and Cornice Productions, the lead producers. https://www.sec.gov/Archives/edgar/data/1961857/000196185723000002/xslFormDX01/primary_doc.xml",
+        "newValue": "SEC Form D/A filing (Cottage Play Ltd Liability Co, CIK 0001961857, filed Jul 26, 2023): \"Maximum capitalization was $6,000,000/Minimum capitalization was $4,000,000 - Offering capitalized at $4,108,500\" (total amount sold $4,108,500). Matched to the show by its related persons Victoria Lang, Andrew Bogner and Tracey McFarland (Broadway & Beyond Theatricals) and Cornice Productions, the lead producers. https://www.sec.gov/Archives/edgar/data/1961857/000196185723000002/primary_doc.xml",
+        "description": "Quote the filing's own capitalization statement."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "showId": "mrs-doubtfire-2021",
+        "field": "notes",
+        "oldValue": "Broadway run at the Stephen Sondheim (Dec 2021 to May 2022), paused in early 2022. Capitalized for up to $18M per its SEC filing. No investor outcome reported.",
+        "newValue": "Broadway run at the Stephen Sondheim (Dec 2021 to May 2022), paused in early 2022. Capitalized for $17M (The New York Times); its SEC filing allowed up to $18M. Broadway Journal reported the run closed at a loss on May 29, 2022.",
+        "description": "The old note said no investor outcome was reported, but recoupedSource cites the Broadway Journal loss report."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "recouped",
+        "oldValue": null,
+        "newValue": false,
+        "description": "BroadwayWorld (Jul 17, 2026) states it did not recoup."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "recoupedSource",
+        "oldValue": null,
+        "newValue": "BroadwayWorld (Ben Waterhouse, Jul 17, 2026): \"John Proctor is the Villain, though it did not recoup its investment\" https://www.broadwayworld.com/article/Gen-Z-is-Obsessed-with-Movies-Why-Not-Broadway-20260717",
+        "description": "Direct statement of non-recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Did Not Recoup",
+        "description": "Closed without recouping per a cited source; no estimate of the amount returned."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "reported-loss",
+        "description": "A cited source states the non-recoupment."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "john-proctor-is-the-villain-2025",
+        "showId": "john-proctor-is-the-villain-2025",
+        "field": "notes",
+        "oldValue": "Commercial production at the Booth, Apr 14 to Sep 7, 2025 (extended three times; seven Tony nominations). Its SEC Form D (Oct 2024) offered $6.7 million; no recoupment announced (not on Broadway News' recoupment list as of Oct 2026).",
+        "newValue": "Commercial production at the Booth, Apr 14 to Sep 7, 2025 (extended three times; seven Tony nominations). Its SEC Form D (Oct 2024) offered $6.7 million. BroadwayWorld reported in Jul 2026 that it did not recoup its investment.",
+        "description": "The old note said no recoupment was announced; a source now states it did not recoup."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "capitalizationSource",
+        "oldValue": "SEC Form D filing (Proof on Broadway Ltd Liability Co, CIK 0002098417, filed Dec 9, 2025). Range: $5M-$6.5M max.",
+        "newValue": "SEC Form D filing (Proof on Broadway Ltd Liability Co, CIK 0002098417, filed Dec 9, 2025): \"The minimum capitalization is $5,500,000; the maximum capitalization is $6,500,000.\" https://www.sec.gov/Archives/edgar/data/2098417/000209841725000001/primary_doc.xml",
+        "description": "The filing's minimum is $5.5M, not $5M."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "showId": "proof",
+        "field": "notes",
+        "oldValue": "Revival of David Auburn Pulitzer Prize-winning play. SEC Form D shows $5M min to $6.5M max capitalization (previously reported $9M from social media was incorrect). Limited 16-week run Apr-Jul 2026. Co-produced by Mike Bosner and Thomas Kail.",
+        "newValue": "Revival of David Auburn Pulitzer Prize-winning play. SEC Form D shows a $5.5M minimum to $6.5M maximum capitalization (a $9M figure from social media was incorrect). Limited 16-week run Apr-Jul 2026. Co-produced by Mike Bosner and Thomas Kail.",
+        "description": "Correct the minimum to the filing's $5.5M."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T03:04:28.642Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for the-cottage"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for mrs-doubtfire-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:recoupedSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:designationBasis: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for john-proctor-is-the-villain-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for proof"
+    }
+  ]
+}

@@ -1,0 +1,327 @@
+{
+  "issueNumber": "bro-4317-b-07",
+  "planId": "5bc54916-3251-4d68-a875-b7234729f882",
+  "status": "applied",
+  "createdAt": "2026-10-13T01:56:27.499Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4317 part 7/9: rehome review-text files from folders with no shows.json id (rebuild skips them) into the production whose run window holds the review's publishDate; drop exact duplicates of files the target already holds.",
+    "steps": [
+      "move the-play-that-goes-wrong-2019/nysr--steven-suskin.json -> the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json",
+      "move the-play-that-goes-wrong-2019/stagebuddy--erin-kahn.json -> the-play-that-goes-wrong-2017/stagebuddy--erin-kahn.json",
+      "delete touch-2026/woman-around-town--alix-cohen.json",
+      "delete unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--ella-satin.json",
+      "delete angels-in-america/nysr--elysa-gardner.json",
+      "delete appropriate/theater-life--samuel-l-leiter.json",
+      "delete beaches/theater-life--samuel-l-leiter.json",
+      "move buena-vista-social-club/nysr--bob-verini.json -> buena-vista-social-club-2025/nysr--bob-verini.json (replaces thinner copy)",
+      "move buena-vista-social-club/nysr--michael-sommers.json -> buena-vista-social-club-2025/nysr--michael-sommers.json (replaces thinner copy)",
+      "delete bug/theater-life--samuel-l-leiter.json",
+      "delete cat-cohen-broad-strokes-off-broadway/theater-life--isa-goldberg.json",
+      "delete dog-day-afternoon/theater-life--alix-cohen.json",
+      "delete hamilton/theater-life--eric-march.json",
+      "delete heathers-the-musical-off-broadway/theater-life--samuel-l-leiter.json",
+      "delete how-to-dance-in-ohio/theater-life--mark-rifkin.json",
+      "delete i-need-that/theater-life--samuel-l-leiter.json",
+      "delete just-in-time/nysr--frank-scheck.json",
+      "delete lempicka/theater-life--samuel-l-leiter.json",
+      "delete lets-love/theater-life--david-sheward.json",
+      "delete mj/theater-life--samuel-l-leiter.json",
+      "delete mother-russia-off-broadway/theater-life--samuel-l-leiter.json",
+      "delete moulin-rouge-the-musical-review/hollywood-reporter--david-rooney.json",
+      "delete moulin-rouge-the-musical-review/variety--marilyn-stasio.json",
+      "delete our-town/theater-life--samuel-l-leiter.json",
+      "delete ragtime/theater-life--samuel-l-leiter.json"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/nysr--steven-suskin.json",
+        "destPath": "the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json",
+        "description": "publishDate Feb 20 2019, 9d after off-Broadway opening 2019-02-11"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "the-play-that-goes-wrong-2019/stagebuddy--erin-kahn.json",
+        "destPath": "the-play-that-goes-wrong-2017/stagebuddy--erin-kahn.json",
+        "description": "May 1 2017, NYC outlet, inside Broadway Lyceum run 2017-04-02..2019-01-06 (other hit is the London run)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "touch-2026/woman-around-town--alix-cohen.json",
+        "description": "0-text stub, Aug 2016 production; no tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--ella-satin.json",
+        "description": "0-text stub, June 2022 run; no tracked production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "angels-in-america/nysr--elysa-gardner.json",
+        "description": "same-url copy already in angels-in-america-2018"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "appropriate/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in appropriate-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "beaches/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in beaches-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "buena-vista-social-club/nysr--bob-verini.json",
+        "destPath": "buena-vista-social-club-2025/nysr--bob-verini.json",
+        "overwrite": true,
+        "description": "publishDate 2025-03-19 is the Broadway opening night of buena-vista-social-club-2025; target flagged ambiguous-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "buena-vista-social-club/nysr--michael-sommers.json",
+        "destPath": "buena-vista-social-club-2025/nysr--michael-sommers.json",
+        "overwrite": true,
+        "description": "publishDate 2025-03-19 is the Broadway opening night of buena-vista-social-club-2025; target flagged ambiguous-production"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "bug/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in bug-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "cat-cohen-broad-strokes-off-broadway/theater-life--isa-goldberg.json",
+        "description": "same-url copy already in cat-cohen-broad-strokes-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "dog-day-afternoon/theater-life--alix-cohen.json",
+        "description": "same review, slug-variant url copy already in dog-day-afternoon-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "hamilton/theater-life--eric-march.json",
+        "description": "same-url copy already in hamilton-2015"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-off-broadway/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in heathers-the-musical-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "how-to-dance-in-ohio/theater-life--mark-rifkin.json",
+        "description": "same review, slug-variant url copy already in how-to-dance-in-ohio-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "i-need-that/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in i-need-that-2023"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "just-in-time/nysr--frank-scheck.json",
+        "description": "same review, slug-variant url copy already in just-in-time-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lempicka/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in lempicka-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "lets-love/theater-life--david-sheward.json",
+        "description": "same review, slug-variant url copy already in lets-love-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mj/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in mj-2022"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "mother-russia-off-broadway/theater-life--samuel-l-leiter.json",
+        "description": "same-url copy already in mother-russia-off-broadway-2026"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/hollywood-reporter--david-rooney.json",
+        "description": "same review, slug-variant url copy already in moulin-rouge-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/variety--marilyn-stasio.json",
+        "description": "same review, slug-variant url copy already in moulin-rouge-2019"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "our-town/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in our-town-2024"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "ragtime/theater-life--samuel-l-leiter.json",
+        "description": "same review, slug-variant url copy already in ragtime-2025"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T02:35:29.116Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/nysr--steven-suskin.json → the-play-that-goes-wrong-off-broadway-2019/nysr--steven-suskin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-play-that-goes-wrong-2019/stagebuddy--erin-kahn.json → the-play-that-goes-wrong-2017/stagebuddy--erin-kahn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted touch-2026/woman-around-town--alix-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted unfortunate-the-untold-story-of-ursula-the-sea-witch-off-west-end-2026/whatsonstage--ella-satin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america/nysr--elysa-gardner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted appropriate/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted beaches/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved buena-vista-social-club/nysr--bob-verini.json → buena-vista-social-club-2025/nysr--bob-verini.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved buena-vista-social-club/nysr--michael-sommers.json → buena-vista-social-club-2025/nysr--michael-sommers.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted bug/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted cat-cohen-broad-strokes-off-broadway/theater-life--isa-goldberg.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted dog-day-afternoon/theater-life--alix-cohen.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted hamilton/theater-life--eric-march.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted how-to-dance-in-ohio/theater-life--mark-rifkin.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted i-need-that/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted just-in-time/nysr--frank-scheck.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lempicka/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted lets-love/theater-life--david-sheward.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mj/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted mother-russia-off-broadway/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted our-town/theater-life--samuel-l-leiter.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted ragtime/theater-life--samuel-l-leiter.json"
+    }
+  ]
+}

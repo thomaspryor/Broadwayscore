@@ -1,0 +1,245 @@
+{
+  "issueNumber": "bro-5081-15",
+  "planId": "22a3a7d5-4e6c-423a-874a-27d873147f15",
+  "status": "applied",
+  "createdAt": "2026-10-12T00:01:25.877492+00:00",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5081 part 15: correct 16 web-search bylines whose duplicateOf edit the write guard refused in parts 02-10.",
+    "steps": [
+      "Page byline at None is David Cote; Charles Isherwood came from the legacy web-search step. (A duplicateOf toward guardian--david-cote.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Sara Holdren; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--sara-holdren.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Frank Rizzo; Aramide Tinubu came from the legacy web-search step. (A duplicateOf toward variety--frank-rizzo.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Sara Holdren; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--sara-holdren.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Benjamin Lee; Adrian Horton came from the legacy web-search step. (A duplicateOf toward guardian--benjamin-lee.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Christian Lewis; Aramide Tinubu came from the legacy web-search step. (A duplicateOf toward variety--unknown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Diep Tran; David Gordon came from the legacy web-search step. (A duplicateOf toward nytg--diep-tran.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is David Cote; Adam Feldman came from the legacy web-search step. (A duplicateOf toward timeout--david-cote.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Frank Rizzo; Aramide Tinubu came from the legacy web-search step. (A duplicateOf toward variety--frank-rizzo.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Peter Debruge; Marilyn Stasio came from the legacy web-search step. (A duplicateOf toward variety--peter-debruge.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Matt Trueman; Marilyn Stasio came from the legacy web-search step. (A duplicateOf toward variety--matt-trueman.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)",
+      "Page byline at None is Gloria Oladipo; Adrian Horton came from the legacy web-search step. (A duplicateOf toward guardian--gloria-oladipo.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "betrayal-2013/guardian--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "David Cote",
+        "description": "Page byline at None is David Cote; Charles Isherwood came from the legacy web-search step. (A duplicateOf toward guardian--david-cote.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "chaplin-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "choir-boy-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at None is Sara Holdren; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--sara-holdren.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "funny-girl-2022/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at None is Frank Rizzo; Aramide Tinubu came from the legacy web-search step. (A duplicateOf toward variety--frank-rizzo.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "king-lear-2019/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Sara Holdren",
+        "description": "Page byline at None is Sara Holdren; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--sara-holdren.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mother-play-2024/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Benjamin Lee",
+        "description": "Page byline at None is Benjamin Lee; Adrian Horton came from the legacy web-search step. (A duplicateOf toward guardian--benjamin-lee.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oh-mary-2024/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Christian Lewis",
+        "description": "Page byline at None is Christian Lewis; Aramide Tinubu came from the legacy web-search step. (A duplicateOf toward variety--unknown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pass-over-2021/nytg--david-gordon.json",
+        "field": "criticName",
+        "oldValue": "David Gordon",
+        "newValue": "Diep Tran",
+        "description": "Page byline at None is Diep Tran; David Gordon came from the legacy web-search step. (A duplicateOf toward nytg--diep-tran.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-of-rock-the-musical-2015/timeout--adam-feldman.json",
+        "field": "criticName",
+        "oldValue": "Adam Feldman",
+        "newValue": "David Cote",
+        "description": "Page byline at None is David Cote; Adam Feldman came from the legacy web-search step. (A duplicateOf toward timeout--david-cote.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "shucked-2023/variety--aramide-tinubu.json",
+        "field": "criticName",
+        "oldValue": "Aramide Tinubu",
+        "newValue": "Frank Rizzo",
+        "description": "Page byline at None is Frank Rizzo; Aramide Tinubu came from the legacy web-search step. (A duplicateOf toward variety--frank-rizzo.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "soul-doctor-2013/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spring-awakening-2015/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Peter Debruge",
+        "description": "Page byline at None is Peter Debruge; Marilyn Stasio came from the legacy web-search step. (A duplicateOf toward variety--peter-debruge.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-anarchist-2012/vulture--jesse-green.json",
+        "field": "criticName",
+        "oldValue": "Jesse Green",
+        "newValue": "Scott Brown",
+        "description": "Page byline at None is Scott Brown; Jesse Green came from the legacy web-search step. (A duplicateOf toward vulture--scott-brown.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-encounter-2016/variety--marilyn-stasio.json",
+        "field": "criticName",
+        "oldValue": "Marilyn Stasio",
+        "newValue": "Matt Trueman",
+        "description": "Page byline at None is Matt Trueman; Marilyn Stasio came from the legacy web-search step. (A duplicateOf toward variety--matt-trueman.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "topdog-underdog-2022/guardian--adrian-horton.json",
+        "field": "criticName",
+        "oldValue": "Adrian Horton",
+        "newValue": "Gloria Oladipo",
+        "description": "Page byline at None is Gloria Oladipo; Adrian Horton came from the legacy web-search step. (A duplicateOf toward guardian--gloria-oladipo.json was refused by the write guard; the rebuild collapses the same-url, same-critic pair.)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T03:37:48.370Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "betrayal-2013/guardian--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "chaplin-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "choir-boy-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "funny-girl-2022/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "king-lear-2019/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Sara Holdren\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mother-play-2024/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Benjamin Lee\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oh-mary-2024/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Christian Lewis\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pass-over-2021/nytg--david-gordon.json criticName: \"David Gordon\" -> \"Diep Tran\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-of-rock-the-musical-2015/timeout--adam-feldman.json criticName: \"Adam Feldman\" -> \"David Cote\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "shucked-2023/variety--aramide-tinubu.json criticName: \"Aramide Tinubu\" -> \"Frank Rizzo\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "soul-doctor-2013/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "spring-awakening-2015/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Peter Debruge\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-anarchist-2012/vulture--jesse-green.json criticName: \"Jesse Green\" -> \"Scott Brown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-encounter-2016/variety--marilyn-stasio.json criticName: \"Marilyn Stasio\" -> \"Matt Trueman\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "topdog-underdog-2022/guardian--adrian-horton.json criticName: \"Adrian Horton\" -> \"Gloria Oladipo\""
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "_comment": "Show image files a person checked by eye and rejected, keyed by md5 of the file bytes. scripts/check-image-aspect.js refuses any staged image with one of these hashes (and removes it in --staged --quarantine mode, which runs before the auto-fetch commit), so a re-fetch cannot bring the bytes back. tests/unit/show-hero-integrity.test.mjs fails if one is committed anyway.",
+  "md5": {
+    "9c56c7ac3efb321f8e84a2d09da928b6": "hangmen-2022 hero: text-only FINAL WEEK / ENDS JUNE 18 banner (BRO-4251)",
+    "8c0c124f9317bbd949498e7e4d539a2a": "the-snowman-west-end-2026 hero: Chamber Music Society \"Youthful Genius\" ad (BRO-4251)",
+    "20f2fbef406d6303a62c95fea36b8a57": "the-snowman-west-end-2026 poster: Chamber Music Society \"Youthful Genius\" ad (BRO-4251)"
+  }
+}

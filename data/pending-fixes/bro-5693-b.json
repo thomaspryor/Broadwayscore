@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-5693-b",
+  "planId": "48a29412-b42b-4623-ad83-0e0dc7d6bdf3",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Repair the Express Stranger Things review link: the saved URL is a theatre category page. West End Theatre links Neil Norman's review to the outlet permalink below.",
+    "steps": [
+      "Evidence: https://www.westendtheatre.com/211940/news/reviews/stranger-things-the-first-shadow-reviews/ identifies Neil Norman, Daily Express, and links the review to the proposed permalink. Its excerpt agrees with the saved Theatre Record print review.",
+      "The outlet page could not be fetched in this environment. Use the published review link, not the earlier shortened URL saved in urlCorrectedFrom. The standard URL-change invariant will invalidate old URL-derived state and request a refetch.",
+      "Apply through the existing approved-fix executor with issue_number=bro-5693-b and this planId. Collect and verify the corrected review, then rebuild reviews.json. Re-run the lifetime sweep against the current baseline before refreshing the health digest. See bro-5693-triage.md for the seven files missing only from the supplied corpus."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json",
+        "field": "url",
+        "oldValue": "https://www.express.co.uk/latest/theatre",
+        "newValue": "https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show",
+        "description": "Replace the Express category URL with the Neil Norman review permalink linked by West End Theatre. No review text is included in this plan."
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T15:05:04.053Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "stranger-things-the-first-shadow-west-end-2023/express-uk--neil-norman.json url: \"https://www.express.co.uk/latest/theatre\" -> \"https://www.express.co.uk/entertainment/theatre/1845793/stephen-daldry-stranger-things-theatrical-prequel-dazzling-show\""
+    }
+  ],
+  "executedIn": "ci"
+}

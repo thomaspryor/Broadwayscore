@@ -1,0 +1,171 @@
+{
+  "issueNumber": "bro-5499-a",
+  "planId": "c383ffc5-ca67-4e65-a0ae-80ec57127c02",
+  "status": "partial",
+  "createdAt": "2026-10-16T17:26:05.007Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5499 (a): flag the 2019 Sea Wall review wrongProduction, fix Sea Wall cast/creatives, Unconditional type and La MaMa closing dates, purge London Show Score audience data from US shows, re-read the BroadGAYS review at its clean url.",
+    "steps": [
+      "edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-off-broadway-2026/theater-scene--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5499: text names Tom Sturridge and Jake Gyllenhaal (2019 Broadway Sea Wall / A Life); the 2026 Studio Seaview run stars Andrew Scott"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sea-wall-off-broadway-2026/theater-scene--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "Text names Tom Sturridge, Jake Gyllenhaal (sea-wall-a-life-2019) and none of this production's cast: a different production of the same title (BRO-5499)",
+        "description": "BRO-5499: reason"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sea-wall-off-broadway-2026",
+        "field": "cast",
+        "oldValue": [
+          {
+            "name": "Tom Sturridge",
+            "role": "Alex"
+          },
+          {
+            "name": "Jake Gyllenhaal",
+            "role": "Abe"
+          }
+        ],
+        "newValue": [
+          {
+            "name": "Andrew Scott",
+            "role": "Alex"
+          }
+        ],
+        "description": "sea-wall-off-broadway-2026: cast was the 2019 Broadway cast (Sturridge, Gyllenhaal); the 2026 Studio Seaview solo run stars Andrew Scott (TheaterMania, TDF)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "sea-wall-off-broadway-2026",
+        "field": "creativeTeam",
+        "oldValue": [],
+        "newValue": [
+          {
+            "name": "Simon Stephens",
+            "role": "Playwright"
+          },
+          {
+            "name": "Tina Satter",
+            "role": "Director"
+          },
+          {
+            "name": "Isabella Byrd",
+            "role": "Lighting Design"
+          },
+          {
+            "name": "Ben Williams",
+            "role": "Sound Design"
+          }
+        ],
+        "description": "sea-wall-off-broadway-2026: creative team per TheaterMania / New York Theatre Guide announcements"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unconditional-a-new-musical-memoir-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "unconditional-a-new-musical-memoir-off-broadway-2026: a new musical memoir (title and synopsis) was typed play"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "unconditional-a-new-musical-memoir-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-25",
+        "description": "unconditional-a-new-musical-memoir-off-broadway-2026: La MaMa run Oct 15-25 (TDF, BroadwayWorld)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "doll-day-afternoon-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-25",
+        "description": "doll-day-afternoon-off-broadway-2026: La MaMa The Downstairs run closes Oct 25 (TDF, BroadwayWorld)"
+      },
+      {
+        "type": "run-script",
+        "script": "purge-uk-show-score-audience.js",
+        "args": "--apply",
+        "description": "BRO-5499: delete Show Score audience data that came from a London page on 16 US shows (stored rating equals the archived UK page rating), recompute combined scores"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=midnight-off-broadway-2026 --url=https://stephenkearley.substack.com/p/stephen-kearley-reviews-midnight --outlet=stephenkearley",
+        "description": "BRO-5499: re-read the BroadGAYS review at its clean url (the stored url carries a literal &amp; and tracking params) so the byline edit in plan bro-5499-e applies cleanly"
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T19:44:40.278Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sea-wall-off-broadway-2026/theater-scene--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sea-wall-off-broadway-2026/theater-scene--unknown.json wrongProductionReason: null -> \"Text names Tom Sturridge, Jake Gyllenhaal (sea-wall-a-life-2019) and none of this production's cast: a different production of the same title (BRO-5499)\""
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for sea-wall-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: creativeTeam updated for sea-wall-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for unconditional-a-new-musical-memoir-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for unconditional-a-new-musical-memoir-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for doll-day-afternoon-off-broadway-2026"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran purge-uk-show-score-audience.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": false,
+      "reason": "Script ingest-review-from-url.js failed: Command failed: node scripts/ingest-review-from-url.js --show=midnight-off-broadway-2026 --url=https://stephenkearley.substack.com/p/stephen-kearley-reviews-midnight --outlet=stephenkearley"
+    }
+  ]
+}

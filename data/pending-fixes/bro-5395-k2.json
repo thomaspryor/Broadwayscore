@@ -1,0 +1,335 @@
+{
+  "issueNumber": "bro-5395-k2",
+  "planId": "227903a4-0fd8-43b1-a842-309295b76f68",
+  "status": "partial",
+  "createdAt": "2026-10-15T22:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5395 (k2): clear showNotMentioned on 12 real reviews whose body describes the show without printing its title, each checked by hand against the show's venue and run (url-evidence corpus audit, 43 of 52 real).",
+    "steps": [
+      "breadcrumb",
+      "clear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-west-end-2026/thestage--unknown.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller (published April 24th, 2026) names this show and its venue/run; show record Marylebone Theatre 2026-04-23..2026-06-07. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-price-off-west-end-2026/thestage--unknown.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-kind-of-people-west-end-2019/standard--jessie-thompson.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/a-kind-of-people-review-knotty-state-of-the-nation-drama-helps-to-understand-our-political-crisis-a4311761.html (published 2019-12-06) names this show and its venue/run; show record Royal Court 2019-12-11..2020-01-18. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "a-kind-of-people-west-end-2019/standard--jessie-thompson.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thetimes.co.uk/article/cyrano-de-bergerac-review-james-mcavoy-has-a-nose-for-the-humour-amid-his-intensity-qq85xw66c (published 2022-02-04) names this show and its venue/run; show record Harold Pinter Theatre 2022-02-12..2022-03-12. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-west-end-2024/times-uk--clive-davis.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thetimes.co.uk/article/just-for-one-day-theatre-review-old-vic-london-9b9xcn2g7 (published 2024-02-14) names this show and its venue/run; show record The Old Vic 2024-02-02..2024-03-30. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-for-one-day-west-end-2024/times-uk--clive-davis.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pride-and-prejudice-sort-of-west-end-2021/guardian--arifa-akbar.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2021/nov/03/pride-and-prejudice-sort-of-review-silliness-and-sensibility (published 2021-07-17) names this show and its venue/run; show record Criterion Theatre 2021-11-03..2022-02-06. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pride-and-prejudice-sort-of-west-end-2021/guardian--arifa-akbar.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pygmalion-west-end-2023/express-uk--neil-norman.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.express.co.uk/entertainment/theatre/1814610/pygmalion-review-george-bernard-shaw (published 2023-09-19) names this show and its venue/run; show record The Old Vic 2023-09-12..2023-10-28. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pygmalion-west-end-2023/express-uk--neil-norman.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pygmalion-west-end-2023/telegraph--marianka-swain.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.telegraph.co.uk/theatre/what-to-see/pygmalion-old-vic-review/ (published 2023-09-20) names this show and its venue/run; show record The Old Vic 2023-09-12..2023-10-28. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pygmalion-west-end-2023/telegraph--marianka-swain.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sting-west-end-2026/guardian--anya-ryan.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2026/jun/24/sting-review-young-vic-theatre-london (published 2026-06-24) names this show and its venue/run; show record The Maria Theatre 2026-06-23..2026-07-18. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sting-west-end-2026/guardian--anya-ryan.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/standard--unknown.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/total-immediate-collective-imminent-terrestrial-salvation-review-engrossing-and-inventive-a4230526.html (published September 6th, 2019) names this show and its venue/run; show record Royal Court 2019-09-05..2019-09-21. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/standard--unknown.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bleak-expectations-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.telegraph.co.uk/theatre/what-to-see/bleak-expectations-criterion-review-dickens-pastiche-is-eng/ (published May 22nd, 2023) names this show and its venue/run; show record Criterion Theatre 2023-05-18..2023-08-13. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bleak-expectations-west-end-2023/telegraph--dominic-cavendish.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manic-street-creature-west-end-2026/thestage--holly-o.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-london-maimuna-memon (published 2026-03-11) names this show and its venue/run; show record Kiln Theatre 2026-03-10..2026-03-28. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "manic-street-creature-west-end-2026/thestage--holly-o.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-west-end-2022/telegraph--claire-allfree.json",
+        "field": "showNotMentionedManualClear",
+        "oldValue": null,
+        "newValue": "BRO-5395 checked by hand: review url https://www.telegraph.co.uk/theatre/what-to-see/human-voice-review-ruth-wilson-deserves-better-unpleasantly/ (published 2022-03-23) names this show and its venue/run; show record Harold Pinter Theatre 2022-03-21..2022-04-09. The body describes the show without printing its title.",
+        "description": "BRO-5395: record the human show-mention check (url, venue and dates match this production)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-west-end-2022/telegraph--claire-allfree.json",
+        "field": "showNotMentioned",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear the show-not-mentioned flag after the human check above; the body describes the show without printing its title."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T22:33:40.631Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-west-end-2026/thestage--unknown.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/the-price-review-marylebone-theatre-london-arthur-miller (published April 24th, 2026) names this show and its venue/run; show record Marylebone Theatre 2026-04-23..2026-06-07. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-off-west-end-2026/thestage--unknown.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-kind-of-people-west-end-2019/standard--jessie-thompson.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.standard.co.uk/culture/theatre/a-kind-of-people-review-knotty-state-of-the-nation-drama-helps-to-understand-our-political-crisis-a4311761.html (published 2019-12-06) names this show and its venue/run; show record Royal Court 2019-12-11..2020-01-18. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-kind-of-people-west-end-2019/standard--jessie-thompson.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thetimes.co.uk/article/cyrano-de-bergerac-review-james-mcavoy-has-a-nose-for-the-humour-amid-his-intensity-qq85xw66c (published 2022-02-04) names this show and its venue/run; show record Harold Pinter Theatre 2022-02-12..2022-03-12. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-west-end-2024/times-uk--clive-davis.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thetimes.co.uk/article/just-for-one-day-theatre-review-old-vic-london-9b9xcn2g7 (published 2024-02-14) names this show and its venue/run; show record The Old Vic 2024-02-02..2024-03-30. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-for-one-day-west-end-2024/times-uk--clive-davis.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pride-and-prejudice-sort-of-west-end-2021/guardian--arifa-akbar.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2021/nov/03/pride-and-prejudice-sort-of-review-silliness-and-sensibility (published 2021-07-17) names this show and its venue/run; show record Criterion Theatre 2021-11-03..2022-02-06. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pride-and-prejudice-sort-of-west-end-2021/guardian--arifa-akbar.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-west-end-2023/express-uk--neil-norman.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.express.co.uk/entertainment/theatre/1814610/pygmalion-review-george-bernard-shaw (published 2023-09-19) names this show and its venue/run; show record The Old Vic 2023-09-12..2023-10-28. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-west-end-2023/express-uk--neil-norman.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-west-end-2023/telegraph--marianka-swain.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.telegraph.co.uk/theatre/what-to-see/pygmalion-old-vic-review/ (published 2023-09-20) names this show and its venue/run; show record The Old Vic 2023-09-12..2023-10-28. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-west-end-2023/telegraph--marianka-swain.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sting-west-end-2026/guardian--anya-ryan.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.theguardian.com/stage/2026/jun/24/sting-review-young-vic-theatre-london (published 2026-06-24) names this show and its venue/run; show record The Maria Theatre 2026-06-23..2026-07-18. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sting-west-end-2026/guardian--anya-ryan.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/standard--unknown.json showNotMentionedManualClear applied, but the write guard also changed duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "total-immediate-collective-imminent-terrestrial-salvation-west-end-2019/standard--unknown.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bleak-expectations-west-end-2023/telegraph--dominic-cavendish.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.telegraph.co.uk/theatre/what-to-see/bleak-expectations-criterion-review-dickens-pastiche-is-eng/ (published May 22nd, 2023) names this show and its venue/run; show record Criterion Theatre 2023-05-18..2023-08-13. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bleak-expectations-west-end-2023/telegraph--dominic-cavendish.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/thestage--holly-o.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.thestage.co.uk/reviews/manic-street-creature-review-kiln-theatre-london-maimuna-memon (published 2026-03-11) names this show and its venue/run; show record Kiln Theatre 2026-03-10..2026-03-28. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "manic-street-creature-west-end-2026/thestage--holly-o.json showNotMentioned: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-west-end-2022/telegraph--claire-allfree.json showNotMentionedManualClear: null -> \"BRO-5395 checked by hand: review url https://www.telegraph.co.uk/theatre/what-to-see/human-voice-review-ruth-wilson-deserves-better-unpleasantly/ (published 2022-03-23) names this show and its venue/run; show record Harold Pinter Theatre 2022-03-21..2022-04-09. The body describes the show without printing its title.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-west-end-2022/telegraph--claire-allfree.json showNotMentioned: true -> false"
+    }
+  ]
+}

@@ -1,0 +1,410 @@
+{
+  "issueNumber": "bro-5080",
+  "planId": "1132df61-b270-4235-a62e-7979da8cd0e5",
+  "status": "applied",
+  "createdAt": "2026-10-11T21:34:08.874Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5080 part 1: run the West End opening-date class repair (221 rows), then fix wrong basic facts the sourced sample audit found on the historical backfills (24 edits, each description carrying its source URL).",
+    "steps": [
+      "run plan-we-historical-opening-repair.js --apply",
+      "Dates: set the sourced value",
+      "Type/venue/credits: set the sourced value",
+      "Synopsis: clear marketing / other-production / wrong-work text so the production-verified enricher refills it",
+      "Posters of other productions: clear, reject the source, mark no reliable art"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "plan-we-historical-opening-repair.js",
+        "args": "--apply",
+        "description": "BRO-5080 class repair: West End historical rows whose openingDate is a WhatsOnStage first-performance date (sourced sample: 61 of 85 wrong). Moves it to previewsStartDate; press night from a sourced page or the review-date mode; else unconfirmed. Idempotent."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "dear-evan-hansen-west-end-2019",
+        "field": "synopsis",
+        "oldValue": "A timely and timeless new musical about struggling to connect in a hyperconnected world, DEAR EVAN HANSEN is the winner of 3 Olivier Awards for BEST NEW MUSICAL, BEST ORIGINAL SCORE and BEST ACTOR. It is also the winner of two WhatsOnStage Awards and a Critics' Circle Theatre Award.",
+        "newValue": null,
+        "description": "dear-evan-hansen-west-end-2019: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "betrayal-west-end-2019",
+        "field": "synopsis",
+        "oldValue": "With poetic precision, rich humour and an extraordinary emotional force, Betrayal charts a compelling seven-year romance, thrillingly captured in reverse chronological order.",
+        "newValue": null,
+        "description": "betrayal-west-end-2019: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/Betrayal_(play))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "present-laughter-west-end-2019",
+        "field": "synopsis",
+        "oldValue": "A successful, charming playwright navigates romantic entanglements and personal chaos when his ex-lover unexpectedly arrives at his London home, threatening to disrupt his carefully managed life and current relationship. As various characters converge and misunderstandings multiply, he must confront the consequences of his past actions and reckon with his own self-centered nature while juggling multiple romantic interests and the demands of his theatrical career.",
+        "newValue": null,
+        "description": "present-laughter-west-end-2019: synopsis cleared (other) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/Present_Laughter)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/seven-methods-of-killing-kylie-jenner-west-end-2021/thumbnail.jpg",
+          "poster": null,
+          "hero": null
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "seven-methods-of-killing-kylie-jenner-west-end-2021: poster, thumbnail and hero cleared: poster-not-art: image is the Methuen Drama playtext cover with publisher imprint, not a production poster."
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
+        "field": "rejectedImageUrls",
+        "oldValue": [
+          "google-images:https://stories.malthousetheatre.com.au/shows/seven-methods-of-killing-kylie-jenner/",
+          "google-images:https://www.obsidiantheatre.com/show/7-methods/",
+          "google-images:https://www.imdb.com/title/tt19299512/"
+        ],
+        "newValue": [
+          "google-images:https://stories.malthousetheatre.com.au/shows/seven-methods-of-killing-kylie-jenner/",
+          "google-images:https://www.obsidiantheatre.com/show/7-methods/",
+          "google-images:https://www.imdb.com/title/tt19299512/",
+          "google-images:https://api.pageplace.de/preview/DT0400.9781350277496_A42516904/preview-9781350277496_A42516904.pdf"
+        ],
+        "description": "seven-methods-of-killing-kylie-jenner-west-end-2021: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "seven-methods-of-killing-kylie-jenner-west-end-2021",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-not-art",
+          "key": "seven methods of killing kylie jenner|royal court|2021-06-22"
+        },
+        "description": "seven-methods-of-killing-kylie-jenner-west-end-2021: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022",
+        "field": "closingDate",
+        "oldValue": "2022-04-30",
+        "newValue": "2022-05-07",
+        "description": "for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022: closingDate -> 2022-05-07: Royal Court run was 31 March to 7 May 2022, not 30 April. (https://en.wikipedia.org/wiki/For_Black_Boys_Who_Have_Considered_Suicide_When_the_Hue_Gets_Too_Heavy)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bleak-expectations-west-end-2023",
+        "field": "closingDate",
+        "oldValue": "2023-09-03",
+        "newValue": "2023-08-13",
+        "description": "bleak-expectations-west-end-2023: closingDate -> 2023-08-13: Run closed early on 13 August 2023; 3 Sept was the scheduled date. (https://en.wikipedia.org/wiki/Bleak_Expectations_(play))"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "rockets-and-blue-lights-west-end-2021",
+        "field": "synopsis",
+        "oldValue": "In 1840, painter J.M.W. Turner researches his final seascapes depicting the slave trade, encountering Black sailors in a Kent pub whose lives illuminate the ongoing brutality of transatlantic slavery despite Britain's abolition acts. The narrative moves between Turner's era and the present day, where a Black actress playing a historical figure in a film about Turner wrestles with how these histories are told. Inspired by Turner's painting \"The Slave Ship,\" the play weaves together the stories of 19th-century mariners, their families, and modern descendants to confront the enduring legacies of empire and the Middle Passage.",
+        "newValue": null,
+        "description": "rockets-and-blue-lights-west-end-2021: synopsis cleared (other) so the production-verified enricher refills it (https://www.britishtheatreguide.info/reviews/rockets-and-blu-dorfman-theatre-20200)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-mongol-khan-west-end-2023",
+        "field": "synopsis",
+        "oldValue": "A brutal succession battle threatens the very stability of the Empire. As the great Khan struggles to maintain his supremacy, a plot hatches that will forever alter the balance of power. Mongolia's leading theatre company comes to the UK for the first time, with over 70 performers, in a lavish production which explores Mongolian culture and history through music, dance, dialogue and puppetry, with elaborate sets and costumes, all inspired by traditional nomadic culture of the Hun Empire. Bordered by China and Russia, Mongolia is one of the world's best kept secrets as a travel destination for adventure-fuelled people and lovers of luxury alike.",
+        "newValue": null,
+        "description": "the-mongol-khan-west-end-2023: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/The_Mongol_Khan)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "death-drop-west-end-2020",
+        "field": "synopsis",
+        "oldValue": "On the remote Tuck Island, a group of eccentric guests gathers at the invitation of Lady Von Fistenburg for a dinner party marking the tenth anniversary of Princess Diana's death. As the evening unfolds, the drag and queer guests are picked off one by one in this camp murder-mystery parody, blending Agatha Christie-style whodunnit tropes with drag performance and outrageous humour.",
+        "newValue": null,
+        "description": "death-drop-west-end-2020: synopsis cleared (other) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/Death_Drop)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "myras-story-west-end-2023",
+        "field": "synopsis",
+        "oldValue": "Myra Barry, a once-vivacious Dubliner now homeless on the streets of London, shares her life story with passers-by over the course of a single evening. Through wry humour and raw honesty, she recounts her Irish upbringing, a doomed marriage, the loss of her daughter, and her slow descent into alcoholism and destitution. The one-woman play weaves song, memory and confession as Myra confronts the choices and tragedies that led her from a comfortable life to a park bench with only a bottle for company.",
+        "newValue": null,
+        "description": "myras-story-west-end-2023: synopsis cleared (other) so the production-verified enricher refills it (https://playbill.com/production/myras-story-london-trafalgar-theatre-2023)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aspects-of-love-west-end-2023",
+        "field": "previewsStartDate",
+        "oldValue": "2023-05-13",
+        "newValue": "2023-05-12",
+        "description": "aspects-of-love-west-end-2023: previewsStartDate -> 2023-05-12: other: first preview was 12 May 2023, not 13 May. (https://playbill.com/production/aspects-of-love-london-lyric-theatre-shaftesbury-2023)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "aspects-of-love-west-end-2023",
+        "field": "synopsis",
+        "oldValue": "34 years after the original West End production, Michael Ball returns to the passionate musical. Aspects of Love put Michael Ball on the map. In 1989, he originated the role of Alex — his recording of the standout song \"Love Changes Everything\" reached number two in the UK music charts. For the updated version, Ball plays George, Alex's uncle.",
+        "newValue": null,
+        "description": "aspects-of-love-west-end-2023: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it (https://playbill.com/production/aspects-of-love-london-lyric-theatre-shaftesbury-2023)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "bonnie-and-clyde-west-end-2023",
+        "field": "synopsis",
+        "oldValue": "The infamous scheming masterminds captured a nation's heart during the Great Depression. Decades on, Bonnie and Clyde continue to be celebrated in a gritty, tense musical that puts their lives centre stage. Remember, the pair are on the run though, so they can't stay forever. Bonnie & Clyde in London plays for 11 weeks.",
+        "newValue": null,
+        "description": "bonnie-and-clyde-west-end-2023: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it (https://www.londontheatre.co.uk/reviews/bonnie-and-clyde-review-garrick-theatre)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "small-island-west-end-2022",
+        "field": "synopsis",
+        "oldValue": "Extraordinary. Small Island follows their lives through the Second World War until the arrival of HMT Empire Windrush at Tilbury, where hopes for the future soon meet the stubborn reality of post-war Britain. Effortlessly enjoyable and everything a show should be.",
+        "newValue": null,
+        "description": "small-island-west-end-2022: synopsis cleared (synopsis-marketing) so the production-verified enricher refills it (https://www.londontheatre.co.uk/show/24004-small-island-tickets)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "cuckoo-west-end-2023",
+        "field": "previewsStartDate",
+        "oldValue": "2023-07-03",
+        "newValue": "2023-07-06",
+        "description": "cuckoo-west-end-2023: previewsStartDate -> 2023-07-06: other: Royal Court run began 6 July 2023; stored 3 July wrong. (https://livingarchive.royalcourttheatre.com/plays/cuckoo/)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "a-view-from-the-bridge-west-end-2024",
+        "field": "synopsis",
+        "oldValue": "Eddie Carbone, a Brooklyn longshoreman, has brought up his niece, Catherine, as his own daughter. When she succumbs to the attractions of the charismatic Rodolpho, Eddie's explosive sexual jealousy has terrifying and tragic consequences for New York's close-knit Italian-American neighbourhood. When the production was announced at the Theatre Royal Bath's Ustinov Studio earlier this year, the entire run sold out in an hour.",
+        "newValue": null,
+        "description": "a-view-from-the-bridge-west-end-2024: synopsis cleared (synopsis-wrong-production) so the production-verified enricher refills it (https://www.londontheatre.co.uk/theatre-news/news/dominic-west-led-a-view-from-the-bridge-to-transfer-to-west-end)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gospel-at-colonus-1988",
+        "field": "images",
+        "oldValue": {
+          "thumbnail": "/images/shows/the-gospel-at-colonus-1988/thumbnail.webp",
+          "poster": "/images/shows/the-gospel-at-colonus-1988/poster.webp",
+          "hero": "/images/shows/the-gospel-at-colonus-1988/hero.webp"
+        },
+        "newValue": {
+          "thumbnail": null,
+          "poster": null,
+          "hero": null
+        },
+        "description": "the-gospel-at-colonus-1988: poster, thumbnail and hero cleared: poster-other-production: art advertises a July 8-26 run directed by Shayok Misha Chowdhury, a later non-1988 staging; 1988 Broadway was directed by Lee Breuer. (https://playbill.com/production/the-gospel-at-colonus-lunt-fontanne-theatre-vault-0000005030)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gospel-at-colonus-1988",
+        "field": "rejectedImageUrls",
+        "oldValue": null,
+        "newValue": [
+          "https://images.ctfassets.net/6pezt69ih962/4gawlfU3QzzBjNaJIDsQP/7fa6dd84d1957127eaabc9126ac8d050/The_Gospel_at_Colonus_Show_3.png?fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4gawlfU3QzzBjNaJIDsQP/7fa6dd84d1957127eaabc9126ac8d050/The_Gospel_at_Colonus_Show_3.png?w=1080&h=1080&fit=fill&f=face&fm=webp&q=90",
+          "https://images.ctfassets.net/6pezt69ih962/4gawlfU3QzzBjNaJIDsQP/7fa6dd84d1957127eaabc9126ac8d050/The_Gospel_at_Colonus_Show_3.png?w=1920&h=800&fit=fill&f=center&fm=webp&q=90"
+        ],
+        "description": "the-gospel-at-colonus-1988: never re-take the wrong art source (BRO-5080)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-gospel-at-colonus-1988",
+        "field": "noReliableArt",
+        "oldValue": null,
+        "newValue": {
+          "at": "2026-10-11",
+          "reason": "BRO-5080 sourced fact-check: art was poster-other-production",
+          "key": "the gospel at colonus|lunt-fontanne theatre|1988-03-24"
+        },
+        "description": "the-gospel-at-colonus-1988: no reliable art; the image sweep and self-heal skip it until the row changes"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "she-loves-me-1994",
+        "field": "previewsStartDate",
+        "oldValue": "1993-06-10",
+        "newValue": "1993-05-14",
+        "description": "she-loves-me-1994: previewsStartDate -> 1993-05-14: other: stored 1993-06-10 is the opening date; first preview was May 14, 1993. (https://playbill.com/production/she-loves-me-criterion-center-stage-right-vault-0000003830)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "she-loves-me-1994",
+        "field": "openingDate",
+        "oldValue": "1993-10-07",
+        "newValue": "1993-06-10",
+        "description": "she-loves-me-1994: openingDate -> 1993-06-10: date-other-production: stored 1993-10-07 is the Brooks Atkinson transfer date; official opening was Jun 10, 1993. (https://playbill.com/production/she-loves-me-criterion-center-stage-right-vault-0000003830)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "frankie-and-johnny-in-the-clair-de-lune-2002",
+        "field": "synopsis",
+        "oldValue": "The play opens in the dark with a couple making love in her one-room walk-up apartment in the west side of Manhattan. They are Johnny (originated by F. Murray Abraham), a short order cook, and Frankie (originated by Kathy Bates), a waitress. Johnny is certain he has found his soul mate in Frankie. She, on the other hand, is far more cautious and disinclined to jump to conclusions and at first has written off the encounter as a one night stand.",
+        "newValue": null,
+        "description": "frankie-and-johnny-in-the-clair-de-lune-2002: synopsis cleared (synopsis-wrong-production) so the production-verified enricher refills it (https://en.wikipedia.org/wiki/Frankie_and_Johnny_in_the_Clair_de_Lune)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T04:25:59.000Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran plan-we-historical-opening-repair.js successfully"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for dear-evan-hansen-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for betrayal-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for present-laughter-west-end-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for seven-methods-of-killing-kylie-jenner-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for for-black-boys-who-have-considered-suicide-when-the-hue-gets-too-heavy-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: closingDate updated for bleak-expectations-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for rockets-and-blue-lights-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-mongol-khan-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for death-drop-west-end-2020"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for myras-story-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for aspects-of-love-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for aspects-of-love-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for bonnie-and-clyde-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for small-island-west-end-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for cuckoo-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for a-view-from-the-bridge-west-end-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: images updated for the-gospel-at-colonus-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: rejectedImageUrls updated for the-gospel-at-colonus-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: noReliableArt updated for the-gospel-at-colonus-1988"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for she-loves-me-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for she-loves-me-1994"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for frankie-and-johnny-in-the-clair-de-lune-2002"
+    }
+  ]
+}
