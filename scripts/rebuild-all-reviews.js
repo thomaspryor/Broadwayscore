@@ -83,7 +83,7 @@ const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { displayCriticName, isPlaceholderCritic } = require('./lib/critic-display-name');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
-const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
+const { isStaleScoreInput, markRescoreNeeded, needsRescoreForCvPartialWindow } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -2462,6 +2462,12 @@ const crossShowFingerprints = new Map();
         // BRO-4429: verdict formed from the 2500-char head of a longer article is advisory.
         const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText, d);
         if (cvPartialWindow && cv.wrongArticle === true) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
+        // BRO-6225: an advisory verdict newer than the score holds the file out until the ensemble re-reads it.
+        if (cvPartialWindow && needsRescoreForCvPartialWindow(d, showById[sid], path.join(sDir, f))) {
+          markRescoreNeeded(d, 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)');
+          stats.cvPartialWindowRescoreQueued = (stats.cvPartialWindowRescoreQueued || 0) + 1;
+          try { safeWriteReview(path.join(sDir, f), d); } catch {}
+        }
         if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !cvNonReviewHumanCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'nonReview')) {
           // CV outlet-style override (S3-T5): defer for known long-biographical
           // outlets when the text is substantive + opinionated. The CV pass false-positives

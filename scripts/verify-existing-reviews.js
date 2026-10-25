@@ -60,7 +60,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
   process.exit(0);
 }
 
-const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
+const { verifyContent, resolveCvMarket, isCvVerdictFromPartialWindow } = require('./lib/content-verifier');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
 const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
@@ -229,6 +229,9 @@ async function processVerify(items) {
           let setFlag = false;
           if (laneBypasses(data, 'wrongProduction')) {
             // BRO-4807: an opening-night lane review is never flagged by the retroactive verifier
+          } else if (!result.isFilmTv && isCvVerdictFromPartialWindow(result, data.fullText, data)) {
+            // BRO-6225: a preview/feature call on the head of a longer article is advisory (BRO-4429)
+            console.log(`  ${label}: not-a-review verdict from the head of a longer article — advisory, not flagged`);
           } else if (result.wrongProduction) {
             setFlag = true;
             data.wrongProduction = true;

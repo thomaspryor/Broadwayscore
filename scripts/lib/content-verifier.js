@@ -1109,7 +1109,10 @@ function isCvVerdictFromPartialWindow(cv, fullText, review = null) {
   // truncation artifact; only the "is this an evaluation at all" call is.
   if (cv.wrongProduction === true) return false;
   if (!HEAD_AMBIGUOUS_ARTICLE_TYPES.has(cv.articleType)) return false;
-  const len = stripLeadingJsonBlob(fullText || '').length;
+  // BRO-6225: the collector parks the body in wrongFullText on this very
+  // verdict, so fullText is empty when rebuild asks. Measure the parked body
+  // too, or every such verdict reads as a short article and gets promoted.
+  const len = stripLeadingJsonBlob(fullText || (review && review.wrongFullText) || '').length;
   // A high-confidence verdict needs the window to have missed a substantial
   // part of the piece (>1.5x); anything less confident only needs to be cut off.
   const minLen = cv.confidence === 'high' ? CV_WINDOW_CHARS * 1.5 : CV_WINDOW_CHARS;

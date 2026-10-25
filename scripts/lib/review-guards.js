@@ -2509,6 +2509,44 @@ function isStaleCvPromotedWrongShow(data, cvIsStale) {
 }
 
 /**
+ * BRO-6225: a "not a review" verdict the content verifier formed on the head
+ * of a longer article (isCvVerdictFromPartialWindow). Rebuild treats it as
+ * advisory (BRO-4429) and does not promote it, but explainExclusion still
+ * excluded it outright (cvWrongArticleHighConfidence), with the isNonReview
+ * flag and rejectionReason earlier promotions wrote. Promotions made while
+ * the collector had parked the body in wrongFullText measured an empty
+ * fullText, so they were never treated as advisory at all.
+ *
+ * The ensemble reads the whole text, so such a file is scoreable
+ * (opts.forScoring), and it counts once the ensemble has scored it. The
+ * ensemble's own not_a_review call sets rejectedAt, which still excludes.
+ * An isNonReview flag only gives way when the CV promotion set it; a person's
+ * or a classifier's flag is independent evidence.
+ */
+function isCvPartialWindowAdvisory(data, opts) {
+  if (!data || data.rejectedAt) return false;
+  if (data.manualReviewedBy || data.manualNonReviewSet === true || data.manualNonReviewBy) return false;
+  if (data.isNonReview === true && !/^CV-promoted \(not a review\):/.test(String(data.isNonReviewReason || ''))) return false;
+  if (data.rejectionReason && data.rejectionReason !== 'not_a_review') return false;
+  // lazy: content-verifier requires this module
+  if (!require('./content-verifier').isCvVerdictFromPartialWindow(data.contentVerification, data.fullText, data)) return false;
+  return !!(opts && opts.forScoring) || ensembleScoredSinceCv(data);
+}
+
+/**
+ * The ensemble scored this file, with confidence, at or after the stored CV
+ * verdict, so it read the text the verdict was about. An older score can be
+ * of a page the file no longer holds (BRO-6225: a Daily Mail review whose
+ * fullText was later replaced by a news story kept its 19).
+ */
+function ensembleScoredSinceCv(data) {
+  if (!hasHighConfidenceLlmScore(data)) return false;
+  const scored = Date.parse((data.llmMetadata && data.llmMetadata.scoredAt) || '');
+  const verified = Date.parse((data.contentVerification && data.contentVerification.verifiedAt) || '');
+  return Number.isFinite(scored) && Number.isFinite(verified) && scored >= verified;
+}
+
+/**
  * Demote a stale isNonReview flag when a NEWER, high-confidence
  * contentVerification pass affirms the article IS a review — the Telegraph
  * class (task #1255, Notion 3b9637c5). isNonReview is set almost entirely by
@@ -2564,6 +2602,9 @@ function isNonReviewDemotedByFreshCV(data) {
       && /^manual \(not a review\)/i.test(data.isNonReviewReason))) return false;
   const cv = data.contentVerification;
   if (!cv) return false;
+  const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
+    && /^CV-promoted \(not a review\):/.test(data.isNonReviewReason);
+  if (isCvPartialWindowAdvisory(data)) return true;
   if (cv.articleType !== 'review') return false;
   if (cv.isValid === false) return false;
   if (cv.wrongArticle === true) return false;
@@ -2578,8 +2619,6 @@ function isNonReviewDemotedByFreshCV(data) {
     if (!Number.isNaN(fetchedAt) && fetchedAt > cvTime) return false;
   }
 
-  const isCvPromotedProvenance = typeof data.isNonReviewReason === 'string'
-    && /^CV-promoted \(not a review\):/.test(data.isNonReviewReason);
   if (isCvPromotedProvenance) {
     // No classifiedAt exists for this family — require independent
     // corroboration instead of trusting recency we can't prove.
@@ -4664,9 +4703,11 @@ function isFullTextWrongAuthorActive(data) {
  * not_a_review files were includable per the guards but dropped by rebuild.
  * Returns true when the file must be excluded.
  */
-function isRejectedByReasonExclusion(data) {
+function isRejectedByReasonExclusion(data, opts) {
   if (!data) return false;
   if (data.rejectionReason) {
+    // BRO-6225: the not_a_review a head-of-article CV promotion wrote is as advisory as the flag.
+    if (isCvPartialWindowAdvisory(data, opts)) return false;
     // BRO-5238: a human wrong-production clear (wrongProductionManualClear /
     // wrongProductionOverride / humanReviewedWrongProduction:false) overrides a
     // 'wrong_production' rejection, exactly as isRejectedAtExclusion already
@@ -5221,7 +5262,7 @@ function explainExclusion(data, show, filePath, opts) {
   // humanReviewScore is a human's verdict, so it is exempt.
   if (isBodylessAggregatorScoreUncorroborated(data, show)) return 'bodylessAggregatorScoreUncorroborated';
   if (
-    ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
+    ((data.isNonReview === true && !isNonReviewDemotedByFreshCV(data) && !isCvPartialWindowAdvisory(data, opts)) ||
     data.isNotReview === true ||
     data.nonReviewFlag === true ||
     data.nonReviewContent === true) && !laneOk('nonReview')
@@ -5318,7 +5359,8 @@ function explainExclusion(data, show, filePath, opts) {
   if (
     data.contentVerification?.wrongArticle === true &&
     data.contentVerification?.confidence === 'high' &&
-    !laneOk('nonReview') && !cvWrongArticleManuallyCleared(data)
+    !laneOk('nonReview') && !cvWrongArticleManuallyCleared(data) &&
+    !isCvPartialWindowAdvisory(data, opts)
   ) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
@@ -5326,7 +5368,7 @@ function explainExclusion(data, show, filePath, opts) {
   // even when the outlet's JSON-LD schema records an explicit star rating. The json-ld
   // star IS the critic's published verdict — authoritative for KNOWN_STAR_OUTLETS. Allow
   // inclusion so the P0.5 path in getBestScore can use the structured-data score.
-  if (isRejectedByReasonExclusion(data) && !laneOk('wrongProduction')) return 'rejectionReason';
+  if (isRejectedByReasonExclusion(data, opts) && !laneOk('wrongProduction')) return 'rejectionReason';
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2 && !laneOk('wrongProduction')) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
   // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
@@ -6274,6 +6316,8 @@ module.exports = {
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
+  isCvPartialWindowAdvisory,
+  ensembleScoredSinceCv,
   cvWrongArticleManuallyCleared,
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,

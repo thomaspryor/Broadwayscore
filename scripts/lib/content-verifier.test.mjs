@@ -37,6 +37,7 @@ const {
   resolveCvMarket,
   buildVerificationPrompt,
   buildPriorRunHint,
+  isCvVerdictFromPartialWindow,
 } = require('./content-verifier.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -401,3 +402,58 @@ test('heuristicVerify: a press title (akaTitles) counts as the show being mentio
   assert.equal(withAka.wrongArticle, false);
   assert.ok(!withAka.issues.some((i) => /not found in content/.test(i)));
 });
+
+// BRO-6225: the collector parks the body in wrongFullText on the very verdict
+// rebuild then asks about, so the partial-window guard has to measure it there.
+{
+  const { explainExclusion, isCvPartialWindowAdvisory, isNonReviewDemotedByFreshCV } = require('./review-guards.js');
+  const { needsRescoreForCvPartialWindow } = require('./rescore-flagging.js');
+  const body = 'The production is a triumph and the cast is superb. '.repeat(120); // ~6,200 chars, past 1.5x the head window
+  const cv = { wrongArticle: true, wrongProduction: false, articleType: 'feature', confidence: 'high', verifiedAt: '2026-10-01T00:00:00Z' };
+  const promoted = (extra = {}) => ({
+    outletId: 'theatermania', url: 'https://www.theatermania.com/news/x', showId: 's',
+    fullText: body, contentTier: 'complete', wordCount: 1100,
+    isNonReview: true, rejectionReason: 'not_a_review',
+    isNonReviewReason: 'CV-promoted (not a review): This is a feature article',
+    contentVerification: cv,
+    ...extra,
+  });
+
+  test('isCvVerdictFromPartialWindow: measures the parked body when fullText was moved out (BRO-6225)', () => {
+    assert.equal(isCvVerdictFromPartialWindow(cv, '', { fullText: null, wrongFullText: body }), true);
+    assert.equal(isCvVerdictFromPartialWindow(cv, '', { fullText: null, wrongFullText: body.slice(0, 2000) }), false);
+    assert.equal(isCvVerdictFromPartialWindow(cv, ''), false);
+  });
+
+  test('CV-promoted head-of-article verdict: scoreable, but excluded until the ensemble has read the current text (BRO-6225)', () => {
+    const d = promoted();
+    assert.equal(explainExclusion(d, null, null, { forScoring: true }), null);
+    assert.equal(explainExclusion(d), 'nonReview');
+    // A score made before the verdict can be of a page the file no longer holds.
+    const stale = promoted({ llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-09-01T00:00:00Z' } });
+    assert.equal(explainExclusion(stale), 'nonReview');
+    const fresh = promoted({ llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-10-02T00:00:00Z' } });
+    assert.equal(explainExclusion(fresh), null);
+    assert.equal(isNonReviewDemotedByFreshCV(fresh), true);
+  });
+
+  test('head-of-article advisory never overrides the ensemble, a person or another verdict (BRO-6225)', () => {
+    const fresh = { llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-10-02T00:00:00Z' } };
+    assert.notEqual(explainExclusion(promoted({ ...fresh, rejectedAt: '2026-10-03T00:00:00Z' })), null);
+    assert.equal(isCvPartialWindowAdvisory(promoted({ manualNonReviewSet: true }), { forScoring: true }), false);
+    assert.equal(isCvPartialWindowAdvisory(promoted({ isNonReviewReason: 'classifier: interview' }), { forScoring: true }), false);
+    assert.equal(isCvPartialWindowAdvisory(promoted({ rejectionReason: 'garbage_text' }), { forScoring: true }), false);
+    assert.equal(isCvPartialWindowAdvisory(promoted({ contentVerification: { ...cv, wrongProduction: true } }), { forScoring: true }), false);
+    // A short piece was read whole: the verdict stands.
+    assert.equal(explainExclusion(promoted({ ...fresh, fullText: body.slice(0, 3000) }), null, null, { forScoring: true }), 'nonReview');
+  });
+
+  test('needsRescoreForCvPartialWindow: queues a score older than the verdict once, then settles (BRO-6225)', () => {
+    const stale = promoted({ llmScore: { score: 80, confidence: 'high' }, llmMetadata: { scoredAt: '2026-09-01T00:00:00Z' } });
+    assert.equal(needsRescoreForCvPartialWindow(stale, null, null), true);
+    assert.equal(needsRescoreForCvPartialWindow({ ...stale, needsRescore: true }, null, null), false);
+    assert.equal(needsRescoreForCvPartialWindow({ ...stale, rescoreCompletedAt: '2026-10-02T00:00:00Z' }, null, null), false);
+    assert.equal(needsRescoreForCvPartialWindow(promoted(), null, null), false); // unscored: the scorer picks it up anyway
+    assert.equal(needsRescoreForCvPartialWindow({ ...stale, rejectedAt: '2026-10-03T00:00:00Z' }, null, null), false);
+  });
+}

@@ -683,8 +683,10 @@ function loadBaselineGuards() {
   delete require.cache[require.resolve(cmPath)];
   const prsPath = path.join(baselineLibDir, 'prior-run-sibling.js');
   delete require.cache[require.resolve(prsPath)];
+  const cvPath = path.join(baselineLibDir, 'content-verifier.js');
   return {
     ...guards,
+    __contentVerifier: fs.existsSync(cvPath) ? require(cvPath) : {},
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
@@ -707,6 +709,7 @@ function loadWorkingTreeGuards() {
   delete require.cache[require.resolve(prsPath)];
   return {
     ...guards,
+    __contentVerifier: require(path.resolve(REPO_ROOT, 'scripts/lib/content-verifier.js')),
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
@@ -1809,6 +1812,13 @@ function main() {
         // it calls" gap as isWithinTourLeg above (Codex adversarial review,
         // BRO-3862).
         && (baseline.hasHighConfidenceLlmScore?.toString() || '') === (working.hasHighConfidenceLlmScore?.toString() || '')
+        // BRO-6225: the head-of-article CV advisory lifts nonReview,
+        // cvWrongArticleHighConfidence and rejectionReason; it lives partly in
+        // content-verifier.js, which no other comparison here loads.
+        && (baseline.isCvPartialWindowAdvisory?.toString() || '') === (working.isCvPartialWindowAdvisory?.toString() || '')
+        && (baseline.ensembleScoredSinceCv?.toString() || '') === (working.ensembleScoredSinceCv?.toString() || '')
+        && (baseline.__contentVerifier?.isCvVerdictFromPartialWindow?.toString() || '') === (working.__contentVerifier?.isCvVerdictFromPartialWindow?.toString() || '')
+        && (baseline.__contentVerifier?.isCvVerdictFromTruncatedFetch?.toString() || '') === (working.__contentVerifier?.isCvVerdictFromTruncatedFetch?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
