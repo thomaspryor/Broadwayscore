@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T22:10:06.279Z",
+  "runDate": "2026-10-25T22:21:31.367Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,25 +11,25 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
+    "processed": 1,
     "failed": 54,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "1.8%"
   },
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 34,
     "amp": 3,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 1,
-    "scrapingbee": 3,
+    "scrapingbee": 4,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 20
+    "archive": 22
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
@@ -42,7 +42,7 @@
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 54,
     "scrapingBeePageCredits": 0,
@@ -54,7 +54,7 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
+    "processed": 1,
     "failed": 54,
     "shows": [
       "aint-no-mo-2022",
@@ -78,6 +78,7 @@
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
+      "not-ready-for-prime-time-off-broadway-2025",
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
@@ -108,11 +109,13 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 41,
-      "failed": 90
+      "processed": 60,
+      "failed": 91
     }
   },
-  "processed": [],
+  "processed": [
+    "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
+  ],
   "failed": [
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
     "sea-wall-a-life-2019/usatoday--charles-isherwood.json",
@@ -211,6 +214,26 @@
       "good-bones-off-broadway-2024/timeout--raven-snook.json",
       "good-bones-off-broadway-2024/front-row-center--david-walters.json",
       "blood-of-the-lamb-off-broadway-2024/broadwayworld--marina-kennedy.json",
+      "garry-starr-classic-penguins-off-west-end-2026/thereviewshub--steven-wang.json",
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+      "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json",
       "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
     ],
     "failed": [
@@ -296,14 +319,15 @@
       "on-a-clear-day-you-can-see-forever-2011/vulture--jesse-green.json",
       "hamlet-2009/nydailynews--joe-dziemianowicz.json",
       "is-he-dead-2007/nypost--clive-barnes.json",
-      "girls-off-west-end-2026/radio-times--molly-moss.json",
-      "the-land-of-the-living-west-end-2025/i-paper--fiona-mountford.json",
-      "shifters-west-end-2024/thestage--tom-wicker.json",
-      "shifters-west-end-2024/times-uk--rachel-halliburton.json",
-      "the-constituent-west-end-2024/independent--tim-bano.json",
-      "the-constituent-west-end-2024/times-uk--clive-davis.json",
-      "romeo-and-juliet-west-end-2024/sunday-times--dominic-maxwell.json",
-      "oh-mary-off-broadway-2024/chicago-sun-times--richard-roeper.json"
+      "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
+      "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+      "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
+      "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+      "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+      "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+      "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+      "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json"
     ]
   },
   "tierDetails": {
@@ -324,7 +348,24 @@
       "300-paintings-off-broadway-2024/nytg--beatrice-onions.json",
       "mama-im-a-big-girl-now-off-broadway-2024/timeout--raven-snook.json",
       "good-bones-off-broadway-2024/timeout--raven-snook.json",
-      "good-bones-off-broadway-2024/front-row-center--david-walters.json"
+      "good-bones-off-broadway-2024/front-row-center--david-walters.json",
+      "garry-starr-classic-penguins-off-west-end-2026/thereviewshub--steven-wang.json",
+      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
+      "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
+      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
+      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
+      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
+      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
+      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+      "martin-guerre-west-end-2026/londontheatredirect--steve-mills.json",
+      "dog-mom-off-west-end-2026/north-west-end--carole-gordon.json",
+      "dog-mom-off-west-end-2026/notesfromrowh--helena6.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--london-living-large.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+      "jesus-christ-superstar-off-west-end-2026/entertheatre--unknown.json"
     ],
     "amp": [
       "data/review-texts/pygmalion-off-broadway-2025/variety--naman-ramachandran.json",
@@ -343,7 +384,8 @@
     "scrapingbee": [
       "art-of-leaving-off-broadway-2025/theatrely--joey-sims.json",
       "lord-nil-7-deadly-sins-off-broadway-2025/timeout--unknown.json",
-      "blood-of-the-lamb-off-broadway-2024/broadwayworld--marina-kennedy.json"
+      "blood-of-the-lamb-off-broadway-2024/broadwayworld--marina-kennedy.json",
+      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -367,7 +409,9 @@
       "angry-alan-off-broadway-2025/one-minute-critic--bobby-mcguire.json",
       "ceremonies-in-dark-old-men-off-broadway-2025/stagebuddy--elyse-trevers.json",
       "a-knock-on-the-roof-off-broadway-2025/culturesauce--thom-geier.json",
-      "300-paintings-off-broadway-2024/culturesauce--thom-geier.json"
+      "300-paintings-off-broadway-2024/culturesauce--thom-geier.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+      "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json"
     ]
   },
   "failuresByOutlet": {},
