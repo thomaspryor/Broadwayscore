@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6182b",
   "planId": "f2a4e32f-ce40-46b8-98d8-28030eaff68d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T10:20:40.647Z",
   "submitter": {
     "name": null,
@@ -60,5 +60,19 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T10:47:56.229Z",
+  "results": [
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added hair-2009 (Windfall)"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": true,
+      "msg": "commercial.json: added spider-man-turn-off-the-dark-2011 (Did Not Recoup)"
+    }
+  ],
+  "executedIn": "ci"
 }
