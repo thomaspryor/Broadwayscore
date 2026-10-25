@@ -121,3 +121,9 @@ test('isObHistoricalRow: tag or ob-historical discoverySource, Off-Broadway rows
 test('toAddShowAction: refuses a placeholder venue (sanitizeVenueForWrite)', () => {
   assert.equal(toAddShowAction(entry({ venue: 'TBA' }), { discoveredAt: 'x', dateSource: 'y' }), null);
 });
+
+test('toAddShowAction: strips wrapping quotes Playbill prints around some titles', () => {
+  assert.equal(toAddShowAction(entry({ title: '"Anna Christie"' }), { discoveredAt: 'x', dateSource: 'y' }).show.title, 'Anna Christie');
+  assert.equal(toAddShowAction(entry({ title: '“Anna Christie”' }), { discoveredAt: 'x', dateSource: 'y' }).show.title, 'Anna Christie');
+  assert.equal(toAddShowAction(entry({ title: 'Say "Hello"' }), { discoveredAt: 'x', dateSource: 'y' }).show.title, 'Say "Hello"');
+});

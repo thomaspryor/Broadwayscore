@@ -73,7 +73,9 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
   if (!venue) return null;
   const show = {
     id: entry.id,
-    title: entry.title,
+    // Playbill prints some titles in quotes ("Anna Christie"); the id/slug
+    // already drop them, the display title should too.
+    title: String(entry.title || '').replace(/^["“](.*)["”]$/, '$1'),
     slug: entry.slug,
     venue,
     previewsStartDate: entry.previewsStartDate || null,
