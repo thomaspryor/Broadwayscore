@@ -732,5 +732,36 @@
       }
     ],
     "queuedAt": "2026-10-25T20:30:19.082Z"
+  },
+  {
+    "conditionKey": "land:land/mac-cloud-phase2a",
+    "title": "Landing blocked: rebase red on land/mac-cloud-phase2a",
+    "description": "land.yml did not land land/mac-cloud-phase2a: the rebase gate went red at e451da1781. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/mac-cloud-phase2a @ e451da1781 (origin/land/mac-cloud-phase2a) → origin/main @ bf25eb4b6f REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bf25eb4b6f: Rebasing (1/2) error: could not apply 173c923d0ab... BRO-6230: morning digest as a GitHub Action (dry-run only) + Mac heartbeat signal hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40231191354",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/mac-cloud-phase2a"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e451da17817d7d2f02c1e5060b4f66b463c46f78"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40231191354"
+      }
+    ],
+    "queuedAt": "2026-10-25T20:54:47.071Z"
   }
 ]
