@@ -579,7 +579,7 @@
   html:not([data-money-unlocked]) .money-gate-content {
     max-height: 26rem;
     overflow: hidden;
-    filter: blur(2.5px);
+    filter: blur(1px);
     user-select: none;
     pointer-events: none;
     -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
@@ -587,6 +587,20 @@
     /* At least the card's pull-up (-mt-48), so short content never lets the
        card cover the heading above the gate. */
     min-height: 12rem;
+  }
+  /* Figures must not be legible through the preview: every glyph is hidden
+     and only a wide glow of its own color remains. Show names (the links to
+     /show/) keep a tight glow, faintly readable as a teaser. */
+  html:not([data-money-unlocked]) .money-gate-content * {
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 11px currentColor;
+  }
+  html:not([data-money-unlocked]) .money-gate-content a[href^='/show/'],
+  html:not([data-money-unlocked]) .money-gate-content a[href^='/show/'] * {
+    text-shadow: 0 0 3px currentColor;
+  }
+  html:not([data-money-unlocked]) .money-gate-content svg text {
+    fill-opacity: 0;
   }
   html:not([data-money-unlocked]) .money-gate[data-preview='short'] .money-gate-content {
     max-height: 12rem;

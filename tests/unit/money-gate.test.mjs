@@ -68,6 +68,9 @@ test('paywall structured data points at the gated wrapper class', () => {
   assert.equal(schema.isAccessibleForFree, false);
   assert.equal(schema.hasPart.cssSelector, '.money-gated');
   assert.match(read('src/components/biz/MoneyGate.tsx'), /className="money-gated money-gate-content"/);
+  const css = read('src/app/globals.css');
+  assert.match(css, /\.money-gate-content \* \{\s*-webkit-text-fill-color: transparent;/, 'locked figures are not legible');
+  assert.match(css, /\.money-gate-content a\[href\^='\/show\/'\]/, 'show names stay a faint teaser');
   assert.match(read('src/components/BizBuzzCard.tsx'), /<MoneyGate page="show-page" preview="short" schema=\{false\}>/, 'show pages are not marked paywalled');
 });
 
