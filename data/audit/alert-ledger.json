@@ -416,13 +416,12 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-22T19:17:38.499Z",
-      "lastNotifiedAt": "2026-10-22T18:22:35.385Z",
-      "lastSurfacedAt": "2026-10-22T18:22:35.385Z",
-      "notifyCount": 41,
+      "lastSeen": "2026-10-25T07:44:11.838Z",
+      "lastNotifiedAt": "2026-10-25T07:44:11.838Z",
+      "lastSurfacedAt": "2026-10-25T07:44:11.838Z",
+      "notifyCount": 42,
       "cardId": null,
-      "linearIdentifier": "BRO-5526",
-      "silentRefires": 1
+      "linearIdentifier": "BRO-5526"
     },
     "orphan-unscored-requeue:tao-of-glass-west-end-2026": {
       "status": "resolved",
@@ -9917,13 +9916,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 0 P0 older than 24h, 13 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 1 P0 older than 24h, 12 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-24T07:20:55.215Z",
-      "lastNotifiedAt": "2026-10-24T07:20:55.215Z",
-      "lastSurfacedAt": "2026-10-18T07:17:18.505Z",
-      "notifyCount": 21,
+      "lastSeen": "2026-10-25T07:38:50.953Z",
+      "lastNotifiedAt": "2026-10-25T07:38:50.953Z",
+      "lastSurfacedAt": "2026-10-25T07:38:50.953Z",
+      "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-5613"
     },
@@ -17711,7 +17710,7 @@
       "silentRefires": 1
     },
     "guard-audit:bd-serp_api1": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Spend guard bd-circuit-breaker-serp_api1: cap drift",
       "firstSeen": "2026-10-14T02:46:56.653Z",
@@ -17722,7 +17721,8 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-10-25T07:44:10.475Z"
     },
     "guard-audit:bd-web_unlocker2": {
       "status": "open",
@@ -17730,13 +17730,13 @@
       "title": "Spend guard bd-circuit-breaker-web_unlocker2: cap drift",
       "firstSeen": "2026-10-14T02:46:56.661Z",
       "incidentOpenedAt": "2026-10-14T02:46:56.661Z",
-      "lastSeen": "2026-10-24T07:22:21.115Z",
+      "lastSeen": "2026-10-25T07:44:10.499Z",
       "lastNotifiedAt": "2026-10-21T07:42:19.987Z",
       "lastSurfacedAt": "2026-10-21T07:42:19.987Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-5261-s5-retro-fixes": {
       "status": "resolved",
@@ -18691,13 +18691,13 @@
       "title": "LLM scoring daily spend over budget",
       "firstSeen": "2026-10-15T09:31:55.528Z",
       "incidentOpenedAt": "2026-10-19T11:53:05.157Z",
-      "lastSeen": "2026-10-25T05:54:56.819Z",
+      "lastSeen": "2026-10-25T07:44:10.740Z",
       "lastNotifiedAt": "2026-10-24T21:06:39.028Z",
       "lastSurfacedAt": "2026-10-24T21:06:39.028Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20
+      "silentRefires": 21
     },
     "feedback-outcomes:2026-10-15T05:05:16.652944+00:00": {
       "status": "resolved",
@@ -23596,10 +23596,10 @@
       "title": "the-pianist-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T07:38:11.543Z",
       "incidentOpenedAt": "2026-10-22T07:38:11.543Z",
-      "lastSeen": "2026-10-24T07:21:14.939Z",
-      "lastNotifiedAt": "2026-10-24T07:21:14.939Z",
-      "lastSurfacedAt": "2026-10-24T07:21:14.939Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-25T07:39:27.429Z",
+      "lastNotifiedAt": "2026-10-25T07:39:27.429Z",
+      "lastSurfacedAt": "2026-10-25T07:39:27.429Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24332,10 +24332,10 @@
       "title": "stories-the-tap-dance-sensation-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.099Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.099Z",
-      "lastSeen": "2026-10-24T07:21:14.864Z",
-      "lastNotifiedAt": "2026-10-24T07:21:14.864Z",
-      "lastSurfacedAt": "2026-10-24T07:21:14.864Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-25T07:39:27.310Z",
+      "lastNotifiedAt": "2026-10-25T07:39:27.310Z",
+      "lastSurfacedAt": "2026-10-25T07:39:27.310Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24359,10 +24359,10 @@
       "title": "billy-crystal-860-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.185Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.185Z",
-      "lastSeen": "2026-10-24T07:21:14.913Z",
-      "lastNotifiedAt": "2026-10-24T07:21:14.913Z",
-      "lastSurfacedAt": "2026-10-24T07:21:14.913Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-25T07:39:27.385Z",
+      "lastNotifiedAt": "2026-10-25T07:39:27.385Z",
+      "lastSurfacedAt": "2026-10-25T07:39:27.385Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24372,10 +24372,10 @@
       "title": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.315Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.315Z",
-      "lastSeen": "2026-10-24T07:21:15.016Z",
-      "lastNotifiedAt": "2026-10-24T07:21:15.016Z",
-      "lastSurfacedAt": "2026-10-24T07:21:15.016Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-25T07:39:27.578Z",
+      "lastNotifiedAt": "2026-10-25T07:39:27.578Z",
+      "lastSurfacedAt": "2026-10-25T07:39:27.578Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -24385,10 +24385,10 @@
       "title": "nina-off-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
       "firstSeen": "2026-10-22T18:21:15.398Z",
       "incidentOpenedAt": "2026-10-22T18:21:15.398Z",
-      "lastSeen": "2026-10-24T07:21:15.072Z",
-      "lastNotifiedAt": "2026-10-24T07:21:15.072Z",
-      "lastSurfacedAt": "2026-10-24T07:21:15.072Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-10-25T07:39:27.665Z",
+      "lastNotifiedAt": "2026-10-25T07:39:27.665Z",
+      "lastSurfacedAt": "2026-10-25T07:39:27.665Z",
+      "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -26036,8 +26036,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6161",
-      "resolvedAt": "2026-10-24T21:30:42.590Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-24T21:30:42.590Z",
+      "sweptTracker": "BRO-6161",
+      "notifyCountAtRelease": 1
     },
     "gap:harry-potter-and-the-cursed-child-one-part-west-end-2026/vulture--sara-holdren.json": {
       "status": "resolved",
@@ -26050,8 +26052,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6162",
-      "resolvedAt": "2026-10-24T21:30:57.947Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-24T21:30:57.947Z",
+      "sweptTracker": "BRO-6162",
+      "notifyCountAtRelease": 1
     },
     "gap:harry-potter-and-the-cursed-child-one-part-west-end-2026/wnyc--jennifer-vanasco.json": {
       "status": "resolved",
@@ -26064,8 +26068,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6163",
-      "resolvedAt": "2026-10-24T21:30:57.969Z"
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-24T21:30:57.969Z",
+      "sweptTracker": "BRO-6163",
+      "notifyCountAtRelease": 1
     },
     "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026": {
       "status": "open",
@@ -26391,6 +26397,19 @@
       "lastSeen": "2026-10-25T07:38:35.000Z",
       "lastNotifiedAt": "2026-10-25T07:38:35.000Z",
       "lastSurfacedAt": "2026-10-25T07:38:35.000Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "coverage-holes:harry-potter-and-the-cursed-child-one-part-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "harry-potter-and-the-cursed-child-one-part-west-end-2026: 1 review(s) need a decision (rejected real review or score outside the critic's rating)",
+      "firstSeen": "2026-10-25T07:39:27.517Z",
+      "incidentOpenedAt": "2026-10-25T07:39:27.517Z",
+      "lastSeen": "2026-10-25T07:39:27.517Z",
+      "lastNotifiedAt": "2026-10-25T07:39:27.517Z",
+      "lastSurfacedAt": "2026-10-25T07:39:27.517Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
