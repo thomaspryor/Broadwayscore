@@ -3669,13 +3669,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-10-08T11:25:20.258Z",
-      "lastSeen": "2026-10-25T01:07:41.986Z",
+      "lastSeen": "2026-10-25T01:30:10.657Z",
       "lastNotifiedAt": "2026-10-24T11:26:05.130Z",
       "lastSurfacedAt": "2026-10-24T11:26:05.130Z",
       "notifyCount": 34,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "resolved",
@@ -4859,13 +4859,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-10-20T02:48:04.645Z",
-      "lastSeen": "2026-10-25T01:07:41.953Z",
+      "lastSeen": "2026-10-25T01:30:10.631Z",
       "lastNotifiedAt": "2026-10-24T11:26:04.817Z",
       "lastSurfacedAt": "2026-10-17T22:22:42.482Z",
       "notifyCount": 27,
       "cardId": null,
       "linearIdentifier": "BRO-5563",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -6614,19 +6614,17 @@
       "resolveReason": "stale-signature"
     },
     "corpus-drift:sibling-title-misroute": {
-      "status": "resolved",
-      "disposition": "auto",
+      "status": "open",
+      "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "incidentOpenedAt": "2026-10-17T16:13:23.493Z",
-      "lastSeen": "2026-10-24T23:04:51.816Z",
-      "lastNotifiedAt": "2026-10-24T11:26:01.064Z",
+      "incidentOpenedAt": "2026-10-25T01:30:10.014Z",
+      "lastSeen": "2026-10-25T01:30:10.014Z",
+      "lastNotifiedAt": "2026-10-25T01:30:10.014Z",
       "lastSurfacedAt": "2026-10-24T11:26:01.064Z",
-      "notifyCount": 22,
+      "notifyCount": 23,
       "cardId": null,
-      "linearIdentifier": "BRO-6113",
-      "silentRefires": 7,
-      "resolvedAt": "2026-10-24T23:58:28.526Z"
+      "linearIdentifier": "BRO-6113"
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -6685,13 +6683,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-10-19T16:00:04.306Z",
-      "lastSeen": "2026-10-25T01:07:41.926Z",
+      "lastSeen": "2026-10-25T01:30:10.614Z",
       "lastNotifiedAt": "2026-10-24T23:58:28.551Z",
       "lastSurfacedAt": "2026-10-21T18:16:17.511Z",
       "notifyCount": 23,
       "cardId": null,
       "linearIdentifier": "BRO-5314",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -10279,13 +10277,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-24T11:26:04.969Z",
-      "lastSeen": "2026-10-25T01:07:41.975Z",
+      "lastSeen": "2026-10-25T01:30:10.649Z",
       "lastNotifiedAt": "2026-10-24T11:26:04.969Z",
       "lastSurfacedAt": "2026-10-21T09:29:31.216Z",
       "notifyCount": 18,
       "cardId": null,
       "linearIdentifier": "BRO-5823",
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "resolved",
@@ -16111,13 +16109,13 @@
       "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
       "firstSeen": "2026-10-12T12:34:40.002Z",
       "incidentOpenedAt": "2026-10-22T14:17:35.428Z",
-      "lastSeen": "2026-10-25T01:07:42.002Z",
+      "lastSeen": "2026-10-25T01:30:10.668Z",
       "lastNotifiedAt": "2026-10-24T14:46:20.984Z",
       "lastSurfacedAt": "2026-10-24T14:46:20.984Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-3999-empty-body-sweep": {
       "status": "resolved",
@@ -23205,13 +23203,13 @@
       "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
       "firstSeen": "2026-10-22T02:01:04.201Z",
       "incidentOpenedAt": "2026-10-22T02:01:04.201Z",
-      "lastSeen": "2026-10-25T01:07:41.940Z",
+      "lastSeen": "2026-10-25T01:30:10.624Z",
       "lastNotifiedAt": "2026-10-24T02:13:11.046Z",
       "lastSurfacedAt": "2026-10-24T02:13:11.046Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-5706-retire-eno-dup": {
       "status": "open",
