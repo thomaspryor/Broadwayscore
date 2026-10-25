@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T09:03:53.619Z",
+  "timestamp": "2026-10-25T09:18:37.512Z",
   "stats": {
-    "totalReviews": 61305,
+    "totalReviews": 61309,
     "alreadyFlagged": 21395,
     "dateGuardCatches": 222,
     "directorMismatch": 2223,
     "tvFilmSignals": 1739,
-    "londonSignals": 2971,
+    "londonSignals": 2973,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5475
+    "noPublishDate": 5476
   },
   "findings": [
     {
@@ -74583,6 +74583,19 @@
     },
     {
       "showId": "ilford-boy-west-end-2026",
+      "file": "partially-obstructed-view--nick730.json",
+      "publishDate": null,
+      "url": "http://partially-obstructed-view.blogspot.com/2026/10/theatre-review-ilford-boy.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
       "score": 57,
       "publishDate": "2026-10-22",
@@ -74619,6 +74632,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "file": "sierz-co-uk--unknown.json",
+      "publishDate": "2026-10-24",
+      "url": "https://sierz.co.uk/reviews/ilford-boy-donmar-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
