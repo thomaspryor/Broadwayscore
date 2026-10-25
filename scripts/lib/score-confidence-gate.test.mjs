@@ -38,3 +38,11 @@ test('unscored reviews are ignored; returning runs need reviews of this run', ()
   assert.equal(r.counts.total, 12);
   assert.deepEqual(r.reasons, ['this-run:5/6']);
 });
+
+test('opening-night status readiness reads the same floors (no second copy)', () => {
+  const { getThresholds } = require('./opening-night-readiness.js');
+  for (const m of ['broadway', 'west-end']) {
+    const f = getConfidenceFloors(m);
+    assert.deepEqual(getThresholds(m), { MIN_REVIEWS: f.total, MIN_T1_REVIEWS: f.t1, MIN_T2_REVIEWS: f.t2, MIN_HIGH_CONFIDENCE: f.highConfidence }, m);
+  }
+});
