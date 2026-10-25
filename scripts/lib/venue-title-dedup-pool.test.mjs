@@ -96,3 +96,21 @@ test('venueEquals overrides venuesMatch for known naming variants', () => {
   const nt = (a, b) => /lyttelton/i.test(a) && /lyttelton/i.test(b);
   assert.ok(findExactDuplicate(pool, 'Here We Are', 'Lyttelton Theatre', { venueEquals: nt }));
 });
+
+test('BRO-4308: discover-ob-historical dedups through the pool, not canonicalVenue keys', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('../discover-ob-historical.js', import.meta.url), 'utf8');
+  assert.match(src, /require\('\.\/lib\/venue-title-dedup-pool'\)/);
+  assert.doesNotMatch(src, /canonicalVenue\(/);
+  assert.doesNotMatch(src, /\|\$\{venueCanon\}/);
+});
+
+test('BRO-4308: venue labels used by discover-ob-historical match shows.json venue names', () => {
+  const pool = buildVenueTitlePool([
+    { title: 'The Reservoir', venue: 'Atlantic Theater Company - Linda Gross Theater' },
+    { title: 'Petra', venue: 'Vineyard Theatre' },
+  ]);
+  assert.ok(findExactDuplicate(pool, 'The Reservoir', 'Atlantic Theater'));
+  assert.ok(findExactDuplicate(pool, 'Petra', 'Vineyard Theatre'));
+  assert.equal(findExactDuplicate(pool, 'Petra', 'MCC Theater'), null);
+});

@@ -16,7 +16,7 @@
  *   1. Per venue: pull production-page URLs from the archive index (or SERP)
  *   2. For each URL, fetch the production page and parse first-preview /
  *      opening / closing dates (Atlantic/Vineyard structured; MCC less so)
- *   3. Compare title+canonicalVenue against shows.json — keep only misses
+ *   3. Compare title+venue (venuesMatch pool) against shows.json — keep only misses
  *   4. Filter to the user-specified date window (default: opened within
  *      the past N months, --months=N)
  *   5. Write candidates to data/audit/ob-historical-candidates.json
@@ -40,7 +40,8 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
-const { normalizeTitle, canonicalVenue } = require('./lib/title-match');
+const { normalizeTitle } = require('./lib/title-match');
+const { buildVenueTitlePool, findExactDuplicate } = require('./lib/venue-title-dedup-pool');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const ROOT = path.join(__dirname, '..');
@@ -124,15 +125,6 @@ const EXCLUDE_TITLE_RE = [
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   return Array.isArray(data) ? data : (data.shows || []);
-}
-
-function buildExistingKeys(shows) {
-  const set = new Set();
-  for (const s of shows) {
-    if (!s.title || !s.venue) continue;
-    set.add(`${normalizeTitle(s.title)}|${canonicalVenue(s.venue)}`);
-  }
-  return set;
 }
 
 function parseDates(html) {
@@ -224,7 +216,8 @@ async function loadProductionDates(productionUrl) {
 
 async function main() {
   const shows = loadShows();
-  const existingKeys = buildExistingKeys(shows);
+  // BRO-4308: venue-aware pool (venuesMatch), not the lossy canonicalVenue fallback.
+  const knownShows = buildVenueTitlePool(shows);
   const venuesToScan = venueArg === 'all' ? Object.keys(VENUES) : [venueArg];
   for (const v of venuesToScan) {
     if (!VENUES[v]) {
@@ -275,9 +268,7 @@ async function main() {
 
     for (const url of productionUrls) {
       const guessedTitle = titleFromUrl(url);
-      const venueCanon = cfg.canonicalVenue;
-      const key = `${normalizeTitle(guessedTitle || '')}|${venueCanon}`;
-      if (existingKeys.has(key)) {
+      if (findExactDuplicate(knownShows, guessedTitle || '', cfg.label)) {
         if (verbose) console.log(`  [in shows.json] ${guessedTitle}`);
         continue;
       }
