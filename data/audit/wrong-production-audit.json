@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T17:30:11.484Z",
+  "timestamp": "2026-10-25T17:49:44.909Z",
   "stats": {
-    "totalReviews": 61603,
+    "totalReviews": 61620,
     "alreadyFlagged": 21452,
     "dateGuardCatches": 223,
-    "directorMismatch": 2235,
+    "directorMismatch": 2237,
     "tvFilmSignals": 1752,
     "londonSignals": 2977,
     "offBroadwaySignals": 540,
     "yearMismatch": 202,
-    "noPublishDate": 5507
+    "noPublishDate": 5524
   },
   "findings": [
     {
@@ -52183,6 +52183,34 @@
       "score": 78,
       "publishDate": "2025-07-17",
       "url": "https://thefrontrowcenter.com/2025/07/the-weir-3/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "huffpost--michael-giltz.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.huffingtonpost.com/michael-giltz/theater-the-weir-still-ha_b_3333163.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
+      "file": "nydailynews--joe-dziemianowicz.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.nydailynews.com/entertainment/music-arts/weir-theater-review-article-1.1352715",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
