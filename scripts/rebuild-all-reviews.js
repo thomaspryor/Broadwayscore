@@ -132,6 +132,7 @@ const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/re
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { duplicateOfExclusion, duplicateTextOfDecision } = require('./lib/duplicate-of-exclusion');
+const { isJointCombinedCopy } = require('./lib/joint-combined-copy');
 const { cycleTiebreakFor } = require('./lib/duplicate-cycle');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateReviewCountRegression, isRunningInCI, WARN_THRESHOLD_PCT, LOCAL_HARD_BLOCK_PCT } = require('./lib/regression-guard');
@@ -4793,7 +4794,8 @@ showDirs.forEach(showId => {
         if (cleanedForFp.length > 200) {
           const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
           const existing = crossShowFingerprints.get(fp);
-          if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)) {
+          if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)
+            && !isJointCombinedCopy(data, showId, existing)) { // BRO-4305: joint multi-show article copies all count
             logExclusion("skippedCrossShowDupe", showId, file, data);
             stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
             if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
@@ -4825,7 +4827,7 @@ showDirs.forEach(showId => {
             return;
           }
           if (!existing) {
-            crossShowFingerprints.set(fp, { showId, file });
+            crossShowFingerprints.set(fp, { showId, file, url: data.url, isCombinedReview: data.isCombinedReview, combinedWith: data.combinedWith });
           }
         }
       }
