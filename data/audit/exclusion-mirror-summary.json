@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-25T10:57:21.671Z",
+  "generatedAt": "2026-10-25T11:19:56.914Z",
   "totalScanned": 61464,
   "totalExcluded": 28064,
   "ruleCounts": {
     "wrongProduction": 18566,
     "duplicateOf": 2164,
     "wrongShow": 1770,
-    "rejectionReason": 1172,
+    "rejectionReason": 1171,
     "unverifiableWebSearchRow": 951,
-    "nonReview": 600,
+    "nonReview": 601,
     "noTextOrScoreSignal": 594,
     "wrongAttribution": 350,
     "bodylessAggregatorScoreUncorroborated": 234,
@@ -44,9 +44,10 @@
     "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "rejectionReason": 1
+    "rejectionReason": -1,
+    "nonReview": 1
   },
-  "previousGeneratedAt": "2026-10-25T10:46:49.720Z",
+  "previousGeneratedAt": "2026-10-25T10:57:21.671Z",
   "mirror": {
     "comparedShows": 2732,
     "comparedFiles": 60877,
