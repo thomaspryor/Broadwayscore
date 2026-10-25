@@ -1757,5 +1757,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T00:02:29.222Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6184-land-gate-killed-run",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6184-land-gate-killed-run",
+    "description": "land.yml did not land land/bro-6184-land-gate-killed-run: the scripts-lib-tests gate went red at a7ceddd55f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40146332000",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6184-land-gate-killed-run"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "a7ceddd55fda4e52f4edf0f871116017bcc316df"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40146332000"
+      }
+    ],
+    "queuedAt": "2026-10-25T00:40:57.679Z"
   }
 ]
