@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-25T18:09:00.094Z",
+  "generatedAt": "2026-10-25T19:14:14.523Z",
   "summary": {
-    "total": 10,
+    "total": 11,
     "high": 5,
-    "medium": 4,
+    "medium": 5,
     "low": 1
   },
   "collisions": [
@@ -87,6 +87,42 @@
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
       "confidence": "high"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-12ESHO",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "duke-and-roya-off-broadway-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "2025-06-24",
+          "openingDate": "2025-06-24",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "endgame-off-broadway-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "October 27th, 2025",
+          "openingDate": "2025-10-22",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "the-brothers-size-off-broadway-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "2025-09-10",
+          "openingDate": "2025-09-10",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "duke-and-roya-off-broadway-2025",
+      "reason": "publishDate 2025-06-24 is 0 days from duke-and-roya-off-broadway-2025 but also 0 days from the-brothers-size-off-broadway-2025",
+      "confidence": "medium"
     },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
