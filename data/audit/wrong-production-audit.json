@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T00:56:13.303Z",
+  "timestamp": "2026-10-25T01:16:00.225Z",
   "stats": {
-    "totalReviews": 60833,
-    "alreadyFlagged": 21305,
+    "totalReviews": 60835,
+    "alreadyFlagged": 21312,
     "dateGuardCatches": 223,
-    "directorMismatch": 2199,
-    "tvFilmSignals": 1719,
-    "londonSignals": 2950,
-    "offBroadwaySignals": 534,
-    "yearMismatch": 200,
-    "noPublishDate": 5601
+    "directorMismatch": 2202,
+    "tvFilmSignals": 1720,
+    "londonSignals": 2957,
+    "offBroadwaySignals": 535,
+    "yearMismatch": 201,
+    "noPublishDate": 5548
   },
   "findings": [
     {
@@ -6173,7 +6173,7 @@
     },
     {
       "showId": "brainiac-live-west-end-2026",
-      "file": "london-theatre-reviews--unknown.json",
+      "file": "london-theatre-reviews--sunita-jaswal.json",
       "score": 90,
       "publishDate": "2026-07-29",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=28533",
@@ -16213,6 +16213,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 511d before show (2025-05-08 vs 2026-10-01)"
+        }
+      ]
+    },
+    {
+      "showId": "garsides-career-off-broadway-2025",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2025-02-20",
+      "url": "https://www.theatermania.com/news/review-garsides-career-a-relic-of-british-classism-or-deep-satire_1764601/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -32421,7 +32435,7 @@
     },
     {
       "showId": "operation-mincemeat-tour-2026",
-      "file": "chicagoonstage--unknown.json",
+      "file": "chicagoonstage--karen-topham.json",
       "score": 91,
       "publishDate": "2026-10-02",
       "url": "https://www.chicagoonstage.com/operation-mincemeat-is-totally-worth-all-its-hype/",
@@ -35389,6 +35403,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "pretty-woman-the-musical-west-end-2021",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/pretty-woman-the-musical-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from pretty-woman-the-musical-2018"
         }
       ]
     },
@@ -46545,6 +46572,20 @@
     },
     {
       "showId": "the-lehman-trilogy-west-end-2024",
+      "file": "londontheatre1--unknown.json",
+      "score": 94,
+      "publishDate": "2024-10-10",
+      "url": "https://www.londontheatre1.com/reviews/the-lehman-trilogy-gillian-lynne-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2024",
       "file": "theatre-weekly--ke-meng.json",
       "score": 76,
       "publishDate": "2024-10-09",
@@ -46559,6 +46600,25 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lehman-trilogy-west-end-2024",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": null,
+      "publishDate": "October 10th, 2024",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-lehman-trilogy-review-2024-gillian-lynne-theatre-kf3qg0rtz",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam mendes\" from the-lehman-trilogy-2021"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2018 (2x) more than 2024 (0x). 2018 matches production: the-lehman-trilogy-west-end-2018"
         }
       ]
     },
@@ -65151,6 +65211,19 @@
       ]
     },
     {
+      "showId": "coriolanus-west-end-2024",
+      "file": "times-uk--clive-davis.json",
+      "publishDate": "2024-09-25",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/coriolanus-review-david-oyelowo-could-not-save-this-curiously-flat-production-x69z2zr82",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "file": "parterre-box--parterre-box.json",
       "publishDate": "2026-09-30",
@@ -69849,6 +69922,19 @@
       ]
     },
     {
+      "showId": "ghosts-off-broadway-2025",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": "2025-03-10",
+      "url": "https://www.theatrely.com/post/phantom-pains-in-ghosts-the-great-privation-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "giant-2026",
       "file": "amny--matt-windman.json",
       "score": 75,
@@ -70626,6 +70712,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "good-bones-off-broadway-2024",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://twi-ny.com/2024/10/22/good-bones-and-firm-foundations-on-and-off-broadway/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -74835,6 +74935,20 @@
     {
       "showId": "inside-no-9-stage-fright-west-end-2025",
       "file": "radio-times--katelyn-mensah.json",
+      "score": 88,
+      "publishDate": "2025-01-30",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/inside-no-9-stage-fright-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inside-no-9-stage-fright-west-end-2025",
+      "file": "radio-times--unknown.json",
       "score": 88,
       "publishDate": "2025-01-30",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/inside-no-9-stage-fright-review/",
@@ -80535,6 +80649,20 @@
     },
     {
       "showId": "my-master-builder-west-end-2025",
+      "file": "london-theatre--unknown.json",
+      "score": 66,
+      "publishDate": "2025-04-30",
+      "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "my-master-builder-west-end-2025",
       "file": "londontheatredirect--london-theatre-direct-limited.json",
       "score": 96,
       "publishDate": "2025-04-30",
@@ -84052,7 +84180,7 @@
     },
     {
       "showId": "pity-west-end-2018",
-      "file": "financialtimes--unknown.json",
+      "file": "financialtimes--ian-shuttleworth.json",
       "score": 81,
       "publishDate": "2018-07-20",
       "url": "https://www.ft.com/content/0c0a7f78-8c03-11e8-b18d-0181731a0340?syn-25a6b1a6=1",
@@ -90365,6 +90493,19 @@
     },
     {
       "showId": "the-brightening-air-west-end-2025",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2025-04-25",
+      "url": "https://inews.co.uk/culture/arts/the-brightening-air-is-the-finest-play-of-the-year-3659308",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-brightening-air-west-end-2025",
       "file": "independent--alice-saville.json",
       "score": 61,
       "publishDate": "2025-04-25",
@@ -91426,6 +91567,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "the-crucible-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/theatre/the-crucible-review-1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -93034,6 +93188,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-hills-of-california-2024",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
+      "publishDate": "2024-09-24",
+      "url": "https://www.whatsonstage.com/news/jez-butterworth-and-sam-mendes-on-rewriting-the-hills-of-california-for-broadway-and-comparisons-to-gypsy_1633755/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
