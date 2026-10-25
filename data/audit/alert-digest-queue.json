@@ -1418,20 +1418,6 @@
     "queuedAt": "2026-10-24T21:45:31.432Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:ceilidh-the-musical-off-west-end-2026",
-    "title": "Review gap — \"Ceilidh The Musical\" missing 1 cited review(s)",
-    "description": "Ceilidh The Musical (ceilidh-the-musical-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=ceilidh-the-musical-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-24T21:30:14.333Z"
-  },
-  {
     "conditionKey": "land:land/bro-6168-decision-reply-drain",
     "title": "Landing blocked: rebase red on land/bro-6168-decision-reply-drain",
     "description": "land.yml did not land land/bro-6168-decision-reply-drain: the rebase gate went red at cc6809824e. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6168-decision-reply-drain @ cc6809824e (origin/land/bro-6168-decision-reply-drain) → origin/main @ e6047562ec REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e6047562ec: Rebasing (1/1) error: could not apply cc6809824ec... feat: act on the owner's reply to a DECISION NEEDED card (BRO-6168) hint: Resolve all conflicts manually, mark them as resolved with hint: \"g Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40129351809",
@@ -1906,6 +1892,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T05:01:47.154Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T05:34:22.201Z"
   },
   {
     "conditionKey": "corpus-drift:monitor-only",

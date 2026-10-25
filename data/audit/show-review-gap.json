@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-25T03:18:28.178Z",
+  "generatedAt": "2026-10-25T05:34:17.491Z",
   "windowDays": 1095,
-  "targets": 680,
-  "auditedThisRun": 11,
+  "targets": 673,
+  "auditedThisRun": 12,
   "carriedForward": 796,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 401,
-    "missingCurrentRun": 556,
+    "missingCurrentRun": 565,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 717,
-    "totalRecoverable": 1,
+    "totalFlaggedMisses": 708,
+    "totalRecoverable": 2,
     "totalRecovered": 14,
     "humanExcluded": 4,
-    "automatedExcluded": 342,
-    "automatedExcludedListed": 284,
-    "priorProductionCitations": 5648
+    "automatedExcluded": 356,
+    "automatedExcludedListed": 297,
+    "priorProductionCitations": 5684
   },
   "results": [
     {
@@ -27261,11 +27261,12 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "title": "Buena Vista Social Club",
-      "openingDate": "2023-12-07",
+      "openingDate": "2023-12-13",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-did-critics-think-of-buena-vista-social-club-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Launches-North-American-Tour-20260923",
         "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Opens-at-Atlantic-Theater-Company-20231214"
       ],
       "aggregatorListedUrls": [
@@ -27281,6 +27282,8 @@
         "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
         "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
         "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
+        "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
+        "https://buffalotheatreguide.com/2026/09/17/buena-vista-social-club-swings-into-sheas/",
         "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
         "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
         "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
@@ -27288,17 +27291,40 @@
         "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
         "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/",
         "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/",
-        "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
-        "https://www.newyorktheatreguide.com/theatre-news/news/discover-the-musicians-of-buena-vista-social-club-on-broadway"
+        "https://pagesonstages.com/2025/05/04/buena-vista-social-club/"
       ],
-      "dirFiles": 28,
-      "dirClean": 5,
-      "inReviewsJson": 5,
+      "dirFiles": 37,
+      "dirClean": 8,
+      "inReviewsJson": 7,
       "missing": [
         {
-          "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
-          "host": "jalanews.com",
-          "knownOutletId": null
+          "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        },
+        {
+          "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
+          "host": "buffalorising.com",
+          "knownOutletId": "buffalorising",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://buffalotheatreguide.com/2026/09/17/buena-vista-social-club-swings-into-sheas/",
+          "host": "buffalotheatreguide.com",
+          "knownOutletId": "buffalo-theatre-guide",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
@@ -27314,6 +27340,10 @@
         {
           "host": "theaterlife.com",
           "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
         }
       ],
       "flaggedMisses": [
@@ -27328,16 +27358,16 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nysr--bob-verini.json",
+              "file": "nysr--frank-scheck.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-que-gran-fiesta/"
-            },
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-how-to-make-beautiful-music-in-havana/"
+              "urlInDir": "https://nystagereview.com/2023/12/13/buena-vista-social-club-from-album-to-screen-to-triumphant-musical/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191",
@@ -27354,24 +27384,12 @@
               "flag": "clean",
               "urlInDir": "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191"
             }
-          ]
-        },
-        {
-          "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dailybeast--tim-teeman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thedailybeast.com/review-buena-vista-social-club-rouses-broadway-to-fabulous-life-and-we-had-a-world/"
-            }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "reverify": true
         },
         {
           "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/",
@@ -27384,67 +27402,49 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nysr--bob-verini.json",
+              "file": "nysr--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-que-gran-fiesta/"
-            },
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/03/19/buena-vista-social-club-how-to-make-beautiful-music-in-havana/"
+              "urlInDir": "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/"
             }
-          ]
-        },
-        {
-          "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
-          "host": "nysun.com",
-          "knownOutletId": "new-york-sun",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "new-york-sun--elysa-gardner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nysun.com/article/offering-a-substantial-infusion-of-sheer-joy-buena-vista-social-club-moves-to-broadway"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/buena-vista-social-club-broadway-review"
-            }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
           "host": "theatrely.com",
           "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "recoverable": true,
+          "recoverableFile": "theatrely--unknown.json",
+          "recoverableOutletId": "theatrely",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
+            {
+              "file": "theatrely--emily-wyrwa.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review"
+            },
             {
               "file": "theatrely--juan-a-ramirez.json",
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review"
+            },
+            {
+              "file": "theatrely--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction",
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/",
@@ -27461,7 +27461,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.thewrap.com/buena-vista-social-club-off-broadway-review/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review",
@@ -27478,7 +27483,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.newyorktheatreguide.com/reviews/buena-vista-social-club-broadway-review"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html",
@@ -27495,7 +27505,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.vulture.com/article/buena-vista-social-club-broadway-marco-ramirez-theater-review.html"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/",
@@ -27512,7 +27527,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://variety.com/2025/legit/reviews/buena-vista-social-club-review-broadway-musical-1236342624/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/",
@@ -27529,7 +27549,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://nypost.com/2025/03/19/entertainment/buena-vista-social-club-review-electrifying-cuban-music-and-dance-on-broadway/?utm_campaign=nypost&utm_medium=referral"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/",
@@ -27546,7 +27571,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/news/review-buena-vista-social-club-a-wild-cuban-dance-party-trapped-in-a-broadway-musical_1768054/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -27556,27 +27586,86 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 393,
+        "count": 680,
         "byReason": {
-          "aggregator-internal-nav": 309,
-          "not-http-url": 41,
-          "aggregator-section-root": 8,
-          "non-review-host": 35
+          "non-review-host": 50,
+          "aggregator-internal-nav": 509,
+          "not-http-url": 95,
+          "production-database-listing": 11,
+          "aggregator-section-root": 14,
+          "news-article": 1
         }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-BUENA-VISTA-SOCIAL-CLUB-Launches-North-American-Tour-20260923",
+          "publishDate": "2026-09-23"
+        }
+      ],
+      "automatedExcludedListed": 10,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
+          "host": "buffalorising.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://buffalotheatreguide.com/2026/09/17/buena-vista-social-club-swings-into-sheas/",
+          "host": "buffalotheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
-          "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
-          "host": "jalanews.com",
-          "outletId": "jalanews",
-          "provisional": true,
-          "ok": false,
+          "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=jalanews.com): Scrapingdog HTTP 404: {\"message\":\"This "
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
+          "host": "nysun.com",
+          "outletId": "new-york-sun",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         },
         {
           "url": "https://pagesonstages.com/2025/05/04/buena-vista-social-club/",
@@ -27587,20 +27676,50 @@
           "noop": true,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
+          "zeroChar": false,
           "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         }
       ],
       "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
+          "host": "theatrely.com",
+          "file": "theatrely--unknown.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "[review-write-guard] URL collision: theatrely--juan-a-ramirez.json shares URL with theatrely--emily-wyrwa.json, but theatrely--emily-wyrwa.json's duplicateOf chain already loops back to us — keeping primary to avoid a duplicateOf cycle\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/buena-vista-social-club-off-broadway-2023/theatrely--juan-a-ramirez.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.",
+          "recoveryCount": 1
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "jalanews.com",
-            "outlet": "jalanews.com",
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/"
+            "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway"
           },
           {
             "outletId": "pages-on-stages",
@@ -27624,32 +27743,11 @@
             "url": "https://cititour.com/NYC_Broadway/Buena-Vista-Social-Club/1191"
           },
           {
-            "outletId": "dailybeast",
-            "outlet": "dailybeast",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story"
-          },
-          {
             "outletId": "nysr",
             "outlet": "nysr",
             "critic": "Unknown",
             "stars": null,
             "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/"
-          },
-          {
-            "outletId": "new-york-sun",
-            "outlet": "new-york-sun",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway"
           },
           {
             "outletId": "theatrely",
@@ -27728,14 +27826,34 @@
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
           },
           {
+            "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
+            "outletId": "jalanews.com",
+            "state": "live",
+            "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
             "url": "https://www.nytimes.com/2025/03/19/theater/buena-vista-social-club-review-broadway.html",
             "outletId": "nytimes.com",
             "state": "live",
             "firstSeenAt": "2026-09-17T23:23:55.518Z"
           },
           {
-            "url": "https://jalanews.com/jala-news-review-reviving-the-timeless-masterpiece-of-buena-vista-social-club/",
-            "outletId": "jalanews.com",
+            "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
+            "outletId": "dailybeast",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
+            "outletId": "new-york-sun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-19T09:29:52.064Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
+            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
@@ -27762,29 +27880,8 @@
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
           },
           {
-            "url": "https://www.thedailybeast.com/review-buena-vista-social-club-musical-sounds-great-but-lacks-a-story",
-            "outletId": "dailybeast",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T12:09:29.406Z"
-          },
-          {
             "url": "https://nystagereview.com/2023/12/13/buena-vista-social-club-go-for-the-music-alone/",
             "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T12:09:29.406Z"
-          },
-          {
-            "url": "https://www.nysun.com/article/any-flaws-in-the-musical-adaptation-of-buena-vista-social-club-are-forgiven-once-the-music-kicks-in",
-            "outletId": "new-york-sun",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-19T09:29:52.064Z"
-          },
-          {
-            "url": "https://www.timeout.com/newyork/theater/buena-vista-social-club-musical-review-off-broadway",
-            "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
@@ -27840,11 +27937,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 4,
+        "liveCount": 5,
         "candidateCount": 18
       },
-      "computedAt": "2026-09-17T23:23:55.518Z",
-      "automatedExcludedListed": 0
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "buena-vista-social-club-tour-2026",
@@ -35655,12 +35751,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
-          "host": "leeds-theatre.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
           "host": "londontheatredirect.com",
           "knownOutletId": "londontheatredirect",
@@ -35946,18 +36036,27 @@
       "candidatesRejected": {
         "count": 36,
         "byReason": {
-          "non-review-host": 24,
-          "census-junk-host": 1,
-          "no-review-evidence": 5,
-          "write-path-blocked": 3,
-          "ticketing-listing": 1,
+          "non-review-host": 23,
           "aggregator-internal-nav": 1,
-          "bare-host": 1
+          "bare-host": 1,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "no-review-evidence": 5,
+          "ticketing-reseller": 1,
+          "write-path-blocked": 3
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 3,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
+          "host": "leeds-theatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 5
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical",
@@ -36017,13 +36116,6 @@
             "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical"
           },
           {
-            "outletId": "leeds-theatre.co.uk",
-            "outlet": "leeds-theatre.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh"
-          },
-          {
             "outletId": "londontheatredirect",
             "outlet": "londontheatredirect",
             "critic": "Unknown",
@@ -36076,13 +36168,6 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
-            "outletId": "leeds-theatre.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T01:24:25.910Z"
-          },
-          {
             "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
             "outletId": "londontheatredirect",
             "state": "IN_FLIGHT",
@@ -36127,9 +36212,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -37356,7 +37441,9 @@
         "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
         "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
         "https://www.londontheatre.co.uk/reviews/cirque-berserk",
-        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling"
+        "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping"
       ],
       "dirFiles": 6,
       "dirClean": 1,
@@ -37379,11 +37466,27 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-08-25",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
           "priorRun": true,
           "priorRunSource": "pending-file-date:2016-02-09",
+          "serpCensus": true
+        },
+        {
+          "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+          "host": "asiw.co.uk",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2015-02-27",
           "serpCensus": true
         }
       ],
@@ -37549,7 +37652,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -37559,25 +37662,25 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 6,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 32,
+        "count": 31,
         "byReason": {
           "non-review-host": 21,
-          "census-junk-host": 2,
-          "ticket-seller-product-page": 2,
-          "ticketing-listing": 2,
           "aggregator-internal-nav": 3,
+          "ticket-seller-product-page": 2,
+          "non-review-path": 1,
           "bare-host": 1,
-          "non-review-path": 1
+          "census-junk-host": 2,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -37599,8 +37702,22 @@
           "censusGateOn": true
         },
         {
+          "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
           "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+          "host": "asiw.co.uk",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -37653,7 +37770,7 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "clara-sex-love-and-classical-music-off-broadway-2026",
@@ -38839,9 +38956,10 @@
         "https://nystagereview.com/2026/10/19/copperfield-top-drawer-musical-take-on-the-dickens-classic/",
         "https://www.talkinbroadway.com/page/ob/10_19_26.html",
         "https://theaterlife.com/copperfield-the-new-musical/",
-        "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/bobby-conte-brings-dickens-to-life-in-copperfield-the-new-musical/1079",
-        "https://t2conline.com/copperfield-the-new-musical-a-dickens-of-a-cast-but-where-is-david/",
         "https://www.timeout.com/newyork/theater/copperfield-the-new-musical",
+        "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/bobby-conte-brings-dickens-to-life-in-copperfield-the-new-musical/1079",
+        "https://joshatthemovies.com/2026/10/22/theater-review-copperfield-the-new-musical/amp/",
+        "https://t2conline.com/copperfield-the-new-musical-a-dickens-of-a-cast-but-where-is-david/",
         "https://www.theatermania.com/news/review-new-musical-copperfield-needs-a-little-more-twist_1857542/",
         "https://news.frombroadway.com/post/review-roundup-copperfield-the-new-musical-duke-on-42nd-street",
         "https://1minutecritic.com/copperfield-musical-review/",
@@ -38859,10 +38977,6 @@
         }
       ],
       "dirOnly": [
-        {
-          "host": "joshatthemovies.com",
-          "count": 1
-        },
         {
           "host": "lightingandsoundamerica.com",
           "count": 1
@@ -38939,7 +39053,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -38995,21 +39109,22 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
-        "count": 299,
+        "count": 301,
         "byReason": {
-          "non-review-host": 34,
-          "no-review-evidence": 1,
-          "roundup-page": 7,
+          "non-review-host": 36,
+          "aggregator-internal-nav": 207,
+          "bare-host": 1,
+          "census-junk-host": 1,
           "ticketing-listing": 1,
-          "aggregator-internal-nav": 206,
           "not-http-url": 39,
           "production-database-listing": 1,
           "aggregator-section-root": 6,
-          "bare-host": 2,
+          "no-review-evidence": 1,
+          "roundup-page": 6,
           "show-listing-page": 2
         }
       },
@@ -39086,6 +39201,12 @@
             "firstSeenAt": "2026-10-21T19:01:58.243Z"
           },
           {
+            "url": "https://joshatthemovies.com/2026/10/22/theater-review-copperfield-the-new-musical/amp/",
+            "outletId": "joshatthemovies.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T05:34:17.491Z"
+          },
+          {
             "url": "https://t2conline.com/copperfield-the-new-musical-a-dickens-of-a-cast-but-where-is-david/",
             "outletId": "t2conline.com",
             "state": "live",
@@ -39132,10 +39253,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 8,
-        "candidateCount": 11
+        "liveCount": 9,
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -104177,8 +104298,9 @@
         "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
         "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html",
         "https://www.theatermania.com/news/review-lauren-yees-king-of-the-yees-an-exploration-of-what-it-means-to-be-a-yee_1857614/",
-        "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
+        "http://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
         "https://marissavivian.substack.com/p/king-of-the-yees-review",
+        "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
         "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
         "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/"
       ],
@@ -104218,10 +104340,6 @@
         },
         {
           "host": "interestedbystander.com",
-          "count": 1
-        },
-        {
-          "host": "theaterscene.net",
           "count": 1
         },
         {
@@ -104268,7 +104386,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -104308,7 +104426,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
@@ -104318,16 +104436,16 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 129,
+        "count": 126,
         "byReason": {
-          "non-review-host": 40,
-          "venue-production-page": 1,
-          "no-review-evidence": 2,
-          "roundup-page": 3,
-          "aggregator-internal-nav": 46,
+          "non-review-host": 37,
+          "aggregator-internal-nav": 47,
+          "census-junk-host": 1,
           "not-http-url": 20,
           "production-database-listing": 11,
           "aggregator-section-root": 5,
+          "no-review-evidence": 1,
+          "roundup-page": 3,
           "ticketing-reseller": 1
         }
       },
@@ -104376,8 +104494,8 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 1,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 2,
           "uncited": true
         }
       ],
@@ -104463,6 +104581,12 @@
             "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T05:34:17.491Z"
+          },
+          {
             "url": "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
             "outletId": "nottobedramatic.substack.com",
             "state": "live",
@@ -104491,10 +104615,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 9,
-        "candidateCount": 12
+        "liveCount": 10,
+        "candidateCount": 13
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -110080,9 +110204,10 @@
         "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
         "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
         "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
-        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
-        "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
         "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+        "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+        "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
       ],
       "dirFiles": 32,
@@ -110149,6 +110274,29 @@
           "reverify": false
         },
         {
+          "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--adam-nagourney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
           "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
           "host": "slippedisc.com",
           "knownOutletId": "slippedisc",
@@ -110172,9 +110320,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+          "host": "apnews.com",
+          "knownOutletId": "ap",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -110182,17 +110330,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--adam-nagourney.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+              "file": "ap--mike-silverman.json",
+              "flag": "clean",
+              "urlInDir": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongProduction"
+            "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
@@ -110233,7 +110382,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           },
           {
@@ -110243,7 +110392,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -110262,8 +110411,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 0,
             "error": null
           },
           {
@@ -110283,7 +110432,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           }
         ],
@@ -110295,15 +110444,16 @@
       "candidatesRejected": {
         "count": 120,
         "byReason": {
-          "non-review-host": 38,
-          "no-review-evidence": 3,
-          "roundup-page": 1,
+          "non-review-host": 35,
           "aggregator-internal-nav": 45,
+          "census-junk-host": 1,
           "not-http-url": 20,
           "production-database-listing": 6,
           "aggregator-section-root": 5,
+          "no-review-evidence": 1,
+          "roundup-page": 4,
           "show-listing-page": 1,
-          "ticketing-reseller": 1
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
@@ -110327,6 +110477,13 @@
             "url": "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera"
           },
           {
+            "outletId": "nytimes",
+            "outlet": "nytimes",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+          },
+          {
             "outletId": "slippedisc",
             "outlet": "slippedisc",
             "critic": "Unknown",
@@ -110334,11 +110491,11 @@
             "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/"
           },
           {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
+            "outletId": "ap",
+            "outlet": "ap",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html"
+            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661"
           }
         ],
         "suppressedMissing": [
@@ -110420,6 +110577,13 @@
             "firstSeenAt": "2026-10-19T04:06:17.625Z"
           },
           {
+            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
+            "outletId": "nytimes",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-21T23:22:16.944Z"
+          },
+          {
             "url": "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
             "outletId": "slippedisc",
             "state": "GAP",
@@ -110427,11 +110591,11 @@
             "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
-            "url": "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
-            "outletId": "nytimes",
+            "url": "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
+            "outletId": "ap",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-21T23:22:16.944Z"
+            "firstSeenAt": "2026-10-25T05:34:17.491Z"
           },
           {
             "url": "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met",
@@ -110443,9 +110607,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 8,
-        "candidateCount": 13
+        "candidateCount": 14
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -113615,21 +113779,14 @@
       "aggregatorListedUrls": [
         "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
         "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
-        "https://www.littleenginetheater.com/machine-learning",
-        "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
         "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
-        "https://nyra.nyc/articles/machine-learning"
+        "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
+        "https://www.littleenginetheater.com/machine-learning"
       ],
       "dirFiles": 5,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
-        {
-          "url": "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
-          "host": "researchgate.net",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
           "host": "mlreview.com",
@@ -113639,11 +113796,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://nyra.nyc/articles/machine-learning",
-          "host": "nyra.nyc",
+          "url": "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
+          "host": "researchgate.net",
           "knownOutletId": null,
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2024-04-18",
           "serpCensus": true
         }
       ],
@@ -113716,7 +113871,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 5,
             "accepted": 0,
             "error": null
           },
@@ -113737,7 +113892,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -113747,21 +113902,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 37,
+        "count": 27,
         "byReason": {
-          "non-review-host": 34,
+          "non-review-host": 22,
+          "aggregator-internal-nav": 1,
+          "no-review-evidence": 1,
           "venue-production-page": 2,
-          "no-review-evidence": 1
+          "ugc-platform": 1
         }
       },
       "dedupedVariants": [],
@@ -113771,13 +113928,6 @@
         {
           "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
           "host": "mlreview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nyra.nyc/articles/machine-learning",
-          "host": "nyra.nyc",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -113797,7 +113947,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=researchgate.net): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=researchgate.net): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBe"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=researchgate.net): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=researchgate.net): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright Dat"
         }
       ],
       "ingestSkippedByCap": [],
@@ -113852,7 +114002,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -140317,13 +140467,25 @@
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
         "https://playbill.com/article/reviews-heres-what-critics-are-saying-about-oh-mary",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-        "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-at-the-Lucille-Lortel-Theatre-20240208"
+        "https://playbill.com/article/what-do-london-reviews-think-of-oh-mary-in-the-west-end",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway"
       ],
       "aggregatorListedUrls": [
+        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
+        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
+        "https://thefrontrowcenter.com/2024/02/oh-mary/",
+        "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
+        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
+        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
         "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
         "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
         "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
@@ -140347,20 +140509,6 @@
         "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
         "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
         "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
-        "https://cititour.com/NYC_News/REVIEW-OH-MARY-IS-OH-SO-HILARIOUS/8065",
-        "https://culturesauce.com/2024/02/08/cole-escola-oh-mary-off-broadway-review/",
-        "https://thefrontrowcenter.com/2024/02/oh-mary/",
-        "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
-        "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-        "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-        "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-        "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-        "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-        "https://www.theatermania.com/news/review-cole-escola-drags-mary-todd-lincoln-in-oh-mary_1729241/",
-        "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-        "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
-        "https://www.queerty.com/in-oh-mary-cole-escola-conrad-ricamora-deliver-a-raucous-romp-through-history-20240208",
-        "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
         "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
         "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
         "https://cititour.com/NYC_News/Review-Oh-Mary-Is-Oh-Mazing/8508",
@@ -140391,9 +140539,44 @@
         "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/"
       ],
       "dirFiles": 47,
-      "dirClean": 6,
-      "inReviewsJson": 6,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
+        {
+          "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+          "host": "nypost.com",
+          "knownOutletId": "nypost"
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes"
+        },
+        {
+          "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap"
+        },
         {
           "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
           "host": "allthatdazzles.co.uk",
@@ -140405,6 +140588,13 @@
           "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
           "host": "broadwayworld.com",
           "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
         },
@@ -140486,6 +140676,13 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
           "host": "readaboutstuff.com",
           "knownOutletId": "readaboutstuff",
@@ -140556,6 +140753,13 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
           "host": "nysun.com",
           "knownOutletId": "new-york-sun",
@@ -140593,6 +140797,10 @@
       ],
       "dirOnly": [
         {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
           "host": "theaterscene.net",
           "count": 1
         },
@@ -140602,44 +140810,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--adrian-horton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html?searchResultPosition=1"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
           "host": "vulture.com",
@@ -140655,58 +140825,12 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html"
             }
-          ]
-        },
-        {
-          "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nypost--johnny-oleksinski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--bob-verini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/"
-            }
-          ]
-        },
-        {
-          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--bob-verini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/"
-            }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
@@ -140723,75 +140847,12 @@
               "flag": "clean",
               "urlInDir": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola"
             }
-          ]
-        },
-        {
-          "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--jesse-green.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html?searchResultPosition=1"
-            }
-          ]
-        },
-        {
-          "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--nolan-boggess.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review"
-            }
-          ]
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--adam-feldman.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola"
-            }
-          ]
-        },
-        {
-          "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/"
-            }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "reverify": true
         },
         {
           "url": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/",
@@ -140809,8 +140870,13 @@
               "urlInDir": "https://www.chicagotribune.com/2024/07/11/review-oh-mary-on-broadway-is-about-an-unhinged-hilarious-mary-todd-lincoln/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly",
@@ -140828,8 +140894,13 @@
               "urlInDir": "https://www.thedailybeast.com/oh-mary-on-broadway-history-made-brilliantly-hilariously-silly"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/",
@@ -140847,8 +140918,13 @@
               "urlInDir": "https://deadline.com/2024/07/oh-mary-broadway-review-cole-escola-1236005071/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article",
@@ -140866,8 +140942,13 @@
               "urlInDir": "https://www.digitaljournal.com/entertainment/review-cole-escola-rewrites-history-as-mary-todd-lincoln-in-oh-mary-on-broadway/article"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908",
@@ -140885,8 +140966,13 @@
               "urlInDir": "https://ew.com/oh-mary-review-cole-escola-american-farce-is-funniest-play-on-broadway-8676908"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway",
@@ -140904,8 +140990,13 @@
               "urlInDir": "https://www.theguardian.com/stage/article/2024/jul/11/oh-mary-review-cole-escola-broadway"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/",
@@ -140923,8 +141014,13 @@
               "urlInDir": "https://www.hollywoodreporter.com/lifestyle/arts/oh-mary-theater-review-cole-escola-broadway-1235945864/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html",
@@ -140942,8 +141038,13 @@
               "urlInDir": "https://www.vulture.com/article/theater-review-oh-mary-cole-escola-broadway-transfer.html"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/",
@@ -140961,8 +141062,13 @@
               "urlInDir": "https://nypost.com/2024/07/11/entertainment/oh-mary-review-get-to-the-funniest-show-on-broadway/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/",
@@ -140980,27 +141086,13 @@
               "urlInDir": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/"
             }
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--bob-verini.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2024/07/11/oh-mary-lincoln-drinkin-and-todd/"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola",
@@ -141018,8 +141110,13 @@
               "urlInDir": "https://www.newyorktheatreguide.com/reviews/oh-mary-broadway-review-cole-escola"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html",
@@ -141037,8 +141134,13 @@
               "urlInDir": "https://www.nytimes.com/2024/07/11/theater/oh-mary-review-cole-escola.html?searchResultPosition=1"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/",
@@ -141056,8 +141158,13 @@
               "urlInDir": "https://observer.com/2024/07/oh-mary-is-a-splendidly-nasty-farce-you-will-not-want-to-miss/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review",
@@ -141075,8 +141182,13 @@
               "urlInDir": "https://www.theatrely.com/post/cole-escolas-oh-mary-on-broadway-is-a-stupid-masterpiece-review"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola",
@@ -141094,8 +141206,13 @@
               "urlInDir": "https://www.timeout.com/newyork/theater/oh-mary-broadway-review-cole-escola"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1",
@@ -141113,8 +141230,13 @@
               "urlInDir": "https://www.wsj.com/articles/oh-mary-review-cole-escola-mary-todd-lincoln-broadway-9a0803c1"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/",
@@ -141132,8 +141254,13 @@
               "urlInDir": "https://www.thewrap.com/oh-mary-broadway-review-cole-escola/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -141143,12 +141270,14 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 905,
+        "count": 344,
         "byReason": {
-          "aggregator-internal-nav": 667,
-          "not-http-url": 124,
-          "aggregator-section-root": 20,
-          "non-review-host": 94
+          "non-review-host": 61,
+          "aggregator-internal-nav": 218,
+          "bare-host": 3,
+          "not-http-url": 17,
+          "production-database-listing": 33,
+          "aggregator-section-root": 12
         }
       },
       "dedupedVariants": [],
@@ -141160,194 +141289,321 @@
         {
           "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cole-escolas-oh-mary-on-broadway",
           "publishDate": "2024-07-11"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-MARY-Opens-On-Broadway-20240711",
-          "publishDate": "2024-07-11"
         }
       ],
+      "automatedExcludedListed": 2,
+      "unextractable": [],
       "weIngestBlocked": [
         {
           "url": "https://www.allthatdazzles.co.uk/post/review-oh-mary-trafalgar-theatre",
           "host": "allthatdazzles.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.broadwayworld.com/westend/article/Review-OH-MARY-Starring-Mason-Alexander-Park-20251219",
           "host": "broadwayworld.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/dec/19/oh-mary-review-mason-alexander-park-giles-terera-trafalgar-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://liamodell.com/2025/12/19/oh-mary-review-trafalgar-theatre-london-mason-alexander-park-mary-todd-lincoln-abraham-cole-escola-sam-pinkleton-dino-fetscher-kate-odonnell-about/",
           "host": "liamodell.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.huffingtonpost.co.uk/entry/oh-mary-west-end-review-play-mason-alexander-park-cole-escola_uk_69442827e4b0bafbdede7ce1",
           "host": "huffingtonpost.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.the-independent.com/arts-entertainment/theatre-dance/reviews/oh-mary-trafalgar-theatre-review-b2887170.html",
           "host": "the-independent.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.jonathanbaz.com/2025/12/oh-mary-review.html",
           "host": "jonathanbaz.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.lbc.co.uk/article/oh-mary-review-theatre-5HjdPg5_2/",
           "host": "lbc.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://londonist.com/london/on-stage/oh-mary-west-end-review",
           "host": "londonist.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.londontheatre1.com/reviews/oh-mary-trafalgar-theatre-review/",
           "host": "londontheatre1.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/oh-mary-review-trafalgar-theatre",
           "host": "londontheatre.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.londontheatredirect.com/news/oh-mary-review",
           "host": "londontheatredirect.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://loureviews.blog/2025/12/19/theatre-review-oh-mary-trafalgar-theatre/amp/",
           "host": "loureviews.blog",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://musicaltheatrereview.com/oh-mary-trafalgar-theatre/",
           "host": "musicaltheatrereview.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/12/19/arts/oh-mary-trafalgar-theater-london.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://readaboutstuff.com/2025/12/19/oh-mary-trafalgar-theatre-london/",
           "host": "readaboutstuff.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.thestage.co.uk/reviews/oh-mary-review-trafalgar-theatre-london",
           "host": "thestage.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/oh-mary-trafalgar-theatre-review/",
           "host": "telegraph.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
           "host": "theatreandtonic.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://theatreweekly.com/review-oh-mary-at-trafalgar-theatre-london/",
           "host": "theatreweekly.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.theupcoming.co.uk/2025/12/19/oh-mary-at-trafalgar-theatre-theatre-review/",
           "host": "theupcoming.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.westendbestfriend.co.uk/news/review-oh-mary-trafalgar-theatre",
           "host": "westendbestfriend.co.uk",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.whatsonstage.com/news/oh-mary-review-there-is-nothing-else-like-it-in-the-west-end_1707130/",
           "host": "whatsonstage.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.broadwaynews.com/the-broadway-review-in-oh-mary-cole-escola-is-a-tour-de-farce/",
           "host": "broadwaynews.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nydailynews.com/2024/07/11/broadway-review-mary-todd-lincoln-farce-oh-mary-is-hilarious-take-on-controversial-first-lady/",
           "host": "nydailynews.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2024/07/11/oh-mary-dont-ask-for-subtle-comedy/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nysun.com/article/new-play-on-broadway-features-mary-todd-lincoln-in-a-delirious-nearly-80-minute-fit-of-pique",
           "host": "nysun.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://newyorktheater.me/2024/07/11/oh-mary-on-broadway/",
           "host": "newyorktheater.me",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.nj.com/entertainment/2024/07/oh-mary-broadway-review-cole-escolas-historical-farce-is-pure-bananas-and-close-to-perfect.html",
           "host": "nj.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://www.usatoday.com/story/entertainment/music/2024/07/11/oh-mary-broadway-review/74326625007/",
           "host": "usatoday.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         },
         {
           "url": "https://variety.com/2024/legit/reviews/oh-mary-review-broadway-cole-escola-1236067236/",
           "host": "variety.com",
           "priorRun": true,
-          "reason": "prior-run"
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
+      "ingestResults": [
+        {
+          "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
+          "host": "nypost.com",
+          "outletId": "nypost",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-cole-escola-as-the-ludicrously-marvelous-mrs-lincoln/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
+          "host": "theatrely.com",
+          "outletId": "theatrely",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/oh-mary-review-comedy-cole-escola-mary-todd-lincoln",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        },
+        {
+          "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/",
+          "host": "thewrap.com",
+          "outletId": "thewrap"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "vulture",
-            "outlet": "vulture",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html"
-          },
           {
             "outletId": "nypost",
             "outlet": "nypost",
@@ -141368,13 +141624,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/"
-          },
-          {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola"
           },
           {
             "outletId": "nytimes",
@@ -141403,6 +141652,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thewrap.com/oh-mary-off-broadway-review-cole-escola/"
+          },
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola"
           }
         ],
         "suppressedMissing": [],
@@ -141456,13 +141719,6 @@
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
           },
           {
-            "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
-            "outletId": "vulture",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-19T09:29:52.064Z"
-          },
-          {
             "url": "https://nypost.com/2024/02/08/entertainment/oh-mary-review-wild-west-wing-comedy-about-mary-todd-lincoln-is-funniest-show-in-town/",
             "outletId": "nypost",
             "state": "GAP",
@@ -141479,13 +141735,6 @@
           {
             "url": "https://nystagereview.com/2024/02/08/oh-mary-first-lady-mary-todd-lincoln-on-a-sometimes-funny-rampage/",
             "outletId": "nysr",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T12:09:29.406Z"
-          },
-          {
-            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
-            "outletId": "nytg",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
@@ -141517,14 +141766,27 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-08-03T12:09:29.406Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-cole-escola-oh-mary-lincoln.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-19T09:29:52.064Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/oh-mary-off-broadway-review-cole-escola",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-08-03T12:09:29.406Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 5,
         "candidateCount": 13
       },
-      "computedAt": "2026-09-17T23:23:55.518Z",
-      "automatedExcludedListed": 0
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "oh-mary-tour-2026",
@@ -151963,79 +152225,17 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Phyl\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Phyl\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Phyl\" Hamilton review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Phyl Theatre Row review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Phyl Theatre Row review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Phyl Theatre Row review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 2,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 316,
+        "count": 284,
         "byReason": {
+          "non-review-host": 15,
+          "aggregator-internal-nav": 208,
           "not-http-url": 52,
-          "non-review-host": 34,
-          "aggregator-internal-nav": 210,
           "aggregator-section-root": 6,
-          "roundup-page": 6,
-          "venue-production-page": 2,
-          "census-junk-host": 1,
-          "review-index-page": 1,
-          "no-review-evidence": 2,
-          "bare-host": 2
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -152075,7 +152275,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-25T00:00:48.604Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -187839,6 +188039,560 @@
       "automatedExcludedListed": 0
     },
     {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london",
+        "https://playbill.com/article/read-the-reviews-for-richard-ii-at-londons-bridge-theatre-starring-jonathan-bailey",
+        "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+        "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+        "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+        "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+        "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+        "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-II-review-bridge-theatre-london-tickets-wicked-bridgerton",
+        "https://www.theguardian.com/stage/2025/feb/18/richard-ii-review-bridgerton-jonathan-bailey-bridge-theatre-london",
+        "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+        "https://www.nytimes.com/2025/02/18/theater/richard-ii-jonathan-bailey-bridge-theatre-london.html",
+        "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+        "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+        "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+        "http://www.nytimes.com/2015/11/13/theater/review-a-view-from-the-bridge-bears-witness-to-the-pain-of-fate.html",
+        "http://abcnews.go.com/Entertainment/wireStory/review-view-bridge-haunting-impassioned-35168377",
+        "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
+        "http://www.nbcnewyork.com/entertainment/the-scene/Review-VanHove-View-From-Bridge-346070652.html",
+        "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-self-regard-1447378200",
+        "http://www.amny.com/entertainment/a-view-from-the-bridge-review-mark-stong-in-ivo-van-hove-s-divisive-revival-1.11117578",
+        "http://www.nj.com/entertainment/index.ssf/2015/11/a_view_from_the_bridge_review_lincoln_center.html",
+        "http://www.chicagotribune.com/entertainment/theater/broadway/sc-view-bridge-broadway-review-ent-1112-20151112-column.html",
+        "http://deadline.com/2015/11/a-view-from-the-bridge-broadway-review-1201620338/",
+        "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2015/11/12/an-astonishing-view-from-the-bridge-on-broadway/",
+        "http://www.thewrap.com/view-from-bridge-broadway-review-ivo-van-hove-strips-arthur-miller/",
+        "http://www.nydailynews.com/entertainment/theater-arts/arthur-miller-view-bridge-revival-hit-article-1.2432715",
+        "http://www.vulture.com/2015/11/theater-review-a-view-from-the-bridge.html",
+        "http://variety.com/2015/legit/reviews/a-view-from-the-bridge-review-broadway-mark-strong-1201639192/",
+        "https://www.theguardian.com/stage/2015/nov/12/view-from-the-bridge-review-arthur-miller-reinvented",
+        "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+        "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+        "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+        "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
+        "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-II-review-bridge-theatre-london-tickets-wicked-bridgerton",
+          "host": "express.co.uk",
+          "knownOutletId": "sunday-express",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/feb/18/richard-ii-review-bridgerton-jonathan-bailey-bridge-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nytimes.com/2025/02/18/theater/richard-ii-jonathan-bailey-bridge-theatre-london.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2015/11/13/theater/review-a-view-from-the-bridge-bears-witness-to-the-pain-of-fate.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-view-bridge-haunting-impassioned-35168377",
+          "host": "go.com",
+          "knownOutletId": "abc-news",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-VanHove-View-From-Bridge-346070652.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-self-regard-1447378200",
+          "host": "wsj.com",
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-view-from-the-bridge-review-mark-stong-in-ivo-van-hove-s-divisive-revival-1.11117578",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2015/11/a_view_from_the_bridge_review_lincoln_center.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-view-bridge-broadway-review-ent-1112-20151112-column.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2015/11/a-view-from-the-bridge-broadway-review-1201620338/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2015/11/12/an-astonishing-view-from-the-bridge-on-broadway/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/view-from-bridge-broadway-review-ivo-van-hove-strips-arthur-miller/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/arthur-miller-view-bridge-revival-hit-article-1.2432715",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.vulture.com/2015/11/theater-review-a-view-from-the-bridge.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2015/legit/reviews/a-view-from-the-bridge-review-broadway-mark-strong-1201639192/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2015/nov/12/view-from-the-bridge-review-arthur-miller-reinvented",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 821,
+        "byReason": {
+          "non-review-host": 70,
+          "aggregator-internal-nav": 583,
+          "not-http-url": 131,
+          "production-database-listing": 20,
+          "aggregator-section-root": 16,
+          "write-path-blocked": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-caryl-churchills-a-number-at-the-bridge-theatre-in-london",
+          "publishDate": "2020-02-20"
+        },
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-richard-ii-at-londons-bridge-theatre-starring-jonathan-bailey",
+          "publishDate": "2025-02-19"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-A-VIEW-FROM-THE-BRIDGE-Opens-on-Broadway-Updating-LIVE-20151112",
+          "publishDate": "2015-11-12"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Nicholas-Hytners-Immersive-GUYS-AND-DOLLS-Opens-At-The-Bridge-Theatre-20230314",
+          "publishDate": "2023-03-14"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.theguardian.com/stage/2020/feb/19/a-number-review-caryl-churchill-roger-allam-bridge-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/a-number-bridge-theatre-review-roger-allam-colin-morgan-caryl-churchill-a9345706.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-a-number-at-the-bridge-theatre",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/number-bridge-theatre-review-superb-revival-caryl-churchills/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/2020/a-number-roger-allam-colin-morgan-review-at-bridge-theatre-london/",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.express.co.uk/entertainment/theatre/2016337/jonathan-bailey-richard-II-review-bridge-theatre-london-tickets-wicked-bridgerton",
+          "host": "express.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/feb/18/richard-ii-review-bridgerton-jonathan-bailey-bridge-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/richard-ii-review-jonathan-bailey-is-a-magnetic-king-bridge-theatre-nicholas-hytner",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nytimes.com/2025/02/18/theater/richard-ii-jonathan-bailey-bridge-theatre-london.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/richard-ii-bridge-theatre-review-jonathan-bailey-b1211568.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/richard-ii-review-bridge-theatre-london-nicholas-hytner-jonathan-bailey",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/richard-ii-at-bridge-theatre-review-jonathan-bailey-is-a-vicious-monarch_1665507/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nytimes.com/2015/11/13/theater/review-a-view-from-the-bridge-bears-witness-to-the-pain-of-fate.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-view-bridge-haunting-impassioned-35168377",
+          "host": "go.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.timeout.com/newyork/theater/a-view-from-the-bridge",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-VanHove-View-From-Bridge-346070652.html",
+          "host": "nbcnewyork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.wsj.com/articles/a-view-from-the-bridge-review-troubled-waters-of-self-regard-1447378200",
+          "host": "wsj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.amny.com/entertainment/a-view-from-the-bridge-review-mark-stong-in-ivo-van-hove-s-divisive-revival-1.11117578",
+          "host": "amny.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2015/11/a_view_from_the_bridge_review_lincoln_center.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-view-bridge-broadway-review-ent-1112-20151112-column.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2015/11/a-view-from-the-bridge-broadway-review-1201620338/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2015/11/12/an-astonishing-view-from-the-bridge-on-broadway/",
+          "host": "washingtonpost.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/view-from-bridge-broadway-review-ivo-van-hove-strips-arthur-miller/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/arthur-miller-view-bridge-revival-hit-article-1.2432715",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.vulture.com/2015/11/theater-review-a-view-from-the-bridge.html",
+          "host": "vulture.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://variety.com/2015/legit/reviews/a-view-from-the-bridge-review-broadway-mark-strong-1201639192/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2015/nov/12/view-from-the-bridge-review-arthur-miller-reinvented",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/mar/15/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2023/legit/reviews/guys-and-dolls-review-london-nicholas-hytner-bridge-theatre-1235553744/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/guys-dolls-at-bridge-theatre-review-marisha-wallace-daniel-mays-nicholas-hytner-b1067134.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/long-reviews/guys-and-dolls-review-bridge-theatre-london-nicholas-hytner-daniel-mays-marisha-wallace-arlene-phillips",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/london-theatre/news/guys-dolls-bridge-revival-five-star-review_58533.html",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-25T05:34:17.491Z"
+    },
+    {
       "showId": "the-car-man-west-end-2026",
       "title": "The Car Man",
       "openingDate": "2026-07-28",
@@ -190660,7 +191414,9 @@
         "https://www.wsj.com/articles/the-curious-case-of-benjamin-button-review-a-warmly-imagined-musical-c5224f3a",
         "https://newyorktheater.me/2026/10/21/the-curious-case-of-benjamin-button-review/",
         "https://culturesauce.com/curious-case-of-benjamin-button-musical-off-broadway-review/",
+        "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater",
         "https://joshatthemovies.com/2026/10/21/theater-review-the-curious-case-of-benjamin-button/",
+        "https://splashmags.com/2026/10/theater-review-the-curious-case-of-benjamin-button-makes-its-north-american-premiere-at-the-public/",
         "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-public-theater/",
         "https://frontmezzjunkies.com/2026/08/01/the-curious-case-of-benjamin-button-returns-to-the-stage-this-time-just-a-little-closer-to-home/",
         "https://www.timeout.com/newyork/theater/the-curious-case-of-benjamin-button"
@@ -190668,7 +191424,14 @@
       "dirFiles": 50,
       "dirClean": 22,
       "inReviewsJson": 22,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://splashmags.com/2026/10/theater-review-the-curious-case-of-benjamin-button-makes-its-north-american-premiere-at-the-public/",
+          "host": "splashmags.com",
+          "knownOutletId": "splash-magazines",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "thefrontrowcenter.com",
@@ -190712,6 +191475,29 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater",
+          "host": "frombroadway.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frombroadway--hayley-levitt.json",
+              "flag": "roundup",
+              "urlInDir": "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isRoundupArticle"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://frontmezzjunkies.com/2026/08/01/the-curious-case-of-benjamin-button-returns-to-the-stage-this-time-just-a-little-closer-to-home/",
           "host": "frontmezzjunkies.com",
@@ -190773,8 +191559,8 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 9,
-            "accepted": 4,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -190784,7 +191570,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 3,
             "error": null
           },
           {
@@ -190804,7 +191590,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -190820,27 +191606,47 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 7,
+        "resultCount": 8,
         "error": null
       },
       "candidatesRejected": {
-        "count": 419,
+        "count": 422,
         "byReason": {
-          "non-review-host": 55,
-          "venue-production-page": 1,
-          "no-review-evidence": 1,
-          "roundup-page": 8,
+          "non-review-host": 54,
           "aggregator-internal-nav": 254,
+          "non-review-path": 1,
+          "census-junk-host": 3,
           "not-http-url": 77,
           "production-database-listing": 9,
           "aggregator-section-root": 10,
+          "no-review-evidence": 4,
+          "roundup-page": 6,
           "show-listing-page": 1,
-          "ticketing-reseller": 3
+          "ticketing-reseller": 2,
+          "venue-production-page": 1
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 2,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://splashmags.com/2026/10/theater-review-the-curious-case-of-benjamin-button-makes-its-north-american-premiere-at-the-public/",
+          "host": "splashmags.com",
+          "outletId": "splash-magazines",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "recoveryResults": [
         {
           "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-public-theater/attachment/benjaminbutton_0174r2r/",
@@ -190850,14 +191656,28 @@
           "skipped": false,
           "provisional": false,
           "starFallback": false,
-          "reason": "Fetch failed: All scraping methods failed",
-          "recoveryCount": 2,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
+          "recoveryCount": 3,
           "uncited": true
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "splash-magazines",
+            "outlet": "splash-magazines",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://splashmags.com/2026/10/theater-review-the-curious-case-of-benjamin-button-makes-its-north-american-premiere-at-the-public/"
+          },
+          {
+            "outletId": "frombroadway.com",
+            "outlet": "frombroadway.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater"
+          },
           {
             "outletId": "frontmezzjunkies",
             "outlet": "frontmezzjunkies",
@@ -190948,6 +191768,20 @@
             "firstSeenAt": "2026-10-24T21:30:13.917Z"
           },
           {
+            "url": "https://splashmags.com/2026/10/theater-review-the-curious-case-of-benjamin-button-makes-its-north-american-premiere-at-the-public/",
+            "outletId": "splash-magazines",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T05:34:17.491Z"
+          },
+          {
+            "url": "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater",
+            "outletId": "frombroadway.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T05:34:17.491Z"
+          },
+          {
             "url": "https://frontmezzjunkies.com/2026/08/01/the-curious-case-of-benjamin-button-returns-to-the-stage-this-time-just-a-little-closer-to-home/",
             "outletId": "frontmezzjunkies",
             "state": "GAP",
@@ -190964,9 +191798,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 11,
-        "candidateCount": 13
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -200297,10 +201131,12 @@
       "aggregatorListedUrls": [
         "https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F",
         "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
-        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
         "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
-        "https://www.allmusic.com/album/the-kick-inside-mw0000189382"
+        "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
+        "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
+        "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/",
+        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside"
       ],
       "dirFiles": 4,
       "dirClean": 2,
@@ -200318,6 +201154,14 @@
           "knownOutletId": null,
           "priorRun": true,
           "priorRunSource": "pending-file-date:1978-02-17",
+          "serpCensus": true
+        },
+        {
+          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
+          "host": "pitchfork.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2019-01-19",
           "serpCensus": true
         }
       ],
@@ -200371,7 +201215,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -200401,23 +201245,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 31,
         "byReason": {
           "non-review-host": 22,
+          "aggregator-internal-nav": 3,
+          "bare-host": 1,
           "census-junk-host": 1,
-          "no-review-evidence": 4,
-          "write-path-blocked": 1,
-          "aggregator-internal-nav": 2
+          "no-review-evidence": 4
         }
       },
       "dedupedVariants": [],
@@ -200428,12 +201272,26 @@
           "host": "getcuebox.com",
           "knownOutletId": null,
           "zeroCharAttempts": 3
+        },
+        {
+          "url": "https://musicboard.app/erickstarr/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 3
         }
       ],
       "weIngestBlocked": [
         {
           "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
           "host": "allmusic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
+          "host": "pitchfork.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -200508,7 +201366,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-24T21:30:13.917Z"
+      "computedAt": "2026-10-25T05:34:17.491Z"
     },
     {
       "showId": "the-last-five-years-2025",
@@ -250729,26 +251587,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-25T03:18:28.177Z",
+    "at": "2026-10-25T05:34:17.491Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "high-school-musical-off-west-end-2026",
-      "murder-cathedral-off-west-end-2026"
+      "oh-mary-off-broadway-2024",
+      "buena-vista-social-club-off-broadway-2023"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "in-the-heights-off-broadway-2026"
+      "the-bridge-off-west-end-2026"
     ],
-    "neverAuditedDueAtStart": 268,
+    "neverAuditedDueAtStart": 267,
     "oldestDueRowAtStart": {
       "showId": "oh-mary-off-broadway-2024",
       "computedAt": "2026-09-17T23:23:55.518Z",
-      "ageHours": 891.6
+      "ageHours": 893.9
     },
     "oldestDueRowAfterRun": {
-      "showId": "oh-mary-off-broadway-2024",
-      "computedAt": "2026-09-17T23:23:55.518Z",
-      "ageHours": 891.9
+      "showId": "la-traviata-off-broadway-2026",
+      "computedAt": "2026-09-18T01:46:03.483Z",
+      "ageHours": 891.8
     }
   }
 }
