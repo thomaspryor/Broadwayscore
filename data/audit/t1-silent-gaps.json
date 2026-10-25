@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T18:42:57.119Z",
+  "generatedAt": "2026-10-25T19:50:22.629Z",
   "windowDays": 45,
   "showsScanned": 203,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 29.358701944444444,
+      "fileAgeHours": 30.482469444444444,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 15.406544444444444,
+      "nonTerminalAgeHours": 16.5302975,
       "needsManualRecovery": false
     },
     {
@@ -39,34 +39,10 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 794.0399983333333,
+      "fileAgeHours": 795.1637616666667,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 64.42937027777778,
+      "nonTerminalAgeHours": 65.55312333333333,
       "needsManualRecovery": true
-    },
-    {
-      "showId": "the-wiz-tour-2026",
-      "title": "The Wiz",
-      "openingDate": "2026-09-26",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "outletId": "nyt-theater",
-      "tier": 2,
-      "type": "empty-body",
-      "recoverable": true,
-      "url": "https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/",
-      "recovery": {
-        "attempted": true,
-        "ok": true,
-        "reason": null
-      },
-      "recoveryCount": 0,
-      "forumLinkRecoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-wiz-tour-2026 --url=https://newyorktheater.me/2024/04/17/the-wiz-broadway-review/ --outlet=nyt-theater --critic=\"Jonathan Mandell\"   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-25T17:59:25.693Z",
-      "fileAgeHours": 0.5894844444444445,
-      "gapSeenAt": "2026-10-25T18:34:48.162Z",
-      "nonTerminalAgeHours": 0,
-      "needsManualRecovery": false
     }
   ],
   "contradictions": []

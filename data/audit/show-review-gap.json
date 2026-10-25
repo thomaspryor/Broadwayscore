@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-25T18:42:52.709Z",
+  "generatedAt": "2026-10-25T19:50:18.268Z",
   "windowDays": 21,
-  "targets": 1,
-  "auditedThisRun": 1,
-  "carriedForward": 815,
+  "targets": 12,
+  "auditedThisRun": 12,
+  "carriedForward": 816,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 404,
-    "missingCurrentRun": 570,
+    "withGap": 410,
+    "missingCurrentRun": 583,
     "totalCitedNoUrl": 2,
     "totalFlaggedMisses": 701,
-    "totalRecoverable": 1,
-    "totalRecovered": 14,
+    "totalRecoverable": 3,
+    "totalRecovered": 16,
     "humanExcluded": 4,
-    "automatedExcluded": 363,
+    "automatedExcluded": 365,
     "automatedExcludedListed": 302,
-    "priorProductionCitations": 5664
+    "priorProductionCitations": 5674
   },
   "results": [
     {
@@ -13766,6 +13766,213 @@
       "computedAt": "2026-09-19T21:19:05.506Z"
     },
     {
+      "showId": "archduke-off-broadway-2025",
+      "title": "Archduke",
+      "openingDate": "2025-11-12",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-archduke-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Rajiv-Josephs-ARCHDUKE-Opens-Off-Broadway-20251113"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/",
+        "https://culturesauce.com/2025/11/12/archduke-off-broadway-review/",
+        "https://nystagereview.com/2025/11/12/archduke-murder-he-says/",
+        "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html",
+        "https://newyorktheater.me/2025/11/12/archduke-review/",
+        "https://www.newyorktheatreguide.com/reviews/archduke-off-broadway-review",
+        "https://www.theatermania.com/news/review-archduke-rajiv-josephs-historical-comedy-about-hungry-young-assassins_1811647/",
+        "https://therecs.co.uk/archduke/",
+        "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V",
+        "https://www.talkinbroadway.com/page/ob/11_12_25.html",
+        "https://www.theaterscene.net/plays/offbway-plays/archduke/victor-gluck/"
+      ],
+      "dirFiles": 16,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [
+        {
+          "url": "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic"
+        },
+        {
+          "url": "https://therecs.co.uk/archduke/",
+          "host": "therecs.co.uk",
+          "knownOutletId": "the-recs"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 414,
+        "byReason": {
+          "not-http-url": 61,
+          "non-review-host": 38,
+          "aggregator-internal-nav": 296,
+          "aggregator-section-root": 8,
+          "production-database-listing": 11
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://therecs.co.uk/archduke/",
+          "host": "therecs.co.uk",
+          "outletId": "the-recs",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "one-minute-critic",
+            "outlet": "one-minute-critic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/"
+          },
+          {
+            "outletId": "the-recs",
+            "outlet": "the-recs",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://therecs.co.uk/archduke/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/2025/11/12/archduke-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/12/archduke-murder-he-says/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/11/12/archduke-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/archduke-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-archduke-rajiv-josephs-historical-comedy-about-hungry-young-assassins_1811647/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_12_25.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/archduke/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/",
+            "outletId": "one-minute-critic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://therecs.co.uk/archduke/",
+            "outletId": "the-recs",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 12
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
+    },
+    {
       "showId": "archduke-west-end-2026",
       "title": "Archduke",
       "openingDate": "2026-06-26",
@@ -17501,6 +17708,287 @@
       },
       "computedAt": "2026-09-25T08:29:36.594Z",
       "automatedExcludedListed": 0
+    },
+    {
+      "showId": "becoming-eve-off-broadway-2025",
+      "title": "Becoming Eve",
+      "openingDate": "2025-04-07",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-the-critics-think-of-becoming-eve-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-BECOMING-EVE-Opens-at-NYTW-20250408"
+      ],
+      "aggregatorListedUrls": [
+        "https://thefrontrowcenter.com/2025/04/becoming-eve/",
+        "https://nystagereview.com/2025/04/09/becoming-eve-transcendent-trans-father-son-father-daughter-play/",
+        "https://www.newyorktheatreguide.com/reviews/becoming-eve-off-broadway-review-tommy-dorfman",
+        "https://www.nytimes.com/2025/04/11/theater/review-becoming-eve.html",
+        "https://www.theatermania.com/news/review-a-transgender-woman-struggles-to-emerge-from-her-hasidic-community-in-becoming-eve_1769850/",
+        "https://www.thewrap.com/becoming-eve-off-broadway-review-richard-schiff/",
+        "https://www.talkinbroadway.com/page/ob/04_07_25b.html",
+        "https://twi-ny.com/2025/04/24/becoming-eve-abrons-arts-center/",
+        "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html",
+        "https://pagesonstages.com/2025/04/07/becoming-eve/"
+      ],
+      "dirFiles": 6,
+      "dirClean": 5,
+      "inReviewsJson": 5,
+      "missing": [
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/04_07_25b.html",
+          "host": "talkinbroadway.com",
+          "knownOutletId": "talkinbroadway"
+        },
+        {
+          "url": "https://twi-ny.com/2025/04/24/becoming-eve-abrons-arts-center/",
+          "host": "twi-ny.com",
+          "knownOutletId": "this-week-in-new-york"
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html",
+          "host": "interestedbystander.com",
+          "knownOutletId": "the-interested-bystander"
+        },
+        {
+          "url": "https://pagesonstages.com/2025/04/07/becoming-eve/",
+          "host": "pagesonstages.com",
+          "knownOutletId": "pages-on-stages"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [
+        {
+          "url": "https://thefrontrowcenter.com/2025/04/becoming-eve/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": true,
+          "recoverableFile": "front-row-center--kendra-jones.json",
+          "recoverableOutletId": "front-row-center",
+          "recoverableCritic": "Kendra Jones",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--kendra-jones.json",
+              "flag": "nonReview",
+              "urlInDir": "https://thefrontrowcenter.com/2025/04/becoming-eve/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 414,
+        "byReason": {
+          "not-http-url": 44,
+          "non-review-host": 36,
+          "aggregator-internal-nav": 302,
+          "aggregator-section-root": 8,
+          "production-database-listing": 24
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.talkinbroadway.com/page/ob/04_07_25b.html",
+          "host": "talkinbroadway.com",
+          "outletId": "talkinbroadway",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://twi-ny.com/2025/04/24/becoming-eve-abrons-arts-center/",
+          "host": "twi-ny.com",
+          "outletId": "this-week-in-new-york",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html",
+          "host": "interestedbystander.com",
+          "outletId": "the-interested-bystander",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://pagesonstages.com/2025/04/07/becoming-eve/",
+          "host": "pagesonstages.com",
+          "outletId": "pages-on-stages",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://thefrontrowcenter.com/2025/04/becoming-eve/",
+          "host": "thefrontrowcenter.com",
+          "file": "front-row-center--kendra-jones.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "talkinbroadway",
+            "outlet": "talkinbroadway",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.talkinbroadway.com/page/ob/04_07_25b.html"
+          },
+          {
+            "outletId": "this-week-in-new-york",
+            "outlet": "this-week-in-new-york",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://twi-ny.com/2025/04/24/becoming-eve-abrons-arts-center/"
+          },
+          {
+            "outletId": "the-interested-bystander",
+            "outlet": "the-interested-bystander",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html"
+          },
+          {
+            "outletId": "pages-on-stages",
+            "outlet": "pages-on-stages",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pagesonstages.com/2025/04/07/becoming-eve/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2025/04/becoming-eve/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2025/04/09/becoming-eve-transcendent-trans-father-son-father-daughter-play/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/becoming-eve-off-broadway-review-tommy-dorfman",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/04/11/theater/review-becoming-eve.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-a-transgender-woman-struggles-to-emerge-from-her-hasidic-community-in-becoming-eve_1769850/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.thewrap.com/becoming-eve-off-broadway-review-richard-schiff/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/04_07_25b.html",
+            "outletId": "talkinbroadway",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://twi-ny.com/2025/04/24/becoming-eve-abrons-arts-center/",
+            "outletId": "this-week-in-new-york",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2025/04/theater-reviews-three-books-are-vividly.html",
+            "outletId": "the-interested-bystander",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/04/07/becoming-eve/",
+            "outletId": "pages-on-stages",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/04/becoming-eve/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 5,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "becoming-hamlet-off-broadway-2026",
@@ -36218,6 +36706,108 @@
         "candidateCount": 10
       },
       "computedAt": "2026-09-20T12:57:21.255Z"
+    },
+    {
+      "showId": "ceremonies-in-dark-old-men-off-broadway-2025",
+      "title": "Ceremonies in Dark Old Men",
+      "openingDate": "2025-04-18",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-CEREMONIES-IN-DARK-OLD-MEN-Starring-Norm-Lewis-and-More-20250429"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/ceremonies-in-dark-old-men-off-broadway-review-norm-lewis",
+        "https://thefrontrowcenter.com/2025/04/ceremonies-in-dark-old-men/",
+        "https://www.nytimes.com/2025/04/30/theater/ceremonies-in-dark-old-men-review.html",
+        "https://www.theaterscene.net/plays/offbway-plays/ceremonies-in-dark-old-men/victor-gluck/",
+        "https://twi-ny.com/2025/06/14/ceremonies-in-dark-old-men-norm-lewis/",
+        "https://www.offoffonline.com/offoffonline/2025/4/15/ceremonies-in-dark-old-men"
+      ],
+      "dirFiles": 9,
+      "dirClean": 9,
+      "inReviewsJson": 9,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "stagebuddy.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 262,
+        "byReason": {
+          "not-http-url": 31,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 212,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/ceremonies-in-dark-old-men-off-broadway-review-norm-lewis",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/04/ceremonies-in-dark-old-men/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/04/30/theater/ceremonies-in-dark-old-men-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/ceremonies-in-dark-old-men/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://twi-ny.com/2025/06/14/ceremonies-in-dark-old-men-norm-lewis/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/4/15/ceremonies-in-dark-old-men",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 6,
+        "candidateCount": 6
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "chat-noir-off-west-end-2026",
@@ -61213,6 +61803,290 @@
       "computedAt": "2026-10-25T10:27:27.352Z"
     },
     {
+      "showId": "ghosts-off-broadway-2025",
+      "title": "Ghosts",
+      "openingDate": "2025-03-10",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-critics-weigh-in-on-gabriel-byrnes-walking-with-ghosts",
+        "https://www.broadwayworld.com/article/Review-Roundup-GHOSTS-at-Lincoln-Center-Theater-20250311",
+        "https://www.broadwayworld.com/article/Review-Roundup-Gabriel-Byrne-Brings-WALKING-WITH-GHOSTS-To-Broadway--The-Critics-React-20221027"
+      ],
+      "aggregatorListedUrls": [
+        "https://broadwaynews.com/2022/10/27/review-in-walking-with-ghosts-there-is-little-spirit-to-be-found/",
+        "https://cititour.com/NYC_Broadway/Walking-With-Ghosts/1103",
+        "https://www.thedailybeast.com/in-walking-with-ghosts-gabriel-byrne-tells-a-great-story-just-not-the-full-one",
+        "https://didtheylikeit.com/shows/walking-with-ghosts/walking-with-ghosts-is-forgettable-when-it-should-be-haunting/",
+        "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-walking-with-ghosts-gabriel-byrne-20221028-fv6uvchzmvh25jvx7anfccnqla-story.html",
+        "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrne-goes-down-a-dark-memory-lane/",
+        "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrnes-book-makes-a-hazy-memory-play/",
+        "https://newyorktheater.me/2022/10/27/walking-with-ghosts-broadway-review-gabriel-byrne-performs-his-memoir/",
+        "https://www.newyorktheatreguide.com/reviews/walking-with-ghosts-broadway-review-gabriel-byrne",
+        "https://www.nytimes.com/2022/10/27/theater/walking-with-ghosts-review.html",
+        "https://www.theatermania.com/broadway/reviews/review-gabriel-byrne-walking-with-ghosts_94488.html",
+        "https://www.theaterpizzazz.com/gabriel-byrne-walking-with-ghosts/",
+        "https://www.theatrely.com/post/two-men-walk-into-a-theatre-walking-with-ghosts-straight-line-crazy-review",
+        "https://variety.com/2022/legit/reviews/walking-with-ghosts-review-gabriel-byrne-broadway-1235416035/",
+        "https://www.thewrap.com/walking-with-ghosts-broadway-review-gabriel-byrne/",
+        "https://www.nytimes.com/2025/03/10/theater/ghosts-review-rabe-linklater-crudup-beatty.html",
+        "https://www.vulture.com/article/theater-review-ibsen-ghosts-obrien-lincoln-center-hawke-linklater-crudup.html",
+        "https://www.thewrap.com/ghosts-off-broadway-review-billy-crudup-lily-rabe/",
+        "https://www.theatrely.com/post/phantom-pains-in-ghosts-the-great-privation-review",
+        "https://www.wsj.com/articles/ghosts-review-lincoln-centers-streamlined-spectral-ibsen-26ac0678",
+        "https://nystagereview.com/2025/03/10/ghosts-ibsens-wounded-spirits-still-live-within-us/",
+        "https://www.newyorktheatreguide.com/reviews/ghosts-off-broadway-review-lily-rabe-billy-crudup",
+        "https://exeuntnyc.com/reviews/review-ghosts-at-lincoln-center-theater/"
+      ],
+      "dirFiles": 12,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [
+        {
+          "url": "https://broadwaynews.com/2022/10/27/review-in-walking-with-ghosts-there-is-little-spirit-to-be-found/",
+          "host": "broadwaynews.com",
+          "knownOutletId": "broadwaynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Walking-With-Ghosts/1103",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.thedailybeast.com/in-walking-with-ghosts-gabriel-byrne-tells-a-great-story-just-not-the-full-one",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/walking-with-ghosts/walking-with-ghosts-is-forgettable-when-it-should-be-haunting/",
+          "host": "didtheylikeit.com",
+          "knownOutletId": "dtli",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-walking-with-ghosts-gabriel-byrne-20221028-fv6uvchzmvh25jvx7anfccnqla-story.html",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/gabriel-byrne-walking-with-ghosts/",
+          "host": "theaterpizzazz.com",
+          "knownOutletId": "theater-pizzazz",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/walking-with-ghosts-review-gabriel-byrne-broadway-1235416035/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 760,
+        "byReason": {
+          "not-http-url": 98,
+          "non-review-host": 50,
+          "aggregator-internal-nav": 584,
+          "aggregator-section-root": 14,
+          "production-database-listing": 11,
+          "bare-host": 1,
+          "roundup-page": 2
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/reviews-critics-weigh-in-on-gabriel-byrnes-walking-with-ghosts",
+          "publishDate": "2022-10-28"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Gabriel-Byrne-Brings-WALKING-WITH-GHOSTS-To-Broadway--The-Critics-React-20221027",
+          "publishDate": "2022-10-27"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://broadwaynews.com/2022/10/27/review-in-walking-with-ghosts-there-is-little-spirit-to-be-found/",
+          "host": "broadwaynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Walking-With-Ghosts/1103",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thedailybeast.com/in-walking-with-ghosts-gabriel-byrne-tells-a-great-story-just-not-the-full-one",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://didtheylikeit.com/shows/walking-with-ghosts/walking-with-ghosts-is-forgettable-when-it-should-be-haunting/",
+          "host": "didtheylikeit.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-review-walking-with-ghosts-gabriel-byrne-20221028-fv6uvchzmvh25jvx7anfccnqla-story.html",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theaterpizzazz.com/gabriel-byrne-walking-with-ghosts/",
+          "host": "theaterpizzazz.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://variety.com/2022/legit/reviews/walking-with-ghosts-review-gabriel-byrne-broadway-1235416035/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrne-goes-down-a-dark-memory-lane/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2022/10/27/walking-with-ghosts-gabriel-byrnes-book-makes-a-hazy-memory-play/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2022/10/27/walking-with-ghosts-broadway-review-gabriel-byrne-performs-his-memoir/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/walking-with-ghosts-broadway-review-gabriel-byrne",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2022/10/27/theater/walking-with-ghosts-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/broadway/reviews/review-gabriel-byrne-walking-with-ghosts_94488.html",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/two-men-walk-into-a-theatre-walking-with-ghosts-straight-line-crazy-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.thewrap.com/walking-with-ghosts-broadway-review-gabriel-byrne/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/03/10/theater/ghosts-review-rabe-linklater-crudup-beatty.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-ibsen-ghosts-obrien-lincoln-center-hawke-linklater-crudup.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.thewrap.com/ghosts-off-broadway-review-billy-crudup-lily-rabe/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/phantom-pains-in-ghosts-the-great-privation-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/ghosts-review-lincoln-centers-streamlined-spectral-ibsen-26ac0678",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/10/ghosts-ibsens-wounded-spirits-still-live-within-us/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/ghosts-off-broadway-review-lily-rabe-billy-crudup",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-ghosts-at-lincoln-center-theater/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
+    },
+    {
       "showId": "giant-2026",
       "title": "Giant",
       "openingDate": "2026-03-23",
@@ -68521,6 +69395,235 @@
       },
       "computedAt": "2026-09-21T05:44:22.707Z",
       "automatedExcludedListed": 0
+    },
+    {
+      "showId": "good-bones-off-broadway-2024",
+      "title": "Good Bones",
+      "openingDate": "2024-10-01",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-GOOD-BONES-Opens-At-The-Public-Theater-20241001"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.timeout.com/newyork/theater/good-bones-review-public-theater-james-ijames-gentrification",
+        "https://www.newyorktheatreguide.com/reviews/good-bones-off-broadway-review",
+        "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
+        "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway",
+        "https://nystagereview.com/2024/10/01/good-bones-james-ijames-urban-renewal-project/",
+        "https://newyorktheater.me/2024/10/01/good-bones-review/",
+        "https://www.theatrely.com/post/the-good-bones-of-a-great-gentrification-play-review",
+        "https://www.nytimes.com/2024/10/02/theater/good-bones-public-theater-review.html",
+        "https://www.theatermania.com/news/review-strange-occurrences-haunt-a-couples-renovated-home-in-good-bones_1751706/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=M2F4YA",
+        "https://www.talkinbroadway.com/page/ob/10_04_24.html",
+        "https://www.theaterscene.net/plays/offbway-plays/good-bones/victor-gluck/"
+      ],
+      "dirFiles": 20,
+      "dirClean": 19,
+      "inReviewsJson": 19,
+      "missing": [
+        {
+          "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "cititour.com",
+          "count": 1
+        },
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.wordpress.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 277,
+        "byReason": {
+          "not-http-url": 35,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 223,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "good-bones-off-broadway-2024: https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html is already owned by yellow-face-2024 — one of the two is contaminated. Inspect data/review-texts/yellow-face-2024/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway",
+          "host": "thedailybeast.com",
+          "outletId": "dailybeast",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "good-bones-off-broadway-2024: https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway is already owned by yellow-face-2024 — one of the two is contaminated. Inspect data/review-texts/yellow-face-2024/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html"
+          },
+          {
+            "outletId": "dailybeast",
+            "outlet": "dailybeast",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/good-bones-review-public-theater-james-ijames-gentrification",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/good-bones-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/10/01/good-bones-james-ijames-urban-renewal-project/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2024/10/01/good-bones-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/the-good-bones-of-a-great-gentrification-play-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2024/10/02/theater/good-bones-public-theater-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-strange-occurrences-haunt-a-couples-renovated-home-in-good-bones_1751706/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=M2F4YA",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_04_24.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/good-bones/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-reviews-yellow-face-hwang-good-bones-ijames.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/review-the-ghosts-of-good-bones-and-yellow-face-on-broadway",
+            "outletId": "dailybeast",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 12
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
@@ -86069,6 +87172,265 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-14T15:47:11.265Z"
+    },
+    {
+      "showId": "hold-on-to-me-darling-off-broadway-2024",
+      "title": "Hold On to Me Darling",
+      "openingDate": "2024-10-16",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.nytimes.com/2016/03/15/theater/review-kenneth-lonergans-hold-on-to-me-darling-a-study-of-bad-faith-and-behavior.html",
+        "http://www.timeout.com/newyork/theater/hold-on-to-me-darling",
+        "http://www.vulture.com/2016/03/theater-review-hold-on-to-me-darling.html",
+        "http://www.wsj.com/articles/hold-on-to-me-darling-review-satire-meets-sincerity-1458248303",
+        "http://deadline.com/2016/03/she-loves-me-and-hold-on-to-me-darling-review-1201722296/",
+        "http://www.nydailynews.com/entertainment/theater-arts/lonergan-hold-darling-fame-review-article-1.2561194",
+        "http://variety.com/2016/legit/reviews/hold-on-to-me-darling-review-1201729265/",
+        "http://www.hollywoodreporter.com/review/kenneth-lonergans-hold-me-darlng-874984"
+      ],
+      "dirFiles": 33,
+      "dirClean": 22,
+      "inReviewsJson": 23,
+      "missing": [
+        {
+          "url": "http://variety.com/2016/legit/reviews/hold-on-to-me-darling-review-1201729265/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/kenneth-lonergans-hold-me-darlng-874984",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "go.com",
+          "count": 1
+        },
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "thedailybeast.com",
+          "count": 1
+        },
+        {
+          "host": "theepochtimes.com",
+          "count": 1
+        },
+        {
+          "host": "ew.com",
+          "count": 1
+        },
+        {
+          "host": "theguardian.com",
+          "count": 1
+        },
+        {
+          "host": "nysun.com",
+          "count": 1
+        },
+        {
+          "host": "newsday.com",
+          "count": 1
+        },
+        {
+          "host": "nystagereview.com",
+          "count": 2
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "thestage.co.uk",
+          "count": 1
+        },
+        {
+          "host": "thewrap.com",
+          "count": 1
+        },
+        {
+          "host": "t2conline.com",
+          "count": 1
+        },
+        {
+          "host": "vogue.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.timeout.com/newyork/theater/hold-on-to-me-darling",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--david-cote.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.timeout.com/newyork/theater/hold-on-to-me-darling"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2015-11-13",
+          "reverify": false
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/lonergan-hold-darling-fame-review-article-1.2561194",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nydailynews--joe-dziemianowicz.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nydailynews.com/entertainment/theater-arts/lonergan-hold-darling-fame-review-article-1.2561194"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2016-03-14",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://variety.com/2016/legit/reviews/hold-on-to-me-darling-review-1201729265/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "http://www.hollywoodreporter.com/review/kenneth-lonergans-hold-me-darlng-874984",
+          "host": "hollywoodreporter.com",
+          "outletId": "hollywood-reporter",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/hold-on-to-me-darling-review-lucille-lortel-theatre-new-york-adam-driver-kenneth-lonergan",
+          "host": "thestage.co.uk",
+          "file": "thestage--lane-williamson.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "hollywood-reporter",
+            "outlet": "hollywood-reporter",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.hollywoodreporter.com/review/kenneth-lonergans-hold-me-darlng-874984"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.nytimes.com/2016/03/15/theater/review-kenneth-lonergans-hold-on-to-me-darling-a-study-of-bad-faith-and-behavior.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.vulture.com/2016/03/theater-review-hold-on-to-me-darling.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.wsj.com/articles/hold-on-to-me-darling-review-satire-meets-sincerity-1458248303",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://deadline.com/2016/03/she-loves-me-and-hold-on-to-me-darling-review-1201722296/",
+            "outletId": "deadline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.hollywoodreporter.com/review/kenneth-lonergans-hold-me-darlng-874984",
+            "outletId": "hollywood-reporter",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 4,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "holy-fool-off-west-end-2026",
@@ -112369,6 +113731,193 @@
       "computedAt": "2026-08-25T02:21:52.283Z"
     },
     {
+      "showId": "lowcountry-off-broadway-2025",
+      "title": "Lowcountry",
+      "openingDate": "2025-06-10",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2025/06/25/theater/lowcountry-review.html",
+        "https://www.newyorktheatreguide.com/reviews/lowcountry-off-broadway-review",
+        "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html",
+        "https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e",
+        "https://observer.com/2025/06/review-a-hot-mess-and-a-sex-pest-go-on-a-date-in-lowcountry/",
+        "https://www.theatermania.com/news/review-lowcountry-is-a-masterpiece-of-millennial-rage_1786957/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=HBDAXO",
+        "https://www.talkinbroadway.com/page/ob/06_25_25b.html"
+      ],
+      "dirFiles": 14,
+      "dirClean": 13,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture"
+        },
+        {
+          "url": "https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e",
+          "host": "wsj.com",
+          "knownOutletId": "wsj"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html",
+          "host": "vulture.com",
+          "outletId": "vulture",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "lowcountry-off-broadway-2025: https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html is already owned by trophy-boys-off-broadway-2025 — one of the two is contaminated. Inspect data/review-texts/trophy-boys-off-broadway-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e",
+          "host": "wsj.com",
+          "outletId": "wsj",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "lowcountry-off-broadway-2025: https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e is already owned by trophy-boys-off-broadway-2025 — one of the two is contaminated. Inspect data/review-texts/trophy-boys-off-broadway-2025/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "vulture",
+            "outlet": "vulture",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "wsj",
+            "outlet": "wsj",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2025/06/25/theater/lowcountry-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/lowcountry-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://observer.com/2025/06/review-a-hot-mess-and-a-sex-pest-go-on-a-date-in-lowcountry/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-lowcountry-is-a-masterpiece-of-millennial-rage_1786957/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=HBDAXO",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/06_25_25b.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-reviews-trophy-boys-and-lowcountry.html",
+            "outletId": "vulture",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/trophy-boys-and-lowcountry-review-off-broadway-debates-and-bad-dates-242fd27e",
+            "outletId": "wsj",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 6,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
+    },
+    {
       "showId": "macbeth-off-broadway-2026",
       "title": "Macbeth",
       "openingDate": "2026-09-22",
@@ -114544,6 +116093,189 @@
         "candidateCount": 5
       },
       "computedAt": "2026-10-22T19:07:18.841Z"
+    },
+    {
+      "showId": "mama-im-a-big-girl-now-off-broadway-2024",
+      "title": "Mama, I'm a Big Girl Now!",
+      "openingDate": "2024-11-13",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/critics-sound-off-on-mama-im-a-big-girl-now-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-MAMA-IM-A-BIG-GIRL-NOW-Opens-At-New-World-Stages-20241113"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.digitaljournal.com/entertainment/review-laura-bell-bundy-marissa-jaret-winokur-and-kerry-butler-star-in-mama-im-a-big-girl-now/article",
+        "https://nystagereview.com/2024/11/13/mama-im-a-big-girl-now-bundy-butler-winokur-celebrate-with-love/",
+        "https://www.newyorktheatreguide.com/reviews/mama-im-a-big-girl-now-review-hairspray",
+        "https://www.timeout.com/newyork/theater/mama-im-a-big-girl-now-off-broadway-review-hairspray",
+        "https://t2conline.com/mama-im-a-big-girl-now-is-just-what-the-musical-theatre-junkie-doctor-ordered/"
+      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-laura-bell-bundy-marissa-jaret-winokur-and-kerry-butler-star-in-mama-im-a-big-girl-now/article",
+          "host": "digitaljournal.com",
+          "knownOutletId": "digital-journal"
+        },
+        {
+          "url": "https://nystagereview.com/2024/11/13/mama-im-a-big-girl-now-bundy-butler-winokur-celebrate-with-love/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        },
+        {
+          "url": "https://t2conline.com/mama-im-a-big-girl-now-is-just-what-the-musical-theatre-junkie-doctor-ordered/",
+          "host": "t2conline.com",
+          "knownOutletId": "times-square-chronicles"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "theaterscene.net",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 381,
+        "byReason": {
+          "not-http-url": 44,
+          "non-review-host": 37,
+          "aggregator-internal-nav": 278,
+          "aggregator-section-root": 10,
+          "production-database-listing": 11,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.digitaljournal.com/entertainment/review-laura-bell-bundy-marissa-jaret-winokur-and-kerry-butler-star-in-mama-im-a-big-girl-now/article",
+          "host": "digitaljournal.com",
+          "outletId": "digital-journal",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://nystagereview.com/2024/11/13/mama-im-a-big-girl-now-bundy-butler-winokur-celebrate-with-love/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://t2conline.com/mama-im-a-big-girl-now-is-just-what-the-musical-theatre-junkie-doctor-ordered/",
+          "host": "t2conline.com",
+          "outletId": "times-square-chronicles",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "digital-journal",
+            "outlet": "digital-journal",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.digitaljournal.com/entertainment/review-laura-bell-bundy-marissa-jaret-winokur-and-kerry-butler-star-in-mama-im-a-big-girl-now/article"
+          },
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2024/11/13/mama-im-a-big-girl-now-bundy-butler-winokur-celebrate-with-love/"
+          },
+          {
+            "outletId": "times-square-chronicles",
+            "outlet": "times-square-chronicles",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://t2conline.com/mama-im-a-big-girl-now-is-just-what-the-musical-theatre-junkie-doctor-ordered/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/mama-im-a-big-girl-now-review-hairspray",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/mama-im-a-big-girl-now-off-broadway-review-hairspray",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.digitaljournal.com/entertainment/review-laura-bell-bundy-marissa-jaret-winokur-and-kerry-butler-star-in-mama-im-a-big-girl-now/article",
+            "outletId": "digital-journal",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2024/11/13/mama-im-a-big-girl-now-bundy-butler-winokur-celebrate-with-love/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://t2conline.com/mama-im-a-big-girl-now-is-just-what-the-musical-theatre-junkie-doctor-ordered/",
+            "outletId": "times-square-chronicles",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 2,
+        "candidateCount": 5
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "mamma-mia-2025",
@@ -136109,6 +137841,184 @@
       }
     },
     {
+      "showId": "my-first-ex-husband-off-broadway-2025",
+      "title": "My First Ex-Husband",
+      "openingDate": "2025-02-06",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-did-reviewers-think-of-joy-behars-my-first-ex-husband-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-Joy-Behars-MY-FIRST-EX-HUSBAND-Off-Broadway-20250207"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/2025/02/06/my-first-ex-husband-joy-behar-off-broadway-review/",
+        "https://www.digitaljournal.com/entertainment/review-joy-behar-tovah-feldshuh-susie-essman-and-adrienne-c-moore-star-in-my-first-ex-husband/article",
+        "https://nystagereview.com/2025/02/06/my-first-ex-husband-divorce-comedian-style/",
+        "https://www.nysun.com/article/for-those-who-cant-get-enough-of-joy-behar-on-the-view-the-comedian-now-has-a-play-my-first-ex-husband",
+        "https://thefrontrowcenter.com/2025/02/my-first-ex-husband/",
+        "https://www.theatermania.com/news/review-joy-behars-my-first-ex-husband-is-divorced-queen-story-hour_1762903/",
+        "https://www.newyorktheatreguide.com/reviews/my-first-ex-husband-off-broadway-review-joy-behar",
+        "https://observer.com/2025/03/joy-behar-adds-playwright-to-her-resume-with-my-first-ex-husband/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=9ZBDEF",
+        "https://www.theaterscene.net/plays/offbway-plays/my-ex-first-husband/lydia-singer/",
+        "https://www.offoffonline.com/offoffonline/2025/2/4/my-first-ex-husband"
+      ],
+      "dirFiles": 13,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://observer.com/2025/03/joy-behar-adds-playwright-to-her-resume-with-my-first-ex-husband/",
+          "host": "observer.com",
+          "knownOutletId": "observer",
+          "recoverable": true,
+          "recoverableFile": "observer--harry-haun.json",
+          "recoverableOutletId": "observer",
+          "recoverableCritic": "Harry Haun",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "observer--harry-haun.json",
+              "flag": "nonReview",
+              "urlInDir": "https://observer.com/2025/03/joy-behar-adds-playwright-to-her-resume-with-my-first-ex-husband/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 388,
+        "byReason": {
+          "not-http-url": 41,
+          "non-review-host": 36,
+          "aggregator-internal-nav": 291,
+          "aggregator-section-root": 8,
+          "production-database-listing": 11,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://observer.com/2025/03/joy-behar-adds-playwright-to-her-resume-with-my-first-ex-husband/",
+          "host": "observer.com",
+          "file": "observer--harry-haun.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "observer",
+            "outlet": "observer",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://observer.com/2025/03/joy-behar-adds-playwright-to-her-resume-with-my-first-ex-husband/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/2025/02/06/my-first-ex-husband-joy-behar-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.digitaljournal.com/entertainment/review-joy-behar-tovah-feldshuh-susie-essman-and-adrienne-c-moore-star-in-my-first-ex-husband/article",
+            "outletId": "digitaljournal.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/02/06/my-first-ex-husband-divorce-comedian-style/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/for-those-who-cant-get-enough-of-joy-behar-on-the-view-the-comedian-now-has-a-play-my-first-ex-husband",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/02/my-first-ex-husband/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-joy-behars-my-first-ex-husband-is-divorced-queen-story-hour_1762903/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/my-first-ex-husband-off-broadway-review-joy-behar",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=9ZBDEF",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/my-ex-first-husband/lydia-singer/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2025/2/4/my-first-ex-husband",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://observer.com/2025/03/joy-behar-adds-playwright-to-her-resume-with-my-first-ex-husband/",
+            "outletId": "observer",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 11
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
+    },
+    {
       "showId": "my-joy-is-heavy-off-broadway-2025",
       "title": "My Joy Is Heavy",
       "openingDate": "2026-03-17",
@@ -138594,6 +140504,126 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-16T23:13:35.325Z"
+    },
+    {
+      "showId": "not-ready-for-prime-time-off-broadway-2025",
+      "title": "Not Ready for Prime Time",
+      "openingDate": "2025-10-20",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-reviews-say-about-off-broadways-snl-themed-not-ready-for-prime-time",
+        "https://www.broadwayworld.com/article/Review-Roundup-NOT-READY-FOR-PRIME-TIME-Off-Broadway-20251021"
+      ],
+      "aggregatorListedUrls": [
+        "https://culturesauce.com/2025/10/20/not-ready-for-prime-time-snl-off-broadway-review/",
+        "https://www.newyorktheatreguide.com/reviews/not-ready-for-prime-time-off-broadway-review",
+        "https://therecs.co.uk/not-ready-for-prime-time/",
+        "https://www.theatermania.com/news/review-not-ready-for-prime-time-an-expensive-and-dull-drama-about-snl_1808362/",
+        "https://t2conline.com/not-ready-for-prime-time-at-mcc-fails-to-capture-the-magic-or-the-madness/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=T4HKYZ",
+        "https://www.theaterscene.net/plays/offbway-plays/not-ready-for-prime-time/brett-singer/",
+        "https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html",
+        "https://lavocedinewyork.com/en/new-york/2025/10/21/not-ready-for-prime-time-entertains-but-plays-fast-and-loose-with-comedy-history/",
+        "https://pagesonstages.com/2025/10/20/not-ready-for-prime-time/"
+      ],
+      "dirFiles": 10,
+      "dirClean": 10,
+      "inReviewsJson": 10,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 436,
+        "byReason": {
+          "not-http-url": 86,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 295,
+          "aggregator-section-root": 8,
+          "production-database-listing": 11,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://culturesauce.com/2025/10/20/not-ready-for-prime-time-snl-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/not-ready-for-prime-time-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://therecs.co.uk/not-ready-for-prime-time/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-not-ready-for-prime-time-an-expensive-and-dull-drama-about-snl_1808362/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://t2conline.com/not-ready-for-prime-time-at-mcc-fails-to-capture-the-magic-or-the-madness/",
+            "outletId": "t2conline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=T4HKYZ",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/not-ready-for-prime-time/brett-singer/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://lavocedinewyork.com/en/new-york/2025/10/21/not-ready-for-prime-time-entertains-but-plays-fast-and-loose-with-comedy-history/",
+            "outletId": "lavocedinewyork.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/10/20/not-ready-for-prime-time/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "noughts-and-crosses-off-west-end-2026",
@@ -180647,6 +182677,166 @@
       "computedAt": "2026-08-09T22:22:02.507Z"
     },
     {
+      "showId": "sumo-off-broadway-2025",
+      "title": "Sumo",
+      "openingDate": "2025-03-05",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-SUMO-Opens-At-The-Public-Theater-20250305"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2025/03/05/theater/sumo-review-public-theater.html",
+        "https://www.vulture.com/article/theater-review-lisa-sanaye-dring-sumo-public-theater.html",
+        "https://www.timeout.com/newyork/theater/sumo-off-broadway-play-review",
+        "https://nystagereview.com/2025/03/05/sumo-wrestling-with-higher-desires/",
+        "https://www.newyorktheatreguide.com/reviews/sumo-off-broadway-review",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=AGM1XX",
+        "https://www.theaterscene.net/plays/offbway-plays/sumo/joseph-pisano/",
+        "https://theaterpizzazz.com/sumo-pseudo-sumo-is-better-than-no-sumo-at-all/",
+        "https://exeuntnyc.com/reviews/review-sumo-at-the-public-theater/"
+      ],
+      "dirFiles": 14,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [
+        {
+          "url": "https://nystagereview.com/2025/03/05/sumo-wrestling-with-higher-desires/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "interestedbystander.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 275,
+        "byReason": {
+          "not-http-url": 36,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 220,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://nystagereview.com/2025/03/05/sumo-wrestling-with-higher-desires/",
+          "host": "nystagereview.com",
+          "outletId": "nysr",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "nysr",
+            "outlet": "nysr",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nystagereview.com/2025/03/05/sumo-wrestling-with-higher-desires/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2025/03/05/theater/sumo-review-public-theater.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-lisa-sanaye-dring-sumo-public-theater.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/sumo-off-broadway-play-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/sumo-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=AGM1XX",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/sumo/joseph-pisano/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/sumo-pseudo-sumo-is-better-than-no-sumo-at-all/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-sumo-at-the-public-theater/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/03/05/sumo-wrestling-with-higher-desires/",
+            "outletId": "nysr",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 8,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
+    },
+    {
       "showId": "sunset-baby-off-broadway-2026",
       "title": "Sunset Baby",
       "openingDate": "2024-02-20",
@@ -185039,6 +187229,135 @@
         "candidateCount": 3
       },
       "computedAt": "2026-10-21T00:49:57.456Z"
+    },
+    {
+      "showId": "the-antiquities-off-broadway-2025",
+      "title": "The Antiquities",
+      "openingDate": "2025-02-04",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.nytimes.com/2025/02/04/theater/the-antiquities-review-ai.html",
+        "https://www.newyorktheatreguide.com/reviews/the-antiquities-off-broadway-review",
+        "https://www.vulture.com/article/theater-review-jordan-harrison-antiquities-playwrights-horizons.html",
+        "https://www.wsj.com/articles/the-antiquities-review-exhibiting-humanity-in-an-ai-world-3eddf99a",
+        "https://observer.com/2025/02/review-the-distant-future-is-already-ancient-history-in-ai-drama-the-antiquities/",
+        "https://www.theatermania.com/news/review-the-antiquities-your-life-in-a-museum-in-the-post-human-future_1762770/",
+        "https://www.talkinbroadway.com/page/ob/02_04_25.html",
+        "https://www.theaterscene.net/plays/offbway-plays/the-antiquities/victor-gluck/"
+      ],
+      "dirFiles": 17,
+      "dirClean": 16,
+      "inReviewsJson": 16,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheater.me",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.nytimes.com/2025/02/04/theater/the-antiquities-review-ai.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-antiquities-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/theater-review-jordan-harrison-antiquities-playwrights-horizons.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-antiquities-review-exhibiting-humanity-in-an-ai-world-3eddf99a",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://observer.com/2025/02/review-the-distant-future-is-already-ancient-history-in-ai-drama-the-antiquities/",
+            "outletId": "observer.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-antiquities-your-life-in-a-museum-in-the-post-human-future_1762770/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/02_04_25.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/the-antiquities/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T19:50:18.268Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 8,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-10-25T19:50:18.268Z"
     },
     {
       "showId": "the-apple-boys-regional-2025",
@@ -200492,22 +202811,6 @@
           "knownOutletId": null,
           "serpCensus": true,
           "zeroCharAttempts": 3
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
-          "host": "allmusic.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
-          "host": "pitchfork.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
         }
       ],
       "weIngestBlocked": [
