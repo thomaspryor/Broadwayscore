@@ -303,9 +303,14 @@ function findTmCoverageGaps({ rows, venuesById, genresById, shows, pendingShows 
  * dates are within a year of the candidate's. A same-title revival years
  * later is still treated as new.
  *
+ * BRO-6254: `{ allowTransfers: true }` (the historical cohort only) also lets
+ * through a closed row that isDistinctTransfer() calls another production
+ * (other venue, runs that do not overlap), e.g. Prince Faggot at Playwrights
+ * Horizons then Studio Seaview in 2025. Discovery keeps the default.
+ *
  * @returns {object|null} the existing show this candidate duplicates
  */
-function findTmSameTitleShow(candidate, shows) {
+function findTmSameTitleShow(candidate, shows, { allowTransfers = false } = {}) {
   const { getMarketPool } = require('./venue-classification');
   const key = titleKeyLoose(candidate.title);
   if (!key) return null;
@@ -314,10 +319,36 @@ function findTmSameTitleShow(candidate, shows) {
     if (!s || !s.title || getMarketPool(s.category) !== 'nyc') continue;
     if (titleKeyLoose(s.title) !== key) continue;
     if (['open', 'previews', 'upcoming', 'announced'].includes(s.status)) return s;
+    if (allowTransfers && isDistinctTransfer(candidate, s)) continue;
     const sDate = s.openingDate || s.previewsStartDate || s.unconfirmedStartDate || null;
     if (candDate && sDate && Math.abs(Date.parse(candDate) - Date.parse(sDate)) <= 366 * 86400000) return s;
   }
   return null;
+}
+
+const runStart = (x) => x.previewsStartDate || x.openingDate || null;
+const looseVenueKey = (v) => foldDiacritics(String(v || '').toLowerCase()).replace(/\btheat(?:re|er)\b/g, '').replace(/[^a-z0-9]+/g, '');
+
+/**
+ * BRO-6254: is a same-title row another production rather than this one?
+ * Both runs need a start and a closing date that do not overlap, and the
+ * venues must differ. The venue test is strict on purpose: venuesMatch()
+ * (aliases) or one loose key containing the other (TM's "Theatre Row" for
+ * "Theatre Row, Theatre 5") counts as the same venue. Missing dates or
+ * venues give false, so an unprovable case stays a duplicate.
+ */
+function isDistinctTransfer(candidate, show) {
+  if (!candidate || !show || !candidate.venue || !show.venue) return false;
+  const cStart = runStart(candidate), cEnd = candidate.closingDate || null;
+  const sStart = runStart(show), sEnd = show.closingDate || null;
+  if (![cStart, cEnd, sStart, sEnd].every(d => d && !Number.isNaN(Date.parse(d)))) return false;
+  const overlaps = Date.parse(cStart) <= Date.parse(sEnd) && Date.parse(sStart) <= Date.parse(cEnd);
+  if (overlaps) return false;
+  const { venuesMatch } = require('./deduplication');
+  if (venuesMatch(candidate.venue, show.venue)) return false;
+  const a = looseVenueKey(candidate.venue), b = looseVenueKey(show.venue);
+  if (!a || !b || a.includes(b) || b.includes(a)) return false;
+  return true;
 }
 
 // Case, punctuation, diacritics and articles removed. Exact match on this key
@@ -433,6 +464,7 @@ module.exports = {
   parseTmOffBroadwayRow,
   findTmCoverageGaps,
   findTmSameTitleShow,
+  isDistinctTransfer,
   titleKeyLoose,
   decideTmCoverageOutcome,
   fetchTmOffBroadway,
