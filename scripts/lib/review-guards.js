@@ -4699,6 +4699,25 @@ function isRejectedByReasonExclusion(data) {
  * Canonical rejectedAt exclusion (BRO-4404); see isRejectedByReasonExclusion.
  * Returns true when the file must be excluded.
  */
+/**
+ * BRO-6190: the body is a registration-wall stub (Telegraph sign-up form behind
+ * a byline) so the LLM rated boilerplate. Excluded unless a score exists that
+ * never read that body: markup stars (hasStructuralStarScore) or an aggregator
+ * excerpt score (hasIndependentExcerptScore). The invalid tier alone does not
+ * exclude in the rebuild, so this is the exclusion. Pure.
+ */
+function isRegistrationWallStubExclusion(data) {
+  if (!data) return false;
+  const wallStub = require('./paywall-detector').isRegistrationWallStub(data.fullText);
+  // A manual "complete" stamp over a short paywall/registration page (NYDN, FT) is
+  // downgraded to invalid by classifyContentTier; the rebuild does not exclude on
+  // tier, so exclude the same rows here.
+  const manualOverrideStub = !wallStub && data.manualContentTier === 'complete' &&
+    /overrides manualContentTier/.test(require('./content-quality').classifyContentTier(data).tierReason || '');
+  if (!wallStub && !manualOverrideStub) return false;
+  return !hasStructuralStarScore(data) && !hasIndependentExcerptScore(data);
+}
+
 function isRejectedAtExclusion(data) {
   if (!data) return false;
   if (data.rejectedAt && typeof data.rejectedAt === 'string') {
@@ -5315,6 +5334,9 @@ function explainExclusion(data, show, filePath, opts) {
   // rejected them, and wrongProductionManualClear alone couldn't override the rejectedAt
   // guard. See Notion card 34b637c5-416f-81ff-a6d6-d453e7ed537c.
   if (isRejectedAtExclusion(data) && !laneOk('wrongProduction')) return 'rejectedAt';
+
+  // BRO-6190: registration-wall stub body (see isRegistrationWallStubExclusion).
+  if (isRegistrationWallStubExclusion(data)) return 'registrationWallStub';
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
@@ -6183,6 +6205,7 @@ function isReviewContentTrustworthy(data) {
 module.exports = {
   isRejectedByReasonExclusion,
   isRejectedAtExclusion,
+  isRegistrationWallStubExclusion,
   isFullTextWrongAuthorActive,
   explainShowLevelExclusion,
   REBUILD_ONLY_PASS_REASONS,

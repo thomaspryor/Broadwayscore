@@ -2291,6 +2291,16 @@ function classifyContentTier(review) {
     // signals (e.g. nyt_bot_stub) are present. The text is objectively incomplete
     // regardless of what was manually set — the manual override was incorrect.
     if (review.manualContentTier === 'complete') {
+      // BRO-6190: a registration-wall stub is invalid, not merely truncated, even
+      // when the wall's own wording also trips a severe paywall signal.
+      if (require('./paywall-detector').isRegistrationWallStub(review.fullText)) {
+        return {
+          contentTier: 'invalid',
+          wordCount: countWords(review.fullText || ''),
+          truncationSignals: [],
+          tierReason: 'Garbage content: Registration wall stub: sign-up form text instead of a review (overrides manualContentTier: complete)'
+        };
+      }
       const sigs = detectTruncationSignals(review.fullText || '', { outletId: review.outletId, publishDate: review.publishDate });
       if (sigs.severeCount > 0) {
         return {
@@ -2301,15 +2311,21 @@ function classifyContentTier(review) {
         };
       }
     }
-    // BRO-3584: a manual tier never hides a stored 404 / error page. Only this
-    // garbage class: the corpus's other manual-tier garbage hits (newsletter
-    // boxes, paywall prompts) are false positives on real reviews, which is
-    // exactly what a person set the override to say. The "Garbage content:"
-    // prefix is what review-guards isGarbageTierReason reads, so a
+    // BRO-3584: a manual tier never hides a stored 404 / error page. The
+    // corpus's other manual-tier garbage hits (newsletter boxes, paywall
+    // prompts on long pages) are false positives on real reviews, which is
+    // exactly what a person set the override to say. BRO-6190 adds two stub
+    // classes a clear script (not a reader) stamped complete: a registration
+    // wall stub, and a paywall prompt on a page under 3000 chars (no review
+    // fits behind it; FT Tristan und Isolde scored 50 on a sales pitch).
+    // Longer pages keep the override: a prompt there is chrome. The "Garbage
+    // content:" prefix is what review-guards isGarbageTierReason reads, so a
     // wrongProduction clear cannot lift this tier back.
     if (review.manualContentTier !== 'invalid' && review.fullText) {
       const garbage = isGarbageContent(review.fullText);
-      if (garbage && garbage.isGarbage && /^(Error\/404 page|Registration wall stub|Paywall\/subscription prompt)/.test(garbage.reason || '')) {
+      const garbageReason = (garbage && garbage.reason) || '';
+      if (garbage && garbage.isGarbage && (/^(Error\/404 page|Registration wall stub)/.test(garbageReason)
+        || (/^Paywall\/subscription prompt/.test(garbageReason) && review.fullText.length < 3000))) {
         return {
           contentTier: 'invalid',
           wordCount: countWords(review.fullText),
