@@ -70,6 +70,7 @@ const { mergeCriticRegistry } = require('./merge-critic-registry');
 const { mergeGrossesHistory } = require('./merge-grosses-history');
 const { mergeReviewsJson } = require('./merge-reviews-json');
 const { mergeExpressRetryQueue } = require('./merge-express-retry-queue');
+const { mergeExpressCompleted } = require('./merge-express-completed');
 const { mergeObVenueCandidates } = require('./merge-ob-venue-candidates');
 const { mergeAlertLedger } = require('./merge-alert-ledger');
 const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
@@ -240,7 +241,27 @@ const CORE_DATA_MERGE_REGISTRY = [
     // reconcile call (explicit file args ignore optInReconcile). The merge is
     // three-way now, so a clean -X theirs hunk can no longer drop another
     // show's retry entry and our pruneStale deletes stay deleted.
-    notApiFallbackMerge: 'BRO-3333: express-retry-queue.js pruneStale() deletes entries. mergeExpressRetryQueue is base-aware since BRO-5955, but push-via-git-api.sh passes no fork point; until it does, a two-way merge on every API-fallback push would resurrect pruned entries.',
+    // push-via-git-api.sh passes push-with-retry.sh's SCRIPT_ENTRY_BASE as
+    // the base, so pruned entries stay pruned on the API fallback too.
+    apiFallbackMerge: true,
+  },
+  {
+    file: 'audit/opening-night-express-completed.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeExpressCompleted,
+    format: 'json',
+    newline: true,
+    // BRO-5955: was single-writer/apiFallbackSafe (BRO-3071 saw only
+    // opening-night-broadcast.yml). opening-night-express.yml also writes it,
+    // once per show under a PER-SHOW concurrency group, so two shows' pushes
+    // race; 81788096e4 erased the-imaginary-invalid-2026 on 2026-10-22.
+    // Local path: named in push-with-retry.sh's unconditional reconcile call,
+    // additions-only so shared keys keep git's blend. API fallback: keyed
+    // three-way merge (merge-express-completed.js).
+    optInReconcile: false,
+    localReconcile: { mode: 'additions-only', under: 'shows' },
+    apiFallbackMerge: true,
   },
 
   // ── public-repo, apiFallbackSafe entries (task: data-health-check.yml
@@ -1299,21 +1320,6 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'brand-mention-monitor',
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (brand-mention-monitor.yml), group brand-mention-monitor (cancel-in-progress: false).',
-  },
-  {
-    file: 'audit/opening-night-express-completed.json',
-    surface: 'public-repo',
-    status: 'single-writer',
-    apiFallbackSafe: true,
-    concurrencyGroup: 'broadcast-send',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (opening-night-broadcast.yml), group broadcast-send (cancel-in-progress: false).',
-    // BRO-5955: the note above misses opening-night-express.yml, which writes
-    // this file once per show under a PER-SHOW concurrency group, so two
-    // shows' Express pushes race. push-with-retry.sh's post-rebase reconcile
-    // puts back show keys a clean -X theirs hunk dropped (81788096e4 erased
-    // the-imaginary-invalid-2026 on 2026-10-22). The Git Data API overlay is
-    // still last-writer-wins for this file; that is tracked on BRO-5955.
-    localReconcile: { mode: 'additions-only', under: 'shows' },
   },
   {
     file: 'audit/processed-review-submissions.json',

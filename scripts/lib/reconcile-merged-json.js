@@ -150,11 +150,10 @@ function apiFallbackMergerFor(file) {
  * (bare basename, no `data/` prefix) the same way MANAGED does above. */
 function explicitMergerFor(file) {
   const entry = findEntry(file, 'public-repo');
-  const addOnly = !!(entry && entry.localReconcile && entry.localReconcile.mode === 'additions-only');
-  // BRO-5955: an additions-only entry needs no `merge` fn of its own
-  // (opening-night-express-completed.json is apiFallbackSafe, not MANAGED).
-  if (!entry || (!entry.merge && !addOnly)) return null;
-  const merge = addOnly ? additionsOnly(entry.localReconcile.under) : entry.merge;
+  if (!entry || !entry.merge) return null;
+  const merge = entry.localReconcile && entry.localReconcile.mode === 'additions-only'
+    ? additionsOnly(entry.localReconcile.under)
+    : entry.merge;
   return { file, merge, ...(entry.format === 'jsonl' ? { format: 'jsonl' } : { newline: entry.newline }) };
 }
 
