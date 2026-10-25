@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-gap2-b",
   "planId": "758beac8-8895-49c9-ba9c-314aa29aa527",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T13:04:57.582Z",
   "submitter": {
     "name": null,
@@ -40,5 +40,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T13:15:15.127Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added duke-and-roya-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
