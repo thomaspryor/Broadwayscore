@@ -1,40 +1,51 @@
 {
-  "updatedAt": "2026-10-25T00:41:15.650Z",
-  "processed": 23,
-  "failed": 4,
-  "successRate": "85.2%",
+  "updatedAt": "2026-10-25T00:43:07.721Z",
+  "processed": 400,
+  "failed": 230,
+  "successRate": "63.5%",
   "tierBreakdown": {
-    "playwright": 20,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 178,
+    "amp": 9,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
-    "brightdata": 0,
+    "scrapingdog": 24,
+    "scrapingbee": 18,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 141
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-25T00:34:27.415Z",
+      "t": "2026-10-24T21:48:46.832Z",
       "event": "bb-session",
-      "session": "8692bbc0",
-      "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
+      "session": "9442bac6",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-25T00:34:28.228Z",
+      "t": "2026-10-24T21:48:47.509Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-25T00:39:45.296Z",
+      "t": "2026-10-24T21:50:17.294Z",
       "event": "bb-session",
-      "session": "7f1a44fc",
-      "url": "https://www.nytimes.com/2025/06/25/theater/lowcountry-review.html"
+      "session": "8ebced1d",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-10-25T00:39:46.259Z",
+      "t": "2026-10-24T21:50:17.919Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-24T22:09:43.178Z",
+      "event": "bb-session",
+      "session": "8d2c77b8",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-24T22:09:43.869Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
