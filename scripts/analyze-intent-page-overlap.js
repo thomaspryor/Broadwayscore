@@ -15,6 +15,7 @@
 
 const { getAccessToken, loadServiceAccount, SCOPE_WEBMASTERS, SITE_URL_GSC } = require('./submit-google-indexing');
 const { describeGscError } = require('./lib/gsc-error-hint');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const SITE = encodeURIComponent(SITE_URL_GSC);
 const arg = (name, dflt) => {
@@ -74,6 +75,10 @@ function groupByQuery(rows) {
 }
 
 async function main() {
+  if (hasHelpFlag(process.argv)) {
+    console.log('Usage: node scripts/analyze-intent-page-overlap.js [--days=90] [--min-imp=10] [--json]\nRead-only GSC query+page overlap report for /guides, /best, /browse (needs GOOGLE_INDEXING_KEY).');
+    return;
+  }
   const serviceAccount = loadServiceAccount();
   clientEmail = serviceAccount.client_email;
   const token = await getAccessToken(serviceAccount, SCOPE_WEBMASTERS);
