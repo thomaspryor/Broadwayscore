@@ -1,0 +1,44 @@
+{
+  "issueNumber": "bro-5687",
+  "planId": "3a7c1272-d81e-4795-a0b0-9e8a6801fa47",
+  "status": "applied",
+  "createdAt": "2026-10-19T13:42:25Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5687 (owner chose option A): declare Angel's Bone's Manchester premiere (ENO / Factory International, Aviva Studios, 12-16 May 2026) as an earlier run of the same production, so its May reviews count toward the London Coliseum run, as The Car Man, Carmen, Arcadia and My Neighbour Totoro already do.",
+    "steps": [
+      "append the earlier run to priorRuns"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "angels-bone-west-end-2026",
+        "field": "priorRuns",
+        "oldValue": null,
+        "newValue": [
+          {
+            "openingDate": "2026-05-12",
+            "closingDate": "2026-05-16",
+            "venue": "Aviva Studios, Manchester",
+            "note": "ENO / Factory International premiere of the same production (BRO-5687)"
+          }
+        ],
+        "description": "Same ENO production premiered at Aviva Studios, Manchester 12-16 May 2026 before the London Coliseum run (opens 2026-10-17); owner decision BRO-5687 option A."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T14:27:57.540Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: priorRuns updated for angels-bone-west-end-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

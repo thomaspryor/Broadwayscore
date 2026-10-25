@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-5693",
+  "planId": "c98b0c0d-613c-440a-8d22-e1c386f4b23a",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5693: remove a cross-show stub (Evening Standard Rigoletto/Opera Holland Park review filed under No I.D.). The slug-mismatch check no longer flags The Stage /reviews/<id> URLs (code fix). Deleting the Rigoletto stub also removes its stray 4/5 score from No I.D.'s critic score on the next rebuild.",
+    "steps": [
+      "Stub with no text; url is a different production (Rigoletto), already flagged url_content_mismatch. Deleted so it stops tripping the lifetime sweep."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "no-i-d-west-end-2023/standard--barry-millington.json",
+        "description": "Rigoletto (Opera Holland Park) review URL filed under No I.D.; contentTier stub, no text, url_content_mismatch."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T13:35:29.485Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted no-i-d-west-end-2023/standard--barry-millington.json"
+    }
+  ],
+  "executedIn": "ci"
+}

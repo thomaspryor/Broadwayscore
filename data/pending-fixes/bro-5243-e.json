@@ -1,0 +1,142 @@
+{
+  "issueNumber": "bro-5243-e",
+  "planId": "4ecc1896-d564-4826-a3dc-34f112b21550",
+  "status": "partial",
+  "createdAt": "2026-10-14T09:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (e), found in the 2026-10-14 08:17 backfill pass: WSJ rows credited to Charles Isherwood before he was the Journal's critic (Teachout's reviews shown under his name on a-christmas-carol-2019, is-this-a-room-2021, company-2021; a duplicate invented row on sunset-boulevard-2017), a 2024 film review filed on mean-girls-2018, and a two-show column on prince-of-broadway-2017 that would be scored with the other show's rave.",
+    "steps": [
+      "criticName -> Terry Teachout on 3 rows whose text is signed by Teachout",
+      "wrongAttribution on sunset-boulevard-2017 Isherwood row",
+      "wrongProduction on mean-girls-2018 Isherwood row",
+      "pin prince-of-broadway-2017 at 72 (hand-read section)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "a-christmas-carol-2019/wsj--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Terry Teachout",
+        "description": "BRO-5243 backfill pass 2026-10-14: the stored WSJ text (2019-11-28) ends with Teachout's sign-off (\"Write to him at tteachout@wsj.com\"); Isherwood became the Journal's theater critic only after Terry Teachout died (2022-01-13). The live site credits this review to Isherwood. Same fix the corpus already carries on all-my-sons-2019, linda-vista-2019, grand-horizons-2020, aint-too-proud-2019 and clydes-2021 (file name unchanged, criticName corrected)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "is-this-a-room-2021/wsj--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Terry Teachout",
+        "description": "BRO-5243 backfill pass 2026-10-14: the stored WSJ text (2021-10-13) ends with Teachout's sign-off (\"Write to him at tteachout@wsj.com\"); Isherwood became the Journal's theater critic only after Terry Teachout died (2022-01-13). The live site credits this review to Isherwood. Same fix the corpus already carries on all-my-sons-2019, linda-vista-2019, grand-horizons-2020, aint-too-proud-2019 and clydes-2021 (file name unchanged, criticName corrected)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "company-2021/wsj--charles-isherwood.json",
+        "field": "criticName",
+        "oldValue": "Charles Isherwood",
+        "newValue": "Terry Teachout",
+        "description": "BRO-5243 backfill pass 2026-10-14: the stored WSJ text (2021-12-10) ends with Teachout's sign-off (\"Write to him at tteachout@wsj.com\"); Isherwood became the Journal's theater critic only after Terry Teachout died (2022-01-13). The live site credits this review to Isherwood. Same fix the corpus already carries on all-my-sons-2019, linda-vista-2019, grand-horizons-2020, aint-too-proud-2019 and clydes-2021 (file name unchanged, criticName corrected)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2017/wsj--charles-isherwood.json",
+        "field": "wrongAttribution",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243: a second WSJ row for the 2017 revival credited to Isherwood (168-char summary, score 63) next to Teachout's real 4,866-char review (44); Isherwood became the Journal's theater critic only after Terry Teachout died (2022-01-13). The site counts the WSJ review twice."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "sunset-boulevard-2017/wsj--charles-isherwood.json",
+        "field": "wrongAttributionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: Isherwood became the Journal's theater critic only after Terry Teachout died (2022-01-13); the 2017 WSJ review is Teachout's (wsj--terry-teachout.json)",
+        "description": "Why."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mean-girls-2018/wsj--charles-isherwood.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5243: the url is Isherwood's WSJ review of the 2024 Mean Girls movie musical (/arts-culture/film/, Renee Rapp, Angourie Rice), filed on the 2018 Broadway production. Not live today; flagged so it never becomes live."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mean-girls-2018/wsj--charles-isherwood.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: 2024 film review (wsj.com/arts-culture/film/mean-girls-review-musical-...), not the 2018 Broadway production",
+        "description": "Why."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-of-broadway-2017/wsj--terry-teachout.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 72,
+        "description": "BRO-5243 backfill pass 2026-10-14: the newly recovered body is Teachout's two-show column (Prince of Broadway, then a rave for Barrington Stage's 'Company'). Its production boxes have no brackets, so the section finder and multi-show detector miss it and an LLM score would read the Company rave. Hand-read Prince section: 'looks and sounds fabulous', 'you'll go home happy', but a 'momentum-killing' book and 'more like a pledge-week TV special than a full-fledged Broadway show': positive with reservations, 72."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-of-broadway-2017/wsj--terry-teachout.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "BRO-5243: hand-read Prince of Broadway section of a two-show column (the rest reviews Barrington Stage's Company); positive with reservations",
+        "description": "Why the score is pinned."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T09:28:19.042Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "a-christmas-carol-2019/wsj--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Terry Teachout\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "is-this-a-room-2021/wsj--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Terry Teachout\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "company-2021/wsj--charles-isherwood.json criticName: \"Charles Isherwood\" -> \"Terry Teachout\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "sunset-boulevard-2017/wsj--charles-isherwood.json wrongAttribution applied, but the write guard also changed _temporalGuardBlocked, criticName; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sunset-boulevard-2017/wsj--charles-isherwood.json wrongAttributionReason: null -> \"BRO-5243: Isherwood became the Journal's theater critic only after Terry Teachout died (2022-01-13); the 2017 WSJ review is Teachout's (wsj--terry-teachout.json)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "mean-girls-2018/wsj--charles-isherwood.json wrongProduction applied, but the write guard also changed _temporalGuardBlocked, criticName; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "mean-girls-2018/wsj--charles-isherwood.json wrongProductionReason: null -> \"BRO-5243: 2024 film review (wsj.com/arts-culture/film/mean-girls-review-musical-...), not the 2018 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-of-broadway-2017/wsj--terry-teachout.json humanReviewScore: null -> 72"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-of-broadway-2017/wsj--terry-teachout.json humanReviewNote: null -> \"BRO-5243: hand-read Prince of Broadway section of a two-show column (the rest reviews Barrington Stage's Company); positive with reservations\""
+    }
+  ]
+}

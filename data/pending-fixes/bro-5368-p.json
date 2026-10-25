@@ -1,0 +1,74 @@
+{
+  "issueNumber": "bro-5368-p",
+  "planId": "78a2176d-e2c2-4258-88ff-125ec7d4433d",
+  "status": "applied",
+  "createdAt": "2026-10-14T21:14:21.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5368 (p): move 4 Apollo 2025 reviews filed under the Wyndham's 2026 show to the Apollo 2025 show, which has no row for these outlets.",
+    "steps": [
+      "review-file-op move x4 (no overwrite)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "christmas-carol-goes-wrong-west-end-2026/standard--nick-curtis.json",
+        "destPath": "christmas-carol-goes-wrong-apollo-west-end-2025/standard--nick-curtis.json",
+        "description": "Nick Curtis's Standard review of the Apollo run (url .../christmas-carol-goes-wrong-apollo-theatre-review-b1262590.html, 2025-12-15). Filed under the 2026 Wyndham's show, where BRO-5333 excludes it as a prior-run review that belongs on its sibling; the Apollo show has no Standard row."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "christmas-carol-goes-wrong-west-end-2026/broadwayworld--kat-mokrynski.json",
+        "destPath": "christmas-carol-goes-wrong-apollo-west-end-2025/broadwayworld--kat-mokrynski.json",
+        "description": "Kat Mokrynski's BroadwayWorld review of the Apollo run (url .../Review-CHRISTMAS-CAROL-GOES-WRONG-Apollo-The..., 2025-12-16). The Apollo show has no BroadwayWorld row."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "christmas-carol-goes-wrong-west-end-2026/london-box-office--stuart-king.json",
+        "destPath": "christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json",
+        "description": "Stuart King's London Box Office review of the Apollo run (url .../christmas-carol-goes-wrong-apollo-theatre-revi..., 2025-12-16). The Apollo show has no London Box Office review row."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "christmas-carol-goes-wrong-west-end-2026/telegraph--shehrazade-zafar-arif.json",
+        "destPath": "christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json",
+        "description": "Dominic Cavendish's Telegraph review of the Apollo run (url .../christmas-carol-goes-wrong-mischief-review/, 2025-12-14, criticName already Cavendish, content verifier valid high). File name named the wrong critic. The Apollo show's telegraph file is an LBO round-up marked invalid, so no Telegraph review shows there."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T21:40:33.419Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved christmas-carol-goes-wrong-west-end-2026/standard--nick-curtis.json → christmas-carol-goes-wrong-apollo-west-end-2025/standard--nick-curtis.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved christmas-carol-goes-wrong-west-end-2026/broadwayworld--kat-mokrynski.json → christmas-carol-goes-wrong-apollo-west-end-2025/broadwayworld--kat-mokrynski.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved christmas-carol-goes-wrong-west-end-2026/london-box-office--stuart-king.json → christmas-carol-goes-wrong-apollo-west-end-2025/london-box-office--stuart-king.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved christmas-carol-goes-wrong-west-end-2026/telegraph--shehrazade-zafar-arif.json → christmas-carol-goes-wrong-apollo-west-end-2025/telegraph--dominic-cavendish.json",
+      "cleared": []
+    }
+  ]
+}

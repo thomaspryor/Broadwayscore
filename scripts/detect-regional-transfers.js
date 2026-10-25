@@ -1,0 +1,108 @@
+#!/usr/bin/env node
+'use strict';
+/**
+ * Apply regional→Broadway transfer pairs detected by
+ * scripts/lib/transfer-detection.js (pure logic + tests live there).
+ *
+ * Sets transferredTo on the regional show and transferOf on the Broadway
+ * show (the reciprocal pair validate-data enforces), writes shows.json with
+ * the canonical formatting, and (with --email) notifies the owner. Ambiguous
+ * matches are reported, never applied.
+ *
+ * Wired into update-show-status.yml after discovery — a Broadway entry for a
+ * tracked tryout gets its cross-link the same run it's discovered.
+ *
+ * Flags:
+ *   --dry-run   detect + print, write nothing
+ *   --email     send owner a notification for applied pairs / ambiguities
+ */
+
+const fs = require('fs');
+const path = require('path');
+const { detectTransferPairs, detectLondonTransferPairs } = require('./lib/transfer-detection');
+const { loadShows, saveShows } = require('./lib/shows-write-guard');
+
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `detect-regional-transfers.js — Apply regional→Broadway transfer pairs detected by.
+
+Usage:
+  node scripts/detect-regional-transfers.js [options]
+  node scripts/detect-regional-transfers.js --help, -h    print this usage and exit
+`;
+const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
+const args = process.argv.slice(2);
+const dryRun = args.includes('--dry-run');
+const emailAlerts = args.includes('--email');
+
+async function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const data = loadShows();
+  const shows = data.shows || data;
+  const results = detectTransferPairs(shows);
+  const applied = [];
+  const ambiguous = results.filter(r => !r.broadwayId);
+
+  for (const pair of results.filter(r => r.broadwayId)) {
+    const regional = shows.find(s => s.id === pair.regionalId);
+    const broadway = shows.find(s => s.id === pair.broadwayId);
+    if (!regional || !broadway) continue;
+    console.log(`LINK: ${pair.regionalId} → ${pair.broadwayId} (${pair.reason})`);
+    if (!dryRun) {
+      regional.transferredTo = broadway.id;
+      broadway.transferOf = regional.id;
+    }
+    applied.push(pair);
+  }
+  for (const a of ambiguous) {
+    console.log(`::warning::transfer detection ambiguous for ${a.regionalId}: ${a.reason} — link manually`);
+  }
+
+  // London transfers / returns (S5-T5): suggestions only, never written —
+  // validate-data reserves transferOf/transferredTo for regional tryouts, and
+  // the priorRuns[] entry below is the cross-link the later row should carry.
+  for (const p of detectLondonTransferPairs(shows)) {
+    if (!p.earlierId) {
+      console.log(`::warning::London transfer detection ambiguous for ${p.laterId}: ${p.reason} — add priorRuns by hand`);
+    } else {
+      console.log(`SUGGEST priorRuns: ${p.laterId} ← ${p.earlierId} (${p.reason}) — add to ${p.laterId}: ${JSON.stringify(p.suggestedPriorRun)}`);
+    }
+  }
+
+  if (applied.length === 0 && ambiguous.length === 0) {
+    console.log('No new regional transfer pairs detected.');
+    return;
+  }
+  if (dryRun) { console.log('(dry-run: no writes)'); return; }
+
+  if (applied.length > 0) {
+    if (data._meta) data._meta.lastUpdated = new Date().toISOString();
+    saveShows(data);
+    console.log(`Wrote shows.json with ${applied.length} new transfer pair(s).`);
+  }
+
+  if (emailAlerts && (applied.length > 0 || ambiguous.length > 0)) {
+    try {
+      const { sendEmailAlert } = require('./lib/discord-notify');
+      await sendEmailAlert({
+        title: applied.length > 0
+          ? `${applied.length} regional tryout(s) linked to Broadway transfers`
+          : 'Ambiguous regional transfer match needs a human',
+        severity: 'info',
+        description:
+          'Auto-detected regional→Broadway transfer pair(s). Both show pages now cross-link and the Broadway page carries the tryout score. Ambiguous matches (if any, below) were NOT applied — set transferOf/transferredTo by hand.',
+        fields: [
+          ...applied.map(p => ({ name: `${p.regionalId} → ${p.broadwayId}`, value: p.reason })),
+          ...ambiguous.map(a => ({ name: `${a.regionalId} (NOT applied)`, value: a.reason })),
+        ],
+      });
+    } catch (e) {
+      console.warn(`::warning::transfer notification email failed: ${e.message}`);
+    }
+  }
+}
+
+if (require.main === module) {
+  main().catch(err => { console.error('Fatal:', err); process.exit(1); });
+}

@@ -1,0 +1,84 @@
+{
+  "issueNumber": "bro-5020-c",
+  "planId": "b79ee20a-16f9-41ec-8c8b-bc09636091f5",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5020 checker decision (b) for grey-house: undo the stale-closure classifier auto-Fizzle of 2026-10-10 (run 38094523294, no hard citation) to TBD with recoupment unknown, and lock it with humanReviewedDesignation so the classifier does not re-apply it. Closed TBD shows show Undisclosed and no model bar.",
+    "steps": [
+      "Set designation Fizzle -> TBD",
+      "Set recouped false -> null",
+      "Clear the inferred recoupedSource",
+      "Set humanReviewedDesignation true"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "TBD",
+        "description": "grey-house: designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "recouped",
+        "oldValue": false,
+        "newValue": null,
+        "description": "grey-house: recouped"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "recoupedSource",
+        "oldValue": "Inferred: closed 1168 days ago, no trade-press recoupment found",
+        "newValue": null,
+        "description": "grey-house: recoupedSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "grey-house",
+        "showId": "grey-house",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "grey-house: humanReviewedDesignation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-11T07:57:45.737Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recouped updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for grey-house"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for grey-house"
+    }
+  ]
+}

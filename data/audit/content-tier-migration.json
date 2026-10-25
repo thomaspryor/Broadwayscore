@@ -1,0 +1,108 @@
+{
+  "migrationDate": "2026-02-01T05:13:15.180Z",
+  "totalReviews": 1685,
+  "distribution": {
+    "complete": 1192,
+    "truncated": 78,
+    "excerpt": 204,
+    "stub": 1,
+    "invalid": 210
+  },
+  "percentages": {
+    "complete": "70.7%",
+    "truncated": "4.6%",
+    "excerpt": "12.1%",
+    "stub": "0.1%",
+    "invalid": "12.5%"
+  },
+  "examples": {
+    "complete": [
+      {
+        "file": "andygram--andrew-c-mcgibbon.json",
+        "show": "aladdin-2014",
+        "reason": "Full review text",
+        "wordCount": 561
+      },
+      {
+        "file": "becca-on-broadway--becca.json",
+        "show": "aladdin-2014",
+        "reason": "Full review text",
+        "wordCount": 812
+      },
+      {
+        "file": "chicagotribune--chris-jones.json",
+        "show": "aladdin-2014",
+        "reason": "Full review text",
+        "wordCount": 878
+      }
+    ],
+    "truncated": [
+      {
+        "file": "ew--thom-geier.json",
+        "show": "aladdin-2014",
+        "reason": "Missing proper ending or other signals",
+        "wordCount": 329
+      },
+      {
+        "file": "uinterview--danny-graugnard.json",
+        "show": "aladdin-2014",
+        "reason": "Missing proper ending or other signals",
+        "wordCount": 351
+      },
+      {
+        "file": "deadline--greg-evans.json",
+        "show": "appropriate-2023",
+        "reason": "Short text (52 words)",
+        "wordCount": 52
+      }
+    ],
+    "excerpt": [
+      {
+        "file": "ap--mark-kennedy.json",
+        "show": "aladdin-2014",
+        "reason": "Only aggregator excerpts available",
+        "wordCount": 0
+      },
+      {
+        "file": "broadway-voice--kristen-balzano.json",
+        "show": "aladdin-2014",
+        "reason": "Only aggregator excerpts available",
+        "wordCount": 0
+      },
+      {
+        "file": "catholic-transcript--bernard-carragher.json",
+        "show": "aladdin-2014",
+        "reason": "Only aggregator excerpts available",
+        "wordCount": 0
+      }
+    ],
+    "stub": [
+      {
+        "file": "USATODAY--david-patrick-stearns.json",
+        "show": "the-lion-king-1997",
+        "reason": "No text content",
+        "wordCount": 0
+      }
+    ],
+    "invalid": [
+      {
+        "file": "hollywood-reporter--david-rooney.json",
+        "show": "aladdin-2014",
+        "reason": "Marked as garbage",
+        "wordCount": 0
+      },
+      {
+        "file": "theater-pizzazz--sandi-durell.json",
+        "show": "aladdin-2014",
+        "reason": "Marked as garbage",
+        "wordCount": 0
+      },
+      {
+        "file": "thisbroadsway--sandra-mcfarland.json",
+        "show": "aladdin-2014",
+        "reason": "Marked as garbage",
+        "wordCount": 0
+      }
+    ]
+  }
+}

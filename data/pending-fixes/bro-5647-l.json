@@ -1,0 +1,161 @@
+{
+  "issueNumber": "bro-5647-l",
+  "planId": "9a917ed8-8f74-4a48-a074-3e9ffd1c570b",
+  "status": "applied",
+  "createdAt": "2026-10-21T15:03:02.352Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Two primary-source upgrades found while auditing the final Oct 21 Gemini batch (both re-checked here): Ain't No Mo's amended SEC Form D/A states the offering was capitalized at $5,696,583 (replacing the NYT up-to $5.5M from plan bro-5647-k), and Tootsie's weekly figure becomes Broadway Journal's $858,000 break-even from offering documents (was an unsourced $800,000; Gemini had wrongly given this figure to Hillary and Clinton). Old values from the private core data at 73898e0.",
+    "steps": [
+      "Ain't No Mo' amount raised",
+      "Tootsie sourced break-even"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-no-mo-2022",
+        "showId": "aint-no-mo-2022",
+        "field": "capitalization",
+        "oldValue": 5500000,
+        "newValue": 5696583,
+        "description": "aint-no-mo-2022: the amended Form D gives the amount raised"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-no-mo-2022",
+        "showId": "aint-no-mo-2022",
+        "field": "capitalizationSource",
+        "oldValue": "New York Times (Dec 9, 2022), on its early closing: \"The show was capitalized for up to $5.5 million,\" based on an SEC filing. https://www.nytimes.com/2022/12/09/theater/aint-no-mo-broadway-closing.html",
+        "newValue": "SEC Form D/A filing (Ain't No Mo Broadway LLC, CIK 0001914790, filed Jan 24, 2023): \"New maximum capitalization was $6,000,000/new minimum capitalization was $5,000,000 - offering capitalized at $5,696,583.\" The New York Times (Dec 9, 2022) had reported \"capitalized for up to $5.5 million\" from the earlier filing. https://www.sec.gov/Archives/edgar/data/1914790/000191479023000001/xslFormDX01/primary_doc.xml",
+        "description": "aint-no-mo-2022: cite the amended filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-no-mo-2022",
+        "showId": "aint-no-mo-2022",
+        "field": "notes",
+        "oldValue": "Jordan E. Cooper's comedy at the Belasco, produced by Lee Daniels; opened Dec 1, 2022 and closed Dec 23, 2022. Capitalized for up to $5.5 million.",
+        "newValue": "Jordan E. Cooper's comedy at the Belasco, produced by Lee Daniels; opened Dec 1, 2022 and closed Dec 23, 2022. Its amended SEC filing (Jan 2023) shows the offering capitalized at $5.7 million.",
+        "description": "aint-no-mo-2022: notes give the raised amount"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-no-mo-2022",
+        "showId": "aint-no-mo-2022",
+        "field": "sources",
+        "oldValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/12/09/theater/aint-no-mo-broadway-closing.html",
+            "date": "2022-12-09"
+          }
+        ],
+        "newValue": [
+          {
+            "type": "trade",
+            "url": "https://www.nytimes.com/2022/12/09/theater/aint-no-mo-broadway-closing.html",
+            "date": "2022-12-09"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/1914790/000191479023000001/xslFormDX01/primary_doc.xml",
+            "date": "2023-01-24"
+          }
+        ],
+        "description": "aint-no-mo-2022: add the amended filing"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "weeklyRunningCost",
+        "oldValue": 800000,
+        "newValue": 858000,
+        "description": "tootsie-2019: sourced weekly break-even"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "weeklyRunningCostSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (Apr 30, 2019): \"Tootsie ... is capitalized at $20 million and has a weekly breakeven of $858,000, according to offering documents obtained by Broadway Journal.\" https://www.broadwayjournal.com/p/a-nerds-guide-to-the-2019-tony-nominations",
+        "description": "tootsie-2019: cite it"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "weeklyRunningCostBasis",
+        "oldValue": null,
+        "newValue": "all-in",
+        "description": "tootsie-2019: a break-even includes royalties"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tootsie-2019",
+        "showId": "tootsie-2019",
+        "field": "costMethodology",
+        "oldValue": "sec-filing",
+        "newValue": "trade-reported",
+        "description": "tootsie-2019: reported by Broadway Journal from offering documents"
+      }
+    ]
+  },
+  "executedAt": "2026-10-21T15:18:00.267Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for aint-no-mo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for tootsie-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for tootsie-2019"
+    }
+  ],
+  "executedIn": "ci"
+}

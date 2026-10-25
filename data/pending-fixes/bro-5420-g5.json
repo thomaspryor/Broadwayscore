@@ -1,0 +1,334 @@
+{
+  "issueNumber": "bro-5420-g5",
+  "planId": "76a656a8-f62e-47a2-9da4-1c55a389c8c4",
+  "status": "partial",
+  "createdAt": "2026-10-16T04:45:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5420 (g5): London reviews live on Broadway shows (audit-uk-rows-on-broadway: UK outlet or Theatre Record, dated outside the Broadway opening window and priorRuns; each url hand-checked and names a London venue or production). This plan: flag wrongProduction (no London show holds the date), 24 actions.",
+    "steps": [
+      "flag"
+    ],
+    "riskLevel": "medium",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-2008/standard--nick-curtis.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2024-05-22 review of a London production (https://www.standard.co.uk/culture/theatre/passing-strange-at-the-young-vic-review-theatre-b1159205.html), not the Broadway run 2008-02-28..2008-07-20.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "passing-strange-2008/standard--nick-curtis.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/all-that-dazzles-uk--sam-waite.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: all-that-dazzles-uk 2023-12-15 review of a London production (https://www.allthatdazzles.co.uk/post/review-rock-n-roll-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/all-that-dazzles-uk--sam-waite.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/artsdesk--aleks-sierz.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: artsdesk 2023-12-18 review of a London production (https://theartsdesk.com/theatre/rock-n-roll-hampstead-theatre-review-exciting-music-uneven-staging), not the Broadway run 2007-11-04..2008-03-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/artsdesk--aleks-sierz.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/london-theatre--matt-wolf.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2023-12-17 review of a London production (https://www.londontheatre.co.uk/reviews/rock-n-roll-review-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/london-theatre--matt-wolf.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/standard--tim-bano.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: standard 2023-12-13 review of a London production (https://www.standard.co.uk/culture/theatre/rock-n-roll-hampstead-theatre-review-tom-stoppard-b1126600.html), not the Broadway run 2007-11-04..2008-03-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/standard--tim-bano.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: west-end-best-friend 2023-12-13 review of a London production (https://www.westendbestfriend.co.uk/news/review-rock-n-roll-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/london-theatre--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2024-05-24 review of a London production (https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-tom-holland-stars-in-a-sexy-and-haunting-show-jamie-lloyd), not the Broadway run 2024-10-24..2025-02-16.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/london-theatre--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/whatsonstage--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: whatsonstage 2024-05-23 review of a London production (https://www.whatsonstage.com/news/romeo-and-juliet-review-tom-holland-and-francesca-amewudah-rivers-shine-in-stripped-back-shakespeare_1603000/), not the Broadway run 2024-10-24..2025-02-16.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-juliet-2024/whatsonstage--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/london-theatre--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: london-theatre 2023-10-04 review of a London production (https://www.londontheatre.co.uk/reviews/stephen-sondheims-old-friends-review-gielgud-theatre), not the Broadway run 2025-04-08..2025-06-29.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/london-theatre--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/west-end-best-friend--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: west-end-best-friend 2023-10-04 review of a London production (https://www.westendbestfriend.co.uk/news/review-stephen-sondheims-old-friends-gielgud-theatre), not the Broadway run 2025-04-08..2025-06-29.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "stephen-sondheims-old-friends-2025/west-end-best-friend--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/i-paper--fiona-mountford.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: i-paper 2022-10-27 review of a London production (https://inews.co.uk/culture/arts/tammy-faye-almeida-review-elton-john-musical-1937059), not the Broadway run 2024-11-14..2024-12-08.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tammy-faye-2024/i-paper--fiona-mountford.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-assembled-parties-2013/all-that-dazzles-uk--daz-gale.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-5420: all-that-dazzles-uk 2025-10-24 review of a London production (https://www.allthatdazzles.co.uk/post/review-the-assembled-parties-hampstead-theatre), not the Broadway run 2013-04-17..2013-07-28.",
+        "description": "BRO-5420: reason for the flag below."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-assembled-parties-2013/all-that-dazzles-uk--daz-gale.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5420: London review live on a Broadway show; no London show in shows.json whose run contains the date, so flag rather than move."
+      }
+    ]
+  },
+  "executedAt": "2026-10-16T05:21:16.540Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "passing-strange-2008/standard--nick-curtis.json wrongProductionReason: null -> \"BRO-5420: standard 2024-05-22 review of a London production (https://www.standard.co.uk/culture/theatre/passing-strange-at-the-young-vic-review-theatre-b1159205.html), not the Broadway run 2008-02-28..2008-07-20.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/all-that-dazzles-uk--sam-waite.json wrongProductionReason: null -> \"BRO-5420: all-that-dazzles-uk 2023-12-15 review of a London production (https://www.allthatdazzles.co.uk/post/review-rock-n-roll-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/artsdesk--aleks-sierz.json wrongProductionReason: null -> \"BRO-5420: artsdesk 2023-12-18 review of a London production (https://theartsdesk.com/theatre/rock-n-roll-hampstead-theatre-review-exciting-music-uneven-staging), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/london-theatre--matt-wolf.json wrongProductionReason: null -> \"BRO-5420: london-theatre 2023-12-17 review of a London production (https://www.londontheatre.co.uk/reviews/rock-n-roll-review-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/standard--tim-bano.json wrongProductionReason: null -> \"BRO-5420: standard 2023-12-13 review of a London production (https://www.standard.co.uk/culture/theatre/rock-n-roll-hampstead-theatre-review-tom-stoppard-b1126600.html), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rock-n-roll-2007/west-end-best-friend--erifyli-gigante.json wrongProductionReason: null -> \"BRO-5420: west-end-best-friend 2023-12-13 review of a London production (https://www.westendbestfriend.co.uk/news/review-rock-n-roll-hampstead-theatre), not the Broadway run 2007-11-04..2008-03-09.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProductionReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-assembled-parties-2013/all-that-dazzles-uk--daz-gale.json wrongProductionReason: null -> \"BRO-5420: all-that-dazzles-uk 2025-10-24 review of a London production (https://www.allthatdazzles.co.uk/post/review-the-assembled-parties-hampstead-theatre), not the Broadway run 2013-04-17..2013-07-28.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
+}

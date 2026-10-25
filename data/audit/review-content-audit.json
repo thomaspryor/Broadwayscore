@@ -1,0 +1,577 @@
+{
+  "meta": {
+    "timestamp": "2026-01-28T20:52:50.360Z",
+    "totalReviews": 2128,
+    "sprintVersion": "4.0"
+  },
+  "summary": {
+    "sampled": 50,
+    "passed": 50,
+    "failed": 0,
+    "passRate": "100.0%",
+    "orphanReviews": 0,
+    "urlLess": 55,
+    "urlMismatches": 23,
+    "noShowMentions": 1,
+    "dateAnomalies": 9,
+    "dateAnomalyRate": "0.4%"
+  },
+  "validation": {
+    "passRatePassed": true,
+    "orphansPassed": true,
+    "dateAnomaliesPassed": true,
+    "overallPassed": true
+  },
+  "urlOutletMatching": {
+    "total": 2073,
+    "matched": 1638,
+    "mismatched": 23,
+    "unknownDomain": 407,
+    "couldNotParse": 5,
+    "mismatches": [
+      {
+        "file": "and-juliet-2022/city-beat--brain-scott-lipton.json",
+        "url": "https://cititour.com/NYC_Broadway/Juliet/1111",
+        "claimedOutlet": "city-beat",
+        "expectedOutlet": "cititour",
+        "domain": "cititour.com"
+      },
+      {
+        "file": "and-juliet-2022/nydailynews--chris-jones.json",
+        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-ny-broadway-and-juliet-review-20221118-mtb3hrq7jrci5hprgdilaqpop4-story.html",
+        "claimedOutlet": "nydailynews",
+        "expectedOutlet": "chicagotribune",
+        "domain": "chicagotribune.com"
+      },
+      {
+        "file": "buena-vista-social-club-2025/timeout--adam-feldman.json",
+        "url": "https://newyorktheater.me/2025/03/19/buena-vista-social-club-broadway-review/",
+        "claimedOutlet": "timeout",
+        "expectedOutlet": "nyt-theater",
+        "domain": "newyorktheater.me"
+      },
+      {
+        "file": "cabaret-2024/ew--emlyn-travis.json",
+        "url": "https://www.amny.com/news/review-cabaret-revival-2024/",
+        "claimedOutlet": "ew",
+        "expectedOutlet": "amny",
+        "domain": "amny.com"
+      },
+      {
+        "file": "grey-house-2023/nydailynews--chris.json",
+        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-broadway-review-grey-house-red-orchid-20230602-y2d4cp7nkbhxjcfi7p75r3nqay-story.html",
+        "claimedOutlet": "nydailynews",
+        "expectedOutlet": "chicagotribune",
+        "domain": "chicagotribune.com"
+      },
+      {
+        "file": "gutenberg-2023/nydailynews--chris.json",
+        "url": "https://www.chicagotribune.com/entertainment/theater/reviews/ct-ent-gutenberg-musical-broadway-review-20231013-zuik74fcf5hxvnjlqdrmfffb3u-story.html",
+        "claimedOutlet": "nydailynews",
+        "expectedOutlet": "chicagotribune",
+        "domain": "chicagotribune.com"
+      },
+      {
+        "file": "hadestown-2019/ap--thom-geier.json",
+        "url": "https://www.thewrap.com/hadestown-broadway-review-anais-mitchell-musical-orpheus-eurydice-trump/",
+        "claimedOutlet": "ap",
+        "expectedOutlet": "thewrap",
+        "domain": "thewrap.com"
+      },
+      {
+        "file": "hadestown-2019/theaterscenenet--victor-gluck.json",
+        "url": "http://www.theaterscene.net/musicals/broadway/hadestown/victor-gluck/",
+        "claimedOutlet": "theaterscenenet",
+        "expectedOutlet": "theaterscene",
+        "domain": "theaterscene.net"
+      },
+      {
+        "file": "hamilton-2015/theaterscenenet--victor-gluck.json",
+        "url": "http://www.theaterscene.net/musicals/hamilton-broadway/victor-gluck/",
+        "claimedOutlet": "theaterscenenet",
+        "expectedOutlet": "theaterscene",
+        "domain": "theaterscene.net"
+      },
+      {
+        "file": "harry-potter-2021/ap--diana-snyder.json",
+        "url": "https://www.telegraph.co.uk/theatre/what-to-see/could-become-longest-running-broadway-play-harry-potter-cursed/",
+        "claimedOutlet": "ap",
+        "expectedOutlet": "telegraph",
+        "domain": "telegraph.co.uk"
+      },
+      {
+        "file": "illinoise-2024/theaterscenenet--victor-gluck.json",
+        "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
+        "claimedOutlet": "theaterscenenet",
+        "expectedOutlet": "theaterscene",
+        "domain": "theaterscene.net"
+      },
+      {
+        "file": "just-in-time-2025/nytimes--adam-feldman.json",
+        "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff",
+        "claimedOutlet": "nytimes",
+        "expectedOutlet": "timeout",
+        "domain": "timeout.com"
+      },
+      {
+        "file": "liberation-2025/ew--emlyn-travis.json",
+        "url": "https://www.thewrap.com/liberation-broadway-review/",
+        "claimedOutlet": "ew",
+        "expectedOutlet": "thewrap",
+        "domain": "thewrap.com"
+      },
+      {
+        "file": "merrily-we-roll-along-2023/nydailynews--chris.json",
+        "url": "https://www.chicagotribune.com/entertainment/theater/broadway/ct-ent-merrily-we-roll-along-broadway-review-radcliffe-20231010-plf5izps4zc25gpzvf6mcsuqoa-story.html",
+        "claimedOutlet": "nydailynews",
+        "expectedOutlet": "chicagotribune",
+        "domain": "chicagotribune.com"
+      },
+      {
+        "file": "moulin-rouge-2019/ap--diane-snyder.json",
+        "url": "https://www.telegraph.co.uk/theatre/what-to-see/moulin-rouge-musical-al-hirschfeld-theatre-new-york-review-exactly/",
+        "claimedOutlet": "ap",
+        "expectedOutlet": "telegraph",
+        "domain": "telegraph.co.uk"
+      },
+      {
+        "file": "moulin-rouge-2019/ap--robert-hofler.json",
+        "url": "https://www.thewrap.com/moulin-rouge-broadway-review-alex-timbers-baz-luhrmann-aaron-tveit-karen-olivo/",
+        "claimedOutlet": "ap",
+        "expectedOutlet": "thewrap",
+        "domain": "thewrap.com"
+      },
+      {
+        "file": "queen-versailles-2025/theaterscenenet--joseph-pisano.json",
+        "url": "https://www.theaterscene.net/musicals/broadway/the-queen-of-versailles/joseph-pisano/",
+        "claimedOutlet": "theaterscenenet",
+        "expectedOutlet": "theaterscene",
+        "domain": "theaterscene.net"
+      },
+      {
+        "file": "ragtime-2025/ew--shania-russell.json",
+        "url": "https://www.amny.com/entertainment/broadway/review-divided-america-ragtime-strikes-defiant-chord/",
+        "claimedOutlet": "ew",
+        "expectedOutlet": "amny",
+        "domain": "amny.com"
+      },
+      {
+        "file": "real-women-have-curves-2025/theaterscenenet--victor-gluck.json",
+        "url": "https://www.theaterscene.net/musicals/broadway/real-women-have-curves/victor-gluck/",
+        "claimedOutlet": "theaterscenenet",
+        "expectedOutlet": "theaterscene",
+        "domain": "theaterscene.net"
+      },
+      {
+        "file": "six-2021/theaterscenenet--joseph-pisano.json",
+        "url": "http://www.theaterscene.net/musicals/broadway/six-the-musical/joseph-pisano/",
+        "claimedOutlet": "theaterscenenet",
+        "expectedOutlet": "theaterscene",
+        "domain": "theaterscene.net"
+      }
+    ]
+  },
+  "urlLessReviews": {
+    "total": 55,
+    "withMinimumMetadata": 55,
+    "missingMetadata": 0,
+    "byShow": {
+      "an-enemy-of-the-people-2024": [
+        "bloomberg--jeremy-gerard.json",
+        "nydailynews--joe-dziemianowicz.json",
+        "village-voice--michael-musto.json"
+      ],
+      "appropriate-2023": [
+        "ew--allison-considine.json"
+      ],
+      "boop-2025": [
+        "ew--bob-verini.json"
+      ],
+      "cabaret-2024": [
+        "ew--amelia-merrill.json"
+      ],
+      "days-of-wine-and-roses-2024": [
+        "ew--bob-verini.json",
+        "ew--david-finkle.json"
+      ],
+      "gutenberg-2023": [
+        "ew--roma-torre.json"
+      ],
+      "hadestown-2019": [
+        "evening-standard--henry-hitchings.json",
+        "latimes--charles-mcnulty.json",
+        "newsday--linda-winer.json",
+        "towleroad--naveen-kumar.json"
+      ],
+      "harry-potter-2021": [
+        "amny--matt-windman.json",
+        "telegraph--diana-snyder.json"
+      ],
+      "heart-of-rock-and-roll-2024": [
+        "ew--elysa-gardner.json"
+      ],
+      "hells-kitchen-2024": [
+        "digital-journal--markos-papadatos.json"
+      ],
+      "here-lies-love-2023": [
+        "amny--matt-windman.json",
+        "nytimes--ben-brantley.json"
+      ],
+      "illinoise-2024": [
+        "ew--roma-torre.json"
+      ],
+      "just-for-us-2023": [
+        "toronto-star--philadelphia-joshua-chong.json"
+      ],
+      "lempicka-2024": [
+        "ew--elysa-gardner.json",
+        "nypost--philip-kennicott.json"
+      ],
+      "marjorie-prime-2025": [
+        "charles-isherwood--charles-isherwood.json"
+      ],
+      "mary-jane-2024": [
+        "ap--tapintonet.json",
+        "njcom--njcom.json",
+        "northjerseycom--northjerseycom.json"
+      ],
+      "maybe-happy-ending-2024": [
+        "dailybeast--tim-teeman.json",
+        "new-york-sun--elysa-gardner.json",
+        "usatoday--patrick-ryan.json"
+      ],
+      "mother-play-2024": [
+        "ew--allison-considine.json",
+        "ew--steven-suskin.json"
+      ],
+      "oedipus-2025": [
+        "cititour--scott-lipton.json"
+      ],
+      "patriots-2024": [
+        "barbara-hershey-and-ty-simpkins-in-insidious--lin-shaye.json"
+      ],
+      "prayer-for-the-french-republic-2024": [
+        "ew--helen-shaw.json",
+        "ew--roma-torre.json"
+      ],
+      "queen-versailles-2025": [
+        "ew--bob-verini.json"
+      ],
+      "redwood-2025": [
+        "katrina-stuart-santiago--katrina-stuart-santiago.json",
+        "vladimir-bunoan--vladimir-bunoan.json",
+        "wanggo-gallaga--wanggo-gallaga.json"
+      ],
+      "stereophonic-2024": [
+        "ew--allison-considine.json",
+        "ew--bob-verini.json"
+      ],
+      "the-great-gatsby-2024": [
+        "cititour--scott-lipton.json"
+      ],
+      "the-lion-king-1997": [
+        "broadway-voice--gregory-g-allen.json",
+        "columbus-dispatch--michael-grossberg.json",
+        "denver-post--sandra-brooks-dillard.json",
+        "milwaukee-journal-sentinel--damien-jaques.json",
+        "post-and-courier--dottie-ashley.json",
+        "sarasota-herald-tribune--jay-handelman.json",
+        "seattle-post-intelligencer--jeffrey-eric-jenkins.json",
+        "syracuse-herald-journal--joan-vadeboncoeur.json"
+      ],
+      "the-outsiders-2024": [
+        "guardian--adrian-horton.json"
+      ],
+      "the-whos-tommy-2024": [
+        "broadwayworld--jennifer-perry.json"
+      ],
+      "uncle-vanya-2024": [
+        "broadwayworld--gary-naylor.json"
+      ],
+      "water-for-elephants-2024": [
+        "nypost--elisabeth-vincentelli.json"
+      ]
+    },
+    "missingMetadataList": []
+  },
+  "showMentionCheck": {
+    "total": 2114,
+    "hasMention": 2103,
+    "noMention": 1,
+    "noContent": 24,
+    "noMentionList": [
+      {
+        "file": "and-juliet-2022/cititour--brian-scott-lipton.json",
+        "showTitle": "& Juliet",
+        "checksAttempted": [
+          "exact_title",
+          "partial_title",
+          "venue",
+          "cast_creative",
+          "year"
+        ]
+      }
+    ]
+  },
+  "excerptAnalysis": {
+    "total": 2128,
+    "withFullText": 1535,
+    "excerptOnly": 583,
+    "truncatedExcerpts": 7,
+    "stubs": 10,
+    "orphans": 0,
+    "orphanList": [],
+    "stubList": [
+      {
+        "file": "aladdin-2014/dailybeast--tim-teeman.json",
+        "outlet": "The Daily Beast",
+        "critic": "Tim Teeman",
+        "url": "https://www.thedailybeast.com/aladdin-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "and-juliet-2022/hollywood-reporter--frank-scheck.json",
+        "outlet": "The Hollywood Reporter",
+        "critic": "Frank Scheck",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/and-juliet-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "harry-potter-2021/nypost--johnny-oleksinski.json",
+        "outlet": "New York Post",
+        "critic": "Johnny Oleksinski",
+        "url": "https://nypost.com/2021/12/07/harry-potter-cursed-child-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "hells-kitchen-2024/digital-journal--markos-papadatos.json",
+        "outlet": "Digital Journal",
+        "critic": "Markos Papadatos",
+        "url": "https://playbill.com/article/reviews-what-do-critics-think-of-hells-kitchen-on-broadway",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "hells-kitchen-2024/washpost--peter-marks.json",
+        "outlet": "The Washington Post",
+        "critic": "Peter Marks",
+        "url": "https://www.washingtonpost.com/entertainment/theater/2024/04/20/hells-kitchen-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "marjorie-prime-2025/charles-isherwood--charles-isherwood.json",
+        "outlet": "Charles Isherwood",
+        "critic": "Charles Isherwood",
+        "url": null,
+        "status": "needs_url_discovery"
+      },
+      {
+        "file": "the-lion-king-1997/USATODAY--david-patrick-stearns.json",
+        "outlet": "USA Today",
+        "critic": "David Patrick Stearns",
+        "url": "https://www.usatoday.com/story/entertainment/1997/11/13/lion-king-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "the-lion-king-1997/nypost--clive-barnes.json",
+        "outlet": "New York Post",
+        "critic": "Clive Barnes",
+        "url": "https://nypost.com/1997/11/13/lion-king-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "the-outsiders-2024/dailybeast--tim-teeman.json",
+        "outlet": "The Daily Beast",
+        "critic": "Tim Teeman",
+        "url": "https://www.thedailybeast.com/the-outsiders-broadway-review/",
+        "status": "awaiting_collection"
+      },
+      {
+        "file": "wicked-2003/hollywood-reporter--frank-scheck.json",
+        "outlet": "The Hollywood Reporter",
+        "critic": "Frank Scheck",
+        "url": "https://www.hollywoodreporter.com/news/wicked-broadway-review-2003/",
+        "status": "awaiting_collection"
+      }
+    ],
+    "truncatedList": [
+      {
+        "file": "buena-vista-social-club-2025/pages-on-stages--mason-pilevsky.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 40
+          }
+        ]
+      },
+      {
+        "file": "doubt-2024/newyorker--vinson-cunningham.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 42
+          }
+        ]
+      },
+      {
+        "file": "hadestown-2019/reviews-off-broadway--scott-mitchell.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 46
+          }
+        ]
+      },
+      {
+        "file": "heart-of-rock-and-roll-2024/variety--frank-rizzo.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 48
+          }
+        ]
+      },
+      {
+        "file": "illinoise-2024/washpost--gloria-oladipo.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 49
+          }
+        ]
+      },
+      {
+        "file": "just-for-us-2023/nydailynews--chris-jones.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 47
+          }
+        ]
+      },
+      {
+        "file": "lempicka-2024/wsj--charles-isherwood.json",
+        "excerptLengths": [
+          {
+            "source": "showScore",
+            "length": 37
+          }
+        ]
+      }
+    ]
+  },
+  "sampledVerification": {
+    "sampled": 50,
+    "passed": 50,
+    "failed": 0,
+    "passRate": "100.0%",
+    "failures": []
+  },
+  "dateConsistency": {
+    "total": 2114,
+    "valid": 1567,
+    "invalid": 9,
+    "couldNotParse": 538,
+    "anomalyRate": "0.4%",
+    "issues": [
+      {
+        "file": "aladdin-2014/nysr--elysa-gardner.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "September 19, 2018",
+            "openingDate": "2014-03-20",
+            "yearsDifference": 4
+          }
+        ]
+      },
+      {
+        "file": "hadestown-2019/pages-on-stages--mason-pilevsky.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "2024-06-18",
+            "openingDate": "2019-04-17",
+            "yearsDifference": 5
+          }
+        ]
+      },
+      {
+        "file": "hamilton-2015/act-three-the-reviews--doug-marino.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "April 25, 2017",
+            "openingDate": "2015-08-06",
+            "yearsDifference": 2
+          }
+        ]
+      },
+      {
+        "file": "hamilton-2015/bobs-theater-blog--robert-sholiton.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "October 13, 2016",
+            "openingDate": "2015-08-06",
+            "yearsDifference": 1
+          }
+        ]
+      },
+      {
+        "file": "hamilton-2015/roy-berko-info--roy-berko.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "April 23, 2018",
+            "openingDate": "2015-08-06",
+            "yearsDifference": 3
+          }
+        ]
+      },
+      {
+        "file": "the-lion-king-1997/timeout--jenna-scherer.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "June 18, 2014",
+            "openingDate": "1997-11-13",
+            "yearsDifference": 17
+          }
+        ]
+      },
+      {
+        "file": "wicked-2003/front-row-center--stanford-friedman.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "September 21, 2015",
+            "openingDate": "2003-10-30",
+            "yearsDifference": 12
+          }
+        ]
+      },
+      {
+        "file": "wicked-2003/nyt-theater--jonathan-mandell.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "September 12, 2025",
+            "openingDate": "2003-10-30",
+            "yearsDifference": 22
+          }
+        ]
+      },
+      {
+        "file": "wicked-2003/theatre-is-easy--dan-dinero-and-molly-marinik.json",
+        "issues": [
+          {
+            "type": "late_review",
+            "publishDate": "March 23, 2009",
+            "openingDate": "2003-10-30",
+            "yearsDifference": 6
+          }
+        ]
+      }
+    ]
+  }
+}

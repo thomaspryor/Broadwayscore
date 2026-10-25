@@ -1,0 +1,73 @@
+name: Process Review Submissions (Formspree)
+
+on:
+  schedule:
+    # Weekly safety net — primary path is now the /api/submit-review Vercel function
+    # which creates the issue + dispatches instantly. This catches any submissions
+    # that slipped through (e.g. form submitted before the API route was deployed).
+    - cron: '0 6 * * 1'
+  workflow_dispatch: # Manual trigger
+
+# Serialize schedule + manual-dispatch runs against
+# data/audit/processed-review-submissions.json — the dedup tracker that
+# prevents the same Formspree submission from creating a duplicate GitHub
+# issue. A race between the weekly cron and a manual run could let both
+# process the same new submission before either's tracking write lands. Same
+# class as the update-cast-changes.yml incident (Notion 3a5637c5-416f-812a).
+# Queued, not cancelled.
+concurrency:
+  group: process-review-formspree
+  cancel-in-progress: false
+
+jobs:
+  process-submissions:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Fetch Formspree submissions and create issues
+        env:
+          FORMSPREE_REVIEW_TOKEN: ${{ secrets.FORMSPREE_REVIEW_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+        run: node scripts/process-review-formspree.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Process Review Formspree Failed'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      - name: Commit tracking file
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/processed-review-submissions.json
+          if git diff --staged --quiet; then
+            echo "No tracking changes to commit"
+          else
+            git commit -m "chore: update processed review submissions tracking"
+            bash scripts/lib/push-with-retry.sh
+          fi

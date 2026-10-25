@@ -1,0 +1,262 @@
+{
+  "issueNumber": "bro-5660-c",
+  "planId": "64fe7698-8c09-45df-8118-eba34a7e9f32",
+  "status": "applied",
+  "createdAt": "2026-10-19T02:22:37.252Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Tag what each capitalization figure is (part C of 3, 16 records): \"maximum\" for an SEC Form D offering maximum or an \"up to\" figure, which /biz now prints as \"up to $X\" instead of an exact capitalization; \"sold\" where the filing says the amount was raised; \"reported\" where the source wording mentions a maximum only as context. Read from the live demo records; classifications per BRO-5660.",
+    "steps": [
+      "Set capitalizationBasis on 16 commercial.json records"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "showId": "thoughts-of-a-colored-man-2021",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "tina-2019",
+        "showId": "tina-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $17.5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $17.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "showId": "topdog-underdog-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $2.5M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $2.5M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "showId": "torch-song-2018",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "maximum",
+        "description": "The $3.4M is an SEC Form D offering maximum or a reported \"up to\" figure, not the amount raised: print it as \"up to $3.4M\"."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "showId": "the-testament-of-mary-2013",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "reported",
+        "description": "The $2.5M is the reported cost; the source mentions a higher Form D maximum only as context, so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "aint-too-proud-2019",
+        "showId": "aint-too-proud-2019",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $16.75M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "showId": "american-buffalo-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $4M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bullets-over-broadway-2014",
+        "showId": "bullets-over-broadway-2014",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $14M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "call-me-izzy",
+        "showId": "call-me-izzy",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $4.725M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "chess",
+        "showId": "chess",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $15M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "dead-outlaw-2025",
+        "showId": "dead-outlaw-2025",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $10M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "holler-if-ya-hear-me-2014",
+        "showId": "holler-if-ya-hear-me-2014",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $8M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "showId": "leap-of-faith-2012",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $14.65M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "showId": "potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $6.075M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "smash-2025",
+        "showId": "smash-2025",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $20M was sold (raised), so it prints as an exact capitalization."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-minutes-2022",
+        "showId": "the-minutes-2022",
+        "field": "capitalizationBasis",
+        "oldValue": null,
+        "newValue": "sold",
+        "description": "The filing says the $5M was sold (raised), so it prints as an exact capitalization."
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T03:40:43.235Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for tina-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for aint-too-proud-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for american-buffalo-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for bullets-over-broadway-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for call-me-izzy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for chess"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for holler-if-ya-hear-me-2014"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for potus-or-behind-every-great-dumbass-are-seven-women-trying-to-keep-him-alive-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for smash-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for the-minutes-2022"
+    }
+  ]
+}

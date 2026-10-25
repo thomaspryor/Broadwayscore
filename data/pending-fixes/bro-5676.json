@@ -1,0 +1,103 @@
+{
+  "issueNumber": "bro-5676",
+  "planId": "705aea25-1f3d-4c63-a69f-3a603267d766",
+  "status": "applied",
+  "createdAt": "2026-10-19T04:54:40.048Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the 2016 Roundabout Theatre Company run of Love, Love, Love (Mike Bartlett, dir. Michael Mayer) at the Laura Pels Theatre as a closed Off-Broadway show. Reported missing through the feedback form on 2026-10-19.",
+    "steps": [
+      "Append love-love-love-off-broadway-2016 to shows.json",
+      "Dispatch gather-reviews and image fetch for the new id"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "love-love-love-off-broadway-2016",
+          "title": "Love, Love, Love",
+          "slug": "love-love-love-off-broadway-2016",
+          "venue": "The Laura Pels Theatre at the Harold and Miriam Steinberg Center for Theatre",
+          "openingDate": "2016-10-19",
+          "closingDate": "2016-12-18",
+          "previewsStartDate": "2016-09-22",
+          "status": "closed",
+          "type": "play",
+          "isRevival": false,
+          "category": "off-broadway",
+          "market": "broadway",
+          "tags": [
+            "historical"
+          ],
+          "synopsis": "Mike Bartlett's dark comedy follows a baby-boomer couple from swinging-sixties London across more than four decades, tracing how their appetites and choices shape the lives of the children who come after them.",
+          "openingDateSource": "playbill",
+          "discoverySource": "manual-user-request",
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [
+            {
+              "name": "Zoe Kazan",
+              "role": null
+            },
+            {
+              "name": "Amy Ryan",
+              "role": null
+            },
+            {
+              "name": "Richard Armitage",
+              "role": null
+            },
+            {
+              "name": "Ben Rosenfield",
+              "role": null
+            },
+            {
+              "name": "Alex Hurt",
+              "role": null
+            }
+          ],
+          "creativeTeam": [
+            {
+              "name": "Mike Bartlett",
+              "role": "Playwright"
+            },
+            {
+              "name": "Michael Mayer",
+              "role": "Director"
+            },
+            {
+              "name": "Derek McLane",
+              "role": "Scenic Designer"
+            },
+            {
+              "name": "Susan Hilferty",
+              "role": "Costume Designer"
+            },
+            {
+              "name": "David Lander",
+              "role": "Lighting Designer"
+            },
+            {
+              "name": "Kai Harada",
+              "role": "Sound Designer"
+            }
+          ]
+        },
+        "description": "Add the 2016 Roundabout Off-Broadway run of Love, Love, Love (previews 2016-09-22, opened 2016-10-19, closed 2016-12-18) per Playbill"
+      }
+    ]
+  },
+  "executedAt": "2026-10-19T05:18:09.461Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added love-love-love-off-broadway-2016"
+    }
+  ],
+  "executedIn": "ci"
+}

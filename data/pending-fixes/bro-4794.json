@@ -1,0 +1,67 @@
+{
+  "issueNumber": "bro-4794",
+  "planId": "c563c912-fdae-4515-9d8a-03836eaa6854",
+  "status": "applied",
+  "createdAt": "2026-10-12T14:26:45.000Z",
+  "submitter": {
+    "name": null,
+    "email": null,
+    "show": "Ulysses; Midnight",
+    "message": ""
+  },
+  "plan": {
+    "summary": "Playbill cross-check of the 46 provenance-less isRevival=true rows (2025+) found 2 new works wrongly flagged as revivals: Elevator Repair Service's Ulysses (premiered at Bard Fisher Center 2025; the Public run is its NYC premiere) and Todrick Hall's new musical Midnight (NYC premiere after two London runs). Playbill tags both as original; Midnight is also a musical, not a play.",
+    "steps": [
+      "Set isRevival false on ulysses-off-broadway-2026",
+      "Set isRevival false and type musical on midnight-off-broadway-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ulysses-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "New work, not a revival: playbill.com/production/ulysses-off-broadway-public-theater-martinson-hall-2026 tags it original (world premiere at Bard 2025)"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "New Todrick Hall musical, NYC premiere: playbill.com/production/midnight-off-broadway-daryl-roth-theatre-2026 tags it original"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "midnight-off-broadway-2026",
+        "field": "type",
+        "oldValue": "play",
+        "newValue": "musical",
+        "description": "Playbill lists Midnight as a musical (playbill.com/article/todrick-hall-musical-midnight-will-bow-off-broadway)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T15:28:48.616Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for ulysses-off-broadway-2026 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for midnight-off-broadway-2026 (tags: [])"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for midnight-off-broadway-2026"
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5243",
+  "planId": "54473476-b798-4044-b266-5b5698e7e5a7",
+  "status": "partial",
+  "createdAt": "2026-10-13T10:15:56.995Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243: the-music-man-2022 WSJ row is not a real WSJ review; mark it a duplicate of Isherwood's Broadway News review.",
+    "steps": [
+      "Set duplicateReason then duplicateOf on the-music-man-2022/wsj--charles-isherwood.json"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/wsj--charles-isherwood.json",
+        "field": "duplicateReason",
+        "oldValue": null,
+        "newValue": "BRO-5243: not a real WSJ review. Isherwood reviewed The Music Man (2022) for Broadway News (broadwaynews--charles-isherwood.json, 2022-02-10, negative); he joined the WSJ later in 2022 and Teachout died Jan 2022. The WSJ URL returns no article through Browserbase with subscriber cookies (0 chars, run 38379575315) while 3 real WSJ URLs in the same run returned full text; the stored WSJ text contradicts the real review's verdict.",
+        "description": "Evidence for marking the fabricated WSJ row a duplicate."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-music-man-2022/wsj--charles-isherwood.json",
+        "field": "duplicateOf",
+        "oldValue": null,
+        "newValue": "broadwaynews--charles-isherwood.json",
+        "description": "Point the fabricated WSJ row at the critic's real review so it is excluded and never retried."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T11:25:57.491Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-music-man-2022/wsj--charles-isherwood.json duplicateReason: null -> \"BRO-5243: not a real WSJ review. Isherwood reviewed The Music Man (2022) for Broadway News (broadwaynews--charles-isherwood.json, 2022-02-10, negative); he joined the WSJ later in 2022 and Teachout died Jan 2022. The WSJ URL returns no article through Browserbase with subscriber cookies (0 chars, run 38379575315) while 3 real WSJ URLs in the same run returned full text; the stored WSJ text contradicts the real review's verdict.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "the-music-man-2022/wsj--charles-isherwood.json duplicateOf: write guard kept null"
+    }
+  ]
+}

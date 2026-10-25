@@ -1,0 +1,41 @@
+{
+  "startedAt": "2026-04-27T00:42:50Z",
+  "cohort": "data/audit/recovery-targets-2026-04-26.json",
+  "cohortTag": "outlier_safe-2026-04-26",
+  "cohortSize": 1009,
+  "alreadyRecoveredCount": 3,
+  "missingCount": 0,
+  "queueSize": 20,
+  "batchSize": 20,
+  "batches": [
+    {
+      "index": 1,
+      "size": 12,
+      "childExit": 144,
+      "durationSec": 800,
+      "successes": 1,
+      "failures": 11,
+      "perFile": []
+    }
+  ],
+  "attempted": [],
+  "successes": [
+    {
+      "showId": "33-variations-2009",
+      "file": "about-entertainment--ben-brantley.json",
+      "outletId": "about-entertainment",
+      "tier": "archive",
+      "postChars": 8530,
+      "success": true
+    }
+  ],
+  "failures": [],
+  "tierBreakdown": {
+    "archive": 1,
+    "untouched": 19
+  },
+  "estimatedCostUsd": 0.0155,
+  "interrupted": true,
+  "abortReason": "manual-kill: cross-product blow-up; wrapper since fixed (group-by-show).",
+  "completedAt": "2026-04-27T00:58:27.763Z"
+}
