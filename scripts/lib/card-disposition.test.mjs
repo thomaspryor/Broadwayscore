@@ -2,11 +2,26 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+
+// createLinearIssue records every created card in the intake ledger. Redirect it
+// before intake-breaker loads so these fake cards never reach the tracked
+// data/audit/intake-ledger.jsonl (BRO-5290; test.yml Ledger isolation check).
+const ledgerDir = fs.mkdtempSync(path.join(os.tmpdir(), 'intake-ledger-'));
+process.env.INTAKE_LEDGER_PATH = path.join(ledgerDir, 'intake-ledger.jsonl');
+test.after(() => fs.rmSync(ledgerDir, { recursive: true, force: true }));
 
 const require = createRequire(import.meta.url);
 const { resolveDisposition } = require('./card-disposition.js');
 const { createLinearIssue } = require('./linear-issue-create.js');
 const hd = require('./headless-dispatchability.js');
+
+test('intake ledger is redirected away from data/audit', () => {
+  const { LEDGER_PATH } = require('./intake-breaker.js');
+  assert.equal(LEDGER_PATH, process.env.INTAKE_LEDGER_PATH);
+});
 
 test('resolveDisposition: --self is a third mode', () => {
   assert.deepEqual(resolveDisposition({ self: true }), { ok: true, mode: 'self' });
