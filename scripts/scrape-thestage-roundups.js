@@ -233,6 +233,14 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
     const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, match.show, siblingCategoriesByShowId()[showId]) : null;
     if (cached && !cached.valid) console.log(`  [PURGED] ${match.show.title}: cached archive failed ${cached.check.reason}`);
     if (cached && cached.valid) {
+      // BRO-6089: a poisoned cache must not outlive the page-date guard below.
+      const cprod = checkAggregatorPageProduction({ html: cached.html, show: match.show });
+      if (cprod.outOfRun) {
+        console.log(`  [WRONG PRODUCTION] ${match.show.title}: cached archive ${cprod.reason}`);
+        if (!DRY_RUN) { try { fs.renameSync(archivePath, archivePath + '.mismatch'); } catch { /* gone */ } }
+        stats.errors++;
+        continue;
+      }
       console.log(`  [CACHED] ${match.show.title}`);
       matched.push({ showId, show: match.show, archivePath });
       stats.cached++;

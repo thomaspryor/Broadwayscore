@@ -24,12 +24,17 @@ const COVERAGE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'theatre
 /** [{showId, roundupUrl}] -> claims usable by checkTrArchiveClaim. */
 function claimsFromCoverage(coverage) {
   return ((coverage && coverage.shows) || [])
-    .filter((e) => e && e.showId && e.roundupUrl)
+    .filter((e) => e && e.showId && e.roundupUrl && !e.skipped) // skipped = guard-rejected / unfetched, not a trusted claim
     .map((e) => ({ showId: e.showId, url: e.roundupUrl }));
 }
 
+const cache = new Map();
 function loadCoverageClaims(file = COVERAGE_PATH) {
-  try { return claimsFromCoverage(JSON.parse(fs.readFileSync(file, 'utf8'))); } catch { return []; }
+  if (cache.has(file)) return cache.get(file);
+  let claims = [];
+  try { claims = claimsFromCoverage(JSON.parse(fs.readFileSync(file, 'utf8'))); } catch (e) { console.warn(`[tr-archive-claim] no coverage claims (${e.code || e.message}); claim guard off`); }
+  cache.set(file, claims);
+  return claims;
 }
 
 /**

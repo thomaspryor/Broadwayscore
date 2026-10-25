@@ -96,7 +96,7 @@ function showRunNearYear(show, year) {
   if (!dated.length) return true;
   const nowY = new Date().getFullYear();
   return dated.some((r, i) => {
-    const c = r.c || (i === 0 && show.status === 'open' ? nowY : r.o);
+    const c = r.c || (i === 0 && show.status !== 'closed' ? nowY : r.o);
     return year >= r.o - 1 && year <= c + 1;
   });
 }
@@ -113,7 +113,11 @@ function matchLboRoundup(url, extractedTitle, shows, opts = {}) {
     // BRO-6089: with a sitemap year, only productions whose run (or a declared
     // prior run) reaches that year compete on title, so a same-title revival
     // from another era cannot take the round-up.
-    const pool = opts.year ? shows.filter(s => showRunNearYear(s, opts.year)) : shows;
+    // Only when another show shares the title: a unique title keeps its match
+    // (<lastmod> is an edit date and can be years after the production).
+    const key = norm(extractedTitle);
+    const siblings = opts.year ? shows.filter(s => norm(s.title) === key) : [];
+    const pool = siblings.length > 1 ? shows.filter(s => norm(s.title) !== key || showRunNearYear(s, opts.year)) : shows;
     const t = pool.length ? matchTitleToShow(extractedTitle, pool, { market: 'west-end' }) : null;
     if (t && t.show && t.confidence === 'high') return { show: t.show, via: 'title' };
   }

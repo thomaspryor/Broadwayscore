@@ -76,8 +76,11 @@ test('BRO-6089: sitemap year keeps a same-title revival from another era out of 
   const r24 = matchLboRoundup(url, 'waiting for godot', godot, { year: 2024 });
   assert.equal(r24 && r24.show.id, 'godot-west-end-2024');
   // 2009 round-up must not land on the 2024 show.
+  const r09 = matchLboRoundup(url, 'waiting for godot', godot, { year: 2009 });
+  assert.equal(r09 && r09.show.id, 'godot-west-end-2017');
+  // a unique title keeps matching whatever the lastmod year
   const only24 = [godot[1]];
-  assert.equal(matchLboRoundup(url, 'waiting for godot', only24, { year: 2009 }), null);
+  assert.ok(matchLboRoundup(url, 'waiting for godot', only24, { year: 2031 }));
   // no year: old behaviour unchanged
   assert.ok(matchLboRoundup(url, 'waiting for godot', only24, {}));
 });
