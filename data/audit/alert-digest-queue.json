@@ -408,5 +408,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T17:55:32.975Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2625-nested-new-artifact",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-2625-nested-new-artifact",
+    "description": "land.yml did not land land/bro-2625-nested-new-artifact: the scripts-lib-tests gate went red at 1f47ff0c08. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40218580787",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2625-nested-new-artifact"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "1f47ff0c08bf725c45b200248406fb3f16df3966"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40218580787"
+      }
+    ],
+    "queuedAt": "2026-10-25T18:07:18.273Z"
   }
 ]
