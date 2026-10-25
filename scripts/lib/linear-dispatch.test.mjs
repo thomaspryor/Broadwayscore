@@ -572,6 +572,44 @@ test('sortedCommentBodies: drops empty/missing bodies, tolerates missing created
   assert.deepEqual(sortedCommentBodies(issue), ['has body']);
 });
 
+test('sortedCommentBodies: warns once for missing timestamps without changing legacy ordering', (t) => {
+  const warnings = [];
+  t.mock.method(console, 'warn', (message) => warnings.push(message));
+  const issue = { identifier: 'BRO-3157', comments: { nodes: [
+    { body: 'unknown first' },
+    { body: 'known', createdAt: '2026-10-11T19:34:00Z' },
+    { body: 'unknown second', createdAt: null },
+    { body: 'unknown third', createdAt: '' },
+  ] } };
+  const originalNodes = issue.comments.nodes.slice();
+  assert.deepEqual(sortedCommentBodies(issue), ['unknown first', 'unknown second', 'unknown third', 'known']);
+  assert.deepEqual(issue.comments.nodes, originalNodes);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /BRO-3157.*3 comments missing createdAt.*API order/);
+  assert.ok(!warnings[0].includes('unknown first'), 'diagnostic must not print comment bodies');
+});
+
+test('sortedCommentBodies: warns for legacy payloads without issue identifiers', (t) => {
+  const warnings = [];
+  t.mock.method(console, 'warn', (message) => warnings.push(message));
+  assert.deepEqual(sortedCommentBodies({ comments: { nodes: [{ body: 'legacy' }] } }), ['legacy']);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /1 comment missing createdAt/);
+});
+
+test('sortedCommentBodies: does not warn for timestamped comments or discarded empty bodies', (t) => {
+  const warnings = [];
+  t.mock.method(console, 'warn', (message) => warnings.push(message));
+  assert.deepEqual(sortedCommentBodies({ comments: { nodes: [
+    { body: 'known', createdAt: '2026-10-11T19:34:00Z' },
+    { body: '' },
+    {},
+    null,
+  ] } }), ['known']);
+  assert.deepEqual(sortedCommentBodies(null), []);
+  assert.equal(warnings.length, 0);
+});
+
 test('sortedCommentBodies: no comments/no issue never throws', () => {
   assert.deepEqual(sortedCommentBodies({}), []);
   assert.deepEqual(sortedCommentBodies({ comments: { nodes: [] } }), []);
