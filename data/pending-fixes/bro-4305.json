@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4305",
   "planId": "dc075ef3-80bc-479d-a038-01f85d9b8792",
-  "status": "applied",
+  "status": "partial",
   "createdAt": "2026-10-25T01:59:04.491Z",
   "submitter": {
     "name": null,
@@ -24,12 +24,12 @@
       }
     ]
   },
-  "executedAt": "2026-10-25T04:10:25.754Z",
+  "executedAt": "2026-10-25T04:13:52.335Z",
   "results": [
     {
       "action": "review-field-edit",
-      "ok": true,
-      "msg": "disruption-off-broadway-2026/la-voce-di-new-york--jk-clarke.json isRoundupArticle: true -> false"
+      "ok": false,
+      "reason": "isRoundupArticle: current value doesn't match expected (data changed since plan was created)"
     }
   ],
   "executedIn": "ci"
