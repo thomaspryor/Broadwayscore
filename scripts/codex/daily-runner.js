@@ -660,7 +660,13 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
   // landing comes through here, so a recovered or reconciled landing cannot reach Done unapplied.
   // With the kill switch on, a pending plan still bounces the card (never Done unapplied), it is just not dispatched.
   if (!OPTS.dryRun) {
-    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled() });
+    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled(), canDispatch: DF.canDispatchWorkflows() });
+    if (ap.kind === 'deferred') {
+      // Not a failure and not a bounce (a bounce would hide the card from the GHA lane for 14 days): the card stays
+      // In Progress with its landing on main, and a runner that can dispatch applies it on its next reconcile.
+      log(`${id}: data-fix apply deferred: ${ap.why}`);
+      return false;
+    }
     if (ap.kind === 'failed') {
       stats.bounced.push(id);
       const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: landed, but the data-fix plan was not applied\n${R.bounceClassLine('genuine-failure')}\n\n${ap.why}\n\n${fence(tail(ap.lines.join('\n'), 800))}\n\nThe plan file is on main. Fix the plan (a stale oldValue, a refused action) or apply it by hand per .claude/CLOUD.md "Fixing private data from cloud".\n\n${body}`);
@@ -793,7 +799,7 @@ async function workCard(pick, stats, inFlight) {
       const v = makeVerifyCmdEvidence({ timeoutMs: 600_000 })(cmd);
       onMain = `\`${cmd}\` on fresh main: ${v.allowed ? 'PASSES already (the card may be fixed; confirm before changing code)' : `does not pass (${v.verdict}): ${String(v.reason).slice(0, 600)}`}`;
     }
-    const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8').replace('{{DATA_FIX_RULE}}', DF.dataFixesEnabled() ? DATA_FIX_RULE : '');
+    const tpl = fs.readFileSync(path.join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8').replace('{{DATA_FIX_RULE}}', DF.dataFixesEnabled() && DF.canDispatchWorkflows() ? DATA_FIX_RULE : '');
     const prompt = (extra) => R.fillPrompt(tpl, { id, title: card.title, body, extra, data: data.lines.join('\n') });
     // A fix-round exec starts only while 15 min of exec plus the review after it still fit the
     // card budget. The land checks and review after the last exec still run, so

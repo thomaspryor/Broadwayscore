@@ -136,19 +136,54 @@ jobs:
           fi
 
       - name: Push review-texts to private repo
+        id: push_review_texts
         if: always()
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Execute Approved Fix — Commit and push changes"
       - name: Push aggregator-archive to private repo
+        id: push_aggregator
         if: always()
         uses: ./.github/actions/push-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: "data: Execute Approved Fix — aggregator-archive changes"
+      # BRO-6194: pushed BEFORE the status commit (it used to follow it). The plan file on main says
+      # "applied" only once every private-repo write behind it has landed; the runner trusts that status.
+      - name: Push core data to private repo
+        id: push_core
+        if: always()
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: Update from execute-approved-fix'
+      # BRO-6194: a fixed plan is only recorded "applied" when all three private pushes succeeded and the
+      # core push was not skipped (validation sentinel, or no core checkout). Otherwise the plan stays
+      # "pending" on main and this job fails, so the dispatching runner sees a failed apply instead of a
+      # trusted status. Actions check oldValue, so a manual rerun is not idempotent: check the data first.
+      - name: Confirm private pushes landed
+        id: push_gate
+        if: always() && steps.exec.outputs.result == 'fixed'
+        env:
+          PUSH_REVIEW_TEXTS: ${{ steps.push_review_texts.outcome }}
+          PUSH_AGGREGATOR: ${{ steps.push_aggregator.outcome }}
+          PUSH_CORE: ${{ steps.push_core.outcome }}
+        run: |
+          bad=""
+          [ "$PUSH_REVIEW_TEXTS" = "success" ] || bad="$bad review-texts($PUSH_REVIEW_TEXTS)"
+          [ "$PUSH_AGGREGATOR" = "success" ] || bad="$bad aggregator-archive($PUSH_AGGREGATOR)"
+          [ "$PUSH_CORE" = "success" ] || bad="$bad core-data($PUSH_CORE)"
+          if [ -f "${RUNNER_TEMP:-/tmp}/.skip-push-core-data" ]; then bad="$bad core-data(refused by validation sentinel)"; fi
+          if [ ! -d /tmp/core-data-checkout/.git ]; then bad="$bad core-data(no checkout, push skipped)"; fi
+          if [ -n "$bad" ]; then
+            echo "::error::Not recording the plan as applied; private push(es) did not land:$bad"
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
       - name: Commit and push changes
-        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected')
+        if: always() && (steps.exec.outputs.result == 'fixed' || steps.exec.outputs.result == 'no-changes' || steps.exec.outputs.result == 'validation-failed' || steps.exec.outputs.result == 'rejected') && steps.push_gate.outputs.ok != 'false'
         env:
           ISSUE_NUMBER: ${{ inputs.issue_number }}
           # BRO-5182: commercial-pending-review.json is a union-merged managed file (push-with-retry.sh reconcile_merged_json).
@@ -170,13 +205,11 @@ jobs:
             bash scripts/lib/push-with-retry.sh
           fi
 
-
-      - name: Push core data to private repo
-        if: always()
-        uses: ./.github/actions/push-core-data
-        with:
-          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-          message: 'data: Update from execute-approved-fix'
+      - name: Fail when private pushes did not land
+        if: always() && steps.push_gate.outputs.ok == 'false'
+        run: |
+          echo "::error::Plan left pending: a private-repo push did not land (see 'Confirm private pushes landed')"
+          exit 1
       - name: Update GitHub issue
         if: always()
         uses: actions/github-script@v7

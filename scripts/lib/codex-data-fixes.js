@@ -14,6 +14,13 @@ const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits.js');
 
 const dataFixesEnabled = (env = process.env) => !/^(1|true|yes)$/i.test(String(env.CODEX_DATA_FIXES_DISABLED || ''));
 
+/**
+ * Can THIS process dispatch execute-approved-fix.yml / rebuild-fast.yml (BRO-6194)? Only the GHA lane has shown it
+ * can (codex-runner.yml has `actions: write`; bro-4937 was applied by github-actions[bot]). The cloud-routine slots
+ * have no documented dispatch credential, so route cards stay off them until one is proven (set CODEX_CAN_DISPATCH=1).
+ */
+const canDispatchWorkflows = (env = process.env) => env.GITHUB_ACTIONS === 'true' || /^(1|true|yes)$/i.test(String(env.CODEX_CAN_DISPATCH || ''));
+
 // Executor-allowlisted field edits only. Not allowed: run-script, add-show, retire-show, review-file-op,
 // add-commercial-entry, ingest-html-handoff (owner or Claude judgment, or they move whole files/rows).
 const CODEX_PLAN_ACTIONS = new Set(['data-edit', 'review-field-edit', 'drop-orphan-key', 'retitle-show', 'outlet-registry-flag']);
@@ -45,6 +52,22 @@ function planNotApplied(plan, { legacyOk = false } = {}) {
 
 const PLAN_DIR = 'data/pending-fixes';
 
+// execute-approved-fix.yml has timeout-minutes 45 (pinned by a test); the wait adds slack for a queued run.
+const EXECUTOR_TIMEOUT_MIN = 45;
+const APPLY_WAIT_MIN = EXECUTOR_TIMEOUT_MIN + 10;
+
+/**
+ * Plan files the card's latest plan-bearing runner landing touched, or null when that cannot be told
+ * (every plan is then judged). A finished plan from an earlier attempt is not this landing's to apply.
+ */
+function latestLandingPlans(io, cardId) {
+  try {
+    const out = io.git(['log', '-1', '--name-only', '--format=', 'origin/main', '--author=Codex runner', '-F', `--grep=fix(${String(cardId).toUpperCase()}):`, '--', `${PLAN_DIR}/`]);
+    const names = out.split('\n').map((x) => x.trim().replace(/^.*\//, '')).filter(Boolean);
+    return names.length ? new Set(names) : null;
+  } catch { return null; }
+}
+
 /**
  * Apply every plan the card landed on main. io: { git(args) -> stdout (throws on failure),
  * dispatch(args) -> { code, out }, log(msg) }. -> { kind: 'none' } | { kind: 'applied', files, lines } |
@@ -61,41 +84,64 @@ function executorWroteLast(io, f) {
   } catch { return false; }
 }
 
-async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true } = {}) {
+async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true, canDispatch = true } = {}) {
   io.git(['fetch', '-q', 'origin', 'main']);
   const names = io.git(['ls-tree', '--name-only', 'origin/main', `${PLAN_DIR}/`]).split('\n').filter(Boolean);
   const files = cardPlanFiles(names, cardId);
   if (!files.length) return { kind: 'none' };
   const read = (f) => JSON.parse(io.git(['show', `origin/main:${PLAN_DIR}/${f}`]));
+  const landing = latestLandingPlans(io, cardId);
   const lines = [];
   const fail = (why) => ({ kind: 'failed', why, lines });
+  // deferred: nothing is wrong with the card, the apply just has not happened (yet) from this process.
+  const defer = (why) => ({ kind: 'deferred', why, lines });
+  const handled = [];
   for (const f of files) {
     let plan;
     try { plan = read(f); } catch (e) { return fail(`${f} is not readable on main: ${String(e.message).split('\n')[0]}`); }
+    // A finished-but-not-applied plan (partial, rejected, validation-failed) this card's latest landing did not touch is
+    // an earlier attempt's leftover: it neither blocks the card nor gets re-run.
+    if (landing && !landing.has(f) && plan.status !== 'pending' && plan.status !== 'applied') {
+      lines.push(`${f}: skipped, left by an earlier attempt (status "${plan.status}")`);
+      continue;
+    }
     const refused = codexPlanAllowed(plan);
     if (refused && plan.status !== 'applied') return fail(`${f}: ${refused}`);
     let ranHere = false;
     if (plan.status === 'pending') {
       if (!dispatch) return fail(`${f} is pending and the Codex data-fix route is switched off (CODEX_DATA_FIXES_DISABLED)`);
+      if (!canDispatch) return defer(`${f} is pending and this runner cannot dispatch workflows; the GHA Codex lane applies it`);
       ranHere = true;
       if (!plan.planId) return fail(`${f} has no planId`);
       io.log(`${cardId}: applying ${f}`);
-      const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', '--timeout=50']);
+      const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', `--timeout=${APPLY_WAIT_MIN}`]);
       lines.push(`${f}: apply run exit ${r.code}`);
-      if (r.code !== 0) return fail(`${f}: the apply run did not succeed (exit ${r.code}): ${String(r.out || '').trim().split('\n').slice(-3).join(' | ').slice(0, 400)}`);
       io.git(['fetch', '-q', 'origin', 'main']);
       plan = read(f);
+      if (r.code !== 0) {
+        // The run may have finished (or still be running) without the wait seeing it: main is the judge.
+        const applied = planNotApplied(plan) === null && executorWroteLast(io, f);
+        if (!applied) {
+          const detail = String(r.out || '').trim().split('\n').slice(-3).join(' | ').slice(0, 400);
+          // Exit 2 is "run state unknown" (timeout, API trouble, run not found): not a verdict on the plan.
+          if (r.code === 2 && plan.status === 'pending') return defer(`${f}: the apply run's outcome is unknown (exit 2) and the plan is still pending on main: ${detail}`);
+          return fail(`${f}: the apply run did not succeed (exit ${r.code}): ${detail}`);
+        }
+        lines.push(`${f}: the run reported exit ${r.code}, but main shows the executor applied it`);
+      }
     }
     const why = planNotApplied(plan, { legacyOk: !ranHere });
     if (why) return fail(`${f} on main is not applied: ${why}`);
     if (!executorWroteLast(io, f)) return fail(`${f} says applied, but the executor workflow did not write that status (last commit on the file is not its own)`);
     lines.push(`${f}: applied by CI`);
+    handled.push(f);
   }
-  if (rebuild) {
+  if (!handled.length) return { kind: 'none', lines };
+  if (rebuild && canDispatch) {
     // Same call CLOUD.md step 4 makes; rebuilds coalesce, and a failed dispatch only delays the data to the next rebuild.
     try { const r = await io.dispatch(['rebuild-fast.yml']); lines.push(`rebuild-fast.yml dispatched (exit ${r.code})`); } catch { lines.push('rebuild-fast.yml dispatch failed; the next scheduled rebuild picks the data up'); }
   }
-  return { kind: 'applied', files, lines };
+  return { kind: 'applied', files: handled, lines };
 }
 
-module.exports = { dataFixesEnabled, CODEX_PLAN_ACTIONS, cardPlanFiles, codexPlanAllowed, planNotApplied, applyCardFixPlans };
+module.exports = { dataFixesEnabled, canDispatchWorkflows, EXECUTOR_TIMEOUT_MIN, APPLY_WAIT_MIN, latestLandingPlans, CODEX_PLAN_ACTIONS, cardPlanFiles, codexPlanAllowed, planNotApplied, applyCardFixPlans };

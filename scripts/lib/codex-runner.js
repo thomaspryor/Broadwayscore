@@ -17,7 +17,7 @@
  */
 
 const crypto = require('crypto');
-const { dataFixesEnabled } = require('./codex-data-fixes.js');
+const { dataFixesEnabled, canDispatchWorkflows } = require('./codex-data-fixes.js');
 
 const AUTH_MARKER = '<!-- codex-auth-v1 -->';
 // Opens every comment the runner posts when Codex could not finish a card, so
@@ -648,7 +648,7 @@ const CODEX_DATA_ROUTE_RE = /\b(?:pending-fixes|new-fix-plan|execute-approved-fi
 const CODEX_DIRECT_PRIVATE_RE = /\bbroadway-(?:review-texts|scorecard-data)\b/i;
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
-function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now() } = {}) {
+function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now(), canDispatch = canDispatchWorkflows() } = {}) {
   const text = `${title}\n${description}`;
   if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
   const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
@@ -656,6 +656,9 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   // the plan and the runner applies it after the landing (codex-data-fixes.js). 'data-route' skips then fire
   // only for a direct private-repo edit with no plan route named; CODEX_DATA_FIXES_DISABLED restores them all.
   const viaRoute = dataFixesEnabled() && CODEX_DATA_ROUTE_RE.test(text);
+  // BRO-6194: the route's apply step is a workflow dispatch, which only the GHA lane is known to be able to make.
+  // A runner that cannot dispatch never picks a route card (CODEX-OK does not lift this: it is a capability, not a judgment).
+  if (viaRoute && !canDispatch) return { skip: 'data-route-gha-only', score: -Infinity, why: ['data-route-gha-only: the data-fix route needs a runner that can dispatch workflows'] };
   for (const [name, re, flag] of ok ? [] : CODEX_HARD_SKIPS) {
     if (flag === 'data-route' && dataFixesEnabled()) {
       const direct = CODEX_DIRECT_PRIVATE_RE.exec(text);

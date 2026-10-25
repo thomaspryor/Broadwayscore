@@ -489,7 +489,7 @@ test('comment reads keep the newest page: shared query uses first:, nothing quer
 // ---- BRO-5384: parallel slots, routing, fix rounds, check noise ----
 
 test('codexCardFit: the four kinds of card the sandbox cannot finish are skipped (real rejected cards)', () => {
-  const fit = (title, description) => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs' });
+  const fit = (title, description) => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs', canDispatch: true });
   // BRO-3475 (needed a workflow step), BRO-4299 (land/ pushes), BRO-4427 + BRO-4855 (hundreds of
   // shipped rows), BRO-5223 (a data repair): all rejected by the Claude check on 2026-10-14/15.
   assert.equal(fit('drift-state lastAlertTs is stamped before routing', 'stamps state before the workflow\'s alert step ever runs.').skip, 'workflow-edit');
