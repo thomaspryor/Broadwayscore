@@ -19,10 +19,9 @@ export async function goToMock(
   tab: 'diary' | 'watchlist' = 'diary'
 ): Promise<void> {
   await page.goto(`${MOCK_URL}&tab=${tab}`);
-  // The tablist renders once mock data is loaded (the old "shows seen" summary
-  // text was removed 2026-07-12 — counts live in the tab badges now).
-  await page.waitForSelector('[role="tablist"]', { timeout: 30000 });
-  await page.waitForSelector('#tab-watchlist span', { timeout: 30000 });
+  // data-ready flips once mock data is loaded (the tab count badges that used
+  // to signal this were removed with the title-tab header, BRO-6170).
+  await page.waitForSelector('[data-testid="my-shows-content"][data-ready="true"]', { timeout: 30000 });
 }
 
 /**

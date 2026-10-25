@@ -744,7 +744,7 @@ export default function MyShowsClient() {
   }
 
   return (
-    <div data-testid="my-shows-content" className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
+    <div data-testid="my-shows-content" data-ready={loading ? undefined : "true"} className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
       {/* Header — the three section names ARE the page title (owner, 2026-10-25,
           BRO-6170): three text levels — section names, the List/Feed/Stats
           switch, then controls and content. flex-wrap lets the opened Add-show

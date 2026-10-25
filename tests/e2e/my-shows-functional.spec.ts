@@ -41,7 +41,7 @@ for (const vp of VIEWPORTS) {
 
     test('no overlapping controls in tab bar area', async ({ page }) => {
       await goToMock(page);
-      const controls = page.getByRole('tablist').first();
+      const controls = page.getByRole('tablist', { name: 'My Shows sections' });
       if (await controls.isVisible()) {
         await assertNoOverlaps(controls);
       }
@@ -49,7 +49,7 @@ for (const vp of VIEWPORTS) {
 
     test('minimum tap targets on diary controls', async ({ page }) => {
       await goToMock(page, 'diary');
-      const tablist = page.getByRole('tablist').first();
+      const tablist = page.getByRole('tablist', { name: 'My Shows sections' });
       if (await tablist.isVisible()) {
         await assertMinimumTapTargets(tablist);
       }
@@ -83,20 +83,15 @@ for (const vp of VIEWPORTS) {
       await page.getByRole('button', { name: 'List view' }).click();
       await expect(page.getByRole('button', { name: 'List view' })).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Diary tab badge carries the seen count (summary bar removed 2026-07-12)
-      const diaryBadge = page.locator('#tab-diary span').first();
-      const initialText = await diaryBadge.textContent();
-      const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
-      await deleteBtn.click();
+      // Count the entries directly (the Diary tab count badge was removed, BRO-6170).
+      const deleteButtons = page.getByRole('button', { name: 'Delete rating' });
+      const initialCount = await deleteButtons.count();
+      await deleteButtons.first().click();
 
       // Confirm delete
       await page.getByRole('button', { name: /Delete\?/ }).first().click();
 
-      // Badge count should change — wait for the text to differ from initial
-      await expect(async () => {
-        const newText = await diaryBadge.textContent();
-        expect(newText).not.toEqual(initialText);
-      }).toPass({ timeout: 3000 });
+      await expect(deleteButtons).toHaveCount(initialCount - 1, { timeout: 3000 });
     });
 
     // ─── Watchlist — Remove Flow (List View) ────────────────────
@@ -129,26 +124,18 @@ for (const vp of VIEWPORTS) {
       await listBtn.click();
       await expect(listBtn).toHaveClass(/bg-white/, { timeout: 3000 });
 
-      // Get initial watchlist count from tab badge
-      const watchlistTab = page.getByRole('tab', { name: /Watchlist/ });
-      const initialTabText = await watchlistTab.textContent();
-      const initialMatch = initialTabText?.match(/\d+/);
-      const initialCount = initialMatch ? parseInt(initialMatch[0]) : 0;
+      // Count the entries directly (the Watchlist tab count badge was removed, BRO-6170).
+      const removeButtons = page.getByRole('button', { name: 'Remove from watchlist' });
+      const initialCount = await removeButtons.count();
       expect(initialCount).toBeGreaterThan(0);
 
-      const removeBtn = page.getByRole('button', { name: 'Remove from watchlist' }).first();
-      await expect(removeBtn).toBeVisible();
-      await removeBtn.click();
+      await expect(removeButtons.first()).toBeVisible();
+      await removeButtons.first().click();
 
       // Confirm removal
       await page.getByRole('button', { name: /Remove\?/ }).first().click();
 
-      // Watchlist badge count should decrease by 1
-      const expectedCount = initialCount - 1;
-      await expect(async () => {
-        const tabText = await watchlistTab.textContent();
-        expect(tabText).toContain(String(expectedCount));
-      }).toPass({ timeout: 3000 });
+      await expect(removeButtons).toHaveCount(initialCount - 1, { timeout: 3000 });
     });
 
     // ─── View Switching ─────────────────────────────────────────
