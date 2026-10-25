@@ -115,13 +115,14 @@ const TRACK_RECOUPMENT_FEEDS = [...ALL_FEEDS, ...BROADWAY_BUSINESS_FEEDS].filter
 /**
  * Fetch a URL and return the body text
  */
-function fetchUrl(url, timeoutMs = 10000) {
+function fetchUrl(url, timeoutMs = 10000, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
     const proto = url.startsWith('https') ? https : http;
     const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' } }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         // Location may be relative (broadwaynews.com/feed/ -> /rss/).
-        return fetchUrl(new URL(res.headers.location, url).href, timeoutMs).then(resolve).catch(reject);
+        if (redirectsLeft <= 0) return reject(new Error(`Too many redirects for ${url}`));
+        return fetchUrl(new URL(res.headers.location, url).href, timeoutMs, redirectsLeft - 1).then(resolve).catch(reject);
       }
       if (res.statusCode !== 200) {
         return reject(new Error(`HTTP ${res.statusCode} for ${url}`));

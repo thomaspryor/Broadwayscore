@@ -59,6 +59,16 @@ describe('feed parsing', () => {
   });
 });
 
+describe('fetchUrl redirect cap', () => {
+  it('rejects a redirect loop instead of recursing forever', async () => {
+    const srv = http.createServer((req, res) => { res.writeHead(302, { Location: '/again' }); res.end(); });
+    await new Promise(r => srv.listen(0, '127.0.0.1', r));
+    try {
+      await assert.rejects(rss.fetchUrl(`http://127.0.0.1:${srv.address().port}/x`), /Too many redirects/);
+    } finally { srv.close(); }
+  });
+});
+
 describe('coverage evaluation', () => {
   const shows = {
     a: { sources: [{ url: 'https://www.newsite.com/1' }, { url: 'https://newsite.com/2' }] },
