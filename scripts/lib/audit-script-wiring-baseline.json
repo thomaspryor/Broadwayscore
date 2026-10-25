@@ -61,6 +61,11 @@
       "rank": 12,
       "reason": "commercial.json capitalization stored as the Form D maximum (BRO-5732); clean today (0 of 37); core data plus SEC fetch"
     },
+    "audit-excluded-with-own-show-evidence.js": {
+      "bucket": "b",
+      "rank": 0,
+      "reason": "BRO-5805 read-only sweep, needs the private review-texts corpus (cloud-run-script --review-texts); --gate mode is not wired; promote to (a) if a run with review-texts finds hits"
+    },
     "audit-feature-as-review.js": {
       "bucket": "b",
       "rank": 0,
