@@ -37,6 +37,7 @@ const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { classifyHealthCheck } = require('./lib/digest-audience');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
+const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/audit-biz-og-coverage');
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
@@ -258,6 +259,9 @@ const AUTO_FIX_PLAYBOOK = [
     humanAction: 'A currently-running show has audience ratings on a source that never linked — usually a title/venue mismatch. The check message names the source(s) and the correct override knob (MEZZANINE_OVERRIDES in scrape-mezzanine-audience.js, or THEATR_OVERRIDES in scrape-theatr-audience.js — they are separate). Open Claude Code and say: "Add the override for the flagged show and re-run that source’s scraper." Details in data/audit/mezzanine-coverage.json / theatr-coverage.json.' },
   { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
+  // BRO-6159: advisory only; persistent gaps use the existing alert router.
+  { match: /^Commercial: season share cards$/, urgency: 'this-week',
+    humanAction: BIZ_OG_RENDER_HINT },
   { match: /^Freshness: critic-consensus\.json$/, urgency: 'low', workflow: 'update-critic-consensus.yml',
     humanFallback: 'Critic consensus summaries are out of date.' },
   { match: /^Freshness: lottery-rush\.json$/, urgency: 'fix-now', workflow: 'update-lottery-rush.yml',
@@ -6133,6 +6137,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkTourAutomation(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
+    checkBizOgCoverage(),
     ...checkCookieExpiration(),
     ...checkCWV(),
     ...checkSEO(),
