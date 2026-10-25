@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6218-returns",
   "planId": "5ab340a5-43a1-441e-a0dd-42d639d8d21d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T20:36:30.507Z",
   "submitter": {
     "name": null,
@@ -68,5 +68,39 @@
         "newValue": "Fizzle"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T20:44:50.196Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for waitress-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for waitress-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
