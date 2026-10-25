@@ -84,3 +84,42 @@ test('manual-complete 404 page is rejected and excluded; explainExclusion report
   assert.equal(isRegistrationWallStubExclusion({ fullText: nf, manualContentTier: 'complete' }), true);
   assert.equal(explainExclusion({ fullText: stub, outletId: 'telegraph', showId: 'x' }) !== null, true);
 });
+
+for (const manualContentTier of ['complete', 'truncated', 'excerpt', 'stub']) {
+  test(`short paywall exclusion follows rejected manual ${manualContentTier} tier`, () => {
+    const data = { fullText: FT, outletId: 'financialtimes', manualContentTier };
+    assert.equal(classifyContentTier(data).manualOverrideRejected, true);
+    assert.equal(isRegistrationWallStubExclusion(data), true);
+    assert.equal(explainExclusion(data), 'registrationWallStub');
+    assert.equal(isRegistrationWallStubExclusion({ ...data, aggregatorStars: 4 }), false);
+    assert.equal(isRegistrationWallStubExclusion({ ...data, originalScoreSource: 'telegraph-svg-stars', originalScoreNormalized: 80 }), false);
+  });
+}
+
+test('404 exclusions have an error-page label for every rejected manual tier', () => {
+  for (const manualContentTier of ['complete', 'truncated', 'excerpt', 'stub']) {
+    const data = { fullText: '404 PAGE NOT FOUND Sorry, the link you are trying to access is either broken or no longer exists. Please use the search bar.', manualContentTier };
+    assert.equal(explainExclusion(data), 'errorPage');
+  }
+});
+
+const { classifyRebuildExclusion, classifyLlmExclusion } = require('./llm-scoring-parity.js');
+
+test('parity classifiers model wall, rejected manual tiers and error-page exclusions', () => {
+  for (const classify of [classifyRebuildExclusion, classifyLlmExclusion]) {
+    assert.equal(classify({ fullText: stub }), 'registrationWallStub');
+    assert.equal(classify({ fullText: FT, manualContentTier: 'truncated' }), 'registrationWallStub');
+    assert.equal(classify({ fullText: prose }), '');
+    assert.equal(classify({ fullText: stub, aggregatorStars: 4 }), '');
+    assert.equal(classify({ fullText: '404 PAGE NOT FOUND Sorry, the link you are trying to access is either broken or no longer exists. Please use the search bar.', manualContentTier: 'excerpt' }), 'errorPage');
+  }
+});
+
+test('all manual tiers retain long real reviews and respect the 3000-character paywall cutoff', () => {
+  const pw = n => ('Subscribe to unlock this article Try unlimited access Only $1 for 4 weeks. ' + 'y '.repeat(n)).slice(0, n);
+  for (const manualContentTier of ['complete', 'truncated', 'excerpt', 'stub']) {
+    assert.equal(isRegistrationWallStubExclusion({ fullText: pw(2999), manualContentTier }), true);
+    assert.equal(isRegistrationWallStubExclusion({ fullText: pw(3000), manualContentTier }), false);
+    assert.equal(isRegistrationWallStubExclusion({ fullText: longArticleWithFooterWall, manualContentTier }), false);
+  }
+});

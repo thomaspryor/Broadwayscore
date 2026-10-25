@@ -4697,7 +4697,7 @@ function isRejectedByReasonExclusion(data) {
 
 /**
  * BRO-6190: the body is a registration-wall stub (Telegraph sign-up form behind
- * a byline) or a short paywall page under a manual "complete" stamp (NYDN, FT),
+ * a byline) or a short paywall/error page under a rejected manual tier (NYDN, FT),
  * so the LLM rated boilerplate. Excluded unless a score exists that never read
  * that body: page-markup stars (telegraph-svg-stars etc.) or aggregator stars.
  * Own carve-out, not hasStructuralStarScore: that one only applies to files
@@ -4705,18 +4705,25 @@ function isRejectedByReasonExclusion(data) {
  * The invalid tier alone does not exclude in the rebuild, so this is the
  * exclusion. Pure.
  */
-function isRegistrationWallStubExclusion(data) {
-  if (!data) return false;
+function getBodyStubExclusionReason(data) {
+  if (!data) return null;
   const wallStub = require('./paywall-detector').isRegistrationWallStub(data.fullText);
-  const manualOverrideStub = !wallStub && data.manualContentTier === 'complete' &&
-    require('./content-quality').classifyContentTier(data).manualOverrideRejected === true;
-  if (!wallStub && !manualOverrideStub) return false;
+  const tier = !wallStub && data.manualContentTier
+    ? require('./content-quality').classifyContentTier(data) : null;
+  if (!wallStub && tier?.manualOverrideRejected !== true) return null;
   const source = data.scoreSource || data.originalScoreSource;
   const markupStar = STRUCTURAL_STAR_SOURCES.has(source) && data.originalScoreCleared !== true
     && typeof data.originalScoreNormalized === 'number'
     && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
   const aggregatorStar = data.aggregatorStars != null && data.aggregatorStars !== '';
-  return !markupStar && !aggregatorStar && !hasIndependentExcerptScore(data);
+  if (markupStar || aggregatorStar || hasIndependentExcerptScore(data)) return null;
+  return /^Garbage content: Error\/404 page/.test(tier?.tierReason || '')
+    ? 'errorPage' : 'registrationWallStub';
+}
+
+// Compatibility predicate for the rebuild's aggregate body-stub counter.
+function isRegistrationWallStubExclusion(data) {
+  return getBodyStubExclusionReason(data) !== null;
 }
 
 /**
@@ -5341,7 +5348,8 @@ function explainExclusion(data, show, filePath, opts) {
   if (isRejectedAtExclusion(data) && !laneOk('wrongProduction')) return 'rejectedAt';
 
   // BRO-6190: registration-wall stub body (see isRegistrationWallStubExclusion).
-  if (isRegistrationWallStubExclusion(data)) return 'registrationWallStub';
+  const bodyStubReason = getBodyStubExclusionReason(data);
+  if (bodyStubReason) return bodyStubReason;
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
@@ -6211,6 +6219,7 @@ module.exports = {
   isRejectedByReasonExclusion,
   isRejectedAtExclusion,
   isRegistrationWallStubExclusion,
+  getBodyStubExclusionReason,
   isFullTextWrongAuthorActive,
   explainShowLevelExclusion,
   REBUILD_ONLY_PASS_REASONS,

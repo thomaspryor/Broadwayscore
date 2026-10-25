@@ -46,3 +46,28 @@ test('wrongProduction:true with a human clear is included, matching rebuild/expl
 test('rejection fields are FLAG_FIELDS so a data sweep triggers the replay', () => {
   for (const f of ['rejectionReason', 'rejectedAt', 'rejectedBy']) assert.ok(FLAG_FIELDS.has(f), f);
 });
+
+const wall = 'The musical review. Create a free account to continue reading. A minimum of 8 characters At least 1 letter At least 1 number';
+const paywall = 'Subscribe to unlock this article Try unlimited access Only $1 for 4 weeks. ' + 'Keep reading for $1 What is included Global news and analysis. '.repeat(8);
+
+test('BRO-6193: replay uses the real body-stub guard across manual tiers and independent scores', () => {
+  const data = { ...base, fullText: wall };
+  assert.deepEqual(decideInclusion(data, show, guards), { included: false, reason: 'registrationWallStub' });
+  for (const manualContentTier of ['complete', 'truncated', 'excerpt', 'stub']) {
+    const review = { ...base, fullText: paywall, manualContentTier };
+    assert.equal(decideInclusion(review, show, guards).reason, 'registrationWallStub');
+    assert.equal(decideInclusion({ ...review, aggregatorStars: 4 }, show, guards).included, true);
+    assert.equal(decideInclusion({ ...review, originalScoreSource: 'telegraph-svg-stars', originalScoreNormalized: 80 }, show, guards).included, true);
+  }
+  const error = { ...base, fullText: '404 PAGE NOT FOUND Sorry, the link you are trying to access is either broken or no longer exists. Please use the search bar.', manualContentTier: 'truncated' };
+  assert.equal(decideInclusion(error, show, guards).reason, 'errorPage');
+});
+
+test('BRO-6193: replay respects the guard available on each baseline side', () => {
+  const review = { ...base, fullText: wall };
+  const old = { ...guards, getBodyStubExclusionReason: undefined };
+  assert.equal(decideInclusion(review, show, old).reason, 'registrationWallStub');
+  old.isRegistrationWallStubExclusion = undefined;
+  assert.equal(decideInclusion(review, show, old).included, true);
+  for (const field of ['manualContentTier', 'originalScoreCleared', 'fullText']) assert.ok(FLAG_FIELDS.has(field), field);
+});
