@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T01:16:00.225Z",
+  "timestamp": "2026-10-25T01:29:20.117Z",
   "stats": {
     "totalReviews": 60835,
-    "alreadyFlagged": 21312,
+    "alreadyFlagged": 21330,
     "dateGuardCatches": 223,
-    "directorMismatch": 2202,
+    "directorMismatch": 2206,
     "tvFilmSignals": 1720,
-    "londonSignals": 2957,
+    "londonSignals": 2962,
     "offBroadwaySignals": 535,
     "yearMismatch": 201,
-    "noPublishDate": 5548
+    "noPublishDate": 5507
   },
   "findings": [
     {
@@ -1524,6 +1524,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2024",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2024-06-05",
+      "url": "https://www.standard.co.uk/culture/theatre/a-view-from-the-bridge-theatre-royal-haymarket-review-dominic-west-callum-scott-howells-b1162042.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -39468,6 +39486,20 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
+      "file": "culturesauce--thom-geier.json",
+      "score": 48,
+      "publishDate": "2023-10-29",
+      "url": "https://culturesauce.com/2023/10/29/stereophonic-off-broadway-review-fleetwood-mac-rumours/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
       "file": "dailybeast--tim-teeman.json",
       "score": 91,
       "publishDate": "2023-10-30",
@@ -39505,6 +39537,20 @@
       "score": 91,
       "publishDate": "2023-10-29T22:30:03",
       "url": "https://thefrontrowcenter.com/2023/10/stereophonic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
+      "file": "nysr--frank-scheck.json",
+      "score": 77,
+      "publishDate": "2023-10-29",
+      "url": "https://nystagereview.com/2023/10/29/stereophonic-musical-personal/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39594,6 +39640,20 @@
       "score": 88,
       "publishDate": "2023-11-24",
       "url": "https://theaterlife.com/scene-partners-stereophonic/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel aukin\" from stereophonic-2024"
+        }
+      ]
+    },
+    {
+      "showId": "stereophonic-off-broadway-2023",
+      "file": "theater-pizzazz--carole-di-tosti.json",
+      "score": 87,
+      "publishDate": "2023-11-04",
+      "url": "https://www.theaterpizzazz.com/stereophonic-the-artful-magic-of-studio-recording/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -84264,6 +84324,34 @@
     },
     {
       "showId": "player-kings-west-end-2024",
+      "file": "city-am--adam-bloodworth.json",
+      "score": 82,
+      "publishDate": "2024-04-12",
+      "url": "https://www.cityam.com/player-kings-review-ian-mckellen-is-hilarious-in-immensely-cool-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "player-kings-west-end-2024",
+      "file": "city-am--unknown.json",
+      "score": 82,
+      "publishDate": "2024-04-12",
+      "url": "https://www.cityam.com/player-kings-review-ian-mckellen-is-hilarious-in-immensely-cool-show/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "player-kings-west-end-2024",
       "file": "guardian--susannah-clapp.json",
       "score": 80,
       "publishDate": "2024-04-23",
@@ -91378,6 +91466,20 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
+      "score": 74,
+      "publishDate": "2024-06-26",
+      "url": "https://www.londontheatre.co.uk/reviews/the-constituent-review-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-constituent-west-end-2024",
+      "file": "london-theatre--unknown.json",
       "score": 74,
       "publishDate": "2024-06-26",
       "url": "https://www.londontheatre.co.uk/reviews/the-constituent-review-old-vic",
@@ -100201,6 +100303,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "underdog-the-other-other-bronte-west-end-2024",
+      "file": "city-am--lucy-kenningham.json",
+      "score": 63,
+      "publishDate": "2024-04-05",
+      "url": "https://www.cityam.com/underdog-other-other-bronte-dorfman-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
