@@ -720,7 +720,7 @@ if [ "${AHEAD_COUNT:-0}" -gt 0 ]; then
   fi
   for UL in $(SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e 'process.stdout.write(require(process.env.SMART_LIB).GIT_MERGE_UNSAFE_LEDGERS.join(" "))' 2>/dev/null); do
     if [ "$OURS_CHANGED" = "__unreadable__" ] || [ "$THEIRS_CHANGED" = "__unreadable__" ] \
-       || { printf '%s\n' "$OURS_CHANGED" | grep -qxF "$UL" && printf '%s\n' "$THEIRS_CHANGED" | grep -qxF "$UL" \
+       || { grep -qxF "$UL" <<<"$OURS_CHANGED" && grep -qxF "$UL" <<<"$THEIRS_CHANGED" \
             && [ "$(git rev-parse "HEAD:$UL" 2>/dev/null)" != "$(git rev-parse "origin/main:$UL" 2>/dev/null)" ]; }; then
       SMART_BOTH="${SMART_BOTH}${UL}
 "
