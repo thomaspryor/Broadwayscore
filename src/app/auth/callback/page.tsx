@@ -17,7 +17,6 @@ import { markPageLeaving, markSignInFailed, reportUgcError } from '@/lib/ugc-ana
  */
 export default function AuthCallbackPage() {
   const [error, setError] = useState(false);
-  const [errorDetail, setErrorDetail] = useState<string | null>(null);
 
   useEffect(() => {
     // Check for error in URL hash or query params
@@ -41,7 +40,6 @@ export default function AuthCallbackPage() {
       }
       markSignInFailed('google', null, urlError);
       reportUgcError('auth.callback', { message: `${urlError}: ${urlErrorDesc || ''}`, code: urlError });
-      setErrorDetail(`${urlError}: ${urlErrorDesc || 'Unknown error'}`);
       setError(true);
       return;
     }
@@ -51,45 +49,66 @@ export default function AuthCallbackPage() {
     // 10s budget started after a synchronous client, this one includes the
     // SDK download.
     let pollInterval: ReturnType<typeof setInterval> | undefined;
-    let timedOut = false;
-    const timeout = setTimeout(() => {
-      timedOut = true;
-      if (pollInterval) clearInterval(pollInterval);
+    let redirectTimer: ReturnType<typeof setTimeout> | undefined;
+    let finalCheckTimer: ReturnType<typeof setTimeout> | undefined;
+    let cancelled = false;
+    let redirected = false;
+    let cleanup: (() => void) | undefined;
+    const clientPromise = getSupabaseClient();
+
+    const doRedirect = () => {
+      if (cancelled || redirected) return;
+      redirected = true;
+      clearTimeout(timeout);
+      clearTimeout(finalCheckTimer);
+      clearInterval(pollInterval);
+      setError(false);
+      const returnUrl = getReturnUrl();
+      clearReturnUrl();
+      redirectTimer = setTimeout(() => {
+        // Navigation cancels the profile request started by AuthContext.
+        markPageLeaving();
+        window.location.href = returnUrl;
+      }, 100);
+    };
+
+    const timeout = setTimeout(async () => {
+      clearInterval(pollInterval);
+      // A slow SDK load or session write can finish at the deadline. Check
+      // once more before recording a failed sign-in. Bound this last check
+      // too, so a stuck SDK/session lock cannot leave the spinner forever.
+      const sessionReady = clientPromise.then(async client => {
+        const result = await client?.auth.getSession();
+        return !!result?.data.session?.user;
+      }).catch(() => false);
+      const ready = await Promise.race([
+        sessionReady,
+        new Promise<boolean>(resolve => {
+          finalCheckTimer = setTimeout(() => resolve(false), 5000);
+        }),
+      ]);
+      clearTimeout(finalCheckTimer);
+      if (cancelled || redirected) return;
+      if (ready) {
+        doRedirect();
+        return;
+      }
       // Never echo the hash: it holds the access token.
       const hashPresent = hash.length > 1;
       markSignInFailed('google', null, 'timeout');
       reportUgcError('auth.callback', { message: `Timed out waiting for session (hash present: ${hashPresent})`, code: 'timeout' });
-      setErrorDetail(`Timed out waiting for sign-in to finish (token ${hashPresent ? 'received' : 'missing'}).`);
       setError(true);
     }, 15000);
 
     // The SDK loads on demand (lib/supabase.ts); wait for it here.
-    let cancelled = false;
-    let cleanup: (() => void) | undefined;
-    getSupabaseClient().then((client) => {
-      if (cancelled || timedOut) return;
+    clientPromise.then((client) => {
+      if (cancelled || redirected) return;
       if (!client) {
         clearTimeout(timeout);
         reportUgcError('auth.callback', { message: 'Supabase client not available', code: 'no_client' });
-        setErrorDetail('Supabase client not available: env vars missing or the sign-in code failed to load');
         setError(true);
         return;
       }
-
-      let redirected = false;
-
-      const doRedirect = () => {
-        if (redirected) return;
-        redirected = true;
-        const returnUrl = getReturnUrl();
-        clearReturnUrl();
-        setTimeout(() => {
-          // The profile fetch AuthContext started is still in flight; the
-          // navigation cancels it, which is not a failure.
-          markPageLeaving();
-          window.location.href = returnUrl;
-        }, 100);
-      };
 
       // Strategy 1: Listen for auth state change event
       const { data: { subscription } } = client.auth.onAuthStateChange((event) => {
@@ -118,31 +137,32 @@ export default function AuthCallbackPage() {
     return () => {
       cancelled = true;
       clearTimeout(timeout);
+      clearTimeout(finalCheckTimer);
+      clearTimeout(redirectTimer);
       if (pollInterval) clearInterval(pollInterval);
       cleanup?.();
     };
   }, []);
 
   if (error) {
+    // Start a fresh sign-in on the original page via AuthProvider's existing
+    // signin link handler. Reloading this callback would replay provider errors.
+    const retryUrl = new URL(getReturnUrl(), window.location.origin);
+    retryUrl.searchParams.set('signin', '1');
     return (
       <div className="max-w-sm mx-auto px-4 pt-20 text-center">
         <div className="text-4xl mb-4">🎭</div>
-        <h1 className="text-xl font-bold text-white mb-2">Sign-in failed</h1>
+        <h1 className="text-xl font-bold text-white mb-2">Sign-in couldn’t finish</h1>
         <p className="text-sm text-gray-400 mb-6">
-          Something went wrong during sign-in. Please try again.
+          We couldn’t finish signing you in. Check your connection and try again.
         </p>
-        {errorDetail && (
-          <p className="text-xs text-gray-600 mb-4 font-mono break-all bg-white/5 rounded p-2">
-            {errorDetail}
-          </p>
-        )}
         {/* Full reload on purpose: leaves a broken client state behind. */}
         {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
         <a
-          href="/"
+          href={retryUrl.pathname + retryUrl.search + retryUrl.hash}
           className="btn-primary text-sm"
         >
-          Go Home
+          Retry
         </a>
       </div>
     );
