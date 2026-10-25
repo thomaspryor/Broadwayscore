@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T06:40:29.995Z",
+  "timestamp": "2026-10-25T07:09:28.002Z",
   "stats": {
-    "totalReviews": 61029,
-    "alreadyFlagged": 21387,
+    "totalReviews": 61150,
+    "alreadyFlagged": 21388,
     "dateGuardCatches": 222,
     "directorMismatch": 2222,
-    "tvFilmSignals": 1726,
+    "tvFilmSignals": 1728,
     "londonSignals": 2971,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5438
+    "noPublishDate": 5547
   },
   "findings": [
     {
@@ -46748,6 +46748,20 @@
       ]
     },
     {
+      "showId": "the-least-problematic-woman-in-the-world-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://culturesauce.com/2025/10/07/dylan-mulvaney-least-problematic-woman-in-the-world-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-lehman-trilogy-2021",
       "file": "chicagotribune--chris-jones.json",
       "score": 94,
@@ -55648,6 +55662,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "weather-girl-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2025/09/21/weather-girl-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
