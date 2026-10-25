@@ -113,6 +113,7 @@ function pickIssueUrl(sender, links) {
     const host = u.hostname.toLowerCase();
     if (!sender.hosts.some((h) => host === h || host.endsWith(`.${h}`))) continue;
     if (/unsubscribe|manage|preferences|redirect|subscribe/i.test(u.pathname)) continue;
+    if (/\.(png|jpe?g|gif|svg|webp|ico|css|js|pdf|woff2?)$/i.test(u.pathname)) continue; // assets, never an article
     if (!sender.pathRe.test(u.pathname)) continue;
     if (sender.accept && !sender.accept(host, u.pathname)) continue;
     return `https://${host}${u.pathname.replace(/\/+$/, '')}`;
