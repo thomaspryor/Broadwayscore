@@ -40,7 +40,6 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { serpQuery } = require('./lib/url-discovery');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
-const { normalizeTitle } = require('./lib/title-match');
 const { buildVenueTitlePool, findExactDuplicate } = require('./lib/venue-title-dedup-pool');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -284,7 +283,7 @@ async function main() {
       const actualTitle = detail.ok ? detail.title : guessedTitle;
       const candidate = {
         venue: cfg.label,
-        venueCanonical: venueCanon,
+        venueCanonical: cfg.canonicalVenue,
         title: actualTitle,
         slugUrl: url,
         firstDateSeen: dateFirst,

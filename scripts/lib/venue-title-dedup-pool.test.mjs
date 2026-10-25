@@ -103,6 +103,8 @@ test('BRO-4308: discover-ob-historical dedups through the pool, not canonicalVen
   assert.match(src, /require\('\.\/lib\/venue-title-dedup-pool'\)/);
   assert.doesNotMatch(src, /canonicalVenue\(/);
   assert.doesNotMatch(src, /\|\$\{venueCanon\}/);
+  // every identifier the candidate loop reads must still be defined (venueCanon was deleted but still read)
+  assert.doesNotMatch(src.replace(/venueCanonical/g, ''), /\bvenueCanon\b/);
 });
 
 test('BRO-4308: venue labels used by discover-ob-historical match shows.json venue names', () => {
