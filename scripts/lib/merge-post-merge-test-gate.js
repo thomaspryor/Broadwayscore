@@ -140,9 +140,11 @@ const { execErrorDetail } = require('./exec-error-detail.js');
 const { readTsxManifest } = require('./autonomous-checks.js');
 const { nodeUnitTestsForTree, treeUsesCollector, NODE_MANIFEST_REL } = require('./unit-test-collection.js');
 
-// Matches acceptance-check-core.js's own CHECK_TIMEOUT_MS convention — "a
-// hang is worse than a failure" applies equally to this gate's two spawns.
-const TEST_GATE_TIMEOUT_MS = 5 * 60 * 1000;
+// "A hang is worse than a failure" applies to this gate's two spawns. 8 min
+// per spawn (BRO-6184: a merged run was killed at 5 min / 648s on a loaded
+// runner before the baseline was consulted); the outer land cap is 20 min and
+// the land.yml job budget 125 min, so a merged run + baseline fits twice over.
+const TEST_GATE_TIMEOUT_MS = 8 * 60 * 1000;
 
 // node's TAP `location:` line reports the REAL (symlink-resolved) path, but a
 // tmpdir root (e.g. acceptance-check-core.js's baseline checkout, always
@@ -692,7 +694,11 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   // replaces the first, so everything downstream (baseline diff, reason) sees
   // whatever the second run actually produced.
   let retriedUnparseable = false;
-  if (retryUnparseable && result.status !== 0 && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
+  // BRO-6184: a spawn killed by the timeout is not retried. The retry just
+  // doubles the wait (and the cap) on the same loaded runner; the kill is
+  // reported by the fail-safe below with its real cause.
+  const killedByTimeout = !!(result.signal || (result.error && result.error.code === 'ETIMEDOUT'));
+  if (retryUnparseable && !killedByTimeout && result.status !== 0 && parseTapOutput(output, safeRealpath(cwd)).failures.size === 0) {
     retriedUnparseable = true;
     const first = describeExit(result);
     result = execFn(cwd, testFiles);
@@ -877,6 +883,7 @@ function baselineCheckoutOptions(env) {
 }
 
 module.exports = {
+  TEST_GATE_TIMEOUT_MS,
   REQUIRED_WORKFLOW_GUARDS,
   EXCLUDED_WORKFLOW_GUARDS,
   shouldRunTestGate,
