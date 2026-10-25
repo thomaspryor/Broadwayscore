@@ -796,10 +796,7 @@ function findReviewTextsDir() {
 function scanCorpus({ full, families, verifyGuards = false }) {
   const guardAudit = verifyGuards ? require('./lib/regex-pattern-recalibration') : null;
   const dir = findReviewTextsDir();
-  const showDirs = listShowDirs(dir).filter(d => {
-    const p = path.join(dir, d);
-    try { return fs.statSync(p).isDirectory() && d !== '_pending'; } catch { return false; }
-  });
+  const showDirs = listShowDirs(dir, { silent: true }).filter(d => d !== '_pending');
 
   const pool = full ? showDirs : showDirs.slice(-DEFAULT_SAMPLE_SHOWS);
   const reviewLimit = full ? Infinity : MAX_REVIEWS_PER_SHOW;

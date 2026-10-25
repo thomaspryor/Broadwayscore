@@ -52,12 +52,11 @@ const stats = {
 const reroutesByPair = new Map();
 const samples = [];
 
-const showDirs = listShowDirs(reviewTextsDir).filter(f => {
-  const fp = path.join(reviewTextsDir, f);
+const showDirs = listShowDirs(reviewTextsDir, { silent: true }).filter(f => {
   try {
-    if (fs.lstatSync(fp).isSymbolicLink()) return false;
-    return fs.statSync(fp).isDirectory() && guardedShowIds.has(f);
+    if (fs.lstatSync(path.join(reviewTextsDir, f)).isSymbolicLink()) return false;
   } catch { return false; }
+  return guardedShowIds.has(f);
 });
 
 console.log(`Auditing ${showDirs.length} guarded show directories...\n`);

@@ -30,6 +30,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { isNonReviewDemotedByFreshCV } = require('./lib/review-guards');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
@@ -80,15 +81,9 @@ function listShowDirs(dir, showFilter) {
     return { dirs: [], rootMissing: true };
   }
   if (entries.length === 0) return { dirs: [], rootMissing: true };
-  const dirs = entries
-    .filter((e) => e.isDirectory() || e.isSymbolicLink())
-    .map((e) => e.name)
+  const dirs = listShowDirsSafe(dir, { silent: true })
     .filter((name) => !SKIP_DIRS.has(name))
-    .filter((name) => !showFilter || name === showFilter)
-    .filter((name) => {
-      try { return fs.statSync(path.join(dir, name)).isDirectory(); }
-      catch { return false; }
-    });
+    .filter((name) => !showFilter || name === showFilter);
   return { dirs, rootMissing: false };
 }
 

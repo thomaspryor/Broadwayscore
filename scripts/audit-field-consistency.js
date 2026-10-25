@@ -67,7 +67,6 @@ let fixedFiles = 0;
 
 for (const showDir of listShowDirs(BASE)) {
   const showPath = path.join(BASE, showDir);
-  if (!fs.statSync(showPath).isDirectory()) continue;
 
   for (const fname of fs.readdirSync(showPath)) {
     if (!fname.endsWith('.json')) continue;

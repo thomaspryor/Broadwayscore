@@ -80,6 +80,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const ACTIONS_DIR = path.join(__dirname, '..', '.github', 'actions');
 
@@ -205,7 +206,7 @@ function main() {
     return;
   }
 
-  const dirs = fs.readdirSync(ACTIONS_DIR).filter((d) => fs.statSync(path.join(ACTIONS_DIR, d)).isDirectory());
+  const dirs = listShowDirs(ACTIONS_DIR, { silent: true });
 
   const results = [];
   for (const dir of dirs) {

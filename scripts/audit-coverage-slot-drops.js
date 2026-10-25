@@ -45,11 +45,13 @@ function classifyFile(d, { showDir, filename, dupKeys, siblingReviewUrls = [] })
   return classes;
 }
 
+const { listShowDirs } = require('./lib/list-show-dirs');
+
 function auditCorpus(dir) {
   const out = [];
   const { sameUrlKey } = require('./lib/review-url-collision');
   let shows = [];
-  try { shows = fs.readdirSync(dir).filter((s) => !s.startsWith('_') && fs.statSync(path.join(dir, s)).isDirectory()); } catch { return out; }
+  try { shows = listShowDirs(dir, { silent: true, skipHolding: true }); } catch { return out; }
   for (const show of shows.sort()) {
     const showDir = path.join(dir, show);
     const loaded = [];

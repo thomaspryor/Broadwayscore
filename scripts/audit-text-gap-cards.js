@@ -7,6 +7,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { isCvVerdictFromTruncatedFetch } = require('./lib/content-verifier');
 const { isTextlessNeedsRefetch } = require('./lib/collection-priority');
 
@@ -41,9 +42,9 @@ function restoreTargets() {
 }
 
 const rows = [];
-for (const showId of fs.readdirSync(root)) {
+for (const showId of listShowDirs(root, { silent: true })) {
   const dir = path.join(root, showId);
-  if (!fs.statSync(dir).isDirectory() || (only && showId !== only)) continue;
+  if (only && showId !== only) continue;
   for (const file of fs.readdirSync(dir)) {
     if (!file.endsWith('.json')) continue;
     let d; try { d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }

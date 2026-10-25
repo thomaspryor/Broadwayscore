@@ -24,6 +24,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { detectBodyDateMismatch, isUrlRepairPending } = require('./lib/body-date-mismatch');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isDateClaimWrongProduction } = require('./lib/stale-flag-neutralization');
@@ -84,12 +85,10 @@ function scanCorpus(root, { showsById = new Map() } = {}) {
   const hits = [];
   const repairPending = [];
   let files = 0;
-  for (const showId of fs.readdirSync(root)) {
-    if (showId.startsWith('_') || showId.startsWith('.')) continue;
+  for (const showId of listShowDirs(root, { silent: true, skipHolding: true })) {
     const dir = path.join(root, showId);
     let entries;
     try {
-      if (!fs.statSync(dir).isDirectory()) continue;
       entries = fs.readdirSync(dir);
     } catch { continue; }
     for (const file of entries) {
