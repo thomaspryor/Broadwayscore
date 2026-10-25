@@ -23,10 +23,13 @@ const linear = require('./lib/linear-client');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const { findOwnerDecisions, planNotification } = require('./lib/owner-decision-notify.js');
 const link = require('../src/lib/owner-decision-link.js');
-const { buildDecisionEmail, buildRoundupEmail } = require('./lib/owner-decision-email.js');
+const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail } = require('./lib/owner-decision-email.js');
 
 const USAGE = 'Usage: node scripts/send-owner-decision-emails.js [--dry-run] [--only=BRO-N] [--roundup] [--no-sweep] [--max=8]';
 const LEGACY_KEY = 'owner-decisions:new';
+// BRO-6235: this many never-announced decisions at once go out as ONE email
+// linking to the list page, not one email each.
+const BACKLOG_MIN = 3;
 const ROUNDUP_AFTER_MS = 3 * 24 * 60 * 60 * 1000;
 const MAX_PAGES = 40;
 
@@ -140,18 +143,35 @@ async function main(argv = process.argv.slice(2)) {
     .filter((d) => !swept.has(d.identifier) && !hasComment(d, link.emailMarker(refOf(d))) && !hasComment(d, link.answerMarker(refOf(d))));
   console.log(`[owner-decision-emails] ${fresh.length} not yet emailed (cap ${opts.max} per run)`);
   const { sendEmailAlert } = require('./lib/discord-notify.js');
+  const markTold = async (d, text) => {
+    try {
+      const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
+      await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
+        { input: { issueId: issue.issue.id, body: `${text}\n\n${link.emailMarker(refOf(d))}` } });
+      return true;
+    } catch (err) { console.error(`[owner-decision-emails] sent ${d.identifier} but could not record it: ${err.message}`); return false; }
+  };
   let sent = 0;
+  // 3a. A pile of untold decisions: one email with the list link, then the
+  // same told marker the per-decision path writes (the ANSWER: sweep and the
+  // roundup both key on it).
+  if (fresh.length >= BACKLOG_MIN) {
+    const email = buildBacklogEmail({ decisions: fresh, secret });
+    if (opts.dryRun) { console.log(`[dry-run] would send ONE backlog email "${email.subject}" covering ${fresh.map((d) => d.identifier).join(', ')}`); return 0; }
+    const day = new Date().toISOString().slice(0, 10);
+    const ok = await sendEmailAlert({ title: email.subject, description: '', severity: 'error', subjectLabel: '', html: email.html, idempotencyKey: `owner-decision-backlog:${day}:${fresh.length}` });
+    if (!ok) { console.error('[owner-decision-emails] backlog email was not delivered; will retry next run'); return 1; }
+    for (const d of fresh) await markTold(d, "Listed in the owner's decisions email (one email with a link to the list page).");
+    console.log(`[owner-decision-emails] sent ONE backlog email covering ${fresh.length} decision(s)`);
+    return 0;
+  }
   for (const d of fresh.slice(0, opts.max)) {
     const email = buildDecisionEmail({ decision: d, description: byId.get(d.identifier).description, secret });
     if (opts.dryRun) { console.log(`[dry-run] would email "${email.subject}" (${d.identifier})`); continue; }
     // Resend dedupes this key for 24h, so a failed marker write below cannot double-send within a day.
     const ok = await sendEmailAlert({ title: email.subject, description: '', severity: 'error', subjectLabel: '', html: email.html, idempotencyKey: `owner-decision:${d.identifier}:${email.tokenHash}` });
     if (!ok) { failures++; console.error(`[owner-decision-emails] email for ${d.identifier} was not delivered; will retry next run`); continue; }
-    try {
-      const issue = await linear.graphql('query($id: String!) { issue(id: $id) { id } }', { id: d.identifier });
-      await linear.graphql('mutation($input: CommentCreateInput!) { commentCreate(input: $input) { success } }',
-        { input: { issueId: issue.issue.id, body: `Emailed the owner this decision with answer buttons.\n\n${link.emailMarker(refOf(d))}` } });
-    } catch (err) { console.error(`[owner-decision-emails] sent ${d.identifier} but could not record it: ${err.message}`); }
+    await markTold(d, 'Emailed the owner this decision with answer buttons.');
     sent++;
   }
   console.log(`[owner-decision-emails] emailed ${sent} decision(s)`);

@@ -6,7 +6,7 @@
  * owner-facing rules: plain English, no em dashes, no card ids in the text.
  */
 
-const { parseDecisionBlock, answerChoices, signToken, questionHash, unescapeMarkdown, collapseSelfLinks } = require('../../src/lib/owner-decision-link.js');
+const { parseDecisionBlock, answerChoices, signToken, signListToken, questionHash, unescapeMarkdown, collapseSelfLinks } = require('../../src/lib/owner-decision-link.js');
 
 const BASE_URL = 'https://broadwayscorecard.com';
 const SUBJECT_MAX = 90;
@@ -19,6 +19,10 @@ function noDash(s) { return unescapeMarkdown(collapseSelfLinks(String(s == null 
 
 function answerUrl(token, key, baseUrl = BASE_URL) {
   return `${baseUrl}/api/owner-decision?t=${encodeURIComponent(token)}&o=${encodeURIComponent(key)}`;
+}
+
+function listUrl(secret, { now = Date.now(), baseUrl = BASE_URL } = {}) {
+  return `${baseUrl}/api/owner-decision/list?t=${encodeURIComponent(signListToken({ secret, now }))}`;
 }
 
 function button(href, label, primary) {
@@ -59,6 +63,7 @@ ${block.recommendation ? `<p style="margin:16px 0 6px;"><strong>My recommendatio
 ${block.defaultText ? `<p style="margin:0 0 12px;"><strong>If you do not answer:</strong> ${esc(noDash(block.defaultText))}</p>` : ''}
 ${button(answerUrl(token, 'own', baseUrl), 'Reply in my own words', false)}
 <p style="margin:16px 0 0;color:#666;font-size:13px;">Each button opens a page that asks you to confirm before anything is saved. You can also answer on the card by starting a comment with ANSWER:${decision.url ? ` <a href="${esc(decision.url)}" style="color:#666;">Open the card</a>.` : ''} This link works for 14 days.</p>
+<p style="margin:10px 0 0;font-size:14px;"><a href="${esc(listUrl(secret, { now, baseUrl }))}" style="color:#1a1208;">See everything waiting on you</a></p>
 </div></body></html>`;
   return { subject, html, tokenHash: hash };
 }
@@ -80,4 +85,21 @@ function buildRoundupEmail({ decisions, secret, now = Date.now(), baseUrl = BASE
   return { subject, html };
 }
 
-module.exports = { buildDecisionEmail, buildRoundupEmail, answerUrl, BASE_URL };
+// ONE email for a pile of never-announced decisions: the question list with a
+// single link to the list page, where the answer buttons live.
+function buildBacklogEmail({ decisions, secret, now = Date.now(), baseUrl = BASE_URL }) {
+  const n = decisions.length;
+  const subject = `${n} ${n === 1 ? 'decision is' : 'decisions are'} waiting on you`;
+  const rows = decisions.slice(0, 25).map((d) => `<li style="margin:0 0 8px;">${esc(noDash(d.question || d.title))}</li>`).join('');
+  const more = n > 25 ? `<p style="margin:0 0 14px;color:#666;">And ${n - 25} more on the page.</p>` : '';
+  const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:20px 16px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;font-size:16px;line-height:1.5;color:#222;"><div style="max-width:520px;margin:0 auto;">
+<p style="margin:0 0 14px;">${n === 1 ? 'One decision is' : `${n} decisions are`} waiting on you. Work on ${n === 1 ? 'it is' : 'them is'} paused until you answer. Everything is on one page, each with its options and an answer button.</p>
+${button(listUrl(secret, { now, baseUrl }), 'See and answer everything', true)}
+<ol style="padding-left:20px;margin:16px 0;">${rows}</ol>${more}
+<p style="margin:16px 0 0;color:#666;font-size:13px;">Each answer button asks you to confirm before anything is saved. This link works for 3 days; the morning digest carries a fresh one.</p>
+</div></body></html>`;
+  return { subject, html };
+}
+
+module.exports = { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail, answerUrl, listUrl, BASE_URL };

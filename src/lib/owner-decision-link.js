@@ -310,7 +310,101 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   return { ...loaded, status: 'recorded', answer: { label: choice.label, text: cleanText }, moved: Boolean(input.stateId) };
 }
 
+// ── the list page (BRO-6235) ────────────────────────────────────────────────
+// One private page listing every open decision. Its token is a separate
+// signed kind (own HMAC domain, no card id) so it can never verify as a
+// per-decision token. The page mints per-decision tokens server-side, capped
+// at the list token's own expiry, and answering still goes through the
+// existing confirm page and POST.
+const LIST_DOMAIN = 'owner-decision-list:v1:';
+const LIST_TTL_MS = 3 * 24 * 60 * 60 * 1000;
+const MAX_LISTED = 60;
+const SETTLED_RE = /^\s*(?:answered|resolved|decided|done|closed)\b/i;
+
+function listMac(secret, s) {
+  return crypto.createHmac('sha256', secret).update(LIST_DOMAIN + s).digest('hex');
+}
+
+function signListToken({ secret, now = Date.now(), ttlMs = LIST_TTL_MS }) {
+  if (!secret) throw new Error('owner-decision: signing secret missing');
+  const encoded = Buffer.from(JSON.stringify({ k: 'list', e: Math.floor((now + ttlMs) / 1000) })).toString('base64url');
+  return `${encoded}.${listMac(secret, encoded)}`;
+}
+
+function verifyListToken(token, secret, now = Date.now()) {
+  if (!secret) return { ok: false, reason: 'config' };
+  const s = String(token || '');
+  if (s.length > 200) return { ok: false, reason: 'malformed' };
+  const dot = s.lastIndexOf('.');
+  if (dot < 1) return { ok: false, reason: 'malformed' };
+  const encoded = s.slice(0, dot);
+  const sig = s.slice(dot + 1);
+  if (!/^[0-9a-f]{64}$/.test(sig) || !/^[A-Za-z0-9_-]+$/.test(encoded)) return { ok: false, reason: 'malformed' };
+  const a = Buffer.from(sig, 'hex');
+  const b = Buffer.from(listMac(secret, encoded), 'hex');
+  if (a.length !== b.length || !crypto.timingSafeEqual(a, b)) return { ok: false, reason: 'signature' };
+  let p;
+  try { p = JSON.parse(Buffer.from(encoded, 'base64url').toString('utf8')); } catch { return { ok: false, reason: 'malformed' }; }
+  if (!p || p.k !== 'list' || !Number.isInteger(p.e)) return { ok: false, reason: 'malformed' };
+  if (now > p.e * 1000) return { ok: false, reason: 'expired' };
+  return { ok: true, expires: p.e };
+}
+
+// A per-decision token valid no longer than the list token that minted it.
+function mintDecisionToken({ id, hash, secret, listExpires, now = Date.now(), ttlMs = LIST_TTL_MS }) {
+  const cap = Number.isInteger(listExpires) ? listExpires * 1000 - now : ttlMs;
+  return signToken({ id, hash, secret, now, ttlMs: Math.max(60_000, Math.min(ttlMs, cap)) });
+}
+
+function isPlaceholderQuestion(q) {
+  return /^</.test(q) || /<(?:what|why|name|upside|downside|x|y)\b/i.test(q) || /^\.{3}$/.test(q) || SETTLED_RE.test(q);
+}
+
+// One server-side filtered query, no comments: bounded cost for a public GET.
+const LIST_QUERY = `query($teamKey: String!) {
+  issues(first: ${MAX_LISTED + 40}, filter: {
+    team: { key: { eq: $teamKey } },
+    state: { type: { nin: ["completed", "canceled", "duplicate"] } },
+    or: [
+      { labels: { name: { eq: "${AWAITING_OWNER_LABEL}" } } },
+      { description: { containsIgnoreCase: "DECISION NEEDED" } }
+    ]
+  }) { nodes { identifier title description priority url createdAt labels { nodes { name } } } }
+}`;
+
+/**
+ * Open issues -> the decisions waiting on the owner, most urgent first.
+ * Same hash rules as loadDecision, so a listed decision always opens as 'open'.
+ * @returns {Array<{identifier,title,url,question,hash,priority,block,choices}>}
+ */
+function listOpenDecisions(issues) {
+  const out = [];
+  for (const issue of issues || []) {
+    if (!issue || !ID_RE.test(String(issue.identifier))) continue;
+    const real = markerLines(issue.description).find((m) => !isPlaceholderQuestion(m.question));
+    const labelled = ((issue.labels && issue.labels.nodes) || []).some((l) => l && l.name === AWAITING_OWNER_LABEL);
+    if (!real && !labelled) continue;
+    const question = real ? real.question : capQuestion(String(issue.title || issue.identifier));
+    out.push({
+      identifier: issue.identifier,
+      title: issue.title || issue.identifier,
+      url: typeof issue.url === 'string' && issue.url.startsWith('https://linear.app/') ? issue.url : null,
+      question,
+      hash: questionHash(question),
+      priority: Number.isInteger(issue.priority) && issue.priority > 0 ? issue.priority : 5,
+      createdAt: String(issue.createdAt || ''),
+      block: parseDecisionBlock(issue.description),
+      choices: answerChoices(issue.description),
+    });
+  }
+  return out
+    .sort((a, b) => a.priority - b.priority || a.createdAt.localeCompare(b.createdAt) || a.identifier.localeCompare(b.identifier))
+    .slice(0, MAX_LISTED);
+}
+
 module.exports = {
+  LIST_TTL_MS, LIST_QUERY, MAX_LISTED,
+  signListToken, verifyListToken, mintDecisionToken, listOpenDecisions, isPlaceholderQuestion,
   TOKEN_TTL_MS, MAX_ANSWER_CHARS, MARKER_RE, ID_RE, AWAITING_OWNER_LABEL,
   stripCode, collapseSelfLinks, capQuestion, markerLines, questionHash, unescapeMarkdown,
   parseDecisionBlock, answerChoices,

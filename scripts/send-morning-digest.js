@@ -465,6 +465,17 @@ function mergeNeedsYouSections(cmux, linear) {
 // "⛔ site health: 69 known/managed, 14 new/regressing" suffix counted the
 // automation's own machinery (CI, dispatch, cmux ...) the owner can neither
 // see nor act on; those counts now live in the email's Technical details.
+// BRO-6235: one signed link to the private list page of every open decision
+// (answer buttons live there). Omitted without a signing secret.
+function decisionsListLinkHtml(needsYou, secret = process.env.APPROVAL_HMAC_SECRET) {
+  if (!secret || !needsYou || !Array.isArray(needsYou.items) || !needsYou.items.length) return '';
+  try {
+    const { listUrl } = require('./lib/owner-decision-email.js');
+    const href = listUrl(secret).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    return `<p style="margin:8px 0 14px;"><a href="${href}" style="font-weight:700;">See and answer every decision in one place</a></p>`;
+  } catch { return ''; }
+}
+
 const SUBJECT_NAME_MAX = 42;
 const SUBJECT_LIMIT = 120; // digest-content-invariants.js: subject must be < 120 chars
 function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, loopDead = false, now = new Date() } = {}) {
@@ -617,6 +628,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     renderNeedsAttentionBlock(view.decisionQueued),
     // "Needs You" tab triage (card #870) — the owner's own pending decisions.
     sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true }) : '',
+    decisionsListLinkHtml(sections.needsYou),
     // Waiting on your approval (BRO-282) — Linear issues carrying the
     // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
     // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
@@ -1598,4 +1610,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
