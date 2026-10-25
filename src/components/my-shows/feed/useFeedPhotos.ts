@@ -14,6 +14,8 @@ export interface FeedPhotosState {
   photosByReview: Record<string, FeedPhoto[]>;
   loading: boolean;
   error: string | null;
+  /** The current user's saved photos have loaded (upload slots can be counted). */
+  ready: boolean;
   retry: () => void;
 }
 
@@ -37,6 +39,10 @@ export function useFeedPhotos(userId: string | null, isMockMode: boolean, opts: 
   const [photosByReview, setPhotosByReview] = useState<Record<string, FeedPhoto[]>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  // True only once the current user's photos have loaded. Upload slots are
+  // counted from photosByReview, so until then "Add" must stay closed or a
+  // load failure would read as six free slots (ship-check, BRO-6170).
+  const [ready, setReady] = useState(false);
   const signedAt = useRef(0);
   const requestId = useRef(0);
   const signedCache = useRef(new Map<string, { url: string; at: number }>());
@@ -52,11 +58,13 @@ export function useFeedPhotos(userId: string | null, isMockMode: boolean, opts: 
       const all = mod.buildMockPhotosByReview({ seeded: !none });
       setPhotosByReview(reviewId ? (all[reviewId] ? { [reviewId]: all[reviewId] } : {}) : all);
       setError(null);
+      setReady(true);
       setLoading(false);
       return;
     }
     if (!userId) {
       setPhotosByReview({});
+      setReady(false);
       return;
     }
     setLoading(true);
@@ -77,11 +85,13 @@ export function useFeedPhotos(userId: string | null, isMockMode: boolean, opts: 
         if (hit) signed[r.storage_path] = hit.url;
       }
       setPhotosByReview(groupPhotosByReview(rows, signed));
+      setReady(true);
       signedAt.current = Math.min(...rows.map(r => cache.get(r.storage_path)?.at ?? now), now);
       setError(null);
     } catch (e) {
       if (id !== requestId.current) return;
       setError(e instanceof Error ? e.message : 'Could not load photos');
+      setReady(false);
     } finally {
       if (id === requestId.current) setLoading(false);
     }
@@ -101,8 +111,15 @@ export function useFeedPhotos(userId: string | null, isMockMode: boolean, opts: 
       if (signedAt.current && ageMs > REUSE_MS) load();
     };
     document.addEventListener('visibilitychange', onVisible);
-    return () => document.removeEventListener('visibilitychange', onVisible);
+    // A tab left open and visible never fires visibilitychange, so lazy tiles
+    // scrolled into view after the TTL would load expired URLs. Check once a
+    // minute too.
+    const timer = setInterval(onVisible, 60_000);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      clearInterval(timer);
+    };
   }, [isMockMode, userId, load]);
 
-  return { photosByReview, loading, error, retry: load };
+  return { photosByReview, loading, error, ready, retry: load };
 }

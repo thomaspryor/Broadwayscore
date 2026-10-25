@@ -754,6 +754,7 @@ export default function MyShowsClient() {
         <TitleTabs
           items={[{ tab: 'diary', label: 'Diary' }, { tab: 'watchlist', label: 'Watchlist' }, { tab: 'lists', label: 'Lists' }]}
           isActive={tab => (tab === 'diary' ? DIARY_GROUP.includes(activeTab) : activeTab === tab)}
+          panelFor={tab => `panel-${tab === 'diary' && DIARY_GROUP.includes(activeTab) ? activeTab : tab}`}
           onSelect={setActiveTab}
         />
         {activeTab === 'lists' ? (

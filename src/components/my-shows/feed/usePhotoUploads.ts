@@ -70,10 +70,12 @@ export function useLocalMockMode(): boolean {
  * keeps uploads spinning forever and `&mockupload=fail` fails each photo's
  * first attempt (Retry then succeeds), for screenshots of those states.
  */
-export function usePhotoUploads({ userId, isMockMode, photosByReview }: {
+export function usePhotoUploads({ userId, isMockMode, photosByReview, ready = true }: {
   userId: string | null;
   isMockMode: boolean;
   photosByReview: Record<string, FeedPhoto[]>;
+  /** False until the saved photos have loaded: no free slots are offered before then. */
+  ready?: boolean;
 }): PhotoUploads {
   const [pending, setPendingState] = useState<PendingPhoto[]>([]);
   const pendingRef = useRef<PendingPhoto[]>([]);
@@ -86,6 +88,8 @@ export function usePhotoUploads({ userId, isMockMode, photosByReview }: {
   const mockAttempts = useRef(new Map<string, number>());
   const savedRef = useRef(photosByReview);
   savedRef.current = photosByReview;
+  const readyRef = useRef(ready);
+  readyRef.current = ready;
 
   const patch = useCallback((id: string, fields: Partial<PendingPhoto>) => {
     setPending(prev => prev.map(p => (p.id === id ? { ...p, ...fields } : p)));
@@ -133,12 +137,12 @@ export function usePhotoUploads({ userId, isMockMode, photosByReview }: {
   }, [run]);
 
   const remainingFor = useCallback(
-    (reviewId: string) => slotsLeft(photosByReview, pending, reviewId),
-    [photosByReview, pending],
+    (reviewId: string) => (ready ? slotsLeft(photosByReview, pending, reviewId) : 0),
+    [photosByReview, pending, ready],
   );
 
   const addFiles = useCallback((reviewId: string, files: File[]) => {
-    if (files.length === 0) return;
+    if (files.length === 0 || !readyRef.current) return;
     const problems = files.map(f => photoFileProblem(f));
     const usable = files.filter((_, i) => !problems[i]);
     // Refs, not state: two quick picks in a row must see each other.

@@ -6,8 +6,21 @@
  * answers the UI-only "everything about this one reviewer" question.
  */
 
-import { NO_CRITIC_INDEX, parseRating, ratingToHundred } from '@/lib/stats';
-import type { DiaryRow, StatsReviews } from '@/lib/stats';
+import { LOW_ALIGNMENT_MAX, NO_CRITIC_INDEX, parseRating, ratingToHundred } from '@/lib/stats';
+import type { AlignCriticsResult, Alignment, DiaryRow, StatsReviews } from '@/lib/stats';
+
+/**
+ * The critic to label "nemesis", or null. The shared reducer returns the
+ * worst-aligned critic with enough shared shows even at 70%, and with a small
+ * pool that can be the same person shown as a closest or rising match. Only a
+ * genuinely low aligner who isn't listed above qualifies (ship-check, BRO-6170).
+ */
+export function displayNemesis(result: Pick<AlignCriticsResult, 'nemesis' | 'topMates' | 'rising'>): Alignment | null {
+  const n = result.nemesis;
+  if (!n || n.alignment >= LOW_ALIGNMENT_MAX) return null;
+  const listed = new Set([...result.topMates, ...result.rising].map(a => a.name));
+  return listed.has(n.name) ? null : n;
+}
 
 export type Reviewer = { kind: 'critic'; index: number } | { kind: 'outlet'; name: string };
 

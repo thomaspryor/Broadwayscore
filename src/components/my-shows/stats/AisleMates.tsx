@@ -7,7 +7,7 @@
 
 import { RISING_MIN_SHARED, type Alignment, type OutletAlignment } from '@/lib/stats';
 import type { StatsBundle } from '@/lib/stats-ui/bundle';
-import type { Reviewer } from '@/lib/stats-ui/aisle-mates';
+import { displayNemesis, type Reviewer } from '@/lib/stats-ui/aisle-mates';
 import { initials } from '@/lib/stats-ui/format';
 import { GroupLabel, ModuleError, ModuleHeader, ModuleLocked, StatsCard, pressableClass, type DataState } from './primitives';
 
@@ -67,7 +67,8 @@ export default function AisleMates({
       </StatsCard>
     );
   }
-  const { topMates, rising, nemesis, highVolumeNemesis, topOutlets, nemesisOutlet, sharedShowCount } = aisleMates;
+  const { topMates, rising, highVolumeNemesis, topOutlets, nemesisOutlet, sharedShowCount } = aisleMates;
+  const nemesis = displayNemesis(aisleMates);
   if (topMates.length === 0 && rising.length === 0) {
     return (
       <ModuleLocked

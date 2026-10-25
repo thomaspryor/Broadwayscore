@@ -338,6 +338,19 @@ export async function uploadReviewPhoto({ userId, reviewId, photoId, file }: Upl
     return inserted ?? { ...row, created_at: new Date().toISOString() };
   }
 
+  // A lost response is ambiguous: the INSERT may have committed. Deleting the
+  // object then would leave a row pointing at nothing, invisible in the feed
+  // but holding one of the six slots. Look before cleaning up; if we can't
+  // tell, keep the object (a retry is idempotent: duplicate upload + 23505).
+  if (insertError.code === 'network') {
+    const landed = await supabaseRestSelect<ReviewPhotoRow>(
+      'user_review_photos',
+      `select=*&id=eq.${encodeURIComponent(photoId)}`,
+    ).catch(() => null);
+    if (landed && !landed.error && landed.data?.length) return landed.data[0];
+    if (!landed || landed.error) throw new PhotoError(NETWORK_MESSAGE);
+  }
+
   // No orphans: the row never landed, so take the object back out.
   await removeObjects(session.token, [path]).catch(() => {});
   if (insertError.code === '23503') throw new PhotoError('This diary entry no longer exists.');

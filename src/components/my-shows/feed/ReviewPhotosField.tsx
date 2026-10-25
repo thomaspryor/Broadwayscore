@@ -16,8 +16,8 @@ export default function ReviewPhotosField({ reviewId, showTitle }: { reviewId: s
   const { user } = useAuth();
   const isMockMode = useLocalMockMode();
   const userId = isMockMode ? 'mock-user' : user?.id ?? null;
-  const { photosByReview, error, retry } = useFeedPhotos(userId, isMockMode, { reviewId });
-  const uploads = usePhotoUploads({ userId, isMockMode, photosByReview });
+  const { photosByReview, error, ready, retry } = useFeedPhotos(userId, isMockMode, { reviewId });
+  const uploads = usePhotoUploads({ userId, isMockMode, photosByReview, ready });
   if (!userId) return null;
 
   const photos = photosByReview[reviewId] ?? [];

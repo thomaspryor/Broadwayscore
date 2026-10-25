@@ -15,10 +15,12 @@ export interface NavItem {
 }
 
 /** Diary / Watchlist / Lists as the page title, with a gold bar under the active one. */
-export function TitleTabs({ items, isActive, onSelect }: {
+export function TitleTabs({ items, isActive, onSelect, panelFor = tab => `panel-${tab}` }: {
   items: NavItem[];
   isActive: (tab: MyShowsTab) => boolean;
   onSelect: (tab: MyShowsTab) => void;
+  /** id of the panel a tab shows (Diary shows panel-feed/panel-stats when those views are open). */
+  panelFor?: (tab: MyShowsTab) => string;
 }) {
   return (
     <div role="tablist" aria-label="My Shows sections" className="flex items-baseline gap-5 sm:gap-7 min-w-0">
@@ -31,7 +33,7 @@ export function TitleTabs({ items, isActive, onSelect }: {
             role="tab"
             id={`tab-${item.tab}`}
             aria-selected={on}
-            aria-controls={`panel-${item.tab}`}
+            aria-controls={panelFor(item.tab)}
             onClick={() => onSelect(item.tab)}
             className={`relative pb-1.5 text-2xl sm:text-3xl font-extrabold tracking-tight transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand rounded-sm ${on ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
           >
@@ -63,6 +65,7 @@ export function DiarySegmented({ active, onSelect }: { active: MyShowsTab; onSel
             role="tab"
             id={`view-${v.tab}`}
             aria-selected={on}
+            aria-controls={`panel-${v.tab}`}
             onClick={() => onSelect(v.tab)}
             className={`flex-1 py-2.5 text-base font-semibold rounded-lg transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand ${on ? 'bg-surface-overlay text-white' : 'text-gray-400 hover:text-white'}`}
           >

@@ -26,7 +26,7 @@ import {
   hasDisplayableScore,
   youVsCritics,
 } from '../../src/lib/stats-ui/critics';
-import { reviewerDetail } from '../../src/lib/stats-ui/aisle-mates';
+import { displayNemesis, reviewerDetail } from '../../src/lib/stats-ui/aisle-mates';
 import { formatDateSeen, formatHours, formatMonth, groupByVenue, houseShortName, initials, shortMonth, wholeHours } from '../../src/lib/stats-ui/format';
 import {
   EMPTY_CANON,
@@ -417,4 +417,15 @@ test('decodeStatsShowsStrict turns an empty catalog into a load error', () => {
   assert.throws(() => decodeStatsShowsStrict({ shows: {} }), /empty/);
   assert.throws(() => decodeStatsShowsStrict(null), /empty/);
   assert.equal(decodeStatsShowsStrict({ shows: { 'x-2020': [80, 12, 'A', 'open'] } }).length, 1);
+});
+
+test('displayNemesis only labels a genuinely low aligner who is not already listed', () => {
+  const a = (name, alignment) => ({ name, alignment, shared: 10 });
+  // Worst of the pool is 70%: not a nemesis.
+  assert.equal(displayNemesis({ nemesis: a('X', 0.7), topMates: [], rising: [] }), null);
+  // Low, but already shown as a rising match: not a nemesis.
+  assert.equal(displayNemesis({ nemesis: a('Y', 0.2), topMates: [], rising: [a('Y', 0.2)] }), null);
+  // Low and unlisted: shown.
+  assert.equal(displayNemesis({ nemesis: a('Z', 0.15), topMates: [a('M', 0.8)], rising: [] }).name, 'Z');
+  assert.equal(displayNemesis({ nemesis: null, topMates: [], rising: [] }), null);
 });

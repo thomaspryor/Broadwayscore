@@ -40,8 +40,8 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
     try { localStorage.setItem(MODE_KEY, next); } catch { /* ignore */ }
   }, []);
 
-  const { photosByReview, loading, error, retry } = useFeedPhotos(userId, isMockMode);
-  const uploads = usePhotoUploads({ userId, isMockMode, photosByReview });
+  const { photosByReview, loading, error, ready, retry } = useFeedPhotos(userId, isMockMode);
+  const uploads = usePhotoUploads({ userId, isMockMode, photosByReview, ready });
   const groups = useMemo(() => buildMonthGroups(reviews, photosByReview), [reviews, photosByReview]);
   const wallSlides = useMemo(() => buildWallSlides(reviews, photosByReview), [reviews, photosByReview]);
   const undatedCount = useMemo(() => reviews.filter(r => !r.date_seen).length, [reviews]);
