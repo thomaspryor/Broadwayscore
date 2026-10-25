@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T21:31:20.854Z",
+  "generatedAt": "2026-10-25T00:01:43.411Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,11 +39,6 @@
       "openingDate": "2026-10-22"
     },
     {
-      "id": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "billy-crystal-860-2026",
       "title": "Billy Crystal 860",
       "openingDate": "2026-10-21"
@@ -79,11 +74,6 @@
       "openingDate": "2026-10-19"
     },
     {
-      "id": "school-pictures-off-broadway-2026",
-      "title": "School Pictures",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "garry-starr-classic-penguins-off-west-end-2026",
       "title": "Garry Starr Classic Penguins",
       "openingDate": "2026-10-23"
@@ -99,11 +89,6 @@
       "openingDate": "2026-10-20"
     },
     {
-      "id": "two-girls-off-broadway-2026",
-      "title": "Two Girls",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
       "title": "Queeney Todd: The Demon Bottom of Fleet Street",
       "openingDate": "2026-10-22"
@@ -114,11 +99,6 @@
       "openingDate": "2026-10-23"
     },
     {
-      "id": "the-dog-show-come-sit-stay-off-broadway-2026",
-      "title": "The Dog Show: Come. Sit. Stay.",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "women-who-eat-off-broadway-2026",
       "title": "Women Who Eat",
       "openingDate": "2026-10-22"
@@ -127,14 +107,14 @@
       "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
       "title": "The Nicest Body Ever Seen Around These Parts",
       "openingDate": "2026-10-19"
-    },
-    {
-      "id": "dance-is-not-for-us-off-west-end-2026",
-      "title": "Dance Is Not for Us",
-      "openingDate": "2026-10-18"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "hospital-hour-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 73,
   "feedsFailed": [
     {
@@ -158,16 +138,8 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
-    },
-    {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
       "outletId": "theatre-vibe",
-      "error": "AggregateError"
+      "error": "HTTP 403 for https://theatrevibe.co.uk/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -180,13 +152,9 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 630,
+  "itemsScanned": 676,
   "matchedGaps": 2,
   "possibleGaps": 1,
   "gaps": [
