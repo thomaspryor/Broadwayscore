@@ -1,0 +1,75 @@
+{
+  "issueNumber": "bro-3513",
+  "planId": "a323bfe4-ca59-452b-8132-a35eb4d752f9",
+  "status": "applied",
+  "createdAt": "2026-10-12T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag two reviews of other productions found by the URL-date / content audit: Deadline Heisenberg (2015 MTC off-Broadway text) and Vulture The Prom (2020 Netflix film).",
+    "steps": [
+      "heisenberg-2016 deadline wrongProduction",
+      "the-prom-2018 vulture wrongProduction"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "heisenberg-2016/deadline--jeremy-gerard.json",
+        "field": "wrongProduction",
+        "oldValue": false,
+        "newValue": true,
+        "description": "BRO-3513: text is Deadline's review of the 2015 Manhattan Theatre Club off-Broadway premiere, not the 2016 Broadway run (stored url is Deadline's 2016 Cherry Orchard review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "heisenberg-2016/deadline--jeremy-gerard.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-3513: 2015 MTC off-Broadway premiere review, not the 2016 Broadway production",
+        "description": "Record why"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prom-2018/vulture--jesse-green.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-3513: Vulture review of the 2020 Netflix film, not the 2018 Broadway production (stored publishDate is wrong)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prom-2018/vulture--jesse-green.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-3513: review of the 2020 Netflix film adaptation, not the Broadway production",
+        "description": "Record why"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T13:55:42.529Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "heisenberg-2016/deadline--jeremy-gerard.json wrongProductionReason: null -> \"BRO-3513: 2015 MTC off-Broadway premiere review, not the 2016 Broadway production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prom-2018/vulture--jesse-green.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-prom-2018/vulture--jesse-green.json wrongProductionReason: null -> \"BRO-3513: review of the 2020 Netflix film adaptation, not the Broadway production\""
+    }
+  ]
+}

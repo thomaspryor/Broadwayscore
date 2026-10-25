@@ -1,0 +1,1045 @@
+{
+  "timestamp": "2026-02-09T04:27:13.163Z",
+  "pipelineVersion": "v7",
+  "totalScanned": 721,
+  "flagged": [
+    {
+      "showId": "the-roommate-2024",
+      "title": "The Roommate",
+      "thumbnail": "/images/shows/the-roommate-2024/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production photo from the show.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "back-to-the-future-2023",
+      "title": "Back to the Future: The Musical",
+      "thumbnail": "/images/shows/back-to-the-future-2023/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from Back to the Future: The Musical, showing Marty McFly on stage.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "sunset-boulevard-2024",
+      "title": "Sunset Boulevard",
+      "thumbnail": "/images/shows/sunset-boulevard-2024/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is for a revival of Sunset Boulevard, but it is not the 2024 Broadway production. It is for a previous production starring Nicole Scherzinger.",
+        "issues": [
+          "wrong_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "cult-of-love-2024",
+      "title": "Cult of Love",
+      "thumbnail": "/images/shows/cult-of-love-2024/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is for the play 'The Thanksgiving Play' by Larissa FastHorse, directed by Trip Cullman.",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "all-in-comedy-about-love-2024",
+      "title": "All In: Comedy About Love",
+      "thumbnail": "/images/shows/all-in-comedy-about-love-2024/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image does not show the show title. It shows a caricature of the cast of \"Oh, Hello on Broadway\".",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "purpose-2025",
+      "title": "Purpose",
+      "thumbnail": "/images/shows/purpose-2025/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a production still from a play, with the text \"Tony Award Winner\" at the bottom. There is no show title visible.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "leopoldstadt-2022",
+      "title": "Leopoldstadt",
+      "thumbnail": "/images/shows/leopoldstadt-2022/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the promotional art for \"A New Play by Tom Stoppard\" but does not show the title of the play, \"Leopoldstadt\".",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "a-christmas-carol-2022",
+      "title": "A Christmas Carol",
+      "thumbnail": "/images/shows/a-christmas-carol-2022/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"A Christmas Carol\" but the venue is PAC NYC Perelman Performing Arts Center, which is not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "sweeney-todd-2023",
+      "title": "Sweeney Todd",
+      "thumbnail": "/images/shows/sweeney-todd-2023/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This image shows Aaron Tveit and Sutton Foster, not the cast of the 2023 Sweeney Todd revival.",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "life-of-pi-2023",
+      "title": "Life of Pi",
+      "thumbnail": "/images/shows/life-of-pi-2023/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from the show Life of Pi.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "macbeth-2022",
+      "title": "Macbeth",
+      "thumbnail": "/images/shows/macbeth-2022/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Macbeth\" but it is being performed at Classic Stage Company, not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "a-christmas-carol-2019",
+      "title": "A Christmas Carol",
+      "thumbnail": "/images/shows/a-christmas-carol-2019/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows promotional art for A Christmas Carol, but the venue is PAC NYC Perelman Performing Arts Center, which is not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "burn-this-2019",
+      "title": "Burn This",
+      "thumbnail": "/images/shows/burn-this-2019/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production photo of the actors from Burn This.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "gary-a-sequel-to-titus-andronicus-2019",
+      "title": "Gary: A Sequel to Titus Andronicus",
+      "thumbnail": "/images/shows/gary-a-sequel-to-titus-andronicus-2019/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a Playbill cover for Gary: A Sequel to Titus Andronicus at the Booth Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "the-terms-of-my-surrender-2017",
+      "title": "The Terms of My Surrender",
+      "thumbnail": "/images/shows/the-terms-of-my-surrender-2017/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows Michael Moore holding a Playbill with his face on it. The show title is not visible.",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "the-encounter-2016",
+      "title": "The Encounter",
+      "thumbnail": "/images/shows/the-encounter-2016/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a yellow Playbill cover for The Encounter at the Golden Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "oh-hello-on-broadway-2016",
+      "title": "Oh, Hello on Broadway",
+      "thumbnail": "/images/shows/oh-hello-on-broadway-2016/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is a Playbill cover for Oh, Hello on Broadway at the Lyceum Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "the-price-2017",
+      "title": "The Price",
+      "thumbnail": "/images/shows/the-price-2017/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a man carrying a harp, but there is no show title visible. This is not promotional art for \"The Price\".",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "sweat-2017",
+      "title": "Sweat",
+      "thumbnail": "/images/shows/sweat-2017/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This image shows two women laughing. There is no show title visible.",
+        "issues": [
+          "generic_image"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "spring-awakening-2015",
+      "title": "Spring Awakening",
+      "thumbnail": "/images/shows/spring-awakening-2015/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Spring Awakening\" but it is presented by Gallery Players, which is not a Broadway producer.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "old-times-2015",
+      "title": "Old Times",
+      "thumbnail": "/images/shows/old-times-2015/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows posters for the show Guys and Dolls and Call Me Madam.",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "dames-at-sea-2015",
+      "title": "Dames at Sea",
+      "thumbnail": "/images/shows/dames-at-sea-2015/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a Playbill cover for Dames at Sea at the Helen Hayes Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "allegiance-2015",
+      "title": "Allegiance",
+      "thumbnail": "/images/shows/allegiance-2015/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from the show.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "fiddler-on-the-roof-2015",
+      "title": "Fiddler on the Roof",
+      "thumbnail": "/images/shows/fiddler-on-the-roof-2015/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from a performance of Fiddler on the Roof.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "american-psycho-2016",
+      "title": "American Psycho",
+      "thumbnail": "/images/shows/american-psycho-2016/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a production still from American Psycho.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "waitress-2016",
+      "title": "Waitress",
+      "thumbnail": "/images/shows/waitress-2016/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production photo of the cast of Waitress.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "love-letters-2014",
+      "title": "Love Letters",
+      "thumbnail": "/images/shows/love-letters-2014/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Love Letters\" but the venue is \"Irish Repertory Theatre\", which is not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "side-show-2014",
+      "title": "Side Show",
+      "thumbnail": "/images/shows/side-show-2014/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is for a production of Side Show at the White Plains Performing Arts Center, not the 2014 Broadway production.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "the-heidi-chronicles-2015",
+      "title": "The Heidi Chronicles",
+      "thumbnail": "/images/shows/the-heidi-chronicles-2015/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a Playbill cover for The Heidi Chronicles at the Music Box Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "gigi-2015",
+      "title": "Gigi",
+      "thumbnail": "/images/shows/gigi-2015/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a Playbill cover for Gigi at the Neil Simon Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "finding-neverland-2015",
+      "title": "Finding Neverland",
+      "thumbnail": "/images/shows/finding-neverland-2015/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Finding Neverland\" but also includes the logo for \"Creations Theatre Center\", indicating a regional or community theater production.",
+        "issues": [
+          "regional_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "romeo-and-juliet-2013",
+      "title": "Romeo and Juliet",
+      "thumbnail": "/images/shows/romeo-and-juliet-2013/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image says 'Coming Soon'",
+        "issues": [
+          "placeholder"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "no-mans-land-2013",
+      "title": "No Man's Land",
+      "thumbnail": "/images/shows/no-mans-land-2013/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from the show No Man's Land.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "fela-2012",
+      "title": "Fela!",
+      "thumbnail": "/images/shows/fela-2012/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a Playbill program cover for Fela! at the Eugene O'Neill Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "an-enemy-of-the-people-2012",
+      "title": "An Enemy of the People",
+      "thumbnail": "/images/shows/an-enemy-of-the-people-2012/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a Playbill cover for \"An Enemy of the People\" at Circle in the Square.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "the-heiress-2012",
+      "title": "The Heiress",
+      "thumbnail": "/images/shows/the-heiress-2012/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from a performance of The Heiress, not promotional art.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "the-performers-2012",
+      "title": "The Performers",
+      "thumbnail": "/images/shows/the-performers-2012/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a Playbill cover for The Performers at the Longacre Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "rodgers-hammersteins-cinderella-2013",
+      "title": "Rodgers + Hammerstein's Cinderella",
+      "thumbnail": "/images/shows/rodgers-hammersteins-cinderella-2013/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from the show.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "the-testament-of-mary-2013",
+      "title": "The Testament of Mary",
+      "thumbnail": "/images/shows/the-testament-of-mary-2013/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a yellow PLAYBILL program cover for The Testament of Mary at the Walter Kerr Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "master-class-2011",
+      "title": "Master Class",
+      "thumbnail": "/images/shows/master-class-2011/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a Playbill cover for Master Class at the Samuel J. Friedman Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "hair-2011",
+      "title": "Hair",
+      "thumbnail": "/images/shows/hair-2011/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Hair\" but also \"The Public\", which is not a Broadway producer.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "chinglish-2011",
+      "title": "Chinglish",
+      "thumbnail": "/images/shows/chinglish-2011/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production photo from the show Chinglish.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "private-lives-2011",
+      "title": "Private Lives",
+      "thumbnail": "/images/shows/private-lives-2011/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is a placeholder that says \"Coming soon\".",
+        "issues": [
+          "placeholder"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "bonnie-and-clyde-2011",
+      "title": "Bonnie and Clyde",
+      "thumbnail": "/images/shows/bonnie-and-clyde-2011/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title Bonnie and Clyde, but it is for the London production, not the Broadway production.",
+        "issues": [
+          "wrong_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "on-a-clear-day-you-can-see-forever-2011",
+      "title": "On a Clear Day You Can See Forever",
+      "thumbnail": "/images/shows/on-a-clear-day-you-can-see-forever-2011/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"On a Clear Day You Can See Forever\" but it is produced by the Irish Repertory Theatre, not a Broadway production.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "peter-and-the-starcatcher-2012",
+      "title": "Peter and the Starcatcher",
+      "thumbnail": "/images/shows/peter-and-the-starcatcher-2012/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Peter and the Starcatcher\" but also shows \"Gallery Players Presents\", indicating a non-Broadway production.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "a-streetcar-named-desire-2012",
+      "title": "A Streetcar Named Desire",
+      "thumbnail": "/images/shows/a-streetcar-named-desire-2012/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still from a performance of A Streetcar Named Desire.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "ghost-the-musical-2012",
+      "title": "Ghost The Musical",
+      "thumbnail": "/images/shows/ghost-the-musical-2012/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a scene from the stage production of Ghost The Musical.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "a-life-in-the-theatre-2010",
+      "title": "A Life in the Theatre",
+      "thumbnail": "/images/shows/a-life-in-the-theatre-2010/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"A Life in the Theatre\" but it is at Symphony Space, which is not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "lombardi-2010",
+      "title": "Lombardi",
+      "thumbnail": "/images/shows/lombardi-2010/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a Playbill cover for the show Lombardi.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "rain-2010",
+      "title": "Rain",
+      "thumbnail": "/images/shows/rain-2010/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a poster for \"Singin' in the Rain JR.\" by Any Town Theatre Company, which is a different show and a regional production.",
+        "issues": [
+          "wrong_show",
+          "regional_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "hamlet-2009",
+      "title": "Hamlet",
+      "thumbnail": "/images/shows/hamlet-2009/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title Hamlet, but also the venue BAM (Brooklyn Academy of Music), which is not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "a-little-night-music-2009",
+      "title": "A Little Night Music",
+      "thumbnail": "/images/shows/a-little-night-music-2009/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows \"A Little Night Music\" but it is an \"In Concert\" version.",
+        "issues": [
+          "concert_version"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "present-laughter-2010",
+      "title": "Present Laughter",
+      "thumbnail": "/images/shows/present-laughter-2010/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a poster for \"Present Laughter\" but at the Theatre Royal in Bath, not a Broadway venue.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "looped-2010",
+      "title": "Looped",
+      "thumbnail": "/images/shows/looped-2010/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows the promotional art for the Broadway show Looped, but it is presented as a Playbill cover.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "all-about-me-2010",
+      "title": "All About Me",
+      "thumbnail": "/images/shows/all-about-me-2010/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a poster for a play called \"All Of Me\", but the Broadway show is \"All About Me\".",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "la-cage-aux-folles-2010",
+      "title": "La Cage aux Folles",
+      "thumbnail": "/images/shows/la-cage-aux-folles-2010/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title La Cage aux Folles, but the venue is New York City Center Encores!",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "sondheim-on-sondheim-2010",
+      "title": "Sondheim on Sondheim",
+      "thumbnail": "/images/shows/sondheim-on-sondheim-2010/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a photo of Stephen Sondheim, but not promotional art for the show.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "title-of-show-2008",
+      "title": "[title of show]",
+      "thumbnail": "/images/shows/title-of-show-2008/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is for \"A Commercial Jingle for Regina Comet\", not \"[title of show]\"",
+        "issues": [
+          "wrong_show"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "all-my-sons-2008",
+      "title": "All My Sons",
+      "thumbnail": "/images/shows/all-my-sons-2008/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a podcast advertisement for All My Sons, but it is not the 2008 Broadway production. It is a production by Delfont Mackintosh Theatres, which is a West End company.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "west-side-story-2009",
+      "title": "West Side Story",
+      "thumbnail": "/images/shows/west-side-story-2009/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a production of West Side Story, but the dates 23 NOV - 11 JAN indicate it is not the 2009 Broadway production.",
+        "issues": [
+          "wrong_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "accent-on-youth-2009",
+      "title": "Accent on Youth",
+      "thumbnail": "/images/shows/accent-on-youth-2009/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a Playbill cover for Accent on Youth at the Samuel J. Friedman Theatre, a Manhattan Theatre Club production.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "cyrano-de-bergerac-2007",
+      "title": "Cyrano de Bergerac",
+      "thumbnail": "/images/shows/cyrano-de-bergerac-2007/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a promotional image for Cyrano de Bergerac, but it stars James McAvoy and has dates for April 5-May 22. The 2007 Broadway production starred Kevin Kline.",
+        "issues": [
+          "wrong_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "cymbeline-2007",
+      "title": "Cymbeline",
+      "thumbnail": "/images/shows/cymbeline-2007/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "This is a production still of actors performing on stage.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "the-homecoming-2007",
+      "title": "The Homecoming",
+      "thumbnail": "/images/shows/the-homecoming-2007/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a Playbill cover for The Homecoming at the Cort Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "macbeth-2008",
+      "title": "Macbeth",
+      "thumbnail": "/images/shows/macbeth-2008/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the promotional art for Macbeth starring Daniel Craig and Ruth Negga.",
+        "issues": [
+          "wrong_production"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "the-little-dog-laughed-2006",
+      "title": "The Little Dog Laughed",
+      "thumbnail": "/images/shows/the-little-dog-laughed-2006/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a yellow Playbill program cover for The Little Dog Laughed at the Cort Theatre.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "company-2006",
+      "title": "Company",
+      "thumbnail": "/images/shows/company-2006/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows the title \"Company\" but it also says \"KeyBank Broadway Series\" which indicates a non-Broadway production.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "spring-awakening-2006",
+      "title": "Spring Awakening",
+      "thumbnail": "/images/shows/spring-awakening-2006/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a poster for Spring Awakening, but it's presented by Gallery Players, a non-Broadway producer.",
+        "issues": [
+          "non_broadway"
+        ],
+        "imageType": "promotional_art"
+      }
+    },
+    {
+      "showId": "lovemusik-2007",
+      "title": "Lovemusik",
+      "thumbnail": "/images/shows/lovemusik-2007/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image shows a Playbill cover for Lovemusik at the Biltmore Theatre, produced by Manhattan Theatre Club.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "the-pajama-game-2006",
+      "title": "The Pajama Game",
+      "thumbnail": "/images/shows/the-pajama-game-2006/thumbnail.webp",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Photo of actors in a performance.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    },
+    {
+      "showId": "the-norman-conquests-2009",
+      "title": "The Norman Conquests",
+      "thumbnail": "/images/shows/the-norman-conquests-2009/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "Image shows a yellow Playbill cover for The Norman Conquests.",
+        "issues": [
+          "playbill_cover"
+        ],
+        "imageType": "other"
+      }
+    },
+    {
+      "showId": "relatively-speaking-2011",
+      "title": "Relatively Speaking",
+      "thumbnail": "/images/shows/relatively-speaking-2011/thumbnail.jpg",
+      "verifyResult": {
+        "match": false,
+        "confidence": "high",
+        "description": "The image is a cast photo, not promotional art.",
+        "issues": [
+          "production_photo"
+        ],
+        "imageType": "production_still"
+      }
+    }
+  ],
+  "passedCount": 645,
+  "errors": [
+    {
+      "showId": "an-act-of-god-2016",
+      "error": "File not found: /Users/tompryor/Broadwayscore/public/images/shows/an-act-of-god-2016/thumbnail.jpg"
+    },
+    {
+      "showId": "arcadia-2011",
+      "error": "File not found: /Users/tompryor/Broadwayscore/public/images/shows/arcadia-2011/thumbnail.jpg"
+    },
+    {
+      "showId": "the-lieutenant-of-inishmore-2006",
+      "error": "File not found: /Users/tompryor/Broadwayscore/public/images/shows/the-lieutenant-of-inishmore-2006/thumbnail.jpg"
+    }
+  ]
+}

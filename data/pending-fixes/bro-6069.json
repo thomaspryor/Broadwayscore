@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-6069",
+  "planId": "e94c2e94-5348-4d41-bc87-7456275d4a92",
+  "status": "applied",
+  "createdAt": "2026-10-23T14:19:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Pin NYT Two Girls score at 62 (owner call): ensemble majority Claude 63 / Gemini 60, OpenAI 40 flagged sole-outlier-22pt-gap, published 56.",
+    "steps": [
+      "two-girls-off-broadway-2026/nytimes--helen-shaw.json: humanReviewScore=62",
+      "two-girls-off-broadway-2026/nytimes--helen-shaw.json: humanReviewNote"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytimes--helen-shaw.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 62,
+        "description": "two-girls-off-broadway-2026/nytimes--helen-shaw.json: humanReviewScore=62"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "two-girls-off-broadway-2026/nytimes--helen-shaw.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Owner pin 2026-10-23 (BRO-6069): average of the two agreeing models after a sole-outlier ensemble result of 56.",
+        "description": "two-girls-off-broadway-2026/nytimes--helen-shaw.json: humanReviewNote"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T14:30:29.494Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytimes--helen-shaw.json humanReviewScore: null -> 62"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "two-girls-off-broadway-2026/nytimes--helen-shaw.json humanReviewNote: null -> \"Owner pin 2026-10-23 (BRO-6069): average of the two agreeing models after a sole-outlier ensemble result of 56.\""
+    }
+  ],
+  "executedIn": "ci"
+}

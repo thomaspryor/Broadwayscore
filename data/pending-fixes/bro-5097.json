@@ -1,0 +1,116 @@
+{
+  "issueNumber": "bro-5097",
+  "planId": "8f0e8a74-eedf-4520-b8f1-be40feba0aa7",
+  "status": "applied",
+  "createdAt": "2026-10-11T23:14:03.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5097: four review files the T1 gap audit kept reporting. Checked live on 2026-10-11: two are the wrong show/production (Fire Fire, The Visit), one is a Time Out listings blurb (What the Animals Say), and one is a Theater Scene tag archive that now links the real Burning Leaves review. Code change in the same landing: host-scoped Theater Scene tag-archive rule so the tag url counts as provably wrong for the url repair.",
+    "steps": [
+      "Fire Fire: the Times url is a classical review of Julia Wolfe's Fire in my Mouth (Marin Alsop), not the 2026 Arcola play, so flag wrongShow.",
+      "The Visit (regional 2026): curtainup visitwtf14.html is Elyse Sommer's review of the 2014 Williamstown Theatre Festival production, not the 2026 production, so flag wrongProduction with a reason.",
+      "What the Animals Say: the Time Out page is a listings blurb (unsigned 'Time Out says', dates and prices, no critic or stars); the ensemble rejected it not_a_review eight times and each verdict was wiped by a refetch, so flag isNonReview.",
+      "Burning Leaves: the stored url is the theaterscene.net tag archive and the stored text is a Chip Deffaa column about a different play; repoint to the real review (Tony Marinelli, posted 2026-10-11) so the collector refetches it."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "fire-fire-off-west-end-2026/times-uk--unknown.json",
+        "field": "wrongShow",
+        "oldValue": null,
+        "newValue": true,
+        "description": "The Times classical-opera review of 'Fire in my Mouth' (Julia Wolfe, Marin Alsop) is about a different work than the Arcola play Fire Fire (John Webber, Sept 2026)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-visit-regional-2026/curtainup--unknown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "curtainup.com/visitwtf14.html reviews the 2014 Williamstown Theatre Festival production (Aug 3 2014 matinee), not the 2026 production."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-visit-regional-2026/curtainup--unknown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "CurtainUp page visitwtf14.html is the 2014 Williamstown Theatre Festival production, not the 2026 production",
+        "description": "Provenance for the wrongProduction flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Time Out listings page: only an unsigned 'Time Out says' blurb plus dates and prices, no critic and no rating (checked 2026-10-11); eight ensemble not_a_review verdicts were each wiped by collect-review-texts-refetch."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "Time Out listings page, unsigned blurb with dates and prices, no critic or rating",
+        "description": "Provenance for the isNonReview flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "url",
+        "oldValue": "https://www.theaterscene.net/tag/burning-leaves/",
+        "newValue": "https://www.theaterscene.net/plays/offbway-plays/burning-leaves/tony-marinelli/",
+        "description": "The stored url is a Theater Scene tag archive; its newest post (2026-10-11) is the Burning Leaves review at this url."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json",
+        "field": "criticName",
+        "oldValue": "Victor Gluck",
+        "newValue": "Tony Marinelli",
+        "description": "The review url's critic segment is tony-marinelli (Theater Scene's convention). The old byline came from the Chip Deffaa column ingested from the tag page."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T01:43:42.269Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fire-fire-off-west-end-2026/times-uk--unknown.json wrongShow: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-regional-2026/curtainup--unknown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-visit-regional-2026/curtainup--unknown.json wrongProductionReason: null -> \"CurtainUp page visitwtf14.html is the 2014 Williamstown Theatre Festival production, not the 2026 production\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json isNonReviewReason: null -> \"Time Out listings page, unsigned blurb with dates and prices, no critic or rating\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json url: \"https://www.theaterscene.net/tag/burning-leaves/\" -> \"https://www.theaterscene.net/plays/offbway-plays/burning-leaves/tony-marinelli/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burning-leaves-off-broadway-2026/theater-scene--victor-gluck.json criticName: \"Victor Gluck\" -> \"Tony Marinelli\""
+    }
+  ]
+}

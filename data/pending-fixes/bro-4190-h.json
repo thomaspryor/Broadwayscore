@@ -1,0 +1,47 @@
+{
+  "createdAt": "2026-10-12T09:46:54Z",
+  "issueNumber": "bro-4190-h",
+  "planId": "980c40f4-cb46-4b58-ade4-77efea4a7e45",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4190 follow-up to bro-4190-g (refused: the 2026-10-12 outlet split had already renamed the file and relabelled it BritishTheatre.com from its wrong cast-page url). Repoint Howard Loxton's Hercules review to its British Theatre Guide url, which also undoes the split relabel, then restore the file name.",
+    "riskLevel": "low",
+    "steps": [
+      "Repair the url on hercules-west-end-2025/britishtheatrecom--howard-loxton.json"
+    ],
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hercules-west-end-2025/britishtheatrecom--howard-loxton.json",
+        "field": "url",
+        "oldValue": "https://www.britishtheatre.com/shows/disneys-hercules/cast",
+        "newValue": "https://www.britishtheatreguide.info/reviews/disney-s-hercul-theatre-royal-d-24528",
+        "description": "British Theatre Guide review by Howard Loxton; stored url was a britishtheatre.com cast page (undoes the outlet-split relabel made from it)"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "rename",
+        "sourcePath": "hercules-west-end-2025/britishtheatrecom--howard-loxton.json",
+        "destPath": "hercules-west-end-2025/british-theatre--howard-loxton.json",
+        "description": "File name back to the British Theatre Guide outlet id"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T10:49:38.629Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hercules-west-end-2025/britishtheatrecom--howard-loxton.json url: \"https://www.britishtheatre.com/shows/disneys-hercules/cast\" -> \"https://www.britishtheatreguide.info/reviews/disney-s-hercul-theatre-royal-d-24528\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved hercules-west-end-2025/britishtheatrecom--howard-loxton.json → hercules-west-end-2025/british-theatre--howard-loxton.json"
+    }
+  ]
+}

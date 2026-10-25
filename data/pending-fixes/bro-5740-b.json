@@ -1,0 +1,166 @@
+{
+  "issueNumber": "bro-5740-b",
+  "planId": "2e2efb66-9e9d-4e9f-b41b-e53096afc1f4",
+  "status": "partial",
+  "createdAt": "2026-10-20T02:10:00Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5740: correct 11 misspelled criticName values so the live critic-spelling assertion passes (same critic, two spellings, same show/outlet).",
+    "steps": [
+      "review-field-edit criticName on the 11 misspelled files"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "_superseded-misattributed/1536-west-end-2026--timeout-london--andrjez-lukowski.json",
+        "field": "criticName",
+        "oldValue": "Andrjez Lukowski",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5740: byline typo 'Andrjez Lukowski', same critic as the sibling file 'Andrzej Lukowski' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-off-west-end-2026/timeout-london--andrezej-lukowski.json",
+        "field": "criticName",
+        "oldValue": "Andrezej Lukowski",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5740: byline typo 'Andrezej Lukowski', same critic as the sibling file 'Andrzej Lukowski' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-years-west-end-2025/timeout-london--andrjez-lukowski.json",
+        "field": "criticName",
+        "oldValue": "Andrjez Lukowski",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5740: byline typo 'Andrjez Lukowski', same critic as the sibling file 'Andrzej Lukowski' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "thelma-and-louise-a-new-musical-off-west-end-2026/timeout-london--andrjez-lukowski.json",
+        "field": "criticName",
+        "oldValue": "Andrjez Lukowski",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5740: byline typo 'Andrjez Lukowski', same critic as the sibling file 'Andrzej Lukowski' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "why-am-i-so-single-west-end-2024/timeout-london--andrjez-lukowski.json",
+        "field": "criticName",
+        "oldValue": "Andrjez Lukowski",
+        "newValue": "Andrzej Lukowski",
+        "description": "BRO-5740: byline typo 'Andrjez Lukowski', same critic as the sibling file 'Andrzej Lukowski' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cruise-west-end-2021/whatsonstage--sarah-compton.json",
+        "field": "criticName",
+        "oldValue": "Sarah Compton",
+        "newValue": "Sarah Crompton",
+        "description": "BRO-5740: byline typo 'Sarah Compton', same critic as the sibling file 'Sarah Crompton' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-west-end-2024/broadwayworld--abby-grundy.json",
+        "field": "criticName",
+        "oldValue": "Abby Grundy",
+        "newValue": "Abbie Grundy",
+        "description": "BRO-5740: byline typo 'Abby Grundy', same critic as the sibling file 'Abbie Grundy' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "othello-west-end-2025/thestage--dave-fargnoli.json",
+        "field": "criticName",
+        "oldValue": "Dave Fargnoli",
+        "newValue": "David Fargnoli",
+        "description": "BRO-5740: byline typo 'Dave Fargnoli', same critic as the sibling file 'David Fargnoli' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prince-of-broadway-2017/huffpost--steven-suskin.json",
+        "field": "criticName",
+        "oldValue": "Steven Suskind",
+        "newValue": "Steven Suskin",
+        "description": "BRO-5740: byline typo 'Steven Suskind', same critic as the sibling file 'Steven Suskin' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "spamalot-tour-2025/the-moderate-voice--dough-bursch.json",
+        "field": "criticName",
+        "oldValue": "Dough Bursch",
+        "newValue": "Doug Bursch",
+        "description": "BRO-5740: byline typo 'Dough Bursch', same critic as the sibling file 'Doug Bursch' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-man-in-the-white-suit-west-end-2019/telegraph--domenic-cavendish.json",
+        "field": "criticName",
+        "oldValue": "Domenic Cavendish",
+        "newValue": "Dominic Cavendish",
+        "description": "BRO-5740: byline typo 'Domenic Cavendish', same critic as the sibling file 'Dominic Cavendish' for this show and outlet; the spelling the outlet prints. Which file counts is unchanged (no flags touched)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T02:09:17.021Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Bad review path: _superseded-misattributed/1536-west-end-2026--timeout-london--andrjez-lukowski.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "kimberly-akimbo-off-west-end-2026/timeout-london--andrezej-lukowski.json criticName: \"Andrezej Lukowski\" -> \"Andrzej Lukowski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-years-west-end-2025/timeout-london--andrjez-lukowski.json criticName: \"Andrjez Lukowski\" -> \"Andrzej Lukowski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "thelma-and-louise-a-new-musical-off-west-end-2026/timeout-london--andrjez-lukowski.json criticName: \"Andrjez Lukowski\" -> \"Andrzej Lukowski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "why-am-i-so-single-west-end-2024/timeout-london--andrjez-lukowski.json criticName: \"Andrjez Lukowski\" -> \"Andrzej Lukowski\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cruise-west-end-2021/whatsonstage--sarah-compton.json criticName: \"Sarah Compton\" -> \"Sarah Crompton\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-west-end-2024/broadwayworld--abby-grundy.json criticName: \"Abby Grundy\" -> \"Abbie Grundy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "othello-west-end-2025/thestage--dave-fargnoli.json criticName: \"Dave Fargnoli\" -> \"David Fargnoli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prince-of-broadway-2017/huffpost--steven-suskin.json criticName: \"Steven Suskind\" -> \"Steven Suskin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "spamalot-tour-2025/the-moderate-voice--dough-bursch.json criticName applied, but the write guard also changed duplicateClearReason, duplicateOf, duplicateReason; check the record before trusting it"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-man-in-the-white-suit-west-end-2019/telegraph--domenic-cavendish.json criticName: \"Domenic Cavendish\" -> \"Dominic Cavendish\""
+    }
+  ],
+  "executedIn": "ci"
+}

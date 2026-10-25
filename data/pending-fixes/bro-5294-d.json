@@ -1,0 +1,184 @@
+{
+  "issueNumber": "bro-5294-d",
+  "planId": "8bef7622-da0f-46a6-a18a-4ca831b0406e",
+  "status": "applied",
+  "createdAt": "2026-10-14T02:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5294 (d): restore the full stored text of the 7 WSJ rows whose fullText was overwritten by their scoring section (the scorer no longer writes the section back). Their sections were complete per the audit; the restore makes the original column recoverable on the row itself. A rescore follows.",
+    "steps": [
+      "delete",
+      "restore from review-texts 113b32e9^"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "act-one-2014/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "act-one-2014/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "billy-elliot-the-musical-2008/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "billy-elliot-the-musical-2008/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "bullets-over-broadway-2014/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "bullets-over-broadway-2014/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "death-of-a-salesman-2012/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "death-of-a-salesman-2012/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "godspell-2011/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "godspell-2011/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "matilda-the-musical-2013/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "matilda-the-musical-2013/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "next-fall-2010/wsj--terry-teachout.json",
+        "description": "BRO-5294: remove the copy whose fullText was overwritten by its scoring section."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "restore",
+        "sourcePath": "next-fall-2010/wsj--terry-teachout.json",
+        "fromCommit": "113b32e9bf56a5129f6af825e6914fafda4f7dd8^",
+        "description": "BRO-5294: restore the full column text from before the multi-show trim; the scorer now narrows only what the models read and keeps the stored body (1c6d7453b)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T02:42:13.828Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted act-one-2014/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored act-one-2014/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> act-one-2014/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted billy-elliot-the-musical-2008/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored billy-elliot-the-musical-2008/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> billy-elliot-the-musical-2008/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted bullets-over-broadway-2014/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored bullets-over-broadway-2014/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> bullets-over-broadway-2014/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted death-of-a-salesman-2012/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored death-of-a-salesman-2012/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> death-of-a-salesman-2012/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted godspell-2011/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored godspell-2011/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> godspell-2011/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted matilda-the-musical-2013/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored matilda-the-musical-2013/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> matilda-the-musical-2013/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted next-fall-2010/wsj--terry-teachout.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Restored next-fall-2010/wsj--terry-teachout.json@113b32e9bf56a5129f6af825e6914fafda4f7dd8^ -> next-fall-2010/wsj--terry-teachout.json"
+    }
+  ]
+}

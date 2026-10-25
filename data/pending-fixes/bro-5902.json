@@ -1,0 +1,134 @@
+{
+  "issueNumber": "bro-5902",
+  "planId": "3ad0c037-21f1-4b49-8ba8-666f8e26a4de",
+  "status": "applied",
+  "createdAt": "2026-10-22T17:53:33.036544Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Flag 4 unflagged aggregator show-hub files as non-reviews (BRO-5902 sweep)",
+    "steps": [
+      "be-more-chill-west-end-2021/britishtheatrecom--unknown.json.isNonReviewReason",
+      "be-more-chill-west-end-2021/britishtheatrecom--unknown.json.isNonReview",
+      "im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json.isNonReviewReason",
+      "im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json.isNonReview",
+      "rent-west-end-2026/britishtheatrecom--ray-rackham.json.isNonReviewReason",
+      "rent-west-end-2026/britishtheatrecom--ray-rackham.json.isNonReview",
+      "school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json.isNonReviewReason",
+      "school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json.isNonReview"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "be-more-chill-west-end-2021/britishtheatrecom--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).",
+        "description": "BRO-5902: be-more-chill-west-end-2021/britishtheatrecom--unknown.json.isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "be-more-chill-west-end-2021/britishtheatrecom--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5902: be-more-chill-west-end-2021/britishtheatrecom--unknown.json.isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).",
+        "description": "BRO-5902: im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json.isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5902: im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json.isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/britishtheatrecom--ray-rackham.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).",
+        "description": "BRO-5902: rent-west-end-2026/britishtheatrecom--ray-rackham.json.isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "rent-west-end-2026/britishtheatrecom--ray-rackham.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5902: rent-west-end-2026/britishtheatrecom--ray-rackham.json.isNonReview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json",
+        "field": "isNonReviewReason",
+        "oldValue": null,
+        "newValue": "manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).",
+        "description": "BRO-5902: school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json.isNonReviewReason"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json",
+        "field": "isNonReview",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5902: school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json.isNonReview"
+      }
+    ]
+  },
+  "executedAt": "2026-10-23T00:43:08.003Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "be-more-chill-west-end-2021/britishtheatrecom--unknown.json isNonReviewReason: null -> \"manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "be-more-chill-west-end-2021/britishtheatrecom--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json isNonReviewReason: null -> \"manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "im-every-woman-off-west-end-2026/britishtheatrecom--unknown.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/britishtheatrecom--ray-rackham.json isNonReviewReason: null -> \"manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "rent-west-end-2026/britishtheatrecom--ray-rackham.json isNonReview: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json isNonReviewReason: null -> \"manual (not a review): aggregator show-hub URL (britishtheatre.com /shows/ or DTLI /shows/<slug>/), not a single review article. Found by audit-promo-booking-copy.js sweep (BRO-5902).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/dtli--unknown.json isNonReview: null -> true"
+    }
+  ],
+  "executedIn": "ci"
+}

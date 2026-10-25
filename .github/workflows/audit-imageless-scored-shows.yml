@@ -1,0 +1,188 @@
+name: Audit Imageless Scored Shows
+
+# Card #1456 backstop: independent of check-show-freshness.yml (which was
+# silently skipping its own image-fetch job for 5+ days due to an unrelated
+# build-verify failure). Finds any show with reviews but no image on disk
+# past the grace window, self-heals via scripts/audit-imageless-scored-shows.js
+# (per-show cooldown + dispatch cap so this can't storm the fetch-images
+# concurrency group), and alerts if self-heal itself isn't working.
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, skip dispatch/alert/write'
+        required: false
+        default: false
+        type: boolean
+
+permissions:
+  contents: write
+  # Required for scripts/audit-imageless-scored-shows.js's self-heal dispatch
+  # (dispatchImageFetch() in scripts/lib/dispatch-image-fetch.js, which POSTs
+  # to the Actions API to trigger fetch-all-image-formats.yml per-show).
+  # Confirmed live (run 32618091382, 2026-08-23): every dispatch attempt this
+  # workflow made failed with "403 Resource not accessible by integration" —
+  # the default GITHUB_TOKEN's actions scope is read-only unless explicitly
+  # granted write here. Same pattern as audit-aggregator-gap.yml and 5+ other
+  # self-heal/dispatch workflows in this repo.
+  actions: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    # Required for the apiFallbackSafe registry entry (core-data-merge-
+    # registry.js, audit/imageless-scored-shows.json): push-with-retry.sh's
+    # Git Data API fallback is only safe as "ours wins outright" when
+    # overlapping runs of THIS workflow (its own cron racing a manual
+    # workflow_dispatch) queue instead of racing each other into the
+    # fallback. This workflow had no concurrency group before.
+    concurrency:
+      group: audit-imageless-scored-shows
+      cancel-in-progress: false
+    # 15->25 (task investigating card: "Benevolent"/IATI Theater discovery +
+    # image gap, 2026-08-22): this job's "Commit audit ledger" step shares
+    # the exact same push-with-retry.sh bug fixed on scrape-new-aggregators.
+    # yml and fetch-all-image-formats.yml in the same incident — plain
+    # push-with-retry.sh with no override, committing a data/audit/ path,
+    # which the Git Data API fallback unconditionally refuses. This is the
+    # self-heal mechanism (card #1456) meant to catch exactly the class of
+    # gap that caused Benevolent to launch imageless — if ITS OWN commit
+    # can't land, the safety net silently doesn't work either. 25min leaves
+    # generous headroom over the 600s(10min) PUSH_DEADLINE_SEC override
+    # below plus the audit script's own runtime.
+    timeout-minutes: 25
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run audit
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # This script calls routeAlert(disposition:'auto') on self-heal dispatch
+          # failure/escalation (owner-alert-router.js -> linear-issue-create.js),
+          # which needs this to file the Linear issue. Missing here (unlike every
+          # sibling routeAlert('auto') workflow) caused every auto-dispatch from
+          # this workflow to fail with "LINEAR_API_KEY not set in .env or
+          # environment" — surfaced by health-check.js's alert-router deadman
+          # check after 7 days of silent failures.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            node scripts/audit-imageless-scored-shows.js --dry-run
+          else
+            node scripts/audit-imageless-scored-shows.js
+          fi
+
+      # Explicit commit, not push-core-data (adversarial review, 2026-08-14):
+      # push-core-data's composite action only syncs its fixed CORE_FILES
+      # list (shows.json, reviews.json, ...) — data/audit/*.json is never in
+      # that list, so the ledger this workflow depends on for its own
+      # cooldown/escalation state would silently never reach the repo, and
+      # every run would start cold. Same pattern as discover-regional-serp-
+      # reviews.yml's "Commit audit log" step.
+      #
+      # DO NOT SPLIT THIS STEP IN TWO. BRO-2683 did (merge 28431284988,
+      # 2026-09-07) on the theory that bundling the apiFallbackSafe file with
+      # alert-ledger.json/alert-router-attempts.jsonl defeats the Git Data API
+      # fallback. That was already false when it landed and the split was
+      # reverted the same day (BRO-2942). Three independent proofs:
+      #   1. Both telemetry files carry apiFallbackMerge:true as of BRO-2413
+      #      (core-data-merge-registry.js), and the disqualifier is
+      #      `(isManaged && !isApiFallbackMerge) || ...` — so they evaluate to
+      #      disqualifiesFallback:false. See classifyPushFallbackSafety() in
+      #      scripts/lib/audit-push-retry-budgets.js.
+      #   2. Auditing the PRE-split step directly reported mixedSafetyBundle:
+      #      false with disqualifyingFiles: [] — there was nothing to unblock.
+      #   3. The split actively broke this workflow UNDER PUSH CONTENTION. The
+      #      audit script writes alert-ledger.json/alert-router-attempts.jsonl
+      #      during "Run audit", so under a split they stay UNCOMMITTED while
+      #      the first step pushes, and push-with-retry.sh has zero autostash
+      #      or clean-tree guards. When that first push loses its race, the
+      #      rebase refuses ("cannot rebase: You have unstaged changes") and
+      #      the merge refuses ("would be overwritten by merge" — near-certain
+      #      here, since a dozen workflows write alert-ledger.json), so the
+      #      script reaches its reset+cherry-pick last resort and runs
+      #      `git reset --hard origin/$PULL_BRANCH`
+      #      (scripts/lib/push-with-retry.sh:1682), reverting both telemetry
+      #      files to the remote's content. The second step then reports
+      #      "No telemetry changes" and routeAlert's 7-day cooldown never
+      #      persists — the exact failure this step's staging exists to
+      #      prevent. Two later resets (:1938, :2114) would do the same; :1682
+      #      is simply the one reached first. On an uncontended run the first
+      #      push succeeds and nothing is lost, which is why this failed
+      #      intermittently rather than every time.
+      # Staging all three paths in ONE commit keeps them safe across the push.
+      # opening-night-checklist.yml IS legitimately split, because its second
+      # commit carries genuinely disqualifying files (remediation-log.jsonl,
+      # opening-night-latency-*.json); this workflow's does not.
+      # Guarded by tests/unit/audit-imageless-scored-shows-push.test.mjs.
+      - name: Commit audit ledger
+        if: always() && inputs.dry_run != true
+        env:
+          # History: PR #667 first fixed this step's push by raising the
+          # deadline and disabling the Git Data API fallback entirely
+          # (PUSH_API_FALLBACK_DISABLE=1) — that stopped the wasteful early
+          # bailout but a live-verified run (32576759555, 2026-08-22) still
+          # exhausted the full 600s local-retry budget and failed under
+          # sustained main-branch churn. Root cause: this file
+          # (data/audit/imageless-scored-shows.json) was blanket-disqualified
+          # from the fast API fallback along with every other unaudited
+          # data/audit/ path. It's now individually verified single-writer
+          # and registered in core-data-merge-registry.js's apiFallbackSafe
+          # list, so the fallback (built for exactly this "losing the local
+          # push race" failure mode — task #707) is allowed to run for this
+          # file. PUSH_API_FALLBACK_DISABLE removed accordingly.
+          PUSH_DEADLINE_SEC: '600'
+          # BRO-3068: lower push-with-retry.sh's per-attempt network cap from
+          # its 90s default to 30s — the same pre-transfer connection-stall
+          # class as the other PUSH_DEADLINE_SEC-overridden steps above (90s
+          # burns the whole cap with zero transfer progress, starving real
+          # retries out of the 600s deadline). Matches BRO-334/BRO-346.
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/imageless-scored-shows.json 2>/dev/null || true
+          # This script also calls routeAlert(disposition:'auto') on escalation
+          # (scripts/audit-imageless-scored-shows.js:134-159), which writes
+          # routeAlert's cooldown ledger + attempt log — without staging those
+          # too, every run starts with a cold ledger and the 7-day cooldown
+          # never actually holds across runs (same bug class as BRO-2441 /
+          # audit-time-bomb-tests.yml, caught there by an adversarial review).
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No ledger changes"
+          else
+            git commit -m "data: imageless-scored-shows audit [skip ci]
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Audit Imageless Scored Shows Failed'
+          severity: 'warning'

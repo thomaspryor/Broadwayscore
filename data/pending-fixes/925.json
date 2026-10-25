@@ -1,0 +1,74 @@
+{
+  "issueNumber": 925,
+  "planId": "60678cb0-eefc-4005-90e3-a134be56a16a",
+  "status": "pending",
+  "createdAt": "2026-09-23T14:45:23.719Z",
+  "diagnosis": {
+    "fixType": "data",
+    "confidence": "high",
+    "showId": "deep-heat-rivalry-off-west-end-2026",
+    "showSlug": "deep-heat-rivalry-off-west-end",
+    "showIds": [
+      "deep-heat-rivalry-off-west-end-2026"
+    ]
+  },
+  "submitter": {
+    "name": null,
+    "email": null,
+    "show": "Deep Heat Rivalry",
+    "message": ""
+  },
+  "plan": {
+    "summary": "Deep Heat Rivalry is stuck in 'announced' status with no dates, so the engine hides all its reviews and scores. We'll update the status to 'open', add the opening date, and set the closing date so the show displays correctly as currently running.",
+    "steps": [
+      "Set status from 'announced' to 'open' so the engine stops suppressing reviews",
+      "Set openingDate to the show's opening date (using a best estimate based on the show being currently running — needs confirmation)",
+      "Set closingDate to '2026-10-11' as identified in the bug diagnosis",
+      "Remove stale 'upcoming' tag that no longer applies to an open show"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-heat-rivalry-off-west-end-2026",
+        "field": "status",
+        "oldValue": "announced",
+        "newValue": "open",
+        "description": "Change status from 'announced' to 'open' so the engine surfaces reviews and composite scores for this show"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-heat-rivalry-off-west-end-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-10-11",
+        "description": "Set the closing date to Oct 11, 2026 as identified in the bug diagnosis so the engine knows the show is still running"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "deep-heat-rivalry-off-west-end-2026",
+        "field": "tags",
+        "oldValue": [
+          "upcoming",
+          "new"
+        ],
+        "newValue": [
+          "new"
+        ],
+        "description": "Remove the 'upcoming' tag since the show is now open; retain 'new' if it's still within the new-show window"
+      }
+    ]
+  },
+  "verification": {
+    "passed": false,
+    "skipped": false,
+    "issues": [
+      "The proposed fix sets the openingDate based on an estimate, but the original show data has openingDate as null, which means it cannot be confirmed that the show is currently running.",
+      "The closingDate of '2026-10-11' is set without confirmation that this date is accurate or that the show has indeed opened."
+    ],
+    "confidence": "medium"
+  }
+}

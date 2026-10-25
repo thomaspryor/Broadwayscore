@@ -1,0 +1,112 @@
+{
+  "issueNumber": "bro-5243-i",
+  "planId": "7fc614cc-a169-4ce2-8516-ab60540b4263",
+  "status": "partial",
+  "createdAt": "2026-10-14T13:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5243 (i): after plan h's renames, clear 2 dangling duplicateOf pointers (all-my-sons-2019, grand-horizons-2020) to the deleted Isherwood-named file, and refresh linda-vista-2019's stale byline-mismatch verdict.",
+    "steps": [
+      "clear duplicateOf on 2 rows",
+      "re-verify linda-vista"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/wsj--terry-teachout.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5243 plan h: the Isherwood-named copy this pointed at was this same Teachout review and was renamed onto this file; there is no other copy",
+        "description": "Breadcrumb required before clearing duplicateOf."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/wsj--terry-teachout.json",
+        "field": "duplicateOf",
+        "oldValue": "wsj--charles-isherwood.json",
+        "newValue": null,
+        "description": "BRO-5243: dangling pointer carried over by the write guard from the deleted duplicate when plan h renamed wsj--charles-isherwood.json onto this file. The target no longer exists; this file is the only WSJ row for the show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/wsj--terry-teachout.json",
+        "field": "duplicateReason",
+        "oldValue": "same-url-byline-dedup on 2026-08-15: identical article as wsj--charles-isherwood.json under a different byline (one review scraped twice)",
+        "newValue": null,
+        "description": "Goes with the cleared pointer."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grand-horizons-2020/wsj--terry-teachout.json",
+        "field": "duplicateClearReason",
+        "oldValue": null,
+        "newValue": "BRO-5243 plan h: the Isherwood-named copy this pointed at was this same Teachout review and was renamed onto this file; there is no other copy",
+        "description": "Breadcrumb required before clearing duplicateOf."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grand-horizons-2020/wsj--terry-teachout.json",
+        "field": "duplicateOf",
+        "oldValue": "wsj--charles-isherwood.json",
+        "newValue": null,
+        "description": "BRO-5243: dangling pointer carried over by the write guard from the deleted duplicate when plan h renamed wsj--charles-isherwood.json onto this file. The target no longer exists; this file is the only WSJ row for the show."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grand-horizons-2020/wsj--terry-teachout.json",
+        "field": "duplicateReason",
+        "oldValue": "same-url-byline-dedup on 2026-07-20: identical article as wsj--charles-isherwood.json under a different byline (one review scraped twice)",
+        "newValue": null,
+        "description": "Goes with the cleared pointer."
+      },
+      {
+        "type": "run-script",
+        "script": "reverify-stale-cv-promoted.js",
+        "args": "--file=linda-vista-2019/wsj--terry-teachout.json",
+        "description": "BRO-5243: its verdict still reads 'byline mismatch, expected Isherwood' from before plan h renamed it."
+      }
+    ]
+  },
+  "executedAt": "2026-10-14T13:25:25.658Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateClearReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateClearReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateOf: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "duplicateReason: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reverify-stale-cv-promoted.js successfully"
+    }
+  ]
+}

@@ -1,0 +1,349 @@
+{
+  "issueNumber": "bro-3414-k",
+  "planId": "9943cbe3-b75a-4a90-aa8a-1a4b76600a90",
+  "status": "applied",
+  "createdAt": "2026-10-12T15:32:33.183569Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Correct placeholder bylines on live reviews (BRO-3414). \"Eric March\" is the theaterlife.com WordPress import account shown as post author on every Drupal-imported review; each live page names the real critic in a \"By X\" line, or carries no byline. theaterscene.net \"Archive\"/\"Unknown\" files take the JSON-LD author (matching the URL author slug); New Yorker \"Condé Nast\" files take the \"By X\" critic, or Unknown where only the house byline appears. Every page was fetched live on 2026-10-12 and its canonical URL matched the file URL. Also un-glues 9 theaterlife bylines fused to the first word of the article. (part 10 of 12, split for the 25-action cap)",
+    "steps": [
+      "Set criticName to the byline printed on each live page",
+      "Set Unknown where the page names no critic",
+      "Strip the article word glued onto 9 theaterlife bylines"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "becky-shaw-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Samuel L. Leiter",
+        "description": "JSON-LD author Person on the live page is Samuel L. Leiter, matching the author slug in the URL (https://www.theaterscene.net/plays/broadway-plays/becky-shaw/samuel-l-leiter/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "between-two-knees-off-broadway-2024/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (http://www.theaterscene.net/plays/offbway-plays/between-two-knees/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bigfoot-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/musicals/offbway/bigfoot-a-new-musical/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bloodlove-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/musicals/offbway/blood-love/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bughouse-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Joseph Pisano",
+        "description": "JSON-LD author Person on the live page is Joseph Pisano, matching the author slug in the URL (https://www.theaterscene.net/plays/solo-plays/bughouse/joseph-pisano/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "burnout-paradise-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/burnout-paradise/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-cohen-broad-strokes-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/solo-plays/broad-strokes/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "come-from-away-2017/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/goings-on-about-town/theatre/come-from-away-2)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cost-of-living-2022/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Vinson Cunningham",
+        "description": "live page byline reads \"By Vinson Cunningham\" (https://www.newyorker.com/goings-on-about-town/theatre/cost-of-living-10-17-22)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "doubt-2024/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Joel Benjamin",
+        "description": "JSON-LD author Person on the live page is Joel Benjamin, matching the author slug in the URL (http://www.theaterscene.net/plays/offbway-plays/doubt-a-parable/joel-benjamin/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "encores-la-cage-aux-folles-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/musicals/offbway/la-cage-aux-folles-new-york-city-center-encores/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "fat-ham-2023/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/magazine/2023/05/15/fat-ham-theatre-review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "frozen-2018/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Rebecca Mead",
+        "description": "live page byline reads \"By Rebecca Mead\" (https://www.newyorker.com/culture/cultural-comment/the-commercial-compromises-and-hygge-flourishes-of-frozen-the-musical)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "grangeville-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/curse-of-the-starving-class-2/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "how-my-grandparents-fell-in-love-a-musical-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/musicals/offbway/how-my-grandparents-fell-in-love/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "isla-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Tony Marinelli",
+        "description": "JSON-LD author Person on the live page is Tony Marinelli, matching the author slug in the URL (https://www.theaterscene.net/multimedia/isla/tony-marinelli/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "just-in-time-2025/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Helen Shaw",
+        "description": "live page byline reads \"By Helen Shaw\" (https://www.newyorker.com/goings-on-about-town/just-in-time)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "maybe-happy-ending-2024/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Dan Stahl",
+        "description": "live page byline reads \"By Dan Stahl\" (https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/goings-on-about-town/theatre/natasha-pierre-the-great-comet-of-1812-7)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-2009/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Unknown",
+        "description": "live page credits only the house byline \"The New Yorker\"; \"Condé Nast\" is the publisher, not a critic (https://www.newyorker.com/goings-on-about-town/theatre/next-to-normal)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "nicole-travolta-is-doing-alright-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/solo-plays/nicole-travolta-is-doing-alright/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pictures-from-home-2023/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Helen Shaw",
+        "description": "live page byline reads \"By Helen Shaw\" (https://www.newyorker.com/magazine/2023/02/27/pictures-from-home-cornelia-street-review-broadway)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "prima-facie-2023/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Vinson Cunningham",
+        "description": "live page byline reads \"By Vinson Cunningham\" (https://www.newyorker.com/goings-on-about-town/theatre/prima-facie-05-15-23)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "public-charge-off-broadway-2026/theater-scene--archive.json",
+        "field": "criticName",
+        "oldValue": "Archive",
+        "newValue": "Victor Gluck",
+        "description": "JSON-LD author Person on the live page is Victor Gluck, matching the author slug in the URL (https://www.theaterscene.net/plays/offbway-plays/public-charge/victor-gluck/)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "six-2021/newyorker--conde-nast.json",
+        "field": "criticName",
+        "oldValue": "Condé Nast",
+        "newValue": "Vinson Cunningham",
+        "description": "live page byline reads \"By Vinson Cunningham\" (https://www.newyorker.com/goings-on-about-town/theatre/six-10-25-21)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T18:41:19.592Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "becky-shaw-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Samuel L. Leiter\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "between-two-knees-off-broadway-2024/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bigfoot-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bloodlove-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "bughouse-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Joseph Pisano\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "burnout-paradise-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-cohen-broad-strokes-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "come-from-away-2017/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cost-of-living-2022/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Vinson Cunningham\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "doubt-2024/theater-scene--archive.json criticName: \"Archive\" -> \"Joel Benjamin\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "encores-la-cage-aux-folles-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "fat-ham-2023/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frozen-2018/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Rebecca Mead\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "grangeville-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-my-grandparents-fell-in-love-a-musical-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "isla-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Tony Marinelli\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "just-in-time-2025/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-2024/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Dan Stahl\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "natasha-pierre-and-the-great-comet-of-1812-2016/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "next-to-normal-2009/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Unknown\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "nicole-travolta-is-doing-alright-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pictures-from-home-2023/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Helen Shaw\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "prima-facie-2023/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Vinson Cunningham\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "public-charge-off-broadway-2026/theater-scene--archive.json criticName: \"Archive\" -> \"Victor Gluck\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "six-2021/newyorker--conde-nast.json criticName: \"Condé Nast\" -> \"Vinson Cunningham\""
+    }
+  ]
+}

@@ -1,0 +1,3304 @@
+{
+  "generatedAt": "2026-10-08T13:01:10.266Z",
+  "season": "2024-2025",
+  "sources": [
+    "wos-listing",
+    "wos-review",
+    "olivier-2025",
+    "olivier-2026"
+  ],
+  "counts": {
+    "listings": 144,
+    "promotable": 33,
+    "notPromotable": {
+      "no review signal": 21,
+      "already in shows.json": 19,
+      "run of 0 days < 14": 3,
+      "non-theatre genre": 63,
+      "run of 7 days < 14": 1,
+      "run of 5 days < 14": 1,
+      "run of 4 days < 14": 1,
+      "run of 2 days < 14": 1,
+      "run of 8 days < 14": 1
+    },
+    "unlistedReviews": 10
+  },
+  "candidates": [
+    {
+      "title": "Waiting for Godot",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2024-09-05",
+      "openingDate": null,
+      "closingDate": "2024-12-21",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/waiting-for-godot_1170053658/",
+        "wosReview": "https://www.whatsonstage.com/news/waiting-for-godot-with-lucian-msamati-and-ben-whishaw-west-end-review_1632794/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2025"
+      }
+    },
+    {
+      "title": "The Rocky Horror Show",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-09-06",
+      "closingDate": "2024-09-20",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-rocky-horror-show_1599422/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Giant",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2024-09-20",
+      "openingDate": null,
+      "closingDate": "2024-11-16",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/giant_953396998/",
+        "wosReview": "https://www.whatsonstage.com/news/giant-review-john-lithgow-is-a-powerful-presence-as-a-monstrous-roald-dahl_1634668/"
+      },
+      "inShowsJson": "giant-royal-court-off-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: giant-royal-court-off-west-end-2024"
+      }
+    },
+    {
+      "title": "Juno and the Paycock",
+      "venue": "Gielgud Theatre",
+      "previewsStartDate": "2024-09-21",
+      "openingDate": null,
+      "closingDate": "2024-11-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/juno-and-the-paycock_1023967714/",
+        "wosReview": "https://www.whatsonstage.com/news/juno-and-the-paycock-review-mark-rylance-and-j-smith-cameron-fail-to-spark_1636508/"
+      },
+      "inShowsJson": "juno-and-the-paycock-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: juno-and-the-paycock-west-end-2024"
+      }
+    },
+    {
+      "title": "The Lehman Trilogy",
+      "venue": "Gillian Lynne Theatre",
+      "previewsStartDate": "2024-09-24",
+      "openingDate": null,
+      "closingDate": "2025-01-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-lehman-trilogy_237435880/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "White Rabbit Red Rabbit",
+      "venue": "@sohoplace",
+      "previewsStartDate": null,
+      "openingDate": "2024-10-01",
+      "closingDate": "2024-11-09",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/white-rabbit-red-rabbit_1623826/",
+        "wosReview": "https://www.whatsonstage.com/news/white-rabbit-red-rabbit-west-end-review-stick-to-the-script_1636038/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Ghost",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2024-10-01",
+      "openingDate": null,
+      "closingDate": "2024-10-01",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/ghost_932073507/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Macbeth",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2024-10-01",
+      "openingDate": null,
+      "closingDate": "2024-12-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/macbeth_114415091/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Carrie Hope Fletcher: Love Letters Live",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2024-10-01",
+      "openingDate": null,
+      "closingDate": "2024-10-01",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/carrie-hope-fletcher-love-letters-live_1599524699/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "BRACE BRACE",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2024-10-03",
+      "openingDate": null,
+      "closingDate": "2024-11-09",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/brace-brace_579967492/",
+        "wosReview": "https://www.whatsonstage.com/news/brace-brace-at-the-royal-court-review_1638522/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Curious Case of Benjamin Button",
+      "venue": "The Ambassadors Theatre",
+      "previewsStartDate": "2024-10-10",
+      "openingDate": null,
+      "closingDate": "2025-10-10",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-curious-case-of-benjamin-button_663537365/",
+        "wosReview": "https://www.whatsonstage.com/news/the-curious-case-of-benjamin-button-west-end-review-the-musical-is-ageing-beautifully_1649604/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2025"
+      }
+    },
+    {
+      "title": "Jane McDonald – With All My Love",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2024-10-14",
+      "openingDate": null,
+      "closingDate": "2024-10-14",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jane-mcdonald-with-all-my-love_146428624/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Oedipus",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2024-10-04",
+      "openingDate": "2024-10-15",
+      "closingDate": "2025-01-04",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oedipus_1438152182/",
+        "wosReview": "https://www.whatsonstage.com/news/oedipus-west-end-review-mark-strong-and-lesley-manvilles-greek-tragedy-is-a-political-thriller_1640868/"
+      },
+      "inShowsJson": "oedipus-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: oedipus-west-end-2024"
+      }
+    },
+    {
+      "title": "The Duchess (of Malfi)",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2024-10-05",
+      "openingDate": "2024-10-16",
+      "closingDate": "2024-12-20",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-duchess-of-malfi_1494240085/",
+        "wosReview": "https://www.whatsonstage.com/news/the-duchess-of-malfi-review-jodie-whittaker-returns-to-the-stage-in-an-unrecognisable-adaptation_1641301/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Barcelona",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2024-10-21",
+      "openingDate": null,
+      "closingDate": "2025-01-11",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/barcelona_107479779/",
+        "wosReview": "https://www.whatsonstage.com/news/barcelona-west-end-review-lily-collins-and-alvaro-morte-are-revelatory-in-enigmatic-drama_1647506/"
+      },
+      "inShowsJson": "barcelona-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: barcelona-west-end-2024"
+      }
+    },
+    {
+      "title": "Jamie Allan’s Amaze",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": "2024-10-18",
+      "openingDate": "2024-10-22",
+      "closingDate": "2024-11-23",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jamie-allans-amaze_1183169481/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Dr Strangelove",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": "2024-10-08",
+      "openingDate": "2024-10-29",
+      "closingDate": "2025-01-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dr-strangelove_234280604/",
+        "wosReview": "https://www.whatsonstage.com/news/dr-strangelove-west-end-review-steve-coogan-delighting-in-the-war-room_1646916/"
+      },
+      "inShowsJson": "dr-strangelove-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: dr-strangelove-west-end-2024"
+      }
+    },
+    {
+      "title": "Little Piece of You: An Atypical Musical in Concert",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": null,
+      "openingDate": "2024-10-31",
+      "closingDate": "2024-11-01",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/little-piece-of-you-an-atypical-musical-in-concert_1630706/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Frank’s Closet",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2024-11-03",
+      "openingDate": null,
+      "closingDate": "2024-11-17",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/franks-closet_712088807/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2024-11-09",
+      "openingDate": null,
+      "closingDate": "2025-01-04",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-christmas-carol_234939819/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Elixir of Love",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2024-11-15",
+      "openingDate": null,
+      "closingDate": "2024-12-05",
+      "genres": [
+        "opera"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-elixir-of-love_125912655/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "A Christmas Carol (ish)",
+      "venue": "@sohoplace",
+      "previewsStartDate": null,
+      "openingDate": "2024-11-16",
+      "closingDate": "2024-12-31",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-christmas-carol-ish_1632175/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Mozart: Her Story in Concert",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": null,
+      "openingDate": "2024-11-16",
+      "closingDate": "2024-11-17",
+      "genres": [
+        "event",
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mozart-her-story-in-concert_268660324/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Expendable",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2024-11-21",
+      "openingDate": null,
+      "closingDate": "2024-12-21",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/expendable_283801290/",
+        "wosReview": "https://www.whatsonstage.com/news/expendable-at-the-royal-court-theatre-review_1655579/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Room on the Broom",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-11-22",
+      "closingDate": "2025-01-05",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/room-on-the-broom_1614885/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "An Evening with Phil Dunster and Friends",
+      "venue": "Victoria Palace Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-11-24",
+      "closingDate": "2024-11-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/an-evening-with-phil-dunster-and-friends_1645860/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Dirty Rotten Scoundrels in Concert",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2024-11-24",
+      "openingDate": null,
+      "closingDate": "2024-11-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dirty-rotten-scoundrels-in-concert_1292959376/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Mazz Murray: The Music of Dusty Springfield",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2024-11-26",
+      "openingDate": null,
+      "closingDate": "2024-11-26",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mazz-murray-the-music-of-dusty-springfield_1437353885/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Ballet Shoes",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-11-27",
+      "closingDate": "2025-02-22",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/ballet-shoes_1646078/",
+        "wosReview": "https://www.whatsonstage.com/news/ballet-shoes-at-the-national-theatre-review-springs-from-page-to-stage-with-panache_1656503/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Peppa Pig’s Fun Day Out",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2024-11-28",
+      "openingDate": null,
+      "closingDate": "2025-01-05",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/peppa-pigs-fun-day-out_1588282799/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "The Smartest Giant in Town",
+      "venue": "St Martin's Theatre",
+      "previewsStartDate": "2024-11-29",
+      "openingDate": null,
+      "closingDate": "2025-01-05",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-smartest-giant-in-town_1212426043/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Pirates of Penzance",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2024-12-02",
+      "openingDate": null,
+      "closingDate": "2025-02-21",
+      "genres": [
+        "opera"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-pirates-of-penzance_1756147214/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "Fleetwood Mac Legacy – Go Your Own Way",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2024-12-03",
+      "openingDate": null,
+      "closingDate": "2024-12-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/fleetwood-mac-legacy-go-your-own-way_899608477/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Devil Wears Prada",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": "2024-10-24",
+      "openingDate": "2024-12-04",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-devil-wears-prada_358226071/",
+        "wosReview": "https://www.whatsonstage.com/news/the-devil-wears-prada-musical-review-couture-or-off-the-rack_1656396/"
+      },
+      "inShowsJson": "the-devil-wears-prada-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: the-devil-wears-prada-west-end-2024"
+      }
+    },
+    {
+      "title": "The Legends of Them",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2024-12-05",
+      "openingDate": null,
+      "closingDate": "2024-12-21",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-legends-of-them_157640998/",
+        "wosReview": "https://www.whatsonstage.com/news/the-legends-of-them-at-the-royal-court-review_1657223/"
+      },
+      "inShowsJson": "the-legends-of-them-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: the-legends-of-them-west-end-2024"
+      }
+    },
+    {
+      "title": "Charlie Cook’s Favourite Book",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-12-05",
+      "closingDate": "2025-01-05",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/charlie-cooks-favourite-book_1639119/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Maddie Moate’s Very Curious Christmas",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-12-06",
+      "closingDate": "2025-01-04",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/maddie-moates-very-curious-christmas_1616393/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Robin Hood",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2024-12-07",
+      "openingDate": null,
+      "closingDate": "2025-01-12",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/robin-hood_1028885983/",
+        "wosReview": "https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2025"
+      }
+    },
+    {
+      "title": "Nutcracker",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2024-12-12",
+      "openingDate": null,
+      "closingDate": "2025-01-12",
+      "genres": [],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/nutcracker_511626419/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Christmas By Candlelight",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2024-12-17",
+      "openingDate": null,
+      "closingDate": "2024-12-17",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/christmas-by-candlelight_242427765/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Slava’s Snowshow",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2024-12-18",
+      "openingDate": null,
+      "closingDate": "2025-01-12",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/slavas-snowshow_1046190224/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "The Tempest",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2024-12-07",
+      "openingDate": "2024-12-19",
+      "closingDate": "2025-02-01",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-tempest_2025463716/",
+        "wosReview": "https://www.whatsonstage.com/news/the-tempest-with-sigourney-weaver-review-a-production-stripped-of-poetry-and-wonder_1658223/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Anton Du Beke Christmas with Anton & Friends",
+      "venue": "His Majesty's Theatre",
+      "previewsStartDate": "2024-12-22",
+      "openingDate": null,
+      "closingDate": "2024-12-22",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/anton-du-beke-christmas-with-anton-friends_677016281/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "The Merchant of Venice 1936",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2024-12-26",
+      "closingDate": "2025-01-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-merchant-of-venice-1936_1615346/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Bill Bailey Thoughtifier",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2024-12-28",
+      "openingDate": null,
+      "closingDate": "2025-01-19",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/bill-bailey-thoughtifier_1516953379/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Kyoto",
+      "venue": "@sohoplace",
+      "previewsStartDate": "2025-01-09",
+      "openingDate": null,
+      "closingDate": "2025-05-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/kyoto_1708316438/",
+        "wosReview": "https://www.whatsonstage.com/news/kyoto-in-the-west-end-review-a-crucial-piece-of-theatre-that-nudges-the-world-a-little_1660931/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2025"
+      }
+    },
+    {
+      "title": "Titanique",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": "2024-12-09",
+      "openingDate": "2025-01-09",
+      "closingDate": "2027-01-03",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/titanique_1221852853/",
+        "wosReview": "https://www.whatsonstage.com/news/titanique-in-the-west-end-review-a-riotous-voyage-with-celine-dion_1659577/"
+      },
+      "inShowsJson": "titanique-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: titanique-west-end-2024"
+      }
+    },
+    {
+      "title": "A Good House",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-01-11",
+      "openingDate": null,
+      "closingDate": "2025-02-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-good-house_1958174549/",
+        "wosReview": "https://www.whatsonstage.com/news/a-good-house-at-the-royal-court-review_1661192/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Oliver!",
+      "venue": "Gielgud Theatre",
+      "previewsStartDate": "2024-12-14",
+      "openingDate": "2025-01-14",
+      "closingDate": "2027-03-13",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oliver_564005370/",
+        "wosReview": "https://www.whatsonstage.com/news/oliver-in-the-west-end-review-what-more-could-you-want_1660259/"
+      },
+      "inShowsJson": "oliver-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: oliver-west-end-2024"
+      }
+    },
+    {
+      "title": "Giselle",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2025-01-15",
+      "openingDate": null,
+      "closingDate": "2025-01-18",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/giselle_727391472/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "The Years",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2025-01-24",
+      "openingDate": null,
+      "closingDate": "2025-04-19",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-years_560533804/",
+        "wosReview": "https://www.whatsonstage.com/news/the-years-west-end-review-this-play-cannot-be-missed_1663948/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2025"
+      }
+    },
+    {
+      "title": "Rob Lamberti – Perfectly George",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-01-28",
+      "openingDate": null,
+      "closingDate": "2025-01-28",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rob-lamberti-perfectly-george_715427506/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Westway Sessions at the Vaudeville presents Cassidy Janson",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2025-02-03",
+      "openingDate": null,
+      "closingDate": "2025-02-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-westway-sessions-at-the-vaudeville-presents-cassidy-janson_2145228745/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "A Streetcar Named Desire",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": "2025-02-03",
+      "openingDate": null,
+      "closingDate": "2025-02-22",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-streetcar-named-desire_1357388667/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Figaro: An Original Musical",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-02-03",
+      "openingDate": null,
+      "closingDate": "2025-02-04",
+      "genres": [
+        "event",
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/figaro-an-original-musical_1949204040/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Oedipus",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2025-01-21",
+      "openingDate": "2025-02-04",
+      "closingDate": "2025-03-29",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2025"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/oedipus_2135672400/",
+        "wosReview": "https://www.whatsonstage.com/news/oedipus-at-the-old-vic-review-rami-malek-and-indira-varma-start-strong-finish-stifled_1663421/"
+      },
+      "inShowsJson": "oedipus-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: oedipus-west-end-2025"
+      }
+    },
+    {
+      "title": "Unicorn",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-02-05",
+      "closingDate": "2025-04-26",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/unicorn_1651532/",
+        "wosReview": "https://www.whatsonstage.com/news/unicorn-west-end-review-this-throuple-play-is-an-elusive-creature_1664614/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Marriage of Figaro (Le nozze di Figaro)",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2025-02-05",
+      "openingDate": null,
+      "closingDate": "2025-02-22",
+      "genres": [
+        "opera"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-marriage-of-figaro-le-nozze-di-figaro_145998158/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: opera"
+      }
+    },
+    {
+      "title": "More Life",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-02-06",
+      "openingDate": null,
+      "closingDate": "2025-03-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/more-life_798783129/",
+        "wosReview": "https://www.whatsonstage.com/news/more-life-at-the-royal-court-review_1664564/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Eva Noblezada and Reeve Carney – Live in London",
+      "venue": "His Majesty's Theatre",
+      "previewsStartDate": "2025-02-09",
+      "openingDate": null,
+      "closingDate": "2025-02-09",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/eva-noblezada-and-reeve-carney-live-in-london_1662345/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Much Ado About Nothing",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": null,
+      "openingDate": "2025-02-10",
+      "closingDate": "2025-04-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/much-ado-about-nothing_1661118/",
+        "wosReview": "https://www.whatsonstage.com/news/much-ado-about-nothing-with-tom-hiddleston-and-hayley-atwell-review-simply-sublime-shakespeare_1665700/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2026"
+      }
+    },
+    {
+      "title": "If/Then",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": "2025-02-10",
+      "openingDate": null,
+      "closingDate": "2025-02-17",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/if-then_1068864052/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 7 days < 14"
+      }
+    },
+    {
+      "title": "The Westway Sessions at the Vaudeville presents Liza Pulman & Joe Stilgoe (Couple of Swells)",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2025-02-10",
+      "openingDate": null,
+      "closingDate": "2025-02-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-westway-sessions-at-the-vaudeville-presents-liza-pulman-joe-stilgoe-couple-of-swells_1162799678/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Simon and Garfunkel Story",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-02-10",
+      "openingDate": null,
+      "closingDate": "2025-02-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-simon-and-garfunkel-story_710146555/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Clueless",
+      "venue": "Trafalgar Theatre",
+      "previewsStartDate": "2025-02-15",
+      "openingDate": null,
+      "closingDate": "2025-08-23",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/clueless_1628502/",
+        "wosReview": "https://www.whatsonstage.com/news/clueless-the-musical-review-a-clued-up-west-end-star-in-the-making_1669203/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "West End Musical Love Songs",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-02-17",
+      "closingDate": "2025-02-17",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/west-end-musical-love-songs_1655921/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Westway Sessions at the Vaudeville presents Aimie Atkinson",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2025-02-17",
+      "openingDate": null,
+      "closingDate": "2025-02-17",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-westway-sessions-at-the-vaudeville-presents-aimie-atkinson_79743506/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "The Score",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2025-02-20",
+      "openingDate": null,
+      "closingDate": "2025-04-26",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-score_717233629/",
+        "wosReview": "https://www.whatsonstage.com/news/the-score-starring-brian-cox-in-the-west-end-review_1666965/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "A Knock on the Roof",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-02-21",
+      "openingDate": null,
+      "closingDate": "2025-03-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-knock-on-the-roof_1637845846/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Last Laugh",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": "2025-02-25",
+      "openingDate": null,
+      "closingDate": "2025-03-22",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-last-laugh_1041037349/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Alterations",
+      "venue": "Lyttelton Theatre",
+      "previewsStartDate": "2025-02-20",
+      "openingDate": "2025-02-27",
+      "closingDate": "2025-04-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/alterations_1982687180/",
+        "wosReview": "https://www.whatsonstage.com/news/alterations-at-the-national-theatre-review_1667127/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Ballet Icons Gala",
+      "venue": "London Coliseum",
+      "previewsStartDate": null,
+      "openingDate": "2025-03-09",
+      "closingDate": "2025-03-09",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-ballet-icons-gala_1931217846/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Pretty Vacant – The Story of Punk and New Wave",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": "2025-03-09",
+      "openingDate": null,
+      "closingDate": "2025-03-09",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/pretty-vacant-the-story-of-punk-and-new-wave_89320700/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Westway Sessions at the Vaudeville presents Lee Mead",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2025-03-10",
+      "openingDate": null,
+      "closingDate": "2025-03-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-westway-sessions-at-the-vaudeville-presents-lee-mead_997912358/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Jeff Stelling An Evening with Jeff Stelling",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-03-10",
+      "openingDate": null,
+      "closingDate": "2025-03-10",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/jeff-stelling-an-evening-with-jeff-stelling_1715944179/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Marisha Wallace",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-03-11",
+      "openingDate": null,
+      "closingDate": "2025-03-11",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/marisha-wallace_1148867700/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Choir of Man",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2025-03-12",
+      "openingDate": null,
+      "closingDate": "2026-01-04",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-choir-of-man_1656718/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Little Prince",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2025-03-12",
+      "openingDate": null,
+      "closingDate": "2025-03-16",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-little-prince_1147143841/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "The Westway Sessions at the Vaudeville presents Kerry Ellis",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2025-03-17",
+      "openingDate": null,
+      "closingDate": "2025-03-17",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-westway-sessions-at-the-vaudeville-presents-kerry-ellis_118917784/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Dear England",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": "2025-03-10",
+      "openingDate": "2025-03-18",
+      "closingDate": "2025-05-24",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dear-england_806598892/",
+        "wosReview": "https://www.whatsonstage.com/news/dear-england-review-the-revised-play-includes-the-2024-euros-and-gareth-southgates-retirement-and-still-hits-the-back-of-the-net_1669877/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Retrograde",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2025-03-08",
+      "openingDate": "2025-03-19",
+      "closingDate": "2025-06-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/retrograde_1656709/",
+        "wosReview": "https://www.whatsonstage.com/news/retrograde-in-the-west-end-review_1670391/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "My Neighbour Totoro",
+      "venue": "Gillian Lynne Theatre",
+      "previewsStartDate": "2025-03-08",
+      "openingDate": "2025-03-20",
+      "closingDate": "2027-01-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/my-neighbour-totoro_2031817621/"
+      },
+      "inShowsJson": "my-neighbour-totoro-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: my-neighbour-totoro-west-end-2025"
+      }
+    },
+    {
+      "title": "Westend Unscripted!",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2025-03-23",
+      "openingDate": null,
+      "closingDate": "2025-03-23",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/westend-unscripted_1668913/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Dazzling Diamonds",
+      "venue": "Aldwych Theatre",
+      "previewsStartDate": "2025-03-23",
+      "openingDate": null,
+      "closingDate": "2025-03-23",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-dazzling-diamonds_1317485615/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Austenland",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-03-24",
+      "closingDate": "2025-03-24",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/austenland_1663779/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Murder, She Didn’t Write",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-03-24",
+      "closingDate": "2025-05-19",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/murder-she-didnt-write_1659467/"
+      },
+      "inShowsJson": "murder-she-didnt-write-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: murder-she-didnt-write-west-end-2025"
+      }
+    },
+    {
+      "title": "Manhunt",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-03-28",
+      "openingDate": null,
+      "closingDate": "2025-05-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/manhunt_1418414272/",
+        "wosReview": "https://www.whatsonstage.com/news/manhunt-at-the-royal-court-review_1672794/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Samantha Barks",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-04-05",
+      "openingDate": null,
+      "closingDate": "2025-04-05",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/samantha-barks_1666010/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Hold On To Your Butts",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2025-04-07",
+      "openingDate": null,
+      "closingDate": "2025-04-12",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hold-on-to-your-butts_1665513/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 5 days < 14"
+      }
+    },
+    {
+      "title": "Queen by Candlelight",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2025-04-08",
+      "closingDate": "2025-04-08",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/queen-by-candlelight_1664056/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Great Gatsby",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2025-04-11",
+      "openingDate": null,
+      "closingDate": "2025-09-07",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-great-gatsby_1130690252/",
+        "wosReview": "https://www.whatsonstage.com/news/the-great-gatsby-review-luxuriously-glitzy-yet-glib-west-end-musical_1674830/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2026"
+      }
+    },
+    {
+      "title": "RuPaul’s Drag Race Werq The World",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-04-14",
+      "openingDate": null,
+      "closingDate": "2025-04-14",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/rupauls-drag-race-werq-the-world_1672313/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Karen Hauer and Gorka Marquez: Speakeasy",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-04-15",
+      "openingDate": null,
+      "closingDate": "2025-04-15",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/karen-hauer-and-gorka-marquez-speakeasy_641444412/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Aaron Tveit",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2025-04-19",
+      "closingDate": "2025-04-19",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/aaron-tveit_1664355/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Brightening Air",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2025-04-10",
+      "openingDate": "2025-04-24",
+      "closingDate": "2025-06-14",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-brightening-air_209283952/",
+        "wosReview": "https://www.whatsonstage.com/news/the-brightening-air-with-chris-odowd-at-the-old-vic-review_1674981/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Scenes from a Repatriation",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-04-25",
+      "openingDate": null,
+      "closingDate": "2025-05-24",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/scenes-from-a-repatriation_1628034601/",
+        "wosReview": "https://www.whatsonstage.com/news/scenes-from-a-repatriation-at-the-royal-court-theatre-review_1675739/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "StarKid – I Can’t Believe It’s Been a Little Less Than a Year",
+      "venue": "The London Palladium",
+      "previewsStartDate": null,
+      "openingDate": "2025-04-26",
+      "closingDate": "2025-04-27",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/starkid-i-cant-believe-its-been-a-little-less-than-a-year_1657642/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Giant",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2025-04-26",
+      "openingDate": null,
+      "closingDate": "2025-08-02",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/giant_929894254/"
+      },
+      "inShowsJson": "giant-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: giant-west-end-2025"
+      }
+    },
+    {
+      "title": "April Foolery",
+      "venue": "Criterion Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-04-28",
+      "closingDate": "2025-04-28",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/april-foolery_1663408/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "We Aren’t Kids Anymore",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-04-28",
+      "closingDate": "2025-04-28",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/we-arent-kids-anymore_1656154/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Nina Conti: Whose Face Is It Anyway?",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2025-04-29",
+      "openingDate": null,
+      "closingDate": "2025-05-03",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/nina-conti-whose-face-is-it-anyway_1667758/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 4 days < 14"
+      }
+    },
+    {
+      "title": "My Master Builder",
+      "venue": "Wyndham's Theatre",
+      "previewsStartDate": "2025-04-17",
+      "openingDate": "2025-04-29",
+      "closingDate": "2025-07-12",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/my-master-builder_1656194/",
+        "wosReview": "https://www.whatsonstage.com/news/my-master-builder-review-ewan-mcgregors-ibsen-spin-off-is-ill-constructed_1675621/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Katherine Ryan: Battleaxe",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-05-01",
+      "openingDate": null,
+      "closingDate": "2025-05-03",
+      "genres": [
+        "comedy"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/katherine-ryan-battleaxe_1676047/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 2 days < 14"
+      }
+    },
+    {
+      "title": "The Comedy About Spies",
+      "venue": "Noel Coward Theatre",
+      "previewsStartDate": "2025-04-14",
+      "openingDate": "2025-05-06",
+      "closingDate": "2025-09-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-comedy-about-spies_1194623117/",
+        "wosReview": "https://www.whatsonstage.com/news/the-comedy-about-spies-review-mischiefs-cold-war-caper-has-japes-aplenty_1677753/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2026"
+      }
+    },
+    {
+      "title": "The Deep Blue Sea",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2025-05-07",
+      "openingDate": null,
+      "closingDate": "2025-06-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-deep-blue-sea_1637745814/",
+        "wosReview": "https://www.whatsonstage.com/news/the-deep-blue-sea-with-tamsin-greig-review-a-five-star-triumph_1677941/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Here We Are",
+      "venue": "Lyttelton Theatre",
+      "previewsStartDate": "2025-04-23",
+      "openingDate": "2025-05-08",
+      "closingDate": "2025-06-28",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/here-we-are_1052361659/",
+        "wosReview": "https://www.whatsonstage.com/news/here-we-are-at-the-national-theatre-review-sondheims-final-musical-is-mystifying-and-magical_1676732/"
+      },
+      "inShowsJson": "here-we-are-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: here-we-are-west-end-2025"
+      }
+    },
+    {
+      "title": "The Fifth Step",
+      "venue": "@sohoplace",
+      "previewsStartDate": "2025-05-10",
+      "openingDate": null,
+      "closingDate": "2025-07-26",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-fifth-step_1661887/",
+        "wosReview": "https://www.whatsonstage.com/news/the-fifth-step-with-martin-freeman-and-jack-lowden-in-the-west-end-review_1678332/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "West End Unscripted! Sir Derek Jacobi & Special Guests",
+      "venue": "Gillian Lynne Theatre",
+      "previewsStartDate": "2025-05-12",
+      "openingDate": null,
+      "closingDate": "2025-05-12",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/west-end-unscripted-sir-derek-jacobi-special-guests_1673972/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Just For One Day – The Live Aid Musical",
+      "venue": "Shaftesbury Theatre",
+      "previewsStartDate": "2025-05-15",
+      "openingDate": null,
+      "closingDate": "2026-02-07",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/just-for-one-day-the-live-aid-musical_1631133/",
+        "wosReview": "https://www.whatsonstage.com/news/just-for-one-day-the-live-aid-musical-west-end-review_1682698/"
+      },
+      "inShowsJson": "just-for-one-day-the-live-aid-musical-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: just-for-one-day-the-live-aid-musical-west-end-2025"
+      }
+    },
+    {
+      "title": "Some Guys Have All the Luck – The Rod Stewart Story",
+      "venue": "Aldwych Theatre",
+      "previewsStartDate": "2025-05-18",
+      "openingDate": null,
+      "closingDate": "2025-05-18",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/some-guys-have-all-the-luck-the-rod-stewart-story_1219366315/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Music of Coldplay by Candlelight",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-05-20",
+      "openingDate": null,
+      "closingDate": "2025-05-20",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-music-of-coldplay-by-candlelight_1669003/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Mrs Warren’s Profession",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2025-05-10",
+      "openingDate": "2025-05-22",
+      "closingDate": "2025-08-16",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/mrs-warrens-profession_1660132/",
+        "wosReview": "https://www.whatsonstage.com/news/mrs-warrens-profession-with-imelda-staunton-and-bessie-carter-west-end-review_1678905/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "After the Act",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-05-21",
+      "openingDate": "2025-05-23",
+      "closingDate": "2025-06-14",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/after-the-act_1671281/",
+        "wosReview": "https://www.whatsonstage.com/news/after-the-act-at-the-royal-court-review_1679106/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "The Rock’n’Roll Alien",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-05-27",
+      "openingDate": null,
+      "closingDate": "2025-05-27",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-rocknroll-alien_1675460/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Velma Celli: Show Queen",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-06-02",
+      "closingDate": "2025-06-02",
+      "genres": [
+        "cabaret",
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/velma-celli-show-queen_1657146/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: cabaret"
+      }
+    },
+    {
+      "title": "Bettie Page, Queen of Pin-Ups – The Musical",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": "2025-06-09",
+      "openingDate": null,
+      "closingDate": "2025-06-09",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/bettie-page-queen-of-pin-ups-the-musical_1674510/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Stereophonic",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2025-05-24",
+      "openingDate": "2025-06-12",
+      "closingDate": "2025-11-22",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/stereophonic_1659515/",
+        "wosReview": "https://www.whatsonstage.com/news/stereophonic-west-end-review-a-music-studio-masterpiece_1682965/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2026"
+      }
+    },
+    {
+      "title": "London Road",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": "2025-06-05",
+      "openingDate": "2025-06-12",
+      "closingDate": "2025-06-21",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/london-road_2135759951/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Dad’s Army Radio Show",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": "2025-06-16",
+      "openingDate": null,
+      "closingDate": "2025-06-16",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/dads-army-radio-show_1665836/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 0 days < 14"
+      }
+    },
+    {
+      "title": "Girl from the North Country",
+      "venue": "Old Vic Theatre",
+      "previewsStartDate": "2025-06-24",
+      "openingDate": null,
+      "closingDate": "2025-08-23",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/girl-from-the-north-country_1673496/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Disney’s Hercules",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2025-06-06",
+      "openingDate": "2025-06-24",
+      "closingDate": "2026-09-05",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/west-end-theatre-2/disneys-hercules_1648136/",
+        "wosReview": "https://www.whatsonstage.com/news/disneys-hercules-in-the-west-end-review-bursting-with-energy-but-lacking-in-heart_1684149/"
+      },
+      "inShowsJson": "Hercules",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: Hercules"
+      }
+    },
+    {
+      "title": "ECHO",
+      "venue": "Royal Court Theatre",
+      "previewsStartDate": "2025-06-27",
+      "openingDate": null,
+      "closingDate": "2025-07-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/echo_1671289/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "run of 8 days < 14"
+      }
+    },
+    {
+      "title": "Evita",
+      "venue": "The London Palladium",
+      "previewsStartDate": "2025-06-14",
+      "openingDate": "2025-06-27",
+      "closingDate": "2025-09-06",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/evita_1657267/",
+        "wosReview": "https://www.whatsonstage.com/news/evita-with-rachel-zegler-review-high-flying-adored-and-awe-inspiring_1685107/"
+      },
+      "inShowsJson": "evita-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: evita-west-end-2025"
+      }
+    },
+    {
+      "title": "Tom’s Elton Tribute",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-07-01",
+      "openingDate": null,
+      "closingDate": "2025-07-01",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/toms-elton-tribute_1677878/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Till the Stars Come Down",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2025-07-01",
+      "openingDate": null,
+      "closingDate": "2025-09-27",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/till-the-stars-come-down_1670312/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Hold On To Your Butts",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2025-07-07",
+      "openingDate": null,
+      "closingDate": "2025-08-31",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/hold-on-to-your-butts_1681121/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "John Cameron Mitchell Live in London",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2025-07-08",
+      "openingDate": null,
+      "closingDate": "2025-07-08",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/john-cameron-mitchell-live-in-london_1676243/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Estate",
+      "venue": "Dorfman Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-07-09",
+      "closingDate": "2025-08-23",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-estate_1664602/",
+        "wosReview": "https://www.whatsonstage.com/news/the-estate-at-the-national-theatre-review_1687388/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review"
+      }
+    },
+    {
+      "title": "Inter Alia",
+      "venue": "Lyttelton Theatre",
+      "previewsStartDate": "2025-07-10",
+      "openingDate": null,
+      "closingDate": "2025-09-13",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/inter-alia_1663823/",
+        "wosReview": "https://www.whatsonstage.com/news/inter-alia-review-rosamund-pike-holds-court-in-national-theatre-debut_1688007/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2026"
+      }
+    },
+    {
+      "title": "Nye",
+      "venue": "Olivier Theatre",
+      "previewsStartDate": "2025-07-03",
+      "openingDate": "2025-07-10",
+      "closingDate": "2025-08-16",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/nye_139069256/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Carly Paoli and Friends – Hollywood to Broadway",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2025-07-13",
+      "openingDate": null,
+      "closingDate": "2025-07-13",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/carly-paoli-and-friends-hollywood-to-broadway_1679613/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Beatles by Candlelight",
+      "venue": "Gillian Lynne Theatre",
+      "previewsStartDate": "2025-07-14",
+      "openingDate": null,
+      "closingDate": "2025-07-14",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-beatles-by-candlelight_1668453/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Tiger Who Came to Tea",
+      "venue": "Theatre Royal Haymarket",
+      "previewsStartDate": "2025-07-14",
+      "openingDate": null,
+      "closingDate": "2025-09-07",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-tiger-who-came-to-tea_1665816/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "CoComelon: Sing-A-Long LIVE",
+      "venue": "St Martin's Theatre",
+      "previewsStartDate": "2025-07-15",
+      "openingDate": null,
+      "closingDate": "2025-09-07",
+      "genres": [
+        "event",
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/cocomelon-sing-a-long-live_1678875/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "The Smeds and the Smoos",
+      "venue": "Lyric Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-07-18",
+      "closingDate": "2025-09-07",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/the-smeds-and-the-smoos_1653013/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Anton & Giovanni – Together Again",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2025-07-20",
+      "openingDate": null,
+      "closingDate": "2025-07-20",
+      "genres": [
+        "dance"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/anton-giovanni-together-again_1685254/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: dance"
+      }
+    },
+    {
+      "title": "Murder, She Didn’t Write",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": "2025-07-21",
+      "openingDate": null,
+      "closingDate": "2025-11-24",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/murder-she-didnt-write_1686383/"
+      },
+      "inShowsJson": "murder-she-didnt-write-west-end-2025",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: murder-she-didnt-write-west-end-2025"
+      }
+    },
+    {
+      "title": "Burlesque the Musical",
+      "venue": "Savoy Theatre",
+      "previewsStartDate": "2025-07-10",
+      "openingDate": "2025-07-22",
+      "closingDate": "2025-09-06",
+      "genres": [
+        "musical"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/burlesque-the-musical_1670762/",
+        "wosReview": "https://www.whatsonstage.com/news/burlesque-review-west-end-musical-is-a-frivolous-and-flimsy-frolic_1687704/"
+      },
+      "inShowsJson": "burlesque-west-end-2026",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: burlesque-west-end-2026"
+      }
+    },
+    {
+      "title": "Little Dancer",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2025-07-27",
+      "openingDate": null,
+      "closingDate": "2025-07-27",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/little-dancer_1683965/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Horrible Histories: Barmy Britain",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-07-31",
+      "closingDate": "2025-08-31",
+      "genres": [
+        "children"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/horrible-histories-barmy-britain_1658366/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: children"
+      }
+    },
+    {
+      "title": "Every Brilliant Thing",
+      "venue": "@sohoplace",
+      "previewsStartDate": "2025-08-01",
+      "openingDate": null,
+      "closingDate": "2025-11-08",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [
+        "wos-review",
+        "olivier-2026"
+      ],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/every-brilliant-thing_1678618/",
+        "wosReview": "https://www.whatsonstage.com/news/every-brilliant-thing-review-lenny-henry-launches-an-all-star-rotating-cast-season-in-the-west-end_1689912/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: wos-review, olivier-2026"
+      }
+    },
+    {
+      "title": "Live Forever – The Rise of Oasis",
+      "venue": "Dominion Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2025-08-03",
+      "closingDate": "2025-08-03",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/live-forever-the-rise-of-oasis_1657878/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "A Man for All Seasons",
+      "venue": "The Harold Pinter Theatre",
+      "previewsStartDate": "2025-08-06",
+      "openingDate": null,
+      "closingDate": "2025-09-06",
+      "genres": [
+        "play"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/a-man-for-all-seasons_1672916/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Gravity",
+      "venue": "Theatre Royal Drury Lane",
+      "previewsStartDate": "2025-08-31",
+      "openingDate": null,
+      "closingDate": "2025-08-31",
+      "genres": [
+        "event"
+      ],
+      "season": "2024-2025",
+      "signals": [],
+      "sourceUrls": {
+        "wos": "https://www.whatsonstage.com/shows/london-theatre/west-end-theatre/gravity_1669184/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    }
+  ],
+  "unlistedReviews": [
+    {
+      "title": "4.48 Psychosis",
+      "venue": "Royal Court",
+      "date": "2025-06-19",
+      "url": "https://www.whatsonstage.com/news/4-48-psychosis-review-a-profoundly-impactful-and-important-return_1683479/",
+      "rating": 5,
+      "market": [
+        83,
+        201
+      ]
+    },
+    {
+      "title": "Elektra",
+      "venue": "Duke of York's Theatre",
+      "date": "2025-02-05",
+      "url": "https://www.whatsonstage.com/news/elektra-west-end-review-brie-larson-leads-an-abstract-elusive-revival_1663709/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Inside No. 9 Stage/Fright",
+      "venue": "Wyndham's Theatre",
+      "date": "2025-01-29",
+      "url": "https://www.whatsonstage.com/news/inside-no-9-stage-fright-west-end-review-reece-shearsmith-and-steve-pemberton-deliver-an-all-encompassing-adaptation_1662635/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Importance of Being Earnest",
+      "venue": "Lyttelton Theatre",
+      "date": "2024-11-29",
+      "url": "https://www.whatsonstage.com/news/the-importance-of-being-earnest-review-ncuti-gatwa-and-sharon-d-clarke-in-the-national-theatres-panto-production_1655602/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Other Place",
+      "venue": "National Theatre",
+      "date": "2024-10-09",
+      "url": "https://www.whatsonstage.com/news/the-other-place-at-the-national-theatre-review-emma-darcy-and-tobias-menzies-in-an-astonishing-take-on-antigone_1637832/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "A Tupperware of Ashes",
+      "venue": "National Theatre",
+      "date": "2024-10-03",
+      "url": "https://www.whatsonstage.com/news/a-tupperware-of-ashes-at-the-national-theatre-review_1636207/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Coriolanus",
+      "venue": "National Theatre",
+      "date": "2024-09-25",
+      "url": "https://www.whatsonstage.com/news/coriolanus-starring-david-oyelowo-at-the-national-theatre-review_1633866/",
+      "rating": 3,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "Why Am I So Single?",
+      "venue": "Garrick Theatre",
+      "date": "2024-09-12",
+      "url": "https://www.whatsonstage.com/news/why-am-i-so-single-west-end-review-a-heartfelt-meta-theatrical-marvel_1630202/",
+      "rating": 5,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "The Real Thing",
+      "venue": "Old Vic",
+      "date": "2024-09-04",
+      "url": "https://www.whatsonstage.com/news/the-real-thing-at-the-old-vic-review_1627722/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    },
+    {
+      "title": "G",
+      "venue": "Royal Court",
+      "date": "2024-09-02",
+      "url": "https://www.whatsonstage.com/news/g-at-the-royal-court-review_1626659/",
+      "rating": 4,
+      "market": [
+        83
+      ]
+    }
+  ]
+}

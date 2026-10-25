@@ -1,0 +1,33 @@
+{
+  "issueNumber": "bro-4884-b",
+  "planId": "4d8a84d8-961d-4eaa-865f-5a6e3f7c51d1",
+  "status": "applied",
+  "createdAt": "2026-10-09T21:10:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4884: clear a validate-data error that refuses every validate-gated core-data push. A reader-submitted entry on Night of January 16th points at a Theatricalia production listing (not a review); collection filled its byline from the page as Ayn Rand, the playwright, before the show had a creative team on record.",
+    "steps": [
+      "Theatricalia production page, not a review; critic set to the play's author by HTML byline extraction. Rescoring already blocked (body too short)."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json",
+        "description": "Theatricalia production page, not a review; critic set to the play's author by HTML byline extraction. Rescoring already blocked (body too short)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-09T21:43:17.485Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted night-of-january-16th-off-broadway-2026/theatricalia--ayn-rand.json"
+    }
+  ]
+}

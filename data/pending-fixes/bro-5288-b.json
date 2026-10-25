@@ -1,0 +1,321 @@
+{
+  "issueNumber": "bro-5288-b",
+  "planId": "9ebc2eb7-9473-47f5-9b87-3dcdbd8f9224",
+  "status": "applied",
+  "createdAt": "2026-10-13T19:15:10.505Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "(part b of 2) BRO-5288: delete the rows the 2026-10-13 review refresh (broadway-review-texts c94cf8756) filed under show ids shows.json does not have, plus the earlier-production rows it quarantined to _pending/. Where the id is a DTLI page slug of a real show (purpose, romeo-juliet, tammy-faye, doubt-a-parable, harry-potter-*, moulin-rouge-the-musical-review, little-shop-of-horrors-2019, the-music-man-off-broadway-2026), the real show folder already holds a same-outlet row. The rest are reviews of earlier productions (2003-2017) of titles whose new id is not a show. Every file is restorable from c94cf8756 (review-file-op restore). The three rows bro-5232-p flags are left to that plan.",
+    "steps": [
+      "delete harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json (dtli, published December 7, 2021)",
+      "delete harry-potter-and-the-cursed-child/dtli--ana-zambrana.json (dtli, published December 7, 2021)",
+      "delete harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json (dtli, published December 7, 2021)",
+      "delete heathers-the-musical-2025/ap--peter-santilli.json (dtli, published April 1, 2014)",
+      "delete heathers-the-musical-2025/ew--kyle-anderson.json (dtli, published March 31, 2014)",
+      "delete heathers-the-musical-2025/hollywood-reporter--david-rooney.json (dtli, published March 31, 2014)",
+      "delete heathers-the-musical-2025/nbcny--robert-kahn.json (dtli, published March 31, 2014)",
+      "delete heathers-the-musical-2025/nytimes--ben-brantley.json (dtli, published April 1, 2014)",
+      "delete heathers-the-musical-2025/vulture--jesse-green.json (dtli, published March 31, 2014)",
+      "delete little-shop-of-horrors-2019/nytimes--ben-brantley.json (dtli, published October 3, 2003)",
+      "delete moulin-rouge-the-musical-review/amny--matt-windman.json (dtli, published July 25, 2019)",
+      "delete moulin-rouge-the-musical-review/deadline--greg-evans.json (dtli, published July 25, 2019)",
+      "delete moulin-rouge-the-musical-review/hollywood-reporter--david-rooney.json (dtli, published July 25, 2019)",
+      "delete moulin-rouge-the-musical-review/variety--marilyn-stasio.json (dtli, published July 25, 2019)",
+      "delete purpose/deadline--greg-evans.json (dtli, published March 17, 2025)",
+      "delete purpose/theatermania--zachary-stewart.json (dtli, published March 17, 2025)",
+      "delete romeo-juliet/theatrely--juan-a-ramirez.json (dtli, published October 24, 2024)",
+      "delete romeo-juliet/washpost--naveen-kumar.json (dtli, published October 24, 2024)",
+      "delete take-me-out/nytimes--ben-brantley.json (dtli, published February 28, 2003)",
+      "delete tammy-faye/new-york-sun--elysa-gardner.json (dtli, published November 14, 2024)",
+      "delete the-music-man-off-broadway-2026/ap--mark-kennedy.json (dtli, published February 10, 2022)",
+      "delete the-other-place-2026/hollywood-reporter--david-rooney.json (dtli, published January 10, 2013)",
+      "delete the-unknown-2026/nytimes--alexis-soloski.json (dtli, published August 10, 2015)",
+      "delete you-got-older-2026/theatermania--hayley-levitt.json (dtli, published November 6, 2014)",
+      "delete you-got-older-2026/timeout--adam-feldman.json (dtli, published November 7, 2014)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child/dtli--ana-zambrana.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/ap--peter-santilli.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/ew--kyle-anderson.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/nbcny--robert-kahn.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "heathers-the-musical-2025/vulture--jesse-green.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "little-shop-of-horrors-2019/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/amny--matt-windman.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/deadline--greg-evans.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "moulin-rouge-the-musical-review/variety--marilyn-stasio.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "purpose/deadline--greg-evans.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "purpose/theatermania--zachary-stewart.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "romeo-juliet/theatrely--juan-a-ramirez.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "romeo-juliet/washpost--naveen-kumar.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "take-me-out/nytimes--ben-brantley.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "tammy-faye/new-york-sun--elysa-gardner.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-music-man-off-broadway-2026/ap--mark-kennedy.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-other-place-2026/hollywood-reporter--david-rooney.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "the-unknown-2026/nytimes--alexis-soloski.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-2026/theatermania--hayley-levitt.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "you-got-older-2026/timeout--adam-feldman.json",
+        "description": "BRO-5288: added by c94cf8756 under a non-show id or as an earlier-production quarantine"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T20:53:23.710Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child/broadwaynews--charles-isherwood.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child/dtli--ana-zambrana.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted harry-potter-and-the-cursed-child/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/ap--peter-santilli.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/ew--kyle-anderson.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/nbcny--robert-kahn.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted heathers-the-musical-2025/vulture--jesse-green.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted little-shop-of-horrors-2019/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/amny--matt-windman.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted moulin-rouge-the-musical-review/variety--marilyn-stasio.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose/deadline--greg-evans.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted purpose/theatermania--zachary-stewart.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-juliet/theatrely--juan-a-ramirez.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted romeo-juliet/washpost--naveen-kumar.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted take-me-out/nytimes--ben-brantley.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted tammy-faye/new-york-sun--elysa-gardner.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-music-man-off-broadway-2026/ap--mark-kennedy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-other-place-2026/hollywood-reporter--david-rooney.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-unknown-2026/nytimes--alexis-soloski.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/theatermania--hayley-levitt.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted you-got-older-2026/timeout--adam-feldman.json"
+    }
+  ]
+}

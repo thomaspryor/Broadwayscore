@@ -1,0 +1,231 @@
+{
+  "issueNumber": "bro-4889",
+  "planId": "49deaae6-4c0f-4e36-b4df-aecfd2cb84b8",
+  "status": "applied",
+  "createdAt": "2026-10-13T00:38:15.370Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4889: stop counting other productions’ reviews on older revival pages (Private Lives x4, Cat 2003, Osage 2007) and restore the genuine 1979 NYT Evita review.",
+    "steps": [
+      "private-lives-2002/vulture--scott-brown.json: wrongProduction -> true",
+      "private-lives-2002/vulture--scott-brown.json: wrongProductionReason -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\"",
+      "private-lives-1992/vulture--scott-brown.json: wrongProduction -> true",
+      "private-lives-1992/vulture--scott-brown.json: wrongProductionReason -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\"",
+      "private-lives-1983/vulture--scott-brown.json: wrongProduction -> true",
+      "private-lives-1983/vulture--scott-brown.json: wrongProductionReason -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\"",
+      "private-lives-1975/vulture--scott-brown.json: wrongProduction -> true",
+      "private-lives-1975/vulture--scott-brown.json: wrongProductionReason -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\"",
+      "cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json: wrongProduction -> true",
+      "cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json: wrongProductionReason -> \"BRO-4889: text reviews the 2013 Broadway production (Scarlett Johansson)\"",
+      "august-osage-county-2007/financialtimes--sarah-hemming.json: wrongProduction -> true",
+      "august-osage-county-2007/financialtimes--sarah-hemming.json: wrongProductionReason -> \"BRO-4889: reviews the National Theatre Lyttelton production (opened 2008-11-26)\"",
+      "august-osage-county-2007/independent--michaelcoveney.json: wrongProduction -> true",
+      "august-osage-county-2007/independent--michaelcoveney.json: wrongProductionReason -> \"BRO-4889: reviews the National Theatre Lyttelton production (opened 2008-11-26)\"",
+      "evita-1979/nytimes--ben-brantley.json: wrongProduction -> false"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2002/vulture--scott-brown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Vulture/Scott Brown reviews the 2011 Kim Cattrall and Paul Gross production (\"Gross is the evening’s highlight\"), not the 2002 one"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-2002/vulture--scott-brown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-1992/vulture--scott-brown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Vulture/Scott Brown reviews the 2011 Kim Cattrall and Paul Gross production (\"Gross is the evening’s highlight\"), not the 1992 one"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-1992/vulture--scott-brown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-1983/vulture--scott-brown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Vulture/Scott Brown reviews the 2011 Kim Cattrall and Paul Gross production (\"Gross is the evening’s highlight\"), not the 1983 one"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-1983/vulture--scott-brown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-1975/vulture--scott-brown.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Vulture/Scott Brown reviews the 2011 Kim Cattrall and Paul Gross production (\"Gross is the evening’s highlight\"), not the 1975 one"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "private-lives-1975/vulture--scott-brown.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Stored text is Peter Marks on the 2013 Scarlett Johansson production, not the 2003 one"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: text reviews the 2013 Broadway production (Scarlett Johansson)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/financialtimes--sarah-hemming.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the 2008 National Theatre (Lyttelton) London run, published Nov/Dec 2008, not the 2007 Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/financialtimes--sarah-hemming.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: reviews the National Theatre Lyttelton production (opened 2008-11-26)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/independent--michaelcoveney.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Review of the 2008 National Theatre (Lyttelton) London run, published Nov/Dec 2008, not the 2007 Broadway production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "august-osage-county-2007/independent--michaelcoveney.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "BRO-4889: reviews the National Theatre Lyttelton production (opened 2008-11-26)",
+        "description": "Reason for the flag"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "evita-1979/nytimes--ben-brantley.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "This is the genuine 1979 NYT opening review (nytimes.com/1979/09/26 archive); it already carries wrongProductionManualClear but the stale flag makes a rebuild drop it"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T01:25:09.261Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2002/vulture--scott-brown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-2002/vulture--scott-brown.json wrongProductionReason: null -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-1992/vulture--scott-brown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-1992/vulture--scott-brown.json wrongProductionReason: null -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-1983/vulture--scott-brown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-1983/vulture--scott-brown.json wrongProductionReason: null -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-1975/vulture--scott-brown.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "private-lives-1975/vulture--scott-brown.json wrongProductionReason: null -> \"BRO-4889: review of the 2011 Broadway production (Paul Gross, Kim Cattrall)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cat-on-a-hot-tin-roof-2003/washpost--peter-marks.json wrongProductionReason: null -> \"BRO-4889: text reviews the 2013 Broadway production (Scarlett Johansson)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/financialtimes--sarah-hemming.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/financialtimes--sarah-hemming.json wrongProductionReason: null -> \"BRO-4889: reviews the National Theatre Lyttelton production (opened 2008-11-26)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/independent--michaelcoveney.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "august-osage-county-2007/independent--michaelcoveney.json wrongProductionReason: null -> \"BRO-4889: reviews the National Theatre Lyttelton production (opened 2008-11-26)\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "evita-1979/nytimes--ben-brantley.json wrongProduction: true -> false"
+    }
+  ]
+}

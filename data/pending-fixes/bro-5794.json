@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5794",
+  "planId": "36af4f5a-653b-4f85-83f0-e86d07505e1b",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Delete one stub the BRO-5794 meta-evidence backfill attached wrongly: the FT URL is a Scottish Ballet review, not the Old Vic play.",
+    "steps": [
+      "Delete a-streetcar-named-desire-west-end-2023/financialtimes--unknown.json (URL https://www.ft.com/content/34baf4bd-6aa2-4609-9913-09b28f3ecbe1 is 'A Streetcar Named Desire, Scottish Ballet review')."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "a-streetcar-named-desire-west-end-2023/financialtimes--unknown.json",
+        "destinationPath": null,
+        "description": "Wrong production: ballet review of a same-titled work, accepted by the first meta-evidence run before the ballet guard."
+      }
+    ]
+  },
+  "executedAt": "2026-10-22T04:23:31.183Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted a-streetcar-named-desire-west-end-2023/financialtimes--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
+}

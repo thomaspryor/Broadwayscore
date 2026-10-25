@@ -1,0 +1,37 @@
+{
+  "issueNumber": "bro-5556",
+  "planId": "0ac7dd81-5e13-43c6-87a6-4821a05388ba",
+  "status": "applied",
+  "createdAt": "2026-10-20T14:57:58.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Downstate first Broadway preview was postponed again for illness; Playbill now reports the first preview as October 22, 2026 (opening still November 15).",
+    "steps": [
+      "Set downstate-2026 previewsStartDate from 2026-10-17 to 2026-10-22."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "downstate-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-10-17",
+        "newValue": "2026-10-22",
+        "description": "Playbill (https://playbill.com/article/downstate-delays-first-broadway-preview): preview pushed from Oct 17 to Oct 19, then Oct 20, now first performance October 22 at the Booth Theatre; opening night still Nov 15. The audit's Oct 20 cluster date was superseded by that update."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T15:38:23.989Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for downstate-2026"
+    }
+  ],
+  "executedIn": "ci"
+}

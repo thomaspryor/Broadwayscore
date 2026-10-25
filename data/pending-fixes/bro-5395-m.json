@@ -1,0 +1,243 @@
+{
+  "issueNumber": "bro-5395-m",
+  "planId": "409ae802-d345-4867-8417-db282edf8b3f",
+  "status": "partial",
+  "createdAt": "2026-10-15T23:05:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5395 (m): 7 of the 43 hand-checked showNotMentioned rows were still held by a stale wrongShow (one also wrongProduction) set by the same missing-title check. Each text was confirmed by name search; clear with the human marker and re-tier.",
+    "steps": [
+      "breadcrumb",
+      "clear",
+      "retier"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "accidental-death-of-an-anarchist-west-end-2023/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text names Daniel Rigby and the Lyric Hammersmith; url and 2023-06-27 date match this revival). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "accidental-death-of-an-anarchist-west-end-2023/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text names James McAvoy and Cyrano; url and 2022-02-04 date match the Jamie Lloyd revival). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/guardian--arifa-akbar.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text names Hiddleston, Atwell and Beatrice; url and February 2025 date match the Theatre Royal Drury Lane run). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "much-ado-about-nothing-west-end-2025/guardian--arifa-akbar.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pygmalion-west-end-2023/express-uk--neil-norman.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text is about Eliza and Higgins in Shaw's play; url and 2023-09-19 date match this Old Vic run). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pygmalion-west-end-2023/express-uk--neil-norman.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text reviews Luke Norris's new play, which is this show; url names the show and the Royal Court, date 2026-01-23 matches). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: the collector LLM called Luke Norris's play a different production; it is this show (url, venue, date)."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json",
+        "field": "wrongProduction",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongProduction after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-west-end-2022/telegraph--claire-allfree.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text names Cocteau, Ivo van Hove and Ruth Wilson; url and 2022-03-23 date match the Harold Pinter Theatre run). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-west-end-2022/telegraph--claire-allfree.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-west-end-2022/times-uk--clive-davis.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5395: human check, the stored text is this show's review (text names Cocteau and Ivo van Hove; url names the show and Ruth Wilson, date 2022-03-23 matches). The wrongShow flag came from the show title not appearing in the body."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-human-voice-west-end-2022/times-uk--clive-davis.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5395: clear wrongShow after the human check above."
+      },
+      {
+        "type": "run-script",
+        "script": "reclassify-invalid-reviews.js",
+        "args": "--file=accidental-death-of-an-anarchist-west-end-2023/times-uk--clive-davis.json,cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json,much-ado-about-nothing-west-end-2025/guardian--arifa-akbar.json,pygmalion-west-end-2023/express-uk--neil-norman.json,guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json,the-human-voice-west-end-2022/telegraph--claire-allfree.json,the-human-voice-west-end-2022/times-uk--clive-davis.json --apply",
+        "description": "BRO-5395: recompute contentTier on the 7 rows now that their wrong-content flags are cleared (BRO-5356 file mode)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-15T23:26:56.113Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "accidental-death-of-an-anarchist-west-end-2023/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "accidental-death-of-an-anarchist-west-end-2023/times-uk--clive-davis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cyrano-de-bergerac-west-end-2022/times-uk--clive-davis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/guardian--arifa-akbar.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "much-ado-about-nothing-west-end-2025/guardian--arifa-akbar.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-west-end-2023/express-uk--neil-norman.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pygmalion-west-end-2023/express-uk--neil-norman.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongShowManualClear: current value doesn't match expected (data changed since plan was created)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "guess-how-much-i-love-you-west-end-2026/thestage--sam-marlowe.json wrongProduction: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-west-end-2022/telegraph--claire-allfree.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-west-end-2022/telegraph--claire-allfree.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-west-end-2022/times-uk--clive-davis.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-human-voice-west-end-2022/times-uk--clive-davis.json wrongShow: true -> false (retracted contentTier, contentTierReason, incompleteDetail, incompleteReason, tierReason)"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran reclassify-invalid-reviews.js successfully"
+    }
+  ]
+}

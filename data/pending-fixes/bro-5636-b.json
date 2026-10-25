@@ -1,0 +1,325 @@
+{
+  "issueNumber": "bro-5636-b",
+  "planId": "0e59cdbd-7895-420e-84c9-5976ad4b48a5",
+  "status": "applied",
+  "createdAt": "2026-10-18T18:56:20.460Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5636 (part b): 5 more become \"Did Not Recoup\"; three keep their Flop with the quoted estimate recorded (Dancin' about 10%, Leap of Faith and Ragtime 2009 lost everything); 7 loss labels whose cited source states the loss get basis reported-loss.",
+    "steps": [
+      "Each edit reads its oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          10,
+          10
+        ],
+        "description": "bob-fosses-dancin-2023: the Flop rests on a quoted figure; record it as the estimate (owner 2026-10-18: a loss size needs an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Broadway Journal (May 29, 2025): one investor \"retrieved about 10 percent of his money, due to the tax credit.\" https://broadwayjournal.com/dancin-designers-due-more-than-200000/",
+        "description": "bob-fosses-dancin-2023: the quote behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "bob-fosses-dancin-2023",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2025-05-29",
+        "description": "bob-fosses-dancin-2023: when the figure was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "leap-of-faith-2012: the Flop rests on a quoted figure; record it as the estimate (owner 2026-10-18: a loss size needs an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "Playbill (May 13, 2012): \"The New York Times reported that the producers lost their entire $14 million investment.\" https://playbill.com/article/leap-of-faith-the-musical-pulls-down-its-broadway-tent-may-13-com-193495",
+        "description": "leap-of-faith-2012: the quote behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "leap-of-faith-2012",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2012-05-13",
+        "description": "leap-of-faith-2012: when the figure was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "field": "estimatedRecoupmentPct",
+        "oldValue": null,
+        "newValue": [
+          0,
+          0
+        ],
+        "description": "ragtime-2009: the Flop rests on a quoted figure; record it as the estimate (owner 2026-10-18: a loss size needs an estimate)."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": null,
+        "newValue": "The New York Times (Mar 29, 2010) reported the revival \"lost its $8 million investment.\" https://www.nytimes.com/2010/03/29/theater/29normal.html",
+        "description": "ragtime-2009: the quote behind the estimate."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "ragtime-2009",
+        "field": "estimatedRecoupmentDate",
+        "oldValue": null,
+        "newValue": "2010-03-29",
+        "description": "ragtime-2009: when the figure was reported."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-sign-in-sidney-brusteins-window-2023: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-testament-of-mary-2013",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "the-testament-of-mary-2013: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "thoughts-of-a-colored-man-2021",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Did Not Recoup",
+        "description": "thoughts-of-a-colored-man-2021: no estimate of how much came back, so the Fizzle named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "topdog-underdog-2022",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "topdog-underdog-2022: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays no-recoupment-announced."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "torch-song-2018",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Did Not Recoup",
+        "description": "torch-song-2018: no estimate of how much came back, so the Flop named a size we cannot support; owner chose a plain \"Did Not Recoup\" label (2026-10-18). Basis stays reported-loss."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "cabaret-2024",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "cabaret-2024: its cited source states the loss (\"Broadway Journal (Sep 7, 2025) reported the production \"hasn't returned any money to investors, resulting in a total loss to-date,\" so investors had recouped 0%\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "hells-kitchen",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "hells-kitchen: its cited source states the loss (\"Broadway Journal (Oct 12, 2026): Alicia Keys told The New York Times that when the show closed on Broadway, \"investors had been paid back 60% of their stakes\"; \"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-whos-tommy",
+        "field": "designationBasis",
+        "oldValue": "notes-stated",
+        "newValue": "reported-loss",
+        "description": "the-whos-tommy: its cited source states the loss (\"The New York Times, as relayed by Rolling Stone (Jun 26, 2024), reported the revival had not recouped its capitalization when it announced its closing: \"Tommy w\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mrs-doubtfire-2021",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "mrs-doubtfire-2021: its cited source states the loss (\"Broadway Journal reported on 2022-06-13 that the Broadway run 'closed at a loss on May 29'.\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "beetlejuice-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "beetlejuice-2022: its cited source states the loss (\"The New York Times closure report republished by ArtDaily said Beetlejuice had not recouped its $21 million investment by its January 8, 2023 Broadway closing. \"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "mr-saturday-night-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "mr-saturday-night-2022: its cited source states the loss (\"BroadwayWorld later described Mr. Saturday Night as having closed at a loss. https://www.broadwayworld.com/article/The-Art-of-Recasting-20250801\"), so the label rests on a reported loss, not on silence."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "american-buffalo-2022",
+        "field": "designationBasis",
+        "oldValue": "no-recoupment-announced",
+        "newValue": "reported-loss",
+        "description": "american-buffalo-2022: its cited source states the loss (\"Trade-press summary of a Deadline report (via IMDb news) said the production would not recoup its investment.\"), so the label rests on a reported loss, not on silence."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T19:36:12.929Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for bob-fosses-dancin-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for leap-of-faith-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentPct updated for ragtime-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentSource updated for ragtime-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: estimatedRecoupmentDate updated for ragtime-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-testament-of-mary-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for thoughts-of-a-colored-man-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for topdog-underdog-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for torch-song-2018"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for cabaret-2024"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for hells-kitchen"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for the-whos-tommy"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for mrs-doubtfire-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for beetlejuice-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for mr-saturday-night-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for american-buffalo-2022"
+    }
+  ]
+}

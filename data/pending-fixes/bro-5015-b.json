@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5015-b",
+  "planId": "67c5b557-312e-4231-a540-f5f0e7769922",
+  "status": "applied",
+  "createdAt": "2026-10-12T05:52:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5015: la-traviata-off-broadway-2026 New York Classical Review file points at a 2022 review of the Met's Traviata (a different production). A manual clear protects it from the new other-production-url guard, so it stays live and keeps audit-url-downgrade --gate red. Move it aside.",
+    "steps": [
+      "Move la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json to _superseded-misattributed/"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json",
+        "destPath": "_superseded-misattributed/la-traviata-off-broadway-2026--new-york-classical-review--rick-perdian--2022-met-run-2026-10-12.json",
+        "description": "url is a 2022 review of the Metropolitan Opera production, not this off-Broadway run"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T08:36:51.978Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved la-traviata-off-broadway-2026/new-york-classical-review--rick-perdian.json → _superseded-misattributed/la-traviata-off-broadway-2026--new-york-classical-review--rick-perdian--2022-met-run-2026-10-12.json"
+    }
+  ]
+}

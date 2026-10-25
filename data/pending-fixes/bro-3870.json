@@ -1,0 +1,49 @@
+{
+  "issueNumber": "bro-3870",
+  "planId": "69e2b6ef-ea6a-446f-92ce-d05b37c6ee0b",
+  "status": "applied",
+  "createdAt": "2026-10-13T12:00:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-3870: Elling (2010) David Rooney review is excluded twice over. The Reuters copy (complete text, 2010-11-22) is flagged crossOutletDuplicate of elling-2010/hollywood-reporter--.json, which no longer exists; the surviving THR copy (hollywood-reporter--david-rooney.json) is a 198-char stub flagged wrongProduction. The audit's --fix leaves this shape report-only, so clear the Reuters flag by hand.",
+    "steps": [
+      "Breadcrumb for the hand clear.",
+      "Clear crossOutletDuplicate on the Reuters copy so Rooney's review counts once (the THR stub stays excluded)."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "elling-2010/reuters--david-rooney.json",
+        "field": "crossOutletClearReason",
+        "oldValue": null,
+        "newValue": "BRO-3870 hand clear: crossOutletPrimaryFile elling-2010/hollywood-reporter--.json no longer exists; the surviving THR copy hollywood-reporter--david-rooney.json is a 198-char stub flagged wrongProduction, so this complete Reuters/Hollywood Reporter text is the only usable copy of Rooney's review.",
+        "description": "Breadcrumb for the hand clear."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "elling-2010/reuters--david-rooney.json",
+        "field": "crossOutletDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear crossOutletDuplicate on the Reuters copy so Rooney's review counts once (the THR stub stays excluded)."
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T14:16:55.523Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elling-2010/reuters--david-rooney.json crossOutletClearReason: null -> \"BRO-3870 hand clear: crossOutletPrimaryFile elling-2010/hollywood-reporter--.json no longer exists; the surviving THR copy hollywood-reporter--david-rooney.json is a 198-char stub flagged wrongProduction, so this complete Reuters/Hollywood Reporter text is the only usable copy of Rooney's review.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "elling-2010/reuters--david-rooney.json crossOutletDuplicate: true -> false"
+    }
+  ]
+}

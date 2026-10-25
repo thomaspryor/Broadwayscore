@@ -1,0 +1,48 @@
+{
+  "issueNumber": "bro-5786-b",
+  "planId": "b2b72f97-75c4-4fd8-8220-f571738a8b1a",
+  "status": "applied",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5786 part 2: flag the undated Front Row Center excerpt on the 2026 School Pictures page as the 2023 production. It is the Brittany Crowell review already filed under school-pictures-off-broadway-2023 (thefrontrowcenter.com/2023/12/school-pictures/, scored 99).",
+    "steps": [
+      "set wrongProduction and its reason on the 2026 FRC file"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "school-pictures-off-broadway-2026/front-row-center--brittany-crowell.json",
+        "field": "wrongProduction",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-5786: the show-score excerpt on this file appears verbatim in the 2023 FRC review text (Dec 2023, Playwrights Horizons run); the 2026 file has no url or date. Owner decided 2023 reviews do not count for the 2026 run."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "school-pictures-off-broadway-2026/front-row-center--brittany-crowell.json",
+        "field": "wrongProductionReason",
+        "oldValue": null,
+        "newValue": "2023 Playwrights Horizons production review (same text as the FRC file under school-pictures-off-broadway-2023)",
+        "description": "BRO-5786: reason for the flag above."
+      }
+    ]
+  },
+  "executedAt": "2026-10-20T17:53:18.382Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-pictures-off-broadway-2026/front-row-center--brittany-crowell.json wrongProduction: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-pictures-off-broadway-2026/front-row-center--brittany-crowell.json wrongProductionReason: null -> \"2023 Playwrights Horizons production review (same text as the FRC file under school-pictures-off-broadway-2023)\""
+    }
+  ],
+  "executedIn": "ci"
+}

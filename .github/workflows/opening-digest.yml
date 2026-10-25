@@ -1,0 +1,75 @@
+name: Opening Digest Email
+
+on:
+  schedule:
+    # 11:00 UTC = 7:00am EDT (6:00am EST) / 12pm BST — lands BEFORE the
+    # 07:30 ET morning digest. Standalone send restored 2026-07-30 (owner
+    # ask): card #497 folded this into the merged morning email, but the
+    # owner missed the standalone version ("my fave email") and asked for
+    # it back.
+    - cron: '0 11 * * *'
+  workflow_dispatch:
+    inputs:
+      send_to:
+        description: 'Override recipient (default: owner)'
+        required: false
+        default: ''
+
+concurrency:
+  group: opening-digest
+  cancel-in-progress: false
+
+jobs:
+  send-digest:
+    runs-on: ubuntu-latest
+    # BRO-2531: the 2026-08-27 run never sent — actions/checkout@v5 stalled on
+    # a transient runner hiccup for 8+ minutes (job start 20:50:56, checkout
+    # still running at the 8-minute mark), so the job was cancelled before the
+    # "Send opening digest" step ever ran. Normal end-to-end runtime is ~1
+    # minute (checkout ~15-90s, everything else <5s). Raising the ceiling
+    # doesn't make a hang recover — it only buys more time for a *transient*
+    # stall to clear before the whole run is sacrificed; a hang that outlasts
+    # 15 minutes still misses the send. Real detection for this workflow is
+    # the independent scripts/monitor-scheduled-email-count.js Resend-history
+    # check, not this timeout.
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 20
+
+      - name: Checkout core data (shows.json, reviews.json, audience-buzz.json)
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Send opening digest
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          # env: indirection (not inline ${{ }} in the run body) so a crafted
+          # dispatch input can't inject shell (ship-check QA finding).
+          SEND_TO_INPUT: ${{ github.event.inputs.send_to }}
+        run: |
+          if [ -n "$SEND_TO_INPUT" ]; then
+            node scripts/send-opening-digest.js "--send-to=$SEND_TO_INPUT"
+          else
+            node scripts/send-opening-digest.js
+          fi
+
+      - name: Notify on failure
+        # cancelled() covers a job-timeout hitting a LATER step (checkout
+        # already succeeded); a hang IN checkout itself may leave this local
+        # composite action unresolvable regardless. severity: warning below
+        # means this step is a no-op today either way (notify-failure/action
+        # .yml only sends on severity=='critical') — real detection for this
+        # workflow is scripts/monitor-scheduled-email-count.js's independent
+        # Resend-history check (BRO-2531).
+        if: failure() || cancelled()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Opening Digest Email Failed'
+          description: 'The standalone opening digest (the owner''s daily radar email) did not send.'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}

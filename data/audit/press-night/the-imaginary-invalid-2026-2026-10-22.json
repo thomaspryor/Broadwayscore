@@ -1,0 +1,831 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-imaginary-invalid-2026",
+  "night": "2026-10-22",
+  "market": "broadway",
+  "embargoAt": "2026-10-23T02:00:00.000Z",
+  "probe": {
+    "startedAt": "2026-10-23T02:21:57.637Z",
+    "endedAt": "2026-10-23T08:00:16.498Z",
+    "intervalMin": 5,
+    "samples": 68,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-23T07:57:46.146Z",
+    "lastOkSampleAt": "2026-10-23T07:57:46.146Z"
+  },
+  "firstLiveAt": "2026-10-23T02:21:57.637Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-10-23T04:57:38.937Z",
+  "liveCount": 18,
+  "liveCountAt": {
+    "1h": 1,
+    "2h": 16,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-23T03:01:59.567Z",
+    "2h": "2026-10-23T04:02:36.868Z",
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": "2026-10-22",
+    "precision": "approx",
+    "source": "prod-rv-publishDate",
+    "tierScope": "T1-T2"
+  },
+  "perReview": [
+    {
+      "key": "singleticket|unknown",
+      "outlet": "singleticket",
+      "critic": null,
+      "tier": 3,
+      "publishAt": "2026-10-05",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T02:21:57.637Z",
+      "baseline": true,
+      "liveNow": true
+    },
+    {
+      "key": "deadline|greg evans",
+      "outlet": "Deadline",
+      "critic": "Greg Evans",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york daily news|chris jones",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": false
+    },
+    {
+      "key": "the new york times|helen shaw",
+      "outlet": "The New York Times",
+      "critic": "Helen Shaw",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york post|johnny oleksinski",
+      "outlet": "New York Post",
+      "critic": "Johnny Oleksinski",
+      "tier": 1,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "time out new york|adam feldman",
+      "outlet": "Time Out New York",
+      "critic": "Adam Feldman",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|melissa rose bernardo",
+      "outlet": "New York Stage Review",
+      "critic": "Melissa Rose Bernardo",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york stage review|michael sommers",
+      "outlet": "New York Stage Review",
+      "critic": "Michael Sommers",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theatrely|joey sims",
+      "outlet": "Theatrely",
+      "critic": "Joey Sims",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theatre guide|kyle turner",
+      "outlet": "New York Theatre Guide",
+      "critic": "Kyle Turner",
+      "tier": 2,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "theatermania|pete hempstead",
+      "outlet": "TheaterMania",
+      "critic": "Pete Hempstead",
+      "tier": 2,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "thewrap|robert hofler",
+      "outlet": "TheWrap",
+      "critic": "Robert Hofler",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "culture sauce|thom geier",
+      "outlet": "Culture Sauce",
+      "critic": "Thom Geier",
+      "tier": 3,
+      "publishAt": null,
+      "publishPrecision": "unknown",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "the wall street journal|charles isherwood",
+      "outlet": "The Wall Street Journal",
+      "critic": "Charles Isherwood",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:37:01.452Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "chicago tribune|chris jones",
+      "outlet": "Chicago Tribune",
+      "critic": "Chris Jones",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:37:01.452Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "new york theater|jonathan mandell",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:37:01.452Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "1 minute critic|jerry portwood",
+      "outlet": "1 Minute Critic",
+      "critic": "Jerry Portwood",
+      "tier": 3,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T03:37:01.452Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "vulture|sara holdren",
+      "outlet": "Vulture",
+      "critic": "Sara Holdren",
+      "tier": 1,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T04:57:38.937Z",
+      "baseline": false,
+      "liveNow": true
+    },
+    {
+      "key": "talkin' broadway|howard miller",
+      "outlet": "Talkin' Broadway",
+      "critic": "Howard Miller",
+      "tier": 2,
+      "publishAt": "2026-10-22",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-23T04:57:38.937Z",
+      "baseline": false,
+      "liveNow": true
+    }
+  ],
+  "dropped": [
+    {
+      "key": "new york daily news|chris jones",
+      "outlet": "New York Daily News",
+      "critic": "Chris Jones",
+      "firstLiveAt": "2026-10-23T03:27:01.017Z",
+      "droppedAt": "2026-10-23T03:37:01.452Z",
+      "restoredAt": null
+    }
+  ],
+  "reference": {
+    "2h": {
+      "status": "complete",
+      "source": [
+        "bww-roundup",
+        "dtli",
+        "playbill-verdict"
+      ],
+      "count": 14,
+      "covered": 14,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 15,
+      "fetchedAt": "2026-10-23T14:30:17.376Z",
+      "asOf": "2026-10-23T04:00:00.000Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "excluded": [
+        {
+          "outletId": "nydailynews",
+          "reason": "syndicated copy of the chicagotribune review (knownSyndicationSecondary)"
+        },
+        {
+          "outletId": "cititour",
+          "reason": "wrongProduction"
+        }
+      ],
+      "censusNote": "archive only"
+    },
+    "end": {
+      "status": "complete",
+      "source": [
+        "bww-roundup",
+        "dtli",
+        "playbill-verdict"
+      ],
+      "count": 14,
+      "covered": 14,
+      "coverage": 1,
+      "missing": [],
+      "suppressedMissing": [],
+      "liveCount": 17,
+      "fetchedAt": "2026-10-23T14:30:17.376Z",
+      "asOf": "2026-10-23T07:57:46.146Z",
+      "method": "timeline",
+      "notYetPublished": [],
+      "discoveredAfter": [],
+      "excluded": [
+        {
+          "outletId": "nydailynews",
+          "reason": "syndicated copy of the chicagotribune review (knownSyndicationSecondary)"
+        },
+        {
+          "outletId": "cititour",
+          "reason": "wrongProduction"
+        }
+      ],
+      "censusNote": "archive only"
+    },
+    "2h-live": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 16,
+      "fetchedAt": "2026-10-23T04:00:12.329Z"
+    },
+    "end-live": {
+      "status": "incomplete",
+      "source": [
+        "dtli",
+        "playbill-verdict"
+      ],
+      "count": 16,
+      "covered": 14,
+      "coverage": 0.875,
+      "missing": [
+        "nydailynews",
+        "cititour"
+      ],
+      "suppressedMissing": [],
+      "liveCount": 18,
+      "fetchedAt": "2026-10-23T08:00:15.551Z"
+    }
+  },
+  "laneShadow": {
+    "importedAt": "2026-10-23T12:58:47.645Z",
+    "runId": "39873028216",
+    "startedAt": "2026-10-22T23:39:37.400Z",
+    "pollMin": 2,
+    "pollFailures": 0,
+    "firstDiscoveredAt": "2026-10-23T02:03:46.049Z",
+    "discoveredByOutlet": {
+      "nysr": "2026-10-23T02:03:46.049Z",
+      "nytg": "2026-10-23T02:17:51.659Z",
+      "culturesauce": "2026-10-23T02:33:50.737Z",
+      "nytimes": "2026-10-23T02:42:26.543Z",
+      "deadline": "2026-10-23T02:42:26.543Z",
+      "nypost": "2026-10-23T02:42:26.543Z",
+      "thewrap": "2026-10-23T02:42:26.543Z",
+      "nydailynews": "2026-10-23T02:42:26.543Z",
+      "theatrely": "2026-10-23T02:48:30.412Z",
+      "one-minute-critic": "2026-10-23T03:19:39.658Z",
+      "wsj": "2026-10-23T03:19:39.658Z",
+      "nyt-theater": "2026-10-23T03:19:39.658Z"
+    },
+    "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-THE-IMAGINARY-INVALID-Opens-on-Broadway-20261022",
+    "liveFirstSeen": [
+      {
+        "outlet": "singleticket",
+        "url": "https://singleticket.substack.com/p/theater-review-the-imaginary-invalid",
+        "at": "2026-10-22T23:39:37.601Z",
+        "baseline": true
+      },
+      {
+        "outlet": "Deadline",
+        "url": "https://deadline.com/2026/10/the-imaginary-invalid-broadway-review-bill-irwin-1237169589/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Daily News",
+        "url": "https://www.nydailynews.com/2026/10/22/broadway-review-imaginary-invalid-a-gross-but-fun-moliere-adaptation/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "The New York Times",
+        "url": "https://www.nytimes.com/2026/10/22/theater/imaginary-invalid-review-bill-irwin-moliere.html",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Post",
+        "url": "https://nypost.com/2026/10/22/entertainment/the-imaginary-invalid-review-unfunny-moliere-revival-on-broadway-makes-you-scream-sacre-bleu/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Time Out New York",
+        "url": "https://www.timeout.com/newyork/news/broadway-review-the-imaginary-invalid-gasps-for-moliere-102326",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Stage Review",
+        "url": "https://nystagereview.com/2026/10/22/the-imaginary-invalid-just-what-the-doctor-ordered/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Stage Review",
+        "url": "https://nystagereview.com/2026/10/22/the-imaginary-invalid-hacks-and-quacks/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Theatrely",
+        "url": "https://www.theatrely.com/post/the-imaginary-invalid-with-a-starry-cast-hits-broadway-review",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theatre Guide",
+        "url": "https://www.newyorktheatreguide.com/reviews/the-imaginary-invalid-broadway-review-bill-irwin-rachel-bloom",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "TheaterMania",
+        "url": "https://www.theatermania.com/news/review-revival-of-the-imaginary-invalid-is-terminally-short-on-laughs_1857994/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "TheWrap",
+        "url": "https://www.thewrap.com/creative-content/theater/the-imaginary-invalid-broadway-review-bill-irwin/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Culture Sauce",
+        "url": "https://culturesauce.com/imaginary-invalid-moliere-broadway-review/",
+        "at": "2026-10-23T03:27:38.860Z",
+        "baseline": false
+      },
+      {
+        "outlet": "The Wall Street Journal",
+        "url": "https://www.wsj.com/articles/the-imaginary-invalid-review-bill-irwins-hilarious-hypochondriac-ff88aa6b",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Chicago Tribune",
+        "url": "https://www.chicagotribune.com/2026/10/22/review-imaginary-invalid-broadway/",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "New York Theater",
+        "url": "https://newyorktheater.me/2026/10/22/the-imaginary-invalid-review/",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "1 Minute Critic",
+        "url": "https://1minutecritic.com/imaginary-invalid-bill-irwin-broadway-review/",
+        "at": "2026-10-23T03:35:38.989Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Vulture",
+        "url": "https://www.vulture.com/article/broadway-review-bill-irwin-rachel-bloom-the-imaginary-invalid.html",
+        "at": "2026-10-23T04:53:39.463Z",
+        "baseline": false
+      },
+      {
+        "outlet": "Talkin' Broadway",
+        "url": "https://www.talkinbroadway.com/page/world/TheImaginaryInvalid.html",
+        "at": "2026-10-23T04:53:39.463Z",
+        "baseline": false
+      }
+    ]
+  },
+  "fileState": {
+    "capturedAt": "2026-10-23T14:30:17.376Z",
+    "files": [
+      {
+        "file": "chicagotribune--chris-jones.json",
+        "outletId": "chicagotribune",
+        "outlet": "Chicago Tribune",
+        "critic": "Chris Jones",
+        "firstSeenAt": "2026-10-23T02:36:04.948Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "cititour--brian-scott-lipton.json",
+        "outletId": "cititour",
+        "outlet": "Cititour",
+        "critic": "Brian Scott Lipton",
+        "firstSeenAt": "2026-08-14T04:13:12.021Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "culturesauce--thom-geier.json",
+        "outletId": "culturesauce",
+        "outlet": "Culture Sauce",
+        "critic": "Thom Geier",
+        "firstSeenAt": "2026-10-23T02:36:04.471Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "dc-theater-arts--deb-miller.json",
+        "outletId": "dc-theater-arts",
+        "outlet": "DC Theater Arts",
+        "critic": "Deb Miller",
+        "firstSeenAt": "2026-08-14T04:13:12.029Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "deadline--greg-evans.json",
+        "outletId": "deadline",
+        "outlet": "Deadline",
+        "critic": "Greg Evans",
+        "firstSeenAt": "2026-10-23T02:36:09.372Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "exeunt-magazine--juliet-hindell.json",
+        "outletId": "exeunt-magazine",
+        "outlet": "Exeunt Magazine",
+        "critic": "Juliet Hindell",
+        "firstSeenAt": "2026-08-14T04:13:12.031Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "front-row-center--tulis-mccall.json",
+        "outletId": "front-row-center",
+        "outlet": "Front Row Center",
+        "critic": "Tulis McCall",
+        "firstSeenAt": "2026-08-16T14:03:29.724Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "front-row-center--unknown.json",
+        "outletId": "front-row-center",
+        "outlet": "Front Row Center",
+        "critic": "Tulis McCall",
+        "firstSeenAt": "2026-08-14T04:13:12.033Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "goldderby--matthew-huff.json",
+        "outletId": "goldderby",
+        "outlet": "Goldderby",
+        "critic": "Matthew Huff",
+        "firstSeenAt": "2026-10-23T02:11:58.782Z",
+        "publishDate": "2026-10-22",
+        "includable": false,
+        "reason": "rejectionReason",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "ny1--adolfo-mena-cejas.json",
+        "outletId": "ny1",
+        "outlet": "NY1",
+        "critic": "Adolfo Mena Cejas",
+        "firstSeenAt": "2026-10-22T14:05:43.036Z",
+        "publishDate": "2026-10-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nydailynews--chris-jones.json",
+        "outletId": "nydailynews",
+        "outlet": "New York Daily News",
+        "critic": "Chris Jones",
+        "firstSeenAt": "2026-10-23T02:36:10.287Z",
+        "publishDate": "2026-10-22",
+        "includable": false,
+        "reason": "knownSyndicationSecondary",
+        "syndicatedUnder": "chicagotribune"
+      },
+      {
+        "file": "nypost--johnny-oleksinski.json",
+        "outletId": "nypost",
+        "outlet": "New York Post",
+        "critic": "Johnny Oleksinski",
+        "firstSeenAt": "2026-10-23T02:36:07.599Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--david-finkle.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "David Finkle",
+        "firstSeenAt": "2026-08-14T04:13:12.061Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--melissa-rose-bernardo.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Melissa Rose Bernardo",
+        "firstSeenAt": "2026-10-23T02:57:18.639Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nysr--michael-sommers.json",
+        "outletId": "nysr",
+        "outlet": "New York Stage Review",
+        "critic": "Michael Sommers",
+        "firstSeenAt": "2026-10-23T02:57:18.142Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nyt-theater--jonathan-mandell.json",
+        "outletId": "nyt-theater",
+        "outlet": "New York Theater",
+        "critic": "Jonathan Mandell",
+        "firstSeenAt": "2026-10-23T02:36:07.147Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytg--kyle-turner.json",
+        "outletId": "nytg",
+        "outlet": "New York Theatre Guide",
+        "critic": "Kyle Turner",
+        "firstSeenAt": "2026-10-23T02:36:05.807Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "nytimes--helen-shaw.json",
+        "outletId": "nytimes",
+        "outlet": "The New York Times",
+        "critic": "Helen Shaw",
+        "firstSeenAt": "2026-10-23T02:57:16.236Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "one-minute-critic--jerry-portwood.json",
+        "outletId": "one-minute-critic",
+        "outlet": "1 Minute Critic",
+        "critic": "Jerry Portwood",
+        "firstSeenAt": "2026-10-23T02:36:03.609Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "one-minute-critic--matthew-wexler.json",
+        "outletId": "one-minute-critic",
+        "outlet": "1 Minute Critic",
+        "critic": "Matthew Wexler",
+        "firstSeenAt": "2026-08-14T04:13:12.019Z",
+        "publishDate": "2025-06-03",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "singleticket--singleticket.json",
+        "outletId": "singleticket",
+        "outlet": "singleticket",
+        "critic": "singleticket",
+        "firstSeenAt": "2026-10-22T02:06:21.470Z",
+        "publishDate": "2026-10-05",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "stagebuddy--elyse-trevers.json",
+        "outletId": "stagebuddy",
+        "outlet": "Stage Buddy",
+        "critic": "Elyse Trevers",
+        "firstSeenAt": "2026-08-14T04:13:12.075Z",
+        "publishDate": "2025-06-03",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "talkinbroadway--howard-miller.json",
+        "outletId": "talkinbroadway",
+        "outlet": "Talkin' Broadway",
+        "critic": "Howard Miller",
+        "firstSeenAt": "2026-10-23T02:57:19.949Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theater-pizzazz--ron-fassler.json",
+        "outletId": "theater-pizzazz",
+        "outlet": "Theater Pizzazz",
+        "critic": "Ron Fassler",
+        "firstSeenAt": "2026-08-14T04:13:12.079Z",
+        "publishDate": null,
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--pete-hempstead.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Pete Hempstead",
+        "firstSeenAt": "2026-10-23T02:36:08.029Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatermania--zachary-stewart.json",
+        "outletId": "theatermania",
+        "outlet": "TheaterMania",
+        "critic": "Zachary Stewart",
+        "firstSeenAt": "2026-08-14T04:13:12.077Z",
+        "publishDate": "2025-06-02",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      },
+      {
+        "file": "theatrely--joey-sims.json",
+        "outletId": "theatrely",
+        "outlet": "Theatrely",
+        "critic": "Joey Sims",
+        "firstSeenAt": "2026-10-23T02:57:16.811Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "thewrap--robert-hofler.json",
+        "outletId": "thewrap",
+        "outlet": "TheWrap",
+        "critic": "Robert Hofler",
+        "firstSeenAt": "2026-10-23T02:57:17.702Z",
+        "publishDate": "October 22, 2026",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "timeout--adam-feldman.json",
+        "outletId": "timeout",
+        "outlet": "Time Out New York",
+        "critic": "Adam Feldman",
+        "firstSeenAt": "2026-10-23T02:57:17.258Z",
+        "publishDate": "2026-10-23",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "vulture--sara-holdren.json",
+        "outletId": "vulture",
+        "outlet": "Vulture",
+        "critic": "Sara Holdren",
+        "firstSeenAt": "2026-10-23T04:01:09.946Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "wsj--charles-isherwood.json",
+        "outletId": "wsj",
+        "outlet": "The Wall Street Journal",
+        "critic": "Charles Isherwood",
+        "firstSeenAt": "2026-10-23T02:36:08.931Z",
+        "publishDate": "2026-10-22",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}

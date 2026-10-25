@@ -1,0 +1,35 @@
+{
+  "createdAt": "2026-10-12T08:50:40Z",
+  "issueNumber": "bro-4190-g",
+  "planId": "7a520f08-e449-4365-9b4a-c80771f18e91",
+  "status": "partial",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-4540 re-audit follow-up: Howard Loxton's British Theatre Guide review of Hercules (Theatre Royal Drury Lane) is stored with a britishtheatre.com cast-page URL. The text matches the BTG review page; repoint the url at it. The cast page is now a named show-hub non-review URL (britishtheatre.com /shows/).",
+    "riskLevel": "low",
+    "steps": [
+      "Repair the url on hercules-west-end-2025/british-theatre--howard-loxton.json"
+    ],
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "hercules-west-end-2025/british-theatre--howard-loxton.json",
+        "field": "url",
+        "oldValue": "https://www.britishtheatre.com/shows/disneys-hercules/cast",
+        "newValue": "https://www.britishtheatreguide.info/reviews/disney-s-hercul-theatre-royal-d-24528",
+        "description": "British Theatre Guide review by Howard Loxton; stored URL was a britishtheatre.com cast page"
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T09:42:48.975Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "Review file not found: hercules-west-end-2025/british-theatre--howard-loxton.json"
+    }
+  ]
+}

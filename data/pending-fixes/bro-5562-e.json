@@ -1,0 +1,50 @@
+{
+  "issueNumber": "bro-5562-e",
+  "planId": "27729911-cfb0-4110-a2f8-d7a43a269b7a",
+  "status": "applied",
+  "createdAt": "2026-10-18T00:42:14.868Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5562 (part e): Proof (2026) printed a $500K weekly running cost as reported, with High confidence, on the attribution \"Industry sources\", which names no source. Mark it as our estimate. The code side (publicSourceText and isCitedReportedWeeklyCost refuse a source line that is only a vague attribution) lands with this plan.",
+    "steps": [
+      "Edits read each oldValue from live commercial.json."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "field": "costMethodology",
+        "oldValue": "producer-confirmed",
+        "newValue": "industry-estimate",
+        "description": "proof: the $500K weekly cost names no source (\"Industry sources\"), so it is our estimate, not a producer-confirmed figure; the card prints it with a ~ and the model grades it as estimated input."
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "proof",
+        "field": "weeklyRunningCostSource",
+        "oldValue": "Industry sources",
+        "newValue": null,
+        "description": "proof: drop the attribution that names no source."
+      }
+    ]
+  },
+  "executedAt": "2026-10-18T01:33:04.994Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costMethodology updated for proof"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for proof"
+    }
+  ]
+}

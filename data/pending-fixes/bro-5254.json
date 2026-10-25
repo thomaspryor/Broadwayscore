@@ -1,0 +1,34 @@
+{
+  "issueNumber": "bro-5254",
+  "planId": "9e360b67-6289-470a-9454-fd6cd899d148",
+  "status": "applied",
+  "createdAt": "2026-10-13T21:37:14.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5254 5-row test: strip the Variety 'Related Stories' / 'Popular on Variety' promo modules from 5 stored Variety review texts (evenly spread over the 403 strippable rows). Dry run on 2026-10-13 (run-script, all rows) showed 821 removed lines, every one a Variety headline or 'VIP+'. verify-live on the same 5 rows: 3 matched the live article with no removed line in the article body; 2 pages redirect (url_mismatch), their removed lines are headlines of other Variety stories. Each stripped row gets needsRescore with reason 'variety-promo-bleed (BRO-5254)' and keeps its pre-strip score for the A/B.",
+    "steps": [
+      "Run strip-variety-promo-bleed.js --apply --limit=5 (same evenly spaced 5 rows as the verify-live check).",
+      "Re-run the dry run and --ab to confirm the 5 rows are clean and queued for rescore."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "strip-variety-promo-bleed.js",
+        "args": "--apply --limit=5",
+        "description": "BRO-5254: strip promo modules from 5 Variety review texts"
+      }
+    ]
+  },
+  "executedAt": "2026-10-13T22:21:54.425Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran strip-variety-promo-bleed.js successfully"
+    }
+  ]
+}

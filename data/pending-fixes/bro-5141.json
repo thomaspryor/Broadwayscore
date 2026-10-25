@@ -1,0 +1,79 @@
+{
+  "issueNumber": "bro-5141",
+  "planId": "29b59093-f787-4bd2-b9fd-f0ef9f8a8511",
+  "status": "applied",
+  "createdAt": "2026-10-12T06:58:46.963Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5141 test batch (5 actions): the Theatre Record PDF parser filed Anna X reviews under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021. Delete two misfiled files whose url is the real 2021 Joseph review and re-ingest those reviews from the url; delete one more misfiled copy (the Anna X review already exists in anna-x-west-end-2021).",
+    "steps": [
+      "Delete guardian--arifa-akbar.json, ingest the Guardian Joseph review.",
+      "Delete timeout-london--andrzej-lukowski.json, ingest the Time Out Joseph review.",
+      "Delete artsdesk--laura-de-lisle.json."
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/guardian--arifa-akbar.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021. Its url is the real 2021 Joseph review, re-ingested next."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 --url=https://www.theguardian.com/stage/2021/jul/28/joseph-and-the-amazing-technicolor-dreamcoat-review-london-palladium --outlet=guardian --critic=\"Arifa Akbar\" --publish-date=2021-07-28 --stub-on-failure",
+        "description": "BRO-5141: ingest the real 2021 Joseph review this file's url points at (Arifa Akbar, guardian)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021. Its url is the real 2021 Joseph review, re-ingested next."
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 --url=https://www.timeout.com/london/theatre/joseph-and-the-amazing-technicolor-dreamcoat-review --outlet=timeout-london --critic=\"Andrzej Lukowski\" --publish-date=2021-08-01 --stub-on-failure",
+        "description": "BRO-5141: ingest the real 2021 Joseph review this file's url points at (Andrzej Lukowski, timeout-london)."
+      },
+      {
+        "type": "review-file-op",
+        "operation": "delete",
+        "sourcePath": "joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/artsdesk--laura-de-lisle.json",
+        "description": "BRO-5141: Anna X review (Joseph Charlton play, Harold Pinter Theatre, July 2021) misfiled under joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021 by the Theatre Record PDF parser; the same review is already in anna-x-west-end-2021."
+      }
+    ]
+  },
+  "executedAt": "2026-10-12T08:11:53.808Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/guardian--arifa-akbar.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted joseph-and-the-amazing-technicolor-dreamcoat-west-end-2021/artsdesk--laura-de-lisle.json"
+    }
+  ]
+}

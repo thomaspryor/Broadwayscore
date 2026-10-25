@@ -1,0 +1,1303 @@
+{
+ "WE-056": {
+  "score": {
+   "verdict": "error",
+   "note": "Time Out prints 3/5 (band 51-70); we score 75. The 3/5 sits on a duplicate file, the surviving Theatre Record file has no star",
+   "url": "https://www.timeout.com/london/theatre/more-life-review",
+   "correctScore": 65
+  }
+ },
+ "WE-095": {
+  "score": {
+   "verdict": "error",
+   "note": "Observer column prints To Kill a Mockingbird 3 stars (band 51-70); we score 44 from Theatre Record text with no stars",
+   "url": "https://www.theguardian.com/stage/2022/apr/03/the-week-in-theatre-to-kill-a-mockingbird-the-mozart-question-clybourne-park-review",
+   "correctScore": 55
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-144": {
+  "score": {
+   "verdict": "error",
+   "note": "Observer column prints Elektra 2 stars (band 31-50); we score 57 from Theatre Record text",
+   "url": "https://www.theguardian.com/stage/2025/feb/09/the-week-in-theatre-oedipus-old-vic-hofesh-shechter-matthew-warchus-indira-varma-rami-malek-review-elektra-duke-of-yorks-brie-larson-anne-carson-daniel-fish",
+   "correctScore": 45
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-075": {
+  "score": {
+   "verdict": "error",
+   "note": "WhatsOnStage page shows 3 of 5 stars (band 51-70); we score 78 from Theatre Record text",
+   "url": "https://www.whatsonstage.com/news/hamlet-at-the-national-theatre-review-francesca-mills-provides-the-heart-in-an-insightful-production_1697140/",
+   "correctScore": 68
+  }
+ },
+ "WE-118": {
+  "score": {
+   "verdict": "error",
+   "note": "BritishTheatre.com prints 2 Stars (band 31-50); we score 57",
+   "url": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/",
+   "correctScore": 45
+  },
+  "outletMatches": {
+   "verdict": "error",
+   "note": "page is BritishTheatre.com; we label it British Theatre Guide (outletId british-theatre merges britishtheatre.com and britishtheatreguide.info)",
+   "url": "https://britishtheatre.com/review-when-we-have-sufficiently-tortured-each-other-national-theatre/"
+  },
+  "dateMatches": {
+   "verdict": "error",
+   "note": "we show 2019-02-07; page says 2019-01-24"
+  }
+ },
+ "WE-049": {
+  "score": {
+   "verdict": "error",
+   "note": "BritishTheatre.com prints 3 Stars (band 51-70); we score 80 from aggregator excerpt",
+   "url": "https://www.britishtheatre.com/review-a-day-in-the-death-of-joe-egg-trafalgar-studios",
+   "correctScore": 68
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "error",
+   "note": "page is BritishTheatre.com; we label it British Theatre Guide",
+   "url": "https://www.britishtheatre.com/review-a-day-in-the-death-of-joe-egg-trafalgar-studios"
+  }
+ },
+ "BW-015": {
+  "score": {
+   "verdict": "error",
+   "note": "Time Out prints 5 out of 5 stars (band 91-100); our row scores 86 under a wrong critic (phantom file wins dedup)",
+   "url": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck",
+   "correctScore": 95
+  },
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Adam Feldman; page byline is Helen Shaw",
+   "url": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck"
+  },
+  "dateMatches": {
+   "verdict": "error",
+   "note": "we show 2019-03-14; page says 2019-03-31",
+   "url": "https://www.timeout.com/newyork/theater/what-the-constitution-means-to-me-broadway-review-heidi-schreck"
+  }
+ },
+ "WE-123": {
+  "score": {
+   "verdict": "unverifiable",
+   "note": "FT page paywalled; rating claim came from a roundup, not the page"
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-045": {
+  "score": {
+   "verdict": "unverifiable",
+   "note": "only a 1-sentence WSJ excerpt exists; cannot rate"
+  },
+  "isReview": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-146": {
+  "score": {
+   "verdict": "unverifiable",
+   "note": "WaPo page unreachable (503); the \"2 stars\" a checker cited was a blog, rejected"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "WaPo page unreachable"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "WaPo page unreachable"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "page unreachable"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-004": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-016": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-023": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-024": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-044": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-050": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-054": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-058": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-063": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-065": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Maryam Philpott; page byline is Mark Shenton",
+   "url": "https://playsinternational.org.uk/here-we-are-lyttelton-national-theatre/"
+  }
+ },
+ "WE-067": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "Theatre Record text, no byline on page copy"
+  }
+ },
+ "WE-069": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-076": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-086": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-098": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-111": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-113": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-117": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-134": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "WE-136": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "BW-010": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-017": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Angie Han; page byline is David Rooney",
+   "url": "https://www.hollywoodreporter.com/lifestyle/arts/company-stephen-sondheim-theater-review-1235060159/"
+  }
+ },
+ "BW-018": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Charles Isherwood; page byline is Ben Brantley"
+  }
+ },
+ "BW-051": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "BW-058": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "BW-069": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-077": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "BW-094": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  }
+ },
+ "BW-101": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "isReview": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-102": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "BW-116": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  }
+ },
+ "BW-129": {
+  "score": {
+   "verdict": "ok",
+   "note": "read: within band or adjacent bucket; page ratings checked where printed (Guardian Margaritaville 2/5, London Theatre Cyrano 3/5, i Harry Clarke 2/5 all match ours)"
+  },
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Linda Winer; page byline is Matt Windman"
+  }
+ },
+ "BW-014": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Jesse Green; page byline is Scott Brown"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-028": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Jesse Green; page byline is Alexis Soloski"
+  }
+ },
+ "BW-098": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show David Rooney; page byline is Frank Scheck"
+  }
+ },
+ "BW-123": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Adrian Horton; page byline is Alexis Soloski"
+  }
+ },
+ "BW-048": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Leigh Howard; page byline is Tim Teeman and Brooke Leigh Howard"
+  }
+ },
+ "BW-034": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Noel Murray; page byline is Ben Brantley"
+  }
+ },
+ "BW-115": {
+  "criticMatches": {
+   "verdict": "error",
+   "note": "we show Ben Brantley; page byline is Charles Isherwood"
+  }
+ },
+ "WE-014": {
+  "criticMatches": {
+   "verdict": "missing",
+   "note": "we show no critic; page byline is Mica Blackwell (micablackers)"
+  }
+ },
+ "WE-105": {
+  "criticMatches": {
+   "verdict": "missing",
+   "note": "we show no critic; page byline is Holly O'Mahony"
+  }
+ },
+ "WE-114": {
+  "criticMatches": {
+   "verdict": "missing",
+   "note": "we show no critic; page byline is Daz Gale"
+  }
+ },
+ "WE-139": {
+  "criticMatches": {
+   "verdict": "missing",
+   "note": "we show no critic; page byline is Daz Gale"
+  }
+ },
+ "WE-145": {
+  "criticMatches": {
+   "verdict": "missing",
+   "note": "we show no critic; page byline is Matt Wolf"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-041": {
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "TheaterMania 2009 page shows no review byline"
+  }
+ },
+ "BW-080": {
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "Guardian URL 404; our \"Jesse Green\" (never a Guardian critic) is suspect but unproven"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  }
+ },
+ "BW-109": {
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "NY1 text has no byline"
+  }
+ },
+ "WE-127": {
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "no critic recorded, page unreachable"
+  }
+ },
+ "WE-135": {
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "The Stage rate-limited (429); checkers disagree"
+  }
+ },
+ "WE-031": {
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "Theatre Record text, no byline on page copy"
+  }
+ },
+ "WE-005": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-008": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-010": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-022": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-036": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-048": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-051": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-053": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-109": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-110": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-115": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-119": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "thetimes.co.uk page may be The Sunday Times (Sunday date); The Times and The Sunday Times share one outletId"
+  }
+ },
+ "WE-137": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-149": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "BW-003": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-008": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-024": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  }
+ },
+ "BW-027": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  }
+ },
+ "BW-032": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  }
+ },
+ "BW-039": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  }
+ },
+ "BW-084": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-097": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-099": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-119": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "one-sentence excerpt; THR also reviewed the 2015 Off-Broadway run"
+  }
+ },
+ "BW-131": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-143": {
+  "criticMatches": {
+   "verdict": "ok",
+   "note": "read: byline matches (theaterlife \"Author Eric March\", Front Mezz \"By Ross\", Reviewing the Drama \"Posted by Robin\"; Observer column is Clapp, the Guardian review a checker cited is a different article)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "WE-131": {
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "thetimes.co.uk page may be The Sunday Times (Sunday date); The Times and The Sunday Times share one outletId"
+  }
+ },
+ "WE-028": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-066": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-080": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-101": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-107": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "WE-133": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "BW-031": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "BW-073": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  },
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-106": {
+  "outletMatches": {
+   "verdict": "ok",
+   "note": "read: same publication (Evening Standard = The Standard; NorthJersey.com = The Record; CNJ/Westminster Extra same paper; Observer column on theguardian.com)"
+  }
+ },
+ "BW-023": {
+  "dateMatches": {
+   "verdict": "error",
+   "note": "we show 2016-05-03; page says 2016-04-25"
+  }
+ },
+ "BW-030": {
+  "dateMatches": {
+   "verdict": "error",
+   "note": "we show 2016-05-26; page says 2016-04-25",
+   "url": "http://www.hollywoodreporter.com/review/jesse-tyler-ferguson-fully-committed-887213"
+  },
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  }
+ },
+ "BW-050": {
+  "dateMatches": {
+   "verdict": "error",
+   "note": "we show 2015-03-20; page says 2015-04-09"
+  }
+ },
+ "WE-090": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "Time Out page shows 2021-08-01, likely an update date"
+  }
+ },
+ "WE-130": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "Time Out page shows a 2022 update date"
+  }
+ },
+ "WE-011": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "no date stored"
+  },
+  "thisProduction": {
+   "verdict": "error",
+   "note": "The Stage reviewed the pre-West End run at the Rose Theatre Kingston (April 2019), filed under the Harold Pinter Theatre run",
+   "url": "https://www.thestage.co.uk/reviews/captain-corellis-mandolin-review-at-rose-theatre-kingston-upon-thames--feels-diminished"
+  }
+ },
+ "WE-106": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "no date stored"
+  }
+ },
+ "BW-092": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "no date stored"
+  }
+ },
+ "BW-120": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "no date stored"
+  }
+ },
+ "BW-065": {
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "checkers disagree, EW page unreachable"
+  }
+ },
+ "BW-052": {
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-137": {
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-141": {
+  "dateMatches": {
+   "verdict": "ok",
+   "note": "read: within 7 days, or the page date is a later CMS migration (Vulture 2018, NY Daily News 2015) / New Yorker print-issue date"
+  }
+ },
+ "BW-057": {
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  }
+ },
+ "BW-089": {
+  "isReview": {
+   "verdict": "ok",
+   "note": "read: a review (multi-show columns count; T&C live URL now redirects but the stored archive copy is the 2017 review)"
+  },
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-079": {
+  "thisProduction": {
+   "verdict": "error",
+   "note": "URL is the 2016 Broadway review, but the stored text (and so the score) is the NYT review of the 2015 London Donmar run",
+   "url": "https://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html"
+  },
+  "isReview": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "WE-021": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-032": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "WE-035": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-055": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-056": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-061": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-076": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-090": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  },
+  "score": {
+   "verdict": "ok",
+   "note": "NYSR prints 5 stars for Six (band 91-100); ours 96. The 4-star hit was a sidebar headline \"Birthright: Six Characters...\""
+  }
+ },
+ "BW-104": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "read: same production (venue renames and later-cast lists in shows.json are not review errors)"
+  }
+ },
+ "BW-040": {
+  "thisProduction": {
+   "verdict": "ok",
+   "note": "2016 re-review of the still-running 1996 Chicago revival with a replacement cast: same production; noted as a policy question"
+  }
+ },
+ "WE-015": {
+  "isReview": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-006": {
+  "isReview": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-037": {
+  "isReview": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "dateMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-062": {
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ },
+ "BW-132": {
+  "thisProduction": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "outletMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  },
+  "criticMatches": {
+   "verdict": "unverifiable",
+   "note": "both checkers agree, but neither quote is on the copy we can reach (paywalled/blocked page); not counted"
+  }
+ }
+}
