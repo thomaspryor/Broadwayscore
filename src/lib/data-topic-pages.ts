@@ -24,7 +24,7 @@ function inputs(): TopicShowInput[] {
       const buzz = getAudienceBuzz(s.id);
       audience.set(s.id, buzz && hasEnoughAudienceReviews(buzz) ? buzz.combinedScore ?? null : null);
     }
-    // Held from prod: no commercial data is read unless featureFlags.commercial is on.
+    // Commercial data is read only while featureFlags.commercial is on (released 2026-10-26, BRO-6192).
     const base = featureFlags.commercial ? getTopicShowInputs(getCriticScoreMap(), audience) : [];
     cache = base.map((s) => ({
       ...s,

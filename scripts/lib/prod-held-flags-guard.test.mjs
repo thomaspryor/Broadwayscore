@@ -1,5 +1,5 @@
 // Tests for prod-held-flags-guard.js: the pre-build check that keeps
-// owner-held features (BRO-4525: commercial) out of production deploys.
+// owner-held features (BRO-5007: boxOfficeV2; commercial until BRO-6192) out of production deploys.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, rmSync, existsSync } from 'node:fs';
@@ -15,8 +15,10 @@ const { parseHeldFeatures, featuresFromEnvFile, heldFeaturesEnabled, main } = re
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const read = (p) => readFileSync(path.join(ROOT, p), 'utf8');
 
-test('feature-flags.ts holds commercial back from production', () => {
-  assert.ok(parseHeldFeatures(read('src/config/feature-flags.ts')).includes('commercial'));
+test('feature-flags.ts holds boxOfficeV2 back from production; commercial is released (BRO-6192)', () => {
+  const held = parseHeldFeatures(read('src/config/feature-flags.ts'));
+  assert.ok(held.includes('boxOfficeV2'));
+  assert.ok(!held.includes('commercial'));
 });
 
 test('an empty held list parses (releasing the last held feature must not break deploys)', () => {
@@ -166,13 +168,13 @@ test('held features are matched as whole names only', () => {
 test('main(): fails on a held flag in the env file or the shell, passes otherwise, fails without the file', () => {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'held-flags-'));
   const file = (name, text) => { const p = path.join(dir, name); writeFileSync(p, text); return p; };
-  const withHeld = file('held.env', 'NEXT_PUBLIC_FEATURES="westEnd,commercial"\n');
+  const withHeld = file('held.env', 'NEXT_PUBLIC_FEATURES="westEnd,boxOfficeV2"\n');
   const clean = file('clean.env', 'NEXT_PUBLIC_FEATURES="westEnd,tonyPredictions"\n');
   const unset = file('unset.env', '# Created by Vercel CLI\nVERCEL="1"\n');
   const multiline = file('multi.env', 'API_KEY="sk-secret-one\nsk-secret-two"\nNEXT_PUBLIC_FEATURES="westEnd"\n');
   const emptyRoot = mkdtempSync(path.join(os.tmpdir(), 'held-flags-root-'));
   const localRoot = mkdtempSync(path.join(os.tmpdir(), 'held-flags-root-'));
-  writeFileSync(path.join(localRoot, '.env.local'), 'NEXT_PUBLIC_FEATURES=westEnd,commercial\n');
+  writeFileSync(path.join(localRoot, '.env.local'), 'NEXT_PUBLIC_FEATURES=westEnd,boxOfficeV2\n');
   const errors = [];
   const quiet = { error: console.error, log: console.log };
   console.error = (...a) => errors.push(a.join(' '));
@@ -180,7 +182,7 @@ test('main(): fails on a held flag in the env file or the shell, passes otherwis
   try {
     assert.equal(main([withHeld], {}, emptyRoot), 1);
     assert.equal(main([clean], {}, emptyRoot), 0);
-    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: 'commercial' }, emptyRoot), 1);
+    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: 'boxOfficeV2' }, emptyRoot), 1);
     assert.equal(main([path.join(dir, 'missing.env')], {}, emptyRoot), 1);
     assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: '${HELD}' }, emptyRoot), 1);
     // Refused file: fails, and the error names a line, never a value.
