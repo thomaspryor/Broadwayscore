@@ -1,17 +1,7 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-10-25T14:59:40.358Z",
+  "updatedAt": "2026-10-25T15:37:46.656Z",
   "staged": [
-    {
-      "outletId": "magnetmagazine",
-      "reason": "name-unresolved",
-      "domainHint": "magnetmagazine.com",
-      "reviewCount": 1,
-      "exampleShowId": "beetlejuice-tour-2022",
-      "firstSeenAt": "2026-10-25T14:57:24.820Z",
-      "lastSeenAt": "2026-10-25T14:59:40.358Z",
-      "mastheadName": "Magnet Magazine"
-    },
     {
       "outletId": "themetroland",
       "reason": "name-unresolved",
@@ -19,7 +9,7 @@
       "reviewCount": 1,
       "exampleShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "firstSeenAt": "2026-10-24T09:31:53.539Z",
-      "lastSeenAt": "2026-10-25T14:59:40.358Z"
+      "lastSeenAt": "2026-10-25T15:37:46.656Z"
     }
   ]
 }
