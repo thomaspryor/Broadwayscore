@@ -520,8 +520,76 @@ function selectOpenBacklogSweepCandidates({
   return out;
 }
 
+// ── Auto-close of passed cards (BRO-6240, owner decision 2026-10-25) ────────
+//
+// Until BRO-6240 this recheck only reported. 14 cards passed in one week and
+// stayed open, because nothing closed them. The owner approved closing a card
+// whose own acceptance check passes, under these conditions, all enforced here
+// by one pure function so a test can pin each one:
+//   - the check is a real test that RAN green against fresh origin/main, never
+//     a file-exists probe (`test -f`, marker-file checks): AUTOCLOSE_STRONG_FORMS
+//     is an explicit allowlist, so a future safe-form is not strong by default;
+//   - a pass that needed the flake retry stays open (a flaky green is not proof);
+//   - only a card the author stamped RECHECK-AFTER ("check back on this") and
+//     that is still OPEN by Linear state TYPE (backlog/unstarted). A started
+//     card is someone's live work; findClaimedTask cannot see claims in CI;
+//   - failures keep only being reported (no auto-reopen).
+// This deliberately bypasses the S3 shadow-exit bar (shouldExitShadow): that bar
+// guards REOPENING a finished card on a bad signal, a different risk from closing
+// an open card on a green test, and the owner approved this path explicitly.
+const AUTOCLOSE_STATE_TYPES = Object.freeze(['backlog', 'unstarted']);
+const AUTOCLOSE_STRONG_FORMS = Object.freeze([
+  /^node --test\b/,
+  /^npx tsx --test\b/,
+  /^npx tsc --noEmit$/,
+  /^bash scripts\/lib\/[A-Za-z0-9_.-]+\.test\.sh$/,
+  /^node scripts\/lib\/verify-data-backfill\.js\b/,
+  // Card-specific live-state probes: exit 0 only when the named row/alert/gap is gone; exit 3 (stale evidence) is 'unverifiable', never a pass.
+  /^node scripts\/check-health-row-absent\.js\b/,
+  /^node scripts\/check-alert-condition-absent\.js\b/,
+  /^node scripts\/check-attribution-gap-clear\.js\b/,
+]);
+
+function isStrongAutoCloseCommand(cmd) {
+  const c = String(cmd || '').trim();
+  return !!c && isSafeCheckCommand(c) && AUTOCLOSE_STRONG_FORMS.some((re) => re.test(c));
+}
+
+/**
+ * @param {{card?:{stateType?:string,notes?:string,comments?:string[]}, target?:{skip?:string|null,verifyCmd?:string|null}, result?:{status?:string,detail?:string|null}}} o
+ * @returns {{close:boolean, reason:string}}
+ */
+function decideAutoClose({ card, target, result } = {}) {
+  const no = (reason) => ({ close: false, reason });
+  if (!card || !target || !result) return no('missing card, target or result');
+  if (target.skip) return no(`skipped: ${target.skip}`);
+  if (result.status !== 'pass') return no(`check did not pass (${result.status || 'no status'})`);
+  if (/retry/i.test(String(result.detail || ''))) return no('passed only on the flake retry, not proof');
+  if (parseRecheckAfterFromCard(card) == null) return no('no RECHECK-AFTER stamp: the author never asked for a re-check');
+  if (!AUTOCLOSE_STATE_TYPES.includes(card.stateType)) return no(`card state type is ${card.stateType || 'unknown'}, not an open backlog/unstarted card`);
+  if (!isStrongAutoCloseCommand(target.verifyCmd)) return no('command is not a real test (file-exists or generic check)');
+  return { close: true, reason: 'real test passed on fresh origin/main' };
+}
+
+/** The evidence comment: exact command, commit, run URL, and the VERIFY line the Done gate reads. */
+function buildAutoCloseComment({ cmd, sha, runUrl, now = new Date() } = {}) {
+  return [
+    `Auto-closed by the nightly acceptance re-check (BRO-6240, owner-approved 2026-10-25) on ${now.toISOString().slice(0, 10)}.`,
+    `Command: \`${cmd}\``,
+    `Commit: ${sha || 'unknown'} (fresh origin/main checkout)`,
+    `Run: ${runUrl || 'local run, no CI URL'}`,
+    'Result: passed on the first attempt. Reopen this card if the check is not a fair proof of the work.',
+    '',
+    `VERIFY: ${cmd}`,
+  ].join('\n');
+}
+
 module.exports = {
   DEFAULT_WINDOW_HOURS,
+  AUTOCLOSE_STATE_TYPES,
+  isStrongAutoCloseCommand,
+  decideAutoClose,
+  buildAutoCloseComment,
   RECHECK_AFTER_RE,
   SHADOW_EXIT,
   parseRecheckAfter,

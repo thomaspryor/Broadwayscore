@@ -45,6 +45,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
 - **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
+- **RECHECK-AFTER auto-close (BRO-6240):** the nightly recheck closes an open stamped card whose real test (`node --test`/`tsx --test`/`tsc`) passed first try, with command + commit + run URL in the comment; file-exists/lint checks stay open. Off switch: repo var `RECHECK_AUTOCLOSE_DISABLED=true`.
 - **If Linear is down:** warn, continue untracked, print the Outcome. Never fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
