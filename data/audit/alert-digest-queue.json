@@ -303,41 +303,6 @@
     "queuedAt": "2026-10-24T10:56:42.548Z"
   },
   {
-    "conditionKey": "opening-night-drift:the-curious-case-of-benjamin-button-off-broadway-2026",
-    "title": "Opening night drift: The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): local review-texts=25, reviews.json aggregate=22, live production=22, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40089808914",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=25, aggregate=22, live=22, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-10-21",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40089808914)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-10-24T11:27:26.992Z"
-  },
-  {
     "conditionKey": "star-band:regressions",
     "title": "Star-band detector: 35 review(s) flagged for anchored re-score — escalated after 15 notifications",
     "description": "Filed BRO-6121 for owner triage after 15 repeats with no tracker.\n\n{\"unanchored\":8,\"false-truncation\":27} across the whole corpus, by market {\"broadway\":20,\"west-end\":14,\"regional\":1}. Each was flagged needsRescore and the normal drain repairs it, no action needed.\n- [unanchored] mike-birbiglia-the-old-man-and-the-pool-2022/ew--yolanda-machado.json A band 89-94\n- [unanchored] the-mousetrap-west-end-2021/guardian--arifa-akbar.json 3/5 band 51-70\n- [unanchored] the-man-in-the-white-suit-west-end-2019/times-uk--clive-davis.json 1/5 band 0-30\n- [unanchored] touching-the-void-west-end-2019/telegraph--dominic-cavendish.json 5/5 band 91-100\n- [unanchored] midnight-movie-west-end-2019/times-uk--sam-marlowe.json 2/5 band 31-50\n- [unanchored] downstate-west-end-2019/times-uk--ann-treneman.json 4/5 band 71-90\n- [unanchored] top-girls-west-end-2019/times-uk--ann-treneman.json 2/5 band 31-50\n- [unanchored] bitter-wheat-west-end-2019/times-uk--dominic-maxwell.json 2/5 band 31-50\n- [false-truncation] good-night-and-good-luck-2025/ew--dalton-ross.json score 90 scored with a truncation warning on a complete-tier text\n- [false-truncation] parade-2023/ew--kristen-baldwin.json score 89 scored with a truncation warning on a complete-tier text",
@@ -1894,6 +1859,41 @@
     "queuedAt": "2026-10-25T03:58:44.162Z"
   },
   {
+    "conditionKey": "opening-night-drift:the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "Opening night drift: The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
+    "description": "Review counts do not reconcile for The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): local review-texts=25, reviews.json aggregate=22, live production=22, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40164037326",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=25, aggregate=22, live=22, drift=3",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-21",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40164037326)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-25T05:04:15.320Z"
+  },
+  {
     "conditionKey": "corpus-drift:show-score-urls",
     "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
     "description": "check-corpus-drift.js audit \"show-score-urls\" (node scripts/audit-show-score-urls.js --strict) has been drifting. Latest output:\n\n    Page venue: Palace Theatre\n    Review dates: 0 dates found\n    ! Page venue \"Palace Theatre\" != show venue \"Winter Garden Theatre\"\n\n  a-few-good-men-2026:\n    URL: https://www.show-score.com/broadway-shows/a-few-good-men-broadway\n    Show: A Few Good Men @ Vivian Beaumont Theater (previews, opens 2026-10-29)\n    Page venue: Vivian Beaumont Theater, Lincoln Center Theater\n    Review dates: 0 dates found\n    ! Page venue \"Vivian Beaumont Theater, Lincoln Center Theater\" != show venue \"Vivian Beaumont Theater\"\n\nSUSPICIOUS — no archive to verify (39):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 29 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (2):\n  fish-off-broadway-2026: https://www.show-score.com/off-broadway-shows/fish-signature-theatre-company\n    wrong-production page: 5/5 page dates (latest 2024-04-12) predate this production's start 2026-09-26 by over 60 days: another production's page [extractor rejection]\n  elektra-off-broadway-2026: https://www.show-score.com/off-broadway-shows/elektra-theatre-for-a-new-audience\n    wrong-production page: 5/5 page dates (latest 2022-04-13) predate this production's start 2026-11-10 by over 60 days: another production's page [extractor rejection]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      5\n  Suspicious (no arch): 39\n  Other production:     2\n  OK:                   732\n  No archive:           114\n  Total checked:        891",
@@ -1906,19 +1906,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T05:01:47.154Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +11 more). Checked 2026-10-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T05:01:47.275Z"
   }
 ]
