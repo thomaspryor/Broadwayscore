@@ -1,0 +1,34 @@
+/* Site CSS copied from src/app/globals.css (.card, .score-*), tailwind.config.js (shadow-card, rounded-*). */
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:360px;height:640px;background:#0f0f14;overflow:hidden}
+body{font-family:'Inter',sans-serif;color:#fff;-webkit-font-smoothing:antialiased}
+#stage{position:absolute;inset:0;overflow:hidden;background:#0f0f14}
+.abs{position:absolute}
+.card{background:#1a1a24;border-radius:1rem;box-shadow:0 2px 8px -2px rgba(0,0,0,.5),0 1px 2px -1px rgba(0,0,0,.4);border:1px solid rgba(255,255,255,.05)}
+.score-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:.625rem;font-weight:700;box-shadow:0 1px 2px 0 rgba(0,0,0,.05);font-variant-numeric:tabular-nums}
+.bw-xs{width:40px;height:40px;font-size:16px;line-height:24px;border-radius:.5rem;flex-shrink:0}
+.bw-sm{width:44px;height:44px;font-size:18px;line-height:28px;border-radius:.5rem;flex-shrink:0}
+.bw-lg{width:80px;height:80px;font-size:30px;line-height:36px;border-radius:.75rem}
+.score-must-see{background:linear-gradient(135deg,#DAA520 0%,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520 100%);color:#1a1a1a;box-shadow:0 0 24px rgba(218,165,32,.55),0 0 12px rgba(255,215,0,.4),0 4px 12px rgba(0,0,0,.3),inset 0 2px 0 rgba(255,255,255,.3);position:relative;overflow:hidden;border:2px solid #C8960E}
+.score-must-see::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.3),transparent);animation:shimmer 2.5s infinite}
+@keyframes shimmer{0%{left:-100%}100%{left:100%}}
+.score-great{background-color:#22c55e;color:#fff;box-shadow:0 2px 8px rgba(34,197,94,.3)}
+.score-good{background-color:#14b8a6;color:#fff;box-shadow:0 2px 8px rgba(20,184,166,.3)}
+.score-tepid{background-color:#d97706;color:#1a1a1a;box-shadow:0 2px 8px rgba(217,119,6,.3)}
+.score-skip{background-color:#ef4444;color:#fff;box-shadow:0 2px 8px rgba(239,68,68,.3)}
+.score-none{background:#2a2a38;color:#6b7280;border:1px solid rgba(255,255,255,.1)}
+.pill{display:inline-flex;align-items:center;padding:4px 10px;border-radius:9999px;font-size:10px;line-height:1;font-weight:600;text-transform:uppercase;letter-spacing:.025em}
+.pill-open{background:rgba(16,185,129,.15);color:#34d399}
+.pill-musical{border:1px solid rgba(168,85,247,.5);color:#c084fc}
+.pill-play{border:1px solid rgba(59,130,246,.5);color:#60a5fa}
+.pill-new{background:rgba(245,158,11,.2);color:#fbbf24}
+.text-gradient{background:linear-gradient(90deg,#e8c39e,#d4a574,#c08a52);-webkit-background-clip:text;background-clip:text;color:transparent}
+.lockup{font-weight:800;letter-spacing:-.01em;font-size:17px;white-space:nowrap}
+.crown{position:absolute;left:50%;transform:translateX(-50%);z-index:10;pointer-events:none}
+.bar{height:8px;border-radius:9999px;overflow:hidden;display:flex;background:#2a2a38}
+.bar>div{height:100%}
+.legend{display:flex;justify-content:space-between;gap:12px;font-size:12px;white-space:nowrap;margin-top:4px;color:#9ca3af}
+.legend i{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+.cap{font-weight:700;font-size:15px;text-align:center;color:#fff}
+.muted{color:#9ca3af}
+.rank{width:32px;height:32px;border-radius:9999px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;flex-shrink:0}

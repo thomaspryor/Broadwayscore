@@ -1,0 +1,209 @@
+// In-page helpers + compositions. Time-driven: update(t) sets every style from t, so frames are deterministic.
+const W = 360, H = 640;
+const clamp = (x, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+const seg = (t, a, b) => clamp((t - a) / (b - a));
+const eo = x => 1 - Math.pow(1 - x, 3);
+const eob = x => { const c = 1.70158; return 1 + (c + 1) * Math.pow(x - 1, 3) + c * Math.pow(x - 1, 2); };
+const lerp = (a, b, x) => a + (b - a) * x;
+const $ = (cls, style = '', html = '', tag = 'div') => { const e = document.createElement(tag); e.className = cls; e.style.cssText = style; e.innerHTML = html; return e; };
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+// Tiers come from scripts/lib/score-tiers.js (injected by render.js as window.TIERS), never hand-written here.
+const GOLD = window.TIERS.gold;
+const TIER_CLASS = { 'must-see': 'score-must-see', 'recommended': 'score-great', 'worth-seeing': 'score-good', 'skippable': 'score-tepid', 'stay-away': 'score-skip' };
+const TIER_COLOR = { 'must-see': '#FFD700', 'recommended': '#22c55e', 'worth-seeing': '#14b8a6', 'skippable': '#d97706', 'stay-away': '#ef4444' };
+const tierId = s => window.TIERS.id[clamp(Math.round(s), 0, 100)];
+const tierClass = s => TIER_CLASS[tierId(s)];
+const tierLabel = s => window.TIERS.label[tierId(s)];
+const tierColor = s => TIER_COLOR[tierId(s)];
+const CROWN = '<svg width="15" height="7" viewBox="0 0 24 14"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg>';
+const logo = (size = 17) => `<span class="lockup" style="font-size:${size}px"><span style="color:#fafafa">Broadway</span> <span class="text-gradient">Scorecard</span></span>`;
+const pills = (show, isNew) => `${isNew ? '<span class="pill pill-new">New on Broadway</span>' : '<span class="pill pill-open">Now playing</span>'}<span class="pill pill-${show.type === 'musical' ? 'musical' : 'play'}">${show.type === 'musical' ? 'Musical' : 'Play'}</span>`;
+
+// Badge (ScoreBadge): value 0..score shown rounded; class follows the live value (gold only once it reaches 83).
+function setBadge(wrap, v, { crown = true, size = 'lg' } = {}) {
+  const r = Math.round(v);
+  const b = wrap.querySelector('.score-badge'), cr = wrap.querySelector('.crown');
+  b.className = `score-badge bw-${size} ${r <= 0 ? 'score-none' : tierClass(r)}`;
+  b.textContent = r <= 0 ? '–' : r;
+  if (cr) cr.style.display = crown && r >= GOLD ? 'block' : 'none';
+}
+const badgeEl = (size = 'lg', style = '') => { const w = $('', `position:relative;display:inline-block;${style}`); w.innerHTML = `<div class="crown" style="top:${size === 'lg' ? -6 : -4}px">${CROWN}</div><div class="score-badge bw-${size} score-none">–</div>`; return w; };
+
+// Breakdown bar (ScoreBreakdownBar): tiers rave>=83, positive>=70, mixed>=55, negative<55; largest-remainder percentages.
+const bTier = s => s >= GOLD ? 'rave' : s >= 70 ? 'positive' : s >= 55 ? 'mixed' : 'negative';
+function pcts(c, total) {
+  const tiers = ['rave', 'positive', 'mixed', 'negative'];
+  const exact = tiers.map(t => c[t] / total * 100), fl = exact.map(Math.floor);
+  let rem = 100 - fl.reduce((a, b) => a + b, 0);
+  exact.map((v, i) => ({ f: v - Math.floor(v), i })).sort((a, b) => b.f - a.f || a.i - b.i).forEach(o => { if (rem > 0 && c[tiers[o.i]] > 0) { fl[o.i]++; rem--; } });
+  return Object.fromEntries(tiers.map((t, i) => [t, fl[i]]));
+}
+const BAR_COL = { rave: 'linear-gradient(135deg,#DAA520,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520)', positive: '#22c55e', mixed: '#d97706', negative: '#ef4444' };
+const BAR_LBL = { rave: 'Rave', positive: 'Positive', mixed: 'Mixed', negative: 'Negative' };
+function barHtml(reviewScores) {
+  const c = { rave: 0, positive: 0, mixed: 0, negative: 0 }; let n = 0;
+  reviewScores.forEach(s => { c[bTier(s)]++; n++; });
+  if (!n) return `<div class="bar"></div><div class="legend"><span>&nbsp;</span></div>`;
+  const p = pcts(c, n), T = ['rave', 'positive', 'mixed', 'negative'].filter(t => c[t] > 0);
+  return `<div class="bar">${T.map(t => `<div style="width:${p[t]}%;background:${BAR_COL[t]}"></div>`).join('')}</div>
+  <div class="legend">${T.map(t => `<span><i style="background:${t === 'rave' ? '#FFD700' : BAR_COL[t]}"></i>${c[t]} ${BAR_LBL[t]}</span>`).join('')}</div>`;
+}
+const fade = (el, o, y = 0) => { el.style.opacity = o; el.style.transform = `translateY(${y}px)`; };
+const artImg = (uri, size, extra = '') => `<img src="${uri}" style="width:${size}px;height:${size}px;border-radius:1rem;object-fit:cover;display:block;${extra}">`;
+
+const COMPS = {};
+
+/* ---------- A: score reveal ---------- */
+COMPS.reveal = {
+  dur: 22,
+  build(root, d) {
+    const s = d.show, sc = d.score, r = Math.round(sc);
+    this.d = d;
+    const g1 = this.g1 = $('abs', 'inset:0');
+    g1.append($('abs card', 'left:105px;top:66px;width:150px;height:150px;padding:0;overflow:hidden;border-radius:1rem', artImg(d.art, 150, 'border-radius:0')));
+    this.art = g1.firstChild;
+    g1.append($('abs', 'left:0;right:0;top:226px;text-align:center;font-weight:800;font-size:22px;letter-spacing:-.02em', esc(s.title)));
+    g1.append($('abs', 'left:0;right:0;top:258px;display:flex;gap:6px;justify-content:center', pills(s, d.isNew)));
+    this.cap1 = $('abs cap', 'left:20px;right:20px;top:286px;font-size:14px;color:#d4d4d8', `${d.count} critics weighed in. One score.`);
+    g1.append(this.cap1);
+    this.bw = badgeEl('lg', 'position:absolute;left:140px;top:326px;transform-origin:50% 50%'); g1.append(this.bw);
+    this.tl = $('abs', 'left:0;right:0;top:424px;text-align:center;font-weight:800;font-size:18px', ''); g1.append(this.tl);
+    this.bc = $('abs card', 'left:24px;right:24px;top:452px;padding:10px 14px 8px', barHtml([])); g1.append(this.bc);
+    const g2 = this.g2 = $('abs', 'inset:0');
+    g2.append($('abs cap', 'left:0;right:0;top:76px;font-size:17px', 'What the critics said'));
+    this.qc = d.quotes.map((q, i) => {
+      const c = $('abs card', `left:20px;right:20px;top:${106 + i * 128}px;padding:12px 14px;height:118px`,
+        `<div style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574;white-space:nowrap">${esc(q.o)}</div><div style="font-size:12px;color:#9ca3af;margin-top:2px">${esc(q.cn)}</div></div><div class="score-badge bw-xs ${tierClass(q.s)}">${q.s}</div></div>
+         <div style="font-size:13px;line-height:1.35;color:#e4e4e7;margin-top:8px;font-style:italic">&ldquo;${esc(q.q)}&rdquo;</div>`);
+      g2.append(c); return c; });
+    const g3 = this.g3 = $('abs', 'inset:0');
+    g3.append($('abs cap', 'left:0;right:0;top:72px;font-size:17px', 'Critics vs. audience'));
+    const mk = (x, label, val, sub) => { const c = $('abs card', `left:${x}px;width:150px;top:150px;height:220px;display:flex;flex-direction:column;align-items:center;padding-top:18px`, `<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">${label}</div>`); const w = badgeEl('lg', 'margin-top:36px'); c.append(w); c.append($('', 'margin-top:20px;font-size:12px;color:#9ca3af;text-align:center', sub)); c._w = w; c._v = val; return c; };
+    this.ca = mk(20, 'Critics', sc, `${d.count} reviews`); this.cb = mk(190, 'Audience', d.audience, 'Audience score');
+    g3.append(this.ca, this.cb);
+    this.cap3 = $('abs cap', 'left:24px;right:24px;top:392px;font-size:17px;line-height:1.3', d.gapLine); g3.append(this.cap3);
+    const g4 = this.g4 = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center');
+    g4.innerHTML = `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`;
+    root.append($('abs', 'left:0;right:0;top:34px;text-align:center;z-index:5', logo(14)), g1, g2, g3, g4);
+    this.events = [];
+    for (let i = 0; i < 16; i++) this.events.push({ t: 1.9 + i * 0.16, k: 'tick', p: i / 16 });
+    this.events.push({ t: 4.55, k: r >= GOLD ? 'chime' : 'pop' });
+    d.quotes.forEach((_, i) => this.events.push({ t: 8.9 + i * 1.9, k: 'pop' }));
+    this.events.push({ t: 16.2, k: 'pop' }, { t: 17.2, k: 'pop' });
+  },
+  update(t) {
+    const d = this.d, sc = d.score;
+    this.g1.style.opacity = 1 - seg(t, 7.6, 8.1);
+    this.g1.style.display = t > 8.2 ? 'none' : 'block';
+    const a = eob(seg(t, 0.1, 0.9)); this.art.style.opacity = seg(t, 0.1, 0.6); this.art.style.transform = `scale(${lerp(0.85, 1, a)})`;
+    fade(this.cap1, seg(t, 0.9, 1.5), (1 - seg(t, 0.9, 1.5)) * 8);
+    const bt = seg(t, 1.9, 4.5), v = sc * eo(bt);
+    this.bw.style.opacity = seg(t, 1.5, 1.9);
+    setBadge(this.bw, bt === 0 ? 0 : v);
+    const pop = t > 4.5 ? 1 + 0.22 * Math.sin(Math.PI * seg(t, 4.5, 5.0)) : 1; this.bw.style.transform = `scale(${1.3 * pop})`;
+    const r = Math.round(sc); this.tl.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; fade(this.tl, seg(t, 4.6, 5.1), (1 - seg(t, 4.6, 5.1)) * 8);
+    const k = Math.round(d.scores.length * eo(seg(t, 5.3, 6.9)));
+    this.bc.innerHTML = barHtml(d.scores.slice(0, k)); fade(this.bc, seg(t, 5.2, 5.7), (1 - seg(t, 5.2, 5.7)) * 10);
+    // quotes
+    const g2in = seg(t, 8.2, 8.6), g2out = 1 - seg(t, 14.4, 14.9);
+    this.g2.style.opacity = Math.min(g2in, g2out); this.g2.style.display = (t < 8.1 || t > 15) ? 'none' : 'block';
+    this.qc.forEach((c, i) => { const x = seg(t, 8.5 + i * 1.9, 9.0 + i * 1.9); fade(c, x, (1 - eo(x)) * 24); });
+    // vs
+    const g3in = seg(t, 15.0, 15.5), g3out = 1 - seg(t, 19.4, 19.9);
+    this.g3.style.opacity = Math.min(g3in, g3out); this.g3.style.display = (t < 14.9 || t > 20) ? 'none' : 'block';
+    [this.ca, this.cb].forEach((c, i) => { const x = seg(t, 15.4 + i * 0.9, 17.0 + i * 0.9); setBadge(c._w, c._v * eo(x)); fade(c, seg(t, 15.2 + i * 0.4, 15.7 + i * 0.4)); });
+    fade(this.cap3, seg(t, 18.1, 18.6), (1 - seg(t, 18.1, 18.6)) * 8);
+    const g4 = seg(t, 20, 20.6); this.g4.style.opacity = g4; this.g4.style.display = t < 19.9 ? 'none' : 'flex';
+  },
+};
+
+/* ---------- B: every review in 30 seconds ---------- */
+COMPS.every = {
+  dur: 33,
+  build(root, d) {
+    this.d = d; const s = d.show;
+    this.t0 = 1.6;
+    this.times = d.reviews.map((_, i) => this.t0 + (i < 5 ? i * 0.95 : 4.75 + (i - 5) * 0.55));
+    this.tEnd = this.times[this.times.length - 1] + 1.3;
+    const head = $('abs card', 'left:16px;right:16px;top:62px;height:76px;padding:10px;display:flex;gap:12px;align-items:center');
+    head.innerHTML = `<div style="width:56px;height:56px;border-radius:.75rem;overflow:hidden;flex-shrink:0">${artImg(d.art, 56, 'border-radius:0')}</div><div style="min-width:0"><div style="font-weight:800;font-size:16px;line-height:1.15;letter-spacing:-.01em">${esc(s.title)}</div><div style="display:flex;gap:6px;margin-top:6px">${pills(s, d.isNew)}</div></div>`;
+    this.cnt = $('abs', 'left:0;right:0;top:148px;text-align:center;font-size:13px;font-weight:600;color:#9ca3af');
+    this.list = $('abs', 'left:16px;right:16px;top:176px;height:262px;overflow:hidden');
+    this.rows = d.reviews.map(r => { const e = $('card', 'position:absolute;left:0;right:0;height:46px;padding:0 10px;display:flex;align-items:center;gap:10px',
+      `<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.o)}</div><div style="font-size:11px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.cn || '')}</div></div><div class="score-badge bw-xs ${tierClass(r.s)}" style="width:34px;height:34px;font-size:14px">${r.s}</div>`); this.list.append(e); return e; });
+    this.bc = $('abs card', 'left:24px;right:24px;top:446px;padding:10px 14px 8px', '');
+    this.res = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;padding-top:196px');
+    this.rb = badgeEl('lg', 'transform:scale(1.5);transform-origin:50% 0'); 
+    this.rt = $('', 'margin-top:96px;font-size:20px;font-weight:800'); this.rs = $('', 'margin-top:6px;font-size:14px;color:#d4d4d8');
+    this.res.append(this.rb, this.rt, this.rs);
+    this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+    const tag = $('abs cap', 'left:0;right:0;top:34px;font-size:13px;color:#9ca3af;letter-spacing:.08em;text-transform:uppercase;font-weight:700', `${logo(14)}`);
+    root.append(tag, head, this.cnt, this.list, this.bc, this.res, this.end);
+    this.events = this.times.map(t => ({ t, k: 'pop' })); this.events.push({ t: this.tEnd + 0.7, k: d.score >= GOLD ? 'chime' : 'pop' });
+  },
+  update(t) {
+    const d = this.d, n = d.reviews.length;
+    const shown = this.times.filter(x => t >= x).length;
+    this.cnt.textContent = shown ? `${shown} of ${n} reviews` : `${n} critics. Watch them land.`;
+    const listOut = 1 - seg(t, this.tEnd - 0.2, this.tEnd + 0.3);
+    this.list.style.opacity = listOut; this.cnt.style.opacity = listOut;
+    // rows stack from bottom; each new row slides in, older ones shift up (5 visible)
+    const rowH = 52, bottom = 262 - 46;
+    this.rows.forEach((e, i) => {
+      const age = shown - 1 - i; const prog = clamp((t - this.times[i]) / 0.3);
+      if (t < this.times[i]) { e.style.opacity = 0; return; }
+      const slide = (shown - 1 === i) ? eo(prog) : 1;
+      const y = bottom - (age + (shown - 1 === i ? 0 : 0)) * rowH + (shown - 1 === i ? (1 - slide) * 30 : 0);
+      // smooth shift for the previous rows while the newest slides in
+      const shift = age >= 1 ? 0 : 0;
+      e.style.transform = `translateY(${y}px)`; e.style.top = '0';
+      e.style.opacity = age > 4 ? 0 : (shown - 1 === i ? slide : 1 - Math.max(0, age - 3.2) * 0.8);
+    });
+    this.rows.forEach((e, i) => { const age = shown - 1 - i; if (age >= 1 && age <= 5) { const prog = clamp((t - this.times[shown - 1]) / 0.3); const y = bottom - (age - 1 + eo(prog)) * rowH; e.style.transform = `translateY(${y}px)`; } });
+    this.bc.innerHTML = barHtml(d.reviews.slice(0, shown).map(r => r.s));
+    this.bc.style.opacity = seg(t, 1.2, 1.8);
+    const rv = seg(t, this.tEnd + 0.3, this.tEnd + 0.9);
+    this.res.style.opacity = rv; this.res.style.display = rv > 0 ? 'flex' : 'none';
+    const bt = seg(t, this.tEnd + 0.4, this.tEnd + 2.6); setBadge(this.rb, d.score * eo(bt));
+    const r = Math.round(d.score); this.rt.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; this.rt.style.opacity = seg(t, this.tEnd + 2.6, this.tEnd + 3.1);
+    this.rs.textContent = `Critic Score from ${n} reviews`; this.rs.style.opacity = this.rt.style.opacity;
+    const e = seg(t, this.tEnd + 5.2, this.tEnd + 5.8); this.end.style.opacity = e; this.end.style.display = e > 0 ? 'flex' : 'none';
+    if (e > 0) { this.res.style.opacity = 1 - e; this.bc.style.opacity = 1 - e; }
+  },
+};
+
+/* ---------- C: weekly top 5 ---------- */
+COMPS.top5 = {
+  dur: 25,
+  build(root, d) {
+    this.d = d;
+    root.append($('abs', 'left:0;right:0;top:34px;text-align:center', logo(14)));
+    root.append($('abs cap', 'left:0;right:0;top:66px;font-size:22px;font-weight:800;letter-spacing:-.02em', 'Top 5 on Broadway'));
+    root.append($('abs', 'left:0;right:0;top:96px;text-align:center;font-size:13px;color:#9ca3af;font-weight:600', 'Ranked by Critic Score, shows playing now'));
+    this.start = [1.6, 5.0, 8.4, 11.8, 15.2]; // rank 5 first
+    this.cards = d.shows.map((s, i) => { // i = rank-1
+      const rk = i + 1, top3 = rk <= 3;
+      const c = $('abs card', `left:14px;right:14px;top:${126 + i * 76}px;height:68px;padding:0 10px;display:flex;align-items:center;gap:10px;${rk === 1 ? 'border-color:rgba(255,215,0,.45);' : ''}`);
+      c.innerHTML = `<div class="rank" style="${top3 ? 'background:#d4a574;color:#111827' : 'background:#2a2a38;color:#9ca3af;border:1px solid rgba(255,255,255,.1)'}">${rk}</div>
+        <div style="width:48px;height:48px;border-radius:.5rem;overflow:hidden;flex-shrink:0">${artImg(s.art, 48, 'border-radius:0')}</div>
+        <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.title)}</div><div style="display:flex;align-items:center;gap:6px;margin-top:5px"><span class="pill pill-${s.type === 'musical' ? 'musical' : 'play'}" style="padding:3px 8px">${s.type === 'musical' ? 'Musical' : 'Play'}</span><span style="font-size:12px;color:#9ca3af">${s.rc} reviews</span></div></div>`;
+      c._b = badgeEl('sm'); c.append(c._b); c._s = s; root.append(c); return c; });
+    this.cap = $('abs cap', 'left:20px;right:20px;top:520px;display:none', '');
+    this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">New scores every week.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+    root.append(this.end);
+    this.events = [];
+    this.start.forEach(st => { for (let k = 0; k < 6; k++) this.events.push({ t: st + 0.4 + k * 0.12, k: 'tick', p: k / 6 }); });
+    this.events.push({ t: this.start[4] + 1.6, k: 'chime' });
+  },
+  update(t) {
+    this.cards.forEach((c, i) => {
+      const rk = i + 1, st = this.start[5 - rk];
+      const x = seg(t, st, st + 0.5); fade(c, x, (1 - eob(x)) * 40);
+      c.style.transform = `translateX(${(1 - eo(x)) * 60}px)`;
+      if (rk === 1 && t > st + 1.8) c.style.boxShadow = `0 0 ${10 + 8 * Math.sin((t - st) * 3)}px rgba(255,215,0,.35), 0 2px 8px -2px rgba(0,0,0,.5)`;
+      setBadge(c._b, c._s.score * eo(seg(t, st + 0.4, st + 1.5)), { size: 'sm' });
+    });
+    const e = seg(t, 21.0, 21.6); this.end.style.opacity = e; this.end.style.display = e > 0 ? 'flex' : 'none';
+    if (e > 0) this.cards.forEach(c => c.style.opacity = 1 - e);
+  },
+};
