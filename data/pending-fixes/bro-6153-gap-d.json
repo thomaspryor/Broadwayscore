@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-gap-d",
   "planId": "d8048fed-daaf-48d1-9176-c03b06c42194",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T01:26:42.375Z",
   "submitter": {
     "name": null,
@@ -274,5 +274,59 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T01:45:48.892Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added weather-girl-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dilaria-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wesley-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-world-of-tomorrow-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added father-anonymous-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ginger-twinsies-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added ta-da-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dreadful-episodes-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-much-i-know-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-is-government-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
