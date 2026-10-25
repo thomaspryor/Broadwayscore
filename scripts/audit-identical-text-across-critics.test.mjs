@@ -43,6 +43,11 @@ test('same text under one critic, different shows, different text, and short stu
     row('s1', 'variety--david-rooney.json', body('c')),
     row('s1', 'variety--marilyn-stasio.json', body('d')),
   ]).length, 0, 'different text');
+  const exact = 'x'.repeat(MIN_CHARS);
+  assert.equal(identicalTextGroups([
+    row('s1', 'variety--david-rooney.json', exact),
+    row('s1', 'variety--marilyn-stasio.json', exact),
+  ]).length, 1, 'exactly MIN_CHARS counts');
   const stub = 'x'.repeat(MIN_CHARS - 1);
   assert.equal(identicalTextGroups([
     row('s1', 'variety--david-rooney.json', stub),
@@ -61,6 +66,8 @@ test('a group is resolved once one copy is excluded or points at the other as it
   assert.equal(isUnresolvedGroup([twin, b]), false);
   const strayPointer = row('s1', 'nytimes--jesse-green.json', t, { duplicateTextOf: 'nytimes--someone-else.json' });
   assert.equal(isUnresolvedGroup([strayPointer, b]), true, 'a pointer outside the group settles nothing');
+  const c = row('s1', 'nytimes--ben-brantley.json', t);
+  assert.equal(isUnresolvedGroup([excluded, b, c]), true, 'two live copies of three still count twice');
 });
 
 test('byline verdict: flags a shown copy whose byline differs from the live page, passes one that matches', () => {
@@ -82,11 +89,21 @@ test('byline verdict: flags a shown copy whose byline differs from the live page
   assert.equal(nobody.kind, 'author-not-stored');
 });
 
-test('byline verdict: a page that does not carry the text, or has no structured author, stays unverified', () => {
+test('byline verdict: with different urls, a page that does not carry the text or has no structured author stays unverified', () => {
   const members = [
     { file: 'a--x-y.json', critic: 'X Y', url: 'https://a.example/1', shown: true },
     { file: 'a--p-q.json', critic: 'P Q', url: 'https://a.example/2', shown: false },
   ];
   assert.equal(groupVerdict(members, [{ url: 'https://a.example/1', authors: ['jsonld: X Y'], overlap: 0.1 }]).kind, 'unverified');
   assert.equal(groupVerdict(members, [{ url: 'https://a.example/1', authors: ['byline: By Staff Writer'], overlap: 1 }]).kind, 'unverified');
+});
+
+test('byline verdict: copies that share one url take the byline of that url even when the text overlap is low', () => {
+  const members = [
+    { file: 'a--x-y.json', critic: 'X Y', url: 'https://a.example/1', shown: true },
+    { file: 'a--p-q.json', critic: 'P Q', url: 'https://a.example/1', shown: false },
+  ];
+  const v = groupVerdict(members, [{ url: 'https://a.example/1', authors: ['jsonld: P Q'], overlap: 0.1 }]);
+  assert.equal(v.basis, 'same-url-byline');
+  assert.equal(v.kind, 'shown-wrong');
 });
