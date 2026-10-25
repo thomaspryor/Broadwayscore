@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T05:34:38.848Z",
+  "generatedAt": "2026-10-25T08:54:06.766Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -122,6 +122,10 @@
       "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -144,12 +148,25 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 686,
-  "matchedGaps": 3,
-  "possibleGaps": 2,
+  "itemsScanned": 646,
+  "matchedGaps": 4,
+  "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "level": "matched",
+      "outletId": "revstanstheatreblog",
+      "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
+      "headline": "Review: Ilford Boy, Donmar Warehouse",
+      "publishDate": "2026-10-25"
+    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -158,15 +175,6 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
       "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/midnight-1-2-the-curious-case-of-benjamin-button/",
-      "headline": "Midnight ** 1/2, The Curious Case of Benjamin Button ****",
-      "publishDate": "2026-10-24"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
@@ -178,13 +186,13 @@
       "publishDate": "2026-10-24"
     },
     {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "readaboutstuff",
+      "url": "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
+      "headline": "Review: The Pianist &#8211; Park Theatre, London",
+      "publishDate": "2026-10-25"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",

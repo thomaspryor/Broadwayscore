@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T05:34:22.200Z",
+  "generatedAt": "2026-10-25T08:53:44.825Z",
   "windowDays": 45,
   "showsScanned": 204,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 16.21562888888889,
+      "fileAgeHours": 19.538108333333334,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 2.263511388888889,
+      "nonTerminalAgeHours": 5.586463055555556,
       "needsManualRecovery": false
     },
     {
@@ -39,9 +39,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 780.8969397222222,
+      "fileAgeHours": 784.2196041666666,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 51.28633722222222,
+      "nonTerminalAgeHours": 54.60928888888889,
       "needsManualRecovery": true
     }
   ],
