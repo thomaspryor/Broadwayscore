@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T16:51:47.938Z",
+  "generatedAt": "2026-10-25T18:23:31.550Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,28 +12,28 @@
       "status": "open",
       "slug": "aftermath-art-new-york-off-broadway",
       "thumbnail": "/images/shows/aftermath-art-new-york-off-broadway-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 43,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 1,
+      "siteScore": 51.66,
+      "liveScore": 52,
+      "scoreDrift": 0.3400000000000034,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 2,
+      "total": 3,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 1,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "2/12 total",
+          "3/12 total",
           "T1:0/3",
-          "T2:1/3",
-          "hi-conf:2/8"
+          "T2:2/3",
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -178,10 +178,6 @@
         },
         {
           "name": "Lighting & Sound America",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -379,6 +375,18 @@
           "t3": 1,
           "p": 0,
           "m": 0,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-25T17:30:24.537Z",
+          "rc": 3,
+          "s": 51.66,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 0,
+          "m": 1,
           "n": 2,
           "bc": "waiting"
         }

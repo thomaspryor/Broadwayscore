@@ -21,6 +21,7 @@ import { mixSection, withoutMixRows } from '@/lib/season-findings';
 import MixCard from '@/components/biz/MixCard';
 
 import AllShowsTable from '@/components/biz/AllShowsTable';
+import MoneyGate from '@/components/biz/MoneyGate';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
@@ -197,7 +198,9 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
 
         {/* All Shows Table */}
         <section>
+          <MoneyGate page="biz-season">
           <AllShowsTable shows={shows} initialLimit={50} />
+          </MoneyGate>
         </section>
 
         {/* Footer */}

@@ -308,6 +308,7 @@ function auditReviewDuplicates() {
   const reviewsByShowOutlet = {};
   for (const review of allReviews) {
     const d = review.data;
+    // BRO-2613: skip is advisory ("don't re-flag"), not a scoring claim; see docs/duplicate-text-of-exclusion.md
     if (d.duplicateOf || d.duplicateTextOf || d.wrongShow || d.wrongProduction) continue;
     const outletId = normalizeOutlet(d.outletId || d.outlet);
     const key = `${review.showId}|${outletId}`;
@@ -352,6 +353,7 @@ function auditReviewDuplicates() {
   console.log('Analyzing URL-domain mismatches...');
   for (const review of allReviews) {
     const d = review.data;
+    // BRO-2613: advisory skip, see docs/duplicate-text-of-exclusion.md
     if (d.duplicateOf || d.duplicateTextOf || d.wrongShow || d.wrongProduction || d.wrongUrl) continue;
     const outletId = (d.outletId || '').toLowerCase();
     if (!outletId || !d.url) continue;

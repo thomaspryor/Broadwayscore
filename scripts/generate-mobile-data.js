@@ -253,6 +253,29 @@ const output = {
 const outputPath = path.join(outputDir, 'mobile-shows.json');
 fs.writeFileSync(outputPath, JSON.stringify(output));
 
+// Lottery & rush policies for the app's native page (BRO-6220). Visible shows
+// only; internal scrape stamps stripped. Same freshness fields the website's
+// /lotteries page uses (src/lib/lottery-rush-freshness.ts).
+const lotteryRushPath = path.join(outputDir, 'lottery-rush.json');
+{
+  const src = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/lottery-rush.json'), 'utf8'));
+  const visibleIds = new Set(mobileShows.map(s => s.id));
+  const lrShows = {};
+  for (const [id, entry] of Object.entries(src.shows || {})) {
+    if (!visibleIds.has(id)) continue;
+    const clean = {};
+    for (const [k, v] of Object.entries(entry)) if (!k.startsWith('_')) clean[k] = v;
+    lrShows[id] = clean;
+  }
+  fs.writeFileSync(lotteryRushPath, JSON.stringify({
+    _ts: new Date().toISOString(),
+    lastUpdated: src.lastUpdated || null,
+    lastCheckedAt: src.lastCheckedAt || src.lastUpdated || null,
+    shows: lrShows,
+  }));
+  console.log(`  lottery-rush.json: ${Object.keys(lrShows).length} shows`);
+}
+
 const sizeKB = (fs.statSync(outputPath).size / 1024).toFixed(0);
 const withScores = mobileShows.filter(s => s.cs != null).length;
 const withAudience = mobileShows.filter(s => s.ag != null).length;

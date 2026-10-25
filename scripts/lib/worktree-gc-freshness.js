@@ -103,4 +103,17 @@ function checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos = []) {
   return stale;
 }
 
-module.exports = { checkWorktreeGcFreshness, lastTimestampFromLog, lastTimestampsByRepo, checkWorktreeGcFreshnessByRepo, STALE_WARN_HOURS, STALE_ERROR_HOURS };
+/** Pure: one payload per repo whose own DIGEST heartbeat is stale (BRO-2617). */
+function evaluateRepos(logText, nowMs, expectedRepos = []) {
+  if (logText == null) return [];
+  return checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos).map((s) => ({
+    conditionKey: `worktree-gc:stale:${s.repo}`,
+    title: `Infra: worktree GC stale for repo ${s.repo}`,
+    description: s.hoursStale == null
+      ? `worktree-gc.log has no DIGEST[${s.repo}] line at all, so the ${s.repo} repo's worktrees are not being garbage-collected.`
+      : `worktree-gc.log has no DIGEST[${s.repo}] line in the last ${s.hoursStale.toFixed(1)}h while other repos may still be logging, so the ${s.repo} repo's GC pass may have silently stopped.`,
+    severity: s.severity, disposition: 'digest',
+  }));
+}
+
+module.exports = { checkWorktreeGcFreshness, lastTimestampFromLog, lastTimestampsByRepo, checkWorktreeGcFreshnessByRepo, evaluateRepos, STALE_WARN_HOURS, STALE_ERROR_HOURS };

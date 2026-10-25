@@ -44,6 +44,7 @@ import ApproachingRecoupmentCard from '@/components/biz/ApproachingRecoupmentCar
 import AtRiskCard from '@/components/biz/AtRiskCard';
 import RecoupmentTable from '@/components/biz/RecoupmentTable';
 import AllShowsTable from '@/components/biz/AllShowsTable';
+import MoneyGate from '@/components/biz/MoneyGate';
 import DesignationLegend from '@/components/biz/DesignationLegend';
 import BizPageTracker from '@/components/biz/BizPageTracker';
 import CostCoverageCard from '@/components/box-office/CostCoverageCard';
@@ -394,6 +395,9 @@ export default function BizDashboard() {
 
         {costCoverage && <CostCoverageCard counts={costCoverage.counts} shares={costCoverage.shares} />}
 
+        {/* Show-level detail: free with an email (BRO-6210). Everything
+            above is the free landing; the tier guide below stays free too. */}
+        <MoneyGate page="biz-dashboard">
         {/* Recent Developments */}
         {recentDevelopments.length > 0 && (
           <section className="mb-8">
@@ -463,6 +467,8 @@ export default function BizDashboard() {
           </p>
           <AllShowsTable shows={allOpenShows} initialLimit={10} />
         </section>
+
+        </MoneyGate>
 
         {/* Designation Legend */}
         <section className="mb-10">

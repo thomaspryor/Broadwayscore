@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T16:51:32.572Z",
+  "timestamp": "2026-10-25T18:23:16.018Z",
   "stats": {
-    "totalReviews": 61599,
-    "alreadyFlagged": 21450,
+    "totalReviews": 61639,
+    "alreadyFlagged": 21468,
     "dateGuardCatches": 223,
-    "directorMismatch": 2235,
+    "directorMismatch": 2237,
     "tvFilmSignals": 1752,
     "londonSignals": 2977,
     "offBroadwaySignals": 540,
     "yearMismatch": 202,
-    "noPublishDate": 5507
+    "noPublishDate": 5512
   },
   "findings": [
     {
@@ -13653,6 +13653,7 @@
     {
       "showId": "duke-and-roya-off-broadway-2025",
       "file": "one-minute-critic--matthew-wexler.json",
+      "score": 80,
       "publishDate": "2025-06-24",
       "url": "https://1minutecritic.com/jay-ellis-stephanie-nur-duke-and-roya-off-broadway-review/",
       "findings": [
@@ -37085,7 +37086,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 61,
+      "score": 65,
       "publishDate": "2026-04-01",
       "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
@@ -42173,7 +42174,7 @@
     {
       "showId": "tartuffe-off-broadway-2025",
       "file": "cititour--unknown.json",
-      "score": null,
+      "score": 44,
       "publishDate": "2025-12-17",
       "url": "https://cititour.com/NYC_News/Review-NYTWs-Tartuffe-Needs-More-Bite/10233",
       "findings": [
@@ -43078,6 +43079,7 @@
     {
       "showId": "the-brothers-size-off-broadway-2025",
       "file": "new-york-sun--elysa-gardner.json",
+      "score": 89,
       "publishDate": "2025-09-10",
       "url": "https://www.nysun.com/article/the-tortured-but-unbreakable-bond-between-the-siblings-in-the-brothers-size-speaks-to-the-challenges-of-kinship-and-love",
       "findings": [
@@ -52164,6 +52166,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "culturesauce--thom-geier.json",
+      "score": 97,
       "publishDate": "2025-07-17",
       "url": "https://culturesauce.com/2025/07/17/the-weir-irish-rep-off-broadway-review/",
       "findings": [
@@ -52176,7 +52179,22 @@
     },
     {
       "showId": "the-weir-off-broadway-2025",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2025-07-18",
+      "url": "https://exeuntnyc.com/reviews/review-the-weir-at-irish-repertory-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
       "file": "front-row-center--stanford-friedman.json",
+      "score": 78,
       "publishDate": "2025-07-17",
       "url": "https://thefrontrowcenter.com/2025/07/the-weir-3/",
       "findings": [
@@ -52190,6 +52208,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "nysr--michael-sommers.json",
+      "score": 82,
       "publishDate": "2025-07-17",
       "url": "https://nystagereview.com/2025/07/17/the-weir-naturally-supernatural/",
       "findings": [
@@ -52203,6 +52222,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "nytimes--juan-a-ramirez.json",
+      "score": 88,
       "publishDate": "2025-07-18",
       "url": "https://www.nytimes.com/2025/07/18/theater/the-weir-conor-mcpherson.html",
       "findings": [
@@ -52216,6 +52236,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "talkinbroadway--marc-miller.json",
+      "score": 77,
       "publishDate": "2025-07-17",
       "url": "https://www.talkinbroadway.com/page/ob/07_17_25.html",
       "findings": [
@@ -52229,6 +52250,7 @@
     {
       "showId": "the-weir-off-broadway-2025",
       "file": "theater-pizzazz--alix-cohen.json",
+      "score": 87,
       "publishDate": "2025-07-15",
       "url": "https://theaterpizzazz.com/the-weir-camaraderie-alcohol-and-ghost-stories/",
       "findings": [
@@ -52241,7 +52263,22 @@
     },
     {
       "showId": "the-weir-off-broadway-2025",
+      "file": "theatrely--andrew-martini.json",
+      "score": null,
+      "publishDate": "2025-07-18",
+      "url": "https://www.theatrely.com/post/ghostly-tragedies---the-weir-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
+      "showId": "the-weir-off-broadway-2025",
       "file": "wsj--charles-isherwood.json",
+      "score": 91,
       "publishDate": "2025-07-18",
       "url": "https://www.wsj.com/articles/the-weir-review-conor-mcphersons-menu-of-spirits-c60daf6a",
       "findings": [
@@ -67956,19 +67993,6 @@
       "file": "flicker-magazine--unknown.json",
       "publishDate": null,
       "url": "https://www.flickermagazine.art/post/dog-mom-brings-south-asian-female-led-comedy-to-southwark-playhouse-this-autumn",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "dog-mom-off-west-end-2026",
-      "file": "onin--caitlin-neal.json",
-      "publishDate": "2026-10-23",
-      "url": "https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&utm_medium=rss&utm_campaign=dog-mom-at-southwark-playhouse",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -90352,6 +90376,7 @@
     {
       "showId": "tartuffe-off-broadway-2025",
       "file": "nysr--steven-suskin.json",
+      "score": 39,
       "publishDate": "2025-12-16",
       "url": "https://nystagereview.com/2025/12/16/tartuffe-sparkling-wine-without-the-sparkle/",
       "findings": [
@@ -92788,6 +92813,20 @@
       "score": 99,
       "publishDate": "2024-11-07",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-curious-case-of-benjamin-button-ambassador-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+      "file": "express-uk--george-simpson.json",
+      "score": 95,
+      "publishDate": "2024-11-12",
+      "url": "https://www.express.co.uk/entertainment/theatre/1975202/Curious-Case-of-Benjamin-Button-musical-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",

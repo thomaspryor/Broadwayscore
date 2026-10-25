@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T14:53:28.906Z",
+  "generatedAt": "2026-10-25T18:10:27.646Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -131,10 +131,6 @@
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
     {
-      "outletId": "theatre-reviews-limited",
-      "error": "Timeout fetching https://www.theatrereviews.com/feed/"
-    },
-    {
       "outletId": "slantmagazine",
       "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
     },
@@ -155,19 +151,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 684,
-  "matchedGaps": 4,
+  "itemsScanned": 689,
+  "matchedGaps": 1,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "level": "matched",
-      "outletId": "revstanstheatreblog",
-      "url": "https://revstanstheatreblog.co.uk/2026/10/25/review-ilford-boy-donmar-warehouse/",
-      "headline": "Review: Ilford Boy, Donmar Warehouse",
-      "publishDate": "2026-10-25"
-    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -176,24 +163,6 @@
       "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
       "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/midnight-1-2-the-curious-case-of-benjamin-button/",
-      "headline": "Midnight ** 1/2, The Curious Case of Benjamin Button ****",
-      "publishDate": "2026-10-24"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "pinkprincetheatre",
-      "url": "https://www.pinkprincetheatre.com/post/review-the-pianist-park-theatre",
-      "headline": "REVIEW: THE PIANIST @ PARK THEATRE",
-      "publishDate": "2026-10-25"
     },
     {
       "showId": "copperfield-the-new-musical-off-broadway-2026",

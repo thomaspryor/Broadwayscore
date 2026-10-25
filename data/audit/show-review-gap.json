@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-25T14:53:08.167Z",
+  "generatedAt": "2026-10-25T18:07:05.819Z",
   "windowDays": 1095,
-  "targets": 661,
-  "auditedThisRun": 20,
-  "carriedForward": 795,
+  "targets": 667,
+  "auditedThisRun": 12,
+  "carriedForward": 804,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 404,
     "missingCurrentRun": 571,
     "totalCitedNoUrl": 3,
-    "totalFlaggedMisses": 707,
+    "totalFlaggedMisses": 705,
     "totalRecoverable": 1,
     "totalRecovered": 14,
     "humanExcluded": 4,
-    "automatedExcluded": 365,
-    "automatedExcludedListed": 305,
-    "priorProductionCitations": 5658
+    "automatedExcluded": 367,
+    "automatedExcludedListed": 306,
+    "priorProductionCitations": 5668
   },
   "results": [
     {
@@ -35581,15 +35581,18 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/ceilidh-the-musical",
-        "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
-        "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
         "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
+        "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
+        "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/",
+        "https://www.timeout.com/london/theatre/ceilidh-the-musical",
+        "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/",
         "https://www.lsbo.co.uk/musical/ceilidh",
-        "https://www.theatrebookings.com/musical/ceilidh",
-        "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour"
+        "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
+        "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
+        "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour",
+        "https://www.theatrebookings.com/musical/ceilidh"
       ],
-      "dirFiles": 9,
+      "dirFiles": 10,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -35598,16 +35601,33 @@
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--milo-garth.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
           "host": "broadwaybaby.com",
@@ -35632,9 +35652,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
+          "url": "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -35642,17 +35662,44 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "bestoftheatre--milo-garth.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026"
+              "file": "whatsonstage--alex-wood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "wrongShow"
+            "wrongProduction"
           ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-09",
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
+        },
+        {
+          "url": "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-09",
+          "serpCensus": true,
+          "reverify": false
         },
         {
           "url": "https://www.lsbo.co.uk/musical/ceilidh",
@@ -35678,9 +35725,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.theatrebookings.com/musical/ceilidh",
-          "host": "theatrebookings.com",
-          "knownOutletId": "theatrebookings",
+          "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -35688,9 +35735,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatrebookings--tube.json",
+              "file": "londontheatredirect--london-theatre-direct-limited.json",
               "flag": "clean",
-              "urlInDir": "https://www.theatrebookings.com/musical/ceilidh"
+              "urlInDir": "https://www.londontheatredirect.com/news/event/ceilidh-tickets"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -35715,6 +35762,30 @@
               "file": "theatre-news--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.theatrebookings.com/musical/ceilidh",
+          "host": "theatrebookings.com",
+          "knownOutletId": "theatrebookings",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrebookings--tube.json",
+              "flag": "clean",
+              "urlInDir": "https://www.theatrebookings.com/musical/ceilidh"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -35772,16 +35843,91 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ceilidh The Musical\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ceilidh The Musical\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ceilidh The Musical\" review shoreditch",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 25,
+          "aggregator-internal-nav": 1,
+          "no-review-evidence": 3,
+          "bare-host": 1,
+          "write-path-blocked": 3,
+          "census-junk-host": 1,
+          "ticketing-reseller": 1,
+          "non-review-path": 1,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 3,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
+          "host": "leeds-theatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 5
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical",
@@ -35797,21 +35943,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "ceilidh-the-musical-off-west-end-2026: https://www.timeout.com/london/theatre/ceilidh-the-musical is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -35826,11 +35957,11 @@
             "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical"
           },
           {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets"
+            "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026"
           },
           {
             "outletId": "broadway-baby",
@@ -35840,13 +35971,6 @@
             "url": "https://broadwaybaby.com/shows/ceilidh-the-musical/839235"
           },
           {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026"
-          },
-          {
             "outletId": "lsbo",
             "outlet": "lsbo",
             "critic": "Unknown",
@@ -35854,11 +35978,11 @@
             "url": "https://www.lsbo.co.uk/musical/ceilidh"
           },
           {
-            "outletId": "theatrebookings",
-            "outlet": "theatrebookings",
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatrebookings.com/musical/ceilidh"
+            "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets"
           },
           {
             "outletId": "theatre-news",
@@ -35866,6 +35990,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour"
+          },
+          {
+            "outletId": "theatrebookings",
+            "outlet": "theatrebookings",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrebookings.com/musical/ceilidh"
           }
         ],
         "suppressedMissing": [],
@@ -35878,11 +36009,11 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
-            "outletId": "londontheatredirect",
+            "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
+            "outletId": "bestoftheatre",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T11:53:28.442Z"
+            "firstSeenAt": "2026-10-22T22:14:01.718Z"
           },
           {
             "url": "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
@@ -35892,13 +36023,6 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T22:14:01.718Z"
-          },
-          {
             "url": "https://www.lsbo.co.uk/musical/ceilidh",
             "outletId": "lsbo",
             "state": "IN_FLIGHT",
@@ -35906,11 +36030,11 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://www.theatrebookings.com/musical/ceilidh",
-            "outletId": "theatrebookings",
+            "url": "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
+            "outletId": "londontheatredirect",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+            "firstSeenAt": "2026-10-24T11:53:28.442Z"
           },
           {
             "url": "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour",
@@ -35918,13 +36042,20 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-24T01:24:25.910Z"
+          },
+          {
+            "url": "https://www.theatrebookings.com/musical/ceilidh",
+            "outletId": "theatrebookings",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-25T10:27:27.352Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -38704,14 +38835,14 @@
         "https://nystagereview.com/2026/10/19/copperfield-top-drawer-musical-take-on-the-dickens-classic/",
         "https://www.talkinbroadway.com/page/ob/10_19_26.html",
         "https://theaterlife.com/copperfield-the-new-musical/",
-        "https://www.timeout.com/newyork/theater/copperfield-the-new-musical",
-        "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/bobby-conte-brings-dickens-to-life-in-copperfield-the-new-musical/1079",
         "https://joshatthemovies.com/2026/10/22/theater-review-copperfield-the-new-musical/amp/",
         "https://t2conline.com/copperfield-the-new-musical-a-dickens-of-a-cast-but-where-is-david/",
         "https://www.theatermania.com/news/review-new-musical-copperfield-needs-a-little-more-twist_1857542/",
-        "https://news.frombroadway.com/post/review-roundup-copperfield-the-new-musical-duke-on-42nd-street",
         "https://1minutecritic.com/copperfield-musical-review/",
-        "https://theaterpizzazz.com/copperfield-the-new-musical-a-wonderfully-entertaining-version-of-the-saga/"
+        "https://theaterpizzazz.com/copperfield-the-new-musical-a-wonderfully-entertaining-version-of-the-saga/",
+        "https://www.timeout.com/newyork/theater/copperfield-the-new-musical",
+        "https://broadwaypodcastnetwork.com/podcasts/the-roundtable/bobby-conte-brings-dickens-to-life-in-copperfield-the-new-musical/1079",
+        "https://news.frombroadway.com/post/review-roundup-copperfield-the-new-musical-duke-on-42nd-street"
       ],
       "dirFiles": 16,
       "dirClean": 12,
@@ -38790,90 +38921,17 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Copperfield! The New Musical\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Copperfield! The New Musical\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Copperfield! The New Musical\" review duke",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"Copperfield! The New Musical\" Scharf review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Copperfield! The New Musical The Duke on 42nd Street review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Copperfield! The New Musical The Duke on 42nd Street review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Copperfield! The New Musical The Duke on 42nd Street review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 9,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 301,
+        "count": 268,
         "byReason": {
-          "aggregator-internal-nav": 208,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 205,
+          "roundup-page": 3,
           "not-http-url": 39,
-          "production-database-listing": 1,
-          "aggregator-section-root": 6,
-          "non-review-host": 35,
-          "roundup-page": 6,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "show-listing-page": 2,
-          "ticketing-listing": 1,
-          "bare-host": 1
+          "aggregator-section-root": 6
         }
       },
       "dedupedVariants": [],
@@ -39004,7 +39062,7 @@
         "liveCount": 9,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-25T14:15:42.198Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -103898,10 +103956,10 @@
         "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
         "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html",
         "https://www.theatermania.com/news/review-lauren-yees-king-of-the-yees-an-exploration-of-what-it-means-to-be-a-yee_1857614/",
-        "https://marissavivian.substack.com/p/king-of-the-yees-review",
         "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
-        "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
         "http://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
+        "https://marissavivian.substack.com/p/king-of-the-yees-review",
+        "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
         "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/"
       ],
       "dirFiles": 24,
@@ -103975,78 +104033,17 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"King of the Yees\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"King of the Yees\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"King of the Yees\" review signature",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "King of the Yees Signature Theatre Company/Alice Griffin Jewel Box Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "King of the Yees Signature Theatre Company/Alice Griffin Jewel Box Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "King of the Yees Signature Theatre Company/Alice Griffin Jewel Box Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 10,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 128,
+        "count": 100,
         "byReason": {
-          "aggregator-internal-nav": 47,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 46,
           "not-http-url": 20,
-          "production-database-listing": 11,
-          "aggregator-section-root": 5,
-          "non-review-host": 40,
-          "roundup-page": 2,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "ticketing-reseller": 1
+          "production-database-listing": 9,
+          "aggregator-section-root": 5
         }
       },
       "dedupedVariants": [],
@@ -104085,20 +104082,6 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signature-center/attachment/hanjie_sig_koty_productionfinals_21/",
-          "host": "exeuntnyc.com",
-          "file": "exeunt-magazine--unknown.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.",
-          "recoveryCount": 3,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -104218,7 +104201,7 @@
         "liveCount": 10,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-25T14:15:42.198Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -109829,21 +109812,33 @@
         "https://www.thetimes.com/culture/classical-opera/article/lincoln-in-the-bardo-review-opera-8z28bfrs9",
         "https://icareifyoulisten.com/2026/10/review-lincoln-in-the-bardo-at-the-metropolitan-opera/",
         "https://www.wsj.com/arts-culture/theater/lincoln-in-the-bardo-review-an-opera-of-presidential-grief-83cfed8b",
-        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
+        "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
         "https://www.vogue.com/article/lincoln-in-the-bardo-met-opera",
         "https://www.nytimes.com/2026/09/18/arts/music/missy-mazzoli-lincoln-in-the-bardo-met-opera.html",
         "https://slippedisc.com/2026/10/lincoln-in-the-bardo-first-review-from-the-met/",
+        "https://operawire.com/q-a-composer-missy-mazzoli-author-george-saunders-on-lincoln-in-the-bardo/",
         "https://apnews.com/article/missy-mazzoli-lincoln-bardo-a486dc15579e9a2ea86b0bf6dbd7c661",
         "https://www.newyorker.com/culture/goings-on/lincoln-in-the-bardo-gets-an-opera-at-the-met"
       ],
-      "dirFiles": 32,
-      "dirClean": 10,
-      "inReviewsJson": 10,
-      "missing": [],
+      "dirFiles": 33,
+      "dirClean": 11,
+      "inReviewsJson": 11,
+      "missing": [
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+          "host": "washingtonpost.com",
+          "knownOutletId": "washpost",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "parterre.com",
           "count": 1
         },
         {
@@ -109998,25 +109993,122 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Lincoln in the Bardo\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Lincoln in the Bardo\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Lincoln in the Bardo\" review metropolitan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Lincoln in the Bardo\" Mazzoli review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Lincoln in the Bardo Metropolitan Opera House review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Lincoln in the Bardo Metropolitan Opera House review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Lincoln in the Bardo Metropolitan Opera House review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 96,
+        "count": 122,
         "byReason": {
-          "non-review-host": 20,
-          "aggregator-internal-nav": 45,
-          "production-database-listing": 6,
+          "non-review-host": 37,
+          "aggregator-internal-nav": 46,
+          "no-review-evidence": 1,
+          "census-junk-host": 1,
+          "roundup-page": 3,
           "not-http-url": 20,
-          "aggregator-section-root": 5
+          "production-database-listing": 6,
+          "aggregator-section-root": 5,
+          "show-listing-page": 1,
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+          "host": "washingtonpost.com",
+          "outletId": "washpost",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "washpost",
+            "outlet": "washpost",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/"
+          },
           {
             "outletId": "npr",
             "outlet": "npr",
@@ -110118,6 +110210,13 @@
             "firstSeenAt": "2026-10-24T21:30:13.917Z"
           },
           {
+            "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+            "outletId": "washpost",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T18:07:05.819Z"
+          },
+          {
             "url": "https://www.npr.org/2026/10/19/nx-s1-6003649/lincoln-bardo-metropolitan-opera-mazzoli-saunders",
             "outletId": "npr",
             "state": "GAP",
@@ -110162,9 +110261,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 8,
-        "candidateCount": 14
+        "candidateCount": 15
       },
-      "computedAt": "2026-10-25T10:27:27.352Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "little-bear-ridge-road-2025",
@@ -113332,19 +113431,37 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
         "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
+        "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
+        "https://nyra.nyc/articles/machine-learning",
+        "https://www.littleenginetheater.com/machine-learning",
         "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
-        "https://www.littleenginetheater.com/machine-learning"
+        "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47"
       ],
       "dirFiles": 5,
       "dirClean": 4,
       "inReviewsJson": 4,
       "missing": [
         {
+          "url": "https://nyra.nyc/articles/machine-learning",
+          "host": "nyra.nyc",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2024-04-18",
+          "serpCensus": true
+        },
+        {
           "url": "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
           "host": "researchgate.net",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
+          "host": "mlreview.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-07-30",
           "serpCensus": true
         }
       ],
@@ -113387,16 +113504,104 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Machine Learning\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Machine Learning\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Machine Learning\" review manhattan",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Machine Learning\" Vozella review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Machine Learning Manhattan Neighborhood Network review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Machine Learning Manhattan Neighborhood Network review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Machine Learning Manhattan Neighborhood Network review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "non-review-host": 28,
+          "no-review-evidence": 4,
+          "non-review-path": 1,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://nyra.nyc/articles/machine-learning",
+          "host": "nyra.nyc",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://blog.mlreview.com/machine-learning-weekly-review-992c2c6ea47",
+          "host": "mlreview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
@@ -113436,16 +113641,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
-            "outletId": "theaterscene.net",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
             "url": "https://www.theatermania.com/news/review-machine-learning-a-reality-show-masquerading-as-an-experiment_1857715/",
             "outletId": "theatermania.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T05:36:11.502Z"
+          },
+          {
+            "url": "http://www.theaterscene.net/plays/offbway-plays/machine-learning/christopher-caz/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
             "url": "https://www.researchgate.net/publication/251236864_Machine_Learning_for_Social_Network_Analysis_A_Systematic_Literature_Review",
@@ -113466,7 +113671,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-25T10:27:27.352Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "madama-butterfly-off-broadway-2024",
@@ -120014,18 +120219,21 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
         "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
-        "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
         "https://www.timeout.com/london/theatre/martin-guerre-review",
-        "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
+        "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
+        "https://www.oldvictheatre.com/stage/martin-guerre/",
         "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
         "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
         "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
         "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
-        "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
+        "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
         "https://thespyinthestalls.com/2026/10/martin-guerre/",
-        "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
+        "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
         "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+        "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
+        "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
         "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
         "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
         "https://www.timeout.com/london/theatre/martin-guerre",
@@ -120036,14 +120244,12 @@
         "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
         "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
         "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
-        "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
-        "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic",
         "https://1883magazine.com/martin-guerre-old-vic-review/",
         "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/"
       ],
-      "dirFiles": 39,
+      "dirFiles": 40,
       "dirClean": 24,
-      "inReviewsJson": 25,
+      "inReviewsJson": 26,
       "missing": [
         {
           "url": "https://1883magazine.com/martin-guerre-old-vic-review/",
@@ -120102,6 +120308,31 @@
             "wrongProduction"
           ],
           "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
+          "host": "oldvictheatre.com",
+          "knownOutletId": "oldvictheatrecom",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "oldvictheatrecom--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.oldvictheatre.com/stage/martin-guerre/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-08",
           "serpCensus": true,
           "reverify": false
         },
@@ -120193,13 +120424,64 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Martin Guerre\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Martin Guerre\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Martin Guerre The Old Vic review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Martin Guerre The Old Vic review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Martin Guerre The Old Vic review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 14,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 2,
+        "count": 17,
         "byReason": {
-          "bare-host": 2
+          "non-review-host": 9,
+          "bare-host": 2,
+          "roundup-page": 4,
+          "non-review-path": 1,
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -120279,22 +120561,16 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T18:40:22.780Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/martin-guerre-review",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
-            "outletId": "whatsonstage.com",
+            "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+            "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
           {
             "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
@@ -120321,14 +120597,20 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
+            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T05:36:11.502Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
-            "outletId": "thespyinthestalls.com",
+            "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
+            "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
@@ -120339,8 +120621,8 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
-            "outletId": "standard.co.uk",
+            "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
@@ -120437,7 +120719,7 @@
         "liveCount": 21,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-25T14:15:42.198Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "mary-jane-2024",
@@ -135222,20 +135504,20 @@
         "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
         "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
         "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
+        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
         "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
         "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
         "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
         "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
         "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
         "https://playsinternational.org.uk/murder-in-the-cathedral-orange-tree-theatre-church-of-saint-john-the-divine-richmond/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
         "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
-        "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
         "https://everything-theatre.co.uk/2026/10/review-murder-in-the-cathedral-orange-tree-theatre-st-john-the-divine/",
+        "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
         "https://theatrecat.com/2026/10/20/murder-in-the-cathedral-orange-tree-richmond/",
-        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
-        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
-        "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/"
+        "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
+        "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond"
       ],
       "dirFiles": 36,
       "dirClean": 22,
@@ -135332,7 +135614,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           },
           {
@@ -135342,7 +135624,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -135362,7 +135644,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -135372,22 +135654,22 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 5,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 14,
+        "resultCount": 16,
         "error": null
       },
       "candidatesRejected": {
-        "count": 18,
+        "count": 17,
         "byReason": {
-          "non-review-host": 10,
+          "non-review-host": 9,
+          "no-review-evidence": 4,
           "write-path-blocked": 2,
           "roundup-page": 1,
-          "no-review-evidence": 4,
           "event-listings-page": 1
         }
       },
@@ -135444,6 +135726,12 @@
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
             "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
             "outletId": "theatreweekly.com",
             "state": "live",
@@ -135460,12 +135748,6 @@
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-23T08:15:37.359Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
-            "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
@@ -135486,6 +135768,12 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
             "url": "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
             "outletId": "broadwayworld.com",
             "state": "live",
@@ -135504,22 +135792,16 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
-            "outletId": "londontheatre1.com",
+            "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
+            "outletId": "lbc.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+            "firstSeenAt": "2026-10-24T14:39:26.381Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
             "outletId": "westendbestfriend.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-24T11:53:28.442Z"
-          },
-          {
-            "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
-            "outletId": "lbc.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T14:39:26.381Z"
           },
           {
             "url": "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html",
@@ -135533,7 +135815,7 @@
         "liveCount": 16,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-25T03:18:28.178Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -146523,41 +146805,54 @@
     },
     {
       "showId": "oratorio-for-living-things-off-broadway-2026",
-      "title": "ORATORIO FOR LIVING THINGS",
+      "title": "Oratorio for Living Things",
       "openingDate": "2025-10-16",
       "status": "closed",
       "category": "off-broadway",
       "aggregatorArticles": [
+        "https://playbill.com/article/what-do-reviews-think-of-oratorio-for-living-thingss-off-broadway-return",
+        "https://playbill.com/article/read-the-reviews-for-the-off-broadway-premiere-of-heather-christians-oratorio-for-living-things",
         "https://www.broadwayworld.com/article/Review-Roundup-ORATORIO-FOR-LIVING-THINGS-Opens-at-Signature-Theatre-20251017",
         "https://www.broadwayworld.com/article/Review-Roundup-ORATORIO-FOR-LIVING-THINGS-Opens-at-Ars-Nova-What-Are-the-Critics-Saying-20220331"
       ],
       "aggregatorListedUrls": [
         "https://nystagereview.com/2025/10/16/oratorio-for-living-things-musically-captivating-text-effect-not-so/",
         "https://www.newyorktheatreguide.com/reviews/oratorio-for-living-things-off-broadway-review",
+        "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
+        "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
+        "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/",
+        "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html",
         "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
         "https://www.timeout.com/newyork/theater/oratorio-for-living-things",
-        "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html",
-        "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/",
         "https://www.theatermania.com/off-broadway/reviews/review-heather-christian-oratorio-for-living-things_93579.html",
         "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/",
-        "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
         "https://thebroadwayblog.com/heather-christian-oratorio/"
       ],
-      "dirFiles": 14,
-      "dirClean": 3,
-      "inReviewsJson": 3,
-      "missing": [],
+      "dirFiles": 15,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [
+        {
+          "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        }
+      ],
       "dirOnly": [
         {
           "host": "newyorker.com",
+          "count": 1
+        },
+        {
+          "host": "talkinbroadway.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
+          "url": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -146565,51 +146860,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nytimes--jesse-green.json",
+              "file": "exeunt-magazine--lane-williamson.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html"
+              "urlInDir": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/"
             }
           ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/oratorio-for-living-things",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--raven-snook.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/newyork/theater/oratorio-for-living-things"
-            }
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
           ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--helen-shaw.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/",
@@ -146627,8 +146889,85 @@
               "urlInDir": "https://newyorktheater.me/2022/03/30/oratorio-for-living-things-review/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "vulture--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.vulture.com/2022/03/theater-review-oratorio-for-living-things.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nytimes--jesse-green.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.nytimes.com/2022/03/30/theater/oratorio-for-living-things-review.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/oratorio-for-living-things",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--raven-snook.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/oratorio-for-living-things"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
         },
         {
           "url": "https://www.theatermania.com/off-broadway/reviews/review-heather-christian-oratorio-for-living-things_93579.html",
@@ -146645,7 +146984,14 @@
               "flag": "wrongProduction",
               "urlInDir": "https://www.theatermania.com/off-broadway/reviews/review-heather-christian-oratorio-for-living-things_93579.html"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:March 30th, 2022",
+          "reverify": false
         },
         {
           "url": "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/",
@@ -146663,25 +147009,13 @@
               "urlInDir": "https://thefrontrowcenter.com/2022/04/oratorio-for-living-things/"
             }
           ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
           "priorRun": true,
-          "priorRunSource": "show-score-url-year"
-        },
-        {
-          "url": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "exeunt-magazine--lane-williamson.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/"
-            }
-          ]
+          "priorRunSource": "flagged-file-date:April 28th, 2022",
+          "reverify": false
         },
         {
           "url": "https://thebroadwayblog.com/heather-christian-oratorio/",
@@ -146698,7 +147032,14 @@
               "flag": "wrongProduction",
               "urlInDir": "https://thebroadwayblog.com/heather-christian-oratorio/"
             }
-          ]
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:March 30th, 2022",
+          "reverify": false
         }
       ],
       "citedNoUrl": [],
@@ -146708,21 +147049,48 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 581,
+        "count": 859,
         "byReason": {
-          "non-review-host": 30,
-          "aggregator-internal-nav": 448,
-          "not-http-url": 95,
-          "aggregator-section-root": 8
+          "non-review-host": 71,
+          "aggregator-internal-nav": 562,
+          "census-junk-host": 2,
+          "roundup-page": 50,
+          "not-http-url": 135,
+          "production-database-listing": 21,
+          "aggregator-section-root": 18
         }
       },
       "dedupedVariants": [],
       "priorRunArticles": [
         {
+          "url": "https://playbill.com/article/read-the-reviews-for-the-off-broadway-premiere-of-heather-christians-oratorio-for-living-things",
+          "publishDate": "2022-03-31"
+        },
+        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-ORATORIO-FOR-LIVING-THINGS-Opens-at-Ars-Nova-What-Are-the-Critics-Saying-20220331",
           "publishDate": "2022-03-31"
         }
       ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -146731,21 +147099,7 @@
             "outlet": "theatermania",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.theatermania.com/off-broadway/reviews/review-heather-christian-oratorio-for-living-things_93579.html"
-          },
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/"
-          },
-          {
-            "outletId": "broadway-blog",
-            "outlet": "broadway-blog",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thebroadwayblog.com/heather-christian-oratorio/"
+            "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/"
           }
         ],
         "suppressedMissing": [],
@@ -146763,32 +147117,18 @@
             "firstSeenAt": "2026-08-03T16:48:58.521Z"
           },
           {
-            "url": "https://www.theatermania.com/off-broadway/reviews/review-heather-christian-oratorio-for-living-things_93579.html",
+            "url": "https://www.theatermania.com/news/review-oratorio-for-living-things-returns-as-glorious-as-ever_1807728/",
             "outletId": "theatermania",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
-          },
-          {
-            "url": "http://exeuntnyc.com/reviews/review-oratorio-for-living-things-at-ars-nova-at-greenwich-house/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
-          },
-          {
-            "url": "https://thebroadwayblog.com/heather-christian-oratorio/",
-            "outletId": "broadway-blog",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-08-03T16:48:58.521Z"
+            "firstSeenAt": "2026-10-25T18:07:05.819Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 2,
-        "candidateCount": 5
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-19T01:53:26.201Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "orlando-off-broadway-2026",
@@ -151765,21 +152105,14 @@
         "https://nystagereview.com/2026/10/22/phyl-a-free-spirited-woman-of-1913/",
         "http://www.theaterscene.net/plays/offbway-plays/phyl/samuel-l-leiter/",
         "https://theaterlife.com/phyl/",
-        "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row",
         "https://t2conline.com/mint-theater-companys-phyl-a-woman-ahead-of-her-time/",
-        "https://www.theatermania.com/news/review-a-feminist-cinderella-story-returns-to-the-stage-in-a-witty-revival-of-phyl_1858001/"
+        "https://www.theatermania.com/news/review-a-feminist-cinderella-story-returns-to-the-stage-in-a-witty-revival-of-phyl_1858001/",
+        "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row"
       ],
-      "dirFiles": 9,
+      "dirFiles": 10,
       "dirClean": 8,
       "inReviewsJson": 8,
-      "missing": [
-        {
-          "url": "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row",
-          "host": "frombroadway.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        }
-      ],
+      "missing": [],
       "dirOnly": [
         {
           "host": "pagesonstages.com",
@@ -151794,105 +152127,50 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Phyl\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Phyl\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Phyl\" Hamilton review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Phyl Theatre Row review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Phyl Theatre Row review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Phyl Theatre Row review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 5,
-        "error": null
-      },
-      "candidatesRejected": {
-        "count": 313,
-        "byReason": {
-          "aggregator-internal-nav": 210,
-          "not-http-url": 52,
-          "aggregator-section-root": 6,
-          "non-review-host": 33,
-          "roundup-page": 6,
-          "no-review-evidence": 1,
-          "census-junk-host": 1,
-          "venue-production-page": 3,
-          "non-review-path": 1
-        }
-      },
-      "dedupedVariants": [],
-      "automatedExcludedListed": 0,
-      "unextractable": [],
-      "ingestResults": [
+      "flaggedMisses": [
         {
           "url": "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row",
           "host": "frombroadway.com",
-          "outletId": "frombroadway",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frombroadway--rachel-graham.json",
+              "flag": "roundup",
+              "urlInDir": "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "isRoundupArticle"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
-      "ingestSkippedByCap": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "cooldown"
+      },
+      "candidatesRejected": {
+        "count": 284,
+        "byReason": {
+          "non-review-host": 15,
+          "aggregator-internal-nav": 208,
+          "roundup-page": 3,
+          "not-http-url": 52,
+          "aggregator-section-root": 6
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -151948,7 +152226,7 @@
         "liveCount": 5,
         "candidateCount": 6
       },
-      "computedAt": "2026-10-25T14:15:42.198Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "pied-a-terre-off-broadway-2026",
@@ -190736,8 +191014,8 @@
         "https://www.timeout.com/newyork/theater/the-curious-case-of-benjamin-button",
         "https://news.frombroadway.com/post/review-roundup-the-curious-case-of-benjamin-button-public-theater"
       ],
-      "dirFiles": 51,
-      "dirClean": 23,
+      "dirFiles": 52,
+      "dirClean": 24,
       "inReviewsJson": 23,
       "missing": [],
       "dirOnly": [
@@ -190771,7 +191049,7 @@
         },
         {
           "host": "theaterlife.com",
-          "count": 1
+          "count": 2
         },
         {
           "host": "theverdictnyc.wixsite.com",
@@ -190857,80 +191135,18 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"The Curious Case of Benjamin Button\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"The Curious Case of Benjamin Button\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"The Curious Case of Benjamin Button\" review public",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "The Curious Case of Benjamin Button The Public Theater/Newman Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "The Curious Case of Benjamin Button The Public Theater/Newman Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "The Curious Case of Benjamin Button The Public Theater/Newman Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 2,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 8,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 418,
+        "count": 388,
         "byReason": {
-          "aggregator-internal-nav": 254,
+          "non-review-host": 36,
+          "aggregator-internal-nav": 253,
+          "roundup-page": 3,
           "not-http-url": 77,
           "production-database-listing": 9,
-          "aggregator-section-root": 10,
-          "non-review-host": 54,
-          "roundup-page": 7,
-          "no-review-evidence": 1,
-          "ticketing-reseller": 3,
-          "venue-production-page": 1,
-          "show-listing-page": 1,
-          "ticketing-listing": 1
+          "aggregator-section-root": 10
         }
       },
       "dedupedVariants": [],
@@ -191067,7 +191283,7 @@
         "liveCount": 12,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-25T14:15:42.198Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -200162,9 +200378,11 @@
       "aggregatorListedUrls": [
         "https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F",
         "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
         "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
-        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside"
+        "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
+        "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/"
       ],
       "dirFiles": 4,
       "dirClean": 2,
@@ -200174,6 +200392,22 @@
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
+          "host": "allmusic.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:1978-02-17",
+          "serpCensus": true
+        },
+        {
+          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
+          "host": "pitchfork.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2019-01-19",
           "serpCensus": true
         }
       ],
@@ -200206,12 +200440,76 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Kick Inside\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Kick Inside\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Kick Inside\" review here",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 6,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 28,
+        "byReason": {
+          "non-review-host": 18,
+          "aggregator-internal-nav": 3,
+          "no-review-evidence": 3,
+          "bare-host": 1,
+          "write-path-blocked": 2,
+          "census-junk-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -200221,6 +200519,22 @@
           "host": "getcuebox.com",
           "knownOutletId": null,
           "zeroCharAttempts": 3
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.allmusic.com/album/the-kick-inside-mw0000189382",
+          "host": "allmusic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://pitchfork.com/reviews/albums/kate-bush-the-kick-inside/",
+          "host": "pitchfork.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
@@ -200237,7 +200551,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright D"
+          "reason": "spawnSync node ETIMEDOUT | ⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"succ"
         }
       ],
       "ingestSkippedByCap": [],
@@ -200292,7 +200606,7 @@
         "liveCount": 2,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-25T10:27:27.352Z"
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "the-last-five-years-2025",
@@ -223970,6 +224284,43 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-05T01:35:25.861Z"
+    },
+    {
+      "showId": "the-visitors-off-broadway-2026",
+      "title": "The Visitors",
+      "openingDate": "2026-11-09",
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-25T18:07:05.819Z"
     },
     {
       "showId": "the-waterfall-off-broadway-2026",
@@ -250570,28 +250921,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-25T14:53:08.166Z",
+    "at": "2026-10-25T18:07:05.819Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "the-human-voice-the-seven-deadly-sins-west-end-2026",
-      "sunset-baby-off-broadway-2026",
-      "grangeville-off-broadway-2026"
+      "murder-cathedral-off-west-end-2026",
+      "oratorio-for-living-things-off-broadway-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "mexodus-tour-2026",
-      "showstopper-the-improvised-musical-west-end-2023"
+      "the-visitors-off-broadway-2026"
     ],
-    "neverAuditedDueAtStart": 274,
+    "neverAuditedDueAtStart": 273,
     "oldestDueRowAtStart": {
-      "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
-      "computedAt": "2026-09-18T23:08:51.294Z",
-      "ageHours": 879.4
-    },
-    "oldestDueRowAfterRun": {
       "showId": "oratorio-for-living-things-off-broadway-2026",
       "computedAt": "2026-09-19T01:53:26.201Z",
-      "ageHours": 877
+      "ageHours": 879.9
+    },
+    "oldestDueRowAfterRun": {
+      "showId": "caroline-off-broadway-2026",
+      "computedAt": "2026-09-19T01:53:26.201Z",
+      "ageHours": 880.2
     }
   }
 }

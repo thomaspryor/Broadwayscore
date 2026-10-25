@@ -2,8 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { lastTimestampsByRepo, checkWorktreeGcFreshnessByRepo } = require('./worktree-gc-freshness.js');
-const { evaluate, evaluateRepos } = require('../check-worktree-gc-freshness.js');
+const { lastTimestampsByRepo, checkWorktreeGcFreshnessByRepo, evaluateRepos, checkWorktreeGcFreshness, lastTimestampFromLog } = require('./worktree-gc-freshness.js');
 
 const NOW = Date.parse('2026-10-25T12:00:00Z');
 const LOG = [
@@ -18,7 +17,7 @@ test('newest DIGEST timestamp per repo', () => {
 });
 
 test('fresh web plus stale ios in one log: only ios fires (overall check stays quiet)', () => {
-  assert.equal(evaluate(LOG, NOW), null);
+  assert.equal(checkWorktreeGcFreshness(lastTimestampFromLog(LOG), NOW), null);
   const r = checkWorktreeGcFreshnessByRepo(LOG, NOW);
   assert.equal(r.length, 1);
   assert.equal(r[0].repo, 'ios');

@@ -173,6 +173,16 @@ const AUDITS = [
     args: ['--strict'],
     crashCodes: [2],           // 0 clean / 1 a contradicted show / 2 = shows.json unreadable or nothing checkable
   },
+  // BRO-6211: an outlet cited by >=10 shows in commercial.json that the recoupment poller
+  // neither watches nor exempts with a reason (Playbill and Broadway News were missed for
+  // months). Advisory first (rule 19): this monitor never blocks a push.
+  {
+    name: 'commercial-source-coverage',
+    label: 'outlets cited by >=10 commercial shows that the recoupment poller neither watches nor exempts',
+    script: 'audit-commercial-source-coverage.js',
+    args: [],
+    crashCodes: [2],           // 0 covered / 1 gap or stale exemption / 2 = commercial.json missing
+  },
   {
     name: 'todaytix-placeholder-runtime',
     label: 'TodayTix placeholder runtime "3h 12m" stored on a row (BRO-5860)',

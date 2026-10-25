@@ -11,6 +11,7 @@ import { bizOgImage } from '@/lib/biz-og';
 import { getFlopsAndRecoups } from '@/lib/data-topic-pages';
 import { formatMillions } from '@/lib/investment-topics';
 import TopicPageShell from '@/components/biz/TopicPageShell';
+import MoneyGate from '@/components/biz/MoneyGate';
 
 const TITLE = "Broadway's Biggest Flops Since the Reopening";
 const DESCRIPTION = "Commercial Broadway shows opened since September 2021 that finished in the red, ranked by the capital they raised.";
@@ -28,6 +29,7 @@ export default function Page() {
 
   return (
     <TopicPageShell title={TITLE} sharePath="/biz/biggest-flops" subtitle="Shows carrying a loss label (Fizzle, Flop or similar), ranked by capitalization.">
+      <MoneyGate page="biz-biggest-flops">
       <ul className="space-y-2" data-testid="flop-list">
         {data.flops.map((r) => (
           <li key={r.slug} className="card rounded-xl px-4 py-3 flex items-center gap-3">
@@ -40,6 +42,7 @@ export default function Page() {
           </li>
         ))}
       </ul>
+      </MoneyGate>
       <p className="text-xs text-gray-500 mt-3">
         Capitalization is the capital raised, reported or estimated by the site. It is the money at stake, not a computed loss: a Fizzle returned some of it.
         {data.flopsWithoutCapitalization > 0 && ` ${data.flopsWithoutCapitalization} more loss-labelled shows have no capitalization on file and are not ranked.`}

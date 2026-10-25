@@ -30,6 +30,15 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 
 **Exclusions on TM rows.** Drop rows with no opening or preview date, runs under 14 days, titles matching festival or reading or benefit or concert or cabaret patterns, and venues outside OB (TM market 98 includes some off-off spaces). Dedup against shows.json by normalized title and opening date within 120 days, and refuse an id that exists (the add-show action already does).
 
+## Status after BRO-6153 (2026-10-25)
+
+- **Added: 80 OB productions, 62 (78 percent) with 3+ reviews, 650 reviews.** By source: 2 hand (34 reviews), 16 award 2024-25 (all 16 scored, 130 reviews), 62 from TheaterMania via Playbill (44 scored, 486 reviews). Rows are marked `discoverySource: ob-historical:hand|award|tm`.
+- **Catalog OB openings 2025-06 to 2026-02: 125** (Jun 10, Jul 7, Aug 4, Sep 14, Oct 23, Nov 19, Dec 5, Jan 17, Feb 26). Before: 14 for Jun to Dec 2025.
+- **Repeatable tool landed:** `node scripts/plan-ob-historical-cohort.js --from=YYYY-MM-DD --to=YYYY-MM-DD` (read-only, run via `cloud-run-script.js --timeout=55` for the keys). It prints add-show actions; plans are built with `buildPlans` from `new-fix-plan.js` (10 actions each). Its second pass on the gap window found 11 more (revivals and "&" titles the hand pass missed).
+- **Per cohort, in order:** plan script, then plans land and apply, then `gather-reviews.yml` (`max_tier=3`, `spend_purpose=historical-backfill`, 12 shows a run), then `collect-review-texts.yml` with `show_filter`, then `llm-ensemble-score.yml` with `show_id`, then `rebuild-fast.yml`. Waiting for the scheduled text and score crons instead adds up to a day.
+- **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
+- **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each.
+
 ## Gap cohort results (2026-10-25, BRO-6153): June 2025 to February 2026
 
 Process (all existing tools, no new code): TheaterMania WP JSON listings for the window, minus shows already in the catalog, minus festival/reading/benefit titles, closed 90+ days, run 14+ days, giving 125 candidates. `validate-show-venue.js --candidates-file` via `cloud-run-script.js` gave 55 Playbill matches, 22 mismatches (mostly classics where Playbill points at another production) and 48 with no Playbill page. Playbill pages were fetched directly (curl, free) and parsed with `parseFactDates` / `parseTitleVenueYear`. `findTmSameTitleShow` + `checkForDuplicate` dropped 4 already-catalogued runs. 48 add-show actions in five 10-action plans (`buildPlans` from `new-fix-plan.js`), applied, gathered in 4 groups of 12, then `collect-review-texts.yml` and a show-scoped `llm-ensemble-score.yml` per group, then `rebuild-fast.yml`.

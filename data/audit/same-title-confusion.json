@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-18T17:08:09.810Z",
-  "totalFindings": 31,
+  "generatedAt": "2026-10-25T17:28:21.695Z",
+  "totalFindings": 43,
   "findings": [
     {
       "currentShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
@@ -46,25 +46,24 @@
       "suggestedShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
       "confidence": "high",
       "signals": [
+        "url-year-match",
+        "url-year:2026"
+      ],
+      "reviewFile": "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-tour-2024/slotkinletter--unknown.json",
+      "url": "https://slotkinletter.com/2026/05/review-a-beautiful-noise-the-neil-diamond-musi",
+      "reason": "url-year"
+    },
+    {
+      "currentShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "suggestedShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2026",
+      "confidence": "high",
+      "signals": [
         "publish-date-mismatch",
         "days-from-own:627",
         "days-from-closer:142"
       ],
       "reviewFile": "data/review-texts/a-beautiful-noise-the-neil-diamond-musical-tour-2024/syracuse-herald-journal--len-fonte.json",
       "url": "https://www.syracuse.com/entertainment/2026/06/landmark-theatres-a-beautiful-noi",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "and-juliet-2022",
-      "suggestedShowId": "and-juliet-tour-2024",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:555",
-        "days-from-closer:120"
-      ],
-      "reviewFile": "data/review-texts/and-juliet-2022/hollywood-reporter--demetrios-matheou.json",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review",
       "reason": "publish-date"
     },
     {
@@ -120,6 +119,32 @@
       "reason": "publish-date"
     },
     {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:972",
+        "days-from-closer:70"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/magnetmagazine--magnet-staff.json",
+      "url": "https://magnetmagazine.com/2025/07/30/live-review-beetlejuice-the-musical-the-mu",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "beetlejuice-tour-2022",
+      "suggestedShowId": "beetlejuice-2025",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:922",
+        "days-from-closer:120"
+      ],
+      "reviewFile": "data/review-texts/beetlejuice-tour-2022/next-magazine--william-molls.json",
+      "url": "https://nextmag.ca/review-beetlejuice-at-mirvish-dishes-out-laughs-tears-and-soc",
+      "reason": "publish-date"
+    },
+    {
       "currentShowId": "death-of-a-salesman-2026",
       "suggestedShowId": "death-of-a-salesman-2022",
       "confidence": "high",
@@ -134,17 +159,159 @@
       "reason": "publish-date"
     },
     {
-      "currentShowId": "evita-2026",
-      "suggestedShowId": "evita-west-end-2025",
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:631",
-        "days-from-closer:1",
-        "duplicate-in-suggested-dir"
+        "days-from-own:597",
+        "days-from-closer:174"
       ],
-      "reviewFile": "data/review-texts/evita-2026/whatsonstage--sarah-crompton.json",
-      "url": "https://www.whatsonstage.com/news/how-jamie-lloyds-evita-was-cast-with-star-qual",
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/broadwayworld--jared-fessler.json",
+      "url": "https://www.broadwayworld.com/minneapolis/article/Review-HARRY-POTTER-AND-THE-CU",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:716",
+        "days-from-closer:55"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/broadwayworld--jay-irwin.json",
+      "url": "https://www.broadwayworld.com/seattle/article/Review-HARRY-POTTER-AND-THE-CURSED",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:744",
+        "days-from-closer:27"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/broadwayworld--tyler-hinton.json",
+      "url": "https://www.broadwayworld.com/salt-lake-city/article/Review-HARRY-POTTER-AND-THE",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:695",
+        "days-from-closer:76"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/chasingsupermom--bekki.json",
+      "url": "https://chasingsupermom.com/2026/08/06/harry-potter-and-the-cursed-child-in-port",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:745",
+        "days-from-closer:26"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/gephardt-daily--nancy-van-valkenburg.json",
+      "url": "https://gephardtdaily.com/local/review-broadway-in-utahs-harry-potter-and-the-cu",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:633",
+        "days-from-closer:138"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/latin-life-denver--joe-contreras.json",
+      "url": "https://latinlifedenver.com/community/harry-potter-and-the-cursed-child-a-back-t",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:633",
+        "days-from-closer:138"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/onstage-colorado--alex-miller.json",
+      "url": "https://onstagecolorado.com/harry-potter-and-the-cursed-child-flies-into-the-bue",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:598",
+        "days-from-closer:173"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/phenomnaltwincities--stephanie-kwong.json",
+      "url": "https://www.phenomnaltwincities.com/review-harry-potter-and-the-cursed-child/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:597",
+        "days-from-closer:174"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/playoffthepage--mary-aalgaard.json",
+      "url": "https://playoffthepage.com/2026/04/review-of-harry-potter-and-the-cursed-child-o",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:745",
+        "days-from-closer:26"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/rachelsreviewstheatre--unknown.json",
+      "url": "https://rachelsreviewstheatre.com/2026/09/25/cursed-child-delivers-magical-spect",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:716",
+        "days-from-closer:55"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/seattles-child--candice-mcmillan.json",
+      "url": "https://www.seattleschild.com/harry-potter-cursed-child-seattle-review/",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "harry-potter-tour-2024",
+      "suggestedShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:748",
+        "days-from-closer:23"
+      ],
+      "reviewFile": "data/review-texts/harry-potter-tour-2024/utahconcertreview--ucr.json",
+      "url": "https://utahconcertreview.com/harry-potter-and-the-cursed-child/",
       "reason": "publish-date"
     },
     {
@@ -244,6 +411,20 @@
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
+        "days-from-own:1424",
+        "days-from-closer:93",
+        "duplicate-in-suggested-dir"
+      ],
+      "reviewFile": "data/review-texts/my-sons-a-queer-but-what-can-you-do-west-end-2026/times-uk--clive-davis.json",
+      "url": "https://www.thetimes.co.uk/article/my-sons-a-queer-but-what-can-you-do-review-ch",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "suggestedShowId": "my-sons-a-queer-but-what-can-you-do-west-end-2023",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
         "days-from-own:1323",
         "days-from-closer:8"
       ],
@@ -262,6 +443,19 @@
       ],
       "reviewFile": "data/review-texts/oh-mary-2024/cititour--unknown.json",
       "url": "https://cititour.com/NYC_News/Bowen-Yang-Extends-Run-in-Broadways-Oh-Mary/11061",
+      "reason": "publish-date"
+    },
+    {
+      "currentShowId": "oh-mary-2024",
+      "suggestedShowId": "oh-mary-tour-2026",
+      "confidence": "high",
+      "signals": [
+        "publish-date-mismatch",
+        "days-from-own:827",
+        "days-from-closer:27"
+      ],
+      "reviewFile": "data/review-texts/oh-mary-2024/deadline--unknown.json",
+      "url": "https://deadline.com/2026/10/j-harrison-ghee-oh-mary-john-andrew-morrison-123716",
       "reason": "publish-date"
     },
     {
@@ -305,17 +499,16 @@
       "reason": "publish-date"
     },
     {
-      "currentShowId": "school-pictures-off-broadway-2026",
-      "suggestedShowId": "school-pictures-off-broadway-2023",
+      "currentShowId": "stranger-things-the-first-shadow-west-end-2023",
+      "suggestedShowId": "stranger-things-2024",
       "confidence": "high",
       "signals": [
         "publish-date-mismatch",
-        "days-from-own:1061",
-        "days-from-closer:2",
-        "duplicate-in-suggested-dir"
+        "days-from-own:645",
+        "days-from-closer:150"
       ],
-      "reviewFile": "data/review-texts/school-pictures-off-broadway-2026/theatermania--zachary-stewart.json",
-      "url": "https://www.theatermania.com/news/reviews-school-pictures-amusements-and-sad-boy",
+      "reviewFile": "data/review-texts/stranger-things-the-first-shadow-west-end-2023/telegraph--marianka-swain.json",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-land-of-the-living-review-na",
       "reason": "publish-date"
     },
     {
@@ -332,19 +525,6 @@
       "reason": "publish-date"
     },
     {
-      "currentShowId": "the-notebook-tour-2025",
-      "suggestedShowId": "the-notebook-2024",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:463",
-        "days-from-closer:78"
-      ],
-      "reviewFile": "data/review-texts/the-notebook-tour-2025/broadwayworld--deborah-bostock-kelley.json",
-      "url": "https://www.broadwayworld.com/tampa/article/Review-THE-NOTEBOOK-MUSICAL-at-Straz",
-      "reason": "publish-date"
-    },
-    {
       "currentShowId": "titanique-west-end-2024",
       "suggestedShowId": "titanique-2026",
       "confidence": "high",
@@ -356,19 +536,6 @@
       ],
       "reviewFile": "data/review-texts/titanique-west-end-2024/deadline--greg-evans.json",
       "url": "https://deadline.com/2026/05/titanique-tour-1236915666/",
-      "reason": "publish-date"
-    },
-    {
-      "currentShowId": "to-kill-a-mockingbird-west-end-2026",
-      "suggestedShowId": "to-kill-a-mockingbird-west-end-2022",
-      "confidence": "high",
-      "signals": [
-        "publish-date-mismatch",
-        "days-from-own:1552",
-        "days-from-closer:0"
-      ],
-      "reviewFile": "data/review-texts/to-kill-a-mockingbird-west-end-2026/telegraph--dominic-cavendish.json",
-      "url": "https://www.telegraph.co.uk/theatre/what-to-see/kill-mockingbird-review-aaron-so",
       "reason": "publish-date"
     },
     {
@@ -392,17 +559,6 @@
       ],
       "reviewFile": "data/review-texts/cyrano-de-bergerac-2007/whatsonstage--unknown.json",
       "url": "https://www.whatsonstage.com/news/review-cyrano-de-bergerac-playhouse-theatre_50",
-      "reason": "venue"
-    },
-    {
-      "currentShowId": "the-score-regional-2026",
-      "suggestedShowId": "the-score-west-end-2025",
-      "confidence": "medium",
-      "signals": [
-        "venue-slug-match"
-      ],
-      "reviewFile": "data/review-texts/the-score-regional-2026/standard--tim-bano.json",
-      "url": "https://www.standard.co.uk/culture/theatre/the-score-theatre-royal-haymarket-rev",
       "reason": "venue"
     }
   ]

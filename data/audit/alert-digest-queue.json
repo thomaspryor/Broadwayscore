@@ -136,20 +136,6 @@
     "queuedAt": "2026-10-25T14:15:42.566Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T14:53:12.709Z"
-  },
-  {
     "conditionKey": "corpus-drift:contradicted-flag-basis",
     "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
     "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 2807 shows scanned, 1 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
@@ -176,20 +162,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T15:10:18.277Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, cross-show-url, body-date-mismatch, unknown-outlets, +11 more). Checked 2026-10-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T15:42:22.321Z"
   },
   {
     "conditionKey": "cron-health:GitLab Code Mirror",
@@ -228,5 +200,351 @@
       }
     ],
     "queuedAt": "2026-10-25T15:22:55.022Z"
+  },
+  {
+    "conditionKey": "llm-scoring:daily-cost-breach",
+    "title": "LLM scoring daily spend over budget",
+    "description": "Rolling 24h LLM scoring cost $21.55 exceeds the $10.00 llmScoringDailyUsd alarm line, across all GitHub runs.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T17:22:26.249Z"
+  },
+  {
+    "conditionKey": "slug-misroute:f99ee68ebd1c",
+    "title": "133 new slug-misroute finding(s)",
+    "description": "133 review file(s) appear misrouted and are not yet dispositioned. Nothing was changed automatically. To triage LOCALLY:\n1) node scripts/audit-slug-match-routing.js\n2) node scripts/verify-misroute-content.js --include-flagged --include-oos\n3) gated apply per scripts/apply-slug-misroute-whitelist.js header (snapshot → ff-only → --apply → rebuild → spot-check)\nTo silence a finding you've decided to leave: node scripts/disposition-misroute.js add --from=ID --file=F --reason=\"...\"",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "amny--matt-windman.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "bloomberg--jason-zinoman.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "broadwaynews--charles-isherwood.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "deadline--jeremy-gerard.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "ew--isabella-biedenharn.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "nbcny--robert-kahn.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "newsday--elisabeth-vincentelli.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "nydailynews--joe-dziemianowicz.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "nytimes--ben-brantley.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "thewrap--thom-geier.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "timeout--adam-feldman.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "variety--marilyn-stasio.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "1984-2017 → opening-night-west-end-2024",
+        "value": "vulture--christopher-bonanos.json (article 2017, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "an-ark-off-broadway-2026 → ian-mckellen-acting-shakespeare-1984",
+        "value": "culturesauce--thom-geier.json (article 2026, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "annie-1977 → whoopi-goldberg-1984",
+        "value": "lincoln-journal-star--unknown.json (article 2024, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "becky-shaw-2026 → monte-cristo-the-york-theatre-company-off-broadway-2026",
+        "value": "nysr--david-finkle.json (article 2026, class-A)"
+      },
+      {
+        "name": "becky-shaw-2026 → monte-cristo-the-york-theatre-company-off-broadway-2026",
+        "value": "nytimes--elisabeth-vincentelli.json (article 2026, class-A)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "cititour--brian-scott-lipton.json (article 2024, class-C)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "new-york-sun--elysa-gardner.json (article 2024, class-C)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "nytg--gillian-russo.json (article 2024, class-C)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "theatrely--joey-sims.json (article 2024, class-C)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "thewrap--robert-hofler.json (article 2024, class-C)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "timeout--regina-robbins.json (article 2024, class-C)"
+      },
+      {
+        "name": "broadway-1987 → heart-of-rock-and-roll-2024",
+        "value": "vulture--unknown.json (article 2024, class-C)"
+      },
+      {
+        "name": "bull-off-west-end-2026 → the-imaginary-invalid-2026",
+        "value": "exeunt-magazine--juliet-hindell.json (article 2025, from-also-full-match)"
+      },
+      {
+        "name": "bull-off-west-end-2026 → the-imaginary-invalid-2026",
+        "value": "nysr--david-finkle.json (article 2025, from-also-full-match)"
+      },
+      {
+        "name": "bull-off-west-end-2026 → the-imaginary-invalid-2026",
+        "value": "stagebuddy--elyse-trevers.json (article 2025, from-also-full-match)"
+      },
+      {
+        "name": "bull-off-west-end-2026 → the-imaginary-invalid-2026",
+        "value": "theater-pizzazz--ron-fassler.json (article 2025, from-also-full-match)"
+      },
+      {
+        "name": "caroline-or-change-2004 → caroline-or-change-west-end-2018",
+        "value": "amny--matt-windman.json (article 2021, to-year-far,from-also-full-match)"
+      },
+      {
+        "name": "caroline-or-change-2004 → caroline-or-change-west-end-2018",
+        "value": "broadwaynews--charles-isherwood.json (article 2021, to-year-far,from-also-full-match)"
+      }
+    ],
+    "queuedAt": "2026-10-25T17:29:38.152Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6210-money-gate",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6210-money-gate",
+    "description": "land.yml did not land land/bro-6210-money-gate: the unit-tests-node gate went red at 35022500e7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40215763303",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6210-money-gate"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "35022500e7a60969d4193ca979f8b2b759d98348"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40215763303"
+      }
+    ],
+    "queuedAt": "2026-10-25T17:38:43.670Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:murder-cathedral-off-west-end-2026",
+    "title": "Review gap — \"Murder in the Cathedral\" missing 1 cited review(s)",
+    "description": "Murder in the Cathedral (murder-cathedral-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=murder-cathedral-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T18:07:06.301Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T18:07:14.004Z"
+  },
+  {
+    "conditionKey": "bd-circuit-breaker-web_unlocker2",
+    "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1871/1750 reqs)",
+    "description": "Zone web_unlocker2 billed 1871 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n16 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (1070), opening-night-poller.js (600), collect-review-texts.js (354).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T17:55:32.975Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2625-nested-new-artifact",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-2625-nested-new-artifact",
+    "description": "land.yml did not land land/bro-2625-nested-new-artifact: the scripts-lib-tests gate went red at 1f47ff0c08. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40218580787",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2625-nested-new-artifact"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "1f47ff0c08bf725c45b200248406fb3f16df3966"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40218580787"
+      }
+    ],
+    "queuedAt": "2026-10-25T18:07:18.273Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6214",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6214",
+    "description": "land.yml did not land land/bro-6214: the unit-tests-node gate went red at 2f9c1fee03. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40218452037",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6214"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2f9c1fee0353707906d8b09b21e81f5c5ee0b6df"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40218452037"
+      }
+    ],
+    "queuedAt": "2026-10-25T18:09:29.034Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2617-gc-per-repo",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2617-gc-per-repo",
+    "description": "land.yml did not land land/bro-2617-gc-per-repo: the unit-tests-node gate went red at 05dc49963d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40218546590",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2617-gc-per-repo"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "05dc49963dd432f60961579094eb21990538bfc0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40218546590"
+      }
+    ],
+    "queuedAt": "2026-10-25T18:08:54.209Z"
+  },
+  {
+    "conditionKey": "land:land/mac-cloud-phase0",
+    "title": "Landing blocked: unit-tests-node red on land/mac-cloud-phase0",
+    "description": "land.yml did not land land/mac-cloud-phase0: the unit-tests-node gate went red at 040496dac2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40218988420",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/mac-cloud-phase0"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "040496dac2c1a35df5daadfd767b4b74debb161e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40218988420"
+      }
+    ],
+    "queuedAt": "2026-10-25T18:17:28.717Z"
   }
 ]
