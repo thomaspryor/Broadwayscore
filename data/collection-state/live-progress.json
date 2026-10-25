@@ -1,21 +1,49 @@
 {
-  "updatedAt": "2026-10-25T04:57:45.835Z",
-  "processed": 101,
-  "failed": 92,
-  "successRate": "52.3%",
+  "updatedAt": "2026-10-25T05:04:47.264Z",
+  "processed": 114,
+  "failed": 99,
+  "successRate": "53.5%",
   "tierBreakdown": {
-    "playwright": 73,
+    "playwright": 82,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 7,
-    "scrapingbee": 6,
-    "brightdata": 0,
+    "scrapingbee": 8,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 13
+    "archive": 14
   },
   "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-10-25T03:52:33.677Z",
+      "event": "bb-session",
+      "session": "a81b2502",
+      "url": "https://www.nytimes.com/2026/01/28/theater/watch-me-walk-ulysses-under-the-radar"
+    },
+    {
+      "t": "2026-10-25T03:52:34.229Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T03:55:11.060Z",
+      "event": "bb-session",
+      "session": "402c45d4",
+      "url": "https://www.nytimes.com/2025/12/21/theater/picnic-at-hanging-rock-musical-review"
+    },
+    {
+      "t": "2026-10-25T03:55:11.627Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:02:23.055Z",
+      "event": "bb-session",
+      "session": "943c8f62",
+      "url": "https://www.wsj.com/arts-culture/film/father-mother-sister-brother-review-jim-ja"
+    },
     {
       "t": "2026-10-25T04:02:23.593Z",
       "event": "bb-cookie-inject",
@@ -29,58 +57,6 @@
     },
     {
       "t": "2026-10-25T04:13:27.450Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T04:38:34.837Z",
-      "event": "bb-session",
-      "session": "b518331d",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
-    },
-    {
-      "t": "2026-10-25T04:39:23.237Z",
-      "event": "bb-session",
-      "session": "d7d3c426",
-      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
-    },
-    {
-      "t": "2026-10-25T04:39:32.350Z",
-      "event": "bb-session",
-      "session": "f72fe45b",
-      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
-    },
-    {
-      "t": "2026-10-25T04:40:08.682Z",
-      "event": "bb-session",
-      "session": "8ce4c311",
-      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
-    },
-    {
-      "t": "2026-10-25T04:40:18.099Z",
-      "event": "bb-session",
-      "session": "c007e9ae",
-      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
-    },
-    {
-      "t": "2026-10-25T04:41:19.431Z",
-      "event": "bb-session",
-      "session": "ea341c32",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-25T04:41:20.309Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T04:41:29.543Z",
-      "event": "bb-session",
-      "session": "d6bf6d8e",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-25T04:41:30.319Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
