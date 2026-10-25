@@ -50,7 +50,8 @@
     "other-off-broadway-2025/off-off-online--deirdre-donovan.json",
     "other-off-broadway-2025/theater-scene--tony-marinelli.json",
     "the-glitch-off-broadway-2025/exeunt-magazine--unknown.json",
-    "the-glitch-off-broadway-2025/theater-scene--tony-marinelli.json"
+    "the-glitch-off-broadway-2025/theater-scene--tony-marinelli.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "picnic-at-hanging-rock-off-broadway-2025/la-voce-di-new-york--elise-nussbaum.json",
@@ -64,7 +65,17 @@
     "other-off-broadway-2025/observer--unknown.json",
     "other-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
     "heaux-church-off-broadway-2025/theater-scene--unknown.json",
-    "other-off-broadway-2025/chicagotribune--unknown.json"
+    "other-off-broadway-2025/chicagotribune--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/timeout--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/hotelbelleclaire--unknown.json",
+    "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -112,18 +123,22 @@
       "other-off-broadway-2025/off-off-online--deirdre-donovan.json",
       "other-off-broadway-2025/theater-scene--tony-marinelli.json",
       "the-glitch-off-broadway-2025/exeunt-magazine--unknown.json",
-      "the-glitch-off-broadway-2025/theater-scene--tony-marinelli.json"
+      "the-glitch-off-broadway-2025/theater-scene--tony-marinelli.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/reunions-off-broadway-2025/wsj--unknown.json"
+      "data/review-texts/reunions-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "picnic-at-hanging-rock-off-broadway-2025/new-york-notebook--sandy-macdonald.json",
       "reunions-off-broadway-2025/theater-life--samuel-l-leiter.json",
       "reunions-off-broadway-2025/theater-scene--victor-gluck.json",
-      "playing-shylock-off-broadway-2025/theater-life--samuel-l-leiter.json"
+      "playing-shylock-off-broadway-2025/theater-life--samuel-l-leiter.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [
       "picnic-at-hanging-rock-off-broadway-2025/new-york-sun--elysa-gardner.json",
@@ -140,7 +155,7 @@
     ]
   },
   "startTime": "2026-10-25T03:51:52.619Z",
-  "lastProcessed": "the-glitch-off-broadway-2025/theater-scene--tony-marinelli.json",
+  "lastProcessed": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026/metopera-org--unknown.json",
   "log": [
     {
       "t": "2026-10-25T03:52:33.677Z",
@@ -185,6 +200,76 @@
       "t": "2026-10-25T04:13:27.450Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:38:34.837Z",
+      "event": "bb-session",
+      "session": "b518331d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-25T04:39:23.237Z",
+      "event": "bb-session",
+      "session": "d7d3c426",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T04:39:32.350Z",
+      "event": "bb-session",
+      "session": "f72fe45b",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T04:40:08.682Z",
+      "event": "bb-session",
+      "session": "8ce4c311",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T04:40:18.099Z",
+      "event": "bb-session",
+      "session": "c007e9ae",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T04:41:19.431Z",
+      "event": "bb-session",
+      "session": "ea341c32",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T04:41:20.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:41:29.543Z",
+      "event": "bb-session",
+      "session": "d6bf6d8e",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T04:41:30.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:42:48.869Z",
+      "event": "bb-session",
+      "session": "4f8ec621",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T04:42:57.534Z",
+      "event": "bb-session",
+      "session": "aba9a8c2",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T04:44:17.412Z",
+      "event": "bb-session",
+      "session": "b05ccec6",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }

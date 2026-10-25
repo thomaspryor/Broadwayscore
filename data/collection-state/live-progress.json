@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-25T04:15:29.795Z",
-  "processed": 51,
-  "failed": 12,
-  "successRate": "81.0%",
+  "updatedAt": "2026-10-25T04:44:31.388Z",
+  "processed": 52,
+  "failed": 22,
+  "successRate": "70.3%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 4,
+    "scrapingdog": 5,
     "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
     "archive": 5
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
       "t": "2026-10-25T03:52:33.677Z",
@@ -59,6 +59,76 @@
       "t": "2026-10-25T04:13:27.450Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:38:34.837Z",
+      "event": "bb-session",
+      "session": "b518331d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-25T04:39:23.237Z",
+      "event": "bb-session",
+      "session": "d7d3c426",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T04:39:32.350Z",
+      "event": "bb-session",
+      "session": "f72fe45b",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-25T04:40:08.682Z",
+      "event": "bb-session",
+      "session": "8ce4c311",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T04:40:18.099Z",
+      "event": "bb-session",
+      "session": "c007e9ae",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-25T04:41:19.431Z",
+      "event": "bb-session",
+      "session": "ea341c32",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T04:41:20.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:41:29.543Z",
+      "event": "bb-session",
+      "session": "d6bf6d8e",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-25T04:41:30.319Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-25T04:42:48.869Z",
+      "event": "bb-session",
+      "session": "4f8ec621",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T04:42:57.534Z",
+      "event": "bb-session",
+      "session": "aba9a8c2",
+      "url": "https://www.hotelbelleclaire.com/events/new-york/metropolitan-opera-lincoln-in-t"
+    },
+    {
+      "t": "2026-10-25T04:44:17.412Z",
+      "event": "bb-session",
+      "session": "b05ccec6",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
