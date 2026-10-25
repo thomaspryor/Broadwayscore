@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-25T17:00:27.516Z",
+  "runDate": "2026-10-25T17:11:59.972Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 59,
+    "processed": 1,
+    "failed": 54,
     "skipped": 0,
-    "successRate": "3.3%"
+    "successRate": "1.8%"
   },
   "tierBreakdown": {
     "playwright": 64,
@@ -22,30 +22,30 @@
     "browserbase": 11,
     "directCookies": 0,
     "scrapingdog": 2,
-    "scrapingbee": 6,
+    "scrapingbee": 7,
     "brightdata": 9,
     "archiveToday": 0,
     "archive": 15
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 3,
+    "tier2Attempts": 1,
     "tier2Success": 1,
-    "tier3Attempts": 3,
-    "tier3Success": 2,
-    "tier3_6Attempts": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 59,
-    "scrapingBeePageCredits": 10,
+    "totalFailed": 54,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,12 +54,12 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 2,
-    "failed": 59,
+    "processed": 1,
+    "failed": 54,
     "shows": [
+      "aftermath-art-new-york-off-broadway-2026",
       "aint-no-mo-2022",
       "all-my-sons-2008",
-      "anna-christie-off-broadway-2025",
       "appropriate-2023",
       "clybourne-park-2012",
       "come-back-little-sheba-2008",
@@ -75,15 +75,10 @@
       "inherit-the-wind-2007",
       "is-he-dead-2007",
       "jesus-christ-superstar-2012",
-      "joy-a-new-true-musical-off-broadway-2025",
-      "just-for-us-2023",
       "kiss-me-kate-2019",
-      "laowang-a-chinatown-king-lear-off-broadway-2025",
       "macbeth-2008",
       "mary-jane-2024",
       "motown-the-musical-2013",
-      "not-ready-for-prime-time-off-broadway-2025",
-      "oh-mary-off-broadway-2024",
       "ohio-state-murders-2022",
       "on-a-clear-day-you-can-see-forever-2011",
       "picnic-2013",
@@ -114,13 +109,12 @@
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
-      "processed": 98,
-      "failed": 32
+      "processed": 100,
+      "failed": 86
     }
   },
   "processed": [
-    "laowang-a-chinatown-king-lear-off-broadway-2025/the-interested-bystander--cary-wong.json",
-    "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
+    "aftermath-art-new-york-off-broadway-2026/new-york-sun--unknown.json"
   ],
   "failed": [
     "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
@@ -163,15 +157,10 @@
     "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
     "kiss-me-kate-2019/usatoday--david-rooney.json",
     "clybourne-park-2012/usatoday--elysa-gardner.json",
-    "anna-christie-off-broadway-2025/thewrap--robert-hofler.json",
-    "joy-a-new-true-musical-off-broadway-2025/variety--brent-lang.json",
     "tammy-faye-2024/stageandcinema--mike-mineo.json",
     "the-wiz-2024/indiewire--sarah-shachat.json",
     "the-whos-tommy-2024/hollywood-reporter--angie-han.json",
-    "oh-mary-off-broadway-2024/chicago-sun-times--unknown.json",
-    "oh-mary-off-broadway-2024/sunday-times--unknown.json",
     "the-shark-is-broken-2023/hollywood-reporter--angie-han.json",
-    "just-for-us-2023/chicagotribune--emily-mcclanathan.json",
     "grey-house-2023/stageandcinema--simi-horwitz.json",
     "the-collaboration-2022/hollywood-reporter--anita-gates.json",
     "the-collaboration-2022/times-uk--jesse-green.json",
@@ -284,7 +273,8 @@
       "fun-home-2015/broadwayworld--unknown.json",
       "fun-home-2015/onstage-blog--tara-kennedy.json",
       "laowang-a-chinatown-king-lear-off-broadway-2025/the-interested-bystander--cary-wong.json",
-      "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json"
+      "not-ready-for-prime-time-off-broadway-2025/the-interested-bystander--cary-wong.json",
+      "aftermath-art-new-york-off-broadway-2026/new-york-sun--unknown.json"
     ],
     "failed": [
       "anna-christie-off-broadway-2025/thewrap--robert-hofler.json",
@@ -467,7 +457,8 @@
       "funny-girl-2022/usatoday--unknown.json",
       "the-devil-wears-prada-west-end-2024/mail-on-sunday--unknown.json",
       "the-brothers-size-off-broadway-2025/new-york-sun--elysa-gardner.json",
-      "duke-and-roya-off-broadway-2025/new-york-sun--elysa-gardner.json"
+      "duke-and-roya-off-broadway-2025/new-york-sun--elysa-gardner.json",
+      "aftermath-art-new-york-off-broadway-2026/new-york-sun--unknown.json"
     ],
     "brightdata": [
       "anna-christie-off-broadway-2025/observer--david-cote.json",
@@ -499,14 +490,6 @@
       "fun-home-2015/broadwayworld--unknown.json"
     ]
   },
-  "failuresByOutlet": {
-    "TheWrap": {
-      "count": 1,
-      "domain": "thewrap.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
