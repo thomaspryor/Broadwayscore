@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6153-gap-b",
   "planId": "f3ca8ded-4b37-47bd-b3f0-4c5ae7c1c999",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T01:26:42.375Z",
   "submitter": {
     "name": null,
@@ -274,5 +274,59 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T01:37:34.714Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added other-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added playing-shylock-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added richard-ii-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added art-of-leaving-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added nothing-can-take-you-from-the-hand-of-god-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-nights-dream-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added sulfur-bottom-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added messy-white-gays-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-honey-trap-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added crooked-cross-off-broadway-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
