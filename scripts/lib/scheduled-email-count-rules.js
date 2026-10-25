@@ -207,4 +207,20 @@ function decideDayMissing(dayBucket, dayKey = null) {
   return { missing: !primaryFired, primaryFired, senderCount, missingExpected };
 }
 
-module.exports = { SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };
+// BRO-6157: `scheduled-email-missing:<sender>:<day>` is keyed by the missed day,
+// so once that day is over nothing could ever clear it, and its card's
+// "no longer fires" acceptance check sat at exit 1/3 forever. A missed day is
+// recovered when the sender delivered on the latest complete day: return the
+// older open keys for that sender so the monitor can resolve them.
+function recoveredMissingKeys(conditionKeys, days, yesterdayKey) {
+  const yesterday = days && days.get ? days.get(yesterdayKey) : null;
+  if (!yesterday || !yesterday.senders) return [];
+  const out = [];
+  for (const key of conditionKeys || []) {
+    const m = /^scheduled-email-missing:(.+):(\d{4}-\d{2}-\d{2})$/.exec(key);
+    if (m && m[2] < yesterdayKey && yesterday.senders.has(m[1])) out.push(key);
+  }
+  return out;
+}
+
+module.exports = { recoveredMissingKeys, SCHEDULED_SENDERS, EXPECTED_SENDER_KEYS, classifySubject, dayKeyET, buildDailyReport, decideDayViolation, decideDayMissing, PRIMARY_SENDER_KEY, RETIRED_FORGIVENESS_ENDS };

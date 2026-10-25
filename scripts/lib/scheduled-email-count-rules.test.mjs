@@ -269,3 +269,19 @@ test('decideDayViolation: an event-driven sender flags only a repeated identical
   assert.equal(repeated.violation, true);
   assert.deepEqual(repeated.duplicateKeys, ['reddit-post-ready']);
 });
+
+import { createRequire as _cr6157 } from 'node:module';
+import _t6157 from 'node:test';
+import _a6157 from 'node:assert/strict';
+const _rules6157 = _cr6157(import.meta.url)('./scheduled-email-count-rules.js');
+_t6157('BRO-6157 recoveredMissingKeys resolves older missed days once the sender delivered yesterday', () => {
+  const days = new Map([['2026-10-24', { senders: new Set(['opening-digest']) }]]);
+  const keys = [
+    'scheduled-email-missing:opening-digest:2026-10-23',
+    'scheduled-email-missing:morning-digest:2026-10-23',
+    'scheduled-email-missing:opening-digest:2026-10-24',
+    'scheduled-email-count:unexpected-x',
+  ];
+  _a6157.deepEqual(_rules6157.recoveredMissingKeys(keys, days, '2026-10-24'), ['scheduled-email-missing:opening-digest:2026-10-23']);
+  _a6157.deepEqual(_rules6157.recoveredMissingKeys(keys, new Map(), '2026-10-24'), []);
+});
