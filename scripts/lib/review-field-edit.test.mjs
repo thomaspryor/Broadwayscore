@@ -828,3 +828,8 @@ test('outletId relabel is refused for any other outlet, a non-AP url, or a stale
   assert.equal(applyReviewFieldEdit({ ...wire, outletId: 'nypost' }, act, stamp).ok, false);
   assert.equal(applyReviewFieldEdit({ ...wire, _locked: true }, act, stamp).ok, false);
 });
+
+test('outletId relabel tests the url path, not a query string (BRO-5289)', () => {
+  const rec = { outletId: 'nytimes', url: 'https://www.nytimes.com/2013/x.html?ref=/article/AP216f8806ddad4b8b9837a6702e4b81cb' };
+  assert.equal(applyReviewFieldEdit(rec, { field: 'outletId', oldValue: 'nytimes', newValue: 'ap' }, stamp).ok, false);
+});

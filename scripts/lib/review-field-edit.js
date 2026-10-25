@@ -149,7 +149,9 @@ const FIELD_VALUE_CHECKS = {
   outletId: (v, record) => {
     const { AP_WIRE_URL } = require('./ap-wire-detect');
     if (v !== 'ap') return "outletId may only be relabelled to 'ap'";
-    if (typeof record.url !== 'string' || !AP_WIRE_URL.test(record.url)) return 'outletId: relabel to ap needs an AP wire url (/article/AP<32 hex>) on the record';
+    let pathname = null;
+    try { pathname = new URL(record.url).pathname; } catch { /* not a url */ }
+    if (!pathname || !AP_WIRE_URL.test(pathname)) return 'outletId: relabel to ap needs an AP wire url (/article/AP<32 hex>) on the record';
     return null;
   },
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
