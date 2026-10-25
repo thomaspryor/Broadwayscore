@@ -21,7 +21,7 @@
       "BRO-4937: Body names Ramin Karimloo, Will Swenson, Laurence Connor, James Powell and the Imperial, identifying the 2014 revival. Missing publication date does not contradict that evidence.",
       "BRO-4937: Body is a show synopsis and email-alert promotion, not a review. isNonReview:true and its BRO-4270 show-hub reason already exclude it; retain those flags and restore the historical exclusion.",
       "BRO-4937: Body is return-engagement promotional copy quoting other outlets, not an Alex Wood review. isNonReview:true and nonReviewType:preview already exclude it; retain those flags and restore the historical exclusion.",
-      "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion rather than permanently clearing this contaminated record.",
+      "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion for this contaminated record.",
       "BRO-4937: Surviving text explicitly names Sam Gold as director. The 2013 show director is John Tiffany; the 2017 show director is Sam Gold. Missing URL does not justify clearing this production mismatch.",
       "BRO-4937: Current record has tierReason:Wrong show, incompleteReason:url_content_mismatch and no body to support a production clear. Restore the historical exclusion; no metadata inferred from the current URL."
     ],
@@ -121,7 +121,7 @@
         "field": "wrongProduction",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion rather than permanently clearing this contaminated record."
+        "description": "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion for this contaminated record."
       },
       {
         "type": "review-field-edit",
