@@ -26,9 +26,23 @@
 // new Form D maximum. A plan that also sets capitalizationBasis lists it
 // after; when the re-derived value is already there it counts as the
 // planned oldValue.
+//
+// A costHistory edit must be an array of anchors that pass anchorErrors.
 const { canonicalDesignation } = require('./commercial-designations');
 const { stampDesignationBasis } = require('./commercial-apply-gate');
 const { capitalizationBasisFromText, isBareCapitalizationSource, retagCapitalizationBasis } = require('./public-source-text');
+
+// A redated anchor's own dates must agree (BRO-6218): asOf inside the period it
+// measured, and no later than the report (the cost-anchor ledger's rule).
+function anchorPeriodErrors(a) {
+  const errs = [];
+  if (!a || typeof a !== 'object') return errs;
+  if (a.periodStart && a.periodEnd && a.periodStart > a.periodEnd) errs.push('periodStart is after periodEnd');
+  if (a.periodStart && a.asOf < a.periodStart) errs.push('asOf is before periodStart');
+  if (a.periodEnd && a.asOf > a.periodEnd) errs.push('asOf is after periodEnd');
+  if (a.reportedAt && a.asOf > a.reportedAt) errs.push('asOf is later than reportedAt');
+  return errs;
+}
 
 function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, now = new Date().toISOString()) {
   const record = commercial && commercial.shows && commercial.shows[slug];
@@ -45,6 +59,15 @@ function applyCommercialFieldEdit(commercial, slug, field, oldValue, newValue, n
   // a URL, or state its basis; a bare outlet name leaves the basis a guess.
   if (field === 'capitalizationSource' && isBareCapitalizationSource(newValue)) {
     return { ok: false, reason: `commercial.json:capitalizationSource for "${slug}" names an outlet but quotes nothing; quote the sentence, give a URL, or state "up to"/"sold" wording` };
+  }
+
+  // BRO-6218: the model silently drops a malformed anchor, so a plan that
+  // writes one would lose the figure without a word; refuse it instead.
+  if (field === 'costHistory') {
+    if (!Array.isArray(newValue)) return { ok: false, reason: `commercial.json:costHistory for "${slug}" must be an array` };
+    const { anchorErrors } = require('./cost-history');
+    const bad = newValue.map((a, i) => [i, [...anchorErrors(a), ...anchorPeriodErrors(a)]]).find(([, errs]) => errs.length);
+    if (bad) return { ok: false, reason: `commercial.json:costHistory[${bad[0]}] for "${slug}": ${bad[1].join('; ')}` };
   }
 
   if (field === 'designation') {

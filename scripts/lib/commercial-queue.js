@@ -141,7 +141,10 @@ function addToQueue(queue, slugs, trigger) {
  * before this date is selected by the automatic sweeps below.
  */
 const COMMERCIAL_RESEARCH_FLOOR = '2020-01-01';
-const DEFAULT_MIN_WEEKS = 8;
+// Every opened run counts (BRO-6218): an 8-week floor hid the short
+// reopening-era runs (Pass Over, Is This a Room, Slave Play's return), which
+// lost money too. Callers can still pass minWeeks.
+const DEFAULT_MIN_WEEKS = 0;
 
 function commercialEntryFor(commShows, s) {
   return commShows[s.slug] || commShows[s.id] || null;
@@ -162,7 +165,7 @@ function weeksRun(s, todayStr) {
 
 /**
  * Self-healing sweep (BRO-4990): CLOSED Broadway shows that opened on/after
- * the floor, ran at least minWeeks, and have no commercial.json record at
+ * the floor, ran at least minWeeks (default: any run), and have no commercial.json record at
  * all. The event triggers (new-show, pre-opening, closing) miss any show
  * whose window passed while a workflow was down or before the trigger
  * existed: 24 shows from 2021-2023 sat uncovered that way. Open/previews
@@ -192,7 +195,7 @@ function filterUncoveredClosedShows(shows, commercial, todayStr, opts = {}) {
 /**
  * Coverage by season for the weekly health output (BRO-4990). Counts
  * Broadway shows that opened on/after `since`. "eligible" = ran (or has been
- * running) at least minWeeks; "covered" = has a commercial.json record;
+ * running) at least minWeeks (default: opened at all); "covered" = has a commercial.json record;
  * "resolved" = that record's designation is not TBD.
  * @returns {{season:string, inScope:number, eligible:number, covered:number, resolved:number, uncovered:string[]}[]}
  */

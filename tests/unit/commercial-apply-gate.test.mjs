@@ -811,6 +811,26 @@ describe('bare capitalizationSource (BRO-5815)', () => {
     assert.equal(good.ok, true);
     assert.equal(c.shows.x.capitalizationBasis, 'maximum');
   });
+
+  it('applyCommercialFieldEdit writes a valid costHistory and refuses a malformed anchor (BRO-6218)', () => {
+    const old = [{ asOf: '2025-09-07', amount: 1500000, kind: 'running-cost', sourceType: 'trade', sourceUrl: 'https://example.com/a', note: 'n' }];
+    const mk = () => ({ shows: { x: { costHistory: old } } });
+    const redated = [{ ...old[0], asOf: '2024-05-15', periodStart: '2024-04-21', periodEnd: '2024-06-08', reportedAt: '2025-09-25', dateBasis: 'period-midpoint' }];
+    const c = mk();
+    assert.equal(applyCommercialFieldEdit(c, 'x', 'costHistory', old, redated).ok, true);
+    assert.equal(c.shows.x.costHistory[0].asOf, '2024-05-15');
+    const noUrl = applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, [{ ...redated[0], sourceUrl: null }]);
+    assert.equal(noUrl.ok, false);
+    assert.match(noUrl.reason, /costHistory\[0\].*sourceUrl/);
+    assert.equal(applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, { asOf: '2024-05-15' }).ok, false);
+    const outside = applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, [{ ...redated[0], asOf: '2024-07-01' }]);
+    assert.match(outside.reason, /asOf is after periodEnd/);
+    const early = applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, [{ ...redated[0], reportedAt: '2024-05-01' }]);
+    assert.match(early.reason, /later than reportedAt/);
+    // Compare-and-set on the whole array: a plan built on a stale copy is refused.
+    const stale = applyCommercialFieldEdit(mk(), 'x', 'costHistory', [{ ...old[0], amount: 1 }], redated);
+    assert.equal(stale.ok, false);
+  });
 });
 
 describe('buildCommercialEntry: a brand-new record always has a designation (BRO-5824)', () => {

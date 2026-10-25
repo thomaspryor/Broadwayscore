@@ -555,8 +555,8 @@ async function main() {
   const showKeyIndex = buildShowKeyIndex(allShows);
   const toSlug = (t) => resolveCommercialSlug(t, null, showKeyIndex).slug;
   const queuedTriggers = {};
-  // BRO-4990 backfill: closed shows (opened since the 2020 floor, ran 8+
-  // weeks) with no commercial.json record. However they get targeted (weekly
+  // BRO-4990 backfill: closed shows (opened since the 2020 floor, any run
+  // length) with no commercial.json record. However they get targeted (weekly
   // sweep, --shows dispatch), their research goes to pending review ONLY,
   // flagged requiresHumanReview: no TBD stub in commercial.json and no bulk
   // auto-apply (owner plan 2026-10-10: no commercial.json writes alongside
@@ -617,7 +617,7 @@ async function main() {
     // for a human instead of being re-researched every Saturday.
     const uncoveredClosedSlugs = [...backfillSlugSet].filter(slug => !pendingAtStart[slug]);
     if (uncoveredClosedSlugs.length > 0) {
-      console.log(`Uncovered closed shows (since ${COMMERCIAL_RESEARCH_FLOOR}, 8+ weeks): ${uncoveredClosedSlugs.length}`);
+      console.log(`Uncovered closed shows (since ${COMMERCIAL_RESEARCH_FLOOR}, all runs): ${uncoveredClosedSlugs.length}`);
     }
     const uncoveredSlugs = [...new Set([...uncoveredOpenSlugs, ...uncoveredClosedSlugs])];
 

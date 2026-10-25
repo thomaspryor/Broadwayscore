@@ -30,6 +30,7 @@ const SOURCES = {
   received: 'https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit',
   allocated: 'https://www.broadwayworld.com/article/Exclusive-Inside-the-Numbers-Who-Benefited-and-Why-Broadway-Still-Needs-a-Tax-Credit-20250904',
   paid2026: 'https://news.bloombergtax.com/daily-tax-report/broadway-shows-backed-by-disney-billionaires-nab-ny-tax-credits',
+  nysFocus2026: 'https://nysfocus.com/2026/03/19/new-york-broadway-tax-credit-flops',
 };
 const LISTS_AS_OF = '2025-08-18';
 
@@ -51,6 +52,11 @@ const TAX_CREDIT_PROGRAM_END = new Date('2027-12-31');
  * 30 2023) take the later date, and the six $3M awards whose entity names no
  * show (DEH, Mrs. Doubtfire, Funny Girl, Harmony, The Notebook, Tommy) take the
  * latest unassigned $3M payout, Mar 10 2025: paid on or before that day.
+ *
+ * An optional third element is what ESD had allocated before it paid
+ * ([amount, date paid, allocated]): a run replayed before the payment counts
+ * that allocation, not the later payout (BRO-6218). Without it the payout
+ * stands in for the allocation.
  */
 const RECEIVED = {
   'the-phantom-of-the-opera-1988': [3000000, '2024-02-02'],
@@ -143,12 +149,18 @@ const RECEIVED = {
   'glengarry-glen-ross-2025': [2700000, '2026-06-02'],
   'an-enemy-of-the-people': [2300000, '2026-06-02'],
   'all-in-comedy-about-love-2024': [1474276, '2026-06-02'],
+  // New York Focus (Mar 19 2026), from ESD's payout list through Feb 2026:
+  // Tammy Faye "received $2.5 million from the state earlier this year" and
+  // Lempicka "got $2.6 million", both rounded as reported. Dated by the
+  // report, so paid on or before that day; both had $3M allocated on Aug 18
+  // 2025 (BRO-6218).
+  'tammy-faye-2024': [2500000, '2026-03-19', 3000000],
+  'lempicka': [2600000, '2026-03-19', 3000000],
 };
 
 /** Allocated by ESD from the application estimate, not yet paid on Aug 18 2025
  * (nor reported paid since). */
 const ALLOCATED = {
-  'lempicka': 3000000,
   'suffs': 3000000,
   'heart-of-rock-and-roll': 3000000,
   'how-to-dance-in-ohio': 3000000,
@@ -169,9 +181,8 @@ const ALLOCATED = {
   'left-on-tenth-2024': 2238013,
   'sunset-boulevard-2024': 3000000,
   'a-wonderful-world-the-louis-armstrong-musical-2024': 3000000,
-  // Tammy Faye and Dead Outlaw were paid "more than $2 million" by Jun 2 2026
-  // (Bloomberg Tax); the amounts are not published, so the allocation stands.
-  'tammy-faye-2024': 3000000,
+  // Dead Outlaw was paid "more than $2 million" by Jun 2 2026 (Bloomberg
+  // Tax); the amount is not published, so its allocation stands.
   'death-becomes-her': 3000000,
   'swept-away-2024': 3000000,
   'elf-2024': 1930752,
@@ -227,7 +238,7 @@ function nyTaxCredit({ slug, notesCredit, eligible, capitalization, qualifyingRu
   const paid = RECEIVED[slug];
   if (paid && Date.parse(paid[1]) <= +now) return { amount: paid[0], basis: 'received', received: true };
   if (notesCredit != null) return { amount: notesCredit, basis: 'notes', received: false };
-  const allocated = paid ? paid[0] : ALLOCATED[slug];
+  const allocated = paid ? (paid[2] ?? paid[0]) : ALLOCATED[slug];
   if (allocated != null) return { amount: allocated, basis: 'allocated', received: false };
   return { amount: formulaCredit(capitalization, qualifyingRunningCosts), basis: 'formula', received: false };
 }

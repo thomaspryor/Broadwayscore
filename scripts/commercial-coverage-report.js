@@ -4,7 +4,7 @@
  * Commercial coverage by season (BRO-4990).
  *
  * Weekly health output for commercial.json: of the Broadway shows that
- * opened since the research floor (2020-01-01) and ran 8+ weeks, how many
+ * opened since the research floor (2020-01-01), however short the run, how many
  * have a record and how many have a resolved (non-TBD) designation.
  * Uncovered shows are listed; the weekly research run's sweep picks them up.
  *
@@ -62,7 +62,7 @@ function main() {
     console.log(JSON.stringify(report, null, 2));
   } else {
     const lines = [
-      `## Commercial coverage (Broadway, opened since ${COMMERCIAL_RESEARCH_FLOOR}, ran 8+ weeks)`,
+      `## Commercial coverage (Broadway, opened since ${COMMERCIAL_RESEARCH_FLOOR}, all runs)`,
       '',
       '| Season | Eligible | Has record | Coverage | Resolved (not TBD) | Researched, awaiting review |',
       '|---|---|---|---|---|---|',

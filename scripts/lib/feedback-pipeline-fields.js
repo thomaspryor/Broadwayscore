@@ -106,6 +106,11 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // that finds the credit must be able to record it (BRO-5520). Values and
     // the Tour Stop pairing are checked by commercial-record-checks.js.
     'productionType',
+    // The dated cost anchors the model reads (cost-history.js). A plan
+    // replaces the whole array (compare-and-set), so a mis-dated anchor can be
+    // redated to the period it measured (BRO-6218, Cabaret's first seven
+    // weeks). commercial-field-edit.js refuses any anchor anchorErrors flags.
+    'costHistory',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

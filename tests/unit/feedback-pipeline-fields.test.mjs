@@ -204,6 +204,12 @@ test('productionType is editable only on the human-approved path, and the record
   assert.equal(productionTypeErrors('co-pro').length, 1);
 });
 
+test('costHistory is editable only on the human-approved path (BRO-6218)', () => {
+  const { FEEDBACK_EDITABLE_FIELDS: human, AUTO_FIX_EDITABLE_FIELDS: auto } = require('../../scripts/lib/feedback-pipeline-fields');
+  assert.ok(human['commercial.json'].includes('costHistory'));
+  assert.ok(!auto['commercial.json'].includes('costHistory'));
+});
+
 test('a reported "% returned" figure is editable only on the human-approved path (BRO-5073)', () => {
   const { FEEDBACK_EDITABLE_FIELDS: human, AUTO_FIX_EDITABLE_FIELDS: auto } = require('../../scripts/lib/feedback-pipeline-fields');
   for (const f of ['estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate']) {
