@@ -2,10 +2,13 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import type { UserReview, ShowLookup } from '@/types/user';
 import { useFeedPhotos } from './useFeedPhotos';
+import { usePhotoUploads } from './usePhotoUploads';
+import { CameraIcon } from './PhotoThumbRow';
 import FeedTimeline from './FeedTimeline';
 import PhotoWall from './PhotoWall';
 import PhotoLightbox from './PhotoLightbox';
 import { buildMonthGroups, buildWallSlides, type FeedEntry, type FeedSlide } from './feed-model';
+import type { FeedPhoto } from '@/lib/review-photos';
 
 export interface FeedTabProps {
   reviews: UserReview[];
@@ -20,7 +23,9 @@ const MODE_KEY = 'bsc_feed_mode';
 /**
  * My Shows → Feed (BRO-6170): the iOS app's private photo Feed on the web.
  * Two modes, Timeline (month-grouped nights with their photos) and Photo
- * wall (every photo). Display only; photos are added from the iOS app.
+ * wall (every photo). Photos can be added to any dated entry from the
+ * Timeline (or the rating editor) and deleted from the lightbox; they sync
+ * with the app through the same table and bucket.
  */
 export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTabProps) {
   const [mode, setMode] = useState<FeedMode>('timeline');
@@ -36,6 +41,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
   }, []);
 
   const { photosByReview, loading, error, retry } = useFeedPhotos(userId, isMockMode);
+  const uploads = usePhotoUploads({ userId, isMockMode, photosByReview });
   const groups = useMemo(() => buildMonthGroups(reviews, photosByReview), [reviews, photosByReview]);
   const wallSlides = useMemo(() => buildWallSlides(reviews, photosByReview), [reviews, photosByReview]);
   const undatedCount = useMemo(() => reviews.filter(r => !r.date_seen).length, [reviews]);
@@ -49,6 +55,17 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
   const openWallPhoto = useCallback((index: number) => setLightbox({ slides: wallSlides, index }), [wallSlides]);
   const setLightboxIndex = useCallback((index: number) => setLightbox(lb => (lb ? { ...lb, index } : lb)), []);
   const closeLightbox = useCallback(() => setLightbox(null), []);
+  // After a delete the lightbox drops that slide (next photo slides in), or
+  // closes when it was the last one.
+  const deleteFromLightbox = useCallback(async (photo: FeedPhoto) => {
+    await uploads.deletePhoto(photo);
+    setLightbox(lb => {
+      if (!lb) return lb;
+      const slides = lb.slides.filter(s => s.photo.id !== photo.id);
+      if (slides.length === 0) return null;
+      return { slides, index: Math.min(lb.index, slides.length - 1) };
+    });
+  }, [uploads]);
 
   const noPhotos = !loading && !error && wallSlides.length === 0;
 
@@ -80,7 +97,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
         ) : (
           <>
             {noPhotos && <AppPhotoHint className="mb-4" />}
-            <FeedTimeline groups={groups} showMap={showMap} onOpenPhoto={openEntryPhoto} />
+            <FeedTimeline groups={groups} showMap={showMap} onOpenPhoto={openEntryPhoto} uploads={uploads} />
             {undatedCount > 0 && (
               <p className="mt-2 text-xs text-gray-500 text-center">
                 {undatedCount} {undatedCount === 1 ? 'entry has' : 'entries have'} no date seen, so {undatedCount === 1 ? 'it isn’t' : 'they aren’t'} on the timeline.
@@ -95,8 +112,11 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
       ) : wallSlides.length === 0 ? (
         <EmptyState
           title="No photos yet"
-          body="Photos you add to diary entries show up here. For now, add them from the Broadway Scorecard iPhone app."
+          body={groups.length > 0
+            ? 'Add photos from the night to any diary entry. Open the Timeline and tap “Add a photo” on an entry.'
+            : 'Rate a show with the date you saw it, then add photos from the night to that entry.'}
           icon="camera"
+          action={groups.length > 0 ? { label: 'Go to Timeline', onClick: () => pickMode('timeline') } : undefined}
         />
       ) : (
         <>
@@ -113,6 +133,7 @@ export default function FeedTab({ reviews, showMap, userId, isMockMode }: FeedTa
         showMap={showMap}
         onIndexChange={setLightboxIndex}
         onClose={closeLightbox}
+        onDelete={deleteFromLightbox}
       />
     </div>
   );
@@ -148,12 +169,17 @@ function AppPhotoHint({ className = '' }: { className?: string }) {
   return (
     <div className={`flex items-center gap-2.5 px-3 py-2.5 rounded-xl bg-white/[0.02] border border-white/[0.06] text-xs text-gray-400 ${className}`}>
       <CameraIcon className="w-4 h-4 flex-shrink-0 text-brand" />
-      <span>Add photos from the night to any entry in the Broadway Scorecard iPhone app. They show up here.</span>
+      <span>Add photos from the night to any entry below. Photos added in the iPhone app show up here too.</span>
     </div>
   );
 }
 
-function EmptyState({ title, body, icon = 'calendar' }: { title: string; body: string; icon?: 'calendar' | 'camera' }) {
+function EmptyState({ title, body, icon = 'calendar', action }: {
+  title: string;
+  body: string;
+  icon?: 'calendar' | 'camera';
+  action?: { label: string; onClick: () => void };
+}) {
   return (
     <div className="flex flex-col items-center text-center py-12 px-6 rounded-xl bg-white/[0.02] border border-white/[0.06]">
       <span className="flex items-center justify-center w-12 h-12 mb-3 rounded-full bg-surface-overlay text-brand">
@@ -167,15 +193,11 @@ function EmptyState({ title, body, icon = 'calendar' }: { title: string; body: s
       </span>
       <h3 className="text-base font-bold text-white">{title}</h3>
       <p className="mt-1 max-w-sm text-sm text-gray-400">{body}</p>
+      {action && (
+        <button type="button" onClick={action.onClick} className="btn-secondary text-sm mt-4">
+          {action.label}
+        </button>
+      )}
     </div>
-  );
-}
-
-function CameraIcon({ className = '' }: { className?: string }) {
-  return (
-    <svg className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75} aria-hidden="true">
-      <path strokeLinecap="round" strokeLinejoin="round" d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-      <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
-    </svg>
   );
 }

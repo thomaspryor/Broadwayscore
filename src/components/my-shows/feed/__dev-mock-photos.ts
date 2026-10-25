@@ -44,18 +44,39 @@ const MOCK_PHOTO_SRCS: Record<string, string[]> = {
   r5: [T('hudson-theatre'), H('some-like-it-hot-2022'), T('booth-theatre'), T('lyceum-theatre')],
 };
 
-export function buildMockPhotosByReview(): Record<string, FeedPhoto[]> {
+// Uploads and deletes made in mock mode (?mock=1 / ?mock=large). Module
+// state, so it lasts until a full reload; never touches Supabase.
+const added: FeedPhoto[] = [];
+const deleted = new Set<string>();
+
+export function buildMockPhotosByReview(opts: { seeded?: boolean } = {}): Record<string, FeedPhoto[]> {
   const out: Record<string, FeedPhoto[]> = {};
-  for (const [reviewId, srcs] of Object.entries(MOCK_PHOTO_SRCS)) {
-    out[reviewId] = srcs.map((url, i) => ({
-      id: `mock-photo-${reviewId}-${i + 1}`,
-      reviewId,
-      url,
-      width: null,
-      height: null,
-      takenAt: null,
-      createdAt: `2026-01-01T00:00:0${i}Z`,
-    }));
+  if (opts.seeded !== false) {
+    for (const [reviewId, srcs] of Object.entries(MOCK_PHOTO_SRCS)) {
+      out[reviewId] = srcs.map((url, i) => ({
+        id: `mock-photo-${reviewId}-${i + 1}`,
+        reviewId,
+        storagePath: '',
+        url,
+        width: null,
+        height: null,
+        takenAt: null,
+        createdAt: `2026-01-01T00:00:0${i}Z`,
+      }));
+    }
+  }
+  for (const photo of added) (out[photo.reviewId] ||= []).push(photo);
+  for (const reviewId of Object.keys(out)) {
+    out[reviewId] = out[reviewId].filter(p => !deleted.has(p.id));
+    if (out[reviewId].length === 0) delete out[reviewId];
   }
   return out;
+}
+
+export function addMockPhoto(photo: FeedPhoto): void {
+  added.push(photo);
+}
+
+export function removeMockPhoto(photoId: string): void {
+  deleted.add(photoId);
 }

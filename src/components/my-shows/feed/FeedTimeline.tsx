@@ -6,20 +6,25 @@ import { Poster, SectionBand } from '@/components/user/upcoming-cards';
 import type { ShowLookup } from '@/types/user';
 import type { FeedPhoto } from '@/lib/review-photos';
 import PhotoTile from './PhotoTile';
+import PhotoThumbRow, { AddPhotoButton } from './PhotoThumbRow';
+import type { PhotoUploads } from './usePhotoUploads';
 import { dayMonth, longDate, showHref, titleFor, type FeedEntry, type FeedMonthGroup } from './feed-model';
 
 interface FeedTimelineProps {
   groups: FeedMonthGroup[];
   showMap: Record<string, ShowLookup>;
   onOpenPhoto: (entry: FeedEntry, photoIndex: number) => void;
+  uploads: PhotoUploads;
 }
 
 /**
  * Timeline: month bands, then one card per night (the app's
  * PhotoFeedTimeline): date block, poster, title, venue, note, stars, and the
- * night's photos below. Entries without photos stay compact.
+ * night's photos below. Each entry under the per-entry limit gets one quiet
+ * "Add a photo" / "Add more" button (no nagging); while photos upload they
+ * show as tiles with an Add tile beside them.
  */
-export default function FeedTimeline({ groups, showMap, onOpenPhoto }: FeedTimelineProps) {
+export default function FeedTimeline({ groups, showMap, onOpenPhoto, uploads }: FeedTimelineProps) {
   return (
     <div>
       {groups.map(group => (
@@ -32,6 +37,7 @@ export default function FeedTimeline({ groups, showMap, onOpenPhoto }: FeedTimel
                 entry={entry}
                 show={showMap[entry.review.show_id]}
                 onOpenPhoto={i => onOpenPhoto(entry, i)}
+                uploads={uploads}
               />
             ))}
           </div>
@@ -41,12 +47,18 @@ export default function FeedTimeline({ groups, showMap, onOpenPhoto }: FeedTimel
   );
 }
 
-function EntryCard({ entry, show, onOpenPhoto }: {
+function EntryCard({ entry, show, onOpenPhoto, uploads }: {
   entry: FeedEntry;
   show: ShowLookup | undefined;
   onOpenPhoto: (photoIndex: number) => void;
+  uploads: PhotoUploads;
 }) {
   const { review, photos } = entry;
+  const savedIds = new Set(photos.map(p => p.id));
+  const pending = uploads.pendingFor(review.id).filter(p => !savedIds.has(p.id));
+  const canAdd = uploads.remainingFor(review.id) > 0;
+  const notice = uploads.noticeFor(review.id);
+  const addFiles = (files: File[]) => uploads.addFiles(review.id, files);
   const title = titleFor(show, review.show_id);
   const href = showHref(show, review.show_id);
   const block = review.date_seen ? dayMonth(review.date_seen) : null;
@@ -86,6 +98,30 @@ function EntryCard({ entry, show, onOpenPhoto }: {
       </div>
 
       {photos.length > 0 && <PhotoCollage photos={photos} title={title} onOpen={onOpenPhoto} />}
+
+      {pending.length > 0 ? (
+        <div className="mt-2">
+          <PhotoThumbRow
+            pending={pending}
+            canAdd={canAdd}
+            onAddFiles={addFiles}
+            onRetry={uploads.retry}
+            onDismiss={uploads.dismiss}
+            notice={notice}
+            title={title}
+            size="sm"
+          />
+        </div>
+      ) : (
+        <>
+          {canAdd && (
+            <div className="mt-1.5 flex justify-end">
+              <AddPhotoButton title={title} onAddFiles={addFiles} label={photos.length > 0 ? 'Add more' : 'Add a photo'} />
+            </div>
+          )}
+          {notice && <p className="text-xs text-gray-400 text-right">{notice}</p>}
+        </>
+      )}
     </article>
   );
 }
