@@ -36,3 +36,20 @@ test('classifier', () => {
 test('idempotency key is stable per day+recipient', () => {
   assert.equal(buildIdempotencyKey('opening-digest', '2026-10-23', 'A@b.com'), 'opening-digest/2026-10-23/a@b.com');
 });
+
+test('409 concurrent is retried, 409 payload-mismatch is not', async () => {
+  assert.ok(isRetryableSendError(new Error('HTTP 409: {"name":"concurrent_idempotent_requests"}')));
+  assert.ok(!isRetryableSendError(new Error('HTTP 409: {"name":"invalid_idempotent_request"}')));
+});
+
+test('payload hash is appended to the key', () => {
+  assert.equal(buildIdempotencyKey('opening-digest', '2026-10-23', 'a@b.com', 'abc123'), 'opening-digest/2026-10-23/a@b.com/abc123');
+});
+
+test('every attempt receives its attempt index and the caller can reuse one key', async () => {
+  const keys = [];
+  const key = buildIdempotencyKey('p', 'd', 'r', 'h');
+  await sendWithRetry(async (i) => { keys.push(key); if (i < 2) throw new Error('Resend request timed out after 15s'); return {}; }, noSleep);
+  assert.deepEqual(new Set(keys).size, 1);
+  assert.equal(keys.length, 3);
+});

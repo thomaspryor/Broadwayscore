@@ -195,18 +195,6 @@ async function main() {
     }
   }
 
-  // BRO-6157: a missed day is recovered once its sender delivered on the latest
-  // complete day; resolve the date-keyed alert so its card's acceptance check passes.
-  {
-    const router = require('./lib/owner-alert-router');
-    const { recoveredMissingKeys } = require('./lib/scheduled-email-count-rules');
-    for (const key of recoveredMissingKeys(Object.keys(router.loadLedger().conditions || {}), days, yesterdayKey)) {
-      if (router.resolveCondition(key, { reason: `BRO-6157: sender delivered on ${yesterdayKey}, missed day recovered` })) {
-        console.log(`resolved recovered missing-sender condition ${key}`);
-      }
-    }
-  }
-
   if (completeViolations.length === 0 && missingExpected.length === 0) {
     console.log('No violations on complete days in window (and both expected senders fired yesterday).');
     return;

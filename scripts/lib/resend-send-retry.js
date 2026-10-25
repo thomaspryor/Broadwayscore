@@ -12,15 +12,18 @@ function isRetryableSendError(err) {
   const m = /^HTTP (\d{3})\b/.exec(msg);
   if (m) {
     const code = Number(m[1]);
-    return code === 429 || code >= 500;
+    // 409 concurrent_idempotent_requests: the timed-out first attempt is still
+    // being processed, so retry later. invalid_idempotent_request (payload
+    // mismatch) is permanent and stays non-retryable.
+    return code === 429 || code >= 500 || (code === 409 && /concurrent_idempotent_requests/.test(msg));
   }
   return /timed out|ECONNRESET|ECONNREFUSED|ETIMEDOUT|EAI_AGAIN|ENOTFOUND|EPIPE|socket hang up/i.test(msg);
 }
 
-// Key is stable across attempts and across same-day workflow re-runs for the same
-// recipient+subject, so a manual re-dispatch cannot double-send either (Resend
-// holds keys 24h). dayKey is the ET calendar date. payloadHash keeps a deliberate
-// same-day re-send with changed content from 409-ing on a reused key.
+// Key is stable across every attempt of one run. A same-day re-run with identical
+// content reuses the key (Resend dedupes, 24h); one whose content changed gets a
+// new key via payloadHash and sends again (so it does not 409 on a payload
+// mismatch). dayKey is the ET calendar date.
 function buildIdempotencyKey(prefix, dayKey, recipient, payloadHash = '') {
   return `${prefix}/${dayKey}/${String(recipient).toLowerCase()}${payloadHash ? `/${payloadHash}` : ''}`.slice(0, 256);
 }
