@@ -86,8 +86,10 @@ export default function PhotoLightbox({ slides, index, showMap, onIndexChange, o
       </div>
       <div className="px-4 py-3">
         <div className="flex items-center justify-between gap-3">
-          <Link href={showHref(show, review.show_id)} className="min-w-0 font-bold text-white text-base leading-snug truncate hover:text-brand transition-colors">
-            {title}
+          {/* flex + inner truncate: the site's mobile tap-target rule stretches
+              links to 44px, which left the title top-aligned above the stars. */}
+          <Link href={showHref(show, review.show_id)} className="min-w-0 flex items-center font-bold text-white text-base leading-snug hover:text-brand transition-colors">
+            <span className="truncate">{title}</span>
           </Link>
           {review.rating > 0 && (
             <div className="flex-shrink-0 flex items-center gap-px" role="img" aria-label={`${review.rating} out of 5 stars`}>
