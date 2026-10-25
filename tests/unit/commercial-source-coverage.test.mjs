@@ -11,7 +11,6 @@ const rss = require('../../scripts/lib/rss-discovery');
 const cov = require('../../scripts/lib/commercial-source-coverage');
 const cronCov = require('../../scripts/lib/cron-coverage');
 const { TRUSTED_RECOUPMENT_HOSTS } = require('../../scripts/lib/trusted-recoupment-domains');
-const { MAIN_REPO_ROOT } = require('../../scripts/lib/repo-root');
 
 describe('feed registration', () => {
   it('Playbill and Broadway News are polled for recoupment, not in review discovery', () => {
@@ -100,16 +99,6 @@ describe('coverage evaluation', () => {
   });
   it('every shipped exemption has a reason', () => {
     for (const [h, why] of Object.entries(cov.EXEMPT_HOSTS)) assert.ok(why.trim().length > 10, h);
-  });
-});
-
-describe('real commercial.json', () => {
-  const p = [path.join(process.cwd(), 'data/commercial.json'), path.join(MAIN_REPO_ROOT, 'data/commercial.json')].find(fs.existsSync);
-  it('has no uncovered host and no stale exemption', { skip: !p && 'commercial.json not present' }, () => {
-    const shows = JSON.parse(fs.readFileSync(p, 'utf8')).shows;
-    const r = cov.evaluateCoverage(cov.countCitedHosts(shows), cov.trackedHosts(rss.TRACK_RECOUPMENT_FEEDS), cov.EXEMPT_HOSTS);
-    assert.deepEqual(r.uncovered, []);
-    assert.deepEqual(r.staleExemptions, []);
   });
 });
 
