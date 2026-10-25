@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6182",
   "planId": "2c81ed16-6485-453d-b3e9-d7bc0583671f",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-25T10:08:53.370Z",
   "submitter": {
     "name": null,
@@ -150,5 +150,39 @@
         "description": "commercial.json: next-to-normal-2009.sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T10:18:53.250Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hair-2009"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added spider-man-turn-off-the-dark-2011"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: field \"humanReviewedDesignation\" not allowed"
+    },
+    {
+      "action": "add-commercial-entry",
+      "ok": false,
+      "reason": "add-commercial-entry: field \"humanReviewedDesignation\" not allowed"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedSource updated for next-to-normal-2009"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for next-to-normal-2009"
+    }
+  ],
+  "executedIn": "ci"
 }
