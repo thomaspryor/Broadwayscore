@@ -80,8 +80,8 @@
     },
     {
       "file": "the-color-purple-2005/nytimes--alissa-wilkinson.json",
-      "decision": "clear",
-      "evidence": "Body reviews Fantasia replacing LaChanze at the Broadway Theatre a year and a half into the run. Stored publishDate 2007-05-18 falls within the original production run ending 2008-02-24. The conflicting revival/movie provenance is stale. This production decision does not verify the stored byline."
+      "decision": "restore",
+      "evidence": "Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion rather than permanently clearing this contaminated record."
     },
     {
       "file": "the-glass-menagerie-2013/dailybeast--tim-teeman.json",

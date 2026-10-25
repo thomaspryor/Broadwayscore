@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "Triage the remaining 14 orphaned wrongProduction records: nine evidence-backed manual clears and five restored exclusions; six of the original 20 are already resolved.",
+    "summary": "Triage the remaining 14 orphaned wrongProduction records: eight evidence-backed manual clears and six restored exclusions; six of the original 20 are already resolved.",
     "steps": [
       "BRO-4937: Body names Emily Lim, Michael Grady-Hall and Mel Lowe at the Globe, matching the current show cast and director. Current publishDate is opening day; missing URL is not evidence of another production.",
       "BRO-4937: Body names Atri Banerjee and Regent's Park Open Air Theatre. Current html-paid publishDate 2026-06-30 is one day after the 2026-06-29 opening; the five-day pre-opening provenance is stale.",
@@ -21,7 +21,7 @@
       "BRO-4937: Body names Ramin Karimloo, Will Swenson, Laurence Connor, James Powell and the Imperial, identifying the 2014 revival. Missing publication date does not contradict that evidence.",
       "BRO-4937: Body is a show synopsis and email-alert promotion, not a review. isNonReview:true and its BRO-4270 show-hub reason already exclude it; retain those flags and restore the historical exclusion.",
       "BRO-4937: Body is return-engagement promotional copy quoting other outlets, not an Alex Wood review. isNonReview:true and nonReviewType:preview already exclude it; retain those flags and restore the historical exclusion.",
-      "BRO-4937: Body reviews Fantasia replacing LaChanze at the Broadway Theatre a year and a half into the run. Stored publishDate 2007-05-18 falls within the original production run ending 2008-02-24. The conflicting revival/movie provenance is stale. This production decision does not verify the stored byline.",
+      "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion rather than permanently clearing this contaminated record.",
       "BRO-4937: Surviving text explicitly names Sam Gold as director. The 2013 show director is John Tiffany; the 2017 show director is Sam Gold. Missing URL does not justify clearing this production mismatch.",
       "BRO-4937: Current record has tierReason:Wrong show, incompleteReason:url_content_mismatch and no body to support a production clear. Restore the historical exclusion; no metadata inferred from the current URL."
     ],
@@ -118,10 +118,10 @@
       {
         "type": "review-field-edit",
         "file": "the-color-purple-2005/nytimes--alissa-wilkinson.json",
-        "field": "wrongProductionManualClear",
+        "field": "wrongProduction",
         "oldValue": null,
         "newValue": true,
-        "description": "BRO-4937: Body reviews Fantasia replacing LaChanze at the Broadway Theatre a year and a half into the run. Stored publishDate 2007-05-18 falls within the original production run ending 2008-02-24. The conflicting revival/movie provenance is stale. This production decision does not verify the stored byline."
+        "description": "BRO-4937: Body is a May 2007 cast-change review of Fantasia replacing LaChanze, not the 2005 opening review already covered by nytimes--ben-brantley.json. The 2007 NYT review is misattributed to Alissa Wilkinson. The stored llmPullQuote comes from the 2015 revival review and is absent from this body. Restore the exclusion rather than permanently clearing this contaminated record."
       },
       {
         "type": "review-field-edit",

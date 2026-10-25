@@ -25,8 +25,8 @@ test('BRO-4937: every retired entry has evidence and every pending decision has 
   assert.equal(new Set(actions.map(a => a.file)).size, 14);
 
   const pending = baseline.triage.filter(t => t.decision === 'clear' || t.decision === 'restore');
-  assert.equal(pending.filter(t => t.decision === 'clear').length, 9);
-  assert.equal(pending.filter(t => t.decision === 'restore').length, 5);
+  assert.equal(pending.filter(t => t.decision === 'clear').length, 8);
+  assert.equal(pending.filter(t => t.decision === 'restore').length, 6);
   for (const t of baseline.triage) {
     assert.ok(t.evidence.length > 40, `${t.file}: missing source evidence`);
     if (!pending.includes(t)) {
@@ -48,4 +48,14 @@ test('BRO-4937: every retired entry has evidence and every pending decision has 
     assert.equal(result.record[action.field], true, t.file);
     assert.equal(isOrphanedWrongProdProvenance(result.record), false, t.file);
   }
+});
+
+test('BRO-4937: restore the misattributed Color Purple cast-change review exclusion', () => {
+  const file = 'the-color-purple-2005/nytimes--alissa-wilkinson.json';
+  const plan = JSON.parse(readFileSync(new URL('../../data/pending-fixes/bro-4937.json', import.meta.url), 'utf8'));
+  assert.equal(baseline.triage.find(t => t.file === file).decision, 'restore');
+  const action = plan.plan.actions.find(a => a.file === file);
+  assert.equal(action.field, 'wrongProduction');
+  assert.equal(action.oldValue, null);
+  assert.equal(action.newValue, true);
 });
