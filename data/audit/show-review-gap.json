@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-25T20:06:04.714Z",
+  "generatedAt": "2026-10-25T20:20:32.397Z",
   "windowDays": 21,
   "targets": 12,
   "auditedThisRun": 12,
-  "carriedForward": 828,
+  "carriedForward": 840,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 414,
-    "missingCurrentRun": 602,
+    "withGap": 419,
+    "missingCurrentRun": 608,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 701,
-    "totalRecoverable": 6,
-    "totalRecovered": 17,
+    "totalFlaggedMisses": 704,
+    "totalRecoverable": 10,
+    "totalRecovered": 20,
     "humanExcluded": 4,
-    "automatedExcluded": 368,
-    "automatedExcludedListed": 302,
-    "priorProductionCitations": 5759
+    "automatedExcluded": 373,
+    "automatedExcludedListed": 305,
+    "priorProductionCitations": 5777
   },
   "results": [
     {
@@ -40934,6 +40934,183 @@
       "computedAt": "2026-10-21T15:55:40.470Z"
     },
     {
+      "showId": "crooked-cross-off-broadway-2025",
+      "title": "Crooked Cross",
+      "openingDate": "2025-10-09",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-crooked-cross-sally-carsons-family-drama-about-the-rise-of-the-nazis_1806647/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=PUK8XB",
+        "https://www.talkinbroadway.com/page/ob/10_09_25.html",
+        "https://nystagereview.com/2025/10/09/crooked-cross-a-sign-of-the-times/",
+        "https://www.theaterscene.net/plays/offbway-plays/crooked-cross/victor-gluck/",
+        "https://thefrontrowcenter.com/2025/10/crooked-cross/",
+        "https://newyorktheater.me/2025/10/09/crooked-cross-review/",
+        "https://theaterlife.com/crooked-cross-2/"
+      ],
+      "dirFiles": 9,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "interestedbystander.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.theatermania.com/news/review-crooked-cross-sally-carsons-family-drama-about-the-rise-of-the-nazis_1806647/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "nonReview",
+              "urlInDir": "https://www.theatermania.com/news/review-crooked-cross-sally-carsons-family-drama-about-the-rise-of-the-nazis_1806647/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "reverify": true
+        },
+        {
+          "url": "https://thefrontrowcenter.com/2025/10/crooked-cross/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "recoverable": true,
+          "recoverableFile": "front-row-center--david-walters.json",
+          "recoverableOutletId": "front-row-center",
+          "recoverableCritic": "David Walters",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "front-row-center--david-walters.json",
+              "flag": "nonReview",
+              "urlInDir": "https://thefrontrowcenter.com/2025/10/crooked-cross/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "nonReview"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://thefrontrowcenter.com/2025/10/crooked-cross/",
+          "host": "thefrontrowcenter.com",
+          "file": "front-row-center--david-walters.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-crooked-cross-sally-carsons-family-drama-about-the-rise-of-the-nazis_1806647/"
+          },
+          {
+            "outletId": "front-row-center",
+            "outlet": "front-row-center",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thefrontrowcenter.com/2025/10/crooked-cross/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=PUK8XB",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/10_09_25.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/10/09/crooked-cross-a-sign-of-the-times/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/crooked-cross/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/10/09/crooked-cross-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://theaterlife.com/crooked-cross-2/",
+            "outletId": "theaterlife.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-crooked-cross-sally-carsons-family-drama-about-the-rise-of-the-nazis_1806647/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/10/crooked-cross/",
+            "outletId": "front-row-center",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 6,
+        "candidateCount": 8
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "crybabies-the-scaring-off-west-end-2026",
       "title": "Crybabies: The Scaring",
       "openingDate": null,
@@ -64177,6 +64354,138 @@
         "candidateCount": 0
       },
       "computedAt": "2026-10-12T00:42:40.641Z"
+    },
+    {
+      "showId": "ginger-twinsies-off-broadway-2025",
+      "title": "Ginger Twinsies",
+      "openingDate": "2025-07-24",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-do-reviews-say-about-off-broadway-parent-trap-parody-ginger-twinsies",
+        "https://www.broadwayworld.com/article/Review-Roundup-GINGER-TWINSIES-World-Premiere-Opens-Off-Broadway-20250724"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/ginger-twinsies-turns-the-parent-trap-into-high-camp-heaven/",
+        "https://culturesauce.com/2025/07/24/ginger-twinsies-parent-trap-parody-off-broadway-review/",
+        "https://nypost.com/2025/07/24/entertainment/ginger-twinsies-review-off-broadway-parent-trap-parody-is-millennial-catnip/",
+        "https://nystagereview.com/2025/07/24/ginger-twinsies-kevin-zaks-parent-trap-spoof-not-so-gingerly-achieved/",
+        "https://www.newyorktheatreguide.com/reviews/ginger-twinsies-off-broadway-review-parent-trap",
+        "https://www.theatermania.com/news/review-ginger-twinsies-spoofs-the-parent-trap-without-much-of-a-payoff_1793954/",
+        "https://theaterpizzazz.com/insane-comedy-abounds-in-ginger-twinsies/",
+        "https://www.theatrely.com/post/ginger-twinsies-is-bringing-the-laughs-in-the-east-village-this-summer-review",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=D2369L",
+        "https://www.theaterscene.net/plays/offbway-plays/ginger-twinsies/victor-gluck/",
+        "https://www.interestedbystander.com/2025/07/theater-reviews-three-summer-shows-joy.html"
+      ],
+      "dirFiles": 12,
+      "dirClean": 12,
+      "inReviewsJson": 12,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 399,
+        "byReason": {
+          "not-http-url": 48,
+          "non-review-host": 35,
+          "aggregator-internal-nav": 296,
+          "aggregator-section-root": 8,
+          "production-database-listing": 11,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/ginger-twinsies-turns-the-parent-trap-into-high-camp-heaven/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/07/24/ginger-twinsies-parent-trap-parody-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nypost.com/2025/07/24/entertainment/ginger-twinsies-review-off-broadway-parent-trap-parody-is-millennial-catnip/",
+            "outletId": "nypost.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/07/24/ginger-twinsies-kevin-zaks-parent-trap-spoof-not-so-gingerly-achieved/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/ginger-twinsies-off-broadway-review-parent-trap",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-ginger-twinsies-spoofs-the-parent-trap-without-much-of-a-payoff_1793954/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/insane-comedy-abounds-in-ginger-twinsies/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/ginger-twinsies-is-bringing-the-laughs-in-the-east-village-this-summer-review",
+            "outletId": "theatrely.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=D2369L",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/ginger-twinsies/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.interestedbystander.com/2025/07/theater-reviews-three-summer-shows-joy.html",
+            "outletId": "interestedbystander.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 11,
+        "candidateCount": 11
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
     },
     {
       "showId": "girl-interrupted-off-broadway-2026",
@@ -89605,6 +89914,167 @@
         "candidateCount": 6
       },
       "computedAt": "2026-10-21T19:01:58.243Z"
+    },
+    {
+      "showId": "house-of-mcqueen-off-broadway-2025",
+      "title": "House of McQueen",
+      "openingDate": "2025-09-09",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-HOUSE-OF-MCQUEEN-Opens-On-Broadway-20250909"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.vulture.com/article/house-of-mcqueen-alexander-bio-play-mansion-hudson-yards.html",
+        "https://www.thedailybeast.com/obsessed/house-of-mcqueen-fashion-icon-alexander-mcqueen-is-brought-back-to-life-on-stage/",
+        "https://www.thewrap.com/house-of-mcqueen-off-broadway-review-luke-newton-bridgerton/",
+        "https://nystagereview.com/2025/09/09/house-of-mcqueen-luke-newton-stars-in-a-terribly-respectful-bio-drama-of-a-tragic-artist/",
+        "https://nystagereview.com/2025/09/09/house-of-mcqueen-a-bio-drama-that-has-the-feel-of-an-art-installation/",
+        "https://www.newyorktheatreguide.com/reviews/house-of-mcqueen-off-broadway-review-luke-newton",
+        "https://www.nysun.com/article/a-designer-who-drew-inspiration-from-violence-and-despair-alexander-mcqueen-is-subject-of-off-broadways-house-of-mcqueen",
+        "https://newyorktheater.me/2025/09/09/house-of-mcqueen-review/",
+        "https://www.theatermania.com/news/review-house-of-mcqueen-an-off-the-rack-bioplay-about-the-famous-couturier_1802313/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-J862VO",
+        "https://www.theaterscene.net/plays/offbway-plays/house-of-mcqueen/tony-marinelli/"
+      ],
+      "dirFiles": 23,
+      "dirClean": 20,
+      "inReviewsJson": 21,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "digitaljournal.com",
+          "count": 1
+        },
+        {
+          "host": "offoffonline.com",
+          "count": 1
+        },
+        {
+          "host": "1minutecritic.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "interestedbystander.com",
+          "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        },
+        {
+          "host": "t2conline.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 322,
+        "byReason": {
+          "not-http-url": 79,
+          "non-review-host": 16,
+          "aggregator-internal-nav": 223,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.vulture.com/article/house-of-mcqueen-alexander-bio-play-mansion-hudson-yards.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/house-of-mcqueen-fashion-icon-alexander-mcqueen-is-brought-back-to-life-on-stage/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thewrap.com/house-of-mcqueen-off-broadway-review-luke-newton-bridgerton/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/09/house-of-mcqueen-luke-newton-stars-in-a-terribly-respectful-bio-drama-of-a-tragic-artist/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/09/house-of-mcqueen-a-bio-drama-that-has-the-feel-of-an-art-installation/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/house-of-mcqueen-off-broadway-review-luke-newton",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/a-designer-who-drew-inspiration-from-violence-and-despair-alexander-mcqueen-is-subject-of-off-broadways-house-of-mcqueen",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/09/09/house-of-mcqueen-review/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-house-of-mcqueen-an-off-the-rack-bioplay-about-the-famous-couturier_1802313/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-J862VO",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/house-of-mcqueen/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 10,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
     },
     {
       "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
@@ -127192,6 +127662,188 @@
       "computedAt": "2026-10-20T21:11:21.454Z"
     },
     {
+      "showId": "meet-the-cartozians-off-broadway-2025",
+      "title": "Meet the Cartozians",
+      "openingDate": "2025-11-17",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-sound-off-on-meet-the-cartozians-off-broadway-get-a-1st-look-at-the-show"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/meet-the-cartozians-off-broadway-review-talene-monahon/",
+        "https://culturesauce.com/2025/11/17/meet-the-cartozians-kardashians-off-broadway-review/",
+        "https://nystagereview.com/2025/11/17/meet-the-cartozians-armenians-in-america-then-and-now/",
+        "https://nystagereview.com/2025/11/17/meet-the-cartozians-a-people-proud-a-history-melancholy/",
+        "https://www.newyorktheatreguide.com/reviews/meet-the-cartozians-off-broadway-review",
+        "https://theaterpizzazz.com/meet-the-cartozians-talen-monahons-must-see-new-drama/",
+        "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon",
+        "https://www.thewrap.com/meet-the-cartozians-off-broadway-review-kardashians/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=2L53LK",
+        "https://www.theaterscene.net/plays/offbway-plays/meet-the-cartozians/victor-gluck/"
+      ],
+      "dirFiles": 15,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
+        {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": true,
+          "recoverableFile": "timeout--adam-feldman.json",
+          "recoverableOutletId": "timeout",
+          "recoverableCritic": "Adam Feldman",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--adam-feldman.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 114,
+        "byReason": {
+          "not-http-url": 6,
+          "non-review-host": 20,
+          "aggregator-internal-nav": 72,
+          "aggregator-section-root": 4,
+          "production-database-listing": 11,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon",
+          "host": "timeout.com",
+          "file": "timeout--adam-feldman.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/meet-the-cartozians-off-broadway-review-talene-monahon/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/17/meet-the-cartozians-kardashians-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/17/meet-the-cartozians-armenians-in-america-then-and-now/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/17/meet-the-cartozians-a-people-proud-a-history-melancholy/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/meet-the-cartozians-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/meet-the-cartozians-talen-monahons-must-see-new-drama/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thewrap.com/meet-the-cartozians-off-broadway-review-kardashians/",
+            "outletId": "thewrap.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=2L53LK",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/meet-the-cartozians/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/meet-the-cartozians-play-review-armenian-talene-monahon",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 8,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
       "openingDate": "2026-10-15",
@@ -157356,6 +158008,60 @@
       "computedAt": "2026-08-14T11:44:15.360Z"
     },
     {
+      "showId": "polishing-shakespeare-off-broadway-2025",
+      "title": "Polishing Shakespeare",
+      "openingDate": "2025-07-12",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-X31ANZ",
+        "https://www.thinkingtheaternyc.com/2025/07/review-polishing-shakespeare-gleams.html"
+      ],
+      "dirFiles": 2,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-X31ANZ",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thinkingtheaternyc.com/2025/07/review-polishing-shakespeare-gleams.html",
+            "outletId": "thinkingtheaternyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 2,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "porgy-and-bess-off-broadway-2025",
       "title": "Porgy and Bess",
       "openingDate": "2025-12-02",
@@ -161892,6 +162598,478 @@
         "candidateCount": 5
       },
       "computedAt": "2026-10-25T14:53:08.167Z"
+    },
+    {
+      "showId": "queens-off-broadway-2025",
+      "title": "Queens",
+      "openingDate": "2025-11-05",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-martyna-majoks-queens-at-manhattan-theatre-club",
+        "https://playbill.com/article/read-reviews-for-martyna-majoks-new-play-queens"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/martyna-majok-queens-off-broadway-review/",
+        "https://culturesauce.com/2025/11/05/queens-off-broadway-review/",
+        "https://exeuntnyc.com/reviews/review-queens-at-new-york-city-center/",
+        "https://nystagereview.com/2025/11/06/queens-the-american-dream-does-not-live-here/",
+        "https://www.nysun.com/article/a-pulitzer-winner-martyna-majok-revises-her-powerful-play-queens-to-strong-effect",
+        "https://www.newyorktheatreguide.com/reviews/queens-off-broadway-review",
+        "https://www.nytimes.com/2025/11/06/theater/queens-review-martyna-majok.html",
+        "https://www.theatermania.com/news/review-queens-asks-what-the-american-dream-is-worth-leaving-behind_1810610/",
+        "https://www.theatrely.com/post/queens-character-actress-riches-in-martyna-majoks-complicated-immigrant-tale----review",
+        "https://www.wsj.com/articles/queens-review-martyna-majoks-play-of-immigrant-lives-0e64ff15",
+        "http://dctheatrescene.com/2018/03/05/queens-review-martyna-majok-crowds-queens-basement-poor-immigrant-women/",
+        "http:/www.nytimes.com/2018/03/05/theater/queens-martyna-majok-review.html",
+        "http://www.timeout.com/newyork/theater/queens",
+        "http://www.towleroad.com/2018/03/queens-off-broadway/",
+        "http://www.thewrap.com/queens-theater-review-immigrant-women-martyna-majok-trapped-in-america/",
+        "https://www.nytimes.com/2018/03/05/theater/queens-martyna-majok-review.html",
+        "https://www.timeout.com/newyork/theater/queens",
+        "http://theatermania.com/off-broadway/reviews/immigrants-and-american-animus-coexist-in-queens_84322.html",
+        "http://thefrontrowcenter.com/2018/03/queens/",
+        "http://exeuntnyc.com/reviews/review-queens-lct3/",
+        "https://dctheatrescene.com/2018/03/05/queens-review-martyna-majok-crowds-queens-basement-poor-immigrant-women/"
+      ],
+      "dirFiles": 12,
+      "dirClean": 7,
+      "inReviewsJson": 7,
+      "missing": [
+        {
+          "url": "https://culturesauce.com/2025/11/05/queens-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce"
+        },
+        {
+          "url": "https://www.nysun.com/article/a-pulitzer-winner-martyna-majok-revises-her-powerful-play-queens-to-strong-effect",
+          "host": "nysun.com",
+          "knownOutletId": "new-york-sun"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/queens-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-queens-asks-what-the-american-dream-is-worth-leaving-behind_1810610/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania"
+        },
+        {
+          "url": "https://www.theatrely.com/post/queens-character-actress-riches-in-martyna-majoks-complicated-immigrant-tale----review",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely"
+        },
+        {
+          "url": "http://dctheatrescene.com/2018/03/05/queens-review-martyna-majok-crowds-queens-basement-poor-immigrant-women/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.towleroad.com/2018/03/queens-off-broadway/",
+          "host": "towleroad.com",
+          "knownOutletId": "towleroad",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/queens-theater-review-immigrant-women-martyna-majok-trapped-in-america/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2018/03/queens/",
+          "host": "thefrontrowcenter.com",
+          "knownOutletId": "front-row-center",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://dctheatrescene.com/2018/03/05/queens-review-martyna-majok-crowds-queens-basement-poor-immigrant-women/",
+          "host": "dctheatrescene.com",
+          "knownOutletId": "dctheatrescene",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "talkinbroadway.com",
+          "count": 1
+        },
+        {
+          "host": "theaterreviewsfrommyseat.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "http://www.timeout.com/newyork/theater/queens",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/queens"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "https://www.timeout.com/newyork/theater/queens",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout--helen-shaw.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/newyork/theater/queens"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-03-06",
+          "reverify": false
+        },
+        {
+          "url": "http://theatermania.com/off-broadway/reviews/immigrants-and-american-animus-coexist-in-queens_84322.html",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatermania--zachary-stewart.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://theatermania.com/off-broadway/reviews/immigrants-and-american-animus-coexist-in-queens_84322.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-03-05",
+          "reverify": false
+        },
+        {
+          "url": "http://exeuntnyc.com/reviews/review-queens-lct3/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--nicole-serratore.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://exeuntnyc.com/reviews/review-queens-lct3/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-03-05",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 233,
+        "byReason": {
+          "not-http-url": 12,
+          "non-review-host": 40,
+          "aggregator-internal-nav": 150,
+          "aggregator-section-root": 8,
+          "production-database-listing": 22,
+          "bare-host": 1
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-reviews-for-martyna-majoks-new-play-queens",
+          "publishDate": "2018-03-06"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "http://dctheatrescene.com/2018/03/05/queens-review-martyna-majok-crowds-queens-basement-poor-immigrant-women/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.towleroad.com/2018/03/queens-off-broadway/",
+          "host": "towleroad.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/queens-theater-review-immigrant-women-martyna-majok-trapped-in-america/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://thefrontrowcenter.com/2018/03/queens/",
+          "host": "thefrontrowcenter.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://dctheatrescene.com/2018/03/05/queens-review-martyna-majok-crowds-queens-basement-poor-immigrant-women/",
+          "host": "dctheatrescene.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://culturesauce.com/2025/11/05/queens-off-broadway-review/",
+          "host": "culturesauce.com",
+          "outletId": "culturesauce",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.nysun.com/article/a-pulitzer-winner-martyna-majok-revises-her-powerful-play-queens-to-strong-effect",
+          "host": "nysun.com",
+          "outletId": "new-york-sun",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/queens-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-queens-asks-what-the-american-dream-is-worth-leaving-behind_1810610/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatrely.com/post/queens-character-actress-riches-in-martyna-majoks-complicated-immigrant-tale----review",
+          "host": "theatrely.com",
+          "outletId": "theatrely",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "culturesauce",
+            "outlet": "culturesauce",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://culturesauce.com/2025/11/05/queens-off-broadway-review/"
+          },
+          {
+            "outletId": "new-york-sun",
+            "outlet": "new-york-sun",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nysun.com/article/a-pulitzer-winner-martyna-majok-revises-her-powerful-play-queens-to-strong-effect"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/queens-off-broadway-review"
+          },
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-queens-asks-what-the-american-dream-is-worth-leaving-behind_1810610/"
+          },
+          {
+            "outletId": "theatrely",
+            "outlet": "theatrely",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrely.com/post/queens-character-actress-riches-in-martyna-majoks-complicated-immigrant-tale----review"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/martyna-majok-queens-off-broadway-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-queens-at-new-york-city-center/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/06/queens-the-american-dream-does-not-live-here/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/06/theater/queens-review-martyna-majok.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/queens-review-martyna-majoks-play-of-immigrant-lives-0e64ff15",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http:/www.nytimes.com/2018/03/05/theater/queens-martyna-majok-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2018/03/05/theater/queens-martyna-majok-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/05/queens-off-broadway-review/",
+            "outletId": "culturesauce",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/a-pulitzer-winner-martyna-majok-revises-her-powerful-play-queens-to-strong-effect",
+            "outletId": "new-york-sun",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/queens-off-broadway-review",
+            "outletId": "nytg",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-queens-asks-what-the-american-dream-is-worth-leaving-behind_1810610/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatrely.com/post/queens-character-actress-riches-in-martyna-majoks-complicated-immigrant-tale----review",
+            "outletId": "theatrely",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 5,
+        "candidateCount": 10
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
     },
     {
       "showId": "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026",
@@ -187943,6 +189121,145 @@
       "computedAt": "2026-10-19T14:57:03.324Z"
     },
     {
+      "showId": "ta-da-off-broadway-2025",
+      "title": "Ta-Da!",
+      "openingDate": "2025-07-21",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204"
+      ],
+      "aggregatorListedUrls": [
+        "https://bway.world/ut58r",
+        "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+        "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
+        "https://1minutecritic.com/gotta-dance-york-theatre-review/"
+      ],
+      "dirFiles": 9,
+      "dirClean": 8,
+      "inReviewsJson": 8,
+      "missing": [
+        {
+          "url": "https://bway.world/ut58r",
+          "host": "bway.world",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "culturesauce.com",
+          "count": 1
+        },
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
+        {
+          "host": "gaycitynews.com",
+          "count": 1
+        },
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        },
+        {
+          "host": "vulture.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 326,
+        "byReason": {
+          "not-http-url": 88,
+          "non-review-host": 16,
+          "aggregator-internal-nav": 218,
+          "aggregator-section-root": 4
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-GOTTA-DANCE-Opens-Off-Broadway-at-the-York-Theatre-20251204",
+          "publishDate": "2025-12-04"
+        }
+      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://bway.world/ut58r",
+          "host": "bway.world",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/Gotta-Dance/1346",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://1minutecritic.com/gotta-dance-york-theatre-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2025/12/03/gotta-dance-gotta-dance-better-than-this/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 1,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "table-17-off-west-end-2026",
       "title": "Table 17",
       "openingDate": "2026-09-24",
@@ -203904,6 +205221,145 @@
       "computedAt": "2026-10-12T21:04:05.688Z"
     },
     {
+      "showId": "the-honey-trap-off-broadway-2025",
+      "title": "The Honey Trap",
+      "openingDate": "2025-09-28",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-HONEY-TRAP-at-Irish-Repertory-Theatre-20250929"
+      ],
+      "aggregatorListedUrls": [
+        "https://nystagereview.com/2025/09/28/the-honey-trap-dishing-out-a-potent-blend-of-genres/",
+        "https://nystagereview.com/2025/09/28/the-honey-trap-the-irish-troubles-dealt-with-intriguingly/",
+        "https://culturesauce.com/2025/09/28/the-honey-trap-off-broadway-review/",
+        "https://thefrontrowcenter.com/2025/09/the-honey-trap/",
+        "https://www.theatermania.com/news/review-the-truth-is-a-sticky-business-in-the-honey-trap_1805179/",
+        "https://www.timeout.com/newyork/theater/the-honey-trap-review-troubles",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=5I8LV8",
+        "https://www.talkinbroadway.com/page/ob/09_28_25b.html",
+        "https://exeuntnyc.com/reviews/review-the-honey-trap-at-irish-repertory-theatre/",
+        "https://www.theatrereviews.com/off-broadway-review-the-honey-trap-at-irish-repertory-theatre-through-sunday-november-9-2025/"
+      ],
+      "dirFiles": 15,
+      "dirClean": 15,
+      "inReviewsJson": 15,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "lavocedinewyork.com",
+          "count": 1
+        },
+        {
+          "host": "offoffonline.com",
+          "count": 1
+        },
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 307,
+        "byReason": {
+          "not-http-url": 64,
+          "non-review-host": 15,
+          "aggregator-internal-nav": 223,
+          "aggregator-section-root": 4,
+          "review-index-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://nystagereview.com/2025/09/28/the-honey-trap-dishing-out-a-potent-blend-of-genres/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/28/the-honey-trap-the-irish-troubles-dealt-with-intriguingly/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/09/28/the-honey-trap-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/09/the-honey-trap/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-truth-is-a-sticky-business-in-the-honey-trap_1805179/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.timeout.com/newyork/theater/the-honey-trap-review-troubles",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=5I8LV8",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/09_28_25b.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-the-honey-trap-at-irish-repertory-theatre/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-the-honey-trap-at-irish-repertory-theatre-through-sunday-november-9-2025/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 9,
+        "candidateCount": 9
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "the-hope-theory-off-broadway-2026",
       "title": "The Hope Theory",
       "openingDate": "2026-09-17",
@@ -216713,6 +218169,251 @@
       "computedAt": "2026-09-21T00:49:24.476Z"
     },
     {
+      "showId": "the-other-americans-off-broadway-2025",
+      "title": "The Other Americans",
+      "openingDate": "2025-09-25",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/reviews-sound-off-on-john-leguizamos-the-other-americans-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-John-Leguizamos-THE-OTHER-AMERICANS-20250926"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/the-other-americans-john-leguizamo-review/",
+        "https://cititour.com/NYC_Broadway/The-Other-Americans/1323",
+        "https://culturesauce.com/2025/09/25/john-leguizamo-the-other-americans-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/",
+        "https://thefrontrowcenter.com/2025/09/the-other-americans/",
+        "https://www.vulture.com/article/the-other-americans-leguizamo-review.html",
+        "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/",
+        "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/",
+        "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky",
+        "https://newyorktheater.me/2025/09/25/the-other-americans-review-john-leguizamo-writes-a-tragedy/",
+        "https://www.newyorktheatreguide.com/reviews/the-other-americans-off-broadway-review-john-leguizamo",
+        "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html",
+        "https://therecs.co.uk/the-other-americans/",
+        "https://www.theatermania.com/news/review-the-other-americans-and-the-profound-loneliness-of-dad_1804942/",
+        "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16",
+        "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-A2AM9A",
+        "https://www.talkinbroadway.com/page/ob/09_25_25.html",
+        "https://www.theaterscene.net/plays/offbway-plays/the-other-americans/victor-gluck/"
+      ],
+      "dirFiles": 25,
+      "dirClean": 22,
+      "inReviewsJson": 22,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "pagesonstages.com",
+          "count": 1
+        },
+        {
+          "host": "theaterlife.com",
+          "count": 1
+        },
+        {
+          "host": "theatrereviews.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": true,
+          "recoverableFile": "thewrap--robert-hofler.json",
+          "recoverableOutletId": "thewrap",
+          "recoverableCritic": "Robert Hofler",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 414,
+        "byReason": {
+          "not-http-url": 76,
+          "non-review-host": 36,
+          "aggregator-internal-nav": 280,
+          "aggregator-section-root": 10,
+          "production-database-listing": 11,
+          "roundup-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+          "host": "thewrap.com",
+          "file": "thewrap--robert-hofler.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/the-other-americans-john-leguizamo-review/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://cititour.com/NYC_Broadway/The-Other-Americans/1323",
+            "outletId": "cititour.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/09/25/john-leguizamo-the-other-americans-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/john-leguizamo-exposes-great-american-tragedy-in-the-other-americans/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2025/09/the-other-americans/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/the-other-americans-leguizamo-review.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/25/the-other-americans-john-leguizamo-not-going-it-alone/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/25/the-other-americans-drowning-in-the-kitchen-sink/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nysun.com/article/well-meaning-and-gamely-executed-john-leguizamos-new-play-the-other-americans-ultimately-comes-off-as-clunky",
+            "outletId": "nysun.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://newyorktheater.me/2025/09/25/the-other-americans-review-john-leguizamo-writes-a-tragedy/",
+            "outletId": "newyorktheater.me",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-other-americans-off-broadway-review-john-leguizamo",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/09/25/theater/the-other-americans-review-john-leguizamo.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://therecs.co.uk/the-other-americans/",
+            "outletId": "therecs.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-other-americans-and-the-profound-loneliness-of-dad_1804942/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.wsj.com/articles/the-other-americans-review-john-leguizamo-draws-on-classic-drama-06155c16",
+            "outletId": "wsj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-A2AM9A",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/09_25_25.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/the-other-americans/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thewrap.com/the-other-americans-off-broadway-review-john-leguizamo/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 17,
+        "candidateCount": 18
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "the-other-place-off-broadway-2026",
       "title": "The Other Place",
       "openingDate": "2026-01-30",
@@ -225311,6 +227012,197 @@
       "automatedExcludedListed": 0
     },
     {
+      "showId": "the-seat-of-our-pants-off-broadway-2025",
+      "title": "The Seat of Our Pants",
+      "openingDate": "2025-11-13",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [
+        "https://playbill.com/article/what-are-the-reviews-for-the-world-premiere-of-the-seat-of-our-pants-off-broadway",
+        "https://www.broadwayworld.com/article/Review-Roundup-THE-SEAT-OF-OUR-PANTS-Opens-At-The-Public-Theater-20251114"
+      ],
+      "aggregatorListedUrls": [
+        "https://1minutecritic.com/seat-of-our-pants-review-public-theater/",
+        "https://culturesauce.com/2025/11/13/seat-of-our-pants-thornton-wilder-ethan-lipton-off-broadway-review/",
+        "https://www.thedailybeast.com/obsessed/the-seat-of-our-pants-is-the-end-of-the-world-and-the-show-of-the-year/",
+        "https://nystagereview.com/2025/11/13/the-seat-of-our-pants-too-mild-wilder/",
+        "https://www.newyorktheatreguide.com/reviews/the-seat-of-our-pants-off-broadway-review",
+        "https://www.theatermania.com/news/review-the-seat-of-our-pants-joins-thornton-wilder-for-a-song-at-the-end-of-the-world_1811867/",
+        "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/",
+        "https://www.nytimes.com/2025/11/14/theater/seat-of-our-pants-review-public-theater.html",
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=3I8VN3",
+        "https://www.talkinbroadway.com/page/ob/11_13_25b.html",
+        "https://www.theaterscene.net/musicals/offbway/the-seat-of-our-pants/victor-gluck/",
+        "https://www.theatrereviews.com/off-broadway-review-the-seat-of-our-pants-at-the-publics-newman-theater-through-sunday-december-7-2025/"
+      ],
+      "dirFiles": 16,
+      "dirClean": 14,
+      "inReviewsJson": 14,
+      "missing": [],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "frontmezzjunkies.com",
+          "count": 1
+        },
+        {
+          "host": "twi-ny.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "recoverable": true,
+          "recoverableFile": "thewrap--robert-hofler.json",
+          "recoverableOutletId": "thewrap",
+          "recoverableCritic": "Robert Hofler",
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thewrap--robert-hofler.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "noTextOrScoreSignal"
+          ],
+          "reverify": true
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 414,
+        "byReason": {
+          "not-http-url": 72,
+          "non-review-host": 36,
+          "aggregator-internal-nav": 285,
+          "aggregator-section-root": 10,
+          "production-database-listing": 11
+        }
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 1,
+      "unextractable": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/",
+          "host": "thewrap.com",
+          "file": "thewrap--robert-hofler.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "thewrap",
+            "outlet": "thewrap",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://1minutecritic.com/seat-of-our-pants-review-public-theater/",
+            "outletId": "1minutecritic.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://culturesauce.com/2025/11/13/seat-of-our-pants-thornton-wilder-ethan-lipton-off-broadway-review/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thedailybeast.com/obsessed/the-seat-of-our-pants-is-the-end-of-the-world-and-the-show-of-the-year/",
+            "outletId": "thedailybeast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/11/13/the-seat-of-our-pants-too-mild-wilder/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/the-seat-of-our-pants-off-broadway-review",
+            "outletId": "newyorktheatreguide.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-the-seat-of-our-pants-joins-thornton-wilder-for-a-song-at-the-end-of-the-world_1811867/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.nytimes.com/2025/11/14/theater/seat-of-our-pants-review-public-theater.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=3I8VN3",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.talkinbroadway.com/page/ob/11_13_25b.html",
+            "outletId": "talkinbroadway.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/musicals/offbway/the-seat-of-our-pants/victor-gluck/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatrereviews.com/off-broadway-review-the-seat-of-our-pants-at-the-publics-newman-theater-through-sunday-december-7-2025/",
+            "outletId": "theatrereviews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.thewrap.com/the-seat-of-our-pants-off-broadway-review-musical/",
+            "outletId": "thewrap",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 11,
+        "candidateCount": 12
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "the-second-best-school-shooting-off-broadway-2026",
       "title": "The Second Best School Shooting",
       "openingDate": "2026-10-17",
@@ -232157,6 +234049,74 @@
       "automatedExcludedListed": 0
     },
     {
+      "showId": "this-is-government-off-broadway-2025",
+      "title": "This is Government",
+      "openingDate": "2025-09-06",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "http://www.lightingandsoundamerica.com/news/story.asp?ID=NNJYJ8",
+        "https://www.theatermania.com/news/review-this-is-government-depicts-dc-interns-under-lockdown_1802300/",
+        "https://nystagereview.com/2025/09/08/this-is-government-contemporary-comedy-about-workplace-lockdown/",
+        "https://pagesonstages.com/2025/09/13/this-is-government/"
+      ],
+      "dirFiles": 4,
+      "dirClean": 4,
+      "inReviewsJson": 4,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "complete",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=NNJYJ8",
+            "outletId": "lightingandsoundamerica.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/review-this-is-government-depicts-dc-interns-under-lockdown_1802300/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://nystagereview.com/2025/09/08/this-is-government-contemporary-comedy-about-workplace-lockdown/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2025/09/13/this-is-government/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 4,
+        "candidateCount": 4
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
+    },
+    {
       "showId": "this-is-my-favorite-song-off-broadway-2024",
       "title": "This Is My Favorite Song",
       "openingDate": "2024-11-21",
@@ -232386,6 +234346,208 @@
         "candidateCount": 0
       },
       "computedAt": "2026-08-13T06:23:39.338Z"
+    },
+    {
+      "showId": "this-much-i-know-off-broadway-2025",
+      "title": "This Much I Know",
+      "openingDate": "2025-09-30",
+      "status": "closed",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.broadwayworld.com/westend/article/Review-THIS-MUCH-I-KNOW-Hampstead-Theatre-20231220",
+        "https://www.standard.co.uk/culture/theatre/this-much-i-know-at-hampstead-theatre-downstairs-review-jonathan-spector-b1128145.html",
+        "https://www.theguardian.com/stage/2023/dec/20/this-much-i-know-review-hampstead-theatre-london",
+        "https://www.thetimes.co.uk/article/this-much-i-know-review-a-meditation-on-how-we-narrate-the-past-btk758sfc",
+        "https://www.thestage.co.uk/reviews/this-much-i-know-review-at-hampstead-theatre-london",
+        "https://theartsdesk.com/theatre/much-i-know-hampstead-theatre-review-intellectual-game-slight-emotional-payload",
+        "https://www.westendbestfriend.co.uk/news/review-this-much-i-know-hampstead-theatre"
+      ],
+      "dirFiles": 4,
+      "dirClean": 2,
+      "inReviewsJson": 2,
+      "missing": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THIS-MUCH-I-KNOW-Hampstead-Theatre-20231220",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/this-much-i-know-at-hampstead-theatre-downstairs-review-jonathan-spector-b1128145.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "priorRun": true,
+          "priorRunSource": "show-score-venue-text"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/dec/20/this-much-i-know-review-hampstead-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "show-score-url-year"
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/much-i-know-hampstead-theatre-review-intellectual-game-slight-emotional-payload",
+          "host": "theartsdesk.com",
+          "knownOutletId": "artsdesk"
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-this-much-i-know-hampstead-theatre",
+          "host": "westendbestfriend.co.uk",
+          "knownOutletId": "west-end-best-friend",
+          "priorRun": true,
+          "priorRunSource": "show-score-venue-text"
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "exeuntnyc.com",
+          "count": 1
+        },
+        {
+          "host": "nytimes.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.thetimes.co.uk/article/this-much-i-know-review-a-meditation-on-how-we-narrate-the-past-btk758sfc",
+          "host": "thetimes.co.uk",
+          "knownOutletId": "sunday-times",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "times-uk--clive-davis.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thetimes.co.uk/article/this-much-i-know-review-a-meditation-on-how-we-narrate-the-past-btk758sfc"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2023-12-20",
+          "reverify": false
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/this-much-i-know-review-at-hampstead-theatre-london",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thestage--dave-fargnoli.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thestage.co.uk/reviews/this-much-i-know-review-at-hampstead-theatre-london"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2023-12-21",
+          "reverify": false
+        }
+      ],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THIS-MUCH-I-KNOW-Hampstead-Theatre-20231220",
+          "host": "broadwayworld.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/this-much-i-know-at-hampstead-theatre-downstairs-review-jonathan-spector-b1128145.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2023/dec/20/this-much-i-know-review-hampstead-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-this-much-i-know-hampstead-theatre",
+          "host": "westendbestfriend.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://theartsdesk.com/theatre/much-i-know-hampstead-theatre-review-intellectual-game-slight-emotional-payload",
+          "host": "theartsdesk.com",
+          "outletId": "artsdesk",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "this-much-i-know-off-broadway-2025: https://theartsdesk.com/theatre/much-i-know-hampstead-theatre-review-intellectual-game-slight-emotional-payload has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "artsdesk",
+            "outlet": "artsdesk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theartsdesk.com/theatre/much-i-know-hampstead-theatre-review-intellectual-game-slight-emotional-payload"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://theartsdesk.com/theatre/much-i-know-hampstead-theatre-review-intellectual-game-slight-emotional-payload",
+            "outletId": "artsdesk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T20:20:32.397Z"
+          }
+        ],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-10-25T20:20:32.397Z"
     },
     {
       "showId": "three-houses-off-broadway-2026",
