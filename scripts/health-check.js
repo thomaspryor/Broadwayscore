@@ -2881,6 +2881,47 @@ function checkCiGreenRate(isCI, deps = {}) {
   return [healthRow(result, NAME)];
 }
 
+// --- Main: mid-setup cancels (BRO-2512) ---
+//
+// Empirical companion to the static concurrency audit (audit-workflow-concurrency.js):
+// scripts/ci-health-check.sh samples the last 20 test.yml push runs on main and exits 1
+// when more than 30% were cancelled before any job validated (the pre-2026-07-12
+// per-sha-concurrency baseline was ~75%). Until this row nothing ran it on a schedule, so
+// a reverted concurrency block would have gone unnoticed. Exit 1 is a legitimate reading
+// (warn row WITH the numbers); exit 2 (gh failure / no runs) is a warn row saying "no
+// reading", never a pass. Resolves flap-safe through the generic health-row resolver.
+function checkCiMidSetupCancels(deps = {}) {
+  const NAME = 'Main: mid-setup cancels';
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+  }
+  if (hasLowHeadroom()) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (~21 gh calls for a 20-run sample)' }];
+  }
+  const exec = deps.exec || execFileSync;
+  const script = path.join(__dirname, 'ci-health-check.sh');
+  let stdout = '';
+  let status = 0;
+  let stderr = '';
+  try {
+    stdout = exec('bash', [script, '20', '30'], { encoding: 'utf8', timeout: 120000, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    status = err && err.status != null ? err.status : '?';
+    stdout = String((err && err.stdout) || '');
+    stderr = String((err && (err.stderr || err.message)) || '');
+  }
+  const summary = (stdout.match(/Mid-setup cancelled \(never validated\):\s+(\d+) \((\d+)%\)/) || []);
+  const total = (stdout.match(/last (\d+) completed runs/) || [])[1];
+  if (status === 0) {
+    return [{ name: NAME, status: 'pass', message: `${summary[2] ?? '?'}% of the last ${total ?? '?'} test.yml main runs cancelled mid-setup (threshold 30%)` }];
+  }
+  if (status === 1) {
+    return [{ name: NAME, status: 'warn', message: `${summary[2] ?? '?'}% (${summary[1] ?? '?'} of ${total ?? '?'}) of the last test.yml main runs were cancelled before validating, above the 30% threshold. Check test.yml's per-sha concurrency block and run: node scripts/audit-workflow-concurrency.js` }];
+  }
+  const detail = stderr.trim().split('\n')[0].slice(0, 120);
+  return [{ name: NAME, status: 'warn', message: `ci-health-check.sh failed (exit ${status}) — no reading: ${detail}` }];
+}
+
 // --- Auto-fix effectiveness (2026-08-10 incident) ---
 //
 // The owner received a near-identical morning digest 13 days running. Cause: the
@@ -6100,6 +6141,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkScheduledFailureStreak(),
     ...(await checkMainRedStreak(isCI)),
     ...checkCiGreenRate(isCI),
+    ...checkCiMidSetupCancels(),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
     ...checkDeployFreshness(),
@@ -6332,4 +6374,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
