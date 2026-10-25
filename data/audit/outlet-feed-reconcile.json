@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T21:01:34.894Z",
+  "generatedAt": "2026-10-25T21:33:34.050Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -127,6 +127,10 @@
       "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
     },
@@ -139,15 +143,7 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "plays-international",
-      "error": "AggregateError"
-    },
-    {
-      "outletId": "south-london",
-      "error": "Timeout fetching https://southlondon.co.uk/feed/"
-    },
-    {
-      "outletId": "theatre-vibe",
+      "outletId": "viewfromthegods",
       "error": "AggregateError"
     },
     {
@@ -161,15 +157,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "chicagotribune",
-      "error": "HTTP 403 for https://www.chicagotribune.com/wp-json/wp/v2/posts?categories=135&per_page=20&orderby=date&order=desc&after"
     }
   ],
-  "itemsScanned": 659,
+  "itemsScanned": 669,
   "matchedGaps": 2,
-  "possibleGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "machine-learning-off-broadway-2026",
@@ -188,15 +180,6 @@
       "url": "https://stageandcinema.com/2026/10/23/phyl-mint-theater-review/",
       "headline": "Off-Broadway Review: PHYL (Mint Theater Company at Theatre Row)",
       "publishDate": "2026-10-23"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",

@@ -627,20 +627,6 @@
     "queuedAt": "2026-10-25T19:49:36.270Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
-    "title": "Review gap — \"Jest to Impress\" missing 1 cited review(s)",
-    "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T20:06:05.147Z"
-  },
-  {
     "conditionKey": "land:land/bro-6235-owner-decision-list",
     "title": "Landing blocked: tsc red on land/bro-6235-owner-decision-list",
     "description": "land.yml did not land land/bro-6235-owner-decision-list: the tsc gate went red at 07ad1251fe. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40228019783",
@@ -734,20 +720,6 @@
     "queuedAt": "2026-10-25T20:30:19.082Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T21:01:12.426Z"
-  },
-  {
     "conditionKey": "land:land/mac-cloud-phase2a",
     "title": "Landing blocked: rebase red on land/mac-cloud-phase2a",
     "description": "land.yml did not land land/mac-cloud-phase2a: the rebase gate went red at e451da1781. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/mac-cloud-phase2a @ e451da1781 (origin/land/mac-cloud-phase2a) → origin/main @ bf25eb4b6f REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bf25eb4b6f: Rebasing (1/2) error: could not apply 173c923d0ab... BRO-6230: morning digest as a GitHub Action (dry-run only) + Mac heartbeat signal hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40231191354",
@@ -777,6 +749,20 @@
       }
     ],
     "queuedAt": "2026-10-25T20:54:47.071Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-25T21:33:10.060Z"
   },
   {
     "conditionKey": "land:land/bro-6240-recheck-autoclose",
