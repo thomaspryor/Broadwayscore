@@ -2266,6 +2266,9 @@ on:
       # single scheduled owner email; colocated test runs in the
       # scripts/lib/*.test.mjs glob step, path-listed so a solo edit triggers CI.
       - 'scripts/send-morning-digest.js'
+      # BRO-6230 cutover tooling (dry-run compare); tested by
+      # tests/unit/morning-digest-action.test.mjs. Delete with the dry-run job.
+      - 'scripts/morning-digest-compare.js'
       # Close-time acceptance verify + trunk status (task #1003) — the decision
       # lib, the shared checkout/runner it leans on, the gh producer, and the
       # tests. Not covered by any broader glob (scripts/tests/ is not

@@ -12,10 +12,16 @@
  *   node scripts/check-morning-digest-sent.js                  live: page if missing, re-arm if found
  *   node scripts/check-morning-digest-sent.js --dry-run        report only, never routeAlert
  *   node scripts/check-morning-digest-sent.js --date=YYYY-MM-DD  check a specific ET day
+ *   node scripts/check-morning-digest-sent.js --signal=heartbeat [--dry-run]
+ *       judge the Mac by its checkout-sync heartbeat instead of the digest
+ *       (BRO-6230: once the digest sends from GitHub Actions it arrives even
+ *       when the Mac is dead). Same alert key, so one incident either way;
+ *       the workflow runs only one of the two signals live.
  *
  * Exit: 0 digest found (or paged / would page), 2 could not tell (Resend error
  * or missing env: never pages, job goes red so a broken checker is not silent).
  * Env: RESEND_API_KEY (full access), OWNER_EMAIL; live mode also LINEAR_API_KEY.
+ * Heartbeat signal: GH_TOKEN (read access) instead of the Resend pair.
  */
 'use strict';
 
@@ -24,13 +30,56 @@ const { dayKeyET } = require('./lib/scheduled-email-count-rules.js');
 const { fetchOwnerEmailsSince } = require('./lib/resend-owner-emails.js');
 const { decideMorningDigest, CONDITION_KEY, ALERT_TITLE, ALERT_DESCRIPTION } = require('./lib/morning-digest-liveness.js');
 
+const HEARTBEAT_ALERT_TITLE = 'The Mac Studio has stopped checking in. It is probably off or logged out';
+const HEARTBEAT_ALERT_DESCRIPTION = 'Log in to the Mac Studio. If it is on and logged in, its code sync is stuck. Until then the Mac\'s jobs are not running.';
+
+// The heartbeat signal (BRO-6230). Same exits and alert key as the digest signal below.
+async function checkHeartbeat({ dryRun }) {
+  const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
+  const r = await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN });
+  console.log(`[mac-heartbeat] ${r.state.toUpperCase()} — ${r.reason}`);
+  if (r.state === 'unknown') {
+    console.error('::warning::Cannot read the Mac heartbeat; NOT paging. Fix the checker.');
+    process.exit(2);
+  }
+  if (dryRun) {
+    if (r.state === 'dead') console.log('[mac-heartbeat] dry-run: would page the owner');
+    return;
+  }
+  const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
+  if (r.state === 'alive') {
+    if (resolveCondition(CONDITION_KEY)) console.log(`[mac-heartbeat] ${CONDITION_KEY} re-armed`);
+    return;
+  }
+  const result = await routeAlert({
+    conditionKey: CONDITION_KEY,
+    title: HEARTBEAT_ALERT_TITLE,
+    description: HEARTBEAT_ALERT_DESCRIPTION,
+    severity: 'critical',
+    disposition: 'human',
+    cooldownHours: 20,
+  });
+  console.log(`[mac-heartbeat] routeAlert -> ${result.action} delivered=${result.delivered}`);
+  if (result.delivered === false) {
+    console.error('::error::The Mac heartbeat is dead and the owner page was NOT delivered');
+    process.exit(2);
+  }
+}
+
 async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/check-morning-digest-sent.js [--dry-run] [--date=YYYY-MM-DD]');
+    console.log('Usage: node scripts/check-morning-digest-sent.js [--dry-run] [--date=YYYY-MM-DD] [--signal=digest|heartbeat]');
     return;
   }
   const dryRun = argv.includes('--dry-run');
+  const signalArg = argv.find((a) => a.startsWith('--signal='));
+  const signal = signalArg ? signalArg.split('=')[1] : 'digest';
+  if (signal === 'heartbeat') return checkHeartbeat({ dryRun });
+  if (signal !== 'digest') {
+    console.error(`Bad --signal "${signal}" (want digest or heartbeat)`);
+    process.exit(2);
+  }
   const dateArg = argv.find((a) => a.startsWith('--date='));
   const dateET = dateArg ? dateArg.split('=')[1] : dayKeyET(new Date().toISOString());
   if (!/^\d{4}-\d{2}-\d{2}$/.test(dateET)) {

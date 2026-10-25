@@ -11,6 +11,12 @@ name: Check Morning Digest Sent
 # cron can fire 30 min to 3 h late, so a late fire only delays the page.
 # An unreadable Resend API or an undelivered page exits 2: job red + critical
 # notify-failure email (severity 'warning' would send nothing), and never a false page.
+# BRO-6230: once the digest sends from GitHub Actions (morning-digest-action.yml)
+# it arrives even when the Mac is dead, so the Mac's checkout-sync heartbeat
+# (mac/checkout-sync-applied commit status) is the second signal. Repo variable
+# MAC_ALIVE_SIGNAL=heartbeat makes it the live one and turns the digest check
+# off; until then it runs report-only and cannot fail the job. Set the variable
+# BEFORE the digest moves (cutover checklist on BRO-6230).
 on:
   schedule:
     - cron: '30 14 * * *'
@@ -32,6 +38,7 @@ concurrency:
 
 permissions:
   contents: write
+  statuses: read
 
 jobs:
   check:
@@ -47,6 +54,7 @@ jobs:
           node-version: 20
 
       - name: Check morning digest was sent
+        if: vars.MAC_ALIVE_SIGNAL != 'heartbeat'
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
@@ -61,6 +69,20 @@ jobs:
             echo "$CHECK_DATE" | grep -qE '^[0-9]{4}-[0-9]{2}-[0-9]{2}$' || { echo "bad date"; exit 2; }
             ARGS="$ARGS --date=$CHECK_DATE"
           fi
+          node scripts/check-morning-digest-sent.js $ARGS
+
+      - name: Check the Mac heartbeat (report-only unless MAC_ALIVE_SIGNAL=heartbeat)
+        continue-on-error: ${{ vars.MAC_ALIVE_SIGNAL != 'heartbeat' }}
+        env:
+          GH_TOKEN: ${{ github.token }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          LIVE: ${{ vars.MAC_ALIVE_SIGNAL == 'heartbeat' }}
+        run: |
+          ARGS="--signal=heartbeat"
+          if [ "$LIVE" != "true" ] || [ "$DRY_RUN" = "true" ]; then ARGS="$ARGS --dry-run"; fi
           node scripts/check-morning-digest-sent.js $ARGS
 
       # routeAlert()/resolveCondition() write the cooldown ledger on the
