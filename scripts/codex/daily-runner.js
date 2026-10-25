@@ -523,9 +523,10 @@ function newLandFailures() {
 function newLandFailuresNow() {
   const D = require(path.join(ROOT, 'scripts/lib/land-gate-delta.js'));
   // The branch's own harness copy judges both trees, as land.yml does.
-  const gauntlet = path.join(os.tmpdir(), `codex-land-gauntlet-${process.pid}.sh`);
-  fs.copyFileSync(path.join(WT, 'scripts/lib/land-gauntlet.sh'), gauntlet);
-  try { return landFailuresWith(D, gauntlet); } finally { fs.rmSync(gauntlet, { force: true }); }
+  // Its own dir, with the gauntlet's siblings (BRO-6152: a lone copy lost tsc-node-options.sh).
+  const harnessDir = fs.mkdtempSync(path.join(os.tmpdir(), 'codex-land-gauntlet-'));
+  const gauntlet = require(path.join(ROOT, 'scripts/lib/land-local-check.js')).stageGauntletHarness(WT, harnessDir);
+  try { return landFailuresWith(D, gauntlet); } finally { fs.rmSync(harnessDir, { recursive: true, force: true }); }
 }
 function landFailuresWith(D, gauntlet) {
   requireSandbox();

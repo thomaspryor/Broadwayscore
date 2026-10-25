@@ -4,6 +4,7 @@ import { createRequire } from 'node:module';
 import fs, { mkdtempSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = require('./land-local-check.js');
@@ -162,4 +163,55 @@ test('main exits 3 (not ready) when core data is missing, before any gate runs',
   const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
   const main = src.slice(src.indexOf('function main('));
   assert.ok(main.indexOf('missingCoreData(ROOT)') > 0 && main.indexOf('missingCoreData(ROOT)') < main.indexOf('mkdtempSync'));
+});
+
+// BRO-6152: the base run executes a COPY of land-gauntlet.sh outside the tree it checks out.
+// Every sibling it calls via $(dirname "${BASH_SOURCE[0]}")/<file> must be staged next to it,
+// by stageGauntletHarness (land-local-check, codex daily runner) and by land.yml's harness step.
+test('harness list covers every sibling the gauntlet calls, and land.yml stages all of them', () => {
+  const { HARNESS_FILES } = require('./land-local-check.js');
+  const g = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+  const siblings = [...g.matchAll(/\$\(dirname "\$\{BASH_SOURCE\[0\]\}"\)\/([\w.-]+)/g)].map((m) => m[1]);
+  assert.ok(siblings.includes('tsc-node-options.sh'), 'the sibling pattern still matches the tsc helper reference');
+  for (const s of siblings) assert.ok(HARNESS_FILES.includes(s), `${s} is in HARNESS_FILES`);
+  const yml = fs.readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const step = yml.slice(yml.indexOf("name: Stage the branch's gauntlet harness"));
+  const run = step.slice(0, step.indexOf('\n      - ')).match(/run: (.*)/)[1];
+  for (const f of HARNESS_FILES) assert.ok(run.includes(`scripts/lib/${f}`), `land.yml stages ${f}: ${run}`);
+  assert.match(run, /"\$RUNNER_TEMP\/"$/, 'land.yml copies into $RUNNER_TEMP, where the base step runs land-gauntlet.sh');
+});
+
+test('stageGauntletHarness copies the gauntlet and its siblings; a helper absent from the source is skipped', () => {
+  const { stageGauntletHarness, HARNESS_FILES } = require('./land-local-check.js');
+  const root = new URL('../..', import.meta.url).pathname;
+  const dir = mkdtempSync(join(tmpdir(), 'stage-harness-'));
+  try {
+    const out = join(dir, 'h');
+    assert.equal(stageGauntletHarness(root, out), join(out, 'land-gauntlet.sh'));
+    for (const f of HARNESS_FILES) assert.equal(fs.readFileSync(join(out, f), 'utf8'), fs.readFileSync(join(root, 'scripts/lib', f), 'utf8'));
+    const old = join(dir, 'old');
+    fs.mkdirSync(join(old, 'scripts/lib'), { recursive: true });
+    writeFileSync(join(old, 'scripts/lib/land-gauntlet.sh'), '# old\n');
+    stageGauntletHarness(old, join(dir, 'h2'));
+    assert.ok(existsSync(join(dir, 'h2/land-gauntlet.sh')));
+    assert.ok(!existsSync(join(dir, 'h2/tsc-node-options.sh')));
+    assert.throws(() => stageGauntletHarness(join(dir, 'nowhere'), join(dir, 'h3')), /ENOENT/, 'a missing gauntlet is an error');
+  } finally { rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('gauntlet copied alone resolves tsc NODE_OPTIONS quietly to the floor', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'lone-gauntlet-'));
+  try {
+    const g = fs.readFileSync(new URL('./land-gauntlet.sh', import.meta.url), 'utf8');
+    const start = g.indexOf('TSC_HELPER=');
+    const block = g.slice(start, g.indexOf('\n', g.indexOf('[ -n "$TSC_NODE_OPTIONS" ]')));
+    for (const [name, withHelper] of [['alone', false], ['staged', true]]) {
+      const d = join(dir, name); fs.mkdirSync(d);
+      writeFileSync(join(d, 'probe.sh'), `${block}\nprintf '%s' "$TSC_NODE_OPTIONS"\n`);
+      if (withHelper) fs.copyFileSync(new URL('./tsc-node-options.sh', import.meta.url), join(d, 'tsc-node-options.sh'));
+      const r = spawnSync('bash', [join(d, 'probe.sh')], { encoding: 'utf8', env: { ...process.env, NODE_OPTIONS: '' } });
+      assert.equal(r.stderr, '', `${name}: no stderr (BRO-6152 saw "No such file or directory")`);
+      assert.match(r.stdout, /--max-old-space-size=6144/, name);
+    }
+  } finally { rmSync(dir, { recursive: true, force: true }); }
 });

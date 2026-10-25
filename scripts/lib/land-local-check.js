@@ -119,6 +119,23 @@ function newFailureFiles(deltaText) {
   return [...files];
 }
 
+// The base run checks out an older tree, so the gauntlet runs from a copy outside it. That copy
+// needs every sibling the gauntlet calls via $(dirname "${BASH_SOURCE[0]}")/... (BRO-6152: a lone
+// copy lost tsc-node-options.sh). land.yml's "Stage the branch's gauntlet harness" step mirrors
+// this list; land-local-check.test.mjs fails if either drifts from the gauntlet's references.
+const HARNESS_FILES = ['land-gauntlet.sh', 'tsc-node-options.sh'];
+
+/** Copy the harness from <fromRoot>/scripts/lib into <dir>; returns the gauntlet copy's path.
+ * A helper missing from the source tree is skipped (the gauntlet has a fallback); the gauntlet is not. */
+function stageGauntletHarness(fromRoot, dir) {
+  fs.mkdirSync(dir, { recursive: true });
+  for (const name of HARNESS_FILES) {
+    const src = path.join(fromRoot, 'scripts/lib', name);
+    if (name === 'land-gauntlet.sh' || fs.existsSync(src)) fs.copyFileSync(src, path.join(dir, name));
+  }
+  return path.join(dir, 'land-gauntlet.sh');
+}
+
 function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   if (opts.help) {
@@ -167,9 +184,7 @@ function main(argv = process.argv.slice(2)) {
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
       if (red) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
-        const copy = path.join(out, 'land-gauntlet.sh');
-        fs.copyFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), copy);
-        fs.copyFileSync(path.join(ROOT, 'scripts/lib/tsc-node-options.sh'), path.join(out, 'tsc-node-options.sh'));
+        const copy = stageGauntletHarness(ROOT, out);
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
         run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
         if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${branch || head}`);
@@ -204,6 +219,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { main, parseArgs, newFailureFiles, missingCoreData, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { main, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());

@@ -289,7 +289,9 @@ jobs:
         # predate scripts/lib/land-gauntlet.sh entirely (the first landing of
         # this workflow) or carry an older one. Only the tree under test
         # changes between the two runs, never the harness.
-        run: cp scripts/lib/land-gauntlet.sh "$RUNNER_TEMP/land-gauntlet.sh"
+        # Mirrors HARNESS_FILES in scripts/lib/land-local-check.js: the gauntlet's
+        # siblings must sit next to the copy (BRO-6152); the test enforces the list.
+        run: cp scripts/lib/land-gauntlet.sh scripts/lib/tsc-node-options.sh "$RUNNER_TEMP/"
 
       # ── Branch gauntlet: the rebased tip ─────────────────────────────────────
       # BRO-6043: core-data digest BEFORE the gauntlet; the seed export refuses
