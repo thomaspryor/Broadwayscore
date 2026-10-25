@@ -1,8 +1,8 @@
 {
-  "timestamp": "2026-10-25T17:16:56.698Z",
+  "timestamp": "2026-10-25T17:30:11.484Z",
   "stats": {
-    "totalReviews": 61602,
-    "alreadyFlagged": 21450,
+    "totalReviews": 61603,
+    "alreadyFlagged": 21452,
     "dateGuardCatches": 223,
     "directorMismatch": 2235,
     "tvFilmSignals": 1752,
@@ -37086,7 +37086,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 61,
+      "score": 65,
       "publishDate": "2026-04-01",
       "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
@@ -67974,19 +67974,6 @@
       ]
     },
     {
-      "showId": "dog-mom-off-west-end-2026",
-      "file": "onin--caitlin-neal.json",
-      "publishDate": "2026-10-23",
-      "url": "https://onin.london/dog-mom-at-southwark-playhouse/?utm_source=rss&utm_medium=rss&utm_campaign=dog-mom-at-southwark-playhouse",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "don-juan-in-soho-west-end-2017",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 82,
@@ -92798,6 +92785,19 @@
       "score": 99,
       "publishDate": "2024-11-07",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-curious-case-of-benjamin-button-ambassador-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+      "file": "express-uk--george-simpson.json",
+      "publishDate": null,
+      "url": "https://www.express.co.uk/entertainment/theatre/1975202/Curious-Case-of-Benjamin-Button-musical-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
