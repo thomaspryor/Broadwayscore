@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T01:45:10.638Z",
+  "timestamp": "2026-10-25T02:24:54.997Z",
   "stats": {
-    "totalReviews": 60835,
-    "alreadyFlagged": 21345,
-    "dateGuardCatches": 223,
-    "directorMismatch": 2211,
-    "tvFilmSignals": 1720,
+    "totalReviews": 60836,
+    "alreadyFlagged": 21351,
+    "dateGuardCatches": 222,
+    "directorMismatch": 2210,
+    "tvFilmSignals": 1719,
     "londonSignals": 2963,
     "offBroadwaySignals": 535,
     "yearMismatch": 201,
-    "noPublishDate": 5468
+    "noPublishDate": 5465
   },
   "findings": [
     {
@@ -14309,19 +14309,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"harold prince\" from evita-1979"
-        }
-      ]
-    },
-    {
-      "showId": "evita-2026",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2025-07-02",
-      "url": "https://www.whatsonstage.com/news/how-jamie-lloyds-evita-was-cast-with-star-quality_1685346/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 605d before show (2025-07-02 vs 2027-02-27)"
         }
       ]
     },
@@ -42854,20 +42841,6 @@
       ]
     },
     {
-      "showId": "the-color-purple-2005",
-      "file": "nytimes--alissa-wilkinson.json",
-      "score": 76,
-      "publishDate": "2007-05-18",
-      "url": "https://www.nytimes.com/2007/05/18/theater/reviews/18purp.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
       "showId": "the-color-purple-2015",
       "file": "broadway-and-me--janice-c-simpson.json",
       "score": 91,
@@ -44223,20 +44196,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "dailybeast--tim-teeman.json",
-      "score": 88,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam gold\" from the-glass-menagerie-2017"
         }
       ]
     },
