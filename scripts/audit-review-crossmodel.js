@@ -55,7 +55,7 @@ function loadShows() { const j = loadJson('data/shows.json'); return Array.isArr
 const isHist = (s) => Array.isArray(s.tags) && s.tags.includes('historical');
 const COHORT_FILTERS = {
   'bw-historical': (s) => s.market === 'broadway' && isBroadwayCategory(s) && isHist(s),
-  'ob-historical': (s) => s.market === 'broadway' && s.category === 'off-broadway' && isHist(s),
+  'ob-historical': (s) => require('./lib/ob-historical-cohort').isObHistoricalRow(s),
 };
 function cohortFilter(c) {
   if (COHORT_FILTERS[c]) return COHORT_FILTERS[c];

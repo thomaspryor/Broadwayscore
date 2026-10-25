@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts } = require('./ob-historical-cohort.js');
+const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, isObHistoricalRow } = require('./ob-historical-cohort.js');
 const { applyAddShow } = require('./add-show-action.js');
 const { isTmRowInWindow, isCurrentTmRow } = require('./theatermania-ob.js');
 const { selectPromotable } = require('../promote-ob-historical.js');
@@ -50,10 +50,10 @@ test('toAddShowAction: closed OB row tagged ob-historical:tm with Playbill date 
   assert.equal(a.show.openingDateSource, 'playbill-ob-historical');
   assert.deepEqual(a.show.evidenceUrls, ['https://playbill.com/x']);
   assert.equal(a.show.slug, a.show.id);
-  assert.deepEqual(a.show.tags, ['historical', 'new']);
+  assert.deepEqual(a.show.tags, []);
   assert.equal('isRevival' in a.show, false);
   const rev = toAddShowAction(entry({ isRevival: true }), { discoveredAt: 'x', dateSource: 'y' });
-  assert.deepEqual(rev.show.tags, ['historical', 'revival']);
+  assert.deepEqual(rev.show.tags, ['revival']);
   assert.equal(rev.show.isRevival, true);
 });
 
@@ -108,4 +108,12 @@ test('selectPromotable: refuses an id already in shows and a same title+venue ro
   ], shows);
   assert.deepEqual(toPromote.map(e => e.id), ['archduke-off-broadway-2025']);
   assert.equal(skipped.length, 1);
+});
+
+test('isObHistoricalRow: tag or ob-historical discoverySource, Off-Broadway rows only', () => {
+  assert.equal(isObHistoricalRow({ market: 'broadway', category: 'off-broadway', tags: ['historical'] }), true);
+  assert.equal(isObHistoricalRow({ market: 'broadway', category: 'off-broadway', tags: [], discoverySource: 'ob-historical:tm' }), true);
+  assert.equal(isObHistoricalRow({ market: 'broadway', category: 'off-broadway', tags: [], discoverySource: 'theatermania-ob' }), false);
+  assert.equal(isObHistoricalRow({ market: 'broadway', category: 'broadway', tags: ['historical'] }), false);
+  assert.equal(isObHistoricalRow(null), false);
 });
