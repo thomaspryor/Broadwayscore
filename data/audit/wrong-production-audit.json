@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T12:38:52.043Z",
+  "timestamp": "2026-10-25T13:53:19.773Z",
   "stats": {
-    "totalReviews": 61331,
-    "alreadyFlagged": 21401,
-    "dateGuardCatches": 222,
-    "directorMismatch": 2223,
-    "tvFilmSignals": 1747,
-    "londonSignals": 2974,
+    "totalReviews": 61387,
+    "alreadyFlagged": 21396,
+    "dateGuardCatches": 223,
+    "directorMismatch": 2221,
+    "tvFilmSignals": 1746,
+    "londonSignals": 2973,
     "offBroadwaySignals": 540,
     "yearMismatch": 201,
-    "noPublishDate": 5434
+    "noPublishDate": 5484
   },
   "findings": [
     {
@@ -5207,25 +5207,6 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2019 (2x) more than 2026 (0x). 2019 matches production: beetlejuice-2019"
-        }
-      ]
-    },
-    {
-      "showId": "betrayal-2013",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 90,
-      "publishDate": "November 6, 2013",
-      "url": "https://www.hollywoodreporter.com/news/betrayal-theater-review-646659/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jamie lloyd\" from betrayal-2019"
-        },
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -18725,24 +18706,10 @@
     },
     {
       "showId": "gypsy-2024",
-      "file": "vulture--jackson-mchenry.json",
-      "score": 77,
-      "publishDate": "December 20, 2024",
-      "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.html#:~:text=Another%20irony%20of%20Gypsy%20is,and%20none%20of%20the%20resources.",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
-        }
-      ]
-    },
-    {
-      "showId": "gypsy-2024",
       "file": "vulture--sara-holdren.json",
       "score": 77,
       "publishDate": "December 20, 2024",
-      "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.html",
+      "url": "https://www.vulture.com/article/theater-review-audra-mcdonald-gypsy-momma-rose.html#:~:text=Another%20irony%20of%20Gypsy%20is,and%20none%20of%20the%20resources.",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -61407,6 +61374,20 @@
     },
     {
       "showId": "art-west-end-2016",
+      "file": "artshub--gina-fairley.json",
+      "score": null,
+      "publishDate": "2016-01-29",
+      "url": "https://www.artshub.co.uk/news/opinions-analysis/where-does-australia-fit-in-singapores-regional-art-hub-250382-1279755/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 326d before show (2016-01-29 vs 2016-12-20)"
+        }
+      ]
+    },
+    {
+      "showId": "art-west-end-2016",
       "file": "daily-mail--quentin-letts.json",
       "score": 78,
       "publishDate": "2016-12-23",
@@ -62901,6 +62882,7 @@
     {
       "showId": "blood-of-my-blood-west-end-2026",
       "file": "loureviews--louise-penn.json",
+      "score": 92,
       "publishDate": "2026-10-25",
       "url": "https://loureviews.blog/2026/10/25/play-review-blood-of-my-blood-at-royal-court-upstairs/",
       "findings": [
@@ -81650,7 +81632,7 @@
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "nbcny--robert-kahn.json",
       "score": 72,
-      "publishDate": null,
+      "publishDate": "2016-11-14T20:16:33-05:00",
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Josh-Groban-Great-Comet-Review-401123215.html",
       "findings": [
         {
@@ -85772,19 +85754,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
-      "file": "donyc--the-heartbeat-opera-presents.json",
-      "publishDate": null,
-      "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
