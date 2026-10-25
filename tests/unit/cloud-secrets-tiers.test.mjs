@@ -45,6 +45,11 @@ test('every scraper provider credential is Tier 1 (BRO-6112)', () => {
   }
 });
 
+test('APPROVAL_HMAC_SECRET is never required in cloud (a session holding it could sign its own approvals)', () => {
+  assert.ok(!TIER_1.includes('APPROVAL_HMAC_SECRET'));
+  assert.ok(TIER_2.includes('APPROVAL_HMAC_SECRET'), 'keep it listed so a stray copy is visible');
+});
+
 test('requiring the script does not execute it (no process.exit on import)', () => {
   // The module is guarded by `require.main === module`. Without that guard this
   // very test file would kill its own worker on import.
