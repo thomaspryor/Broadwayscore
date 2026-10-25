@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T19:38:24.387Z",
+  "timestamp": "2026-10-25T19:53:34.314Z",
   "stats": {
-    "totalReviews": 61644,
-    "alreadyFlagged": 21468,
+    "totalReviews": 61690,
+    "alreadyFlagged": 21467,
     "dateGuardCatches": 223,
     "directorMismatch": 2238,
-    "tvFilmSignals": 1752,
+    "tvFilmSignals": 1753,
     "londonSignals": 2977,
     "offBroadwaySignals": 542,
     "yearMismatch": 202,
-    "noPublishDate": 5507
+    "noPublishDate": 5518
   },
   "findings": [
     {
@@ -32262,6 +32262,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "london-theatre-reviews--stuart-james.json",
+      "publishDate": "2025-12-19",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26495",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
