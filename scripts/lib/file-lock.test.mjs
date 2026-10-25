@@ -301,3 +301,29 @@ test('withFileLock makes one attempt even when the deadline has already passed',
     fs.rmSync(dir, { recursive: true, force: true });
   }
 });
+
+// BRO-6189 (review follow-up): clearing an abandoned steal gate must not use up
+// the guaranteed attempt, or the now-free lock is still reported busy.
+test('withFileLock still acquires after clearing an abandoned gate past the deadline', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'file-lock-gate-deadline-'));
+  const lock = path.join(dir, 'x.lock');
+  const gate = `${lock}.steal-gate`;
+  try {
+    fs.mkdirSync(gate);
+    const old = new Date(Date.now() - 60 * 60_000);
+    fs.utimesSync(gate, old, old);
+    const realNow = Date.now;
+    let calls = 0;
+    // First Date.now() call MUST be the deadline calc in withFileLock; later calls are 1h ahead.
+    t.mock.method(Date, 'now', () => (calls++ === 0 ? realNow() : realNow() + 3_600_000));
+    let held;
+    withFileLock(lock, h => { held = h; }, { timeoutMs: 1, waitMs: 0 });
+    t.mock.restoreAll();
+    assert.equal(held, true);
+    assert.equal(fs.existsSync(gate), false);
+    assert.equal(fs.existsSync(lock), false, 'lock released on exit');
+  } finally {
+    t.mock.restoreAll();
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
