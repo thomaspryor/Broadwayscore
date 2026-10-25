@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6036-d",
   "planId": "899f5256-bc52-437d-9b78-35d47cfaf126",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T11:57:08.985Z",
   "submitter": {
     "name": null,
@@ -84,5 +84,44 @@
         "description": "shows.json: jersey-boys-west-end-2021.openingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-25T12:14:12.727Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-name-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-name-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for dr-semmelweis-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for dr-semmelweis-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for dr-semmelweis-west-end-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for jersey-boys-west-end-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for jersey-boys-west-end-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
