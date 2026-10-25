@@ -79,9 +79,10 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
     category: 'off-broadway',
     market: 'broadway',
     type: entry.type,
-    // 'historical' is what the OB historical audits select on
-    // (audit-review-crossmodel.js isHist, fact-check samples).
-    tags: ['historical', entry.isRevival ? 'revival' : 'new'],
+    // Not 'historical': on the site that tag is a theme ("historical
+    // drama", src/lib/data-core.ts thematicTags). The OB historical audits
+    // select these rows by discoverySource instead (isObHistoricalRow).
+    tags: entry.isRevival === true ? ['revival'] : entry.isRevival === false ? ['new'] : [],
     ...(typeof entry.isRevival === 'boolean' ? { isRevival: entry.isRevival } : {}),
     discoverySource: 'ob-historical:tm',
     discoveredAt,
@@ -92,4 +93,16 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
   return { type: 'add-show', show };
 }
 
-module.exports = { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };
+/**
+ * Is this shows.json row part of the Off-Broadway historical backfill? Older
+ * backfilled rows carry the 'historical' tag; rows this cohort script writes
+ * carry discoverySource 'ob-historical:<source>' (BRO-6153). Shared by the
+ * audit cohorts in audit-review-crossmodel.js and fact-check-sample.js.
+ */
+function isObHistoricalRow(s) {
+  if (!s || s.market !== 'broadway' || s.category !== 'off-broadway') return false;
+  return (Array.isArray(s.tags) && s.tags.includes('historical'))
+    || String(s.discoverySource || '').startsWith('ob-historical:');
+}
+
+module.exports = { isObHistoricalRow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };
