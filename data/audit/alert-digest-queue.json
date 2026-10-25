@@ -994,5 +994,36 @@
       }
     ],
     "queuedAt": "2026-10-25T22:47:56.668Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5088-steinberg-directors",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5088-steinberg-directors",
+    "description": "land.yml did not land land/bro-5088-steinberg-directors: the unit-tests-node gate went red at 7a3c27cc42. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40240833551",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5088-steinberg-directors"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7a3c27cc422b9eddfefe4dcf1819caecd3ee6cfd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40240833551"
+      }
+    ],
+    "queuedAt": "2026-10-25T22:54:37.610Z"
   }
 ]
