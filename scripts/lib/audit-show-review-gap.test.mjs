@@ -171,7 +171,7 @@ test('BRO-5627 the audit passes --require-publish-date and the ingest script emi
   assert.match(ingest, /Skipped: publish-date-unresolved/);
   assert.match(audit, /args\.push\('--require-publish-date'\)/);
   assert.match(audit, /iargs\.push\('--require-publish-date'\)/);
-  assert.match(audit, /ingestMissingUrl\(r\.showId, m\.url, m\.knownOutletId, \{ requirePublishDate: gapIngestRequiresPublishDate\(m, earlierEvidence\) \}\)/);
+  assert.match(audit, /ingestMissingUrl\(r\.showId, m\.url, m\.knownOutletId, \{ requirePublishDate: gapIngestRequiresPublishDate\(m, earlierEvidence\), show: s \}\)/);
 });
 
 test('BRO-5627 an article + one-word title needs the whole title, a quote, or "review" beside it', () => {

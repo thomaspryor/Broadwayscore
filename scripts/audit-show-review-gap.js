@@ -204,7 +204,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, flaggedFilePriorRunDate, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation } = require('./lib/gap-ingest-policy');
 const { otherProductionSignal } = require('./lib/other-production-signal');
 const { priorRunUrlSignal, phillyFringeUrlSignal } = require('./lib/prior-run-url-signal');
 const { isLikelyTourReview } = require('./lib/review-guards');
@@ -1618,7 +1618,7 @@ async function dispatchGatherFor(showId) {
 // Returns { ok, reason } so the caller can log per-URL outcomes. Skips URLs
 // whose host is unknown to the registry (those should be added to the registry
 // first via the unknown-aggregator-outlets audit).
-function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = false } = {}) {
+function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = false, show = null } = {}) {
   // BRO-5500: ingest-review-from-url.js refuses these with exit 1 (the submission workflow
   // depends on that), which read here as a FAILED ingest and re-alarmed roundup-gap:all
   // hourly. Same permanent refusal, so classify it as the expected skip without spawning.
@@ -1665,6 +1665,11 @@ function ingestMissingUrl(showId, url, knownOutletId, { requirePublishDate = fal
     // BRO-4765: ingestFailureReason (execErrorDetail, 600 chars) keeps a bounded prefix, and warnings can print before the line
     // that says extraction returned 0 chars. Look at the child's whole output for it.
     const zeroChar = /Article extraction returned 0 chars/i.test(`${e && e.stderr || ''}${e && e.stdout || ''}${e && e.message || ''}`);
+    // BRO-5421: a date_implausible quarantine of a pre-run review is the prior production's, a permanent expected refusal.
+    const priorDate = show && quarantinedPriorRunDate(`${e && e.stdout || ''}${e && e.stderr || ''}`, show);
+    if (priorDate) {
+      return { ok: false, noop: true, expected: true, expectedReason: 'prior-production-quarantined', reason: `${showId}: ${url} dated ${priorDate} predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed.`, provisional };
+    }
     return { ok: false, reason: ingestFailureReason(e), provisional, zeroChar };
   }
   // Exit 0 is NOT proof the review landed: ingest-review-from-url.js exits 0
@@ -2474,7 +2479,7 @@ async function main(argv = process.argv.slice(2)) {
       const earlierEvidence = earlierDatedCitation(r, s, { heldDates: loadDirFiles(s.id).map(d => d.publishDate) });
       if (earlierEvidence) console.log(`  📅 earlier-dated citation (${earlierEvidence}) — gap ingests must resolve a publish date`);
       for (const m of ingestable) {
-        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId, { requirePublishDate: gapIngestRequiresPublishDate(m, earlierEvidence) });
+        const res = ingestMissingUrl(r.showId, m.url, m.knownOutletId, { requirePublishDate: gapIngestRequiresPublishDate(m, earlierEvidence), show: s });
         perShowFetches++;
         const outletId = m.knownOutletId || provisionalOutletIdFromHost(m.host);
         // conflict/conflictReason MUST be carried through: computeResidualCounts
