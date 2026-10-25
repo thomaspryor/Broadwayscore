@@ -1,115 +1,53 @@
 {
-  "updatedAt": "2026-10-25T12:11:45.391Z",
-  "processed": 100,
-  "failed": 82,
-  "successRate": "54.9%",
+  "updatedAt": "2026-10-25T13:24:44.113Z",
+  "processed": 57,
+  "failed": 43,
+  "successRate": "57.0%",
   "tierBreakdown": {
-    "playwright": 81,
+    "playwright": 31,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 1,
-    "brightdata": 2,
+    "scrapingdog": 7,
+    "scrapingbee": 5,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 16
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-25T10:24:47.987Z",
+      "t": "2026-10-25T12:55:07.854Z",
       "event": "bb-session",
-      "session": "36cef300",
-      "url": "https://www.nytimes.com/2025/08/07/theater/downton-abbey-elizabeth-mcgovern-ava-"
+      "session": "da0e3287",
+      "url": "http://www.wsj.com/articles/love-love-love-review-not-since-stoppard-1476997177"
     },
     {
-      "t": "2026-10-25T10:24:48.669Z",
+      "t": "2026-10-25T12:55:08.212Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T12:55:26.275Z",
+      "event": "bb-session",
+      "session": "1f81c6ff",
+      "url": "http://www.wsj.com/articles/love-love-love-review-not-since-stoppard-1476997177"
+    },
+    {
+      "t": "2026-10-25T12:55:26.575Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-25T13:07:38.664Z",
+      "event": "bb-session",
+      "session": "0c2ecaa8",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-25T13:07:39.028Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-25T10:29:33.429Z",
-      "event": "bb-session",
-      "session": "6390362d",
-      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
-    },
-    {
-      "t": "2026-10-25T10:29:43.847Z",
-      "event": "bb-session",
-      "session": "8e8eeb57",
-      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
-    },
-    {
-      "t": "2026-10-25T10:30:57.794Z",
-      "event": "bb-session",
-      "session": "4ef8cad8",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-25T10:31:05.346Z",
-      "event": "bb-session",
-      "session": "c4684f65",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-25T10:33:10.511Z",
-      "event": "bb-session",
-      "session": "4eaa87af",
-      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
-    },
-    {
-      "t": "2026-10-25T11:22:45.820Z",
-      "event": "bb-session",
-      "session": "0ae470d9",
-      "url": "https://soundsandstage.com/show/cirque-berserk"
-    },
-    {
-      "t": "2026-10-25T11:26:31.010Z",
-      "event": "bb-session",
-      "session": "109242d3",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-25T11:26:38.783Z",
-      "event": "bb-session",
-      "session": "c2d8b533",
-      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
-    },
-    {
-      "t": "2026-10-25T11:27:22.872Z",
-      "event": "bb-session",
-      "session": "f5390aee",
-      "url": "https://soundsandstage.com/show/dirty-dancing"
-    },
-    {
-      "t": "2026-10-25T11:28:01.525Z",
-      "event": "bb-session",
-      "session": "2a1b8aa7",
-      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
-    },
-    {
-      "t": "2026-10-25T11:28:12.695Z",
-      "event": "bb-session",
-      "session": "449ee021",
-      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
-    },
-    {
-      "t": "2026-10-25T11:29:03.557Z",
-      "event": "bb-session",
-      "session": "5350af10",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-25T11:29:10.892Z",
-      "event": "bb-session",
-      "session": "ed3d3e8b",
-      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
-    },
-    {
-      "t": "2026-10-25T11:30:50.488Z",
-      "event": "bb-session",
-      "session": "4d7bb7d9",
-      "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d"
     }
   ]
 }
