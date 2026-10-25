@@ -178,8 +178,8 @@ describe('classifyStaleClosure', () => {
     assert.equal(r.action, 'no-change');
   });
 
-  it('skips tour-stop / return-engagement / international-transfer production types', () => {
-    for (const pt of ['tour-stop', 'return-engagement', 'international-transfer', 'International Transfer']) {
+  it('skips tour-stop / international-transfer production types', () => {
+    for (const pt of ['tour-stop', 'international-transfer', 'International Transfer']) {
       const r = classifyStaleClosure({
         show: { status: 'closed', closingDate: daysBefore(45) },
         entry: { designation: 'TBD', productionType: pt }, now: NOW,
