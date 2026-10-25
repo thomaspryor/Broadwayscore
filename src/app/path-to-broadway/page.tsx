@@ -180,14 +180,14 @@ export default function PathToBroadwayPage() {
               <ul className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                 {f.everPlayed.map((e) => (
                   <li key={e.stage}>
-                    <span className="block text-2xl font-bold text-white">{f.newProductions ? pct(e.count, f.newProductions) : '—'}</span>
+                    <span className="block text-2xl font-bold text-white">{f.newProductions ? pct(e.count, f.newProductions) : '–'}</span>
                     <span className="block text-xs text-gray-400">{e.label} ({e.count})</span>
                   </li>
                 ))}
               </ul>
               <p className="text-xs text-gray-500 mt-3">
                 Revivals that came from London:{' '}
-                {ERAS.map((e, i) => `${e.id} ${f.revivalsFromLondon.totals[i] ? pct(f.revivalsFromLondon.counts[i], f.revivalsFromLondon.totals[i]) : '—'} (${f.revivalsFromLondon.counts[i]} of ${f.revivalsFromLondon.totals[i]})`).join(', ')}.
+                {ERAS.map((e, i) => `${e.id} ${f.revivalsFromLondon.totals[i] ? pct(f.revivalsFromLondon.counts[i], f.revivalsFromLondon.totals[i]) : '–'} (${f.revivalsFromLondon.counts[i]} of ${f.revivalsFromLondon.totals[i]})`).join(', ')}.
               </p>
             </div>
           </section>

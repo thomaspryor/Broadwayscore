@@ -35,7 +35,7 @@ function RateRow({ label, count }: { label: string; count: BandCount }) {
         <div className="h-2 rounded-full bg-brand" style={{ width: `${count.total < MIN_RATE_SAMPLE ? 0 : (r ?? 0) * 100}%` }} />
       </div>
       <span className="text-right whitespace-nowrap">
-        <span className="font-semibold text-white">{r == null || count.total < MIN_RATE_SAMPLE ? '—' : `${Math.round(r * 100)}%`}</span>{' '}
+        <span className="font-semibold text-white">{r == null || count.total < MIN_RATE_SAMPLE ? '–' : `${Math.round(r * 100)}%`}</span>{' '}
         <span className="text-xs text-gray-500">{count.recouped} of {count.total}</span>
       </span>
     </div>

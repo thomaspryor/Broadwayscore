@@ -41,10 +41,11 @@ test('the scanner flags rendered strings but not comments or console output', (t
     "const g = 'Clean sentence, no tropes.';",
     "const j = 'Name – Title';",
     "const k = '–';",
+    "const l = 'data-money-unlocked';",
     'const h = <p>You&apos;ll be fine, they&apos;re here</p>;',
     'const i = <p>YouYou&apos;ll navigateapos;ll move</p>;',
   ].join('\n'));
-  assert.deepEqual(copyViolationsIn(tmp, dir).map((h) => h.split(':')[1]), ['2', '3', '4', '6', '7', '8', '10', '13']);
+  assert.deepEqual(copyViolationsIn(tmp, dir).map((h) => h.split(':')[1]), ['2', '3', '4', '6', '7', '8', '10', '14']);
 });
 
 test('on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules', () => {

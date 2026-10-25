@@ -26,6 +26,9 @@ const isPlaceholder = (text) => /^\s*–\s*$/.test(text) && (text === '–' || t
 // A find-and-replace that eats an ampersand leaves text like "navigateapos;ll".
 const BROKEN_ENTITY = /(?<![&\w])\w+(?:apos|quot|amp|mdash);|[A-Za-z](?:apos|quot);/;
 
+// data-* attribute names are identifiers, not copy (e.g. data-money-unlocked).
+const isDataAttrName = (text) => /^data-[a-z][a-z0-9-]*$/.test(text);
+
 function isConsoleArg(node) {
   for (let p = node.parent; p; p = p.parent) {
     if (ts.isCallExpression(p)) {
@@ -45,7 +48,7 @@ function copyViolationsIn(file, root = process.cwd()) {
       || ts.isTemplateMiddle(node) || ts.isTemplateTail(node) || ts.isJsxText(node);
     if (literal && (EM_DASH.test(node.text) || BANNED_PHRASES.test(node.text) || BROKEN_ENTITY.test(node.text)
       || (!ts.isTemplateMiddle(node) && !ts.isTemplateTail(node) && !ts.isTemplateHead(node) && !ts.isNoSubstitutionTemplateLiteral(node)
-        && SPACED_EN_DASH.test(node.text) && !isPlaceholder(node.text))) && !isConsoleArg(node)) {
+        && SPACED_EN_DASH.test(node.text) && !isPlaceholder(node.text))) && !isConsoleArg(node) && !isDataAttrName(node.text)) {
       const { line } = src.getLineAndCharacterOfPosition(node.getStart(src));
       hits.push(`${path.relative(root, file)}:${line + 1}: ${node.text.trim().replace(/\s+/g, ' ').slice(0, 90)}`);
     }
