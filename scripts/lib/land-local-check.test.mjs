@@ -189,6 +189,12 @@ test('stageGauntletHarness copies the gauntlet and its siblings; a helper absent
     const out = join(dir, 'h');
     assert.equal(stageGauntletHarness(root, out), join(out, 'land-gauntlet.sh'));
     for (const f of HARNESS_FILES) assert.equal(fs.readFileSync(join(out, f), 'utf8'), fs.readFileSync(join(root, 'scripts/lib', f), 'utf8'));
+    // The codex runner runs the copy as another user: a 0700 mkdtemp dir would be unreadable to it.
+    const private700 = mkdtempSync(join(tmpdir(), 'stage-harness-700-'));
+    try {
+      stageGauntletHarness(root, private700);
+      assert.equal(fs.statSync(private700).mode & 0o755, 0o755, 'harness dir readable and searchable by others, not writable');
+    } finally { rmSync(private700, { recursive: true, force: true }); }
     const old = join(dir, 'old');
     fs.mkdirSync(join(old, 'scripts/lib'), { recursive: true });
     writeFileSync(join(old, 'scripts/lib/land-gauntlet.sh'), '# old\n');

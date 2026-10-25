@@ -129,6 +129,9 @@ const HARNESS_FILES = ['land-gauntlet.sh', 'tsc-node-options.sh'];
  * A helper missing from the source tree is skipped (the gauntlet has a fallback); the gauntlet is not. */
 function stageGauntletHarness(fromRoot, dir) {
   fs.mkdirSync(dir, { recursive: true });
+  // mkdtemp dirs are 0700; the codex runner runs the copy as the sandbox user, which must be able to read it.
+  // 0755, not 0777: the sandbox must not be able to rewrite the harness.
+  fs.chmodSync(dir, 0o755);
   for (const name of HARNESS_FILES) {
     const src = path.join(fromRoot, 'scripts/lib', name);
     if (name === 'land-gauntlet.sh' || fs.existsSync(src)) fs.copyFileSync(src, path.join(dir, name));
