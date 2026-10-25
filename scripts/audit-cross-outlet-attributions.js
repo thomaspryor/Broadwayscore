@@ -83,6 +83,12 @@ const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-sca
 const { isTriagedOut } = require('./lib/cross-outlet-triage');
 const { explainExclusion } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { normalizeOutlet } = require('./lib/review-normalization');
+
+// Registry aliases (gotham-playgoer -> bobs-theater-blog, dc-metro-theater-arts
+// -> dc-theater-arts) are the SAME outlet. Comparing raw outletIds reported a
+// critic at their own home outlet's alias as a cross-outlet suspect (BRO-4695).
+const canonOutlet = (id) => normalizeOutlet(id) || id;
 
 // Byline zone for the --include-fulltext inline-verify check. A plain
 // whole-body substring search (ship-check adversarial finding, 2026-08-04)
@@ -179,7 +185,7 @@ for (const [oid, entry] of Object.entries(registry)) {
 const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'reviews.json'), 'utf8')).reviews;
 const perOutletCritic = new Map();
 for (const r of reviews) {
-  const key = `${r.outletId}||${r.criticName}`;
+  const key = `${canonOutlet(r.outletId)}||${r.criticName}`;
   perOutletCritic.set(key, (perOutletCritic.get(key) || 0) + 1);
 }
 
@@ -263,8 +269,9 @@ if (PLAYBILL_BLEED) {
       if (!criticName || !outletId || criticName === 'Unknown') continue;
       if (isTriagedOut(d, explainExclusion)) continue;
       const homes = defaultOf.get(criticName) || [];
-      if (!homes.length || homes.includes(outletId)) continue;
-      if ((perOutletCritic.get(`${outletId}||${criticName}`) || 0) > 1) continue;
+      const canonId = canonOutlet(outletId);
+      if (!homes.length || homes.includes(outletId) || homes.includes(canonId)) continue;
+      if ((perOutletCritic.get(`${canonId}||${criticName}`) || 0) > 1) continue;
 
       if (INCLUDE_FULLTEXT) {
         if (!d.fullText) continue;

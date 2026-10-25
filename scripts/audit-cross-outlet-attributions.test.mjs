@@ -162,3 +162,17 @@ test('no live-scoring review-text file has a reverted wrongAttribution clear', (
     `live-scoring files with a reverted wrongAttribution clear remain: ${JSON.stringify(contradictions, null, 2)}`
   );
 });
+
+// BRO-4695: a critic filed under a registry ALIAS of their own home outlet
+// (Robert Sholiton @ gotham-playgoer, alias of bobs-theater-blog; Richard Seff
+// @ dc-metro-theater-arts, alias of dc-theater-arts) is not a cross-outlet
+// suspect. The audit must compare canonical outletIds, not raw ones.
+test('audit canonicalizes registry-alias outletIds before the home-outlet check', async () => {
+  const { createRequire } = await import('node:module');
+  const { normalizeOutlet } = createRequire(import.meta.url)('./lib/review-normalization.js');
+  assert.strictEqual(normalizeOutlet('gotham-playgoer'), 'bobs-theater-blog');
+  assert.strictEqual(normalizeOutlet('dc-metro-theater-arts'), 'dc-theater-arts');
+  const src = readFileSync(path.join(repoRoot, 'scripts', 'audit-cross-outlet-attributions.js'), 'utf8');
+  assert.match(src, /homes\.includes\(canonId\)/, 'default-critic home check must test the canonical outletId');
+  assert.match(src, /perOutletCritic\.get\(`\$\{canonId\}\|\|\$\{criticName\}`\)/, 'repeat-appearance lookup must use the canonical outletId');
+});
