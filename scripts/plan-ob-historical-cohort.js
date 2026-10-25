@@ -26,6 +26,8 @@
  */
 'use strict';
 
+// venue-write-guard-ok: venues here only feed validateOne's Playbill lookup and the selection; the one written value goes through toAddShowAction, which applies sanitizeVenueForWrite.
+
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
@@ -138,11 +140,13 @@ async function main() {
     const e = { ...raw, ...playbillFacts(resultByUrl.get(raw.playbillUrl), raw) };
     const d = decideObHistoricalEntry(e, { todayIso });
     if (!d.ok) { ruleSkips.push(`${e.title}: ${d.reason}`); continue; }
-    actions.push(toAddShowAction(e, {
+    const action = toAddShowAction(e, {
       discoveredAt: `${todayIso}T00:00:00.000Z`,
       dateSource: 'playbill-ob-historical',
       evidenceUrls: [e.playbillUrl, tmById.get(e.playbillUrl)],
-    }));
+    });
+    if (!action) { ruleSkips.push(`${e.title}: venue "${e.venue}" failed sanitizeVenueForWrite`); continue; }
+    actions.push(action);
   }
   for (const s of skipped) console.log(`  - ${s.entry.title} (${s.reason})`);
   for (const s of ruleSkips) console.log(`  - ${s}`);
