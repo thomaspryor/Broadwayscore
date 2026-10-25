@@ -307,13 +307,13 @@ test('BRO-3599: pushReviewTextsCheckpoint no longer returns on a clean index wit
   assert.doesNotMatch(body, /git diff --staged --quiet'[^\n]*\);\s*\n\s*\/\/ No changes\s*\n\s*return;/);
 });
 
-// BRO-5805 — the collector's CV-verdict branches (not-a-review, wrong production, film/TV) are advisory when the
+// BRO-5805 — the collector's CV-verdict branches (wrong production, film/TV) are advisory when the
 // stored body names most of the show's own cast.
 test('BRO-5805 wiring: collector CV branches are gated on ownShowEvidence', async () => {
   const fsMod = await import('node:fs');
   const src = fsMod.readFileSync(new URL('./collect-review-texts.js', import.meta.url), 'utf8');
   assert.ok(/const ownShowEvidence = ownShowTextEvidence\(data\.fullText, /.test(src));
-  assert.ok(/if \(contentVerification\.wrongArticle && !ownShowEvidence\) \{/.test(src), 'not-a-review branch');
+  assert.ok(/if \(contentVerification\.wrongArticle\) \{/.test(src), 'not-a-review branch stays ungated by cast evidence');
   assert.ok(/contentVerification\.wrongProduction && showCat !== 'off-broadway' && !ownShowEvidence &&/.test(src), 'wrong-production branch');
   assert.ok(/contentVerification\.isFilmTv && isHighConfidence && data\.fullText && !ownShowEvidence &&/.test(src), 'film/TV branch');
 });

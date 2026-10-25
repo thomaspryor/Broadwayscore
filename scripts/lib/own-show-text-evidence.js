@@ -31,7 +31,7 @@ const MIN_HITS_HALF_CAST = 2;
 
 function norm(s) {
   return foldDiacritics(String(s || '').toLowerCase())
-    .replace(/[’']/g, '')
+    .replace(/[’‘ʼ']/g, '')
     .replace(/[^a-z0-9]+/g, ' ')
     .trim();
 }

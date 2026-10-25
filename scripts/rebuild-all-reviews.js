@@ -2409,8 +2409,9 @@ const crossShowFingerprints = new Map();
         const ppCvWpAdvisory = ppEnsembleSaysReview && cv.confidence !== 'high' && !cvLowButStrong;
         // BRO-5805: a body that names most of THIS show's listed cast is about this show's production, so a CV
         // wrong-production / wrong-show / film-TV verdict is advisory, whatever its confidence (the verifier has
-        // no cast list and reads scrape chrome). Same carve-out shape as the ones above; the strong
-        // "different show" path still promotes.
+        // no cast list and reads scrape chrome). Same carve-out shape as the ones above. Only a low-confidence
+        // verdict backed by a strong "different show" signal (cvLowButStrong) still promotes. Not-a-review
+        // verdicts are untouched: naming the cast shows which show a text is about, not that it is a review.
         const ppOwnShowEvidence = !cvLowButStrong && ownShowTextEvidence(d.fullText, showById[sid]).strong;
         // Production-continuity gate (Phase 1): operator-declared priorRuns trumps
         // CV's wrongProduction (CV identifies a different venue/run, which is
@@ -2447,7 +2448,8 @@ const crossShowFingerprints = new Map();
         } else if (cv.wrongProduction === true && (ppInPriorRun || ppInTourLeg)) {
           stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
         } else if (cv.wrongProduction === true && ppCvWpAdvisory) {
-          stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;        } else if (cv.wrongProduction === true && ppOwnShowEvidence) {
+          stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
+        } else if (cv.wrongProduction === true && ppOwnShowEvidence) {
           stats.cvWrongProductionOwnShowEvidence = (stats.cvWrongProductionOwnShowEvidence || 0) + 1;
         }
         const wpConf = cv.confidence || 'medium';

@@ -5575,16 +5575,16 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       || hasHighConfidenceLlmScore(data);
 
     // BRO-5805: a body naming most of THIS show's listed cast is about this show's production. The verifier has no
-    // cast list and reads scrape chrome, so its not-a-review / wrong-production / film-TV verdicts are advisory
-    // against that evidence (Dog Day Afternoon's full review was parked as a "preview" on opening day).
+    // cast list and reads scrape chrome, so its wrong-production / film-TV verdicts are advisory
+    // against that evidence.
     const ownShowEvidence = ownShowTextEvidence(data.fullText, _showsJsonCache?.shows?.find(s => s.id === data.showId)).strong;
-    if (ownShowEvidence && (contentVerification.wrongArticle || contentVerification.wrongProduction || contentVerification.isFilmTv)) {
+    if (ownShowEvidence && (contentVerification.wrongProduction || contentVerification.isFilmTv)) {
       console.log(`    ⚠ LLM: verdict contradicted by the show's own cast named in the text — advisory, text kept`);
     }
 
     // Auto-invalidate on HIGH confidence wrong article type (preview, interview, news, etc.)
     // Medium confidence → log warning only (21% LLM error rate on article classification)
-    if (contentVerification.wrongArticle && !ownShowEvidence) {
+    if (contentVerification.wrongArticle) {
       const artConf = contentVerification.articleTypeConfidence || 'medium';
       const artType = contentVerification.articleType || 'unknown';
       if (data.contentVerification.truncatedFetch) {
