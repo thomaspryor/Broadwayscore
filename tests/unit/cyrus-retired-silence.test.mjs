@@ -50,3 +50,9 @@ test('a stale Cyrus status file no longer raises a digest alarm once the job is 
   assert.equal(digest.localCyrusRelayMessage(), null);
   assert.equal(digest.localRunnerHealthMessage(), null);
 });
+
+test('BRO-6216: a stale delegation status file raises no digest alarm once linear-delegation-check is retired', () => {
+  fs.writeFileSync(path.join(home, 'linear-delegation-status.json'), JSON.stringify({ at: stale, alarm: 'x stalled' }));
+  assert.equal(digest.localLinearDelegationMessage(), null);
+  assert.equal(digest.localCodexConnectionLine(), null);
+});

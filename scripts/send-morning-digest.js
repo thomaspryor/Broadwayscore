@@ -187,6 +187,7 @@ const LINEAR_DELEGATION_STATUS_PATH = path.join(
   'linear-delegation-status.json'
 );
 function localCodexConnectionLine() {
+  if (macLabelRetired('com.broadwayscore.linear-delegation-check')) return null;
   try {
     return codexLineFromStatus(JSON.parse(fs.readFileSync(LINEAR_DELEGATION_STATUS_PATH, 'utf8')));
   } catch {
@@ -194,6 +195,7 @@ function localCodexConnectionLine() {
   }
 }
 function localLinearDelegationMessage() {
+  if (macLabelRetired('com.broadwayscore.linear-delegation-check')) return null;
   let raw;
   try {
     raw = fs.readFileSync(LINEAR_DELEGATION_STATUS_PATH, 'utf8');
@@ -1585,4 +1587,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

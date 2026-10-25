@@ -86,6 +86,34 @@
           "note": "No pager watched the edge worker itself (it last showed exit status 1 in August and nothing alarmed). The only Cyrus-side reader left is the delegation check, which judges delegated Linear issues by their agent sessions; BRO-338, the one issue ever delegated, is closed."
         }
       ]
+    },
+    {
+      "label": "com.broadwayscore.linear-delegation-check",
+      "retiredAt": "2026-10-25",
+      "replacedBy": [
+        "nothing: Cyrus delegation machinery, owner retired Cyrus Team Cloud (BRO-6110, 2026-10-24); BRO-338, the one delegated issue, is closed"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "localLinearDelegationMessage",
+          "file": "scripts/send-morning-digest.js",
+          "note": "The digest reader of ~/.cyrus/linear-delegation-status.json would report \"delegation check has not run\" every morning once the job stops writing it, so it and localCodexConnectionLine stay silent for a retired label (BRO-6216)."
+        }
+      ]
+    },
+    {
+      "label": "com.broadwayscore.linear-drain-parked",
+      "retiredAt": "2026-10-25",
+      "replacedBy": [
+        ".github/workflows/linear-unpark-drain.yml (daily cloud drain, last 5 scheduled runs green through 2026-10-25; moves takeable parked cards to Todo for the cloud workers)"
+      ],
+      "watchers": [
+        {
+          "conditionKey": "assessCloudCoverage",
+          "file": "scripts/check-linear-drain-health.js",
+          "note": "check-linear-drain-health.yml judges a silent Mac drain ledger by cloud-worker coverage of the parked queue (BRO-5360), so a stopped Mac drain pages only when the cloud cannot reach the queue either."
+        }
+      ]
     }
   ]
 }
