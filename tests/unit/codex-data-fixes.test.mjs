@@ -188,6 +188,7 @@ test('daily-runner wiring: apply inside settleLanded before Done; prompt rule be
   assert.match(src, /const DEFER_HEADING = '## Codex runner: landing did not finish/);
   assert.match(src, /startsWith\('## Codex runner: landing did not finish'\)/);
   // The lane's base slot (gha: 3) reconciles deferred applies; slot 0 alone never would on the GHA lane.
+  assert.match(src, /DF\.reconcileSkips\(\{ deferred, onlyDeferred, canDispatch: DF\.canDispatchWorkflows\(\) \}\)/);
   assert.match(src, /SLOT === R\.LANES\[OPTS\.lane\]\.base\) await reconcileLanded\(stats, \{ onlyDeferred: true \}\)/);
   assert.match(fn, /canDispatch: DF\.canDispatchWorkflows\(\)/);
   assert.match(src, /DF\.dataFixesEnabled\(\) && DF\.canDispatchWorkflows\(\) \? DATA_FIX_RULE : ''/);
@@ -305,4 +306,17 @@ test('execute-approved-fix.yml: core data is pushed before the status commit, wh
   assert.match(wf, /\.skip-push-core-data/);
   assert.match(wf, /Fail when private pushes did not land/);
   assert.match(wf, /FIX_RESULT: \$\{\{ steps\.push_gate\.outputs\.ok == 'false' && 'push-failed'/);
+});
+
+test('reconcileSkips: slot 0 takes everything it can; the GHA base slot takes only deferred applies', () => {
+  const k = (deferred, onlyDeferred, canDispatch) => DF.reconcileSkips({ deferred, onlyDeferred, canDispatch });
+  // Slot 0 (full reconcile): never skips a plain card; skips a deferred one only when it cannot dispatch.
+  assert.equal(k(false, false, false), false);
+  assert.equal(k(false, false, true), false);
+  assert.equal(k(true, false, false), true);
+  assert.equal(k(true, false, true), false);
+  // GHA base slot (deferred-only): skips plain cards; takes a deferred one when it can dispatch.
+  assert.equal(k(false, true, true), true);
+  assert.equal(k(true, true, true), false);
+  assert.equal(k(true, true, false), true);
 });
