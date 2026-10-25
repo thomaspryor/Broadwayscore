@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-10-25T04:10:37.058Z",
+  "runDate": "2026-10-25T04:16:20.927Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 0,
     "priority": "all",
     "showFilter": "the-bookstore-off-broadway-2026,just-desserts-a-musical-bake-off-off-broadway-2026,going-bacharach-off-broadway-2026,picnic-at-hanging-rock-off-broadway-2025,watch-me-walk-off-broadway-2026,the-burning-cauldron-of-fiery-fire-off-broadway-2025,laowang-a-chinatown-king-lear-off-broadway-2025,reunions-off-broadway-2025,the-glitch-off-broadway-2025,heaux-church-off-broadway-2025,other-off-broadway-2025,playing-shylock-off-broadway-2025",
     "aggressive": false,
@@ -11,51 +11,51 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 52,
-    "failed": 11,
+    "processed": 51,
+    "failed": 12,
     "skipped": 0,
-    "successRate": "82.5%"
+    "successRate": "81.0%"
   },
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 44,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 1,
+    "scrapingdog": 4,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 5
   },
   "statistics": {
     "tier1Attempts": 56,
-    "tier1Success": 47,
+    "tier1Success": 48,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 4,
-    "tier1_5Success": 1,
-    "tier1_9Attempts": 7,
-    "tier1_9Success": 6,
+    "tier1_5Success": 2,
+    "tier1_9Attempts": 6,
+    "tier1_9Success": 5,
     "tier2Attempts": 8,
-    "tier2Success": 1,
+    "tier2Success": 2,
     "tier3Attempts": 3,
     "tier3Success": 2,
     "tier3_6Attempts": 1,
     "tier3_6Success": 0,
     "tier4Attempts": 5,
     "tier4Success": 4,
-    "totalFailed": 6,
-    "scrapingBeePageCredits": 32,
+    "totalFailed": 8,
+    "scrapingBeePageCredits": 33,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 0.8,
+    "browserbaseMinutesUsed": 0.7,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 52,
-    "failed": 11,
+    "processed": 51,
+    "failed": 12,
     "shows": [
       "heaux-church-off-broadway-2025",
       "just-desserts-a-musical-bake-off-off-broadway-2026",
@@ -116,12 +116,11 @@
     "playing-shylock-off-broadway-2025/new-york-sun--elysa-gardner.json",
     "playing-shylock-off-broadway-2025/theatermania--zachary-stewart.json",
     "playing-shylock-off-broadway-2025/nysr--unknown.json",
+    "playing-shylock-off-broadway-2025/theater-scene--darryl-reilly.json",
     "playing-shylock-off-broadway-2025/theater-scene--victor-gluck.json",
     "other-off-broadway-2025/nyt-theater--jonathan-mandell.json",
     "other-off-broadway-2025/nytg--austin-fimmano.json",
-    "other-off-broadway-2025/nytimes--unknown.json",
     "other-off-broadway-2025/theatermania--hayley-levitt.json",
-    "heaux-church-off-broadway-2025/theater-scene--unknown.json",
     "other-off-broadway-2025/culturesauce--thom-geier.json",
     "other-off-broadway-2025/culturesauce--unknown.json",
     "other-off-broadway-2025/off-off-online--deirdre-donovan.json",
@@ -137,9 +136,10 @@
     "playing-shylock-off-broadway-2025/nyt-theater--jonathan-mandell.json",
     "playing-shylock-off-broadway-2025/theater-life--samuel-l-leiter.json",
     "playing-shylock-off-broadway-2025/theater-mirror--unknown.json",
-    "playing-shylock-off-broadway-2025/theater-scene--darryl-reilly.json",
+    "other-off-broadway-2025/nytimes--unknown.json",
     "other-off-broadway-2025/observer--unknown.json",
     "other-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
+    "heaux-church-off-broadway-2025/theater-scene--unknown.json",
     "other-off-broadway-2025/chicagotribune--unknown.json"
   ],
   "cumulativeResumedState": {
@@ -184,12 +184,11 @@
       "playing-shylock-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "playing-shylock-off-broadway-2025/theatermania--zachary-stewart.json",
       "playing-shylock-off-broadway-2025/nysr--unknown.json",
+      "playing-shylock-off-broadway-2025/theater-scene--darryl-reilly.json",
       "playing-shylock-off-broadway-2025/theater-scene--victor-gluck.json",
       "other-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "other-off-broadway-2025/nytg--austin-fimmano.json",
-      "other-off-broadway-2025/nytimes--unknown.json",
       "other-off-broadway-2025/theatermania--hayley-levitt.json",
-      "heaux-church-off-broadway-2025/theater-scene--unknown.json",
       "other-off-broadway-2025/culturesauce--thom-geier.json",
       "other-off-broadway-2025/culturesauce--unknown.json",
       "other-off-broadway-2025/off-off-online--deirdre-donovan.json",
@@ -205,9 +204,10 @@
       "playing-shylock-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "playing-shylock-off-broadway-2025/theater-life--samuel-l-leiter.json",
       "playing-shylock-off-broadway-2025/theater-mirror--unknown.json",
-      "playing-shylock-off-broadway-2025/theater-scene--darryl-reilly.json",
+      "other-off-broadway-2025/nytimes--unknown.json",
       "other-off-broadway-2025/observer--unknown.json",
       "other-off-broadway-2025/theatre-reviews-limited--joseph-verlezza.json",
+      "heaux-church-off-broadway-2025/theater-scene--unknown.json",
       "other-off-broadway-2025/chicagotribune--unknown.json"
     ]
   },
@@ -215,7 +215,6 @@
     "playwright": [
       "just-desserts-a-musical-bake-off-off-broadway-2026/theater-scene--victor-gluck.json",
       "watch-me-walk-off-broadway-2026/nyt-theater--jonathan-mandell.json",
-      "watch-me-walk-off-broadway-2026/nytimes--unknown.json",
       "watch-me-walk-off-broadway-2026/theatermania--dan-rubins.json",
       "watch-me-walk-off-broadway-2026/exeunt-magazine--unknown.json",
       "watch-me-walk-off-broadway-2026/theater-scene--tony-marinelli.json",
@@ -246,12 +245,12 @@
       "playing-shylock-off-broadway-2025/nytg--austin-fimmano.json",
       "playing-shylock-off-broadway-2025/theatermania--zachary-stewart.json",
       "playing-shylock-off-broadway-2025/nysr--unknown.json",
-      "playing-shylock-off-broadway-2025/theater-scene--victor-gluck.json",
+      "playing-shylock-off-broadway-2025/theater-mirror--unknown.json",
       "playing-shylock-off-broadway-2025/theater-scene--darryl-reilly.json",
+      "playing-shylock-off-broadway-2025/theater-scene--victor-gluck.json",
       "other-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "other-off-broadway-2025/nytg--austin-fimmano.json",
       "other-off-broadway-2025/theatermania--hayley-levitt.json",
-      "heaux-church-off-broadway-2025/theater-scene--unknown.json",
       "other-off-broadway-2025/culturesauce--thom-geier.json",
       "other-off-broadway-2025/culturesauce--unknown.json",
       "other-off-broadway-2025/off-off-online--deirdre-donovan.json",
@@ -268,27 +267,40 @@
       "picnic-at-hanging-rock-off-broadway-2025/new-york-notebook--sandy-macdonald.json",
       "reunions-off-broadway-2025/theater-life--samuel-l-leiter.json",
       "reunions-off-broadway-2025/theater-scene--victor-gluck.json",
-      "playing-shylock-off-broadway-2025/theater-life--samuel-l-leiter.json",
-      "playing-shylock-off-broadway-2025/theater-mirror--unknown.json"
+      "playing-shylock-off-broadway-2025/theater-life--samuel-l-leiter.json"
     ],
     "scrapingbee": [
+      "picnic-at-hanging-rock-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "playing-shylock-off-broadway-2025/new-york-sun--elysa-gardner.json"
     ],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
+      "watch-me-walk-off-broadway-2026/nytimes--unknown.json",
       "picnic-at-hanging-rock-off-broadway-2025/nytimes--brittani-samuel.json",
-      "picnic-at-hanging-rock-off-broadway-2025/new-york-sun--elysa-gardner.json",
       "picnic-at-hanging-rock-off-broadway-2025/dailybeast--tim-teeman.json",
       "the-burning-cauldron-of-fiery-fire-off-broadway-2025/nytimes--laura-collins-hughes.json",
-      "playing-shylock-off-broadway-2025/nytimes--unknown.json",
-      "other-off-broadway-2025/nytimes--unknown.json"
+      "playing-shylock-off-broadway-2025/nytimes--unknown.json"
     ]
   },
   "failuresByOutlet": {
     "New York Theater": {
       "count": 1,
       "domain": "newyorktheater.me",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The New York Times": {
+      "count": 1,
+      "domain": "nytimes.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": true
+    },
+    "Theater Scene": {
+      "count": 1,
+      "domain": "theaterscene.net",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
