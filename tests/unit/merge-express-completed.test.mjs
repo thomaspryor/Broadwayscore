@@ -52,10 +52,26 @@ test('a show we deleted since the fork point stays deleted', () => {
   assert.equal(stats.deletesHonored, 1);
 });
 
-test('no base: ours unchanged (the old overlay), never a guess', () => {
-  const ours = doc({ a: rec() });
-  assert.equal(mergeExpressCompleted(ours, doc({ b: rec() }), undefined).merged, ours);
+test('no base: union, ours wins on a shared show', () => {
+  const ours = doc({ a: rec({ n: 1 }), p: rec() });
+  const { merged } = mergeExpressCompleted(ours, doc({ a: rec({ n: 2 }), r: rec() }), undefined);
+  assert.deepEqual(Object.keys(merged.shows).sort(), ['a', 'p', 'r']);
+  assert.equal(merged.shows.a.n, 1);
   assert.equal(mergeExpressCompleted.requiresTrueBase, true);
+});
+
+test('a show both sides changed merges field by field (Express retry vs broadcast draft)', () => {
+  const base = doc({ x: rec({ completedAt: 'T1', reviewCount: 9 }) });
+  const remote = doc({ x: rec({ completedAt: 'T1', reviewCount: 9, broadcastDraftedAt: 'D', broadcastDraftId: 'id1' }) });
+  const ours = doc({ x: rec({ completedAt: 'T2', reviewCount: 14, isRetry: true }) });
+  const { merged, stats } = mergeExpressCompleted(ours, remote, base);
+  assert.deepEqual(merged.shows.x, rec({ completedAt: 'T2', reviewCount: 14, isRetry: true, broadcastDraftedAt: 'D', broadcastDraftId: 'id1' }));
+  assert.equal(stats.fieldMerged, 1);
+  // and the reverse direction: we are the broadcast write, remote is the retry
+  const r2 = mergeExpressCompleted(remote, ours, base).merged.shows.x;
+  assert.equal(r2.completedAt, 'T2');
+  assert.equal(r2.reviewCount, 14);
+  assert.equal(r2.broadcastDraftId, 'id1');
 });
 
 test('both Express files take the API-fallback merge; local path stays additions-only for completed', () => {
