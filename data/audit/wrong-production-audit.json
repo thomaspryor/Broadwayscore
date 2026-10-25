@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T05:49:30.861Z",
+  "timestamp": "2026-10-25T06:07:34.343Z",
   "stats": {
-    "totalReviews": 61011,
-    "alreadyFlagged": 21377,
+    "totalReviews": 61029,
+    "alreadyFlagged": 21383,
     "dateGuardCatches": 222,
     "directorMismatch": 2222,
-    "tvFilmSignals": 1723,
-    "londonSignals": 2969,
+    "tvFilmSignals": 1725,
+    "londonSignals": 2971,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5511
+    "noPublishDate": 5450
   },
   "findings": [
     {
@@ -28305,6 +28305,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "meet-the-cartozians-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": "2025-11-17",
+      "url": "https://culturesauce.com/2025/11/17/meet-the-cartozians-kardashians-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "meet-the-cartozians-off-broadway-2025",
+      "file": "theater-pizzazz--ron-fassler.json",
+      "publishDate": "2025-11-17",
+      "url": "https://theaterpizzazz.com/meet-the-cartozians-talen-monahons-must-see-new-drama/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -90382,6 +90408,33 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"csc\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bakers-wife-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "publishDate": "2025-11-11",
+      "url": "https://culturesauce.com/2025/11/11/the-bakers-wife-ariana-debose-off-broadway-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-bakers-wife-off-broadway-2025",
+      "file": "nysr--steven-suskin.json",
+      "score": null,
+      "publishDate": "2025-11-11",
+      "url": "https://nystagereview.com/2025/11/11/the-bakers-wife-fabled-flop-charms-in-amiable-revival/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
