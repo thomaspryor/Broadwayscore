@@ -180,6 +180,7 @@ test('daily-runner wiring: apply inside settleLanded before Done; prompt rule be
   const body = src.slice(src.indexOf('async function settleLanded'));
   const fn = body.slice(0, body.indexOf('\n}\n'));
   assert.ok(fn.indexOf('applyLandedPlans(id,') > 0 && fn.indexOf('applyLandedPlans(id,') < fn.indexOf('if (partial)') && fn.indexOf('if (partial)') < fn.indexOf("'Done'"));
+  assert.match(fn, /already done; only the other items remain|is already done; only the other items remain/);
   assert.match(src, /DF\.dataFixesEnabled\(\) \? DATA_FIX_RULE : ''/);
   assert.match(readFileSync(new URL('../../scripts/codex/runner-prompt.md', import.meta.url), 'utf8'), /\{\{DATA_FIX_RULE\}\}/);
   assert.match(readFileSync(new URL('../../.github/workflows/codex-runner.yml', import.meta.url), 'utf8'), /^permissions:\n  contents: read\n(?:  #.*\n)*  actions: write$/m);

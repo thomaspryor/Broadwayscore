@@ -666,7 +666,7 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
       const r = await moveCard(id, 'Todo', `${R.BOUNCED_MARKER}\n## Codex runner: landed, but the data-fix plan was not applied\n${R.bounceClassLine('genuine-failure')}\n\n${ap.why}\n\n${fence(tail(ap.lines.join('\n'), 800))}\n\nThe plan file is on main. Fix the plan (a stale oldValue, a refused action) or apply it by hand per .claude/CLOUD.md "Fixing private data from cloud".\n\n${body}`);
       return r.code === 0;
     }
-    if (ap.kind === 'applied') body = `${body}\n\n### Data-fix plan applied\n${ap.lines.map((l) => `- ${l}`).join('\n')}`;
+    if (ap.kind === 'applied') body = `${body}\n\n### Data-fix plan applied\n${ap.lines.map((l) => `- ${l}`).join('\n')}\n\nAny item above that asks to approve or apply this plan is already done; only the other items remain.`;
   }
   if (partial) {
     const left = remaining.length ? `Still open on this card:\n${remaining.map((x) => `- ${x}`).join('\n')}\n\n` : 'Some card items are still open (see the runner\'s "landing a partial fix" note).\n\n';
