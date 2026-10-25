@@ -135,6 +135,12 @@ async function processMessages(messages, { extract, shows, commercial, windowDay
     const dkim = nf.dkimPassesFor(sender, m.authResults);
     const links = [...nf.extractLinks(m.text), ...nf.extractLinks(m.html || '')];
     const issueUrl = nf.pickIssueUrl(sender, links);
+    if (process.env.NEWSLETTER_LINK_SHAPES === '1') {
+      // Diagnostic: host + first path segment only (no query, no body text).
+      const shapes = {};
+      for (const l of links) { try { const u = new URL(l); const k = `${u.hostname}/${u.pathname.split('/')[1] || ''}`; shapes[k] = (shapes[k] || 0) + 1; } catch { /* skip */ } }
+      console.log(`  link shapes ${sender.label} ${m.date.slice(0, 10)}: ${JSON.stringify(shapes)}`);
+    }
     const issue = { sender: sender.label, date: m.date.slice(0, 10), subject: m.subject, issueUrl, dkim, facts: 0, accepted: 0 };
     issues.push(issue);
     if (!dkim) { bump('dkim-not-verified'); continue; }

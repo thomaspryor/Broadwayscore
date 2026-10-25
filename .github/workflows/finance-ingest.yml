@@ -300,6 +300,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Dry runs also print host + first path segment of each link (no bodies) so SENDERS can be tuned.
+          NEWSLETTER_LINK_SHAPES: ${{ steps.gate.outputs.mode == 'dry-run' && '1' || '' }}
         run: |
           FLAGS=""
           if [ "$MODE" = "dry-run" ]; then FLAGS="--dry-run"; fi
