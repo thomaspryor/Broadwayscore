@@ -45,7 +45,7 @@ export default function TheaterTracker({
           className={`${pressableClass} flex-shrink-0 rounded-full hover:opacity-90`}
         >
           <ProgressRing pct={theaters.completion}>
-            <span className="text-3xl font-extrabold text-white tabular-nums leading-none">{theaters.visited}</span>
+            <span className="text-3xl font-extrabold text-white tabular-nums leading-tight">{theaters.visited}</span>
             <span className="text-xs text-gray-400 mt-1">of {theaters.operating}</span>
           </ProgressRing>
         </button>

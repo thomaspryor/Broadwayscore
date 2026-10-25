@@ -55,7 +55,7 @@ export function StatTile({
       aria-label={`${value} ${label}. Opens the list.`}
       className={`${pressable} group rounded-xl bg-surface-overlay/70 hover:bg-surface-overlay border border-white/5 hover:border-white/10 px-3.5 py-3 sm:py-4 min-h-[88px] flex flex-col justify-center min-w-0`}
     >
-      <span className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums leading-none truncate">{value}</span>
+      <span className="text-2xl sm:text-3xl font-extrabold text-white tabular-nums leading-tight truncate">{value}</span>
       <span className="text-xs text-gray-300 mt-1.5">{label}</span>
       {sublabel && <span className="text-xs text-gray-500 mt-0.5 truncate">{sublabel}</span>}
     </button>

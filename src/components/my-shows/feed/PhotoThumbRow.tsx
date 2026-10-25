@@ -240,7 +240,7 @@ export function AddPhotoButton({ title, onAddFiles, label = 'Add a photo', class
         type="button"
         onClick={() => inputRef.current?.click()}
         aria-label={`${label} to ${title}`}
-        className={`inline-flex items-center gap-1.5 min-h-[32px] px-2 -mx-2 rounded-lg text-xs font-medium text-gray-400 hover:text-brand transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand ${className}`}
+        className={`inline-flex items-center gap-1.5 min-h-[32px] px-2 rounded-lg text-xs font-medium text-gray-400 hover:text-brand transition-colors outline-none focus-visible:ring-2 focus-visible:ring-brand ${className}`}
       >
         <CameraIcon className="w-4 h-4" />
         {label}

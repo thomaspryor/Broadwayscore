@@ -96,7 +96,7 @@ export function YouVsCritics({
       >
         <span className="flex items-baseline justify-between gap-3 mb-2">
           <span className="text-base sm:text-lg font-bold text-white">{critics.label}</span>
-          <span className="text-3xl font-extrabold text-brand tabular-nums leading-none">{pct}%</span>
+          <span className="text-3xl font-extrabold text-brand tabular-nums leading-tight">{pct}%</span>
         </span>
         <GoldTrack pct={critics.alignment} thick />
         <span className="block text-xs text-gray-400 mt-2">
@@ -140,7 +140,7 @@ export function GoldCard({ bundle, onOpenGold }: { bundle: StatsBundle; onOpenGo
     <StatsCard>
       <ModuleHeader title="Critical Gold, open now" caption={scope.kind !== 'all' ? 'All time' : 'The top-scored shows playing right now'} />
       <div className="flex items-baseline gap-2 mb-2">
-        <span className="text-3xl font-extrabold text-white tabular-nums leading-none">{gold.seen}</span>
+        <span className="text-3xl font-extrabold text-white tabular-nums leading-tight">{gold.seen}</span>
         <span className="text-sm text-gray-400">of {gold.total} seen</span>
       </div>
       <GoldTrack pct={gold.total ? gold.seen / gold.total : 0} />
@@ -173,7 +173,7 @@ export function AudienceCard({ bundle, onOpen }: { bundle: StatsBundle; onOpen: 
         className={`${pressableClass} w-full text-left rounded-lg -mx-1 px-1 py-1 hover:bg-white/[0.03]`}
       >
         <span className="flex items-baseline gap-2 mb-2">
-          <span className="text-3xl font-extrabold text-brand tabular-nums leading-none">{pct}%</span>
+          <span className="text-3xl font-extrabold text-brand tabular-nums leading-tight">{pct}%</span>
           <span className="text-sm text-gray-400">agreement</span>
         </span>
         <GoldTrack pct={audience.alignment} />
