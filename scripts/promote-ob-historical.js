@@ -151,25 +151,24 @@ function logEntry(entry) {
   }
 }
 
-function main() {
-  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
-  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
-  const matches = (audit.results || []).filter(r => r.result === 'match' && r.playbillUrl);
-  console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);
-
-  const showsData = loadShows();
-  const existingIds = new Set(showsData.shows.map(s => s.id));
+/**
+ * BRO-6153: the promotion selection, shared with plan-ob-historical-cohort.js.
+ * Takes validate-show-venue results (result === 'match', with parsed dates)
+ * and the current shows, returns the entries to add and the skipped ones with
+ * reasons. Pure apart from the optional onSkipInvalidVenue logger.
+ */
+function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}) {
+  const existingIds = new Set(shows.map(s => s.id));
   // Live pool of {title, venue} this run checks candidates against — starts
   // as shows.json and grows as candidates are promoted, so a second
   // candidate for the same show later in this run still gets caught.
-  const knownShows = buildVenueTitlePool(showsData.shows);
+  const knownShows = buildVenueTitlePool(shows);
   // BRO-3863 — the gate (validate-data.js) builds the corpus venue vocabulary
   // and this writer must too, or the two disagree: a "(Bridge)" suffix would
   // survive promotion here and then fail validation because some OTHER show's
   // venue is "Bridge". Writer/gate equivalence is the point of routing both
   // through normalizeShowTitle (adversarial review finding).
-  const venueVocabulary = buildVenueVocabulary(showsData.shows);
+  const venueVocabulary = buildVenueVocabulary(shows);
 
   const toPromote = [];
   const skipped = [];
@@ -182,7 +181,7 @@ function main() {
       const rawVenue = r.parsed?.titleParse?.venue || r.venue;
       const reason = `venue "${rawVenue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`;
       skipped.push({ entry, reason });
-      logEntry({ kind: 'skip-invalid-venue', title: entry.title, venue: rawVenue, reason });
+      onSkipInvalidVenue({ kind: 'skip-invalid-venue', title: entry.title, venue: rawVenue, reason });
       continue;
     }
     const exactDup = findExactDuplicate(knownShows, entry.title, entry.venue);
@@ -198,6 +197,18 @@ function main() {
     knownShows.push({ title: entry.title, venue: entry.venue });
     existingIds.add(entry.id);
   }
+  return { toPromote, skipped };
+}
+
+function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+  const audit = JSON.parse(fs.readFileSync(AUDIT_PATH, 'utf8'));
+  const matches = (audit.results || []).filter(r => r.result === 'match' && r.playbillUrl);
+  console.log(`Audit has ${audit.results?.length || 0} results; ${matches.length} promotable matches.`);
+
+  const showsData = loadShows();
+  const { toPromote, skipped } = selectPromotable(matches, showsData.shows, { onSkipInvalidVenue: logEntry });
 
   console.log('');
   console.log(`Will promote: ${toPromote.length}`);
@@ -240,4 +251,4 @@ if (require.main === module) {
   main();
 }
 
-module.exports = { buildShowEntry };
+module.exports = { buildShowEntry, selectPromotable };
