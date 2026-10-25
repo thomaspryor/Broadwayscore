@@ -124,6 +124,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // outlet's own page, so the rebuild treats it as aggregator-relayed and drops it. The plan's
   // description must name the pre-relabel scoreSource recovered from review-texts history.
   'scoreProvenance',
+  // outletId (BRO-5289): ONE relabel, to 'ap', on a file whose url is an AP wire page on a partner
+  // newspaper's host (online.wsj.com/article/AP<32 hex>.html). The text is the Associated Press's own
+  // review; a rename alone is undone by the rebuild's filename-vs-outletId heal. See FIELD_VALUE_CHECKS.outletId.
+  'outletId',
 ];
 
 // True when a record's syndication pointer names the record's own file
@@ -142,6 +146,12 @@ const FIELD_VALUE_CHECKS = {
   crossOutletVerified: (v, record) => (v === true && record.wrongAttribution !== true
     && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
     ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
+  outletId: (v, record) => {
+    const { AP_WIRE_URL } = require('./ap-wire-detect');
+    if (v !== 'ap') return "outletId may only be relabelled to 'ap'";
+    if (typeof record.url !== 'string' || !AP_WIRE_URL.test(record.url)) return 'outletId: relabel to ap needs an AP wire url (/article/AP<32 hex>) on the record';
+    return null;
+  },
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
   // BRO-4415: or when the executor's syndicated-duplicate-heal decision (ctx.syndicatedHeal) is 'clear':
@@ -414,6 +424,12 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
       next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: outlet-split relabel undone, it was made from the wrong url`;
     }
   }
+  if (field === 'outletId') {
+    // Display name and breadcrumb travel with the id (the outlet-split relabel stamps the same pair).
+    next.outlet = require('./review-normalization').getOutletDisplayName(newValue) || newValue;
+    next.outletIdCorrectedFrom = record.outletId || null;
+    next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`;
+  }
   if (field === 'originalScore') {
     // The helper owns the whole rating write, so it starts from the stored value.
     next.originalScore = record.originalScore === undefined ? null : record.originalScore;
@@ -477,6 +493,7 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
       for (const k of ['outletId', 'outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
     }
   }
+  if (field === 'outletId') for (const k of ['outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
   // BRO-4888: the write guard resolves a duplicate-pointer pair itself. Setting
   // duplicateClearReason on a file that points at a same-url sibling makes it
   // refuse the cycle and clear that file's own duplicateOf/duplicateReason;

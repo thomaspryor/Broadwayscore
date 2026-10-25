@@ -1726,6 +1726,11 @@ function validateUrlDomain(url, outletId) {
   if (!expectedDomain) {
     return { valid: true, unvalidated: true, reason: `no registered domain for outlet "${outletId}" — URL host not checked` };
   }
+  // AP wire copy lives on partner newspapers' hosts (BRO-5289: online.wsj.com/article/AP<32 hex>.html);
+  // the AP id in the path, not the host, says it is the Associated Press's review.
+  if (String(outletId).toLowerCase() === 'ap') {
+    try { if (require('./ap-wire-detect').AP_WIRE_URL.test(new URL(url).pathname)) return { valid: true }; } catch { /* fall through to the host check */ }
+  }
   try {
     const urlDomain = new URL(url).hostname.replace(/^www\./, '');
     if (!domainMatchesExpected(expectedDomain.replace(/^www\./, ''), urlDomain)) {
