@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-25T09:18:37.512Z",
+  "timestamp": "2026-10-25T09:40:44.899Z",
   "stats": {
-    "totalReviews": 61309,
-    "alreadyFlagged": 21395,
+    "totalReviews": 61316,
+    "alreadyFlagged": 21398,
     "dateGuardCatches": 222,
     "directorMismatch": 2223,
-    "tvFilmSignals": 1739,
+    "tvFilmSignals": 1745,
     "londonSignals": 2973,
     "offBroadwaySignals": 538,
     "yearMismatch": 201,
-    "noPublishDate": 5476
+    "noPublishDate": 5436
   },
   "findings": [
     {
@@ -3449,6 +3449,19 @@
       ]
     },
     {
+      "showId": "angry-alan-off-broadway-2025",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2025-06-11",
+      "url": "https://www.thedailybeast.com/obsessed/angry-alan-john-krasinski-gets-red-pilled-by-the-mens-rights-movement/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "anna-x-west-end-2021",
       "file": "a-younger-theatre--unknown.json",
       "score": 76,
@@ -4217,6 +4230,20 @@
       ]
     },
     {
+      "showId": "ava-the-secret-conversations-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2025-08-07",
+      "url": "https://culturesauce.com/2025/08/07/elizabeth-mcgovern-ava-gardner-secret-conversations-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "avenue-q-west-end-2026",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 82,
@@ -4929,6 +4956,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "bear-grease-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2025-06-20",
+      "url": "https://newyorktheater.me/2025/06/20/bear-grease-review-all-indigenous-not-all-grease/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -8635,6 +8676,20 @@
       "score": 91,
       "publishDate": "2026-09-17",
       "url": "https://www.thereviewshub.com/chewing-gum-dreams-theatre503-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "chiaroscuro-off-broadway-2025",
+      "file": "theater-scene--tony-marinelli.json",
+      "score": null,
+      "publishDate": "2025-06-06",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/chiaroscuro/tony-marinelli/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -36793,6 +36848,19 @@
       ]
     },
     {
+      "showId": "rolling-thunder-off-broadway-2025",
+      "file": "one-minute-critic--jude-cramer.json",
+      "publishDate": "2025-07-25",
+      "url": "https://1minutecritic.com/rolling-thunder-off-broadway-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 3\""
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-juliet-2013",
       "file": "huffpost--steven-suskin.json",
       "score": 55,
@@ -37303,6 +37371,19 @@
       "score": 62,
       "publishDate": "2018-04-28",
       "url": "https://newyorktheater.me/2018/04/28/saint-joan-review-condola-rashad-as-shaws-teenage-martyr-resurrected-once-again-on-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "saturday-church-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2025-09-20",
+      "url": "https://newyorktheater.me/2025/09/20/saturday-church-review/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -74584,6 +74665,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "partially-obstructed-view--nick730.json",
+      "score": 79,
       "publishDate": null,
       "url": "http://partially-obstructed-view.blogspot.com/2026/10/theatre-review-ilford-boy.html",
       "findings": [
@@ -74638,6 +74720,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "sierz-co-uk--unknown.json",
+      "score": 63,
       "publishDate": "2026-10-24",
       "url": "https://sierz.co.uk/reviews/ilford-boy-donmar-warehouse/",
       "findings": [
