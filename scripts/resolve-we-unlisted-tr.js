@@ -152,7 +152,10 @@ function pdfHeaderFor(text, title, venue, opts = {}) {
   const want = pdfTitleKey(title);
   if (!want) return null;
   const variants = [...new Set([want.replace(/^THE /, ''), `THE ${want.replace(/^THE /, '')}`])].filter(v => v !== want);
+  const runHead = pdfRunHeadFor(text, title, venue);
+  if (runHead) return runHead;
   const lines = String(text || '').split('\n');
+  let period;
   for (const keys of [new Set([want]), new Set(variants)]) {
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i].trim();
@@ -177,11 +180,69 @@ function pdfHeaderFor(text, title, venue, opts = {}) {
       }
       const facts = headerFacts(block.join('\n'));
       const d = parseTrHeaderDates(facts);
+      // The issue's own covering period ("12 - 25 February 2016") printed near a heading is not a run (BRO-6343).
+      period = period === undefined ? issuePeriodAnyLabel(text) : period;
+      if (period && !d.openingDate && d.previewsStartDate === period.start && d.closingDate === period.end) continue;
       if (d.previewsStartDate || d.openingDate || d.closingDate) return facts;
     }
   }
   return pdfContentsRowFor(text, want, variants, opts.page) || pdfIndexRowFor(text, want, variants, opts.volume, opts.page)
     || pdfOpeningsFor(text, want, variants, venue);
+}
+
+const RUN_LINE = /^(\d{1,2})(?:\s+([A-Za-z]+)(?:\s*(\d{4}))?)?\s*[–—-]\s*(\d{1,2})\s+([A-Za-z]+)\s*(\d{4})$/;
+const RUN_LINE_SINGLE = /^(\d{1,2})\s+([A-Za-z]+)\s*(\d{4})$/;
+
+/**
+ * 2015-16 production pages (volumes 35-36, BRO-6343) print the run above the
+ * heading, in -raw text as three lines:
+ *   GARRICK
+ *   30 August – 12 November 2016
+ *   THE ENTERTAINER
+ * The range is press night to close (it matches the issue's contents row,
+ * e.g. Nell Gwynn "Apollo 12 Feb 30 Apr"); a single date is press night
+ * only. The venue line must be the linked production's venue (a same-title
+ * heading at another venue is another production) and the date line must
+ * sit directly between it and the heading. Conflicting blocks fail closed.
+ */
+function pdfRunHeadFor(text, title, venue) {
+  const want = pdfTitleKey(title);
+  if (!want || !venue) return null;
+  const variants = [...new Set([want.replace(/^THE /, ''), `THE ${want.replace(/^THE /, '')}`])].filter(v => v !== want);
+  const wantedVenue = venueFamily(trVenueName(venue));
+  const lines = String(text || '').replace(/\f/g, '\n').split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
+  const mon = m => m.slice(0, 3);
+  for (const keys of [new Set([want]), new Set(variants)]) {
+    const matches = new Set();
+    for (let i = 2; i < lines.length; i++) {
+      const line = lines[i];
+      if (line !== line.toUpperCase() || !keys.has(capsKey(line))) continue;
+      const venueLine = lines[i - 2];
+      if (venueLine !== venueLine.toUpperCase() || !/[A-Z]{3}/.test(venueLine)) continue;
+      if (venueFamily(trVenueName(venueLine)) !== wantedVenue) continue;
+      const run = lines[i - 1].replace(/([A-Za-z])(\d{4})\b/g, '$1 $2');
+      let start;
+      let close = null;
+      const r = run.match(RUN_LINE);
+      if (r) {
+        const endYear = Number(r[6]);
+        close = readPdfDate(r[4], r[5], endYear);
+        const startMon = r[2] || r[5];
+        start = readPdfDate(r[1], startMon, r[3] || endYear);
+        if (start && close && !r[3] && start > close) start = readPdfDate(r[1], startMon, endYear - 1);
+        if (!start || !close || start > close) return null;
+        matches.add(`${want}\nPress night ${Number(r[1])} ${mon(startMon)} ${start.slice(0, 4)}\nCloses ${Number(r[4])} ${mon(r[5])} ${close.slice(0, 4)}`);
+        continue;
+      }
+      const s = run.match(RUN_LINE_SINGLE);
+      if (!s) continue;
+      start = readPdfDate(s[1], s[2], s[3]);
+      if (!start) return null;
+      matches.add(`${want}\nPress night ${Number(s[1])} ${mon(s[2])} ${s[3]}`);
+    }
+    if (matches.size) return matches.size === 1 ? [...matches][0] : null;
+  }
+  return null;
 }
 
 /** "30 Apr 18" -> "2018-04-30"; null for an impossible date. */
@@ -195,15 +256,17 @@ const CONTENTS_ROW = /^(.+?)\s+[–—-]\s+.*?\s(\d{1,2})\s+([A-Z][a-z]{2,8})\.?
 // 2016 issues print the same table without years: "... Royal Court 16 Nov 23 Dec 1297".
 const CONTENTS_ROW_YEARLESS = /^(.+?)\s+[–—-]\s+.*?\s(\d{1,2})\s+([A-Z][a-z]{2,8})\.?(?:\s+(\d{1,2})\s+([A-Z][a-z]{2,8})\.?)?\s+(\d{1,4})$/;
 const ISSUE_PERIOD = /Theatre Record\s+(\d{1,2})(?:\s+([A-Z][a-z]+))?\s*[–—-]\s*(\d{1,2})\s+([A-Z][a-z]+)\s+(\d{4})/g;
+// Any running head: 2016 issues also print "Openings 12-25 February 2016" and "Productions 26 Aug - 12 Sep 2016".
+const ISSUE_PERIOD_ANY = /(?:Theatre Record|Openings|Productions)\s+(\d{1,2})(?:\s+([A-Z][a-z]+))?\s*[–—-]\s*(\d{1,2})\s+([A-Z][a-z]+)\s+(\d{4})/g;
 
 /**
  * The issue's own covering period from its running head, e.g.
  * "Theatre Record 04 – 17 November 2016" or "21 October – 03 November 2016".
  * The most frequent banner wins; null when none prints or two tie.
  */
-function issuePeriod(text) {
+function issuePeriod(text, banner = ISSUE_PERIOD) {
   const counts = new Map();
-  for (const m of String(text || '').matchAll(ISSUE_PERIOD)) {
+  for (const m of String(text || '').matchAll(banner)) {
     const end = readPdfDate(m[3], m[4], m[5]);
     if (!end) continue;
     let start = readPdfDate(m[1], m[2] || m[4], m[5]);
@@ -218,6 +281,8 @@ function issuePeriod(text) {
   const [start, end] = ranked[0][0].split('|');
   return { start, end };
 }
+
+const issuePeriodAnyLabel = text => issuePeriod(text, ISSUE_PERIOD_ANY);
 
 /**
  * A yearless press night takes the year that puts it near the issue's own
@@ -395,6 +460,12 @@ function logDateContext(text, title, mode) {
     shown++;
     const underReviews = lines.slice(Math.max(0, i - 5), i).some(l => l.trim() === 'Reviews');
     console.log(`    [${mode}] heading at line ${i}${underReviews ? ' (under Reviews)' : ''}`);
+    // 2015-16 run head above the heading (BRO-6343): print it only when it is a caps venue line and a run line.
+    const above = lines.slice(Math.max(0, i - 4), i).map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean).slice(-2);
+    const runAbove = above[1] && above[1].replace(/([A-Za-z])(\d{4})\b/g, '$1 $2');
+    if (above.length === 2 && above[0] === above[0].toUpperCase() && above[0].length <= 40 && (RUN_LINE.test(runAbove) || RUN_LINE_SINGLE.test(runAbove))) {
+      console.log(`      above: ${above[0]} / ${above[1]}`);
+    }
     for (let j = i + 1; j < lines.length && j <= i + 40; j++) {
       const flat = lines[j].replace(/\s+/g, ' ');
       for (const m of flat.matchAll(LOG_DATE)) {
@@ -468,6 +539,19 @@ function searchTitles(title) {
   const parts = full.split(/\s*(?:\/|:|\bin\b)\s*/).map(s => s.trim())
     .filter(s => s && s !== full && (s.split(' ').length >= 2 || s.length >= 6));
   return [...new Set([full, ...parts])].slice(0, 4);
+}
+
+/**
+ * --resume keeps a finished row unless it errored or is a PDF-era match
+ * whose header lacks a press night and close: a parser fix (BRO-6343) must
+ * reach those rows, and a header like "12 - 25 February 2016" (the issue's
+ * own period) is no run. Unmatched rows and complete headers are kept.
+ */
+function resumeKeeps(row) {
+  if (!row || row.error) return false;
+  if (!row.tr || !/\/volume\/|\/issue\//.test(row.tr.link || '')) return true;
+  const d = parseTrHeaderDates(row.header);
+  return Boolean(d.openingDate && d.closingDate && /^Press night [^\n]+\nCloses /m.test(row.header || ''));
 }
 
 const DATELESS_KEY = 'dateless';
@@ -596,6 +680,12 @@ async function main() {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
           const pageNo = (link.match(/\/page\/(\d+)/) || [])[1];
           const volNo = (link.match(/\/volume\/(\d+)/) || [])[1];
+          if (mode === '-layout') {
+            // 2015-16 run heads (venue / run / title) only read in order in -raw text (BRO-6343).
+            const rawText = execFileSync('pdftotext', ['-raw', tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
+            const runHead = pdfRunHeadFor(rawText, title, venue);
+            if (runHead) return runHead;
+          }
           const h = pdfHeaderFor(text, title, venue, { page: pageNo ? Number(pageNo) : null, volume: volNo ? Number(volNo) : null });
           const d = parseTrHeaderDates(h);
           if (!d.closingDate || !d.openingDate) logDateContext(text, title, mode);
@@ -633,7 +723,7 @@ async function main() {
       }
       if (resume && p.season !== DATELESS_KEY && fs.existsSync(reviewLedPath(ROOT, p.season))) {
         for (const r of JSON.parse(fs.readFileSync(reviewLedPath(ROOT, p.season), 'utf8')).lookups || []) {
-          if (!r.error) prior.set(`${normalizeTitle(r.review.title)}|${r.review.venue || ''}`, r);
+          if (resumeKeeps(r)) prior.set(`${normalizeTitle(r.review.title)}|${r.review.venue || ''}`, r);
         }
       }
       let pending = 0;
@@ -682,4 +772,4 @@ if (require.main === module) {
   main().catch(e => { console.error(e); process.exit(1); });
 }
 
-module.exports = { datelessLookups, pdfHeaderFor, pdfContentsRowFor, pdfIndexRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
+module.exports = { datelessLookups, resumeKeeps, pdfHeaderFor, pdfRunHeadFor, issuePeriodAnyLabel, pdfContentsRowFor, pdfIndexRowFor, htmlHeaderFor, pairLabelLines, searchTitles, logDateContext };
