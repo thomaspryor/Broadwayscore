@@ -87,8 +87,17 @@ function createSortToggle(pairs) {
     return '';
   }
 
+  // Tooltip for a sort button. Reversible ones explain direction via the caller;
+  // fixed-order ones (Default, Newest, ...) say so instead of looking dead when
+  // clicked while active (BRO-2762). Returns undefined for reversible values.
+  function getFixedSortTitle(value, currentSort, label) {
+    if (isToggleableLocal(value)) return undefined;
+    return currentSort === value ? `Sorted by ${label}` : `Click to sort by ${label}`;
+  }
+
   return {
     pairs,
+    getFixedSortTitle,
     isToggleable: isToggleableLocal,
     normalizeSort: normalizeSortLocal,
     getNextSort: getNextSortLocal,
