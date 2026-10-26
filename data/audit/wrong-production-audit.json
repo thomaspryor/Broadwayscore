@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T02:22:31.697Z",
+  "timestamp": "2026-10-26T04:07:13.787Z",
   "stats": {
-    "totalReviews": 61718,
-    "alreadyFlagged": 21469,
+    "totalReviews": 61753,
+    "alreadyFlagged": 21476,
     "dateGuardCatches": 223,
-    "directorMismatch": 2263,
-    "tvFilmSignals": 1754,
-    "londonSignals": 2987,
+    "directorMismatch": 2275,
+    "tvFilmSignals": 1760,
+    "londonSignals": 2998,
     "offBroadwaySignals": 544,
     "yearMismatch": 204,
-    "noPublishDate": 5476
+    "noPublishDate": 5444
   },
   "findings": [
     {
@@ -2191,6 +2191,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "all-about-eve-west-end-2019",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2019-02-23",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"television\""
         }
       ]
     },
@@ -6492,6 +6505,20 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "newyorker--vinson-cunningham.json",
+      "score": null,
+      "publishDate": "2023-12-18",
+      "url": "https://www.newyorker.com/magazine/2023/12/25/buena-vista-social-club-theatre-review-how-to-dance-in-ohio",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "nytg--gillian-russo.json",
       "score": 79,
       "publishDate": "2023-12-14",
@@ -9637,6 +9664,24 @@
       ]
     },
     {
+      "showId": "come-from-away-west-end-2019",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "publishDate": "2019-02-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "company-2021",
       "file": "chicagotribune--chris-jones.json",
       "score": 75,
@@ -12468,6 +12513,19 @@
     },
     {
       "showId": "death-of-england-closing-time-west-end-2024",
+      "file": "financialtimes--suzi-feay.json",
+      "publishDate": "2024-08-29",
+      "url": "https://www.ft.com/content/1d428e6c-db5d-46c2-8258-70f038868b71",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 55,
       "publishDate": "2024-08-29",
@@ -12486,6 +12544,20 @@
       "score": 77,
       "publishDate": "2024-08-29",
       "url": "https://www.londonboxoffice.co.uk/news/post/death-of-england-closing-time-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-closing-time-west-end-2024",
+      "file": "telegraph--dzifa-benson.json",
+      "score": 96,
+      "publishDate": "2024-08-29",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-soho-place-review/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12524,6 +12596,19 @@
     },
     {
       "showId": "death-of-england-michael-delroy-west-end-2024",
+      "file": "financialtimes--suzi-feay.json",
+      "publishDate": "2024-07-31",
+      "url": "https://www.ft.com/content/2d8d8d22-3f3b-4f4c-ac6a-c5dc28995869",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-michael-delroy-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 76,
       "publishDate": "2024-07-31",
@@ -12552,6 +12637,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "death-of-england-michael-delroy-west-end-2024",
+      "file": "telegraph--dzifa-benson.json",
+      "score": 88,
+      "publishDate": "2024-07-31",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-soho-place-review-paapa-essideu-racism/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"clint dyer\" from death-of-england-delroy-west-end-2020"
         }
       ]
     },
@@ -14926,7 +15025,7 @@
       "showId": "fawlty-towers-west-end-2024",
       "file": "theupcoming--michael-higgs.json",
       "score": 85,
-      "publishDate": null,
+      "publishDate": "2024-05-16",
       "url": "https://www.theupcoming.co.uk/2024/05/16/fawlty-towers-at-apollo-theatre-theatre-review/",
       "findings": [
         {
@@ -18597,6 +18696,20 @@
       "score": 96,
       "publishDate": "2024-12-20",
       "url": "https://www.nj.com/entertainment/2024/12/gypsy-on-broadway-review-audra-macdonald-gives-a-performance-for-the-ages.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-2024",
+      "file": "npr--jeff-lunden.json",
+      "score": null,
+      "publishDate": "2024-12-21",
+      "url": "https://www.npr.org/2024/12/16/nx-s1-5226924/gypsy-audra-mcdonald-broadway",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -23034,7 +23147,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
-      "score": 62,
+      "score": 57,
       "publishDate": "2026-10-09",
       "url": "https://www.cityam.com/into-the-woods-london-review-magical-overwhelming-meta-musical/",
       "findings": [
@@ -27796,6 +27909,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "lyonesse-west-end-2023",
+      "file": "daily-mail--laura-parkin.json",
+      "score": null,
+      "publishDate": "2023-10-26",
+      "url": "https://www.dailymail.com/tvshowbiz/article-12673511/Lily-James-Lyonesse-Kristin-Scott-Thomas.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -35470,6 +35597,20 @@
     },
     {
       "showId": "player-kings-west-end-2024",
+      "file": "daily-mail--rory-tingle.json",
+      "score": null,
+      "publishDate": "2024-06-20",
+      "url": "https://www.dailymail.com/news/article-13550559/Sir-Ian-McKellen-not-appear-Player-Kings-West-End.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "player-kings-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
       "score": 87,
       "publishDate": "April 12th, 2024",
@@ -36240,6 +36381,20 @@
       ]
     },
     {
+      "showId": "prince-faggot-playwrights-horizons-off-broadway-2025",
+      "file": "thewrap--robert-hofler.json",
+      "score": 91,
+      "publishDate": "2025-06-17",
+      "url": "https://www.thewrap.com/prince-faggot-review-off-broadway/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "prince-of-broadway-2017",
       "file": "broadwayworld--michael-dale.json",
       "score": 80,
@@ -36629,6 +36784,25 @@
     },
     {
       "showId": "punch-west-end-2025",
+      "file": "independent--alice-saville.json",
+      "score": 55,
+      "publishDate": "2025-03-07",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/james-graham-punch-review-b2710837.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
       "file": "independent--unknown.json",
       "score": 58,
       "publishDate": null,
@@ -36657,6 +36831,30 @@
     },
     {
       "showId": "punch-west-end-2025",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 62,
+      "publishDate": "2025-03-07",
+      "url": "https://www.londontheatre.co.uk/reviews/punch-review-james-graham-young-vic",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
       "file": "plays-international--maryam-philpott.json",
       "score": 80,
       "publishDate": "2025-09-28",
@@ -36671,6 +36869,44 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"leanne pinder\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "telegraph--lindsay-john.json",
+      "score": 97,
+      "publishDate": "2025-03-07",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/punch-young-vic-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
+        }
+      ]
+    },
+    {
+      "showId": "punch-west-end-2025",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 81,
+      "publishDate": "2025-03-31",
+      "url": "https://www.timeout.com/london/theatre/punch-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 175d before show (2025-03-31 vs 2025-09-22)"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam penford\" from punch-2025"
         }
       ]
     },
@@ -38235,6 +38471,39 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-west-end-2024",
+      "file": "telegraph--kirsten-grant.json",
+      "score": 82,
+      "publishDate": "2024-08-22",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/shifters-bush-theatre-review-genuinely-funny/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "shifters-west-end-2024",
+      "file": "times-uk--rachel-halliburton.json",
+      "score": 84,
+      "publishDate": "2024-08-22",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/shifters-review-duke-of-york-london-benedict-lombe-sz8ff3zj5",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -59996,6 +60265,19 @@
     },
     {
       "showId": "absolute-hell-west-end-2018",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2018-04-26",
+      "url": "https://www.theguardian.com/stage/2018/apr/26/absolute-hell-review-lyttelton-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "absolute-hell-west-end-2018",
       "file": "guardian--susannah-clapp.json",
       "score": 80,
       "publishDate": "2018-04-29",
@@ -60844,20 +61126,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "alterations-west-end-2025",
-      "file": "theupcoming--jonathan-marshall.json",
-      "score": 85,
-      "publishDate": null,
-      "url": "https://www.theupcoming.co.uk/2025/02/28/alterations-at-the-national-theatre-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -68555,6 +68823,8 @@
       "showId": "dracula-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 85,
+      "publishDate": "2025-03-18",
+      "url": "https://www.broadwayworld.com/westend/article/Review-DRACULA-A-COMEDY-OF-TERRORS-Menier-Chocolate-Factory-20250318",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -70089,6 +70359,20 @@
       "score": 76,
       "publishDate": "2018-07-25",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/exit-king-review-national-theatre-rhys-ifans-drives-chilling/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "file": "thestage--natasha-tripney.json",
+      "score": 54,
+      "publishDate": "2018-08-02",
+      "url": "https://www.thestage.co.uk/reviews/exit-the-king-review-at-national-theatre-london--rhys-ifans-compelling-performance",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -74268,6 +74552,19 @@
     },
     {
       "showId": "hello-dolly-west-end-2024",
+      "file": "guardian--kate-kellaway.json",
+      "publishDate": "2024-07-28",
+      "url": "https://www.theguardian.com/stage/article/2024/jul/28/the-week-in-theatre-hello-dolly-london-palladium-imelda-staunton-review-the-hot-wing-king-dorfman-national-theatre-fangirls-musical-lyric-hammersmith?CMP=Share_iOSApp_Other",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
       "file": "london-box-office--stuart-king.json",
       "score": 75,
       "publishDate": "2024-07-20",
@@ -75392,7 +75689,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 64,
+      "score": 56,
       "publishDate": "2026-10-23",
       "url": "https://theartsdesk.com/theatre/ilford-boy-donmar-warehouse-review-writing-numbers-can-be-fun",
       "findings": [
@@ -76634,6 +76931,19 @@
     },
     {
       "showId": "is-god-is-west-end-2021",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2021-09-24",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "is-god-is-west-end-2021",
       "file": "fringereview--simon-jenner.json",
       "score": 88,
       "publishDate": "2021-10-02",
@@ -76650,8 +76960,21 @@
       "showId": "is-god-is-west-end-2021",
       "file": "guardian--arifa-akbar.json",
       "score": 82,
-      "publishDate": null,
+      "publishDate": "2021-09-17",
       "url": "https://www.theguardian.com/stage/2021/sep/17/is-god-is-review-royal-court",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "is-god-is-west-end-2021",
+      "file": "thestage--tim-bano.json",
+      "publishDate": "2021-09-17",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -80492,6 +80815,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "musicaltheatremusings--sarah-mcpartlan.json",
+      "score": 79,
       "publishDate": "2026-10-24",
       "url": "https://musicaltheatremusings.co.uk/martin-guerre/",
       "findings": [
@@ -83311,20 +83635,6 @@
     },
     {
       "showId": "oedipus-west-end-2024",
-      "file": "camdennewjournal--unknown.json",
-      "score": 83,
-      "publishDate": null,
-      "url": "https://www.camdennewjournal.co.uk/article/review-oedipus-at-wyndhams-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
-      "showId": "oedipus-west-end-2024",
       "file": "guardian--unknown.json",
       "score": null,
       "publishDate": null,
@@ -83424,7 +83734,7 @@
       "showId": "oedipus-west-end-2024",
       "file": "theupcoming--jonathan-marshall.json",
       "score": 90,
-      "publishDate": null,
+      "publishDate": "2024-10-16",
       "url": "https://www.theupcoming.co.uk/2024/10/16/oedipus-at-wyndhams-theatre-theatre-review/",
       "findings": [
         {
@@ -84443,6 +84753,20 @@
       "score": 82,
       "publishDate": "March 27th, 2024",
       "url": "https://www.theguardian.com/stage/2024/mar/27/opening-night-review-gielgud-theatre-sheridan-smith-ivo-van-hove-rufus-wainwright",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
+      "showId": "opening-night-west-end-2024",
+      "file": "new-statesman--kate-mossman.json",
+      "score": 51,
+      "publishDate": "2024-03-26",
+      "url": "https://www.newstatesman.com/culture/theatre/2024/03/opening-night-review-why-was-this-confusing-unloveable-musical-made",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -86353,42 +86677,6 @@
     },
     {
       "showId": "punch-west-end-2025",
-      "file": "independent--alice-saville.json",
-      "score": 55,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "london-theatre--olivia-rook.json",
-      "score": 62,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 198d before show (2025-03-08 vs 2025-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "telegraph--lindsay-john.json",
-      "score": 97,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
       "file": "telegraph--lindsay-johns.json",
       "findings": [
         {
@@ -86407,18 +86695,6 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 199d before show (2025-03-07 vs 2025-09-22)"
-        }
-      ]
-    },
-    {
-      "showId": "punch-west-end-2025",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "score": 81,
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 175d before show (2025-03-31 vs 2025-09-22)"
         }
       ]
     },
@@ -93076,6 +93352,20 @@
       ]
     },
     {
+      "showId": "the-constituent-west-end-2024",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 66,
+      "publishDate": "2024-06-25",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-constituent-old-vic-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-corn-is-green-west-end-2022",
       "file": "i-paper--fiona-mountford.json",
       "score": 75,
@@ -93303,6 +93593,20 @@
       "score": 99,
       "publishDate": "2024-11-07",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-curious-case-of-benjamin-button-ambassador-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+      "file": "britishtheatrecom--julia-jordan.json",
+      "score": null,
+      "publishDate": "2025-03-05",
+      "url": "https://www.britishtheatre.com/posts/olivier-nominated-the-curious-case-of-benjamin-button-extends-west-end-run-to-august-2025",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -96890,6 +97194,20 @@
     },
     {
       "showId": "the-motive-and-the-cue-west-end-2023",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "score": 87,
+      "publishDate": "2023-12-20",
+      "url": "https://www.timeout.com/london/theatre/the-motive-and-the-cue-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "the-motive-and-the-cue-west-end-2023",
       "file": "timeout-london--leonie-cooper.json",
       "score": 87,
       "publishDate": "December 20th, 2023",
@@ -98313,11 +98631,18 @@
       "showId": "the-producers-west-end-2025",
       "file": "sunday-times--dominic-maxwell.json",
       "score": 89,
+      "publishDate": "2024-12-15",
+      "url": "https://www.thetimes.com/article/51bc03b7-bdf2-4856-97be-6fb7aa5a7e9b",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 258d before show (2024-12-15 vs 2025-08-30)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -100685,6 +101010,19 @@
       "score": 88,
       "publishDate": "2024-01-29",
       "url": "https://maryamphilpottblog.wordpress.com/2024/01/29/till-the-stars-come-down-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "till-the-stars-come-down-west-end-2024",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2024-02-01",
+      "url": "https://www.ft.com/content/7df93ec1-f196-4353-b623-f14f77c883f5",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
