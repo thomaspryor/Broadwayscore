@@ -255,6 +255,9 @@ async function runTests() {
 }
 
 process.on('exit', deleteScratchBranch);
+// Default signal handling skips 'exit', which would orphan the scratch branch.
+process.on('SIGINT', () => process.exit(130));
+process.on('SIGTERM', () => process.exit(143));
 
 runTests()
   .then(() => {
