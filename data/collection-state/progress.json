@@ -67,14 +67,24 @@
     "grandiloquent-off-broadway-2025/vulture--kathryn-vanarendonk.json",
     "grandiloquent-off-broadway-2025/nysr--frank-scheck.json",
     "grandiloquent-off-broadway-2025/nysr--roma-torre.json",
-    "grandiloquent-off-broadway-2025/theater-scene--tony-marinelli.json"
+    "grandiloquent-off-broadway-2025/theater-scene--tony-marinelli.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "the-jonathan-larson-project-off-broadway-2025/musical-theatre-report--ben-west.json",
-    "henry-iv-off-broadway-2025/exeunt-magazine--natasha-tripney.json",
-    "henry-iv-off-broadway-2025/nysr--unknown.json",
-    "kowalski-off-broadway-2025/culturesauce--unknown.json",
-    "grandiloquent-off-broadway-2025/theatermania--zachary-stewart.json"
+    "grandiloquent-off-broadway-2025/theatermania--zachary-stewart.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -120,15 +130,20 @@
       "grandiloquent-off-broadway-2025/nytg--joe-dziemianowicz.json",
       "grandiloquent-off-broadway-2025/nysr--frank-scheck.json",
       "grandiloquent-off-broadway-2025/nysr--roma-torre.json",
-      "grandiloquent-off-broadway-2025/theater-scene--tony-marinelli.json"
+      "grandiloquent-off-broadway-2025/theater-scene--tony-marinelli.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
     "browserbase": [
       "data/review-texts/henry-iv-off-broadway-2025/wsj--unknown.json",
-      "henry-iv-off-broadway-2025/wsj--unknown.json"
+      "henry-iv-off-broadway-2025/wsj--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
+    ],
     "scrapingbee": [
       "the-last-bimbo-of-the-apocalypse-off-broadway-2025/theatrely--unknown.json",
       "the-jonathan-larson-project-off-broadway-2025/new-york-sun--elysa-gardner.json",
@@ -163,8 +178,8 @@
       "henry-iv-off-broadway-2025/village-voice--jacob-gallagher-ross.json"
     ]
   },
-  "startTime": "2026-10-26T16:05:21.233Z",
-  "lastProcessed": "grandiloquent-off-broadway-2025/theater-scene--tony-marinelli.json",
+  "startTime": "2026-10-26T15:54:25.030Z",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
   "log": [
     {
       "t": "2026-10-26T16:05:39.317Z",
@@ -209,6 +224,36 @@
       "t": "2026-10-26T16:18:24.219Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-26T16:22:29.316Z",
+      "event": "bb-session",
+      "session": "43cf79ff",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T16:23:56.002Z",
+      "event": "bb-session",
+      "session": "557e5aa9",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T16:24:06.190Z",
+      "event": "bb-session",
+      "session": "69bd667a",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T16:27:58.407Z",
+      "event": "bb-session",
+      "session": "544a9a44",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T16:28:08.685Z",
+      "event": "bb-session",
+      "session": "de441450",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
     }
   ]
 }
