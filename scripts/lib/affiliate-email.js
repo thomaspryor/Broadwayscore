@@ -13,9 +13,14 @@ function esc(str) {
   if (str == null) return '';
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-function htmlMoney(n) { return typeof n === 'number' ? `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '\u2014'; }
-function htmlInt(n) { return typeof n === 'number' ? n.toLocaleString() : '\u2014'; }
-function htmlPct(n) { return typeof n === 'number' ? `${(n * 100).toFixed(1)}%` : '\u2014'; }
+// Sign before the symbol (-$12.34); NaN/Infinity from a zero divisor read as a dash.
+function formatUsd(n) {
+  if (!Number.isFinite(n)) return '\u2014';
+  const abs = Math.abs(n).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  return `${n < 0 && abs !== '0.00' ? '-' : ''}$${abs}`;
+}
+function htmlInt(n) { return Number.isFinite(n) ? n.toLocaleString() : '\u2014'; }
+function htmlPct(n) { return Number.isFinite(n) ? `${(n * 100).toFixed(1)}%` : '\u2014'; }
 
 function buildAffiliateReportHtml(stats) {
   const { window: win, funnel, unitEconomics, perPlatform, impact, errors, wowDelta, context } = stats;
@@ -76,7 +81,7 @@ function buildAffiliateReportHtml(stats) {
     baselineLine = `
     <p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.35);font-family:${FONT};">
       vs trailing ${b.baseline.days}d baseline: ${wowChip(context.baseline.payoutVsBaselinePct)}
-      &nbsp;(${esc(htmlMoney(b.windowPerDay ? b.windowPerDay.payout : null))}/day now &middot; ${esc(htmlMoney(b.baselinePerDay ? b.baselinePerDay.payout : null))}/day baseline)
+      &nbsp;(${esc(formatUsd(b.windowPerDay ? b.windowPerDay.payout : null))}/day now &middot; ${esc(formatUsd(b.baselinePerDay ? b.baselinePerDay.payout : null))}/day baseline)
     </p>`;
   }
   const partialBanner = context && context.partial ? `
@@ -85,8 +90,8 @@ function buildAffiliateReportHtml(stats) {
   const mix = impact && !impact.skipped ? impact.todaytixMix : null;
   const newCustomersNote = mix ? ` (${esc(htmlInt(mix.newCount))} new to TodayTix)` : '';
   const commissionHtml = card(`Our earnings \u2014 last ${win.days} days`, `
-    <p style="margin:0;font-size:42px;font-weight:800;color:#ffffff;font-family:${FONT};line-height:1;">${esc(htmlMoney(stats.totals.commission))}</p>
-    <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${esc(htmlInt(stats.totals.conversions))} conversion${stats.totals.conversions !== 1 ? 's' : ''}${newCustomersNote} &middot; ${esc(htmlMoney(stats.totals.revenue))} attributed sales</p>
+    <p style="margin:0;font-size:42px;font-weight:800;color:#ffffff;font-family:${FONT};line-height:1;">${esc(formatUsd(stats.totals.commission))}</p>
+    <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${esc(htmlInt(stats.totals.conversions))} conversion${stats.totals.conversions !== 1 ? 's' : ''}${newCustomersNote} &middot; ${esc(formatUsd(stats.totals.revenue))} attributed sales</p>
     ${wowLine}
     ${baselineLine}
     ${partialBanner}
@@ -99,10 +104,10 @@ function buildAffiliateReportHtml(stats) {
   if (context && !context.partial) {
     const notes = [];
     for (const d of context.outlierDays || []) {
-      notes.push(`Single day ${esc(d.day)} contributed ${Math.round(d.shareOfWindow * 100)}% of this window's commission (${esc(htmlMoney(d.payout))}).`);
+      notes.push(`Single day ${esc(d.day)} contributed ${Math.round(d.shareOfWindow * 100)}% of this window's commission (${esc(formatUsd(d.payout))}).`);
     }
     for (const b of context.repeatBuyers || []) {
-      notes.push(`One buyer placed ${b.conversions} of this window's orders (${esc(htmlMoney(b.sales))} in sales, ${esc(htmlMoney(b.payout))} commission).`);
+      notes.push(`One buyer placed ${b.conversions} of this window's orders (${esc(formatUsd(b.sales))} in sales, ${esc(formatUsd(b.payout))} commission).`);
     }
     if (context.clickDivergenceRatio != null && context.clickDivergenceRatio > 2) {
       notes.push(`Impact recorded ${esc(htmlInt(context.impactClicks))} clicks vs ${esc(htmlInt(funnel ? funnel.ticketClicks : null))} on-site ticket clicks (${context.clickDivergenceRatio.toFixed(1)}x) \u2014 likely bot hits on tracking links diluting EPC.`);
@@ -125,7 +130,7 @@ function buildAffiliateReportHtml(stats) {
       </tr><tr>
         ${funnelCell('Conversions', htmlInt(funnel.conversions),
           funnel.rates.convsPerClick != null ? `${(funnel.rates.convsPerClick * 100).toFixed(2)}% of clicks` : null, false)}
-        ${funnelCell('Commission', htmlMoney(funnel.commission),
+        ${funnelCell('Commission', formatUsd(funnel.commission),
           funnel.rates.epc != null ? `$${funnel.rates.epc.toFixed(3)} / click` : null, true)}
       </tr>
     </table>
@@ -135,8 +140,8 @@ function buildAffiliateReportHtml(stats) {
   const unitHtml = unitEconomics && unitEconomics.avgOrderValue != null ? card('Unit economics', `
     <table width="100%" cellpadding="0" cellspacing="0">
       <tr>
-        ${unitCell('Avg order', htmlMoney(unitEconomics.avgOrderValue), 'ticket sale value')}
-        ${unitCell('Avg commission', htmlMoney(unitEconomics.avgCommissionPerConv), 'we earn')}
+        ${unitCell('Avg order', formatUsd(unitEconomics.avgOrderValue), 'ticket sale value')}
+        ${unitCell('Avg commission', formatUsd(unitEconomics.avgCommissionPerConv), 'we earn')}
       </tr><tr>
         ${unitCell('Take rate', unitEconomics.takeRate != null ? `${(unitEconomics.takeRate * 100).toFixed(2)}%` : '\u2014', 'commission \u00F7 sale')}
         ${unitCell('EPC', unitEconomics.earningsPerClick != null ? `$${unitEconomics.earningsPerClick.toFixed(3)}` : '\u2014', 'commission \u00F7 click')}
@@ -162,7 +167,7 @@ function buildAffiliateReportHtml(stats) {
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${htmlInt(r.clicks)}</td>
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${r.conversions != null ? htmlInt(r.conversions) : dash}</td>
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${r.conversionRate != null ? htmlPct(r.conversionRate) : dash}</td>
-        <td align="right" style="${cs};font-weight:600;font-variant-numeric:tabular-nums;">${r.commission != null ? htmlMoney(r.commission) : dash}</td>
+        <td align="right" style="${cs};font-weight:600;font-variant-numeric:tabular-nums;">${r.commission != null ? formatUsd(r.commission) : dash}</td>
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${r.epc != null ? '$' + r.epc.toFixed(3) : dash}</td>
       </tr>`;
     }).join('');
@@ -199,10 +204,10 @@ function buildAffiliateReportHtml(stats) {
       todaytixMixHtml = card('TodayTix customer mix', `
         <p style="margin:0 0 12px;font-size:11px;color:rgba(255,255,255,0.35);font-family:${FONT};">Inferred from payout rate (5% = new, 1% = existing)</p>
         <table width="100%" cellpadding="0" cellspacing="0">
-          ${sr(`New (${newPct}%)`, `${m.newCount} \u00B7 ${htmlMoney(m.newPayout)} commission`)}
-          ${sr(`Existing (${100 - newPct}%)`, `${m.existingCount} \u00B7 ${htmlMoney(m.existingPayout)} commission`)}
-          ${m.promoZeroCount > 0 ? sr('Promo-code orders ($0 by contract)', `${m.promoZeroCount} \u00B7 ${htmlMoney(m.promoZeroRevenue)} in sales`) : ''}
-          ${m.rateBumpUplift > 0 ? sr('Rate-bump uplift vs old 2%', `+${htmlMoney(m.rateBumpUplift)}`, 'pos') : ''}
+          ${sr(`New (${newPct}%)`, `${m.newCount} \u00B7 ${formatUsd(m.newPayout)} commission`)}
+          ${sr(`Existing (${100 - newPct}%)`, `${m.existingCount} \u00B7 ${formatUsd(m.existingPayout)} commission`)}
+          ${m.promoZeroCount > 0 ? sr('Promo-code orders ($0 by contract)', `${m.promoZeroCount} \u00B7 ${formatUsd(m.promoZeroRevenue)} in sales`) : ''}
+          ${m.rateBumpUplift > 0 ? sr('Rate-bump uplift vs old 2%', `+${formatUsd(m.rateBumpUplift)}`, 'pos') : ''}
         </table>
       `);
     }
@@ -251,4 +256,4 @@ function buildAffiliateReportHtml(stats) {
 </body></html>`;
 }
 
-module.exports = { buildAffiliateReportHtml };
+module.exports = { buildAffiliateReportHtml, formatUsd };

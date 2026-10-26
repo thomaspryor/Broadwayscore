@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildAffiliateReportHtml } = require('./affiliate-email.js');
+const { buildAffiliateReportHtml, formatUsd } = require('./affiliate-email.js');
 
 const base = {
   window: { days: 7, startDate: '2026-10-19', endDate: '2026-10-25' },
@@ -37,4 +37,13 @@ test('money over $1,000 gets a thousands separator', () => {
   const html = buildAffiliateReportHtml({ ...base, totals: { commission: 1234.5, conversions: 2, revenue: 4557.79 } });
   assert.match(html, /\$1,234\.50/);
   assert.match(html, /\$4,557\.79 attributed sales/);
+});
+
+test('formatUsd: sign before the symbol, dash for NaN/Infinity, no negative zero', () => {
+  assert.equal(formatUsd(-12.34), '-$12.34');
+  assert.equal(formatUsd(-0.001), '$0.00');
+  assert.equal(formatUsd(NaN), '—');
+  assert.equal(formatUsd(Infinity), '—');
+  assert.equal(formatUsd(null), '—');
+  assert.equal(formatUsd(4557.79), '$4,557.79');
 });

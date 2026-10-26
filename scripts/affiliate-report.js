@@ -20,7 +20,7 @@
  */
 
 const { getAffiliateStats } = require('./lib/affiliate-stats');
-const { buildAffiliateReportHtml } = require('./lib/affiliate-email');
+const { buildAffiliateReportHtml, formatUsd } = require('./lib/affiliate-email');
 
 const args = process.argv.slice(2);
 const DAYS = (() => {
@@ -54,10 +54,10 @@ async function main() {
   if (wowDelta) {
     const arrow = (pct) => pct == null ? '' : (pct >= 0 ? `▲ +${pct.toFixed(1)}%` : `▼ ${pct.toFixed(1)}%`);
     console.log(`\n── Week over Week (vs ${wowDelta.priorStartDate} to ${wowDelta.priorEndDate}, Impact only) ──`);
-    console.log(`  Commission   : ${arrow(wowDelta.commissionPct) || 'n/a'}    (prior $${wowDelta.priorCommission.toFixed(2)})`);
+    console.log(`  Commission   : ${arrow(wowDelta.commissionPct) || 'n/a'}    (prior ${formatUsd(wowDelta.priorCommission)})`);
     console.log(`  Conversions  : ${arrow(wowDelta.conversionsPct) || 'n/a'}    (prior ${wowDelta.priorConversions})`);
     console.log(`  New TT custs : ${arrow(wowDelta.newCustomersPct) || 'n/a'}    (prior ${wowDelta.priorNewCustomers})`);
-    console.log(`  Attrib sales : ${arrow(wowDelta.revenuePct) || 'n/a'}    (prior $${wowDelta.priorRevenue.toFixed(2)})`);
+    console.log(`  Attrib sales : ${arrow(wowDelta.revenuePct) || 'n/a'}    (prior ${formatUsd(wowDelta.priorRevenue)})`);
   }
 
   // ── Context (baseline + outlier annotations — affiliate hardening 2026-08-03) ──
@@ -70,13 +70,13 @@ async function main() {
         const b = context.baseline;
         const sign = context.baseline.payoutVsBaselinePct >= 0 ? '+' : '';
         console.log(`  vs trailing ${b.baseline.days}d baseline: ${sign}${context.baseline.payoutVsBaselinePct.toFixed(1)}%/day` +
-          ` ($${(b.windowPerDay?.payout || 0).toFixed(2)}/day now vs $${(b.baselinePerDay?.payout || 0).toFixed(2)}/day)`);
+          ` (${formatUsd(b.windowPerDay?.payout || 0)}/day now vs ${formatUsd(b.baselinePerDay?.payout || 0)}/day)`);
       }
       for (const d of context.outlierDays || []) {
-        console.log(`  Outlier day: ${d.day} contributed ${Math.round(d.shareOfWindow * 100)}% of window commission ($${d.payout.toFixed(2)})`);
+        console.log(`  Outlier day: ${d.day} contributed ${Math.round(d.shareOfWindow * 100)}% of window commission (${formatUsd(d.payout)})`);
       }
       for (const b of context.repeatBuyers || []) {
-        console.log(`  Repeat buyer: one customer placed ${b.conversions} orders ($${b.sales.toFixed(2)} sales)`);
+        console.log(`  Repeat buyer: one customer placed ${b.conversions} orders (${formatUsd(b.sales)} sales)`);
       }
       if (context.clickDivergenceRatio != null && context.clickDivergenceRatio > 2) {
         console.log(`  Bot note: Impact recorded ${context.impactClicks} clicks vs ${funnel?.ticketClicks} on-site (${context.clickDivergenceRatio.toFixed(1)}x) — EPC diluted`);
@@ -95,14 +95,14 @@ async function main() {
     console.log(`  Show page views : ${pv}`);
     console.log(`  Ticket clicks   : ${tc}    (${ctr} of views)`);
     console.log(`  Conversions     : ${funnel.conversions}    (${cr} of clicks)`);
-    console.log(`  Commission      : $${funnel.commission.toFixed(2)}    (${epc} EPC)`);
+    console.log(`  Commission      : ${formatUsd(funnel.commission)}    (${epc} EPC)`);
   }
 
   // ── Unit economics ──
   if (unitEconomics && unitEconomics.avgOrderValue != null) {
     console.log('\n── Unit Economics ──');
-    console.log(`  Avg order value     : $${unitEconomics.avgOrderValue.toFixed(2)}`);
-    console.log(`  Avg commission/conv : $${unitEconomics.avgCommissionPerConv.toFixed(2)}`);
+    console.log(`  Avg order value     : ${formatUsd(unitEconomics.avgOrderValue)}`);
+    console.log(`  Avg commission/conv : ${formatUsd(unitEconomics.avgCommissionPerConv)}`);
     console.log(`  Take rate           : ${(unitEconomics.takeRate * 100).toFixed(2)}%`);
     console.log(`  EPC                 : $${(unitEconomics.earningsPerClick || 0).toFixed(3)}`);
   }
@@ -116,7 +116,7 @@ async function main() {
       const clicks = String(r.clicks).padStart(5);
       const conv = r.conversions != null ? String(r.conversions).padStart(4) : '   —';
       const cr = r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%`.padStart(6) : '     —';
-      const comm = r.commission != null ? `$${r.commission.toFixed(2)}`.padStart(11) : '          —';
+      const comm = r.commission != null ? formatUsd(r.commission).padStart(11) : '          —';
       const epc = r.epc != null ? `$${r.epc.toFixed(3)}`.padStart(8) : '       —';
       console.log(`  ${aff}${(r.platform).padEnd(15)} ${clicks}  ${conv}  ${cr}  ${comm}  ${epc}`);
     }
@@ -133,11 +133,11 @@ async function main() {
   } else {
     console.log(`Conversions: ${impact.conversions}`);
     if (impact.conversions > 0) {
-      console.log(`Commission earned (our revenue): $${impact.totalPayout.toFixed(2)}`);
-      console.log(`Ticket sales attributed (gross order value, NOT ours): $${impact.totalRevenue.toFixed(2)}`);
+      console.log(`Commission earned (our revenue): ${formatUsd(impact.totalPayout)}`);
+      console.log(`Ticket sales attributed (gross order value, NOT ours): ${formatUsd(impact.totalRevenue)}`);
       console.log('By campaign:');
       for (const c of impact.byCampaign) {
-        console.log(`  ${c.name}: ${c.count} sales, $${c.payout.toFixed(2)} commission ($${c.revenue.toFixed(2)} attributed)`);
+        console.log(`  ${c.name}: ${c.count} sales, ${formatUsd(c.payout)} commission (${formatUsd(c.revenue)} attributed)`);
       }
       if (impact.todaytixMix) {
         const m = impact.todaytixMix;
@@ -145,12 +145,12 @@ async function main() {
         if (total > 0) {
           const newPct = Math.round((m.newCount / total) * 100);
           console.log('TodayTix customer mix (inferred from payout rate):');
-          console.log(`  New: ${m.newCount} (${newPct}%), $${m.newPayout.toFixed(2)} commission ($${m.newRevenue.toFixed(2)} attributed)`);
-          console.log(`  Existing: ${m.existingCount} (${100 - newPct}%), $${m.existingPayout.toFixed(2)} commission ($${m.existingRevenue.toFixed(2)} attributed)`);
-          if (m.promoZeroCount > 0) console.log(`  Promo-code orders (TodayTix pays $0 on these by contract): ${m.promoZeroCount} ($${m.promoZeroRevenue.toFixed(2)} attributed)`);
+          console.log(`  New: ${m.newCount} (${newPct}%), ${formatUsd(m.newPayout)} commission (${formatUsd(m.newRevenue)} attributed)`);
+          console.log(`  Existing: ${m.existingCount} (${100 - newPct}%), ${formatUsd(m.existingPayout)} commission (${formatUsd(m.existingRevenue)} attributed)`);
+          if (m.promoZeroCount > 0) console.log(`  Promo-code orders (TodayTix pays $0 on these by contract): ${m.promoZeroCount} (${formatUsd(m.promoZeroRevenue)} attributed)`);
           if (m.unknownCount > 0) console.log(`  Unknown rate: ${m.unknownCount}`);
           if (m.rateBumpUplift > 0) {
-            console.log(`  Rate-bump uplift (vs old 2%/1% contract): +$${m.rateBumpUplift.toFixed(2)} commission this period`);
+            console.log(`  Rate-bump uplift (vs old 2%/1% contract): +${formatUsd(m.rateBumpUplift)} commission this period`);
           }
         }
       }
