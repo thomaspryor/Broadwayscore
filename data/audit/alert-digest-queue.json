@@ -1232,5 +1232,36 @@
       }
     ],
     "queuedAt": "2026-10-26T01:33:45.680Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6268-ocr-probe",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6268-ocr-probe",
+    "description": "land.yml did not land land/bro-6268-ocr-probe: the unit-tests-node gate went red at 40622b29b2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40253445641",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6268-ocr-probe"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "40622b29b2c27abcd6fca7051df5bd4820545324"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40253445641"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:36:08.671Z"
   }
 ]
