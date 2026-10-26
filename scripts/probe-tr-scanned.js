@@ -23,8 +23,8 @@ const { pdfUrlVariants } = require('./lib/tr-pdf-url');
 
 const arg = (n, d) => (process.argv.find(a => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=') || d;
 const QUERIES = arg('queries', 'Kinky Boots').split(',').map(s => s.trim()).filter(Boolean);
-const OCR_PAGES = parseInt(arg('ocr-pages', '3'), 10);
-const DPIS = arg('dpis', '300').split(',').map(Number);
+const OCR_PAGES = Math.min(Math.max(parseInt(arg('ocr-pages', '3'), 10) || 1, 1), 10);
+const DPIS = arg('dpis', '300').split(',').map(Number).filter(d => d >= 100 && d <= 400);
 const PAGES_FROM = parseInt(arg('first-page', '1'), 10);
 const TR_EMAIL = process.env.TR_EMAIL || '';
 const TR_PASSWORD = process.env.TR_PASSWORD || '';
@@ -87,8 +87,8 @@ function tesseractStats(imgPath) {
     const pdf = path.join(tmp, 'issue.pdf');
     let got = false;
     for (const u of pdfUrlVariants(pdfHit.link)) {
-      sh('curl', ['-s', '-L', '-o', pdf, '-b', `PHPSESSID=${sess.value}`, u]);
-      if (/PDF/.test(sh('file', [pdf]))) { got = true; break; }
+      try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf, '-b', `PHPSESSID=${sess.value}`, u]); } catch { continue; }
+      if (fs.readFileSync(pdf).subarray(0, 5).toString() === '%PDF-') { got = true; break; }
     }
     if (!got) { console.log('  not a PDF:', pdfHit.link); continue; }
     const info = sh('pdfinfo', [pdf]);
