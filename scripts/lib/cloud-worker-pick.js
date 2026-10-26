@@ -382,8 +382,8 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
  * runner's claim-time re-check, leaveCodexCards): one call so the rule can't drift between them
  * (BRO-5407). `nodes` are the card's comments. -> reason string or null
  */
-function historySkipReason(issue, nodes, nowMs) {
-  return pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue) });
+function historySkipReason(issue, nodes, nowMs, { cloudLane = false } = {}) {
+  return pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue), cloudLane });
 }
 
 /**
@@ -657,7 +657,7 @@ function mayTakeUnchecked(entry) {
  *   note shows a worker put it there; one moved to Backlog by hand is 'backlog-unexplained'.
  * @returns {'awaiting-owner'|'lane-unworkable'|'backlog-unexplained'|'reclaimed-to-backlog'|'recheck-pending'|'paused-repeatedly'|'recently-paused'|null}
  */
-function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = false } = {}) {
+function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = false, cloudLane = false } = {}) {
   const { parseSessionReportStatus } = require('./linear-session-reporting.js');
   const { BOUNCED_MARKER } = require('./codex-runner.js');
   const { parseRecheckAfter } = require('./recheck-stamp.js');
@@ -688,7 +688,7 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
   const answered = sorted.slice(0, idx).some((c) => !isMachineComment(c.body));
   const ageMs = nowMs - Date.parse(report.createdAt);
   if (!answered && ageMs < AWAITING_OWNER_MAX_MS && namesOwnerHold(report.body)) return 'awaiting-owner';
-  if (!answered && ageMs < LANE_UNWORKABLE_MAX_MS && laneUnworkableReason(report.body)) return 'lane-unworkable';
+  if (cloudLane && !answered && ageMs < LANE_UNWORKABLE_MAX_MS && laneUnworkableReason(report.body)) return 'lane-unworkable';
   const pauses = sorted.filter((c) => parseSessionReportStatus(c.body) === 'paused').length;
   if (!answered && pauses >= MAX_PAUSES) return 'paused-repeatedly';
   const cooldownMs = PRIORITIES.has(Number(priority)) ? RECENT_PAUSE_URGENT_MS : RECENT_PAUSE_MS;

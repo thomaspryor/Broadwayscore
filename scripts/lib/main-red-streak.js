@@ -303,7 +303,7 @@ function firstFailingTestNameInJobLog(jobLogText) {
 // title is not unique across files and may be built from a template literal, so
 // grepping the source for it is unreliable). Returns the repo-relative path
 // (from its first tests/ scripts/ or src/ segment) or null.
-const TAP_LOCATION_RE = /location:\s*['"]?[^'"\n]*?((?:tests|scripts|src)\/[\w@./-]+\.test\.(?:m?js|cjs|ts)):\d+/;
+const TAP_LOCATION_RE = /location:\s*['"]?(?:[^'"\n]*?[\/])?((?:tests|scripts|src)\/[\w@./-]+\.test\.(?:m?js|cjs|ts)):\d+/;
 function firstFailingTestFileInJobLog(jobLogText) {
   const lines = String(jobLogText || '').split('\n').map((raw) => raw.replace(/^\S*Z\s?/, '').replace(/\r$/, ''));
   for (let i = 0; i < lines.length; i++) {

@@ -1094,13 +1094,15 @@ test('BRO-6262: a pause that says the cloud lane cannot do the work keeps the ca
   const D = 24 * 3600_000;
   const lane = report('paused', 'Not workable from the cloud lane: data/review-texts is not attached.', 5 * D);
   assert.equal(laneUnworkableReason(lane.body), true);
-  assert.equal(pausedHistorySkipReason([lane], NOW), 'lane-unworkable');
-  assert.equal(pausedHistorySkipReason([lane, { body: FILER_REFRESH_MARKER + '\n' + REFRESH_BODY, createdAt: at(1 * D) }], NOW), 'lane-unworkable');
+  assert.equal(pausedHistorySkipReason([lane], NOW, { cloudLane: true }), 'lane-unworkable');
+  // The Codex runner links review-texts: it never skips on this reason.
+  assert.equal(pausedHistorySkipReason([lane], NOW), null);
+  assert.equal(pausedHistorySkipReason([lane, { body: FILER_REFRESH_MARKER + '\n' + REFRESH_BODY, createdAt: at(1 * D) }], NOW, { cloudLane: true }), 'lane-unworkable');
   // A person answered after the pause: back to the normal idle rule.
-  assert.equal(pausedHistorySkipReason([lane, { body: 'attached it, go', createdAt: at(1 * D) }], NOW), null);
+  assert.equal(pausedHistorySkipReason([lane, { body: 'attached it, go', createdAt: at(1 * D) }], NOW, { cloudLane: true }), null);
   // Old enough that the lane may have changed.
   const old = report('paused', 'not workable from the cloud lane', LANE_UNWORKABLE_MAX_MS + D);
-  assert.equal(pausedHistorySkipReason([old], NOW), null);
+  assert.equal(pausedHistorySkipReason([old], NOW, { cloudLane: true }), null);
   // A report that only mentions review-texts in passing is not lane-unworkable.
   assert.equal(laneUnworkableReason('Fixed; verified with cloud-run-script --review-texts audit.'), false);
 });

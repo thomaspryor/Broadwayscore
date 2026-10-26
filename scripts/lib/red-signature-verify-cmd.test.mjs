@@ -213,3 +213,8 @@ test('the default tsx check reads the real manifest', () => {
   if (!tsxFile) return;
   assert.match(verifyForSignature({ job: 'Unit Tests', step: 'x', testFile: tsxFile }, FIXTURE_YML).line, /^VERIFY: npx tsx --test /);
 });
+
+test('a job with no proxy command never gets a narrowed file command (stays owner-judgment)', () => {
+  const v = verifyForSignature({ job: 'Some Unregistered Job', step: 'x', testFile: 'tests/unit/a.test.mjs' }, FIXTURE_YML, { isTsxTest: () => false });
+  assert.equal(v.line, 'VERIFY: owner-judgment');
+});

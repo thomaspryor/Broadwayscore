@@ -201,7 +201,7 @@ function verifyForSignature({ job, step, testFile }, rawYmlText, { isTsxTest = i
   // suite. The whole-suite proxy keeps failing on unrelated reds, so the Done gate
   // refused these cards and they sat In Review. Only the proxy fallback is
   // narrowed; a step's own single-line command stays as written.
-  if (!stepCmd && testFile) {
+  if (!stepCmd && testFile && JOB_PROXY_COMMANDS[job]) {
     const cmd = `${isTsxTest(testFile) ? 'npx tsx --test' : 'node --test'} ${testFile}`;
     if (explainUnsafeCheckCommand(cmd).ok) {
       return {

@@ -598,3 +598,8 @@ test('firstFailingTestFileInJobLog returns null with no location, and never reac
   assert.equal(firstFailingTestFileInJobLog(''), null);
   assert.equal(firstFailingTestFileInJobLog(null), null);
 });
+
+test('firstFailingTestFileInJobLog needs a path boundary before the tests/ segment', () => {
+  const log = "not ok 1 - a\n  location: '/x/contests/a.test.mjs:1:1'";
+  assert.equal(firstFailingTestFileInJobLog(log), null);
+});
