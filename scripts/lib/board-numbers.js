@@ -408,7 +408,8 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
  * test alarms, routine logs and self-tracking, so the line says which is which.
  */
 function filingOutpacesClosingLine(m) {
-  const days = m && Array.isArray(m.daily) ? m.daily.slice(-2) : [];
+  // A truncated page makes the daily counts minimums, so the comparison can't be trusted.
+  const days = m && Array.isArray(m.daily) && !m.dailyTruncated ? m.daily.slice(-2) : [];
   if (days.length < 2 || !days.every((d) => d.added > d.closed)) return null;
   const top = m.bySource && Array.isArray(m.bySource.bySource) ? m.bySource.bySource[0] : null;
   const added = days.reduce((a, d) => a + d.added, 0);
@@ -417,7 +418,7 @@ function filingOutpacesClosingLine(m) {
   const who = top ? ` Top filer in 24h: ${top.source}, ${top.count}${total ? ` of ${total}` : ''} (not counting test alarms, routine logs and self-tracking).` : '';
   const flood = m.bySource && m.bySource.floods && m.bySource.floods[0]
     ? ` Biggest flood: ${m.bySource.floods[0].source} "${m.bySource.floods[0].kind}" ${m.bySource.floods[0].count}.` : '';
-  return `Filing is outpacing closing for 2 days: ${added} added, ${closed} closed (all cards).${who}${flood}`;
+  return `Filing is outpacing closing for 2 days: ${added} added, ${closed} closed (all cards, canceled counted as closed).${who}${flood}`;
 }
 
 const FLOOD_LABEL = `${cardDedupe.FLOOD_THRESHOLD}+ cards of one kind from one filer in 24h`;

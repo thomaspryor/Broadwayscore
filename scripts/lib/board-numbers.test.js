@@ -421,7 +421,8 @@ test('BRO-6338: filingOutpacesClosingLine names the top filer only when added > 
   assert.equal(B.filingOutpacesClosingLine({ daily: [day(50, 50), day(70, 50)], bySource }), null, 'equal is not outpacing');
   assert.equal(B.filingOutpacesClosingLine({ daily: [day(70, 50)], bySource }), null, 'needs 2 days');
   assert.equal(B.filingOutpacesClosingLine({ daily: null, bySource }), null);
-  assert.match(B.filingOutpacesClosingLine({ daily: [day(9, 1), day(9, 1)], bySource: null }), /^Filing is outpacing closing for 2 days: 18 added, 2 closed \(all cards\)\.$/);
+  assert.equal(B.filingOutpacesClosingLine({ daily: [day(70, 50), day(70, 50)], dailyTruncated: true, bySource }), null, 'truncated counts are minimums');
+  assert.match(B.filingOutpacesClosingLine({ daily: [day(9, 1), day(9, 1)], bySource: null }), /^Filing is outpacing closing for 2 days: 18 added, 2 closed \(all cards, canceled counted as closed\)\.$/);
 });
 
 test('BRO-6338: ceremonyKind treats "TEST (BRO-N) ... safe to ignore" cards as test alarms', () => {
