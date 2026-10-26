@@ -337,6 +337,12 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     out.push(`commercial.json: "${showId}" has invalid costMethodology "${show.costMethodology}". Valid values: ${VALID_COST_METHODOLOGIES.join(', ')}`);
   }
 
+  // A cited weekly cost with no costMethodology reads as reported on the site
+  // but as our own estimate in the cost model (BRO-6297, BRO-5632 parity).
+  if (show.weeklyRunningCost > 0 && !show.costMethodology && String(show.weeklyRunningCostSource || '').trim()) {
+    out.push(`commercial.json: "${showId}" has a cited weeklyRunningCost but no costMethodology (the site and the cost model disagree on whether it is reported; set one of ${VALID_COST_METHODOLOGIES.join(', ')})`);
+  }
+
   // Validate deepResearch object if present
   if (show.deepResearch) {
     const dr = show.deepResearch;
