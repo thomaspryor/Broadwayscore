@@ -24,7 +24,10 @@ const canDispatchWorkflows = (env = process.env) => env.GITHUB_ACTIONS === 'true
 /**
  * Should reconcileLanded skip a card? A deferred data-fix apply is for a runner that can dispatch (a cloud slot
  * re-reading it would only defer again); onlyDeferred is the GHA lane's base slot, which leaves everything else to slot 0.
+ * canDispatch here is canReconcileDeferred(): only the GHA lane retries deferred applies, even though the cloud lane can
+ * now dispatch its own (BRO-6260 review: two lanes re-dispatching one card race on the executor's per-issue queue).
  */
+const canReconcileDeferred = (env = process.env) => env.GITHUB_ACTIONS === 'true';
 const reconcileSkips = ({ deferred, onlyDeferred, canDispatch }) => (deferred ? !canDispatch : !!onlyDeferred);
 
 // Executor-allowlisted field edits only. Not allowed: run-script, add-show, retire-show, review-file-op,
@@ -153,4 +156,4 @@ async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true, 
   return { kind: 'applied', files: handled, lines };
 }
 
-module.exports = { dataFixesEnabled, reconcileSkips, canDispatchWorkflows, EXECUTOR_TIMEOUT_MIN, APPLY_WAIT_MIN, latestLandingPlans, CODEX_PLAN_ACTIONS, cardPlanFiles, codexPlanAllowed, planNotApplied, applyCardFixPlans };
+module.exports = { dataFixesEnabled, reconcileSkips, canReconcileDeferred, canDispatchWorkflows, EXECUTOR_TIMEOUT_MIN, APPLY_WAIT_MIN, latestLandingPlans, CODEX_PLAN_ACTIONS, cardPlanFiles, codexPlanAllowed, planNotApplied, applyCardFixPlans };

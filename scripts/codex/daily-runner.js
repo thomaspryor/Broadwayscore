@@ -1443,7 +1443,7 @@ async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
     if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
     // A deferred data-fix apply is for a runner that can dispatch; a cloud slot re-reading it would only defer again.
     const deferred = notes[0].body.startsWith(DEFER_HEADING);
-    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canDispatchWorkflows() })) continue;
+    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canReconcileDeferred() })) continue;
     await settleLanded(id, stats, { partial: await partialLanding(id, NaN), body: 'The runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.' });
   }
 }

@@ -202,7 +202,10 @@ test('daily-runner wiring: apply inside settleLanded before Done; prompt rule be
   assert.match(src, /const DEFER_HEADING = '## Codex runner: landing did not finish/);
   assert.match(src, /startsWith\('## Codex runner: landing did not finish'\)/);
   // The lane's base slot (gha: 3) reconciles deferred applies; slot 0 alone never would on the GHA lane.
-  assert.match(src, /DF\.reconcileSkips\(\{ deferred, onlyDeferred, canDispatch: DF\.canDispatchWorkflows\(\) \}\)/);
+  assert.match(src, /DF\.reconcileSkips\(\{ deferred, onlyDeferred, canDispatch: DF\.canReconcileDeferred\(\) \}\)/);
+  // BRO-6260: a cloud runner with CODEX_CAN_DISPATCH=1 still leaves deferred applies to the GHA lane.
+  assert.equal(DF.canReconcileDeferred({ CODEX_CAN_DISPATCH: '1' }), false);
+  assert.equal(DF.canReconcileDeferred({ GITHUB_ACTIONS: 'true' }), true);
   assert.match(src, /SLOT === R\.LANES\[OPTS\.lane\]\.base\) await reconcileLanded\(stats, \{ onlyDeferred: true \}\)/);
   assert.match(fn, /canDispatch: DF\.canDispatchWorkflows\(\), applyWaitMin: R\.landWaitMinutes\(/);
   assert.match(src, /DF\.dataFixesEnabled\(\) && DF\.canDispatchWorkflows\(\) \? DATA_FIX_RULE : ''/);
