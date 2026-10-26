@@ -9,7 +9,8 @@
 // htmlFile is relative to .next/server/app after `next build`.
 const MARKET_PAGE_BUDGETS = [
   { route: '/west-end', htmlFile: 'west-end.html', maxBytes: 1_000_000, maxImgs: 150 },
-  { route: '/off-broadway', htmlFile: 'off-broadway.html', maxBytes: 1_000_000, maxImgs: 150 },
+  // /off-broadway: 1.09MB before BRO-6325 (ItemList JSON-LD listed ~470 closed shows); ~0.5MB after.
+  { route: '/off-broadway', htmlFile: 'off-broadway.html', maxBytes: 650_000, maxImgs: 150 },
   { route: '/off-west-end', htmlFile: 'off-west-end.html', maxBytes: 1_000_000, maxImgs: 150 },
 ];
 
