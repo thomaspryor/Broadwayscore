@@ -586,6 +586,10 @@ function syndicatedHealDecision(reviewTextsDir, ctx, record) {
  * article) or {syndicatedDanglingClear: true} (none does, so the secondary is the only copy). {} when the pointer
  * resolves to an existing file.
  */
+function isApWireUrl(url) {
+  try { return require('./ap-wire-detect').AP_WIRE_URL.test(new URL(url).pathname); } catch { return false; }
+}
+
 function syndicatedDanglingContext(reviewTextsDir, ctx, record) {
   const fs = require('fs');
   const path = require('path');
@@ -632,6 +636,9 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   if ((action.field === 'isSyndicatedDuplicate' || action.field === 'syndicatedPrimaryFile')
       && typeof record.syndicatedPrimaryFile === 'string' && !isSelfSyndicationPointer(record, ctx)) {
     ctx.syndicatedHeal = syndicatedHealDecision(reviewTextsDir, ctx, record) === 'clear';
+    // The AP scan never flags ap-- files itself (detect-syndicated-duplicates.js skips them), so on an AP-outlet row
+    // with an AP wire url the stamp is a leftover from when the page was filed under another outlet (BRO-5289).
+    if (!ctx.syndicatedHeal && record.outletId === 'ap' && record._apContentDetected === true && isApWireUrl(record.url)) ctx.syndicatedHeal = true;
     Object.assign(ctx, syndicatedDanglingContext(reviewTextsDir, ctx, record));
   }
   const res = applyReviewFieldEdit(record, action, stamp, ctx);
