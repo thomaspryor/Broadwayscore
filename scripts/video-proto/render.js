@@ -127,8 +127,22 @@ const AUDIO_STYLE = process.env.AUDIO_STYLE || (process.env.MUSIC ? 'sfx' : 'gro
 // Every path that writes a soundtrack goes through here: optional library music, then the voiceover over the bed.
 // A voiced comp must come out clearly louder than its bed alone, or the voice never made it into the mix.
 const meanDb = f => +/mean_volume: (-?[\d.]+) dB/.exec(require('child_process').spawnSync('ffmpeg', ['-i', f, '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8' }).stderr)[1];
+// MUSIC=rotate spreads videos across the owner's picks plus an effects-only slot. The pick hangs on the
+// format and show, so re-rendering a video never changes its track. Tracks live in MUSIC_DIR (Incompetech, CC BY 4.0: credit in the caption).
+const ROTATION = ['Sidewalk Shade.mp3', 'I Got a Stick Arr Bryan Teoh.mp3', 'Happy Alley.mp3', 'Cheery Monday.mp3', null];
+function musicFor(d) {
+  if (process.env.MUSIC !== 'rotate') return process.env.MUSIC || null;
+  const key = `${name}:${(d.show && d.show.title) || d.title || ''}`;
+  const pick = ROTATION[[...key].reduce((h, c) => (h * 31 + c.charCodeAt(0)) >>> 0, 7) % ROTATION.length];
+  if (!pick) return null;
+  const f = path.join(process.env.MUSIC_DIR || '', pick);
+  if (!fs.existsSync(f)) throw new Error(`MUSIC=rotate picked ${pick} but it is not in MUSIC_DIR (${process.env.MUSIC_DIR || 'unset'})`);
+  return f;
+}
 function finishAudio(wav, dur, d, outDir) {
-  if (process.env.MUSIC) mixMusic(wav, dur);
+  const track = musicFor(d);
+  console.log(`music: ${track ? path.basename(track) : 'none (effects only)'}`);
+  if (track) mixMusic(wav, dur, track);
   if (!d.vo) return;
   // the bed sits BED_DUCK dB (default 14) under the voice's average loudness, whatever the source track's level
   const mix = path.join(outDir, `${name}-mix.wav`), voiceDb = meanDb(d.vo), bedDb = voiceDb - +(process.env.BED_DUCK || 14), bedVol = Math.pow(10, (bedDb - meanDb(wav)) / 20);
@@ -141,9 +155,9 @@ function finishAudio(wav, dur, d, outDir) {
   console.log(`voice check: mix ${out} dB, voice ${voiceDb} dB, bed ${bedDb.toFixed(1)} dB`);
   fs.renameSync(mix, wav);
 }
-function mixMusic(wav, dur) {
+function mixMusic(wav, dur, track) {
   const out = wav.replace(/\.wav$/, '-m.wav'), ss = process.env.MUSIC_START || '0', vol = process.env.MUSIC_VOL || '0.55';
-  require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-ss', ss, '-i', process.env.MUSIC, '-filter_complex',
+  require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-ss', ss, '-i', track, '-filter_complex',
     `[1:a]atrim=0:${dur},asetpts=N/SR/TB,afade=t=in:d=0.3,afade=t=out:st=${Math.max(0, dur - 2)}:d=2,volume=${vol}[m];[0:a][m]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.9[o]`, '-map', '[o]', '-ar', '44100', out]);
   fs.renameSync(out, wav);
 }
