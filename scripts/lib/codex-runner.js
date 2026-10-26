@@ -1017,9 +1017,9 @@ function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
   if (!issue || Number(issue.priority) === 1 || startNow) return false;
   const comments = (issue.comments && issue.comments.nodes) || [];
   if (codexBouncedRecently(comments, nowMs)) return false;
-  // Default canDispatch: the Claude worker is not a dispatch-capable Codex runner, so it keeps data-route cards
-  // itself rather than leaving them to a Codex lane that may be only the cloud one (BRO-6194).
-  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs }).skip;
+  // Every Codex lane can apply a data-fix plan now (GHA has actions: write; the cloud lane runs with
+  // CODEX_CAN_DISPATCH=1, BRO-6260), so data-route cards are left to Codex like any other fit card (BRO-6194 kept them).
+  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs, canDispatch: true }).skip;
 }
 
 /**

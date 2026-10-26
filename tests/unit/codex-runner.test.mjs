@@ -787,6 +787,16 @@ test('leaveToCodex: the Claude worker leaves fit cards to a live Codex runner, n
   assert.equal(r.leaveToCodex({ ...card, description: 'Then edit .github/workflows/land.yml.' }, { nowMs: now, verify }), false, 'Codex cannot do it');
   const bounced = { ...card, comments: { nodes: [{ body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed`, createdAt: new Date(now - 3600_000).toISOString() }] } };
   assert.equal(r.leaveToCodex(bounced, { nowMs: now, verify }), false, 'Codex already tried');
+  // BRO-6260: both Codex lanes apply data-fix plans, so a data-route card is left to Codex even from a
+  // process that cannot dispatch itself (the Claude worker), unless the data-fix route is switched off.
+  const keep = { g: process.env.GITHUB_ACTIONS, c: process.env.CODEX_CAN_DISPATCH, k: process.env.CODEX_DATA_FIXES_DISABLED };
+  try {
+    delete process.env.GITHUB_ACTIONS; delete process.env.CODEX_CAN_DISPATCH; delete process.env.CODEX_DATA_FIXES_DISABLED;
+    const route = { ...card, title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json.' };
+    assert.equal(r.leaveToCodex(route, { nowMs: now, verify }), true, 'data-route card goes to Codex');
+  } finally {
+    for (const [k, v] of [['GITHUB_ACTIONS', keep.g], ['CODEX_CAN_DISPATCH', keep.c], ['CODEX_DATA_FIXES_DISABLED', keep.k]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  }
 });
 
 test('savings line: check $ per landed card in the summary and the health row; landed cards per lane from git log', () => {
