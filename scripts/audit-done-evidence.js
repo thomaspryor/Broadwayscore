@@ -60,7 +60,7 @@ const {
 } = require('./lib/card-premises-auditor.js');
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { fetchDoneEvidenceCandidates, selectCandidates, DONE_WINDOW_DAYS } = require('./lib/done-evidence-source.js');
-const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted } = require('./lib/done-evidence-remote.js');
+const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted, resolvePathRename } = require('./lib/done-evidence-remote.js');
 const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, VERDICTS,
   isTimeoutResult, rotationOffset, priorSlowIds, demoteSlowChecks, nextSlowIds,
   nextSlowSince } = require('./lib/done-evidence-audit.js');
@@ -393,8 +393,8 @@ async function main(argv = process.argv.slice(2)) {
 
       // Only for a Done card whose check actually FAILED: is the path it names
       // one that has never existed at all (a wrong acceptance criterion), as
-      // opposed to one that existed and is now gone (a real regression)? One
-      // extra call, on ~17 cards a night.
+      // opposed to one that was deleted or renamed? One history call per
+      // missing path, plus up to ten calls to confirm a rename and destination continuity.
       let misArmed = null;
       if (card.state === 'Done' && runResult && runResult.status === 'fail') {
         // Resolve the facts; adjudicateMisArmed (pure, tested) applies the rule.
@@ -432,9 +432,9 @@ async function main(argv = process.argv.slice(2)) {
           // clear cards for everybody. History decides the verdict now; the
           // ignore answer only chooses the WORDING.
           //
-          // true = zero commits ever, false = it existed and is now gone (a
-          // real regression, and no ignore rule may override that), null = the
-          // probe failed and absolves nothing.
+          // true = zero commits ever, false = previously tracked, null = the
+          // probe failed. Previously tracked paths need explicit rename proof;
+          // an ignore rule alone still cannot absolve a deletion.
           const never = pathNeverExisted(p);
           if (never === null) unresolvedProbes++;
           // Asked in the fresh checkout when there is one, so the answer comes
@@ -451,6 +451,7 @@ async function main(argv = process.argv.slice(2)) {
             presentOnMain: false,
             everExisted: never === null ? null : !never,
             gitignored,
+            renamedTo: never === false ? resolvePathRename(p, { existsOnMain: existsFn, ref: checkout.sha }) : null,
           };
         }
         misArmed = adjudicateMisArmed(paths, facts);
