@@ -27,6 +27,13 @@ test('isDualMarket outlet is always skipped (legit by definition)', () => {
   );
 });
 
+test('allowCrossMarket review is skipped even for a Tier 1/2 London outlet on Broadway (BRO-6369)', () => {
+  const base = { region: 'london', isDualMarket: false, isTier12: true, isBroadway: true };
+  assert.equal(classifyReverseCrossMarket(base).level, 'error');
+  assert.equal(classifyReverseCrossMarket({ ...base, allowCrossMarket: true }).level, 'skip');
+  assert.equal(classifyReverseCrossMarket({ ...base, allowCrossMarket: 'yes' }).level, 'error');
+});
+
 test('non-London outlet is skipped regardless of category/tier', () => {
   assert.equal(
     classifyReverseCrossMarket({ region: 'us', isDualMarket: false, isTier12: false, isBroadway: true }).level,

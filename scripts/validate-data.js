@@ -5309,6 +5309,7 @@ function validateCrossMarketContamination() {
       isDualMarket: dualMarket.has(oid),
       isTier12: tier12Outlets.has(oid),
       isBroadway,
+      allowCrossMarket: r.allowCrossMarket === true,
     });
     if (level === 'skip') continue;
     if (level === 'error') {

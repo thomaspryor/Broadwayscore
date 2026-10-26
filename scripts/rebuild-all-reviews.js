@@ -5533,6 +5533,8 @@ showDirs.forEach(showId => {
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none',
+        // BRO-6369: surface the human cross-market approval so validate-data's reverse check agrees with the rebuild guard.
+        ...(data.allowCrossMarket === true ? { allowCrossMarket: true } : {}),
         // Ensemble scoring metadata (for confidence analysis + auditing)
         ...(data.ensembleData ? {
           scoreDelta: data.ensembleData.scoreDelta || 0,

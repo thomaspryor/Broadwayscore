@@ -134,9 +134,15 @@ function outletIsUkSideSelfHealRegion(outletRegionMap, canonicalOutlet, rawOutle
  * @param {boolean} args.isDualMarket            - outlet has isDualMarket:true
  * @param {boolean} args.isTier12                - outlet is Tier 1 or Tier 2
  * @param {boolean} args.isBroadway             - the reviewed show is Broadway category
+ * @param {boolean} [args.allowCrossMarket]    - the review row carries allowCrossMarket:true
  * @returns {{ level: 'skip'|'advisory'|'warning'|'error', reason: string }}
  */
-function classifyReverseCrossMarket({ region, isDualMarket, isTier12, isBroadway }) {
+function classifyReverseCrossMarket({ region, isDualMarket, isTier12, isBroadway, allowCrossMarket = false }) {
+  // Per-review human approval: the rebuild's reverseCrossMarketExclusion honors the same
+  // flag, so CI must not fail on a row the rebuild deliberately kept (BRO-6369).
+  if (allowCrossMarket === true) {
+    return { level: 'skip', reason: 'review carries allowCrossMarket (human-approved cross-market coverage)' };
+  }
   if (isDualMarket) {
     return { level: 'skip', reason: 'dual-market outlet (legit by definition)' };
   }
