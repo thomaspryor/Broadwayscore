@@ -524,13 +524,17 @@ function retryBody({ findings = '', reason = '' } = {}) {
  * True when Codex failed this card within the last 14 days (a 'landed part' note counts for only 3 days,
  * and two of them in 14 days ban it for the full 14), or the runner crashed on it twice
  * (a card that breaks the runner every time must not take a slot on every run).
+ * A retry note (BRO-6260) forgets the plain and partial bounces before it; structural holds and crash
+ * notes still count across it. A card's first plain bounce in 60 days that nobody answered for 7 days
+ * stops counting (no Claude worker took it); a second one bans it for the usual 14 days.
  */
 function codexBouncedRecently(comments, nowMs) {
-  const all = sinceRetry(Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : []);
+  const raw = Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : [];
+  if (structuralBounceHolds(raw, nowMs)) return true;
+  const all = sinceRetry(raw);
   const recent = all.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
   const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
   const partials = recent.filter(isPartial);
-  if (structuralBounceHolds(all, nowMs)) return true;
   const full = all.filter((c) => isCodexBounce(c.body) && !isPartial(c) && nowMs - Date.parse(c.createdAt) < STRUCTURAL_MEMORY_MS);
   const newest = full.reduce((m, c) => (!m || Date.parse(c.createdAt) > Date.parse(m.createdAt) ? c : m), null);
   const unclaimed = (c) => c === newest && full.length === 1 && nowMs - Date.parse(c.createdAt) >= UNCLAIMED_RETRY_MS
@@ -539,7 +543,7 @@ function codexBouncedRecently(comments, nowMs) {
   return recent.some((c) => isCodexBounce(c.body) && !isPartial(c) && !unclaimed(c))
     || partials.length >= PARTIAL_MAX_PER_MEMORY
     || partials.some((c) => nowMs - Date.parse(c.createdAt) < PARTIAL_MEMORY_MS)
-    || recent.filter((c) => isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
+    || raw.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS && isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
 }
 
 /**
@@ -720,7 +724,8 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   if (items > 3) { score -= 2; why.push(`acceptance-items:${items}`); }
   // A fix round an earlier run could not fit goes first, so a SHIP-WITH-FIXES always gets it.
   if (parseSwfCarry(comments, nowMs)) { score += 10; why.push('swf-carry'); }
-  else if (parseCodexRetry(comments)) { score += 10; why.push('retry'); }
+  // A retry is a fresh attempt, so it never lifts a too-broad card over the line.
+  else if (score > CODEX_MIN_SCORE && parseCodexRetry(comments)) { score += 10; why.push('retry'); }
   return { skip: score <= CODEX_MIN_SCORE ? 'too-broad' : null, score, why };
 }
 

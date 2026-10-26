@@ -32,7 +32,14 @@ test('planRetry: open cards only, once, newest bounce decides, leave-alone list 
   assert.equal(B.planRetry({ ...base, stateType: 'started' }).skip, 'state started');
   assert.equal(B.planRetry({ ...base, identifier: 'BRO-4672' }).skip, 'leave-alone');
   assert.equal(B.planRetry({ ...base, comments: [...base.comments, c(R.retryBody({ findings: 'x' }), '2026-10-21T00:00:00Z')] }).skip, 'already retried');
-  assert.match(B.planRetry({ ...base, comments: [...base.comments, c(note(NOT_LANDED, 'owner-decision'), '2026-10-22T00:00:00Z')] }).skip, /owner-decision/);
+  assert.match(B.planRetry({ ...base, comments: [...base.comments, c(note(NOT_LANDED, 'owner-decision'), '2026-10-22T00:00:00Z')] }).skip, /structural/);
+  // A person replying after the bounce keeps the card out; a machine note after it does not.
+  assert.equal(B.planRetry({ ...base, comments: [...base.comments, c('I will take this one by hand.', '2026-10-21T00:00:00Z')] }).skip, 'a person replied after the bounce');
+  assert.equal(B.planRetry({ ...base, comments: [...base.comments, c('Claimed by worker slot 2', '2026-10-21T00:00:00Z')] }).kind, 'not-landed');
+  // An older structural bounce still standing keeps the card out, and survives a retry note in the runner too.
+  const held = [c(note(NOT_LANDED, 'owner-decision'), '2026-10-05T00:00:00Z'), ...base.comments];
+  assert.match(B.planRetry({ ...base, comments: held, nowMs: Date.parse('2026-10-24T00:00:00Z') }).skip, /structural/);
+  assert.equal(R.codexBouncedRecently([...held, c(R.retryBody({ findings: 'x' }), '2026-10-23T00:00:00Z')], Date.parse('2026-10-24T00:00:00Z')), true);
   // The posted note lifts the bounce for the runner.
   const posted = [...base.comments, c(R.retryBody({ findings: B.planRetry(base).findings }), '2026-10-23T00:00:00Z')];
   assert.equal(R.codexBouncedRecently(posted, Date.parse('2026-10-24T00:00:00Z')), false);

@@ -7,10 +7,11 @@
  * A card that already has a retry note, is In Progress/Done, or is on the leave-alone list is skipped.
  *
  *   node scripts/codex-retry-backfill.js            # dry run: lists what it would post
- *   node scripts/codex-retry-backfill.js --apply    # posts the retry notes
+ *   node scripts/codex-retry-backfill.js --apply    # posts the retry notes (--limit=N for a batch, --days=N window)
  */
 const R = require('./lib/codex-runner.js');
 const L = require('./lib/linear-client.js');
+const { isMachineComment } = require('./lib/cloud-worker-pick.js');
 
 // Genuine failures and an owner decision (BRO-6260 parent note), and two cards checked by hand.
 const LEAVE_ALONE = new Set(['BRO-5163', 'BRO-4318', 'BRO-5263', 'BRO-4672', 'BRO-3408', 'BRO-2632']);
@@ -40,13 +41,18 @@ function bounceFindings(body) {
 }
 
 /** Pure selection over one card's comments and state -> { kind, findings } | { skip }. */
-function planRetry({ identifier, stateType, comments }) {
+function planRetry({ identifier, stateType, comments, nowMs = Date.now() }) {
   if (LEAVE_ALONE.has(identifier)) return { skip: 'leave-alone' };
   if (!OPEN_STATE_TYPES.has(stateType)) return { skip: `state ${stateType}` };
   const list = (comments || []).filter((c) => c && Number.isFinite(Date.parse(c.createdAt)));
   if (list.some((c) => String(c.body || '').startsWith(R.RETRY_MARKER))) return { skip: 'already retried' };
   const bounces = list.filter((c) => R.isCodexBounce(c.body)).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   if (!bounces.length) return { skip: 'no bounce note on the card' };
+  const at = Date.parse(bounces[0].createdAt);
+  // A person answered the bounce (took it, decided it, or explained why it stays): their call, not ours.
+  if (list.some((c) => Date.parse(c.createdAt) > at && !isMachineComment(c.body))) return { skip: 'a person replied after the bounce' };
+  // An older structural bounce still standing (owner decision, missing credential) keeps the card out.
+  if (R.structuralBounceHolds(list, nowMs)) return { skip: 'an earlier structural bounce still holds' };
   const kind = retryKind(bounces[0].body);
   if (!kind) return { skip: `newest bounce is ${R.bounceClassOf(bounces[0].body) || 'not retryable'}` };
   return { kind, findings: bounceFindings(bounces[0].body) };
@@ -58,6 +64,7 @@ async function main() {
   const sinceIso = new Date(Date.now() - days * 864e5).toISOString();
   const notes = await L.listRecentCommentsContaining({ sinceIso, text: 'codex-runner-bounced', max: 2000 });
   const ids = [...new Set(notes.filter((c) => c.issue && retryKind(c.body)).map((c) => c.issue.identifier))].sort();
+  const limit = Number((process.argv.find((a) => a.startsWith('--limit=')) || '--limit=0').slice(8)) || Infinity;
   const tally = { posted: 0, wouldPost: 0, skipped: 0, byKind: {} };
   for (const id of ids) {
     const issue = await L.getIssue(id);
@@ -68,8 +75,10 @@ async function main() {
     const reason = plan.kind === 'partial'
       ? 'Codex landed part of this card and the rest is still open.'
       : 'Codex bounced this card and no Claude worker has taken it.';
+    if (tally.posted + tally.wouldPost >= limit) { console.log(`${id}: held back (--limit)`); tally.skipped++; continue; }
     if (!apply) { console.log(`${id}: would retry (${plan.kind}, ${plan.findings.length} chars of findings)`); tally.wouldPost++; continue; }
-    await L.createComment(issue.id, R.retryBody({ findings: plan.findings, reason }));
+    try { await L.createComment(issue.id, R.retryBody({ findings: plan.findings, reason })); }
+    catch (e) { console.log(`${id}: post failed (${e.message}); a rerun retries it`); tally.skipped++; continue; }
     console.log(`${id}: retry posted (${plan.kind})`);
     tally.posted++;
   }

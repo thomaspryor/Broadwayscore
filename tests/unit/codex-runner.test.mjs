@@ -1122,11 +1122,16 @@ test('BRO-6260 retry note: lifts the bounces before it once, the picker and fit 
   assert.equal(r.codexBouncedRecently([rejected(2)], now), true);
   assert.equal(r.codexBouncedRecently([rejected(2), retry(1)], now), false, 'retry lifts it');
   assert.equal(r.codexBouncedRecently([rejected(3), retry(2), rejected(1)], now), true, 'a bounce after the retry counts');
-  assert.equal(r.codexBouncedRecently([structural(5), retry(1)], now), false);
+  assert.equal(r.codexBouncedRecently([structural(5), retry(1)], now), true, 'a retry never lifts a structural hold');
+  const crash = (d) => ({ createdAt: at(d), body: "## Codex runner: stopped mid-card\n\nThe runner died on this card." });
+  assert.equal(r.codexBouncedRecently([crash(4), crash(3)], now), true);
+  assert.equal(r.codexBouncedRecently([crash(4), crash(3), retry(1)], now), true, 'crash notes still count across a retry');
   assert.deepEqual(r.parseCodexRetry([rejected(2), retry(1)]), { findings: r.retryBody({ findings: 'Add the missing test.' }).split('\n').slice(1).join('\n').trim() });
   assert.equal(r.parseCodexRetry([retry(2), claim(1)]), null, 'only while it is the newest comment');
   const fit = r.codexCardFit({ title: 'Fix the thing', description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs', comments: [rejected(2), retry(1)], nowMs: now });
   assert.ok(fit.why.includes('retry') && fit.skip === null);
+  const broad = r.codexCardFit({ title: 'Fix the thing', description: 'x'.repeat(20000), comments: [rejected(2), retry(1)], nowMs: now });
+  assert.ok(broad.skip === 'too-broad' && !broad.why.includes('retry'), 'a retry never lifts a too-broad card');
   // Unclaimed: one plain bounce, nothing after it for 7 days -> back to Codex; a second bounce in 60 days stays out.
   assert.equal(r.codexBouncedRecently([rejected(8)], now), false);
   assert.equal(r.codexBouncedRecently([rejected(8), claim(7)], now), true);
