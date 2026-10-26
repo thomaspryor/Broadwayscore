@@ -317,7 +317,10 @@
     "sukkot-off-broadway-2026/prettykosher--anna-rahmanan.json",
     "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json",
     "allegra-west-end-2026/londongrip--julia-pascal.json",
-    "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json"
+    "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json"
   ],
   "failed": [
     "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
@@ -492,7 +495,17 @@
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
     "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
     "othello-off-broadway-2026/thestage--fergus-morgan.json",
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json"
+    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -667,7 +680,8 @@
       "sukkot-off-broadway-2026/prettykosher--anna-rahmanan.json",
       "giulia-the-poison-queen-of-palermo-off-broadway-2026/medium--m-m-de-voe.json",
       "allegra-west-end-2026/londongrip--julia-pascal.json",
-      "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json"
+      "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -699,7 +713,8 @@
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
       "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
-      "jeeves-takes-charge-west-end-2026/ground--unknown.json"
+      "jeeves-takes-charge-west-end-2026/ground--unknown.json",
+      "double-bill-tell-me-straight-and-aggy-off-west-end-2026/nearbuzz--unknown.json"
     ],
     "scrapingbee": [
       "isabel-off-broadway-2024/theatrely--unknown.json",
@@ -814,11 +829,12 @@
       "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+      "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ]
   },
   "startTime": "2026-10-26T09:47:33.190Z",
-  "lastProcessed": "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
+  "lastProcessed": "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
   "log": [
     {
       "t": "2026-10-26T11:16:18.645Z",
@@ -852,6 +868,48 @@
       "t": "2026-10-26T11:43:16.791Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T14:12:51.680Z",
+      "event": "bb-session",
+      "session": "026bcfe1",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
+    },
+    {
+      "t": "2026-10-26T14:15:45.490Z",
+      "event": "bb-session",
+      "session": "d2a0c0f0",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-26T14:15:54.218Z",
+      "event": "bb-session",
+      "session": "66817047",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-26T14:17:13.852Z",
+      "event": "bb-session",
+      "session": "3722d6dd",
+      "url": "https://soundsandstage.com/show/dirty-dancing"
+    },
+    {
+      "t": "2026-10-26T14:17:56.396Z",
+      "event": "bb-session",
+      "session": "f3e7df90",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-26T14:18:09.728Z",
+      "event": "bb-session",
+      "session": "cb413f8c",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-26T14:21:39.981Z",
+      "event": "bb-session",
+      "session": "f09a2e95",
+      "url": "https://soundsandstage.com/show/double-bill-tell-me-straight-aggy-may"
     }
   ],
   "recoveredAfterFailure": [
