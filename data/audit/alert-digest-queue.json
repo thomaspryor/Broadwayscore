@@ -992,20 +992,6 @@
     "queuedAt": "2026-10-25T23:51:22.707Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T23:51:26.784Z"
-  },
-  {
     "conditionKey": "land:land/bro-6219-web-alerts",
     "title": "Landing blocked: unit-tests-node red on land/bro-6219-web-alerts",
     "description": "land.yml did not land land/bro-6219-web-alerts: the unit-tests-node gate went red at 35a01e13ac. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40248653007",
@@ -1263,6 +1249,20 @@
       }
     ],
     "queuedAt": "2026-10-26T01:36:08.671Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:03:59.823Z"
   },
   {
     "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",

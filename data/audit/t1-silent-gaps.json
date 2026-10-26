@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-25T23:51:26.783Z",
+  "generatedAt": "2026-10-26T02:03:59.822Z",
   "windowDays": 45,
-  "showsScanned": 203,
+  "showsScanned": 199,
   "gaps": [
     {
       "showId": "high-school-musical-off-west-end-2026",
@@ -19,9 +19,33 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 34.5002775,
+      "fileAgeHours": 36.627425277777775,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 20.548118055555555,
+      "nonTerminalAgeHours": 22.757295555555555,
+      "needsManualRecovery": false
+    },
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "openingDate": "2026-10-24",
+      "file": "talkinbroadway--unknown.json",
+      "outletId": "talkinbroadway",
+      "tier": 2,
+      "type": "empty-body",
+      "recoverable": true,
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n⚠️  Bright Data failed: Bright Data request timeout\n  critic lookup failed (All scraping methods failed) — ingest will fall back to Unknown\n⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: All scraping methods failed\n  ingest failed: Ingesting single review: aftermath-art-new-yo"
+      },
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "node scripts/recover-talkinbroadway-forum-links.js --show=aftermath-art-new-york-off-broadway-2026   # follows the thread's Link to the real review page",
+      "firstSeen": "2026-10-25T14:42:41.956Z",
+      "fileAgeHours": 11.354191111111112,
+      "gapSeenAt": "2026-10-26T02:03:59.822Z",
+      "nonTerminalAgeHours": 0,
       "needsManualRecovery": false
     },
     {
@@ -39,9 +63,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 799.1815872222222,
+      "fileAgeHours": 801.3904436111111,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 69.57094388888889,
+      "nonTerminalAgeHours": 71.78012138888889,
       "needsManualRecovery": true
     }
   ],
