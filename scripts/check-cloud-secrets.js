@@ -256,7 +256,10 @@ async function smokeMain(argv = process.argv) {
   const names = TIER_1.concat(TIER_2);
   const env = { ...readEnvKeys(names), ...Object.fromEntries(names.filter((k) => process.env[k]).map((k) => [k, process.env[k]])) };
   const onlyArg = argv.find((a) => a.startsWith('--only='));
-  const results = await runSmoke(env, { only: onlyArg ? onlyArg.slice(7).split(',') : undefined });
+  const only = onlyArg ? onlyArg.slice(7).split(',') : undefined;
+  const unknown = (only || []).filter((g) => !Object.keys(require('./lib/cloud-secrets-smoke').GROUPS).includes(g));
+  if (unknown.length) { console.error(`Unknown smoke group(s): ${unknown.join(', ')}`); return 2; }
+  const results = await runSmoke(env, { only });
   const { failed, lines } = summarize(results);
   console.log('=== Smoke: does each consumer do its real job? (BRO-6258) ===');
   lines.forEach((l) => console.log(l));

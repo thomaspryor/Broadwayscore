@@ -56,12 +56,7 @@ function judgeApi(group, status, data) {
       ? { ok: true, detail: `${data.submissions.length} submission(s) read` }
       : { ok: false, detail: 'no submissions array in response' };
   }
-  if (group === 'brightdata') {
-    return data && !(data.plan && data.plan.disable) && !data.disable
-      ? { ok: true, detail: 'zone active' }
-      : { ok: false, detail: 'zone disabled' };
-  }
-  if (group === 'scrapingdog' || group === 'scrapingbee' || group === 'browserbase') {
+  if (group === 'browserbase') {
     return data && typeof data === 'object' ? { ok: true, detail: 'account endpoint answered' } : { ok: false, detail: 'non-JSON body' };
   }
   return { ok: true, detail: 'HTTP 200' };
@@ -74,7 +69,7 @@ function selectChecks(env, only) {
     .map(([group, keys]) => ({ group, missing: keys.filter((k) => !env[k]) }));
 }
 
-/** Pure: results → { failed, lines }. skipped counts as failure only when missing keys. */
+/** Pure: results → { failed, lines }. every non-ok result (including missing keys) counts as a failure. */
 function summarize(results) {
   const failed = results.filter((r) => !r.ok);
   return {

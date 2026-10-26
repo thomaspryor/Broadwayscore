@@ -132,6 +132,10 @@ fi # CLOUD: data/ copies are refreshed at session start; nothing to pull or push
 # last run happened to write.
 echo "== Verifying de-dup state against actually-sent broadcasts"
 node scripts/newsletter/verify-sent-vs-state.mjs --fix
+# Cloud never commits the reconciled state, so keep a copy to restore after each
+# edition instead of `git checkout` (which would undo the fix for west-end).
+STATE_KEEP=""
+if [ "$CLOUD" = 1 ]; then STATE_KEEP=$(mktemp); cp data/newsletter-state.json "$STATE_KEEP"; fi
 if [ "$CLOUD" != 1 ] && ! git diff --quiet -- data/newsletter-state.json; then
   git add data/newsletter-state.json
   git commit -m "chore(newsletter): reconcile de-dup state with actually-sent broadcasts" --quiet
@@ -165,7 +169,7 @@ for EDITION in broadway west-end; do
   # NOTE: unlike CI, this wrapper also skips regression-test.mjs (non-blocking
   # in CI) and the [DRAFT] owner-preview email — the owner is already reviewing
   # the draft in the Resend UI in this flow.
-  git checkout -- data/newsletter-state.json 2>/dev/null || true
+  if [ "$CLOUD" = 1 ]; then cp "$STATE_KEEP" data/newsletter-state.json; else git checkout -- data/newsletter-state.json 2>/dev/null || true; fi
 done
 
 echo ""

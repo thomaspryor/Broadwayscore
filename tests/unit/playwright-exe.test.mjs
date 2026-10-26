@@ -16,4 +16,5 @@ test('both missing: no override', () => {
 test('launchExtras survives a chromium whose executablePath throws', () => {
   const r = launchExtras({ executablePath() { throw new Error('nope'); } });
   assert.ok(r.executablePath === undefined || r.executablePath === CLOUD_CHROMIUM);
+  assert.deepEqual(Object.keys(r).filter((k) => k !== 'executablePath'), []);
 });

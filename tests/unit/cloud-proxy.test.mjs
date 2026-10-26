@@ -35,3 +35,10 @@ test('withProxyAgent: leaves other hosts and explicit agents alone', () => {
   const off = ['https://app.scrapingbee.com/', {}];
   assert.deepEqual(withProxyAgent(off, {}), off);
 });
+
+test('withProxyAgent: URL object and explicit agent:false', () => {
+  const a = withProxyAgent([new URL('https://app.scrapingbee.com/api/v1/usage')], cloud);
+  assert.ok(a[1].agent);
+  const f = withProxyAgent(['https://app.scrapingbee.com/', { agent: false }], cloud);
+  assert.equal(f[1].agent, false);
+});

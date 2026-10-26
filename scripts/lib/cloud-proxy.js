@@ -10,8 +10,8 @@
  * a no-op everywhere else (Mac, GitHub Actions), and when https-proxy-agent
  * is not installed.
  *
- * axios and follow-redirects call https.request, so one patch covers the
- * `https.get` callers and the axios callers.
+ * Covers https.get/https.request callers. axios already honors HTTPS_PROXY
+ * on its own, so it needs no patch.
  */
 const https = require('https');
 
@@ -50,26 +50,24 @@ function proxyAgent(env = process.env) {
 function withProxyAgent(args, env = process.env) {
   const urlish = typeof args[0] === 'string' || args[0] instanceof URL;
   const optIdx = urlish ? (typeof args[1] === 'object' && args[1] !== null ? 1 : -1) : 0;
-  const host = hostOf(urlish ? args[0] : args[0]);
+  const host = hostOf(args[0]);
   if (!shouldProxy(host, env)) return args;
   const agent = proxyAgent(env);
   if (!agent) return args;
   const out = args.slice();
   if (optIdx === -1) out.splice(1, 0, { agent });
-  else if (!out[optIdx].agent) out[optIdx] = { ...out[optIdx], agent };
+  else if (!('agent' in out[optIdx])) out[optIdx] = { ...out[optIdx], agent };
   return out;
 }
 
 function install() {
   if (https.request.__bro6258) return;
   const origRequest = https.request;
-  const origGet = https.get;
   const request = function (...args) { return origRequest.apply(this, withProxyAgent(args)); };
   const get = function (...args) { const r = request.apply(this, args); r.end(); return r; };
   request.__bro6258 = true;
   https.request = request;
   https.get = get;
-  void origGet;
 }
 
 if (process.env.CLAUDE_CODE_REMOTE === 'true') install();

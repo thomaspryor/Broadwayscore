@@ -17,6 +17,7 @@
  */
 
 const https = require('https');
+require('./cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { recordSbCall, recordSdCall, recordBdCall, sbBilledCredits, sdBilledCredits } = require('./provider-telemetry');
 const { consultScrapingdog } = require('./scrapingdog-caps');
 const { consultBrightData } = require('./brightdata-caps');

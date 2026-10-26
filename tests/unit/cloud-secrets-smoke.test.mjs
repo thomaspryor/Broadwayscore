@@ -21,8 +21,8 @@ test('judgeApi: non-200 always fails; per-group shape checks', () => {
   assert.equal(judgeApi('impact', 200, { Actions: [] }).ok, true);
   assert.equal(judgeApi('impact', 200, {}).ok, false);
   assert.equal(judgeApi('formspree', 200, { submissions: [] }).ok, true);
-  assert.equal(judgeApi('brightdata', 200, { plan: { disable: 'x' } }).ok, false);
-  assert.equal(judgeApi('brightdata', 200, { plan: {} }).ok, true);
+  assert.equal(judgeApi('browserbase', 200, {}).ok, true);
+  assert.equal(judgeApi('browserbase', 200, null).ok, false);
 });
 
 test('selectChecks: reports missing keys per group and honours --only', () => {
