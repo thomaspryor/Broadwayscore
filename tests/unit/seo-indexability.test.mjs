@@ -147,3 +147,24 @@ test('committed cohort file: ~10% of candidates, disjoint control of equal size,
   const cohortSet = new Set(c.cohortSlugs);
   assert.ok(c.controlSlugs.every(s => !cohortSet.has(s)));
 });
+
+test('critic with GSC impressions stays indexable even with 0 landings', () => {
+  assert.equal(seo.isThinCritic({ reviewCount: 0, hasGscImpressions: true }, true), false);
+  assert.equal(seo.isThinCritic({ reviewCount: 0, hasGscImpressions: false }, true), true);
+});
+
+test('cast and critic wrappers consult GSC impressions (guards a silent revert)', () => {
+  const readFileSync = fs.readFileSync;
+  const actor = readFileSync(new URL('../../src/lib/actor-indexability.ts', import.meta.url), 'utf8');
+  const critic = readFileSync(new URL('../../src/lib/seo-indexability.ts', import.meta.url), 'utf8');
+  assert.match(actor, /hasGscImpressions\(`\/cast\//);
+  assert.match(critic, /hasGscImpressions\(`\/critics\//);
+});
+
+test('committed GSC snapshot keys for critics and cast use the lookup format', () => {
+  const snap = JSON.parse(fs.readFileSync(new URL('../../data/seo-gsc-impressions.json', import.meta.url), 'utf8'));
+  const pages = snap.pages || snap;
+  const keys = Object.keys(pages);
+  assert.ok(keys.some((k) => k.startsWith('/critics/')));
+  assert.ok(keys.some((k) => k.startsWith('/cast/')));
+});
