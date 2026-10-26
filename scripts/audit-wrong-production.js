@@ -577,12 +577,11 @@ for (const [showId, showFindings] of Object.entries(byShow).sort((a, b) => a[0].
     if (FIX_MODE) {
       const filePath = path.join(reviewTextsDir, showId, f.file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !laneBypasses(data, 'wrongProduction')) {
+      if (!data.wrongProduction && data._locked !== true && !shouldSkipWrongProductionAudit(data) && !laneBypasses(data, 'wrongProduction')) {
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Auto-flagged by audit: ${f.findings.map(ff => ff.type + ': ' + ff.detail).join('; ')}`;
-        safeWriteReview(filePath, data);
-        fixCount++;
+        if (safeWriteReview(filePath, data).wrote) fixCount++;
       }
     }
   }
