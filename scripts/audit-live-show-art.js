@@ -26,7 +26,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const USAGE = `audit-live-show-art.js — vision sweep of live show thumbnails (advisory).
 
 Usage:
-  node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--rpm=N] [--no-write] [--no-alert]
+  node scripts/audit-live-show-art.js [--show=ID] [--limit=N] [--workers=N] [--rpm=N] [--no-write] [--no-alert] [--ignore-reviewed]
   node scripts/audit-live-show-art.js --help, -h    print this usage and exit
 `;
 
@@ -83,7 +83,9 @@ async function main() {
     process.exit(2);
   }
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
-  let shows = selectLiveShows(Array.isArray(raw) ? raw : raw.shows, { showId: arg('show') });
+  const reviewedFile = path.join(ROOT, 'data', 'live-art-reviewed.json');
+  const reviewed = fs.existsSync(reviewedFile) ? JSON.parse(fs.readFileSync(reviewedFile, 'utf8')) : [];
+  let shows = selectLiveShows(Array.isArray(raw) ? raw : raw.shows, { showId: arg('show'), reviewed: process.argv.includes('--ignore-reviewed') ? [] : reviewed });
   if (arg('limit')) {
     const n = parseInt(arg('limit'), 10);
     if (!(n > 0)) { console.error('--limit needs a positive number'); process.exit(2); }

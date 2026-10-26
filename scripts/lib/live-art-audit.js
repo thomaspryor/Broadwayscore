@@ -22,12 +22,24 @@ const WRONG_WORK_ISSUES = {
   ticket_listing: 'generic_image',
 };
 
+/**
+ * Rows a person already looked at: { id, thumbnail, note }. The vision model
+ * flags right-show art for wording (another venue's logo, "On Broadway" on a
+ * tour, a producer credit), so a reviewed id + thumbnail pair is not
+ * re-flagged weekly. A new thumbnail path re-audits the show (BRO-6329).
+ */
+function reviewedKeys(reviewed) {
+  return new Set((Array.isArray(reviewed) ? reviewed : []).map(r => `${r.id}\u0000${r.thumbnail}`));
+}
+
 /** Live shows that carry a thumbnail path, in shows.json order. */
-function selectLiveShows(shows, { statuses = LIVE_STATUSES, showId = null } = {}) {
+function selectLiveShows(shows, { statuses = LIVE_STATUSES, showId = null, reviewed = [] } = {}) {
+  const seen = reviewedKeys(reviewed);
   return (Array.isArray(shows) ? shows : []).filter(s =>
     s && statuses.includes(s.status)
     && s.images && typeof s.images.thumbnail === 'string' && s.images.thumbnail
-    && (!showId || s.id === showId));
+    && (!showId || s.id === showId)
+    && !seen.has(`${s.id}\u0000${s.images.thumbnail}`));
 }
 
 /**

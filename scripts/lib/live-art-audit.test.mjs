@@ -51,3 +51,24 @@ test('buildLiveArtAlert is null with no rows and one stable-key rollup otherwise
   assert.equal(a.disposition, 'auto');
   assert.match(a.description, /\(a\) \[wrong_show\]/);
 });
+
+test('selectLiveShows skips a reviewed id+thumbnail pair, re-audits when the thumbnail changes (BRO-6329)', () => {
+  const shows = [
+    { id: 'a', status: 'open', images: { thumbnail: '/images/shows/a/thumbnail.webp' } },
+    { id: 'b', status: 'open', images: { thumbnail: '/images/shows/b/thumbnail.webp' } },
+  ];
+  const reviewed = [
+    { id: 'a', thumbnail: '/images/shows/a/thumbnail.webp' },
+    { id: 'b', thumbnail: '/images/shows/b/OLD.webp' },
+  ];
+  assert.deepEqual(selectLiveShows(shows, { reviewed }).map(s => s.id), ['b']);
+});
+
+test('data/live-art-reviewed.json entries are well formed', () => {
+  const rows = require('../../data/live-art-reviewed.json');
+  for (const r of rows) {
+    assert.match(r.id, /^[a-z0-9-]+$/);
+    assert.ok(r.thumbnail.startsWith('/images/shows/'), r.id);
+    assert.ok(r.note, r.id);
+  }
+});
