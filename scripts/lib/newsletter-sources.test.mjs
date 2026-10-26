@@ -128,3 +128,13 @@ test('evaluateSkipHealth: a quiet week with no new posts is not a zero-readable 
   assert.equal(r.zeroRuns.abroadway, 0);
   assert.equal(r.alerts.length, 0);
 });
+
+test('fetchPublicText: checks every redirect hop before requesting it', async () => {
+  const allow = (u) => u.startsWith('https://ok.example/');
+  const seen = [];
+  const hop = async (u) => { seen.push(u); return u.endsWith('/a') ? resp(302, { location: 'http://169.254.169.254/x' }, '', u) : resp(200, { 'content-type': 'text/html' }, 'x', u); };
+  assert.equal((await src.fetchPublicText('https://ok.example/a', { fetchImpl: hop, isAllowed: allow })).reason, 'redirected-off-allowlist');
+  assert.deepEqual(seen, ['https://ok.example/a']);
+  const ok = await src.fetchPublicText('https://ok.example/b', { fetchImpl: async (u) => (u.endsWith('/b') ? resp(301, { location: '/c' }, '', u) : resp(200, { 'content-type': 'text/html' }, 'done', u)), isAllowed: allow });
+  assert.deepEqual(ok, { ok: true, body: 'done' });
+});

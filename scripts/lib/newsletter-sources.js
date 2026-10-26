@@ -136,9 +136,19 @@ async function resolveBwayLink(raw, { fetchImpl = fetch, resolveOutlet }) {
 async function fetchPublicText(url, { fetchImpl = fetch, isAllowed }) {
   if (!isAllowed(url)) return { ok: false, reason: 'host-not-allowed' };
   let res;
+  let cur = url;
   try {
-    res = await fetchImpl(url, { redirect: 'follow', headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml,application/xml' }, signal: AbortSignal.timeout(20000) });
+    // Follow redirects by hand so every hop is checked before it is requested.
+    for (let hop = 0; hop < 4; hop++) {
+      res = await fetchImpl(cur, { redirect: 'manual', headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml,application/xml' }, signal: AbortSignal.timeout(20000) });
+      const loc = res.status >= 300 && res.status < 400 && res.headers && res.headers.get('location');
+      if (!loc) break;
+      cur = new URL(loc, cur).toString();
+      if (!isAllowed(cur)) return { ok: false, reason: 'redirected-off-allowlist' };
+      res = null;
+    }
   } catch { return { ok: false, reason: 'fetch-failed' }; }
+  if (!res) return { ok: false, reason: 'too-many-redirects' };
   if (res.url && !isAllowed(res.url)) return { ok: false, reason: 'redirected-off-allowlist' };
   if (!res.ok) return { ok: false, reason: [401, 402, 403, 429].includes(res.status) ? 'fetch-blocked' : `http-${res.status}` };
   const type = (res.headers && res.headers.get('content-type')) || '';

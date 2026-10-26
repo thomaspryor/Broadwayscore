@@ -284,3 +284,18 @@ test('one failed extraction does not lose the other issues', async () => {
   assert.equal(r.skipped['extraction-failed'], 1);
   assert.equal(r.issues.length, 2);
 });
+
+test('processMessages: an issue whose only extraction failed is skipped, not read', async () => {
+  const extract = async () => { throw new Error('Anthropic HTTP 529'); };
+  const r = await processMessages([msg()], base(extract));
+  assert.equal(r.issues[0].status, 'skipped');
+  assert.equal(r.issues[0].reason, 'extraction-failed');
+  assert.equal(r.skipped['extraction-failed'], 1);
+});
+
+test('processMessages: an email with no bway.ly links at all is a skip (format drift)', async () => {
+  const ex = extractor([good]);
+  const r = await processMessages([msg({ html: '<p>Raised $20 million, no short links here</p>', text: 'Raised $20 million' })], base(ex));
+  assert.equal(r.issues[0].status, 'skipped');
+  assert.equal(r.issues[0].reason, 'no-bway-links');
+});

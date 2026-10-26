@@ -199,10 +199,12 @@ async function processMessages(messages, { extract, shows, commercial, windowDay
       const d = await processDocument(doc, { extract, shows, commercial, items, bump });
       issue.facts += d.facts;
       issue.accepted += d.accepted;
+      if (d.status !== 'read') { issue.articlesRead--; issue.extractFailed = (issue.extractFailed || 0) + 1; }
     }
     // An issue with no money/closing item is read (nothing to extract). One whose items could
     // not be resolved or fetched is a skip, which feeds the health check.
-    if (candidates.length && !issue.articlesRead) { issue.reason = 'no-item-resolvable'; bump(issue.reason); continue; }
+    if (!linksFound) { issue.reason = 'no-bway-links'; bump(issue.reason); continue; }
+    if (candidates.length && !issue.articlesRead) { issue.reason = issue.extractFailed ? 'extraction-failed' : 'no-item-resolvable'; if (!issue.extractFailed) bump(issue.reason); continue; }
     issue.status = 'read';
     issue.unresolved = unresolved;
   }
@@ -281,7 +283,8 @@ async function main() {
   if (!shows.length) console.warn('WARN: data/shows.json not found; facts cannot be matched to commercial records.');
   const stateExists = fs.existsSync(args.state);
   const state = readJson(args.state, { processed: {}, zeroRuns: {} });
-  const want = (key) => args.source === 'all' || args.source === key;
+  let gmailFailed = false;
+  const want = (key) => (args.source === 'all' || args.source === key) && !(gmailFailed && key === 'broadway-briefing');
   const items = [];
   const skipped = {};
   const bump = (k) => { skipped[k] = (skipped[k] || 0) + 1; };
@@ -310,9 +313,9 @@ async function main() {
         await routeAlert(nf.buildFetchFailureAlertOpts(err.message)).catch((e) => console.error(`routeAlert failed: ${e.message}`));
       }
       process.exitCode = 1;
-      return;
+      gmailFailed = true;
     }
-    const r = await processMessages(messages, {
+    const r = gmailFailed ? { issues: [], items: [], skipped: {} } : await processMessages(messages, {
       ...shared,
       windowDays: args.windowDays,
       resolveLink: (u) => src.resolveBwayLink(u, { resolveOutlet: outletOf }),
@@ -336,7 +339,7 @@ async function main() {
     if (!want(k)) continue;
     console.log(`  ${s.label}: found ${s.found}, read ${s.read}, skipped ${s.found - s.read}${s.listingEmpty ? ' (listing empty or unreachable)' : ''}${s.found - s.read ? ` ${JSON.stringify(s.skipped)}` : ''}`);
   }
-  if (issues.length && skipped['extraction-failed'] === issues.length) process.exitCode = 1;
+  if (issues.length && issues.every((i) => i.status !== 'read' && i.reason === 'extraction-failed')) process.exitCode = 1;
   console.log(`Facts for review: ${items.length}`);
   for (const it of items) console.log(`  ${it.status.toUpperCase()} ${it.slug || it.fact.show} ${it.fact.field} = ${JSON.stringify(it.fact.value)} ${it.fact.issueUrl}${it.status === 'conflict' ? ` (record: ${JSON.stringify(it.existing)})` : ''}`);
 
@@ -364,7 +367,8 @@ async function main() {
     for (const [k, listing] of Object.entries(listings)) {
       const seen = new Set(next.processed[k] || []);
       const readNow = issues.filter((i) => i.source === k && i.status === 'read').map((i) => i.citeUrl);
-      for (const u of (stateExists ? readNow : listing.map((l) => l.url))) seen.add(u);
+      // Listings are newest-first and the cap keeps the tail, so seed oldest-first.
+      for (const u of (stateExists ? readNow : [...listing].reverse().map((l) => l.url))) seen.add(u);
       next.processed[k] = [...seen].slice(-200);
     }
     fs.mkdirSync(path.dirname(args.state), { recursive: true });
