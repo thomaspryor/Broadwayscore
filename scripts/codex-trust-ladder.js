@@ -18,7 +18,8 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const L = require('./lib/codex-trust-ladder.js');
-const { runnerSummaryFacts } = require('./lib/codex-runner.js');
+// The protected copy (BRO-6303): codex-runner.js only re-exports it, and Codex may edit that file.
+const { runnerSummaryFacts } = require('./lib/codex-runner-summary.js');
 
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').slice(n.length + 3) || null;
 const flag = (n) => process.argv.includes(`--${n}`);

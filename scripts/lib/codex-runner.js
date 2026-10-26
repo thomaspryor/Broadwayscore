@@ -18,6 +18,9 @@
 
 const crypto = require('crypto');
 const { dataFixesEnabled, canDispatchWorkflows } = require('./codex-data-fixes.js');
+// The grading inputs live in a file the runner never lets Codex land (BRO-6303).
+const { summaryHeading, parseSummaryHeading, runnerSummaryFacts } = require('./codex-runner-summary.js');
+const TL = require('./codex-trust-ladder.js');
 
 const AUTH_MARKER = '<!-- codex-auth-v1 -->';
 // Opens every comment the runner posts when Codex could not finish a card, so
@@ -479,8 +482,9 @@ function bounceSays(re, text, { needVerb = false } = {}) {
 function classifyBounce({ envBlocked = null, blocked = null, remaining = [], report = '' } = {}) {
   const text = [envBlocked, blocked, ...(Array.isArray(remaining) ? remaining : []), String(report || '').slice(0, 700)]
     .filter(Boolean).join('\n');
-  // A pre-review block is Codex's own slip unless it touched workflows (a symlink or token material is not structural).
-  if (/\.github\/workflows/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
+  // A pre-review block is Codex's own slip unless it touched workflows or the trust ladder's files
+  // (BRO-6303; a symlink or token material is not structural).
+  if (/\.github\/workflows|its own grading/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
   if (BOUNCE_FAILING_RE.test(text)) return 'genuine-failure';
   if (bounceSays(BOUNCE_CRED_RE, text, { needVerb: true })) return 'missing-credential';
   if (bounceSays(BOUNCE_MAC_RE, text)) return 'mac-or-private';
@@ -650,9 +654,14 @@ function stripHookNoise(text) {
  * most of them Mac-only, credential- or credit-bound, workflow wiring the runner never lands,
  * private-data or live-site work, or multi-phase). -> { skip: reason|null, score } where a
  * higher score goes first. Mac-only is a skip; the rest only lowers the score, and a score at
- * or under CODEX_MIN_SCORE is a skip ('too-broad').
+ * or under the ladder's min score (CODEX_MIN_SCORE until it widens) is a skip ('too-broad').
+ * `ladder` is the trust ladder's access for this runner (BRO-6303, codex-trust-ladder.js
+ * runnerAccess): in shadow mode it is the pre-ladder baseline, so the result is unchanged.
  */
-const CODEX_MIN_SCORE = -6;
+const CODEX_MIN_SCORE = -6; // the ladder's BASELINE_MIN_SCORE
+// Read-only review-texts is a rung the ladder can take away; a card that names the private review
+// texts then cannot be worked (provideData does not link them), whatever CODEX-OK says.
+const CODEX_REVIEW_TEXTS_RE = /(?<![\w-])(?:data\/)?review-texts\b(?!-)/i;
 const CODEX_MAC_RE = /\b(?:launchd|launchctl|LaunchAgents?|cmux|Keychain|Mac[- ]only|on the Mac|Mac launcher|~\/Library)\b/i;
 const CODEX_PENALTIES = [
   [/\.github\/workflows\/|\b(?:new|weekly|daily|nightly) (?:cron|workflow)\b|\bwire\b[^.\n]{0,60}\b(?:cron|workflow)\b/i, 4, 'workflow'],
@@ -692,9 +701,11 @@ const CODEX_DATA_ROUTE_RE = /\b(?:pending-fixes|new-fix-plan|execute-approved-fi
 const CODEX_DIRECT_PRIVATE_RE = /\bbroadway-(?:review-texts|scorecard-data)\b/i;
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
-function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now(), canDispatch = canDispatchWorkflows() } = {}) {
+function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now(), canDispatch = canDispatchWorkflows(), ladder = TL.runnerAccess() } = {}) {
   const text = `${title}\n${description}`;
+  const minScore = Number.isFinite(ladder && ladder.minScore) ? ladder.minScore : CODEX_MIN_SCORE;
   if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
+  if (ladder && ladder.reviewTextsLocked && CODEX_REVIEW_TEXTS_RE.test(text)) return { skip: 'review-texts-locked', score: -Infinity, why: ['review-texts-locked: the trust ladder has the review texts locked'] };
   const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
   // BRO-6175: a card that names the reviewed pending-fixes route can be done by the Codex lane, which writes
   // the plan and the runner applies it after the landing (codex-data-fixes.js). 'data-route' skips then fire
@@ -703,6 +714,8 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   // BRO-6194: the route's apply step is a workflow dispatch, which only the GHA lane is known to be able to make.
   // A runner that cannot dispatch never picks a route card (CODEX-OK does not lift this: it is a capability, not a judgment).
   if (viaRoute && !canDispatch) return { skip: 'data-route-gha-only', score: -Infinity, why: ['data-route-gha-only: the data-fix route needs a runner that can dispatch workflows'] };
+  // BRO-6303: the trust ladder owns the cloud lane's route switch (runnerAccess leaves the GHA lane open).
+  if (viaRoute && ladder && ladder.cloudDataRouteLocked) return { skip: 'data-route-locked', score: -Infinity, why: ['data-route-locked: the trust ladder has the cloud data route locked'] };
   for (const [name, re, flag] of ok ? [] : CODEX_HARD_SKIPS) {
     if (flag === 'data-route' && dataFixesEnabled()) {
       const direct = CODEX_DIRECT_PRIVATE_RE.exec(text);
@@ -731,8 +744,8 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   // A fix round an earlier run could not fit goes first, so a SHIP-WITH-FIXES always gets it.
   if (parseSwfCarry(comments, nowMs)) { score += 10; why.push('swf-carry'); }
   // A retry is a fresh attempt, so it never lifts a too-broad card over the line.
-  else if (score > CODEX_MIN_SCORE && parseCodexRetry(comments)) { score += 10; why.push('retry'); }
-  return { skip: score <= CODEX_MIN_SCORE ? 'too-broad' : null, score, why };
+  else if (score > minScore && parseCodexRetry(comments)) { score += 10; why.push('retry'); }
+  return { skip: score <= minScore ? 'too-broad' : null, score, why };
 }
 
 /**
@@ -1019,13 +1032,14 @@ function checkModel({ files = [], classify = () => ({ inScope: false }) } = {}) 
  * Codex runner is live, the Claude worker leaves a card to Codex when Codex would take it: fit
  * (codexCardFit), not bounced by Codex, not Urgent and not START-NOW (those go to whoever is free).
  */
-function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
+function leaveToCodex(issue, { nowMs, verify = '', startNow = false, ladder = TL.runnerAccess() } = {}) {
   if (!issue || Number(issue.priority) === 1 || startNow) return false;
   const comments = (issue.comments && issue.comments.nodes) || [];
   if (codexBouncedRecently(comments, nowMs)) return false;
   // Every Codex lane can apply a data-fix plan now (GHA has actions: write; the cloud lane runs with
   // CODEX_CAN_DISPATCH=1, BRO-6260), so data-route cards are left to Codex like any other fit card (BRO-6194 kept them).
-  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs, canDispatch: true }).skip;
+  // Same for the ladder's cloud route lock: the GHA lane still takes route cards.
+  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs, canDispatch: true, ladder: { ...ladder, cloudDataRouteLocked: false } }).skip;
 }
 
 /**
@@ -1209,33 +1223,6 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
 }
 
 /**
- * BRO-5287 acceptance over the runner's own "## Codex runner" summaries (BRO-4745 comments):
- * at least `minRuns` summaries, none whose "Stopped early" line names the lock, and at least one
- * card landed. -> { ok, runs, landed, problems[] }
- */
-/** The counts one "## Codex runner" summary body reports: { landed, crashed, stop }. */
-/**
- * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no
- * "(slot N)" and readers took it for the cloud lane; now every summary names its slot and the
- * lane that launched it (a gha launch that fell back to slot 0 is still lane gha).
- */
-function summaryHeading({ date, worked, mins, slot = 0, lane = 'cloud' }) {
-  return `## Codex runner ${date}: ${worked} card(s) worked in ${mins} min (slot ${Number(slot) || 0}) (lane ${lane})`;
-}
-const SUMMARY_HEADING_RE = /^## Codex runner (\d{4}-\d{2}-\d{2}): (\d+) card\(s\) worked in (\d+) min/;
-/**
- * -> { date, worked, mins, slot, lane } or null (not a run summary). slot is null when the heading
- * has none; lane is null for a summary from before the lane marker (laneOfSummary decides those).
- */
-function parseSummaryHeading(body) {
-  const head = String(body || '').split('\n')[0];
-  const m = head.match(SUMMARY_HEADING_RE);
-  if (!m) return null;
-  const slot = head.match(/\(slot (\d+)\)/);
-  const lane = head.match(/\(lane (cloud|gha)\)/);
-  return { date: m[1], worked: Number(m[2]), mins: Number(m[3]), slot: slot ? Number(slot[1]) : null, lane: lane ? lane[1] : null };
-}
-/**
  * Which lane posted a summary. The marker when present; else slot 3+ is gha and an explicit slot
  * 0-2 is cloud (a gha fallback to slot 0 always ran one slot, so it had no slot). A legacy
  * slotless summary is gha only when a codex-runner.yml run covered its whole "worked in M min"
@@ -1391,22 +1378,6 @@ function abReport(bodies, { sinceMs = 0, createdAtMs = [], lane = null } = {}) {
   return out;
 }
 
-function runnerSummaryFacts(body) {
-  const list = (label) => {
-    const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
-    return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
-  };
-  const landedIds = [...list('Landed and Done'), ...list('Landed part, back to Todo with what is left')];
-  return {
-    landed: landedIds.length,
-    landedIds, // BRO-5671: the ids, for cost per landed card
-    rejected: list('Did not pass the Claude check, back to Todo').length, // BRO-6263: rejection rate for the trust ladder
-    hasCheckLine: /^- Claude check: \d+ review\(s\), \$[\d.]+/m.test(String(body || '')),
-    crashed: list('Runner error mid-card \\(back to Todo\\)').length,
-    stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',
-    checkUsd: Number((String(body || '').match(/^- Claude check: \d+ review\(s\), \$([\d.]+)/m) || [])[1]) || 0,
-  };
-}
 
 /**
  * BRO-5384 acceptance: cards per firing and landed share from runner summaries. Each slot posts

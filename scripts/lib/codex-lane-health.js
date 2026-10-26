@@ -12,7 +12,8 @@
 // summaries also carry the runner's stand-down notes ("## Codex runner did not start ... (reason X)"),
 // so a lane that exits without working says why (BRO-6139 stage 2).
 // A source passed as null is "health unknown", never a breach and never a crash.
-const { runnerSummaryFacts, landedPerLane, parseSummaryHeading, laneOfSummary, parseStandDownNote } = require('./codex-runner.js');
+const { landedPerLane, laneOfSummary, parseStandDownNote } = require('./codex-runner.js');
+const { runnerSummaryFacts, parseSummaryHeading } = require('./codex-runner-summary.js'); // the protected copy (BRO-6303)
 
 const HOUR = 3600_000;
 

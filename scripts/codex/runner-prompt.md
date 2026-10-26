@@ -4,6 +4,7 @@ This prompt is your whole job description. AGENTS.md, CLAUDE.md and .claude/CLOU
 
 Rules that apply to you:
 - Do NOT commit, push, land, open PRs, touch Linear, or edit .github/workflows/**. Leave your changes in the working tree.
+- Do NOT edit the files that grade this runner: scripts/lib/codex-trust-ladder.js, scripts/codex-trust-ladder.js, scripts/lib/codex-runner-summary.js, scripts/codex-lane-alarm.js, data/audit/codex-trust-ladder*. The runner never lands a change to them; if the card needs one, say so in a REMAINING line.
 - Do NOT run npm install, setup-local-data.sh, data:check, /ship-check, /wrap-up or any other session skill, and do not start nested Codex or Claude runs.
 - Never copy logic into a test: require() the real function, extracting it to scripts/lib/ if needed (CLAUDE.md section 15). A new tests/unit file runs in CI automatically (scripts/lib/unit-test-collection.js collects it); do not edit tests/unit-test-manifest.txt, which is retired and ignored.
 - A test for a top-level scripts/*.js fails the land check unless test.yml lists that script in on.push.paths (scripts/audit-toplevel-script-test-yml-coverage.js), and you cannot edit test.yml. Move the logic you test into scripts/lib/ (already covered) and test it there. A scripts/lib/ test that requires a top-level script fails the same way (scripts/audit-test-yml-lib-deps.js).

@@ -5,6 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+process.env.CODEX_TRUST_LADDER_DISABLED = '1'; // BRO-6303: codexCardFit's ladder default stays the baseline here
 const r = require('../../scripts/lib/codex-runner.js');
 const DF = require('../../scripts/lib/codex-data-fixes.js');
 const fit = (title, description = 'Fix it.', canDispatch = true) => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs', canDispatch });

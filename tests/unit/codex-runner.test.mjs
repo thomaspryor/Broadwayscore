@@ -10,7 +10,11 @@ import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
+// BRO-6303: codexCardFit reads the trust ladder by default. Pin it to the pre-ladder baseline (the
+// kill switch) so these tests never depend on the repo's ladder state; ladder tests pass `ladder`.
+process.env.CODEX_TRUST_LADDER_DISABLED = '1';
 const r = require('../../scripts/lib/codex-runner.js');
+const TL = require('../../scripts/lib/codex-trust-ladder.js');
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
 const AUTH = JSON.stringify({ auth_mode: 'chatgpt', last_refresh: '2026-10-05T22:26:32Z', tokens: { id_token: 'x' } });
@@ -375,6 +379,14 @@ test('codexCardFit: Mac-only and too-broad cards are skipped, one-test cards go 
   const broad = r.codexCardFit({ title: 'Wire scripts/audit-exclusion-flags.js into a report-only weekly cron', description: 'Add .github/workflows/x.yml. Reads review-texts. Phase 2 follow-ups.', verify: 'node --test tests/unit/x.test.mjs' });
   assert.equal(broad.skip, 'workflow-edit', 'a workflow edit is a hard skip since BRO-5384');
   assert.equal(r.codexCardFit({ title: 'Wire a report-only weekly cron', description: 'Reads review-texts. Phase 2 follow-ups. Needs an API key.', verify: '' }).skip, 'too-broad');
+  // BRO-6303: the too-broad line is the ladder's min score: -6 at baseline, -9 once larger-cards is earned.
+  for (const minScore of [-6, -9]) {
+    const ladder = { source: 'ladder', minScore, cloudDataRouteLocked: false, reviewTextsLocked: false };
+    assert.equal(r.codexCardFit({ title: 'Wire a report-only weekly cron', description: 'Reads review-texts. Phase 2 follow-ups. Needs an API key.', verify: '', ladder }).skip, 'too-broad', `-12 is too broad at ${minScore}`);
+    const mid = r.codexCardFit({ title: 'Tidy the report', description: 'Needs an API key. Reads review-texts. Phase 2.', verify: '', ladder });
+    assert.equal(mid.score, -8);
+    assert.equal(mid.skip, minScore === -6 ? 'too-broad' : null, `-8 at min score ${minScore}`);
+  }
   const small = r.codexCardFit({ title: 'isUkOutletUrl calls US sites UK', description: 'Fix the regex.\n## Acceptance criteria\n- test passes', verify: 'node --test scripts/lib/venue-classification.test.mjs' });
   assert.equal(small.skip, null);
   const vague = r.codexCardFit({ title: 'Some fix', description: 'x'.repeat(4000), verify: 'npx tsc --noEmit' });
@@ -1142,6 +1154,15 @@ test('BRO-6260 retry note: lifts the bounces before it once, the picker and fit 
   assert.ok(fit.why.includes('retry') && fit.skip === null);
   const broad = r.codexCardFit({ title: 'Fix the thing', description: 'x'.repeat(20000), comments: [rejected(2), retry(1)], nowMs: now });
   assert.ok(broad.skip === 'too-broad' && !broad.why.includes('retry'), 'a retry never lifts a too-broad card');
+  // BRO-6303: the retry lift uses the same ladder min score as the too-broad line.
+  for (const minScore of [-6, -9]) {
+    const ladder = { source: 'ladder', minScore, cloudDataRouteLocked: false, reviewTextsLocked: false };
+    const mid = r.codexCardFit({ title: 'Tidy the report', description: 'Needs an API key. Reads review-texts. Phase 2.', comments: [rejected(2), retry(1)], nowMs: now, ladder });
+    if (minScore === -6) assert.ok(mid.skip === 'too-broad' && !mid.why.includes('retry'), 'too broad at -6: no lift');
+    else assert.ok(mid.skip === null && mid.why.includes('retry') && mid.score === 2, 'inside -9: the retry lifts it');
+    const wide = r.codexCardFit({ title: 'Fix the thing', description: 'x'.repeat(20000), comments: [rejected(2), retry(1)], nowMs: now, ladder });
+    assert.ok(wide.skip === 'too-broad' && !wide.why.includes('retry'), `a retry never lifts a too-broad card (${minScore})`);
+  }
   // Unclaimed: one plain bounce, nothing after it for 7 days -> back to Codex; a second bounce in 60 days stays out.
   assert.equal(r.codexBouncedRecently([rejected(8)], now), false);
   assert.equal(r.codexBouncedRecently([rejected(8), claim(7)], now), true);
@@ -1286,4 +1307,78 @@ test('abReport: lane filter and a carried card is counted once', () => {
   const mk = (lane) => `${r.summaryHeading({ date: '2026-10-26', worked: 1, mins: 10, slot: 3, lane })}\n- Landed and Done: BRO-1\n${line}`;
   assert.deepEqual(Object.keys(r.abReport([mk('cloud')], { lane: 'gha' })), []);
   assert.equal(r.abReport([mk('gha'), mk('gha')], { lane: 'gha' }).high.cards, 1);
+});
+
+// ---- BRO-6303: the runner reads the trust ladder ----
+
+const LADDER_BASE = { source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false };
+const ladderFiles = (mode, rungs = {}, extra = {}) => {
+  const state = TL.seedState('2026-10-26T00:00:00Z');
+  state.mode = mode;
+  for (const [k, v] of Object.entries(rungs)) state.rungs[k] = { unlocked: v, since: null };
+  return { state, owner: TL.seedOwner(), corrupt: false, readFrom: 'test', ...extra };
+};
+const ALL_LOCKED = { 'larger-cards': false, 'cloud-data-route': false, 'review-texts-ro': false };
+const ROUTE_CARD = { title: 'Fix a show date', description: 'Write data/pending-fixes/bro-1.json with a data-edit.', verify: 'node --test tests/unit/x.test.mjs' };
+const TEXTS_CARD = { title: 'Parser drops a byline', description: 'Reads review-texts for the fixture.', verify: 'node --test tests/unit/x.test.mjs' };
+const ENV_OFF = { CODEX_DATA_FIXES_DISABLED: '' };
+
+test('trust ladder: shadow mode gives exactly the pre-ladder results, whatever the rungs say', () => {
+  const cards = [ROUTE_CARD, TEXTS_CARD, { title: 'Tidy the report', description: 'Needs an API key. Reads review-texts. Phase 2.', verify: '' },
+    { title: 'x', description: 'CODEX-OK\nReads data/review-texts.' }, { title: 'launchd job', description: '' }];
+  for (const files of [ladderFiles('shadow', ALL_LOCKED), ladderFiles('shadow'), { state: null, owner: null, corrupt: false }]) {
+    const ladder = TL.runnerAccess({ files, env: {} });
+    assert.deepEqual({ ...ladder, mode: undefined, readFrom: undefined, wouldGrant: undefined }, { ...LADDER_BASE, mode: undefined, readFrom: undefined, wouldGrant: undefined });
+    for (const c of cards) for (const canDispatch of [true, false]) {
+      assert.deepEqual(r.codexCardFit({ ...c, canDispatch, ladder }), r.codexCardFit({ ...c, canDispatch, ladder: LADDER_BASE }), c.title);
+    }
+  }
+  // provideData's default (daily-runner.js) is !reviewTextsLocked: open in shadow.
+  assert.equal(TL.runnerAccess({ files: ladderFiles('shadow', ALL_LOCKED), env: {} }).reviewTextsLocked, false);
+});
+
+test('trust ladder: the cloud data route lock skips route cards on the cloud lane only', () => {
+  const live = (gha) => TL.runnerAccess({ files: ladderFiles('live', { 'cloud-data-route': false }), env: gha ? { GITHUB_ACTIONS: 'true' } : {} });
+  assert.equal(live(false).cloudDataRouteLocked, true);
+  assert.equal(r.codexCardFit({ ...ROUTE_CARD, canDispatch: true, ladder: live(false) }).skip, 'data-route-locked');
+  assert.equal(r.codexCardFit({ ...ROUTE_CARD, canDispatch: true, ladder: live(true) }).skip, null, 'GHA lane stays outside the ladder');
+  const open = TL.runnerAccess({ files: ladderFiles('live', { 'cloud-data-route': true }), env: {} });
+  assert.equal(r.codexCardFit({ ...ROUTE_CARD, canDispatch: true, ladder: open }).skip, null, 'unlocked: as today');
+  assert.equal(r.codexCardFit({ ...ROUTE_CARD, canDispatch: false, ladder: open }).skip, 'data-route-gha-only', 'the capability skip still comes first');
+  assert.equal(r.codexCardFit({ title: 'Fix the parser', description: 'Fix it.', verify: '', canDispatch: true, ladder: live(false) }).skip, null, 'a non-route card is untouched');
+  // leaveToCodex keeps leaving route cards to Codex even when the cloud route is locked: the GHA lane still takes them.
+  assert.equal(r.leaveToCodex({ ...ROUTE_CARD, priority: 3, comments: { nodes: [] } }, { nowMs: Date.now(), ladder: live(false) }), true);
+  assert.equal(r.leaveToCodex({ ...TEXTS_CARD, priority: 3, comments: { nodes: [] } }, { nowMs: Date.now(), ladder: TL.runnerAccess({ files: ladderFiles('live', { 'review-texts-ro': false }), env: {} }) }), false, 'other ladder locks still apply');
+});
+
+test('trust ladder: the review-texts lock skips cards that need the private texts, CODEX-OK or not', () => {
+  const locked = TL.runnerAccess({ files: ladderFiles('live', { 'review-texts-ro': false }), env: {} });
+  const open = TL.runnerAccess({ files: ladderFiles('live', { 'review-texts-ro': true }), env: {} });
+  assert.equal(locked.reviewTextsLocked, true);
+  assert.equal(r.codexCardFit({ ...TEXTS_CARD, ladder: locked }).skip, 'review-texts-locked');
+  assert.equal(r.codexCardFit({ ...TEXTS_CARD, description: 'CODEX-OK\nReads data/review-texts/x.', ladder: locked }).skip, 'review-texts-locked');
+  const today = r.codexCardFit({ ...TEXTS_CARD, ladder: open });
+  assert.ok(today.skip === null && today.why.includes('private-or-live-data'), 'unlocked: the old penalty, nothing more');
+  for (const d of ['Run validate-review-texts.js after.', 'The review-texts-ro rung.', 'Set REVIEW_TEXTS_TOKEN.']) {
+    assert.equal(r.codexCardFit({ title: 'Fix the parser', description: d, ladder: locked }).skip, null, d);
+  }
+});
+
+// A deliberate exception to "shadow changes nothing" (card step 1): an unreadable ladder cannot say it is shadow.
+test('trust ladder: a corrupt ladder fails closed, the env kill switch restores the baseline', () => {
+  const bad = { state: null, owner: null, corrupt: true, readFrom: 'test' };
+  const a = TL.runnerAccess({ files: bad, env: {} });
+  assert.deepEqual([a.minScore, a.cloudDataRouteLocked, a.reviewTextsLocked, a.mode], [-6, true, true, 'corrupt']);
+  assert.equal(r.codexCardFit({ ...ROUTE_CARD, canDispatch: true, ladder: a }).skip, 'data-route-locked');
+  assert.equal(TL.runnerAccess({ files: bad, env: { CODEX_TRUST_LADDER_DISABLED: '1' } }).cloudDataRouteLocked, false);
+});
+
+test('trust ladder: summary status line, protected-path bounces and the runner prompt', () => {
+  const shadow = TL.runnerAccess({ files: ladderFiles('shadow', { 'larger-cards': true, 'review-texts-ro': false }), env: {} });
+  assert.equal(TL.ladderStatusLine(shadow), '- Trust ladder: shadow (baseline): min score -6, cloud data route open, review texts open; a live ladder would give min score -9, cloud data route open, review texts locked');
+  assert.equal(TL.ladderStatusLine(TL.runnerAccess({ files: ladderFiles('live'), env: {} })), '- Trust ladder: live (ladder): min score -6, cloud data route open, review texts open');
+  assert.equal(r.runnerSummaryFacts(`## Codex runner 2026-10-26: 0 card(s) worked in 3 min\n${TL.ladderStatusLine(shadow)}\n- Stopped early: no`).landed, 0, 'the status line is not read as a fact');
+  assert.equal(r.classifyBounce({ blocked: 'Blocked before review: Codex edited the trust ladder or its grading inputs (its own grading rules), which the runner never lands.' }), 'forbidden-files');
+  const prompt = readFileSync(join(ROOT, 'scripts/codex/runner-prompt.md'), 'utf8');
+  for (const f of TL.PROTECTED_FILES) assert.ok(prompt.includes(f), `runner-prompt.md names ${f}`);
 });

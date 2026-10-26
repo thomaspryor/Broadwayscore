@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+process.env.CODEX_TRUST_LADDER_DISABLED = '1'; // BRO-6303: codexCardFit's ladder default stays the baseline here
 const { pickCloudCard, skipReason, IDLE_MS, AUTOMATION_PARK_STALE_MS } = require('./cloud-worker-pick.js');
 
 const NOW = Date.parse('2026-10-03T12:00:00Z');

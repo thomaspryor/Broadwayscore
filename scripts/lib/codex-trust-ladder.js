@@ -1,5 +1,6 @@
 'use strict';
-// BRO-6263: the Codex trust ladder. Pure decisions only; scripts/codex-trust-ladder.js reads the
+// BRO-6263: the Codex trust ladder. Decisions, plus the one read the runner makes (runnerAccess,
+// BRO-6303: the ladder files on origin/main); scripts/codex-trust-ladder.js reads the other
 // sources and writes the state. Codex's access widens as its measured record holds and relocks one
 // rung on a quality regression.
 //
@@ -17,7 +18,8 @@
 // Codex's blocked-path list in scripts/codex/daily-runner.js.
 //
 // Shadow first (CLAUDE.md 19): state.mode 'shadow' makes access() return the pre-ladder baseline
-// and the evaluator report only. Promotion stays off until state.promoteEnabled is set by a
+// and the evaluator report only. One deliberate exception: a ladder file that does not parse (or has
+// the wrong shape) fails closed whatever its mode says, since the mode cannot be read (BRO-6303 card). Promotion stays off until state.promoteEnabled is set by a
 // committed edit (relock is always on).
 
 const fs = require('fs');
@@ -113,6 +115,69 @@ function access({ state, owner, corrupt = false, env = process.env } = {}) {
     cloudDataRouteLocked: !on('cloud-data-route'),
     reviewTextsLocked: !on('review-texts-ro'),
   };
+}
+
+// ---------- what the runner reads (BRO-6303) ----------
+
+const REPO_ROOT = path.resolve(__dirname, '..', '..');
+
+/**
+ * A loadFiles reader for the ladder files as they are on `ref` (origin/main by default), so a stale
+ * runner checkout or a Codex worktree edit never decides access. No such ref (a fresh clone, a test
+ * checkout): the working tree. A file the ref does not have reads as missing (baseline), never corrupt.
+ */
+function gitReader(root, ref = 'origin/main', run = defaultGit) {
+  const has = run(root, ['rev-parse', '--verify', '-q', `${ref}^{commit}`]);
+  if (!has || has.status !== 0) return { reader: undefined, source: 'worktree' };
+  return {
+    source: ref,
+    reader: (abs) => {
+      const rel = path.relative(root, abs).split(path.sep).join('/');
+      const r = run(root, ['cat-file', 'blob', `${ref}:${rel}`]);
+      if (!r || r.status !== 0) { const e = new Error(`${rel} not on ${ref}`); e.code = 'ENOENT'; throw e; }
+      return r.stdout;
+    },
+  };
+}
+function defaultGit(cwd, args) {
+  return require('child_process').spawnSync('git', args, { cwd, encoding: 'utf8', maxBuffer: 16 << 20 });
+}
+
+// The files are read once per process (one picker run, one runner run); access() runs per call so the
+// env kill switch still applies at once.
+const fileMemo = new Map();
+function ladderFiles({ root = REPO_ROOT, ref = 'origin/main', git = defaultGit } = {}) {
+  const key = `${root}\0${ref}`;
+  if (!fileMemo.has(key)) {
+    const { reader, source } = gitReader(root, ref, git);
+    fileMemo.set(key, { ...loadFiles(root, reader), readFrom: source });
+  }
+  return fileMemo.get(key);
+}
+const resetLadderFiles = () => fileMemo.clear();
+
+/**
+ * Access for THIS runner -> access() plus { mode, readFrom, wouldGrant }. The GHA lane stays outside
+ * the ladder for the data route (BRO-6303: it alone could always dispatch the apply), so
+ * cloudDataRouteLocked is false there whatever the ladder says. wouldGrant is what a live ladder
+ * would give now (the shadow report, for the runner summary).
+ */
+function runnerAccess({ env = process.env, files = null, ...opts } = {}) {
+  const f = files || ladderFiles(opts);
+  const gha = String(env.GITHUB_ACTIONS || '') === 'true';
+  const lane = (a) => (gha ? { ...a, cloudDataRouteLocked: false } : a);
+  const now = lane(access({ state: f.state, owner: f.owner, corrupt: f.corrupt, env }));
+  const would = f.state && f.state.mode !== 'live' && !f.corrupt
+    ? lane(access({ state: { ...f.state, mode: 'live' }, owner: f.owner, env })) : null;
+  return { ...now, mode: f.corrupt ? 'corrupt' : f.state ? String(f.state.mode || 'shadow') : 'not set up', readFrom: f.readFrom || 'worktree', wouldGrant: would };
+}
+
+const grantText = (a) => `min score ${a.minScore}, cloud data route ${a.cloudDataRouteLocked ? 'locked' : 'open'}, review texts ${a.reviewTextsLocked ? 'locked' : 'open'}`;
+/** The one-line ladder status for the BRO-4745 runner summary. */
+function ladderStatusLine(a) {
+  if (!a) return '- Trust ladder: unknown';
+  const would = a.wouldGrant ? `; a live ladder would give ${grantText(a.wouldGrant)}` : '';
+  return `- Trust ladder: ${a.mode} (${a.source}): ${grantText(a)}${would}`;
 }
 
 // ---------- the record ----------
@@ -266,14 +331,20 @@ function summarize(state, owner, recordQualifies, nowMs) {
   };
 }
 
-/** Files the runner must never land: Codex cannot edit the rules that grade it. */
+/**
+ * Files the runner must never land: Codex cannot edit the rules that grade it, nor the grading
+ * inputs (BRO-6303): the summary parser and heading (codex-runner-summary.js) and the summary reader
+ * (codex-lane-alarm.js readSummaries).
+ */
+const PROTECTED_FILES = new Set(['scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js', 'scripts/lib/codex-runner-summary.js', 'scripts/codex-lane-alarm.js']);
 function isProtectedPath(name) {
   const n = String(name || '');
-  return n === 'scripts/lib/codex-trust-ladder.js' || n === 'scripts/codex-trust-ladder.js' || n.startsWith('data/audit/codex-trust-ladder');
+  return PROTECTED_FILES.has(n) || n.startsWith('data/audit/codex-trust-ladder');
 }
 
 module.exports = {
-  isProtectedPath,
+  isProtectedPath, PROTECTED_FILES,
+  runnerAccess, ladderFiles, resetLadderFiles, gitReader, ladderStatusLine,
   POLICY, RUNGS, NEVER, STATE_FILE, OWNER_FILE, BASELINE_MIN_SCORE, WIDE_MIN_SCORE, GIT_LOG_FORMAT,
   seedState, seedOwner, loadFiles, access, rejectionStats, gitRegressions, parseCommits, evaluate,
 };

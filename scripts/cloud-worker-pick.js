@@ -198,11 +198,14 @@ async function main() {
     // Cards Codex bounced recently (14d; 3d after a single 'landed part') go to the Claude worker, not back to Codex.
     const { codexBouncedRecently } = require('./lib/codex-runner.js');
     let rest = queue.filter((q) => !q.resume && !codexBouncedRecently(q.issue.comments && q.issue.comments.nodes, nowMs));
+    let ladder; // BRO-6303: the trust ladder's access, read once for the pick and handed to the runner
+
     // --codex (the Codex runner, BRO-5287): drop cards an unattended Codex run cannot finish
     // (Mac-only, too broad) and, within each tier, put the best-suited (small, one-test VERIFY) first.
     if (process.argv.includes('--codex')) {
       const { codexCardFit } = require('./lib/codex-runner.js');
-      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes })]));
+      ladder = require('./lib/codex-trust-ladder.js').runnerAccess();
+      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes, ladder })]));
       for (const [q, f] of fit) if (f.skip) console.error(`[cloud-worker-pick] codex skip ${q.issue.identifier}: ${f.skip} (${f.why.join(',')})`);
       const tierRank = new Map(rest.map((q) => [q.tier, 0]));
       [...tierRank.keys()].forEach((t, i) => tierRank.set(t, i)); // queue order already goes P0/P1, P2, P3
@@ -218,7 +221,7 @@ async function main() {
       picks.push(pickJson(chosen, nowMs, verifyCommand, isStartNow, modelOf));
       rest.splice(0, rest.indexOf(chosen) + 1);
     }
-    console.log(JSON.stringify({ picks, ...counts, historySkipped }, null, 2));
+    console.log(JSON.stringify({ picks, ...counts, historySkipped, ...(ladder ? { ladder } : {}) }, null, 2));
     return;
   }
   // Codex first (BRO-5384): while a Codex runner is live, the Claude worker leaves the cards one

@@ -162,9 +162,70 @@ test('gitRegressions: reverts and forward fixes of Codex landings; a shallow rea
   assert.deepEqual(L.gitRegressions(''), []);
 });
 
-test('isProtectedPath covers the ladder files and nothing else', () => {
-  for (const p of ['data/audit/codex-trust-ladder.json', 'data/audit/codex-trust-ladder-owner.json', 'scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js']) assert.equal(L.isProtectedPath(p), true, p);
-  for (const p of ['data/audit/codex-lane-health.json', 'scripts/lib/codex-runner.js', 'src/app/page.tsx', '', null]) assert.equal(L.isProtectedPath(p), false, String(p));
+test('isProtectedPath covers the ladder files and its grading inputs, nothing else', () => {
+  for (const p of ['data/audit/codex-trust-ladder.json', 'data/audit/codex-trust-ladder-owner.json', 'scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js',
+    'scripts/lib/codex-runner-summary.js', 'scripts/codex-lane-alarm.js']) assert.equal(L.isProtectedPath(p), true, p);
+  for (const p of ['data/audit/codex-lane-health.json', 'scripts/lib/codex-runner.js', 'scripts/codex/daily-runner.js', 'src/app/page.tsx', '', null]) assert.equal(L.isProtectedPath(p), false, String(p));
+  // The grading inputs really live in the protected file (BRO-6303), and codex-runner.js re-exports them.
+  const S = require('../../scripts/lib/codex-runner-summary.js');
+  const R = require('../../scripts/lib/codex-runner.js');
+  for (const k of ['runnerSummaryFacts', 'summaryHeading', 'parseSummaryHeading']) assert.equal(R[k], S[k], k);
+});
+
+// ---- BRO-6303: what the runner reads ----
+
+const ROOT6303 = '/repo';
+const fakeGit = (tree, { refOk = true } = {}) => {
+  const calls = [];
+  const run = (cwd, args) => {
+    calls.push(args.join(' '));
+    if (args[0] === 'rev-parse') return { status: refOk ? 0 : 1, stdout: '' };
+    const rel = args[2].replace(/^origin\/main:/, '');
+    return rel in tree ? { status: 0, stdout: tree[rel] } : { status: 128, stdout: '' };
+  };
+  return { run, calls };
+};
+const files = (tree, opts) => {
+  L.resetLadderFiles();
+  const g = fakeGit(tree, opts);
+  return { f: L.ladderFiles({ root: ROOT6303, git: g.run }), calls: g.calls };
+};
+
+test('runnerAccess reads the ladder files from origin/main: missing is baseline, unparsable fails closed', () => {
+  const shadow = JSON.stringify(L.seedState('2026-10-26T00:00:00Z'));
+  const live = JSON.stringify({ ...L.seedState('2026-10-26T00:00:00Z'), mode: 'live', rungs: { 'larger-cards': { unlocked: true }, 'cloud-data-route': { unlocked: false }, 'review-texts-ro': { unlocked: true } } });
+  const at = (tree, env = {}, opts) => L.runnerAccess({ files: files(tree, opts).f, env });
+  assert.deepEqual([at({}).source, at({}).mode, at({}).readFrom], ['baseline', 'not set up', 'origin/main']);
+  assert.deepEqual([at({ [L.STATE_FILE]: shadow }).source, at({ [L.STATE_FILE]: shadow }).minScore, at({ [L.STATE_FILE]: shadow }).mode], ['baseline', -6, 'shadow']);
+  const l = at({ [L.STATE_FILE]: live });
+  assert.deepEqual([l.source, l.minScore, l.cloudDataRouteLocked, l.reviewTextsLocked], ['ladder', -9, true, false]);
+  assert.equal(at({ [L.STATE_FILE]: live }, { GITHUB_ACTIONS: 'true' }).cloudDataRouteLocked, false, 'GHA lane: route open');
+  for (const bad of ['{not json', '{"mode":"live"}']) {
+    const c = at({ [L.STATE_FILE]: bad });
+    assert.deepEqual([c.source, c.cloudDataRouteLocked, c.reviewTextsLocked, c.mode], ['corrupt-locked', true, true, 'corrupt'], bad);
+  }
+  assert.equal(at({ [L.STATE_FILE]: shadow, [L.OWNER_FILE]: '[' }).source, 'corrupt-locked', 'a corrupt owner file fails closed too');
+});
+
+test('runnerAccess: no origin/main falls back to the working tree; the files are read once per process', () => {
+  const { f } = files({}, { refOk: false });
+  assert.equal(f.readFrom, 'worktree');
+  L.resetLadderFiles();
+  const g = fakeGit({ [L.STATE_FILE]: JSON.stringify({ ...L.seedState('2026-10-26T00:00:00Z'), mode: 'live' }) });
+  for (let i = 0; i < 5; i++) L.runnerAccess({ root: ROOT6303, git: g.run, env: {} });
+  assert.equal(g.calls.length, 3, 'one rev-parse and one read per file, however many cards');
+  // The env kill switch still applies per call after the files are memoised.
+  assert.equal(L.runnerAccess({ root: ROOT6303, git: g.run, env: {} }).source, 'ladder');
+  assert.equal(L.runnerAccess({ root: ROOT6303, git: g.run, env: { CODEX_TRUST_LADDER_DISABLED: '1' } }).source, 'killed');
+  L.resetLadderFiles();
+});
+
+test('runnerAccess on this checkout: a shadow ladder gives the runner the baseline', () => {
+  L.resetLadderFiles();
+  const a = L.runnerAccess({ env: {} });
+  L.resetLadderFiles();
+  assert.notEqual(a.source, 'corrupt-locked', 'the committed ladder files parse');
+  if (a.mode !== 'live') assert.deepEqual([a.source, a.minScore, a.cloudDataRouteLocked, a.reviewTextsLocked], ['baseline', -6, false, false]);
 });
 
 const liveState = (now) => ({ ...L.seedState(now), mode: 'live' });

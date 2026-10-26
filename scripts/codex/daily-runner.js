@@ -288,14 +288,23 @@ function pruneDisk() {
   if (stale.length) log(`pruneDisk: removed ${stale.length} stale temp dir(s): ${stale.slice(0, 8).join(', ')}`);
 }
 
+// BRO-6303: the trust ladder's access for this run. The picker's own read when it ran (so the cards
+// and the data they get agree), else this process reads it once (--ids runs).
+let ladderAccess = null;
+function runLadder() {
+  if (!ladderAccess) ladderAccess = TL.runnerAccess();
+  return ladderAccess;
+}
+
 /**
  * Give a freshly cleaned worktree the private data the main checkout has (R.DATA_FILES
  * copied, data/review-texts linked), since `git clean -x` removes it. reviewTexts: false
  * for the land-check batches: land.yml has no review texts either, and those batches run
- * outside the Codex sandbox, so a test write must not reach the shared clone.
+ * outside the Codex sandbox, so a test write must not reach the shared clone. The default follows the
+ * trust ladder (BRO-6303): with review-texts-ro locked, Codex runs without them.
  * -> { lines (for the prompts), dirs (real paths the reviewer may read) }
  */
-function provideData(dest, { reviewTexts = true } = {}) {
+function provideData(dest, { reviewTexts = !runLadder().reviewTextsLocked } = {}) {
   const src = path.join(ROOT, 'data');
   const provided = [];
   const missing = [];
@@ -501,7 +510,7 @@ function commitAttempt(card, attempt, message = null) {
   const names = git(['diff', '--cached', '--name-only', '--no-renames']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
-  if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder (its own grading rules), which the runner never lands' };
+  if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder or its grading inputs (its own grading rules), which the runner never lands' };
   // A staged symlink could point at the private data the runner links in (land refuses tracked symlinks too).
   if (/^:\d+ 120000 /m.test(git(['diff', '--cached', '--raw']))) return { hasDiff: true, blocked: 'the change adds a symlink, which the runner never lands' };
   if (R.looksLikeSecretLeak(git(['diff', '--cached']))) return { hasDiff: true, blocked: 'the diff looks like it carries token material' };
@@ -772,8 +781,11 @@ async function pickCards() {
   // A slot gets the launch's whole list (--pick-list): the slots share it and skip each other's cards.
   const r = sh('node', ['scripts/cloud-worker-pick.js', `--list=${OPTS.pickList || OPTS.limit + 5}`, '--codex'], { timeoutMs: 1_800_000 });
   if (r.code !== 0) throw new Error(`picker failed: ${tail(r.out, 400)}`);
-  return JSON.parse(r.stdout).picks || [];
+  const out = JSON.parse(r.stdout);
+  if (out.ladder && typeof out.ladder === 'object') ladderAccess = out.ladder; // the access the pick used
+  return out.picks || [];
 }
+
 
 const PICK_TIER = { p0p1: 'p0p1', 'p2-fallback': 'p2', 'p3-fallback': 'p3' };
 /** Why a picked card is no longer the picker's to give out (recent activity, a recent pause), or null. */
@@ -1567,6 +1579,7 @@ async function runLocked(startedMs) {
     ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
     ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
     R.codexSettingsLine(codexUsed),
+    TL.ladderStatusLine(runLadder()),
     `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
     `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
     // BRO-5384 savings line: what the Codex lane costs in Claude, by model and per landed card.
