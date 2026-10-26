@@ -494,7 +494,6 @@
     "othello-off-broadway-2026/thestage--fergus-morgan.json",
     "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json"
   ],
-  "failed": [],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -671,7 +670,11 @@
       "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+      "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/some-woman-west-end-2026/momentsapp--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
@@ -716,8 +719,12 @@
       "marlise-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
-      "conversations-with-mother-off-broadway-2025/cititour--brian-scott-lipton.json",
-      "conversations-with-mother-off-broadway-2025/talkinbroadway--james-wilson.json"
+      "dirty-dancing-tour-2026/nytimes--michael-paulson.json",
+      "dirty-dancing-tour-2026/cititour--brian-scott-lipton.json",
+      "oh-mary-west-end-2025/variety--unknown.json",
+      "oh-mary-2024/cititour--unknown.json",
+      "the-great-gatsby-2024/forbes--shivani-vora.json",
+      "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -814,37 +821,46 @@
   "lastProcessed": "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
   "log": [
     {
-      "t": "2026-10-26T13:08:32.563Z",
+      "t": "2026-10-26T11:16:18.645Z",
       "event": "bb-session",
-      "session": "9e5660b8",
-      "url": "https://www.nytimes.com/2025/05/21/theater/lights-out-nat-king-cole-review.html"
+      "session": "f53af468",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-26T13:08:33.185Z",
+      "t": "2026-10-26T11:16:19.338Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-26T13:11:21.077Z",
+      "t": "2026-10-26T11:18:30.321Z",
       "event": "bb-session",
-      "session": "382b55d3",
-      "url": "https://www.nytimes.com/2025/04/08/theater/wole-soyinka-swamp-dwellers-nyc.html"
+      "session": "eb6470eb",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-10-26T13:11:21.725Z",
+      "t": "2026-10-26T11:18:30.919Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-26T13:13:02.564Z",
+      "t": "2026-10-26T11:43:16.127Z",
       "event": "bb-session",
-      "session": "f6f4ee59",
-      "url": "https://www.nytimes.com/2025/04/06/theater/im-assuming-you-know-david-greenspan-"
+      "session": "9438f51a",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
     },
     {
-      "t": "2026-10-26T13:13:03.234Z",
+      "t": "2026-10-26T11:43:16.791Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+    "hadestown-2019/theater-life--isa-goldberg.json"
   ]
 }
