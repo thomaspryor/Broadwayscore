@@ -236,10 +236,10 @@ function parsePdfReviews(text, showTitle, stats) {
           i++;
         }
 
-        let fullText = cutAtProductionHeader(textLines).map(l => l.trim()).filter(l => l).join('\n');
+        let fullText = stripTrailingCaption(cutAtProductionHeader(textLines)).map(l => l.trim()).filter(l => l).join('\n');
         // Clean PDF artifacts
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
-        if (stats && fullText.length <= 50) stats.shortDropped++;
+        if (stats && !captionForeign && fullText.length <= 50) stats.shortDropped++;
         if (captionForeign) {
           if (stats) stats.captionDropped = (stats.captionDropped || 0) + 1;
         } else if (fullText.length > 50) {
@@ -297,7 +297,7 @@ function parseRawPdfReviews(text, showTitle, venue) {
           i++;
         }
 
-        let fullText = cutAtProductionHeader(textLines).map(l => l.trim()).filter(l => l).join('\n');
+        let fullText = stripTrailingCaption(cutAtProductionHeader(textLines)).map(l => l.trim()).filter(l => l).join('\n');
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
 
         if (owned !== false && fullText.length > 200 && fullText.length < 15000) {
@@ -497,7 +497,7 @@ function parseDefaultPdfReviews(text, showTitle, venue) {
       .map((l, off) => ({ l, abs: m.start + 1 + off }))
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
-    const fullText = cutAtProductionHeader(body).join('\n').trim();
+    const fullText = stripTrailingCaption(cutAtProductionHeader(body)).join('\n').trim();
     if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && captionOwnedBy(lines, m.start, showTitle) !== false) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
@@ -597,10 +597,22 @@ function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
   return false;
 }
 
+// BRO-6287: the next review's caption sits right above its outlet line, so it
+// lands at the tail of the review before it. Drop those trailing caps lines.
+function stripTrailingCaption(textLines) {
+  const out = textLines.slice();
+  const last = () => String(out[out.length - 1]).trim();
+  while (out.length && !last()) out.pop();
+  let n = 0;
+  while (out.length && n < 3 && isCapsTitle(last())) { out.pop(); n++; while (out.length && !last()) out.pop(); }
+  if (n && out.length && /^Reviews?$/.test(last())) out.pop();
+  return out;
+}
+
 // BRO-6287: 2020+ issues print each review under a caps caption naming its own
 // production ("SOUTH PACIFIC" above "FINANCIAL TIMES / 16 July 2021"), with no
 // run-dates line or venue header for the other guards to read. Looks at the
-// nearest non-blank line above the outlet line (one blank-line gap allowed):
+// nearest non-blank line above the outlet line (up to two blank lines skipped):
 // true when it names our show, false when it names another one, null when
 // there is no caps caption. A caption sharing a real word with our title stays
 // null, as in sectionOwnedBy (TR spells titles its own way).
@@ -618,6 +630,8 @@ function captionOwnedBy(lines, outletIdx, showTitle) {
   if (!parts.length) return null;
   // The first half of a wrapped masthead ("INTERNATIONAL" / "NEW YORK TIMES").
   if (parts.length === 1 && /^(INTERNATIONAL|SUNDAY|DAILY|EVENING|THE)$/.test(parts[0])) return null;
+  // An outlet we do not list ("WHATSONSTAGE.COM") is not a production caption.
+  if (parts.some(t => /\.(COM|CO\.UK|ORG|NET|UK)\b/.test(t))) return null;
   const caption = parts.join(' ');
   if (trTitleMatches(caption, showTitle)) return true;
   const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));

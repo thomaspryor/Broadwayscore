@@ -470,3 +470,18 @@ test('default and raw parsers drop the review captioned with another show', () =
   assert.ok(outlets.some(o => o.includes('12 July 2021')), 'ours kept');
   assert.ok(!outlets.some(o => o.includes('16 July 2021')), 'South Pacific review dropped: ' + outlets);
 });
+
+test('caption guard: raw and layout parsers drop foreign caption, trailing caption is stripped', () => {
+  const raw = parseRawPdfReviews(chillIssue, 'Be More Chill', null);
+  const rawKeys = raw.map(r => r.date);
+  assert.ok(rawKeys.some(d => d.includes('12 July 2021')), 'raw keeps ours');
+  assert.ok(!rawKeys.some(d => d.includes('16 July 2021')), 'raw drops South Pacific: ' + rawKeys);
+  const lay = parsePdfReviews(['BE MORE CHILL', ...chillIssue.split('\n')].join('\n'), 'Be More Chill', {});
+  assert.ok(!lay.some(r => r.date.includes('16 July 2021')), 'layout drops South Pacific');
+  for (const r of [...raw, ...lay]) assert.ok(!/(SOUTH PACIFIC|BE MORE CHILL)\s*$/.test(r.fullText), 'caption leaked: ' + r.fullText.slice(-40));
+});
+
+test('captionOwnedBy: domain-like outlets and blank gaps', () => {
+  assert.equal(captionOwnedBy(['WHATSONSTAGE.COM', 'THE GUARDIAN'], 1, 'Frozen'), null);
+  assert.equal(captionOwnedBy(['FROZEN', '', 'THE GUARDIAN'], 2, 'Frozen'), true);
+});
