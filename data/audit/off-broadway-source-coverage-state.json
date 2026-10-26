@@ -3,18 +3,26 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-25T12:53:42.511Z"
+    "at": "2026-10-26T14:45:07.145Z"
   },
   "venueReaders": {
-    "at": "2026-10-25T12:53:42.511Z",
+    "at": "2026-10-26T14:45:07.145Z",
     "readers": 54,
-    "active": 172,
-    "activeCovered": 103,
-    "activeDated": 79,
+    "active": 185,
+    "activeCovered": 110,
+    "activeDated": 83,
     "uncovered": {
       "la mama experimental theatre club": {
         "firstSeen": "2026-10-03T12:53:57.507Z",
         "venue": "La MaMa Experimental Theatre Club"
+      },
+      "59e59 theater a": {
+        "firstSeen": "2026-10-26T14:45:07.145Z",
+        "venue": "59E59 Theater A"
+      },
+      "ars nova": {
+        "firstSeen": "2026-10-26T14:45:07.145Z",
+        "venue": "Ars Nova"
       },
       "broadway comedy club": {
         "firstSeen": "2026-10-01T15:00:20.501Z",
@@ -53,6 +61,11 @@
         "reason": "queue-it bot wall on theshed.org/program; needs a real browser"
       },
       {
+        "venue": "The Culture Club",
+        "recentShows": 4,
+        "reason": "no public listing found"
+      },
+      {
         "venue": "Theater 555",
         "recentShows": 4,
         "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
@@ -61,11 +74,6 @@
         "venue": "the cell",
         "recentShows": 3,
         "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
-      },
-      {
-        "venue": "The Culture Club",
-        "recentShows": 3,
-        "reason": "no public listing found"
       },
       {
         "venue": "St. Luke's Theatre",
@@ -95,7 +103,7 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-25T12:53:42.511Z",
+    "at": "2026-10-26T14:45:07.145Z",
     "readers": 23,
     "active": 96,
     "activeCovered": 32,
@@ -108,6 +116,10 @@
       "secret cinema greenwich peninsula": {
         "firstSeen": "2026-10-19T15:10:52.077Z",
         "venue": "Secret Cinema, Greenwich Peninsula"
+      },
+      "unicorn": {
+        "firstSeen": "2026-10-26T14:45:07.145Z",
+        "venue": "Unicorn Theatre"
       },
       "yard": {
         "firstSeen": "2026-09-30T17:53:29.256Z",
