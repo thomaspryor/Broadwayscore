@@ -49,6 +49,10 @@ concurrency:
   group: commercial-data-write
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: write
+
 jobs:
   batch-research:
     if: inputs.skip_batch != true
@@ -56,7 +60,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
@@ -163,7 +167,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -253,7 +257,7 @@ jobs:
     timeout-minutes: 120
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -365,7 +369,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 

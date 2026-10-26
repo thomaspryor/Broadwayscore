@@ -5,6 +5,11 @@ on:
     - cron: '0 12 1 * *'  # 1st of every month at noon UTC
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: read
+  issues: write
+
 jobs:
   rotate:
     runs-on: ubuntu-latest

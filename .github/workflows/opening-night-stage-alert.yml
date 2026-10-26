@@ -13,17 +13,22 @@ on:
     - cron: '0 13 * * *'   # 9 AM ET — 48h window lookback
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: write
+  issues: write
+
 jobs:
   check:
     runs-on: ubuntu-latest
     timeout-minutes: 10  # BRO-4266: the core-data checkout alone can take 3-5 min
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           fetch-depth: 1
 
       - name: Fetch private data repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
         with:
           repository: thomaspryor/broadway-scorecard-data
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

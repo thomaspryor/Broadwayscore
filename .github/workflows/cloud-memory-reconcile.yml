@@ -29,6 +29,10 @@ concurrency:
   group: cloud-memory-reconcile
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   reconcile:
     runs-on: ubuntu-latest
@@ -37,14 +41,14 @@ jobs:
       contents: write
     steps:
       # Full history, no blobs: the history check reads commits and trees only.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
           filter: 'blob:none'
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: 20
+          node-version: 22
 
       # REVIEW_TEXTS_TOKEN is the owner's classic PAT used for every private
       # cross-repo read here. Blob-less, no checkout: notes are read with

@@ -54,7 +54,7 @@ jobs:
     timeout-minutes: 12
     steps:
       - name: Checkout (shallow)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # main, not the pushed sha: the ledger commit below goes on main and
           # the detector fetches origin/main's ledger itself.
@@ -107,7 +107,7 @@ jobs:
         # replay the whole tree (its own header warns it reverts whatever
         # else landed on main); land.yml uses the same shape for its ledger
         # step. Only paid on a 'direct' verdict.
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           fetch-depth: 0
@@ -115,9 +115,9 @@ jobs:
 
       - name: Setup Node.js
         if: steps.classify.outputs.verdict == 'direct'
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies

@@ -9,6 +9,10 @@ concurrency:
   group: r2-cold-backup
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   backup:
     runs-on: ubuntu-latest
@@ -121,7 +125,7 @@ jobs:
         # skip this checkout, and the Notify step below would then be unable
         # to resolve ./.github/actions/notify-failure.
         if: failure() || cancelled()
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             .github/actions/notify-failure

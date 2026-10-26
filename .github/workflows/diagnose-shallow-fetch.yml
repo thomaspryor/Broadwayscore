@@ -37,7 +37,7 @@ jobs:
       # fetch-depth intentionally omitted → depth 1, exactly like the ~100
       # push-with-retry.sh callers that hit this bug.
       - name: Checkout (shallow, like every affected workflow)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 

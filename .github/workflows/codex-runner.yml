@@ -55,7 +55,7 @@ jobs:
     timeout-minutes: 355
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
           filter: blob:none
@@ -83,7 +83,7 @@ jobs:
           if grep -rqs 'x-access-token' data/review-texts/.git/config; then echo "::error::token still in data/review-texts"; exit 1; fi
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           # claude-code 2.1.292 requires node >= 22
           node-version: '22'

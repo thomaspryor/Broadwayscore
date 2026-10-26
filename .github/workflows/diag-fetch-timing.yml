@@ -154,7 +154,7 @@ jobs:
     timeout-minutes: 45
     steps:
       - name: Checkout at the old tip
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ needs.pick-sha.outputs.old_sha }}
           fetch-depth: ${{ matrix.depth }}

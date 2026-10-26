@@ -18,8 +18,8 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { CLAUDE_SONNET } = require('./lib/models');
-const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
-const { buildTipRecord } = require('./lib/commercial-tip-record');
+const { loadCommercial } = require('./lib/commercial-write-guard');
+const { buildTipRecord, queueTipForReview } = require('./lib/commercial-tip-record');
 const { FIZZLE_MIN_RETURNED_PCT } = require('./lib/commercial-designations');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
@@ -28,7 +28,7 @@ const ISSUE_NUMBER = process.env.ISSUE_NUMBER;
 const ISSUE_BODY = process.env.ISSUE_BODY;
 
 const COMMERCIAL_PATH = path.join(__dirname, '..', 'data', 'commercial.json');
-const CHANGELOG_PATH = path.join(__dirname, '..', 'data', 'commercial-changelog.json');
+const PENDING_PATH = path.join(__dirname, '..', 'data', 'commercial-pending-review.json');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 
 function parseIssueBody(body) {
@@ -295,32 +295,28 @@ Rules:
       : { record: null, changes: [], refusedReason: null };
 
     if (wantsApply && built.record) {
-      commercial.shows[slug] = built.record;
-      commercial._meta.lastUpdated = new Date().toISOString();
-      saveCommercial(commercial);
-
-      // Update changelog
-      let changelog;
+      // BRO-6398: a reader tip is public, unauthenticated text judged by a
+      // model, so it never writes commercial.json here. The cleaned changes
+      // join data/commercial-pending-review.json as a human-review row: the
+      // daily apply pass holds it until a person releases it
+      // (apply-commercial-pending.js --show=SLUG or --release-held=SLUG) and
+      // the Linear sync surfaces it to the owner.
+      let pending;
       try {
-        changelog = JSON.parse(fs.readFileSync(CHANGELOG_PATH, 'utf8'));
+        pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
       } catch (e) {
-        changelog = { _meta: { description: 'Automated commercial data update log', lastUpdated: null }, entries: [] };
+        pending = { generatedAt: null, shows: {} };
       }
-
-      changelog.entries.push({
-        date: new Date().toISOString().split('T')[0],
-        source: `User tip via GitHub issue #${ISSUE_NUMBER}`,
-        // What was written, after cleaning, not what the model proposed.
-        changesApplied: built.changes.map(c => ({
-          slug,
-          field: c.field,
-          oldValue: c.oldValue,
-          newValue: c.newValue,
-          confidence: analysis.confidence,
-        })),
+      pending = queueTipForReview(pending, {
+        slug,
+        title: tip.showName,
+        changes: built.changes,
+        confidence: analysis.confidence,
+        source: tip.source,
+        issueNumber: ISSUE_NUMBER,
+        reasoning: analysis.reasoning,
       });
-      changelog._meta.lastUpdated = new Date().toISOString();
-      fs.writeFileSync(CHANGELOG_PATH, JSON.stringify(changelog, null, 2) + '\n');
+      fs.writeFileSync(PENDING_PATH, JSON.stringify(pending, null, 2) + '\n');
 
       // Post comment
       const changesTable = built.changes
@@ -328,24 +324,25 @@ Rules:
         .join('\n');
 
       if (GITHUB_TOKEN && ISSUE_NUMBER) {
-        await postGitHubComment(`## Tip Processed Successfully
+        await postGitHubComment(`## Tip Queued for Review
 
 **Show:** ${tip.showName} (\`${slug}\`)
 **Confidence:** ${analysis.confidence}
 
-### Changes Applied
+### Proposed Changes (not live until a person releases them)
 
-| Field | Old Value | New Value |
-|-------|-----------|-----------|
+| Field | Current Value | Proposed Value |
+|-------|---------------|----------------|
 ${changesTable}
 
 **Reasoning:** ${analysis.reasoning}
 
 ---
 *Automated by [process-commercial-tip.js](https://github.com/thomaspryor/Broadwayscore/blob/main/scripts/process-commercial-tip.js)*`);
+        await addLabel('needs-manual-review');
       }
 
-      console.log(`Applied ${built.changes.length} changes for ${slug}`);
+      console.log(`Queued ${built.changes.length} proposed changes for ${slug} in commercial-pending-review.json`);
     } else {
       // Flag for manual review
       const reason = built.refusedReason

@@ -1440,7 +1440,63 @@ function findUnboundedGitNetworkCommands(raw) {
   return findUnboundedGitCommands(raw, GIT_NETWORK_RE);
 }
 
+/**
+ * Rule (aa): every workflow declares a top-level `permissions:` block
+ * (BRO-6398). With no block anywhere the job runs on the repository default,
+ * which is write-all here, so a planted or prompt-injected step can push,
+ * open issues and dispatch workflows with the GITHUB_TOKEN. A job-level block
+ * alone is not enough: jobs without one still inherit the default.
+ */
+function findMissingTopLevelPermissions(raw) {
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return [];
+  if (lines.some((l) => /^permissions\s*:/.test(l))) return [];
+  return [{ lineNum: jobsIdx + 1, text: 'no top-level permissions: block (jobs without their own inherit the repo default, write-all)' }];
+}
+
+/**
+ * Rule (ab): an external action (`owner/repo[/path]@ref`) is pinned to a full
+ * 40-hex commit SHA, never a tag or branch (BRO-6398). Tags move: the Trivy,
+ * Checkmarx KICS and Mini Shai-Hulud incidents all re-pointed release tags at
+ * malicious commits, so a tag pin runs whatever the tag points at today. Local
+ * composites (`./.github/actions/...`) have no `@ref` and are not actions
+ * this rule sees. Dependabot's github-actions group keeps the SHAs current.
+ */
+const EXTERNAL_USES_RE = /^\s*-?\s*uses:\s*([A-Za-z0-9_.-]+\/[A-Za-z0-9_./-]+)@([^\s#]+)/;
+function findUnpinnedActionUses(raw) {
+  const hits = [];
+  raw.split('\n').forEach((l, i) => {
+    if (l.trim().startsWith('#')) return;
+    const m = EXTERNAL_USES_RE.exec(l);
+    if (m && !/^[0-9a-f]{40}$/.test(m[2])) hits.push({ lineNum: i + 1, text: l.trim(), action: m[1], ref: m[2] });
+  });
+  return hits;
+}
+
+/**
+ * Rule (ac): no `node-version:` at or below Node 20 (BRO-6398). Node 20
+ * reached end of life in April 2026 and did not receive the 21 October 2026
+ * security release (Brotli decoder RCE, TLS hostname bypass), while the
+ * scrapers on these runners read untrusted web pages. Raise NODE_MIN_MAJOR
+ * when the next line goes EOL.
+ */
+const NODE_MIN_MAJOR = 22;
+function findEolNodeVersions(raw) {
+  const hits = [];
+  raw.split('\n').forEach((l, i) => {
+    if (l.trim().startsWith('#')) return;
+    const m = /^\s*node-version:\s*['"]?(\d+)(?:\.\d+)*['"]?\s*(?:#.*)?$/.exec(l);
+    if (m && Number(m[1]) < NODE_MIN_MAJOR) hits.push({ lineNum: i + 1, text: l.trim(), major: Number(m[1]) });
+  });
+  return hits;
+}
+
 module.exports = {
+  findMissingTopLevelPermissions,
+  findUnpinnedActionUses,
+  findEolNodeVersions,
+  NODE_MIN_MAJOR,
   findUnboundedGitNetworkCommands,
   findUnboundedGitClones,
   findDispatchWithoutActionsWrite,

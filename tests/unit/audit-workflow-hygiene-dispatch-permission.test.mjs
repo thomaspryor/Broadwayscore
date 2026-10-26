@@ -180,7 +180,7 @@ describe('audit CLI wiring (rule w reaches the exit code)', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hygiene-dispatchperm-'));
     try {
       fs.writeFileSync(path.join(dir, 'x.yml'), body);
-      for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(dir, `inert-${i}.yml`), '# hygiene-notify-ok: inert fixture\nname: inert\non: workflow_dispatch\njobs: {}\n');
+      for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(dir, `inert-${i}.yml`), '# hygiene-notify-ok: inert fixture\n# hygiene-permissions-ok: inert fixture (BRO-6398 rule aa)\nname: inert\non: workflow_dispatch\njobs: {}\n');
       return spawnSync('node', [audit], { env: { ...process.env, HYGIENE_WORKFLOW_DIR: dir }, encoding: 'utf8' });
     } finally {
       fs.rmSync(dir, { recursive: true, force: true });

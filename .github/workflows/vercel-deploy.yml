@@ -69,7 +69,7 @@ jobs:
       proceed: ${{ steps.check.outputs.proceed }}
     steps:
       - name: Checkout (shallow — the gate fetches the live baseline commit itself)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           fetch-depth: 1
@@ -126,7 +126,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
 
       - name: Checkout core data
@@ -198,9 +198,9 @@ jobs:
           fi
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -287,7 +287,7 @@ jobs:
           echo "✓ Supabase public env present for live accounts"
 
       - name: Restore Next.js build + prebuild artifacts cache
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           # .next/cache: Next.js webpack/module incremental cache (kept across
           # deploys after 2026-05-23 workflow fix — see 3191971fd5).
@@ -432,7 +432,7 @@ jobs:
         # prebuild artifacts were produced (matches the old action's
         # behavior, which saved regardless of later step outcomes).
         if: always()
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: |
             .next/cache
@@ -692,7 +692,7 @@ jobs:
       - name: Check if newer deploy is already queued
         if: failure()
         id: check-newer
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // If a newer deploy is already queued/running, skip the alert —

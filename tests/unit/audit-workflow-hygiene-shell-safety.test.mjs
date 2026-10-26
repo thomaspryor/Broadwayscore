@@ -82,7 +82,7 @@ test('CLI exits non-zero for each of rules s, t, u (rules are wired into the tot
   for (const [rule, body] of Object.entries(cases)) {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'hyg-'));
     fs.writeFileSync(path.join(dir, 'a.yml'), wf(body));
-    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(dir, `inert-${i}.yml`), '# hygiene-notify-ok: inert fixture\nname: inert\non: workflow_dispatch\njobs: {}\n');
+    for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(dir, `inert-${i}.yml`), '# hygiene-notify-ok: inert fixture\n# hygiene-permissions-ok: inert fixture (BRO-6398 rule aa)\nname: inert\non: workflow_dispatch\njobs: {}\n');
     const r = spawnSync('node', [cli], { env: { ...process.env, HYGIENE_WORKFLOW_DIR: dir }, encoding: 'utf8' });
     fs.rmSync(dir, { recursive: true, force: true });
     assert.notEqual(r.status, 0, `rule (${rule}) must fail the CLI`);

@@ -63,7 +63,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Validate inputs
         env:
@@ -144,7 +144,7 @@ jobs:
       # still is when the lane step was cut off before releasing.
       OPENING_NIGHT_LANE_HOLDER: gha-${{ github.run_id }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
           # of main for this 355-min job's final ledger commit; depth-1 aborted when churn outran it.
@@ -268,7 +268,7 @@ jobs:
     permissions:
       contents: read
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Validate inputs
         env:
@@ -329,7 +329,7 @@ jobs:
 
       - name: Upload shadow report and ledger
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: lane-shadow-${{ inputs.show }}-${{ inputs.night }}
           # The spend ledgers stay on this runner (contents: read, no commit), so they ride in the artifact.

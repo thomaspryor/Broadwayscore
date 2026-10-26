@@ -63,14 +63,14 @@ jobs:
       # Sparse: run 37360514150 was cancelled at the 5-min timeout inside a
       # full checkout of the 2.5 GB repo (BRO-4754). The sweep needs only
       # scripts/ and the notify-failure action.
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             scripts
             .github/actions
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Sweep for a stranded Land run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -102,14 +102,14 @@ jobs:
       group: land-stranded-pass
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             scripts
             .github/actions
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Re-run or route stranded land refs
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -135,14 +135,14 @@ jobs:
       group: linear-reclaim-abandoned
       cancel-in-progress: false
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             scripts
             .github/actions
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Move abandoned In Progress cards back to Todo
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

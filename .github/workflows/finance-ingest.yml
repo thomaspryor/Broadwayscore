@@ -60,12 +60,12 @@ jobs:
     timeout-minutes: 30
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       # ingest-finances.js lazy-requires googleapis only on the Gmail path, so
       # it isn't a package.json dependency (keeps the main install lean for the
@@ -153,12 +153,12 @@ jobs:
       contents: write
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       # Same lazy-require pattern as the finance job above: googleapis is not a
       # package.json dependency (keeps the install lean for the 60+ other
@@ -274,7 +274,7 @@ jobs:
 
       - name: Checkout
         if: steps.gate.outputs.mode != 'off'
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Checkout core data
         if: steps.gate.outputs.mode != 'off'
@@ -284,9 +284,9 @@ jobs:
 
       - name: Setup Node.js
         if: steps.gate.outputs.mode != 'off'
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install googleapis
         if: steps.gate.outputs.mode != 'off'
@@ -348,12 +348,12 @@ jobs:
       actions: write # dispatch gmail-reauth.yml
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Check the Gmail token
         id: token

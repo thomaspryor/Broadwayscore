@@ -130,7 +130,7 @@ jobs:
           git config --global http.lowSpeedTime 45
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # fetch-depth: 0 (full history) is REQUIRED, not an optimization. The
@@ -266,10 +266,10 @@ jobs:
         if: steps.find.outputs.has_shows != 'true'
         run: echo "No shows to poll. Exiting."
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         if: steps.find.outputs.has_shows == 'true'
         with:
-          node-version: 20
+          node-version: 22
 
       # Restore 24h SERP cache (scripts/lib/serp-cache.js) + BWW anchor memo
       # (scripts/lib/bww-rr-discover.js, T5) + 45min SERP negative-cache
@@ -284,7 +284,7 @@ jobs:
         # a stable key would freeze the cache at its first contents. Cross-run reuse
         # comes from the `restore-keys: bd-serp-cache-` prefix. This is the cache
         # BRO-3887 was protecting, not the one that caused the incident.
-        uses: actions/cache@v5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: |
             /tmp/bd-serp-cache

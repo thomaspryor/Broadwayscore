@@ -111,7 +111,7 @@ jobs:
     steps:
       - name: Checkout the guard
         if: github.event_name == 'workflow_dispatch'
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # The guard reuses the sweep's decideLandRetry, so it needs scripts/lib.
           sparse-checkout: scripts/lib/
@@ -161,7 +161,7 @@ jobs:
       tsc_seed: ${{ steps.tscseed.outputs.seed }}
     steps:
       - name: Checkout the land branch
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: ${{ github.event.inputs.branch && format('refs/heads/{0}', github.event.inputs.branch) || github.ref }}
           # Full commit graph (the rebase below needs the merge-base with
@@ -241,9 +241,9 @@ jobs:
 
       - name: Setup Node.js
         if: steps.plan.outputs.skip_gauntlet != 'true'
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -414,7 +414,7 @@ jobs:
       - name: Restore the base gauntlet result (actions/cache)
         id: base_cache
         if: vars.LAND_STRICT_GATES != '1' && steps.plan.outputs.skip_gauntlet != 'true' && steps.need.outputs.needed == 'true'
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
           key: ${{ steps.basekey.outputs.key }}
@@ -479,14 +479,14 @@ jobs:
       # find no result for its own red gates (a fail-safe refusal).
       - name: Save the base gauntlet result (actions/cache)
         if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' && steps.base_run.outputs.scoped != 'true'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: ${{ runner.temp }}/land-gauntlet/base
           key: ${{ steps.basekey.outputs.key }}
 
       - name: Save the base gauntlet result (artifact, visible to every land/** run)
         if: steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' && steps.base_run.outputs.scoped != 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: ${{ steps.basekey.outputs.key }}
           path: ${{ runner.temp }}/land-gauntlet/base
@@ -564,7 +564,7 @@ jobs:
       # full-base-only rule on the save steps above).
       - name: Publish the fresh base result (artifact)
         if: always() && steps.confirm.outputs.fresh == 'true' && vars.LAND_LAZY_BASE_DISABLED == 'true' && steps.confirm.outputs.scoped != 'true'
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: ${{ steps.basekey.outputs.key }}
           path: ${{ runner.temp }}/land-gauntlet/base-fresh
@@ -680,7 +680,7 @@ jobs:
       - name: Publish the branch result as the next landing's base (artifact)
         if: success() && steps.tipkey.outputs.key != ''
         continue-on-error: true
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: ${{ steps.tipkey.outputs.key }}
           path: ${{ runner.temp }}/land-gauntlet/branch
@@ -774,7 +774,7 @@ jobs:
           fi
 
       - name: Checkout main
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # REVIEW_TEXTS_TOKEN, not GITHUB_TOKEN: land.js's `git push origin
@@ -790,9 +790,9 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies
@@ -1161,14 +1161,14 @@ jobs:
     steps:
       - name: Checkout main
         # main, not the land branch: the alert ledger is committed to main.
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies

@@ -66,4 +66,44 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
   return { record: entry, changes, refusedReason: null };
 }
 
-module.exports = { buildTipRecord };
+/**
+ * Queues a tip's cleaned changes in data/commercial-pending-review.json as a
+ * human-review row (BRO-6398). A reader tip is public, unauthenticated text
+ * judged by a model, so it never writes commercial.json itself: the daily
+ * apply pass (scripts/apply-commercial-pending.js) holds rows carrying
+ * `requiresHumanReview` until a person releases them, and the Linear sync
+ * puts the row in front of the owner.
+ *
+ * Pure: never mutates `pending`.
+ *
+ * @param {{ generatedAt?: string|null, shows?: object }} pending - parsed commercial-pending-review.json
+ * @param {{ slug: string, title: string, changes: { field: string, newValue: * }[], confidence: string,
+ *           source?: string|null, issueNumber: string|number, reasoning?: string|null, now?: string }} tip
+ * @returns {object} the next pending file contents
+ */
+function queueTipForReview(pending, { slug, title, changes, confidence, source, issueNumber, reasoning, now }) {
+  const at = now || new Date().toISOString();
+  const proposed = Object.fromEntries((changes || []).map((c) => [c.field, c.newValue]));
+  const entry = {
+    title,
+    slug,
+    ...proposed,
+    confidence,
+    sources: source ? [{ type: 'tip', url: source, date: at.slice(0, 10) }] : [],
+    detectedBy: 'github-tip',
+    tipIssue: issueNumber,
+    tipReasoning: reasoning || null,
+    requiresHumanReview: true,
+    researchedAt: at,
+  };
+  // A research row already queued for the show keeps its fields and sources;
+  // the tip's fields win and the hold stays (deep-research merges the same way
+  // through carryHumanReviewHold rather than replacing the row).
+  const prior = (pending && pending.shows && pending.shows[slug]) || null;
+  const merged = prior
+    ? { ...prior, ...entry, sources: [...(Array.isArray(prior.sources) ? prior.sources : []), ...entry.sources] }
+    : entry;
+  return { ...(pending || {}), generatedAt: at, shows: { ...((pending && pending.shows) || {}), [slug]: merged } };
+}
+
+module.exports = { buildTipRecord, queueTipForReview };

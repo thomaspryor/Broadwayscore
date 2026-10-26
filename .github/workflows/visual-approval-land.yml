@@ -40,7 +40,7 @@ jobs:
     timeout-minutes: 10
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # Full commit graph (patch-id needs the merge-base with main) but no
           # historical blobs: a plain fetch-depth 0 takes ~35 min on this repo

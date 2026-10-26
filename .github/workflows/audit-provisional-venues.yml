@@ -89,14 +89,14 @@ jobs:
         # (task #466): the commit steps below run 25+ minutes after this checkout,
         # and push-with-retry.sh needs real history to rebase onto rather than a
         # depth-1 stub against a main branch that moved many commits in the interim.
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 300
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies

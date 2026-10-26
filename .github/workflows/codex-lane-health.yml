@@ -49,7 +49,7 @@ jobs:
       # fetch-depth: 0 (this repo's data/ history is huge). The alarm only
       # reads commit metadata (git log) and runs scripts/, so skip blobs.
       - name: Checkout (full commit history, no blobs)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           fetch-depth: 0
@@ -60,9 +60,9 @@ jobs:
             data/audit
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Evaluate lane health
         id: health
@@ -90,7 +90,7 @@ jobs:
 
       - name: Upload shadow record
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: codex-lane-health
           path: |

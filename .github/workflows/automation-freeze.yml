@@ -37,11 +37,11 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Fetch current ledger
         # Newest run of ANY conclusion that carries one (a failed freeze still saved its partial ledger).
@@ -72,7 +72,7 @@ jobs:
 
       - name: Save ledger
         if: ${{ always() && github.event.inputs.dry_run != 'true' }}
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: freeze-ledger
           path: /tmp/ledger-out/ledger.json

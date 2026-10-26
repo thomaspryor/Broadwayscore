@@ -92,7 +92,7 @@ jobs:
           git config --global http.lowSpeedTime 45
 
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # fetch-depth: 0 (task #1810 root-cause fix): a GIT_TRACE_CURL diagnostic
@@ -133,9 +133,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install dependencies
         run: npm ci || npm install
@@ -1022,14 +1022,14 @@ jobs:
     timeout-minutes: 10  # BRO-4266: 3 min cancelled runs on 10-01, 10-05, 10-07 (checkout + setup-node alone can take 3+ min)
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Fail if a discovery source is blind
         run: node scripts/check-discovery-source-blind.js
@@ -1040,7 +1040,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to read pending shows
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
@@ -1050,7 +1050,7 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Create issue for new shows
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             const fs = require('fs');
@@ -1114,7 +1114,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout to filter previews shows
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
@@ -1222,7 +1222,7 @@ jobs:
         # shows too would re-run the same discovery concurrently with Express against
         # the same review-texts files (the exact race Express exists to eliminate).
         if: steps.filter.outputs.legacy_gather_targets != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Check if the gather-reviews workflow exists
@@ -1251,7 +1251,7 @@ jobs:
 
       - name: Trigger related shows generation for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Generate recommendations for each newly opened show individually
@@ -1278,7 +1278,7 @@ jobs:
 
       - name: Trigger Reddit sentiment workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger Reddit sentiment scraping for newly opened shows
@@ -1301,7 +1301,7 @@ jobs:
 
       - name: Trigger Reddit sentiment for new preview shows
         if: steps.filter.outputs.preview_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Reddit discussions start as soon as previews begin — don't wait for opening night
@@ -1322,7 +1322,7 @@ jobs:
 
       - name: Trigger Broadway.com audience workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger Broadway.com audience scraping for newly opened shows
@@ -1343,7 +1343,7 @@ jobs:
 
       - name: Trigger Show Score workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger Show Score scraping for newly opened shows
@@ -1366,7 +1366,7 @@ jobs:
 
       - name: Trigger Mezzanine workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger Mezzanine scraping for newly opened shows
@@ -1387,7 +1387,7 @@ jobs:
 
       - name: Trigger Theatr workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger Theatr scraping for newly opened shows (Broadway/OB only — Theatr doesn't cover WE)
@@ -1408,7 +1408,7 @@ jobs:
 
       - name: Trigger SeatPlan workflow for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger SeatPlan scraping for newly opened London shows
@@ -1429,7 +1429,7 @@ jobs:
 
       - name: Trigger LBO workflow for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger LBO scraping for newly opened London shows
@@ -1450,7 +1450,7 @@ jobs:
 
       - name: Trigger LTD workflow for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger London Theatre Direct scraping for newly opened London shows
@@ -1471,7 +1471,7 @@ jobs:
 
       - name: Trigger WE aggregator sweep for London shows
         if: steps.filter.outputs.london_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Pre-populate WET/TR/SD/TS archives before opening night poller runs
@@ -1493,7 +1493,7 @@ jobs:
 
       - name: Trigger image fetching workflow
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger image fetching + archival for newly opened shows
@@ -1514,7 +1514,7 @@ jobs:
 
       - name: Trigger cast backfill for new shows
         if: steps.filter.outputs.cast_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger IBDB cast scraping for each new show (including previews)
@@ -1564,7 +1564,7 @@ jobs:
 
       - name: Trigger WE outlet-based SERP collection for new WE shows
         if: needs.update-shows.outputs.we_new_count != '' && needs.update-shows.outputs.we_new_count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger outlet-based SERP collection for new West End shows
@@ -1593,7 +1593,7 @@ jobs:
         # — see the same note on "Trigger data agent workflow" above. Express's inline
         # "Collect review texts" step does this same job for those shows.
         if: steps.filter.outputs.legacy_gather_targets != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Trigger full text collection for each newly opened show
@@ -1619,7 +1619,7 @@ jobs:
 
       - name: Trigger Deep Research for opened shows
         if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             try {
@@ -1651,7 +1651,7 @@ jobs:
       # pre-#1349 role as the standalone opening-night discovery trigger.
       - name: Trigger Opening Night Poller for opened shows (Express-disabled fallback)
         if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0' && vars.EXPRESS_AUTOFIRE_DISABLED == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             try {
@@ -1670,7 +1670,7 @@ jobs:
       - name: Trigger Opening Night Express for opened shows
         # Kill switch independent of reverting this file: gh variable set EXPRESS_AUTOFIRE_DISABLED --body true
         if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0' && vars.EXPRESS_AUTOFIRE_DISABLED != 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // One dispatch per true previews->open transition this run. Each show
@@ -1703,7 +1703,7 @@ jobs:
 
       - name: Trigger Opening Night Broadcast (preview to owner)
         if: needs.update-shows.outputs.opened_count != '' && needs.update-shows.outputs.opened_count != '0'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Dispatch the broadcast — defaults to preview-to-owner only.
@@ -1792,7 +1792,7 @@ jobs:
     timeout-minutes: 10  # BRO-4266: 5 min cancelled runs on 08-06, 10-05 (core-data checkout is slow)
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
@@ -1802,9 +1802,9 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Find open shows with zero reviews
         id: find-gaps
@@ -1875,7 +1875,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 10  # BRO-4266: 3 min cancelled runs on 09-28, 10-01 (core-data checkout is slow)
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
         with:
@@ -1913,7 +1913,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 

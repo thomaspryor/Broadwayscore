@@ -67,7 +67,7 @@ jobs:
       finalized: ${{ steps.guard.outputs.finalized }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # Long job (ledger-checkout-depth.js): depth 1000 keeps push-with-retry.sh's shallow boundary an
@@ -231,7 +231,7 @@ jobs:
     timeout-minutes: 350
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # Long job (ledger-checkout-depth.js): depth 1000 keeps push-with-retry.sh's shallow boundary an

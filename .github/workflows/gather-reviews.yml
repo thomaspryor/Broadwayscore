@@ -103,7 +103,7 @@ jobs:
       job_count: ${{ steps.split.outputs.job_count }}
     steps:
       - name: Checkout (slot helper only)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: scripts
       - name: Wait for a gather slot (BRO-4859)
@@ -202,7 +202,7 @@ jobs:
     # guard; this cap is the backstop behind it.
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
@@ -220,9 +220,9 @@ jobs:
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       # Restore 24h SERP cache (scripts/lib/serp-cache.js). Cuts duplicate
       # Bright Data SERP calls across gather-reviews / poller / orchestrator.
@@ -233,7 +233,7 @@ jobs:
       # reuse comes from the `restore-keys: bd-serp-cache-` prefix, not the key.
       # This is the cache BRO-3887 was protecting, not the one that caused it.
       - name: Restore SERP cache
-        uses: actions/cache@v5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: /tmp/bd-serp-cache
           key: bd-serp-cache-${{ github.run_id }}
@@ -310,7 +310,7 @@ jobs:
       SERP_CACHE_REPORT_DIR: /tmp/serp-shard-out
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
@@ -335,9 +335,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install dependencies
         run: npm ci
@@ -364,7 +364,7 @@ jobs:
       # Needs its own marker: exemptions are step-scoped, not file-scoped (BRO-3887
       # ship-check), so the comment on the outlet-serp cache above does not cover it.
       - name: Restore SERP cache
-        uses: actions/cache@v5
+        uses: actions/cache@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: /tmp/bd-serp-cache
           key: bd-serp-cache-${{ github.run_id }}-gather-${{ matrix.batch_id }}
@@ -523,7 +523,7 @@ jobs:
           tar -C /tmp -cf /tmp/serp-shard-out/serp-cache.tar bd-serp-cache
       - name: Upload SERP cache shard artifact
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
           path: /tmp/serp-shard-out/
@@ -532,7 +532,7 @@ jobs:
           overwrite: true
       - name: Upload deferred shows (BRO-4859)
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: gather-deferred-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
           path: ${{ runner.temp }}/deferred-shows.txt
@@ -568,14 +568,14 @@ jobs:
       # is load-bearing: an exact key hit skips the save, and this entry must be
       # the newest so the next run's `restore-keys: bd-serp-cache-` prefix picks it.
       - name: Restore newest SERP cache (fallback for a shard whose upload failed)
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: /tmp/bd-serp-cache
           key: bd-serp-cache-${{ github.run_id }}-merged-${{ github.run_attempt }}
           restore-keys: |
             bd-serp-cache-
       - name: Download shard caches
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           pattern: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-*
           path: /tmp/serp-shards
@@ -604,7 +604,7 @@ jobs:
           done
       # hygiene-cache-runid-ok: see the restore step above; same key, same reason.
       - name: Save merged SERP cache
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@caa296126883cff596d87d8935842f9db880ef25 # v5
         with:
           path: /tmp/bd-serp-cache
           key: bd-serp-cache-${{ github.run_id }}-merged-${{ github.run_attempt }}
@@ -623,7 +623,7 @@ jobs:
 
     steps:
       - name: Checkout (latest, after gather pushes)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
@@ -648,9 +648,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install dependencies
         run: npm ci
@@ -742,7 +742,7 @@ jobs:
       cancel-in-progress: false
     steps:
       - name: Checkout (latest, after all batches pushed)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
@@ -760,9 +760,9 @@ jobs:
       - name: Opening-night lease sync (BRO-4786)
         uses: ./.github/actions/opening-night-lease-sync
       - name: Setup Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: "20"
+          node-version: "22"
 
       - name: Install dependencies
         run: npm ci
@@ -908,7 +908,7 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
       - name: Checkout review-texts (private repo)
@@ -1062,7 +1062,7 @@ jobs:
       # show it was given is not re-dispatched (it would loop): it alerts.
       - name: Download deferred show lists (BRO-4859)
         if: ${{ !cancelled() }}
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@634f93cb2916e3fdff6788551b99b062d0335ce0 # v5
         with:
           # This attempt's lists only. This step runs in every attempt that is not
           # cancelled, so earlier attempts already re-dispatched their own lists;
@@ -1124,7 +1124,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Update issue (if exists)
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           script: |
             // Find and comment on the related new-show issue

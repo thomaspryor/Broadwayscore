@@ -1,5 +1,5 @@
 name: Setup Node.js
-description: Sets up Node.js 20, installs npm dependencies, and optionally configures git for bot commits
+description: Sets up Node.js 22, installs npm dependencies, and optionally configures git for bot commits
 
 inputs:
   configure-git:
@@ -11,9 +11,9 @@ runs:
   using: composite
   steps:
     - name: Setup Node.js
-      uses: actions/setup-node@v5
+      uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
       with:
-        node-version: '20'
+        node-version: '22'
         cache: 'npm'
 
     - name: Install dependencies

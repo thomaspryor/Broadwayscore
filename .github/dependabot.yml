@@ -15,7 +15,9 @@ updates:
         update-types: ["patch", "minor"]
 
   - package-ecosystem: "github-actions"
-    directory: "/"
+    # "/" covers .github/workflows; the composite actions hold their own
+    # SHA-pinned `uses:` lines (BRO-6398), so Dependabot scans them as well.
+    directories: ["/", "/.github/actions/*"]
     schedule:
       interval: "monthly"
     open-pull-requests-limit: 5

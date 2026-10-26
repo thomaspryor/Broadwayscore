@@ -38,7 +38,7 @@ jobs:
     timeout-minutes: 5
     steps:
       - name: Checkout (shallow — for the notify-failure action + script)
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         # Default fetch-depth: 1 — fast. No history needed; the compare API
         # (below) supplies parent info for the pushed commits.
 

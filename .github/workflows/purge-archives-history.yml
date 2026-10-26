@@ -39,6 +39,10 @@ concurrency:
   group: purge-archives
   cancel-in-progress: true
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   purge:
     runs-on: ubuntu-latest
@@ -88,7 +92,7 @@ jobs:
 
       - name: Full clone
         if: steps.check.outputs.skip == 'false' && steps.wait.outputs.ready == 'true'
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
           # hygiene-full-blobs-ok: git filter-repo below rewrites every historical blob, so a

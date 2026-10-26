@@ -33,7 +33,7 @@ jobs:
     if: ${{ vars.TB_INDEX_COLLECTOR_DISABLED != 'true' }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # Depth 300 keeps push-with-retry.sh's shallow boundary an ancestor of main
           # for the final ledger commit (same as scrape-stagedoor.yml, BRO-2388).
@@ -50,9 +50,9 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
           cache: 'npm'
 
       - name: Install dependencies

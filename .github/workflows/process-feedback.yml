@@ -12,6 +12,11 @@ concurrency:
   group: process-feedback
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: write
+  issues: write
+
 jobs:
   process-feedback:
     runs-on: ubuntu-latest
@@ -23,7 +28,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -33,9 +38,9 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Install dependencies
         run: npm ci
@@ -85,7 +90,7 @@ jobs:
       # skip issue creation (the reader's report would otherwise sit unissued).
       - name: Create Bug Diagnosis Issues
         if: ${{ !cancelled() && steps.process.outcome == 'success' && (steps.process.outputs.has_submissions == 'true' || steps.process.outputs.has_pending_diagnoses == 'true') }}
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         env:
           STORE_PUSH_OUTCOME: ${{ steps.store_push.outcome }}
         with:
@@ -435,7 +440,7 @@ jobs:
       # thank-yous. This kills the daily "Feedback Digest" notification noise.
       - name: Create Needs-Review Issue (spam-flagged only)
         if: success() && steps.process.outputs.has_spam_flagged == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |

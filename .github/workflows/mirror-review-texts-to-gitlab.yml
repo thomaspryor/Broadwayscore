@@ -14,6 +14,10 @@ concurrency:
   group: gitlab-mirror-review-texts
   cancel-in-progress: false  # BRO-5883: a superseded run is now a cancelled() alert
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
@@ -57,7 +61,7 @@ jobs:
 
       - name: Checkout for notify action
         if: failure() || cancelled()
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             .github/actions/notify-failure

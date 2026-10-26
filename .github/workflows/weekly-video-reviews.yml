@@ -44,7 +44,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # BRO-2388 (task #466 class): depth 1000 keeps push-with-retry.sh's shallow boundary an ancestor
           # of main for this 180-min job's final ledger commit; depth-1 aborted when churn outran it.
@@ -73,7 +73,7 @@ jobs:
       # YouTube extraction needs a JS runtime since yt-dlp 2026.08 (the
       # [default] extra pulls in yt-dlp-ejs, which runs on deno).
       - name: Setup Deno
-        uses: denoland/setup-deno@v2
+        uses: denoland/setup-deno@22d081ff2d3a40755e97629de92e3bcbfa7cf2ed # v2.0.5
         with:
           deno-version: v2.x
 

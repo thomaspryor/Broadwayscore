@@ -43,7 +43,7 @@ jobs:
     # statement, so a few statements can legitimately outlast 10 minutes.
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - uses: ./.github/actions/setup-node
 
       - name: Run statements

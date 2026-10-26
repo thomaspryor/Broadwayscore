@@ -27,13 +27,17 @@ concurrency:
   group: ux-walkthrough
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   walkthrough:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
 
       - uses: ./.github/actions/setup-node
 
@@ -66,7 +70,7 @@ jobs:
 
       - name: Upload screenshot + review artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4
         with:
           name: ux-walkthrough-${{ github.run_id }}
           path: ux-walkthrough-run/
@@ -103,7 +107,7 @@ jobs:
         # the 24h schedule) so each night's fresh findings still queue, rather
         # than the router's 7-day default silencing days 2-7 of a real week.
         if: steps.findings.outputs.has_high == 'true'
-        uses: actions/github-script@v7
+        uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           FINDINGS_SUMMARY: ${{ steps.findings.outputs.summary }}

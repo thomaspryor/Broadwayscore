@@ -12,6 +12,10 @@ concurrency:
   # healthy in-flight run; the 6-hourly cadence leaves no queueing pressure.
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   mirror:
     runs-on: ubuntu-latest
@@ -88,7 +92,7 @@ jobs:
 
       - name: Checkout for notify action
         if: failure() || cancelled()
-        uses: actions/checkout@v5
+        uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             .github/actions/notify-failure

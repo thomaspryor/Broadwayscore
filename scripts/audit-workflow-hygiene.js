@@ -258,6 +258,9 @@ const {
   findStringInputInterpolation,
   findCompositeShellHazards,
   findUnboundedGitNetworkCommands,
+  findMissingTopLevelPermissions,
+  findUnpinnedActionUses,
+  findEolNodeVersions,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -845,6 +848,9 @@ async function main() {
     deadCommit: [],
     shortPushTimeout: [],
     pushNoWrite: [],
+    noTopLevelPermissions: [],
+    unpinnedUses: [],
+    eolNodeVersion: [],
     dispatchNoActionsWrite: [],
     scriptNoDispatchToken: [],
     stageWithoutCommit: [],
@@ -1023,6 +1029,24 @@ async function main() {
     if (!raw.includes('hygiene-dispatch-token-ok:')) {
       const hits = findScriptWithoutDispatchToken(raw);
       if (hits.length > 0) violations.scriptNoDispatchToken.push({ file, hits });
+    }
+
+    // ── Rule (aa): no top-level permissions block (BRO-6398) ─
+    if (!raw.includes('hygiene-permissions-ok:')) {
+      const hits = findMissingTopLevelPermissions(raw);
+      if (hits.length > 0) violations.noTopLevelPermissions.push({ file, hits });
+    }
+
+    // ── Rule (ab): external action not pinned to a commit SHA (BRO-6398) ─
+    if (!raw.includes('hygiene-pin-ok:')) {
+      const hits = findUnpinnedActionUses(raw);
+      if (hits.length > 0) violations.unpinnedUses.push({ file, hits });
+    }
+
+    // ── Rule (ac): node-version at or below EOL (BRO-6398) ─
+    if (!raw.includes('hygiene-node-ok:')) {
+      const hits = findEolNodeVersions(raw);
+      if (hits.length > 0) violations.eolNodeVersion.push({ file, hits });
     }
 
     // ── Rule (p): staged files pushed with no commit in between (BRO-4897) ─
@@ -1238,6 +1262,9 @@ async function main() {
     violations.deadCommit.length +
     violations.shortPushTimeout.length +
     violations.pushNoWrite.length +
+    violations.noTopLevelPermissions.length +
+    violations.unpinnedUses.length +
+    violations.eolNodeVersion.length +
     violations.dispatchNoActionsWrite.length +
     violations.scriptNoDispatchToken.length +
     violations.stageWithoutCommit.length +
@@ -1508,6 +1535,40 @@ async function main() {
     }
     console.error('\nFix: add `contents: write` to that job\'s (or the workflow\'s) permissions block.');
     console.error('Exempt (push goes to a different token or repo): add  # hygiene-push-perm-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.noTopLevelPermissions.length) {
+    console.error('── (aa) Workflow without a top-level `permissions:` block ─');
+    console.error('Jobs with no block run on the repository default (write-all), so any step');
+    console.error('can push, file issues and dispatch workflows with the GITHUB_TOKEN (BRO-6398).\n');
+    for (const { file } of violations.noTopLevelPermissions) console.error(`  • ${file}`);
+    console.error('\nFix: add a top-level block (start from `contents: read` + `actions: read`, add');
+    console.error('`contents: write` for root pushes, `issues: write` for issue writes, `actions: write`');
+    console.error('for dispatches). Exempt: add  # hygiene-permissions-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.unpinnedUses.length) {
+    console.error('── (ab) External action not pinned to a 40-hex commit SHA ─');
+    console.error('A tag or branch pin runs whatever the ref points at today; hijacked release');
+    console.error('tags were the Trivy / Checkmarx KICS / Mini Shai-Hulud vector (BRO-6398).\n');
+    for (const { file, hits } of violations.unpinnedUses) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: `uses: owner/repo@<40-hex sha> # vN` (git ls-remote --tags https://github.com/owner/repo refs/tags/vN).');
+    console.error('Exempt: add  # hygiene-pin-ok: <reason>  anywhere in the file.\n');
+  }
+
+  if (violations.eolNodeVersion.length) {
+    console.error('── (ac) node-version below Node 22 (EOL line, no security releases) ─');
+    console.error('Node 20 reached end of life in April 2026 and missed the 2026-10-21 security');
+    console.error('release; the scrapers on these runners read untrusted pages (BRO-6398).\n');
+    for (const { file, hits } of violations.eolNodeVersion) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      line ${h.lineNum}: ${h.text}`);
+    }
+    console.error('\nFix: node-version: \'22\' (or the shared ./.github/actions/setup-node composite).');
+    console.error('Exempt: add  # hygiene-node-ok: <reason>  anywhere in the file.\n');
   }
 
   if (violations.dispatchNoActionsWrite.length) {

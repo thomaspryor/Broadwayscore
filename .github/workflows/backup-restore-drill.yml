@@ -34,7 +34,7 @@ jobs:
       R2_BUCKET: broadwayscorecard-cold-backup
       GPG_PASSPHRASE: ${{ secrets.BACKUP_GPG_PASSPHRASE }}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           sparse-checkout: |
             scripts/backup-restore-drill.js
@@ -43,9 +43,9 @@ jobs:
             scripts/lib/discord-notify.js
             .github/actions/notify-failure
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Validate required secrets present
         run: |

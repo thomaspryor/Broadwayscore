@@ -38,12 +38,16 @@ concurrency:
   group: adhoc-ab-test-readout
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  actions: read
+
 jobs:
   readout:
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - uses: ./.github/actions/setup-node
 
       - name: Run analyze-ab-test.js (prose mode)

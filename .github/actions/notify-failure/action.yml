@@ -95,7 +95,7 @@ runs:
     # equal to that list. Fails OPEN (pages) if the policy file can't be read.
     - name: Page-worthiness policy
       id: policy
-      uses: actions/github-script@v7
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
       # Via env, not ${{ }} inside the script: this step runs for EVERY caller,
       # and a title carrying a workflow input (e.g. a show id) with a backtick
       # would otherwise break the script and leave `page` empty.
@@ -136,7 +136,7 @@ runs:
     - name: Check cooldown
       id: cooldown
       if: steps.policy.outputs.page == 'true'
-      uses: actions/github-script@v7
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
       env:
         INPUT_COOLDOWN_MINUTES: ${{ inputs.cooldown_minutes }}
         INPUT_MIN_CONSECUTIVE_FAILURES: ${{ inputs.min_consecutive_failures }}
@@ -270,7 +270,7 @@ runs:
       # BRO-5479: email_with_auto_fix also sends when the gate only held the
       # alert (held=true means it emailed nothing), never after its own email.
       if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true' && (steps.autofix.outputs.handled != 'true' || (inputs.email_with_auto_fix == 'true' && steps.autofix.outputs.held == 'true'))
-      uses: actions/github-script@v7
+      uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7
       env:
         RESEND_API_KEY: ${{ inputs.resend_api_key }}
         OWNER_EMAIL: ${{ inputs.owner_email }}

@@ -21,16 +21,22 @@ concurrency:
   group: posthog-monday
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  actions: read
+  issues: write
+  pull-requests: write
+
 jobs:
   weekly-insights:
     name: Weekly Insights → GitHub Issue
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install dependencies
         run: npm ci --ignore-scripts
       - name: Query PostHog and create GitHub issue
@@ -53,10 +59,10 @@ jobs:
     needs: weekly-insights
     if: always()
     steps:
-      - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install dependencies
         run: npm ci --ignore-scripts
       - name: Analyze friction and file Linear issues
@@ -98,7 +104,7 @@ jobs:
           git config --global http.lowSpeedLimit 1000
           git config --global http.lowSpeedTime 45
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           fetch-depth: 0
           # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
@@ -107,9 +113,9 @@ jobs:
           # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
           # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
           filter: blob:none
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
       - name: Install dependencies
         run: npm ci --ignore-scripts
       - name: Configure git

@@ -28,6 +28,10 @@ concurrency:
   group: analyze-traffic-sources
   cancel-in-progress: false
 
+permissions:
+  contents: write
+  actions: read
+
 jobs:
   analyze:
     runs-on: ubuntu-latest
@@ -37,7 +41,7 @@ jobs:
     # backfill) under its own 12-minute budget, hence 30.
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
       - uses: ./.github/actions/setup-node
       # shows.json gives the summary real show titles and open/closed status
       # ("Electra / Persona (West End) page", "the show closed, so expected").
@@ -148,7 +152,7 @@ jobs:
 
       - name: Upload report + raw data
         if: always()
-        uses: actions/upload-artifact@v5
+        uses: actions/upload-artifact@330a01c490aca151604b8cf639adc76d48f6c5d4 # v5
         with:
           name: traffic-sources-${{ github.run_id }}
           path: traffic-analysis/

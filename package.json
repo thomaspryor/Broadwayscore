@@ -77,11 +77,12 @@
     "@supabase/supabase-js": "^2.118.0",
     "@tailwindcss/typography": "^0.5.20",
     "@vercel/analytics": "^1.6.1",
-    "@vercel/og": "^0.11.1",
+    "@vercel/og": "^1.0.3",
     "@vercel/speed-insights": "^1.3.1",
     "cheerio": "^1.2.0",
     "fuse.js": "^7.5.0",
     "groq": "^3.99.0",
+    "js-yaml": "^4.3.2",
     "next": "15.5.28",
     "next-sanity": "^9.12.3",
     "posthog-js": "^1.438.12",
@@ -119,9 +120,12 @@
     "vercel": "^50.44.0"
   },
   "overrides": {
-    "cheerio": {
-      "undici": "^6.24.1"
-    },
-    "tar": "^7.5.21"
+    "tar": "^7.5.21",
+    "undici@5": "5.29.0",
+    "undici@6": "6.29.1",
+    "undici@7": "7.30.1",
+    "brace-expansion@2": "2.1.7",
+    "brace-expansion@5": "5.0.12",
+    "@grpc/grpc-js": "1.14.6"
   }
 }

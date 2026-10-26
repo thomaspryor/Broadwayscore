@@ -54,16 +54,16 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           ref: main
 
       # Plain setup-node, not ./.github/actions/setup-node: that action runs
       # npm ci, and this script needs only Node built-ins and in-repo files.
       # Skipping the install keeps the every-15-min run to seconds.
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Send welcome emails
         env:
