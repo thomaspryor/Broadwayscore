@@ -43,14 +43,22 @@ export const EXISTING_SUBSCRIBER_KEYS = [
 ] as const;
 export const EXISTING_SESSION_KEY = SUPABASE_STORAGE_KEY;
 
+/** Why a reader sees the money data without the gate (money_gate_bypassed). */
+export type MoneyBypassReason = 'account' | 'subscriber' | 'unlocked';
+
+/** 'account' or 'subscriber' when this browser belongs to an existing reader. */
+export function existingAccessReason(getItem: (key: string) => string | null): MoneyBypassReason | null {
+  try {
+    if (getItem(EXISTING_SESSION_KEY) !== null) return 'account';
+    return EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true') ? 'subscriber' : null;
+  } catch {
+    return null;
+  }
+}
+
 /** True when this browser already belongs to a subscriber or account holder. */
 export function hasExistingAccess(getItem: (key: string) => string | null): boolean {
-  try {
-    if (getItem(EXISTING_SESSION_KEY) !== null) return true;
-    return EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true');
-  } catch {
-    return false;
-  }
+  return existingAccessReason(getItem) !== null;
 }
 
 export const MONEY_ROLES = [
@@ -77,29 +85,38 @@ export function isValidMoneyEmail(email: string): boolean {
   return e.length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
 }
 
-export function isMoneyUnlocked(): boolean {
-  if (typeof window === 'undefined') return false;
+/**
+ * Why this browser is unlocked, or null when it is not. A money-list sign-up
+ * ('unlocked') wins over an account or subscription so reach by source adds up.
+ */
+export function moneyUnlockReason(): MoneyBypassReason | null {
+  if (typeof window === 'undefined') return null;
+  let existing: MoneyBypassReason | null = null;
   try {
-    if (localStorage.getItem(MONEY_UNLOCK_KEY) === '1') return true;
-    if (hasExistingAccess((k) => localStorage.getItem(k))) return true;
+    if (localStorage.getItem(MONEY_UNLOCK_KEY) === '1') return 'unlocked';
+    existing = existingAccessReason((k) => localStorage.getItem(k));
   } catch { /* storage blocked: fall through to the cookie */ }
   try {
-    return new RegExp(`(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)`).test(document.cookie);
-  } catch {
-    return false;
-  }
+    if (new RegExp(`(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)`).test(document.cookie)) return 'unlocked';
+  } catch { /* noop */ }
+  return existing;
+}
+
+export function isMoneyUnlocked(): boolean {
+  return moneyUnlockReason() !== null;
 }
 
 /**
  * Unlocks the gates on the current page only, for an existing reader
  * (sign-in or subscription mid-visit). Persists nothing: the next load
- * re-derives it from the same flags.
+ * re-derives it from the same flags. Returns true when it unlocked the page.
  */
-export function unlockForExistingReader(): void {
-  if (typeof window === 'undefined') return;
-  if (document.documentElement.hasAttribute(MONEY_UNLOCK_ATTR)) return;
+export function unlockForExistingReader(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (document.documentElement.hasAttribute(MONEY_UNLOCK_ATTR)) return false;
   document.documentElement.setAttribute(MONEY_UNLOCK_ATTR, '');
   window.dispatchEvent(new Event(MONEY_UNLOCKED_EVENT));
+  return true;
 }
 
 /** Unlocks every money gate in this browser and on the current page. */
