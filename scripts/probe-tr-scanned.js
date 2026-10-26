@@ -125,7 +125,7 @@ function tesseractStats(imgPath) {
             if (shown >= 6 || !l.toUpperCase().includes(want) || !l.includes(want)) return;
             shown++;
             console.log(`  T${mode} @${i}/${all.length}`);
-            all.slice(Math.max(0, i - 2), i + (parseInt(nl, 10) || 20)).forEach((x, k) => console.log(`    ${k - 2}`, JSON.stringify(mask(x))));
+            all.slice(Math.max(0, i - 2), i + Math.min(parseInt(nl, 10) || 20, 25)).forEach((x, k) => console.log(`    ${k - 2}`, JSON.stringify(mask(x))));
           });
           if (!shown) console.log(`  T${mode} no caps line holding ${want}`);
         }

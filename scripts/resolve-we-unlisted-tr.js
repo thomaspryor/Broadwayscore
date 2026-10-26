@@ -152,8 +152,9 @@ function pdfHeaderFor(text, title, venue, opts = {}) {
   const want = pdfTitleKey(title);
   if (!want) return null;
   const variants = [...new Set([want.replace(/^THE /, ''), `THE ${want.replace(/^THE /, '')}`])].filter(v => v !== want);
-  const runHead = pdfRunHeadFor(text, title, venue);
-  if (runHead) return runHead;
+  // 2015-16 volumes print the run above the heading (BRO-6343); other eras try it last, after their own formats.
+  const runHead = runHeadScan(text, title, venue);
+  if (runHead && RUN_HEAD_VOLUMES.has(Number(opts.volume))) return runHead.header || null; // a failed scan: no other path may guess
   const lines = String(text || '').split('\n');
   let period;
   for (const keys of [new Set([want]), new Set(variants)]) {
@@ -187,9 +188,10 @@ function pdfHeaderFor(text, title, venue, opts = {}) {
     }
   }
   return pdfContentsRowFor(text, want, variants, opts.page) || pdfIndexRowFor(text, want, variants, opts.volume, opts.page)
-    || pdfOpeningsFor(text, want, variants, venue);
+    || pdfOpeningsFor(text, want, variants, venue) || (runHead && runHead.header) || null;
 }
 
+const RUN_HEAD_VOLUMES = new Set([35, 36]);
 const RUN_LINE = /^(\d{1,2})(?:\s+([A-Za-z]+)(?:\s*(\d{4}))?)?\s*[–—-]\s*(\d{1,2})\s+([A-Za-z]+)\s*(\d{4})$/;
 const RUN_LINE_SINGLE = /^(\d{1,2})\s+([A-Za-z]+)\s*(\d{4})$/;
 
@@ -206,20 +208,31 @@ const RUN_LINE_SINGLE = /^(\d{1,2})\s+([A-Za-z]+)\s*(\d{4})$/;
  * sit directly between it and the heading. Conflicting blocks fail closed.
  */
 function pdfRunHeadFor(text, title, venue) {
+  const r = runHeadScan(text, title, venue);
+  return r && r.header ? r.header : null;
+}
+
+/** pdfRunHeadFor's scan: {header}, {failed: reason} (ambiguous or unreadable: no other path may guess), or null (no run head). */
+function runHeadScan(text, title, venue) {
   const want = pdfTitleKey(title);
   if (!want || !venue) return null;
   const variants = [...new Set([want.replace(/^THE /, ''), `THE ${want.replace(/^THE /, '')}`])].filter(v => v !== want);
   const wantedVenue = venueFamily(trVenueName(venue));
   const lines = String(text || '').replace(/\f/g, '\n').split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
   const mon = m => m.slice(0, 3);
+  const DAY = 86400000;
+  let period;
   for (const keys of [new Set([want]), new Set(variants)]) {
     const matches = new Set();
+    let failed = null;
     for (let i = 2; i < lines.length; i++) {
       const line = lines[i];
       if (line !== line.toUpperCase() || !keys.has(capsKey(line))) continue;
       const venueLine = lines[i - 2];
       if (venueLine !== venueLine.toUpperCase() || !/[A-Z]{3}/.test(venueLine)) continue;
       if (venueFamily(trVenueName(venueLine)) !== wantedVenue) continue;
+      // "ROYAL COURT, LIVERPOOL" reduces to the same family as the London house: a city suffix must still be London.
+      if (venueLine.includes(',') && !isLondonVenue(venueLine, { pdfEra: true })) continue;
       const run = lines[i - 1].replace(/([A-Za-z])(\d{4})\b/g, '$1 $2');
       let start;
       let close = null;
@@ -229,18 +242,27 @@ function pdfRunHeadFor(text, title, venue) {
         close = readPdfDate(r[4], r[5], endYear);
         const startMon = r[2] || r[5];
         start = readPdfDate(r[1], startMon, r[3] || endYear);
-        if (start && close && !r[3] && start > close) start = readPdfDate(r[1], startMon, endYear - 1);
-        if (!start || !close || start > close) return null;
+        // A yearless start after its close is the year before only when its month is later ("15 December – 16 January
+        // 2016") and the run stays under ~10 months; a day-only or same-month reversal ("30 – 2 July") is a misread.
+        if (start && close && !r[3] && start > close) {
+          start = r[2] && start.slice(5, 7) > close.slice(5, 7) ? readPdfDate(r[1], startMon, endYear - 1) : null;
+          if (start && Date.parse(close) - Date.parse(start) > 300 * DAY) start = null;
+        }
+        if (!start || !close || start > close) { failed = `unreadable run line "${run}"`; continue; }
+        period = period === undefined ? issuePeriodAnyLabel(text) : period;
+        if (period && start === period.start && close === period.end) continue; // the issue's own period, not a run
         matches.add(`${want}\nPress night ${Number(r[1])} ${mon(startMon)} ${start.slice(0, 4)}\nCloses ${Number(r[4])} ${mon(r[5])} ${close.slice(0, 4)}`);
         continue;
       }
-      const s = run.match(RUN_LINE_SINGLE);
-      if (!s) continue;
-      start = readPdfDate(s[1], s[2], s[3]);
-      if (!start) return null;
-      matches.add(`${want}\nPress night ${Number(s[1])} ${mon(s[2])} ${s[3]}`);
+      const sd = run.match(RUN_LINE_SINGLE);
+      if (!sd) continue;
+      start = readPdfDate(sd[1], sd[2], sd[3]);
+      if (!start) { failed = `unreadable run line "${run}"`; continue; }
+      matches.add(`${want}\nPress night ${Number(sd[1])} ${mon(sd[2])} ${sd[3]}`);
     }
-    if (matches.size) return matches.size === 1 ? [...matches][0] : null;
+    if (failed) return { failed };
+    if (matches.size > 1) return { failed: `${matches.size} conflicting run heads` };
+    if (matches.size) return { header: [...matches][0] };
   }
   return null;
 }
@@ -543,15 +565,15 @@ function searchTitles(title) {
 
 /**
  * --resume keeps a finished row unless it errored or is a PDF-era match
- * whose header lacks a press night and close: a parser fix (BRO-6343) must
+ * whose header has no labelled press night: a parser fix (BRO-6343) must
  * reach those rows, and a header like "12 - 25 February 2016" (the issue's
  * own period) is no run. Unmatched rows and complete headers are kept.
  */
 function resumeKeeps(row) {
   if (!row || row.error) return false;
   if (!row.tr || !/\/volume\/|\/issue\//.test(row.tr.link || '')) return true;
-  const d = parseTrHeaderDates(row.header);
-  return Boolean(d.openingDate && d.closingDate && /^Press night [^\n]+\nCloses /m.test(row.header || ''));
+  // a labelled press night is final (a run still open has no close to find); "opening 28 Jul" beside a banner is not
+  return Boolean(parseTrHeaderDates(row.header).openingDate && /^Press night \d/im.test(row.header || ''));
 }
 
 const DATELESS_KEY = 'dateless';
@@ -676,15 +698,16 @@ async function main() {
         if (fs.readFileSync(tmp).subarray(0, 5).toString() !== '%PDF-') throw new Error('download is not a PDF (login expired?)');
         // -layout keeps header lines whole on single-column pages; -raw is
         // the fallback for two-column pages (same order as extract-theatre-record.js).
+        const pageNo = (link.match(/\/page\/(\d+)/) || [])[1];
+        const volNo = (link.match(/\/volume\/(\d+)/) || [])[1];
         for (const mode of ['-layout', '-raw']) {
           const text = execFileSync('pdftotext', [mode, tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
-          const pageNo = (link.match(/\/page\/(\d+)/) || [])[1];
-          const volNo = (link.match(/\/volume\/(\d+)/) || [])[1];
           if (mode === '-layout') {
             // 2015-16 run heads (venue / run / title) only read in order in -raw text (BRO-6343).
             const rawText = execFileSync('pdftotext', ['-raw', tmp, '-'], { maxBuffer: 50 * 1024 * 1024 }).toString();
-            const runHead = pdfRunHeadFor(rawText, title, venue);
-            if (runHead) return runHead;
+            const runHead = RUN_HEAD_VOLUMES.has(Number(volNo)) ? runHeadScan(rawText, title, venue) : null;
+            if (runHead && runHead.failed) { console.log(`    [-raw] run head: ${runHead.failed}`); return null; }
+            if (runHead) return runHead.header;
           }
           const h = pdfHeaderFor(text, title, venue, { page: pageNo ? Number(pageNo) : null, volume: volNo ? Number(volNo) : null });
           const d = parseTrHeaderDates(h);
