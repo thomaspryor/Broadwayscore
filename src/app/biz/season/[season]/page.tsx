@@ -181,7 +181,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
                   className="text-xs text-gray-500"
                   title="Capitalization of the closed shows that had not recouped (public figures, else our estimates). Some of it came back to investors; each show's page has our estimate of how much."
                 >
-                  In closed shows that hadn't recouped
+                  In closed shows that hadn&apos;t recouped
                 </div>
                 <div className="text-xs text-gray-500">
                   {outcome.closedUnrecoupedShows} show{outcome.closedUnrecoupedShows === 1 ? '' : 's'}
