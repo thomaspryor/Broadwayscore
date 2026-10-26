@@ -759,20 +759,6 @@
     "queuedAt": "2026-10-26T14:34:03.542Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-26.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T15:01:22.429Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6339-mvpcbpns",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6339-mvpcbpns",
     "description": "land.yml did not land land/job/linear-BRO-6339-mvpcbpns: the rebase gate went red at 59f9b7d4dd. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6339-mvpcbpns @ 59f9b7d4dd (origin/land/job/linear-BRO-6339-mvpcbpns) → origin/main @ 4eee2ef2ef REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 4eee2ef2ef: Rebasing (1/2) error: could not apply c2a6fb68b69... VISUAL-OK-1440: BRO-6339 money gate rejects fake emails (MX check, disposable, junk, typo suggestion) + RPC mirror hint: Resolve all conflicts  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40339713434",
@@ -968,5 +954,33 @@
       }
     ],
     "queuedAt": "2026-10-26T15:13:22.879Z"
+  },
+  {
+    "conditionKey": "corpus-drift:contradicted-flag-basis",
+    "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+    "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 2862 shows scanned, 1 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T15:40:45.091Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T15:40:45.149Z"
   }
 ]
