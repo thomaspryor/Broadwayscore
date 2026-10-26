@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-26T10:00:58.476Z",
+  "generated": "2026-10-26T11:15:37.609Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 34,
+  "count": 37,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -71,6 +71,13 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "isabel-off-broadway-2024",
+      "loserFile": "mail-on-sunday--unknown.json",
+      "targetFile": "daily-mail--unknown.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--unknown.json was flagged invalid after mail-on-sunday--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -148,6 +155,13 @@
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
       "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+      "loserFile": "patch--unknown.json",
+      "targetFile": "patch--sabrina-blandon.json",
+      "reason": "orphaned-duplicate-heal: patch--sabrina-blandon.json was flagged invalid after patch--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -240,6 +254,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "isabel-off-broadway-2024",
+      "loserFile": "mail-on-sunday--unknown.json",
+      "targetFile": "daily-mail--unknown.json",
+      "reason": "orphaned-duplicate-heal: daily-mail--unknown.json was flagged invalid after mail-on-sunday--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
