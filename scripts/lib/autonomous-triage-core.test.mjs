@@ -81,7 +81,7 @@ test('checkableDone safe-command allowlist (prompt-injection gate)', () => {
     'npx tsx --test tests/unit/a.test.ts tests/unit/b.test.mjs',
     'npx tsx --test --test-timeout 30000 tests/unit/foo.test.ts',
     'npx tsc --noEmit',
-    'npx next lint',
+    'npm run lint',
     'test -f docs/triage-queue-format.md',
     // digest-autofix row-absence probe: single base64url token only
     'node scripts/check-health-row-absent.js --row-b64 V29ya2Zsb3cgcmVwZWF0LWZhaWx1cmU',
@@ -143,7 +143,7 @@ test('extractCheckPaths pulls file args out of each safe-check form', () => {
   assert.deepEqual(extractCheckPaths('node --test tests/unit/a.test.mjs tests/unit/b.test.mjs'), ['tests/unit/a.test.mjs', 'tests/unit/b.test.mjs']);
   assert.deepEqual(extractCheckPaths('test -f docs/x.md'), ['docs/x.md']);
   assert.deepEqual(extractCheckPaths('npx tsc --noEmit'), []);
-  assert.deepEqual(extractCheckPaths('npx next lint'), []);
+  assert.deepEqual(extractCheckPaths('npm run lint'), []);
 });
 
 test('resolveCheckPaths: path exists as-given → unchanged, no correction flagged', () => {

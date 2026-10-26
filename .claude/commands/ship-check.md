@@ -63,7 +63,7 @@ Run all of these simultaneously via Bash:
 
 **Next.js:**
 1. **TypeScript check:** `npx tsc --noEmit 2>&1 | tail -20`
-2. **Lint check:** `npx next lint 2>&1 | tail -20`
+2. **Lint check:** `npm run lint 2>&1 | tail -20`
 3. **Data validation:** `node scripts/validate-data.js 2>&1 | tail -30`
 4. **Build test (auth-aware):** Build with feature flags enabled (the public Sanity ids are set because cloud containers lack them and `/blog/[slug]` fails without them; the values are the same non-secret ones the workflows hardcode), but only include `userAccounts` if Supabase env vars are present:
    ```bash

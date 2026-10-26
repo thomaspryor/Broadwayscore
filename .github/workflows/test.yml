@@ -4608,7 +4608,7 @@ jobs:
     # before it (30953715470) cancelled this same job too.
     #
     # 5 minutes never fit the work: checkout + npm ci + a private core-data
-    # checkout + two generated manifests + TWO tsc passes + next lint + two
+    # checkout + two generated manifests + TWO tsc passes + eslint + two
     # audits. unit-tests does strictly less and already gets 10.
     # Timeouts only bound the worst case — a job that finishes in 4 minutes
     # still finishes in 4 minutes — so headroom is free and a too-tight bound
@@ -4658,7 +4658,7 @@ jobs:
         # that no CI check caught because root tsc skips scripts/. Adding
         # this gate would have failed the merge and prevented the bug.
         run: npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
-      - name: next lint
+      - name: eslint
         # if: always() so lint runs even if tsc above fails — they're independent
         # gates and either failure should surface in this job.
         # Why this gate exists: 2026-05-23 — next.config.js sets
@@ -4668,7 +4668,7 @@ jobs:
         # (no --max-warnings) matches the prior in-build behavior: errors fail,
         # existing warnings (e.g. <img> tag advisories) don't block merges.
         if: always()
-        run: npx next lint
+        run: npm run lint
       - name: Audit NFT-excluded runtime reads
         # if: always() so this runs even if tsc/lint fail above — independent gate.
         # Why this gate exists: 2026-05-23 — commit e2154a1b23 added data/cast/**

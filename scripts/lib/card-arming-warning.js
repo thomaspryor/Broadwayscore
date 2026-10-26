@@ -80,7 +80,7 @@ const SAFE_FORM_EXAMPLES =
   'Allowed safe forms (scripts/lib/autonomous-triage-core.js SAFE_CHECK_FORMS):\n' +
   '  - `node --test tests/unit/thing.test.mjs` (a test file the work adds or extends)\n' +
   '  - `npx tsx --test tests/unit/thing.test.ts` (when the test imports a TS module)\n' +
-  '  - `npx tsc --noEmit` / `npx next lint`\n' +
+  '  - `npx tsc --noEmit` / `npm run lint`\n' +
   '  - `test -f scripts/new-file.js`\n' +
   'Note what is NOT allowed: an arbitrary `node scripts/whatever.js --flag` invocation, a bare\n' +
   'file path, a grep, or a source location like `scripts/foo.js:80`. Check your command with\n' +
