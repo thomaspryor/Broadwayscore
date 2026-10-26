@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6282-c",
   "planId": "2def572c-e546-4004-bcd9-d8f76d70bb38",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T02:52:43.480Z",
   "submitter": {
     "name": null,
@@ -186,5 +186,89 @@
         "description": "commercial.json: dirty-dancing.sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T05:34:52.172Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for its-a-wonderful-life-a-live-radio-play"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationBasis updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCost updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostSource updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: weeklyRunningCostBasis updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for dirty-dancing"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for dirty-dancing"
+    }
+  ],
+  "executedIn": "ci"
 }
