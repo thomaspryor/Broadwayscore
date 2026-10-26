@@ -452,7 +452,7 @@ function dispatchArgvFor(taskId) {
   // simply takes the tab path in-process — this lane has no mac-only filter
   // upstream, so the explicit flag would have parked every such card as
   // "redispatch never produced a launch" (ship-check finding).
-  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless'];
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--allow-fresh-claim'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }
 

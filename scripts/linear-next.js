@@ -59,6 +59,8 @@
  *                                                            re-dispatch work that already reported back; --force does not cover it (BRO-2543)
  *   node scripts/linear-next.js --id BRO-123 --allow-marketing "<reason>"  dispatch an owner-approved Marketing/distribution issue (--force does NOT cover this; BRO-2584)
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
+  node scripts/linear-next.js --id BRO-123 --allow-fresh-claim   dispatch even though another session claimed it <6h ago
+ *   node scripts/linear-next.js --id BRO-123 --allow-fresh-claim   dispatch even though another session claimed it <6h ago
  *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch headless even when the issue needs a human to finish it
  *                                                            (the default refuses such a card loudly and points at --tab)
  *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
@@ -114,6 +116,8 @@ const {
   resolveVacuousCheck, vacuousCheckGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
+const { freshClaimGuard } = require('./lib/fresh-claim-guard.js');
+const { claimSessionRef, isSessionSpecificRef } = require('./lib/linear-session-reporting.js');
 // Cross-session work-branch collision guard (BRO-278, port of card #1281's
 // bsc-next.js check — see docs/dispatcher-safety-port-table.md row A5). Was
 // never wired into this dispatcher; combined with dispatch-guards.js's own
@@ -878,6 +882,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // returns updatedAt DESCENDING by default when no orderBy is requested,
   // so an explicit sort here is the only way to be sure "newest wins"
   // actually means newest.
+  // BRO-6262 item 5: a card another session claimed minutes ago is not ours to dispatch again.
+  {
+    const selfRef = claimSessionRef();
+    const msg = freshClaimGuard(identifier, (issue.comments && issue.comments.nodes) || [], Date.now(), { ...args, selfRef: isSessionSpecificRef(selfRef) ? selfRef : '' });
+    if (msg) { console.error(`[linear-next] ${msg}`); process.exit(1); }
+  }
   const gate = evaluateVerifiability(issue.description || '', ld.sortedCommentBodies(issue));
   if (!gate.cmd && !gate.ownerJudgment && !args['allow-unverifiable']) {
     console.error(`[linear-next] REFUSING to dispatch ${identifier}: no runnable verify command (${gate.reason}).`);
