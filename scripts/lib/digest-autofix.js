@@ -59,6 +59,7 @@
 'use strict';
 
 const fs = require('fs');
+const { FILER_REFRESH_MARKER } = require('./filer-refresh-marker.js');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
 const { numberFreeTitle } = require('./card-dedupe');
@@ -775,7 +776,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
       // change day to day, so refreshing here would just be daily spam.
       if (refreshNotesOnReattach) {
         try {
-          execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', fm[1], '--comment', notes],
+          execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', fm[1], '--comment', `${FILER_REFRESH_MARKER}\n${notes}`],
             { cwd: REPO, encoding: 'utf8', timeout: 30000 });
           log(`[digest-autofix] refreshed ${fm[1]}'s acceptance criteria via comment (fold membership may have changed)`);
         } catch (err) {
