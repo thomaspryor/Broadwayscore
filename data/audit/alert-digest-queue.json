@@ -1631,37 +1631,6 @@
     "queuedAt": "2026-10-26T04:36:56.137Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40270291743",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40270291743)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40266833664)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests, E2E Tests"
-      }
-    ],
-    "queuedAt": "2026-10-26T05:03:49.387Z"
-  },
-  {
     "conditionKey": "land:land/bro-6286-biz-hero",
     "title": "Landing blocked: unit-tests-node red on land/bro-6286-biz-hero",
     "description": "land.yml did not land land/bro-6286-biz-hero: the unit-tests-node gate went red at de46cd60cc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40269147153",
@@ -1691,6 +1660,37 @@
       }
     ],
     "queuedAt": "2026-10-26T04:45:49.636Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40273978358",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40273978358)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40272466286)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-26T05:42:51.781Z"
   },
   {
     "conditionKey": "review-gap:opening-window:dance-is-not-for-us-off-west-end-2026",
