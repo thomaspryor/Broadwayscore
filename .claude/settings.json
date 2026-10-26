@@ -82,6 +82,16 @@
         ]
       },
       {
+        "matcher": "Bash|mcp__github__actions_run_trigger",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 20,
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/land-cancel-guard.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
         "matcher": "EnterWorktree",
         "hooks": [
           {
