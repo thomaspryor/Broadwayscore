@@ -1035,5 +1035,36 @@
       }
     ],
     "queuedAt": "2026-10-26T00:39:37.483Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6258-cloud-smoke",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6258-cloud-smoke",
+    "description": "land.yml did not land land/bro-6258-cloud-smoke: the unit-tests-node gate went red at 017663e188. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40249430100",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6258-cloud-smoke"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "017663e1887fc05caaec5e750a9f4a2219162441"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40249430100"
+      }
+    ],
+    "queuedAt": "2026-10-26T00:49:14.874Z"
   }
 ]
