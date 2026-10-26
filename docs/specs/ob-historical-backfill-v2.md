@@ -39,6 +39,24 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 - **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
 - **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each.
 
+## Cohort 1 results (2026-10-26, BRO-6259): June 2024 to May 2025
+
+Process: `plan-ob-historical-cohort` via `cloud-run-script.js` in two half-window runs (211 candidates after in-catalog/gate/parse skips, 68 Playbill matches, 41 mismatches, 102 with no Playbill page), 66 promotable shows. Three add-show plans (at most 25 actions each), landed and applied. Gathered in 6 groups of about 11 (`max_tier=3`, `spend_purpose=historical-backfill`), each followed by `collect-review-texts.yml` and a show-scoped `llm-ensemble-score.yml`, then a cohort-wide catch-up pass (below) and `rebuild-fast.yml`.
+
+Review-count distribution (prod `analyst-shows.json`, 2026-10-26T23:40Z; a show missing from the feed counts as 0):
+
+| Reviews | 0 | 1-2 | 3-4 | 5-9 | 10+ | 3+ | Total reviews |
+|---|---|---|---|---|---|---|---|
+| Before catch-up (18:59Z) | 16 | 16 | 15 | 9 | 10 | 34 (52 percent) | 264 |
+| Final | 7 | 13 | 19 | 13 | 14 | 46 (70 percent) | 363 |
+
+- Cost: $11.97 against a $13 estimate (scraping $6.52, of which a little is the cohort 2 planner runs; LLM $5.45 for 236 newly scored reviews). About $0.18 a show.
+- Wall-clock: about 17 hours, nearly all gather time and deferral hops.
+- Why the catch-up mattered: gather-reviews.js defers shows past its 35-minute budget, and the follow-up job re-dispatches them in a new gather run (28 of 66 shows went through hops). A hop's rebuild only triggers text collection above 20 pending reviews, so small hops leave reviews uncollected and unscored until the cron. One cohort-wide collect, score and rebuild pass after the last hop moved 9 shows off zero and added 99 reviews.
+- Still at 0: Communion, On Beckett, Alexandria, Safe House, Elephant & Piggie's We Are in a Play!, The Beautiful Land I Seek, Duality. Mostly small or limited runs with little critical coverage.
+
+Runbook changes for cohorts 2 and 3 (prevention for the deferral gap): gather about 6 shows per run so fewer shows defer, and always run the cohort-wide catch-up (`collect-review-texts.yml` with `show_filter`, show-scoped `llm-ensemble-score.yml`, `rebuild-fast.yml`) after every group and deferral hop has finished, before recording the distribution.
+
 ## Gap cohort results (2026-10-25, BRO-6153): June 2025 to February 2026
 
 Process (all existing tools, no new code): TheaterMania WP JSON listings for the window, minus shows already in the catalog, minus festival/reading/benefit titles, closed 90+ days, run 14+ days, giving 125 candidates. `validate-show-venue.js --candidates-file` via `cloud-run-script.js` gave 55 Playbill matches, 22 mismatches (mostly classics where Playbill points at another production) and 48 with no Playbill page. Playbill pages were fetched directly (curl, free) and parsed with `parseFactDates` / `parseTitleVenueYear`. `findTmSameTitleShow` + `checkForDuplicate` dropped 4 already-catalogued runs. 48 add-show actions in five 10-action plans (`buildPlans` from `new-fix-plan.js`), applied, gathered in 4 groups of 12, then `collect-review-texts.yml` and a show-scoped `llm-ensemble-score.yml` per group, then `rebuild-fast.yml`.
