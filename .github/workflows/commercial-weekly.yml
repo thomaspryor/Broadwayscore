@@ -192,6 +192,13 @@ jobs:
           fi
           node scripts/sweep-pending-commercial.js $ARGS
 
+      - name: Report pending-review backlog (count + oldest age)
+        # BRO-6336: 180 entries sat unreviewed for four months. Read-only; shows the queue size and the oldest
+        # entry's age on the job summary (in a dry run it is the state before the sweep).
+        if: always()
+        continue-on-error: true
+        run: node scripts/pending-review-backlog.js
+
       - name: Linear sweep — surface recouped claims
         # BRO-3487: was "Notion sweep", filing onto the retired board via
         # notify-pending-commercial-notion.js. Replaced with the Linear
