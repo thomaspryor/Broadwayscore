@@ -65,3 +65,10 @@ test('cmdReport refuses (exit 6) before posting a comment', async () => {
     process.exit = origExit; console.error = origErr; Object.assign(linear, orig);
   }
 });
+
+test('kill switch OWNER_QUESTION_GUARD_DISABLED=1 disables the guard', () => {
+  process.env.OWNER_QUESTION_GUARD_DISABLED = '1';
+  try {
+    assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'Owner decision needed.' }).hidden, false);
+  } finally { delete process.env.OWNER_QUESTION_GUARD_DISABLED; }
+});

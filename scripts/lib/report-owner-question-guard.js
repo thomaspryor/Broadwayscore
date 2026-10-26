@@ -25,6 +25,7 @@ const GUARDED_STATUSES = new Set(['paused', 'blocked', 'in-review']);
  * @returns {{hidden: boolean, reason?: string}}
  */
 function checkHiddenOwnerQuestion({ status, summary, verification, description } = {}) {
+  if (process.env.OWNER_QUESTION_GUARD_DISABLED === '1') return { hidden: false }; // kill switch
   if (!GUARDED_STATUSES.has(status)) return { hidden: false };
   const { namesOwnerHold } = require('./cloud-worker-pick.js');
   const reportText = [summary, verification].filter(Boolean).join('\n');
