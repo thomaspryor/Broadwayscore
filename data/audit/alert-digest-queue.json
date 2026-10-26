@@ -1004,5 +1004,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T23:51:26.784Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6219-web-alerts",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6219-web-alerts",
+    "description": "land.yml did not land land/bro-6219-web-alerts: the unit-tests-node gate went red at 35a01e13ac. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40248653007",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6219-web-alerts"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "35a01e13ac77b2ca3fa72a4bde241f8dc66ea972"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40248653007"
+      }
+    ],
+    "queuedAt": "2026-10-26T00:39:37.483Z"
   }
 ]
