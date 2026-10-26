@@ -245,15 +245,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T07:34:11.818Z",
-      "lastSeen": "2026-10-26T07:34:11.818Z",
-      "lastNotifiedAt": "2026-10-26T07:34:11.818Z",
-      "lastSurfacedAt": "2026-10-26T07:34:11.818Z",
+      "incidentOpenedAt": "2026-10-26T07:11:52.509Z",
+      "lastSeen": "2026-10-26T07:49:42.205Z",
+      "lastNotifiedAt": "2026-10-26T07:11:52.509Z",
+      "lastSurfacedAt": "2026-10-26T07:11:52.509Z",
       "notifyCount": 172,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -26232,7 +26233,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
       "firstSeen": "2026-10-24T21:18:01.551Z",
       "incidentOpenedAt": "2026-10-25T20:34:41.904Z",
-      "lastSeen": "2026-10-26T07:34:11.807Z",
+      "lastSeen": "2026-10-26T07:49:42.193Z",
       "lastNotifiedAt": "2026-10-25T20:34:41.904Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
@@ -26245,7 +26246,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
       "absentRunIds": [],
-      "silentRefires": 17
+      "silentRefires": 18
     },
     "land:land/bro-6158-plans": {
       "status": "resolved",
@@ -27236,7 +27237,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:422359c5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every weekly cost in commercial.json\"",
       "firstSeen": "2026-10-26T06:00:36.141Z",
@@ -27254,9 +27255,12 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346"
       },
       "absentRunIds": [
-        "40279736293",
-        "40283597957"
-      ]
+        "40278290159",
+        "40281346073",
+        "40285210665"
+      ],
+      "resolvedAt": "2026-10-26T07:49:42.175Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-2710-safe-write-3": {
       "status": "open",
