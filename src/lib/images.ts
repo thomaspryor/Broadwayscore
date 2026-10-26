@@ -105,3 +105,27 @@ export function isOptimizableCDN(url: string | undefined): boolean {
   if (!url) return false;
   return url.includes('images.ctfassets.net') || url.includes('res.cloudinary.com');
 }
+
+// Small list/card variants (BRO-6277). Mirrors scripts/lib/show-image-caps.js
+// (VARIANT_WIDTHS / IMAGE_WIDTH_CAPS), asserted equal in scripts/lib/show-image-variants.test.mjs.
+export const VARIANT_WIDTHS = { poster: 256, thumbnail: 240 } as const;
+const ORIGINAL_WIDTH_CAPS = { poster: 480, thumbnail: 540 } as const;
+const LOCAL_SHOW_IMAGE = /^(\/images\/shows\/[^/?#]+)\/(poster|thumbnail)\.(?:webp|jpe?g|png)$/i;
+
+/** `/images/shows/<id>/sm/<role>.webp` for a canonical local poster/thumbnail URL, else ''. */
+export function getShowImageVariantUrl(url: string | undefined | null): string {
+  const m = url ? LOCAL_SHOW_IMAGE.exec(url) : null;
+  return m ? `${m[1]}/sm/${m[2].toLowerCase()}.webp` : '';
+}
+
+/**
+ * srcset for a local show image: the small variant plus the original, so a
+ * 96-128px slot downloads ~7kB instead of ~60kB. '' for anything else (CDN
+ * URLs use getCdnSrcSet). The caller must pass a matching `sizes`.
+ */
+export function getShowImageSrcSet(url: string | undefined | null): string {
+  const variant = getShowImageVariantUrl(url);
+  if (!variant || !url) return '';
+  const role = LOCAL_SHOW_IMAGE.exec(url)![2].toLowerCase() as keyof typeof VARIANT_WIDTHS;
+  return `${variant} ${VARIANT_WIDTHS[role]}w, ${url} ${ORIGINAL_WIDTH_CAPS[role]}w`;
+}

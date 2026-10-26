@@ -9,6 +9,57 @@ const IMAGE_WIDTH_CAPS = { poster: 480, thumbnail: 540, hero: 1920 };
 
 const RESIZE_QUALITY = 80;
 
+/**
+ * Small list/card variants (BRO-6277). List and card slots render at 96-128 CSS
+ * px, so 2x is 192-256px; the originals are 480-540px. Each canonical
+ * `<show>/poster.<ext>` / `<show>/thumbnail.<ext>` gets a webp sibling at
+ * `<show>/sm/<role>.webp`. A subfolder, not a `-240` suffix, so filename-based
+ * scanners (imageRoleFromFilename, dup/aspect audits) never see the variants.
+ * src/lib/images.ts mirrors these numbers (tested for equality).
+ */
+const VARIANT_WIDTHS = { poster: 256, thumbnail: 240 };
+const VARIANT_DIR = 'sm';
+const VARIANT_QUALITY = 78;
+
+/** Canonical (unsuffixed) role files only: poster.webp / thumbnail.jpg, not hero or thumbnail-v2. */
+function variantRoleFromFilename(filename) {
+  const m = /^(poster|thumbnail)\.(webp|jpe?g|png)$/i.exec(filename);
+  return m ? m[1].toLowerCase() : null;
+}
+
+/** Absolute path of the variant for an original at `absPath` (always .webp). */
+function variantPathFor(absPath) {
+  const path = require('path');
+  const role = variantRoleFromFilename(path.basename(absPath));
+  return role ? path.join(path.dirname(absPath), VARIANT_DIR, `${role}.webp`) : null;
+}
+
+/**
+ * Write the variant for the original at `absPath`. Never enlarges; known
+ * placeholders get no variant (they must stay recognisable). Returns
+ * 'written' | 'skipped' | 'placeholder' | 'unreadable'.
+ */
+async function writeVariant(absPath, { force = false } = {}) {
+  const fs = require('fs');
+  const path = require('path');
+  const out = variantPathFor(absPath);
+  if (!out) return 'skipped';
+  const role = variantRoleFromFilename(path.basename(absPath));
+  const buf = fs.readFileSync(absPath);
+  const crypto = require('crypto');
+  const { PLACEHOLDER_FILE_HASHES } = require('./show-images');
+  if (PLACEHOLDER_FILE_HASHES.has(crypto.createHash('md5').update(buf).digest('hex'))) return 'placeholder';
+  if (!force && fs.existsSync(out) && fs.statSync(out).mtimeMs >= fs.statSync(absPath).mtimeMs) return 'skipped';
+  try {
+    const small = await require('sharp')(buf).rotate()
+      .resize({ width: VARIANT_WIDTHS[role], withoutEnlargement: true })
+      .webp({ quality: VARIANT_QUALITY }).toBuffer();
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, small);
+    return 'written';
+  } catch { return 'unreadable'; }
+}
+
 // Files whose re-encode at the cap is LARGER than the original (flat-colour PNG
 // art), so the resizer leaves them alone. Keep this list tiny; each entry needs a reason.
 const WIDTH_CAP_EXCEPTIONS = {
@@ -45,4 +96,4 @@ async function encodeToCap(buf, role, ext) {
   return img.toBuffer();
 }
 
-module.exports = { encodeToCap, IMAGE_WIDTH_CAPS, RESIZE_QUALITY, WIDTH_CAP_EXCEPTIONS, imageRoleFromFilename, exceedsWidthCap };
+module.exports = { VARIANT_WIDTHS, VARIANT_DIR, variantRoleFromFilename, variantPathFor, writeVariant, encodeToCap, IMAGE_WIDTH_CAPS, RESIZE_QUALITY, WIDTH_CAP_EXCEPTIONS, imageRoleFromFilename, exceedsWidthCap };
