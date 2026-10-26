@@ -245,16 +245,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T12:25:32.462Z",
-      "lastSeen": "2026-10-26T13:28:46.392Z",
-      "lastNotifiedAt": "2026-10-26T12:25:32.462Z",
-      "lastSurfacedAt": "2026-10-26T12:25:32.462Z",
-      "notifyCount": 174,
+      "incidentOpenedAt": "2026-10-26T13:49:09.630Z",
+      "lastSeen": "2026-10-26T13:49:09.630Z",
+      "lastNotifiedAt": "2026-10-26T13:49:09.630Z",
+      "lastSurfacedAt": "2026-10-26T13:49:09.630Z",
+      "notifyCount": 175,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "silentRefires": 2
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6763,7 +6762,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
@@ -6780,7 +6779,9 @@
         "runId": "40256915379",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
       },
-      "absentRunIds": []
+      "absentRunIds": [],
+      "resolvedAt": "2026-10-26T13:49:09.498Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -27435,7 +27436,8 @@
       "linearIdentifier": "BRO-6307",
       "silentRefires": 3,
       "absentRunIds": [
-        "40327815067"
+        "40327082307",
+        "40330416586"
       ]
     },
     "land:land/bro-6298-az-lookups": {
@@ -27548,14 +27550,15 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"findReviewsToProcess (real function) queues an aged closed-show stub inside the cut\"",
-      "firstSeen": "2026-10-26T13:28:46.027Z",
-      "incidentOpenedAt": "2026-10-26T13:28:46.027Z",
-      "lastSeen": "2026-10-26T13:28:46.027Z",
-      "lastNotifiedAt": "2026-10-26T13:28:46.027Z",
+      "firstSeen": "2026-10-26T13:23:21.343Z",
+      "incidentOpenedAt": "2026-10-26T13:23:21.343Z",
+      "lastSeen": "2026-10-26T13:49:09.613Z",
+      "lastNotifiedAt": "2026-10-26T13:23:21.343Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6328"
+      "linearIdentifier": "BRO-6328",
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-6307-mvp4vz58": {
       "status": "open",
