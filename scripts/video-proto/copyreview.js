@@ -6,7 +6,8 @@
 // usage: node copyreview.js <plan.json>   (exit 0 = pass, 1 = blocked)
 const fs = require('fs'), crypto = require('crypto');
 
-const reviewHash = P => crypto.createHash('sha1').update(P.prompt + '\n' + (P.caption || '')).digest('hex').slice(0, 12);
+// covers everything render reads from the plan, so nothing can change after review (a tamper check, not a signature)
+const reviewHash = P => { const { review, ...rest } = P; return crypto.createHash('sha1').update(JSON.stringify(rest)).digest('hex').slice(0, 12); };
 
 // AI tells we never ship, from the owner's external-copy rules
 const BANNED = [[/[—–]/, 'em or en dash'], [/\bnot (just|only)\b[^.]*\bbut\b/i, '"not just X but Y"'], [/\bit'?s not\b[^.]*,\s*it'?s\b/i, '"it\'s not X, it\'s Y"'],
@@ -15,23 +16,28 @@ const BANNED = [[/[—–]/, 'em or en dash'], [/\bnot (just|only)\b[^.]*\bbut\b
   [/\bThe \w+\? (A|An|Devastating)\b/, 'dramatic fragment']];
 const lint = t => BANNED.filter(([re]) => re.test(t)).map(([, why]) => why);
 
-// everything a rewrite must keep word for word
-function mustKeep(P) {
-  const keep = new Set();
-  (P.prompt.match(/\[[a-z ]+\]/g) || []).forEach(t => keep.add(t));
-  Object.values(P.cue || {}).forEach(c => keep.add(c));
-  (P.quotes || []).forEach(q => { keep.add(q.ex.replace(/[.!?]+$/, '')); keep.add(q.say); });
-  return [...keep];
+// everything a rewrite must keep word for word: voice tags, plus the plan's own list of facts and timing phrases
+function mustKeep(P, field = 'prompt') {
+  const keep = field === 'prompt' ? (P.prompt.match(/\[[a-z ]+\]/g) || []) : [];
+  return [...new Set([...keep, ...((P.keep && P.keep[field]) || [])])];
 }
-const NUM = /\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|\d+|[A-F](-plus|-minus|\+|-)?)\b/g;
-const nums = t => (t.match(NUM) || []).filter(x => !/^[A-F]$/.test(x)).sort().join(' ');
-const low = s => s.toLowerCase().replace(/[^a-z0-9+\- ]/g, ' ').replace(/\s+/g, ' ');
-function keepsFacts(P, field, text) {
+const NUM = /\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety|hundred|\d+|[A-F](-plus|-minus|\+|-)?)(?![\w+])/gi;
+// numbers and grades in the order they are said; a swap changes the sequence
+const nums = t => (t.match(NUM) || []).map(x => x.toLowerCase()).filter(x => !/^[a-f]$/.test(x)).join(' ');
+const low = s => ' ' + s.toLowerCase().replace(/[\u2019']/g, '').replace(/[^a-z0-9+\- ]/g, ' ').replace(/\s+/g, ' ').trim() + ' ';
+// first phrase in `keep` that is missing from `text`, or said out of order (render listens forward only)
+function outOfOrder(text, keep, ordered) {
+  const t = low(text); let at = 0;
+  for (const k of keep) { const i = t.indexOf(low(k), ordered ? at : 0); if (i < 0) return (t.includes(low(k)) ? 'out of order: ' : 'dropped: ') + k; if (ordered) at = i + low(k).length - 1; }
+  return null;
+}
+function keepsFacts(P, field, text, orig = P[field]) {
   if (!text || typeof text !== 'string') return 'empty';
-  if (nums(text) !== nums(P[field])) return `numbers changed (${nums(P[field])} vs ${nums(text)})`;
-  if (field === 'prompt') { const miss = mustKeep(P).filter(k => !low(text).includes(low(k))); if (miss.length) return 'dropped: ' + miss.join(' | '); }
-  if (field === 'caption') { const tags = P.caption.split('\n\n').slice(1).join('\n\n'); if (tags && !text.endsWith(tags)) return 'hashtags changed'; if (!text.includes('broadwayscorecard.com')) return 'dropped the site'; }
-  const bad = lint(text); return bad.length ? 'rewrite has ' + bad.join(', ') : null;
+  if (nums(text) !== nums(orig)) return `numbers changed (${nums(orig)} vs ${nums(text)})`;
+  const facts = (P.keep && P.keep[field]) || [], tags = mustKeep(P, field).filter(k => !facts.includes(k));
+  const miss = outOfOrder(text, tags, false) || outOfOrder(text, facts, field === 'prompt'); if (miss) return miss;
+  if (field === 'caption') { const tags = orig.split('\n\n').slice(1).join('\n\n'); if (tags && !text.endsWith(tags)) return 'hashtags changed'; if (!text.includes('broadwayscorecard.com')) return 'dropped the site'; }
+  const bad = lint(text); return bad.length ? 'has ' + bad.join(', ') : null;
 }
 
 const RUBRIC = `You review short social video copy for Broadway Scorecard, a site that averages theater critics' reviews into one Critic Score.
@@ -66,12 +72,12 @@ async function review(P, log = console.log) {
     if (!blocks) return { pass: true, notes: verdicts.flatMap(v => v.pass ? [] : (v.issues || []).map(i => v.m + ': ' + i)), of: reviewHash(P), rounds: round, by: verdicts.map(v => v.m), at: new Date().toISOString() };
     if (bad.length) log('  rule check: ' + bad.join(', '));
     if (round === 2) return { pass: false, of: reviewHash(P), issues: [...bad, ...verdicts.flatMap(v => v.pass ? [] : (v.issues || []).map(i => v.m + ': ' + i))] };
-    let changed = false;
-    for (const v of verdicts.filter(v => !v.pass)) for (const field of ['prompt', 'caption']) {
+    let changed = false; const done = new Set();
+    for (const v of verdicts.filter(v => !v.pass)) for (const field of ['prompt', 'caption']) { if (done.has(field)) continue;
       const t = v['rewrite_' + field]; if (!t || t === P[field]) continue;
       const why = keepsFacts(P, field, t);
       if (why) { log(`  ${v.m} ${field} rewrite rejected: ${why}`); continue; }
-      log(`  applied ${v.m} ${field} rewrite`); P[field] = t; changed = true; break;
+      log(`  applied ${v.m} ${field} rewrite`); P[field] = t; changed = true; done.add(field);
     }
     if (!changed && !bad.length) return { pass: false, of: reviewHash(P), issues: verdicts.flatMap(v => v.pass ? [] : (v.issues || []).map(i => v.m + ': ' + i)) };
   }

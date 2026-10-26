@@ -9,7 +9,10 @@ const { slim, meta, topList, breakdown, audienceGradeOf } = require('./showdata.
 const ONES = ['zero', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
 const TENS = ['', '', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 // numbers are spelled out for the voice so it never reads "67" as "six seven"
-const W = n => n < 20 ? ONES[n] : n === 100 ? 'one hundred' : TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '');
+const W = n => n < 20 ? ONES[n] : n < 100 ? TENS[Math.floor(n / 10)] + (n % 10 ? '-' + ONES[n % 10] : '')
+  : n >= 2000 && n < 2010 ? 'two thousand' + (n % 10 ? ' ' + ONES[n % 10] : '')
+  : n >= 1000 && n < 10000 && n % 1000 >= 10 ? W(Math.floor(n / 100)) + ' ' + (n % 100 === 0 ? 'hundred' : n % 100 < 10 ? 'oh-' + W(n % 100) : W(n % 100)) // years: twenty twenty-five
+  : n < 1000 ? W(Math.floor(n / 100)) + ' hundred' + (n % 100 ? ' ' + W(n % 100) : '') : String(n);
 const cap = s => s[0].toUpperCase() + s.slice(1);
 const gradeSaid = g => g.replace('+', '-plus').replace(/-$/, '-minus').replace(/^([A-F])-(?!plus|minus)/, '$1-minus');
 const article = g => /^[AEF]/.test(g) ? 'an' : 'a';
@@ -69,7 +72,7 @@ const LINES = {
   tally: ['{Tally}.', 'All in, {tally}.', 'Overall, {tally}.'],
   verdictScore: [['The Critic Score is {s}.', 'critic score'], ['That puts the Critic Score at {s}.', 'critic score'], ['That gives it a Critic Score of {s}.', 'critic score']],
   audMore: ['And audiences like it even more, with {a} {G}.', 'Audiences are even warmer, with {a} {G}.', 'Audiences like it even more and give it {a} {G}.'],
-  audLess: ['[dryly] Audiences are cooler on it, with {a} {G}.', '[dryly] Audiences are less sold, with {a} {G}.', '[dryly] Audiences are a bit cooler, with {a} {G}.'],
+  audLess: ['[dryly] Audiences are cooler on it, with {a} {G}.', '[dryly] Audiences are less sold, with {a} {G}.', '[dryly] Audiences hold back more, with {a} {G}.'],
   audSame: ['And audiences agree, with {a} {G}.', 'Audiences are right there too, with {a} {G}.', 'And audiences land in the same place, with {a} {G}.'],
   signoff: ['Every review is on Broadway Scorecard.', 'Read every review on Broadway Scorecard.', 'You can read every review on Broadway Scorecard.'],
   revealOpen: ['{N} critics weighed in on {T}.', '{N} critics have reviewed {T}.', 'What did {n} critics make of {T}?'],
@@ -95,8 +98,8 @@ const LINES = {
   capTop5: ['{L}, ranked by Critic Score. Every score is at broadwayscorecard.com', '{L}, by Critic Score. Do you agree with number one? Every score is at broadwayscorecard.com', '{L}, ranked by what critics said. The full list is at broadwayscorecard.com'],
 };
 const line = (slot, key, v) => { const o = pick(slot, LINES[slot], key); return Array.isArray(o) ? [fill(o[0], v), o[1]] : [fill(o, v), null]; };
-const tagFor = t => '#' + t.replace(/^The /, '').replace(/[^A-Za-z0-9]/g, '');
-const hashtags = (m) => [m.category === 'broadway' ? '#Broadway' : m.category.startsWith('off-broadway') ? '#OffBroadway' : '#WestEnd', tagFor(m.title), '#Theater', m.category.includes('west') ? '#London' : '#NYC'].join(' ');
+const tagFor = t => '#' + t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/^The /, '').replace(/[^A-Za-z0-9]/g, '');
+const hashtags = (m) => [m.category === 'broadway' ? '#Broadway' : m.category.startsWith('off-broadway') ? '#OffBroadway' : m.category === 'off-west-end' ? '#OffWestEnd' : '#WestEnd', tagFor(m.title), '#Theater', m.category.includes('west') ? '#London' : '#NYC'].join(' ');
 
 const quoteLine = p => `${p.against ? '[dryly] But ' : ''}${p.say} said, "${p.ex.replace(/[.!?]+$/, '')}."`;
 const tierLabel = (s, cat) => SCORE_TIER_LABELS[getScoreTierId(s, cat)];
@@ -110,7 +113,8 @@ async function plan(fmt, key, cache) {
     const parts = shows.slice().reverse().map((s, i) => `${i === 4 ? 'And number one' : 'Number ' + W(5 - i)}: ${s.title}${/[!?]$/.test(s.title) ? '' : ','} ${i === 4 ? 'with ' : ''}${W(s.score)}${i === 4 ? '!' : '.'}`);
     const v = { L: spokenTitle, l: spokenTitle[0].toLowerCase() + spokenTitle.slice(1) };
     const caption = line('capTop5', K, { L: L.title, l: L.title }) [0] + '\n\n#Broadway #Theater #NYC';
-    return { fmt, key, caption, prompt: `[excited] ${line('top5Lead', K, v)[0]} ${parts.join(' ')} ${L.endLine} ${line('top5End', K, v)[0]}` };
+    const keep = { prompt: shows.slice().reverse().flatMap((s, i) => [`number ${W(5 - i)}`, s.title, W(s.score)]), caption: [L.title] };
+    return { fmt, key, caption, keep, prompt: `[excited] ${line('top5Lead', K, v)[0]} ${parts.join(' ')} ${L.endLine} ${line('top5End', K, v)[0]}` };
   }
   const m = meta(key), p = slim(key), rv = p.rv.filter(r => Number.isFinite(r.s));
   const aud = audienceGradeOf(p); if (!aud) throw new Error(key + ': no audience grade');
@@ -126,7 +130,8 @@ async function plan(fmt, key, cache) {
     const [sc, scoreLead] = line('everyScore', K, { s: W(score) });
     const tallyCap = items.map(([k]) => `${c[k]} ${k === 'rave' ? (c[k] === 1 ? 'rave' : 'raves') : k}`).join(', ');
     const caption = line('capEvery', K, { n: N, T: m.title, tally: tallyCap, s: score, label }) [0] + '\n\n' + hashtags(m);
-    return { fmt, key, caption, cue: { score: scoreLead }, prompt: `[excited] ${line('everyOpen', K, { T: m.title, N: cap(W(N)), n: W(N) })[0]} ${lines.join(' ')} ${sc} ${label}. ${line('signoff', K, {})[0]}` };
+    const keep = { prompt: [`${W(N)} critics`, ...items.map(([k]) => k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k), scoreLead, W(score), label, 'every review'], caption: [tallyCap, `${score}`, label] };
+    return { fmt, key, caption, keep, cue: { score: scoreLead }, prompt: `[excited] ${line('everyOpen', K, { T: m.title, N: cap(W(N)), n: W(N) })[0]} ${lines.join(' ')} ${sc} ${label}. ${line('signoff', K, {})[0]}` };
   }
   const picks = await Promise.all(pickReviews(rv).map(async r => ({ o: r.o, s: r.s, against: !!r.against, say: sayOutlet(r.o), ex: await excerpt(r.q, cache) })));
   const quotes = picks.map(quoteLine).join(' ');
@@ -141,14 +146,16 @@ async function plan(fmt, key, cache) {
     const tally = items.length > 1 ? items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1] : items[0];
     const [sc, scoreLead] = line('verdictScore', K, { s: W(score) });
     const caption = line('capVerdict', K, { T: m.title, where: WHERE[m.category], night, n: N, s: score, label, Aud: audCap }) [0].replace(/^./, ch => ch.toUpperCase()) + '\n\n' + hashtags(m);
-    return { fmt, key, quotes: picks, caption, cue: { score: scoreLead, aud: 'audiences' }, prompt: `[excited] ${open} ${quotes} ${line('tally', K, { Tally: cap(tally), tally })[0]} ${sc} ${label}. ${line(dir, K, av)[0]} ${line('signoff', K, {})[0]}` };
+    const keep = { prompt: [`${W(N)} critics`, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), tally, scoreLead, W(score), label, 'audiences', G, 'every review'], caption: [`${N} critics`, `${score}`, label, audCap] };
+    return { fmt, key, quotes: picks, caption, keep, cue: { score: scoreLead, aud: 'audiences' }, prompt: `[excited] ${open} ${quotes} ${line('tally', K, { Tally: cap(tally), tally })[0]} ${sc} ${label}. ${line(dir, K, av)[0]} ${line('signoff', K, {})[0]}` };
   }
   if (fmt === 'reveal') {
     const [cnt, count] = line('revealCount', K, {}), [qi, quotesIn] = line('revealQuotes', K, {});
     const [vs, vsLead] = line('revealVs', K, { s: W(score) }), [al, audLead] = line('revealAud', K, av);
     const gap = line({ audMore: 'gapMore', audLess: 'gapLess', audSame: 'gapSame' }[dir], K, {})[0];
     const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + hashtags(m);
-    return { fmt, key, quotes: picks, caption, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]}` };
+    const keep = { prompt: [`${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review'], caption: [`${score}`, label, aud.grade] };
+    return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]}` };
   }
   throw new Error('unknown format ' + fmt);
 }
@@ -159,6 +166,7 @@ if (require.main === module) (async () => {
   const cf = path.join(outDir, 'excerpts.json'), cache = fs.existsSync(cf) ? JSON.parse(fs.readFileSync(cf, 'utf8')) : {};
   HIST_FILE = process.env.VO_HISTORY || path.join(outDir, 'phrase-history.json');
   HIST = fs.existsSync(HIST_FILE) ? JSON.parse(fs.readFileSync(HIST_FILE, 'utf8')) : {};
+  if (process.env.VO_REVIEW && !(process.env.OPENAI_API_KEY && process.env.GEMINI_API_KEY)) throw new Error('VO_REVIEW needs OPENAI_API_KEY and GEMINI_API_KEY');
   // with VO_REVIEW=1 the two-model copy review runs here, and a blocked script is redrawn with other lines (3 tries)
   let P, tries = process.env.VO_REVIEW ? 3 : 1;
   const base = JSON.stringify(HIST);
@@ -170,11 +178,10 @@ if (require.main === module) (async () => {
     P.review = await require('./copyreview.js').review(P, m => console.error(m));
     if (P.review.pass) break;
   }
-  // every phrase the renderer will listen for has to be in the script, or the render fails after paying for the voice
-  const flat = t => ' ' + t.toLowerCase().replace(/[^a-z0-9']+/g, ' ') + ' ';
-  Object.values(P.cue || {}).forEach(c => { if (!flat(P.prompt).includes(flat(c))) throw new Error(`script lost its timing phrase "${c}"`); });
+  // every fact and timing phrase must still be said, in order, or the render fails after paying for the voice
+  { const why = require('./copyreview.js').keepsFacts(P, 'prompt', P.prompt, P.prompt); if (why) throw new Error('script check: ' + why); }
   fs.mkdirSync(outDir, { recursive: true });
-  if (!process.env.VO_DRY) fs.writeFileSync(HIST_FILE, JSON.stringify(HIST, null, 1));
+  if (!process.env.VO_DRY) { fs.writeFileSync(HIST_FILE + '.tmp', JSON.stringify(HIST, null, 1)); fs.renameSync(HIST_FILE + '.tmp', HIST_FILE); } // one run at a time: last writer wins
   fs.writeFileSync(cf, JSON.stringify(cache, null, 1));
   fs.writeFileSync(path.join(outDir, name + '.plan.json'), JSON.stringify(P, null, 1));
   console.log(P.prompt);
