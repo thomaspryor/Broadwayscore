@@ -208,7 +208,7 @@ function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = fal
     takeText();
     merged.textWordCount = reviewData.fullText.split(/\s+/).filter(Boolean).length;
     for (const k of ['wrongShow', 'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
-      'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'trNoRecordForProduction']) delete merged[k];
+      'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'trNoRecordForProduction', 'wrongShowReason', 'wrongShowNote']) delete merged[k];
     merged.contentTier = reviewData.contentTier;
     merged.contentTierReason = reviewData.contentTierReason;
     markRescoreNeeded(merged, 'theatre-record: wrong-production text replaced (BRO-6154)', undefined, { requeue: true });

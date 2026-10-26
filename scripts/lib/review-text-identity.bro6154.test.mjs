@@ -41,3 +41,27 @@ test('BRO-6302 safeWriteReview honors the BRO-6154 lift (rejection is not resurr
   assert.match(out.fullText, /^King Lear/);
   assert.equal(out.needsRescore, true);
 });
+
+test('BRO-6302 a second lift works, a stale breadcrumb never re-clears a later re-flag, stuck flags go with the lift', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const { safeWriteReview } = createRequire(import.meta.url)('./review-write-guard.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bro6302b-')), 'x'); fs.mkdirSync(dir); const p = path.join(dir, 'standard--henry-hitchings.json');
+  const base = { ...rejected(), showId: 'x', outletId: 'standard', criticName: 'Henry Hitchings', source: 'theatre-record', stuckRescoreCleared: true, stuckRescoreClearedAt: '2026-10-20T00:00:00Z' };
+  fs.writeFileSync(p, JSON.stringify(base));
+  const lift1 = mergeTheatreRecordIntoExisting(base, fresh('First right text about Lear. '.repeat(40)));
+  safeWriteReview(p, lift1);
+  let out = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(out.stuckRescoreCleared, undefined);
+  // scorer re-rejects, then a later write without the flags must not clear them
+  fs.writeFileSync(p, JSON.stringify({ ...out, wrongShow: true, rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_show' }));
+  safeWriteReview(p, { ...out });
+  out = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(out.rejectionReason, 'wrong_show');
+  // a fresh second lift (newer stamp) clears again
+  const lift2 = mergeTheatreRecordIntoExisting(out, fresh('Second different right text about Lear. '.repeat(40)));
+  lift2.fullTextTrimmed.at = new Date(Date.now() + 60000).toISOString();
+  safeWriteReview(p, lift2);
+  out = JSON.parse(fs.readFileSync(p, 'utf8'));
+  assert.equal(out.rejectionReason, undefined);
+  assert.equal(out.wrongShow, undefined);
+});
