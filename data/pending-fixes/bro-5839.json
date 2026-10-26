@@ -1,175 +1,86 @@
 {
   "issueNumber": "bro-5839",
-  "planId": "77872364-1349-497c-b116-ac2fe1a26e0d",
+  "planId": "b0524f36-6cae-4714-8c45-8055717ba368",
   "status": "pending",
-  "createdAt": "2026-10-22T00:44:35.602Z",
+  "createdAt": "2026-10-26T02:56:33.255Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-5839: create the 2008 National Theatre August: Osage County page and rehome its five reviews.",
+    "summary": "BRO-5839: add the 2008 National Theatre (Lyttelton) August: Osage County run and move its five UK reviews off the Broadway 2007 row",
     "steps": [
-      "Add the separate Lyttelton show, confirmed by the National Theatre catalogue and Playbill. Use the required West End ID suffix before this new page is published.",
-      "For each named review, clear the verdict about its old folder, then immediately move it through the review-file writer. Do not rebuild between these actions.",
-      "Rebuild reviews only after every action succeeds, then verify review recovery on the new show."
+      "Add august-osage-county-west-end-2008",
+      "Move 5 review files august-osage-county-2007 -> august-osage-county-west-end-2008"
     ],
     "riskLevel": "low",
     "actions": [
       {
         "type": "add-show",
-        "distinctFrom": [
-          "august-osage-county-2007",
-          "august-osage-county-west-end-2026"
-        ],
         "show": {
-          "id": "august-osage-county-national-theatre-west-end-2008",
+          "id": "august-osage-county-west-end-2008",
           "title": "August: Osage County",
-          "slug": "august-osage-county-national-theatre-west-end-2008",
-          "venue": "Lyttelton Theatre",
-          "status": "closed",
-          "type": "play",
-          "category": "west-end",
-          "market": "west-end",
+          "slug": "august-osage-county-west-end-2008",
+          "venue": "National Theatre (Lyttelton)",
           "previewsStartDate": "2008-11-21",
           "openingDate": "2008-11-26",
           "closingDate": "2009-01-21",
-          "openingDateSource": "national-theatre",
+          "status": "closed",
+          "type": "play",
           "isRevival": false,
+          "category": "west-end",
+          "market": "west-end",
           "tags": [
             "historical"
           ],
-          "creativeTeam": [
-            {
-              "name": "Tracy Letts",
-              "role": "Playwright"
-            },
-            {
-              "name": "Anna D. Shapiro",
-              "role": "Director"
-            }
-          ],
-          "evidenceUrls": [
-            "https://catalogue.nationaltheatre.org.uk/calmview/Record.aspx?id=PERF7033&src=CalmView.Performance",
-            "https://playbill.com/article/august-osage-county-opens-at-londons-national-nov-26-com-155536"
-          ]
+          "openingDateSource": "bro-5839-card",
+          "discoverySource": "manual-user-request",
+          "images": {
+            "thumbnail": null,
+            "poster": null,
+            "hero": null
+          },
+          "theaterAddress": null,
+          "ticketLinks": [],
+          "cast": [],
+          "creativeTeam": []
         },
-        "description": "Create the separate 2008 National Theatre engagement before rehoming its five reviews."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/financialtimes--sarah-hemming.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Approve release of the old Broadway-folder verdict only as part of this immediate move to its documented 2008 National Theatre engagement."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/financialtimes--sarah-hemming.json",
-        "field": "wrongProduction",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Release the old-folder verdict immediately before moving this National Theatre review. Preserve the old reason as provenance; the explicit manual clear supersedes it and the writer recomputes its stale invalid tier."
-      },
-      {
-        "type": "review-file-op",
-        "operation": "move",
-        "sourcePath": "august-osage-county-2007/financialtimes--sarah-hemming.json",
-        "destPath": "august-osage-county-national-theatre-west-end-2008/financialtimes--sarah-hemming.json",
-        "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/independent--michaelcoveney.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Approve release of the old Broadway-folder verdict only as part of this immediate move to its documented 2008 National Theatre engagement."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/independent--michaelcoveney.json",
-        "field": "wrongProduction",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Release the old-folder verdict immediately before moving this National Theatre review. Preserve the old reason as provenance; the explicit manual clear supersedes it and the writer recomputes its stale invalid tier."
-      },
-      {
-        "type": "review-file-op",
-        "operation": "move",
-        "sourcePath": "august-osage-county-2007/independent--michaelcoveney.json",
-        "destPath": "august-osage-county-national-theatre-west-end-2008/independent--michaelcoveney.json",
-        "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/express-uk--markshenton.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Approve release of the old Broadway-folder verdict only as part of this immediate move to its documented 2008 National Theatre engagement."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/express-uk--markshenton.json",
-        "field": "wrongProduction",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Release the old-folder verdict immediately before moving this National Theatre review. Preserve the old reason as provenance; the explicit manual clear supersedes it and the writer recomputes its stale invalid tier."
+        "description": "Add the Nov 2008 National Theatre Lyttelton run of August: Osage County"
       },
       {
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/express-uk--markshenton.json",
-        "destPath": "august-osage-county-national-theatre-west-end-2008/express-uk--markshenton.json",
-        "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/sunday-telegraph--timauld.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Approve release of the old Broadway-folder verdict only as part of this immediate move to its documented 2008 National Theatre engagement."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/sunday-telegraph--timauld.json",
-        "field": "wrongProduction",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Release the old-folder verdict immediately before moving this National Theatre review. Preserve the old reason as provenance; the explicit manual clear supersedes it and the writer recomputes its stale invalid tier."
+        "destPath": "august-osage-county-west-end-2008/express-uk--markshenton.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton production, filed on the Broadway 2007 row"
       },
       {
         "type": "review-file-op",
         "operation": "move",
-        "sourcePath": "august-osage-county-2007/sunday-telegraph--timauld.json",
-        "destPath": "august-osage-county-national-theatre-west-end-2008/sunday-telegraph--timauld.json",
-        "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
+        "sourcePath": "august-osage-county-2007/financialtimes--sarah-hemming.json",
+        "destPath": "august-osage-county-west-end-2008/financialtimes--sarah-hemming.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton production, filed on the Broadway 2007 row"
       },
       {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/observer--susannah-clapp.json",
-        "field": "wrongProductionManualClear",
-        "oldValue": null,
-        "newValue": true,
-        "description": "Approve release of the old Broadway-folder verdict only as part of this immediate move to its documented 2008 National Theatre engagement."
-      },
-      {
-        "type": "review-field-edit",
-        "file": "august-osage-county-2007/observer--susannah-clapp.json",
-        "field": "wrongProduction",
-        "oldValue": true,
-        "newValue": false,
-        "description": "Release the old-folder verdict immediately before moving this National Theatre review. Preserve the old reason as provenance; the explicit manual clear supersedes it and the writer recomputes its stale invalid tier."
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/independent--michaelcoveney.json",
+        "destPath": "august-osage-county-west-end-2008/independent--michaelcoveney.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton production, filed on the Broadway 2007 row"
       },
       {
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/observer--susannah-clapp.json",
-        "destPath": "august-osage-county-national-theatre-west-end-2008/observer--susannah-clapp.json",
-        "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
+        "destPath": "august-osage-county-west-end-2008/observer--susannah-clapp.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton production, filed on the Broadway 2007 row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "august-osage-county-2007/sunday-telegraph--timauld.json",
+        "destPath": "august-osage-county-west-end-2008/sunday-telegraph--timauld.json",
+        "description": "Nov-Dec 2008 review of the National Theatre Lyttelton production, filed on the Broadway 2007 row"
       }
     ]
   }
