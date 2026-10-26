@@ -547,6 +547,16 @@ function codexBouncedRecently(comments, nowMs) {
 }
 
 /**
+ * A person's word, not the Claude worker's own session report or an automatic note. Every comment on this
+ * board posts under the owner's account, so the body decides, never the author.
+ */
+function isPersonComment(body) {
+  const { isMachineComment } = require('./cloud-worker-pick.js');
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  return !(isMachineComment(body) || parseSessionReportStatus(body) != null || /^\W*(?:Outcome\b|Auto-filed\b|Session report\b|Checkpoint\b|#+ *(?:Progress|Board worker)\b)/i.test(String(body || '')));
+}
+
+/**
  * True while a structural bounce (BRO-6144) still stands: a Codex bounce note with a structural class,
  * under STRUCTURAL_MEMORY_MS old, with no person's comment after it (the owner answered, a credential
  * arrived: the card is worth another try) and no CODEX-OK line anywhere on the card.
@@ -561,11 +571,7 @@ function structuralBounceHolds(comments, nowMs) {
   if (last < 0) return false;
   const after = sorted.slice(last + 1);
   if (after.some((c) => CODEX_OK_RE.test(String(c.body || '')))) return false;
-  // A person's word, not the Claude worker's own session report or an automatic note.
-  const { isMachineComment } = require('./cloud-worker-pick.js');
-  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
-  const isBot = (b) => isMachineComment(b) || parseSessionReportStatus(b) != null || /^\W*(?:Outcome\b|Auto-filed\b|Session report\b)/i.test(String(b || ''));
-  return !after.some((c) => !isBot(c.body));
+  return !after.some((c) => isPersonComment(c.body));
 }
 
 /**
@@ -1653,6 +1659,7 @@ module.exports = {
   bounceClassLine,
   bounceClassOf,
   structuralBounceHolds,
+  isPersonComment,
   STRUCTURAL_BOUNCE_CLASSES,
   STRUCTURAL_MEMORY_MS,
   PARTIAL_MARKER,
