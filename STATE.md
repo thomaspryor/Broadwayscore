@@ -1,9 +1,5 @@
-# BRO-6008 state (2026-10-22 16:30 ET)
-Done (committed on job/linear-BRO-6008-mvjwjxh3, tip 046c0287e94, ship-check verdict recorded):
-- fetchPage options tiers/wait/countryCode (scripts/lib/scraper.js), BD-only helper (scripts/lib/audience-page-fetch.js)
-- LBO/LTD/SeatPlan/ShowScore/WE-sweep migrated off direct BD/SB calls; baseline 13 -> 10; allowlist entries removed
-- tests/unit/scrapingbee-direct-calls.test.mjs (VERIFY) passes 10/10 on the branch; parity run on live data OK
-Remaining: LAND. origin/land/job/linear-BRO-6008-mvjwjxh3 is at the tip; land.yml run was cancelled while pending (busy queue), server-side retry pending.
-Next command (from the worktree): bash scripts/merge-worktree-to-main.sh
-Then on main: node --test tests/unit/scrapingbee-direct-calls.test.mjs ; then linear-session.js report --status=done.
-Not done: scripts/collect-review-texts.js (BRO-2964, still baselined), "Requires: SCRAPINGBEE" docs (still accurate: those scripts gate on the SB key).
+# BRO-6237 state (2026-10-26 ~09:00)
+Done: 79 counted CV-flagged reviews adjudicated by reading text. Plans data/pending-fixes/bro-6237{,-b,-c,-d}.json (8 non-reviews: reason+flag in plan a; 71 nonReviewManualClear). Audit scripts/audit-unadjudicated-cv-flags.js (+lib, test) and advisory step in audit-review-quality.yml. ship-check done (Codex + Claude reviewers, findings fixed).
+Remaining: (1) land: branch land/job/linear-BRO-6237-mvp665fr @006069dcc9 is pushed; Land run 40317951821 was cancelled while pending, waiting on land-retry-cancelled.yml. If not on main: `bash scripts/merge-worktree-to-main.sh`.
+(2) after landing, apply in order: node scripts/cloud-dispatch.js execute-approved-fix.yml -f issue_number=bro-6237 -f plan_id=676022f8-29e6-4e9f-ad47-15545d2aded5 -f mode=apply --wait ; then -b 7dfeda32-316a-4237-8ca9-1a29a84e499f ; -c 27c44e7e-3f54-472b-8e38-f6339b292f6e ; -d a5974801-ba84-453c-9441-8a5f54a57bd1
+(3) verify: rebuild reviews.json, then `node scripts/audit-unadjudicated-cv-flags.js` (expect 0; currently 75 counted).
