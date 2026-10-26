@@ -1,6 +1,7 @@
-'use strict';
-const test = require('node:test');
-const assert = require('node:assert');
+import test from 'node:test';
+import assert from 'node:assert';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 const { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, CORE_PAGE_BUDGETS, measureHtml, evaluateBudget } = require('./page-weight.js');
 
 const budget = MARKET_PAGE_BUDGETS[0];
