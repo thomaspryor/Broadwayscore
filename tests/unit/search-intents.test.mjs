@@ -6,6 +6,7 @@
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
 import { SEARCH_INTENTS, getIntentForPath, getIntentPaths, isCanonicalPath } from '../../src/config/search-intents';
 import { BROWSE_PAGES } from '../../src/config/browse-pages';
 import { GUIDE_PAGES, interpolateTemplate } from '../../src/config/guide-pages';
@@ -74,4 +75,15 @@ test('pages sharing an intent have distinct titles (advisory)', () => {
   }
   if (clashes.length) console.warn(`ADVISORY title overlap:\n  ${clashes.join('\n  ')}`);
   if (process.env.INTENT_STRICT === '1') assert.deepEqual(clashes, []);
+});
+
+test('an alias that vercel.json already redirects points at its own intent canonical', () => {
+  const { redirects } = JSON.parse(readFileSync('vercel.json', 'utf8'));
+  const bySource = new Map(redirects.map((r) => [r.source, r.destination]));
+  for (const intent of SEARCH_INTENTS) {
+    for (const path of getIntentPaths(intent)) {
+      const dest = bySource.get(path);
+      if (dest) assert.equal(dest, intent.canonical, `${path} redirects to ${dest}, intent ${intent.id} says ${intent.canonical}`);
+    }
+  }
 });
