@@ -14,6 +14,8 @@
  */
 'use strict';
 
+require('./lib/cli-help').exitOnHelp(module);
+
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
