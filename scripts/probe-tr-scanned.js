@@ -69,6 +69,52 @@ function tesseractStats(imgPath) {
 
   let ocrDone = false;
   for (const q of QUERIES) {
+    if (q.startsWith('@dump:')) {
+      // @dump:<hit path>:<pdf page>:<lines> prints short lines (headers) of one PDF page; long lines are prose and only counted
+      const [, hitPath, pg, nl] = q.split(':');
+      const tmp2 = fs.mkdtempSync(path.join(os.tmpdir(), 'trdump-'));
+      const pdf2 = path.join(tmp2, 'v.pdf');
+      const cookies2 = await context.cookies();
+      const sess2 = cookies2.find(c => c.name === 'PHPSESSID');
+      const jar2 = path.join(tmp2, 'c.txt');
+      fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
+      try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
+      if (pg === 'az') {
+        // the issue's "A-Z of productions" listing: layout lines clipped to 60 chars (title/venue/date columns, no review prose)
+        const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
+        const at = all.findIndex(l => /A-Z of productions/i.test(l));
+        console.log('DUMP az marker line', at, 'of', all.length);
+        all.slice(Math.max(at - 3, 0), Math.max(at - 3, 0) + (parseInt(nl, 10) || 100)).forEach((l, i) => console.log('  Z' + i, JSON.stringify(l.slice(0, 60))));
+        continue;
+      }
+      if (pg === 'heads') {
+        // every ALL CAPS short line with the next 3 short lines (production headers carry title, venue, dates; no prose)
+        const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
+        let shown = 0;
+        all.forEach((l, i) => {
+          const t = l.replace(/\s*\|\s*Index$/, '');
+          if (shown < (parseInt(nl, 10) || 80) && t.length >= 3 && t.length <= 60 && t === t.toUpperCase() && /[A-Z]{3}/.test(t)) {
+            shown++;
+            console.log('  H' + i, JSON.stringify([l, ...all.slice(i + 1, i + 4)].map(x => x.length > 90 ? '<prose>' : x)));
+          }
+        });
+        console.log('DUMP heads total lines', all.length);
+        continue;
+      }
+      const txt = sh('pdftotext', ['-f', pg, '-l', pg, '-layout', pdf2, '-']).split('\n');
+      console.log(`DUMP ${hitPath} pdfpage ${pg}: ${txt.length} lines`);
+      txt.slice(0, parseInt(nl, 10) || 40).forEach((l, i) => console.log('  L' + i, l.trim().length > 70 ? `<prose ${l.trim().length}>` : JSON.stringify(l.replace(/\s{3,}/g, '  |  '))));
+      continue;
+    }
+    if (q.startsWith('@')) {
+      // browse mode: print the link structure of an archive page (no prose)
+      await page.goto('https://www.theatrerecord.com' + q.slice(1), { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(1500);
+      const links = await page.evaluate(() => [...document.querySelectorAll('a')].map(a => ({ h: a.getAttribute('href') || '', t: (a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 50) })).filter(l => l.h.includes('/archive/')));
+      console.log(`BROWSE ${q}: ${links.length} archive links`);
+      for (const l of links.slice(0, 40)) console.log('  LINK', JSON.stringify(l));
+      continue;
+    }
     const url = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + q + '"')}&title=on&order=oldest`;
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(1500);
