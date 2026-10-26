@@ -768,5 +768,36 @@
       }
     ],
     "queuedAt": "2026-10-26T14:17:21.578Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6302-tr-lift-honored",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6302-tr-lift-honored",
+    "description": "land.yml did not land land/bro-6302-tr-lift-honored: the unit-tests-node gate went red at fcccf1f212. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40337518527",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6302-tr-lift-honored"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "fcccf1f212e570a183a0d23601f595163040af1b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40337518527"
+      }
+    ],
+    "queuedAt": "2026-10-26T14:34:03.542Z"
   }
 ]
