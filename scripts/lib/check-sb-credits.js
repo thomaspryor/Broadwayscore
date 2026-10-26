@@ -13,6 +13,7 @@
 
 // secret-optional: SCRAPINGBEE_API_KEY fetchSBCreditStatus returns { ok: false, reason: 'no-key' } without it (BRO-3602).
 const https = require('https');
+require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 function httpsGetJson(url, timeoutMs = 8000) {

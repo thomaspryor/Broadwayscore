@@ -1,0 +1,77 @@
+/**
+ * Route ScrapingBee calls through the cloud sandbox's egress proxy (BRO-6258).
+ *
+ * In a claude.ai cloud session Node's https module connects directly and
+ * ignores HTTPS_PROXY. Direct egress to app.scrapingbee.com answers
+ * "403 Blocked by egress policy", while the same call through the session's
+ * proxy returns 200 (the other providers happen to be reachable directly, so
+ * only ScrapingBee broke). Requiring this module patches https.request/get so
+ * a request to a ScrapingBee host with no explicit agent uses the proxy. It is
+ * a no-op everywhere else (Mac, GitHub Actions), and when https-proxy-agent
+ * is not installed.
+ *
+ * axios and follow-redirects call https.request, so one patch covers the
+ * `https.get` callers and the axios callers.
+ */
+const https = require('https');
+
+const PROXIED_HOST_RE = /(^|\.)scrapingbee\.com$/i;
+
+/**
+ * Pure: should a request to `host` go through the sandbox proxy?
+ * @param {string} host
+ * @param {Record<string,string|undefined>} env
+ */
+function shouldProxy(host, env = process.env) {
+  if (env.CLAUDE_CODE_REMOTE !== 'true') return false;
+  if (!(env.HTTPS_PROXY || env.https_proxy)) return false;
+  return PROXIED_HOST_RE.test(String(host || ''));
+}
+
+function hostOf(arg) {
+  if (!arg) return '';
+  if (typeof arg === 'string') { try { return new URL(arg).hostname; } catch { return ''; } }
+  if (arg instanceof URL) return arg.hostname;
+  return String(arg.hostname || arg.host || '').replace(/:\d+$/, '');
+}
+
+let _agent;
+function proxyAgent(env = process.env) {
+  if (_agent === undefined) {
+    try {
+      const { HttpsProxyAgent } = require('https-proxy-agent');
+      _agent = new HttpsProxyAgent(env.HTTPS_PROXY || env.https_proxy);
+    } catch { _agent = null; }
+  }
+  return _agent;
+}
+
+/** Pure-ish: add `agent` to the (url|options, options?, cb?) args when needed. */
+function withProxyAgent(args, env = process.env) {
+  const urlish = typeof args[0] === 'string' || args[0] instanceof URL;
+  const optIdx = urlish ? (typeof args[1] === 'object' && args[1] !== null ? 1 : -1) : 0;
+  const host = hostOf(urlish ? args[0] : args[0]);
+  if (!shouldProxy(host, env)) return args;
+  const agent = proxyAgent(env);
+  if (!agent) return args;
+  const out = args.slice();
+  if (optIdx === -1) out.splice(1, 0, { agent });
+  else if (!out[optIdx].agent) out[optIdx] = { ...out[optIdx], agent };
+  return out;
+}
+
+function install() {
+  if (https.request.__bro6258) return;
+  const origRequest = https.request;
+  const origGet = https.get;
+  const request = function (...args) { return origRequest.apply(this, withProxyAgent(args)); };
+  const get = function (...args) { const r = request.apply(this, args); r.end(); return r; };
+  request.__bro6258 = true;
+  https.request = request;
+  https.get = get;
+  void origGet;
+}
+
+if (process.env.CLAUDE_CODE_REMOTE === 'true') install();
+
+module.exports = { shouldProxy, withProxyAgent, install, PROXIED_HOST_RE };

@@ -71,6 +71,19 @@ skip reasons in the finding. Most such cards should come back on their own
 (a paused card returns after its cooldown), so a high count means a new way
 of parking cards that the picker does not know about.
 
+## 3d. Do the provider keys still do their jobs?
+
+Keys present is not keys working: in October 2026 every key authenticated while
+ScrapingBee was blocked by the sandbox egress policy and Playwright could not
+find its browser (BRO-6258). Run the functional smoke (one free read or one
+credit per provider, no email):
+
+    node scripts/check-cloud-secrets.js --smoke 2>&1 | tail -14
+
+Report-only for now (CLAUDE.md §19): unhealthy if the exit code is 1; name the
+failing groups from the `✗` lines in the finding and file it under step 4. Do
+not retry in a loop; one re-run is enough if a line says `timeout`.
+
 ## 4. Record
 
 If everything is healthy, make no changes. If anything is unhealthy, first

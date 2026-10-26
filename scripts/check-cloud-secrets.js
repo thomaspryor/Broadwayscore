@@ -5,6 +5,9 @@
  * Run inside a fresh cloud Claude Code session to confirm the Tier 1
  * secrets configured in claude.ai/settings actually reached the sandbox.
  *
+ * `--smoke [--only=a,b]` instead runs one cheap functional check per consumer
+ * group (lib/cloud-secrets-smoke.js) and exits 1 if any fails.
+ *
  * Exit codes:
  *   0 = all Tier 1 secrets present (in a cloud session, CLOUD_WITHHELD keys
  *       are expected-absent and do not count)
@@ -248,6 +251,22 @@ function main() {
   return 0;
 }
 
-module.exports = { TIER_1, TIER_2, CLOUD_WITHHELD, statusFor, isWithheldInCloud, PREFIX_MIN_LEN };
+async function smokeMain(argv = process.argv) {
+  const { runSmoke, summarize } = require('./lib/cloud-secrets-smoke');
+  const names = TIER_1.concat(TIER_2);
+  const env = { ...readEnvKeys(names), ...Object.fromEntries(names.filter((k) => process.env[k]).map((k) => [k, process.env[k]])) };
+  const onlyArg = argv.find((a) => a.startsWith('--only='));
+  const results = await runSmoke(env, { only: onlyArg ? onlyArg.slice(7).split(',') : undefined });
+  const { failed, lines } = summarize(results);
+  console.log('=== Smoke: does each consumer do its real job? (BRO-6258) ===');
+  lines.forEach((l) => console.log(l));
+  console.log(failed ? `\n✗ ${failed} smoke check(s) failed.` : '\n✓ All smoke checks passed.');
+  return failed ? 1 : 0;
+}
 
-if (require.main === module) process.exit(main());
+module.exports = { smokeMain, TIER_1, TIER_2, CLOUD_WITHHELD, statusFor, isWithheldInCloud, PREFIX_MIN_LEN };
+
+if (require.main === module) {
+  if (process.argv.includes('--smoke')) smokeMain().then((c) => process.exit(c));
+  else process.exit(main());
+}

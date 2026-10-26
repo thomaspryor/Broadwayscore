@@ -19,6 +19,7 @@
  */
 
 const https = require('https');
+require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const path = require('path');
 const fs = require('fs');
 // playwright is lazy-loaded inside fetchWithPlaywright() so that merely
@@ -1255,7 +1256,7 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
       // close to reach, so their pipes held the process open forever.
       let launch = _pwLaunch;
       if (!launch || launch.generation !== myGeneration) {
-        const pending = { generation: myGeneration, promise: chromium.launch({ headless: true }) };
+        const pending = { generation: myGeneration, promise: chromium.launch({ headless: true, ...require('./playwright-exe').launchExtras(chromium) }) };
         const clear = () => { if (_pwLaunch === pending) _pwLaunch = null; };
         pending.promise.then(clear, clear);
         _pwLaunch = pending;
