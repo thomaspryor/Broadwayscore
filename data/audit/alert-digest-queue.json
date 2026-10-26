@@ -1507,6 +1507,37 @@
     "queuedAt": "2026-10-26T03:04:21.993Z"
   },
   {
+    "conditionKey": "land:land/bro-6278-payload-trim",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6278-payload-trim",
+    "description": "land.yml did not land land/bro-6278-payload-trim: the unit-tests-node gate went red at 26dec48317. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40261900075",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6278-payload-trim"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "26dec483176e7e5bc87ba95c8a17e729a97019c8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40261900075"
+      }
+    ],
+    "queuedAt": "2026-10-26T03:20:39.546Z"
+  },
+  {
     "conditionKey": "land:land/bro-6265-archive",
     "title": "Landing blocked: rebase red on land/bro-6265-archive",
     "description": "land.yml did not land land/bro-6265-archive: the rebase gate went red at 3c446fd2e4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40263406931",
