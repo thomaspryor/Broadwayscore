@@ -736,20 +736,6 @@
     "queuedAt": "2026-10-25T21:46:42.780Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T22:15:55.400Z"
-  },
-  {
     "conditionKey": "land:land/bro6112-cloud-keys",
     "title": "Landing blocked: unit-tests-node red on land/bro6112-cloud-keys",
     "description": "land.yml did not land land/bro6112-cloud-keys: the unit-tests-node gate went red at 5df3558107. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40236595439",
@@ -1251,9 +1237,23 @@
     "queuedAt": "2026-10-26T01:36:08.671Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "conditionKey": "corpus-drift:duplicate-shows",
+    "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff) — escalated after 24 notifications",
+    "description": "Filed BRO-6280 for owner triage after 24 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"duplicate-shows\" (node scripts/audit-duplicate-shows.js --strict) has been drifting. Latest output:\n\nFound 3 duplicate-show cluster(s), 3 pair(s) (baselined: 0, new: 3):\n\n  [title-fragment] title-fragment@secret cinema greenwich peninsula\n    secret-cinema-presents-disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027  (Secret Cinema, Greenwich Peninsula, 0 review files)\n    disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027  (Secret Cinema, Greenwich Peninsula, 0 review files)\n  [shared-ticket-identity] ticket-identity@todaytix:38749\n    the-great-gatsby-2024  (Broadway Theatre, 76 review files)\n    the-great-gatsby-tour-2026  (North American Tour, 58 review files)\n  [shared-ticket-identity] ticket-identity@todaytix:46996\n    jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026  (Theatre Royal Drury Lane, 8 review files)\n    jesus-christ-superstar-off-west-end-2026  (Drury Lane, Theatre Royal, 16 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [title-fragment] title-fragment@secret cinema greenwich peninsula: secret-cinema-presents-disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027 <-> disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027\n  [shared-ticket-identity] ticket-identity@todaytix:38749: the-great-gatsby-2024 <-> the-great-gatsby-tour-2026\n  [shared-ticket-identity] ticket-identity@todaytix:46996: jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 <-> jesus-christ-superstar-off-west-end-2026\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6280",
+    "fields": [],
+    "queuedAt": "2026-10-26T02:09:46.912Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
     "severity": "info",
     "url": null,
     "decision": false,
@@ -1262,7 +1262,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-26T02:03:59.823Z"
+    "queuedAt": "2026-10-26T02:09:47.049Z"
   },
   {
     "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
