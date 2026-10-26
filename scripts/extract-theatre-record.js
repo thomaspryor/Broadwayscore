@@ -27,7 +27,7 @@ const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } 
 const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
 const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
-const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
+const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isWrongShowRejection } = require('./lib/review-text-identity');
 
 const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
@@ -587,6 +587,7 @@ async function main() {
       return roundupRowsPromise;
     }
 
+    const touchedFiles = new Set();
     for (const review of reviews) {
       if (!review.fullText || review.fullText.length < 100) continue;
 
@@ -775,6 +776,7 @@ async function main() {
       if (target.action === 'merge') {
         const targetName = path.basename(target.path);
         const existing = target.data;
+        touchedFiles.add(target.path);
         const merged = mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic: target.fillCritic });
         if (dryRun) {
           console.log(`    MERGE: ${filename} -> ${targetName} (${target.reason}; adding TR data to existing review)`);
@@ -785,10 +787,25 @@ async function main() {
       } else if (dryRun) {
         console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       } else {
+        touchedFiles.add(filepath);
         safeWriteReview(filepath, reviewData);
         console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       }
       newCount++;
+    }
+
+    // BRO-6154: a file the scorer rejected as another show's review that this
+    // production's section no longer yields means Theatre Record has no record of
+    // that outlet+critic under this production. Say so on the file.
+    if (reviews.length > 0 && fs.existsSync(showDir)) {
+      for (const f of fs.readdirSync(showDir)) {
+        const fp = path.join(showDir, f);
+        if (!f.endsWith('.json') || touchedFiles.has(fp)) continue;
+        let d; try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
+        if (d.source !== 'theatre-record' || d.theatreRecordUrl !== productionLink || !isWrongShowRejection(d) || d.trNoRecordForProduction) continue;
+        console.log(`    NO-RECORD: ${f} (rejected as another show's text; not in this production's TR section)`);
+        if (!dryRun) safeWriteReview(fp, { ...d, trNoRecordForProduction: { reason: 'Theatre Record has no review by this outlet and critic under this production (BRO-6154)', at: new Date().toISOString() } });
+      }
     }
 
     if (newCount === 0 && reviews.length > 0) {

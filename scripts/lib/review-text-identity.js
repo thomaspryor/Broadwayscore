@@ -172,6 +172,8 @@ function resolveTheatreRecordWriteTarget({ exactPath, exactExists, exactData = n
 const OPENING_CHARS = 200;
 const openingOf = (t) => String(t || '').replace(/\s+/g, ' ').trim().slice(0, OPENING_CHARS);
 
+const isWrongShowRejection = (d) => !!d && d.rejectedBy === 'ensemble-scoreability-check' && d.rejectionReason === 'wrong_show';
+
 function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = false } = {}) {
   const merged = { ...existing };
   // BRO-4490: whenever the TR text is taken, its fetch date comes with it.
@@ -193,6 +195,23 @@ function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = fal
     takeText();
     merged.textWordCount = reviewData.fullText.split(/\s+/).filter(Boolean).length;
     markRescoreNeeded(merged, 'theatre-record: text trimmed to own section (BRO-5141)');
+  }
+  // BRO-6154: the scorer's ensemble gate rejected this file as another show's
+  // review, and a re-extraction with the section-aware parser now yields
+  // different text for the same outlet+critic. The fresh text is the one the
+  // parser attributes to this production; swap it in, lift the rejection and
+  // requeue so the scorer re-judges it (it re-rejects a text that is still wrong).
+  if (isWrongShowRejection(merged) && reviewData.fullText
+      && openingOf(merged.fullText) !== openingOf(reviewData.fullText)) {
+    // Breadcrumb for the push restore (review-write-guard isIntentionalClear).
+    merged.fullTextTrimmed = { reason: 'theatre-record wrong-production text replaced (BRO-6154)', fromLength: String(merged.fullText || '').length, at: new Date().toISOString() };
+    takeText();
+    merged.textWordCount = reviewData.fullText.split(/\s+/).filter(Boolean).length;
+    for (const k of ['wrongShow', 'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
+      'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'trNoRecordForProduction']) delete merged[k];
+    merged.contentTier = reviewData.contentTier;
+    merged.contentTierReason = reviewData.contentTierReason;
+    markRescoreNeeded(merged, 'theatre-record: wrong-production text replaced (BRO-6154)', undefined, { requeue: true });
   }
   if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
   if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt' || merged.contentTier === 'invalid') {
@@ -342,6 +361,7 @@ module.exports = {
   namedCriticsDiffer,
   resolveTheatreRecordWriteTarget,
   mergeTheatreRecordIntoExisting,
+  isWrongShowRejection,
   decideUnknownTwinUrlCarry,
   decideDuplicateTwinUrlCarry,
   DEFAULT_MIN_SHARED_SHINGLES,
