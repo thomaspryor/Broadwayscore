@@ -20,7 +20,7 @@ const crypto = require('crypto');
 const { dataFixesEnabled, canDispatchWorkflows } = require('./codex-data-fixes.js');
 // BRO-6303: the summary format and parser are what the trust ladder grades Codex on, so they live in a
 // file Codex can never land an edit to (codex-trust-ladder.js isProtectedPath).
-const { summaryHeading, parseSummaryHeading, runnerSummaryFacts, runnerSummaryText } = require('./codex-runner-grading.js');
+const { LANES, summaryHeading, parseSummaryHeading, laneOfSummary, runnerSummaryFacts, runnerSummaryText } = require('./codex-runner-grading.js');
 const TL = require('./codex-trust-ladder.js');
 
 const AUTH_MARKER = '<!-- codex-auth-v1 -->';
@@ -484,7 +484,7 @@ function classifyBounce({ envBlocked = null, blocked = null, remaining = [], rep
   const text = [envBlocked, blocked, ...(Array.isArray(remaining) ? remaining : []), String(report || '').slice(0, 700)]
     .filter(Boolean).join('\n');
   // A pre-review block is Codex's own slip unless it touched workflows (a symlink or token material is not structural).
-  if (/\.github\/workflows/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
+  if (/\.github\/workflows|trust ladder/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
   if (BOUNCE_FAILING_RE.test(text)) return 'genuine-failure';
   if (bounceSays(BOUNCE_CRED_RE, text, { needVerb: true })) return 'missing-credential';
   if (bounceSays(BOUNCE_MAC_RE, text)) return 'mac-or-private';
@@ -723,6 +723,9 @@ function codexCardFit({
 } = {}) {
   const text = `${title}\n${description}`;
   if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
+  // The runner refuses to land a change to a protected file (TL.isProtectedPath), so a card naming one never starts.
+  const prot = TL.PROTECTED_CARD_RE.exec(text);
+  if (prot) return { skip: 'protected-path', score: -Infinity, why: [`protected-path: ${prot[0]}`] };
   // A locked rung is a capability, like data-route-gha-only below: CODEX-OK does not lift it.
   if (reviewTextsLocked && CODEX_REVIEW_TEXTS_RE.test(text)) return { skip: 'review-texts-locked', score: -Infinity, why: ['review-texts-locked: the trust ladder has review-texts locked for Codex'] };
   const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
@@ -820,12 +823,8 @@ function loginExpiryWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
  * Assumption: the CLI does not refresh earlier than margin (30 min) before expiry.
  */
 
-/**
- * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
- * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
- * MAX_SLOTS covers every lane: --lock-status reads all of their locks.
- */
-const LANES = { cloud: { base: 0, max: 3 }, gha: { base: 3, max: 2 } };
+// Codex lanes (BRO-5730): LANES lives in codex-runner-grading.js, since which lane posted a summary is graded.
+// MAX_SLOTS covers every lane: --lock-status reads all of their locks.
 const MAX_SLOTS = Math.max(...Object.values(LANES).map((l) => l.base + l.max));
 /** The slot numbers of a lane, or of every lane for 'all'; null for an unknown lane. */
 function laneSlotList(lane) {
@@ -1046,6 +1045,18 @@ function checkModel({ files = [], classify = () => ({ inScope: false }) } = {}) 
 }
 
 /**
+ * The skip the trust ladder adds over the pre-ladder baseline right now (BRO-6303), or null: the
+ * runner re-asks it before claiming, so a relock after the pick, or an --ids card, is held to the
+ * ladder too. Skips the baseline already makes are the picker's business, not this check's.
+ */
+function ladderSkip(card, { ladder = codexLadderAccess(), ...opts } = {}) {
+  const now = codexCardFit({ ...card, ...opts, ladder });
+  if (!now.skip) return null;
+  const base = codexCardFit({ ...card, ...opts, ladder, minScore: TL.BASELINE_MIN_SCORE, dataRouteLocked: false, reviewTextsLocked: false });
+  return base.skip ? null : now.skip;
+}
+
+/**
  * Codex first (BRO-5384, owner 2026-10-15: Codex carries the load, Claude is the fallback): while a
  * Codex runner is live, the Claude worker leaves a card to Codex when Codex would take it: fit
  * (codexCardFit), not bounced by Codex, not Urgent and not START-NOW (those go to whoever is free).
@@ -1241,29 +1252,6 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
   return Math.min(90, Math.floor((hardEndMs - wrapUpMs - nowMs) / 60_000));
 }
 
-/**
- * BRO-5287 acceptance over the runner's own "## Codex runner" summaries (BRO-4745 comments):
- * at least `minRuns` summaries, none whose "Stopped early" line names the lock, and at least one
- * card landed. -> { ok, runs, landed, problems[] }
- */
-/**
- * Which lane posted a summary. The marker when present; else slot 3+ is gha and an explicit slot
- * 0-2 is cloud (a gha fallback to slot 0 always ran one slot, so it had no slot). A legacy
- * slotless summary is gha only when a codex-runner.yml run covered its whole "worked in M min"
- * span (ghRuns [{ startMs, endMs }]); a cloud run that merely ended near a 3-min gha stand-down
- * must not count. Without ghRuns it stays cloud, as before. -> 'cloud' | 'gha' | null
- */
-function laneOfSummary(body, createdAtMs, ghRuns = null) {
-  const h = parseSummaryHeading(body);
-  if (!h) return null;
-  if (h.lane) return h.lane;
-  if (h.slot !== null) return h.slot >= LANES.gha.base ? 'gha' : 'cloud';
-  const startedMs = createdAtMs - h.mins * 60_000;
-  const SLACK = 5 * 60_000;
-  const inGha = Array.isArray(ghRuns) && ghRuns.some((r) => Number.isFinite(r.startMs) && r.startMs <= startedMs + SLACK
-    && createdAtMs <= (Number.isFinite(r.endMs) ? r.endMs : Infinity) + SLACK);
-  return inGha ? 'gha' : 'cloud';
-}
 
 /**
  * A runner that exits without a summary says why (BRO-6139 stage 2): one comment on the runner
@@ -1597,7 +1585,7 @@ module.exports = {
   parseModelCandidates, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
-  runnerSummaryFacts, runnerSummaryText, codexLadderAccess, reviewTextsPlan,
+  runnerSummaryFacts, runnerSummaryText, codexLadderAccess, reviewTextsPlan, ladderSkip,
   runnerHealth,
   codexExitTransient,
   stripHookNoise,

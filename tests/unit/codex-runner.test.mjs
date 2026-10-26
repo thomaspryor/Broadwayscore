@@ -439,6 +439,41 @@ test('codexCardFit: a locked cloud data route skips route cards on the cloud lan
   } finally { if (keep === undefined) delete process.env.GITHUB_ACTIONS; else process.env.GITHUB_ACTIONS = keep; }
 });
 
+test('codexCardFit: a card naming a protected trust-ladder file never starts; the runner itself stays open (BRO-6303)', () => {
+  for (const f of ['scripts/codex-lane-alarm.js', 'scripts/lib/codex-lane-health.js', 'scripts/lib/codex-runner-grading.js', 'data/audit/codex-trust-ladder-owner.json']) {
+    const fit = r.codexCardFit({ title: 'Fix the alarm', description: `Edit ${f}.\nCODEX-OK`, verify: 'node --test tests/unit/x.test.mjs' });
+    assert.equal(fit.skip, 'protected-path', f);
+  }
+  assert.equal(r.codexCardFit({ title: 'Fix the runner', description: 'Edit scripts/lib/codex-runner.js.', verify: 'node --test tests/unit/x.test.mjs' }).skip, null);
+  // A commit the runner refused for a protected file is a structural bounce, not Codex's slip.
+  assert.equal(r.classifyBounce({ blocked: 'Codex edited the trust ladder (its own grading rules or the inputs they read), which the runner never lands' }), 'forbidden-files');
+  assert.match(readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8'), /TL\.isProtectedPath\(n\)\)\) return \{ hasDiff: true, blocked: 'Codex edited the trust ladder/);
+});
+
+test('ladderSkip: only the skips the ladder adds now; null in shadow, so a picked card is never dropped by it today', () => {
+  const card = { title: 'Fix the excerpt trimmer', description: 'Reads data/review-texts to check the trim.', verify: 'node --test tests/unit/x.test.mjs' };
+  const route = { title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json.', verify: 'node --test tests/unit/x.test.mjs', canDispatch: true };
+  const keep = process.env.GITHUB_ACTIONS;
+  try {
+    delete process.env.GITHUB_ACTIONS;
+    for (const [, ladder] of LADDERS) for (const c of [card, route, { title: 'Mac thing', description: 'launchd only' }]) assert.equal(r.ladderSkip(c, { ladder }), null);
+    assert.equal(r.ladderSkip(card, { ladder: ladderOf(['cloud-data-route']) }), 'review-texts-locked', 'relocked since the pick');
+    assert.equal(r.ladderSkip(route, { ladder: ladderOf(['review-texts-ro']) }), 'data-route-locked');
+    assert.equal(r.ladderSkip({ title: 'Mac thing', description: 'launchd only' }, { ladder: ladderOf([]) }), null, 'a baseline skip is the picker\'s, not the ladder\'s');
+    // A card only a widened floor admitted (-8) is ruled out once larger-cards is relocked, which the baseline already does.
+    const mid = { title: 'Tidy the scorer', description: 'Needs an API key. Reads review-texts. Phase 2.' };
+    assert.equal(r.ladderSkip(mid, { ladder: ladderOf(['larger-cards', 'cloud-data-route', 'review-texts-ro']) }), null);
+  } finally { if (keep === undefined) delete process.env.GITHUB_ACTIONS; else process.env.GITHUB_ACTIONS = keep; }
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /const ladderWhy = R\.ladderSkip\(\{ title: card\.title, description: card\.description, verify: verifyCommand\(card\) \|\| '', comments, nowMs: Date\.now\(\) \}\);\n\s+if \(ladderWhy\)/);
+});
+
+test('leaveCodexCards: route cards are scored like leaveToCodex sees them, whatever the cloud data-route rung says', () => {
+  const src = readFileSync(join(ROOT, 'scripts/lib/cloud-worker-pick.js'), 'utf8');
+  assert.match(src, /leaveToCodex\(q\.issue, \{[^}]*ladder \}\)/);
+  assert.match(src, /comments: q\.issue\.comments\.nodes, nowMs, ladder, dataRouteLocked: false \}\)\.score/);
+});
+
 test('provideData: review-texts are linked by the ladder rung unless the caller says otherwise (BRO-6303)', () => {
   const open = ladderOf(['cloud-data-route', 'review-texts-ro']);
   const locked = ladderOf(['cloud-data-route']);
@@ -453,6 +488,8 @@ test('provideData: review-texts are linked by the ladder rung unless the caller 
   const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
   assert.match(src, /function provideData\(dest, \{ ladder = R\.codexLadderAccess\(\), reviewTexts \} = \{\}\) \{\n\s+const rt = R\.reviewTextsPlan\(\{ ladder, reviewTexts \}\);/);
   assert.deepEqual([...src.matchAll(/provideData\([^)]*reviewTexts: (\w+)/g)].map((m) => m[1]), ['false']);
+  // A relock mid-run removes a link an earlier card got (git clean without -x keeps it).
+  assert.match(src, /if \(!rt\.link && present\(to\) && fs\.lstatSync\(to\)\.isSymbolicLink\(\)\) fs\.unlinkSync\(to\);/);
 });
 
 test('codexCardFit: locked review-texts skips a card that needs them; unlocked only lowers its score', () => {

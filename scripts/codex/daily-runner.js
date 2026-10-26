@@ -318,6 +318,8 @@ function provideData(dest, { ladder = R.codexLadderAccess(), reviewTexts } = {})
     if (!rt.link || !fs.existsSync(from)) {
       if (rt.link) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`);
       else if (rt.note) lines.push(`- data/${name}: ${rt.note}`);
+      // A relock mid-run: a link an earlier card got (git clean without -x keeps it) goes now.
+      if (!rt.link && present(to) && fs.lstatSync(to).isSymbolicLink()) fs.unlinkSync(to);
       continue;
     }
     const real = fs.realpathSync(from);
@@ -507,7 +509,7 @@ function commitAttempt(card, attempt, message = null) {
   const names = git(['diff', '--cached', '--name-only', '--no-renames']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
-  if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder (its own grading rules), which the runner never lands' };
+  if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder (its own grading rules or the inputs they read), which the runner never lands' };
   // A staged symlink could point at the private data the runner links in (land refuses tracked symlinks too).
   if (/^:\d+ 120000 /m.test(git(['diff', '--cached', '--raw']))) return { hasDiff: true, blocked: 'the change adds a symlink, which the runner never lands' };
   if (R.looksLikeSecretLeak(git(['diff', '--cached']))) return { hasDiff: true, blocked: 'the diff looks like it carries token material' };
@@ -808,6 +810,9 @@ async function workCard(pick, stats, inFlight) {
     const why = await pickedCardNowUnfit(id, card, comments, pick.tier);
     if (why) { log(`${id}: no longer pickable (${why}), skipped`); return 'skip'; }
   }
+  // The trust ladder as it is now (BRO-6303): a rung relocked since the pick, or an --ids card it rules out.
+  const ladderWhy = R.ladderSkip({ title: card.title, description: card.description, verify: verifyCommand(card) || '', comments, nowMs: Date.now() });
+  if (ladderWhy) { log(`${id}: the trust ladder rules it out now (${ladderWhy}), skipped`); return 'skip'; }
   const body = R.cardBody(card.description, comments);
   // A SHIP-WITH-FIXES round an earlier run had no time for: resume it (BRO-5384).
   const carry = R.parseSwfCarry(comments, Date.now());
@@ -1437,9 +1442,15 @@ function landedPerLane() {
   } catch { return 'unknown (git log failed)'; }
 }
 
-/** The trust ladder access this run worked under (BRO-6303), for the summary. */
+/** The trust ladder access this run started under (BRO-6303), for the summary; a mid-run change says so. */
+let runLadder = null;
 function ladderLine() {
-  try { return TL.accessLine(R.codexLadderAccess()); } catch (e) { return `- Trust ladder: unreadable (${String(e && e.message || e).slice(0, 80)})`; }
+  try {
+    const now = R.codexLadderAccess();
+    const start = runLadder || now;
+    const same = ['source', 'minScore', 'cloudDataRouteLocked', 'reviewTextsLocked'].every((k) => start[k] === now[k]);
+    return `${TL.accessLine(start)}${same ? '' : ` (changed mid-run, now: ${TL.accessLine(now).replace(/^- Trust ladder: /, '')})`}`;
+  } catch (e) { return `- Trust ladder: unreadable (${String(e && e.message || e).slice(0, 80)})`; }
 }
 
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
@@ -1527,6 +1538,7 @@ async function runLocked(startedMs) {
   let worked = 0;
   let stop = null;
   let picks;
+  runLadder = R.codexLadderAccess(); // what this run starts under, for the summary (BRO-6303)
   try { picks = await pickCards(); } catch (e) { throw startFailure('picker', e.message, 1); }
   let skipped = 0;
   for (const pick of picks) {

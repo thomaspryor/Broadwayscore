@@ -116,29 +116,43 @@ function access({ state, owner, corrupt = false, env = process.env } = {}) {
 }
 
 /**
- * access() as the runner sees it now: the two ladder files read from origin/main (so a Codex worktree's
- * own copy never counts and an owner flip on main is seen without a pull), else from the working tree
- * when there is no origin/main ref (shallow or detached checkout). Cached ACCESS_TTL_MS per root: the
- * picker is a fresh process per pick, and a ~2h runner still sees a relock within minutes.
- * -> access() + { mode, ref: 'origin/main'|'worktree' }
+ * access() as the runner sees it now: the two ladder files read from one origin/main commit (so a
+ * Codex worktree's own copy never counts, an owner flip on main is seen without a pull, and both
+ * files come from the same commit while another slot fetches), else from the working tree when
+ * there is no origin/main ref at all (a fresh or detached checkout). Fails closed: a git error
+ * other than "no such ref" or "no such file on main" reads as corrupt (every rung locked), never
+ * as "not set up". Cached ACCESS_TTL_MS per root: the picker is a fresh process per pick, and a
+ * ~2h runner still sees a relock within minutes.
+ * -> access() + { mode, ref: 'origin/main@<sha7>'|'worktree'|'env' }
  */
 const ACCESS_TTL_MS = 5 * 60_000;
 const accessCache = new Map();
 function ladderAccess({ root = path.resolve(__dirname, '..', '..'), env = process.env, nowMs = Date.now(), git = null } = {}) {
+  // The env kill switch needs no file read (and is never cached either way).
+  if (killed(null, env)) return { ...access({ env }), mode: 'killed', ref: 'env' };
   const hit = accessCache.get(root);
-  const killedNow = killed(null, env);
-  if (!killedNow && hit && nowMs - hit.at < ACCESS_TTL_MS) return hit.value;
+  if (hit && nowMs - hit.at < ACCESS_TTL_MS) return hit.value;
   const run = git || ((args) => require('child_process').execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 15_000 }));
-  let onMain = false;
-  try { run(['rev-parse', '--verify', '--quiet', 'origin/main^{commit}']); onMain = true; } catch { /* no ref: read the working tree */ }
-  const readFile = onMain ? (p) => {
-    const rel = path.relative(root, p).split(path.sep).join('/');
-    // The ref exists, so a failed show is a file that is not on main: "not set up", never corrupt.
-    try { return run(['show', `origin/main:${rel}`]); } catch { const e = new Error(`${rel} not on origin/main`); e.code = 'ENOENT'; throw e; }
-  } : undefined;
-  const files = loadFiles(root, readFile);
-  const value = { ...access({ ...files, env }), mode: files.corrupt ? 'corrupt' : files.state ? String(files.state.mode || 'shadow') : 'not set up', ref: onMain ? 'origin/main' : 'worktree' };
-  if (!killedNow) accessCache.set(root, { at: nowMs, value });
+  let value;
+  try {
+    let sha = null;
+    // --verify --quiet exits 1 with no output for a missing ref; anything else is a git failure (throws below).
+    try { sha = run(['rev-parse', '--verify', '--quiet', 'origin/main^{commit}']).trim(); } catch (e) { if (e && e.status !== 1) throw e; }
+    let readFile;
+    if (sha) {
+      readFile = (p) => {
+        const rel = path.relative(root, p).split(path.sep).join('/');
+        // ls-tree succeeds with empty output for a path not on main: that alone is "not set up".
+        if (!run(['ls-tree', '--name-only', sha, '--', rel]).trim()) { const e = new Error(`${rel} not on origin/main`); e.code = 'ENOENT'; throw e; }
+        return run(['show', `${sha}:${rel}`]); // on main but unreadable: throws, which loadFiles reads as corrupt
+      };
+    }
+    const files = loadFiles(root, readFile);
+    value = { ...access({ ...files, env }), mode: files.corrupt ? 'corrupt' : files.state ? String(files.state.mode || 'shadow') : 'not set up', ref: sha ? `origin/main@${sha.slice(0, 7)}` : 'worktree' };
+  } catch {
+    value = { ...access({ corrupt: true, env }), mode: 'unreadable', ref: 'git failed' };
+  }
+  accessCache.set(root, { at: nowMs, value });
   return value;
 }
 ladderAccess.clearCache = () => accessCache.clear();
@@ -312,9 +326,11 @@ function isProtectedPath(name) {
   const n = String(name || '');
   return PROTECTED_FILES.has(n) || n.startsWith('data/audit/codex-trust-ladder');
 }
+// A card that names a protected file: Codex's change to it would be refused at commit, so it never starts.
+const PROTECTED_CARD_RE = /\b(?:codex-trust-ladder|codex-runner-grading|codex-lane-alarm|codex-lane-health)(?:-owner)?\.(?:js|json)\b/i;
 
 module.exports = {
-  isProtectedPath, ladderAccess, accessLine, ACCESS_TTL_MS,
+  isProtectedPath, PROTECTED_CARD_RE, PROTECTED_FILES, ladderAccess, accessLine, ACCESS_TTL_MS,
   POLICY, RUNGS, NEVER, STATE_FILE, OWNER_FILE, BASELINE_MIN_SCORE, WIDE_MIN_SCORE, GIT_LOG_FORMAT,
   seedState, seedOwner, loadFiles, access, rejectionStats, gitRegressions, parseCommits, evaluate,
 };

@@ -5,6 +5,12 @@
 // the lane alarm and the ladder can all load it without a cycle.
 
 /**
+ * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
+ * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
+ */
+const LANES = Object.freeze({ cloud: Object.freeze({ base: 0, max: 3 }), gha: Object.freeze({ base: 3, max: 2 }) });
+
+/**
  * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no
  * "(slot N)" and readers took it for the cloud lane; now every summary names its slot and the
  * lane that launched it (a gha launch that fell back to slot 0 is still lane gha).
@@ -24,6 +30,25 @@ function parseSummaryHeading(body) {
   const slot = head.match(/\(slot (\d+)\)/);
   const lane = head.match(/\(lane (cloud|gha)\)/);
   return { date: m[1], worked: Number(m[2]), mins: Number(m[3]), slot: slot ? Number(slot[1]) : null, lane: lane ? lane[1] : null };
+}
+
+/**
+ * Which lane posted a summary. The marker when present; else slot 3+ is gha and an explicit slot
+ * 0-2 is cloud (a gha fallback to slot 0 always ran one slot, so it had no slot). A legacy
+ * slotless summary is gha only when a codex-runner.yml run covered its whole "worked in M min"
+ * span (ghRuns [{ startMs, endMs }]); a cloud run that merely ended near a 3-min gha stand-down
+ * must not count. Without ghRuns it stays cloud, as before. -> 'cloud' | 'gha' | null
+ */
+function laneOfSummary(body, createdAtMs, ghRuns = null) {
+  const h = parseSummaryHeading(body);
+  if (!h) return null;
+  if (h.lane) return h.lane;
+  if (h.slot !== null) return h.slot >= LANES.gha.base ? 'gha' : 'cloud';
+  const startedMs = createdAtMs - h.mins * 60_000;
+  const SLACK = 5 * 60_000;
+  const inGha = Array.isArray(ghRuns) && ghRuns.some((r) => Number.isFinite(r.startMs) && r.startMs <= startedMs + SLACK
+    && createdAtMs <= (Number.isFinite(r.endMs) ? r.endMs : Infinity) + SLACK);
+  return inGha ? 'gha' : 'cloud';
 }
 
 /** The counts one "## Codex runner" summary body reports (the lane alarm, the daily row, the trust ladder). */
@@ -79,4 +104,4 @@ function runnerSummaryText({ heading, stats, worked, skipped, picks, stop, setti
   ].join('\n');
 }
 
-module.exports = { summaryHeading, SUMMARY_HEADING_RE, parseSummaryHeading, runnerSummaryFacts, runnerSummaryText };
+module.exports = { LANES, laneOfSummary, summaryHeading, SUMMARY_HEADING_RE, parseSummaryHeading, runnerSummaryFacts, runnerSummaryText };

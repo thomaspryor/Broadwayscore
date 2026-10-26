@@ -57,7 +57,8 @@ function planRetry({ identifier, stateType, comments, nowMs = Date.now(), issue 
   if (!kind) return { skip: `newest bounce is ${R.bounceClassOf(bounces[0].body) || 'not retryable'}` };
   // The runner would still pass it over (Mac-only, too broad, paused for a blocker): a note would change nothing.
   if (issue) {
-    const fit = R.codexCardFit({ title: issue.title, description: issue.description, comments: list, nowMs, canDispatch: true });
+    // As leaveToCodex: any lane may take it (the GHA lane is outside the ladder's cloud data-route lock).
+    const fit = R.codexCardFit({ title: issue.title, description: issue.description, comments: list, nowMs, canDispatch: true, dataRouteLocked: false });
     if (fit.skip) return { skip: `codex fit: ${fit.skip}` };
     const held = historySkipReason(issue, list, nowMs);
     if (held) return { skip: `pause history: ${held}` };

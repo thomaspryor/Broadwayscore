@@ -12,7 +12,9 @@
 // summaries also carry the runner's stand-down notes ("## Codex runner did not start ... (reason X)"),
 // so a lane that exits without working says why (BRO-6139 stage 2).
 // A source passed as null is "health unknown", never a breach and never a crash.
-const { runnerSummaryFacts, landedPerLane, parseSummaryHeading, laneOfSummary, parseStandDownNote } = require('./codex-runner.js');
+// The summary parser and lane attribution come from the protected grading file itself (BRO-6303).
+const { runnerSummaryFacts, parseSummaryHeading, laneOfSummary } = require('./codex-runner-grading.js');
+const { landedPerLane, parseStandDownNote } = require('./codex-runner.js');
 
 const HOUR = 3600_000;
 

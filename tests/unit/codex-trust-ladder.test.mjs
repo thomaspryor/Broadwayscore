@@ -171,8 +171,18 @@ test('isProtectedPath covers the ladder files and its grading inputs, and nothin
   // What the ladder grades on really lives in the protected file, not a copy elsewhere.
   const G = require('../../scripts/lib/codex-runner-grading.js');
   const R = require('../../scripts/lib/codex-runner.js');
-  for (const k of ['runnerSummaryFacts', 'runnerSummaryText', 'summaryHeading', 'parseSummaryHeading']) assert.equal(R[k], G[k], k);
-  assert.equal(require('../../scripts/codex-lane-alarm.js').readSummaries.length >= 0, true);
+  for (const k of ['runnerSummaryFacts', 'runnerSummaryText', 'summaryHeading', 'parseSummaryHeading', 'laneOfSummary', 'LANES']) assert.equal(R[k], G[k], k);
+  // The graders load the parser from the protected file itself, never via a re-export Codex could edit.
+  const { readFileSync } = require('node:fs');
+  for (const f of ['scripts/codex-trust-ladder.js', 'scripts/lib/codex-lane-health.js']) {
+    const src = readFileSync(new URL(`../../${f}`, import.meta.url), 'utf8');
+    assert.match(src, /\{ runnerSummaryFacts[^}]*\} = require\('\.\/(?:lib\/)?codex-runner-grading\.js'\)/, f);
+    assert.doesNotMatch(src, /runnerSummaryFacts[^}]*\} = require\('\.\/(?:lib\/)?codex-runner\.js'\)/, f);
+  }
+  // Every protected file a card could name is caught by the card regex (codexCardFit's protected-path skip).
+  for (const f of L.PROTECTED_FILES) assert.match(f, L.PROTECTED_CARD_RE, f);
+  assert.match('data/audit/codex-trust-ladder-owner.json', L.PROTECTED_CARD_RE);
+  assert.doesNotMatch('scripts/lib/codex-runner.js scripts/codex/daily-runner.js', L.PROTECTED_CARD_RE);
 });
 
 const liveState = (now) => ({ ...L.seedState(now), mode: 'live' });
@@ -223,13 +233,19 @@ import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 
-// A fake git over an in-memory origin/main: files maps rel path -> content; null files = no origin/main ref.
-const fakeGit = (files, calls = []) => (args) => {
+// A fake git over an in-memory origin/main, shaped like execFileSync: files maps rel path -> content;
+// null files = no origin/main ref (rev-parse --verify --quiet exits 1); fail = a command that errors.
+const SHA = 'abc1234def';
+const gitErr = (status) => Object.assign(new Error(`git exited ${status}`), { status });
+const fakeGit = (files, calls = [], fail = null) => (args) => {
   calls.push(args.join(' '));
-  if (args[0] === 'rev-parse') { if (!files) throw new Error('no ref'); return 'abc\n'; }
-  if (args[0] === 'show') { const rel = args[1].replace('origin/main:', ''); if (files && rel in files) return files[rel]; throw new Error('missing'); }
+  if (fail && fail(args)) throw gitErr(128);
+  if (args[0] === 'rev-parse') { if (!files) throw gitErr(1); return `${SHA}\n`; }
+  if (args[0] === 'ls-tree') { assert.equal(args[2], SHA, 'both files from the one resolved commit'); return files && args[4] in files ? `${args[4]}\n` : ''; }
+  if (args[0] === 'show') { assert.ok(args[1].startsWith(`${SHA}:`)); return files[args[1].slice(SHA.length + 1)]; }
   throw new Error(`unexpected git ${args[0]}`);
 };
+const REF = `origin/main@${SHA.slice(0, 7)}`;
 const liveJson = (unlocked) => { const st = L.seedState('2026-10-26T00:00:00.000Z'); st.mode = 'live'; for (const k of Object.keys(st.rungs)) st.rungs[k].unlocked = unlocked.includes(k); return JSON.stringify(st); };
 let rootN = 0;
 const freshRoot = () => { const d = mkdtempSync(join(tmpdir(), 'ladder-')); rootN += 1; return join(d, String(rootN)); };
@@ -237,15 +253,27 @@ const freshRoot = () => { const d = mkdtempSync(join(tmpdir(), 'ladder-')); root
 test('ladderAccess: reads origin/main; shadow = baseline, missing = not set up, corrupt fails closed', () => {
   const base = { source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false };
   const shadow = JSON.stringify(L.seedState('2026-10-26T00:00:00.000Z'));
-  assert.deepEqual(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: shadow }) }), { ...base, mode: 'shadow', ref: 'origin/main' });
-  assert.deepEqual(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({}) }), { ...base, mode: 'not set up', ref: 'origin/main' }, 'a file not on main is not corrupt');
+  assert.deepEqual(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: shadow }) }), { ...base, mode: 'shadow', ref: REF });
+  assert.deepEqual(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({}) }), { ...base, mode: 'not set up', ref: REF }, 'a file not on main is not corrupt');
   const bad = L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: '{ not json' }) });
-  assert.deepEqual(bad, { source: 'corrupt-locked', minScore: -6, cloudDataRouteLocked: true, reviewTextsLocked: true, mode: 'corrupt', ref: 'origin/main' });
+  assert.deepEqual(bad, { source: 'corrupt-locked', minScore: -6, cloudDataRouteLocked: true, reviewTextsLocked: true, mode: 'corrupt', ref: REF });
   const live = L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: liveJson(['larger-cards', 'review-texts-ro']) }) });
-  assert.deepEqual(live, { source: 'ladder', minScore: -9, cloudDataRouteLocked: true, reviewTextsLocked: false, mode: 'live', ref: 'origin/main' });
+  assert.deepEqual(live, { source: 'ladder', minScore: -9, cloudDataRouteLocked: true, reviewTextsLocked: false, mode: 'live', ref: REF });
   // The owner's kill switch on main wins over a live state.
   const killedOwner = JSON.stringify({ ...L.seedOwner(), killSwitch: true });
   assert.equal(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: liveJson([]), [L.OWNER_FILE]: killedOwner }) }).source, 'killed');
+});
+
+test('ladderAccess: a git failure fails closed (every rung locked), never reads as "not set up"', () => {
+  const locked = { source: 'corrupt-locked', minScore: -6, cloudDataRouteLocked: true, reviewTextsLocked: true };
+  const files = { [L.STATE_FILE]: liveJson(['cloud-data-route', 'review-texts-ro']) };
+  for (const [what, fail] of [['rev-parse', (a) => a[0] === 'rev-parse'], ['ls-tree', (a) => a[0] === 'ls-tree'], ['show', (a) => a[0] === 'show']]) {
+    const a = L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit(files, [], fail) });
+    assert.deepEqual({ source: a.source, minScore: a.minScore, cloudDataRouteLocked: a.cloudDataRouteLocked, reviewTextsLocked: a.reviewTextsLocked }, locked, what);
+  }
+  // Outside any git repo at all: locked too.
+  const outside = L.ladderAccess({ root: mkdtempSync(join(tmpdir(), 'ladder-nogit-')), env: {} });
+  assert.equal(outside.source, 'corrupt-locked');
 });
 
 test('ladderAccess: no origin/main ref reads the working tree; the working tree never overrides main', () => {
@@ -271,8 +299,11 @@ test('ladderAccess: cached per root for ACCESS_TTL_MS, so a long runner still se
   assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0 + 60_000, git: fakeGit(files, calls) }).reviewTextsLocked, false, 'cached');
   assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0 + L.ACCESS_TTL_MS, git: fakeGit(files, calls) }).reviewTextsLocked, true, 'reread after the TTL');
   assert.ok(L.ACCESS_TTL_MS <= 10 * 60_000);
-  // The env kill switch is never cached either way.
-  assert.equal(L.ladderAccess({ root, env: { CODEX_TRUST_LADDER_DISABLED: '1' }, nowMs: t0 + L.ACCESS_TTL_MS + 1, git: fakeGit(files) }).source, 'killed');
+  // The env kill switch reads no file at all and is never cached either way.
+  const killCalls = [];
+  assert.deepEqual(L.ladderAccess({ root, env: { CODEX_TRUST_LADDER_DISABLED: '1' }, nowMs: t0 + L.ACCESS_TTL_MS + 1, git: fakeGit(files, killCalls) }),
+    { source: 'killed', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false, mode: 'killed', ref: 'env' });
+  assert.deepEqual(killCalls, []);
   assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0 + L.ACCESS_TTL_MS + 2, git: fakeGit(files) }).reviewTextsLocked, true);
 });
 
@@ -283,7 +314,7 @@ test('ladderAccess: the committed ladder on this checkout is shadow, so the runn
 });
 
 test('accessLine: one summary line naming the mode, the source and every gate', () => {
-  assert.equal(L.accessLine({ source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false, mode: 'shadow', ref: 'origin/main' }),
-    '- Trust ladder: shadow (baseline, read from origin/main); min score -6, cloud data route open, review-texts open');
+  assert.equal(L.accessLine({ source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false, mode: 'shadow', ref: 'origin/main@abc1234' }),
+    '- Trust ladder: shadow (baseline, read from origin/main@abc1234); min score -6, cloud data route open, review-texts open');
   assert.match(L.accessLine(L.access({ corrupt: true, env: {} })), /corrupt-locked\); min score -6, cloud data route locked, review-texts locked$/);
 });
