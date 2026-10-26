@@ -1383,37 +1383,6 @@
     "queuedAt": "2026-10-26T02:39:41.214Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40261585559",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40261585559)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40260302523)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-26T03:19:07.993Z"
-  },
-  {
     "conditionKey": "land:land/bro-6262-double-claim",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-6262-double-claim",
     "description": "land.yml did not land land/bro-6262-double-claim: the scripts-lib-tests gate went red at 9201cce328. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40259112080",
@@ -1674,6 +1643,37 @@
       }
     ],
     "queuedAt": "2026-10-26T04:36:56.137Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40270291743",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40270291743)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40266833664)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests, E2E Tests"
+      }
+    ],
+    "queuedAt": "2026-10-26T05:03:49.387Z"
   },
   {
     "conditionKey": "land:land/bro-6286-biz-hero",
