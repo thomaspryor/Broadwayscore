@@ -10,6 +10,7 @@ import { criticProfileKey as sharedCriticProfileKey } from '../../scripts/lib/ur
 
 import reviewsData from '../../data/reviews.json';
 import showsData from '../../data/shows.json';
+import { versionedImagePath } from './versioned-image-path';
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 // Retired critic slugs → canonical (2026 data audit, S5-T9). The same compact
 // map src/middleware.ts 301s from; entries originate in
@@ -193,7 +194,7 @@ for (const show of (partitionShowRows(showsData.shows).valid as unknown as Array
     openingDate: show.openingDate,
     status: show.status,
     type: show.type,
-    thumbnail: show.images?.thumbnail || null,
+    thumbnail: versionedImagePath(show.images?.thumbnail) || null,
     category: show.category || 'broadway',
   });
 }

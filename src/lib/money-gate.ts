@@ -43,14 +43,22 @@ export const EXISTING_SUBSCRIBER_KEYS = [
 ] as const;
 export const EXISTING_SESSION_KEY = SUPABASE_STORAGE_KEY;
 
+/** Why a reader sees the money data without the gate (money_gate_bypassed). */
+export type MoneyBypassReason = 'account' | 'subscriber' | 'unlocked';
+
+/** 'account' or 'subscriber' when this browser belongs to an existing reader. */
+export function existingAccessReason(getItem: (key: string) => string | null): MoneyBypassReason | null {
+  try {
+    if (getItem(EXISTING_SESSION_KEY) !== null) return 'account';
+    return EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true') ? 'subscriber' : null;
+  } catch {
+    return null;
+  }
+}
+
 /** True when this browser already belongs to a subscriber or account holder. */
 export function hasExistingAccess(getItem: (key: string) => string | null): boolean {
-  try {
-    if (getItem(EXISTING_SESSION_KEY) !== null) return true;
-    return EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true');
-  } catch {
-    return false;
-  }
+  return existingAccessReason(getItem) !== null;
 }
 
 export const MONEY_ROLES = [
@@ -77,29 +85,38 @@ export function isValidMoneyEmail(email: string): boolean {
   return e.length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
 }
 
-export function isMoneyUnlocked(): boolean {
-  if (typeof window === 'undefined') return false;
+/**
+ * Why this browser is unlocked, or null when it is not. A money-list sign-up
+ * ('unlocked') wins over an account or subscription so reach by source adds up.
+ */
+export function moneyUnlockReason(): MoneyBypassReason | null {
+  if (typeof window === 'undefined') return null;
+  let existing: MoneyBypassReason | null = null;
   try {
-    if (localStorage.getItem(MONEY_UNLOCK_KEY) === '1') return true;
-    if (hasExistingAccess((k) => localStorage.getItem(k))) return true;
+    if (localStorage.getItem(MONEY_UNLOCK_KEY) === '1') return 'unlocked';
+    existing = existingAccessReason((k) => localStorage.getItem(k));
   } catch { /* storage blocked: fall through to the cookie */ }
   try {
-    return new RegExp(`(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)`).test(document.cookie);
-  } catch {
-    return false;
-  }
+    if (new RegExp(`(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)`).test(document.cookie)) return 'unlocked';
+  } catch { /* noop */ }
+  return existing;
+}
+
+export function isMoneyUnlocked(): boolean {
+  return moneyUnlockReason() !== null;
 }
 
 /**
  * Unlocks the gates on the current page only, for an existing reader
  * (sign-in or subscription mid-visit). Persists nothing: the next load
- * re-derives it from the same flags.
+ * re-derives it from the same flags. Returns true when it unlocked the page.
  */
-export function unlockForExistingReader(): void {
-  if (typeof window === 'undefined') return;
-  if (document.documentElement.hasAttribute(MONEY_UNLOCK_ATTR)) return;
+export function unlockForExistingReader(): boolean {
+  if (typeof window === 'undefined') return false;
+  if (document.documentElement.hasAttribute(MONEY_UNLOCK_ATTR)) return false;
   document.documentElement.setAttribute(MONEY_UNLOCK_ATTR, '');
   window.dispatchEvent(new Event(MONEY_UNLOCKED_EVENT));
+  return true;
 }
 
 /** Unlocks every money gate in this browser and on the current page. */
@@ -131,12 +148,37 @@ export function isMoneyGateInView(): boolean {
 export type MoneySignupResult = 'stored' | 'store_unavailable' | 'invalid';
 
 /**
- * Stores the sign-up. Anything but a bad address resolves (the reader is
- * unlocked either way: a store outage must never lock out someone who gave
- * their email); the caller reports 'store_unavailable' to analytics.
+ * Sign-ups whose save failed, kept in this browser and retried on later page
+ * views until stored (BRO-6289). The reader is unlocked either way, so
+ * without this a store outage lost the address silently.
  */
-export async function submitMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
-  if (!isValidMoneyEmail(email)) return 'invalid';
+export const MONEY_PENDING_KEY = 'bsc_money_pending';
+const MAX_PENDING = 5;
+
+interface PendingSignup {
+  email: string;
+  role: MoneyRole | '';
+  page: string;
+}
+
+function readPending(): PendingSignup[] {
+  try {
+    const v = JSON.parse(localStorage.getItem(MONEY_PENDING_KEY) || '[]');
+    return Array.isArray(v) ? v.filter((x) => x && typeof x.email === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+function writePending(list: PendingSignup[]): void {
+  try {
+    if (list.length) localStorage.setItem(MONEY_PENDING_KEY, JSON.stringify(list.slice(-MAX_PENDING)));
+    else localStorage.removeItem(MONEY_PENDING_KEY);
+  } catch { /* storage blocked: nothing to keep it in */ }
+}
+
+/** One save attempt against the sign-up function. */
+async function storeMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return 'store_unavailable';
@@ -156,6 +198,50 @@ export async function submitMoneySignup(email: string, role: MoneyRole | '', pag
   } catch {
     return 'store_unavailable';
   }
+}
+
+/**
+ * Stores the sign-up. Anything but a bad address resolves (the reader is
+ * unlocked either way: a store outage must never lock out someone who gave
+ * their email); the caller reports 'store_unavailable' to analytics, and the
+ * address waits in the outbox for retryPendingMoneySignups.
+ */
+export async function submitMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
+  if (!isValidMoneyEmail(email)) return 'invalid';
+  const result = await storeMoneySignup(email, role, page);
+  if (result === 'store_unavailable') {
+    const normalized = email.trim().toLowerCase();
+    writePending([...readPending().filter((p) => p.email !== normalized), { email: normalized, role, page }]);
+  }
+  return result;
+}
+
+let retryStarted = false;
+
+/**
+ * Retries the outbox once per page load (every gated page calls it). An
+ * address leaves the outbox when stored or refused as invalid; one that still
+ * fails stays for the next page view.
+ */
+export async function retryPendingMoneySignups(): Promise<{ stored: number; remaining: number }> {
+  if (retryStarted || typeof window === 'undefined') return { stored: 0, remaining: 0 };
+  retryStarted = true;
+  const pending = readPending();
+  if (!pending.length) return { stored: 0, remaining: 0 };
+  const left: PendingSignup[] = [];
+  let stored = 0;
+  for (const p of pending) {
+    const r = await storeMoneySignup(p.email, p.role, p.page);
+    if (r === 'stored') stored += 1;
+    else if (r === 'store_unavailable') left.push(p);
+  }
+  writePending(left);
+  return { stored, remaining: left.length };
+}
+
+/** Test hook: lets a test run the once-per-page retry again. */
+export function resetMoneyRetryForTests(): void {
+  retryStarted = false;
 }
 
 /** schema.org paywall markup: gated content stays in the HTML (not cloaking). */

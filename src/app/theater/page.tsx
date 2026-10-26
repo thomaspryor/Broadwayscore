@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { versionedImagePath } from '@/lib/versioned-image-path';
 import { getAllTheaters } from '@/lib/data-core';
 import { generateBreadcrumbSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import TheaterIndexClient from './TheaterIndexClient';
@@ -6,7 +7,7 @@ import TheaterIndexClient from './TheaterIndexClient';
 
 /** Local theater image path (Wikimedia hotlinking deprecated April 2026) */
 function getTheaterImageUrl(slug: string): string {
-  return `/images/theaters/${slug}.jpg`;
+  return versionedImagePath(`/images/theaters/${slug}.jpg`);
 }
 
 export const metadata: Metadata = {

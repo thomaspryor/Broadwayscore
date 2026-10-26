@@ -432,6 +432,8 @@ export interface TheatrRow {
   /** Set by dropBackfillDates: a real viewing whose logged date was dropped,
    *  not a copy with its date cropped off, so it never folds into another. */
   dateDropped?: boolean;
+  /** The model saw a review here but not all of it, so `review` is null. */
+  reviewCutOff?: boolean;
 }
 
 /**
@@ -476,6 +478,7 @@ export function stitchBatchRows(batches: TheatrRow[][]): TheatrRow[] {
       if (!kept.monthDay && again.monthDay) kept.monthDay = again.monthDay;
       if (!kept.yearHint && again.yearHint) kept.yearHint = again.yearHint;
       if (!kept.review && again.review) kept.review = again.review;
+      if (again.reviewCutOff) kept.reviewCutOff = true;
       if (kept.score === null && again.score !== null) { kept.score = again.score; kept.rating = again.rating; }
     }
     out.push(...rows.slice(overlap).map((r) => ({ ...r })));
@@ -556,6 +559,7 @@ export function mergeTheatrRows(rows: TheatrRow[]): TheatrRow[] {
     if (!into.venue && from.venue) into.venue = from.venue;
     if (into.score === null && from.score !== null) { into.score = from.score; into.rating = from.rating; }
     if (!into.review && from.review) into.review = from.review;
+    if (from.reviewCutOff) into.reviewCutOff = true;
     if (!into.reaction && from.reaction) into.reaction = from.reaction;
   };
   const pending: TheatrRow[] = [];
@@ -644,7 +648,7 @@ export function theatrRowsToEntries(rows: TheatrRow[]): RawImportEntry[] {
 /** The whole client-side pipeline after the edge function, given each
  *  batch's rows in screenshot order: stitch batches, feed dates, backfill
  *  days, repeats, then import entries. */
-export function theatrRowsPipeline(batches: TheatrRow[][], today: string): { entries: RawImportEntry[]; feedDates: number; backfillDropped: number } {
+export function theatrRowsPipeline(batches: TheatrRow[][], today: string): { entries: RawImportEntry[]; feedDates: number; backfillDropped: number; reviewsCutOff: number } {
   const dated = resolveFeedDates(stitchBatchRows(batches), today);
   const { rows: cleaned, dropped } = dropBackfillDates(dated);
   const merged = mergeTheatrRows(cleaned);
@@ -652,13 +656,15 @@ export function theatrRowsPipeline(batches: TheatrRow[][], today: string): { ent
     entries: theatrRowsToEntries(merged),
     feedDates: merged.filter((r) => r.dateFromFeed && r.date).length,
     backfillDropped: dropped,
+    // A copy that showed the whole review already filled it in above.
+    reviewsCutOff: merged.filter((r) => r.list === 'attended' && r.reviewCutOff && !r.review).length,
   };
 }
 
 /** Preview notices for a finished Theatr read. */
 export function theatrNotices(
   entries: RawImportEntry[],
-  counts: { picked: number; failedScreenshots: number; unreadable: number; feedDates?: number; backfillDropped?: number },
+  counts: { picked: number; failedScreenshots: number; unreadable: number; feedDates?: number; backfillDropped?: number; reviewsCutOff?: number },
 ): string[] {
   const notices: string[] = [];
   if (counts.picked > THEATR_MAX_SCREENSHOTS) {
@@ -677,6 +683,9 @@ export function theatrNotices(
   }
   if (counts.feedDates || counts.backfillDropped) {
     notices.push(`Dates are when you logged each show in Theatr, so check them.${counts.backfillDropped ? ' A day you logged several shows at once isn’t used.' : ''}`);
+  }
+  if (counts.reviewsCutOff) {
+    notices.push(`${counts.reviewsCutOff} review(s) were cut off between screenshots, so their text wasn’t imported. Take screenshots that overlap a little to bring it in.`);
   }
   // Reaction rows are rated by the preview's reaction settings, so only rows
   // with neither a score nor a reaction are certain to stay unrated.
@@ -751,7 +760,7 @@ export async function acquireFromTheatrScreenshots(
     while (next < batches.length) await runBatch(next++);
   }));
 
-  const { entries, feedDates, backfillDropped } = theatrRowsPipeline(rowsByBatch, localToday());
+  const { entries, feedDates, backfillDropped, reviewsCutOff } = theatrRowsPipeline(rowsByBatch, localToday());
   if (entries.length === 0) {
     const code = firstError || 'no_shows';
     throw new Error(THEATR_ERROR_COPY[code] || THEATR_ERROR_COPY.internal);
@@ -764,6 +773,7 @@ export async function acquireFromTheatrScreenshots(
       unreadable,
       feedDates,
       backfillDropped,
+      reviewsCutOff,
     }),
   };
 }

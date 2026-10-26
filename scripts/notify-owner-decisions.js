@@ -55,6 +55,21 @@ async function fetchOpenIssues() {
   throw new Error(`more than ${MAX_PAGES * 100} open issues; refusing to treat a partial list as complete`);
 }
 
+// BRO-6266: comments for the decision cards only (a handful), so the digest can
+// apply the emailer's already-answered test without pulling every card's comments.
+const COMMENTS_QUERY = 'query($id: String!) { issue(id: $id) { comments(first: 100) { nodes { id body createdAt } } } }';
+async function attachDecisionComments(issues) {
+  const ids = new Set(findOwnerDecisions(issues).map((d) => d.identifier));
+  await Promise.all((issues || []).filter((i) => ids.has(i.identifier)).map(async (i) => {
+    // One failed fetch must not blank the digest section: that card just gets no hold check.
+    try {
+      const data = await linear.graphql(COMMENTS_QUERY, { id: i.identifier });
+      i.comments = (data && data.issue && data.issue.comments) || { nodes: [] };
+    } catch (e) { console.warn(`[owner-decisions] comments for ${i.identifier} unavailable: ${e.message}`); }
+  }));
+  return issues;
+}
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const dryRun = argv.includes('--dry-run');
@@ -150,4 +165,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, fetchOpenIssues, OPEN_ISSUES_QUERY, CONDITION_KEY, BROKEN_KEY };
+module.exports = { main, fetchOpenIssues, attachDecisionComments, OPEN_ISSUES_QUERY, CONDITION_KEY, BROKEN_KEY };

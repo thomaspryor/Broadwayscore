@@ -3,9 +3,9 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, isObHistoricalRow } = require('./ob-historical-cohort.js');
+const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, isObHistoricalRow, transferLinkFields } = require('./ob-historical-cohort.js');
 const { applyAddShow } = require('./add-show-action.js');
-const { isTmRowInWindow, isCurrentTmRow } = require('./theatermania-ob.js');
+const { isTmRowInWindow, isCurrentTmRow, findTmSameTitleShow, isDistinctTransfer } = require('./theatermania-ob.js');
 const { selectPromotable } = require('../promote-ob-historical.js');
 
 const TODAY = '2026-10-25';
@@ -126,4 +126,78 @@ test('toAddShowAction: strips wrapping quotes Playbill prints around some titles
   assert.equal(toAddShowAction(entry({ title: '"Anna Christie"' }), { discoveredAt: 'x', dateSource: 'y' }).show.title, 'Anna Christie');
   assert.equal(toAddShowAction(entry({ title: '“Anna Christie”' }), { discoveredAt: 'x', dateSource: 'y' }).show.title, 'Anna Christie');
   assert.equal(toAddShowAction(entry({ title: 'Say "Hello"' }), { discoveredAt: 'x', dateSource: 'y' }).show.title, 'Say "Hello"');
+});
+
+// BRO-6254: Prince Faggot ran at Playwrights Horizons (May-Aug 2025), then
+// transferred to Studio Seaview (Sep-Dec 2025). The cohort must see the first
+// run as its own production; discovery must not change.
+const seaview = {
+  id: 'prince-faggot-off-broadway-2025', title: 'Prince Faggot', slug: 'prince-faggot-off-broadway-2025',
+  venue: 'Studio Seaview', previewsStartDate: '2025-09-10', openingDate: '2025-09-10', closingDate: '2025-12-13',
+  status: 'closed', category: 'off-broadway', market: 'broadway',
+};
+const phCandidate = { title: 'Prince Faggot', venue: 'Playwrights Horizons', previewsStartDate: '2025-05-23', openingDate: '2025-06-16', closingDate: '2025-08-03' };
+
+test('isDistinctTransfer: other venue and runs apart is another production', () => {
+  assert.equal(isDistinctTransfer(phCandidate, seaview), true);
+});
+
+test('isDistinctTransfer: same venue, overlapping runs, coarse TM venue or missing dates stay the same production', () => {
+  assert.equal(isDistinctTransfer({ ...phCandidate, venue: 'Studio Seaview' }, seaview), false, 'same venue');
+  assert.equal(isDistinctTransfer({ ...phCandidate, closingDate: '2025-09-20' }, seaview), false, 'overlapping runs');
+  assert.equal(isDistinctTransfer({ ...phCandidate, closingDate: null }, seaview), false, 'no closing date: unprovable');
+  assert.equal(isDistinctTransfer(phCandidate, { ...seaview, closingDate: null }), false, 'holder has no closing date');
+  const row = { ...seaview, venue: 'Theatre Row, Theatre 5' };
+  assert.equal(isDistinctTransfer({ ...phCandidate, venue: 'Theatre Row' }, row), false, 'TM coarse venue name');
+  assert.equal(isDistinctTransfer({ ...phCandidate, venue: null }, seaview), false);
+});
+
+test('findTmSameTitleShow: discovery default still matches the transfer; the cohort opt-in lets it through', () => {
+  assert.equal(findTmSameTitleShow(phCandidate, [seaview])?.id, seaview.id, 'default behaviour unchanged');
+  assert.equal(findTmSameTitleShow(phCandidate, [seaview], { allowTransfers: true }), null);
+  const sameRun = { ...phCandidate, venue: 'Studio Seaview', previewsStartDate: '2025-09-10', openingDate: '2025-09-10', closingDate: '2025-12-13' };
+  assert.equal(findTmSameTitleShow(sameRun, [seaview], { allowTransfers: true })?.id, seaview.id, 'the same run is still caught');
+  assert.equal(findTmSameTitleShow(phCandidate, [{ ...seaview, status: 'open' }], { allowTransfers: true })?.status, 'open', 'a running row always matches');
+});
+
+test('selectPromotable: a same-year transfer gets a venue-scoped id instead of a duplicate-id skip', () => {
+  const ph = {
+    title: 'Prince Faggot', venue: 'Playwrights Horizons', result: 'match', playbillUrl: 'https://playbill.com/production/prince-faggot-playwrights-horizons',
+    parsed: { dates: { openingDate: '2025-06-16', firstPreview: '2025-05-30', closingDate: '2025-08-03' }, titleParse: { venue: 'Playwrights Horizons/Peter Jay Sharp Theater' } },
+  };
+  const { toPromote, skipped, transferOf } = selectPromotable([ph], [seaview]);
+  assert.deepEqual(skipped, []);
+  assert.equal(toPromote.length, 1);
+  assert.equal(toPromote[0].id, 'prince-faggot-playwrights-horizons-off-broadway-2025');
+  assert.equal(toPromote[0].slug, toPromote[0].id);
+  assert.equal(toAddShowAction(toPromote[0], { discoveredAt: 'x', dateSource: 'y' }).show.id, toPromote[0].id);
+  assert.equal(transferOf.get(toPromote[0].id), seaview.id);
+  assert.deepEqual(transferLinkFields(toPromote[0], seaview), { crossLinkFrom: seaview.id }, 'earlier run: link from the later row');
+  const a = { ...toAddShowAction(toPromote[0], { discoveredAt: 'x', dateSource: 'y' }), ...transferLinkFields(toPromote[0], seaview) };
+  const applied = applyAddShow(JSON.parse(JSON.stringify([seaview])), a);
+  assert.equal(applied.ok, true, applied.reason);
+  // An overlapping same-id row is still refused as a duplicate.
+  const overlap = { ...ph, parsed: { ...ph.parsed, dates: { openingDate: '2025-09-12', firstPreview: '2025-09-10', closingDate: '2025-12-13' } } };
+  const r2 = selectPromotable([overlap], [seaview]);
+  assert.equal(r2.toPromote.length, 0);
+  assert.equal(r2.skipped[0].reason, 'duplicate id');
+});
+
+test('transferLinkFields: later new run names the earlier one; no opening date gives no link', () => {
+  assert.deepEqual(transferLinkFields({ openingDate: '2026-01-10' }, seaview), { priorRunOf: seaview.id });
+  assert.deepEqual(transferLinkFields({ openingDate: null }, seaview), {});
+  assert.deepEqual(transferLinkFields({ openingDate: '2025-06-16' }, undefined), {});
+});
+
+test('selectPromotable: two same-year runs both new in one batch get distinct ids', () => {
+  const m = (venue, prev, open, close) => ({
+    title: 'Prince Faggot', venue, result: 'match', playbillUrl: `https://playbill.com/production/pf-${venue.length}`,
+    parsed: { dates: { openingDate: open, firstPreview: prev, closingDate: close }, titleParse: { venue } },
+  });
+  const { toPromote, skipped } = selectPromotable([
+    m('Studio Seaview', '2025-09-10', '2025-09-10', '2025-12-13'),
+    m('Playwrights Horizons', '2025-05-30', '2025-06-16', '2025-08-03'),
+  ], []);
+  assert.deepEqual(skipped, []);
+  assert.deepEqual(toPromote.map(e => e.id), ['prince-faggot-off-broadway-2025', 'prince-faggot-playwrights-horizons-off-broadway-2025']);
 });

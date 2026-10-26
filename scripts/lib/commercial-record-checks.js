@@ -126,6 +126,26 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     }
   }
 
+  // ourEstimateRangePct (BRO-6245): our own rounded [low, high], ends in whole 5s,
+  // never on a recouped show (it would read as an earlier share outranking the recoupment).
+  if (show.ourEstimateRangePct != null) {
+    const r = show.ourEstimateRangePct;
+    if (!Array.isArray(r) || r.length !== 2 || !r.every((v) => typeof v === 'number' && Number.isFinite(v))) {
+      out.push(`commercial.json: "${showId}" ourEstimateRangePct must be a 2-element numeric array [low, high]`);
+    } else if (r[0] < 0 || r[0] > r[1] || r[1] > 150 || r.some((v) => v % 5 !== 0)) {
+      out.push(`commercial.json: "${showId}" ourEstimateRangePct must satisfy 0 <= low <= high <= 150 with both ends multiples of 5, got [${r.join(', ')}]`);
+    }
+    if (show.recouped === true) {
+      out.push(`commercial.json: "${showId}" is recouped but carries ourEstimateRangePct (remove it)`);
+    }
+    if (show.estimatedRecoupmentPct != null) {
+      out.push(`commercial.json: "${showId}" carries both estimatedRecoupmentPct and ourEstimateRangePct (label sizing and the displayed range would read different numbers; remove one)`);
+    }
+    if (show.analystRecoupPct != null) {
+      out.push(`commercial.json: "${showId}" carries both analystRecoupPct and ourEstimateRangePct (the analyst's figure wins, so ours is dead weight; remove it)`);
+    }
+  }
+
   // A nonprofit run that switched to a commercial run (BRO-5508,
   // commercial-conversion.js): a commercial designation (it has investors),
   // the presenting nonprofit, and a date inside the run.

@@ -49,9 +49,8 @@ import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
-import TicketButtonsAB from '@/components/TicketButtonsAB';
+import ShowPageTicketCTA from '@/components/ShowPageTicketCTA';
 import { sortTicketLinks } from '@/lib/ticket-utils';
-import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import { getComparisonsForShow } from '@/config/comparisons';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
@@ -335,12 +334,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
     ? getShowRanks(show.id, { format: show.type })
     : null;
-  // The commercial scorecard is unreleased (owner, 2026-10-04). Load its data
-  // only when the flag is on: ShowPageBelowFold is a client component, so
-  // anything passed to it lands in the page's RSC payload even when its
-  // section is hidden. Gating the render alone leaked capitalization and
-  // recoupment figures into every Broadway show page's source.
-  // Even with the flag on, only the allowlisted, publishable part of the
+  // The Money Scorecard was released 2026-10-26 (BRO-6192); to pull it, set the
+  // commercial getter back to has('commercial') and rebuild. ShowPageBelowFold
+  // is a client component, so anything passed to it lands in the page's RSC
+  // payload even when its section is hidden.
+  // Only the allowlisted, publishable part of the
   // record is sent (toPublicShowCommercial): raw research notes would
   // otherwise sit in the page source though the card never prints them.
   const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
@@ -838,7 +836,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
             <div className="flex flex-wrap gap-2 min-w-0 flex-1">
               {/* Ticket Links — A/B tested (which platform gets the filled primary CTA) */}
-              <TicketButtonsAB
+              <ShowPageTicketCTA
                 showName={show.title}
                 showId={show.id}
                 showSlug={show.slug}
@@ -847,22 +845,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 showVenue={show.venue}
                 showScore={show.criticScore?.score ?? null}
                 ticketLinks={sortedTicketLinks}
+                rawTicketLinks={show.ticketLinks}
                 officialUrl={show.officialUrl}
                 pageType="show"
                 buttonClassName="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
               />
-
-              {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an
-                  explicit note instead of leaving a silent gap where the ticket
-                  button used to be — users hunting for a "Get Tickets" button
-                  rage-clicked the empty space (CLAUDE.md card #228, task #90).
-                  See getTicketCtaNote for why 'closed' checks status alone. */}
-              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
-                <p className="w-full text-xs text-gray-500">This show has closed. Tickets are no longer available.</p>
-              )}
-              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
-                <p className="w-full text-xs text-gray-500">Tickets aren&apos;t on sale yet. Check back closer to opening.</p>
-              )}
 
               {/* Lottery/Rush — subdued style, not a revenue link */}
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (

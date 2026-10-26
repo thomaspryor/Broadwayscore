@@ -75,6 +75,12 @@ export interface SeasonProfile {
   capitalization: { all: MoneyAggregate; musical: MoneyAggregate; play: MoneyAggregate };
   /** Disclosed capitalizations plus an estimate for each commercial show with none (estimateCapitalization). */
   estimatedCapital: CapitalEstimate;
+  /**
+   * The same per-show figures as estimatedCapital, split by outcome (owner,
+   * 2026-10-26: the season page's only loss-side number was capital still at
+   * risk in running shows). Shows with no figure count in neither.
+   */
+  capitalByOutcome: { closedUnrecouped: number; closedUnrecoupedShows: number; running: number; runningShows: number };
   runningCost: { musical: MoneyAggregate; play: MoneyAggregate };
 }
 
@@ -138,6 +144,7 @@ function emptyProfile(season: string): SeasonProfile {
     tracked: 0, nonprofit: 0, commercial: 0, recouped: 0,
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
     estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
+    capitalByOutcome: { closedUnrecouped: 0, closedUnrecoupedShows: 0, running: 0, runningShows: 0 },
     runningCost: { musical: emptyMoney(), play: emptyMoney() },
   };
 }
@@ -250,9 +257,12 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     // ahead of the comparables median.
     const disclosedCap = isOwnEstimate(c) ? null : c.capitalization;
     addMoney(p.capitalization.all, disclosedCap);
+    let showCap: number | null = null;
     if (typeof disclosedCap === 'number' && disclosedCap > 0) {
+      showCap = disclosedCap;
       p.estimatedCapital.total += disclosedCap;
     } else if (typeof c.capitalization === 'number' && c.capitalization > 0) {
+      showCap = c.capitalization;
       p.estimatedCapital.total += c.capitalization;
       p.estimatedCapital.estimated++;
     } else if (c.nonprofitOrg) {
@@ -263,8 +273,18 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
       );
       if (est === null) p.estimatedCapital.missing++;
       else {
+        showCap = est;
         p.estimatedCapital.total += est;
         p.estimatedCapital.estimated++;
+      }
+    }
+    if (showCap !== null && c.recouped !== true) {
+      if (show.status === 'closed') {
+        p.capitalByOutcome.closedUnrecouped += showCap;
+        p.capitalByOutcome.closedUnrecoupedShows++;
+      } else if (show.status === 'open' || show.status === 'previews') {
+        p.capitalByOutcome.running += showCap;
+        p.capitalByOutcome.runningShows++;
       }
     }
     if (isMusical) {
@@ -365,6 +385,9 @@ export interface ComparisonRow {
   currentDetail: string | null;
   last: number | null;
   lastDetail: string | null;
+  /** The season before last (the third column, owner 2026-10-26). */
+  prev: number | null;
+  prevDetail: string | null;
   avg: number | null;
   /** Per-season average counts ("15.4 of 36.2") or disclosure, under the average. */
   avgDetail: string | null;
@@ -375,6 +398,8 @@ export interface ComparisonRow {
 export interface SeasonComparison {
   season: string;
   lastSeason: string | null;
+  /** The season before last with openings, or null. */
+  prevSeason: string | null;
   /** Oldest and newest baseline seasons, e.g. ["2015-2016", "2025-2026"]. */
   baselineRange: [string, string] | null;
   /** Set when the season is still under way: rows compare against full seasons except "Opened so far". */
@@ -443,13 +468,15 @@ function disclosedDetail(agg: MoneyAggregate): string | null {
  * seasons left out, and the season just before it (even if disrupted; 2020-21
  * had no openings at all). Newest first.
  */
-export function seasonBaseline(profiles: SeasonProfile[], season: string): { baseline: SeasonProfile[]; last: SeasonProfile | null } {
+export function seasonBaseline(profiles: SeasonProfile[], season: string): { baseline: SeasonProfile[]; last: SeasonProfile | null; prev: SeasonProfile | null } {
   const sorted = [...profiles].sort((a, b) => b.season.localeCompare(a.season));
   const idx = sorted.findIndex((p) => p.season === season);
-  if (idx === -1) return { baseline: [], last: null };
+  if (idx === -1) return { baseline: [], last: null, prev: null };
+  const withOpenings = sorted.slice(idx + 1).filter((p) => p.productions > 0);
   return {
-    baseline: sorted.slice(idx + 1).filter((p) => p.productions > 0 && !DISRUPTED_SEASONS.has(p.season)).slice(0, BASELINE_SEASONS),
-    last: sorted.slice(idx + 1).find((p) => p.productions > 0) ?? null,
+    baseline: withOpenings.filter((p) => !DISRUPTED_SEASONS.has(p.season)).slice(0, BASELINE_SEASONS),
+    last: withOpenings[0] ?? null,
+    prev: withOpenings[1] ?? null,
   };
 }
 
@@ -519,7 +546,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   const idx = sorted.findIndex((p) => p.season === season);
   if (idx === -1) return null;
   const cur = sorted[idx];
-  const { baseline, last } = seasonBaseline(sorted, season);
+  const { baseline, last, prev } = seasonBaseline(sorted, season);
 
   const asOfMs = Date.parse(asOf);
   const start = seasonStartMs(season);
@@ -529,6 +556,13 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
 
   const rows: ComparisonRow[] = [];
 
+  // The same cell for last season and the season before it.
+  const pair = (cell: (q: SeasonProfile | null) => { v: number | null; d: string | null }) => {
+    const l = cell(last);
+    const p2 = cell(prev);
+    return { last: l.v, lastDetail: l.d, prev: p2.v, prevDetail: p2.d };
+  };
+
   if (asOfDay != null) {
     const openedBy = (p: SeasonProfile) => p.openingDayOffsets.filter((d) => d <= asOfDay).length;
     rows.push({
@@ -536,8 +570,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
       format: 'count',
       current: openedBy(cur),
       currentDetail: null,
-      last: last ? openedBy(last) : null,
-      lastDetail: null,
+      ...pair((q) => ({ v: q ? openedBy(q) : null, d: null })),
       avg: avgOf(baseline.map(openedBy)),
       avgDetail: null,
       avgSeasons: baseline.length,
@@ -549,8 +582,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
     format: 'count',
     current: cur.productions,
     currentDetail: null,
-    last: last?.productions ?? null,
-    lastDetail: null,
+    ...pair((q) => ({ v: q?.productions ?? null, d: null })),
     avg: avgOf(baseline.map((p) => p.productions)),
     avgDetail: null,
     avgSeasons: baseline.length,
@@ -562,8 +594,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
       format: 'pct',
       current: share(num(cur), den(cur)),
       currentDetail: pctDetail(num(cur), den(cur)),
-      last: last ? share(num(last), den(last)) : null,
-      lastDetail: last ? pctDetail(num(last), den(last)) : null,
+      ...pair((q) => ({ v: q ? share(num(q), den(q)) : null, d: q ? pctDetail(num(q), den(q)) : null })),
       avg: pooled(baseline, num, den),
       avgDetail: avgCountDetail(baseline, num, den),
       avgSeasons: baseline.length,
@@ -586,8 +617,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
     format: 'pct',
     current: trackedOk ? sampledShare(cur.nonprofit, cur.tracked) : null,
     currentDetail: trackedOk ? pctDetail(cur.nonprofit, cur.tracked) : null,
-    last: last && hasTrackedCoverage(last) ? sampledShare(last.nonprofit, last.tracked) : null,
-    lastDetail: last && hasTrackedCoverage(last) ? pctDetail(last.nonprofit, last.tracked) : null,
+    ...pair((q) => ({ v: q && hasTrackedCoverage(q) ? sampledShare(q.nonprofit, q.tracked) : null, d: q && hasTrackedCoverage(q) ? pctDetail(q.nonprofit, q.tracked) : null })),
     avg: pooled(tracked, (p) => p.nonprofit, (p) => p.tracked),
     avgDetail: avgCountDetail(tracked, (p) => p.nonprofit, (p) => p.tracked),
     avgSeasons: tracked.length,
@@ -599,12 +629,11 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   const settled = tracked.filter(isSettled);
   const recoupUnsettled = !isSettled(cur) || (!!last && !isSettled(last));
   rows.push({
-    label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped so far',
+    label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped as of today',
     format: 'pct',
     current: trackedOk || inProgress ? sampledShare(cur.recouped, cur.commercial) : null,
     currentDetail: trackedOk || inProgress ? pctDetail(cur.recouped, cur.commercial) : null,
-    last: last && hasTrackedCoverage(last) ? sampledShare(last.recouped, last.commercial) : null,
-    lastDetail: last && hasTrackedCoverage(last) ? pctDetail(last.recouped, last.commercial) : null,
+    ...pair((q) => ({ v: q && hasTrackedCoverage(q) ? sampledShare(q.recouped, q.commercial) : null, d: q && hasTrackedCoverage(q) ? pctDetail(q.recouped, q.commercial) : null })),
     avg: pooled(settled, (p) => p.recouped, (p) => p.commercial),
     avgDetail: avgCountDetail(settled, (p) => p.recouped, (p) => p.commercial),
     avgSeasons: settled.length,
@@ -626,8 +655,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
       format: 'money',
       current: trackedOk || inProgress ? mean(a) : null,
       currentDetail: disclosedDetail({ ...a, of: curOf }),
-      last: last && ok(last) ? mean(agg(last)) : null,
-      lastDetail: last && ok(last) ? disclosedDetail(agg(last)) : null,
+      ...pair((q) => ({ v: q && ok(q) ? mean(agg(q)) : null, d: q && ok(q) ? disclosedDetail(agg(q)) : null })),
       avg,
       avgDetail: used.length ? `${avgCountDetail(used, (p) => agg(p).known, (p) => agg(p).of)} disclosed` : null,
       avgSeasons: n,
@@ -643,8 +671,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
     format: 'money',
     current: capAll(cur).known > 0 ? capAll(cur).total : null,
     currentDetail: disclosedDetail(capAll(cur)),
-    last: last && hasTrackedCoverage(last) && capAll(last).known > 0 ? capAll(last).total : null,
-    lastDetail: last && hasTrackedCoverage(last) ? disclosedDetail(capAll(last)) : null,
+    ...pair((q) => ({ v: q && hasTrackedCoverage(q) && capAll(q).known > 0 ? capAll(q).total : null, d: q && hasTrackedCoverage(q) ? disclosedDetail(capAll(q)) : null })),
     avg: avgOf(capSeasons.map((p) => capAll(p).total)),
     avgDetail: capSeasons.length ? `${avgCountDetail(capSeasons, (p) => capAll(p).known, (p) => capAll(p).of)} disclosed` : null,
     avgSeasons: capSeasons.length,
@@ -657,6 +684,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   return {
     season,
     lastSeason: last?.season ?? null,
+    prevSeason: prev?.season ?? null,
     baselineRange: baseline.length ? [baseline[baseline.length - 1].season, baseline[0].season] : null,
     inProgress,
     baselineSeasons: baseline.length,

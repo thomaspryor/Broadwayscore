@@ -98,14 +98,19 @@ test('baseline skips pandemic seasons; money rows need their own coverage', () =
   assert.equal(row('Musicals').current, 0.5);
   assert.equal(row('Musicals').currentDetail, '5 of 10');
   assert.equal(row('Musicals').last, 0.2);
+  // The third column is the season before last (owner, 2026-10-26).
+  assert.equal(cmp.prevSeason, '2023-2024');
+  assert.equal(row('Musicals').prev, 0.2);
+  assert.equal(row('Musicals').prevDetail, '2 of 10');
+  assert.equal(row('Disclosed capitalization (sum)').prev, 60e6);
   assert.equal(row('Musicals').avg, 6 / 30); // pooled 2+2+2 of 30; 2019-20's 9 musicals excluded
 
   // 2025-26 ended Jul 2026: still settling, so labelled "so far". All three
   // baseline seasons ended over a year before Sep 2026: settled.
   assert.equal(cmp.recoupUnsettled, true);
   assert.equal(cmp.baselineSeasons, 3);
-  assert.equal(row('Commercial shows recouped so far').avgSeasons, 3);
-  assert.equal(row('Commercial shows recouped so far').avg, 3 / 30);
+  assert.equal(row('Commercial shows recouped as of today').avgSeasons, 3);
+  assert.equal(row('Commercial shows recouped as of today').avg, 3 / 30);
 
   // Only 2024-25 and 2023-24 have disclosed capitalizations.
   const cap = row('Average capitalization, play');
@@ -139,7 +144,7 @@ test('recoupment average leaves out seasons still playing out', () => {
     ...season(2024, 10, { tracked: true }),
   ];
   const cmp = compareSeason(buildSeasonProfiles(shows), '2026-2027', '2026-10-20')!;
-  const r = cmp.rows.find((x) => x.label === 'Commercial shows recouped so far')!;
+  const r = cmp.rows.find((x) => x.label === 'Commercial shows recouped as of today')!;
   assert.equal(r.last, 0.1); // last season is still shown
   assert.equal(r.avgSeasons, 1); // but only 2024-25 is averaged
 });
@@ -238,6 +243,8 @@ test('shares of fewer than 3 shows are not stated; a disrupted last season still
   assert.equal(recoup.currentDetail, '1 of 2');
   assert.equal(cmp.lastSeason, '2019-2020');
   assert.equal(cmp.lastDisrupted, true);
+  assert.equal(cmp.prevSeason, null); // nothing opened before 2019-20 in this fixture
+  assert.equal(recoup.prev, null);
   assert.equal(cmp.baselineSeasons, 0);
   assert.equal(recoup.last, 0.2);
 });
@@ -427,4 +434,16 @@ test('recouped show names are listed per bucket; shows that did not recoup are n
   const f = buildRecoupFindings(shows, '2026-10-20');
   const pr = f.buckets.find((b) => b.label === 'Play revivals')!;
   assert.deepEqual(pr.recoupedShows.map((s) => s.title), ['A Show', 'B Show']);
+});
+
+test('capital by outcome: closed-unrecouped and running shows, same per-show figures as the estimated total', () => {
+  const shows = [
+    show({ openingDate: '2025-10-01', status: 'closed', commercial: com({ capitalization: 10e6, recouped: false }) }),
+    show({ openingDate: '2025-10-02', status: 'closed', commercial: com({ capitalization: 6e6, recouped: true }) }),
+    show({ openingDate: '2025-10-03', status: 'open', commercial: com({ capitalization: 4e6, recouped: false }) }),
+    show({ openingDate: '2025-10-04', status: 'open', commercial: com({ capitalization: 3e6, recouped: true }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
+  assert.equal(p.estimatedCapital.total, 23e6);
+  assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 10e6, closedUnrecoupedShows: 1, running: 4e6, runningShows: 1 });
 });

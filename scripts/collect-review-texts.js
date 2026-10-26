@@ -73,6 +73,7 @@ const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('
 const { shouldPushReviewTextsCheckpoint, countUnpushedCommits, decideCheckpointAction } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
+require('./lib/cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
 
@@ -165,6 +166,7 @@ function getNytCriticsPicks() {
 const { isLondonMarket } = require('./lib/venue-classification');
 const { isUrlCorrectedRefetch, mayShortCircuitCollected, bypassesFetchFailureGate } = require('./lib/url-corrected-refetch');
 const { shouldSkipScoredReview, shouldSkipWrongProductionAudit, wrongShowCleared, evaluateShowMentionGuard, pickShowTitleForHeuristic, checkLlmVerificationAgainstKeywords, hasHighConfidenceLlmScore } = require('./lib/review-guards');
+const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { resolveShowIdentity } = require('./lib/show-identity');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
@@ -5573,6 +5575,14 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const alreadyScored = !!(data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100)
       || hasHighConfidenceLlmScore(data);
 
+    // BRO-5805: a body naming most of THIS show's listed cast is about this show's production. The verifier has no
+    // cast list and reads scrape chrome, so its wrong-production / film-TV verdicts are advisory
+    // against that evidence.
+    const ownShowEvidence = ownShowTextEvidence(data.fullText, _showsJsonCache?.shows?.find(s => s.id === data.showId)).strong;
+    if (ownShowEvidence && (contentVerification.wrongProduction || contentVerification.isFilmTv)) {
+      console.log(`    ⚠ LLM: verdict contradicted by the show's own cast named in the text — advisory, text kept`);
+    }
+
     // Auto-invalidate on HIGH confidence wrong article type (preview, interview, news, etc.)
     // Medium confidence → log warning only (21% LLM error rate on article classification)
     if (contentVerification.wrongArticle) {
@@ -5614,7 +5624,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     const showCat = _showsJsonCache?.shows?.find(s => s.id === data.showId)?.category;
     if (shouldSkipWrongProductionAudit(data) || laneHeld(data, 'wrongProduction')) {
       console.log(`    ⚠ wrongProduction override set (human-verified or manual) — skipping wrongProduction check`);
-    } else if (contentVerification.wrongProduction && showCat !== 'off-broadway' &&
+    } else if (contentVerification.wrongProduction && showCat !== 'off-broadway' && !ownShowEvidence &&
                ((isHighConfidence && data.fullText) || contentVerification.wrongArticle)) {
       // wrongArticle (completely wrong page fetched) bypasses the isHighConfidence+fullText
       // requirements — the temporal override can downgrade confidence to "low" and the
@@ -5647,7 +5657,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
 
     // Auto-null fullText on high/medium confidence film/TV content
-    if (contentVerification.isFilmTv && isHighConfidence && data.fullText && !laneHeld(data, 'wrongProduction')) {
+    if (contentVerification.isFilmTv && isHighConfidence && data.fullText && !ownShowEvidence && !laneHeld(data, 'wrongProduction')) {
       if (alreadyScored) {
         // Don't destroy an already-scored review — flag for human review instead
         data.needsReview = true;
@@ -6802,6 +6812,7 @@ async function setupBrowser() {
 
   const newBrowser = await chromium.launch({
     headless: true,
+    ...require('./lib/playwright-exe').launchExtras(chromium),
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',

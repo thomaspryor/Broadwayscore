@@ -231,7 +231,7 @@ test('BRO-3446: history says the path DID exist -> real regression stays FAILED,
 // ── the two defects the first live sweep exposed (2026-09-15, 371 cards) ──
 
 test('a repo-wide tsc/lint check is never proof: it is green on main for every card at once', () => {
-  for (const cmd of ['npx tsc --noEmit', 'npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json', 'npx next lint']) {
+  for (const cmd of ['npx tsc --noEmit', 'npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json', 'npm run lint']) {
     assert.equal(isNonProbativeCommand(cmd), true, cmd);
     // Would otherwise have produced 6 false VERIFIED and 10 false STUCK.
     assert.equal(classifyCard({ card: doneCard(), cmd, runResult: PASS }).verdict, VERDICTS.UNVERIFIABLE, cmd);

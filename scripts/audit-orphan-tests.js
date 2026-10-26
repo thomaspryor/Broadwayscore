@@ -74,6 +74,8 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-5992 RECHECK-AFTER probe: live GSC/PostHog snapshots, skipped until the cohort hold ends (2026-11-16).
+  'scripts/verify-bro-5992-recheck.test.mjs': 'BRO-5992',
   // BRO-4763: runs indirectly, imported by tour-runtime-coverage.test.mjs in
   // check-corpus-drift.yml. The path-based audit does not trace ESM imports.
   'tests/unit/sound-of-music-synopsis.test.mjs': 'BRO-4763',
@@ -81,6 +83,8 @@ const EXEMPT_NEVER_CI = {
   'tests/unit/tour-runtime-source-agreement.test.mjs': 'BRO-4776',
   // BRO-6134 RECHECK-AFTER probe: reads live git/Linear/GitHub signals, red while a Codex lane is down.
   'tests/live/codex-lane-alarm-clean.test.mjs': 'BRO-6134',
+  // BRO-5989 RECHECK-AFTER probe: live PostHog data, red until each arm has the pre-registered minimum exposed people.
+  'tests/live/related-shows-ab-sample.test.mjs': 'BRO-5989',
   // BRO-3490 RECHECK-AFTER probe: live data, red until Saturday's deep-research run researches the six stuck closures.
   'scripts/verify-bro-3490-recheck.test.mjs': 'BRO-3490',
   // BRO-5879 RECHECK-AFTER probe: live data, red until the daily Reddit draft job has run the update-email code.

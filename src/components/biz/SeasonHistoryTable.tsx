@@ -59,14 +59,14 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
             <tr className="text-left text-gray-400 border-b border-white/10 bg-surface-overlay leading-tight">
               <th className="py-3 px-3 font-medium whitespace-nowrap sticky left-0 z-10 bg-surface-overlay">Season</th>
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Productions</th>
+              <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Recouped</th>
+              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Disclosed<br />capital</th>}
+              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Est. total<br />capital</th>}
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Musicals</th>
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Revivals</th>
               <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Revivals among<br />musicals</th>
               <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Revivals among<br />plays</th>
               <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Nonprofit</th>
-              <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Recouped</th>
-              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Disclosed<br />capital</th>}
-              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Est. total<br />capital</th>}
             </tr>
           </thead>
           <tbody>
@@ -88,17 +88,6 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                     {current && <span className="block text-xs text-gray-500">so far + announced</span>}
                   </td>
                   <td className="py-2.5 px-3 text-center text-white font-semibold">{p.productions}</td>
-                  <td className="py-2.5 px-3 text-center text-gray-300">
-                    {pct(p.musicals, p.productions)}
-                    <span className="block text-xs text-gray-500">{p.musicals}</span>
-                  </td>
-                  <td className="py-2.5 px-3 text-center text-gray-300">
-                    {pct(p.revivals, p.revivalKnown)}
-                    <span className="block text-xs text-gray-500">{p.revivals}</span>
-                  </td>
-                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{pct(p.musicalRevivals, p.musicalRevivalKnown)}</td>
-                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{pct(p.playRevivals, p.playRevivalKnown)}</td>
-                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{tracked ? pct(p.nonprofit, p.tracked) : '—'}</td>
                   <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                     {tracked || current ? `${p.recouped} of ${p.commercial}` : '—'}
                   </td>
@@ -118,6 +107,17 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                       {hasEstimatedCapital(p) && !current && estimateNotes(p).map((n) => <span key={n} className="block text-xs text-gray-500">{n}</span>)}
                     </td>
                   )}
+                  <td className="py-2.5 px-3 text-center text-gray-300">
+                    {pct(p.musicals, p.productions)}
+                    <span className="block text-xs text-gray-500">{p.musicals}</span>
+                  </td>
+                  <td className="py-2.5 px-3 text-center text-gray-300">
+                    {pct(p.revivals, p.revivalKnown)}
+                    <span className="block text-xs text-gray-500">{p.revivals}</span>
+                  </td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{pct(p.musicalRevivals, p.musicalRevivalKnown)}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{pct(p.playRevivals, p.playRevivalKnown)}</td>
+                  <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{tracked ? pct(p.nonprofit, p.tracked) : '—'}</td>
                 </tr>
               );
             })}
@@ -130,17 +130,6 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                   <span className="block text-xs text-gray-500 font-normal">of {avg.seasons} completed seasons</span>
                 </th>
                 <td className="py-2.5 px-3 text-center text-white">{avg.productions == null ? '—' : Math.round(avg.productions)}</td>
-                <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                  {sharePct(avg.musicals.share)}
-                  {cellNote(avg.musicals.count == null ? null : `${Math.round(avg.musicals.count)} a season`)}
-                </td>
-                <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                  {sharePct(avg.revivals.share)}
-                  {cellNote(avg.revivals.count == null ? null : `${Math.round(avg.revivals.count)} a season`)}
-                </td>
-                <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{sharePct(avg.musicalRevivals)}</td>
-                <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{sharePct(avg.playRevivals)}</td>
-                <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{sharePct(avg.nonprofit)}</td>
                 <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                   {avg.recouped ? `${Math.round(avg.recouped.recouped)} of ${Math.round(avg.recouped.commercial)}` : '—'}
                   {avg.recouped && cellNote(seasonsNote(avg.recouped.seasons, avg.seasons))}
@@ -157,6 +146,17 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                     {cellNote(seasonsNote(avg.estimatedCapital.seasons, avg.seasons))}
                   </td>
                 )}
+                <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
+                  {sharePct(avg.musicals.share)}
+                  {cellNote(avg.musicals.count == null ? null : `${Math.round(avg.musicals.count)} a season`)}
+                </td>
+                <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
+                  {sharePct(avg.revivals.share)}
+                  {cellNote(avg.revivals.count == null ? null : `${Math.round(avg.revivals.count)} a season`)}
+                </td>
+                <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{sharePct(avg.musicalRevivals)}</td>
+                <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{sharePct(avg.playRevivals)}</td>
+                <td className="hidden md:table-cell py-2.5 px-3 text-center text-gray-300">{sharePct(avg.nonprofit)}</td>
               </tr>
             </tfoot>
           )}

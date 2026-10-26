@@ -22,6 +22,7 @@
  */
 
 const https = require('https');
+require('./lib/cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 
 // --- HTTP helpers ---
 

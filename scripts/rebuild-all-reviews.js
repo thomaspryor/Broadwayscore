@@ -72,6 +72,7 @@ const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
 const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { ownShowTextEvidence } = require('./lib/own-show-text-evidence');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -2406,6 +2407,12 @@ const crossShowFingerprints = new Map();
         // signal. Medium-conf CV vs confident ensemble = ensemble wins.
         const ppEnsembleSaysReview = hasHighConfidenceLlmScore(d);
         const ppCvWpAdvisory = ppEnsembleSaysReview && cv.confidence !== 'high' && !cvLowButStrong;
+        // BRO-5805: a body that names most of THIS show's listed cast is about this show's production, so a CV
+        // wrong-production / wrong-show / film-TV verdict is advisory, whatever its confidence (the verifier has
+        // no cast list and reads scrape chrome). Same carve-out shape as the ones above. Only a low-confidence
+        // verdict backed by a strong "different show" signal (cvLowButStrong) still promotes. Not-a-review
+        // verdicts are untouched: naming the cast shows which show a text is about, not that it is a review.
+        const ppOwnShowEvidence = !cvLowButStrong && ownShowTextEvidence(d.fullText, showById[sid]).strong;
         // Production-continuity gate (Phase 1): operator-declared priorRuns trumps
         // CV's wrongProduction (CV identifies a different venue/run, which is
         // exactly what priorRuns IS for). Skip promotion — operator-trust over CV.
@@ -2426,7 +2433,7 @@ const crossShowFingerprints = new Map();
           && isReviewWithinOwnProductionWindow(showById[sid], d.publishDate);
         if (cv.wrongProduction === true && d.wrongProduction !== true
             && !shouldSkipWrongProductionAudit(d) && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')
-            && !ppCvWpAdvisory && !ppInPriorRun && !ppInTourLeg && !ppVenueCarveout) {
+            && !ppCvWpAdvisory && !ppInPriorRun && !ppInTourLeg && !ppVenueCarveout && !ppOwnShowEvidence) {
           // [GUARD:CV-PRE-PASS] DoaS Apr 9-10 #10: was the source of the bug.
           d.wrongProduction = true;
           invalidateWrongProductionAutoClear(d);
@@ -2442,6 +2449,8 @@ const crossShowFingerprints = new Map();
           stats.cvWrongProductionPriorRunSuppressed = (stats.cvWrongProductionPriorRunSuppressed || 0) + 1;
         } else if (cv.wrongProduction === true && ppCvWpAdvisory) {
           stats.cvWrongProductionAdvisory = (stats.cvWrongProductionAdvisory || 0) + 1;
+        } else if (cv.wrongProduction === true && ppOwnShowEvidence) {
+          stats.cvWrongProductionOwnShowEvidence = (stats.cvWrongProductionOwnShowEvidence || 0) + 1;
         }
         const wpConf = cv.confidence || 'medium';
         const skipLondon = isLondonMarket(sCat) && isUkOutletUrl(d.url) && wpConf !== 'high';
@@ -2484,7 +2493,7 @@ const crossShowFingerprints = new Map();
             d.isNonReviewReason = d.isNonReviewReason || `CV-promoted (not a review): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
+        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && !ppOwnShowEvidence && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
           // Both flags true: genuinely a review, just of a different production — wrongShow family.
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
@@ -2500,7 +2509,7 @@ const crossShowFingerprints = new Map();
         } else if (cv.wrongArticle === true && ensembleSaysReview) {
           stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
         }
-        if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
+        if (cv.isFilmTv === true && !ensembleSaysReview && !ppOwnShowEvidence && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
             d.flagReason = 'cv-promotion-deferred';

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { isFantasyListed } from '@/config/fantasy-listing';
+import { versionedImagePath } from '@/lib/versioned-image-path';
 
 // Unlisted until fantasy-season.json listedFrom (BRO-5483): the pages work by
 // direct link but stay out of search results. Once listed, no robots key is
@@ -10,10 +11,10 @@ import { isFantasyListed } from '@/config/fantasy-listing';
 // (BRO-5519, files from scripts/generate-fantasy-brand-assets.mjs).
 const icons: Metadata['icons'] = {
   icon: [
-    { url: '/images/fantasy/marquee-icon.svg', type: 'image/svg+xml' },
-    { url: '/images/fantasy/marquee-icon-32.png', sizes: '32x32', type: 'image/png' },
+    { url: versionedImagePath('/images/fantasy/marquee-icon.svg'), type: 'image/svg+xml' },
+    { url: versionedImagePath('/images/fantasy/marquee-icon-32.png'), sizes: '32x32', type: 'image/png' },
   ],
-  apple: '/images/fantasy/marquee-icon-180.png',
+  apple: versionedImagePath('/images/fantasy/marquee-icon-180.png'),
 };
 
 export function generateMetadata(): Metadata {

@@ -35,6 +35,7 @@ When unsure, `grep` the changed files for `data/` or `require(...data...)`; no m
 ## Codex-relevant rules CLAUDE.md doesn't spell out
 - Workflows that scrape must pass both `BRIGHTDATA_TOKEN` and `SCRAPINGBEE_API_KEY` (scraping itself goes through `fetchPage()` in `scripts/lib/scraper.js`).
 - Tests are `.mjs` files using the `node:test` API; Jest is not installed.
+- Emailing the owner (status or a question): follow `docs/owner-email-guidelines.md`. Questions go on a DECISION NEEDED card, never "reply yes".
 
 ## Never (only the broadcast rule is hook-enforced; CLAUDE.md has the full list)
 - Call `POST /broadcasts/{id}/send` or test against a Resend audience with real contacts.

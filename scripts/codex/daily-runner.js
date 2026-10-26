@@ -696,7 +696,7 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
   // landing comes through here, so a recovered or reconciled landing cannot reach Done unapplied.
   // With the kill switch on, a pending plan still bounces the card (never Done unapplied), it is just not dispatched.
   if (!OPTS.dryRun) {
-    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled(), canDispatch: DF.canDispatchWorkflows() });
+    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled(), canDispatch: DF.canDispatchWorkflows(), applyWaitMin: R.landWaitMinutes({ hardEndMs: HARD_END_MS, wrapUpMs: WRAP_UP_MS, nowMs: Date.now() }) });
     if (ap.kind === 'deferred') {
       // Not a failure and not a bounce (a bounce would hide the card from the GHA lane for 14 days): the card stays
       // In Progress with its landing on main, and a runner that can dispatch applies it on its next reconcile.
@@ -845,8 +845,8 @@ async function workCard(pick, stats, inFlight) {
     // card budget. The land checks and review after the last exec still run, so
     // a card can overrun the budget by those (bounded by their own timeouts).
     const cardDeadline = Math.min(claimedMs + OPTS.cardMaxMinutes * 60_000, HARD_END_MS - WRAP_UP_MS);
-    // The current round's deadline: the card budget, or for the first SHIP-WITH-FIXES round the
-    // rest of the run (R.fixRoundDeadline, BRO-5384).
+    // The current round's deadline: the card budget, or for the first SHIP-WITH-FIXES round and a REJECT
+    // round the rest of the run (R.fixRoundDeadline, BRO-5384, BRO-6260).
     let roundDeadline = cardDeadline;
     // A fix round's exec gets what is left after the review (down to 15 min), not a fixed 45:
     // reserving a whole 45-min exec + 30-min review never fit the routine's 60-min card budget,
@@ -949,13 +949,13 @@ async function workCard(pick, stats, inFlight) {
       }
       if (step !== 'fix-round' && step !== 'env-retry') break;
       const deadline = step === 'fix-round'
-        ? R.fixRoundDeadline({ verdict: check.verdict, swfRoundUsed, cardDeadlineMs: cardDeadline, runEndMs: HARD_END_MS - WRAP_UP_MS })
+        ? R.fixRoundDeadline({ verdict: check.verdict, swfRoundUsed, cardDeadlineMs: cardDeadline, runEndMs: HARD_END_MS - WRAP_UP_MS, rejectRunEnd: process.env.CODEX_REJECT_RUN_END !== '0' })
         : roundDeadline;
       const swfRound = step === 'fix-round' && check.verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed;
       if (!execFits(deadline)) {
         // A SHIP-WITH-FIXES verdict always gets its fix round: in the next run if not in this one.
         if (swfRound) { carryOver = true; break; }
-        step = 'bounce'; check.text += `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break;
+        step = 'bounce'; check.text += check.verdict === 'REJECT' && process.env.CODEX_REJECT_RUN_END !== '0' ? '\n\n(The run had no time left for another round.)' : `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break;
       }
       roundDeadline = deadline;
       if (swfRound) swfRoundUsed = true;
@@ -1443,7 +1443,7 @@ async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
     if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
     // A deferred data-fix apply is for a runner that can dispatch; a cloud slot re-reading it would only defer again.
     const deferred = notes[0].body.startsWith(DEFER_HEADING);
-    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canDispatchWorkflows() })) continue;
+    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canReconcileDeferred() })) continue;
     await settleLanded(id, stats, { partial: await partialLanding(id, NaN), body: 'The runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.' });
   }
 }

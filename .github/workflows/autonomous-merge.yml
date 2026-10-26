@@ -124,7 +124,7 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      # Tier-3 re-verify (Sprint 2) runs `npx tsc --noEmit`, `npx next lint`
+      # Tier-3 re-verify (Sprint 2) runs `npx tsc --noEmit`, `npm run lint`
       # and a production `npx next build` on a src/ diff — all three import
       # data/*.json via resolveJsonModule and fail TS2307 without the private
       # core data. Same composite action + manifest generation the

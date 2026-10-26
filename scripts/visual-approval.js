@@ -21,7 +21,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const va = require('./lib/visual-approval.js');
 const link = require('../src/lib/owner-decision-link.js');
 
-const USAGE = 'Usage: node scripts/visual-approval.js request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run]';
+const USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N | request --issue=BRO-N --what="<plain words>" [--dir=<crops dir>] [--summary="..."] [--dry-run]';
 
 function arg(argv, name) { const a = argv.find((x) => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : ''; }
 
@@ -38,7 +38,7 @@ async function request(argv) {
   let verdict;
   try { verdict = JSON.parse(fs.readFileSync(path.join(dir, 'verdict.json'), 'utf8')); } catch { console.error(`Refused: no verdict.json in ${dir}. Run node scripts/visual-qa.mjs first.`); return 1; }
   if (!verdict.contentHash) { console.error('Refused: verdict.json has no contentHash.'); return 1; }
-  if (verdict.overallPass === false) { console.error('Refused: the visual check did not pass. Fix the findings, re-run visual-qa, then ask.'); return 1; }
+  if (verdict.overallPass !== true) { console.error('Refused: the visual check did not pass. Fix the findings, re-run visual-qa, then ask.'); return 1; }
   if (verdict.headSha && verdict.headSha !== va.git(['rev-parse', 'HEAD'], { cwd })) { console.error('Refused: the verdict was made on a different commit than HEAD. Re-run node scripts/visual-qa.mjs.'); return 1; }
 
   va.git(['fetch', 'origin', 'main', '--quiet'], { cwd });
@@ -81,8 +81,33 @@ async function request(argv) {
   return 0;
 }
 
+/** Where the owner's answer stands, read from the card itself (the Owner decision comment and the lander's markers). Never infer "still waiting" from memory. */
+async function status(argv) {
+  const issueId = arg(argv, 'issue');
+  if (!/^BRO-\d+$/.test(issueId)) { console.error(STATUS_USAGE); return 2; }
+  const linear = require('./lib/linear-client.js');
+  const issue = await linear.getIssue(issueId);
+  if (!issue) { console.error(`${issueId} not found`); return 1; }
+  const comments = (await linear.listIssueComments([issueId])).get(issueId) || [];
+  const state = va.classifyStatus(issue.description, comments);
+  console.log(`${issueId}: ${state}${STATUS_TEXT[state] ? ` (${STATUS_TEXT[state]})` : ''}`);
+  return 0;
+}
+const STATUS_USAGE = 'Usage: node scripts/visual-approval.js status --issue=BRO-N';
+const STATUS_TEXT = {
+  waiting: 'the owner has not answered yet',
+  approved: 'the owner tapped Approve; the lander ships it on its next run',
+  landed: 'pushed to a land ref; follow the Land run and prod',
+  rejected: 'the owner said no; read their note on the card and rework',
+  void: 'approved, but the held branch no longer matches; restore it or ask again',
+  unverified: 'approved, but the evidence check did not pass; ask again',
+  expired: 'nobody answered in 14 days; redo and ask again',
+  none: 'no visual approval request on this card',
+};
+
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
+  if (argv[0] === 'status') return status(argv.slice(1));
   if (argv[0] === 'request') return request(argv.slice(1));
   console.error(USAGE);
   return 2;

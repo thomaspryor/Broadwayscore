@@ -179,26 +179,12 @@ function main() {
       ? calculateRecoupment(show, comm, grossAllTime, weeklyData, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate })
       : calculateLifetimeRecoupment(show, comm, grossAllTime, { ...RETURNED_SO_FAR_OPTS, capEstimate: rowOpts.capEstimate }));
 
-    // Flag designation contradictions
-    if (comm.designation && result.recoupmentPctCentral != null) {
-      const pct = result.recoupmentPctCentral;
-      const desig = comm.designation;
-      const isContradiction = modelContradictsDesignation(pct, desig);
-
-      if (isContradiction) {
-        comm.modelDesignationFlag = `Model: ${pct.toFixed(0)}% vs designation: ${desig}`;
-        contradictions++;
-      } else {
-        delete comm.modelDesignationFlag;
-      }
-    }
-
     if (DRY_RUN) {
       console.log(`${key}: ${tier} | ${result.recoupmentPctLow}–${result.recoupmentPctCentral}–${result.recoupmentPctHigh}%`);
     }
   }
 
-  // Loss labels follow their estimates (BRO-5643), after every branch above:
+  // Labels follow their estimates (BRO-5643, BRO-6187), after every branch above:
   // one that cleared a record's model fields leaves no estimate, so a Fizzle
   // or Flop the model sized becomes Did Not Recoup. Too many moves at once are
   // held for review instead of written.
@@ -211,7 +197,22 @@ function main() {
     if (!resize.held) commercial.shows[key].designation = to;
   }
   if (resize.held) {
-    console.log(`::warning title=Loss labels held::${resize.moves.length} loss labels would move with the model's new figures (limit ${MODEL_LOSS_RESIZE_LIMIT}); none written. Check the [SIZE] lines and relabel by data plan.`);
+    console.log(`::warning title=Designation sizes held::${resize.moves.length} designations would move with the model's new figures (limit ${MODEL_LOSS_RESIZE_LIMIT}); none written. Check the [SIZE] lines and relabel by data plan.`);
+  }
+
+  // Check the final labels so a resized estimate never keeps a contradiction
+  // flag naming the old tier. Failed/passthrough runs clear these fields above.
+  for (const key of keys) {
+    const comm = commercial.shows[key];
+    if (comm.modelMethod === 'ai-estimated') continue;
+    const pct = comm.modelRecoupmentPct?.[1];
+    if (!comm.designation || !Number.isFinite(pct)) continue;
+    if (modelContradictsDesignation(pct, comm.designation)) {
+      comm.modelDesignationFlag = `Model: ${pct.toFixed(0)}% vs designation: ${comm.designation}`;
+      contradictions++;
+    } else {
+      delete comm.modelDesignationFlag;
+    }
   }
 
   // Final sweep: normalize sources[] for every show. LLM-generated source entries
@@ -245,7 +246,7 @@ function main() {
   console.log(`  Tier 2 (simplified-lifetime):  ${tier2} shows`);
   console.log(`  Tier 3 (ai-estimated):         ${tier3} shows`);
   console.log(`  Designation contradictions:     ${contradictions}`);
-  console.log(`  Loss labels re-sized:           ${resize.held ? `0 (${resize.moves.length} held)` : resize.moves.length}`);
+  console.log(`  Designations re-sized:          ${resize.held ? `0 (${resize.moves.length} held)` : resize.moves.length}`);
   console.log(`  Total:                          ${tier1 + tier2 + tier3} shows`);
 }
 

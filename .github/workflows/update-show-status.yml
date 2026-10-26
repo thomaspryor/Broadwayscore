@@ -1585,30 +1585,8 @@ jobs:
               console.log('WE outlet SERP trigger failed:', e.message);
             }
 
-      - name: Trigger social media post for opened shows
-        if: steps.filter.outputs.opened_shows != ''
-        uses: actions/github-script@v7
-        with:
-          script: |
-            // Post to social media for each newly opened show
-            const slugs = '${{ steps.filter.outputs.opened_shows }}'.split(',').filter(Boolean);
-            for (const slug of slugs) {
-              try {
-                await github.rest.actions.createWorkflowDispatch({
-                  owner: context.repo.owner,
-                  repo: context.repo.repo,
-                  workflow_id: 'social-post.yml',
-                  ref: 'main',
-                  inputs: {
-                    event: 'opened',
-                    show: slug
-                  }
-                });
-                console.log(`Triggered social post for opened show: ${slug}`);
-              } catch (e) {
-                console.log(`Social post trigger failed for ${slug}:`, e.message);
-              }
-            }
+      # BRO-6242: the per-show social-post.yml dispatch was removed; social-autopost.yml
+      # picks up opening days and Critic Scores on its own hourly schedule.
 
       - name: Trigger review text collection for opened shows
         # legacy_gather_targets excludes true previews->open transitions (opened_slugs)

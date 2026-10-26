@@ -14,6 +14,7 @@ import { createShowSerializer } from '@/lib/serialize-show';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { BASE_URL, generateHomepageFAQSchema } from '@/lib/seo';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { getServerImageSrcSet } from '@/lib/show-image-srcset.server';
 import path from 'path';
 import HomePageClient from '@/components/HomePageClient';
 import type { HomepageShow, FeaturedRowData } from '@/components/HomePageClient';
@@ -345,14 +346,18 @@ export default function HomePage() {
     .slice(0, 1)
     .map(s => {
       const img = s.images?.poster || s.images?.thumbnail;
-      return img ? getOptimizedImageUrl(img, 'card') : null;
+      if (!img) return null;
+      const href = getOptimizedImageUrl(img, 'card');
+      // Match the <img> srcset/sizes in FeaturedRowServer so the browser preloads the file it will use.
+      return { href, srcSet: getServerImageSrcSet(href) };
     })
-    .filter((u): u is string => !!u);
+    .filter((u): u is { href: string; srcSet: string } => !!u);
 
   return (
     <>
-      {featuredPosterUrls.map((url, i) => (
-        <link key={`preload-${i}`} rel="preload" as="image" href={url} fetchPriority="high" />
+      {featuredPosterUrls.map(({ href, srcSet }, i) => (
+        <link key={`preload-${i}`} rel="preload" as="image" href={href} fetchPriority="high"
+          {...(srcSet ? { imageSrcSet: srcSet, imageSizes: '(min-width: 640px) 128px, 112px' } : {})} />
       ))}
       <script
         type="application/ld+json"

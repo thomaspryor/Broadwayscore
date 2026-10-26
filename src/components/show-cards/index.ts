@@ -24,3 +24,4 @@ export { DataStalenessBanner } from './DataStalenessBanner';
 export type { DataStalenessBannerProps } from './DataStalenessBanner';
 export { default as WindowedShowCardList } from './WindowedShowCardList';
 export type { WindowedShowCardListProps } from './WindowedShowCardList';
+export { AddShowCard } from './AddShowCard';

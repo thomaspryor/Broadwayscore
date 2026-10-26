@@ -167,7 +167,7 @@ test('a command naming a test file that DOES exist stays silent', () => {
 test('fabricatedPathReason is silent for the non-path forms', () => {
   const root = new URL('../..', import.meta.url).pathname;
   assert.equal(fabricatedPathReason('npx tsc --noEmit', root), null);
-  assert.equal(fabricatedPathReason('npx next lint', root), null);
+  assert.equal(fabricatedPathReason('npm run lint', root), null);
 });
 
 test('the probe fails OPEN when the canonical resolver is unavailable', () => {

@@ -29,7 +29,7 @@ import {
   getDisplayableEstimateRange,
   hasNoInvestorsToRepay,
 } from '@/lib/commercial-display';
-import { formatCapitalization } from '@/lib/biz-format';
+import { formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
@@ -243,7 +243,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           Money Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
-          {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? 'source · filings, press, analyst estimate + our model' : analystRange ? 'source · filings, press + analyst estimate' : 'source · filings + press'}
+          {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? (commercial.analystRecoupPct ? 'source · filings, press, analyst estimate + our model' : 'source · filings, press + our model') : analystRange ? (commercial.analystRecoupPct ? 'source · filings, press + analyst estimate' : 'source · filings, press + our estimate') : 'source · filings + press'}
         </span>
       </header>
       <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 italic m-0 mb-3">
@@ -360,7 +360,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), isEstimatedRunningCost(commercial))}
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
-                Weekly Cost
+                {weeklyCostLabel(commercial.weeklyRunningCostBasis)}
               </div>
             </div>
           )}
@@ -453,7 +453,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <RecoupmentProgressBar estimatedPct={analystRange} variant="headline" />
             )}
             <div className="mt-1">
-              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} />
+              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!commercial.analystRecoupPct} />
             </div>
           </div>
         )}

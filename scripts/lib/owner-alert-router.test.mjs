@@ -33,6 +33,9 @@ const { isUsageLimitExceeded: REAL_IS_USAGE_LIMIT_EXCEEDED } = require('./linear
 // reloading it via require.cache (its exported functions are pure fs I/O
 // under whatever path is on disk).
 const { LEDGER_PATH: REAL_INTAKE_LEDGER_PATH } = require('./intake-breaker.js');
+// intake-breaker now defaults to a temp file under node --test (BRO-5290), so the
+// BRO-2656 assertion below watches the tracked production ledger by its fixed path.
+const PRODUCTION_INTAKE_LEDGER = path.join(path.dirname(new URL(import.meta.url).pathname), '..', '..', 'data', 'audit', 'intake-ledger.jsonl');
 
 // The router calls createLinearIssue() (scripts/lib/linear-issue-create.js,
 // BRO-375 Phase 1 — formerly an execFileSync shell-out to linear-brain.js)
@@ -513,8 +516,8 @@ test('routeAlert: disposition=auto creates the Linear issue via the injectable c
 // before this was caught). This asserts the real file is untouched by a full
 // routeAlert() round trip through the real chokepoint.
 test('routeAlert (BRO-2656): the real chokepoint call never writes to the production intake ledger', async () => {
-  const before = fs.existsSync(REAL_INTAKE_LEDGER_PATH)
-    ? fs.readFileSync(REAL_INTAKE_LEDGER_PATH, 'utf8') : null;
+  const before = fs.existsSync(PRODUCTION_INTAKE_LEDGER)
+    ? fs.readFileSync(PRODUCTION_INTAKE_LEDGER, 'utf8') : null;
   const { router, restore } = loadRouterWithFakes({ useRealLinearIssueCreate: true });
   try {
     await router.routeAlert({
@@ -527,8 +530,8 @@ test('routeAlert (BRO-2656): the real chokepoint call never writes to the produc
   } finally {
     restore();
   }
-  const after = fs.existsSync(REAL_INTAKE_LEDGER_PATH)
-    ? fs.readFileSync(REAL_INTAKE_LEDGER_PATH, 'utf8') : null;
+  const after = fs.existsSync(PRODUCTION_INTAKE_LEDGER)
+    ? fs.readFileSync(PRODUCTION_INTAKE_LEDGER, 'utf8') : null;
   assert.equal(after, before, 'real data/audit/intake-ledger.jsonl must be untouched by this test suite');
 });
 

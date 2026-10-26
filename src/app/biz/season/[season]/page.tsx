@@ -16,6 +16,7 @@ import {
   getShowsBySeasonWithCommercial,
   getSeasonComparison,
   getSeasonProfiles,
+  isIndexedCommercialSeason,
 } from '@/lib/data-commercial';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
 import MixCard from '@/components/biz/MixCard';
@@ -24,6 +25,7 @@ import AllShowsTable from '@/components/biz/AllShowsTable';
 import MoneyGate from '@/components/biz/MoneyGate';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
+import { formatRowValue } from '@/lib/season-profile';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 
 // Dynamically generate params from actual data - auto-updates when shows are added
@@ -43,6 +45,7 @@ export async function generateMetadata(props: { params: Promise<{ season: string
     alternates: {
       canonical: `${BASE_URL}/biz/season/${params.season}`,
     },
+    ...(isIndexedCommercialSeason(params.season) ? {} : { robots: { index: false, follow: true } }),
     openGraph: {
       images: [seasonOgImage(params.season)],
       title: `${params.season} Broadway Season`,
@@ -94,6 +97,13 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
   // as $0 (BRO-4623 P0-6); nonprofit productions and tour stops are excluded.
   const totalCapital = formatCapitalSummary(stats.totalCapital);
   const capitalAtRisk = formatCapitalSummary(stats.capitalAtRisk);
+  // Owner (2026-10-26): the tiles lead with the full estimated total (the
+  // Season by Season table's Est. total capital) and with the money in shows
+  // that closed without recouping; disclosed-only and still-at-risk sums sit
+  // underneath. Same per-show figures as the table (season-profile.ts).
+  const profile = getSeasonProfiles().find((p) => p.season === season) ?? null;
+  const est = profile && profile.estimatedCapital.total > 0 ? profile.estimatedCapital : null;
+  const outcome = profile?.capitalByOutcome ?? null;
   const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews').length;
   const closedShows = shows.filter(s => s.status === 'closed').length;
 
@@ -145,27 +155,53 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-white">
-              {totalCapital.value}
+              {est ? `~${formatRowValue('money', est.total)}` : totalCapital.value}
             </div>
             <div
               className="text-xs text-gray-500"
-              title="Sum of publicly disclosed capitalizations for commercial productions; our own budget estimates (shown with ~) count as undisclosed. Nonprofit productions and tour stops are excluded."
+              title="Every commercial production's capitalization: the public figure where there is one, else our estimate (our own budget estimate, or the median of similar shows). Nonprofit productions and tour stops are excluded."
             >
-              Total Capital
+              Total Capital (est.)
             </div>
-            {totalCapital.note && <div className="text-xs text-gray-500">{totalCapital.note}</div>}
+            {est ? (
+              <div className="text-xs text-gray-500">
+                {formatRowValue('money', profile!.capitalization.all.total)} disclosed{est.estimated > 0 ? `, ${est.estimated} show${est.estimated === 1 ? '' : 's'} estimated` : ''}
+              </div>
+            ) : (
+              totalCapital.note && <div className="text-xs text-gray-500">{totalCapital.note}</div>
+            )}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-            <div className="text-xl sm:text-2xl font-bold text-amber-400">
-              {capitalAtRisk.value}
-            </div>
-            <div
-              className="text-xs text-gray-500"
-              title="Capitalization of shows still running that have not recouped. Nonprofit productions and tour stops are excluded."
-            >
-              Capital at Risk
-            </div>
-            {capitalAtRisk.note && <div className="text-xs text-gray-500">{capitalAtRisk.note}</div>}
+            {outcome && outcome.closedUnrecoupedShows > 0 ? (
+              <>
+                <div className="text-xl sm:text-2xl font-bold text-score-skip">
+                  ~{formatRowValue('money', outcome.closedUnrecouped)}
+                </div>
+                <div
+                  className="text-xs text-gray-500"
+                  title="Capitalization of the closed shows that had not recouped (public figures, else our estimates). Some of it came back to investors; each show's page has our estimate of how much."
+                >
+                  In closed shows that hadn&apos;t recouped
+                </div>
+                <div className="text-xs text-gray-500">
+                  {outcome.closedUnrecoupedShows} show{outcome.closedUnrecoupedShows === 1 ? '' : 's'}
+                  {outcome.runningShows > 0 && `, plus ~${formatRowValue('money', outcome.running)} still at risk in ${outcome.runningShows} running show${outcome.runningShows === 1 ? '' : 's'}`}
+                </div>
+              </>
+            ) : (
+              <>
+                <div className="text-xl sm:text-2xl font-bold text-amber-400">
+                  {outcome && outcome.runningShows > 0 ? `~${formatRowValue('money', outcome.running)}` : capitalAtRisk.value}
+                </div>
+                <div
+                  className="text-xs text-gray-500"
+                  title="Capitalization of shows still running that have not recouped. Nonprofit productions and tour stops are excluded."
+                >
+                  Still at Risk
+                </div>
+                <div className="text-xs text-gray-500">in running shows not yet recouped</div>
+              </>
+            )}
           </div>
         </div>
 

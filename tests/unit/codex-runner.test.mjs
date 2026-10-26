@@ -172,7 +172,8 @@ test('stopReason: time, weekly cap, reject streak, Done refusal', () => {
 test('codexBouncedRecently: only the runner marker, only for 14 days', () => {
   const now = Date.parse('2026-10-20T00:00:00Z');
   const c = (body, at) => ({ body, createdAt: at });
-  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-10T00:00:00Z')], now), true);
+  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-15T00:00:00Z')], now), true);
+  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-10T00:00:00Z'), c('Claimed by worker', '2026-10-11T00:00:00Z')], now), true);
   assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nold`, '2026-10-01T00:00:00Z')], now), false);
   assert.equal(r.codexBouncedRecently([c('a human mentions codex-runner-bounced', '2026-10-19T00:00:00Z')], now), false);
   assert.equal(r.codexBouncedRecently(undefined, now), false);
@@ -555,7 +556,10 @@ test('fixRoundDeadline: a SHIP-WITH-FIXES round is not cut by the 60-min card bu
   const hard = t0 + 112 * 60_000;
   const fits = (deadline) => r.fixRoundFits({ deadlineMs: deadline, nowMs: now, hardEndMs: hard, wrapUpMs: 8 * 60_000 });
   assert.equal(fits(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), true);
-  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), false, 'a REJECT keeps to the card budget');
+  // BRO-6260: a REJECT's one fix round gets the rest of the run too (it was banned 14 days before it ran).
+  assert.equal(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd }), runEnd);
+  assert.equal(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), runEnd);
+  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd, rejectRunEnd: false })), false, 'kill switch: a REJECT keeps to the card budget');
   assert.equal(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), card, 'only the first one');
   // A verdict at minute 50 leaves under exec + land checks + review before the hard stop: that
   // round is carried to the next run (swfCarryBody) instead of being dropped.
@@ -717,7 +721,9 @@ test('reviewerSandboxAuth and REVIEWER_READ_DENY', () => {
 
 test('board-workers.md starts three slots with budgets that leave a SHIP-WITH-FIXES round', () => {
   const doc = readFileSync(join(ROOT, 'docs/cloud-routines/board-workers.md'), 'utf8');
-  const cmd = (doc.match(/`(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  const cmd = (doc.match(/`(?:CODEX_CAN_DISPATCH=1 )?(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  // BRO-6260: the cloud lane applies data-fix plans (cloud sessions dispatch through scripts/cloud-dispatch.js).
+  assert.match(doc, /`CODEX_CAN_DISPATCH=1 node scripts\/codex\/daily-runner\.js --slots/);
   const flag = (n) => Number((cmd.match(new RegExp(`--${n} (\\d+)`)) || [])[1]);
   assert.ok(flag('slots') >= 3 && flag('slots') <= 4, cmd);
   assert.ok(flag('limit') >= flag('slots') * 2, 'at least two cards per slot');
@@ -781,6 +787,16 @@ test('leaveToCodex: the Claude worker leaves fit cards to a live Codex runner, n
   assert.equal(r.leaveToCodex({ ...card, description: 'Then edit .github/workflows/land.yml.' }, { nowMs: now, verify }), false, 'Codex cannot do it');
   const bounced = { ...card, comments: { nodes: [{ body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed`, createdAt: new Date(now - 3600_000).toISOString() }] } };
   assert.equal(r.leaveToCodex(bounced, { nowMs: now, verify }), false, 'Codex already tried');
+  // BRO-6260: both Codex lanes apply data-fix plans, so a data-route card is left to Codex even from a
+  // process that cannot dispatch itself (the Claude worker), unless the data-fix route is switched off.
+  const keep = { g: process.env.GITHUB_ACTIONS, c: process.env.CODEX_CAN_DISPATCH, k: process.env.CODEX_DATA_FIXES_DISABLED };
+  try {
+    delete process.env.GITHUB_ACTIONS; delete process.env.CODEX_CAN_DISPATCH; delete process.env.CODEX_DATA_FIXES_DISABLED;
+    const route = { ...card, title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json.' };
+    assert.equal(r.leaveToCodex(route, { nowMs: now, verify }), true, 'data-route card goes to Codex');
+  } finally {
+    for (const [k, v] of [['GITHUB_ACTIONS', keep.g], ['CODEX_CAN_DISPATCH', keep.c], ['CODEX_DATA_FIXES_DISABLED', keep.k]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  }
 });
 
 test('savings line: check $ per landed card in the summary and the health row; landed cards per lane from git log', () => {
@@ -1092,7 +1108,8 @@ test('codexBouncedRecently: partial landings are remembered 3 days, twice in 14 
   assert.equal(r.codexBouncedRecently([partial(1)], now), true, 'fresh partial: wait');
   assert.equal(r.codexBouncedRecently([partial(4)], now), false, 'one partial 4 days ago: Codex may finish it');
   assert.equal(r.codexBouncedRecently([partial(4), partial(9)], now), true, 'second partial in 14 days: Claude lane');
-  assert.equal(r.codexBouncedRecently([rejected(10)], now), true, 'a rejection keeps the 14-day ban');
+  assert.equal(r.codexBouncedRecently([rejected(6)], now), true, 'a rejection keeps the ban');
+  assert.equal(r.codexBouncedRecently([rejected(10)], now), false, 'BRO-6260: a rejection nobody took for 7 days returns to Codex');
   assert.equal(r.codexBouncedRecently([partial(4), rejected(6)], now), true);
   assert.equal(r.codexBouncedRecently([rejected(15)], now), false);
 });
@@ -1102,6 +1119,34 @@ test('codexCardFit: work that waits on a date, a scheduled run or the owner is s
   for (const d of ['Fix it.\nRECHECK-AFTER: 2026-10-30', 'Confirm the next scheduled audit-aggregator-gap.yml run passes', 'The owner must settle the acceptance line']) assert.equal(fit(d).skip, 'waits-on-later-event', d);
   assert.equal(fit('Fix it, then add a test.').skip, null);
   for (const d of ['The owner must never be the one catching it', 'so the owner needs to see the failure', 'Add a test that RECHECK-AFTER: 2026-11-01 stamps parse', 'Fix the parser for the next scheduled data-health-check.yml run output']) assert.equal(fit(d).skip, null, d);
+});
+
+test('BRO-6260 retry note: lifts the bounces before it once, the picker and fit treat it like a carry', () => {
+  const now = Date.parse('2026-10-26T12:00:00Z');
+  const day = 24 * 3600_000;
+  const at = (d) => new Date(now - d * day).toISOString();
+  const rejected = (d) => ({ createdAt: at(d), body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nREJECT` });
+  const structural = (d) => ({ createdAt: at(d), body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n<!-- codex-bounce-class: owner-decision -->\n` });
+  const retry = (d) => ({ createdAt: at(d), body: r.retryBody({ findings: 'Add the missing test.' }) });
+  const claim = (d) => ({ createdAt: at(d), body: 'Claimed by worker' });
+  assert.equal(r.codexBouncedRecently([rejected(2)], now), true);
+  assert.equal(r.codexBouncedRecently([rejected(2), retry(1)], now), false, 'retry lifts it');
+  assert.equal(r.codexBouncedRecently([rejected(3), retry(2), rejected(1)], now), true, 'a bounce after the retry counts');
+  assert.equal(r.codexBouncedRecently([structural(5), retry(1)], now), true, 'a retry never lifts a structural hold');
+  const crash = (d) => ({ createdAt: at(d), body: "## Codex runner: stopped mid-card\n\nThe runner died on this card." });
+  assert.equal(r.codexBouncedRecently([crash(4), crash(3)], now), true);
+  assert.equal(r.codexBouncedRecently([crash(4), crash(3), retry(1)], now), true, 'crash notes still count across a retry');
+  assert.deepEqual(r.parseCodexRetry([rejected(2), retry(1)]), { findings: r.retryBody({ findings: 'Add the missing test.' }).split('\n').slice(1).join('\n').trim() });
+  assert.equal(r.parseCodexRetry([retry(2), claim(1)]), null, 'only while it is the newest comment');
+  const fit = r.codexCardFit({ title: 'Fix the thing', description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs', comments: [rejected(2), retry(1)], nowMs: now });
+  assert.ok(fit.why.includes('retry') && fit.skip === null);
+  const broad = r.codexCardFit({ title: 'Fix the thing', description: 'x'.repeat(20000), comments: [rejected(2), retry(1)], nowMs: now });
+  assert.ok(broad.skip === 'too-broad' && !broad.why.includes('retry'), 'a retry never lifts a too-broad card');
+  // Unclaimed: one plain bounce, nothing after it for 7 days -> back to Codex; a second bounce in 60 days stays out.
+  assert.equal(r.codexBouncedRecently([rejected(8)], now), false);
+  assert.equal(r.codexBouncedRecently([rejected(8), claim(7)], now), true);
+  assert.equal(r.codexBouncedRecently([rejected(30), rejected(8)], now), true);
+  assert.equal(r.codexBouncedRecently([structural(20)], now), true, 'structural holds are unchanged');
 });
 
 // BRO-6144: route by bounce reason. Texts below are the 2026-10-24 live-run bounce notes.

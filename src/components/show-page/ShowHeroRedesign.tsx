@@ -50,7 +50,7 @@ import ShowImage from '@/components/ShowImage';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
 import { useCouldHaveSeenShow } from '@/hooks/useCouldHaveSeenShow';
-import TicketButtonsAB from '@/components/TicketButtonsAB';
+import ShowPageTicketCTA from '@/components/ShowPageTicketCTA';
 import { useAuth } from '@/contexts/AuthContext';
 import { useUserReviews } from '@/hooks/useUserReviews';
 import { useWatchlist } from '@/hooks/useWatchlist';
@@ -78,7 +78,6 @@ import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import { slugify } from '../../../scripts/lib/url-slug';
 import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
-import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
@@ -822,44 +821,26 @@ function Inner({
           on mobile it pushed content too far down. Desktop keeps it next
           to the Get Tickets CTA where there's horizontal room. Full info
           for both viewports lives in the Discount Tickets card below. */}
-      {/* BRO-166: also mount when the only thing we have is an officialUrl —
-          TicketButtonsAB itself now renders that as the primary CTA, but
-          only if it gets the chance to run at all. */}
-      {!isClosed && (sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && (
-        <TicketButtonsAB
-          showName={show.title}
-          showId={show.id}
-          showSlug={show.slug}
-          showStatus={show.status}
-          showCategory={show.category}
-          showVenue={show.venue}
-          showScore={score}
-          ticketLinks={sortedTicketLinks}
-          officialUrl={show.officialUrl}
-          pageType="show"
-          splitVariant
-          primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 h-10 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
-          secondaryAfter={lotteryPill('hidden lg:inline-flex')}
-        />
-      )}
-
-      {/* A lottery/rush show with no ticket links and no official site never
-          mounts TicketButtonsAB, so its pill has no home above. Render it
-          standalone (all breakpoints: there is no Get Tickets button here to
-          crowd) so the hero still points at the Discount Tickets card. */}
-      {!isClosed && !(sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && lotteryPill('inline-flex self-start')}
-
-      {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an explicit
-          note instead of leaving a silent gap where the ticket button used to be —
-          users hunting for a "Get Tickets" button rage-clicked the empty space
-          (CLAUDE.md card #228, task #90). See getTicketCtaNote for why 'closed'
-          checks status alone. */}
-      {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
-        <p className="text-xs text-gray-500">This show has closed. Tickets are no longer available.</p>
-      )}
-      {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
-        <p className="text-xs text-gray-500">Tickets aren&apos;t on sale yet. Check back closer to opening.</p>
-      )}
+      <ShowPageTicketCTA
+        showName={show.title}
+        showId={show.id}
+        showSlug={show.slug}
+        showStatus={show.status}
+        showCategory={show.category}
+        showVenue={show.venue}
+        showScore={score}
+        ticketLinks={sortedTicketLinks}
+        rawTicketLinks={show.ticketLinks}
+        noteClassName="text-xs text-gray-500"
+        officialUrl={show.officialUrl}
+        pageType="show"
+        splitVariant
+        primaryButtonClassName="w-full lg:w-auto lg:self-start inline-flex items-center justify-center gap-1.5 h-10 px-5 rounded-lg bg-gradient-brand text-white font-bold text-sm leading-none hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap"
+        secondaryAfter={lotteryPill('hidden lg:inline-flex')}
+      >
+        {/* Keep the standalone lottery pill when no purchase link is available. */}
+        {!isClosed && !(sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && lotteryPill('inline-flex self-start')}
+      </ShowPageTicketCTA>
       </div>{/* /action cluster */}
     </div>
   );

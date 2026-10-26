@@ -14,6 +14,7 @@
  */
 
 const https = require('https');
+require('./cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const { sbUsageFields } = require('./provider-billing'); // BRO-3010: SB /usage field names live in one place
 
 function httpsGet(url, headers = {}) {

@@ -46,6 +46,19 @@ cloud substitutions:
 - Stop after 60 minutes of work: finish or card what you are on, then send the
   summary last, as the prompt says.
 
+## Known cloud gaps (BRO-6258, checked 2026-10-26)
+
+- `refresh-drafts.sh` now has a cloud mode (no `.env`, no pulls or pushes to
+  main, output under `$TMPDIR/newsletter-mocks`), and the prompt's
+  `set -a; source .env` line can be skipped: the keys are already in the
+  environment.
+- The refresh step still HARD-FAILS at `pre-send-check.mjs` in cloud: the
+  most-read-pages section needs `GA4_PROPERTY_ID` and the GA service account,
+  which cloud sessions do not have. The Resend draft is therefore not PATCHed,
+  and nothing exists on disk to fall back to. The routine stays disabled until
+  GA4 reaches the environment or the owner decides the issue may go out without
+  that section (`NEWSLETTER_ALLOW_NO_ACCESS=1`).
+
 ## 3. Reply
 
 Three plain-English lines: what you reviewed, what you fixed, how the owner was

@@ -21,6 +21,7 @@ import UserProviders from '@/components/UserProviders';
 import HeaderHamburger from '@/components/HeaderHamburger';
 import HeaderUserIcon from '@/components/HeaderUserIcon';
 import HeaderSecondaryMarketLink from '@/components/HeaderSecondaryMarketLink';
+import { ADSENSE_CLIENT } from '@/lib/ads';
 
 // Inter is self-hosted (see the @font-face block at the top of globals.css for
 // why next/font/google was removed). This is the one file the browser needs for
@@ -61,6 +62,9 @@ export const metadata: Metadata = {
   },
   other: {
     'impact-site-verification': '210ec958-0fb2-4221-8150-3f2fa07d559e',
+    // AdSense site verification (BRO-5893). Not the ad script: no ad code
+    // loads from this tag.
+    'google-adsense-account': ADSENSE_CLIENT,
   },
 };
 

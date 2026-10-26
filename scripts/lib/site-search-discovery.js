@@ -14,6 +14,7 @@
 
 const { titleMatchWords, textHasWord } = require('./title-word-match');
 const https = require('https');
+require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const http = require('http');
 const { URL } = require('url');
 const { isLondonMarket } = require('./venue-classification');

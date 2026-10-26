@@ -16,6 +16,7 @@
  */
 
 const https = require('https');
+require('./lib/cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
 const fs = require('fs');
 const path = require('path');
 const { loadCookiesByFileKey, loadCookieMeta, getEnvVarForFileKey, getAllFileKeys, COOKIE_DIR } = require('./lib/cookie-loader');

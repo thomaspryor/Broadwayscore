@@ -365,9 +365,9 @@ export const GUIDE_PAGES: Record<string, GuidePageConfig> = {
   // === AUDIENCE SEGMENTS ===
   'best-broadway-shows-for-teens': {
     slug: 'best-broadway-shows-for-teens',
-    title: 'Best Broadway Shows for Teens',
-    h1Template: 'Best Broadway Shows for Teenagers ({year})',
-    metaTitleTemplate: 'Best Broadway Shows for Teens {year} | Ages 13+',
+    title: 'Taking Teens to Broadway',
+    h1Template: 'Taking Teenagers to Broadway: Age-by-Age Picks ({year})',
+    metaTitleTemplate: 'Broadway Shows for Teens {year} | Parent Guide',
     metaDescriptionTemplate: 'The {count} best Broadway shows for teenagers in {year}. Age-appropriate musicals and plays that teens actually want to see.',
     introFallback: 'Finding a Broadway show that appeals to teenagers can be tricky: too young and they\'ll roll their eyes, too mature and it\'s awkward. These {count} shows hit the sweet spot for teen audiences.',
     filter: (show) => {

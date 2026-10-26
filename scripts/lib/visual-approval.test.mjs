@@ -42,10 +42,11 @@ test('binding: swapping the machine line (different patch) breaks it, as does a 
 
 test('evidence: only this repo on raw.githubusercontent.com images, capped, no traversal', () => {
   const ok = 'https://raw.githubusercontent.com/thomaspryor/Broadwayscore/x/a.png';
-  const d = [`Evidence: a | ${ok}`, 'Evidence: b | https://evil.example/a.png', 'Evidence: c | https://raw.githubusercontent.com/other/repo/x/a.png',
+  const machine = `VISUAL-APPROVAL: patch=${PATCH} verdict=${VERDICT} hold=visual-hold/bro-7`;
+  const d = [machine, `Evidence: a | ${ok}`, 'Evidence: b | https://evil.example/a.png', 'Evidence: c | https://raw.githubusercontent.com/other/repo/x/a.png',
     'Evidence: d | https://raw.githubusercontent.com/thomaspryor/Broadwayscore/x/../../a.png', 'Evidence: e | javascript:alert(1)'].join('\n');
   assert.deepEqual(link.parseDecisionBlock(d).evidence.map((e) => e.url), [ok]);
-  const many = Array.from({ length: 12 }, (_, i) => `Evidence: s${i} | https://raw.githubusercontent.com/thomaspryor/Broadwayscore/x/${i}.png`).join('\n');
+  const many = [machine, ...Array.from({ length: 12 }, (_, i) => `Evidence: s${i} | https://raw.githubusercontent.com/thomaspryor/Broadwayscore/x/${i}.png`)].join('\n');
   assert.equal(link.parseDecisionBlock(many).evidence.length, 8);
 });
 

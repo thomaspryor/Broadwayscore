@@ -1,5 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -283,7 +284,7 @@ test('a sibling ref with no Land run yet blocks resume for that card', () => {
 // Pause memory (BRO-4574): the first two live firings each took a card an
 // earlier worker had already paused on (one with a VERIFY the cloud can't run,
 // one held for an owner decision), so both would have won every firing.
-const { pausedHistorySkipReason, findResumeCandidates, RECENT_PAUSE_MS } = require('./cloud-worker-pick.js');
+const { pausedHistorySkipReason, findResumeCandidates, RECENT_PAUSE_MS, isMachineComment } = require('./cloud-worker-pick.js');
 const at = (msAgo) => new Date(NOW - msAgo).toISOString();
 const report = (status, text, msAgo) => ({ body: `**Session report (${status})**\n\n${text}`, createdAt: at(msAgo) });
 
@@ -914,6 +915,16 @@ test('a Codex fix round carried to the next run skips the 6 h idle wait for Code
   assert.equal(skipReason(issue({ updatedAt: FRESH, comments: { nodes: [{ body: '## Codex runner: not landed', createdAt: FRESH }] } }), NOW, { codex: true }), 'recent-activity');
 });
 
+test('a Codex retry note (BRO-6260) lifts an earlier bounce and skips the idle wait for Codex only', () => {
+  const { retryBody, BOUNCED_MARKER } = require('./codex-runner.js');
+  const bounce = { body: `${BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nREJECT`, createdAt: new Date(NOW - 3 * 24 * 3600_000).toISOString() };
+  const retry = { body: retryBody({ findings: 'Add the test.' }), createdAt: FRESH };
+  const card = issue({ updatedAt: FRESH, comments: { nodes: [bounce, retry] } });
+  assert.equal(skipReason(card, NOW, { codex: true }), null);
+  assert.equal(skipReason(card, NOW), 'recent-activity');
+  assert.equal(pickCloudCard([card], { nowMs: NOW, codex: true }).pick.identifier, 'BRO-100');
+});
+
 test('leaveCodexCards: the Claude queue leaves one Codex firing of fit cards to Codex, never resumes, Urgent or unfit ones (BRO-5384)', () => {
   const { leaveCodexCards } = require('./cloud-worker-pick.js');
   const card = (n, over = {}) => issue({ identifier: `BRO-${n}`, title: `Parser drops field ${n}`, description: BODY, ...over });
@@ -1064,4 +1075,49 @@ test('BRO-6080: a START-NOW mac-only card is refused at filing with a hint', () 
   const r = startNowUnpickableReason({ title: 'x', description: `START-NOW: go\nMAC-ONLY: needs the Mac keychain\n${BODY}`, priority: 2, mode: 'dispatch' });
   assert.equal(r.reason, 'mac-only');
   assert.match(r.hint, /Mac drain/);
+});
+
+// BRO-6262: digest-autofix's daily notes refresh is the filer's, not an owner answer.
+// The body below is the real shape found on BRO-5489 (starts "## Problem\nThe daily health check ...").
+const { laneUnworkableReason, LANE_UNWORKABLE_MAX_MS } = require('./cloud-worker-pick.js');
+const { FILER_REFRESH_MARKER, isFilerRefreshComment } = require('./filer-refresh-marker.js');
+const REFRESH_BODY = '## Problem\nThe daily health check (`node scripts/health-check.js`) reports "Review gaps" on 10 shows:\n- Review gap ...';
+
+test('BRO-6262: a filer notes-refresh (marked or legacy) does not count as an answer to a pause', () => {
+  const D = 24 * 3600_000;
+  for (const body of [`${FILER_REFRESH_MARKER}\n${REFRESH_BODY}`, REFRESH_BODY]) {
+    assert.equal(isMachineComment(body), true);
+    // Three pauses, the filer refreshing after each: still out of the pick.
+    const comments = [
+      report('paused', 'x', 9 * D), { body, createdAt: at(8.5 * D) },
+      report('paused', 'x', 6 * D), { body, createdAt: at(5.5 * D) },
+      report('paused', 'x', 4 * D), { body, createdAt: at(3.5 * D) },
+    ];
+    assert.equal(pausedHistorySkipReason(comments, NOW), 'paused-repeatedly');
+  }
+  // A person's own structured "## Problem" note is NOT the filer.
+  assert.equal(isFilerRefreshComment('## Problem\nI found that the cron skips Sundays'), false);
+  assert.equal(isMachineComment('## Problem\nI found that the cron skips Sundays'), false);
+});
+
+test('BRO-6262: a pause that says the cloud lane cannot do the work keeps the card out until a person comments or 14d pass', () => {
+  const D = 24 * 3600_000;
+  const lane = report('paused', 'Not workable from the cloud lane: data/review-texts is not attached.', 5 * D);
+  assert.equal(laneUnworkableReason(lane.body), true);
+  assert.equal(pausedHistorySkipReason([lane], NOW, { cloudLane: true }), 'lane-unworkable');
+  // The Codex runner links review-texts: it never skips on this reason.
+  assert.equal(pausedHistorySkipReason([lane], NOW), null);
+  assert.equal(pausedHistorySkipReason([lane, { body: FILER_REFRESH_MARKER + '\n' + REFRESH_BODY, createdAt: at(1 * D) }], NOW, { cloudLane: true }), 'lane-unworkable');
+  // A person answered after the pause: back to the normal idle rule.
+  assert.equal(pausedHistorySkipReason([lane, { body: 'attached it, go', createdAt: at(1 * D) }], NOW, { cloudLane: true }), null);
+  // Old enough that the lane may have changed.
+  const old = report('paused', 'not workable from the cloud lane', LANE_UNWORKABLE_MAX_MS + D);
+  assert.equal(pausedHistorySkipReason([old], NOW, { cloudLane: true }), null);
+  // A report that only mentions review-texts in passing is not lane-unworkable.
+  assert.equal(laneUnworkableReason('Fixed; verified with cloud-run-script --review-texts audit.'), false);
+});
+
+test('BRO-6262: digest-autofix posts its notes refresh with the marker the picker reads as machine output', () => {
+  const src = fs.readFileSync(new URL('./digest-autofix.js', import.meta.url), 'utf8');
+  assert.match(src, /'--comment', `\$\{FILER_REFRESH_MARKER\}\\n\$\{notes\}`/);
 });

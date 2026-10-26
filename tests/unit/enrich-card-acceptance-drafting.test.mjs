@@ -148,7 +148,7 @@ test('defect 1: isSafeCheckCommand and explainUnsafeCheckCommand cannot disagree
   // edit cannot reintroduce two drifting copies of the rules (CLAUDE.md §15).
   const corpus = [
     'node --test tests/unit/a.test.mjs', 'node --test tests/unit/a.test.mjs tests/unit/b.test.mjs',
-    'npx tsx --test src/lib/a.test.ts', 'npx tsc --noEmit', 'npx next lint',
+    'npx tsx --test src/lib/a.test.ts', 'npx tsc --noEmit', 'npm run lint',
     'test -f docs/x.md', 'test -f memory/x.md', 'test -f data/x.json', 'test -f x.json',
     'node --test ../../etc/x.test.mjs', 'node scripts/rebuild-all-reviews.js',
     'node scripts/audit-review-contamination.js --strict', 'node scripts/audit-not-vetted.js',

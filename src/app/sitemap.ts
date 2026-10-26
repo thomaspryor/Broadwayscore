@@ -36,12 +36,16 @@ import { seasonSlug } from '@/lib/tony-seasons';
 import { SITEMAP_SHARDS, getActorBucket, type ShardName } from '@/config/sitemap-shards';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getTourCities } from '@/lib/data-tour-cities';
+import { getSeasonsWithCommercialData, isIndexedCommercialSeason } from '@/lib/data-commercial';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
 export function generateSitemaps() {
   return SITEMAP_SHARDS.map((_, i) => ({ id: i }));
 }
+
+// Money Scorecard topic pages under src/app/biz (stunt-casting is listed on its own).
+const BIZ_TOPIC_PATHS = ['musicals-since-reopening', 'reviews-and-money', 'fastest-recoups', 'biggest-flops', 'tony-winners', 'developments'];
 
 type DateContext = { showsDate: Date; reviewsDate: Date; latestDate: Date; currentYear: number };
 
@@ -447,13 +451,28 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    // /biz is a 404 while the commercial scorecard is unreleased.
-    ...(featureFlags.commercial ? [{
-      url: `${BASE_URL}/biz`,
-      lastModified: ctx.showsDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.7,
-    }] : []),
+    // Money Scorecard (released 2026-10-26, BRO-6192): the hub, its topic
+    // pages and one page per season with enough tracked shows to index.
+    ...(featureFlags.commercial ? [
+      {
+        url: `${BASE_URL}/biz`,
+        lastModified: ctx.showsDate,
+        changeFrequency: 'weekly' as const,
+        priority: 0.7,
+      },
+      ...BIZ_TOPIC_PATHS.map((p) => ({
+        url: `${BASE_URL}/biz/${p}`,
+        lastModified: ctx.showsDate,
+        changeFrequency: 'weekly' as const,
+        priority: 0.6,
+      })),
+      ...getSeasonsWithCommercialData().filter(isIndexedCommercialSeason).map((season) => ({
+        url: `${BASE_URL}/biz/season/${season}`,
+        lastModified: ctx.showsDate,
+        changeFrequency: 'monthly' as const,
+        priority: 0.5,
+      })),
+    ] : []),
     // Public research page (owner released it ahead of /biz, 2026-10-21).
     {
       url: `${BASE_URL}/biz/stunt-casting`,

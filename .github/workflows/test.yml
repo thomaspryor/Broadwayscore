@@ -75,6 +75,8 @@ on:
       - 'scripts/linear-decision-reply-drain.js'
       # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
       - 'scripts/codex-lane-alarm.js'
+      # BRO-6260: one-time Codex retry backfill, tested by tests/unit/codex-retry-backfill.test.mjs.
+      - 'scripts/codex-retry-backfill.js'
       # BRO-6139: its replay() is the change-safety gate, tests/unit/codex-lane-backtest-replay.test.mjs.
       - 'scripts/backtest-codex-lane-health.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
@@ -776,6 +778,8 @@ on:
       - 'scripts/cloud-dispatch.js'
       - 'scripts/cloud-doctor.js'
       - 'scripts/new-fix-plan.js'
+      # BRO-6266: chat-answer recorder (tested by owner-decision-quiet-period.test.mjs).
+      - 'scripts/record-owner-answer.js'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
@@ -1633,6 +1637,10 @@ on:
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
       # solo edit triggers CI.
       - 'scripts/audit-contradicted-flag-basis.js'
+      # BRO-5805 report-only sweep for excluded files whose text names the show's
+      # own cast. Sibling *.test.mjs is globbed (scripts/*.test.mjs); path-listed so
+      # a solo edit triggers CI.
+      - 'scripts/audit-excluded-with-own-show-evidence.js'
       # duplicateOf + stale _duplicateOfCleared contradiction sweep (#1655).
       # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
       # so a solo edit to the CLI wrapper itself triggers CI.
@@ -4600,7 +4608,7 @@ jobs:
     # before it (30953715470) cancelled this same job too.
     #
     # 5 minutes never fit the work: checkout + npm ci + a private core-data
-    # checkout + two generated manifests + TWO tsc passes + next lint + two
+    # checkout + two generated manifests + TWO tsc passes + eslint + two
     # audits. unit-tests does strictly less and already gets 10.
     # Timeouts only bound the worst case — a job that finishes in 4 minutes
     # still finishes in 4 minutes — so headroom is free and a too-tight bound
@@ -4650,7 +4658,7 @@ jobs:
         # that no CI check caught because root tsc skips scripts/. Adding
         # this gate would have failed the merge and prevented the bug.
         run: npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
-      - name: next lint
+      - name: eslint
         # if: always() so lint runs even if tsc above fails — they're independent
         # gates and either failure should surface in this job.
         # Why this gate exists: 2026-05-23 — next.config.js sets
@@ -4660,7 +4668,7 @@ jobs:
         # (no --max-warnings) matches the prior in-build behavior: errors fail,
         # existing warnings (e.g. <img> tag advisories) don't block merges.
         if: always()
-        run: npx next lint
+        run: npm run lint
       - name: Audit NFT-excluded runtime reads
         # if: always() so this runs even if tsc/lint fail above — independent gate.
         # Why this gate exists: 2026-05-23 — commit e2154a1b23 added data/cast/**
@@ -4954,6 +4962,13 @@ jobs:
         # Advisory first (CLAUDE.md section 19).
         continue-on-error: true
         run: node scripts/resize-show-images.js --check
+
+      - name: Show image list variants (BRO-6277, advisory)
+        # Every poster/thumbnail original wider than its variant width needs
+        # public/images/shows/<id>/sm/<file>.webp (list/card srcset). Fix with
+        # `node scripts/resize-show-images.js --variants`. Advisory first (section 19).
+        continue-on-error: true
+        run: node scripts/resize-show-images.js --check-variants
 
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)

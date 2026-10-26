@@ -16,6 +16,8 @@
  */
 'use strict';
 
+require('./cloud-proxy'); // BRO-6258: global fetch to ScrapingBee needs the sandbox proxy in cloud
+
 const FETCH_TIMEOUT_MS = 20000;
 
 async function _getJson(url, headers = {}) {

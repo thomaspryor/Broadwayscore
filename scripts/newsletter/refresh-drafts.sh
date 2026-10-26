@@ -41,18 +41,28 @@ cd "$(dirname "$0")/../.."
 # every step is idempotent — so say that instead of failing silently.
 trap 'git checkout -- data/newsletter-state.json 2>/dev/null || true; echo "FAILED partway — one edition may be refreshed and the other stale. Re-run this script to reconcile (all steps are idempotent)." >&2' ERR
 
-if [ ! -f .env ]; then
-  echo "ERROR: no .env here ($(pwd)) — run from the main configured checkout (needs RESEND_API_KEY), not a worktree/fresh clone." >&2
-  exit 1
+# Cloud sessions (BRO-6258) have no .env: keys come from the environment, data/
+# is a disposable copy refreshed at session start (nothing to pull or push), and
+# main is never pushed. CLOUD=1 skips those Mac-only steps.
+CLOUD=0; [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && CLOUD=1
+if [ "$CLOUD" = 1 ]; then
+  [ -n "${RESEND_API_KEY:-}" ] || { echo "ERROR: RESEND_API_KEY not set in this cloud session." >&2; exit 1; }
+else
+  if [ ! -f .env ]; then
+    echo "ERROR: no .env here ($(pwd)) — run from the main configured checkout (needs RESEND_API_KEY), not a worktree/fresh clone." >&2
+    exit 1
+  fi
+  set -a; source .env; set +a
 fi
-set -a; source .env; set +a
 
 WEEK="${1:-$(TZ=America/New_York date -v-mon +%Y-%m-%d 2>/dev/null || TZ=America/New_York date -d 'last monday' +%Y-%m-%d)}"
-OUT="${NEWSLETTER_OUT_DIR:-$HOME/Documents/claude-outputs/newsletter-mocks}"
+if [ "$CLOUD" = 1 ]; then DEFAULT_OUT="${TMPDIR:-/tmp}/newsletter-mocks"; else DEFAULT_OUT="$HOME/Documents/claude-outputs/newsletter-mocks"; fi
+OUT="${NEWSLETTER_OUT_DIR:-$DEFAULT_OUT}"
 mkdir -p "$OUT"
 
 echo "== Refreshing drafts for week $WEEK (out: $OUT)"
 
+if [ "$CLOUD" != 1 ]; then
 echo "== Pulling data repos"
 # realpath handles both the symlinked layout (data/reviews.json -> core-data
 # clone) and a pre-setup regular file, unlike bare readlink.
@@ -110,6 +120,8 @@ if ! git pull --rebase --autostash --quiet; then
   exit 1
 fi
 
+fi # CLOUD: data/ copies are refreshed at session start; nothing to pull or push
+
 # Self-heal the anti-repeat ledger against what was ACTUALLY sent in Resend
 # BEFORE generating anything new (2026-08-16, #the-pass duplicate). A prior
 # regeneration can update data/newsletter-state.json without the matching
@@ -120,7 +132,11 @@ fi
 # last run happened to write.
 echo "== Verifying de-dup state against actually-sent broadcasts"
 node scripts/newsletter/verify-sent-vs-state.mjs --fix
-if ! git diff --quiet -- data/newsletter-state.json; then
+# Cloud never commits the reconciled state, so keep a copy to restore after each
+# edition instead of `git checkout` (which would undo the fix for west-end).
+STATE_KEEP=""
+if [ "$CLOUD" = 1 ]; then STATE_KEEP=$(mktemp); cp data/newsletter-state.json "$STATE_KEEP"; fi
+if [ "$CLOUD" != 1 ] && ! git diff --quiet -- data/newsletter-state.json; then
   git add data/newsletter-state.json
   git commit -m "chore(newsletter): reconcile de-dup state with actually-sent broadcasts" --quiet
   bash scripts/lib/push-with-retry.sh 3 main
@@ -153,7 +169,7 @@ for EDITION in broadway west-end; do
   # NOTE: unlike CI, this wrapper also skips regression-test.mjs (non-blocking
   # in CI) and the [DRAFT] owner-preview email — the owner is already reviewing
   # the draft in the Resend UI in this flow.
-  git checkout -- data/newsletter-state.json 2>/dev/null || true
+  if [ "$CLOUD" = 1 ]; then cp "$STATE_KEEP" data/newsletter-state.json; else git checkout -- data/newsletter-state.json 2>/dev/null || true; fi
 done
 
 echo ""

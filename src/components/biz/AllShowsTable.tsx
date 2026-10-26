@@ -18,7 +18,7 @@ import {
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialShowRow } from '@/lib/data-types';
-import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import {
   getRecoupedCellSummary,
   getDesignationDisplay,
@@ -138,21 +138,23 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   }
 
   if (cell.kind === 'analyst') {
-    const title = cell.withModel
+    const title = cell.ours
+      ? 'Our own estimate, not a reported figure. See methodology.'
+      : cell.withModel
       ? `Range spanning an r/Broadway analyst's estimate (u/Boring_Waltz_9545) and our model, not a reported figure. See methodology.`
       : `Estimate published by an r/Broadway analyst (u/Boring_Waltz_9545), not a reported figure. See methodology.`;
     if (cell.range[0] >= 100) {
       return (
         <div title={title}>
           <div className="text-xs text-gray-300">Est. recouped, not yet announced</div>
-          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} compact />
+          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} ours={cell.ours} compact />
         </div>
       );
     }
     return (
       <div className="w-36 sm:w-40" title={title}>
         <RecoupmentProgressBar estimatedPct={cell.range} />
-        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} compact />
+        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} ours={cell.ours} compact />
       </div>
     );
   }
@@ -382,7 +384,12 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {show.weeklyCost == null ? (
                       <span className="text-gray-500">—</span>
                     ) : (
-                      `${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`
+                      <>
+                        {`${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`}
+                        {show.weeklyCostBasis && show.weeklyCostBasis !== 'running' && (
+                          <span className="block text-[10px] text-gray-500">{weeklyCostLabel(show.weeklyCostBasis)}</span>
+                        )}
+                      </>
                     )}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">

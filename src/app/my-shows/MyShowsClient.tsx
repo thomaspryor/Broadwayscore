@@ -29,7 +29,7 @@ import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { selectDeviceSavedShows } from '@/lib/device-saved-shows';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
-import { ShowSearchDropdown } from '@/components/show-cards';
+import { AddShowCard, ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
 import { TitleTabs, DiarySegmented } from '@/components/my-shows/MyShowsNav';
@@ -1937,51 +1937,6 @@ function ToBeRatedSection({ entries, showMap, idPrefix }: {
         })}
       </div>
     </section>
-  );
-}
-
-/** (+) card to add shows — placed at end of grid views */
-function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' | 'watchlist'; variant?: 'grid' | 'list'; onOpen: () => void }) {
-  const openAndReveal = () => {
-    onOpen();
-    // The search input mounts in the page HEADER — from the bottom of a long
-    // list the open is off-screen and reads as a dead button on mobile
-    // (owner, 2026-07-20). Scroll it into view and focus it.
-    requestAnimationFrame(() => {
-      const input = document.querySelector<HTMLInputElement>('input[placeholder^="Search to"]');
-      input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      input?.focus({ preventScroll: true });
-    });
-  };
-  if (variant === 'list') {
-    return (
-      <button
-        type="button"
-        onClick={openAndReveal}
-        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
-        aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
-      >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        <span className="text-xs font-medium">{context === 'diary' ? 'Rate a show' : 'Add a show'}</span>
-      </button>
-    );
-  }
-  return (
-    <button
-      type="button"
-      onClick={openAndReveal}
-      // Poster-sized, top-aligned: the grid would otherwise stretch it to the
-      // tallest card in the row (name, stars, date controls), owner 2026-10-03.
-      className="self-start aspect-[2/3] flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
-      aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
-    >
-      <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-      </svg>
-      <span className="text-xs font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
-    </button>
   );
 }
 

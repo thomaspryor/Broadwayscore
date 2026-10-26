@@ -14,6 +14,7 @@
  */
 
 const fs = require('fs');
+require('./cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 const path = require('path');
 const scraper = require('./scraper');
 const { domainMatchesExpected, setRegistryDomainAliases } = scraper;

@@ -25,8 +25,11 @@ import {
   isValidMoneyEmail,
   markMoneyUnlocked,
   moneyGatePaywallSchema,
+  moneyUnlockReason,
   submitMoneySignup,
+  retryPendingMoneySignups,
   unlockForExistingReader,
+  type MoneyBypassReason,
   type MoneyRole,
 } from '@/lib/money-gate';
 
@@ -45,26 +48,45 @@ interface MoneyGateProps {
 // the lock flash for a frame.
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
+// money_gate_bypassed counts readers who see the money data without the gate.
+// Like money_gate_shown it fires when the content scrolls into view, and once
+// per page view: a page with several gates, or a sign-in after a load-time
+// unlock, must not count twice. The flag resets when the page's last gate unmounts.
+type Bypass = { reason: MoneyBypassReason; when: 'load' | 'midvisit' };
+let mountedGates = 0;
+let bypassTracked = false;
+function trackMoneyBypass(page: MoneyGateProps['page'], { reason, when }: Bypass) {
+  if (bypassTracked) return;
+  bypassTracked = true;
+  track('money_gate_bypassed', { page, reason, when });
+  captureEvent('money_gate_bypassed', { page, reason, when, path: window.location.pathname });
+}
+
 export default function MoneyGate({ children, page, preview = 'tall', schema = true }: MoneyGateProps) {
   // null until mounted: the server render is the locked markup, and CSS
   // (driven by the boot script's <html> attribute) decides what shows.
   const [unlocked, setUnlocked] = useState<boolean | null>(null);
   const [justUnlocked, setJustUnlocked] = useState(false);
+  const [bypass, setBypass] = useState<Bypass | null>(null);
   const lockRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
   const { isAuthenticated } = useAuth();
 
   useIsoLayoutEffect(() => {
-    const unlockedNow = isMoneyUnlocked();
+    const reason = moneyUnlockReason();
+    const unlockedNow = reason !== null;
     // A bypass unlock is page-only: after sign-out and a client navigation the
     // attribute would outlive it and leave the content shown but inert.
     if (unlockedNow) document.documentElement.setAttribute('data-money-unlocked', '');
     else document.documentElement.removeAttribute('data-money-unlocked');
     setUnlocked(unlockedNow);
+    if (reason) setBypass({ reason, when: 'load' });
     const onUnlock = () => setUnlocked(true);
     // Joining the main list elsewhere on the page (footer, header) counts too.
-    const onSubscribed = () => { if (isMoneyUnlocked()) unlockForExistingReader(); };
+    const onSubscribed = () => {
+      if (isMoneyUnlocked() && unlockForExistingReader()) setBypass({ reason: 'subscriber', when: 'midvisit' });
+    };
     window.addEventListener(MONEY_UNLOCKED_EVENT, onUnlock);
     window.addEventListener('bsc_subscribed', onSubscribed);
     return () => {
@@ -73,9 +95,24 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
     };
   }, []);
 
+  // A sign-up whose save failed on an earlier page view is retried here (BRO-6289).
+  useEffect(() => {
+    retryPendingMoneySignups().then(({ stored, remaining }) => {
+      if (stored) captureEvent('money_gate_signup_retried', { stored, remaining });
+    }).catch(() => { /* stays queued for the next page view */ });
+  }, []);
+
+  useEffect(() => {
+    mountedGates += 1;
+    return () => {
+      mountedGates -= 1;
+      if (mountedGates === 0) bypassTracked = false;
+    };
+  }, []);
+
   // Signed in (on load or mid-visit): unlock without asking for an email.
   useEffect(() => {
-    if (isAuthenticated) unlockForExistingReader();
+    if (isAuthenticated && unlockForExistingReader()) setBypass({ reason: 'account', when: 'midvisit' });
   }, [isAuthenticated]);
 
   // Locked content is blurred: keep keyboard focus and screen readers out of
@@ -100,6 +137,18 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
     io.observe(el);
     return () => io.disconnect();
   }, [unlocked, page]);
+
+  useEffect(() => {
+    if (!bypass || !contentRef.current) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        trackMoneyBypass(page, bypass);
+        io.disconnect();
+      }
+    });
+    io.observe(contentRef.current);
+    return () => io.disconnect();
+  }, [bypass, page]);
 
   // The submit button disappears with the card: move focus to the confirmation.
   useEffect(() => {
@@ -180,7 +229,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
       </div>
       <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Unlock the Money Scorecard</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-300">
-        Show-by-show capitalization, recoupment and box office for every Broadway show.
+        Always free. Show-by-show capitalization, recoupment and box office for every Broadway show.
         One sign&#8209;up unlocks every page.
       </p>
 

@@ -13,6 +13,14 @@ on:
     - cron: '11,31,51 * * * *'
   workflow_dispatch:
     inputs:
+      redispatched:
+        # redispatch-after-hours: 0.75  (BRO-6244: an owner-approved change must not wait on GitHub's dropped schedules)
+        # Set by scripts/cron-redispatch.js when no run was created in the band. Nothing branches
+        # on the trigger: the lander is idempotent (landed markers, one concurrency group).
+        description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
+        required: false
+        default: 'false'
+        type: string
       dry_run:
         description: 'Dry run (no pushes, no Linear writes)'
         required: false
@@ -34,7 +42,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v5
         with:
+          # Full commit graph (patch-id needs the merge-base with main) but no
+          # historical blobs: a plain fetch-depth 0 takes ~35 min on this repo
+          # and hit the 10 min timeout on both dry runs (land.yml, BRO-423).
           fetch-depth: 0
+          filter: blob:none
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
       - name: Setup Node.js

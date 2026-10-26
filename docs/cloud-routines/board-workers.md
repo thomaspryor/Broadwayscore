@@ -35,7 +35,7 @@ the run lock. Exit 0 means no live runner anywhere: start it. Exit 4 (lock
 unreadable): start it anyway, the runner re-checks and waits its turn.
 
 1. `codex --version` must print 0.160.0; otherwise `npm i -g --no-audit --no-fund @openai/codex@0.160.0`.
-2. Start `node scripts/codex/daily-runner.js --slots 3 --limit 9 --max-minutes 105 --card-max-minutes 60 --hard-stop-minutes 112 > /tmp/codex-run.log 2>&1`
+2. Start `CODEX_CAN_DISPATCH=1 node scripts/codex/daily-runner.js --slots 3 --limit 9 --max-minutes 105 --card-max-minutes 60 --hard-stop-minutes 112 > /tmp/codex-run.log 2>&1`
    with run_in_background AND timeout 7200000. The default background limit is
    30 minutes and it killed the runner mid-card on 2026-10-11, after Codex had
    pushed a passing fix. Codex works on the owner's ChatGPT plan, so it takes
@@ -114,10 +114,13 @@ For each card:
    Data changes go through approved-fix plans (`data/pending-fixes/`, see
    .claude/CLOUD.md); cloud `data/*.json` are disposable copies, so an edit
    to them is lost, and never write into the core-data clone (BRO-5217).
-   The Codex slots in this routine do not take data-fix route cards: applying a
-   plan dispatches execute-approved-fix.yml, and only the GHA Codex lane
-   (codex-runner.yml, `actions: write`) is known to be able to (BRO-6194;
-   `CODEX_CAN_DISPATCH=1` opts a runner in once one is proven).
+   The Codex slots in this routine take data-fix route cards too: step 1 starts
+   the runner with `CODEX_CAN_DISPATCH=1`, since cloud sessions dispatch
+   execute-approved-fix.yml through scripts/cloud-dispatch.js (proven 2026-10-26,
+   BRO-6260). The runner, not Codex, dispatches the apply, and waits only for the
+   time left before its hard stop; an apply it cannot wait for is deferred and
+   applied on a later reconcile. You (the Claude lane) still keep route cards
+   when your picker gives you one.
    A card that genuinely needs an owner decision: write the one-sentence
    question on the card and pause it; do not build it.
 5. Land: a commit holding ONLY your files on a branch from current origin/main

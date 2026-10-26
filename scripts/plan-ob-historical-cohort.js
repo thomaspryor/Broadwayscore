@@ -64,7 +64,7 @@ async function main() {
   const { checkForDuplicate } = require('./lib/deduplication');
   const { isNonTheaterContent, isOneNightShow } = require('./discover-new-shows');
   const { selectPromotable } = require('./promote-ob-historical');
-  const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts } = require('./lib/ob-historical-cohort');
+  const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, transferLinkFields } = require('./lib/ob-historical-cohort');
 
   const showsPath = path.join(__dirname, '..', 'data', 'shows.json');
   const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
@@ -94,7 +94,8 @@ async function main() {
     if (r.skip) { note('parse'); continue; }
     if (isNonTheaterContent(r.gateShape) || isOneNightShow(r.gateShape)) { note('gate'); continue; }
     const c = r.candidate;
-    if (findTmSameTitleShow(c, shows)) { note('in-catalog'); continue; }
+    // BRO-6254: a transfer (other venue, runs apart) is its own production here.
+    if (findTmSameTitleShow(c, shows, { allowTransfers: true })) { note('in-catalog'); continue; }
     let dup = null;
     try { dup = checkForDuplicate(c, shows); } catch (e) { note('dedup-error'); console.log(`  ! checkForDuplicate failed for "${c.title}": ${e.message}`); dup = null; }
     if (dup && dup.isDuplicate) { note('in-catalog'); continue; }
@@ -131,7 +132,8 @@ async function main() {
   try { await require('./lib/scraper').cleanup(); } catch (_) { /* best-effort: browser/pool teardown */ }
 
   // 4-5. Guards, then cohort rules.
-  const { toPromote, skipped } = selectPromotable(results, shows);
+  const { toPromote, skipped, transferOf } = selectPromotable(results, shows);
+  const showById = new Map(shows.map(s => [s.id, s]));
   const tmById = new Map(results.map(r => [r.playbillUrl, r.tmUrl]));
   const resultByUrl = new Map(results.map(r => [r.playbillUrl, r]));
   const actions = [];
@@ -146,6 +148,8 @@ async function main() {
       evidenceUrls: [e.playbillUrl, tmById.get(e.playbillUrl)],
     });
     if (!action) { ruleSkips.push(`${e.title}: venue "${e.venue}" failed sanitizeVenueForWrite`); continue; }
+    // BRO-6254: link a split-off transfer to the run already in shows.json.
+    Object.assign(action, transferLinkFields(action.show, showById.get(transferOf.get(e.id))));
     actions.push(action);
   }
   for (const s of skipped) console.log(`  - ${s.entry.title} (${s.reason})`);

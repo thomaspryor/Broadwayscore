@@ -20,6 +20,8 @@ const KNOWN_MATCH = {
   // "[" ends the id, so bro-9 does not also match bro-9-b's run.
   // With a mode, "]" too, so an apply run is not mixed up with a dry run of the same plan.
   'execute-approved-fix.yml': (inputs) => inputs.issue_number && `execute-approved-fix ${inputs.issue_number} [${inputs.mode ? `${inputs.mode}]` : ''}`,
+  // BRO-6266: the answer text stays out of the run title (the Actions page is readable).
+  'record-owner-answer.yml': (inputs) => inputs.issue && `record-owner-answer ${inputs.issue} [`,
 };
 
 function parseArgs(argv) {

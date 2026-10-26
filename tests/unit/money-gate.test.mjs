@@ -58,7 +58,7 @@ test('existing subscribers and signed-in readers bypass the gate (BRO-6248)', ()
   assert.equal(runBoot({ items: { bsc_user_data: '{"email":"a@b.co"}', bsc_email_recaptured: 'true' } }), false);
 
   const tsx = read('src/components/biz/MoneyGate.tsx');
-  assert.match(tsx, /if \(isAuthenticated\) unlockForExistingReader\(\);/, 'signing in mid-visit unlocks');
+  assert.match(tsx, /if \(isAuthenticated && unlockForExistingReader\(\)\) setBypass\(\{ reason: 'account', when: 'midvisit' \}\);/, 'signing in mid-visit unlocks');
   assert.match(tsx, /addEventListener\('bsc_subscribed', onSubscribed\)/, 'subscribing mid-visit unlocks');
   assert.match(tsx, /else document\.documentElement\.removeAttribute\('data-money-unlocked'\);/, 'a stale page-only unlock is cleared on navigation');
   // The bypass never persists the money unlock or joins the money list.
@@ -66,9 +66,53 @@ test('existing subscribers and signed-in readers bypass the gate (BRO-6248)', ()
   assert.doesNotMatch(fn, /localStorage|cookie|submitMoneySignup/);
 });
 
+test('money_gate_bypassed reports why the gate was skipped, once per page view', () => {
+  const { SUBSCRIBED_KEY, SUBSCRIBED_KEY_PREFIX } = hooks;
+  const only = (key, val) => (k) => (k === key ? val : null);
+  assert.equal(gate.existingAccessReason(only(supa.SUPABASE_STORAGE_KEY, '{}')), 'account');
+  assert.equal(gate.existingAccessReason(only(`${SUBSCRIBED_KEY_PREFIX}west-end`, 'true')), 'subscriber');
+  assert.equal(gate.existingAccessReason(only(SUBSCRIBED_KEY, 'false')), null);
+  assert.equal(gate.existingAccessReason(() => { throw new Error('blocked'); }), null);
+  // An account holder who is also subscribed reports as an account.
+  assert.equal(gate.existingAccessReason((k) => (k === SUBSCRIBED_KEY ? 'true' : k === supa.SUPABASE_STORAGE_KEY ? '{}' : null)), 'account');
+  assert.equal(gate.moneyUnlockReason(), null, 'server render: never unlocked');
+
+  // In a browser: a money-list sign-up wins, the cookie covers blocked storage.
+  const inBrowser = (store, cookie = '') => {
+    const saved = { window: globalThis.window, localStorage: globalThis.localStorage, document: globalThis.document };
+    globalThis.window = {};
+    globalThis.localStorage = { getItem: store === 'throw' ? () => { throw new Error('blocked'); } : (k) => store[k] ?? null };
+    globalThis.document = { cookie };
+    try { return gate.moneyUnlockReason(); } finally { Object.assign(globalThis, saved); }
+  };
+  assert.equal(inBrowser({ [gate.MONEY_UNLOCK_KEY]: '1', [supa.SUPABASE_STORAGE_KEY]: '{}' }), 'unlocked');
+  assert.equal(inBrowser({ [SUBSCRIBED_KEY]: 'true' }), 'subscriber');
+  assert.equal(inBrowser({ [supa.SUPABASE_STORAGE_KEY]: '{}' }), 'account');
+  assert.equal(inBrowser('throw', `x=1; ${gate.MONEY_UNLOCK_COOKIE}=1`), 'unlocked');
+  assert.equal(inBrowser('throw'), null);
+  assert.equal(inBrowser({ [SUBSCRIBED_KEY]: 'false' }), null);
+
+  const src = read('src/lib/money-gate.ts');
+  const reason = src.match(/export function moneyUnlockReason[\s\S]*?\n}/)[0];
+  assert.ok(reason.indexOf("'unlocked'") < reason.indexOf('existingAccessReason'), 'a money-list sign-up wins over account/subscriber');
+  assert.match(src, /export function isMoneyUnlocked\(\): boolean \{\s*return moneyUnlockReason\(\) !== null;/, 'one source of truth for unlocked');
+
+  const tsx = read('src/components/biz/MoneyGate.tsx');
+  assert.match(tsx, /track\('money_gate_bypassed', \{ page, reason, when \}\);/);
+  assert.match(tsx, /captureEvent\('money_gate_bypassed', \{ page, reason, when, path: window\.location\.pathname \}\);/);
+  assert.match(tsx, /if \(bypassTracked\) return;\s*bypassTracked = true;/, 'once per page view');
+  assert.match(tsx, /if \(mountedGates === 0\) bypassTracked = false;/, 'resets when the page is left');
+  assert.match(tsx, /if \(reason\) setBypass\(\{ reason, when: 'load' \}\);/, 'load-time unlock is counted');
+  assert.match(tsx, /unlockForExistingReader\(\)\) setBypass\(\{ reason: 'subscriber', when: 'midvisit' \}\);/, 'mid-visit subscribe is counted');
+  // Like money_gate_shown, it counts only once the content is on screen.
+  assert.match(tsx, /if \(entries\.some\(\(e\) => e\.isIntersecting\)\) \{\s*trackMoneyBypass\(page, bypass\);/);
+  assert.match(tsx, /io\.observe\(contentRef\.current\);/);
+});
+
 test('gate copy: benefit-led, discloses email use, offers sign-in, no em dashes', () => {
   const tsx = read('src/components/biz/MoneyGate.tsx');
   assert.match(tsx, />Unlock the Money Scorecard</);
+  assert.match(tsx, /Always free\. Show-by-show capitalization, recoupment and box office for every Broadway show\./);
   assert.match(tsx, /One sign&#8209;up unlocks every page\./, 'non-breaking hyphen keeps "sign-up" on one line at 390');
   assert.match(tsx, /\{MONEY_EMAIL_USE\}/);
   assert.match(gate.MONEY_EMAIL_USE, /Unsubscribe anytime\./);
@@ -134,4 +178,57 @@ test('every show-level money surface is gated', () => {
   ];
   assert.equal(gated.length, 8);
   for (const p of gated) assert.match(read(p), /<MoneyGate page="/, `${p} renders a MoneyGate`);
+});
+
+test('a failed save waits in the outbox and is retried until stored (BRO-6289)', async () => {
+  const store = {};
+  const saved = { window: globalThis.window, localStorage: globalThis.localStorage, fetch: globalThis.fetch };
+  const env = { url: process.env.NEXT_PUBLIC_SUPABASE_URL, key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY };
+  process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://db.example';
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon';
+  globalThis.window = {};
+  globalThis.localStorage = {
+    getItem: (k) => store[k] ?? null,
+    setItem: (k, v) => { store[k] = String(v); },
+    removeItem: (k) => { delete store[k]; },
+  };
+  const calls = [];
+  let up = false;
+  globalThis.fetch = async (_url, init) => {
+    calls.push(JSON.parse(init.body).p_email);
+    if (!up) throw new Error('network down');
+    return { ok: true, status: 200, text: async () => '' };
+  };
+  try {
+    // The save fails: the reader is still let in, the address is kept.
+    assert.equal(await gate.submitMoneySignup(' Reader@Example.com ', 'investor', 'biz-dashboard:/biz'), 'store_unavailable');
+    assert.deepEqual(JSON.parse(store[gate.MONEY_PENDING_KEY]), [{ email: 'reader@example.com', role: 'investor', page: 'biz-dashboard:/biz' }]);
+
+    // Next page view, still down: it stays queued.
+    gate.resetMoneyRetryForTests();
+    assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 0, remaining: 1 });
+    // Only once per page load.
+    assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 0, remaining: 0 });
+
+    // Store back up: the retry saves it and empties the outbox.
+    up = true;
+    gate.resetMoneyRetryForTests();
+    assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 1, remaining: 0 });
+    assert.equal(store[gate.MONEY_PENDING_KEY], undefined);
+    assert.deepEqual(calls, ['reader@example.com', 'reader@example.com', 'reader@example.com']);
+
+    // A save that works never touches the outbox.
+    assert.equal(await gate.submitMoneySignup('second@example.com', '', 'show-page:/show/x'), 'stored');
+    assert.equal(store[gate.MONEY_PENDING_KEY], undefined);
+  } finally {
+    Object.assign(globalThis, saved);
+    process.env.NEXT_PUBLIC_SUPABASE_URL = env.url;
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = env.key;
+    gate.resetMoneyRetryForTests();
+  }
+});
+
+test('every gate retries the outbox on mount', () => {
+  const tsx = read('src/components/biz/MoneyGate.tsx');
+  assert.match(tsx, /retryPendingMoneySignups\(\)/);
 });

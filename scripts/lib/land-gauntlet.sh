@@ -200,7 +200,7 @@ TSC_NODE_OPTIONS=""
 if git status --porcelain --untracked-files=no > "$OUT/tsc-tree-status.tmp" 2>/dev/null; then mv "$OUT/tsc-tree-status.tmp" "$OUT/tsc-tree-status"; else rm -f "$OUT/tsc-tree-status.tmp"; fi
 gate tsc env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit
 gate tsc-llm-scoring env NODE_OPTIONS="$TSC_NODE_OPTIONS" npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
-gate next-lint npx next lint
+gate next-lint npm run lint
 
 # ── Unit Tests: the two in-repo batches, each its own gate, BOTH always run ──
 # Same manifests and per-test timeout as test.yml's "Run unit tests

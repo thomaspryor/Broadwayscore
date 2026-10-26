@@ -81,8 +81,61 @@ function buildEvidenceCommit(files, cwd, message) {
   return git(['-c', 'user.name=visual-approval', '-c', 'user.email=visual-approval@users.noreply.github.com', 'commit-tree', tree, '-m', message], { cwd });
 }
 
+// Comment markers the lander writes. The MAC-bearing suffix is added by the lander (it holds the secret);
+// the status command below matches the prefixes only, so a worker without the secret can still read the state.
+const MARK = {
+  landed: 'Visual approval landed VQL',
+  expired: 'Visual approval expired VQX',
+  cleaned: 'Visual approval cleaned VQC',
+  void: 'Visual approval void VQV',
+  stale: 'Visual approval stale VQS',
+  unverified: 'Visual approval unverified VQU',
+  approved: 'Visual approval ref VQA',
+};
+const STALE_APPROVAL_MS = 45 * 60 * 1000;
+
+/** The evidence commit sha the card's screenshot URLs name (the branch can be force-pushed after the owner was emailed). */
+function evidenceSha(description) {
+  // Only Evidence lines count (a URL elsewhere in the body is free text), and the last one wins (an older ask's lines stay above a newer block).
+  const re = /raw\.githubusercontent\.com\/thomaspryor\/Broadwayscore\/([0-9a-f]{40})\//i;
+  const shas = String(description || '').split('\n').filter((l) => /^\s*(?:[-*>]\s+)?\**Evidence\**\s*:/i.test(l)).map((l) => re.exec(l)).filter(Boolean);
+  return shas.length ? shas[shas.length - 1][1].toLowerCase() : null;
+}
+
+/** The owner approved exactly this check only when it passed and is the very file the approval was bound to. */
+function checkVerdict(raw, expectedHash) {
+  let v;
+  try { v = JSON.parse(raw); } catch { return { ok: false, why: 'verdict.json is missing or not valid JSON' }; }
+  if (!v || v.overallPass !== true) return { ok: false, why: 'the visual check in verdict.json did not pass' };
+  if (!v.contentHash || String(v.contentHash) !== String(expectedHash)) return { ok: false, why: 'verdict.json is not the check the owner approved (contentHash differs)' };
+  return { ok: true };
+}
+
+/**
+ * Where a visual request stands, from the card alone (no secret needed).
+ * waiting | approved (tapped, lander has not pushed yet) | landed | rejected | void | unverified | expired | none
+ */
+function classifyStatus(description, comments) {
+  if (!link.parseVisualApproval(description)) return 'none';
+  // A card can be asked again after an expiry or a redo: only comments from the latest ask describe the current request.
+  const all = comments || [];
+  const askedAt = all.filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body || '').trim())).map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
+  const current = askedAt ? all.filter((c) => !(new Date(c.createdAt).getTime() < askedAt)) : all;
+  const texts = current.map((c) => link.unescapeMarkdown(c.body || ''));
+  const has = (prefix) => texts.some((t) => t.includes(prefix));
+  if (has(MARK.landed)) return 'landed';
+  if (has(MARK.expired)) return 'expired';
+  if (has(MARK.approved)) {
+    if (has(MARK.unverified)) return 'unverified';
+    if (has(MARK.void)) return 'void';
+    return 'approved';
+  }
+  if (/ANSWERED by the owner/.test(description || '')) return 'rejected';
+  return 'waiting';
+}
+
 function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { REPO, MAX_OPEN, git, patchId, holdBranch, evidenceBranch, rawUrl, pickCrops, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdBranch, evidenceBranch, rawUrl, pickCrops, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };

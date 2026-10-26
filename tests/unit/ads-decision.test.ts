@@ -10,6 +10,7 @@ import {
   ADSENSE_CLIENT,
   AD_REGION_COOKIE,
   AD_SLOTS,
+  ADS_TXT_LINE,
   adRegionForCountry,
   decideAdRender,
   isAutomatedBrowser,
@@ -206,4 +207,11 @@ test('middleware: no write when the cookie already matches, or off /show/', () =
     undefined,
   );
   assert.equal(middleware(req('https://broadwayscorecard.com/critics/zz-none', { 'x-vercel-ip-country': 'US' })), undefined);
+});
+
+test('launch state: publisher id set, slot id still empty, so ads stay dark', () => {
+  assert.equal(ADSENSE_CLIENT, 'ca-pub-5443308376628971');
+  assert.equal(ADS_TXT_LINE, 'google.com, pub-5443308376628971, DIRECT, f08c47fec0942fa0');
+  // Remove this assertion in B-T2 when the approved unit's slot id is committed.
+  assert.equal(AD_SLOTS.showInline.id, '');
 });

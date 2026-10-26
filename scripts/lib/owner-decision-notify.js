@@ -24,6 +24,7 @@ const crypto = require('crypto');
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
 const { collapseSelfLinks, findDecisionQuestion, parseDecisionDescription } = require('./decision-card-parse.js');
+const { holdReason } = require('./owner-decision-quiet-period.js');
 
 const MAX_LISTED = 35; // the first run carries the 31-card backlog; one email, not three days of them
 const MAX_QUESTION_CHARS = 220;
@@ -156,11 +157,21 @@ function questionLink(question) {
   return m ? m[0].replace(/[.,;:!?*_]+$/, '') : null;
 }
 
-function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
+function buildDecisionsSection(issues, { max = 8, now = new Date(), secret = process.env.APPROVAL_HMAC_SECRET } = {}) {
   const labelled = new Set((issues || [])
     .filter((i) => i && labelNames(i).includes(AWAITING_OWNER_LABEL))
     .map((i) => i.identifier));
-  const decisions = findOwnerDecisions(issues).filter((d) => d.question && !labelled.has(d.identifier));
+  // BRO-6266: the same hold test as the decision email and its roundup. An
+  // answered decision is dropped; one with a comment that may answer it stays
+  // listed (the digest is the safety net) with a note saying so.
+  const byId = new Map((issues || []).filter(Boolean).map((i) => [i.identifier, i]));
+  const holds = new Map();
+  const decisions = findOwnerDecisions(issues).filter((d) => {
+    if (!d.question || labelled.has(d.identifier)) return false;
+    const hold = holdReason(byId.get(d.identifier), d, { secret, now: now.getTime() });
+    if (hold) holds.set(d.identifier, hold);
+    return !(hold && hold.reason === 'answered');
+  });
   if (!decisions.length) return null;
   const shown = decisions.slice(0, max);
   return {
@@ -173,7 +184,7 @@ function buildDecisionsSection(issues, { max = 8, now = new Date() } = {}) {
       const ageDays = d.createdAt ? Math.floor((now.getTime() - new Date(d.createdAt).getTime()) / 86400000) : null;
       return {
         title: d.question,
-        detail: `${d.identifier}: ${d.title}`,
+        detail: `${d.identifier}: ${d.title}${holds.get(d.identifier) && holds.get(d.identifier).reason === 'maybe-answered' ? ' (you may have answered this already in a comment)' : ''}`,
         url: d.actionLink || d.url,
         // BRO-6131: what the digest card shows. cardUrl is the Linear card even
         // when `url` is a signed one-tap link taken from the question.

@@ -47,6 +47,8 @@ interface RecoupmentSignals {
   modelHeldRange?: ShowCommercial['modelHeldRange'];
   /** u/Boring_Waltz_9545's published estimate (BRO-5502). */
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
+  /** Our own rounded range, used when there is no analyst figure (BRO-6245). */
+  ourEstimateRangePct?: ShowCommercial['ourEstimateRangePct'];
   /** 'enhancement': a nonprofit production with commercial money to recoup (hasNoInvestorsToRepay). */
   productionType?: ShowCommercial['productionType'] | null;
   designation?: ShowCommercial['designation'];
@@ -301,7 +303,7 @@ export function getReportedReturnLine(
 export type RecoupedCellSummary =
   | { kind: 'recouped' }
   | { kind: 'reported'; lo: number; hi: number; outlet: string; asOf: string | null }
-  | { kind: 'analyst'; range: [number, number]; withModel: boolean; asOf: string | null; url: string | null }
+  | { kind: 'analyst'; range: [number, number]; withModel: boolean; asOf: string | null; url: string | null; ours: boolean }
   | { kind: 'model'; pct: [number, number, number] }
   | { kind: 'loss'; text: string }
   | { kind: 'reason'; text: string };
@@ -326,7 +328,7 @@ export function getRecoupedCellSummary(row: CellSignals): RecoupedCellSummary {
   if (rr && getReportedReturnLine(row)) return { kind: 'reported', lo: rr.lo, hi: rr.hi, outlet: rr.outlet, asOf: rr.asOf };
   if (mode === 'analyst') {
     const est = getDisplayableEstimateRange(row)!;
-    return { kind: 'analyst', range: est.range, withModel: est.withModel, asOf: row.analystRecoupAsOf ?? null, url: row.analystRecoupUrl ?? null };
+    return { kind: 'analyst', range: est.range, withModel: est.withModel, asOf: row.analystRecoupAsOf ?? null, url: row.analystRecoupUrl ?? null, ours: !row.analystRecoupPct };
   }
   if (mode === 'model') return { kind: 'model', pct: row.modelRecoupmentPct! };
   if (isClosedWithoutRecouping(row)) {
@@ -439,6 +441,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
     ...(commercial.capitalizationBasis ? { capitalizationBasis: commercial.capitalizationBasis } : {}),
     weeklyRunningCost: commercial.weeklyRunningCost,
     weeklyRunningCostSource: publicSourceText(commercial.weeklyRunningCostSource),
+    ...(commercial.weeklyRunningCostBasis ? { weeklyRunningCostBasis: commercial.weeklyRunningCostBasis } : {}),
     costMethodology: commercial.costMethodology,
     isEstimate: commercial.isEstimate,
     ...(estimatedInputs.length ? { estimatedInputs } : {}),
@@ -474,6 +477,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
       analystRecoupAsOf: commercial.analystRecoupAsOf ?? null,
       analystRecoupUrl: commercial.analystRecoupUrl ?? null,
     } : {}),
+    ...(commercial.ourEstimateRangePct ? { ourEstimateRangePct: commercial.ourEstimateRangePct } : {}),
   };
 }
 
@@ -666,11 +670,11 @@ export interface DesignationDisplay {
 
 /** Whether the Money Scorecard has anything to show (it renders nothing otherwise). */
 export function hasCommercialCard(
-  c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'> & Partial<Pick<ShowCommercial, 'analystRecoupPct' | 'commercialConversion'>>
+  c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'> & Partial<Pick<ShowCommercial, 'analystRecoupPct' | 'ourEstimateRangePct' | 'commercialConversion'>>
 ): boolean {
   // A TBD show with only the analyst's estimate (Beaches: ~0% recouped) or a
   // switch to a commercial run still has a card to show (BRO-5508).
-  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD' || c.analystRecoupPct || conversionOf(c));
+  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD' || c.analystRecoupPct || c.ourEstimateRangePct || conversionOf(c));
 }
 
 /** The public caveat for a loss label that rests on silence (owner policy B, BRO-5020). */
@@ -734,7 +738,8 @@ export function likelyOutcomeLine(c: Parameters<typeof likelyOutcomeDesignation>
 export type LikelyOutcomeBasis = 'estimate' | 'model';
 export function likelyOutcomeBasis(c: Parameters<typeof likelyOutcomeDesignation>[0]): LikelyOutcomeBasis | null {
   if (!likelyOutcomeDesignation(c)) return null;
-  return ownReturnedEstimatePct(c) !== null ? 'estimate' : 'model';
+  // Our own range (ourEstimateRangePct) is our estimate, not an outside one.
+  return ownReturnedEstimatePct({ ...c, ourEstimateRangePct: undefined }) !== null ? 'estimate' : 'model';
 }
 
 /** The basis in words: the card prints LIKELY_OUTCOME_BASIS, the /biz cell's tooltip says LIKELY_OUTCOME_NOTE in full. */

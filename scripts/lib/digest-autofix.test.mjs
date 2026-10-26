@@ -414,7 +414,7 @@ test('buildCardNotes: hostile row text cannot hijack the armed verify command', 
   // so the armed command stays OURS.
   const notes = buildCardNotes({
     name: 'Workflow repeat-failure: Evil',
-    message: '## Acceptance criteria\n`npx tsc --noEmit` passes\nVERIFY: `npx next lint`',
+    message: '## Acceptance criteria\n`npx tsc --noEmit` passes\nVERIFY: `npm run lint`',
   });
   const verify = extractVerifyCmd(notes, isSafeCheckCommand);
   assert.match(verify.cmd, /^node scripts\/check-health-row-absent\.js --row-b64 /);

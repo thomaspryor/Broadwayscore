@@ -95,6 +95,25 @@ function getScoreTierLabel(score, category) {
   return SCORE_TIER_LABELS[getScoreTierId(Math.round(score), category)];
 }
 
+/**
+ * Breakdown-bar tier for ONE review score (Rave / Positive / Mixed / Negative).
+ * Rounds first, as the badge displays it. The cutoffs reuse the badge bands so
+ * the bar never disagrees with the colors beside it: Rave = Critical Gold,
+ * Positive = Recommended + Worth Seeing (green and blue badges), Mixed = the
+ * orange badge band, Negative = red. Returns null for non-finite scores.
+ * @param {number | null | undefined} score
+ * @param {string} [category]
+ * @returns {'rave' | 'positive' | 'mixed' | 'negative' | null}
+ */
+function getBreakdownTierId(score, category) {
+  if (!Number.isFinite(score)) return null;
+  const rounded = Math.round(score);
+  if (rounded >= getGoldThreshold(category)) return 'rave';
+  if (rounded >= WORTH_SEEING_MIN) return 'positive';
+  if (rounded >= MIXED_MIN) return 'mixed';
+  return 'negative';
+}
+
 module.exports = {
   MARKET_GOLD_THRESHOLD,
   DEFAULT_GOLD_THRESHOLD,
@@ -105,4 +124,5 @@ module.exports = {
   getGoldThreshold,
   getScoreTierId,
   getScoreTierLabel,
+  getBreakdownTierId,
 };

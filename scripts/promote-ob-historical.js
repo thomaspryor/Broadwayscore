@@ -51,7 +51,8 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 // promote-historical-we.js — see that file's identical dedup pattern) wrap
 // both of these plus venuesMatch().
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
-const { sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { sanitizeVenueForWrite, venueSlug } = require('./lib/venue-classification');
+const { isDistinctTransfer } = require('./lib/theatermania-ob');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { productionIdYear } = require('./lib/todaytix-dates');
 
@@ -158,7 +159,7 @@ function logEntry(entry) {
  * reasons. Pure apart from the optional onSkipInvalidVenue logger.
  */
 function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}) {
-  const existingIds = new Set(shows.map(s => s.id));
+  const existingIds = new Map(shows.map(s => [s.id, s]));
   // Live pool of {title, venue} this run checks candidates against — starts
   // as shows.json and grows as candidates are promoted, so a second
   // candidate for the same show later in this run still gets caught.
@@ -172,6 +173,8 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
 
   const toPromote = [];
   const skipped = [];
+  // new venue-scoped id -> id of the other production it was split from
+  const transferOf = new Map();
   for (const r of matches) {
     const entry = buildShowEntry(r, venueVocabulary);
     // sanitizeVenueForWrite (card #994) returns null for a placeholder/
@@ -188,6 +191,17 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
     const subtitleDup = !exactDup && findSubtitleDuplicateTitle(knownShows, entry.title, entry.venue);
     if (exactDup) { skipped.push({ entry, reason: 'duplicate title+venue' }); continue; }
     if (subtitleDup) { skipped.push({ entry, reason: `subtitle-stripped duplicate of "${subtitleDup}"` }); continue; }
+    // BRO-6254: a same-title transfer in the same year (Prince Faggot,
+    // Playwrights Horizons then Studio Seaview, 2025) mints the id the other
+    // run holds. When the holder is another production (isDistinctTransfer),
+    // put the venue in the id, the shape the catalog already uses for this
+    // (kramerfauci-st-anns-off-broadway-2026). Playbill's "Org/Space" venues
+    // name the house by its first part.
+    if (existingIds.has(entry.id) && isDistinctTransfer(entry, existingIds.get(entry.id))) {
+      const vs = venueSlug(entry.venue.split('/')[0]);
+      const venueId = vs && entry.id.replace(/-off-broadway-(\d{4})$/, `-${vs}-off-broadway-$1`);
+      if (venueId && venueId !== entry.id) { transferOf.set(venueId, entry.id); entry.id = venueId; entry.slug = venueId; }
+    }
     // venue-write-guard-ok: read-only probe of the retired registry, nothing is written to a venue field
     const retiredHit = matchesRetired({ id: entry.id, title: entry.title, venue: entry.venue });
     if (retiredHit) { skipped.push({ entry, reason: `matches retired ${retiredHit.id} by ${retiredHit.matchedBy}` }); continue; }
@@ -195,9 +209,9 @@ function selectPromotable(matches, shows, { onSkipInvalidVenue = () => {} } = {}
     if (!entry.openingDate && !entry.closingDate) { skipped.push({ entry, reason: 'no opening or closing date from Playbill' }); continue; }
     toPromote.push(entry);
     knownShows.push({ title: entry.title, venue: entry.venue });
-    existingIds.add(entry.id);
+    existingIds.set(entry.id, entry);
   }
-  return { toPromote, skipped };
+  return { toPromote, skipped, transferOf };
 }
 
 function main() {

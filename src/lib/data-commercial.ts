@@ -288,6 +288,41 @@ export function getSeasonsWithCommercialData(): string[] {
   return Array.from(seasonsSet).sort((a, b) => b.localeCompare(a));
 }
 
+// Season pages with fewer tracked shows than this still render (a show page
+// links its season) but stay out of the sitemap and carry noindex: a
+// one-show "season" page is thin and its season-level stats mislead (BRO-6192).
+export const MIN_INDEXED_SEASON_SHOWS = 5;
+
+export function isIndexedCommercialSeason(season: string): boolean {
+  return getShowsBySeasonWithCommercial(season).length >= MIN_INDEXED_SEASON_SHOWS;
+}
+
+/**
+ * Headline numbers for the /biz hero (BRO-6286), on the same population as
+ * the season stats: commercial productions only (no pure nonprofits or tour
+ * stops, no untracked placeholders), our own capitalization estimates and
+ * Form D offering ceilings ("up to $X") left out of the disclosed sum, and
+ * recoupments that carry recouped === true.
+ */
+export function getCommercialHeadlineStats(): { productions: number; disclosedCapitalization: number; disclosedCount: number; recouped: number } {
+  let productions = 0;
+  let disclosedCapitalization = 0;
+  let disclosedCount = 0;
+  let recouped = 0;
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find(s => s.slug === slug);
+    if (!show) continue;
+    if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
+    productions++;
+    if (typeof data.capitalization === 'number' && data.capitalization > 0 && !isOwnEstimate(data) && !isMaximumCapitalization(data)) {
+      disclosedCapitalization += data.capitalization;
+      disclosedCount++;
+    }
+    if (data.recouped === true) recouped++;
+  }
+  return { productions, disclosedCapitalization, disclosedCount, recouped };
+}
+
 /**
  * Get season statistics: capital at risk, recoupment count, etc.
  *
@@ -845,6 +880,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     weeklyAtp: running ? positiveOrNull(grossData?.thisWeek?.atp) : null,
     weeklyCost: data.weeklyRunningCost || null,
     weeklyCostIsEstimate: isEstimatedRunningCost(data),
+    weeklyCostBasis: data.weeklyRunningCostBasis ?? null,
     nonprofitOrg: getNonprofitProducer(data),
     totalGross: grossData?.allTime?.gross || null,
     modelRecoupmentPct: data.modelRecoupmentPct || null,
@@ -856,6 +892,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
       analystRecoupAsOf: data.analystRecoupAsOf ?? null,
       analystRecoupUrl: data.analystRecoupUrl ?? null,
     } : {}),
+    ...(data.ourEstimateRangePct ? { ourEstimateRangePct: data.ourEstimateRangePct } : {}),
     ...(data.reportedReturn ? { reportedReturn: data.reportedReturn } : {}),
     ...(data.productionType ? { productionType: data.productionType } : {}),
     ...(conversionOf(data) ? { commercialConversion: conversionOf(data) } : {}),
