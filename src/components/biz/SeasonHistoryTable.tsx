@@ -13,6 +13,7 @@ import {
   formatRowValue,
   hasEstimatedCapital,
   hasFullCapitalCoverage,
+  hasReturnedCapital,
   hasTrackedCoverage,
   seasonHistoryAverage,
   type SeasonProfile,
@@ -63,6 +64,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Recouped</th>
               {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Disclosed<br />capital</th>}
               {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Est. total<br />capital</th>}
+              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap" title="Our estimate of how much of the capital invested in the season's shows has come back so far, with a low-high range.">Est. money<br />back so far</th>}
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Musicals</th>
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Revivals</th>
               <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Revivals among<br />musicals</th>
@@ -108,6 +110,16 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                       {hasEstimatedCapital(p) && !current && estimateNotes(p).map((n) => <span key={n} className="block text-xs text-gray-500">{n}</span>)}
                     </td>
                   )}
+                  {showCapital && (
+                    <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap" data-testid="season-money-back">
+                      {hasReturnedCapital(p) ? `~${formatRowValue('money', p.returnedCapital.mid)}` : '—'}
+                      {hasReturnedCapital(p) && (
+                        <span className="block text-xs text-gray-500">
+                          {formatRowValue('money', p.returnedCapital.low)}-{formatRowValue('money', p.returnedCapital.high)}
+                        </span>
+                      )}
+                    </td>
+                  )}
                   <td className="py-2.5 px-3 text-center text-gray-300">
                     {pct(p.musicals, p.productions)}
                     <span className="block text-xs text-gray-500">{p.musicals}</span>
@@ -147,6 +159,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                     {cellNote(seasonsNote(avg.estimatedCapital.seasons, avg.seasons))}
                   </td>
                 )}
+                {showCapital && <td className="py-2.5 px-3 text-center text-gray-500">—</td>}
                 <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                   {sharePct(avg.musicals.share)}
                   {cellNote(avg.musicals.count == null ? null : `${Math.round(avg.musicals.count)} a season`)}

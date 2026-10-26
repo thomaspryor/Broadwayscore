@@ -14,6 +14,8 @@ import assert from 'node:assert/strict';
 import {
   buildRecoupFindings,
   buildSeasonProfiles,
+  hasReturnedCapital,
+  returnedShare,
   compareSeason,
   formatRowValue,
   isOwnEstimate,
@@ -446,4 +448,54 @@ test('capital by outcome: closed-unrecouped and running shows, same per-show fig
   const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
   assert.equal(p.estimatedCapital.total, 23e6);
   assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 10e6, closedUnrecoupedShows: 1, running: 4e6, runningShows: 1 });
+});
+
+// ---- Returned capital (BRO-6335) ----
+
+test('returnedShare: recouped uses the reported multiple else 100%; outside estimates are never read', () => {
+  assert.deepEqual(returnedShare('closed', com({ recouped: true })), { low: 1, mid: 1, high: 1 });
+  assert.equal(returnedShare('closed', com({ recouped: true, investorMultiple: 1.5 }))?.mid, 1.5);
+  assert.equal(returnedShare('open', com({ recouped: true, investorMultiple: 0.4 }))?.mid, 1);
+  // Closed unrecouped: our own range beats the model; the analyst figure is ignored.
+  const own = returnedShare('closed', com({ ourEstimateRangePct: [20, 40], modelRecoupmentPct: [0, 90, 100], analystRecoupPct: [90, 95] } as never));
+  assert.deepEqual(own, { low: 0.2, mid: 0.3, high: 0.4 });
+  const model = returnedShare('closed', com({ modelRecoupmentPct: [-30, 50, 130] }));
+  assert.deepEqual(model, { low: 0, mid: 0.5, high: 1 });
+  // Ex-credit reading comes first; running shows read only the model; unopened shows have none.
+  assert.equal(returnedShare('open', com({ modelReturnedExCreditPct: [10, 20, 30], modelRecoupmentPctV2: [50, 60, 70] }))?.mid, 0.2);
+  assert.equal(returnedShare('open', com({ ourEstimateRangePct: [20, 40] })), null);
+  assert.equal(returnedShare('announced', com({ modelRecoupmentPct: [10, 20, 30] })), null);
+  assert.equal(returnedShare('closed', com()), null);
+});
+
+test('returnedCapital sums capital x share with a low/high band and gates on coverage', () => {
+  const [p] = buildSeasonProfiles([
+    show({ openingDate: '2024-10-01', status: 'closed', commercial: com({ recouped: true, capitalization: 10e6, investorMultiple: 2 }) }),
+    show({ openingDate: '2024-10-02', status: 'closed', commercial: com({ capitalization: 10e6, ourEstimateRangePct: [10, 30] }) }),
+    show({ openingDate: '2024-10-03', status: 'open', commercial: com({ capitalization: 20e6, modelRecoupmentPct: [20, 40, 80] }) }),
+    show({ openingDate: '2024-10-04', status: 'open', commercial: com({ capitalization: 10e6 }) }),
+  ]);
+  const r = p.returnedCapital;
+  assert.equal(r.shows, 3);
+  assert.equal(r.missing, 1);
+  assert.equal(r.capital, 40e6);
+  assert.equal(r.eligible, 50e6);
+  assert.equal(r.mid, 20e6 + 2e6 + 8e6);
+  assert.equal(r.low, 20e6 + 1e6 + 4e6);
+  assert.equal(r.high, 20e6 + 3e6 + 16e6);
+  assert.equal(hasReturnedCapital(p), true);
+});
+
+test('hasReturnedCapital needs 75% of opened capital covered; unopened shows stay out', () => {
+  const [thin] = buildSeasonProfiles([
+    show({ openingDate: '2024-10-01', status: 'closed', commercial: com({ recouped: true, capitalization: 10e6 }) }),
+    show({ openingDate: '2024-10-02', status: 'open', commercial: com({ capitalization: 30e6 }) }),
+  ]);
+  assert.equal(hasReturnedCapital(thin), false);
+  const [ok] = buildSeasonProfiles([
+    show({ openingDate: '2024-10-01', status: 'closed', commercial: com({ recouped: true, capitalization: 10e6 }) }),
+    show({ openingDate: '2024-10-02', status: 'announced', commercial: com({ capitalization: 30e6 }) }),
+  ]);
+  assert.equal(ok.returnedCapital.eligible, 10e6);
+  assert.equal(hasReturnedCapital(ok), true);
 });

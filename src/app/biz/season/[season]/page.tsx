@@ -16,6 +16,7 @@ import {
   getShowsBySeasonWithCommercial,
   getSeasonComparison,
   getSeasonProfiles,
+  getSeasonPaybackTrend,
   isIndexedCommercialSeason,
 } from '@/lib/data-commercial';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
@@ -25,7 +26,8 @@ import AllShowsTable from '@/components/biz/AllShowsTable';
 import MoneyGate from '@/components/biz/MoneyGate';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
-import { formatRowValue } from '@/lib/season-profile';
+import { formatRowValue, hasReturnedCapital } from '@/lib/season-profile';
+import SeasonPaybackCard from '@/components/biz/SeasonPaybackCard';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 import EmailTomLink from '@/components/EmailTomLink';
 
@@ -206,6 +208,10 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             )}
           </div>
         </div>
+
+        {profile && hasReturnedCapital(profile) && (
+          <SeasonPaybackCard profile={profile} trend={getSeasonPaybackTrend(season)} />
+        )}
 
         {/* Mix, capital and recoupment vs last season and the 10-season average */}
         {comparison && (

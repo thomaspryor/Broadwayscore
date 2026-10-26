@@ -38,7 +38,29 @@ export interface SeasonShowInput {
     productionType?: string | null;
     /** Producing nonprofit (Roundabout, MTC, LCT...), also set on enhancement and converted runs. */
     nonprofitOrg?: string | null;
+    /** Returned-capital inputs (returnedShare): a reported multiple, our own range, our model's [low, mid, high] % returned. */
+    investorMultiple?: number | null;
+    ourEstimateRangePct?: [number, number] | null;
+    modelReturnedExCreditPct?: [number, number, number] | null;
+    modelRecoupmentPctV2?: [number, number, number] | null;
+    modelRecoupmentPct?: [number, number, number] | null;
   } | null;
+}
+
+/** Broadway shows joined with their commercial.json row: the one mapping the site and the daily payback history both feed buildSeasonProfiles. */
+export function toSeasonShowInputs(
+  shows: Array<{ slug: string; category?: string | null; type: string | null | undefined; isRevival?: boolean | null; openingDate?: string | null; status?: string | null }>,
+  commercialBySlug: Record<string, NonNullable<SeasonShowInput['commercial']> & { weeklyRunningCost?: number | null }>,
+): SeasonShowInput[] {
+  return shows
+    .filter((s) => s.category === 'broadway' && !!s.openingDate)
+    .map((s) => ({
+      type: s.type,
+      isRevival: s.isRevival,
+      openingDate: s.openingDate as string,
+      status: s.status,
+      commercial: commercialBySlug[s.slug] ? { ...commercialBySlug[s.slug], weeklyCost: commercialBySlug[s.slug].weeklyRunningCost } : null,
+    }));
 }
 
 export interface MoneyAggregate {
@@ -81,7 +103,24 @@ export interface SeasonProfile {
    * risk in running shows). Shows with no figure count in neither.
    */
   capitalByOutcome: { closedUnrecouped: number; closedUnrecoupedShows: number; running: number; runningShows: number };
+  /** Estimated money back to investors so far (returnedShare per show). */
+  returnedCapital: ReturnedCapital;
   runningCost: { musical: MoneyAggregate; play: MoneyAggregate };
+}
+
+export interface ReturnedCapital {
+  /** Capital of the shows that have a returned figure: the "in" side of "back of in". */
+  capital: number;
+  /** Capital of every opened commercial show (recouped, closed or running) that has a figure: the coverage denominator. */
+  eligible: number;
+  /** Estimated dollars back, low / middle / high. */
+  low: number;
+  mid: number;
+  high: number;
+  /** Shows with a returned figure. */
+  shows: number;
+  /** Opened shows with capital but no usable returned figure. */
+  missing: number;
 }
 
 export interface CapitalEstimate {
@@ -103,6 +142,8 @@ export interface CapitalEstimate {
 export const MIN_TRACKED_SHARE = 0.75;
 /** Share of commercial productions with a disclosed capitalization before money rows count. */
 export const MIN_CAP_COVERAGE = 0.6;
+/** Share of an opened season's capital that needs a returned figure before "money back" is stated. */
+export const MIN_RETURNED_COVERAGE = 0.75;
 /** Seasons in the long-run baseline. */
 export const BASELINE_SEASONS = 10;
 /** Share of commercial shows with a disclosed capitalization before two seasons' sums are compared. */
@@ -145,6 +186,7 @@ function emptyProfile(season: string): SeasonProfile {
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
     estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
     capitalByOutcome: { closedUnrecouped: 0, closedUnrecoupedShows: 0, running: 0, runningShows: 0 },
+    returnedCapital: { capital: 0, eligible: 0, low: 0, mid: 0, high: 0, shows: 0, missing: 0 },
     runningCost: { musical: emptyMoney(), play: emptyMoney() },
   };
 }
@@ -196,6 +238,52 @@ function isResearchPlaceholder(c: RecordFacts): boolean {
   return c.designation === 'TBD' && typeof c.recouped !== 'boolean'
     && !(typeof c.capitalization === 'number' && c.capitalization > 0)
     && !(Array.isArray(c.sources) && c.sources.length > 0);
+}
+
+export interface ReturnedShare {
+  low: number;
+  mid: number;
+  high: number;
+}
+
+function clampShare(pct: number): number {
+  return Math.min(100, Math.max(0, pct)) / 100;
+}
+
+/** The record's own range, never an outside estimate (analystRecoupPct and estimatedRecoupmentPct stay out). */
+function ownRangeShare(c: NonNullable<SeasonShowInput['commercial']>): ReturnedShare | null {
+  const r = c.ourEstimateRangePct;
+  if (!Array.isArray(r) || r.length !== 2 || !r.every(Number.isFinite)) return null;
+  const [lo, hi] = [Math.min(r[0], r[1]), Math.max(r[0], r[1])];
+  return { low: clampShare(lo), mid: clampShare((lo + hi) / 2), high: clampShare(hi) };
+}
+
+/** Our model's returned-so-far [pessimistic, central, optimistic], same order as the Likely line (modelMiddleReturnedPct). */
+function modelShare(c: NonNullable<SeasonShowInput['commercial']>): ReturnedShare | null {
+  for (const v of [c.modelReturnedExCreditPct, c.modelRecoupmentPctV2, c.modelRecoupmentPct]) {
+    if (Array.isArray(v) && v.length === 3 && v.every(Number.isFinite)) {
+      const [a, b, d] = v;
+      return { low: clampShare(Math.min(a, b)), mid: clampShare(b), high: clampShare(Math.max(d, b)) };
+    }
+  }
+  return null;
+}
+
+/**
+ * Share of a show's capital that has come back to investors, as a fraction
+ * (BRO-6335). Recouped: the reported multiple if any, else 100%. Closed and
+ * unrecouped: our own estimate, else the model. Running: the model. Anything
+ * else (announced, closed with no reading) is null. Outside estimates are
+ * never read here.
+ */
+export function returnedShare(status: string | null | undefined, c: NonNullable<SeasonShowInput['commercial']>): ReturnedShare | null {
+  if (c.recouped === true) {
+    const m = typeof c.investorMultiple === 'number' && Number.isFinite(c.investorMultiple) ? Math.max(1, c.investorMultiple) : 1;
+    return { low: m, mid: m, high: m };
+  }
+  if (status === 'closed') return ownRangeShare(c) ?? modelShare(c);
+  if (status === 'open' || status === 'previews') return modelShare(c);
+  return null;
 }
 
 /** One profile per season (July 1 - June 30), newest first. */
@@ -287,6 +375,17 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
         p.capitalByOutcome.runningShows++;
       }
     }
+    if (showCap !== null && (c.recouped === true || show.status === 'closed' || show.status === 'open' || show.status === 'previews')) {
+      const r = returnedShare(show.status, c);
+      p.returnedCapital.eligible += showCap;
+      if (r) {
+        p.returnedCapital.capital += showCap;
+        p.returnedCapital.low += showCap * r.low;
+        p.returnedCapital.mid += showCap * r.mid;
+        p.returnedCapital.high += showCap * r.high;
+        p.returnedCapital.shows++;
+      } else p.returnedCapital.missing++;
+    }
     if (isMusical) {
       addMoney(p.capitalization.musical, disclosedCap);
       addMoney(p.runningCost.musical, c.weeklyCost);
@@ -313,6 +412,12 @@ export function hasCapitalCoverage(p: SeasonProfile): boolean {
 export function hasFullCapitalCoverage(p: SeasonProfile): boolean {
   return hasTrackedCoverage(p) && p.commercial > 0
     && p.capitalization.all.known / p.commercial >= MIN_TOTAL_COVERAGE;
+}
+
+/** Enough of the season's opened capital has a returned figure to state "about $X back of $Y in". */
+export function hasReturnedCapital(p: SeasonProfile): boolean {
+  const r = p.returnedCapital;
+  return hasEstimatedCapital(p) && r.shows > 0 && r.eligible > 0 && r.capital / r.eligible >= MIN_RETURNED_COVERAGE;
 }
 
 /** Tracked well enough that the estimated capital total (disclosed + estimates) can be stated. */

@@ -58,8 +58,10 @@ import {
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
-import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
+import { buildSeasonProfiles, toSeasonShowInputs, buildRecoupFindings, compareSeason, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import { getMarketDate } from './date-utils';
+import seasonPaybackHistory from '../../data/season-payback-history.json';
+import { seasonRows, trendFor } from '../../scripts/lib/season-payback-history';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
 import {
@@ -404,20 +406,16 @@ export function getSeasonShowList(season: string): { dated: SeasonListShow[]; un
   };
 }
 
+/** How a season's estimated money back has moved, from the daily history (null until it spans a week). */
+export function getSeasonPaybackTrend(season: string): { fromDate: string; change: number } | null {
+  const t = trendFor(seasonRows(seasonPaybackHistory, season));
+  return t ? { fromDate: t.from.date, change: t.change } : null;
+}
+
 export function getSeasonProfiles(): SeasonProfile[] {
   if (!seasonProfilesCache) {
     const shows = commercial.shows;
-    seasonProfilesCache = buildSeasonProfiles(
-      rawShows
-        .filter((s) => s.category === 'broadway' && !!s.openingDate)
-        .map((s) => ({
-          type: s.type,
-          isRevival: s.isRevival,
-          openingDate: s.openingDate,
-          status: s.status,
-          commercial: shows[s.slug] ? { ...shows[s.slug], weeklyCost: shows[s.slug].weeklyRunningCost } : null,
-        })),
-    );
+    seasonProfilesCache = buildSeasonProfiles(toSeasonShowInputs(rawShows, shows));
   }
   return seasonProfilesCache;
 }
