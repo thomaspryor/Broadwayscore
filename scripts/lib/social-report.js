@@ -65,21 +65,42 @@ function indexLedger(ledger) {
 }
 
 /**
+ * The show a caption names, for posts the ledger does not know (the video lane
+ * has no show link). Longest title wins; titles under 6 letters ("Chess") are
+ * too likely to be an ordinary word.
+ */
+function showInCaption(text, shows) {
+  const first = String(text || '').split('\n')[0];
+  let best = null;
+  for (const s of shows || []) {
+    const t = s && s.title;
+    if (!t || t.length < 6 || (best && t.length <= best.title.length)) continue;
+    const at = first.indexOf(t);
+    if (at < 0 || /\w/.test(first[at - 1] || '') || /\w/.test(first[at + t.length] || '')) continue;
+    best = s;
+  }
+  return best;
+}
+
+/**
  * One row per Buffer post: lane, title, slug, link, metrics, visits.
  * bufferPosts: [{id, sentAt, text, externalLink, service, isVideo, metrics:[{type,value}]}]
+ * shows: optional, names the show in a video caption (the slug stays null, so
+ * visits are still credited only to posts that link the show).
  */
-function buildPostRows(bufferPosts, ledger) {
+function buildPostRows(bufferPosts, ledger, shows = []) {
   const byPostId = indexLedger(ledger);
   return (bufferPosts || []).filter((p) => p && p.sentAt).map((p) => {
     const hit = byPostId.get(p.id);
     const entry = hit && hit.entry;
     const firstLine = String(p.text || '').split('\n')[0].trim();
+    const named = !entry && p.isVideo ? showInCaption(p.text, shows) : null;
     return {
       id: p.id,
       service: p.service,
       sentAt: p.sentAt,
       lane: entry ? (entry.type || 'score') : (p.isVideo ? 'video' : 'other'),
-      title: (entry && entry.title) || (firstLine.length > 70 ? `${firstLine.slice(0, 67)}...` : firstLine) || 'Untitled post',
+      title: (entry && entry.title) || (named && `${named.title} (video)`) || (firstLine.length > 70 ? `${firstLine.slice(0, 67)}...` : firstLine) || 'Untitled post',
       slug: (entry && entry.slug) || slugFromText(p.text),
       reviewCount: entry ? Number((/from (\d+) critics/.exec(entry.text || '') || [])[1]) || null : null,
       // hit.service is the ledger's channel key ('instagram', or 'instagram@westend' for a
@@ -432,7 +453,7 @@ function groupBy(rows, keyFn) {
  * @param o.now          ms; the monthly block appears when it is day 1-7 of the month (UTC)
  */
 function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews = [], scheduled = [], ctx = null, now = Date.now() }) {
-  const rows = buildPostRows(bufferPosts, ledger);
+  const rows = buildPostRows(bufferPosts, ledger, ctx && ctx.shows);
   const unmatchedVisits = attributeVisits(rows, { utmRows, bioRows });
   const weekRows = rows.filter((r) => now - Date.parse(r.sentAt) <= 7 * DAY_MS).sort(compareRank);
   const settled = weekRows.filter((r) => now - Date.parse(r.sentAt) >= DAY_MS);
@@ -466,4 +487,4 @@ function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews
   return report;
 }
 
-module.exports = { buildSocialReport, buildPostRows, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, localTime, showLines, attributeVisits, normalizeMetrics, weeklyTakeaway, monthlySuggestion, suggestedReply, networkName, slugFromText };
+module.exports = { buildSocialReport, buildPostRows, showInCaption, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, localTime, showLines, attributeVisits, normalizeMetrics, weeklyTakeaway, monthlySuggestion, suggestedReply, networkName, slugFromText };

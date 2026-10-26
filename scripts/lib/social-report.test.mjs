@@ -7,7 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildSocialReport, normalizeMetrics, attributeVisits, buildPostRows, monthlySuggestion, suggestedReply, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason } = require('./social-report.js');
+const { buildSocialReport, normalizeMetrics, attributeVisits, buildPostRows, monthlySuggestion, suggestedReply, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, showInCaption } = require('./social-report.js');
 const { scoreDecision, findScoreEvents } = require('../social-autopost/select.js');
 const { socialHtml, loadSocialSection } = require('./traffic-report-email.js');
 const { writeLedger } = require('../social-autopost/run.js');
@@ -233,4 +233,18 @@ test('socialHtml renders coming up, skipped (capped) and posting times', () => {
 test('plainReason never shows an internal reason code', () => {
   assert.equal(plainReason({ why: 'no-score' }), 'no score on the site yet');
   for (const why of ['some-new-code', undefined]) assert.equal(plainReason({ why }), 'not ready to post yet');
+});
+
+test('video posts are named after the show their caption mentions', () => {
+  const shows = [{ id: 'a', title: 'The Imaginary Invalid' }, { id: 'b', title: 'Chess' }, { id: 'c', title: 'Invalid' }];
+  assert.equal(showInCaption('The Imaginary Invalid just opened on Broadway', shows).id, 'a');
+  assert.equal(showInCaption('Chess fans, this one is for you', shows), null); // too short to trust
+  assert.equal(showInCaption('Here is how we score a show.', shows), null);
+  const rows = buildPostRows([
+    { id: 'v1', sentAt: '2026-10-20T12:00:00Z', service: 'tiktok', isVideo: true, text: 'The Imaginary Invalid just opened on Broadway and 20 critics have weighed in', metrics: [] },
+    { id: 'v2', sentAt: '2026-10-20T12:00:00Z', service: 'tiktok', isVideo: true, text: 'Here is how we score a show.', metrics: [] },
+  ], { posts: [] }, shows);
+  assert.equal(rows[0].title, 'The Imaginary Invalid (video)');
+  assert.equal(rows[0].slug, null); // visits still go only to posts that link the show
+  assert.equal(rows[1].title, 'Here is how we score a show.');
 });
