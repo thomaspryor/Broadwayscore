@@ -78,6 +78,8 @@ const { mergeGuardEscalationState } = require('./merge-guard-escalation-state');
 const { mergeBreakerTransitions } = require('./merge-breaker-transitions');
 const { mergeRetiredRecords } = require('./merge-retired-ids');
 const { mergeNewsletterState } = require('./merge-newsletter-state');
+const { mergeTriageItem } = require('./merge-triage-item');
+const { registryPathMatches } = require('./registry-path-match');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -1850,11 +1852,20 @@ const CORE_DATA_MERGE_REGISTRY = [
   // header) — a real per-key merge is a strict improvement on that existing
   // baseline, not a new correctness bar.
   //
-  // data/audit/triage/ remains NOT added: it is a DIRECTORY of per-item
-  // files (also written by rebuild-reviews.yml), a different shape from the
-  // generic {ours,remote}->{merged,stats} single-file contract this registry
-  // and push-via-git-api.sh's blob-overlay both assume — needs its own
-  // design, out of scope here.
+  // data/audit/triage/*.json (BRO-2782): a directory of per-item files, covered
+  // by one glob entry below ('/*.json' matches direct children only, see
+  // registry-path-match.js). Each file has one CI writer, so the merge is
+  // ours-wins (merge-triage-item.js).
+  {
+    file: 'audit/triage/*.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeTriageItem,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    optInReconcile: false,
+  },
   {
     file: 'audit/alert-ledger.json',
     surface: 'public-repo',
@@ -2183,7 +2194,7 @@ const CORE_DATA_MERGE_REGISTRY = [
  */
 function findEntry(file, surface) {
   const candidates = surface ? CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface) : CORE_DATA_MERGE_REGISTRY;
-  return candidates.find((e) => file === e.file || file.endsWith('/' + e.file)) || null;
+  return candidates.find((e) => file === e.file || (e.file.includes('*') ? registryPathMatches(e.file, file) : file.endsWith('/' + e.file))) || null;
 }
 
 /** Active (generic-merge-eligible) entries for one surface, restricted to the

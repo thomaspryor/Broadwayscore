@@ -2,8 +2,10 @@
 # park-triage.sh park|restore  (BRO-4521, data-health-check.yml)
 #
 # data/audit/triage/ is written by several steps of data-health-check.yml but
-# committed only by the job's LAST push step, because the directory has no
-# Git Data API fallback (core-data-merge-registry.js: not apiFallbackSafe, so
+# committed only by the job's LAST push step, because the directory had no
+# Git Data API fallback (BRO-2782 since registered audit/triage/*.json as
+# apiFallbackMerge; this parking predates it and still works). It was not
+# apiFallbackSafe, so
 # an earlier commit of it would disqualify every later step's fallback,
 # BRO-2538). Left dirty, it made every intermediate push-with-retry.sh call
 # log "rebase REFUSED ... You have unstaged changes" and fall to the merge

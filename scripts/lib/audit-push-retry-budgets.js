@@ -138,6 +138,7 @@ try {
 // script's graph every run until the predicate was split out (BRO-2531
 // session, unrelated fix picked up while landing that ticket).
 // eslint-disable-next-line global-require
+const { registryPathMatches } = require('./registry-path-match.js');
 const { disqualifyingPath, NEVER_FALLBACK: NEVER_FALLBACK_FILES } = require('./api-fallback-disqualifier-core.js');
 
 /**
@@ -155,8 +156,13 @@ const { disqualifyingPath, NEVER_FALLBACK: NEVER_FALLBACK_FILES } = require('./a
  * the extra `!isApiFallbackMergeable` carve-out on the isManaged clause.
  */
 function classifyPushFallbackSafety(filePath) {
-  const isApiFallbackSafe = PUBLIC_REPO_API_FALLBACK_SAFE_FILES.some((f) => filePath.endsWith(f));
-  const isApiFallbackMerge = PUBLIC_REPO_API_FALLBACK_MERGE_FILES.some((f) => filePath.endsWith(f));
+  const isApiFallbackSafe = PUBLIC_REPO_API_FALLBACK_SAFE_FILES.some((f) => registryPathMatches(f, filePath));
+  // BRO-2782: a bare directory add (`git add data/audit/triage/`) is covered
+  // when a registry glob entry ('audit/triage/*.json') owns that directory.
+  // Only .json children are covered; anything else the add stages is still
+  // disqualified at push time by the real disqualifier, which sees file paths.
+  const dirOwned = (f) => filePath.endsWith('/') && f.endsWith('/*.json') && filePath.endsWith(f.slice(0, -'*.json'.length));
+  const isApiFallbackMerge = PUBLIC_REPO_API_FALLBACK_MERGE_FILES.some((f) => registryPathMatches(f, filePath) || dirOwned(f));
   // BRO-3663: `disqualifiesFallback` is no longer a hand-maintained mirror of
   // the shell's `hit` expression — that expression no longer exists. It now
   // CALLS the same module push-with-retry.sh calls, so the two cannot drift.

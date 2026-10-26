@@ -1436,7 +1436,7 @@ jobs:
       # fallback is actually usable. (The old "Commit health check + triage
       # data" step was split by BRO-3318: its 3 alert files now get this
       # same override in "Commit alert router state (apiFallbackMerge)";
-      # only "Commit triage data", a directory, stays fallback-disqualified.)
+      # "Commit triage data" gets it too since BRO-2782.)
       - name: Commit health check audit snapshots (apiFallbackSafe)
         if: always()
         env:
@@ -1625,8 +1625,8 @@ jobs:
       # registry's single-file {ours,remote}->merged contract, so it has no
       # apiFallbackMerge path and (per core-data-merge-registry.js's own
       # comment) "needs its own design, out of scope" — genuinely
-      # fallback-disqualified, not just under-registered like its former
-      # 3 bundle-mates above.
+      # fallback-disqualified until BRO-2782 registered it (audit/triage/*.json,
+      # ours-wins merge), like its former 3 bundle-mates above.
       #
       # continue-on-error: true (BRO-3318): this was the ONLY commit step in
       # the job without it, on the theory that a lost push here was uniquely
@@ -1664,6 +1664,10 @@ jobs:
           # job-level comment above (line ~102). Lower to 30s so more real
           # attempts fit in the 900s deadline. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
+          # BRO-2782: data/audit/triage/*.json is apiFallbackMerge-registered
+          # (ours-wins, one CI writer per file), so the fallback is reachable.
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          PUSH_API_REST_REF_UPDATE: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"

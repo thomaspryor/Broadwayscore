@@ -132,9 +132,10 @@ run_push() {
 UNREGISTERED="data/audit/push-with-retry-early-fallback-budget-fixture.json"
 if node -e '
   const r = require(process.argv[1]);
+  const { registryPathMatches } = require(process.argv[1].replace(/reconcile-merged-json\.js$/, "registry-path-match.js"));
   const f = process.argv[2];
   const hit = [...r.API_FALLBACK_SAFE, ...r.API_FALLBACK_MERGE]
-    .some((m) => f.endsWith(m.file.replace(/^data\//, "")));
+    .some((m) => registryPathMatches(m.file, f));
   process.exit(hit ? 1 : 0);
 ' "$SCRIPT_DIR/reconcile-merged-json.js" "$UNREGISTERED"; then
   rm -f "$LEDGER"
