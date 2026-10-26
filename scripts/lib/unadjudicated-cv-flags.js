@@ -10,13 +10,18 @@
  * nonReviewManualClear (a human called it a real review).
  */
 
+const { cvNonReviewHumanCleared } = require('./review-guards');
+
 const CV_NOT_A_REVIEW_RE = /not a review \((preview|feature|news|interview)/i;
 
 /** True when the file carries the CV not-a-review verdict and no human adjudication. */
 function isUnadjudicatedCvFlag(record) {
   if (!record || typeof record.needsReviewReason !== 'string') return false;
   if (!CV_NOT_A_REVIEW_RE.test(record.needsReviewReason)) return false;
-  return !(record.isNonReview === true || record.nonReviewManualClear === true);
+  // Same human-clear test the rebuild honours (nonReviewManualClear or a wrong-article clear).
+  if (record.isNonReview === true || cvNonReviewHumanCleared(record)) return false;
+  // A duplicate pointer shares its twin's url but is not itself counted.
+  return !record.duplicateOf;
 }
 
 /**

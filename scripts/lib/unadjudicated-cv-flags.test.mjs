@@ -13,6 +13,10 @@ test('isNonReview or nonReviewManualClear counts as adjudicated', () => {
   assert.equal(isUnadjudicatedCvFlag({ needsReviewReason: reason, isNonReview: true }), false);
   assert.equal(isUnadjudicatedCvFlag({ needsReviewReason: reason, nonReviewManualClear: true }), false);
 });
+test('wrong-article human clear and duplicate pointers are not unadjudicated', () => {
+  assert.equal(isUnadjudicatedCvFlag({ needsReviewReason: reason, wrongArticleManualClear: true }), false);
+  assert.equal(isUnadjudicatedCvFlag({ needsReviewReason: reason, duplicateOf: 'other.json' }), false);
+});
 test('unrelated reasons and missing reasons are ignored', () => {
   assert.equal(isUnadjudicatedCvFlag({ needsReviewReason: 'truncated text' }), false);
   assert.equal(isUnadjudicatedCvFlag({}), false);
