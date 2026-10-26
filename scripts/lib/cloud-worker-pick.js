@@ -372,7 +372,9 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   // For the Codex runner only (codex: true): a fix round it carried to its next run (BRO-5384) is
   // its own hand-back note, not someone working the card. The Claude lane keeps the 6 h wait, so
   // it does not take the card first and redo it without Codex's carried change.
-  const carry = codex && require('./codex-runner.js').parseSwfCarry(issue.comments && issue.comments.nodes, nowMs);
+  const CR = codex && require('./codex-runner.js');
+  // A carried fix round or a retry note (BRO-6260) is the newest comment, which makes the card look recently touched.
+  const carry = codex && (CR.parseSwfCarry(issue.comments && issue.comments.nodes, nowMs) || CR.parseCodexRetry(issue.comments && issue.comments.nodes));
   if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs)) && !carry) return 'recent-activity';
   return null;
 }

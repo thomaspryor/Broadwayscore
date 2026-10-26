@@ -915,6 +915,16 @@ test('a Codex fix round carried to the next run skips the 6 h idle wait for Code
   assert.equal(skipReason(issue({ updatedAt: FRESH, comments: { nodes: [{ body: '## Codex runner: not landed', createdAt: FRESH }] } }), NOW, { codex: true }), 'recent-activity');
 });
 
+test('a Codex retry note (BRO-6260) lifts an earlier bounce and skips the idle wait for Codex only', () => {
+  const { retryBody, BOUNCED_MARKER } = require('./codex-runner.js');
+  const bounce = { body: `${BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nREJECT`, createdAt: new Date(NOW - 3 * 24 * 3600_000).toISOString() };
+  const retry = { body: retryBody({ findings: 'Add the test.' }), createdAt: FRESH };
+  const card = issue({ updatedAt: FRESH, comments: { nodes: [bounce, retry] } });
+  assert.equal(skipReason(card, NOW, { codex: true }), null);
+  assert.equal(skipReason(card, NOW), 'recent-activity');
+  assert.equal(pickCloudCard([card], { nowMs: NOW, codex: true }).pick.identifier, 'BRO-100');
+});
+
 test('leaveCodexCards: the Claude queue leaves one Codex firing of fit cards to Codex, never resumes, Urgent or unfit ones (BRO-5384)', () => {
   const { leaveCodexCards } = require('./cloud-worker-pick.js');
   const card = (n, over = {}) => issue({ identifier: `BRO-${n}`, title: `Parser drops field ${n}`, description: BODY, ...over });

@@ -42,6 +42,12 @@ const STRUCTURAL_MEMORY_MS = 60 * 24 * 3600_000;
 // path settles the landing (this run, reconcileLanded, recoverOrphans) returns the card
 // to Todo instead of closing it.
 const PARTIAL_MARKER = '<!-- codex-runner-partial -->';
+// BRO-6260: one more Codex try for a card Codex bounced. A retry note lifts the bounce memory for every note
+// before it (a bounce after it counts as usual), so a card gets one retry per note; scripts/codex-retry-backfill.js
+// posts them once. And a plain bounce nobody touched for UNCLAIMED_RETRY_MS returns the card to Codex, once per
+// STRUCTURAL_MEMORY_MS: the Claude lane did not take it, so leaving it banned only leaves it undone.
+const RETRY_MARKER = '<!-- codex-runner-retry -->';
+const UNCLAIMED_RETRY_MS = 7 * 24 * 3600_000;
 const HKDF_SALT = 'bsc-codex-runner-auth-v1';
 
 /** Bound card runs to their host; PR landings keep an unlimited default. */
@@ -490,19 +496,47 @@ function bounceClassOf(body) {
   return m ? m[1] : null;
 }
 
+/** The comments after the newest retry note (all of them when there is none). */
+function sinceRetry(comments) {
+  const at = comments.reduce((m, c) => (String(c.body || '').startsWith(RETRY_MARKER) ? Math.max(m, Date.parse(c.createdAt)) : m), -Infinity);
+  return comments.filter((c) => Date.parse(c.createdAt) > at);
+}
+/** The retry to run: the newest comment is a retry note (no Codex run has taken the card since). */
+function parseCodexRetry(comments) {
+  const list = (Array.isArray(comments) ? comments : (comments && comments.nodes) || [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  return list[0] && String(list[0].body || '').startsWith(RETRY_MARKER) ? { findings: String(list[0].body).split('\n').slice(1).join('\n').trim() } : null;
+}
+/** The retry note: the reviewer's findings from the bounce note, for Codex to address this time. */
+function retryBody({ findings = '', reason = '' } = {}) {
+  return [
+    RETRY_MARKER,
+    '## Codex runner: one more Codex try',
+    '',
+    `${reason || 'Codex bounced this card and no Claude worker has taken it.'} The next Codex run takes it first. Address the findings from the earlier attempt below; if a finding is wrong, show the evidence in your report.`,
+    '',
+    findings ? String(findings).slice(0, 6000) : '(No findings were recorded; see the earlier Codex runner note.)',
+  ].join('\n');
+}
+
 /**
  * True when Codex failed this card within the last 14 days (a 'landed part' note counts for only 3 days,
  * and two of them in 14 days ban it for the full 14), or the runner crashed on it twice
  * (a card that breaks the runner every time must not take a slot on every run).
  */
 function codexBouncedRecently(comments, nowMs) {
-  const all = Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : [];
+  const all = sinceRetry(Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : []);
   const recent = all.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
   const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
   const partials = recent.filter(isPartial);
   if (structuralBounceHolds(all, nowMs)) return true;
+  const full = all.filter((c) => isCodexBounce(c.body) && !isPartial(c) && nowMs - Date.parse(c.createdAt) < STRUCTURAL_MEMORY_MS);
+  const newest = full.reduce((m, c) => (!m || Date.parse(c.createdAt) > Date.parse(m.createdAt) ? c : m), null);
+  const unclaimed = (c) => c === newest && full.length === 1 && nowMs - Date.parse(c.createdAt) >= UNCLAIMED_RETRY_MS
+    && !all.some((o) => Date.parse(o.createdAt) > Date.parse(c.createdAt));
   // A full disk is the machine's fault, so it never counts toward the card's two crashes (BRO-5384).
-  return recent.some((c) => isCodexBounce(c.body) && !isPartial(c))
+  return recent.some((c) => isCodexBounce(c.body) && !isPartial(c) && !unclaimed(c))
     || partials.length >= PARTIAL_MAX_PER_MEMORY
     || partials.some((c) => nowMs - Date.parse(c.createdAt) < PARTIAL_MEMORY_MS)
     || recent.filter((c) => isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
@@ -686,6 +720,7 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   if (items > 3) { score -= 2; why.push(`acceptance-items:${items}`); }
   // A fix round an earlier run could not fit goes first, so a SHIP-WITH-FIXES always gets it.
   if (parseSwfCarry(comments, nowMs)) { score += 10; why.push('swf-carry'); }
+  else if (parseCodexRetry(comments)) { score += 10; why.push('retry'); }
   return { skip: score <= CODEX_MIN_SCORE ? 'too-broad' : null, score, why };
 }
 
@@ -1572,6 +1607,10 @@ module.exports = {
   SWF_CARRY_MARKER,
   swfCarryBody,
   parseSwfCarry,
+  parseCodexRetry,
+  retryBody,
+  RETRY_MARKER,
+  UNCLAIMED_RETRY_MS,
   fixRoundDeadline,
   checkModel,
   landedPerLane, LANDED_LOG_FORMAT,
