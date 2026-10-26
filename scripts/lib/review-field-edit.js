@@ -430,6 +430,13 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     // Display name and breadcrumb travel with the id (the outlet-split relabel stamps the same pair).
     next.outlet = require('./review-normalization').getOutletDisplayName(newValue) || newValue;
     next.outletIdCorrectedFrom = record.outletId || null;
+    // The AP detector flags AP copy under another outlet as a syndicated duplicate (detect-syndicated-duplicates.js);
+    // on the AP row itself that stamp would exclude the review the relabel exists to recover.
+    if (record._apContentDetected === true && record.isSyndicatedDuplicate === true) {
+      next.isSyndicatedDuplicate = false;
+      next.syndicatedPrimaryFile = null;
+      next._apContentDetected = false;
+    }
     next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`;
   }
   if (field === 'originalScore') {
@@ -495,7 +502,7 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
       for (const k of ['outletId', 'outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
     }
   }
-  if (field === 'outletId') for (const k of ['outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
+  if (field === 'outletId') for (const k of ['outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason', 'isSyndicatedDuplicate', 'syndicatedPrimaryFile', '_apContentDetected']) expected.add(k);
   // BRO-4888: the write guard resolves a duplicate-pointer pair itself. Setting
   // duplicateClearReason on a file that points at a same-url sibling makes it
   // refuse the cycle and clear that file's own duplicateOf/duplicateReason;

@@ -1,0 +1,72 @@
+{
+  "issueNumber": "bro-5289-b",
+  "planId": "3bc8fed7-77e1-45b2-a985-7c8c6834ed08",
+  "status": "pending",
+  "createdAt": "2026-10-26T00:55:20.821Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-5289: clear the leftover duplicate flags on the three relabelled AP rows (of-mice-and-men-2014, pippin-2013, the-glass-menagerie-2013) so their scores count.",
+    "steps": [
+      "BRO-5289: the AP detector flagged this as a copy while it was filed under WSJ; it is now the AP row itself.",
+      "BRO-5289: pointer left from the WSJ-era flag.",
+      "BRO-5289: the AP detector flagged this as a copy while it was filed under WSJ; it is now the AP row itself.",
+      "BRO-5289: pointer to the AP file deleted when the rows were merged.",
+      "BRO-5289: the AP detector flagged this as a copy while it was filed under WSJ; it is now the AP row itself.",
+      "BRO-5289: pointer left from the WSJ-era flag."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/ap--mark-kennedy.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: the AP detector flagged this as a copy while it was filed under WSJ; it is now the AP row itself."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "of-mice-and-men-2014/ap--mark-kennedy.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "of-mice-and-men-2014/ap--mark-kennedy.json",
+        "newValue": null,
+        "description": "BRO-5289: pointer left from the WSJ-era flag."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/ap--mark-kennedy.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: the AP detector flagged this as a copy while it was filed under WSJ; it is now the AP row itself."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "pippin-2013/ap--mark-kennedy.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "pippin-2013/ap--associated-press.json",
+        "newValue": null,
+        "description": "BRO-5289: pointer to the AP file deleted when the rows were merged."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/ap--mark-kennedy.json",
+        "field": "isSyndicatedDuplicate",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-5289: the AP detector flagged this as a copy while it was filed under WSJ; it is now the AP row itself."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-glass-menagerie-2013/ap--mark-kennedy.json",
+        "field": "syndicatedPrimaryFile",
+        "oldValue": "the-glass-menagerie-2013/ap--mark-kennedy.json",
+        "newValue": null,
+        "description": "BRO-5289: pointer left from the WSJ-era flag."
+      }
+    ]
+  }
+}
