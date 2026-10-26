@@ -55,6 +55,23 @@ function decideEmailGateFunnelAlerts(summary = {}, state = {}, nowMs = 0) {
   const baselinePerWeek = +(BASELINE_CAPTURES_PER_DAY * 7).toFixed(1);
   const hasMeaningfulTraffic = impressions >= MIN_IMPRESSIONS_FOR_ALERT;
 
+  // A single confirmed passive opening below the minimum is a regression,
+  // even during ramp-up. Legacy events without a count are unknown, not zero.
+  const pageViews = summary.pageViewGuardrail;
+  if (pageViews?.belowMinimumEvents > 0
+    && (!next.lastPageViewMinimumAlertAt || nowMs - next.lastPageViewMinimumAlertAt >= COLLAPSE_COOLDOWN_MS)) {
+    next.lastPageViewMinimumAlertAt = nowMs;
+    alerts.push({
+      kind: 'page-view-minimum', severity: 'error', email: true, stampKey: 'lastPageViewMinimumAlertAt',
+      title: 'Email gate: passive modal opened below the page-view minimum',
+      description: `${pageViews.belowMinimumEvents} passive gate_modal_shown events opened below the required ` +
+        `session page-view minimum (at least 2 pages). Triggers: ${JSON.stringify(pageViews.violationsByTrigger)}. ` +
+        `Checked ${pageViews.checkedEvents} events; ${pageViews.unknownPageViewEvents} had missing or invalid counts. ` +
+        `Check triggerGate in src/contexts/ProGateContext.tsx and its hasSeenEnoughPages guard. ` +
+        `Explicit actions, blocking gates and recapture are exempt.`,
+    });
+  }
+
   // Factual, never reverted: has the funnel ever produced a meaningful week?
   const everReachedFloor = !!next.everReachedFloor;
   if (hasMeaningfulTraffic) next.everReachedFloor = true;

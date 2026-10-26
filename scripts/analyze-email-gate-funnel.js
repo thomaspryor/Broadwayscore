@@ -36,6 +36,7 @@ if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(
 // Shared Real Users predicate (owner + bot-heavy geos excluded) — the one
 // definition lives in scripts/lib/posthog-query.js so a new bot geo is added once.
 const { REAL_USERS_WHERE: REAL_USERS, phQuery } = require('./lib/posthog-query');
+const { getGatePageViewSummary } = require('./lib/gate-modal-guardrail');
 
 // Modal-attributed only — see file header.
 const MODAL_ONLY = `JSONExtractString(properties,'trigger') != ''`;
@@ -141,6 +142,7 @@ async function main() {
       GROUP BY person_id
       LIMIT 1000000)`);
   const bouncers = Number(bouncersRows[0]?.[0] || 0);
+  const pageViewGuardrail = await getGatePageViewSummary(DAYS);
 
   const summary = {
     days: DAYS,
@@ -155,6 +157,7 @@ async function main() {
     mobileBouncePct: mobileVisitors > 0 ? +((bouncers / mobileVisitors) * 100).toFixed(2) : null,
     byTrigger: Object.fromEntries(byTriggerRows.map(([t, n, people]) => [t || '(none)', { n: Number(n), people: Number(people) }])),
     byCopyVersion: buildByCopyVersion(byCopyVersionShownDismissedRows, byCopyVersionCapturedRows),
+    pageViewGuardrail,
   };
 
   say(`Impressions (shown): ${summary.impressions} people (${summary.impressionEvents} events)`);
@@ -164,6 +167,7 @@ async function main() {
   say(`Mobile bounce: ${bouncers}/${mobileVisitors} (${summary.mobileBouncePct}%)`);
   say(`By trigger: ${JSON.stringify(summary.byTrigger)}`);
   say(`By copy version: ${JSON.stringify(summary.byCopyVersion)}`);
+  say(`Passive page-view minimum: ${JSON.stringify(summary.pageViewGuardrail)}`);
 
   if (JSON_OUT) console.log(JSON.stringify(summary));
 }
