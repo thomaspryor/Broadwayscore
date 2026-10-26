@@ -333,6 +333,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/triage-audit-scripts.md
 # BRO-2613: audit-skip review note; tests/unit/duplicate-text-of-audit-skips.test.mjs asserts the call sites point at it.
 !/docs/duplicate-text-of-exclusion.md
+# BRO-6285: how sessions write emails to the owner; .claude/CLOUD.md and AGENTS.md point at it, tests/unit/owner-email-guidelines.test.mjs asserts it.
+!/docs/owner-email-guidelines.md
 # Feature specs are cross-session deliverables (Notion cards + PRs point at
 # them) — durable-path rule, same rationale as /docs/experiments/ below.
 !/docs/specs/

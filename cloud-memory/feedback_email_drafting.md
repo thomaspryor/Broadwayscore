@@ -6,11 +6,11 @@ type: feedback
 
 Two rules for drafting emails, social posts, or any communications:
 
-1. **Minimal em dashes.** Use commas, periods, or parentheses instead. Em dashes should be rare, not the default punctuation.
+1. **No em dashes.** Use commas, periods, or parentheses instead (owner banned them outright in drafted copy, 2026-07-12).
 
 **Why:** User finds heavy em dash usage unnatural and overly AI-sounding.
 
-**How to apply:** When drafting any text the user will send (emails, posts, Buffer content, Notion-facing text), rewrite sentences to avoid em dashes. One or two per email max, not one per paragraph.
+**How to apply:** When drafting any text the user will send (emails, posts, Buffer content, Notion-facing text), rewrite sentences to avoid em dashes. Zero per email. Emails to the owner also follow `docs/owner-email-guidelines.md`.
 
 2. **Clean line breaks in Gmail drafts.** Never pass terminal-width-wrapped text into the Gmail draft body. Write flowing prose with no hard line breaks mid-paragraph. Only break for actual new paragraphs.
 
