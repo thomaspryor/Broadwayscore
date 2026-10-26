@@ -123,6 +123,20 @@ test('applyCardFixPlans: pending plan is dispatched in apply mode, checked on ma
   assert.equal(calls[1][0], 'rebuild-fast.yml');
 });
 
+// BRO-6260: the cloud lane waits only for what is left before its hard stop.
+test('applyCardFixPlans: the apply wait is clamped to applyWaitMin; no time left defers without dispatching', async () => {
+  const t = fake({ 'bro-9.json': plan(['data-edit']) }, { code: 0, plan: { status: 'applied', executedIn: 'ci' } });
+  await DF.applyCardFixPlans('BRO-9', t.io, { applyWaitMin: 12.7 });
+  assert.ok(t.calls[0].includes('--timeout=12'));
+  const d = fake({ 'bro-9.json': plan(['data-edit']) }, { code: 0, plan: { status: 'applied', executedIn: 'ci' } });
+  await DF.applyCardFixPlans('BRO-9', d.io);
+  assert.ok(d.calls[0].includes(`--timeout=${DF.APPLY_WAIT_MIN}`));
+  const late = fake({ 'bro-9.json': plan(['data-edit']) }, { code: 0, plan: {} });
+  const res = await DF.applyCardFixPlans('BRO-9', late.io, { applyWaitMin: 0 });
+  assert.equal(res.kind, 'deferred');
+  assert.equal(late.calls.length, 0);
+});
+
 test('applyCardFixPlans: a green run over a partial plan is a failure (already-applied is green in CI)', async () => {
   const { io } = fake({ 'bro-9.json': plan(['data-edit']) }, { code: 0, plan: { status: 'partial', executedIn: 'ci' } });
   const res = await DF.applyCardFixPlans('BRO-9', io);
@@ -190,7 +204,7 @@ test('daily-runner wiring: apply inside settleLanded before Done; prompt rule be
   // The lane's base slot (gha: 3) reconciles deferred applies; slot 0 alone never would on the GHA lane.
   assert.match(src, /DF\.reconcileSkips\(\{ deferred, onlyDeferred, canDispatch: DF\.canDispatchWorkflows\(\) \}\)/);
   assert.match(src, /SLOT === R\.LANES\[OPTS\.lane\]\.base\) await reconcileLanded\(stats, \{ onlyDeferred: true \}\)/);
-  assert.match(fn, /canDispatch: DF\.canDispatchWorkflows\(\)/);
+  assert.match(fn, /canDispatch: DF\.canDispatchWorkflows\(\), applyWaitMin: R\.landWaitMinutes\(/);
   assert.match(src, /DF\.dataFixesEnabled\(\) && DF\.canDispatchWorkflows\(\) \? DATA_FIX_RULE : ''/);
   assert.match(readFileSync(new URL('../../scripts/codex/runner-prompt.md', import.meta.url), 'utf8'), /\{\{DATA_FIX_RULE\}\}/);
   assert.match(readFileSync(new URL('../../.github/workflows/codex-runner.yml', import.meta.url), 'utf8'), /^permissions:\n  contents: read\n(?:  #.*\n)*  actions: write$/m);
