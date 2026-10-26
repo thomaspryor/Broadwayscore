@@ -417,3 +417,12 @@ test('BRO-6154 venueOwnedBy: a review under another theatre header is not ours, 
   assert.equal(venueOwnedBy(['LONDON, YOUNG VIC THEATRE', 'Previews / Opens', 'x'], 2, 'Royal Court'), false);
   assert.equal(venueOwnedBy(['LONDON, ROYAL COURT THEATRE UPSTAIRS', 'Previews / Opens', 'x'], 2, 'Royal Court'), true);
 });
+
+test('BRO-6154 venueOwnedBy tolerates renames, possessives and the title in the header', async () => {
+  const { venueOwnedBy } = await import('node:module').then(m => m.createRequire(import.meta.url)('./tr-pdf-parse.js'));
+  const h = (t) => [t, 'Previews / Opens', 'x'];
+  assert.equal(venueOwnedBy(h("DUKE OF YORK\u2019S THEATRE"), 2, 'Tom Stoppard Theatre', 'Rosmersholm'), true);
+  assert.equal(venueOwnedBy(h('WYNDHAMS THEATRE'), 2, "Wyndham's Theatre", 'Curtains'), true);
+  assert.equal(venueOwnedBy(h('ALL ABOUT EVE'), 2, 'No\u00ebl Coward Theatre', 'All About Eve'), true);
+  assert.equal(venueOwnedBy(h('WYNDHAM\u2019S THEATRE'), 2, 'No\u00ebl Coward Theatre', 'All About Eve'), false);
+});
