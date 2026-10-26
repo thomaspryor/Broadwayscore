@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T00:58:41.553Z",
+  "timestamp": "2026-10-26T01:14:46.594Z",
   "stats": {
-    "totalReviews": 61730,
-    "alreadyFlagged": 21487,
+    "totalReviews": 61731,
+    "alreadyFlagged": 21489,
     "dateGuardCatches": 223,
-    "directorMismatch": 2263,
-    "tvFilmSignals": 1753,
-    "londonSignals": 2983,
+    "directorMismatch": 2266,
+    "tvFilmSignals": 1754,
+    "londonSignals": 2986,
     "offBroadwaySignals": 544,
     "yearMismatch": 204,
-    "noPublishDate": 5480
+    "noPublishDate": 5473
   },
   "findings": [
     {
@@ -6566,6 +6566,19 @@
       "score": 89,
       "publishDate": "2023-12-20",
       "url": "https://www.theaterscene.net/musicals/offbway/buena-vista-social-club/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "theatrely--unknown.json",
+      "publishDate": "2023-12-13",
+      "url": "https://www.theatrely.com/post/buena-vista-social-clubs-rhythm-of-life-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32230,6 +32243,20 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
+      "file": "nytimes--joshua-baron.json",
+      "score": 86,
+      "publishDate": "2024-02-27",
+      "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-off-broadway-2024",
       "file": "nytimes--joshua-barone.json",
       "score": 91,
       "publishDate": "2024-02-27",
@@ -33762,6 +33789,25 @@
     {
       "showId": "p-rn-play-west-end-2025",
       "file": "broadwayworld--franco-milazzo.json",
+      "score": 53,
+      "publishDate": "2025-11-14",
+      "url": "https://www.broadwayworld.com/westend/article/Review-PORN-PLAY-Royal-Court-20251114",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "p-rn-play-west-end-2025",
+      "file": "broadwayworld--unknown.json",
       "score": 53,
       "publishDate": "2025-11-14",
       "url": "https://www.broadwayworld.com/westend/article/Review-PORN-PLAY-Royal-Court-20251114",
@@ -42670,6 +42716,20 @@
     {
       "showId": "the-39-steps-west-end-2024",
       "file": "london-theatre--marianka-swain.json",
+      "score": 82,
+      "publishDate": "2024-08-20",
+      "url": "https://www.londontheatre.co.uk/reviews/the-39-steps-review-trafalgar-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria aitken\" from the-39-steps-2008"
+        }
+      ]
+    },
+    {
+      "showId": "the-39-steps-west-end-2024",
+      "file": "london-theatre--unknown.json",
       "score": 82,
       "publishDate": "2024-08-20",
       "url": "https://www.londontheatre.co.uk/reviews/the-39-steps-review-trafalgar-theatre",
@@ -62724,6 +62784,20 @@
     },
     {
       "showId": "ballet-shoes-west-end-2024",
+      "file": "londontheatre1--unknown.json",
+      "score": 74,
+      "publishDate": "2024-12-06",
+      "url": "https://www.londontheatre1.com/reviews/ballet-shoes-national-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ballet-shoes-west-end-2024",
       "file": "standard--nick-curtis.json",
       "score": 98,
       "publishDate": "2024-12-06",
@@ -62768,6 +62842,20 @@
       "showId": "ballet-shoes-west-end-2025",
       "file": "london-theatre--aliya-al-hassan.json",
       "score": 95,
+      "publishDate": "2025-11-26",
+      "url": "https://www.londontheatre.co.uk/reviews/ballet-shoes-review-national-theatre-2",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"olivier theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ballet-shoes-west-end-2025",
+      "file": "london-theatre--unknown.json",
+      "score": 88,
       "publishDate": "2025-11-26",
       "url": "https://www.londontheatre.co.uk/reviews/ballet-shoes-review-national-theatre-2",
       "findings": [
