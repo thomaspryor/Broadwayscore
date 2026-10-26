@@ -68,10 +68,12 @@ describe('getTicketCtaNote', () => {
   });
 });
 
-describe('show page + ShowHeroRedesign both consume the shared helper', () => {
-  test('src/app/show/[slug]/page.tsx imports getTicketCtaNote from ticket-cta-note, not a local re-implementation', () => {
+describe('show page + ShowHeroRedesign both consume the shared CTA', () => {
+  test('legacy page delegates ticket rendering and notes to ShowPageTicketCTA', () => {
     const src = readFileSync(join(ROOT, 'src/app/show/[slug]/page.tsx'), 'utf8');
-    assert.match(src, /from ['"]@\/lib\/ticket-cta-note['"]/);
+    assert.match(src, /from ['"]@\/components\/ShowPageTicketCTA['"]/);
+    assert.match(src, /<ShowPageTicketCTA\s/);
+    assert.match(src, /rawTicketLinks=\{show\.ticketLinks\}/);
     // Guards against re-introducing the ticketLinks.length > 0 gate on the
     // closed-note branch specifically (a plain status check is fine, e.g.
     // inside getTicketCtaNote itself or the isClosed helper var).
@@ -81,9 +83,11 @@ describe('show page + ShowHeroRedesign both consume the shared helper', () => {
     );
   });
 
-  test('ShowHeroRedesign.tsx imports getTicketCtaNote from ticket-cta-note, not a local re-implementation', () => {
+  test('redesigned hero delegates ticket rendering and notes to ShowPageTicketCTA', () => {
     const src = readFileSync(join(ROOT, 'src/components/show-page/ShowHeroRedesign.tsx'), 'utf8');
-    assert.match(src, /from ['"]@\/lib\/ticket-cta-note['"]/);
+    assert.match(src, /from ['"]@\/components\/ShowPageTicketCTA['"]/);
+    assert.match(src, /<ShowPageTicketCTA\s/);
+    assert.match(src, /rawTicketLinks=\{show\.ticketLinks\}/);
     assert.doesNotMatch(
       src,
       /isClosed && \(show\.ticketLinks\?\.length \?\? 0\) > 0/
