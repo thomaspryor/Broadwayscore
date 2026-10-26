@@ -172,7 +172,7 @@ export default function BizDashboard() {
             tagline as the lead, then headline numbers and the fine print. */}
         <header className="mb-10">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <span className="inline-flex items-center whitespace-nowrap rounded-full border border-brand/40 px-2.5 sm:px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] sm:tracking-[0.18em] text-brand">
+            <span className="inline-flex items-center whitespace-nowrap rounded-full border border-brand/40 px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.04em] sm:tracking-[0.18em] text-brand">
               The Broadway profitability database
             </span>
             <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0 ml-auto" />
