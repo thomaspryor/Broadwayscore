@@ -170,6 +170,10 @@ test('BRO-6244: writes to visual-hold/* and visual-evidence/* skip the gate; the
     assert.equal(r.status, 0, branch);
     assert.equal(r.seen, null, `${branch}: the gate must not even run`);
   }
+  for (const branch of ['heads/visual-hold/bro-7', 'refs/tags/visual-hold/bro-7']) {
+    assert.notEqual(run(ui({ branch }), { env: { STUB_RC: '2' } }).seen, null, `${branch}: only refs/heads/ is stripped`);
+  }
+  assert.equal(run(ui({ branch: 'refs/heads/visual-hold/bro-7' }), { env: { STUB_RC: '2' } }).seen, null, 'full ref of a hold branch skips');
   const lookalike = run(ui({ branch: 'visual-holdx/bro-7' }), { env: { STUB_RC: '2' } });
   assert.notEqual(lookalike.seen, null, 'a lookalike branch still reaches the gate');
   const re = (f) => /visual-\(hold\|evidence\)\/\[A-Za-z0-9\._-\]\+/.exec(fs.readFileSync(f, 'utf8'));

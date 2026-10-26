@@ -55,7 +55,7 @@ ui_count=$(printf '%s\n' "$ui_all" | grep -c .)
 ui_files=$(printf '%s\n' "$ui_all" | head -5)
 
 branch=$(printf '%s' "$input" | jq -r '.tool_input.branch // empty' 2>/dev/null | tr -d '[:space:]')
-branch=${branch#refs/}; branch=${branch#heads/}
+case "$branch" in refs/heads/*) branch=${branch#refs/heads/} ;; refs/*) branch=${branch#refs/} ;; esac
 [ -z "$branch" ] && exit 0
 
 # BRO-6244: the visual-approval flow parks work on visual-hold/* and screenshots on

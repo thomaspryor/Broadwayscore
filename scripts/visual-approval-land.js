@@ -115,7 +115,7 @@ async function main(argv = process.argv.slice(2)) {
         const stuck = async (why, marker) => {
           console.log(`[visual-land] ${issue.identifier}: not shipping (${why})`);
           const told = (issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, marker));
-          if (!dryRun && !told) await comment(issue, `The owner approved a change, but it was not shipped: ${why}. Restore it on ${hold} or ask again with node scripts/visual-approval.js request.\n\n${marker}`);
+          if (!dryRun && !told) await comment(issue, `The owner approved a change, but it was not shipped: ${why}. A worker needs to fix ${hold} or its screenshots, or ask again with node scripts/visual-approval.js request.\n\n${marker}`);
           if (!dryRun && isStale(plan.approvedAt) && !(issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, staleMarker(mac)))) {
             await comment(issue, `The owner approved this more than ${STALE_APPROVAL_MS / 60000} minutes ago and it is still not live (${why}). It needs a worker to fix it.\n\n${staleMarker(mac)}`);
           }
@@ -128,11 +128,10 @@ async function main(argv = process.argv.slice(2)) {
         const sha = va.evidenceSha(issue.description);
         let rawVerdict = '';
         if (sha) {
-          try {
-            try { va.git(['fetch', '--quiet', 'origin', `+refs/heads/${va.evidenceBranch(issue.identifier)}:refs/remotes/origin/${va.evidenceBranch(issue.identifier)}`]); } catch { /* branch gone: try the sha itself */ }
-            try { va.git(['cat-file', '-e', `${sha}^{commit}`]); } catch { va.git(['fetch', '--quiet', 'origin', sha]); }
-            rawVerdict = va.git(['show', `${sha}:verdict.json`]);
-          } catch { rawVerdict = ''; }
+          // A failed fetch is transient (counted as a failure, no card comment); a commit without a readable verdict.json is a real "unverified".
+          try { va.git(['fetch', '--quiet', 'origin', `+refs/heads/${va.evidenceBranch(issue.identifier)}:refs/remotes/origin/${va.evidenceBranch(issue.identifier)}`]); } catch { /* branch gone: try the sha itself */ }
+          try { va.git(['cat-file', '-e', `${sha}^{commit}`]); } catch { try { va.git(['fetch', '--quiet', 'origin', sha]); } catch (e) { throw new Error(`could not fetch evidence commit ${sha}: ${e.message}`); } }
+          try { rawVerdict = va.git(['show', `${sha}:verdict.json`]); } catch { rawVerdict = ''; }
         }
         const verdictCheck = sha ? va.checkVerdict(rawVerdict, v.verdict) : { ok: false, why: 'the card names no evidence commit' };
         if (!verdictCheck.ok) { await stuck(verdictCheck.why, unverifiedMarker(mac, sha)); continue; }

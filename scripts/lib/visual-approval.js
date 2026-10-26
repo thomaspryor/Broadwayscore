@@ -96,8 +96,10 @@ const STALE_APPROVAL_MS = 45 * 60 * 1000;
 
 /** The evidence commit sha the card's screenshot URLs name (the branch can be force-pushed after the owner was emailed). */
 function evidenceSha(description) {
-  const m = /raw\.githubusercontent\.com\/thomaspryor\/Broadwayscore\/([0-9a-f]{40})\//i.exec(String(description || ''));
-  return m ? m[1].toLowerCase() : null;
+  // Only Evidence lines count (a URL elsewhere in the body is free text), and the last one wins (an older ask's lines stay above a newer block).
+  const re = /raw\.githubusercontent\.com\/thomaspryor\/Broadwayscore\/([0-9a-f]{40})\//i;
+  const shas = String(description || '').split('\n').filter((l) => /^\s*(?:[-*>]\s+)?\**Evidence\**\s*:/i.test(l)).map((l) => re.exec(l)).filter(Boolean);
+  return shas.length ? shas[shas.length - 1][1].toLowerCase() : null;
 }
 
 /** The owner approved exactly this check only when it passed and is the very file the approval was bound to. */
@@ -115,7 +117,11 @@ function checkVerdict(raw, expectedHash) {
  */
 function classifyStatus(description, comments) {
   if (!link.parseVisualApproval(description)) return 'none';
-  const texts = (comments || []).map((c) => link.unescapeMarkdown(c.body || ''));
+  // A card can be asked again after an expiry or a redo: only comments from the latest ask describe the current request.
+  const all = comments || [];
+  const askedAt = all.filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body || '').trim())).map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
+  const current = askedAt ? all.filter((c) => !(new Date(c.createdAt).getTime() < askedAt)) : all;
+  const texts = current.map((c) => link.unescapeMarkdown(c.body || ''));
   const has = (prefix) => texts.some((t) => t.includes(prefix));
   if (has(MARK.landed)) return 'landed';
   if (has(MARK.expired)) return 'expired';

@@ -86,3 +86,19 @@ test('Evidence lines only render on a card with a VISUAL-APPROVAL line', () => {
   assert.deepEqual(link.parseDecisionBlock(plain).evidence, []);
   assert.equal(link.parseDecisionBlock(desc()).evidence.length, 1);
 });
+
+test('classifyStatus: a second ask on the same card ignores the first ask\'s markers', () => {
+  const ask = (ms) => ({ body: 'Asked the owner to look at 2 screenshot(s). Held change: visual-hold/bro-7', createdAt: at(ms) });
+  const old = [ask(NOW - 40 * 864e5), { body: `${va.MARK.landed}${'f'.repeat(16)}`, createdAt: at(NOW - 39 * 864e5) }];
+  assert.equal(va.classifyStatus(desc(), old), 'landed');
+  assert.equal(va.classifyStatus(desc(), [...old, ask(NOW - 1000)]), 'waiting', 'new unanswered ask is waiting, not landed');
+});
+
+test('evidenceSha: only Evidence lines count and the last one wins', () => {
+  const other = 'd'.repeat(40);
+  const free = `see https://raw.githubusercontent.com/thomaspryor/Broadwayscore/${other}/x.png\n`;
+  assert.equal(va.evidenceSha(free + desc()), SHA, 'a URL in free text is ignored');
+  const later = desc().replace(/^(Evidence:.*)$/m, `$1\nEvidence: B | https://raw.githubusercontent.com/thomaspryor/Broadwayscore/${other}/y.png`);
+  assert.equal(va.evidenceSha(later), other);
+  assert.equal(va.evidenceSha('no evidence here'), null);
+});
