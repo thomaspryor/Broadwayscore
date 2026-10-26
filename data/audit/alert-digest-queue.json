@@ -1476,5 +1476,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T21:04:54.542Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6377-social-email",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6377-social-email",
+    "description": "land.yml did not land land/bro-6377-social-email: the unit-tests-node gate went red at 6654210103. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40400948971",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6377-social-email"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "665421010313c57b89efcf0aae59752756254fbc"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40400948971"
+      }
+    ],
+    "queuedAt": "2026-10-26T21:22:12.639Z"
   }
 ]
