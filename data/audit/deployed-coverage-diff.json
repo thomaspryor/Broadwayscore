@@ -1,53 +1,30 @@
 {
-  "generatedAt": "2026-10-26T16:04:02.624Z",
+  "generatedAt": "2026-10-26T18:54:32.381Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 248,
-  "clean": 246,
-  "defective": 2,
+  "clean": 247,
+  "defective": 1,
   "byType": {
-    "score-drift": 2,
-    "missing-from-prod": 1
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "beauty-and-the-beast-tour-2025",
-      "title": "Beauty and the Beast",
-      "openingDate": "2025-06-25",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: kidsoutandabout"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.15 vs local 84.24 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [
-        "kidsoutandabout"
-      ],
-      "localCount": 38,
-      "deployedCount": 38,
-      "firstDefectAt": "2026-10-26T12:12:02.165Z"
-    },
-    {
-      "showId": "billy-crystal-860-2026",
-      "title": "Billy Crystal 860",
-      "openingDate": "2026-10-21",
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "title": "The Play That Goes Wrong",
+      "openingDate": "2014-09-18",
       "ok": false,
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 82.88 vs local 83.02 (Δ0.14)"
+          "detail": "deployed cs 72.53 vs local 70.86 (Δ1.67)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 24,
-      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+      "localCount": 10,
+      "deployedCount": 11,
+      "firstDefectAt": "2026-10-26T18:54:25.695Z"
     }
   ],
   "persistentDefective": 0,

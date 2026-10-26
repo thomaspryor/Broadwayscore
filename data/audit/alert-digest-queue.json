@@ -70,34 +70,6 @@
     "queuedAt": "2026-10-26T08:25:09.325Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
-    "title": "Review gap — \"The Imaginary Invalid\" missing 1 cited review(s)",
-    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T08:25:09.478Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-pianist-off-west-end-2026",
-    "title": "Review gap — \"The Pianist\" missing 2 cited review(s)",
-    "description": "The Pianist (the-pianist-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-pianist-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T08:25:09.503Z"
-  },
-  {
     "conditionKey": "aggregator-health:thestage-roundups:workflow-failing:scrape-thestage-roundups.yml",
     "title": "The Stage roundups: scrape-thestage-roundups.yml failed its last 19 runs in a row (last success 2026-06-09)",
     "description": "The Stage roundups: scrape-thestage-roundups.yml failed its last 19 runs in a row (last success 2026-06-09)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 runs.",
@@ -385,20 +357,6 @@
     "queuedAt": "2026-10-26T12:11:34.330Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:love-me-off-broadway-2026",
-    "title": "Review gap — \"Love Me\" missing 1 cited review(s)",
-    "description": "Love Me (love-me-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=love-me-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T12:11:34.345Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:martin-guerre-west-end-2026",
     "title": "Review gap — \"Martin Guerre\" missing 3 cited review(s)",
     "description": "Martin Guerre (martin-guerre-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=martin-guerre-west-end-2026 --checkpoint --ingest-missing",
@@ -411,34 +369,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T12:11:34.359Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
-    "title": "Review gap — \"Tales of Urban Hysteria is an evening of four short plays by award-winning playwright Mark Borkowski.\" missing 3 cited review(s)",
-    "description": "Tales of Urban Hysteria is an evening of four short plays by award-winning playwright Mark Borkowski. (tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T12:11:34.419Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:women-who-eat-off-broadway-2026",
-    "title": "Review gap — \"Women Who Eat\" missing 1 cited review(s)",
-    "description": "Women Who Eat (women-who-eat-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=women-who-eat-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T12:11:34.504Z"
   },
   {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
@@ -909,20 +839,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T16:01:10.675Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T16:01:14.813Z"
   },
   {
     "conditionKey": "land:land/bro-6302-tr-lift-honored-3",
@@ -1445,5 +1361,19 @@
       }
     ],
     "queuedAt": "2026-10-26T18:11:00.410Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T18:54:11.724Z"
   }
 ]
