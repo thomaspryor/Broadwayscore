@@ -45,6 +45,13 @@ async function main() {
       total++;
       if (!fs.existsSync(out)) missing.push(f.rel);
     }
+    // A variant whose original is gone would be served by srcset with no fallback.
+    for (const d of fs.readdirSync(IMAGES_DIR)) {
+      const smDir = path.join(IMAGES_DIR, d, 'sm');
+      if (!fs.existsSync(smDir)) continue;
+      const names = fs.readdirSync(path.join(IMAGES_DIR, d)).map(n => n.toLowerCase());
+      for (const v of fs.readdirSync(smDir)) if (!names.includes(v.replace(/\.webp$/, ''))) missing.push(`${d}/sm/${v} (orphan)`);
+    }
     missing.slice(0, 40).forEach(m => console.log(`no sm/ variant: ${m}`));
     console.log(`${missing.length} of ${total} poster/thumbnail originals lack a list variant (fix: node scripts/resize-show-images.js --variants)`);
     process.exit(missing.length ? 1 : 0);
@@ -74,12 +81,16 @@ async function main() {
       const smDir = path.join(IMAGES_DIR, d, 'sm');
       if (!fs.existsSync(smDir)) continue;
       for (const v of fs.readdirSync(smDir)) {
-        if (!fs.existsSync(path.join(IMAGES_DIR, d, v.replace(/\.webp$/, '')))) { fs.rmSync(path.join(smDir, v)); tally.pruned = (tally.pruned || 0) + 1; }
+        const orig = v.replace(/\.webp$/, '');
+        const hasOrig = fs.readdirSync(path.join(IMAGES_DIR, d)).some(n => n.toLowerCase() === orig);
+        if (!hasOrig) { fs.rmSync(path.join(smDir, v)); tally.pruned = (tally.pruned || 0) + 1; }
       }
     }
     if (staged) {
       const { execFileSync } = require('child_process');
-      execFileSync('git', ['add', '-A', '--', ...fs.readdirSync(IMAGES_DIR).map(d => `public/images/shows/${d}/sm`).filter(p => fs.existsSync(p))], { stdio: 'inherit' });
+      const smDirs = fs.readdirSync(IMAGES_DIR).map(d => path.join(IMAGES_DIR, d, 'sm')).filter(p => fs.existsSync(p));
+      // Never run a path-less `git add -A` (it would stage the whole tree).
+      if (smDirs.length) execFileSync('git', ['add', '-A', '--', ...smDirs], { stdio: 'inherit' });
     }
     console.log('variants:', JSON.stringify(tally));
     return;
