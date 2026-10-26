@@ -28,7 +28,7 @@ const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } 
 const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
 const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
-const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isWrongShowRejection } = require('./lib/review-text-identity');
+const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoRecordCandidate } = require('./lib/review-text-identity');
 
 const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
@@ -512,7 +512,9 @@ async function main() {
   }
 
   // ─── Shared: extract reviews from a production page link ───
-  async function processShowFromLink(show, productionLink) {
+  // `picked`: the link is this show's own production, chosen by its per-show
+  // search (not a browse-listing match), so it speaks for every TR file of it.
+  async function processShowFromLink(show, productionLink, { picked = false } = {}) {
     const isPDF = productionLink.includes('/volume/') || productionLink.includes('/issue/');
     let reviews;
 
@@ -798,12 +800,15 @@ async function main() {
     // BRO-6154: a file the scorer rejected as another show's review that this
     // production's section no longer yields means Theatre Record has no record of
     // that outlet+critic under this production. Say so on the file.
+    // BRO-6302: with the per-show pick, a rejected file taken from a different TR
+    // page (an earlier run's wrong production pick: Come From Away's 2021
+    // reopening listing, The Play That Goes Wrong's 2020 return) is covered too.
     if (reviews.length > 0 && fs.existsSync(showDir)) {
       for (const f of fs.readdirSync(showDir)) {
         const fp = path.join(showDir, f);
         if (!f.endsWith('.json') || touchedFiles.has(fp)) continue;
         let d; try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
-        if (d.source !== 'theatre-record' || d.theatreRecordUrl !== productionLink || !isWrongShowRejection(d) || d.trNoRecordForProduction) continue;
+        if (!isTrNoRecordCandidate(d, productionLink, { picked })) continue;
         console.log(`    NO-RECORD: ${f} (rejected as another show's text; not in this production's TR section)`);
         if (!dryRun) safeWriteReview(fp, { ...d, trNoRecordForProduction: { reason: 'Theatre Record has no review by this outlet and critic under this production (BRO-6154)', at: new Date().toISOString() } });
       }
@@ -899,7 +904,7 @@ async function main() {
     console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
     console.log(`  Link: ${bestResult.link}`);
 
-    return processShowFromLink(show, bestResult.link);
+    return processShowFromLink(show, bestResult.link, { picked: true });
   }
 
   // ─── Main processing loop ───

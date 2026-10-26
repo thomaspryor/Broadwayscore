@@ -65,3 +65,19 @@ test('BRO-6302 a second lift works, a stale breadcrumb never re-clears a later r
   assert.equal(out.rejectionReason, undefined);
   assert.equal(out.wrongShow, undefined);
 });
+
+// BRO-6302: the NO-RECORD stamp also covers rejected files taken from a
+// different TR page, but only when the link is the show's own per-show pick.
+test('BRO-6302 isTrNoRecordCandidate: same link, stale link only with picked', () => {
+  const { isTrNoRecordCandidate } = createRequire(import.meta.url)('./review-text-identity.js');
+  const rej = { source: 'theatre-record', rejectedBy: 'ensemble-scoreability-check', rejectionReason: 'wrong_show' };
+  const A = 'https://www.theatrerecord.com/archive/volume/39/dest/4_come_from_away';
+  const B = 'https://www.theatrerecord.com/archive/volume/41/dest/14_come_from_away';
+  assert.equal(isTrNoRecordCandidate({ ...rej, theatreRecordUrl: A }, A), true);
+  assert.equal(isTrNoRecordCandidate({ ...rej, theatreRecordUrl: B }, A), false);
+  assert.equal(isTrNoRecordCandidate({ ...rej, theatreRecordUrl: B }, A, { picked: true }), true);
+  assert.equal(isTrNoRecordCandidate({ ...rej }, A, { picked: true }), false);
+  assert.equal(isTrNoRecordCandidate({ ...rej, theatreRecordUrl: A, trNoRecordForProduction: { reason: 'x' } }, A), false);
+  assert.equal(isTrNoRecordCandidate({ ...rej, source: 'outlet', theatreRecordUrl: A }, A, { picked: true }), false);
+  assert.equal(isTrNoRecordCandidate({ ...rej, rejectionReason: 'stub', theatreRecordUrl: A }, A, { picked: true }), false);
+});

@@ -174,6 +174,14 @@ const openingOf = (t) => String(t || '').replace(/\s+/g, ' ').trim().slice(0, OP
 
 const isWrongShowRejection = (d) => !!d && d.rejectedBy === 'ensemble-scoreability-check' && d.rejectionReason === 'wrong_show';
 
+// BRO-6154: a TR file the scorer rejected as another show's review, not yet
+// marked trNoRecordForProduction, that this production's extraction did not
+// yield. BRO-6302: with the show's own per-show pick (`picked`), a file taken
+// from a different TR page (an earlier run's wrong production pick) counts too.
+const isTrNoRecordCandidate = (d, productionLink, { picked = false } = {}) => !!d
+  && d.source === 'theatre-record' && isWrongShowRejection(d) && !d.trNoRecordForProduction
+  && (d.theatreRecordUrl === productionLink || (picked && !!d.theatreRecordUrl));
+
 function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = false } = {}) {
   const merged = { ...existing };
   // BRO-4490: whenever the TR text is taken, its fetch date comes with it.
@@ -362,6 +370,7 @@ module.exports = {
   resolveTheatreRecordWriteTarget,
   mergeTheatreRecordIntoExisting,
   isWrongShowRejection,
+  isTrNoRecordCandidate,
   decideUnknownTwinUrlCarry,
   decideDuplicateTwinUrlCarry,
   DEFAULT_MIN_SHARED_SHINGLES,
