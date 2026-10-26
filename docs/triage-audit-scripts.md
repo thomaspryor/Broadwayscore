@@ -15,11 +15,11 @@ path triggers do not count as wiring.
 
 | Population | Count |
 | --- | --- |
-| `scripts/audit-*.js` files | 282 |
+| `scripts/audit-*.js` files | 283 |
 | Referenced by workflow/action/package or other non-test code (bucket c) | 192 |
-| Unreferenced and retained in the baseline | 90 |
+| Unreferenced and retained in the baseline | 91 |
 | Bucket a: alertable, awaiting wiring | 33 |
-| Bucket b: manual, one-shot, local-only or already covered by tests | 57 |
+| Bucket b: manual, one-shot, local-only or already covered by tests | 58 |
 | Bucket u: untriaged | 0 |
 
 The baseline actually contained **58** bucket-u entries, not the card's 59 or the
@@ -85,7 +85,7 @@ completed independently.
 Items 9 to 12 (`flagged-file-contamination`, `stale-review-texts`, `shared-url-quote`,
 `form-d-capitalization`) follow the same recipe after the top 8 have a clean baseline.
 
-## Bucket (b): intentionally manual, one-shot, local-only or redundant in CI (57)
+## Bucket (b): intentionally manual, one-shot, local-only or redundant in CI (58)
 
 The original 20 below are diagnostics, sprint-scoped checks, or need a local environment
 (worktrees, the iOS repo, an image archive, a pasted input). The additional 37 decisions
@@ -219,3 +219,4 @@ with `--counts=data/audit/<name>.json` (adding supported counts output where abs
 Remove each baseline entry when wired, as enforced by the stale-entry test. Preserve
 the recorded star-band-drift overlap check and shadow-mode observation period.
 No new cron, fetch, LLM request or API call is introduced by this classification change.
+| `audit-excluded-with-own-show-evidence.js` | BRO-5805 read-only sweep of excluded review files whose text names the show's own cast; needs the private review-texts corpus, so run it through cloud-run-script. Gate mode exists but is unwired. Promote to (a) once a run finds real hits. |

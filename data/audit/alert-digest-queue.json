@@ -1097,5 +1097,247 @@
       }
     ],
     "queuedAt": "2026-10-26T00:56:20.651Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:dirty-dancing-the-classic-story-on-stage-west-end-2026",
+    "title": "1 review(s) for dirty-dancing-the-classic-story-on-stage-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--unknown.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/dirty-dancing--the-classic-story-on-stage-review-at-churchill-theatre-bromley--lazy-and-unimaginative",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T01:07:42.268Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5988-intent-map",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5988-intent-map",
+    "description": "land.yml did not land land/bro-5988-intent-map: the unit-tests-node gate went red at 3d9b48bea5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40251601869",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5988-intent-map"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3d9b48bea5d77900a65ffd4db6ae876efcd77818"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40251601869"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:08:50.000Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-in-the-heights-off-broadway-2026",
+    "title": "Placeholder synopsis on In the Heights",
+    "description": "synopsis for in-the-heights-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T01:16:07.878Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-the-revlon-girl-off-west-end-2026",
+    "title": "Placeholder synopsis on The Revlon Girl",
+    "description": "synopsis for the-revlon-girl-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T01:16:08.271Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6264-mvojpx6u",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6264-mvojpx6u",
+    "description": "land.yml did not land land/job/linear-BRO-6264-mvojpx6u: the unit-tests-node gate went red at 023c2f3112. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40253013162",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6264-mvojpx6u"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "023c2f3112173e3ce8424ac5da78be31f9c671f6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40253013162"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:28:39.939Z"
+  },
+  {
+    "conditionKey": "land:land/last30days-cloud",
+    "title": "Landing blocked: unit-tests-node red on land/last30days-cloud",
+    "description": "land.yml did not land land/last30days-cloud: the unit-tests-node gate went red at 77b4e7787d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40253097815",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/last30days-cloud"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "77b4e7787d0e910f5ee077f9bfa680bdfca2190c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40253097815"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:33:45.680Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6268-ocr-probe",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6268-ocr-probe",
+    "description": "land.yml did not land land/bro-6268-ocr-probe: the unit-tests-node gate went red at 40622b29b2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40253445641",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6268-ocr-probe"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "40622b29b2c27abcd6fca7051df5bd4820545324"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40253445641"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:36:08.671Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
+    "title": "6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/\n- nbcny--1daa444e.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-announces-pregnant-baby-no-3/6559878/\n- nbcny--77bcfc31.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/kaley-cuoco-tom-pelphrey-welcome-2nd-baby/6559563/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T01:58:02.433Z"
+  },
+  {
+    "conditionKey": "land:land/owner-decision-quiet",
+    "title": "Landing blocked: unit-tests-node red on land/owner-decision-quiet",
+    "description": "land.yml did not land land/owner-decision-quiet: the unit-tests-node gate went red at 29d79265cb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40254715277",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/owner-decision-quiet"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "29d79265cb30673366641ad7d34863a2c705c8ab"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40254715277"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:52:51.515Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5215-eslint-cli",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5215-eslint-cli",
+    "description": "land.yml did not land land/bro-5215-eslint-cli: the unit-tests-node gate went red at 1e86c3f5af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40254879732",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5215-eslint-cli"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1e86c3f5afd6b95f95ce1691b134a83e7621b294"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40254879732"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:01:36.719Z"
   }
 ]

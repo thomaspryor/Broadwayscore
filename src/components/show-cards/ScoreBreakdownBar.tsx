@@ -1,20 +1,13 @@
-import { getGoldThreshold } from '@/config/score-buckets';
+import { getBreakdownTierId } from '../../../scripts/lib/score-tiers';
 
 /**
- * Breakdown bar tiers. Intentionally diverge from the 5-tier ScoreBadge taxonomy
- * (Critical Gold / Recommended / Worth Seeing / Mixed / Critical Miss): a single
- * review shows its full badge on the review card, but in the aggregate breakdown
- * we use four simpler sentiment labels.
- *
- * Thresholds:
- *   Rave     = score >= gold threshold (83 Broadway / 85 West End)
- *   Positive = 70 to gold-1
- *   Mixed    = 55 to 69
- *   Negative = < 55
- *
- * The 70 boundary is deliberately lower than the Recommended badge (75). A 72 in
- * our scoring is a soft recommend — not a mixed review — so it belongs in the
- * Positive camp on the breakdown bar even though its badge reads "Worth Seeing".
+ * Breakdown bar tiers. Four sentiment labels over the same score bands as the
+ * 5-tier ScoreBadge, so the bar never contradicts the badge colors beside it:
+ *   Rave     = Critical Gold (83 Broadway / 85 West End and up)
+ *   Positive = Recommended + Worth Seeing (green and blue badges, 65 to gold-1)
+ *   Mixed    = orange badge band (55 to 64)
+ *   Negative = red badge band (< 55)
+ * Cutoffs live in scripts/lib/score-tiers.js (getBreakdownTierId).
  */
 export type BreakdownTier = 'rave' | 'positive' | 'mixed' | 'negative';
 
@@ -27,12 +20,7 @@ export function getBreakdownTier(
   score: number | null | undefined,
   category?: string
 ): BreakdownTier | null {
-  if (!Number.isFinite(score)) return null;
-  const rounded = Math.round(score as number);
-  if (rounded >= getGoldThreshold(category)) return 'rave';
-  if (rounded >= 70) return 'positive';
-  if (rounded >= 55) return 'mixed';
-  return 'negative';
+  return getBreakdownTierId(score, category);
 }
 
 /**

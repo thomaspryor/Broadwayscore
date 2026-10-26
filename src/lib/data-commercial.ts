@@ -288,6 +288,15 @@ export function getSeasonsWithCommercialData(): string[] {
   return Array.from(seasonsSet).sort((a, b) => b.localeCompare(a));
 }
 
+// Season pages with fewer tracked shows than this still render (a show page
+// links its season) but stay out of the sitemap and carry noindex: a
+// one-show "season" page is thin and its season-level stats mislead (BRO-6192).
+export const MIN_INDEXED_SEASON_SHOWS = 5;
+
+export function isIndexedCommercialSeason(season: string): boolean {
+  return getShowsBySeasonWithCommercial(season).length >= MIN_INDEXED_SEASON_SHOWS;
+}
+
 /**
  * Get season statistics: capital at risk, recoupment count, etc.
  *

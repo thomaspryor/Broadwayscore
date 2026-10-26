@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-26T00:43:52.000Z",
-  "processed": 152,
-  "failed": 92,
-  "successRate": "62.3%",
+  "updatedAt": "2026-10-26T02:01:25.581Z",
+  "processed": 303,
+  "failed": 186,
+  "successRate": "62.0%",
   "tierBreakdown": {
-    "playwright": 83,
+    "playwright": 155,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 7,
-    "brightdata": 6,
+    "scrapingdog": 24,
+    "scrapingbee": 13,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 43
+    "archive": 91
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-25T23:26:28.677Z",
@@ -61,6 +61,46 @@
       "t": "2026-10-26T00:23:58.236Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T00:53:48.461Z",
+      "event": "bb-session",
+      "session": "c5f73cdd",
+      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
+    },
+    {
+      "t": "2026-10-26T00:53:49.152Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T01:53:15.484Z",
+      "event": "bb-session",
+      "session": "5c6b8d41",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-26T01:53:16.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-26T01:56:59.998Z",
+      "event": "bb-session",
+      "session": "35d720b6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T01:57:57.046Z",
+      "event": "bb-session",
+      "session": "05b166ab",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T01:58:05.579Z",
+      "event": "bb-session",
+      "session": "3888b486",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
     }
   ]
 }

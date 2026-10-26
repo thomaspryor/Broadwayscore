@@ -30,7 +30,6 @@ const scoreChanges = {
 // === SUMMARY REWRITES ===
 const summaryRewrites = {
   "Richard Rodgers Theatre": "The Richard Rodgers offers strong sightlines from most orchestra and front mezzanine seats, with good acoustics for musicals. However, legroom is notably tight throughout, especially in the orchestra, and rear mezzanine seats feel distant from the stage.",
-  "Harold and Miriam Steinberg Center for Theatre": "An intimate 299-seat black box space at Roundabout, offering an unusually close actor-audience experience unlike any other Broadway house. Sightlines and sound vary by configuration since staging changes per production. Comfort is adequate but unremarkable.",
   "Helen Hayes Theater": "One of Broadway's smallest houses (597 seats) and one of its newest, built in 2015 as Second Stage's permanent home. The intimate scale means excellent sightlines from nearly every seat, though the modern design prioritizes function over grandeur.",
   "Lunt-Fontanne Theatre": "A handsome Art Deco house with a distinctive celestial ceiling and wide auditorium. Sightlines are good from center seats but the wide layout means far-side seats lose some stage width. Notoriously narrow seats make comfort a challenge for longer shows.",
   "Palace Theatre": "Spectacularly renovated in a $100M+ project that literally raised the theater 30 feet. The restoration preserved its opulent 1913 interior while upgrading acoustics, seating comfort, and accessibility — one of the best-equipped houses on Broadway.",

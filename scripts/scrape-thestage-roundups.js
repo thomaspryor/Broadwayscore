@@ -30,6 +30,7 @@ const { checkArchiveCategory, readCachedArchiveIfValid } = require('./lib/archiv
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { filterToLiveShowIds, loadLiveShowIds } = require('./lib/live-show-ids');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
+const { checkAggregatorPageProduction } = require('./lib/aggregator-page-production');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { fetchWithCookiesPlain } = require('./lib/fetch-plain');
 const { discoverRoundupUrlsPlain, classifyRoundupPage, LOGIN_EXPIRED_MESSAGE } = require('./lib/thestage-fetch');
@@ -232,6 +233,14 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
     const cached = !FORCE ? readCachedArchiveIfValid(archivePath, Infinity, match.show, siblingCategoriesByShowId()[showId]) : null;
     if (cached && !cached.valid) console.log(`  [PURGED] ${match.show.title}: cached archive failed ${cached.check.reason}`);
     if (cached && cached.valid) {
+      // BRO-6089: a poisoned cache must not outlive the page-date guard below.
+      const cprod = checkAggregatorPageProduction({ html: cached.html, show: match.show });
+      if (cprod.outOfRun) {
+        console.log(`  [WRONG PRODUCTION] ${match.show.title}: cached archive ${cprod.reason}`);
+        if (!DRY_RUN) { try { fs.renameSync(archivePath, archivePath + '.mismatch'); } catch { /* gone */ } }
+        stats.errors++;
+        continue;
+      }
       console.log(`  [CACHED] ${match.show.title}`);
       matched.push({ showId, show: match.show, archivePath });
       stats.cached++;
@@ -260,6 +269,15 @@ async function scrapeRoundups(fetchHtml, urls, weShows) {
       const v = checkArchiveCategory(html, match.show, siblingCategoriesByShowId()[match.show.id]);
       if (!v.ok) {
         console.log(`    ✗ archive guard (${v.reason}): "${(v.pageTitle||'').substring(0,60)}" — skipped`);
+        stats.errors++;
+        continue;
+      }
+
+      // BRO-6089: the slug has no date, so a same-title revival's round-up passes
+      // the title-only guard. Drop pages dated outside this show's run.
+      const prod = checkAggregatorPageProduction({ html, show: match.show });
+      if (prod.outOfRun) {
+        console.log(`    ✗ wrong production (${prod.reason}) — not archiving`);
         stats.errors++;
         continue;
       }

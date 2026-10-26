@@ -59,7 +59,13 @@ const path = require('path');
 const REPO = path.join(__dirname, '..', '..');
 // INTAKE_LEDGER_PATH redirects the ledger (tests only): linear-issue-create's
 // test drives the real recordCreated() and created this file in CI (BRO-2664).
-const LEDGER_PATH = process.env.INTAKE_LEDGER_PATH || path.join(REPO, 'data', 'audit', 'intake-ledger.jsonl');
+// A test process (node --test sets NODE_TEST_CONTEXT) never touches the real
+// ledger even when a test forgets the override: BRO-5290 (card-disposition.test),
+// same rule as provider-telemetry._ledgerPath and reddit-dispatch-cooldown.
+const LEDGER_PATH = process.env.INTAKE_LEDGER_PATH
+  || (process.env.NODE_TEST_CONTEXT
+    ? path.join(require('os').tmpdir(), `intake-ledger-test-${process.pid}.jsonl`)
+    : path.join(REPO, 'data', 'audit', 'intake-ledger.jsonl'));
 const DISABLE_ENV = 'INTAKE_BREAKER_DISABLED';
 
 // Sized from the measurement, not from taste: mean real intake is 34.3/day and

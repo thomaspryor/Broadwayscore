@@ -967,8 +967,13 @@ async function runAggregators(show) {
           // check of its own — a regional show's page vs. its later Broadway
           // transfer could still poison the write.
           const trCatCheck = checkArchiveCategory(tr.html, show, siblingCategoriesByShowId()[show.id]);
+          const trClaimLib = require('./lib/tr-archive-claim');
+          const trClaim = trCatCheck.ok ? trClaimLib.checkTrArchiveClaim(tr.html, show.id, trClaimLib.loadCoverageClaims()) : { ok: true };
           if (!trCatCheck.ok) {
             console.log(`  theatre.reviews: page mismatch (${trCatCheck.reason}) — not archiving`);
+          } else if (!trClaim.ok) {
+            // BRO-6089: another production's round-up (matched to a different show)
+            console.log(`  theatre.reviews: ${trClaim.reason} — not archiving`);
           } else {
             // Cache to archive for future runs
             const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);

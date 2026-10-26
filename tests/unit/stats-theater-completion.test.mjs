@@ -127,10 +127,10 @@ test('houses sort visited-first by count, then alphabetically', () => {
   assert.deepEqual(r.unvisited, ['Lena Horne Theatre', 'Palace Theatre']);
 });
 
-test('real theater-metadata: 42 operating houses, all with a capacity', () => {
+test('real theater-metadata: 41 operating houses, all with a capacity', () => {
   const r = theaterCompletion([], {}, REAL_META);
   assert.equal(r.operating, Object.keys(REAL_META).filter((k) => !k.startsWith('_')).length);
-  assert.ok(r.operating >= 40, `expected ~42 houses, got ${r.operating}`);
+  assert.ok(r.operating >= 40, `expected ~41 houses, got ${r.operating}`);
   const noCapacity = r.houses.filter((h) => h.capacity === null).map((h) => h.name);
   assert.deepEqual(noCapacity, [], 'total-audience counter needs every capacity');
 });

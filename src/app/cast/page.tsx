@@ -31,7 +31,8 @@ export default function CastIndexPage() {
       name: p.name,
       url: `${BASE_URL}/cast/${p.slug}`,
     })),
-    'Broadway Cast Members'
+    'Broadway Cast Members',
+    'Person'
   );
 
   const { main: summaries, rest } = splitCastIndex(getCastIndexProfiles());
