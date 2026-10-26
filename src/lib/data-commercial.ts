@@ -866,6 +866,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
       analystRecoupAsOf: data.analystRecoupAsOf ?? null,
       analystRecoupUrl: data.analystRecoupUrl ?? null,
     } : {}),
+    ...(data.ourEstimateRangePct ? { ourEstimateRangePct: data.ourEstimateRangePct } : {}),
     ...(data.reportedReturn ? { reportedReturn: data.reportedReturn } : {}),
     ...(data.productionType ? { productionType: data.productionType } : {}),
     ...(conversionOf(data) ? { commercialConversion: conversionOf(data) } : {}),

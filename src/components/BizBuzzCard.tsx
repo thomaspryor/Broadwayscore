@@ -243,7 +243,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           Money Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
-          {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? 'source · filings, press, analyst estimate + our model' : analystRange ? 'source · filings, press + analyst estimate' : 'source · filings + press'}
+          {showModelBar ? 'source · filings, press + our model' : estimateRange?.withModel ? (commercial.analystRecoupPct ? 'source · filings, press, analyst estimate + our model' : 'source · filings, press + our model') : analystRange ? (commercial.analystRecoupPct ? 'source · filings, press + analyst estimate' : 'source · filings, press + our estimate') : 'source · filings + press'}
         </span>
       </header>
       <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 italic m-0 mb-3">
@@ -453,7 +453,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
               <RecoupmentProgressBar estimatedPct={analystRange} variant="headline" />
             )}
             <div className="mt-1">
-              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} />
+              <AnalystEstimateCredit asOf={commercial.analystRecoupAsOf} url={commercial.analystRecoupUrl} withModel={estimateRange?.withModel} ours={!commercial.analystRecoupPct} />
             </div>
           </div>
         )}

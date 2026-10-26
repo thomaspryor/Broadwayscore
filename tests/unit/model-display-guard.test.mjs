@@ -198,3 +198,9 @@ test('displayBasis: running shows use the pre-credit figure once running bars ar
   // A stale run without the counted field: pre-credit figure, basis not claimed.
   assert.deepEqual(displayBasis({ pct, exCreditPct: ex, running: true, runningEnabled: true }), { pct: ex, creditBasis: null });
 });
+
+test('BRO-6245: analystRange falls back to ourEstimateRangePct', () => {
+  assert.deepEqual(analystRange({ ourEstimateRangePct: [10, 30] }), [10, 30]);
+  assert.deepEqual(analystRange({ analystRecoupPct: [5, 15], ourEstimateRangePct: [10, 30] }), [5, 15]);
+  assert.equal(analystRange({ ourEstimateRangePct: [10] }), null);
+});

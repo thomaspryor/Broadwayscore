@@ -40,7 +40,7 @@ const FIZZLE_MIN_RETURNED_PCT = 30;
  * midpoint. null when the record has neither.
  */
 function ownReturnedEstimatePct(entry) {
-  for (const v of [entry?.analystRecoupPct, entry?.estimatedRecoupmentPct]) {
+  for (const v of [entry?.analystRecoupPct, entry?.estimatedRecoupmentPct, entry?.ourEstimateRangePct]) {
     if (Array.isArray(v) && v.length === 2 && v.every(Number.isFinite)) return (v[0] + v[1]) / 2;
     if (Number.isFinite(v)) return v;
   }
