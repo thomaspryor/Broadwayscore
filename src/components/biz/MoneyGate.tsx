@@ -32,6 +32,12 @@ import {
   type MoneyBypassReason,
   type MoneyRole,
 } from '@/lib/money-gate';
+import {
+  MONEY_EMAIL_MESSAGES,
+  domainAcceptsMail,
+  moneyEmailProblem,
+  suggestMoneyEmail,
+} from '@/lib/money-email';
 
 interface MoneyGateProps {
   children: ReactNode;
@@ -193,20 +199,36 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
   const [role, setRole] = useState<MoneyRole | ''>('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  const [suggestion, setSuggestion] = useState('');
   const id = useId();
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!isValidMoneyEmail(email)) {
-      setError('Please enter a valid email address.');
+    setSuggestion('');
+    const problem = moneyEmailProblem(email);
+    if (problem || !isValidMoneyEmail(email)) {
+      setError(MONEY_EMAIL_MESSAGES[problem ?? 'format']);
+      return;
+    }
+    // A likely typo (gmial.com) gets a one-tap fix instead of a refusal.
+    const fix = suggestMoneyEmail(email);
+    if (fix) {
+      setError('Did you mean this address?');
+      setSuggestion(fix);
       return;
     }
     setSubmitting(true);
+    // Fails open: a lookup error or timeout counts as "accepts mail".
+    if (!(await domainAcceptsMail(email))) {
+      setSubmitting(false);
+      setError(MONEY_EMAIL_MESSAGES.no_mail_server);
+      return;
+    }
     const result = await submitMoneySignup(email, role, `${page}:${window.location.pathname}`);
     setSubmitting(false);
     if (result === 'invalid') {
-      setError('Please enter a valid email address.');
+      setError(MONEY_EMAIL_MESSAGES.format);
       return;
     }
     const props = { page, role: role || 'none', stored: result === 'stored' };
@@ -242,7 +264,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
             inputMode="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); setSuggestion(''); }}
             placeholder="you@example.com"
             required
             aria-invalid={error ? true : undefined}
@@ -283,7 +305,22 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         </fieldset>
 
         {error && (
-          <p id={`${id}-error`} role="alert" className="mt-3 text-xs text-score-skip">{error}</p>
+          <p id={`${id}-error`} role="alert" className="mt-3 text-xs text-score-skip">
+            {error}
+            {suggestion && (
+              <>
+                {' '}
+                <button
+                  type="button"
+                  data-money-suggestion
+                  onClick={() => { setEmail(suggestion); setSuggestion(''); setError(''); }}
+                  className="font-medium text-brand underline underline-offset-2 hover:text-brand-hover"
+                >
+                  {suggestion}
+                </button>
+              </>
+            )}
+          </p>
         )}
         <p className="mt-4 text-xs leading-relaxed text-gray-400">
           {MONEY_EMAIL_USE}{' '}

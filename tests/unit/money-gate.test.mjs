@@ -12,6 +12,7 @@ import vm from 'node:vm';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const gate = await import('../../src/lib/money-gate.ts');
+const email = await import('../../src/lib/money-email.ts');
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
 const hooks = await import('../../src/hooks/useFormspreeSubscribed.ts');
 const supa = await import('../../src/lib/supabase.ts');
@@ -130,7 +131,7 @@ test('header opening-night CTA is hidden on /biz and while a locked gate is on t
 });
 
 test('email validation matches the database function', () => {
-  for (const ok of ['a@b.co', ' Name.Last+tag@Example.org ']) assert.equal(gate.isValidMoneyEmail(ok), true, ok);
+  for (const ok of ['ab@b.co', ' Name.Last+tag@Example.org ']) assert.equal(gate.isValidMoneyEmail(ok), true, ok);
   for (const bad of ['', 'a@b', 'a b@c.d', '@b.co', 'a@@b.co', `${'x'.repeat(250)}@b.co`]) assert.equal(gate.isValidMoneyEmail(bad), false, bad);
   const sql = read('supabase/migrations/20261025_money_scorecard_signups.sql');
   assert.match(sql, /\^\[\^@\\s\]\+@\[\^@\\s\]\+\\\.\[\^@\\s\]\+\$/, 'same pattern as isValidMoneyEmail');
@@ -231,4 +232,74 @@ test('a failed save waits in the outbox and is retried until stored (BRO-6289)',
 test('every gate retries the outbox on mount', () => {
   const tsx = read('src/components/biz/MoneyGate.tsx');
   assert.match(tsx, /retryPendingMoneySignups\(\)/);
+});
+
+test('fake addresses are refused: junk locals, disposable domains, bad format (BRO-6339)', () => {
+  for (const bad of ['a@a1a.com', 'x@gmail.com', 'aaaa@gmail.com', 'test@gmail.com', 'Asdf@yahoo.com']) {
+    assert.equal(email.moneyEmailProblem(bad), 'junk', bad);
+    assert.equal(gate.isValidMoneyEmail(bad), false, bad);
+  }
+  for (const bad of ['x@mailinator.com', 'jane@sub.mailinator.com', 'jane@YOPMAIL.com']) {
+    assert.equal(email.moneyEmailProblem(bad), 'disposable', bad);
+  }
+  assert.equal(email.moneyEmailProblem('nope'), 'format');
+  for (const ok of ['jane.doe@gmail.com', 'tom@att.net', 'sam@mba.berkeley.edu', 'me2@notmailinator.com']) {
+    assert.equal(email.moneyEmailProblem(ok), null, ok);
+  }
+});
+
+test('common domain typos get a suggestion, real domains do not (BRO-6339)', () => {
+  assert.equal(email.suggestMoneyEmail('jane@gmial.com'), 'jane@gmail.com');
+  assert.equal(email.suggestMoneyEmail('Jane@gmail.co'), 'jane@gmail.com');
+  assert.equal(email.suggestMoneyEmail('jane@yaho.com'), 'jane@yahoo.com');
+  assert.equal(email.suggestMoneyEmail('jane@hotmial.com'), 'jane@hotmail.com');
+  assert.equal(email.suggestMoneyEmail('jane@gmail.com'), null);
+});
+
+async function withDoh(handler, fn) {
+  const real = globalThis.fetch;
+  globalThis.fetch = handler;
+  try { return await fn(); } finally { globalThis.fetch = real; }
+}
+const dohReply = (body, ok = true) => ({ ok, status: ok ? 200 : 503, json: async () => body });
+
+test('mail-server check: no MX and no A refuses; MX, A fallback, errors and timeouts accept', async () => {
+  const byType = (mx, a) => async (url) => {
+    const u = new URL(String(url));
+    assert.equal(u.host, 'dns.google');
+    return u.searchParams.get('type') === 'MX' ? dohReply(mx) : dohReply(a);
+  };
+  const none = { Status: 0 };
+  const mxHit = { Status: 0, Answer: [{ type: 15, data: '10 mail.att.net.' }] };
+  const aHit = { Status: 0, Answer: [{ type: 1, data: '1.2.3.4' }] };
+  assert.equal(await withDoh(byType(none, none), () => email.domainAcceptsMail('a@a1a.com')), false);
+  assert.equal(await withDoh(byType({ Status: 3 }, { Status: 3 }), () => email.domainAcceptsMail('a@nope.invalid')), false);
+  assert.equal(await withDoh(byType(mxHit, none), () => email.domainAcceptsMail('t@att.net')), true);
+  assert.equal(await withDoh(byType(none, aHit), () => email.domainAcceptsMail('t@a.example')), true);
+  assert.equal(await withDoh(byType({ Status: 0, Answer: [{ type: 15, data: '0 .' }] }, none), () => email.domainAcceptsMail('t@nullmx.test')), false);
+  // fail open
+  assert.equal(await withDoh(async () => { throw new Error('offline'); }, () => email.domainAcceptsMail('t@att.net')), true);
+  assert.equal(await withDoh(async () => dohReply({}, false), () => email.domainAcceptsMail('t@att.net')), true);
+  assert.equal(await withDoh(async () => dohReply({ Status: 2 }), () => email.domainAcceptsMail('t@att.net')), true);
+  const hang = (url, { signal }) => new Promise((_, rej) => signal.addEventListener('abort', () => rej(new Error('aborted'))));
+  assert.equal(await withDoh(hang, () => email.domainAcceptsMail('t@att.net', 30)), true);
+});
+
+test('database function mirrors the disposable and junk rules (BRO-6339)', () => {
+  const sql = read('supabase/migrations/20261026b_money_signup_reject_fake_emails.sql');
+  for (const d of email.DISPOSABLE_DOMAINS) assert.ok(sql.includes(`'${d}'`), `domain ${d} in SQL`);
+  const sqlDomains = [...sql.match(/unnest\(ARRAY\[(.*?)\]\)/s)[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
+  assert.deepEqual(sqlDomains, [...email.DISPOSABLE_DOMAINS]);
+  for (const l of ['test', 'asdf', 'qwerty']) assert.ok(sql.includes(`'${l}'`), `local ${l} in SQL`);
+  assert.match(sql, /length\(v_local\) < 2/);
+  assert.match(sql, /DELETE FROM public\.money_scorecard_signups WHERE email = 'a@a1a\.com'/);
+  assert.match(sql, /invalid email/, 'client maps this body to "invalid"');
+  assert.match(sql, /GRANT EXECUTE ON FUNCTION public\.money_scorecard_signup\(TEXT, TEXT, TEXT\) TO anon, authenticated/);
+});
+
+test('gate card wires the suggestion and the fail-open mail-server check (BRO-6339)', () => {
+  const src = read('src/components/biz/MoneyGate.tsx');
+  assert.match(src, /domainAcceptsMail\(email\)/);
+  assert.match(src, /suggestMoneyEmail\(email\)/);
+  assert.match(src, /data-money-suggestion/);
 });

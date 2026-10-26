@@ -21,6 +21,7 @@
 
 import { SUBSCRIBED_KEY, SUBSCRIBED_KEY_PREFIX } from '../hooks/useFormspreeSubscribed';
 import { SUPABASE_STORAGE_KEY } from './supabase';
+import { moneyEmailProblem } from './money-email';
 
 export const MONEY_UNLOCK_KEY = 'bsc_money_unlocked';
 export const MONEY_UNLOCK_COOKIE = 'bsc_money';
@@ -81,8 +82,7 @@ export const MONEY_GATE_BOOT_SCRIPT =
   `if(u)d.setAttribute('${MONEY_UNLOCK_ATTR}','')}}catch(e){}`;
 
 export function isValidMoneyEmail(email: string): boolean {
-  const e = email.trim();
-  return e.length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
+  return moneyEmailProblem(email) === null;
 }
 
 /**
