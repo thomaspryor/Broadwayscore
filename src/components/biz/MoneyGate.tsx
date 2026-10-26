@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 import { useAuth } from '@/contexts/AuthContext';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -59,6 +60,7 @@ function trackMoneyBypass(page: MoneyGateProps['page'], { reason, when }: Bypass
   if (bypassTracked) return;
   bypassTracked = true;
   track('money_gate_bypassed', { page, reason, when });
+  gaEvent('money_gate_bypassed', { page, reason, when });
   captureEvent('money_gate_bypassed', { page, reason, when, path: window.location.pathname });
 }
 
@@ -130,6 +132,7 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
       if (document.documentElement.hasAttribute('data-money-unlocked')) { io.disconnect(); return; }
       if (entries.some((e) => e.isIntersecting)) {
         track('money_gate_shown', { page });
+        gaEvent('money_gate_shown', { page });
         captureEvent('money_gate_shown', { page, path: window.location.pathname });
         io.disconnect();
       }
@@ -211,6 +214,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
     }
     const props = { page, role: role || 'none', stored: result === 'stored' };
     track('money_gate_unlocked', props);
+    gaEvent('money_gate_unlocked', { page, role: props.role, stored: String(props.stored) });
     captureEvent('money_gate_unlocked', { ...props, path: window.location.pathname });
     markMoneyUnlocked();
     onUnlocked();
