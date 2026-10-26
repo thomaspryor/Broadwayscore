@@ -160,6 +160,16 @@ function findStepRunCommandInWorkflow(rawYmlText, jobDisplayName, stepName) {
   return findStepRunCommand(lines, stepIdx);
 }
 
+// Files in tests/unit-test-manifest-tsx.txt import TS through the `@/` alias and
+// only run under tsx; plain `node --test` fails them with ERR_MODULE_NOT_FOUND.
+function isTsxManifestTest(file) {
+  try {
+    const { TSX_MANIFEST_REL } = require('./unit-test-collection.js');
+    const text = require('node:fs').readFileSync(require('node:path').join(__dirname, '..', '..', TSX_MANIFEST_REL), 'utf8');
+    return text.split('\n').some((l) => l.trim() === file);
+  } catch { return /\.test\.ts$/.test(file); }
+}
+
 function ownerJudgment(note) {
   return { line: 'VERIFY: owner-judgment', note };
 }
@@ -178,15 +188,28 @@ function armOrOwnerJudgment(cmd, armedNote, unsafeNote) {
 }
 
 /**
- * @param {{job: string, step: string}} sig one entry from failingStepSignatures()
+ * @param {{job: string, step: string, testFile?: string}} sig one entry from failingStepSignatures()
  * @param {string} rawYmlText contents of .github/workflows/test.yml
  * @returns {{line: string, note: string|null}} `line` is either
  *   `VERIFY: <safe-form command>` or the literal `VERIFY: owner-judgment`;
  *   `note` explains the fallback/refusal when `line` isn't a direct hit, and
  *   is null when the step's own command was used as-is.
  */
-function verifyForSignature({ job, step }, rawYmlText) {
+function verifyForSignature({ job, step, testFile }, rawYmlText, { isTsxTest = isTsxManifestTest } = {}) {
   const stepCmd = findStepRunCommandInWorkflow(rawYmlText, job, step);
+  // BRO-6262: a failing unit test re-verifies against ITS OWN file, not the whole
+  // suite. The whole-suite proxy keeps failing on unrelated reds, so the Done gate
+  // refused these cards and they sat In Review. Only the proxy fallback is
+  // narrowed; a step's own single-line command stays as written.
+  if (!stepCmd && testFile) {
+    const cmd = `${isTsxTest(testFile) ? 'npx tsx --test' : 'node --test'} ${testFile}`;
+    if (explainUnsafeCheckCommand(cmd).ok) {
+      return {
+        line: `VERIFY: ${cmd}`,
+        note: `Targeted to the first failing test's file (from the CI TAP log) instead of the job-wide proxy.`,
+      };
+    }
+  }
   if (stepCmd) {
     return armOrOwnerJudgment(stepCmd, null, (safe) =>
       `The failing step's own command (\`${stepCmd}\`) is not on the safe-form allowlist ` +

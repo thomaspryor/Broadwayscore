@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   assessMainRedStreak, failingJobsFromNeeds,
-  stepFailureSignature, firstFailingTestNameInJobLog, isBashIntegrationStep, isBashTestStepCommand, failingStepSignatures, signaturesToResolve,
+  stepFailureSignature, firstFailingTestNameInJobLog, firstFailingTestFileInJobLog, isBashIntegrationStep, isBashTestStepCommand, failingStepSignatures, signaturesToResolve,
   trackSignatureAbsence, jobNameFromRedKey, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./main-red-streak.js');
 
@@ -575,4 +575,26 @@ test('trackSignatureAbsence: a job whose log fetch failed this run gets no absen
   // non-red keys are ignored entirely
   assert.deepEqual(trackSignatureAbsence({ 'health-check:Cookies': { status: 'open' } }, none(), run, '3'), { toResolve: [], updates: {} });
   function none() { return []; }
+});
+
+// BRO-6262: the file behind the first failing TAP test comes from node's own
+// `location:` line, not from grepping test titles (titles repeat across files).
+test('firstFailingTestFileInJobLog reads the first failure\'s location as a repo-relative file', () => {
+  const log = [
+    '2026-10-20T18:38:38.2331444Z ok 1 - fine',
+    "2026-10-20T18:38:38.2331444Z not ok 2 - no two unrelated shows serve byte-identical hero images",
+    '2026-10-20T18:38:38.2331444Z   ---',
+    "2026-10-20T18:38:38.2331444Z   location: '/home/runner/work/Broadwayscore/Broadwayscore/tests/unit/show-hero-integrity.test.mjs:42:1'",
+    '2026-10-20T18:38:38.2331444Z   ...',
+    '2026-10-20T18:38:38.2331444Z not ok 3 - second',
+    "2026-10-20T18:38:38.2331444Z   location: '/home/runner/work/x/x/scripts/lib/other.test.mjs:1:1'",
+  ].join('\n');
+  assert.equal(firstFailingTestFileInJobLog(log), 'tests/unit/show-hero-integrity.test.mjs');
+});
+
+test('firstFailingTestFileInJobLog returns null with no location, and never reaches into the next failure', () => {
+  assert.equal(firstFailingTestFileInJobLog('not ok 1 - a\nnot ok 2 - b\n  location: \'/r/tests/unit/b.test.mjs:1:1\''), null);
+  assert.equal(firstFailingTestFileInJobLog('ok 1 - fine'), null);
+  assert.equal(firstFailingTestFileInJobLog(''), null);
+  assert.equal(firstFailingTestFileInJobLog(null), null);
 });

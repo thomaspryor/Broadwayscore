@@ -297,6 +297,27 @@ function firstFailingTestNameInJobLog(jobLogText) {
   return null;
 }
 
+// BRO-6262: the test FILE behind firstFailingTestNameInJobLog()'s test. node's
+// TAP reporter prints `location: '<abs>/<file>.test.mjs:L:C'` in the diagnostic
+// block right after the `not ok` line, which names the file directly (a test
+// title is not unique across files and may be built from a template literal, so
+// grepping the source for it is unreliable). Returns the repo-relative path
+// (from its first tests/ scripts/ or src/ segment) or null.
+const TAP_LOCATION_RE = /location:\s*['"]?[^'"\n]*?((?:tests|scripts|src)\/[\w@./-]+\.test\.(?:m?js|cjs|ts)):\d+/;
+function firstFailingTestFileInJobLog(jobLogText) {
+  const lines = String(jobLogText || '').split('\n').map((raw) => raw.replace(/^\S*Z\s?/, '').replace(/\r$/, ''));
+  for (let i = 0; i < lines.length; i++) {
+    if (!TAP_NOT_OK_RE.test(lines[i])) continue;
+    for (let j = i + 1; j < Math.min(lines.length, i + 25); j++) {
+      if (TAP_NOT_OK_RE.test(lines[j])) break;
+      const m = TAP_LOCATION_RE.exec(lines[j]);
+      if (m) return m[1];
+    }
+    return null;
+  }
+  return null;
+}
+
 // BRO-4151: `testNameByJob` is a JOB-wide scan (firstFailingTestNameInJobLog
 // finds the first TAP `not ok` line ANYWHERE in the job's concatenated log,
 // not within the specific failing step's own output — the per-job REST logs
@@ -472,6 +493,7 @@ module.exports = {
   RED_SIGNATURE_PREFIX,
   stepFailureSignature,
   firstFailingTestNameInJobLog,
+  firstFailingTestFileInJobLog,
   isBashIntegrationStep,
   isBashTestStepCommand,
   failingStepSignatures,

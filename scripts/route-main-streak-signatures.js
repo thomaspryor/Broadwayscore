@@ -54,7 +54,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const {
-  failingStepSignatures, firstFailingTestNameInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
+  failingStepSignatures, firstFailingTestNameInJobLog, firstFailingTestFileInJobLog, signaturesToResolve, RED_SIGNATURE_PREFIX,
   trackSignatureAbsence, STALE_ABSENT_RUN_THRESHOLD,
 } = require('./lib/main-red-streak.js');
 const { routeAlert, loadLedger, resolveCondition, patchCondition } = require('./lib/owner-alert-router.js');
@@ -214,6 +214,7 @@ async function main() {
   // green run with nothing open, or a red run under the streak-2 gate with
   // no open red condition to re-judge).
   let testNameByJob = new Map();
+  const testFileByJob = new Map();
   const unreliableJobs = new Set();
   if (opts.dispatch || openRedKeys.length) {
     for (const job of jobs) {
@@ -223,6 +224,8 @@ async function main() {
       if (logText === null) { unreliableJobs.add(job.name || ''); continue; }
       const testName = firstFailingTestNameInJobLog(logText);
       if (testName) testNameByJob.set(job.name || '', testName);
+      const testFile = firstFailingTestFileInJobLog(logText);
+      if (testFile) testFileByJob.set(job.name || '', testFile);
     }
   }
   const currentSignatures = failingStepSignatures(run, testNameByJob, resolveStepRunCommand);
@@ -258,7 +261,7 @@ async function main() {
   const runUrl = runUrlFor(opts.runId);
   for (const sig of currentSignatures) {
     const label = sig.testName ? `${sig.job} / ${sig.step} — "${sig.testName}"` : `${sig.job} / ${sig.step}`;
-    const verify = verifyForSignature({ job: sig.job, step: sig.step }, testYmlText);
+    const verify = verifyForSignature({ job: sig.job, step: sig.step, testFile: testFileByJob.get(sig.job) }, testYmlText);
     await routeAlert({
       conditionKey: sig.conditionKey,
       title: `main test.yml red: ${label}`,
