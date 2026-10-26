@@ -41,12 +41,22 @@ describe('lottery-stability-guard', () => {
     assert.equal(r.removed.length, 4);
   });
 
-  it('aborts on too many additions regardless of removals', () => {
+  it('replays the 2026-10-26 abort (BRO-6364): 7 legit new shows → PASS', () => {
     const original = showsOf('a');
-    const updated = showsOf('a', 'n1', 'n2', 'n3', 'n4', 'n5', 'n6');
+    const updated = showsOf('a', 'downstate-2026', 'much-ado-about-nothing-2026',
+      'here-there-are-blueberries-2026', 'warriors-2026', 'cloud-9-west-end-2026',
+      'jesus-christ-superstar-off-west-end-2026', 'the-jungle-book-west-end-2026');
+    const r = evaluateShowIdStability(original, updated, []);
+    assert.equal(r.abort, false, 'a backlog of new shows must not wedge the workflow');
+    assert.equal(r.added.length, 7);
+  });
+
+  it('aborts on a runaway number of additions regardless of removals', () => {
+    const original = showsOf('a');
+    const updated = showsOf('a', ...Array.from({ length: 21 }, (_, i) => `n${i}`));
     const r = evaluateShowIdStability(original, updated, []);
     assert.equal(r.abort, true);
-    assert.equal(r.added.length, 6);
+    assert.equal(r.added.length, 21);
   });
 
   it('passes a quiet run with no changes', () => {

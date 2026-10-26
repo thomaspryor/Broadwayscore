@@ -11,7 +11,13 @@
 // the removal count, or a normal week of 4+ closures permanently wedges the
 // workflow (5 closed West End shows aborted it every run 2026-06-22 → 06-28).
 
-const MAX_ADDED = 5;
+// Additions are NOT the garbage signature: every added ID was mapped from a
+// scraped title onto an existing shows.json entry, so a broken source yields
+// FEWER shows (caught by MAX_REMOVED), not new valid ones. A low cap also
+// self-wedges: each failed run leaves the new-show backlog (upcoming openings,
+// regional/WE additions) growing, so 7 legit adds aborted every run from
+// 2026-10-24 onward (BRO-6364). Cap stays as a sanity ceiling only.
+const MAX_ADDED = 20;
 const MAX_REMOVED = 3;
 
 function evaluateShowIdStability(original, updated, changes = []) {
