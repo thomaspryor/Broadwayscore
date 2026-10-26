@@ -63,7 +63,7 @@ const KNOWN_LIVE_ONLY_POLICIES = {
   "watchlist:Users can read own watchlist": { def: 'a278350523dc', why: 'base schema: own rows only (auth.uid() = user_id)' },
   "watchlist:Users can update own watchlist": { def: '096635213bde', why: 'base schema: own rows only (auth.uid() = user_id)' },
 };
-const DELETE_ACCOUNT_FN = path.join(__dirname, '..', 'supabase', 'functions', 'delete-account', 'index.ts');
+const DELETE_ACCOUNT_FN = path.join(__dirname, '..', 'supabase', 'functions', 'delete-account', 'handler.mjs');
 
 if (process.argv.includes('--help') || process.argv.includes('-h')) {
   console.log(`verify-supabase-schema — fail loud when a committed migration is not applied to prod
@@ -150,7 +150,7 @@ async function main() {
   }
   const fnSource = fs.existsSync(DELETE_ACCOUNT_FN) ? fs.readFileSync(DELETE_ACCOUNT_FN, 'utf8') : '';
   for (const t of findUndeletedUserTables(liveRows, fnSource, DELETE_ACCOUNT_EXEMPT)) {
-    console.log(`::warning::per-user table ${t} survives account deletion: not in delete-account/index.ts, no cascade from auth.users/profiles, not in scripts/lib/delete-account-exempt.js`);
+    console.log(`::warning::per-user table ${t} survives account deletion: not in delete-account/handler.mjs, no cascade from auth.users/profiles, not in scripts/lib/delete-account-exempt.js`);
   }
 
   if (missing.length === 0 && drifted.length === 0) {
