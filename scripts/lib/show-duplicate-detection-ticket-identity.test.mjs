@@ -19,7 +19,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require_ = createRequire(import.meta.url);
-const { findSharedTicketIdentityDupes, ticketIdentityKeys } = require_('./show-duplicate-detection.js');
+const { findSharedTicketIdentityDupes, ticketIdentityKeys, findTicketUrlHolder } = require_('./show-duplicate-detection.js');
 
 const pairIds = (dupes) => dupes.map((d) => [d.a, d.b].sort().join('|')).sort();
 
@@ -185,4 +185,23 @@ test('non-array and empty input are safe', () => {
 test('ticketIdentityKeys dedupes the numeric field against its own URL', () => {
   const keys = ticketIdentityKeys(AMAZE_2025);
   assert.deepEqual([...keys], ['todaytix:44453'], 'one listing must produce exactly one key');
+});
+
+// BRO-6280: the SERP ticket-link fallback wrote the Broadway parent's TodayTix
+// listing onto the Great Gatsby tour row (and a real row's listing onto a
+// duplicate JCS stub), minting shared-ticket-identity pairs.
+test('findTicketUrlHolder: a URL already held by another open row is refused', () => {
+  const broadway = { id: 'gatsby-2024', title: 'The Great Gatsby', status: 'open', market: 'broadway',
+    ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/38749-the-great-gatsby-on-broadway' }] };
+  const tour = { id: 'gatsby-tour-2026', title: 'The Great Gatsby', status: 'open', market: 'tour', ticketLinks: [] };
+  const holder = findTicketUrlHolder([broadway, tour], tour, broadway.ticketLinks[0].url);
+  assert.equal(holder && holder.id, 'gatsby-2024');
+});
+
+test('findTicketUrlHolder: unheld, non-TodayTix and own-listing URLs pass', () => {
+  const a = { id: 'a', title: 'Oklahoma', status: 'open', ticketLinks: [{ url: 'https://www.todaytix.com/nyc/shows/5-oklahoma' }] };
+  const b = { id: 'b', title: 'Oklahoma', status: 'open', ticketLinks: [] };
+  assert.equal(findTicketUrlHolder([a, b], b, 'https://www.todaytix.com/nyc/shows/9-other'), null);
+  assert.equal(findTicketUrlHolder([a, b], b, 'https://seatplan.com/london/oklahoma-tickets/'), null);
+  assert.equal(findTicketUrlHolder([a, b], a, a.ticketLinks[0].url), null);
 });

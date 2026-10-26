@@ -41,6 +41,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { serpQuery } = require('./lib/url-discovery');
 const { pickTicketUrl, buildTicketQuery, platformForUrl, VENUE_SITES } = require('./lib/ticket-link-discovery');
+const { findTicketUrlHolder } = require('./lib/show-duplicate-detection');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -158,6 +159,14 @@ async function main() {
     const pick = pickTicketUrl(results, show);
     if (!pick) {
       console.log('  ✗ no allowlisted, title-matched result');
+      misses++;
+      continue;
+    }
+    // BRO-6280: the SERP can return another row's TodayTix listing (a tour's Broadway
+    // parent, the real row of a duplicate stub); writing it mints a shared-ticket-identity pair.
+    const holder = findTicketUrlHolder(shows, show, pick.url);
+    if (holder) {
+      console.log(`  ✗ ${pick.url} is already ${holder.id}'s listing`);
       misses++;
       continue;
     }

@@ -335,6 +335,16 @@ function findTicketIdentityHolder(shows, show, ttId) {
     && titlesAgree(probe, s)) || null;
 }
 
+// URL-shaped twin of findTicketIdentityHolder for writers that discover a ticket
+// URL rather than an id (enrich-fallback-ticket-links.js, BRO-6280): the row that
+// already holds the TodayTix listing the URL points at, or null (non-TodayTix URL,
+// no holder). A tour row given its Broadway parent's listing, or an undated stub
+// given the real row's, is the pair findSharedTicketIdentityDupes flags.
+function findTicketUrlHolder(shows, show, url) {
+  const m = String(url || '').match(TODAYTIX_URL_ID);
+  return m ? findTicketIdentityHolder(shows, show, m[1]) : null;
+}
+
 function sameMarketPair(a, b) {
   return !a.market || !b.market || a.market === b.market;
 }
@@ -356,6 +366,7 @@ module.exports = {
   findTitleFragmentDupes,
   findSharedTicketIdentityDupes,
   findTicketIdentityHolder,
+  findTicketUrlHolder,
   ticketIdentityKeys,
   isDeclaredTransferPair,
   canonicalVenue,
