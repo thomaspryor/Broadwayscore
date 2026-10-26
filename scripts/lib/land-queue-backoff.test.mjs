@@ -63,6 +63,13 @@ test('supersededByNewerRun: a refused or re-pushed newer run on the branch wins'
   assert.equal(supersededByNewerRun(cand, undefined), false);
 });
 
+test('a dozen older dead candidates no longer hide a parked one (BRO-6276)', () => {
+  const cancelledRuns = Array.from({ length: 13 }, (_, i) => run({ id: i + 1, created_at: at(200 - i) }));
+  const d = decideSweep({ cancelledRuns, refs: refsFor(cancelledRuns), now: NOW });
+  assert.equal(d.candidates.at(-1).id, 13);
+  assert.ok(MAX_INSPECT >= 33, 'covers the 33 candidates seen live on 2026-10-26');
+});
+
 test('decideSweep caps the inspected candidates', () => {
   const cancelledRuns = Array.from({ length: MAX_INSPECT + 3 }, (_, i) => run({ id: i + 1, created_at: at(100 - i) }));
   const d = decideSweep({ cancelledRuns, refs: refsFor(cancelledRuns), now: NOW });
@@ -98,6 +105,10 @@ test('wiring (BRO-5112): per-branch Land group, mutex around land.js, sweep with
   assert.match(js, /supersededByNewerRun\(/);
   // the retry decision uses the fresh per-branch run, not the possibly stale listing
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
+  // BRO-6276: dead candidates are refused on their own jobs before the per-branch
+  // lookup, and listing reads are shared across candidates
+  assert.match(js, /decideLandRetry\(\{ run, jobs: jobsOf\(run\.id\)[\s\S]*?if \(!listed\.retry\)[\s\S]*?readLatestLandRun\(run\.head_branch/);
+  assert.match(js, /read: readListing/);
 });
 
 // BRO-6015: walk a sweep's eligible candidates through sweepStep, as runSweep does.

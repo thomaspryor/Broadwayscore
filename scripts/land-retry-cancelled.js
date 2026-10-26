@@ -49,7 +49,14 @@ if ([sweep, Boolean(runId), stranded].filter(Boolean).length !== 1 || (runId && 
 const ghRaw = (args) => runGhWithFallback(args, { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN });
 const gh = (args) => JSON.parse(ghRaw(args));
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
-const identityOptions = { repo, read: (endpoint) => gh([endpoint]), readText: (endpoint) => ghRaw([endpoint]), cache: new Map() };
+// Listing reads are memoized per process: every sweep candidate's
+// readLatestLandRun walks the same workflow_dispatch pages (BRO-6276).
+const listingCache = new Map();
+const readListing = (endpoint) => {
+  if (!listingCache.has(endpoint)) listingCache.set(endpoint, gh([endpoint]));
+  return listingCache.get(endpoint);
+};
+const identityOptions = { repo, read: readListing, readText: (endpoint) => ghRaw([endpoint]), cache: new Map() };
 
 // Memoized: the targeted and sweep decisions can ask about the same run.
 const jobsCache = new Map();
@@ -145,6 +152,12 @@ function runSweep() {
   let resumed = 0;
   let evictionRerun = false;
   for (const run of d.candidates) {
+    // BRO-6276: refuse on the listed run's own jobs first (one call). A refusal
+    // there (started work, failed Checks, budget spent) is final for that
+    // attempt, and a run re-run since is in flight, so skipping it is right.
+    // Only survivors pay for the per-branch lookup below.
+    const listed = decideLandRetry({ run, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
+    if (!listed.retry) { console.log(`run ${run.id} ${run.head_branch}: skip (${listed.reason})`); continue; }
     const latest = readLatestLandRun(run.head_branch, identityOptions);
     if (supersededByNewerRun(run, latest)) {
       console.log(`run ${run.id} ${run.head_branch}: skip (newer run ${latest.id} ${latest.conclusion || latest.status})`);

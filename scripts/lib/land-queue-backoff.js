@@ -24,7 +24,10 @@ const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
 const { isMainRedBranch } = require('./land-main-red');
 
 const MAX_AGE_HOURS = 24;
-const MAX_INSPECT = 10;
+// Candidates a sweep inspects. Each costs one jobs read; only those still
+// retry-eligible on it pay for the per-branch lookup (BRO-6276). At 10, ten
+// dead runs (cancelled mid-work by hand) hid ~20 parked ones for hours.
+const MAX_INSPECT = 40;
 const { PARKED_MAX_ATTEMPTS } = require('./land-mutex');
 
 /**
