@@ -576,3 +576,16 @@ test('BRO-6302 review round: TR short forms and hyphen-wrapped captions stay our
   const lines = ['A MIDSUM-', 'MER NIGHT\u2019S DREAM', 'FINANCIAL TIMES', '16 July 2018', 'body'];
   assert.notEqual(captionOwnedBy(lines, 2, "A Midsummer Night's Dream"), false);
 });
+test('BRO-6302 all-common-word title: a block naming something else is foreign', () => {
+  assert.equal(sharesTitleWord('KING LEAR', 'The King and I'), false);
+  assert.equal(sharesTitleWord('EXIT THE KING', 'The King and I'), false);
+  assert.equal(sharesTitleWord('KING AND I', 'The King and I'), true);
+  const runs = productionRuns(['X', '03 July - 02 September 2018', 'THE KING AND I', 'a', 'b', '25 July - 02 October 2018', 'KING LEAR', 'c']);
+  assert.equal(sectionOwnedBy(runs, 3, 'The King and I'), true);
+  assert.equal(sectionOwnedBy(runs, 7, 'The King and I'), false);
+});
+test('BRO-6302 a one-word caption that opens our title stays ours', () => {
+  assert.equal(sharesTitleWord('ALL IN', 'All In: Comedy About Love'), true);
+  assert.equal(sharesTitleWord('KING', 'King Lear'), true);
+  assert.equal(sharesTitleWord('KING', 'The Lion King'), false);
+});

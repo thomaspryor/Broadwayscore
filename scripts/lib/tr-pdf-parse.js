@@ -564,21 +564,24 @@ const { foldDiacritics } = require('./title-match');
 // BRO-6302: a block title sharing a word with ours stays "unknown" (TR spells
 // titles its own way), but common title words do not count: KING LEAR kept
 // EXIT THE KING's and THE KING AND I's reviews, LOVE LETTERS kept LOVE BITES'.
-// A title made only of such words keeps the full set.
 const GENERIC_TITLE_WORDS = new Set(['king', 'queen', 'prince', 'princess', 'lady', 'man', 'men', 'woman', 'women', 'girl', 'girls', 'boy', 'boys', 'love', 'night', 'nights', 'day', 'days', 'life', 'death', 'light', 'dark', 'great', 'little', 'old', 'new', 'one', 'two', 'three', 'last', 'first', 'play', 'show', 'story', 'house', 'home', 'world', 'time', 'christmas', 'that', 'this', 'into', 'what', 'when', 'who', 'all', 'not', 'are', 'was', 'you', 'your', 'our', 'his', 'her', 'broken', 'come', 'away', 'goes', 'over', 'out', 'way', 'wild', 'heart', 'blood', 'city', 'street', 'road', 'big', 'good', 'bad', 'young', 'black', 'white', 'red', 'blue', 'green']);
 // A long title wraps over caps lines; a line-end hyphen joins the halves of a
 // wrapped word ("A MIDSUM-" / "MER NIGHT'S DREAM").
 const joinWrapped = (parts) => parts.join(' ').replace(/(\w)-\s+(?=\w)/g, '$1');
 const titleWords = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
-// A block title of two or more words that are all in our title is TR's short
-// form of it ("ALL OUT" for All Out: Comedy About Ambition), not another show.
+// A block title of two or more words that are all in our title, or one that
+// opens it, is TR's short form of it ("ALL IN" for All In: Comedy About Love).
 function sharesTitleWord(blockTitle, showTitle) {
   const all = titleWords(showTitle);
   const theirs = titleWords(joinWrapped([blockTitle]));
-  if (theirs.length >= 2 && theirs.every(w => all.includes(w))) return true;
+  const norm = (t) => foldDiacritics(String(t)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (theirs.length && theirs.every(w => all.includes(w))
+    && (theirs.length >= 2 || norm(showTitle).startsWith(`${norm(joinWrapped([blockTitle]))} `))) return true;
   const distinctive = all.filter(w => !GENERIC_TITLE_WORDS.has(w));
-  const ours = new Set(distinctive.length ? distinctive : all);
-  return theirs.some(w => ours.has(w));
+  if (distinctive.length) return theirs.some(w => distinctive.includes(w));
+  // A title of common words only (The King and I): a block naming something
+  // else as well (KING LEAR, EXIT THE KING) is another show.
+  return theirs.some(w => all.includes(w)) && theirs.every(w => all.includes(w) || GENERIC_TITLE_WORDS.has(w));
 }
 
 function productionRuns(lines) {
