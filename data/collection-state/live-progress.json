@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-26T18:26:11.807Z",
-  "processed": 275,
-  "failed": 175,
-  "successRate": "61.1%",
+  "updatedAt": "2026-10-26T18:38:21.465Z",
+  "processed": 276,
+  "failed": 182,
+  "successRate": "60.3%",
   "tierBreakdown": {
-    "playwright": 137,
+    "playwright": 138,
     "amp": 3,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 20,
     "scrapingbee": 16,
-    "brightdata": 11,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 81
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-26T18:11:00.149Z",
@@ -48,6 +48,36 @@
       "t": "2026-10-26T17:33:29.748Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T18:32:31.315Z",
+      "event": "bb-session",
+      "session": "9b8aecc8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T18:33:53.317Z",
+      "event": "bb-session",
+      "session": "56965229",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T18:34:04.636Z",
+      "event": "bb-session",
+      "session": "bcbefc90",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T18:37:51.148Z",
+      "event": "bb-session",
+      "session": "472407a3",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T18:38:01.576Z",
+      "event": "bb-session",
+      "session": "0da26f5a",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
     }
   ]
 }
