@@ -406,3 +406,14 @@ test('BRO-6154 a missed run line for our own show leaves the review unknown, not
   assert.equal(sectionOwnedBy(runs, 7, 'All About Eve', L), null);
   assert.equal(sectionOwnedBy(runs, 7, 'After Life', L), false);
 });
+
+test('BRO-6154 venueOwnedBy: a review under another theatre header is not ours, same venue or no header stays', async () => {
+  const { venueOwnedBy } = await import('node:module').then(m => m.createRequire(import.meta.url)('./tr-pdf-parse.js'));
+  const L = ['NOËL COWARD THEATRE', 'Previews / Opens   Press night', 'a', 'b', 'WYNDHAM’S THEATRE', 'Previews / Opens   Press night', 'c', 'd'];
+  assert.equal(venueOwnedBy(L, 3, 'Noël Coward Theatre'), true);
+  assert.equal(venueOwnedBy(L, 7, 'Noël Coward Theatre'), false);
+  assert.equal(venueOwnedBy(L, 0, 'Noël Coward Theatre'), null);
+  assert.equal(venueOwnedBy(L, 7, ''), null);
+  assert.equal(venueOwnedBy(['LONDON, YOUNG VIC THEATRE', 'Previews / Opens', 'x'], 2, 'Royal Court'), false);
+  assert.equal(venueOwnedBy(['LONDON, ROYAL COURT THEATRE UPSTAIRS', 'Previews / Opens', 'x'], 2, 'Royal Court'), true);
+});

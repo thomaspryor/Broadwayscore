@@ -258,7 +258,7 @@ function parsePdfReviews(text, showTitle, stats) {
 }
 
 // For multi-column pre-2019 PDFs: extract ALL reviews, filter by show title mention
-function parseRawPdfReviews(text, showTitle) {
+function parseRawPdfReviews(text, showTitle, venue) {
   const lines = text.split('\n');
   const allReviews = [];
   const runs = productionRuns(lines);
@@ -275,7 +275,7 @@ function parseRawPdfReviews(text, showTitle) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle, lines);
+        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue) === false ? false : null;
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -454,7 +454,7 @@ function mentionsTitle(fullText, showTitle) {
   return words.filter(w => count(w) > 0).length >= Math.ceil(words.length * 0.7);
 }
 
-function parseDefaultPdfReviews(text, showTitle) {
+function parseDefaultPdfReviews(text, showTitle, venue) {
   const lines = text.split('\n').map(l => l.trim());
   const markers = [];
   for (let i = 0; i < lines.length; i++) {
@@ -489,7 +489,7 @@ function parseDefaultPdfReviews(text, showTitle) {
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
     const fullText = cutAtProductionHeader(body).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false) {
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue) !== false) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -588,6 +588,26 @@ function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
   return false;
 }
 
+// 2019+ issues have no run-dates lines; each production page opens with a
+// "Previews / Opens" header whose caps line names the venue ("WYNDHAM'S THEATRE",
+// "LONDON, YOUNG VIC THEATRE"). A review under a header naming a theatre that
+// shares no word with the show's venue belongs to another production.
+const VENUE_STOP = new Set(['the', 'theatre', 'theater', 'royal', 'london', 'national', 'reviews', 'review', 'from', 'printed', 'media', 'are', 'reproduced', 'pages', 'following', 'playscript', 'synopsis']);
+const venueWords = (t) => foldDiacritics(String(t || '')).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !VENUE_STOP.has(w));
+const sectionCache = new WeakMap();
+function venueOwnedBy(lines, lineIdx, venue) {
+  const ours = new Set(venueWords(venue));
+  if (!ours.size) return null;
+  let sections = sectionCache.get(lines);
+  if (!sections) { sections = productionSections(lines); sectionCache.set(lines, sections); }
+  let sec = null;
+  for (const x of sections) { if (x.line <= lineIdx) sec = x; else break; }
+  if (!sec) return null;
+  const theirs = venueWords(sec.title);
+  if (!theirs.length) return null;
+  return theirs.some(w => ours.has(w)) ? true : false;
+}
+
 // BRO-6154 diagnostic: which production's section of the issue each parsed
 // review sits in. Structure only (production titles, outlets, dates, line
 // numbers), never review prose, so the result can be committed in a probe file.
@@ -623,6 +643,7 @@ function locateReviews(text, reviews, showTitle) {
 module.exports = {
   productionRuns,
   sectionOwnedBy,
+  venueOwnedBy,
   productionSections,
   locateReviews,
   maskPdfText,

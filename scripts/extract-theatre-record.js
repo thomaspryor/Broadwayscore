@@ -122,7 +122,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   }
 
   const rawText = text;
-  const rawReviews = parseRawPdfReviews(text, show.title);
+  const rawReviews = parseRawPdfReviews(text, show.title, show.venue);
   try { dumpPdfText(show.id, 'raw', text, show.title); } catch (_) {}
   // Plain column-order mode (BRO-6097): recovers the pre-2020 reviews that
   // neither -layout nor -raw can pair into outlet + date + critic.
@@ -131,7 +131,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     console.log(`  pdftotext (default) failed: ${e.message}`);
   }
   // Kill switch: TR_DEFAULT_MODE_DISABLED=true restores the layout + raw behaviour.
-  const defaultReviews = process.env.TR_DEFAULT_MODE_DISABLED === 'true' ? [] : parseDefaultPdfReviews(defaultText, show.title);
+  const defaultReviews = process.env.TR_DEFAULT_MODE_DISABLED === 'true' ? [] : parseDefaultPdfReviews(defaultText, show.title, show.venue);
   if (dumpDir && defaultText) { try { dumpPdfText(show.id, 'default', defaultText, show.title); } catch (_) {} }
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { defaultReviews: defaultReviews.length }) });
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
