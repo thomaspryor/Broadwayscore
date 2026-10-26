@@ -1250,10 +1250,19 @@
     "refVersion": 2
   },
   "woman-in-mind-west-end-2025": {
-    "at": "2026-09-19T23:49:24.714Z",
-    "gaps": 1,
-    "uncollected": 0,
-    "refVersion": 2
+    "at": "2026-10-26T11:53:35.695Z",
+    "gaps": 4,
+    "priorProductionGaps": 0,
+    "uncollected": 1,
+    "alertUncollected": 1,
+    "refVersion": 2,
+    "zeroChar": {
+      "https://www.phusionpassenger.com/library/admin/log_file/": {
+        "n": 1,
+        "at": "2026-10-26T11:53:40.769Z",
+        "since": "2026-10-26T11:53:40.769Z"
+      }
+    }
   },
   "romeo-and-juliet-west-end-2026": {
     "at": "2026-09-20T01:44:43.809Z",
@@ -1278,9 +1287,11 @@
     "refVersion": 2
   },
   "all-my-sons-west-end-2025": {
-    "at": "2026-09-19T23:50:19.013Z",
-    "gaps": 14,
+    "at": "2026-10-26T12:02:38.242Z",
+    "gaps": 0,
+    "priorProductionGaps": 28,
     "uncollected": 0,
+    "alertUncollected": 0,
     "refVersion": 2
   },
   "austentatious-an-improvised-jane-austen-novel-west-end-2025": {
@@ -1312,9 +1323,11 @@
     "refVersion": 2
   },
   "the-spy-who-came-in-from-the-cold-west-end-2025": {
-    "at": "2026-09-20T01:44:24.698Z",
+    "at": "2026-10-26T12:07:05.310Z",
     "gaps": 1,
+    "priorProductionGaps": 0,
     "uncollected": 0,
+    "alertUncollected": 0,
     "refVersion": 2
   },
   "the-unlikely-pilgrimage-of-harold-fry-west-end-2026": {
@@ -5139,9 +5152,9 @@
     "uncollected": 0
   },
   "harry-potter-and-the-cursed-child-one-part-west-end-2026": {
-    "at": "2026-10-26T01:54:54.852Z",
+    "at": "2026-10-26T11:57:20.398Z",
     "gaps": 4,
-    "priorProductionGaps": 23,
+    "priorProductionGaps": 47,
     "uncollected": 0,
     "alertUncollected": 0,
     "refVersion": 2,
@@ -5157,7 +5170,7 @@
         "since": "2026-10-23T01:56:58.141Z"
       }
     },
-    "serpCensusAt": "2026-10-25T21:26:45.542Z"
+    "serpCensusAt": "2026-10-26T11:57:20.399Z"
   },
   "bettys-summer-vacation-the-heights-players-off-broadway-2026": {
     "at": "2026-10-15T20:51:35.115Z",
@@ -6422,7 +6435,7 @@
     "serpCensusAt": "2026-10-24T23:55:33.025Z"
   },
   "ilford-boy-west-end-2026": {
-    "at": "2026-10-26T01:51:49.326Z",
+    "at": "2026-10-26T11:53:17.968Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -6445,7 +6458,7 @@
         "since": "2026-10-22T14:17:35.951Z"
       }
     },
-    "serpCensusAt": "2026-10-25T21:23:22.368Z"
+    "serpCensusAt": "2026-10-26T11:53:17.968Z"
   },
   "machine-learning-off-broadway-2026": {
     "at": "2026-10-26T05:21:18.387Z",
@@ -6478,12 +6491,19 @@
     }
   },
   "jest-to-impress-off-broadway-2026": {
-    "at": "2026-10-26T01:55:18.858Z",
-    "gaps": 2,
-    "priorProductionGaps": 0,
-    "uncollected": 1,
-    "alertUncollected": 1,
-    "serpCensusAt": "2026-10-25T21:27:33.641Z"
+    "at": "2026-10-26T11:58:37.873Z",
+    "gaps": 7,
+    "priorProductionGaps": 3,
+    "uncollected": 2,
+    "alertUncollected": 2,
+    "serpCensusAt": "2026-10-26T11:58:37.875Z",
+    "zeroChar": {
+      "https://www.phusionpassenger.com/library/admin/log_file/": {
+        "n": 1,
+        "at": "2026-10-26T11:58:44.858Z",
+        "since": "2026-10-26T11:58:44.858Z"
+      }
+    }
   },
   "surinderella-off-west-end-2026": {
     "at": "2026-10-26T05:14:11.884Z",
@@ -6503,9 +6523,9 @@
     "serpCensusAt": "2026-10-21T03:39:02.980Z"
   },
   "slanted-floors-off-broadway-2026": {
-    "at": "2026-10-26T01:57:58.901Z",
+    "at": "2026-10-26T12:03:38.640Z",
     "gaps": 0,
-    "priorProductionGaps": 0,
+    "priorProductionGaps": 3,
     "uncollected": 0,
     "alertUncollected": 0,
     "zeroChar": {
@@ -6515,7 +6535,7 @@
         "since": "2026-10-23T05:20:28.718Z"
       }
     },
-    "serpCensusAt": "2026-10-25T21:33:02.251Z"
+    "serpCensusAt": "2026-10-26T12:03:38.640Z"
   },
   "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026": {
     "at": "2026-10-25T23:35:17.280Z",
@@ -6618,20 +6638,27 @@
     }
   },
   "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026": {
-    "at": "2026-10-26T05:08:34.771Z",
-    "gaps": 2,
+    "at": "2026-10-26T12:06:09.022Z",
+    "gaps": 3,
     "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
-    "serpCensusAt": "2026-10-25T23:36:21.276Z"
+    "uncollected": 1,
+    "alertUncollected": 1,
+    "serpCensusAt": "2026-10-26T12:06:09.091Z"
   },
   "women-who-eat-off-broadway-2026": {
-    "at": "2026-10-26T01:57:20.201Z",
-    "gaps": 1,
-    "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
-    "serpCensusAt": "2026-10-25T21:31:00.015Z"
+    "at": "2026-10-26T12:01:58.519Z",
+    "gaps": 5,
+    "priorProductionGaps": 2,
+    "uncollected": 1,
+    "alertUncollected": 1,
+    "serpCensusAt": "2026-10-26T12:01:58.521Z",
+    "zeroChar": {
+      "https://www.phusionpassenger.com/library/admin/log_file/": {
+        "n": 1,
+        "at": "2026-10-26T12:02:03.775Z",
+        "since": "2026-10-26T12:02:03.775Z"
+      }
+    }
   },
   "cirque-berserk-west-end-2026": {
     "at": "2026-10-26T05:16:08.465Z",
@@ -6683,12 +6710,19 @@
     "serpCensusAt": "2026-10-26T05:17:15.540Z"
   },
   "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026": {
-    "at": "2026-10-26T01:56:04.842Z",
-    "gaps": 0,
+    "at": "2026-10-26T12:00:48.618Z",
+    "gaps": 4,
     "priorProductionGaps": 0,
-    "uncollected": 0,
-    "alertUncollected": 0,
-    "serpCensusAt": "2026-10-25T21:29:57.258Z"
+    "uncollected": 3,
+    "alertUncollected": 3,
+    "serpCensusAt": "2026-10-26T12:00:48.620Z",
+    "zeroChar": {
+      "https://www.phusionpassenger.com/library/admin/log_file/": {
+        "n": 1,
+        "at": "2026-10-26T12:01:08.667Z",
+        "since": "2026-10-26T12:01:08.667Z"
+      }
+    }
   },
   "girls-off-west-end-2026": {
     "at": "2026-10-26T05:15:19.966Z",
@@ -6726,21 +6760,21 @@
     "serpCensusAt": "2026-10-26T05:20:16.680Z"
   },
   "memoriam-off-west-end-2026": {
-    "at": "2026-10-26T05:10:52.576Z",
+    "at": "2026-10-26T12:08:59.462Z",
     "gaps": 1,
-    "priorProductionGaps": 0,
+    "priorProductionGaps": 1,
     "uncollected": 0,
     "alertUncollected": 0,
     "refVersion": 2,
-    "serpCensusAt": "2026-10-25T23:38:03.938Z"
+    "serpCensusAt": "2026-10-26T12:08:59.462Z"
   },
   "rabih-mroue-and-lina-majdalanie-four-walls-and-a-roof-off-broadway-2026": {
-    "at": "2026-10-26T05:11:26.735Z",
+    "at": "2026-10-26T12:11:33.912Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-25T23:38:56.102Z"
+    "serpCensusAt": "2026-10-26T12:11:33.913Z"
   },
   "garry-starr-classic-penguins-off-west-end-2026": {
     "at": "2026-10-26T08:24:40.824Z",
@@ -6807,32 +6841,39 @@
     "refVersion": 2
   },
   "hospital-hour-off-broadway-2026": {
-    "at": "2026-10-26T01:58:50.967Z",
+    "at": "2026-10-26T12:04:57.703Z",
     "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
-    "serpCensusAt": "2026-10-26T01:58:50.967Z"
+    "serpCensusAt": "2026-10-26T12:04:57.703Z"
   },
   "love-me-off-broadway-2026": {
-    "at": "2026-10-26T01:52:48.250Z",
-    "gaps": 1,
-    "priorProductionGaps": 7,
-    "uncollected": 0,
-    "alertUncollected": 0,
-    "serpCensusAt": "2026-10-25T21:24:09.462Z"
+    "at": "2026-10-26T11:54:19.185Z",
+    "gaps": 5,
+    "priorProductionGaps": 6,
+    "uncollected": 1,
+    "alertUncollected": 1,
+    "serpCensusAt": "2026-10-26T11:54:19.187Z",
+    "zeroChar": {
+      "https://www.phusionpassenger.com/library/admin/log_file/": {
+        "n": 1,
+        "at": "2026-10-26T11:54:47.235Z",
+        "since": "2026-10-26T11:54:47.235Z"
+      }
+    }
   },
   "showstopper-the-kids-show-off-west-end-2026": {
-    "at": "2026-10-26T01:54:10.679Z",
+    "at": "2026-10-26T11:55:58.281Z",
     "gaps": 1,
     "priorProductionGaps": 0,
     "uncollected": 0,
     "alertUncollected": 0,
     "refVersion": 2,
-    "serpCensusAt": "2026-10-25T21:25:59.184Z"
+    "serpCensusAt": "2026-10-26T11:55:58.281Z"
   },
   "aftermath-art-new-york-off-broadway-2026": {
-    "at": "2026-10-26T05:10:25.869Z",
+    "at": "2026-10-26T12:07:57.915Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,
@@ -6849,7 +6890,7 @@
         "since": "2026-10-23T13:57:56.550Z"
       }
     },
-    "serpCensusAt": "2026-10-25T23:37:16.353Z"
+    "serpCensusAt": "2026-10-26T12:07:57.916Z"
   },
   "the-infinite-wrench-off-broadway-2026": {
     "at": "2026-10-23T08:01:45.264Z",
@@ -7510,6 +7551,14 @@
   },
   "palesteenian-off-west-end-2026": {
     "at": "2026-10-26T08:13:59.228Z",
+    "gaps": 0,
+    "priorProductionGaps": 0,
+    "uncollected": 0,
+    "alertUncollected": 0,
+    "refVersion": 2
+  },
+  "a-world-elsewhere-off-west-end-2026": {
+    "at": "2026-10-26T11:57:33.648Z",
     "gaps": 0,
     "priorProductionGaps": 0,
     "uncollected": 0,

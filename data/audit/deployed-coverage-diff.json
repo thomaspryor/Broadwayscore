@@ -1,15 +1,60 @@
 {
-  "generatedAt": "2026-10-26T08:28:14.736Z",
+  "generatedAt": "2026-10-26T12:12:09.178Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 254,
-  "clean": 253,
-  "defective": 1,
+  "clean": 235,
+  "defective": 19,
   "byType": {
-    "missing-from-prod": 1
+    "score-drift": 19,
+    "missing-from-prod": 11
   },
   "shows": [
+    {
+      "showId": "garry-starr-classic-penguins-off-west-end-2026",
+      "title": "Garry Starr Classic Penguins",
+      "openingDate": "2026-10-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: londonlivinglarge"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 90.83 vs local 88.83 (Δ2)"
+        }
+      ],
+      "missingFromProd": [
+        "londonlivinglarge"
+      ],
+      "localCount": 11,
+      "deployedCount": 10,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: harunaenterprisesltd"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.88 vs local 83.02 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [
+        "harunaenterprisesltd"
+      ],
+      "localCount": 25,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
     {
       "showId": "dance-is-not-for-us-off-west-end-2026",
       "title": "Dance Is Not for Us",
@@ -19,6 +64,10 @@
         {
           "type": "missing-from-prod",
           "detail": "1 scored outlet(s) absent from the deployed payload: soundbehindcurtain"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 70.68)"
         }
       ],
       "missingFromProd": [
@@ -27,6 +76,323 @@
       "localCount": 3,
       "deployedCount": 2,
       "firstDefectAt": "2026-10-26T08:28:10.954Z"
+    },
+    {
+      "showId": "buena-vista-social-club-tour-2026",
+      "title": "Buena Vista Social Club",
+      "openingDate": "2026-09-12",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: attractions"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.67 vs local 84.97 (Δ1.7)"
+        }
+      ],
+      "missingFromProd": [
+        "attractions"
+      ],
+      "localCount": 6,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "title": "The Outsiders",
+      "openingDate": "2025-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: oc-register"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.57 vs local 83.43 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [
+        "oc-register"
+      ],
+      "localCount": 47,
+      "deployedCount": 46,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "the-sound-of-music-tour-2025",
+      "title": "The Sound of Music",
+      "openingDate": "2025-09-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "2 scored outlet(s) absent from the deployed payload: minnesota-monthly, pioneer-press"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 85.25 vs local 85.34 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [
+        "minnesota-monthly",
+        "pioneer-press"
+      ],
+      "localCount": 29,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "title": "Beauty and the Beast",
+      "openingDate": "2025-06-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "5 scored outlet(s) absent from the deployed payload: chicagocultureauthority, kidsoutandabout, letsplaytheatricalreview, onstage-colorado, wernerstheatrereviews"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.45 vs local 84.23 (Δ0.22)"
+        }
+      ],
+      "missingFromProd": [
+        "chicagocultureauthority",
+        "kidsoutandabout",
+        "letsplaytheatricalreview",
+        "onstage-colorado",
+        "wernerstheatrereviews"
+      ],
+      "localCount": 38,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "title": "Harry Potter and the Cursed Child",
+      "openingDate": "2024-09-10",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "5 scored outlet(s) absent from the deployed payload: dc-theater-arts, feature-presentation, hotchka, maryland-theatre-guide, washpost"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 78.59 vs local 77.74 (Δ0.85)"
+        }
+      ],
+      "missingFromProd": [
+        "dc-theater-arts",
+        "feature-presentation",
+        "hotchka",
+        "maryland-theatre-guide",
+        "washpost"
+      ],
+      "localCount": 23,
+      "deployedCount": 18,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "hamilton-tour-2024",
+      "title": "Hamilton",
+      "openingDate": "2024-08-16",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "5 scored outlet(s) absent from the deployed payload: cityscenecolumbus, cleveland-plain-dealer, clevescene, revue, the-news-herald"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.09 vs local 86.36 (Δ0.73)"
+        }
+      ],
+      "missingFromProd": [
+        "cityscenecolumbus",
+        "cleveland-plain-dealer",
+        "clevescene",
+        "revue",
+        "the-news-herald"
+      ],
+      "localCount": 26,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "title": "The Book of Mormon",
+      "openingDate": "2022-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: city-pulse"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.96 vs local 85.36 (Δ0.4)"
+        }
+      ],
+      "missingFromProd": [
+        "city-pulse"
+      ],
+      "localCount": 13,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "title": "Wicked",
+      "openingDate": "2021-08-03",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: indianapolisrecorder"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.49 vs local 84.67 (Δ0.18)"
+        }
+      ],
+      "missingFromProd": [
+        "indianapolisrecorder"
+      ],
+      "localCount": 35,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "title": "Ilford Boy",
+      "openingDate": "2026-10-20",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.8 vs local 76.06 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "murder-cathedral-off-west-end-2026",
+      "title": "Murder in the Cathedral",
+      "openingDate": "2026-10-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.73 vs local 82.8 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 22,
+      "deployedCount": 22,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "title": "My Neighbour Totoro",
+      "openingDate": "2025-03-08",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 83.63 vs local 83.83 (Δ0.2)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 21,
+      "deployedCount": 21,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "openingDate": "2024-07-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 87.78 vs local 87.64 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 31,
+      "deployedCount": 31,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "stranger-things-the-first-shadow-west-end-2023",
+      "title": "Stranger Things: The First Shadow",
+      "openingDate": "2023-12-14",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.92 vs local 82.68 (Δ0.24)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 33,
+      "deployedCount": 33,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "operation-mincemeat-west-end-2024",
+      "title": "Operation Mincemeat",
+      "openingDate": "2023-05-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 88.89 vs local 88.81 (Δ0.08)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 25,
+      "deployedCount": 25,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "title": "The Lion King",
+      "openingDate": "2021-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 86.22 vs local 86.57 (Δ0.35)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 36,
+      "deployedCount": 37,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "the-phantom-of-the-opera-west-end-1986",
+      "title": "The Phantom of the Opera",
+      "openingDate": "1986-10-09",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.74 vs local 82.6 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
     }
   ],
   "persistentDefective": 0,

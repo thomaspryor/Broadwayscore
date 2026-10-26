@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-26T08:27:53.800Z",
+  "generatedAt": "2026-10-26T12:11:44.804Z",
   "maxAgeHours": 12,
-  "showsAffected": 1,
-  "strandedFiles": 2,
+  "showsAffected": 0,
+  "strandedFiles": 0,
   "blackoutShows": [],
   "agedStubHours": 48,
   "agedStubFiles": 66,
@@ -184,7 +184,7 @@
           "file": "timeout--adam-feldman.json",
           "url": "https://www.timeout.com/newyork/theater/appropriate-review",
           "outlet": "Time Out New York",
-          "ageHours": 5984.041333333334
+          "ageHours": 5987.772167777778
         }
       ]
     },
@@ -256,7 +256,7 @@
           "file": "usatoday--matthew-j-palm.json",
           "url": "https://www.usatoday.com/story/life/theater/2022/12/08/aint-no-mo-broadway-review/10856338002/",
           "outlet": "USA Today",
-          "ageHours": 5984.041333333334
+          "ageHours": 5987.772167777778
         }
       ]
     },
@@ -400,7 +400,7 @@
           "file": "wolf-entertainment-guide--william-wolf.json",
           "url": "http://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=7078",
           "outlet": "Wolf Entertainment Guide",
-          "ageHours": 2283.5460377777777
+          "ageHours": 2287.276872222222
         }
       ]
     },
@@ -425,6 +425,18 @@
           "url": "https://www.usatoday.com/story/life/theater/2016/04/26/tuck-everlasting-broadway-review/83537416/",
           "outlet": "USA Today",
           "ageHours": null
+        }
+      ]
+    },
+    {
+      "showId": "disaster-2016",
+      "status": "closed",
+      "stubs": [
+        {
+          "file": "northjerseycom--virginia-rohan.json",
+          "url": "https://www.northjersey.com/story/entertainment/tv/2016/02/20/growing-trend-of-live-tv-brings-possibilities-of-greatness-and-disaster/94507614/",
+          "outlet": "NorthJersey.com",
+          "ageHours": 435.22579444444443
         }
       ]
     },
@@ -525,18 +537,6 @@
       ]
     },
     {
-      "showId": "anything-goes-2011",
-      "status": "closed",
-      "stubs": [
-        {
-          "file": "nypost--frank-scheck.json",
-          "url": "http://www.nypost.com/p/entertainment/theater/he_ll_charm_your_pants_off_Z92DrptWT9Xu1MXg19Un6J",
-          "outlet": "New York Post",
-          "ageHours": null
-        }
-      ]
-    },
-    {
       "showId": "red-2010",
       "status": "closed",
       "stubs": [
@@ -592,7 +592,7 @@
           "file": "usatoday--elysa-gardner.json",
           "url": "https://www.usatoday.com/life/theater/reviews/2008-10-17-all-my-sons_N.htm",
           "outlet": "USA Today",
-          "ageHours": 5984.041333333334
+          "ageHours": 5987.772167777778
         }
       ]
     },
@@ -676,7 +676,7 @@
           "file": "oldvictheatrecom--unknown.json",
           "url": "https://www.oldvictheatre.com/stage/arcadia/",
           "outlet": "Old Vic Theatre",
-          "ageHours": 2136.0378658333334
+          "ageHours": 2139.768700277778
         }
       ]
     },
@@ -712,7 +712,7 @@
           "file": "almeidacouk--unknown.json",
           "url": "https://almeida.co.uk/whats-on/",
           "outlet": "Almeida Theatre",
-          "ageHours": 112.46578277777778
+          "ageHours": 116.19661722222222
         }
       ]
     },
@@ -724,7 +724,7 @@
           "file": "almeidacouk--unknown.json",
           "url": "https://almeida.co.uk",
           "outlet": "Almeida Theatre",
-          "ageHours": 649.7716152777778
+          "ageHours": 653.5024497222222
         }
       ]
     },
@@ -736,7 +736,7 @@
           "file": "oldvictheatrecom--unknown.json",
           "url": "https://www.oldvictheatre.com/stage/event/just-for-one-day",
           "outlet": "Old Vic Theatre",
-          "ageHours": 417.89082777777776
+          "ageHours": 421.6216622222222
         }
       ]
     },
@@ -748,7 +748,7 @@
           "file": "oldvictheatrecom--elizabeth-charlesworth.json",
           "url": "https://www.oldvictheatre.com/news/the-47th-reviews/",
           "outlet": "Old Vic Theatre",
-          "ageHours": 387.32790083333333
+          "ageHours": 391.05873527777777
         }
       ]
     },
@@ -760,33 +760,10 @@
           "file": "wolf-entertainment-guide--william-wolf.json",
           "url": "https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=6949",
           "outlet": "Wolf Entertainment Guide",
-          "ageHours": 167.09893583333334
+          "ageHours": 170.82977027777778
         }
       ]
     }
   ],
-  "findings": [
-    {
-      "showId": "the-notebook-tour-2025",
-      "title": "The Notebook",
-      "status": "open",
-      "stranded": [
-        {
-          "file": "musical-theatre-review--unknown.json",
-          "url": "https://musicaltheatrereview.com/the-notebook-a-new-musical-to-open-at-the-judi-dench-theatre-in-2027/",
-          "outlet": "Musical Theatre Review",
-          "ageHours": 17.7416325
-        },
-        {
-          "file": "variety--unknown.json",
-          "url": "https://variety.com/2026/theater/global/the-notebook-musical-west-end-run-judi-dench-theatre-1236920361/",
-          "outlet": "Variety",
-          "ageHours": 42.14050972222222
-        }
-      ],
-      "usable": 82,
-      "discovered": 87,
-      "totalBlackout": false
-    }
-  ]
+  "findings": []
 }

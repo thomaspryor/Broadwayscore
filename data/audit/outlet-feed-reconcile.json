@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T08:28:15.111Z",
+  "generatedAt": "2026-10-26T12:12:09.521Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -64,11 +64,6 @@
       "openingDate": "2026-10-22"
     },
     {
-      "id": "i-became-we-off-broadway-2026",
-      "title": "I Became We",
-      "openingDate": "2026-10-27"
-    },
-    {
       "id": "aftermath-art-new-york-off-broadway-2026",
       "title": "Aftermath",
       "openingDate": "2026-10-24"
@@ -114,7 +109,12 @@
       "openingDate": "2026-10-22"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "i-became-we-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 73,
   "feedsFailed": [
     {
@@ -138,6 +138,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "musical-theatre-review",
+      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -148,10 +152,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 675,
-  "matchedGaps": 6,
+  "itemsScanned": 632,
+  "matchedGaps": 8,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -189,6 +197,24 @@
       "url": "https://www.britishtheatreguide.info/reviews/the-master-buil-arcola-theatre-26155",
       "headline": "The Master Builder",
       "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
+      "level": "matched",
+      "outletId": "theupcoming",
+      "url": "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
+      "headline": "The Master Builder at Arcola Theatre &#124; Theatre review",
+      "publishDate": "2026-10-23"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "a-youngish-perspective",
+      "url": "https://ayoungishperspective.co.uk/2026/10/26/review-the-pianist/",
+      "headline": "REVIEW: The Pianist",
+      "publishDate": "2026-10-26"
     },
     {
       "showId": "the-pianist-off-west-end-2026",

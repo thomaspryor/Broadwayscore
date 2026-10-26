@@ -126,20 +126,6 @@
     "queuedAt": "2026-10-26T08:25:09.503Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T08:25:16.368Z"
-  },
-  {
     "conditionKey": "aggregator-health:thestage-roundups:workflow-failing:scrape-thestage-roundups.yml",
     "title": "The Stage roundups: scrape-thestage-roundups.yml failed its last 19 runs in a row (last success 2026-06-09)",
     "description": "The Stage roundups: scrape-thestage-roundups.yml failed its last 19 runs in a row (last success 2026-06-09)\n\nMonitor: node scripts/audit-aggregator-health.js (BRO-6098). Coverage compares the last 2 full quarters with the 4 before; workflow checks use the last 30 runs.",
@@ -456,5 +442,89 @@
       }
     ],
     "queuedAt": "2026-10-26T11:24:35.010Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
+    "title": "Review gap — \"King of the Yees\" missing 2 cited review(s)",
+    "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T12:11:34.330Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:love-me-off-broadway-2026",
+    "title": "Review gap — \"Love Me\" missing 1 cited review(s)",
+    "description": "Love Me (love-me-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=love-me-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T12:11:34.345Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:martin-guerre-west-end-2026",
+    "title": "Review gap — \"Martin Guerre\" missing 3 cited review(s)",
+    "description": "Martin Guerre (martin-guerre-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=martin-guerre-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T12:11:34.359Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
+    "title": "Review gap — \"Tales of Urban Hysteria is an evening of four short plays by award-winning playwright Mark Borkowski.\" missing 3 cited review(s)",
+    "description": "Tales of Urban Hysteria is an evening of four short plays by award-winning playwright Mark Borkowski. (tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T12:11:34.419Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:women-who-eat-off-broadway-2026",
+    "title": "Review gap — \"Women Who Eat\" missing 1 cited review(s)",
+    "description": "Women Who Eat (women-who-eat-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=women-who-eat-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T12:11:34.504Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T12:11:44.539Z"
   }
 ]
