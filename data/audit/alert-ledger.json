@@ -246,7 +246,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T14:30:51.898Z",
+      "lastSeen": "2026-10-26T14:43:48.900Z",
       "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
       "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
@@ -27437,9 +27437,9 @@
       "absentRunIds": [
         "40327815067",
         "40333144748",
-        "40336990940"
+        "40338684609"
       ],
-      "resolvedAt": "2026-10-26T14:30:51.865Z",
+      "resolvedAt": "2026-10-26T14:43:48.750Z",
       "resolveReason": "stale-signature"
     },
     "land:land/bro-6298-az-lookups": {
@@ -27563,7 +27563,7 @@
       "silentRefires": 1,
       "absentRunIds": [
         "40333144748",
-        "40336990940"
+        "40338684609"
       ]
     },
     "land:land/job/linear-BRO-6307-mvp4vz58": {
@@ -27720,12 +27720,18 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every original record in data/show-origins.json says true story or invented (BRO-5871)\"",
       "firstSeen": "2026-10-26T14:03:16.640Z",
       "incidentOpenedAt": "2026-10-26T14:03:16.640Z",
-      "lastSeen": "2026-10-26T14:30:51.884Z",
+      "lastSeen": "2026-10-26T14:43:48.874Z",
       "lastNotifiedAt": "2026-10-26T14:03:16.640Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6334",
+      "dispatch": {
+        "requestedAt": "2026-10-26T13:59:26.038Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40331633769",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40331633769"
+      },
       "silentRefires": 1
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
