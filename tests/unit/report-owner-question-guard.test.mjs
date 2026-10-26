@@ -72,3 +72,11 @@ test('kill switch OWNER_QUESTION_GUARD_DISABLED=1 disables the guard', () => {
     assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'Owner decision needed.' }).hidden, false);
   } finally { delete process.env.OWNER_QUESTION_GUARD_DISABLED; }
 });
+
+test('fenced examples and denials do not trip the guard; watchdog path skips it', async () => {
+  const { checkHiddenOwnerQuestion } = await import('../../scripts/lib/report-owner-question-guard.js');
+  const fenced = 'Added the guard.\n```\nDECISION NEEDED: x\n```\nOwner must decide which way.';
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: fenced }).hidden, true);
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'There is no question for the owner here.' }).hidden, false);
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'Needs Thomas to decide the venue.' }).hidden, true);
+});

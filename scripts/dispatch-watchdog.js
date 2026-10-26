@@ -544,7 +544,7 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
           issue: linearMatch[1],
           status: 'blocked',
           summary: `${core.WATCHDOG_SAFETY_NET_PREFIX} headless job ${item.jobId} ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: ${item.reason || 'no reason given'}. Not retried automatically — resolve the blocker, then re-dispatch (node scripts/linear-next.js --id ${linearMatch[1]} --force once fixed).`,
-        }, {});
+        }, { skipOwnerQuestionGuard: true }); // BRO-6402: process.exit(6) here would kill the sweep
       } catch (e) {
         console.error(`[watchdog] failed to post BLOCKED reason to Linear ${item.taskId}: ${e.message}`);
       }
