@@ -30,6 +30,15 @@ export async function runMoneySignupChecks({ rest, check, anonKey, serviceKey })
       { p_email: 'not-an-email', p_role: null, p_page: 'roundtrip:/biz' }, null);
     check('money gate: a malformed address is refused (the browser shows an error)', bad.status === 400 && bad.text.includes('invalid email'),
       `HTTP ${bad.status}`, { urgent: false });
+
+    // BRO-6339: the function itself refuses disposable domains and placeholder
+    // local parts, so a direct API call cannot store them.
+    for (const junk of ['roundtrip@mailinator.com', 'a@example.com', 'test@example.com']) {
+      const r = await rest('POST', 'rpc/money_scorecard_signup', anonKey,
+        { p_email: junk, p_role: null, p_page: 'roundtrip:/biz' }, null);
+      check(`money gate: ${junk} is refused by the function (BRO-6339)`, r.status === 400 && r.text.includes('invalid email'),
+        `HTTP ${r.status}`, { urgent: false });
+    }
   } finally {
     await rest('DELETE', `money_scorecard_signups?email=eq.${encodeURIComponent(email)}`, serviceKey, null, 'return=minimal').catch(() => {});
   }
