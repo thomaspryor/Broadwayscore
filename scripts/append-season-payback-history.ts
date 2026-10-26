@@ -22,13 +22,15 @@ const rawShows = readJson('shows.json').shows as Array<Record<string, any>>;
 const commercial = readJson('commercial.json').shows as Record<string, any>;
 const profiles = buildSeasonProfiles(
   rawShows
+    // Intentionally NOT isBroadwayCategory: the same strict filter as getSeasonProfiles (src/lib/data-commercial.ts), so the history matches what /biz prints.
     .filter((s) => s.category === 'broadway' && !!s.openingDate)
     .map((s) => ({
       type: s.type,
       isRevival: s.isRevival,
       openingDate: s.openingDate,
       status: s.status,
-      commercial: commercial[s.slug] ? { ...commercial[s.slug], weeklyCost: commercial[s.slug].weeklyRunningCost } : null,
+      // No weeklyCost: the payback estimate does not use running cost.
+      commercial: commercial[s.slug] ?? null,
     })),
 );
 
