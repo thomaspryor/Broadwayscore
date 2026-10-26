@@ -72,6 +72,13 @@ const nextConfig = {
   },
   outputFileTracingExcludes: {
     '**/*': [
+      // BRO-6305: src/lib/show-image-srcset.server.ts checks fs.existsSync on
+      // public/images/... with a dynamic path, which made NFT trace all ~640MB
+      // of show images into the server functions; every Vercel deploy failed
+      // (upload 725MB -> 1.4GB) from 2026-10-26 06:42 UTC. Functions never
+      // serve these files (the CDN does), and the check falls back to no
+      // srcset when a file is not visible.
+      'public/images/**',
       'data/audit/**',
       'data/review-texts/**',
       // BRO-6277: show art (7k+ files, ~570MB with sm/ variants) is static
