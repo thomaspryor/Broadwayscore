@@ -387,12 +387,15 @@ test('BRO-6326: the stranded pass picks the newest Land job too', () => {
   const latestRun = { id: 1, head_sha: 'aaa', status: 'completed', conclusion: 'cancelled', run_attempt: 2, updated_at: '2026-10-26T12:25:00Z', created_at: '2026-10-26T10:27:23Z' };
   const jobs = [
     { name: 'Checks', run_attempt: 1, conclusion: 'success' },
-    { name: 'Land', run_attempt: 1, conclusion: 'cancelled', started_at: '2026-10-26T10:47:52Z', steps: [{ conclusion: 'cancelled' }] },
+    { name: 'Land', run_attempt: 1, conclusion: 'cancelled', started_at: '2026-10-26T10:47:52Z', steps: [{ conclusion: 'success' }, { conclusion: 'cancelled' }] },
     { name: 'Land', run_attempt: 2, conclusion: 'success', started_at: '2026-10-26T12:03:03Z', steps: [] },
   ];
   const withStale = decideStrandedRef({ tip: 'aaa', latestRun, jobs: jobs.slice(0, 2), now });
   const withBoth = decideStrandedRef({ tip: 'aaa', latestRun, jobs, now });
-  assert.notEqual(withBoth.action, 'rerun', JSON.stringify({ withStale, withBoth }));
+  // the stale cancelled-mid-landing job alone escalates; with the newer attempt listed it must not
+  assert.equal(withStale.reason, 'land-cancelled-mid-flight');
+  assert.notEqual(withBoth.reason, 'land-cancelled-mid-flight');
+  assert.equal(withBoth.action, 'none');
 });
 
 test('BRO-6326: a refused re-run is skipped inside rerun() and never aborts or spends the sweep slot', () => {
@@ -402,4 +405,6 @@ test('BRO-6326: a refused re-run is skipped inside rerun() and never aborts or s
   assert.match(src, /if \(outcome === 'refused'\) continue;/);
   // any other rerun failure continues the sweep and fails the job at the end
   assert.match(src, /process\.exitCode = 1;\s*continue;/);
+  // a refused targeted retry (--run=) goes red again instead of exiting 0 silently
+  assert.match(src, /rerun\(runId, run\.run_attempt\) === 'refused'\) process\.exitCode = 1/);
 });

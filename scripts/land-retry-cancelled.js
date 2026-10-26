@@ -108,7 +108,7 @@ function runTargeted() {
   // BRO-6015: resuming a parked run into a full queue re-parks it and spends
   // an attempt, the same check the sweep makes.
   if (d.parked && resumeSlotsNow() === 0) { console.log(`run ${runId}: parked, landing queue has no resume room yet; the sweep resumes it in order (nothing to do)`); return; }
-  rerun(runId, run.run_attempt);
+  if (rerun(runId, run.run_attempt) === 'refused') process.exitCode = 1;
 }
 
 /**
@@ -170,7 +170,7 @@ function runSweep() {
       console.log(`run ${run.id} ${run.head_branch}: skip (newer run ${latest.id} ${latest.conclusion || latest.status})`);
       continue;
     }
-    // Decide again on the fresh run and a fresh jobs read: a listed run may have
+    // Decide again on the fresh run and the jobs read: a listed run may have
     // been re-run since (status back to queued/pending, conclusion null → skip).
     const fresh = latest || resolveLandRun(gh([`repos/${repo}/actions/runs/${run.id}`]), identityOptions);
     if (!fresh) continue;
