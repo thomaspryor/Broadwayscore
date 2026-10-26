@@ -75,6 +75,7 @@ const REPO_ROOT = fileURLToPath(new URL('../..', import.meta.url));
 // this file's own "no live Linear API calls" invariant stated above).
 function noopLinearDeps() {
   return {
+    probeHealthRow: async () => ({ verdict: 'unknown', matched: null }),
     linear: {
       createComment: async () => {},
       getTeam: async () => ({ states: [] }),
@@ -1891,6 +1892,53 @@ test('main(): --allow-autofix-filed lets the owning pipeline dispatch its own is
     console.error = origError;
   }
   assert.equal(launched, true);
+});
+
+test('BRO-3973: headless dispatch probes and comments before launching with current evidence', async () => {
+  const cap = captureConsole();
+  const events = [];
+  const description = 'PARKED: Auto-filed by digest-autofix\n\n## Problem\nCannot measure from the local ledger.\n\n## Acceptance criteria\n`node scripts/check-health-row-absent.js --row-b64 UHVzaC1yZXRyeSBkZWFkbWFu`';
+  let prompt;
+  let comment;
+  try {
+    await main(['--id', 'BRO-9499', '--force', '--allow-autofix-filed', '--allow-automation-parked'], headlessDefaultDeps({
+      getIssue: async () => ({ ...makeAutofixFiledIssue('BSC Daily: Push-retry deadman'), description }),
+      appendLedgerEntry: () => {},
+      probeHealthRow: async name => {
+        events.push('probe');
+        assert.equal(name, 'Push-retry deadman');
+        return { verdict: 'present', matched: { status: 'warn', message: '222 genuine failures across 30 workflows.' } };
+      },
+      linear: {
+        ...noopLinearDeps().linear,
+        createComment: async (id, body) => {
+          if (body.includes('Dispatch-time health evidence')) { events.push('comment'); comment = body; }
+        },
+      },
+      runJobFn: async options => {
+        events.push('launch');
+        prompt = options.prompt;
+        return { ok: true, jobId: 'bro3973-fixture', headlessOutcome: 'done' };
+      },
+    }));
+  } finally { cap.restore(); }
+  assert.deepEqual(events, ['probe', 'comment', 'launch']);
+  assert.ok(prompt.includes(comment), 'the worker must receive the exact evidence posted to Linear');
+  assert.ok(prompt.includes(description), 'the original description and acceptance command are retained');
+});
+
+test('BRO-3973: preview does not probe health or comment on a parked digest card', async () => {
+  const cap = captureConsole();
+  try {
+    await main(['--id', 'BRO-9499', '--dry-run'], {
+      getIssue: async () => makeAutofixFiledIssue(),
+      readLedgerEntries: () => [],
+      appendLedgerEntry: () => {},
+      probeHealthRow: () => assert.fail('preview must not probe'),
+      linear: { createComment: () => assert.fail('preview must not comment') },
+    });
+  } finally { cap.restore(); }
+  assert.ok(cap.out.some(line => line.includes('would launch')));
 });
 
 test('main(): an ordinary backlog issue is unaffected by the auto-filed guard (BRO-2499)', async () => {

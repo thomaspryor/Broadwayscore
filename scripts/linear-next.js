@@ -423,6 +423,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // test path was calling the real getTeam/getIssue/createComment/
     // updateIssue with no override before this was added).
     linear: reportLinearFn = linear,
+    probeHealthRow: probeHealthRowFn = (name) => require('./lib/health-row-probe.js').probeHealthRowLive(name),
     // BRO-3652: the detached-parent path's two I/O primitives, injectable so
     // tests/unit/linear-next.test.mjs can prove the child argv and the
     // settle-window verdict without spawning a real process. Real
@@ -511,7 +512,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // over both inside decideRouting.
   const wantsHeadless = !args.tab;
   const routing = ld.decideRouting(issue, { headless: wantsHeadless, macHeadless: !!args['mac-headless'] });
-  const seed = ld.buildLinearSeed({
+  let seed = ld.buildLinearSeed({
     identifier: issue.identifier, title: issue.title, description: issue.description,
     url: issue.url, model, project, mode: routing.mode,
   });
@@ -1158,6 +1159,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       process.exit(1);
     }
   }
+
+  // BRO-3973: after previews and all refusal guards, immediately before launch.
+  // Comments alone never reached buildLinearSeed's prompt.
+  const { refreshDigestDispatchBrief } = require('./lib/digest-dispatch-freshness.js');
+  const healthBrief = await refreshDigestDispatchBrief(issue, {
+    probeRow: probeHealthRowFn,
+    createComment: (id, body) => reportLinearFn.createComment(id, body),
+  });
+  if (healthBrief) seed += `\n\n${healthBrief}`;
 
   // Every dispatch attempt gets one correlationId, threaded into the ledger
   // entry AND the Linear comment — the cross-reference a human or a future
