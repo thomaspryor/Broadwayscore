@@ -60,7 +60,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     const stats = await page.getByTestId('biz-hero-stats').boundingBox();
     const row = await chips.boundingBox();
     expect(row!.y).toBeGreaterThan(stats!.y);
-    expect(row!.y).toBeLessThan(900);
+    expect(row!.y).toBeLessThan(page.viewportSize()!.height);
     await chips.getByText('Miracle', { exact: true }).click();
     await expect(page).toHaveURL(/#designation-guide$/);
   });

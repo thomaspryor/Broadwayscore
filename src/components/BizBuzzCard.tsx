@@ -238,7 +238,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="commercial-scorecard-heading">
       {/* Unified scorecard chrome: eyebrow on left, source attribution right */}
-      <header className="flex items-center justify-between gap-3 mb-1">
+      <header className="flex flex-wrap items-center justify-between gap-x-3 gap-y-1 mb-1">
         <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           Profitability Scorecard
         </h2>
