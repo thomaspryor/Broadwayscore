@@ -1,40 +1,62 @@
 {
-  "updatedAt": "2026-10-26T11:51:58.793Z",
-  "processed": 179,
-  "failed": 126,
-  "successRate": "58.7%",
+  "updatedAt": "2026-10-26T12:01:52.903Z",
+  "processed": 44,
+  "failed": 6,
+  "successRate": "88.0%",
   "tierBreakdown": {
-    "playwright": 94,
+    "playwright": 25,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 9,
-    "brightdata": 5,
+    "scrapingdog": 1,
+    "scrapingbee": 2,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 54
+    "archive": 14
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-26T11:16:18.645Z",
+      "t": "2026-10-26T11:45:10.934Z",
       "event": "bb-session",
-      "session": "f53af468",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+      "session": "56a2f56e",
+      "url": "https://www.nytimes.com/2024/09/19/theater/forbidden-broadway-review.html"
     },
     {
-      "t": "2026-10-26T11:16:19.338Z",
+      "t": "2026-10-26T11:45:11.746Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-26T11:18:30.321Z",
+      "t": "2026-10-26T11:47:25.264Z",
       "event": "bb-session",
-      "session": "eb6470eb",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+      "session": "c8662970",
+      "url": "https://www.wsj.com/articles/forbidden-broadway-merrily-we-stole-a-song-review-g"
     },
     {
-      "t": "2026-10-26T11:18:30.919Z",
+      "t": "2026-10-26T11:47:26.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-26T11:53:36.050Z",
+      "event": "bb-session",
+      "session": "652d92c4",
+      "url": "https://www.nytimes.com/2024/07/29/theater/six-characters-review-howze.html"
+    },
+    {
+      "t": "2026-10-26T11:53:36.869Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T12:00:33.858Z",
+      "event": "bb-session",
+      "session": "c6141a8a",
+      "url": "https://www.nytimes.com/2024/06/18/theater/review-dark-noon.html"
+    },
+    {
+      "t": "2026-10-26T12:00:34.772Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
