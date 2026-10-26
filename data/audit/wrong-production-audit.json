@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-26T08:59:27.014Z",
+  "timestamp": "2026-10-26T09:15:00.386Z",
   "stats": {
     "totalReviews": 61840,
     "alreadyFlagged": 21477,
@@ -7,9 +7,9 @@
     "directorMismatch": 2275,
     "tvFilmSignals": 1762,
     "londonSignals": 2998,
-    "offBroadwaySignals": 545,
+    "offBroadwaySignals": 546,
     "yearMismatch": 206,
-    "noPublishDate": 5493
+    "noPublishDate": 5451
   },
   "findings": [
     {
@@ -41226,7 +41226,7 @@
       "showId": "strategic-love-play-off-broadway-2024",
       "file": "talkinbroadway--james-wilson.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2024-11-10",
       "url": "https://www.talkinbroadway.com/page/ob/11_10_24.html",
       "findings": [
         {
@@ -44745,6 +44745,7 @@
     {
       "showId": "the-counter-off-broadway-2024",
       "file": "nytimes--jesse-green.json",
+      "score": 63,
       "publishDate": "2024-10-09",
       "url": "https://www.nytimes.com/2024/10/09/theater/the-counter-review-edward-flood.html",
       "findings": [
@@ -103006,6 +103007,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "we-live-in-cairo-off-broadway-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2024-10-27",
+      "url": "https://newyorktheater.me/2024/10/27/we-live-in-cairo-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
