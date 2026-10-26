@@ -7,19 +7,17 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
-import { execFileSync } from 'node:child_process';
+import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const REL = 'docs/owner-email-guidelines.md';
 
+// exit 0 = ignored, 1 = not ignored; anything else is a git failure, not a pass.
 function isIgnored(rel) {
-  try {
-    execFileSync('git', ['check-ignore', '-q', '--no-index', rel], { cwd: ROOT, stdio: 'ignore' });
-    return true; // exit 0 = ignored
-  } catch {
-    return false;
-  }
+  const { status } = spawnSync('git', ['check-ignore', '-q', '--no-index', rel], { cwd: ROOT, stdio: 'ignore' });
+  assert.ok(status === 0 || status === 1, `git check-ignore failed (exit ${status})`);
+  return status === 0;
 }
 
 test('the guidelines doc exists and is not gitignored', () => {

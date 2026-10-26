@@ -7,13 +7,13 @@ otherwise. They are guidelines; nothing blocks a send. BRO-6285.
 ## The rules
 
 1. **The first line says what this is and whether anything is needed.** For example: "Status: the
-   ads.txt fix is live. Nothing needed from you." or "One decision is waiting on a card for you."
+   ad-permission fix is live. Nothing needed from you." or "One decision is waiting on a card for you."
    If the owner reads only that line, they should know whether to keep reading.
 
 2. **Never ask a question in a free-form email.** File a card that starts with
    `DECISION NEEDED: <plain-English question>` (the decision rule in `.claude/CLOUD.md`). The system
-   emails that card with tap buttons, and the owner answers by tapping a button or writing on the
-   card, where the answer is picked up and recorded. Before you file, run
+   emails that card with tap buttons (one per option, plus "Reply in my own words"). The owner answers
+   by tapping one, or by commenting `ANSWER: <words>` on the card; both are picked up and recorded. Before you file, run
    `node scripts/lib/owner-decision-recall.js "<topic>"`: the owner may already have answered.
    - Never write "reply yes to Claude" or "reply to Codex". A chat reply reaches one named session
      only, the owner cannot tell which one you mean, and nothing reads a reply to the email itself.
@@ -67,23 +67,23 @@ What went wrong:
 
 ## Good example (the same email, rewritten)
 
-> Subject: AdSense: blocking bot traffic before ads go live (nothing needed from you)
+> Subject: AdSense: one decision waiting for you (blocking bot traffic)
 >
-> This is a status note from the AdSense setup tab. Nothing is needed from you right now.
+> This is from the AdSense setup tab. One decision is waiting for you on a card, with buttons.
 >
-> Most of the site's measured traffic turns out to be bots running on rented cloud servers. Real
-> readers are steady at about 60,000 page views a month. The bots matter because Google can limit an
+> Most of the site's measured traffic turns out to be bots running on rented cloud servers. Your real
+> audience is steady, about 17,500 engaged visits in the last four weeks. The bots matter because Google can limit an
 > ad account that shows many ads to bots.
 >
-> I recommend blocking those cloud servers and Singapore traffic before ads start, first in a
-> watch-only mode for three days and then for real. Real visitors almost never browse from cloud
-> servers, so the risk to them is low. I put this on a decision card with yes and no buttons; if you
-> do nothing, the block stays in watch-only mode and ads launch as planned.
+> The decision: block that bot traffic before ads start, watching for three days first and then
+> blocking for real. I recommend yes. Real visitors almost never browse from cloud servers, so the
+> risk to them is low. If you do nothing, nothing is blocked and the firewall work waits; the
+> request for Google's review goes ahead either way.
 >
 > Decision card: <link to the card>
 >
 > Claude, AdSense setup tab
 
-Why it works: the first line says what it is and that nothing is needed. One plain sentence says why
+Why it works: the first line says what it is and that one decision is waiting. One plain sentence says why
 it matters. The recommendation and the default are stated. The question lives on a card with
 buttons, there is one link, and the sender is named.
