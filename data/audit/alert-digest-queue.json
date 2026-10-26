@@ -725,34 +725,17 @@
     "queuedAt": "2026-10-26T13:26:14.676Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40333144748",
+    "conditionKey": "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026",
+    "title": "1 review(s) for garry-starr-classic-penguins-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--6baa861b.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
+    "severity": "warning",
+    "url": null,
     "decision": false,
     "info": false,
     "decisionPrompt": null,
-    "model": "opus",
+    "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40333144748)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40331633769)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-26T14:03:17.073Z"
+    "fields": [],
+    "queuedAt": "2026-10-26T14:04:05.483Z"
   }
 ]
