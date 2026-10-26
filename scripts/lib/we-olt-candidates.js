@@ -33,10 +33,19 @@ const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = 
 const { venuesMatch } = require('./deduplication');
 const { cleanOltTitle } = require('./olt-archive-parse');
 const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion } = require('./we-historical-corroboration');
+const { parseTrHeaderDates } = require('./we-review-led-candidates');
 
 const DAY_MS = 86400000;
 const AZ_EARLY_DAYS = 7;
 const AZ_LATE_DAYS = 14;
+// Same title + venue: OLT item ids within this many days are one production.
+const COLLAPSE_DAYS = 30;
+// A shows.json row this close in start date is the same production. Wider
+// would swallow a return season (Cats, Palladium: Dec 2014 and Oct 2015).
+const EXISTING_WITHIN_YEARS = 0.5;
+// A run opening this soon after the same title closed at another house is a
+// transfer leg of that production, not a new one.
+const TRANSFER_GAP_DAYS = 21;
 
 // OLT genre labels -> the WOS-style slugs decideWeHistoricalPromotion screens.
 const GENRE_SLUGS = {
@@ -83,15 +92,39 @@ function trPageMatchesListing(lookup, l) {
   return signalMatchesListing({ title: tr.title, venue: tr.venue, date: lookup.review?.date || null }, l);
 }
 
-/** One production can sit under several OLT item ids; keep the most recent snapshot. */
+/**
+ * One production can sit under several OLT item ids, sometimes with dates a
+ * few days apart; keep the most recent snapshot of each title + venue +
+ * start within COLLAPSE_DAYS.
+ */
 function collapseItems(pages) {
-  const byKey = new Map();
+  const kept = [];
+  const startOf = p => Date.parse(p.openingDate || p.previewsStartDate || '');
   for (const p of pages) {
-    const key = `${normalizeTitle(p.title)}|${venueFamily(p.venue)}|${p.openingDate || p.previewsStartDate}`;
-    const prev = byKey.get(key);
-    if (!prev || String(p.snapshot) > String(prev.snapshot)) byKey.set(key, p);
+    const key = `${normalizeTitle(p.title)}|${venueFamily(p.venue)}`;
+    const i = kept.findIndex(k => k.key === key && Math.abs(startOf(k.page) - startOf(p)) <= COLLAPSE_DAYS * DAY_MS);
+    if (i < 0) kept.push({ key, page: p });
+    else if (String(p.snapshot) > String(kept[i].page.snapshot)) kept[i].page = p;
   }
-  return [...byKey.values()];
+  return kept.map(k => k.page);
+}
+
+/**
+ * The closing date a Theatre Record production header states outright
+ * ("Closes 17 Sep 2016", "Until ..."). A bare "12 - 25 February 2016" line
+ * is the TR issue's review period, not the run, so it is ignored.
+ */
+function trStatedClosing(header) {
+  if (!/\b(?:closes|closing|until|final performance|ends)\b/i.test(String(header || ''))) return null;
+  return parseTrHeaderDates(header).closingDate;
+}
+
+/** The listing an OLT run transferred from: same title, another house, closed just before it opened. */
+function transferredFrom(l, listings) {
+  if (l.previewsStartDate) return null;
+  const start = Date.parse(l.openingDate || '');
+  return listings.find(o => o !== l && o.closingDate && titlesMatch(o.title, l.title) && !sameVenue(o.venue, l.venue)
+    && start - Date.parse(o.closingDate) >= 0 && start - Date.parse(o.closingDate) <= TRANSFER_GAP_DAYS * DAY_MS) || null;
 }
 
 /**
@@ -122,7 +155,7 @@ function buildOltCandidates({ season, pages, azTitles = [], trPages = [], review
       if (signalMatchesListing(o, l) && !signals.includes(`olivier-${o.year}`)) signals.push(`olivier-${o.year}`);
     }
     const startDate = l.openingDate || l.previewsStartDate;
-    const dupOpts = { withinYears: 1, startDate, venueEquals: sameVenue };
+    const dupOpts = { withinYears: EXISTING_WITHIN_YEARS, startDate, venueEquals: sameVenue };
     const existing = findExactDuplicate(pool, l.title, l.venue, dupOpts)
       || pool.find(s => s.startDate && westEndIds.has(s.id) && normalizeTitle(s.title) === normalizeTitle(l.title)
         && Math.abs(Date.parse(s.startDate) - Date.parse(startDate)) <= 7 * DAY_MS);
@@ -148,8 +181,14 @@ function buildOltCandidates({ season, pages, azTitles = [], trPages = [], review
       ...(az ? { trAz: { title: az.title, venue: az.venue || null, opened: az.opened } } : {}),
       inShowsJson: existing ? (existing.id || existing.title) : (subtitleOf || null),
     };
+    const trClosing = trPage && trStatedClosing(trPage.header);
+    const transfer = transferredFrom(l, inSeason);
     if (candidate.inShowsJson) {
       candidate.decision = { promotable: false, persistent: true, reason: `already in shows.json: ${candidate.inShowsJson}` };
+    } else if (transfer) {
+      candidate.decision = { promotable: false, persistent: true, reason: `transfer leg of the ${transfer.venue} run (closed ${transfer.closingDate})` };
+    } else if (trClosing && candidate.closingDate && trClosing !== candidate.closingDate) {
+      candidate.decision = { promotable: false, persistent: false, reason: `closing conflict: OLT ${candidate.closingDate}, Theatre Record ${trClosing}` };
     } else if (candidate.closingDate && (!snapshotDay || snapshotDay < candidate.closingDate)) {
       candidate.decision = { promotable: false, persistent: false, reason: `closing ${candidate.closingDate} unconfirmed: newest OLT snapshot ${snapshotDay} predates it` };
     } else {
@@ -161,4 +200,4 @@ function buildOltCandidates({ season, pages, azTitles = [], trPages = [], review
   return candidates;
 }
 
-module.exports = { buildOltCandidates, azMatchesListing, trPageMatchesListing, collapseItems, genreSlugs };
+module.exports = { buildOltCandidates, azMatchesListing, trPageMatchesListing, collapseItems, genreSlugs, trStatedClosing, transferredFrom };
