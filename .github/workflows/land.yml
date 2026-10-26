@@ -706,6 +706,8 @@ jobs:
           LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
           LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}
         run: |
+          # BRO-6276: the Land step sizes its deadman from the job's real start.
+          if [ -n "${GITHUB_ENV:-}" ]; then echo "LAND_JOB_STARTED_AT=$(date +%s)" >> "$GITHUB_ENV"; fi
           cap="${LAND_MUTEX_PARK_DEPTH:-4}"
           if [ "$LAND_MUTEX_DISABLED" = "true" ] || [ "$cap" = "0" ]; then echo "parking disabled; proceeding"; exit 0; fi
           lower="${BRANCH,,}"
@@ -855,20 +857,47 @@ jobs:
         # --riders-file / --train-landed-only: BRO-5282 merge train (see the
         #   step above). A run whose mutex wait ended on a train marker only
         #   confirms that marker and never lands without the lock.
+        # BRO-6276 deadman: the job dies at 125 min with the mutex held, and a
+        #   long queue wait eats into that. The backstop is what is left of a
+        #   110 min budget from the job's start (15 min for the ledger/release
+        #   steps below); land.js stops starting retry attempts 50 min before
+        #   it (LAND_DEADLINE_MIN, land-branch.js deadlineRefusal), so the
+        #   timeout only fires on a real hang.
         run: |
           set +e
           TRAIN_ARGS=()
           if [ "$TRAIN_LANDED" = "true" ]; then TRAIN_ARGS+=(--train-landed-only)
           elif [ -s /tmp/land-riders.json ]; then TRAIN_ARGS+=(--riders-file /tmp/land-riders.json); fi
-          node scripts/land.js --branch "$BRANCH" --source origin \
+          started="${LAND_JOB_STARTED_AT:-$(date +%s)}"
+          case "$started" in ''|*[!0-9]*) started=$(date +%s) ;; esac
+          backstop=$(( 110 - ($(date +%s) - started) / 60 ))
+          [ "$backstop" -lt 10 ] && backstop=10
+          deadline=$(( backstop - 50 )); [ "$deadline" -gt 55 ] && deadline=55; [ "$deadline" -lt 5 ] && deadline=5
+          echo "deadman: ${backstop} min backstop, no new attempt after ${deadline} min"
+          LAND_DEADLINE_MIN="$deadline" timeout --kill-after=60s "${backstop}m" \
+            node scripts/land.js --branch "$BRANCH" --source origin \
             --expect-tip "$TIP" --verified-base "$BASE" "${TRAIN_ARGS[@]}" \
             --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
           rc=${PIPESTATUS[0]}
           set -e
+          if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
+            # Children (git push, the check runners) outlive the killed node.
+            pkill -f 'scripts/land.js' || true
+            pkill -x git || true
+          fi
           if [ ! -f /tmp/land-result.json ]; then
             echo "landed=false" >> "$GITHUB_OUTPUT"
-            echo "failed_check=fatal" >> "$GITHUB_OUTPUT"
-            echo "::error::land.js exited $rc without a result — see the log above"
+            if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
+              # A push may have gone through before the kill. The ref is kept
+              # (not landed), so the branch's next Land run reports
+              # rebased-to-empty if it did.
+              echo "failed_check=deadman" >> "$GITHUB_OUTPUT"
+              echo "reason=land.js hung past the ${backstop} min deadman and was killed; it may have pushed before the kill, re-run the land to confirm" >> "$GITHUB_OUTPUT"
+              echo "::error::land.js killed by the ${backstop} min deadman (rc $rc); mutex released below"
+            else
+              echo "failed_check=fatal" >> "$GITHUB_OUTPUT"
+              echo "::error::land.js exited $rc without a result — see the log above"
+            fi
             exit 0
           fi
           node -e '

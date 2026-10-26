@@ -21,7 +21,7 @@ const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
   selectRecheckScope, isBuildCodePath,
-  isPromisorFetchFailure,
+  isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
@@ -983,4 +983,52 @@ test('makeVerifiedBaseChecks hands the scope to the checks seam; a failed diff m
   const diffArgs = [];
   run((args) => { if (args[0] === 'diff') diffArgs.push(...args); return args[0] === 'merge-base' ? '' : 'x.md'; });
   assert.ok(diffArgs.includes('--no-renames'), 'a rename on main shows both names to the overlap test');
+});
+
+test('BRO-6276 deadline: a lost race past the deadline stops before attempt 2 and hands back a clean refusal', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-deadline');
+    let clock = 0;
+    let pushCalls = 0;
+    const r = landBranch({
+      branch: 'feat-deadline', repoDir: w.repoDir,
+      checks: (...a) => { clock += 60 * 60 * 1000; return greenChecks(...a); },
+      pushMain: (o) => { pushCalls++; w.moveOrigin(); plainPush(o); },
+      now: () => clock, deadlineMs: 55 * 60 * 1000,
+    });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'deadline');
+    assert.equal(r.attempts, 1);
+    assert.equal(pushCalls, 1, 'no second attempt once past the deadline');
+    assert.match(r.reason, /not starting attempt 2/);
+    assert.equal(w.isAncestorOfOrigin(tip), false);
+    assert.equal(w.worktreeCount(), 1, 'worktree cleaned up');
+  } finally { w.cleanup(); }
+});
+
+test('BRO-6276 deadline: under the deadline the retry still runs and lands', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-deadline-ok');
+    let pushCalls = 0;
+    const r = landBranch({
+      branch: 'feat-deadline-ok', repoDir: w.repoDir, checks: greenChecks,
+      pushMain: (o) => { pushCalls++; if (pushCalls === 1) w.moveOrigin(); plainPush(o); },
+      now: () => 0, deadlineMs: 55 * 60 * 1000,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.notEqual(r.sha, tip);
+    assert.equal(w.isAncestorOfOrigin(r.sha), true);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-6276 deadlineRefusal / landDeadlineMs: attempt 1 always runs; bad env values keep the default', () => {
+  assert.equal(deadlineRefusal({ attempt: 1, elapsedMs: 1e9, deadlineMs: 1 }), null);
+  assert.equal(deadlineRefusal({ attempt: 2, elapsedMs: 10, deadlineMs: 100 }), null);
+  assert.match(deadlineRefusal({ attempt: 3, elapsedMs: 100, deadlineMs: 100 }), /attempt 3/);
+  assert.equal(landDeadlineMs({}), DEFAULT_LAND_DEADLINE_MS);
+  assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '40' }), 40 * 60 * 1000);
+  for (const bad of ['0', '4', '121', 'abc', '30.5', '-10', '']) assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: bad }), DEFAULT_LAND_DEADLINE_MS, bad);
 });

@@ -83,6 +83,10 @@ const { SITE_PATHS, SITE_DATA_FILES } = require('./should-deploy-gate.js');
 const { collectBuildScriptDependencies } = require('./build-script-dependencies.js');
 
 const MAX_ATTEMPTS = 3;
+// BRO-6276 deadman: no retry attempt starts once this much wall time has gone. One attempt can take ~50 min
+// (merged-tree suite 30 + build 20), and the Land job dies at 125 min with the mutex held (run 40246798624 held it
+// 588s on one attempt). Stopping at the attempt boundary hands the lock back cleanly with a result file.
+const DEFAULT_LAND_DEADLINE_MS = 55 * 60 * 1000;
 // Inert-churn re-rebases allowed per attempt before a full re-check is forced.
 const MAX_CHURN_SKIPS = 10;
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -170,6 +174,22 @@ function classifyIntervening(files) {
  */
 function classifyPushFailure({ baseSha, nowBase }) {
   return nowBase && baseSha && nowBase !== baseSha ? 'race' : 'rejected';
+}
+
+/**
+ * The deadline for starting another attempt, from LAND_DEADLINE_MIN (whole minutes, 5..120) or the default.
+ * Anything else falls back to the default rather than switching the deadman off.
+ */
+function landDeadlineMs(env = process.env) {
+  const raw = env.LAND_DEADLINE_MIN;
+  const min = /^\d+$/.test(String(raw ?? '').trim()) ? Number(raw) : NaN;
+  return min >= 5 && min <= 120 ? min * 60 * 1000 : DEFAULT_LAND_DEADLINE_MS;
+}
+
+/** Why attempt N must not start (null = go). Attempt 1 always runs: the deadline only stops retries. Pure. */
+function deadlineRefusal({ attempt, elapsedMs, deadlineMs }) {
+  if (attempt <= 1 || !(elapsedMs >= deadlineMs)) return null;
+  return `${Math.round(elapsedMs / 60000)} min spent, past the ${Math.round(deadlineMs / 60000)} min deadline: not starting attempt ${attempt}, handing the landing mutex back`;
 }
 
 /** Whether a failed attempt gets another go. Bounded, never unbounded. */
@@ -565,12 +585,12 @@ function landBranch(o) {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
-    riders = [], trainBases = [], trainChecks = defaultChecks,
+    riders = [], trainBases = [], trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now,
   } = o || {};
-  const t0 = Date.now();
+  const t0 = now();
   const trainDropped = []; // BRO-5282: riders not landed by this run, and why
   const done = (patch) => ({
-    landed: false, sha: null, attempts: 0, wallMs: Date.now() - t0,
+    landed: false, sha: null, attempts: 0, wallMs: now() - t0,
     failedCheck: null, reason: null, pushed: false, files: [], verified: null, contentNote: null,
     baseSha: null, verifiedBase: null, churnSkips: 0, riders: [], trainDropped, ...patch,
   });
@@ -756,6 +776,11 @@ function landBranch(o) {
 
     let lastReason = null;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      const lateBy = deadlineRefusal({ attempt, elapsedMs: now() - t0, deadlineMs });
+      if (lateBy) {
+        log(`[land] ${lateBy}`);
+        return done({ attempts: attempt - 1, failedCheck: 'deadline', reason: `${lateBy} (last: ${lastReason || 'n/a'})`.slice(0, 500) });
+      }
       discardResidue(`attempt ${attempt}`);
       git(['fetch', remote, target], workdir);
       // Pin the base: every later step (rebase, diff, moved-check, trailer)
@@ -961,6 +986,7 @@ function landBranch(o) {
 }
 
 module.exports = {
+  DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
   isPromisorFetchFailure,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,

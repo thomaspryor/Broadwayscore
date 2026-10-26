@@ -9,6 +9,7 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine } = require('./wait-for-land.js');
+const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
 test('diagnostic first lines are bounded before parsing large messages', () => {
   assert.equal(firstLine('request failed\nresponse body'), 'request failed');
@@ -112,6 +113,19 @@ test('a confirmed eviction keeps waiting, names the retry, and flags it once sta
   const stale = verdict({ refSha: TIP, run: run({ ...cancelled, updated_at: minsAgo(45) }) });
   assert.equal(stale.verdict, 'waiting');
   assert.match(stale.why, /30\+ min ago and not re-run/);
+  assert.match(fresh.why, /the sweep will re-run it/);
+  assert.doesNotMatch(stale.why, /retries spent/);
+});
+
+// BRO-6031: once the sweep's budget is spent, say so instead of "retries spent?".
+test('an eviction on the last attempt says retries are spent and how to restart', () => {
+  const spent = verdict({ refSha: TIP, run: run({ id: 1, conclusion: 'cancelled', run_attempt: MAX_ATTEMPTS, cancellation: { kind: 'eviction' } }) });
+  assert.equal(spent.verdict, 'waiting');
+  assert.match(spent.why, new RegExp(`attempt ${MAX_ATTEMPTS} of ${MAX_ATTEMPTS}: retries spent`));
+  assert.match(spent.why, /new commit/);
+  assert.doesNotMatch(spent.why, /land-retry-cancelled/);
+  const early = verdict({ refSha: TIP, run: run({ id: 2, conclusion: 'cancelled', run_attempt: 2, cancellation: { kind: 'eviction' } }) });
+  assert.match(early.why, /attempt 2 of \d+\); the sweep will re-run it/);
 });
 
 // BRO-6015: sessions told to hand-retry, or re-pushing a new ref, lost their place in line.

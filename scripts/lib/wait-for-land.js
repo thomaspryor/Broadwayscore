@@ -50,7 +50,7 @@
 
 const { execFileSync, spawnSync } = require('child_process');
 const path = require('path');
-const { runGhWithFallback, decideLandRetry } = require('./land-retry-on-cancel');
+const { runGhWithFallback, decideLandRetry, MAX_ATTEMPTS } = require('./land-retry-on-cancel');
 const { readLatestLandRun } = require('./land-run-identity');
 const { SITE_PATHS } = require('./should-deploy-gate');
 const { repoDepthArgs } = require('./shallow-fetch-args');
@@ -120,8 +120,12 @@ function landVerdict({ refSha, lastSha = null, run, nowMs }) {
       return { verdict: 'waiting', why: `run ${run.id} parked in the landing line (queue full); the sweep resumes it in order. Keep waiting: do not push a new land ref or retry by hand` };
     }
     const retry = `node scripts/land-retry-cancelled.js --run=${run.id}`;
-    if (ageMs > STALE_EVICTION_MS) return { verdict: 'waiting', why: `run ${run.id} cancelled 30+ min ago and not re-run (retries spent?): ${retry}` };
-    return { verdict: 'waiting', why: `run ${run.id} cancelled (cancelled before landing; the sweep re-runs it, or: ${retry})` };
+    // BRO-6031: say which case this is instead of guessing. The sweep stops
+    // re-running a run once its attempt count reaches MAX_ATTEMPTS.
+    const attempt = run.run_attempt || 1;
+    if (attempt >= MAX_ATTEMPTS) return { verdict: 'waiting', why: `run ${run.id} cancelled on attempt ${attempt} of ${MAX_ATTEMPTS}: retries spent, neither the sweep nor a hand retry will re-run it. Push a new commit to the land ref (merge origin/main) to start a fresh run` };
+    if (ageMs > STALE_EVICTION_MS) return { verdict: 'waiting', why: `run ${run.id} cancelled 30+ min ago and not re-run yet (attempt ${attempt} of ${MAX_ATTEMPTS}; is the Land retry sweep running?): ${retry}` };
+    return { verdict: 'waiting', why: `run ${run.id} cancelled before landing (attempt ${attempt} of ${MAX_ATTEMPTS}); the sweep will re-run it, or: ${retry}` };
   }
   if (RED_CONCLUSIONS.has(run.conclusion)) return { verdict: 'refused', why: `run ${run.id} ${run.conclusion}` };
   return { verdict: 'waiting', why: `run ${run.id} ${run.conclusion}, ref not deleted yet` };
