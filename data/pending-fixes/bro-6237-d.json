@@ -1,16 +1,15 @@
 {
   "issueNumber": "bro-6237-d",
-  "planId": "2e8e4047-1c03-4040-a881-1f1b350b7b61",
+  "planId": "a5974801-ba84-453c-9441-8a5f54a57bd1",
   "status": "pending",
-  "createdAt": "2026-10-26T11:27:01.367Z",
+  "createdAt": "2026-10-26T11:33:49.849Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (9 true non-reviews, 70 real reviews cleared) (part 4 of 4)",
+    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (8 true non-reviews, 71 real reviews cleared) (part 4 of 4)",
     "steps": [
-      "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json: isNonReview",
       "the-piano-lesson-2022/wsj--charles-isherwood.json: nonReviewManualClear",
       "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json: nonReviewManualClear",
       "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json: nonReviewManualClear",
@@ -26,14 +25,6 @@
     ],
     "riskLevel": "low",
     "actions": [
-      {
-        "type": "review-field-edit",
-        "file": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json",
-        "field": "isNonReview",
-        "oldValue": null,
-        "newValue": true,
-        "description": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json: isNonReview"
-      },
       {
         "type": "review-field-edit",
         "file": "the-piano-lesson-2022/wsj--charles-isherwood.json",

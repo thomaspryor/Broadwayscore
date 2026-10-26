@@ -1,15 +1,17 @@
 {
   "issueNumber": "bro-6237-c",
-  "planId": "56c2ce16-a7fd-45ef-a239-e5fee33ffd73",
+  "planId": "27c44e7e-3f54-472b-8e38-f6339b292f6e",
   "status": "pending",
-  "createdAt": "2026-10-26T11:27:01.367Z",
+  "createdAt": "2026-10-26T11:33:49.849Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (9 true non-reviews, 70 real reviews cleared) (part 3 of 4)",
+    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (8 true non-reviews, 71 real reviews cleared) (part 3 of 4)",
     "steps": [
+      "next-to-normal-2009/nydailynews--joe-dziemianowicz.json: nonReviewManualClear",
+      "oklahoma-2019/front-row-center--tulis-mccall.json: nonReviewManualClear",
       "operation-mincemeat-tour-2026/warwick-post--joe-siegel.json: nonReviewManualClear",
       "paradise-square-2022/broadway-and-me--janice-c-simpson.json: nonReviewManualClear",
       "paranormal-activity-2026/nytimes--helen-shaw.json: nonReviewManualClear",
@@ -17,7 +19,6 @@
       "pirates-the-penzance-musical-2025/broadwaynews--brittani-samuel.json: nonReviewManualClear",
       "plaza-suite-2022/broadway-and-me--janice-c-simpson.json: nonReviewManualClear",
       "proof-2026/variety--aramide-tinubu.json: nonReviewManualClear",
-      "punch-west-end-2025/daily-mail--frances-hardy.json: isNonReview",
       "saint-joan-2018/wsj--terry-teachout.json: nonReviewManualClear",
       "shucked-tour-2024/edge-media-network--will-demers.json: nonReviewManualClear",
       "shucked-tour-2024/ladue-news--mark-bretz.json: nonReviewManualClear",
@@ -25,7 +26,6 @@
       "spellbound-off-broadway-2026/front-row-center--david-walters.json: nonReviewManualClear",
       "springwood-west-end-2026/london-box-office--stuart-king.json: nonReviewManualClear",
       "stick-fly-2011/timeout--david-cote.json: nonReviewManualClear",
-      "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json: isNonReview",
       "sweat-2017/reading-eagle--george-hatza.json: nonReviewManualClear",
       "tao-of-glass-west-end-2026/artsdesk--helen-hawkins.json: nonReviewManualClear",
       "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/new-statesman--rachel-cunliffe.json: nonReviewManualClear",
@@ -33,11 +33,27 @@
       "the-great-gatsby-2024/nytimes--laura-collins-hughes.json: nonReviewManualClear",
       "the-guy-who-didnt-like-musicals-west-end-2026/whatsonstage--sonny-waheed.json: nonReviewManualClear",
       "the-last-ship-2014/nytimes--charles-isherwood.json: nonReviewManualClear",
-      "the-normal-heart-2011/wsj--nancy-dewolf-smith.json: isNonReview",
-      "the-notebook-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+      "the-notebook-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear",
+      "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json: nonReviewManualClear"
     ],
     "riskLevel": "low",
     "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "next-to-normal-2009/nydailynews--joe-dziemianowicz.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "next-to-normal-2009/nydailynews--joe-dziemianowicz.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "oklahoma-2019/front-row-center--tulis-mccall.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "oklahoma-2019/front-row-center--tulis-mccall.json: nonReviewManualClear"
+      },
       {
         "type": "review-field-edit",
         "file": "operation-mincemeat-tour-2026/warwick-post--joe-siegel.json",
@@ -93,14 +109,6 @@
         "oldValue": null,
         "newValue": true,
         "description": "proof-2026/variety--aramide-tinubu.json: nonReviewManualClear"
-      },
-      {
-        "type": "review-field-edit",
-        "file": "punch-west-end-2025/daily-mail--frances-hardy.json",
-        "field": "isNonReview",
-        "oldValue": null,
-        "newValue": true,
-        "description": "punch-west-end-2025/daily-mail--frances-hardy.json: isNonReview"
       },
       {
         "type": "review-field-edit",
@@ -160,14 +168,6 @@
       },
       {
         "type": "review-field-edit",
-        "file": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json",
-        "field": "isNonReview",
-        "oldValue": null,
-        "newValue": true,
-        "description": "sunset-boulevard-west-end-2023/bnn--sheena-oberoi.json: isNonReview"
-      },
-      {
-        "type": "review-field-edit",
         "file": "sweat-2017/reading-eagle--george-hatza.json",
         "field": "nonReviewManualClear",
         "oldValue": null,
@@ -224,19 +224,19 @@
       },
       {
         "type": "review-field-edit",
-        "file": "the-normal-heart-2011/wsj--nancy-dewolf-smith.json",
-        "field": "isNonReview",
-        "oldValue": false,
-        "newValue": true,
-        "description": "the-normal-heart-2011/wsj--nancy-dewolf-smith.json: isNonReview"
-      },
-      {
-        "type": "review-field-edit",
         "file": "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
         "field": "nonReviewManualClear",
         "oldValue": null,
         "newValue": true,
         "description": "the-notebook-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-phantom-of-the-opera-west-end-1986/telegraph--unknown.json: nonReviewManualClear"
       }
     ]
   }
