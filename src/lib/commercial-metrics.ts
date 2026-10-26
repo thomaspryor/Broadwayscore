@@ -186,8 +186,8 @@ export function isExcludedFromSeasonStats(commercial: {
 }
 
 /**
- * A show's recoupment outcome is on record: a recouped flag either way, or a
- * reported loss. A closed show labelled only by our model (designationBasis
+ * A show's recoupment outcome is on record: a recouped flag either way, a
+ * reported loss, or a researched close with no recoupment ever announced. A closed show labelled only by our model (designationBasis
  * 'model-estimate', recouped null) has no known outcome (BRO-6354): the model
  * calls some of them Trickle, so counting them as not recouped biases every
  * recoup rate down. Running shows are judged by the caller (not recouped as of
@@ -197,7 +197,8 @@ export function hasKnownRecoupOutcome(commercial: {
   recouped?: boolean | null;
   designationBasis?: string | null;
 }): boolean {
-  return typeof commercial.recouped === 'boolean' || commercial.designationBasis === 'reported-loss';
+  return typeof commercial.recouped === 'boolean'
+    || commercial.designationBasis === 'reported-loss' || commercial.designationBasis === 'no-recoupment-announced';
 }
 
 /** Running = capital still exposed (open or in previews). */

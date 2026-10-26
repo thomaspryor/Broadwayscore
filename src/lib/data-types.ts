@@ -553,6 +553,8 @@ export interface SeasonStats {
   totalShows: number;
   /** Commercial shows whose recoupment outcome is known (hasKnownOutcome): the recoupment count's denominator. */
   outcomeKnown: number;
+  /** Commercial shows that closed with no known outcome, left out of the recoupment count. */
+  closedUnknown: number;
   recoupedShows: string[];
 }
 

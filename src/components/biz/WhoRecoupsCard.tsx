@@ -82,7 +82,7 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
         {findings.recoupedAvgScore != null && findings.closedUnrecoupedAvgScore != null && (
           <p>
             Shows that recouped averaged a critic score of {Math.round(findings.recoupedAvgScore)}. Shows that closed
-            with no recoupment announced averaged {Math.round(findings.closedUnrecoupedAvgScore)}.
+            with no recoupment on record averaged {Math.round(findings.closedUnrecoupedAvgScore)}.
           </p>
         )}
       </div>
@@ -107,7 +107,8 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
       )}
       <p className="px-4 pb-4 text-xs text-gray-500">
         Leaves out nonprofit-only runs and tour stops, which have no investors to repay. Shows still running count as
-        not recouped yet, so the rates by show type can only go up. The critic rows count shows with a critic score
+        not recouped yet. A closed show with no recoupment record, only our model&apos;s estimate, is left out as an unknown
+        outcome, and only seasons where most outcomes are known are counted. The critic rows count shows with a critic score
         that have recouped or closed, and show a correlation only. Recoupment comes from producer announcements and
         trade press. Critic scores are Broadway Scorecard&apos;s.
       </p>

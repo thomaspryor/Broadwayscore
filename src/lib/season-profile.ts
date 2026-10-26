@@ -90,6 +90,8 @@ export interface SeasonProfile {
    * is left out (BRO-6354).
    */
   outcomeKnown: number;
+  /** Commercial productions that closed with no known outcome (the "unknown" count beside the rate). */
+  closedUnknown: number;
   recouped: number;
   capitalization: { all: MoneyAggregate; musical: MoneyAggregate; play: MoneyAggregate };
   /** Disclosed capitalizations plus an estimate for each commercial show with none (estimateCapitalization). */
@@ -175,7 +177,7 @@ function emptyProfile(season: string): SeasonProfile {
     musicalRevivals: 0, musicalRevivalKnown: 0,
     playRevivals: 0, playRevivalKnown: 0,
     openingDayOffsets: [],
-    tracked: 0, nonprofit: 0, commercial: 0, outcomeKnown: 0, recouped: 0,
+    tracked: 0, nonprofit: 0, commercial: 0, outcomeKnown: 0, closedUnknown: 0, recouped: 0,
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
     estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
     capitalByOutcome: { closedUnrecouped: 0, closedUnrecoupedShows: 0, running: 0, runningShows: 0 },
@@ -270,12 +272,28 @@ export function trackedRecord<C extends RecordFacts>(show: { status?: string | n
 
 /**
  * The show counts in a recoupment rate's denominator: its outcome is on record
- * (hasKnownRecoupOutcome), or it has not closed, so it has not recouped as of
+ * (hasKnownRecoupOutcome), or it is running, so it has not recouped as of
  * today. A closed show whose only label is our model's guess is an unknown
- * outcome, not a failure to recoup (BRO-6354).
+ * outcome, not a failure to recoup (BRO-6354); a show that has not opened has
+ * no outcome yet.
  */
 export function hasKnownOutcome(show: { status?: string | null }, c: RecordFacts): boolean {
+  if (NOT_OPENED.has(show.status ?? '')) return false;
   return show.status !== 'closed' || hasKnownRecoupOutcome(c);
+}
+
+const NOT_OPENED = new Set(['upcoming', 'announced']);
+
+/**
+ * Share of a season's opened commercial shows with a known outcome before its
+ * recoupment rate is stated or averaged: a rate over a small known slice
+ * (mostly documented successes, say) would not represent the season.
+ */
+export const MIN_OUTCOME_SHARE = 0.5;
+
+export function hasOutcomeCoverage(p: SeasonProfile): boolean {
+  const opened = p.outcomeKnown + p.closedUnknown;
+  return opened > 0 && p.outcomeKnown / opened >= MIN_OUTCOME_SHARE;
 }
 
 function isResearchPlaceholder(c: RecordFacts): boolean {
@@ -339,6 +357,7 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     p.commercial++;
     const known = hasKnownOutcome(show, c);
     if (known) p.outcomeKnown++;
+    else if (show.status === 'closed') p.closedUnknown++;
     if (c.recouped === true) p.recouped++;
     // Our own estimate of a show's budget is not a disclosed figure: it stays
     // out of the disclosed sums and averages, and fills the estimated total
@@ -459,7 +478,7 @@ export interface HistoryAverage {
   playRevivals: number | null;
   /** Over averaged seasons we track well. */
   nonprofit: number | null;
-  /** Over settled seasons we track well (RECOUP_SETTLE_DAYS): mean recouped and known-outcome shows per season. */
+  /** Over settled seasons we track well (RECOUP_SETTLE_DAYS, hasOutcomeCoverage): mean recouped and known-outcome shows per season. */
   recouped: { recouped: number; outcomeKnown: number; seasons: number } | null;
   disclosedCapital: { avg: number | null; seasons: number };
   estimatedCapital: { avg: number | null; seasons: number };
@@ -475,7 +494,8 @@ export function seasonHistoryAverage(profiles: SeasonProfile[], currentSeason: s
   const meanOf = (vals: number[]) => (vals.length ? vals.reduce((a, b) => a + b, 0) / vals.length : null);
   const tracked = base.filter(hasTrackedCoverage);
   const asOfMs = Date.parse(asOf);
-  const settled = tracked.filter((p) => asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS);
+  const settled = tracked.filter((p) => hasOutcomeCoverage(p)
+    && asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS);
   const disclosedSeasons = base.filter(hasFullCapitalCoverage);
   const estimatedSeasons = base.filter(hasEstimatedCapital);
   return {
@@ -579,7 +599,7 @@ function pctDetail(n: number, d: number): string | null {
 
 /** Some commercial shows closed with no known outcome and are left out of the recoupment rate. */
 export function hasUnknownOutcomes(p: SeasonProfile): boolean {
-  return p.outcomeKnown < p.commercial;
+  return p.closedUnknown > 0;
 }
 
 function withKnownNote(detail: string | null, unknown: boolean): string | null {
@@ -632,11 +652,10 @@ export function seasonBaseline(profiles: SeasonProfile[], season: string): { bas
 export function seasonHistoryRows(profiles: SeasonProfile[], currentSeason: string | null): SeasonProfile[] {
   const sorted = [...profiles].sort((a, b) => b.season.localeCompare(a.season));
   const visible = currentSeason ? sorted.filter((p) => p.season <= currentSeason) : sorted;
-  const top = visible[0];
-  if (!top) return [];
-  const { baseline } = seasonBaseline(visible, top.season);
-  const oldest = baseline[baseline.length - 1]?.season ?? top.season;
-  return visible.filter((p) => p.season >= oldest);
+  // The baseline is the seasons before the one under way, whether or not it has openings yet.
+  const finished = visible.filter((p) => p.season !== currentSeason && p.productions > 0 && !DISRUPTED_SEASONS.has(p.season));
+  const oldest = finished.slice(0, BASELINE_SEASONS).pop()?.season;
+  return oldest ? visible.filter((p) => p.season >= oldest) : visible;
 }
 
 /**
@@ -785,14 +804,15 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   // settled seasons only and an unsettled season's rate is labelled "so far".
   // A season under way states its rate so far: recouping mid-season is rare, so it is mostly 0%.
   const isSettled = (p: SeasonProfile) => asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS;
-  const settled = tracked.filter(isSettled);
+  const settled = tracked.filter((p) => isSettled(p) && hasOutcomeCoverage(p));
+  const recoupOk = (q: SeasonProfile) => hasTrackedCoverage(q) && hasOutcomeCoverage(q);
   const recoupUnsettled = !isSettled(cur) || (!!last && !isSettled(last));
   rows.push({
     label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped as of today',
     format: 'pct',
-    current: trackedOk || inProgress ? sampledShare(cur.recouped, cur.outcomeKnown) : null,
+    current: (trackedOk || inProgress) && hasOutcomeCoverage(cur) ? sampledShare(cur.recouped, cur.outcomeKnown) : null,
     currentDetail: trackedOk || inProgress ? recoupDetail(cur) : null,
-    ...pair((q) => ({ v: q && hasTrackedCoverage(q) ? sampledShare(q.recouped, q.outcomeKnown) : null, d: q && hasTrackedCoverage(q) ? recoupDetail(q) : null })),
+    ...pair((q) => ({ v: q && recoupOk(q) ? sampledShare(q.recouped, q.outcomeKnown) : null, d: q && hasTrackedCoverage(q) ? recoupDetail(q) : null })),
     avg: pooled(settled, (p) => p.recouped, (p) => p.outcomeKnown),
     avgDetail: withKnownNote(avgCountDetail(settled, (p) => p.recouped, (p) => p.outcomeKnown), settled.some(hasUnknownOutcomes)),
     avgSeasons: settled.length,
@@ -917,7 +937,7 @@ export const HIGH_SCORE = 80;
 export function settledRecoupSeasons(shows: SeasonShowInput[], asOf: string): string[] {
   const asOfMs = Date.parse(asOf);
   return buildSeasonProfiles(shows)
-    .filter((p) => hasTrackedCoverage(p) && !DISRUPTED_SEASONS.has(p.season)
+    .filter((p) => hasTrackedCoverage(p) && hasOutcomeCoverage(p) && !DISRUPTED_SEASONS.has(p.season)
       && asOfMs - Date.UTC(parseInt(p.season.slice(5), 10), 6, 1) >= RECOUP_SETTLE_DAYS * DAY_MS)
     .map((p) => p.season)
     .sort();

@@ -19,6 +19,7 @@ import {
   compareSeason,
   formatRowValue,
   hasKnownOutcome,
+  hasOutcomeCoverage,
   hasReturnedCoverage,
   returnedCapitalShare,
   isOwnEstimate,
@@ -503,6 +504,10 @@ test('a closed show labelled only by our model is an unknown outcome, not a fail
   assert.equal(hasKnownOutcome({ status: 'closed' }, com({ designation: 'Flop', designationBasis: 'reported-loss' })), true);
   assert.equal(hasKnownOutcome({ status: 'closed' }, com({ recouped: true })), true);
   assert.equal(hasKnownOutcome({ status: 'open' }, model('Trickle')), true); // running: not recouped as of today
+  assert.equal(hasKnownOutcome({ status: 'closed' }, com({ designation: 'Did Not Recoup', designationBasis: 'no-recoupment-announced' })), true);
+  // Not opened yet: no outcome, even with a stray recouped flag.
+  assert.equal(hasKnownOutcome({ status: 'upcoming' }, com({ recouped: false })), false);
+  assert.equal(hasKnownOutcome({ status: 'announced' }, com()), false);
 
   const shows = [
     ...[1, 2, 3].map((d) => show({ openingDate: `2016-10-0${d}`, status: 'closed', commercial: com({ designation: 'Windfall', recouped: true, capitalization: 5e6 }) })),
@@ -513,6 +518,7 @@ test('a closed show labelled only by our model is an unknown outcome, not a fail
   const p = buildSeasonProfiles(shows).find((x) => x.season === '2016-2017')!;
   assert.equal(p.commercial, 8); // still tracked commercial shows (capital rows)
   assert.equal(p.outcomeKnown, 6);
+  assert.equal(p.closedUnknown, 2);
   assert.equal(p.recouped, 3);
   // The model-only shows leave the closed-without-recouping capital too.
   assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 15e6, closedUnrecoupedShows: 3, running: 0, runningShows: 0 });
@@ -546,4 +552,36 @@ test('Season by Season rows reach back to the oldest season in the 10-season bas
   assert.ok(!rows.includes('2027-2028'), 'no season after the one under way');
   const avg = seasonHistoryAverage(seasonHistoryRows(profiles, '2026-2027'), '2026-2027', '2026-10-26');
   assert.equal(avg.seasons, 10);
+});
+
+test('a season whose outcomes are mostly unknown states no recoupment rate and leaves the averages', () => {
+  // 3 documented successes and 4 model-only closures: 3 of 3 known would read 100%.
+  const shows = [
+    ...[1, 2, 3].map((d) => show({ openingDate: `2017-10-0${d}`, status: 'closed', commercial: com({ designation: 'Windfall', recouped: true }) })),
+    ...[4, 5, 6, 7].map((d) => show({ openingDate: `2017-10-0${d}`, status: 'closed', commercial: com({ designation: 'Flop', designationBasis: 'model-estimate', recouped: null }) })),
+  ];
+  const profiles = buildSeasonProfiles(shows);
+  const p = profiles.find((x) => x.season === '2017-2018')!;
+  assert.equal(hasOutcomeCoverage(p), false);
+  const row = compareSeason(profiles, '2017-2018', '2026-10-26')!.rows.find((r) => r.label === 'Commercial shows recouped')!;
+  assert.equal(row.current, null);
+  assert.equal(row.currentDetail, '3 of 3 with a known outcome'); // the counts still show
+  assert.equal(seasonHistoryAverage(profiles, '2026-2027', '2026-10-26').recouped, null);
+  assert.equal(buildRecoupFindings(shows.map((s) => ({ ...s, status: s.status!, criticScore: null })), '2026-10-26').range, null);
+  // Upcoming shows do not count against coverage: the season under way keeps its rate.
+  const cur = buildSeasonProfiles([
+    ...[1, 2, 3].map((d) => show({ openingDate: `2026-08-0${d}`, status: 'open', commercial: com() })),
+    ...[1, 2, 3, 4, 5].map((d) => show({ openingDate: `2027-03-0${d}`, status: 'upcoming', commercial: com() })),
+  ]).find((x) => x.season === '2026-2027')!;
+  assert.deepEqual([cur.commercial, cur.outcomeKnown, cur.closedUnknown, hasOutcomeCoverage(cur)], [8, 3, 0, true]);
+});
+
+test('Season by Season rows: the season under way with no openings yet still anchors a 10-season baseline', () => {
+  const seasons = ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2021', '2022', '2023', '2024', '2025'];
+  const profiles = buildSeasonProfiles(seasons.map((y) => show({ openingDate: `${y}-10-01` })));
+  const rows = seasonHistoryRows(profiles, '2026-2027').map((p) => p.season);
+  assert.equal(rows[0], '2025-2026');
+  assert.equal(rows[rows.length - 1], '2014-2015'); // 10 finished seasons; 2019-20 is in range but not the baseline
+  assert.ok(!rows.includes('2013-2014'));
+  assert.equal(seasonHistoryAverage(seasonHistoryRows(profiles, '2026-2027'), '2026-2027', '2026-10-26').seasons, 10);
 });

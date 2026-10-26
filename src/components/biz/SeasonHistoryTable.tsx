@@ -95,7 +95,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                   <td className="py-2.5 px-3 text-center text-white font-semibold">{p.productions}</td>
                   <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                     {tracked || current ? `${p.recouped} of ${p.outcomeKnown}` : '—'}
-                    {(tracked || current) && hasUnknownOutcomes(p) && cellNote(`${p.commercial - p.outcomeKnown} unknown`)}
+                    {(tracked || current) && hasUnknownOutcomes(p) && cellNote(`${p.closedUnknown} unknown`)}
                   </td>
                   {showCapital && (
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">

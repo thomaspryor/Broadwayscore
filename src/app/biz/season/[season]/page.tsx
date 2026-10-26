@@ -157,8 +157,8 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
               <span className="text-sm text-gray-400">of {stats.outcomeKnown}</span>
             </div>
             <div className="text-xs text-gray-500">Commercial shows recouped</div>
-            {stats.outcomeKnown < stats.totalShows && (
-              <div className="text-xs text-gray-500">with a known outcome; {stats.totalShows - stats.outcomeKnown} unknown</div>
+            {stats.closedUnknown > 0 && (
+              <div className="text-xs text-gray-500">of shows with a known outcome; {stats.closedUnknown} closed, outcome unknown</div>
             )}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
@@ -193,6 +193,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
                 </div>
                 <div className="text-xs text-gray-500">
                   {outcome.closedUnrecoupedShows} show{outcome.closedUnrecoupedShows === 1 ? '' : 's'}
+                  {stats.closedUnknown > 0 && ` (${stats.closedUnknown} with unknown outcome left out)`}
                   {outcome.runningShows > 0 && `, plus ~${formatRowValue('money', outcome.running)} still at risk in ${outcome.runningShows} running show${outcome.runningShows === 1 ? '' : 's'}`}
                 </div>
               </>

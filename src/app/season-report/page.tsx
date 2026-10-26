@@ -15,7 +15,7 @@ import { getSeason, getSeasonComparison, getSeasonProfiles, getSeasonShowList, g
 import { getMarketDate } from '@/lib/date-utils';
 import { formatDataDate } from '@/lib/biz-format';
 import { BASE_URL, SITE_OG_IMAGE, generateBreadcrumbSchema } from '@/lib/seo';
-import { MIX_ROW_LABELS, MIX_ROW_LABELS_HIDDEN, SHOW_GROUPS, mix, seasonBaseline, showGroup, type RecoupFindings, type SeasonComparison, type SeasonProfile } from '@/lib/season-profile';
+import { MIX_ROW_LABELS, MIX_ROW_LABELS_HIDDEN, SHOW_GROUPS, mix, seasonBaseline, seasonHistoryRows, showGroup, type RecoupFindings, type SeasonComparison, type SeasonProfile } from '@/lib/season-profile';
 
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
@@ -169,7 +169,7 @@ export default function SeasonReportPage() {
   const pick = (labels: readonly string[]) => labels.map((l) => fullComparison?.rows.find((r) => r.label === l)).filter((r): r is NonNullable<typeof r> => !!r);
   const overallRows = pick(MIX_ROW_LABELS.slice(0, 2));
   const withinRows = pick(MIX_ROW_LABELS.slice(2));
-  const history = profiles.filter((p) => !currentSeason || p.season <= currentSeason).slice(0, 11);
+  const history = seasonHistoryRows(profiles, currentSeason);
   const allShows = getAllShows();
   const scores = new Map(allShows.map((s) => [s.slug, s.compositeScore == null ? null : Math.round(s.compositeScore)]));
   const recoup = getRecoupFindings(scores, today);
