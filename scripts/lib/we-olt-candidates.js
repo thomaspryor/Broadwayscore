@@ -14,6 +14,9 @@
  *                  agreeing when TR gives one
  *   - wos-review:  a WhatsOnStage review in the run window
  *   - olivier-YYYY: an Olivier nomination naming the title at that venue
+ *   - tr-page:     a Theatre Record production page (we-historical-tr-resolve
+ *                  lookups) for the title at that venue, in a TR volume of the
+ *                  run's years, its A-Z date within the run window
  *
  * The closing date must be confirmed: the newest archived snapshot has to
  * be dated on or after the closing it shows. A page captured before the
@@ -28,6 +31,7 @@ const { isWestEndVenue } = require('./venue-classification');
 const { isDateInSeason } = require('./we-seasons');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./venue-title-dedup-pool');
 const { venuesMatch } = require('./deduplication');
+const { cleanOltTitle } = require('./olt-archive-parse');
 const { venueFamily, signalMatchesListing, decideWeHistoricalPromotion } = require('./we-historical-corroboration');
 
 const DAY_MS = 86400000;
@@ -61,6 +65,24 @@ function azMatchesListing(az, l) {
   return d >= first - AZ_EARLY_DAYS * DAY_MS && d <= press + AZ_LATE_DAYS * DAY_MS;
 }
 
+/**
+ * TR production-page lookup ({review: {title, date}, tr: {title, venue, link}})
+ * naming this OLT listing's production? The volume year must be a year the
+ * run touches (volume 35 = 2015): an older production of the title at the
+ * same house sits in an older volume.
+ */
+function trPageMatchesListing(lookup, l) {
+  const tr = lookup?.tr;
+  if (!tr?.title || !tr.venue || !tr.link) return false;
+  const vol = /\/archive\/volume\/(\d+)\//.exec(tr.link);
+  if (!vol) return false;
+  const year = 1980 + Number(vol[1]);
+  const startYear = Number(String(l.previewsStartDate || l.openingDate || '').slice(0, 4));
+  const endYear = Number(String(l.closingDate || '').slice(0, 4)) || startYear;
+  if (!startYear || year < startYear || year > endYear) return false;
+  return signalMatchesListing({ title: tr.title, venue: tr.venue, date: lookup.review?.date || null }, l);
+}
+
 /** One production can sit under several OLT item ids; keep the most recent snapshot. */
 function collapseItems(pages) {
   const byKey = new Map();
@@ -76,10 +98,12 @@ function collapseItems(pages) {
  * @param {{season: string, pages: Array<{item: string, url: string, snapshot: string, title: string, venue: string|null,
  *          genre?: string|null, previewsStartDate: string|null, openingDate: string|null, closingDate: string|null}>,
  *          azTitles?: Array<{title: string, venue?: string|null, opened?: string|null}>,
+ *          trPages?: Array<{review?: {title: string, date?: string|null}, tr?: {title: string, venue: string, link: string}|null}>,
  *          reviews?: Array, oliviers?: Array, shows: Array, today?: string}} input
  */
-function buildOltCandidates({ season, pages, azTitles = [], reviews = [], oliviers = [], shows, today }) {
-  const inSeason = collapseItems(pages.filter(p => {
+function buildOltCandidates({ season, pages, azTitles = [], trPages = [], reviews = [], oliviers = [], shows, today }) {
+  // Pages cached before cleanOltTitle existed still carry "Duration 2h30".
+  const inSeason = collapseItems(pages.map(p => ({ ...p, title: cleanOltTitle(p.title) || null })).filter(p => {
     const start = p.openingDate || p.previewsStartDate;
     return p.title && start && p.venue && isWestEndVenue(p.venue) && isDateInSeason(start, season);
   }));
@@ -90,6 +114,8 @@ function buildOltCandidates({ season, pages, azTitles = [], reviews = [], olivie
     const signals = [];
     const az = azTitles.find(a => azMatchesListing(a, l));
     if (az) signals.push('tr-az');
+    const trPage = trPages.find(t => trPageMatchesListing(t, l));
+    if (trPage) signals.push('tr-page');
     const review = reviews.find(r => signalMatchesListing(r, l));
     if (review) signals.push('wos-review');
     for (const o of oliviers) {
@@ -117,6 +143,7 @@ function buildOltCandidates({ season, pages, azTitles = [], reviews = [], olivie
       sourceUrls: {
         olt: `https://web.archive.org/web/${l.snapshot}/${l.url}`,
         ...(review ? { wosReview: review.url } : {}),
+        ...(trPage ? { theatreRecord: trPage.tr.link } : {}),
       },
       ...(az ? { trAz: { title: az.title, venue: az.venue || null, opened: az.opened } } : {}),
       inShowsJson: existing ? (existing.id || existing.title) : (subtitleOf || null),
@@ -134,4 +161,4 @@ function buildOltCandidates({ season, pages, azTitles = [], reviews = [], olivie
   return candidates;
 }
 
-module.exports = { buildOltCandidates, azMatchesListing, collapseItems, genreSlugs };
+module.exports = { buildOltCandidates, azMatchesListing, trPageMatchesListing, collapseItems, genreSlugs };

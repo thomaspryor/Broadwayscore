@@ -15,7 +15,8 @@
  *    pages are cached in data/audit/we-historical-olt-pages.json, shared by
  *    seasons, checkpointed every 25 pages, so a rerun resumes.
  * 3. Second sources: Theatre Record A-Z titles (data/audit/
- *    we-historical-az-<season>.json, when built), WhatsOnStage review posts,
+ *    we-historical-az-<season>.json, when built), Theatre Record production
+ *    pages (we-historical-review-led-<season>.json), WhatsOnStage review posts,
  *    Olivier nominations.
  * 4. Candidates (lib/we-olt-candidates.js) -> data/audit/
  *    we-historical-olt-<season>.json, read by promote-historical-we.js.
@@ -154,6 +155,9 @@ async function main() {
 
   const az = readJson(path.join(ROOT, 'data', 'audit', `we-historical-az-${season}.json`), null);
   const azTitles = (az?.titles || []).filter(t => t.opened);
+  // Theatre Record production pages resolved by we-historical-tr-resolve.yml.
+  const { reviewLedPath } = require('./lib/we-review-led-candidates');
+  const trPages = (readJson(reviewLedPath(ROOT, season), null)?.lookups || []).filter(x => x.tr);
   let reviews = [];
   let oliviers = [];
   if (!offline) {
@@ -162,16 +166,20 @@ async function main() {
     const iso = d => d.toISOString().slice(0, 10);
     reviews = await fetchWosReviews({ after: iso(new Date(start.getTime() - 30 * DAY_MS)), before: iso(new Date(end.getTime() + 120 * DAY_MS)) });
     const endYear = Number(season.split('-')[1]);
-    oliviers = [...(await fetchOlivierCeremonyNominees(endYear)), ...(await fetchOlivierCeremonyNominees(endYear + 1))];
+    // Olivier nominations are one optional signal: a Wikipedia outage (429)
+    // only means fewer promotable rows, so warn and carry on.
+    for (const year of [endYear, endYear + 1]) {
+      try { oliviers.push(...(await fetchOlivierCeremonyNominees(year))); } catch (e) { console.warn(`  Olivier ${year} nominees unavailable: ${e.message}`); }
+    }
   } else {
     const prev = readJson(oltPath(season), null);
     reviews = prev?.signalInputs?.reviews || [];
     oliviers = prev?.signalInputs?.oliviers || [];
   }
-  console.log(`Second sources: TR A-Z dated titles ${azTitles.length}, WOS reviews ${reviews.length}, Olivier lines ${oliviers.length}`);
+  console.log(`Second sources: TR A-Z dated titles ${azTitles.length}, TR production pages ${trPages.length}, WOS reviews ${reviews.length}, Olivier lines ${oliviers.length}`);
 
   const shows = (() => { const d = readJson(path.join(ROOT, 'data', 'shows.json'), { shows: [] }); return d.shows || d; })();
-  const candidates = buildOltCandidates({ season, pages: Object.values(cache.pages), azTitles, reviews, oliviers, shows });
+  const candidates = buildOltCandidates({ season, pages: Object.values(cache.pages), azTitles, trPages, reviews, oliviers, shows });
   const promotable = candidates.filter(c => c.decision.promotable);
   for (const c of candidates) {
     if (!verbose && !c.decision.promotable) continue;
@@ -187,7 +195,7 @@ async function main() {
   writeJson(oltPath(season), {
     generatedAt: new Date().toISOString(),
     season,
-    sources: ['official-london-theatre (wayback)', 'tr-az', 'wos-review', `olivier-${season.split('-')[1]}`, `olivier-${Number(season.split('-')[1]) + 1}`],
+    sources: ['official-london-theatre (wayback)', 'tr-az', 'tr-page', 'wos-review', `olivier-${season.split('-')[1]}`, `olivier-${Number(season.split('-')[1]) + 1}`],
     counts: { listings: candidates.length, promotable: promotable.length, notPromotable: reasons },
     candidates,
     signalInputs: { reviews, oliviers },
