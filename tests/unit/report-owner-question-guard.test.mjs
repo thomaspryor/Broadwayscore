@@ -1,9 +1,14 @@
-import { test } from 'node:test';
+import { test, afterEach } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { guardProcessExit } from '../helpers/process-exit-guard.mjs';
 
 const require = createRequire(import.meta.url);
 const { checkHiddenOwnerQuestion } = require('../../scripts/lib/report-owner-question-guard.js');
+
+// cmdReport tests stub process.exit; keep a stray exit or exitCode from failing the whole file.
+afterEach(() => { process.exitCode = 0; });
+guardProcessExit();
 
 const BLOCK = 'DECISION NEEDED: Add the Liberation tour to the site?\nWhy this is your call: public listing.\nOption A - add: more coverage / unconfirmed\nOption B - wait: safe / later\nMy recommendation: B because Wikipedia does not confirm it.\nDefault: wait.';
 
