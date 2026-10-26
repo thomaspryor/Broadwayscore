@@ -216,9 +216,8 @@ const CORE_DATA_MERGE_REGISTRY = [
     // opening-night-express.yml uses a PER-SHOW concurrency group (see its
     // own comment on `concurrency:`), so multiple shows opening the same
     // night dispatch concurrently and can each append a retry entry to this
-    // file around the same time — same multi-writer shape as
-    // feedback-request-ledger.json. Reconciled ONLY via the case-arm path (same
-    // reasoning as feedback-request-ledger.json above); not opted into the
+    // file around the same time. Reconciled ONLY via the case-arm path (same
+    // multi-writer shape and reasoning as feedback-request-ledger.json above); not opted into the
     // post-rebase reconcile pass since the case-arm fires unconditionally on
     // an actual conflict, which two near-simultaneous appends reliably cause.
     optInReconcile: false,
