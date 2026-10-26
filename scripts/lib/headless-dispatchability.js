@@ -320,7 +320,7 @@ function hasOnlyWorkerTakeableParks(notes, now = new Date()) {
 function takeableParkAdvisory(reason) {
   if (!isWorkerTakeableParkReason(reason)) return null;
   return 'PARK-ADVISORY: this park reason names nothing a worker cannot do (no owner call, key, date, spend or Mac). '
-    + 'File it with --dispatch and a VERIFY line so it lands in Todo. Parked, it waits for the daily unpark drain, '
+    + 'File it with --dispatch and a VERIFY line so it lands in Todo, or with --child "<session title>" if a child session is starting on it now (BRO-6359). Parked, it waits for the daily unpark drain, '
     + 'which moves it to Todo only if it has a safe VERIFY (BRO-5626).';
 }
 

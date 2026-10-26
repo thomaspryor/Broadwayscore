@@ -23,15 +23,18 @@ const USAGE_MESSAGE =
   'with a stated reason, or --self when this session is already doing the work. Neither was given — that silent third state is the bug this gate exists to close.\n' +
   '  --dispatch                   create it and let a worker take it\n' +
   '  --self                       create it In Progress, claimed by this session (its own work, BRO-6130)\n' +
+  '  --child "<what>"             create it In Progress, claimed, for a child session this one is starting now (BRO-6359)\n' +
   `  --park "<reason (>=${MIN_PARK_REASON_LENGTH} chars)>"  create it parked, with a reason a reader can act on`;
 
 /**
  * @param {{dispatch?: boolean, park?: string|boolean, self?: boolean}} opts
  * @returns {{ok: true, mode: 'dispatch'|'park'|'self', reason?: string} | {ok: false, reason: string, message: string}}
  */
-function resolveDisposition({ dispatch, park, self } = {}) {
+function resolveDisposition({ dispatch, park, self, child } = {}) {
   const hasDispatch = !!dispatch;
-  const hasSelf = !!self;
+  // BRO-6359: --child "<what>" = a child session is starting on this card now; filed exactly like --self
+  // (In Progress, claimed) so no worker takes it.
+  const hasSelf = !!self || (typeof child === 'string' && child.trim().length > 0);
   // A bare `--park` with no value parses as `true`, not a string — treat that
   // the same as "no reason given" rather than silently accepting it.
   const hasPark = typeof park === 'string' && park.trim().length > 0;
@@ -42,7 +45,7 @@ function resolveDisposition({ dispatch, park, self } = {}) {
     return {
       ok: false,
       reason: 'BOTH_FLAGS',
-      message: 'Pass exactly one of --dispatch, --self or --park "<reason>".',
+      message: 'Pass exactly one of --dispatch, --self, --child or --park "<reason>".',
     };
   }
 
