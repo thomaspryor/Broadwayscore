@@ -121,6 +121,16 @@ function normalizeDate(dateStr) {
   // Fallback: strip ordinals and try new Date()
   const parsed = new Date(cleaned);
   if (!isNaN(parsed.getTime())) {
+    // BRO-2844: new Date() rolls an impossible day forward ("February 30,
+    // 2022 10:00 AM" -> 2022-03-02) and this branch skips validateCalendarDate.
+    // Reject a stated day that does not exist in its stated month. This reads
+    // the day from the text, not from `parsed`, so timezone offsets in the
+    // string cannot cause a false rejection.
+    const stated = cleaned.match(/\b([A-Za-z]{3,9})\.?\s+(\d{1,2})(?!\d)\D.*?\b((?:19|20)\d{2})\b/);
+    if (stated) {
+      const mn = MONTH_TO_NUM[stated[1].toLowerCase()] || MONTH_ABBR_TO_NUM[stated[1].toLowerCase()];
+      if (mn && Number(stated[2]) > new Date(Number(stated[3]), Number(mn), 0).getDate()) return null;
+    }
     return parsed.toISOString().slice(0, 10);
   }
 

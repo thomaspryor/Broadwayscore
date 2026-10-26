@@ -104,3 +104,11 @@ describe('maxPlausibleYear', () => {
     assert.deepEqual(offenders, [], 'use maxPlausibleYear({ atLeast }) from scripts/lib/date-utils.js');
   });
 });
+
+// BRO-2844: the last-resort new Date() branch rolled impossible days forward.
+describe('normalizeDate last-resort branch rejects impossible calendar days', () => {
+  test('February 30 with a time', () => assert.equal(normalizeDate('February 30, 2022 10:00 AM'), null));
+  test('Feb 30 abbreviated', () => assert.equal(normalizeDate('Feb 30 2022 12:00'), null));
+  test('real leap day with a time still parses', () => assert.equal(normalizeDate('Feb 29 2024 12:00'), '2024-02-29'));
+  test('real date with ordinal and time still parses', () => assert.equal(normalizeDate('Oct 7th, 2022 3:15 PM'), '2022-10-07'));
+});
