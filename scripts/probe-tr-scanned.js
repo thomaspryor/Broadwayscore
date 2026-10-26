@@ -79,13 +79,30 @@ function tesseractStats(imgPath) {
       const jar2 = path.join(tmp2, 'c.txt');
       fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
       try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
-      if (pg === 'azparse') {
-        // parsed A-Z entries (title, type, dates, page ref) as one JSON line per entry; no prose
-        const { parseAzEntries } = require('./lib/tr-az-parse');
-        const raw = sh('pdftotext', ['-raw', pdf2, '-']);
-        const entries = parseAzEntries(raw);
-        console.log(`AZ ${hitPath} entries=${entries.length}`);
-        entries.forEach(e => console.log('AZE ' + JSON.stringify([hitPath.replace('/archive/issue/', ''), e.title, e.type, e.opened, e.seasonFrom, e.seasonTo, e.closes, e.page])));
+      if (pg === 'azraw') {
+        // BRO-6298: the A-Z section only (a listing of titles, types, venues, dates, phone numbers; no review prose).
+        // Finds the marker page via per-page layout text, then prints up to 8 pages from it as one line per
+        // pdftotext -bbox-layout text line with its position: AZL|issue|page|xMin|yMin|xMax|text
+        const id = hitPath.replace('/archive/issue/', '');
+        const pages = sh('pdftotext', ['-layout', pdf2, '-']).split('\f');
+        const markerRe = /A\s*[-\u2013]\s*Z of (?:current )?(?:London )?productions/i;
+        const first = pages.findIndex((t, i) => i >= pages.length * 0.4 && markerRe.test(t.replace(/\s+/g, ' ')));
+        console.log(`AZRAW ${id} pages=${pages.length} markerPage=${first}`);
+        if (first < 0) {
+          pages.forEach((t, i) => t.split('\n').forEach(l => { if (/\bA-Z\b|productions|running in/i.test(l)) console.log(`AZHINT|${id}|p${i + 1}|${l.replace(/\s+/g, ' ').slice(0, 120)}`); }));
+          continue;
+        }
+        const last = Math.min(pages.length, first + 10);
+        const xml = sh('pdftotext', ['-bbox-layout', '-f', String(first + 1), '-l', String(last), pdf2, '-']);
+        const dec = t => t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+        let pageNo = first;
+        for (const pm of xml.split('<page ').slice(1)) {
+          pageNo++;
+          for (const lm of pm.matchAll(/<line xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="[\d.]+">([\s\S]*?)<\/line>/g)) {
+            const text = dec([...lm[4].matchAll(/<word [^>]*>([^<]*)<\/word>/g)].map(w => w[1]).join(' '));
+            console.log(`AZL|${id}|${pageNo}|${Math.round(lm[1])}|${Math.round(lm[2])}|${Math.round(lm[3])}|${text}`);
+          }
+        }
         continue;
       }
       if (pg === 'az') {

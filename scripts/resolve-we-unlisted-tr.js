@@ -33,12 +33,15 @@ const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeade
 const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { venueFamily } = require('./lib/we-historical-corroboration');
+const { azLookups } = require('./lib/we-az-lookups');
+const { normalizeTitle } = require('./lib/title-match');
 
 const ROOT = path.join(__dirname, '..');
 const USAGE = `resolve-we-unlisted-tr.js — Theatre Record lookups for WE reviews with no WOS listing (BRO-5031).
 
 Usage:
   node scripts/resolve-we-unlisted-tr.js --seasons=2019-2020[,2020-2021...] [--dry-run]
+  node scripts/resolve-we-unlisted-tr.js --seasons=2015-2016 --resume [--budget-min=35]   # also looks up data/audit/we-historical-az-<season>.json titles (BRO-6298); keeps finished rows
   node scripts/resolve-we-unlisted-tr.js --dateless [--dry-run]   # existing closed WE rows with no openingDate (BRO-5850)
 
 Needs TR_EMAIL and TR_PASSWORD (GitHub Actions: we-historical-tr-resolve.yml).
@@ -498,6 +501,9 @@ async function main() {
   if (hasHelpFlag(args)) { console.log(USAGE); return; }
   const seasonsArg = (args.find(a => a.startsWith('--seasons=')) || '').split('=')[1];
   const dryRun = args.includes('--dry-run');
+  const resume = args.includes('--resume');
+  const budgetMin = Number((args.find(a => a.startsWith('--budget-min=')) || '').split('=')[1]) || 0;
+  const startedAt = Date.now();
   const dateless = args.includes('--dateless');
   if (!seasonsArg && !dateless) { console.error(USAGE); process.exit(2); }
   const seasons = dateless ? [DATELESS_KEY] : seasonsArg.split(',').map(s => s.trim()).filter(Boolean);
@@ -510,7 +516,14 @@ async function main() {
     const file = path.join(ROOT, 'data', 'audit', `we-historical-candidates-${season}.json`);
     if (!fs.existsSync(file)) throw new Error(`no candidates file for ${season}: run discover-historical-shows-we.js first`);
     const audit = JSON.parse(fs.readFileSync(file, 'utf8'));
-    return { season, ...selectLookups(audit.unlistedReviews, season) };
+    const sel = selectLookups(audit.unlistedReviews, season);
+    const azFile = path.join(ROOT, 'data', 'audit', `we-historical-az-${season}.json`);
+    if (fs.existsSync(azFile)) {
+      const az = azLookups(JSON.parse(fs.readFileSync(azFile, 'utf8')), sel.lookups);
+      sel.lookups.push(...az.lookups);
+      sel.dropped.push(...az.dropped);
+    }
+    return { season, ...sel };
   });
   for (const p of plan) {
     console.log(`${p.season}: ${p.lookups.length} lookups, ${p.dropped.length} dropped`);
@@ -609,7 +622,29 @@ async function main() {
   try {
     for (const p of plan) {
       const rows = [];
+      // --resume keeps finished rows (no error) of an earlier partial run, so a time-boxed run can be dispatched again
+      const prior = new Map();
+      // without --resume the old file is still the fallback for lookups a time-boxed run never reaches, so a partial run cannot shrink a complete file
+      const old = new Map();
+      if (budgetMin && p.season !== DATELESS_KEY && fs.existsSync(reviewLedPath(ROOT, p.season))) {
+        for (const r of JSON.parse(fs.readFileSync(reviewLedPath(ROOT, p.season), 'utf8')).lookups || []) {
+          old.set(`${normalizeTitle(r.review.title)}|${r.review.venue || ''}`, r);
+        }
+      }
+      if (resume && p.season !== DATELESS_KEY && fs.existsSync(reviewLedPath(ROOT, p.season))) {
+        for (const r of JSON.parse(fs.readFileSync(reviewLedPath(ROOT, p.season), 'utf8')).lookups || []) {
+          if (!r.error) prior.set(`${normalizeTitle(r.review.title)}|${r.review.venue || ''}`, r);
+        }
+      }
+      let pending = 0;
       for (const review of p.lookups) {
+        const done = prior.get(`${normalizeTitle(review.title)}|${review.venue || ''}`);
+        if (done) { rows.push({ ...done, review }); continue; }
+        if (budgetMin && Date.now() - startedAt > budgetMin * 60000) {
+          const kept = old.get(`${normalizeTitle(review.title)}|${review.venue || ''}`);
+          if (kept) rows.push({ ...kept, review }); else pending++;
+          continue;
+        }
         const row = { review, tr: null, trResults: [], header: null, error: null };
         try {
           const results = await search(review.title);
@@ -623,13 +658,17 @@ async function main() {
           console.log(`  ${review.title}: ERROR ${e.message}`);
         }
         rows.push(row);
-        // Checkpoint: a 97-row run can hit the workflow timeout, and the file is written only here.
+        // Checkpoint (local runs; CI commits only after the step ends, so the time budget is what protects CI).
+        if (p.season !== DATELESS_KEY && rows.length % 10 === 0 && !prior.size && !old.size) { // a checkpoint of a resumed run would shrink the file it resumes from
+          fs.writeFileSync(reviewLedPath(ROOT, p.season), JSON.stringify({ generatedAt: new Date().toISOString(), season: p.season, partial: true, lookups: rows, dropped: p.dropped }, null, 2) + '\n');
+        }
         if (p.season === DATELESS_KEY && rows.length % 10 === 0) {
           fs.writeFileSync(datelessPath(ROOT), JSON.stringify({ generatedAt: new Date().toISOString(), season: p.season, partial: true, lookups: rows, dropped: p.dropped }, null, 2) + '\n');
         }
         await page.waitForTimeout(1500);
       }
-      const out = { generatedAt: new Date().toISOString(), season: p.season, lookups: rows, dropped: p.dropped };
+      const out = { generatedAt: new Date().toISOString(), season: p.season, ...(pending ? { partial: true, pending } : {}), lookups: rows, dropped: p.dropped };
+      if (pending) console.log(`${p.season}: time budget reached, ${pending} lookups still pending (dispatch again with --resume)`);
       fs.writeFileSync(p.season === DATELESS_KEY ? datelessPath(ROOT) : reviewLedPath(ROOT, p.season), JSON.stringify(out, null, 2) + '\n');
       console.log(`${p.season}: wrote ${rows.length} rows (${rows.filter(r => r.header).length} with a header)`);
     }
