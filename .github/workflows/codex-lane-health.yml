@@ -96,6 +96,8 @@ jobs:
           path: |
             /tmp/codex-lane-health.json
             /tmp/codex-lane-health.txt
+            /tmp/codex-trust-ladder.json
+            /tmp/codex-trust-ladder.txt
           if-no-files-found: ignore
           retention-days: 14
 
@@ -114,6 +116,47 @@ jobs:
             echo "No alert-router state changes to commit"
           else
             git commit -m "chore: persist codex-lane-health alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      # BRO-6263: trust ladder. Reads the alarm's record plus the BRO-4745 summaries and git
+      # reverts, and writes data/audit/codex-trust-ladder.json. Ships in shadow mode with
+      # promote disabled (state file decides); relocks and alerts only fire in live mode.
+      # Kill switch: repo variable CODEX_LADDER_DISABLED=true (or killSwitch in the owner file).
+      - name: Evaluate Codex trust ladder
+        if: always() && vars.CODEX_LADDER_DISABLED != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          CODEX_TRUST_LADDER_DISABLED: ${{ vars.CODEX_LADDER_DISABLED }}
+        run: |
+          set +e
+          node scripts/codex-trust-ladder.js --health=/tmp/codex-lane-health.json --apply --alert --out=/tmp/codex-trust-ladder.json | tee /tmp/codex-trust-ladder.txt
+          EC=${PIPESTATUS[0]}
+          set -e
+          { echo '## Codex trust ladder'; echo; echo '```'; cat /tmp/codex-trust-ladder.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+          case "$EC" in
+            0) ;;
+            1) echo "::error::a trust ladder state file is corrupt (exit 1): runner access is locked to baseline until fixed"; exit 1 ;;
+            *) echo "::error::codex-trust-ladder.js exited $EC"; exit 1 ;;
+          esac
+
+      - name: Persist trust ladder state
+        if: always() && vars.CODEX_LADDER_DISABLED != 'true'
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/codex-trust-ladder.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No trust ladder state changes to commit"
+          else
+            git commit -m "chore: codex trust ladder state [skip ci]"
             bash scripts/lib/push-with-retry.sh 5 main
           fi
 

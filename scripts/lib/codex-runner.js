@@ -1400,6 +1400,7 @@ function runnerSummaryFacts(body) {
   return {
     landed: landedIds.length,
     landedIds, // BRO-5671: the ids, for cost per landed card
+    rejected: list('Did not pass the Claude check, back to Todo').length, // BRO-6263: rejection rate for the trust ladder
     hasCheckLine: /^- Claude check: \d+ review\(s\), \$[\d.]+/m.test(String(body || '')),
     crashed: list('Runner error mid-card \\(back to Todo\\)').length,
     stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',

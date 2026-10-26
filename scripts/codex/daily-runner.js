@@ -62,6 +62,7 @@ const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-park
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
 const DF = require(path.join(ROOT, 'scripts/lib/codex-data-fixes.js'));
+const TL = require(path.join(ROOT, 'scripts/lib/codex-trust-ladder.js'));
 const PF = require(path.join(ROOT, 'scripts/lib/codex-sandbox-preflight.js'));
 const { createSandbox, sandboxUser, judgeLandSandboxed, readSandboxFile, JSON_MARK } = require(path.join(ROOT, 'scripts/lib/codex-sandbox.js'));
 
@@ -500,6 +501,7 @@ function commitAttempt(card, attempt, message = null) {
   const names = git(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
+  if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder (its own grading rules), which the runner never lands' };
   // A staged symlink could point at the private data the runner links in (land refuses tracked symlinks too).
   if (/^:\d+ 120000 /m.test(git(['diff', '--cached', '--raw']))) return { hasDiff: true, blocked: 'the change adds a symlink, which the runner never lands' };
   if (R.looksLikeSecretLeak(git(['diff', '--cached']))) return { hasDiff: true, blocked: 'the diff looks like it carries token material' };

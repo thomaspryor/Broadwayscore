@@ -468,7 +468,7 @@ test('runnerHealth: a lapsed Codex login reads as such, and the row is internal-
 
 test('runnerSummaryFacts: one parser for the lane alarm and the daily row', () => {
   const b = '## Codex runner 2026-10-14: 2 card(s) worked in 90 min\n- Landed and Done: BRO-1, \n- Landed part, back to Todo with what is left: BRO-2\n- Runner error mid-card (back to Todo): BRO-3, BRO-4\n- Stopped early: no';
-  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, landedIds: ['BRO-1', 'BRO-2'], hasCheckLine: false, crashed: 2, stop: 'no', checkUsd: 0 });
+  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, landedIds: ['BRO-1', 'BRO-2'], hasCheckLine: false, rejected: 0, crashed: 2, stop: 'no', checkUsd: 0 });
   assert.equal(r.runnerSummaryFacts(`${b}\n- Claude check: 2 review(s), $1.25 API cost`).hasCheckLine, true);
   assert.match(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: b }], Date.parse('2026-10-14T10:00:00Z')).message, /2 card\(s\) landed, 2 crashed/);
 });
