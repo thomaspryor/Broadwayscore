@@ -254,6 +254,11 @@ APPROVAL_RESULT=$(node "$SCAN" --query=approval-of "$VERDICT_HASH" --transcript=
 APPROVED=$(echo "$APPROVAL_RESULT" | jq -r '.approved // false' 2>/dev/null)
 
 if [ "$APPROVED" != "true" ]; then
+  # BRO-419: route ready-to-review evidence to the owner's Linear channel.
+  # Notification success is not approval: every outcome still exits 2 below.
+  node "$CANONICAL_ROOT/scripts/lib/linear-attach-approval.js" \
+    --branch="$BRANCH" --repo="$SESSION_ROOT" --dir="$(dirname "$VERDICT_PATH")" \
+    >/dev/null || true
   echo "🛑 BLOCKED: a passing visual-qa verdict exists (overallPass=$OVERALL_PASS) but the user has not yet approved it. Show the user the visual, then wait for their reply. ANY plain affirmative in their next message clears the gate — \"ship it\", \"ship all four\", \"looks good\", \"yes\", \"send them\", \"go\", etc. NEVER ask the user to type, copy, or paste a hash/token/APPROVED: string — that is not their job and is the exact friction we removed. Other bypasses (you, not the user): \"ship immediately for: <reason>\" | NO-VERIFY: <reason>." >&2
   exit 2
 fi
