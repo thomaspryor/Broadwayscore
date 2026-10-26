@@ -1,53 +1,64 @@
 {
-  "updatedAt": "2026-10-26T08:43:49.527Z",
-  "processed": 23,
-  "failed": 8,
-  "successRate": "74.2%",
+  "updatedAt": "2026-10-26T08:50:43.810Z",
+  "processed": 42,
+  "failed": 1,
+  "successRate": "97.7%",
   "tierBreakdown": {
-    "playwright": 15,
+    "playwright": 27,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 3,
+    "scrapingdog": 0,
+    "scrapingbee": 6,
     "brightdata": 4,
     "archiveToday": 0,
     "archive": 4
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-26T08:31:38.787Z",
+      "t": "2026-10-26T08:38:24.261Z",
       "event": "bb-session",
-      "session": "586f5610",
-      "url": "https://www.nytimes.com/2024/09/24/theater/ghost-of-john-mccain-review-trump.htm"
+      "session": "4404bb47",
+      "url": "https://www.nytimes.com/2024/11/26/theater/we-are-your-robots-review.html"
     },
     {
-      "t": "2026-10-26T08:31:39.398Z",
+      "t": "2026-10-26T08:38:25.014Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-26T08:39:38.912Z",
+      "t": "2026-10-26T08:39:47.379Z",
       "event": "bb-session",
-      "session": "d009ee4d",
-      "url": "https://www.nytimes.com/2024/09/21/theater/kate-mulgrew-beacon-irish-rep.html"
+      "session": "cc064305",
+      "url": "https://www.nytimes.com/2024/11/21/theater/the-blood-quilt-review.html"
     },
     {
-      "t": "2026-10-26T08:39:39.628Z",
+      "t": "2026-10-26T08:39:48.069Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-26T08:43:24.355Z",
+      "t": "2026-10-26T08:44:06.469Z",
       "event": "bb-session",
-      "session": "b3015bcf",
-      "url": "https://www.wsj.com/arts-culture/books/impossible-monsters-and-dinosaurs-at-the-"
+      "session": "530e761f",
+      "url": "https://www.nytimes.com/2024/11/13/theater/strategic-love-play-review.html"
     },
     {
-      "t": "2026-10-26T08:43:25.018Z",
+      "t": "2026-10-26T08:44:07.199Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T08:47:18.215Z",
+      "event": "bb-session",
+      "session": "f9c90eb5",
+      "url": "https://www.nytimes.com/2024/10/27/theater/we-live-in-cairo-review.html"
+    },
+    {
+      "t": "2026-10-26T08:47:18.817Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
