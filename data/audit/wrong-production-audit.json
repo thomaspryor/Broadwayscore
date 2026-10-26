@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T21:59:17.833Z",
+  "timestamp": "2026-10-26T22:50:55.400Z",
   "stats": {
-    "totalReviews": 62627,
+    "totalReviews": 62648,
     "alreadyFlagged": 21565,
     "dateGuardCatches": 223,
-    "directorMismatch": 2305,
+    "directorMismatch": 2316,
     "tvFilmSignals": 1772,
     "londonSignals": 3020,
     "offBroadwaySignals": 553,
-    "yearMismatch": 211,
-    "noPublishDate": 5557
+    "yearMismatch": 210,
+    "noPublishDate": 5561
   },
   "findings": [
     {
@@ -19851,20 +19851,6 @@
     },
     {
       "showId": "hangmen-2022",
-      "file": "theatermania--david-gordon.json",
-      "score": 77,
-      "publishDate": "April 21, 2022",
-      "url": "https://www.theatermania.com/broadway/news/review-martin-mcdonaghs-hangmen-is-a-fun-broadway_93664.html",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2015 (2x) more than 2022 (1x). 2015 matches production: hangmen-west-end-2015"
-        }
-      ]
-    },
-    {
-      "showId": "hangmen-2022",
       "file": "theatermania--jesse-green.json",
       "score": 77,
       "publishDate": "April 21, 2022",
@@ -27638,6 +27624,157 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2025-02-20",
+      "url": "https://culturesauce.com/2025/02/20/liberation-bess-wohl-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2025-02-28",
+      "url": "https://exeuntnyc.com/reviews/review-liberation-at-the-laura-pels-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "nysr--roma-torre.json",
+      "publishDate": "2025-02-20",
+      "url": "https://nystagereview.com/2025/02/20/liberation-a-beautifully-evocative-look-at-the-cause-circa-1970/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "nytg--austin-fimmano.json",
+      "score": null,
+      "publishDate": "2025-02-21",
+      "url": "https://www.newyorktheatreguide.com/reviews/liberation-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "nytimes--jesse-green.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.nytimes.com/2025/02/20/theater/bess-wohl-liberation-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.nytimes.com/2025/02/20/theater/bess-wohl-liberation-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "off-off-online--adrienne-onofri.json",
+      "score": null,
+      "publishDate": "2025-02-21",
+      "url": "https://www.offoffonline.com/offoffonline/2025/2/19/liberation",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "theater-life--unknown.json",
+      "score": null,
+      "publishDate": "2025-02-22",
+      "url": "https://theaterlife.com/liberation-the-antiquities/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": "2025-02-25",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/liberation/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "theatermania--rachel-graham.json",
+      "score": null,
+      "publishDate": "2025-02-20",
+      "url": "https://www.theatermania.com/news/review-bess-wohl-interrogates-the-womens-movement-in-liberation-off-broadway_1764629/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "vulture--sara-holdren.json",
+      "score": null,
+      "publishDate": "2025-02-20",
+      "url": "https://www.vulture.com/article/liberation-bess-wohl-play-theater-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
         }
       ]
     },
