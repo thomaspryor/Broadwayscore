@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "billy-crystal-860-2026",
   "openingDate": "2026-10-21",
-  "detectedAt": "2026-10-26T08:55:38.353Z",
+  "detectedAt": "2026-10-26T08:59:13.223Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "harunaenterprisesltd--haruna-enterprises-ltd.json",
-      "outletId": "harunaenterprisesltd",
-      "criticName": "Haruna Enterprises Ltd",
-      "url": "https://harunaenterprisesltd.com/pro/broadway-review-billy-crystal-in-860-a1imdgxpg1",
-      "fullTextLen": 5114,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "hollywood-reporter--caitlin-huston.json",
       "outletId": "hollywood-reporter",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-26T08:44:44.833Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
