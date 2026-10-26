@@ -21,7 +21,8 @@ const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { isLateTheatreRecordReviewOfBroadwayShow } = require('./lib/tr-late-review-guard');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, resolveSplitOutletByCritic, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
+const { splitOutletForLabel } = require('./lib/outlet-mismatch-heal');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
 const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
@@ -598,7 +599,7 @@ async function main() {
       }
 
       const parentOutletId = getOutletId(review.outlet);
-      const outletId = resolveSplitOutletByCritic(parentOutletId, review.critic);
+      const outletId = splitOutletForLabel(parentOutletId, review.outlet, review.critic);
       const outletDisplay = getRegistryDisplayName(outletId) || review.outlet;
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);

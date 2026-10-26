@@ -13,7 +13,7 @@
  * checked before rejecting.
  */
 
-const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
+const { normalizeOutlet, normalizeCritic, editionGroupKey } = require('./review-normalization');
 const { foldDiacritics } = require('./title-match');
 const { titleMatchWords, wordPattern } = require('./title-word-match');
 
@@ -116,9 +116,12 @@ function isCorroboratedByRoundup(outlet, critic, roundupRows) {
   if (!Array.isArray(roundupRows) || roundupRows.length === 0) return false;
   const criticId = normalizeCritic(critic);
   if (criticId === 'unknown') return false;
-  const outletId = normalizeOutlet(outlet);
+  // BRO-6287: Theatre Record labels the parent ("Daily Mail") for a split
+  // child's byline while a roundup lists the child ("Mail on Sunday"); compare
+  // edition families, the critic check below still pins the individual.
+  const outletKey = editionGroupKey(normalizeOutlet(outlet));
   return roundupRows.some(row => {
-    if (normalizeOutlet(row.outlet) !== outletId) return false;
+    if (editionGroupKey(normalizeOutlet(row.outlet)) !== outletKey) return false;
     const rowCriticId = normalizeCritic(row.critic);
     return rowCriticId === 'unknown' || rowCriticId === criticId;
   });

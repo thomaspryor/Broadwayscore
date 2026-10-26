@@ -86,7 +86,12 @@ const KNOWN_OUTLETS_UPPER = new Set([
 // (BRO-6127: the 2018 Pressure/The Band reviews were dropped for want of it).
 const outletKey = (t) => t.replace(/\s*\([^)]*\)\s*$/, '').replace(/^THE\s+/, '');
 const KNOWN_OUTLET_KEYS = new Set([...KNOWN_OUTLETS_UPPER].map(outletKey));
-const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t) || KNOWN_OUTLET_KEYS.has(outletKey(t));
+// BRO-6287: a bare masthead only counts when it is not also a plausible
+// production title ("THE SUN" is an outlet, "SUN" or "LIST" is a show); those
+// keep their exact "THE X" form.
+const AMBIGUOUS_BARE_KEYS = new Set(['I', 'SUN', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD']);
+const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t)
+  || (KNOWN_OUTLET_KEYS.has(outletKey(t)) && !AMBIGUOUS_BARE_KEYS.has(outletKey(t)));
 
 // `stats` (optional) is filled for the BRO-6097 coverage probe: whether the
 // production's Reviews section was found, how many outlet+date headers it
@@ -655,6 +660,7 @@ function locateReviews(text, reviews, showTitle) {
 
 module.exports = {
   productionRuns,
+  isKnownOutletLine,
   sectionOwnedBy,
   venueOwnedBy,
   productionSections,

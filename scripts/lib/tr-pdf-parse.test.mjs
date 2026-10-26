@@ -426,3 +426,13 @@ test('BRO-6154 venueOwnedBy tolerates renames, possessives and the title in the 
   assert.equal(venueOwnedBy(h('ALL ABOUT EVE'), 2, 'No\u00ebl Coward Theatre', 'All About Eve'), true);
   assert.equal(venueOwnedBy(h('WYNDHAM\u2019S THEATRE'), 2, 'No\u00ebl Coward Theatre', 'All About Eve'), false);
 });
+
+// BRO-6287 (side item 5): a bare masthead key must not turn a short production
+// title into an outlet marker, while the printed forms still match.
+const { isKnownOutletLine } = require('./tr-pdf-parse.js');
+test('isKnownOutletLine: printed mastheads match, ambiguous bare keys do not', () => {
+  for (const ok of ['THE GUARDIAN', 'GUARDIAN', 'INDEPENDENT', 'METRO (LONDON)', 'THE SUN', 'THE I', 'THE LIST', 'METRO'])
+    assert.equal(isKnownOutletLine(ok), true, ok);
+  for (const no of ['SUN', 'I', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD', 'AFTER LIFE'])
+    assert.equal(isKnownOutletLine(no), false, no);
+});

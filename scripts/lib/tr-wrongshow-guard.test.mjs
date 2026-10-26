@@ -179,3 +179,10 @@ test('computeMentionCounts counts mentions of a hyphenated title', () => {
   // And no false mentions from an unrelated 'man' or 'woman'.
   assert.equal(computeMentionCounts({ title: 'Spider-Man' }, 'A woman and a man walk into the Old Vic. The man is sad.').mentions, 0);
 });
+
+test('isCorroboratedByRoundup: parent-labelled TR review corroborated by its split child row (BRO-6287)', () => {
+  const rows = [{ outlet: 'Mail on Sunday', critic: 'Robert Gore-Langton' }];
+  assert.equal(isCorroboratedByRoundup('Daily Mail', 'Robert Gore-Langton', rows), true);
+  assert.equal(isCorroboratedByRoundup('Daily Mail', 'Quentin Crisp', rows), false);
+  assert.equal(isCorroboratedByRoundup('Guardian', 'Robert Gore-Langton', rows), false);
+});

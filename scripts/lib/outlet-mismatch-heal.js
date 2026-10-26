@@ -163,6 +163,21 @@ function splitOutletCorrection(data) {
     : null;
 }
 
+/**
+ * The outlet a source row (Theatre Record's printed masthead + byline) files
+ * under at extraction. Same policy as the heal above (BRO-6287): the critic
+ * moves a row to a split child only when the label carries no edition signal;
+ * an explicit bare masthead ("The Times") is a statement about the parent and
+ * stays there, exactly as splitOutletCorrection would leave it.
+ */
+function splitOutletForLabel(parentId, label, criticName) {
+  const { resolveSplitOutletByCritic } = require('./review-normalization');
+  // Casing is no edition signal: a printed ALL-CAPS masthead reads as its title-cased form.
+  let l = String(label || '').trim();
+  if (l && l === l.toUpperCase()) l = l.toLowerCase().replace(/\b[a-z]/g, (c) => c.toUpperCase());
+  return isGenericLabel(l, parentId) ? resolveSplitOutletByCritic(parentId, criticName) : parentId;
+}
+
 function urlNamesNoPublisher(url, ownerId) {
   let host;
   try { host = new URL(url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return true; }
@@ -766,6 +781,7 @@ module.exports = {
   publisherDomainCorrection,
   splitOutletCorrection,
   isGenericLabel,
+  splitOutletForLabel,
   misfileHealPlan,
   excludedTargetSwapAllowed,
   sameArticlePath,
