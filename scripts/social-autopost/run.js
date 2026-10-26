@@ -121,10 +121,11 @@ function describe(show, ctx) {
 /**
  * Owner rule (2026-10-26): never post without the show's poster. A show with no usable
  * poster throws NO_POSTER and waits. Only the self-test (drafts, deleted) and dry-run
- * previews pass requirePoster: false to render the typographic card.
+ * previews pass requirePoster: false to render the typographic card. `resolved` is the
+ * poster main() already resolved before scheduling (BRO-6393), so it is not fetched twice.
  */
-async function buildCard(desc, outDir, { requirePoster = true } = {}) {
-  const poster = await resolvePoster(desc.show);
+async function buildCard(desc, outDir, { requirePoster = true, resolved = null } = {}) {
+  const poster = resolved || await resolvePoster(desc.show);
   if (!poster.poster && requirePoster) {
     const err = new Error(`no usable poster (${poster.reason})`);
     err.code = 'NO_POSTER';
@@ -139,6 +140,26 @@ async function buildCard(desc, outDir, { requirePoster = true } = {}) {
   const out = path.join(outDir, `${desc.show.id}.png`);
   await renderCard(card, out);
   return { path: out, poster: poster.poster ? `${poster.width}x${poster.height} ${poster.source}` : `none (${poster.reason})` };
+}
+
+const HOLD_RECHECK_MS = 3 * 36e5;
+
+/** Pure: was this waitingForPoster entry checked within HOLD_RECHECK_MS? */
+function recentlyHeld(entry, now) {
+  return !!(entry && now - Date.parse(entry.lastChecked || '') < HOLD_RECHECK_MS);
+}
+
+/**
+ * Hold a show for want of a poster: not a failure, the show waits in
+ * ledger._meta.waitingForPoster and every run retries it until a usable poster exists
+ * (scripts/upgrade-social-posters.js finds them) or it ages out of SCORE_LOOKBACK_DAYS.
+ * Returns the problem line on the FIRST hold only (so the digest shows it once), else null.
+ */
+function holdShow(ledger, id, reason, now) {
+  const waiting = ledger._meta.waitingForPoster = ledger._meta.waitingForPoster || {};
+  const first = !waiting[id];
+  waiting[id] = { since: (waiting[id] || {}).since || new Date(now).toISOString(), lastChecked: new Date(now).toISOString(), reason: String(reason).slice(0, 300) };
+  return first ? `${id}: held, no usable poster (${String(reason).slice(0, 200)}). Add a full-size poster (at least 440px wide, or run scripts/upgrade-social-posters.js --show=${id}) and it posts on the next run.` : null;
 }
 
 async function allowedChannels(buffer) {
@@ -303,6 +324,8 @@ async function main() {
 
   let events;
   let backlogSkipped = [];
+  const posters = new Map(); // show id -> resolvePoster() result, resolved once per run
+  const held = [];
   if (arg('show')) {
     if (!dryRun) throw new Error('--show is for previews; add --dry-run');
     const show = ctx.shows.find(s => s.id === arg('show'));
@@ -313,11 +336,30 @@ async function main() {
     const { post, skip } = splitBacklog(found, ctx.ledger, now);
     backlogSkipped = skip;
     const failures = ctx.ledger._meta.failures || {};
-    events = scheduleEvents(post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS)), ctx.ledger, now);
+    const candidates = post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS));
+    // Posters are resolved before scheduling (not in --check, which only gates the
+    // browser install): a held show must not take a slot and push the others back.
+    if (!flag('check')) {
+      const ready = [];
+      for (const ev of candidates) {
+        // Outside the per-show try below: one broken image must not stop every other show.
+        let p;
+        try { p = await resolvePoster(ev.show); } catch (e) { p = { poster: false, reason: `poster check failed: ${e.message.slice(0, 160)}` }; }
+        posters.set(ev.show.id, p);
+        if (p.poster) ready.push(ev); else held.push({ id: ev.show.id, reason: p.reason });
+      }
+      for (const h of held) console.log(`  [hold] ${h.id}: waiting for a poster (${h.reason})`);
+      events = scheduleEvents(ready, ctx.ledger, now);
+    } else {
+      // --check: a show held for its poster in the last HOLD_RECHECK_MS is not due work,
+      // or every hourly run would install the browser just to hold it again.
+      const waiting = ctx.ledger._meta.waitingForPoster || {};
+      events = scheduleEvents(candidates.filter(ev => !recentlyHeld(waiting[ev.show.id], now)), ctx.ledger, now);
+    }
   }
   const owed = pendingRetries(ctx.ledger, now).length;
   const toVerify = postsToVerify(ctx.ledger, now).length;
-  console.log(`[autopost] ${events.length} post(s) due, ${owed} retry(ies) owed, ${toVerify} to read back${backlogSkipped.length ? `, ${backlogSkipped.length} older show(s) skipped at go-live` : ''}${dryRun ? ' (dry run)' : ''}`);
+  console.log(`[autopost] ${events.length} post(s) due${held.length ? `, ${held.length} held for want of a poster` : ''}, ${owed} retry(ies) owed, ${toVerify} to read back${backlogSkipped.length ? `, ${backlogSkipped.length} older show(s) skipped at go-live` : ''}${dryRun ? ' (dry run)' : ''}`);
 
   if (flag('check')) {
     // Workflow gate: install the browser only when there is work. Without a key,
@@ -352,6 +394,10 @@ async function main() {
     problems.push(...abandonRetries(ctx.ledger, now));
     writeLedger(ctx.ledger);
     if (await retryFailedChannels(ctx.ledger, channels, buffer, now, summary)) problems.push('a retried network failed again (see the log above)');
+    if (held.length) {
+      for (const h of held) { const p = holdShow(ctx.ledger, h.id, h.reason, now); if (p) problems.push(p); }
+      writeLedger(ctx.ledger);
+    }
   }
 
   if (flag('self-test')) {
@@ -382,7 +428,7 @@ async function main() {
       try {
         const desc = describe(ev.show, ctx);
         const captions = buildCaptions(desc);
-        const card = await buildCard(desc, outDir, { requirePoster: live });
+        const card = await buildCard(desc, outDir, { requirePoster: live, resolved: posters.get(ev.show.id) });
         console.log(`\n[autopost] ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
         console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
         const route = targetSets(ev.show, ev.gate, CHANNEL_SETS, ctx.shows);
@@ -430,9 +476,8 @@ async function main() {
         if (e.code === 'NO_POSTER') {
           // Not a failure: the show waits (every run retries) until a usable poster exists
           // or it ages out of SCORE_LOOKBACK_DAYS. Reported once so the digest shows it.
-          const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
-          if (!waiting[ev.show.id]) problems.push(`${ev.show.id}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
-          waiting[ev.show.id] = { since: (waiting[ev.show.id] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
+          const p = holdShow(ctx.ledger, ev.show.id, e.message, now);
+          if (p) problems.push(p);
           console.log(`  [art] ${ev.show.id}: HELD, ${e.message}`);
           writeLedger(ctx.ledger);
           continue;
@@ -464,4 +509,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext };
+module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, holdShow, recentlyHeld, HOLD_RECHECK_MS };

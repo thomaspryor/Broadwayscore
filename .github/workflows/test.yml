@@ -49,6 +49,10 @@ on:
       # globbed). Never add a literal scripts/<name>.test.mjs entry:
       # tests/unit/test-yml-toplevel-test-glob.test.mjs refuses one.
       - 'scripts/*.test.mjs'
+      # BRO-6393: scripts/social-autopost.test.mjs requires these; a solo edit to
+      # the poster/hold logic otherwise triggered zero CI.
+      - 'scripts/social-autopost/**'
+      - 'scripts/upgrade-social-posters.js'
       # scripts/lib/check-orphan-commits.test.mjs requires ../check-orphan-commits.js
       # (a top-level scripts/ file, outside the glob above) and
       # scripts/lib/owner-accounts.test.mjs requires ../../vercel.json (a root

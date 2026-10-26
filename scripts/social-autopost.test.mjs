@@ -9,10 +9,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const sel = require('./social-autopost/select.js');
 const { buildCaptions, postMarkers, showUrl, LIMITS } = require('./social-autopost/captions.js');
-const { isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle } = require('./social-autopost/art.js');
+const { isUsablePoster, artVerdict, originalUrl, originalVariants, candidatesFor, sameTitle } = require('./social-autopost/art.js');
 const { buildCardHtml, SITE_CSS } = require('./social-autopost/render.js');
 const { metadataFor } = require('./social-autopost/buffer.js');
-const { breakdownFor, pendingRetries, abandonRetries, postsToVerify } = require('./social-autopost/run.js');
+const { breakdownFor, pendingRetries, abandonRetries, postsToVerify, holdShow, recentlyHeld, HOLD_RECHECK_MS } = require('./social-autopost/run.js');
+const posters = require('./upgrade-social-posters.js');
 
 const getOutletTier = id => Number(id.split('-')[0].slice(1));
 const reviews = (t1, t2, t3) => [
@@ -172,6 +173,10 @@ test('poster rules: a portrait at least 440 px wide, confirmed by the vision che
   assert.equal(artVerdict({ match: true }).ok, true);
   assert.equal(artVerdict({ match: false, confidence: 'low' }).ok, false, 'a low-confidence no still fails');
   assert.equal(artVerdict({ skipped: true }).ok, false, 'unverified art is not used');
+  assert.equal(artVerdict({ match: true, confidence: 'low', issues: ['api_error'], description: 'Verification failed after 3 retries' }).ok, false, 'a Gemini outage (verifyImage fails open) is not a confirmation');
+  assert.equal(artVerdict({ match: true, confidence: 'high', issues: [], workConfirmed: true, productionMatch: 'this' }, { strict: true }).ok, true);
+  assert.equal(artVerdict({ match: true, confidence: 'high', issues: [], workConfirmed: false }, { strict: true }).ok, false, 'strict: title-search art needs positive evidence');
+  assert.equal(artVerdict({ match: true, confidence: 'high', issues: [], workConfirmed: true, productionMatch: 'other' }, { strict: true }).ok, false, 'strict: another production');
   assert.equal(originalUrl('https://images.ctfassets.net/a/b/c/x.jpg?w=1920&fm=webp'), 'https://images.ctfassets.net/a/b/c/x.jpg');
   const show = { id: 's', todaytixId: 48323, images: { poster: '/images/shows/s/poster.jpg' } };
   const order = c => c.url ? 'source' : c.todaytixId ? 'todaytix' : 'local';
@@ -285,4 +290,52 @@ test('self-test: channels added after go-live (West End) are unvalidated; legacy
   assert.deepEqual(unvalidated({ _meta: { bufferValidatedAt: 'x' } }, [...b, { id: 'w1' }]).map(c => c.id), ['w1']);
   assert.equal(unvalidated({ _meta: {} }, b).length, b.length);
   assert.equal(unvalidated({ _meta: { bufferValidatedAt: 'x', bufferValidatedChannels: ['w1'] } }, [{ id: 'w1' }]).length, 0);
+});
+
+test('resized poster URLs map to their full-size originals, recorded URL last (BRO-6393)', () => {
+  const ss = 'https://dalyklerwhmui.cloudfront.net/uploads/show/poster_image/12027/medium_1791556307-TT_POSTER_480x720.jpg';
+  assert.deepEqual(originalVariants(ss), [ss.replace('/medium_', '/'), ss], 'Show Score medium_ prefix');
+  assert.deepEqual(originalVariants('https://x.org/wp-content/uploads/p-300x450.jpg'), ['https://x.org/wp-content/uploads/p.jpg', 'https://x.org/wp-content/uploads/p-300x450.jpg']);
+  assert.deepEqual(originalVariants('https://cdn.x.org/p.jpg?w=300&q=80'), ['https://cdn.x.org/p.jpg', 'https://cdn.x.org/p.jpg?w=300&q=80']);
+  assert.deepEqual(originalVariants('https://images.ctfassets.net/a/b/c/x.jpg?w=300'), ['https://images.ctfassets.net/a/b/c/x.jpg']);
+  assert.deepEqual(originalVariants('https://x.org/poster.jpg'), ['https://x.org/poster.jpg'], 'nothing to strip');
+  const order = candidatesFor({ id: 's', images: {} }, { s: { poster: ss } }).map(c => c.url);
+  assert.deepEqual(order, [ss.replace('/medium_', '/'), ss], 'art.js tries the original before the recorded copy');
+});
+
+test('held shows: reported once, re-checked by --check after 3h, posters resolved before scheduling (BRO-6393)', () => {
+  const t0 = Date.parse('2026-10-26T12:00:00Z');
+  const ledger = { _meta: {} };
+  assert.match(holdShow(ledger, 'a', 'too small', t0), /^a: held, no usable poster/);
+  assert.equal(holdShow(ledger, 'a', 'too small', t0 + 36e5), null, 'reported on the first hold only');
+  assert.equal(ledger._meta.waitingForPoster.a.since, '2026-10-26T12:00:00.000Z', 'since is kept across runs');
+  const w = ledger._meta.waitingForPoster.a;
+  assert.equal(recentlyHeld(w, t0 + 36e5 + HOLD_RECHECK_MS - 1), true, '--check skips a show held moments ago');
+  assert.equal(recentlyHeld(w, t0 + 36e5 + HOLD_RECHECK_MS), false, '...and re-checks it after HOLD_RECHECK_MS');
+  assert.equal(recentlyHeld(undefined, t0), false);
+  const src = fs.readFileSync(new URL('./social-autopost/run.js', import.meta.url), 'utf8');
+  assert.match(src, /if \(p\.poster\) ready\.push\(ev\); else held\.push/, 'a held show is left out of scheduleEvents, so it cannot push other posts back');
+  assert.match(src, /buildCard\(desc, outDir, \{ requirePoster: live, resolved: posters\.get\(ev\.show\.id\) \}\)/, 'live cards still require a poster');
+});
+
+test('poster upgrade: targets, page images and venue show links (BRO-6393)', () => {
+  const now = Date.parse('2026-10-26T12:00:00Z');
+  const shows = [
+    { id: 'old', openingDate: '2026-08-30' },
+    { id: 'recent', openingDate: '2026-10-20' },
+    { id: 'older', openingDate: '2026-09-02' },
+    { id: 'soon', openingDate: '2026-11-03' },
+    { id: 'far', openingDate: '2026-12-20' },
+    { id: 'held', openingDate: '2026-08-01' },
+    { id: 'gone', openingDate: '2026-10-01', status: 'cancelled' },
+  ];
+  assert.deepEqual(posters.selectTargets(shows, { since: '2026-09-01', now, waiting: { held: {} } }).map(s => s.id), ['held', 'soon', 'recent', 'older']);
+  assert.deepEqual(posters.openedSince(shows, '2026-09-01', now).map(s => s.id), ['recent', 'older']);
+  const html = `<meta property="og:image" content="https://v.org/img/key.jpg"><img src="/logo.png"><img srcset="/a-300x450.jpg 300w, /a.jpg 900w" src="/a-300x450.jpg"><img data-src="https://v.org/i.svg">`;
+  assert.deepEqual(posters.extractPageImages(html, 'https://v.org/show/x'), ['https://v.org/img/key.jpg', 'https://v.org/a.jpg', 'https://v.org/a-300x450.jpg']);
+  const home = `<a href="/whats-on/murder-in-the-cathedral/">Book</a><a href="/whats-on/other/">Other</a><a href="https://elsewhere.com/murder-in-the-cathedral">x</a>`;
+  assert.deepEqual(posters.showPageLinks(home, 'https://www.orangetreetheatre.co.uk/', 'Murder in the Cathedral'), ['https://www.orangetreetheatre.co.uk/whats-on/murder-in-the-cathedral/']);
+  assert.equal(posters.isHomePage('https://www.orangetreetheatre.co.uk/'), true);
+  assert.equal(posters.isHomePage('https://show.com/tickets'), false);
+  assert.deepEqual(posters.matchCatalogue([{ id: 1, name: 'Ilford Boy' }, { id: 2, name: 'Ilford' }], 'Ilford Boy').map(r => r.id), [1]);
 });

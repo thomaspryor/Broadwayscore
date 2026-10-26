@@ -31,11 +31,34 @@ function originalUrl(url) {
   } catch { return null; }
 }
 
+/**
+ * The larger originals a resized image URL usually points at, best first, the
+ * recorded URL last (BRO-6393): Show Score's "medium_"/"small_"/"thumb_" file
+ * prefixes (147 recorded posters were 400x600 "medium_" copies of 480x720
+ * originals), WordPress "-300x450" suffixes and resizer query strings removed,
+ * Contentful transforms stripped.
+ */
+function originalVariants(url) {
+  const out = [];
+  const add = u => { if (u && !out.includes(u)) out.push(u); };
+  let u;
+  try { u = new URL(url); } catch { return out; }
+  if (u.hostname === 'images.ctfassets.net') { add(originalUrl(url)); return out; }
+  const pathname = u.pathname
+    .replace(/\/(?:medium|small|thumb|large)_([^/]+)$/i, '/$1')
+    .replace(/-\d{2,4}x\d{2,4}(\.(?:jpe?g|png|webp))$/i, '$1');
+  const resized = u.search && /[?&](w|h|width|height|resize|fit|size|crop)=/i.test(u.search);
+  if (pathname !== u.pathname) add(`${u.origin}${pathname}${resized ? '' : u.search}`);
+  if (resized) add(`${u.origin}${pathname}`);
+  add(url);
+  return out;
+}
+
 /** Poster candidates, best first: the original source file, TodayTix, then the site's own copy. */
 function candidatesFor(show, sources) {
   const src = sources[show.id] || {};
   const out = [];
-  if (src.poster) out.push({ url: originalUrl(src.poster) });
+  if (src.poster) for (const url of originalVariants(src.poster)) out.push({ url });
   if (show.todaytixId) out.push({ todaytixId: show.todaytixId, title: show.title });
   const local = show.images && show.images.poster;
   if (local && local.startsWith('/')) out.push({ file: path.join(ROOT, 'public', local) });
@@ -84,21 +107,33 @@ function isUsablePoster({ width, height }) {
 }
 
 /** Pure: verifyImage result -> {ok, reason}. Only a positive match passes. Exported for tests. */
-function artVerdict(r) {
+const VERIFIER_ERRORS = ['api_error', 'download_error', 'parse_error', 'invalid_input'];
+function artVerdict(r, { strict = false } = {}) {
   if (!r || r.skipped) return { ok: false, reason: 'not verified (no GEMINI_API_KEY)' };
+  // verifyImage fails OPEN on a Gemini outage (match: true + issues: ['api_error']):
+  // that is no confirmation, so the card waits (BRO-6393).
+  if ((r.issues || []).some(i => VERIFIER_ERRORS.includes(i))) return { ok: false, reason: `verifier error (${String(r.description || '').slice(0, 120)})` };
+  if (strict) {
+    const v = require('../lib/verify-image').applyStrictVerdict(r, { strict: true });
+    return v.accept ? { ok: true, reason: 'confirmed' } : { ok: false, reason: `${v.reason}: ${String(r.description || '').slice(0, 140)}` };
+  }
   if (r.match === true) return { ok: true, reason: 'match' };
   return { ok: false, reason: `${r.confidence || 'unknown'}: ${String(r.description || (r.issues || []).join(',')).slice(0, 160)}` };
 }
 
 // venue-write-guard-ok: show.venue is only read here (card text / vision-check context), never written back
-/** Gemini vision check shared with the site's image pipeline. */
-async function checkArt(show, buf) {
+/**
+ * Gemini vision check shared with the site's image pipeline. strict: art found by
+ * title search (scripts/upgrade-social-posters.js) needs positive evidence of this
+ * production, the pipeline's BRO-5022 rule for title-only hits.
+ */
+async function checkArt(show, buf, { strict = false } = {}) {
   const verify = require('../lib/verify-image');
   const r = await verify.verifyImage(buf, show.title, {
     market: show.category, venue: show.venue, openingDate: show.openingDate,
-    creatives: verify.creativesForVerify(show), mimeType: 'image/png',
+    creatives: verify.creativesForVerify(show), mimeType: 'image/png', strict,
   });
-  return artVerdict(r);
+  return artVerdict(r, { strict });
 }
 
 /**
@@ -124,4 +159,4 @@ async function resolvePoster(show, { sources = loadImageSources(), check = check
   return { poster: false, reason: reasons.join(' | ') || 'no poster on file' };
 }
 
-module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle, MIN_POSTER_WIDTH };
+module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, originalVariants, candidatesFor, loadBuffer, checkArt, sameTitle, MIN_POSTER_WIDTH, POSTER_RATIO };
