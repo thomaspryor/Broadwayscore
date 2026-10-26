@@ -81,3 +81,13 @@ test('BRO-6302 isTrNoRecordCandidate: same link, stale link only with picked', (
   assert.equal(isTrNoRecordCandidate({ ...rej, source: 'outlet', theatreRecordUrl: A }, A, { picked: true }), false);
   assert.equal(isTrNoRecordCandidate({ ...rej, rejectionReason: 'stub', theatreRecordUrl: A }, A, { picked: true }), false);
 });
+
+// BRO-6365: PDFs that parse to 0 reviews for a picked production still stamp NO-RECORD.
+test('BRO-6365 shouldSweepNoRecord: parsed-empty picked PDF sweeps; failures and browse matches do not', () => {
+  const { shouldSweepNoRecord } = createRequire(import.meta.url)('./review-text-identity.js');
+  assert.equal(shouldSweepNoRecord({ reviewCount: 3 }), true);
+  assert.equal(shouldSweepNoRecord({ reviewCount: 0, picked: true, isPDF: true, parsedOk: true }), true);
+  assert.equal(shouldSweepNoRecord({ reviewCount: 0, picked: true, isPDF: true, parsedOk: false }), false);
+  assert.equal(shouldSweepNoRecord({ reviewCount: 0, picked: false, isPDF: true, parsedOk: true }), false);
+  assert.equal(shouldSweepNoRecord({ reviewCount: 0, picked: true, isPDF: false, parsedOk: true }), false);
+});

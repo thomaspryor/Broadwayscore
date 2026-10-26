@@ -28,7 +28,7 @@ const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } 
 const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
 const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
-const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoRecordCandidate } = require('./lib/review-text-identity');
+const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoRecordCandidate, shouldSweepNoRecord } = require('./lib/review-text-identity');
 
 const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
@@ -165,6 +165,8 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
 
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { merged: reviews.length }) });
   fs.unlinkSync(tmpFile);
+  // BRO-6365: downloaded and parsed (as opposed to every `return []` failure above).
+  reviews.parsedOk = true;
   return reviews;
 }
 
@@ -810,7 +812,9 @@ async function main() {
     // BRO-6302: with the per-show pick, a rejected file taken from a different TR
     // page (an earlier run's wrong production pick: Come From Away's 2021
     // reopening listing, The Play That Goes Wrong's 2020 return) is covered too.
-    if (reviews.length > 0 && fs.existsSync(showDir)) {
+    // BRO-6365: a picked production whose PDF parsed cleanly but yielded nothing
+    // for this show (pigeon-english, still-no-idea) has no record of any of its files.
+    if (shouldSweepNoRecord({ reviewCount: reviews.length, picked, isPDF, parsedOk: reviews.parsedOk }) && fs.existsSync(showDir)) {
       for (const f of fs.readdirSync(showDir)) {
         const fp = path.join(showDir, f);
         if (!f.endsWith('.json') || touchedFiles.has(fp)) continue;

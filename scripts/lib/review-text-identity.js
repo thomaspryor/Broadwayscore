@@ -182,6 +182,12 @@ const isTrNoRecordCandidate = (d, productionLink, { picked = false } = {}) => !!
   && d.source === 'theatre-record' && isWrongShowRejection(d) && !d.trNoRecordForProduction
   && (d.theatreRecordUrl === productionLink || (picked && !!d.theatreRecordUrl));
 
+// BRO-6365: whether the NO-RECORD sweep may run for a production. It needs reviews
+// from this production's section, or a picked PDF that downloaded and parsed cleanly
+// but yielded none (a failed download proves nothing).
+const shouldSweepNoRecord = ({ reviewCount, picked = false, isPDF = false, parsedOk = false }) =>
+  reviewCount > 0 || (!!picked && !!isPDF && parsedOk === true);
+
 function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = false } = {}) {
   const merged = { ...existing };
   // BRO-4490: whenever the TR text is taken, its fetch date comes with it.
@@ -371,6 +377,7 @@ module.exports = {
   mergeTheatreRecordIntoExisting,
   isWrongShowRejection,
   isTrNoRecordCandidate,
+  shouldSweepNoRecord,
   decideUnknownTwinUrlCarry,
   decideDuplicateTwinUrlCarry,
   DEFAULT_MIN_SHARED_SHINGLES,
