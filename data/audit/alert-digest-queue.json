@@ -334,6 +334,37 @@
     "queuedAt": "2026-10-26T10:18:57.300Z"
   },
   {
+    "conditionKey": "land:land/bro-2762-default-sort-title",
+    "title": "Landing blocked: race red on land/bro-2762-default-sort-title",
+    "description": "land.yml did not land land/bro-2762-default-sort-title: the race gate went red at da0f0fff2a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-2762-default-sort-title @ da0f0fff2a (origin/land/bro-2762-default-sort-title) → origin/main @ 0cffbac1e6 [land] train: + land/bro-6276-dispatch-guard-r2 @ c8b6b1f47b (7 commit(s)) [land] train: + land/bro-5805-marcel-clear2 @ d096316125 (1 commit(s)) [land] train: + land/bro-2617-gc-per-repo-v2 @ 728a5566cc (1 commit(s)) [land] attempt 1/3: rebased onto 0cffbac1e6, 21 file(s) chan Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40293230634",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2762-default-sort-title"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "da0f0fff2ad493379e4edc5b8952f8f56a7adf82"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40293230634"
+      }
+    ],
+    "queuedAt": "2026-10-26T12:01:58.300Z"
+  },
+  {
     "conditionKey": "land:land/bro-6276-dispatch-guard-r2",
     "title": "Landing blocked: colocated-tests red on land/bro-6276-dispatch-guard-r2",
     "description": "land.yml did not land land/bro-6276-dispatch-guard-r2: the colocated-tests gate went red at c8b6b1f47b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6276-dispatch-guard-r2 @ c8b6b1f47b (origin/land/bro-6276-dispatch-guard-r2) → origin/main @ 65d0b11a70 [land] attempt 1/3: rebased onto 65d0b11a70, 13 file(s) changed — running checks [land] verified-base: main moved 270322065e → 65d0b11a70 across 910 file(s), substantive — re-checking on the merged tree (+16 test file(s) changed on main since the verified base); small re-check: n Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40297622657",
