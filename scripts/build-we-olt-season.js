@@ -133,18 +133,21 @@ async function main() {
 
   const cache = readJson(PAGES_PATH, { note: 'Parsed archived Official London Theatre show pages (build-we-olt-season.js, BRO-6343).', pages: {} });
   if (pagesFrom) {
-    let merged = 0;
+    let merged = 0, bad = 0;
     for (const line of fs.readFileSync(pagesFrom, 'utf8').split('\n')) {
       const m = /OLTPAGE (\{.*\})\s*$/.exec(line);
       if (!m) continue;
-      const entry = JSON.parse(m[1]);
+      // Captured stdout can be cut mid-line; skip what does not parse.
+      let entry;
+      try { entry = JSON.parse(m[1]); } catch { bad++; continue; }
+      if (!entry?.item) { bad++; continue; }
       const prev = cache.pages[entry.item];
       if (prev && prev.title && (!entry.title || prev.snapshot >= entry.snapshot)) continue;
       cache.pages[entry.item] = entry;
       merged++;
     }
     writeJson(PAGES_PATH, cache);
-    console.log(`Merged ${merged} page(s) from ${pagesFrom}; cache holds ${Object.keys(cache.pages).length}.`);
+    console.log(`Merged ${merged} page(s) from ${pagesFrom}${bad ? ` (${bad} unreadable line(s) skipped)` : ''}; cache holds ${Object.keys(cache.pages).length}.`);
   } else if (!offline) {
     // Captures from 3 months before the season to 12 months after it: a
     // production opening in the season is listed (and archived) in that span.

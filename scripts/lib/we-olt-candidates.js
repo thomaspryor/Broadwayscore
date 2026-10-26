@@ -40,6 +40,7 @@ const { parseTrHeaderDates } = require('./we-review-led-candidates');
 const DAY_MS = 86400000;
 const AZ_EARLY_DAYS = 7;
 const AZ_LATE_DAYS = 14;
+const AZ_SEASON_SLACK_DAYS = 2;
 // Same title + venue: OLT item ids within this many days are one production.
 const COLLAPSE_DAYS = 30;
 // A shows.json row this close in start date is the same production. Wider
@@ -79,7 +80,15 @@ function azMatchesListing(az, l) {
   const press = Date.parse(l.openingDate || l.previewsStartDate || '');
   const d = Date.parse(when);
   if ([first, press, d].some(Number.isNaN)) return false;
-  return d >= first - AZ_EARLY_DAYS * DAY_MS && d <= press + AZ_LATE_DAYS * DAY_MS;
+  if (az.opened) return d >= first - AZ_EARLY_DAYS * DAY_MS && d <= press + AZ_LATE_DAYS * DAY_MS;
+  // A season row has no venue in the 2015 layout and the A-Z covers the
+  // fringe, so a same-title fringe season must not pass: its first
+  // performance has to fall in previews-to-press-night and its last within
+  // AZ_LATE_DAYS of the OLT close.
+  if (d < first - AZ_SEASON_SLACK_DAYS * DAY_MS || d > press) return false;
+  const to = Date.parse(az.seasonTo || '');
+  const close = Date.parse(l.closingDate || '');
+  return !Number.isNaN(to) && !Number.isNaN(close) && Math.abs(to - close) <= AZ_LATE_DAYS * DAY_MS;
 }
 
 /**

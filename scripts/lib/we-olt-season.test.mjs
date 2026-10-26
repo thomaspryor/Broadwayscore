@@ -54,6 +54,11 @@ assert.strictEqual(c.decision.promotable, true, c.decision.reason);
 assert.strictEqual(c.trAz.seasonFrom, '2016-08-20');
 // ...a season starting months away from the OLT run is another production.
 assert.strictEqual(azMatchesListing({ title: 'THE ENTERTAINER', venue: 'Garrick', seasonFrom: '2016-03-01' }, page()), false);
+// ...a same-title season (no venue in this layout) ending weeks before the OLT close is a fringe run.
+assert.strictEqual(azMatchesListing({ title: 'THE ENTERTAINER', venue: null, opened: null, seasonFrom: '2016-08-22', seasonTo: '2016-09-10' }, page()), false);
+// ...as is one starting after press night, or one with no end date.
+assert.strictEqual(azMatchesListing({ title: 'THE ENTERTAINER', venue: null, opened: null, seasonFrom: '2016-09-05', seasonTo: '2016-11-12' }, page()), false);
+assert.strictEqual(azMatchesListing({ title: 'THE ENTERTAINER', venue: null, opened: null, seasonFrom: '2016-08-20' }, page()), false);
 
 // A-Z entry for a different production of the same title (years apart) is not a signal.
 assert.strictEqual(azMatchesListing({ ...az, opened: '2007-03-01' }, page()), false);
