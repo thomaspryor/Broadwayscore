@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T21:20:39.552Z",
+  "timestamp": "2026-10-26T21:59:17.833Z",
   "stats": {
-    "totalReviews": 62628,
-    "alreadyFlagged": 21545,
+    "totalReviews": 62627,
+    "alreadyFlagged": 21565,
     "dateGuardCatches": 223,
     "directorMismatch": 2305,
-    "tvFilmSignals": 1773,
-    "londonSignals": 3021,
-    "offBroadwaySignals": 554,
+    "tvFilmSignals": 1772,
+    "londonSignals": 3020,
+    "offBroadwaySignals": 553,
     "yearMismatch": 211,
-    "noPublishDate": 5562
+    "noPublishDate": 5557
   },
   "findings": [
     {
@@ -2772,6 +2772,7 @@
     {
       "showId": "american-buffalo-west-end-2015",
       "file": "express-uk--neil-norman.json",
+      "score": 74,
       "publishDate": "2015-05-01",
       "url": "https://www.express.co.uk/entertainment/theatre/574272/American-Buffalo-reviewy-moving-but-slow",
       "findings": [
@@ -2799,6 +2800,7 @@
     {
       "showId": "american-idiot-west-end-2016",
       "file": "times-uk--kate-bassett.json",
+      "score": 63,
       "publishDate": "2016-07-19",
       "url": null,
       "findings": [
@@ -5342,6 +5344,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "bestofthislife--emily-smith.json",
+      "score": 86,
       "publishDate": "2025-05-28",
       "url": "https://bestofthislife.com/beetlejuice-the-musical-review/",
       "findings": [
@@ -9213,19 +9216,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "clarence-darrow-west-end-2015",
-      "file": "times-uk--kate-bassett.json",
-      "publishDate": "2015-03-09",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -16484,6 +16474,7 @@
     {
       "showId": "funny-girl-west-end-2016",
       "file": "daily-mail--quentin-letts.json",
+      "score": 77,
       "publishDate": "2016-04-22",
       "url": null,
       "findings": [
@@ -16502,6 +16493,7 @@
     {
       "showId": "funny-girl-west-end-2016",
       "file": "standard--fiona-mountford.json",
+      "score": 85,
       "publishDate": "2016-04-21",
       "url": null,
       "findings": [
@@ -16515,6 +16507,7 @@
     {
       "showId": "funny-girl-west-end-2016",
       "file": "thestage--mark-shenton.json",
+      "score": 91,
       "publishDate": "2016-04-21",
       "url": null,
       "findings": [
@@ -16533,6 +16526,7 @@
     {
       "showId": "funny-girl-west-end-2016",
       "file": "timeout-london--louise-schwartzkoff.json",
+      "score": 81,
       "publishDate": "2016-04-26",
       "url": null,
       "findings": [
@@ -16546,6 +16540,7 @@
     {
       "showId": "funny-girl-west-end-2016",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 87,
       "publishDate": "2016-04-21",
       "url": null,
       "findings": [
@@ -16761,6 +16756,7 @@
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "theargus--unknown.json",
+      "score": 78,
       "publishDate": "2026-08-10",
       "url": "https://www.theargus.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
       "findings": [
@@ -19312,6 +19308,7 @@
     {
       "showId": "gypsy-west-end-2015",
       "file": "express-uk--neil-norman.json",
+      "score": 86,
       "publishDate": "2015-04-17",
       "url": null,
       "findings": [
@@ -19325,6 +19322,7 @@
     {
       "showId": "gypsy-west-end-2015",
       "file": "standard--fiona-mountford.json",
+      "score": 80,
       "publishDate": "2015-04-16",
       "url": "https://www.standard.co.uk/goingout/theatre/gypsy-savoy-theatre-review-get-the-awards-ready-for-a-momma-rose-with-charisma-to-burn-10180983.html",
       "findings": [
@@ -19338,6 +19336,7 @@
     {
       "showId": "gypsy-west-end-2015",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 95,
       "publishDate": "2015-04-16",
       "url": null,
       "findings": [
@@ -19797,6 +19796,7 @@
     {
       "showId": "hand-to-god-west-end-2016",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 44,
       "publishDate": "2016-02-16",
       "url": null,
       "findings": [
@@ -56379,6 +56379,7 @@
     {
       "showId": "waitress-tour-2026",
       "file": "austin101magazine--jerristarbuck.json",
+      "score": 94,
       "publishDate": "2026-10-22",
       "url": "https://austin101magazine.com/review-the-10th-anniversary-tour-of-waitress-serves-up-a-masterpiece-at-bass-concert-hall/",
       "findings": [
@@ -57235,6 +57236,7 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "headtopics--sdut.json",
+      "score": 74,
       "publishDate": "2026-08-20",
       "url": "https://us.headtopics.com/news/review-water-for-elephants-musical-delivers-on-spectacle-86844621",
       "findings": [
@@ -61885,6 +61887,7 @@
     {
       "showId": "american-buffalo-west-end-2015",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 66,
       "publishDate": "2015-04-28",
       "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11561068/American-Buffalo-Wyndhams-Theatre-review-Damien-Lewis-has-bravura.html",
       "findings": [
@@ -67144,19 +67147,6 @@
       ]
     },
     {
-      "showId": "clarence-darrow-west-end-2015",
-      "file": "timeout-london--andrzej-lukowski.json",
-      "publishDate": "2015-03-10",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"young vic\""
-        }
-      ]
-    },
-    {
       "showId": "cleansed-off-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 36,
@@ -69415,6 +69405,7 @@
     {
       "showId": "doctor-faustus-west-end-2016",
       "file": "the-spectator-uk--lloyd-evans.json",
+      "score": 15,
       "publishDate": "2016-05-07",
       "url": null,
       "findings": [
@@ -72653,19 +72644,6 @@
       ]
     },
     {
-      "showId": "girls-off-west-end-2026",
-      "file": "nytimes--helen-shaw.json",
-      "publishDate": "2026-10-20",
-      "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
-        }
-      ]
-    },
-    {
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "a-younger-theatre--unknown.json",
       "score": 91,
@@ -73601,6 +73579,7 @@
     {
       "showId": "groundhog-day-west-end-2016",
       "file": "independent--paul-taylor.json",
+      "score": 89,
       "publishDate": "2016-08-17",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/groundhog-day-old-vic-theatre-review-such-a-tonic-that-it-s-a-pity-you-can-t-get-a-repeat-prescription-for-it-a7195351.html",
       "findings": [
@@ -73614,6 +73593,7 @@
     {
       "showId": "groundhog-day-west-end-2016",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 94,
       "publishDate": "2016-08-17",
       "url": null,
       "findings": [
@@ -73627,6 +73607,7 @@
     {
       "showId": "groundhog-day-west-end-2016",
       "file": "the-sun--unknown.json",
+      "score": 73,
       "publishDate": "2016-08-17",
       "url": null,
       "findings": [
@@ -74671,6 +74652,7 @@
     {
       "showId": "hangmen-west-end-2015",
       "file": "daily-mail--quentin-letts.json",
+      "score": 66,
       "publishDate": "2015-12-08",
       "url": "https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html",
       "findings": [
@@ -74684,6 +74666,7 @@
     {
       "showId": "hangmen-west-end-2015",
       "file": "times-uk--ann-treneman.json",
+      "score": 91,
       "publishDate": "2015-12-09",
       "url": null,
       "findings": [
@@ -74697,6 +74680,7 @@
     {
       "showId": "hangmen-west-end-2015",
       "file": "whatsonstage--daisy-bowie-sell.json",
+      "score": 91,
       "publishDate": "2015-12-08",
       "url": "https://www.whatsonstage.com/news/hangmen-wyndhams-theatre_39299/",
       "findings": [
@@ -83590,6 +83574,7 @@
     {
       "showId": "my-night-with-reg-west-end-2015",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 89,
       "publishDate": "2015-01-27",
       "url": null,
       "findings": [
@@ -83713,6 +83698,7 @@
     {
       "showId": "nell-gwynn-west-end-2016",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 91,
       "publishDate": "2016-02-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/nell-gwynn-apollo-theatre-review-arterton-joins-actings-a-list/",
       "findings": [
@@ -86550,6 +86536,7 @@
     {
       "showId": "people-places-and-things-west-end-2016",
       "file": "thestage--natasha-tripney.json",
+      "score": 96,
       "publishDate": "2016-03-31",
       "url": "https://www.thestage.co.uk/reviews/2016/people-places-and-things-review-at-wyndhams-theatre-london/",
       "findings": [
@@ -86563,6 +86550,7 @@
     {
       "showId": "people-places-and-things-west-end-2016",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 87,
       "publishDate": "2016-03-29",
       "url": "http://www.timeout.com/london/theatre/people-places-and-things",
       "findings": [
@@ -93138,6 +93126,7 @@
     {
       "showId": "the-blood-quilt-off-broadway-2024",
       "file": "theater-scene--victor-gluck.json",
+      "score": 63,
       "publishDate": "2024-12-02",
       "url": "https://www.theaterscene.net/plays/offbway-plays/the-blood-quilt/victor-gluck/",
       "findings": [
@@ -93639,6 +93628,7 @@
     {
       "showId": "the-caretaker-west-end-2016",
       "file": "express-uk--neil-norman.json",
+      "score": 56,
       "publishDate": "2016-04-15",
       "url": null,
       "findings": [
@@ -98323,6 +98313,7 @@
     {
       "showId": "the-nether-west-end-2015",
       "file": "financialtimes--sarah-hemming.json",
+      "score": 88,
       "publishDate": "2015-02-25",
       "url": null,
       "findings": [
@@ -104016,6 +104007,7 @@
     {
       "showId": "we-live-in-cairo-off-broadway-2024",
       "file": "vulture--jackson-mchenry.json",
+      "score": 69,
       "publishDate": "2024-10-28",
       "url": "https://www.vulture.com/article/theater-review-we-live-in-cairo-bad-kreyol.html",
       "findings": [
