@@ -44,7 +44,7 @@ test('rounds like the badge and rejects non-finite scores', () => {
 
 test('no hard-coded 70 cutoff returns to the bar or the broadcast', () => {
   const root = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-  for (const f of ['src/components/show-cards/ScoreBreakdownBar.tsx', 'scripts/send-opening-night-broadcast.js']) {
-    assert.doesNotMatch(readFileSync(join(root, f), 'utf8'), /rounded >= 70/, `${f} must use getBreakdownTierId`);
+  for (const f of ['src/components/show-cards/ScoreBreakdownBar.tsx', 'scripts/send-opening-night-broadcast.js', 'scripts/lib/reddit-opening-post.js']) {
+    assert.doesNotMatch(readFileSync(join(root, f), 'utf8'), /(rounded|score|r)\s*>=\s*70\b/, `${f} must use getBreakdownTierId`);
   }
 });

@@ -142,11 +142,8 @@ describe('ScoreBreakdownBar — allocation invariants on all 1,470+ public shows
   // the bar without importing JSX. Must stay in sync with ScoreBreakdownBar.tsx.
   type Tier = 'rave' | 'positive' | 'mixed' | 'negative';
   function classify(score: number, gold: number): Tier {
-    const r = Math.round(score);
-    if (r >= gold) return 'rave';
-    if (r >= 65) return 'positive';
-    if (r >= 55) return 'mixed';
-    return 'negative';
+    // Real function, not a copy of the cutoffs (CLAUDE.md §15). gold 85 = West End.
+    return getBreakdownTier(score, gold === 85 ? 'west-end' : 'broadway') as Tier;
   }
   function allocate(counts: Record<Tier, number>, total: number): Record<Tier, number> {
     const tiers: Tier[] = ['rave', 'positive', 'mixed', 'negative'];

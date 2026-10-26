@@ -20,6 +20,7 @@
 // venue-write-guard-ok: buildFacts only reads show.venue into an in-memory fact sheet for a Reddit draft; nothing writes it back to shows.json.
 
 const { foldDiacritics } = require('./title-match');
+const { getBreakdownTierId } = require('./score-tiers');
 
 const SUBREDDIT_BY_MARKET = {
   'west-end': 'TheWestEnd',
@@ -130,14 +131,14 @@ function audienceReviewCount(au) {
   return Object.values(au.sources).reduce((n, s) => n + (Number(s && s.c) || 0), 0);
 }
 
-function bucketCounts(slim) {
+// Same Rave/Positive/Mixed/Negative split as the site's breakdown bar and the
+// opening-night email (getBreakdownTierId), computed from each review's score so
+// a 65-69 review is Positive here too. The stored LLM bucket (r.b) uses older cutoffs.
+function bucketCounts(slim, market) {
   const out = { rave: 0, positive: 0, mixed: 0, negative: 0 };
   for (const r of slim.rv || []) {
-    const b = String(r.b || '').toLowerCase();
-    if (b === 'rave') out.rave++;
-    else if (b === 'positive') out.positive++;
-    else if (b === 'mixed') out.mixed++;
-    else if (b === 'negative' || b === 'pan') out.negative++;
+    const tier = getBreakdownTierId(r.s, market);
+    if (tier) out[tier]++;
   }
   return out;
 }
@@ -183,7 +184,7 @@ function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
   if (!slim || typeof slim.cs !== 'number') return null;
   const market = marketOf(show);
   const score = Math.round(slim.cs);
-  const buckets = bucketCounts(slim);
+  const buckets = bucketCounts(slim, market);
   const reviewCount = slim.rc || (slim.rv || []).length;
   const auCount = audienceReviewCount(slim.au);
   const audienceGrade = auCount >= MIN_AUDIENCE_REVIEWS && slim.au ? audienceGradeLetter(slim.au.score) : null;
