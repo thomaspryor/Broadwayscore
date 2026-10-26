@@ -84,6 +84,11 @@ const nextConfig = {
       // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
       // to bundle the whole directory again — this exclude blocks that.
       'data/cast/**',
+      // BRO-6310: getServerImageSrcSet() does fs.existsSync(cwd/public/<dynamic>),
+      // which makes NFT bundle all of public/images (~640MB) into every page
+      // function ("off-broadway" hit 792MB > 250MB, 11 failed deploys 2026-10-26).
+      // Vercel serves public/ from the CDN; the existsSync only runs at build time.
+      'public/images/**',
       'data/broadway.db',
       'data/llm-scoring-runs.json',
       'data/mezzanine-productions-raw.json',
