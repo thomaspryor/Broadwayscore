@@ -796,7 +796,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('--child conflicts with --self and --mac-only: a child-claimed card is worked now by the child session.');
     process.exit(1);
   }
-  if ((args.self || childArg !== undefined) && macOnly !== undefined) {
+  if (args.self && macOnly !== undefined) {
     console.error('--self and --mac-only conflict: a self-claimed card is worked now by this session. Use --dispatch --mac-only for Mac work.');
     process.exit(1);
   }

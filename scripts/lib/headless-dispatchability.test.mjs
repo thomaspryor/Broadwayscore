@@ -52,3 +52,27 @@ test('linear-next fresh-claim guard refuses a card carrying the child claim comm
 test('the PARK-ADVISORY names --child as the way out', () => {
   assert.match(takeableParkAdvisory('technical cleanup needs doing sometime'), /--child/);
 });
+
+test('linear-brain create --child files In Progress with a child claim comment; short/conflicting values exit', async () => {
+  const { main } = require('../linear-brain.js');
+  const filed = []; const comments = [];
+  const deps = {
+    createLinearIssue: async (o) => { filed.push(o); return { issue: { id: 'u1', identifier: 'BRO-9100', title: o.title }, mode: 'self', stateName: 'In Progress' }; },
+    createComment: async (id, body) => { comments.push(body); },
+    fetchAnsweredCards: async () => [],
+    coordinatorReminder: async () => {},
+  };
+  await main(['create', 'child card', '--child', 'BRO-9100: do the thing', '--notes', notes], deps);
+  assert.equal(filed[0].child, 'BRO-9100: do the thing');
+  assert.equal(filed[0].dispatch, undefined);
+  assert.match(comments[0], /^Claimed by /);
+  assert.match(comments[0], /Child session starting on this card now: BRO-9100: do the thing/);
+  const realExit = process.exit; const codes = [];
+  process.exit = (c) => { codes.push(c); throw new Error('exit'); };
+  try {
+    for (const argv of [['--child', 'short'], ['--child', 'BRO-9100: do the thing', '--mac-only', 'needs the Mac for a thing']]) {
+      await assert.rejects(main(['create', 'x', ...argv, '--notes', notes], deps), /exit/);
+    }
+  } finally { process.exit = realExit; }
+  assert.deepEqual(codes, [1, 1]);
+});

@@ -34,7 +34,7 @@ function resolveDisposition({ dispatch, park, self, child } = {}) {
   const hasDispatch = !!dispatch;
   // BRO-6359: --child "<what>" = a child session is starting on this card now; filed exactly like --self
   // (In Progress, claimed) so no worker takes it.
-  const hasSelf = !!self || (typeof child === 'string' && child.trim().length > 0);
+  const hasSelf = !!self || (typeof child === 'string' && child.trim().length >= MIN_PARK_REASON_LENGTH);
   // A bare `--park` with no value parses as `true`, not a string — treat that
   // the same as "no reason given" rather than silently accepting it.
   const hasPark = typeof park === 'string' && park.trim().length > 0;
