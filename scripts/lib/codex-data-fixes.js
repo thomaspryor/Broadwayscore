@@ -17,14 +17,17 @@ const dataFixesEnabled = (env = process.env) => !/^(1|true|yes)$/i.test(String(e
 /**
  * Can THIS process dispatch execute-approved-fix.yml / rebuild-fast.yml (BRO-6194)? Only the GHA lane has shown it
  * can (codex-runner.yml has `actions: write`; bro-4937 was applied by github-actions[bot]). The cloud-routine slots
- * have no documented dispatch credential, so route cards stay off them until one is proven (set CODEX_CAN_DISPATCH=1).
+ * have no documented dispatch credential, so route cards stay off them unless CODEX_CAN_DISPATCH=1 (the Board workers routine sets it on its Codex runner, BRO-6260).
  */
 const canDispatchWorkflows = (env = process.env) => env.GITHUB_ACTIONS === 'true' || /^(1|true|yes)$/i.test(String(env.CODEX_CAN_DISPATCH || ''));
 
 /**
  * Should reconcileLanded skip a card? A deferred data-fix apply is for a runner that can dispatch (a cloud slot
  * re-reading it would only defer again); onlyDeferred is the GHA lane's base slot, which leaves everything else to slot 0.
+ * canDispatch here is canReconcileDeferred(): only the GHA lane retries deferred applies, even though the cloud lane can
+ * now dispatch its own (BRO-6260 review: two lanes re-dispatching one card race on the executor's per-issue queue).
  */
+const canReconcileDeferred = (env = process.env) => env.GITHUB_ACTIONS === 'true';
 const reconcileSkips = ({ deferred, onlyDeferred, canDispatch }) => (deferred ? !canDispatch : !!onlyDeferred);
 
 // Executor-allowlisted field edits only. Not allowed: run-script, add-show, retire-show, review-file-op,
@@ -90,7 +93,9 @@ function executorWroteLast(io, f) {
   } catch { return false; }
 }
 
-async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true, canDispatch = true } = {}) {
+// applyWaitMin: how long the apply run may be waited for. The cloud lane passes what is left before its hard stop
+// (BRO-6260: the routine kills the runner at 120 min); under a minute defers the apply to the next reconcile.
+async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true, canDispatch = true, applyWaitMin = APPLY_WAIT_MIN } = {}) {
   io.git(['fetch', '-q', 'origin', 'main']);
   const names = io.git(['ls-tree', '--name-only', 'origin/main', `${PLAN_DIR}/`]).split('\n').filter(Boolean);
   const files = cardPlanFiles(names, cardId);
@@ -117,10 +122,11 @@ async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true, 
     if (plan.status === 'pending') {
       if (!dispatch) return fail(`${f} is pending and the Codex data-fix route is switched off (CODEX_DATA_FIXES_DISABLED)`);
       if (!canDispatch) return defer(`${f} is pending and this runner cannot dispatch workflows; the GHA Codex lane applies it`);
+      if (!(applyWaitMin >= 1)) return defer(`${f} is pending and this run has no time left to wait for the apply; the next reconcile applies it`);
       ranHere = true;
       if (!plan.planId) return fail(`${f} has no planId`);
       io.log(`${cardId}: applying ${f}`);
-      const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', `--timeout=${APPLY_WAIT_MIN}`]);
+      const r = await io.dispatch(['execute-approved-fix.yml', '-f', `issue_number=${f.replace(/\.json$/, '')}`, '-f', `plan_id=${plan.planId}`, '-f', 'mode=apply', '--wait', `--timeout=${Math.min(APPLY_WAIT_MIN, Math.floor(applyWaitMin))}`]);
       lines.push(`${f}: apply run exit ${r.code}`);
       io.git(['fetch', '-q', 'origin', 'main']);
       plan = read(f);
@@ -150,4 +156,4 @@ async function applyCardFixPlans(cardId, io, { rebuild = true, dispatch = true, 
   return { kind: 'applied', files: handled, lines };
 }
 
-module.exports = { dataFixesEnabled, reconcileSkips, canDispatchWorkflows, EXECUTOR_TIMEOUT_MIN, APPLY_WAIT_MIN, latestLandingPlans, CODEX_PLAN_ACTIONS, cardPlanFiles, codexPlanAllowed, planNotApplied, applyCardFixPlans };
+module.exports = { dataFixesEnabled, reconcileSkips, canReconcileDeferred, canDispatchWorkflows, EXECUTOR_TIMEOUT_MIN, APPLY_WAIT_MIN, latestLandingPlans, CODEX_PLAN_ACTIONS, cardPlanFiles, codexPlanAllowed, planNotApplied, applyCardFixPlans };

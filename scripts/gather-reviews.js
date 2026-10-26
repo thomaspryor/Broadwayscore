@@ -4816,6 +4816,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
           throw new Error('quarantined');
         }
+        // BRO-6089: canonical URL belongs to a round-up matched to a different show
+        const trClaim = require('./lib/tr-archive-claim').checkTrArchiveClaim(html, showId, require('./lib/tr-archive-claim').loadCoverageClaims());
+        if (!trClaim.ok) {
+          console.log(`    ✗ TR archive is another production's round-up (${trClaim.reason}) — quarantining`);
+          try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
+          throw new Error('quarantined');
+        }
         const trReviews = extractTR(html, showId);
         const trRoundupDate = extractRoundupDateFromHtml(html);
         if (trReviews.length > 0) {

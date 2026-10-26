@@ -12,7 +12,7 @@ function slim({ cs = 36.4, n = 10, buckets = ['Rave', 'Negative'] } = {}) {
   const rv = [];
   for (let i = 0; i < n; i++) {
     const b = buckets[i % buckets.length];
-    rv.push({ o: `Outlet ${i}`, cn: `Critic ${i}`, s: b === 'Rave' ? 90 - i : 30 + i, b, t: i < 4 ? 1 : 3, q: `Quote number ${i} about the show and its cast.` });
+    rv.push({ o: `Outlet ${i}`, cn: `Critic ${i}`, s: b === 'Rave' ? 99 - i : 30 + i, b, t: i < 4 ? 1 : 3, q: `Quote number ${i} about the show and its cast.` });
   }
   return { id: 'x', cs, rc: n, rv, au: { score: 70, sources: { a: { c: 20 } } }, cn: { t: 'Critics blamed the format, not the cast.' } };
 }
@@ -150,7 +150,7 @@ test('lintDraft catches the ship-check bad-draft set (BRO-4360)', () => {
   // numbers tied to what they count
   assert.ok(bad('24 raves and 5 negative.'), '24 raves (24 is only the opening day)');
   assert.ok(bad('Twelve raves and five pans.'), 'word numbers are checked');
-  assert.ok(bad('It has 90 reviews.'), 'a quote score is not a review count');
+  assert.ok(bad('It has 99 reviews.'), 'a quote score is not a review count');
   assert.ok(good('Five raves, five pans, 10 reviews.'), 'correct word/digit counts');
   // grades without +/-
   assert.ok(bad('Audiences give it a B.'), 'plain B grade (fact sheet: B-)');

@@ -555,7 +555,10 @@ test('fixRoundDeadline: a SHIP-WITH-FIXES round is not cut by the 60-min card bu
   const hard = t0 + 112 * 60_000;
   const fits = (deadline) => r.fixRoundFits({ deadlineMs: deadline, nowMs: now, hardEndMs: hard, wrapUpMs: 8 * 60_000 });
   assert.equal(fits(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), true);
-  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), false, 'a REJECT keeps to the card budget');
+  // BRO-6260: a REJECT's one fix round gets the rest of the run too (it was banned 14 days before it ran).
+  assert.equal(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd }), runEnd);
+  assert.equal(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), runEnd);
+  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd, rejectRunEnd: false })), false, 'kill switch: a REJECT keeps to the card budget');
   assert.equal(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), card, 'only the first one');
   // A verdict at minute 50 leaves under exec + land checks + review before the hard stop: that
   // round is carried to the next run (swfCarryBody) instead of being dropped.
@@ -717,7 +720,9 @@ test('reviewerSandboxAuth and REVIEWER_READ_DENY', () => {
 
 test('board-workers.md starts three slots with budgets that leave a SHIP-WITH-FIXES round', () => {
   const doc = readFileSync(join(ROOT, 'docs/cloud-routines/board-workers.md'), 'utf8');
-  const cmd = (doc.match(/`(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  const cmd = (doc.match(/`(?:CODEX_CAN_DISPATCH=1 )?(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  // BRO-6260: the cloud lane applies data-fix plans (cloud sessions dispatch through scripts/cloud-dispatch.js).
+  assert.match(doc, /`CODEX_CAN_DISPATCH=1 node scripts\/codex\/daily-runner\.js --slots/);
   const flag = (n) => Number((cmd.match(new RegExp(`--${n} (\\d+)`)) || [])[1]);
   assert.ok(flag('slots') >= 3 && flag('slots') <= 4, cmd);
   assert.ok(flag('limit') >= flag('slots') * 2, 'at least two cards per slot');

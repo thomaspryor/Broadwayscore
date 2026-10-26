@@ -4,8 +4,10 @@ const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 // BRO-5007: inlined as a literal, so `process.env.HELD_BOX_OFFICE_BUILD === 'true'`
 // folds at build time and a flag-off build never emits the held sections'
 // chunks (a dynamic() import still emits its chunk even when nothing renders it).
+// The held sections need commercial AND boxOfficeV2; commercial is always on
+// since its release (BRO-6192), so boxOfficeV2 alone decides.
 const builtFeatures = (process.env.NEXT_PUBLIC_FEATURES || '').split(',').map((s) => s.trim());
-const heldBoxOfficeBuild = builtFeatures.includes('commercial') && builtFeatures.includes('boxOfficeV2');
+const heldBoxOfficeBuild = builtFeatures.includes('boxOfficeV2');
 
 const nextConfig = {
   reactStrictMode: true,
