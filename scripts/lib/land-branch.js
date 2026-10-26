@@ -345,6 +345,41 @@ function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = fa
 }
 
 /**
+ * selectRecheckScope for a merge train (BRO-6276). To member i, every other
+ * member's files are exactly like main changing after i was verified, so
+ * member i's intervening set is main's files since ITS verified base plus the
+ * other members' files, and each member goes through selectRecheckScope.
+ * 'small' only when every member is small; build is the OR. Full when the
+ * switch is set, any member lacks a verified base (a rider whose ticket had
+ * no Land-Base only has a merge-base, which no gauntlet verified), its base
+ * is not an ancestor of main, or any diff failed (null). Fails closed.
+ * @param {{members:Array<{name:string, base:(string|null), verified:boolean, ancestor:boolean, mainChanged:(string[]|null), files:(string[]|null)}>, disabled?:boolean, buildScripts?:(Set<string>|null)}} o
+ * @returns {{mode:'full'|'small', build:boolean, reason:string}}
+ */
+function selectTrainRecheckScope({ members, disabled = false, buildScripts = null }) {
+  const full = (reason) => ({ mode: 'full', build: true, reason });
+  if (disabled) return full('small re-check disabled (LAND_SMALL_RECHECK_DISABLED / LAND_TRAIN_SMALL_RECHECK_DISABLED)');
+  if (!Array.isArray(members) || members.length < 2) return full('not a train');
+  for (const m of members) {
+    if (!m.verified || !/^[0-9a-f]{40}$/.test(String(m.base || ''))) return full(`${m.name} has no verified base`);
+    if (!Array.isArray(m.files)) return full(`files ${m.name} changed are unknown`);
+  }
+  let build = false;
+  for (const m of members) {
+    const others = members.filter((x) => x !== m).flatMap((x) => x.files);
+    const scope = selectRecheckScope({
+      ancestor: m.ancestor,
+      intervening: Array.isArray(m.mainChanged) ? [...m.mainChanged, ...others] : null,
+      changedFiles: m.files,
+      buildScripts,
+    });
+    if (scope.mode !== 'small') return full(`${m.name}: ${scope.reason}`);
+    build = build || scope.build;
+  }
+  return { mode: 'small', build, reason: `no file changed by two of the ${members.length} members or by main since their verified bases; build ${build ? 'runs' : 'skipped (deploy builds it)'}` };
+}
+
+/**
  * A checks seam that reuses an upstream verdict when decideVerifiedBaseSkip
  * allows it and otherwise runs `checks` (the full default gauntlet). On the
  * skip path the throwaway worktree is still prepared (node_modules link,
@@ -578,6 +613,9 @@ function defaultPushMain({ cwd, log = () => {} }) {
  * @param {string[]} [o.trainBases] the bases the branch and riders were verified
  *                                 at: test files main changed since then feed
  *                                 the merged-tree floor (BRO-5180)
+ * @param {string} [o.holderBase] the base this branch's checks verified
+ *                                 (--verified-base); a train re-checks small
+ *                                 only when every member has one (BRO-6276)
  * @param {function} [o.trainChecks] checks seam for a train (default defaultChecks)
  * @returns {{landed:boolean, sha:string|null, attempts:number, wallMs:number, failedCheck:string|null, reason:string|null, pushed:boolean, files:string[], verified:'LANDED'|'UNKNOWN'|null, contentNote:string|null, baseSha:string|null}}
  */
@@ -586,7 +624,7 @@ function landBranch(o) {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
-    riders = [], trainBases = [], trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now, pushMarkerFile = process.env.LAND_PUSH_MARKER || null,
+    riders = [], trainBases = [], holderBase = null, trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now, pushMarkerFile = process.env.LAND_PUSH_MARKER || null,
   } = o || {};
   const t0 = now();
   const trainDropped = []; // BRO-5282: riders not landed by this run, and why
@@ -742,7 +780,8 @@ function landBranch(o) {
         if (!mb) { drop('no merge-base with main'); continue; }
         // No Land-Base on the ticket: the merge-base is at or before the base
         // its checks rebased onto, so the intervening-test set only grows.
-        const base = /^[0-9a-f]{40}$/.test(String(r.base || '')) ? r.base : mb;
+        const verified = /^[0-9a-f]{40}$/.test(String(r.base || ''));
+        const base = verified ? r.base : mb;
         try {
           rebaseOnto(prev, { rangeFrom: mb, tip: r.tip });
         } catch (err) {
@@ -756,7 +795,9 @@ function landBranch(o) {
         }
         const now = git(['rev-parse', 'HEAD'], workdir);
         if (now === prev) { drop('nothing left to land after the rebase (already on main or in the train)'); continue; }
-        added.push({ ...r, base, count: Number(git(['rev-list', '--count', `${prev}..${now}`], workdir)) });
+        // BRO-6276: the rider's own rebased files, renames split, for the train scope.
+        const filesOut = gitOrNull(['diff', '--name-only', '--no-renames', prev, now], workdir);
+        added.push({ ...r, base, verified, files: filesOut === null ? null : filesOut.split('\n').filter(Boolean), count: Number(git(['rev-list', '--count', `${prev}..${now}`], workdir)) });
         log(`[land] train: + ${r.branch} @ ${r.tip.slice(0, 10)} (${added[added.length - 1].count} commit(s))`);
       }
       return added;
@@ -773,6 +814,29 @@ function landBranch(o) {
         }
       }
       return [...set];
+    };
+
+    // BRO-6276: the holder and each rider as train members for
+    // selectTrainRecheckScope; every git failure reads as unknown (full).
+    const trainRecheckScope = (baseSha) => {
+      const disabled = process.env.LAND_SMALL_RECHECK_DISABLED === 'true' || process.env.LAND_TRAIN_SMALL_RECHECK_DISABLED === 'true';
+      if (disabled) return selectTrainRecheckScope({ members: [], disabled });
+      const filesOf = (out) => (out === null ? null : out.split('\n').filter(Boolean));
+      const member = (name, base, verified, files) => {
+        const ancestor = verified && gitOrNull(['merge-base', '--is-ancestor', base, baseSha], workdir) !== null;
+        const mainChanged = ancestor ? filesOf(gitOrNull(['diff', '--name-only', '--no-renames', `${base}..${baseSha}`], workdir)) : null;
+        return { name, base, verified, ancestor, mainChanged, files };
+      };
+      const holderVerified = /^[0-9a-f]{40}$/.test(String(holderBase || ''));
+      const members = [
+        member(branch, holderBase, holderVerified, filesOf(gitOrNull(['diff', '--name-only', '--no-renames', baseSha, holderHead], workdir))),
+        ...train.map((r) => member(r.branch, r.base, r.verified === true, r.files)),
+      ];
+      const all = members.flatMap((m) => m.files || []);
+      const mains = members.flatMap((m) => m.mainChanged || []);
+      const buildScripts = all.some((f) => f.startsWith('src/')) && [...all, ...mains].some((f) => f.startsWith('scripts/'))
+        ? collectBuildScriptDependencies(workdir) : null;
+      return selectTrainRecheckScope({ members, buildScripts });
     };
 
     let lastReason = null;
@@ -818,7 +882,9 @@ function landBranch(o) {
       if (train.length) {
         const interveningTests = trainInterveningTests(baseSha, [...trainBases, ...train.map((r) => r.base)]);
         log(`[land] train: ONE merged-tree re-check for ${train.length + 1} branch(es) (+${interveningTests.length} test file(s) changed on main since their verified bases)`);
-        results = trainChecks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log, interveningTests }) || [];
+        const recheckScope = trainRecheckScope(baseSha);
+        log(`[land] train: ${recheckScope.mode} re-check: ${recheckScope.reason}`);
+        results = trainChecks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log, interveningTests, recheckScope }) || [];
         const trainFailed = firstFailedCheck(results);
         if (trainFailed) {
           // Degenerate bisect: the holder alone, exactly as without a train.
@@ -1001,6 +1067,7 @@ module.exports = {
   isInertForVerification,
   isBuildCodePath,
   selectRecheckScope,
+  selectTrainRecheckScope,
   classifyIntervening,
   landBranch,
   defaultChecks,

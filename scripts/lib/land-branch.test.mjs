@@ -20,7 +20,7 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
-  selectRecheckScope, isBuildCodePath,
+  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath,
   isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
@@ -1049,4 +1049,29 @@ test('BRO-6276 push marker: the sha about to be pushed is written before each pu
     assert.equal(r.landed, true, JSON.stringify(r));
     assert.deepEqual(seen, [[r.sha, r.sha]]);
   } finally { fs.rmSync(marker, { force: true }); w.cleanup(); }
+});
+
+test('BRO-6276 selectTrainRecheckScope: small only when no two members (or main) share a file and every base is verified', () => {
+  const A40 = 'a'.repeat(40);
+  const B40 = 'b'.repeat(40);
+  const mem = (name, files, o = {}) => ({ name, base: A40, verified: true, ancestor: true, mainChanged: [], files, ...o });
+  const s = (members, extra = {}) => selectTrainRecheckScope({ members, ...extra });
+  assert.equal(s([mem('h', ['scripts/lib/a.js']), mem('r', ['scripts/lib/b.js'])]).mode, 'small', 'disjoint members');
+  assert.equal(s([mem('h', ['scripts/lib/a.js']), mem('r', ['scripts/lib/a.js'])]).mode, 'full', 'rider and holder share a file');
+  assert.equal(s([mem('h', ['x.js']), mem('r1', ['y.js']), mem('r2', ['y.js'])]).mode, 'full', 'two riders share a file');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'], { mainChanged: ['y.js'] })]).mode, 'full', 'main changed a rider file since its base');
+  assert.match(s([mem('h', ['x.js']), mem('r', ['y.js'], { verified: false })]).reason, /r has no verified base/, 'merge-base fallback is not a verified base');
+  assert.equal(s([mem('h', ['x.js'], { base: null, verified: false }), mem('r', ['y.js'])]).mode, 'full', 'holder without --verified-base');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'], { ancestor: false, mainChanged: null })]).mode, 'full', 'base not an ancestor of main');
+  assert.equal(s([mem('h', ['x.js']), mem('r', null)]).mode, 'full', 'unknown rider files');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'], { mainChanged: null })]).mode, 'full', 'main diff failed');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'])], { disabled: true }).mode, 'full', 'kill switch');
+  assert.equal(s([mem('h', ['x.js'])]).mode, 'full', 'one member is not a train');
+  // Build: src/ in one member and build code in another member (or main) → build runs.
+  const b1 = s([mem('h', ['src/app/page.tsx']), mem('r', ['next.config.js'], { base: B40 })]);
+  assert.deepEqual([b1.mode, b1.build], ['small', true]);
+  const b2 = s([mem('h', ['src/app/page.tsx']), mem('r', ['memory/notes.md'])]);
+  assert.deepEqual([b2.mode, b2.build], ['small', false]);
+  const b3 = s([mem('h', ['src/app/page.tsx'], { mainChanged: ['package-lock.json'] }), mem('r', ['docs.md'])]);
+  assert.equal(b3.build, true, 'main changed build code since the src/ member was verified');
 });
