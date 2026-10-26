@@ -1363,20 +1363,6 @@
     "queuedAt": "2026-10-26T19:23:29.772Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-26.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T19:23:29.796Z"
-  },
-  {
     "conditionKey": "ux-walkthrough:high-priority",
     "title": "UX walkthrough: high-priority finding(s) filed",
     "description": "- [2/3] Destructive action (delete) not clearly differentiated. Trash icon is the same color as other icons on 'mobile__watchlist_list'.",
@@ -1627,6 +1613,20 @@
       }
     ],
     "queuedAt": "2026-10-26T22:48:18.599Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 16 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +10 more). Checked 2026-10-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T23:27:48.095Z"
   },
   {
     "conditionKey": "land:land/bro-6402-owner-question-guard",
