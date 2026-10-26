@@ -26,6 +26,7 @@
 'use strict';
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { evaluateCostReport, parseFailedByWorkflow } = require('./lib/cost-report-alerts.js');
 
 const LINEAR_ISSUE_URL = 'https://linear.app/broadway-scorecard/issue/';
@@ -115,10 +116,13 @@ async function routeLines({ lines, resolvableKeys, router, runContext = {}, log 
   return { cards, failed };
 }
 
+const USAGE = 'usage: node scripts/route-cost-report-alerts.js --html-out=FILE [--dry-run]';
+
 async function main(argv = process.argv.slice(2), env = process.env) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
   const htmlArg = argv.find((a) => a.startsWith('--html-out='));
   if (!htmlArg) {
-    console.error('usage: node scripts/route-cost-report-alerts.js --html-out=FILE [--dry-run]');
+    console.error(USAGE);
     return 2;
   }
   const htmlOut = htmlArg.slice('--html-out='.length);
