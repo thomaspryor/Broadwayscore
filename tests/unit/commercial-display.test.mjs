@@ -300,7 +300,7 @@ test('BRO-5502: the % Recouped cell always says something', () => {
   const cell = (over) => getRecoupedCellSummary({ ...base, modelRecoupmentPct: null, status: 'open', ...over });
   assert.deepEqual(cell({ recouped: true }), { kind: 'recouped' });
   assert.deepEqual(cell({ analystRecoupPct: [10, 30], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://r/x' }),
-    { kind: 'analyst', range: [10, 30], withModel: false, asOf: '2026-10-13', url: 'https://r/x' });
+    { kind: 'analyst', range: [10, 30], withModel: false, asOf: '2026-10-13', url: 'https://r/x', ours: false });
   assert.deepEqual(cell({ ...modelFields }), { kind: 'model', pct: [60, 86, 110] });
   // A trade-reported return beats every estimate on a closed show (Hell's Kitchen).
   const hk = { status: 'closed', designation: 'Fizzle', recouped: false, analystRecoupPct: [60, 60], reportedReturn: { lo: 55, hi: 60, outlet: 'Broadway Journal', asOf: 'Oct 2026' } };
@@ -576,4 +576,22 @@ test('owner 2026-10-22: a closed label is checked on the rounded range the reade
   // Mid 29 fits Flop, but it shows as 0-60 (mid 30, a Fizzle's): nothing shown.
   assert.equal(getDisplayableEstimateRange(closed), null);
   assert.deepEqual(getDisplayableEstimateRange({ ...closed, analystRecoupPct: [0, 50] }), { range: [0, 50], withModel: false });
+});
+
+test('BRO-6245: ourEstimateRangePct stands in for the analyst range and is credited as ours', () => {
+  const closedFlop = { ...base, status: 'closed', designation: 'Flop', designationBasis: 'model-estimate', modelRecoupmentPct: null, ourEstimateRangePct: [5, 25] };
+  assert.equal(getRecoupmentDisplayMode(closedFlop), 'analyst');
+  assert.deepEqual(getDisplayableAnalystRange(closedFlop), [5, 25]);
+  const cell = getRecoupedCellSummary(closedFlop);
+  assert.equal(cell.kind, 'analyst');
+  assert.equal(cell.ours, true);
+  assert.equal(cell.url, null);
+  // A range whose middle contradicts the closed label stays hidden.
+  assert.notEqual(getRecoupmentDisplayMode({ ...closedFlop, ourEstimateRangePct: [40, 60] }), 'analyst');
+  // An analyst figure, when present, wins and keeps its attribution.
+  const both = getRecoupedCellSummary({ ...closedFlop, analystRecoupPct: [10, 20], analystRecoupAsOf: '2026-10-13', analystRecoupUrl: 'https://example.com/p' });
+  assert.equal(both.ours, false);
+  assert.deepEqual(both.range, [10, 20]);
+  // Never on a recouped show.
+  assert.equal(getRecoupmentDisplayMode({ ...closedFlop, recouped: true, designation: 'Trickle' }), 'announced');
 });
