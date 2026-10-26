@@ -166,7 +166,8 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { merged: reviews.length }) });
   fs.unlinkSync(tmpFile);
   // BRO-6365: downloaded and parsed (as opposed to every `return []` failure above).
-  reviews.parsedOk = true;
+  // Default mode recovers the pre-2020 reviews, so a run without it proves nothing.
+  reviews.parsedOk = !!defaultText && process.env.TR_DEFAULT_MODE_DISABLED !== 'true';
   return reviews;
 }
 
