@@ -80,13 +80,26 @@ function tesseractStats(imgPath) {
       fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
       try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
       if (pg === 'azraw') {
-        // BRO-6298: the A-Z section only (a listing of titles, types, venues, dates, phone numbers; no review prose), raw + layout modes, one prefixed line per text line
+        // BRO-6298: the A-Z section only (a listing of titles, types, venues, dates, phone numbers; no review prose).
+        // Finds the marker page via per-page layout text, then prints that page onward as pdftotext -bbox-layout blocks.
         const id = hitPath.replace('/archive/issue/', '');
-        for (const mode of ['raw', 'layout']) {
-          const all = sh('pdftotext', ['-' + mode, pdf2, '-']).split('\n');
-          const at = all.findIndex(l => /A-Z of productions/i.test(l));
-          console.log(`AZRAW ${id} ${mode} marker=${at} lines=${all.length}`);
-          if (at >= 0) all.slice(at).forEach(l => console.log(`AZ|${id}|${mode}|${l}`));
+        const pages = sh('pdftotext', ['-layout', pdf2, '-']).split('\f');
+        const markerRe = /A-Z of productions|productions running in/i;
+        const first = pages.findIndex(t => markerRe.test(t.replace(/\s+/g, ' ')));
+        console.log(`AZRAW ${id} pages=${pages.length} markerPage=${first}`);
+        if (first < 0) {
+          pages.forEach((t, i) => t.split('\n').forEach(l => { if (/\bA-Z\b|productions|running in/i.test(l)) console.log(`AZHINT|${id}|p${i + 1}|${l.replace(/\s+/g, ' ').slice(0, 120)}`); }));
+          continue;
+        }
+        const xml = sh('pdftotext', ['-bbox-layout', '-f', String(first + 1), '-l', String(pages.length), pdf2, '-']);
+        let pageNo = first;
+        const pageRe = /<page |<block xMin="([\d.]+)" yMin="([\d.]+)" xMax="([\d.]+)" yMax="([\d.]+)">([\s\S]*?)<\/block>/g;
+        let m, bi = 0;
+        while ((m = pageRe.exec(xml))) {
+          if (m[0].startsWith('<page ')) { pageNo++; bi = 0; continue; }
+          const lines = [...m[5].matchAll(/<line [^>]*>([\s\S]*?)<\/line>/g)].map(l => [...l[1].matchAll(/<word [^>]*>([^<]*)<\/word>/g)].map(w => w[1]).join(' '));
+          const dec = t => t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
+          console.log(`AZB|${id}|${pageNo}|${bi++}|${Math.round(m[1])}|${Math.round(m[2])}|${Math.round(m[3])}|${Math.round(m[4])}|${dec(lines.join(' ⏎ '))}`);
         }
         continue;
       }
