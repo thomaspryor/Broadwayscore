@@ -58,6 +58,12 @@ branch=$(printf '%s' "$input" | jq -r '.tool_input.branch // empty' 2>/dev/null 
 branch=${branch#refs/}; branch=${branch#heads/}
 [ -z "$branch" ] && exit 0
 
+# BRO-6244: the visual-approval flow parks work on visual-hold/* and screenshots on
+# visual-evidence/* (scripts/visual-approval.js); neither ever lands without the owner's
+# Approve. Same shape as _HOLD_RE in pre-push-visual-gate.sh (a test pins them together).
+HOLD_BRANCH_RE='^visual-(hold|evidence)/[A-Za-z0-9._-]+$'
+[[ "$branch" =~ $HOLD_BRANCH_RE ]] && exit 0
+
 # The registered copy wins: on the Mac the ~/.claude master, else the repo copy.
 GATE=""
 # Test seam only: a stub gate is honoured when BSC_HOOK_TEST=1 is also set.

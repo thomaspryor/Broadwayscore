@@ -113,9 +113,12 @@ function splitUpDown(rest) {
 function parseDecisionBlock(description) {
   const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [] };
   const seen = new Set();
+  // Screenshots are only for visual approvals (BRO-6244): any other card with an Evidence line must not put images on the owner pages.
+  const visual = parseVisualApproval(description);
   for (const line of stripCode(description)) {
     const ev = EVIDENCE_RE.exec(line);
     if (ev) {
+      if (!visual) continue;
       const url = safeEvidenceUrl(ev[2]);
       if (url && out.evidence.length < MAX_EVIDENCE) out.evidence.push({ label: plain(ev[1]).slice(0, 80) || 'Screenshot', url });
       continue;

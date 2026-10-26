@@ -322,5 +322,3 @@ linear-decision-reply-drain.yml
 commercial-broadway-journal-sweep.yml
 # BRO-6147: every-20-min owner decision emails; a missed run only delays an email to the next run, and a failed run goes through notify-failure.
 owner-decision-emails.yml
-# BRO-6241: lands owner-approved UI changes every 20 minutes; a missed run only delays a landing to the next run and a failed run goes through notify-failure.
-visual-approval-land.yml

@@ -242,6 +242,11 @@ jobs:
             # Same throttled-hourly band as audit-aggregator-gap (BRO-3867: real gap p95 8.0h, max 12.1h). Mirrored in
             # TIGHT_BY_DESIGN (scripts/audit-cron-health-coverage.js); do not tighten back.
             "codex-lane-health.yml|12|Codex Lane Health"
+            # BRO-6244: ships owner-approved UI changes (cron 11,31,51). GitHub dropped its schedule
+            # between 2026-10-25 and 01:20Z (an Approve sat 90 min), so cron-redispatch replaces a
+            # missing run after 0.75h (input + redispatch-after-hours in the workflow). 13h = 1/3h gap
+            # cushion + 12h; a run with no cards exits 0, so a success always means the lander ran.
+            "visual-approval-land.yml|13|Visual Approval Land"
             # Same-night Express retry dispatcher (card #1889); scheduled hourly at :50.
             # A dead cron here means a queued
             # same-night retry never dispatches — the exact silent-miss this
