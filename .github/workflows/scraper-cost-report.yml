@@ -8,9 +8,18 @@ on:
 # BRO-2957: this workflow no longer creates issues, so it no longer needs
 # issues: write. The run-history queries (gh_runs_query) and `gh run view` calls
 # in the first step still need actions: read, and checkout needs contents: read.
+#
+# BRO-6391: red Action-needed lines are filed as worker cards through
+# owner-alert-router.js (scripts/route-cost-report-alerts.js) and the email
+# names the card instead of asking the owner to investigate. contents: write
+# is for the alert-router state push at the end.
 permissions:
-  contents: read
+  contents: write
   actions: read
+
+concurrency:
+  group: scraper-cost-report
+  cancel-in-progress: false
 
 jobs:
   report:
@@ -21,10 +30,23 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v5
+        with:
+          # The alert-router state is pushed to main at the end.
+          ref: main
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v5
+        with:
+          node-version: '20'
 
       - name: Collect data and build report
+        id: report
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          COST_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
@@ -76,11 +98,14 @@ jobs:
           TOTAL_RUNS=0
           TOTAL_FAILED=0
           TOTAL_CANCELLED=0
+          FAILED_BY_WF=""
+          RUNS_QUERY_FAILED=""
           for wf_file in "${COUNT_WFS[@]}"; do
             wf=$(wf_display_name "$wf_file")
             [ -n "$wf" ] || wf="$wf_file"
             if ! RUNS_JSON=$(wf_runs_since "$wf_file"); then
               echo "::warning::run history query failed for $wf_file; its row shows '?'"
+              RUNS_QUERY_FAILED="$RUNS_QUERY_FAILED${RUNS_QUERY_FAILED:+, }$wf_file"
               WORKFLOW_ROWS="$WORKFLOW_ROWS<tr><td style='padding:4px 12px'>$wf</td><td style='padding:4px 12px;text-align:center'>?</td><td style='padding:4px 12px;text-align:center'>query failed</td></tr>"
               continue
             fi
@@ -96,6 +121,7 @@ jobs:
               TOTAL_RUNS=$((TOTAL_RUNS + RUNS))
               TOTAL_FAILED=$((TOTAL_FAILED + FAILED))
               TOTAL_CANCELLED=$((TOTAL_CANCELLED + CANCELLED))
+              if [ "$FAILED" -gt 0 ]; then FAILED_BY_WF="$FAILED_BY_WF${FAILED_BY_WF:+,}$wf_file:$FAILED"; fi
               FAIL_BADGE=""
               if [ "$FAILED" -gt 0 ]; then
                 FAIL_BADGE="<span style='color:#dc2626;font-weight:bold'>$FAILED failed</span>"
@@ -287,42 +313,38 @@ jobs:
           # downgrade takes effect, instead of finding out mid-month when the site
           # degrades. Override via repo secret if plan changes.
           SB_TARGET_CAP=${SB_TARGET_CAP:-1000000}
-          ACTION_NEEDED=""
-          # Cancelled runs are not in this threshold: most are concurrency-group
-          # cancels (Gather Review Data had 58 of 246 in the week this landed),
-          # which would fire it every week. They are shown per row instead.
-          if [ "$TOTAL_FAILED" -gt 5 ]; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>$TOTAL_FAILED workflow failures this week ($TOTAL_CANCELLED cancelled runs not counted) — check logs</li>"
-          fi
-          # Forward-looking SB cap alert (highest priority — site degrades when cap hits).
-          # Explicit numeric guard: bash -gt on non-numeric is undefined and could silently
-          # skip the alert when we most need it.
-          if [[ "$SB_PROJECTED_ABS" =~ ^[0-9]+$ ]] && [ "$SB_PROJECTED_ABS" -gt "$SB_TARGET_CAP" ]; then
-            OVER_PCT=$(echo "scale=0; ($SB_PROJECTED_ABS - $SB_TARGET_CAP) * 100 / $SB_TARGET_CAP" | bc 2>/dev/null || echo "?")
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'><strong>SB projected $SB_PROJECTED_ABS credits this cycle — ${OVER_PCT}% OVER ${SB_TARGET_CAP} cap.</strong> Site will degrade mid-cycle when SB exhausts and BD/Playwright take the overflow.</li>"
-          fi
-          # API-degraded alert (e.g. BB pagination cap or HTTP error) — surface visibly
-          # so a silent zero never reads as "all clear".
-          if [ -n "$API_DEGRADED" ]; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>Cost data partially unavailable: $API_DEGRADED</li>"
-          fi
-          if echo "$SB_STATUS" | grep -qi "exhausted"; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>ScrapingBee credits exhausted (fallbacks active)</li>"
-          fi
-          if [ "$SB_CREDITS_TOTAL" -gt 50000 ]; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>High SB credit usage ($SB_CREDITS_TOTAL) — review if BD-first is working</li>"
-          fi
-          # Browserbase weekly cost alert (Feb 2026 had \$1,287 in 1 week — never again)
-          BB_COST_INT=$(printf '%.0f' "$BB_COST" 2>/dev/null || echo "0")
-          if [ "$BB_COST_INT" -gt 50 ]; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#dc2626'>Browserbase \$$BB_COST this week ($BB_SESSIONS sessions) — investigate spike</li>"
-          elif [ "$BB_COST_INT" -gt 25 ]; then
-            ACTION_NEEDED="$ACTION_NEEDED<li style='color:#f59e0b'>Browserbase \$$BB_COST this week ($BB_SESSIONS sessions) — monitor</li>"
+          # BRO-6391: the Action-needed rules live in scripts/lib/cost-report-alerts.js
+          # (same thresholds this step used inline). Each red line is filed as a
+          # worker card; the HTML it writes names that card. It always writes the
+          # file, so a Linear failure (exit 3) still sends the report and fails
+          # the job afterwards ("Fail if a worker card could not be filed").
+          set +e
+          COST_TOTAL_FAILED="$TOTAL_FAILED" COST_TOTAL_CANCELLED="$TOTAL_CANCELLED" \
+          COST_FAILED_BY_WF="$FAILED_BY_WF" COST_BB_COST="$BB_COST" COST_BB_SESSIONS="$BB_SESSIONS" \
+          COST_SB_PROJECTED="$SB_PROJECTED_ABS" COST_SB_CAP="$SB_TARGET_CAP" COST_SB_STATUS="$SB_STATUS" \
+          COST_SB_CREDITS_TOTAL="$SB_CREDITS_TOTAL" COST_API_DEGRADED="$API_DEGRADED" COST_RUNS_QUERY_FAILED="$RUNS_QUERY_FAILED" \
+            node scripts/route-cost-report-alerts.js --html-out=/tmp/action-needed.html
+          ROUTE_EXIT=$?
+          set -e
+          echo "route_exit=$ROUTE_EXIT" >> "$GITHUB_OUTPUT"
+          if [ -f /tmp/action-needed.html ]; then
+            ACTION_NEEDED=$(cat /tmp/action-needed.html)
+          else
+            ACTION_NEEDED="<li style='color:#dc2626'>Action-needed check did not run this week (see the workflow log)</li>"
           fi
 
           BANNER=""
           if [ -n "$ACTION_NEEDED" ]; then
-            BANNER="<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#dc2626'>Action needed:</strong><ul style='margin:8px 0 0 0;padding-left:20px'>$ACTION_NEEDED</ul></div>"
+            # BRO-6391: red lines carry a worker card, so the owner only acts
+            # when a card could not be filed or the check itself did not run.
+            if [[ "$ACTION_NEEDED" == *"Could not file"* || "$ACTION_NEEDED" == *"did not run"* ]]; then
+              BANNER_HEAD="Action needed:"
+            elif [[ "$ACTION_NEEDED" != *"#dc2626"* ]]; then
+              BANNER_HEAD="Watch list (nothing needed from you):"
+            else
+              BANNER_HEAD="Flagged this week (worker sessions handle the red items, nothing needed from you):"
+            fi
+            BANNER="<div style='background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#dc2626'>$BANNER_HEAD</strong><ul style='margin:8px 0 0 0;padding-left:20px'>$ACTION_NEEDED</ul></div>"
           else
             BANNER="<div style='background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px 16px;margin-bottom:16px'><strong style='color:#16a34a'>All clear.</strong> No action needed this week.</div>"
           fi
@@ -418,6 +440,32 @@ jobs:
             exit 1
           fi
           echo "Cost report emailed (HTTP $HTTP_CODE)"
+
+      # BRO-6391: the ledger records which card each condition filed and when a
+      # clear week resolved it; the cards' VERIFY line reads it.
+      - name: Persist alert-router state
+        if: always()
+        continue-on-error: true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
+          if git diff --cached --quiet; then
+            echo "No alert-router state changes to commit"
+          else
+            git commit -m "chore: persist scraper-cost-report alert-router state [skip ci]"
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
+      - name: Fail if a worker card could not be filed
+        if: always() && steps.report.outputs.route_exit != '' && steps.report.outputs.route_exit != '0'
+        run: |
+          echo "::error::route-cost-report-alerts.js exited ${{ steps.report.outputs.route_exit }}: a red line has no worker card (check LINEAR_API_KEY). The report email said so."
+          exit 1
 
       # BRO-2957 follow-up: notify-failure defaults to severity 'low'
       # (.github/actions/notify-failure/action.yml:15) and BOTH of its steps are
