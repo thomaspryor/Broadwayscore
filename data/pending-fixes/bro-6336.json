@@ -134,7 +134,7 @@
       }
     ]
   },
-  "executedAt": "2026-10-26T15:39:46.106Z",
+  "executedAt": "2026-10-26T15:43:45.689Z",
   "results": [
     {
       "action": "data-edit",
@@ -148,8 +148,8 @@
     },
     {
       "action": "data-edit",
-      "ok": true,
-      "msg": "commercial.json: sources updated for king-lear-2019"
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
     },
     {
       "action": "data-edit",
@@ -163,23 +163,23 @@
     },
     {
       "action": "data-edit",
-      "ok": true,
-      "msg": "commercial.json: sources updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
     },
     {
       "action": "data-edit",
-      "ok": true,
-      "msg": "commercial.json: capitalization updated for midnight-in-the-garden-of-good-and-evil"
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
     },
     {
       "action": "data-edit",
-      "ok": true,
-      "msg": "commercial.json: capitalizationSource updated for midnight-in-the-garden-of-good-and-evil"
+      "ok": false,
+      "reason": "commercial.json:capitalizationSource: value changed since plan"
     },
     {
       "action": "data-edit",
-      "ok": true,
-      "msg": "commercial.json: sources updated for midnight-in-the-garden-of-good-and-evil"
+      "ok": false,
+      "reason": "commercial.json:sources: value changed since plan"
     }
   ],
   "executedIn": "ci"
