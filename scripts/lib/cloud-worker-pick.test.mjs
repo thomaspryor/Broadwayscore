@@ -4,6 +4,8 @@ import fs from 'node:fs';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+// BRO-6303: codexCardFit defaults read the committed trust ladder; pin them to the pre-ladder baseline.
+process.env.CODEX_TRUST_LADDER_DISABLED = '1';
 const { pickCloudCard, skipReason, IDLE_MS, AUTOMATION_PARK_STALE_MS } = require('./cloud-worker-pick.js');
 
 const NOW = Date.parse('2026-10-03T12:00:00Z');

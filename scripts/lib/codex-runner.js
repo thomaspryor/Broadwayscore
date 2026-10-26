@@ -664,6 +664,17 @@ function stripHookNoise(text) {
 const CODEX_MIN_SCORE = TL.BASELINE_MIN_SCORE; // the pre-ladder floor; the live one is ladder.minScore
 const codexLadderAccess = (opts) => TL.ladderAccess(opts);
 const CODEX_REVIEW_TEXTS_RE = /review-texts\b/i;
+/**
+ * Whether daily-runner.js provideData links the private review-texts clone into a worktree. An
+ * explicit reviewTexts (false for the land-check batches) wins; the default is the ladder's
+ * review-texts rung, and a locked rung tells Codex why it is missing.
+ * -> { link, note: prompt text when not linked because of the ladder, else null }
+ */
+function reviewTextsPlan({ ladder, reviewTexts } = {}) {
+  const locked = !!(ladder && ladder.reviewTextsLocked);
+  const link = reviewTexts === undefined ? !locked : !!reviewTexts;
+  return { link, note: !link && locked && reviewTexts === undefined ? 'locked for Codex by the trust ladder. If the card needs it, say so in a REMAINING line.' : null };
+}
 const CODEX_MAC_RE = /\b(?:launchd|launchctl|LaunchAgents?|cmux|Keychain|Mac[- ]only|on the Mac|Mac launcher|~\/Library)\b/i;
 const CODEX_PENALTIES = [
   [/\.github\/workflows\/|\b(?:new|weekly|daily|nightly) (?:cron|workflow)\b|\bwire\b[^.\n]{0,60}\b(?:cron|workflow)\b/i, 4, 'workflow'],
@@ -1586,7 +1597,7 @@ module.exports = {
   parseModelCandidates, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
-  runnerSummaryFacts, runnerSummaryText, codexLadderAccess,
+  runnerSummaryFacts, runnerSummaryText, codexLadderAccess, reviewTextsPlan,
   runnerHealth,
   codexExitTransient,
   stripHookNoise,

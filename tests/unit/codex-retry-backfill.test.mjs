@@ -2,6 +2,8 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
+// BRO-6303: codexCardFit defaults read the committed trust ladder; pin them to the pre-ladder baseline.
+process.env.CODEX_TRUST_LADDER_DISABLED = '1';
 const B = require('../../scripts/codex-retry-backfill.js');
 const R = require('../../scripts/lib/codex-runner.js');
 

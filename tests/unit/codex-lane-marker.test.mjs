@@ -165,7 +165,10 @@ test('daily-runner: the summary uses summaryHeading and no exit path is silent',
   assert.doesNotMatch(src, /## Codex runner did not start\\n/, 'stand-down notes are built by R.standDownNote');
   const ensure = src.slice(src.indexOf('function ensureTools'), src.indexOf('\n}\n', src.indexOf('function ensureTools')));
   assert.doesNotMatch(ensure, /process\.exit\(/, 'a missing tool throws into the stand-down path instead of exiting quietly');
-  assert.match(src, /Why nothing was worked/, 'a run that worked nothing says why');
+  // BRO-6303: the summary body is built by R.runnerSummaryText (codex-runner-grading.js, protected from Codex edits).
+  assert.match(src, /R\.runnerSummaryText\(\{/, 'the summary is built by the protected builder');
+  const stats = { landed: [], landedPartial: [], alreadyFixed: [], bounced: [], inReview: [], landFailed: [], crashed: [], recoveredStops: [], carried: [], outOfTime: [], wouldLand: [] };
+  assert.match(R.runnerSummaryText({ heading: 'h', stats, worked: 0, skipped: 0, picks: [], stop: null, settingsLine: '', weeklyPct: null, checkCount: 0, checkSpentUsd: 0, checkByModel: {} }), /- Why nothing was worked: the picker returned no Codex-fit card/, 'a run that worked nothing says why');
   assert.match(src, /standDownClass/, 'main() turns a start failure or crash into a stand-down note');
   assert.match(src, /standDown\('crash', `killed by \$\{sig\}/, 'a kill before the summary says so');
   assert.doesNotMatch(src, /await standDown\(/, 'standDown is one bounded sync post, not linearBrain retries');

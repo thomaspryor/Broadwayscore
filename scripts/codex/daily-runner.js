@@ -296,8 +296,8 @@ function pruneDisk() {
  * trust ladder's review-texts rung (BRO-6303): unlocked links it, locked does not and says why.
  * -> { lines (for the prompts), dirs (real paths the reviewer may read) }
  */
-function provideData(dest, { ladder = R.codexLadderAccess(), reviewTexts = !ladder.reviewTextsLocked } = {}) {
-  const ladderLocked = !!ladder.reviewTextsLocked;
+function provideData(dest, { ladder = R.codexLadderAccess(), reviewTexts } = {}) {
+  const rt = R.reviewTextsPlan({ ladder, reviewTexts });
   const src = path.join(ROOT, 'data');
   const provided = [];
   const missing = [];
@@ -315,9 +315,9 @@ function provideData(dest, { ladder = R.codexLadderAccess(), reviewTexts = !ladd
   for (const name of R.DATA_DIRS) {
     const from = path.join(src, name);
     const to = path.join(dest, 'data', name);
-    if (!reviewTexts || !fs.existsSync(from)) {
-      if (reviewTexts) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`);
-      else if (ladderLocked) lines.push(`- data/${name}: locked for Codex by the trust ladder. If the card needs it, say so in a REMAINING line.`);
+    if (!rt.link || !fs.existsSync(from)) {
+      if (rt.link) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`);
+      else if (rt.note) lines.push(`- data/${name}: ${rt.note}`);
       continue;
     }
     const real = fs.realpathSync(from);

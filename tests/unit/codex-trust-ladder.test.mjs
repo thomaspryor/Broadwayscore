@@ -162,9 +162,17 @@ test('gitRegressions: reverts and forward fixes of Codex landings; a shallow rea
   assert.deepEqual(L.gitRegressions(''), []);
 });
 
-test('isProtectedPath covers the ladder files and nothing else', () => {
-  for (const p of ['data/audit/codex-trust-ladder.json', 'data/audit/codex-trust-ladder-owner.json', 'scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js']) assert.equal(L.isProtectedPath(p), true, p);
-  for (const p of ['data/audit/codex-lane-health.json', 'scripts/lib/codex-runner.js', 'src/app/page.tsx', '', null]) assert.equal(L.isProtectedPath(p), false, String(p));
+test('isProtectedPath covers the ladder files and its grading inputs, and nothing else', () => {
+  for (const p of ['data/audit/codex-trust-ladder.json', 'data/audit/codex-trust-ladder-owner.json', 'scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js',
+    // BRO-6303: the summary format/parser, the summary reader and the lane-health breaches
+    'scripts/lib/codex-runner-grading.js', 'scripts/codex-lane-alarm.js', 'scripts/lib/codex-lane-health.js']) assert.equal(L.isProtectedPath(p), true, p);
+  // Codex legitimately lands runner fixes (BRO-5694), so the runner itself stays editable.
+  for (const p of ['data/audit/codex-lane-health.json', 'scripts/lib/codex-runner.js', 'scripts/codex/daily-runner.js', 'src/app/page.tsx', '', null]) assert.equal(L.isProtectedPath(p), false, String(p));
+  // What the ladder grades on really lives in the protected file, not a copy elsewhere.
+  const G = require('../../scripts/lib/codex-runner-grading.js');
+  const R = require('../../scripts/lib/codex-runner.js');
+  for (const k of ['runnerSummaryFacts', 'runnerSummaryText', 'summaryHeading', 'parseSummaryHeading']) assert.equal(R[k], G[k], k);
+  assert.equal(require('../../scripts/codex-lane-alarm.js').readSummaries.length >= 0, true);
 });
 
 const liveState = (now) => ({ ...L.seedState(now), mode: 'live' });
@@ -208,4 +216,74 @@ test('env kill switch tolerates whitespace and the clock pause never reaches the
   const st = liveState('2026-10-26T00:00:00Z'); st.clock.lastEvalAt = '2026-11-09T00:00:00Z'; st.clock.cleanSince = '2026-11-20T00:00:00Z';
   const r = L.evaluate({ state: st, owner: L.seedOwner(), record: { stats: null, regressions: null, breaches: null }, nowMs: NOW2 });
   assert.ok(Date.parse(r.state.clock.cleanSince) <= NOW2);
+});
+
+// ---------- BRO-6303: ladderAccess, what the runner reads ----------
+import { mkdtempSync, mkdirSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
+import { join } from 'node:path';
+
+// A fake git over an in-memory origin/main: files maps rel path -> content; null files = no origin/main ref.
+const fakeGit = (files, calls = []) => (args) => {
+  calls.push(args.join(' '));
+  if (args[0] === 'rev-parse') { if (!files) throw new Error('no ref'); return 'abc\n'; }
+  if (args[0] === 'show') { const rel = args[1].replace('origin/main:', ''); if (files && rel in files) return files[rel]; throw new Error('missing'); }
+  throw new Error(`unexpected git ${args[0]}`);
+};
+const liveJson = (unlocked) => { const st = L.seedState('2026-10-26T00:00:00.000Z'); st.mode = 'live'; for (const k of Object.keys(st.rungs)) st.rungs[k].unlocked = unlocked.includes(k); return JSON.stringify(st); };
+let rootN = 0;
+const freshRoot = () => { const d = mkdtempSync(join(tmpdir(), 'ladder-')); rootN += 1; return join(d, String(rootN)); };
+
+test('ladderAccess: reads origin/main; shadow = baseline, missing = not set up, corrupt fails closed', () => {
+  const base = { source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false };
+  const shadow = JSON.stringify(L.seedState('2026-10-26T00:00:00.000Z'));
+  assert.deepEqual(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: shadow }) }), { ...base, mode: 'shadow', ref: 'origin/main' });
+  assert.deepEqual(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({}) }), { ...base, mode: 'not set up', ref: 'origin/main' }, 'a file not on main is not corrupt');
+  const bad = L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: '{ not json' }) });
+  assert.deepEqual(bad, { source: 'corrupt-locked', minScore: -6, cloudDataRouteLocked: true, reviewTextsLocked: true, mode: 'corrupt', ref: 'origin/main' });
+  const live = L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: liveJson(['larger-cards', 'review-texts-ro']) }) });
+  assert.deepEqual(live, { source: 'ladder', minScore: -9, cloudDataRouteLocked: true, reviewTextsLocked: false, mode: 'live', ref: 'origin/main' });
+  // The owner's kill switch on main wins over a live state.
+  const killedOwner = JSON.stringify({ ...L.seedOwner(), killSwitch: true });
+  assert.equal(L.ladderAccess({ root: freshRoot(), env: {}, git: fakeGit({ [L.STATE_FILE]: liveJson([]), [L.OWNER_FILE]: killedOwner }) }).source, 'killed');
+});
+
+test('ladderAccess: no origin/main ref reads the working tree; the working tree never overrides main', () => {
+  const root = freshRoot();
+  mkdirSync(join(root, 'data/audit'), { recursive: true });
+  writeFileSync(join(root, L.STATE_FILE), liveJson(['larger-cards']));
+  const wt = L.ladderAccess({ root, env: {}, git: fakeGit(null) });
+  assert.equal(wt.ref, 'worktree');
+  assert.equal(wt.minScore, -9);
+  const root2 = freshRoot();
+  mkdirSync(join(root2, 'data/audit'), { recursive: true });
+  writeFileSync(join(root2, L.STATE_FILE), liveJson(['larger-cards'])); // a worktree edit main does not have
+  assert.equal(L.ladderAccess({ root: root2, env: {}, git: fakeGit({ [L.STATE_FILE]: liveJson([]) }) }).minScore, -6);
+});
+
+test('ladderAccess: cached per root for ACCESS_TTL_MS, so a long runner still sees a relock within minutes', () => {
+  const root = freshRoot();
+  const calls = [];
+  const files = { [L.STATE_FILE]: liveJson(['review-texts-ro']) };
+  const t0 = Date.parse('2026-10-26T10:00:00Z');
+  assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0, git: fakeGit(files, calls) }).reviewTextsLocked, false);
+  files[L.STATE_FILE] = liveJson([]); // relocked on main
+  assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0 + 60_000, git: fakeGit(files, calls) }).reviewTextsLocked, false, 'cached');
+  assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0 + L.ACCESS_TTL_MS, git: fakeGit(files, calls) }).reviewTextsLocked, true, 'reread after the TTL');
+  assert.ok(L.ACCESS_TTL_MS <= 10 * 60_000);
+  // The env kill switch is never cached either way.
+  assert.equal(L.ladderAccess({ root, env: { CODEX_TRUST_LADDER_DISABLED: '1' }, nowMs: t0 + L.ACCESS_TTL_MS + 1, git: fakeGit(files) }).source, 'killed');
+  assert.equal(L.ladderAccess({ root, env: {}, nowMs: t0 + L.ACCESS_TTL_MS + 2, git: fakeGit(files) }).reviewTextsLocked, true);
+});
+
+test('ladderAccess: the committed ladder on this checkout is shadow, so the runner keeps its baseline', () => {
+  const a = L.ladderAccess({ env: {} });
+  assert.ok(['shadow', 'not set up'].includes(a.mode) || a.source !== 'baseline', JSON.stringify(a));
+  if (a.mode === 'shadow') assert.deepEqual({ source: a.source, minScore: a.minScore, cloudDataRouteLocked: a.cloudDataRouteLocked, reviewTextsLocked: a.reviewTextsLocked }, { source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false });
+});
+
+test('accessLine: one summary line naming the mode, the source and every gate', () => {
+  assert.equal(L.accessLine({ source: 'baseline', minScore: -6, cloudDataRouteLocked: false, reviewTextsLocked: false, mode: 'shadow', ref: 'origin/main' }),
+    '- Trust ladder: shadow (baseline, read from origin/main); min score -6, cloud data route open, review-texts open');
+  assert.match(L.accessLine(L.access({ corrupt: true, env: {} })), /corrupt-locked\); min score -6, cloud data route locked, review-texts locked$/);
 });
