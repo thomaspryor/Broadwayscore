@@ -240,7 +240,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -254,7 +254,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 5
+      "silentRefires": 5,
+      "resolvedAt": "2026-10-26T17:26:28.189Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1024,7 +1025,7 @@
       "resolvedAt": "2026-10-13T16:45:36.193Z"
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 3.9h",
@@ -1036,7 +1037,8 @@
       "notifyCount": 72,
       "cardId": null,
       "linearIdentifier": "BRO-5817",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-26T17:26:28.097Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "resolved",
@@ -27822,7 +27824,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:f13563cb": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside\"",
       "firstSeen": "2026-10-26T15:11:20.600Z",
@@ -27843,7 +27845,9 @@
       "absentRunIds": [
         "40354526811",
         "40361964080"
-      ]
+      ],
+      "resolvedAt": "2026-10-26T17:26:27.876Z",
+      "resolveReason": "job-green"
     },
     "land:land/job/linear-BRO-6339-mvpcbpns": {
       "status": "resolved",
@@ -27873,7 +27877,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:9e6f95d5": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.)",
       "firstSeen": "2026-10-26T15:17:53.368Z",
@@ -27893,7 +27897,9 @@
       "absentRunIds": [
         "40354526811",
         "40361964080"
-      ]
+      ],
+      "resolvedAt": "2026-10-26T17:26:27.933Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6302-tr-lift-honored-2": {
       "status": "open",
@@ -27937,7 +27943,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:c98cc8c1": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"no loss-labelled star play with a model run reads 90% or more\"",
       "firstSeen": "2026-10-26T16:25:10.363Z",
@@ -27948,7 +27954,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6353",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-26T17:26:27.951Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6340-outlet-feeds": {
       "status": "open",
