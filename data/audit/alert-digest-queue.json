@@ -737,5 +737,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T14:04:05.483Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2892-temp-worktree-cleanup",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2892-temp-worktree-cleanup",
+    "description": "land.yml did not land land/bro-2892-temp-worktree-cleanup: the unit-tests-node gate went red at 171130a065. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40335558609",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2892-temp-worktree-cleanup"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "171130a065db4924154f84924bd32b4ebabbbca2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40335558609"
+      }
+    ],
+    "queuedAt": "2026-10-26T14:17:21.578Z"
   }
 ]
