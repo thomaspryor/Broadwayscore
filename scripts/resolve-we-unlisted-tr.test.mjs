@@ -276,3 +276,85 @@ test('the diagnostic log never prints review prose past 90 characters', () => {
   assert.ok(rows[0].includes('16 Nov 23 Dec 1297'));
   for (const part of rows[0].split(' || ').slice(1)) assert.ok(part.length <= 90);
 });
+
+// BRO-6343: 2015-16 production pages (volumes 35-36) print venue and run ABOVE
+// the heading. Synthetic -raw shapes copied from the masked CI probe
+// (run 40415845770); parser fixtures, not evidence for production dates.
+const { pdfRunHeadFor, resumeKeeps } = require('./resolve-we-unlisted-tr.js');
+const runHead = (venueLine, run, heading, credit = 'Revival of the play by JOHN OSBORNE') =>
+  `Vol. XXXVI Issue 18\nOpenings 26 Aug - 12 Sep 2016\nProductions 26 Aug - 12 Sep 2016\n\f${venueLine}\n${run}\n${heading}\n${credit}\nKenneth Branagh Archie Rice\n`;
+
+test('2015-16 run head above the heading gives press night and close', () => {
+  assert.deepEqual(dates(runHead('GARRICK', '30 August – 12 November 2016', 'THE ENTERTAINER'), 'Entertainer (The)', 'Garrick'), {
+    previewsStartDate: null, openingDate: '2016-08-30', closingDate: '2016-11-12',
+  });
+  assert.deepEqual(dates(runHead('DOMINION', '21 July 2016 – 07 January 2017', 'THE BODYGUARD'), 'Bodyguard (The)', 'Dominion'), {
+    previewsStartDate: null, openingDate: '2016-07-21', closingDate: '2017-01-07',
+  });
+  assert.deepEqual(dates(runHead('ROYAL COURT', '22 – 30 July 2016', 'PIGS AND DOGS'), 'Pigs and Dogs', 'Royal Court'), {
+    previewsStartDate: null, openingDate: '2016-07-22', closingDate: '2016-07-30',
+  });
+  assert.deepEqual(dates(runHead('THEATRE ROYAL HAYMARKET', '27 August- 9 September 2015', 'MR FOOTE\'S OTHER LEG'), "Mr Foote's Other Leg", 'Theatre Royal - Haymarket').openingDate, '2015-08-27');
+});
+
+test('a single run-head date is press night only; a squashed year still reads', () => {
+  assert.deepEqual(dates(runHead('ADELPHI', '15 September2015', 'KINKY BOOTS'), 'KINKY BOOTS', 'Adelphi'), {
+    previewsStartDate: null, openingDate: '2015-09-15', closingDate: null,
+  });
+});
+
+test('a run head at another venue is another production', () => {
+  const text = runHead('GARRICK', '30 August – 12 November 2016', 'THE ENTERTAINER');
+  assert.equal(pdfRunHeadFor(text, 'Entertainer (The)', 'Old Vic'), null);
+  assert.equal(pdfRunHeadFor(text, 'Entertainer (The)', null), null);
+  assert.equal(pdfRunHeadFor(text, 'The Entertainers', 'Garrick'), null);
+});
+
+test('a run head needs the venue line directly above the run line', () => {
+  // a lowercase line (prose, a credit) in the venue slot is not a venue
+  assert.equal(pdfRunHeadFor('the Garrick, where\n30 August – 12 November 2016\nTHE ENTERTAINER\n', 'Entertainer (The)', 'Garrick'), null);
+  // a heading with no run line above it reads nothing from this path
+  assert.equal(pdfRunHeadFor('GARRICK\nTHE ENTERTAINER\n30.08.16\n', 'Entertainer (The)', 'Garrick'), null);
+});
+
+test('run heads: reversed or impossible ranges and conflicting blocks fail closed', () => {
+  assert.equal(pdfRunHeadFor(runHead('GARRICK', '30 November 2016 – 12 August 2016', 'THE ENTERTAINER'), 'Entertainer (The)', 'Garrick'), null);
+  assert.equal(pdfRunHeadFor(runHead('GARRICK', '31 February – 12 August 2016', 'THE ENTERTAINER'), 'Entertainer (The)', 'Garrick'), null);
+  const two = runHead('GARRICK', '30 August – 12 November 2016', 'THE ENTERTAINER') + runHead('GARRICK', '01 December 2016 – 07 January 2017', 'THE ENTERTAINER');
+  assert.equal(pdfRunHeadFor(two, 'Entertainer (The)', 'Garrick'), null);
+  const same = runHead('GARRICK', '30 August – 12 November 2016', 'THE ENTERTAINER').repeat(2);
+  assert.equal(parseTrHeaderDates(pdfRunHeadFor(same, 'Entertainer (The)', 'Garrick')).closingDate, '2016-11-12');
+});
+
+test('a yearless start before its end month rolls back a year', () => {
+  assert.deepEqual(dates(runHead('APOLLO', '15 December – 16 January 2016', 'THE DAZZLE'), 'THE DAZZLE', 'Apollo'), {
+    previewsStartDate: null, openingDate: '2015-12-15', closingDate: '2016-01-16',
+  });
+});
+
+test('the issue period printed under a heading is not a run (Nell Gwynn 2016 shape)', () => {
+  const text = 'Openings 12-25 February 2016\nProductions 12-25 February 2016\nNELL GWYNN\n12 - 25 February 2016\nVol. XXXVI Issue 04\n';
+  assert.equal(pdfHeaderFor(text, 'NELL GWYNN', 'Apollo'), null);
+  // the real run head in the same issue wins
+  const withRun = `${text}APOLLO\n12 February – 30 April 2016\nNELL GWYNN\nTransfer of the play by JESSICA SWALE\n`;
+  assert.deepEqual(dates(withRun, 'NELL GWYNN', 'Apollo'), { previewsStartDate: null, openingDate: '2016-02-12', closingDate: '2016-04-30' });
+});
+
+test('run-head facts promote through the existing historical decision', () => {
+  const lookups = [{ review: { title: 'The Entertainer', venue: 'Garrick Theatre', date: '2016-08-31' },
+    tr: { title: 'Entertainer (The)', venue: 'Garrick', link: 'https://www.theatrerecord.com/archive/volume/36/page/914' },
+    header: pdfHeaderFor(runHead('GARRICK', '30 August – 12 November 2016', 'THE ENTERTAINER'), 'Entertainer (The)', 'Garrick') }];
+  const [c] = buildReviewLedCandidates({ season: '2016-2017', lookups, shows: [], today: '2026-10-26' });
+  assert.deepEqual([c.openingDate, c.closingDate, c.decision.promotable], ['2016-08-30', '2016-11-12', true]);
+});
+
+test('--resume refetches PDF matches without a press night and close, keeps the rest', () => {
+  const pdf = 'https://www.theatrerecord.com/archive/volume/36/page/914';
+  assert.equal(resumeKeeps({ tr: { link: pdf }, header: null }), false);
+  assert.equal(resumeKeeps({ tr: { link: pdf }, header: 'NELL GWYNN\n12 - 25 February 2016' }), false);
+  assert.equal(resumeKeeps({ tr: { link: pdf }, header: 'X\n28 Jul - 25 Aug 2016\nopening 28 Jul' }), false);
+  assert.equal(resumeKeeps({ tr: { link: pdf }, header: 'GROUNDHOG DAY\nPress night 16 Aug 2016\nCloses 17 Sep 2016' }), true);
+  assert.equal(resumeKeeps({ tr: null, header: null }), true);
+  assert.equal(resumeKeeps({ tr: { link: 'https://www.theatrerecord.com/archive/2019/1234-x' }, header: null }), true);
+  assert.equal(resumeKeeps({ tr: { link: pdf }, header: 'X\nPress night 1 Jan 2016\nCloses 2 Feb 2016', error: 'boom' }), false);
+});
