@@ -298,6 +298,32 @@ export function isIndexedCommercialSeason(season: string): boolean {
 }
 
 /**
+ * Headline numbers for the /biz hero (BRO-6286), on the same population as
+ * the season stats: commercial productions only (no pure nonprofits or tour
+ * stops, no untracked placeholders), our own capitalization estimates and
+ * Form D offering ceilings ("up to $X") left out of the disclosed sum, and
+ * recoupments that carry recouped === true.
+ */
+export function getCommercialHeadlineStats(): { productions: number; disclosedCapitalization: number; disclosedCount: number; recouped: number } {
+  let productions = 0;
+  let disclosedCapitalization = 0;
+  let disclosedCount = 0;
+  let recouped = 0;
+  for (const [slug, data] of Object.entries(commercial.shows)) {
+    const show = rawShows.find(s => s.slug === slug);
+    if (!show) continue;
+    if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
+    productions++;
+    if (typeof data.capitalization === 'number' && data.capitalization > 0 && !isOwnEstimate(data) && !isMaximumCapitalization(data)) {
+      disclosedCapitalization += data.capitalization;
+      disclosedCount++;
+    }
+    if (data.recouped === true) recouped++;
+  }
+  return { productions, disclosedCapitalization, disclosedCount, recouped };
+}
+
+/**
  * Get season statistics: capital at risk, recoupment count, etc.
  *
  * Capital at risk (BRO-4623 P0-6) = every running (open/previews) commercial
