@@ -1,11 +1,17 @@
 /** @type {import('next').NextConfig} */
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 
+// BRO-6197: prepare versions before next dev/build compiles any site data.
+// The manifest also ships to ISR functions, where public/ is not on disk.
+require('./scripts/lib/site-image-versions').writeSiteImageVersions();
+
 // BRO-5007: inlined as a literal, so `process.env.HELD_BOX_OFFICE_BUILD === 'true'`
 // folds at build time and a flag-off build never emits the held sections'
 // chunks (a dynamic() import still emits its chunk even when nothing renders it).
+// The held sections need commercial AND boxOfficeV2; commercial is always on
+// since its release (BRO-6192), so boxOfficeV2 alone decides.
 const builtFeatures = (process.env.NEXT_PUBLIC_FEATURES || '').split(',').map((s) => s.trim());
-const heldBoxOfficeBuild = builtFeatures.includes('commercial') && builtFeatures.includes('boxOfficeV2');
+const heldBoxOfficeBuild = builtFeatures.includes('boxOfficeV2');
 
 const nextConfig = {
   reactStrictMode: true,
@@ -62,17 +68,27 @@ const nextConfig = {
   // a held show's score appears. Checked post-build by
   // scripts/lib/check-coverage-floor-trace.js.
   outputFileTracingIncludes: {
-    '**/*': ['data/coverage-floor-snapshot.json'],
+    '**/*': ['data/coverage-floor-snapshot.json', 'data/site-image-versions.json'],
   },
   outputFileTracingExcludes: {
     '**/*': [
       'data/audit/**',
       'data/review-texts/**',
+      // BRO-6277: show art (7k+ files, ~570MB with sm/ variants) is static
+      // output only. A server module building an fs path from process.cwd()
+      // once traced all of it into functions and broke every prod deploy
+      // (2026-10-26, BRO-6305; tests/unit/trace-excludes-public.test.mjs).
+      'public/images/**',
       // ~2400 cast files (~300MB total). Tony pages now consume cast data
       // via data/actor-slugs.json (generated at prebuild). If any code path
       // re-introduces a dynamic data/cast/${showId}.json read, NFT will try
       // to bundle the whole directory again — this exclude blocks that.
       'data/cast/**',
+      // BRO-6310: getServerImageSrcSet() does fs.existsSync(cwd/public/<dynamic>),
+      // which makes NFT bundle all of public/images (~640MB) into every page
+      // function ("off-broadway" hit 792MB > 250MB, 11 failed deploys 2026-10-26).
+      // Vercel serves public/ from the CDN; the existsSync only runs at build time.
+      'public/images/**',
       'data/broadway.db',
       'data/llm-scoring-runs.json',
       'data/mezzanine-productions-raw.json',

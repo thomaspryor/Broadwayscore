@@ -4,9 +4,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { landVerdict, readLatestRun, prodPlan, prodVerdict, parseArgs, sitePathsIn, firstLine, lastLine } = require('./wait-for-land.js');
+const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
 test('diagnostic first lines are bounded before parsing large messages', () => {
   assert.equal(firstLine('request failed\nresponse body'), 'request failed');
@@ -110,6 +113,19 @@ test('a confirmed eviction keeps waiting, names the retry, and flags it once sta
   const stale = verdict({ refSha: TIP, run: run({ ...cancelled, updated_at: minsAgo(45) }) });
   assert.equal(stale.verdict, 'waiting');
   assert.match(stale.why, /30\+ min ago and not re-run/);
+  assert.match(fresh.why, /the sweep will re-run it/);
+  assert.doesNotMatch(stale.why, /retries spent/);
+});
+
+// BRO-6031: once the sweep's budget is spent, say so instead of "retries spent?".
+test('an eviction on the last attempt says retries are spent and how to restart', () => {
+  const spent = verdict({ refSha: TIP, run: run({ id: 1, conclusion: 'cancelled', run_attempt: MAX_ATTEMPTS, cancellation: { kind: 'eviction' } }) });
+  assert.equal(spent.verdict, 'waiting');
+  assert.match(spent.why, new RegExp(`attempt ${MAX_ATTEMPTS} of ${MAX_ATTEMPTS}: retries spent`));
+  assert.match(spent.why, /new commit/);
+  assert.doesNotMatch(spent.why, /land-retry-cancelled/);
+  const early = verdict({ refSha: TIP, run: run({ id: 2, conclusion: 'cancelled', run_attempt: 2, cancellation: { kind: 'eviction' } }) });
+  assert.match(early.why, /attempt 2 of \d+\); the sweep will re-run it/);
 });
 
 // BRO-6015: sessions told to hand-retry, or re-pushing a new ref, lost their place in line.
@@ -248,4 +264,93 @@ test('sitePathsIn reads SITE_PATHS as git pathspecs and refuses a possibly-cut f
   assert.deepEqual(sitePathsIn(['package.json', 'package.json.bak', 'srcs/x']), ['package.json'], 'files match exactly, directories by prefix');
   assert.equal(sitePathsIn(Array.from({ length: 300 }, (_, i) => `docs/${i}.md`)), null, 'the compare API caps files at 300');
   assert.equal(sitePathsIn(null), null);
+});
+
+// BRO-6257 (BRO-6040 recurrence): wait-for-land.js OOMed in Runtime_StringSplit
+// on 2026-10-25. The split was landIdentityFromChecks() splitting and mapping a
+// whole Checks job log (gh's maxBuffer is 64 MB) for every hand-dispatched land
+// run on every poll. Reproduced pre-fix: a 60 MB log needed >128 MB of heap,
+// and the old parser OOMs on the 24 MB log below in this 64 MB heap.
+const { forEachLine, firstLine: sharedFirstLine } = require('./log-lines.js');
+
+test('BRO-6257: forEachLine matches split semantics, stops early and caps long lines', () => {
+  const walk = (text, opts) => { const out = []; forEachLine(text, (l, n, t) => { out.push([l, n, t]); }, opts); return out; };
+  for (const text of ['', 'a', 'a\n', '\nb', 'a\n\nb\n', 'x\r\ny']) {
+    assert.deepEqual(walk(text).map(([l]) => l), text.split('\n'), JSON.stringify(text));
+  }
+  assert.deepEqual(walk(null).map(([l]) => l), ['']);
+  assert.deepEqual(walk('abcdef\nxy', { maxLineLength: 3 }), [['abc', 0, true], ['xy', 1, false]]);
+  const seen = [];
+  assert.equal(forEachLine('a\nb\nc', (l) => { seen.push(l); return l === 'b'; }), true);
+  assert.deepEqual(seen, ['a', 'b'], 'returning true stops the walk');
+  assert.equal(forEachLine('a\nb', () => undefined), false);
+  assert.equal(sharedFirstLine, firstLine, 'wait-for-land and check-prod-deploy share one firstLine');
+});
+
+test('BRO-6257: every job-log parser on the wait-for-land path runs a 24 MB log in a 64 MB heap', () => {
+  const child = spawnSync(process.execPath, ['--max-old-space-size=64', '-e', `
+    const assert = require('node:assert/strict');
+    const lib = (f) => require(${JSON.stringify(path.dirname(require.resolve('./wait-for-land.js')))} + '/' + f);
+    const { landIdentityFromChecks } = lib('land-run-identity.js');
+    const { prodProofFromLog } = lib('deploy-log-proof.js');
+    const { firstFailingTestNameInJobLog, firstFailingTestFileInJobLog } = lib('main-red-streak.js');
+    const sha = 'a'.repeat(40);
+    const head = '2026-10-22T18:23:35.7452531Z   BRANCH: land/x\\n2026-10-22T18:24:35.2144324Z [command]/usr/bin/git log -1 --format=%H\\n2026-10-22T18:24:35.2173902Z ' + sha + '\\n';
+    const filler = '2026-10-22T18:25:00.0000000Z ok 1 - test\\n'.repeat(Math.floor(24e6 / 43));
+    // Markers at the top (early exit), at the bottom (full walk), and absent.
+    assert.deepEqual(landIdentityFromChecks(head + filler), { branch: 'land/x', sha });
+    assert.deepEqual(landIdentityFromChecks(filler + head), { branch: 'land/x', sha });
+    assert.equal(landIdentityFromChecks(filler), null);
+    const deploy = '2026-10-22T18:30:00.0000000Z deployment h.vercel.app: ready (state=READY, x)\\n2026-10-22T18:30:01.0000000Z Deployed to production: https://h.vercel.app\\n';
+    assert.equal(prodProofFromLog(filler + deploy).url, 'h.vercel.app');
+    assert.equal(prodProofFromLog(filler), null);
+    const tap = '2026-10-22T18:31:00.0000000Z not ok 7 - broke\\n2026-10-22T18:31:00.0000000Z   location: /w/scripts/lib/x.test.mjs:1:1\\n';
+    assert.equal(firstFailingTestNameInJobLog(filler + tap), 'broke');
+    assert.equal(firstFailingTestFileInJobLog(filler + tap), 'scripts/lib/x.test.mjs');
+    assert.equal(firstFailingTestNameInJobLog(filler), null);
+    // One giant line is never copied whole either.
+    assert.equal(landIdentityFromChecks('  BRANCH: land/' + 'y'.repeat(24e6)), null);
+  `], { encoding: 'utf8', timeout: 120_000 });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 0, `child signal=${child.signal}: ${child.stderr.slice(0, 2000)}`);
+});
+
+test('BRO-6257: wait-for-land and the libs that parse gh/log output never split it whole', () => {
+  // Guard for the class: a whole-text split on gh/log output is how BRO-6040
+  // and BRO-6257 OOMed. Walk lines with log-lines.js forEachLine instead.
+  const dir = path.dirname(require.resolve('./wait-for-land.js'));
+  for (const f of ['wait-for-land.js', 'land-run-identity.js', 'land-retry-on-cancel.js', 'deploy-log-proof.js', 'log-lines.js', '../check-prod-deploy.js']) {
+    const code = readFileSync(path.join(dir, f), 'utf8').split('\n').filter((l) => !/^\s*(\/\/|\*|\/\*)/.test(l)).join('\n');
+    assert.doesNotMatch(code, /\.split\(/, `${f}: use forEachLine/firstLine from log-lines.js, not .split(`);
+  }
+  const red = readFileSync(path.join(dir, 'main-red-streak.js'), 'utf8');
+  assert.doesNotMatch(red, /jobLogText[^\n]*\.split\(/, 'main-red-streak.js job-log parsers must walk lines lazily');
+});
+
+test('BRO-6257: cached dispatch identities do not pin their Checks logs (real readLatestLandRun cache)', () => {
+  // Live 2026-10-26: Checks logs are ~15.6 MB each and a waiter resolves every
+  // hand dispatch newer than the ref's push run. A cached SHA sliced from a log
+  // kept that whole log alive, so 12 x 8 MB logs here need ~100 MB pre-fix.
+  const child = spawnSync(process.execPath, ['--max-old-space-size=64', '-e', `
+    const assert = require('node:assert/strict');
+    const { readLatestLandRun } = require(${JSON.stringify(path.join(path.dirname(require.resolve('./wait-for-land.js')), 'land-run-identity.js'))});
+    const runs = Array.from({ length: 12 }, (_, i) => ({ id: 1000 - i, event: 'workflow_dispatch', run_attempt: 1, status: 'completed', conclusion: 'success', created_at: '2026-10-25T00:00:00Z', updated_at: 'u' + i }));
+    const cache = new Map();
+    const read = (endpoint) => {
+      if (endpoint.includes('event=push')) return { workflow_runs: [] };
+      if (endpoint.includes('event=workflow_dispatch')) return { workflow_runs: runs };
+      return { jobs: [{ id: Number(endpoint.match(/runs\\/(\\d+)/)[1]), name: 'Checks', conclusion: 'success' }] };
+    };
+    const readText = (endpoint) => {
+      const id = endpoint.match(/jobs\\/(\\d+)/)[1];
+      const head = 'T0Z   BRANCH: land/r-' + id + '\\nT0Z [command]/usr/bin/git log -1 --format=%H\\nT0Z ' + id.padStart(40, 'a') + '\\n';
+      return Buffer.from(head + 'T0Z ok 1 - filler line\\n'.repeat(Math.floor(8e6 / 24))).toString(); // fresh flat string, like gh output
+    };
+    const latest = readLatestLandRun('land/r-995', { repo: 'o/r', read, readText, cache });
+    assert.equal(latest.id, 995);
+    assert.equal(latest.head_sha, '995'.padStart(40, 'a'));
+    assert.equal([...cache.keys()].filter((k) => k.startsWith('checks:')).length, 12);
+  `], { encoding: 'utf8', timeout: 120_000 });
+  assert.equal(child.error, undefined);
+  assert.equal(child.status, 0, `child signal=${child.signal}: ${child.stderr.slice(0, 2000)}`);
 });

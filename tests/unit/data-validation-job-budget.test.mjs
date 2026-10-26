@@ -45,6 +45,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
+const { budgetMinutesFrom, CHECKOUT_ESTIMATE_SEC } = require('../../scripts/lib/audit-push-retry-budgets.js');
 const { readWorkflowJobBlocks, jobTimeoutMinutes } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -71,7 +72,7 @@ const PUSH_WITH_RETRY_SH = path.join(__dirname, '..', '..', 'scripts', 'lib', 'p
 //         gone — so the number stays conservative while remaining sourced.
 // The sweep's own cost is bounded by --time-budget-min instead, and the persist
 // step's by pushStepWorstCaseSec(); both are checked separately below.
-const MEASURED_FIXED_COST_SEC = 569 + 500 + 366;
+const MEASURED_FIXED_COST_SEC = CHECKOUT_ESTIMATE_SEC + 500 + 366;
 // Require at least 15% slack between the fixed cost + the step's budget and
 // the job's declared ceiling — catches a future timeout-minutes cut or a
 // --time-budget-min raise that quietly re-creates a tight-budget flake,
@@ -104,22 +105,8 @@ function findVenueAuditStepText(jobLines) {
   return null;
 }
 
-// Read the effective time budget in minutes. Accepts either a literal
-// `--time-budget-min=25` on the command, or the indirected form this workflow
-// uses: `--time-budget-min=$BUDGET_MIN` with BUDGET_MIN's default supplied by
-// `BUDGET_MIN: ${{ github.event.inputs.time_budget_min || '25' }}`. The default
-// is what a SCHEDULED run gets (github.event.inputs is null on `schedule`), and
-// the scheduled run is the one this budget model is about.
-function budgetMinutesFrom(stepText) {
-  const literal = stepText.match(/--time-budget-min=(\d+(?:\.\d+)?)\b/);
-  if (literal) return parseFloat(literal[1]);
-  const viaVar = stepText.match(/--time-budget-min=\$\{?([A-Z_][A-Z0-9_]*)\}?/);
-  if (!viaVar) return null;
-  const envDefault = stepText.match(
-    new RegExp(`${viaVar[1]}\\s*:\\s*\\$\\{\\{[^}]*?\\|\\|\\s*'(\\d+(?:\\.\\d+)?)'`),
-  );
-  return envDefault ? parseFloat(envDefault[1]) : null;
-}
+// The imported budgetMinutesFrom reads literal flags and scheduled env defaults,
+// sharing those inputs with the generic push-budget audit (BRO-2714).
 
 // Step boundaries within a job are every `- name:` line at 6-space indent
 // (job header at 2, `steps:` at 4, each step's `- name:` at 6).
@@ -305,7 +292,7 @@ const TEST_YML = path.join(__dirname, '..', '..', '.github', 'workflows', 'test.
 // non-Playbill audit bucket. The 480s setup-playwright term is deliberately
 // NOT included — that step moved to audit-provisional-venues.yml with the
 // sweep it existed for, and no remaining data-validation step needs a browser.
-const DATA_VALIDATION_FIXED_COST_SEC = 569 + 366;
+const DATA_VALIDATION_FIXED_COST_SEC = CHECKOUT_ESTIMATE_SEC + 366;
 
 // Steps in data-validation that reach push-with-retry.sh. "Record pipeline
 // success" calls it inline; "Commit scraper-spend ledger" calls it from inside

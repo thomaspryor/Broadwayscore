@@ -14,10 +14,19 @@
   "reasoning": "The transcript is reviewing 'The Counter' at Roundabout Theatre, not 'Raw' as specified in the prompt. This is a different show entirely.",
   "scoredAt": "2026-04-14T03:55:15.795Z",
   "fileName": "7421738996436307242.json",
-  "showId": null,
+  "showId": "the-counter-off-broadway-2024",
   "showTitle": "The Counter",
   "reviewType": "review",
   "classificationConfidence": "high",
   "classificationReason": "Clear first-hand review ('Last night, I saw') with detailed opinions about acting, direction, and production, but show not in provided list",
-  "classifiedAt": "2026-04-15T03:09:42.542Z"
+  "classifiedAt": "2026-04-15T03:09:42.542Z",
+  "rematch": {
+    "candidates": [
+      "the-counter-off-broadway-2024"
+    ],
+    "result": "the-counter-off-broadway-2024",
+    "reason": "The transcript explicitly mentions seeing 'The Counter' at 'Roundabout's off-broadway house,' matching the listed production's venue, playwright (Meghan Kennedy), and director (David Cromer), with the posting date falling within the preview period.",
+    "checkedAt": "2026-10-26T10:22:06.283Z"
+  },
+  "showIdSource": "rematch"
 }

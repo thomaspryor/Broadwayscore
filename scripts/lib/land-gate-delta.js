@@ -169,7 +169,9 @@ function parseNextLintFailures(text) {
     if (!line) continue;
     // A non-indented path line opens a file block: ./src/app/page.tsx
     if (/^\.?\.?\/?[\w@][\w@./+-]*\.[A-Za-z]+$/.test(line) && !/\s/.test(line)) {
-      file = line.replace(/^\.\//, '');
+      // ESLint's stylish formatter prints absolute paths; key on the repo-relative one
+      // so a base checkout in another directory compares equal.
+      file = line.replace(/^\.\//, '').replace(/^\/.*?\/(?=src\/)/, '');
       continue;
     }
     // 12:5  Error: 'x' is defined but never used.  @typescript-eslint/no-unused-vars

@@ -406,3 +406,186 @@ test('BRO-6154 a missed run line for our own show leaves the review unknown, not
   assert.equal(sectionOwnedBy(runs, 7, 'All About Eve', L), null);
   assert.equal(sectionOwnedBy(runs, 7, 'After Life', L), false);
 });
+
+test('BRO-6154 venueOwnedBy: a review under another theatre header is not ours, same venue or no header stays', async () => {
+  const { venueOwnedBy } = await import('node:module').then(m => m.createRequire(import.meta.url)('./tr-pdf-parse.js'));
+  const L = ['NOËL COWARD THEATRE', 'Previews / Opens   Press night', 'a', 'b', 'WYNDHAM’S THEATRE', 'Previews / Opens   Press night', 'c', 'd'];
+  assert.equal(venueOwnedBy(L, 3, 'Noël Coward Theatre'), true);
+  assert.equal(venueOwnedBy(L, 7, 'Noël Coward Theatre'), false);
+  assert.equal(venueOwnedBy(L, 0, 'Noël Coward Theatre'), null);
+  assert.equal(venueOwnedBy(L, 7, ''), null);
+  assert.equal(venueOwnedBy(['LONDON, YOUNG VIC THEATRE', 'Previews / Opens', 'x'], 2, 'Royal Court'), false);
+  assert.equal(venueOwnedBy(['LONDON, ROYAL COURT THEATRE UPSTAIRS', 'Previews / Opens', 'x'], 2, 'Royal Court'), true);
+});
+
+test('BRO-6154 venueOwnedBy tolerates renames, possessives and the title in the header', async () => {
+  const { venueOwnedBy } = await import('node:module').then(m => m.createRequire(import.meta.url)('./tr-pdf-parse.js'));
+  const h = (t) => [t, 'Previews / Opens', 'x'];
+  assert.equal(venueOwnedBy(h("DUKE OF YORK\u2019S THEATRE"), 2, 'Tom Stoppard Theatre', 'Rosmersholm'), true);
+  assert.equal(venueOwnedBy(h('WYNDHAMS THEATRE'), 2, "Wyndham's Theatre", 'Curtains'), true);
+  assert.equal(venueOwnedBy(h('ALL ABOUT EVE'), 2, 'No\u00ebl Coward Theatre', 'All About Eve'), true);
+  assert.equal(venueOwnedBy(h('WYNDHAM\u2019S THEATRE'), 2, 'No\u00ebl Coward Theatre', 'All About Eve'), false);
+});
+
+// BRO-6287 (side item 5): a bare masthead key must not turn a short production
+// title into an outlet marker, while the printed forms still match.
+const { isKnownOutletLine } = require('./tr-pdf-parse.js');
+test('isKnownOutletLine: printed mastheads match, ambiguous bare keys do not', () => {
+  for (const ok of ['THE GUARDIAN', 'GUARDIAN', 'INDEPENDENT', 'METRO (LONDON)', 'THE SUN', 'THE I', 'THE LIST', 'METRO', 'THE TIMES (LONDON)', 'SUN (LONDON)'])
+    assert.equal(isKnownOutletLine(ok), true, ok);
+  for (const no of ['SUN', 'I', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD', 'AFTER LIFE'])
+    assert.equal(isKnownOutletLine(no), false, no);
+});
+
+// BRO-6287: 2021 issues have no run-dates lines or venue headers, only a caps
+// caption (production title) directly above each review's outlet line. The
+// structure below is copied from the masked layout diagnostic of the Be More
+// Chill / South Pacific / After Life issues; the prose is filler.
+const { captionOwnedBy } = require('./tr-pdf-parse.js');
+const CHILL_BODY = 'Be More Chill: the staging is lively and the songs land well, with a cast that sells every beat of the show. '.repeat(4);
+const chillIssue = [
+  'Reviews', '', 'BE MORE CHILL', 'Daily Mail', '', 'BE MORE CHILL', 'FINANCIAL TIMES', '12 July 2021', 'Hannah Bennett', CHILL_BODY, 'It is a fine night out.',
+  '', 'SOUTH PACIFIC', 'FINANCIAL TIMES', '16 July 2021', 'Another Critic', CHILL_BODY, 'Rodgers and Hammerstein again.',
+  '', 'BE MORE CHILL', 'THE GUARDIAN', '13 July 2021', 'Third Critic', CHILL_BODY, 'Squip.',
+].join('\n');
+
+test('captionOwnedBy: our caption true, foreign caption false, none null', () => {
+  const lines = chillIssue.split('\n');
+  const at = (txt, nth = 0) => lines.map((l, i) => l === txt ? i : -1).filter(i => i >= 0)[nth];
+  assert.equal(captionOwnedBy(lines, at('FINANCIAL TIMES', 0), 'Be More Chill'), true);
+  assert.equal(captionOwnedBy(lines, at('FINANCIAL TIMES', 1), 'Be More Chill'), false);
+  assert.equal(captionOwnedBy(lines, at('THE GUARDIAN'), 'Be More Chill'), true);
+  assert.equal(captionOwnedBy(['text', 'some prose line.', 'FINANCIAL TIMES'], 2, 'Be More Chill'), null);
+  // a wrapped masthead is not a caption (real King Lear 2018 skeleton: INTERNATIONAL / NEW YORK TIMES)
+  assert.equal(captionOwnedBy(['INTERNATIONAL', 'NEW YORK TIMES', '28.07.18'], 1, 'King Lear'), null);
+  // a long foreign title wrapping over two caps lines (After Life skeleton)
+  assert.equal(captionOwnedBy(['ADVENTURES WITH THE', 'PAINTED PEOPLE', 'DAILY MAIL'], 2, 'After Life'), false);
+  // a title that shares a real word stays unknown rather than being dropped
+  assert.equal(captionOwnedBy(['PRIDE AND PREJUDICE* (*SORT OF)', 'GUARDIAN'], 1, 'Pride and Prejudice (sort of)'), true);
+});
+
+test('default and raw parsers drop the review captioned with another show', () => {
+  const def = parseDefaultPdfReviews(chillIssue, 'Be More Chill', null);
+  const outlets = def.map(r => `${r.outlet}|${r.date}`);
+  assert.ok(outlets.some(o => o.includes('12 July 2021')), 'ours kept');
+  assert.ok(!outlets.some(o => o.includes('16 July 2021')), 'South Pacific review dropped: ' + outlets);
+});
+
+test('caption guard: raw and layout parsers drop foreign caption, trailing caption is stripped', () => {
+  const raw = parseRawPdfReviews(chillIssue, 'Be More Chill', null);
+  const rawKeys = raw.map(r => r.date);
+  assert.ok(rawKeys.some(d => d.includes('12 July 2021')), 'raw keeps ours');
+  assert.ok(!rawKeys.some(d => d.includes('16 July 2021')), 'raw drops South Pacific: ' + rawKeys);
+  const lay = parsePdfReviews(['BE MORE CHILL', ...chillIssue.split('\n')].join('\n'), 'Be More Chill', {});
+  assert.ok(!lay.some(r => r.date.includes('16 July 2021')), 'layout drops South Pacific');
+  for (const r of [...raw, ...lay]) assert.ok(!/(SOUTH PACIFIC|BE MORE CHILL)\s*$/.test(r.fullText), 'caption leaked: ' + r.fullText.slice(-40));
+});
+
+test('captionOwnedBy: domain-like outlets and blank gaps', () => {
+  assert.equal(captionOwnedBy(['WHATSONSTAGE.COM', 'THE GUARDIAN'], 1, 'Frozen'), null);
+  assert.equal(captionOwnedBy(['FROZEN', '', 'THE GUARDIAN'], 2, 'Frozen'), true);
+});
+
+// BRO-6287: structure copied from the masked raw diagnostic of Be More Chill
+// (vol 41 issue 13). pdftotext glues each page's form feed to the next page's
+// first line, so a page-top caption ("...\fTHE WINTER'S TALE") was invisible,
+// and only a block's first review has a caption; later ones must inherit it.
+test('raw parser: form-feed captions and caption inheritance drop another show\'s later reviews', () => {
+  const body = 'Be More Chill: the staging is lively and the songs land well, with a cast that sells every beat of the show. '.repeat(4);
+  const foreign = 'A Winter\'s Tale with a spare, fast staging and a company that handles the verse with ease and speed. '.repeat(4);
+  const issue = [
+    'Jane Doe\fBE MORE CHILL', 'EVERYTHING-THEATRE.CO.UK', '07 July 2021', 'Mary Pollard', body,
+    'DAILY MAIL', '16 July 2021', 'Patrick Marmion', body,
+    'last words of page\fTHE WINTER’S TALE', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign,
+    'CHICHESTER OBSERVER', '13 July 2021', 'Phil Hewitt', foreign,
+    'FINANCIAL TIMES', '16 July 2021', 'Sarah Hemming', foreign,
+    'page end\fBE MORE CHILL', 'THE GUARDIAN', '14 July 2021', 'Third Critic', body,
+  ].join('\n');
+  const raw = parseRawPdfReviews(issue, 'Be More Chill', null);
+  const got = raw.map(r => `${r.outlet}|${r.date}`).join(' ; ');
+  assert.ok(/Daily Mail\|16 July 2021/.test(got), 'ours kept (inherits our caption): ' + got);
+  assert.ok(/Guardian\|14 July 2021/.test(got), 'ours after a foreign block kept: ' + got);
+  for (const d of ['12 July 2021|', '13 July 2021|']) assert.ok(!got.includes(d), 'foreign dropped');
+  assert.ok(!/Financial Times\|16 July 2021/.test(got), 'foreign FT (no caption of its own) dropped: ' + got);
+  assert.ok(!/Stage\|12 July/.test(got) && !/Chichester/.test(got), got);
+  // inheritance is a raw/default behaviour only: the bare call stays unknown
+  const lines = issue.split(/\n|\f/);
+  const ft = lines.indexOf('FINANCIAL TIMES');
+  assert.equal(captionOwnedBy(lines, ft, 'Be More Chill'), null);
+  assert.equal(captionOwnedBy(lines, ft, 'Be More Chill', { inherit: true }), false);
+  // our own caption between a foreign block and the review restores ownership
+  assert.equal(captionOwnedBy(lines, lines.indexOf('THE GUARDIAN'), 'Be More Chill', { inherit: true }), true);
+});
+
+// BRO-6287 ship-check: inheritance must not outrank a positive run-line match,
+// must stop at a run-dates line, and must work in default mode too.
+test('caption inheritance: run line and wrapped titles stop it; default mode inherits', () => {
+  const body = 'Be More Chill: the staging is lively and the songs land well, with a cast that sells every beat of the show. '.repeat(4);
+  const foreign = 'A Winter\'s Tale with a spare, fast staging and a company that handles the verse with ease and speed. '.repeat(4);
+  const lines = [
+    'THE WINTER’S TALE', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign,
+    '01 Jun 2021 – 30 Sep 2021', 'BE MORE CHILL', 'THE GUARDIAN', '14 July 2021', 'Critic', body,
+  ];
+  // our run line sits between the foreign review and ours: inheritance gives up
+  assert.equal(captionOwnedBy(lines, lines.indexOf('THE GUARDIAN'), 'Be More Chill', { inherit: true }), true);
+  const noCaption = ['THE WINTER’S TALE', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign, '01 Jun 2021 – 30 Sep 2021', 'BE MORE CHILL', 'x', 'THE GUARDIAN', '14 July 2021'];
+  assert.equal(captionOwnedBy(noCaption, 8, 'Be More Chill', { inherit: true }), null);
+  // a wrapped title of ours between the blocks stops the walk
+  const wrapped = ['SOUTH PACIFIC', 'THE STAGE', '12 July 2021', 'A', foreign, 'THE CURIOUS INCIDENT OF THE DOG', 'IN THE NIGHT-TIME', 'text', 'THE GUARDIAN', '14 July 2021'];
+  assert.equal(captionOwnedBy(wrapped, 8, 'The Curious Incident of the Dog in the Night-Time', { inherit: true }), null);
+  // default mode: foreign block's caption-less second review is dropped
+  const def = ['SOUTH PACIFIC', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign + ' Be More Chill.', 'FINANCIAL TIMES', '16 July 2021', 'Sarah Hemming', foreign + ' Be More Chill.',
+    'BE MORE CHILL', 'THE GUARDIAN', '14 July 2021', 'Third Critic', body, 'THE TIMES', '15 July 2021', 'Fourth Critic', body].join('\n');
+  const got = parseDefaultPdfReviews(def, 'Be More Chill', null).map(r => r.date).join(',');
+  assert.ok(!got.includes('16 July 2021') && !got.includes('12 July 2021'), got);
+  assert.ok(got.includes('14 July 2021') && got.includes('15 July 2021'), got);
+});
+
+// BRO-6302: a shared common word (KING, LOVE, NIGHT) no longer makes another
+// production's block "unknown". King Lear (2018) kept EXIT THE KING's and THE
+// KING AND I's reviews; Love Letters (2021) kept LOVE BITES'.
+const { sharesTitleWord } = require('./tr-pdf-parse.js');
+test('BRO-6302 sectionOwnedBy: a block sharing only a common title word is foreign', () => {
+  const runs = productionRuns(['X', '03 October - 02 December 2018', 'EXIT THE KING', 'a', 'b', '04 December - 02 January 2019', 'THE KING AND I', 'c']);
+  assert.equal(sectionOwnedBy(runs, 3, 'King Lear'), false);
+  assert.equal(sectionOwnedBy(runs, 7, 'King Lear'), false);
+  assert.equal(sectionOwnedBy(runs, 3, 'Exit the King'), true);
+  const r2 = productionRuns(['X', '01 May - 30 June 2021', 'LOVE BITES', 'a']);
+  assert.equal(sectionOwnedBy(r2, 3, 'Love Letters'), false);
+  // A distinctive shared word still reads as TR's own spelling of our title.
+  assert.equal(sectionOwnedBy(r2, 3, 'Love Bites Back'), null);
+});
+test('BRO-6302 captionOwnedBy: a caption sharing only a common word is foreign', () => {
+  const lines = ['LONG DAY’S JOURNEY', 'x', 'MY NIGHT WITH REG', 'FINANCIAL TIMES', '16 July 2018', 'body'];
+  assert.equal(captionOwnedBy(lines, 3, "Long Day's Journey into Night"), false);
+  assert.equal(captionOwnedBy(lines, 3, 'My Night with Reg'), true);
+});
+test('BRO-6302 sharesTitleWord: generic words ignored unless the title has nothing else', () => {
+  assert.equal(sharesTitleWord('THE SHARK IS BROKEN', 'Broken Lad'), false);
+  assert.equal(sharesTitleWord('THE LION KING', 'The Lion King (revival)'), true);
+  // All-generic title keeps its words so TR spelling variants stay unknown.
+  assert.equal(sharesTitleWord('COME FROM AWAY!', 'Come From Away'), true);
+  assert.equal(sharesTitleWord('PIGEON ENGLISH', 'Pride and Prejudice'), false);
+});
+test('BRO-6302 review round: TR short forms and hyphen-wrapped captions stay ours', () => {
+  // Every caption word is in our title: TR's short form, not another show.
+  assert.equal(sharesTitleWord('ALL OUT', 'All Out: Comedy About Ambition'), true);
+  assert.equal(sharesTitleWord('THE CHRISTMAS PRINCE', 'The (Very Gay) Christmas Prince'), true);
+  // One shared generic word is still not enough (THE KING AND I under King Lear).
+  assert.equal(sharesTitleWord('THE KING AND I', 'King Lear'), false);
+  const lines = ['A MIDSUM-', 'MER NIGHT\u2019S DREAM', 'FINANCIAL TIMES', '16 July 2018', 'body'];
+  assert.notEqual(captionOwnedBy(lines, 2, "A Midsummer Night's Dream"), false);
+});
+test('BRO-6302 all-common-word title: a block naming something else is foreign', () => {
+  assert.equal(sharesTitleWord('KING LEAR', 'The King and I'), false);
+  assert.equal(sharesTitleWord('EXIT THE KING', 'The King and I'), false);
+  assert.equal(sharesTitleWord('KING AND I', 'The King and I'), true);
+  const runs = productionRuns(['X', '03 July - 02 September 2018', 'THE KING AND I', 'a', 'b', '25 July - 02 October 2018', 'KING LEAR', 'c']);
+  assert.equal(sectionOwnedBy(runs, 3, 'The King and I'), true);
+  assert.equal(sectionOwnedBy(runs, 7, 'The King and I'), false);
+});
+test('BRO-6302 a one-word caption that opens our title stays ours', () => {
+  assert.equal(sharesTitleWord('ALL IN', 'All In: Comedy About Love'), true);
+  assert.equal(sharesTitleWord('KING', 'King Lear'), true);
+  assert.equal(sharesTitleWord('KING', 'The Lion King'), false);
+});

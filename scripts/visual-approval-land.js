@@ -25,15 +25,26 @@ const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const link = require('../src/lib/owner-decision-link.js');
 
 const USAGE = 'Usage: node scripts/visual-approval-land.js [--dry-run]';
-const LANDED_PREFIX = 'Visual approval landed VQL';
-const EXPIRED_MARK = 'Visual approval expired VQX';
+const { MARK, STALE_APPROVAL_MS } = va;
 const EXPIRE_AFTER_MS = link.VISUAL_TTL_MS;
 
-const landedMarker = (mac) => `${LANDED_PREFIX}${mac.slice(0, 16)}`;
-const expiredMarker = (mac) => `${EXPIRED_MARK}${mac.slice(0, 16)}`;
+const landedMarker = (mac) => `${MARK.landed}${mac.slice(0, 16)}`;
+const expiredMarker = (mac) => `${MARK.expired}${mac.slice(0, 16)}`;
 // A held branch that stopped matching is not final: re-pushing the approved change must be able to land, so this marker is per observed patch.
-const cleanedMarker = (mac) => `Visual approval cleaned VQC${mac.slice(0, 16)}`;
-const voidMarker = (mac, patch) => `Visual approval void VQV${mac.slice(0, 12)}${String(patch).slice(0, 12)}`;
+const cleanedMarker = (mac) => `${MARK.cleaned}${mac.slice(0, 16)}`;
+const voidMarker = (mac, patch) => `${MARK.void}${mac.slice(0, 12)}${String(patch).slice(0, 12)}`;
+const unverifiedMarker = (mac, sha) => `${MARK.unverified}${mac.slice(0, 12)}${String(sha || 'none').slice(0, 12)}`;
+// Once per approval: the owner-visible nudge when a tapped change is still not shipping after STALE_APPROVAL_MS.
+const staleMarker = (mac) => `${MARK.stale}${mac.slice(0, 12)}`;
+
+/** When the owner's Approve was written (ms), from the signed comment itself. */
+function approvalTime(comments, marker) {
+  const t = ((comments && comments.nodes) || []).filter((c) => link.bodyHasMarker(c.body, marker)).map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite);
+  return t.length ? Math.min(...t) : null;
+}
+
+/** An approval that is still not shipping after STALE_APPROVAL_MS. */
+const isStale = (approvedAt, now = Date.now()) => approvedAt != null && now - approvedAt > STALE_APPROVAL_MS;
 
 /** What to do with one card. Pure: the CLI below does the git and Linear writes. */
 function planCard(issue, secret, now = Date.now(), currentPatch = null) {
@@ -44,8 +55,9 @@ function planCard(issue, secret, now = Date.now(), currentPatch = null) {
   const has = (m) => (comments.nodes || []).some((c) => link.bodyHasMarker(c.body, m));
   if (has(landedMarker(mac)) || has(expiredMarker(mac))) return { action: 'skip', why: 'already handled', v, mac };
   if (link.hasVisualApproval({ comments, secret, id: issue.identifier, patch: v.patch, verdict: v.verdict, now })) {
-    if (currentPatch === null) return { action: 'land', v, mac };
-    return currentPatch === v.patch ? { action: 'land', v, mac } : { action: 'void', why: 'the held branch no longer matches the approved change', v, mac };
+    const approvedAt = approvalTime(comments, link.visualMarker(mac));
+    if (currentPatch === null) return { action: 'land', v, mac, approvedAt };
+    return currentPatch === v.patch ? { action: 'land', v, mac, approvedAt } : { action: 'void', why: 'the held branch no longer matches the approved change', v, mac, approvedAt };
   }
   // Answered without an approval (a Reject or the owner's own words): the held refs are dead weight.
   if (/ANSWERED by the owner/.test(issue.description || '')) return has(cleanedMarker(mac)) ? { action: 'skip', why: 'rejected, already cleaned', v, mac } : { action: 'cleanup', v, mac };
@@ -100,12 +112,29 @@ async function main(argv = process.argv.slice(2)) {
         va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
         const current = va.patchId('origin/main', `origin/${hold}`);
         const plan = planCard(issue, secret, Date.now(), current);
+        const stuck = async (why, marker) => {
+          console.log(`[visual-land] ${issue.identifier}: not shipping (${why})`);
+          const told = (issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, marker));
+          if (!dryRun && !told) await comment(issue, `The owner approved a change, but it was not shipped: ${why}. A worker needs to fix ${hold} or its screenshots, or ask again with node scripts/visual-approval.js request.\n\n${marker}`);
+          if (!dryRun && isStale(plan.approvedAt) && !(issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, staleMarker(mac)))) {
+            await comment(issue, `The owner approved this more than ${STALE_APPROVAL_MS / 60000} minutes ago and it is still not live (${why}). It needs a worker to fix it.\n\n${staleMarker(mac)}`);
+          }
+        };
         if (plan.action === 'void') {
-          console.log(`[visual-land] ${issue.identifier}: void (${plan.why})`);
-          const told = (issue.comments.nodes || []).some((c) => link.bodyHasMarker(c.body, voidMarker(mac, current)));
-          if (!dryRun && !told) await comment(issue, `The owner approved a change, but ${hold} no longer matches it, so nothing was shipped. Restore the approved change on ${hold}, or ask again with node scripts/visual-approval.js request.\n\n${voidMarker(mac, current)}`);
+          await stuck(plan.why, voidMarker(mac, current));
           continue;
         }
+        // The approval binds the verdict's hash; re-read the file at the evidence commit the owner's email showed, so a re-pushed branch or a failed check cannot ship.
+        const sha = va.evidenceSha(issue.description);
+        let rawVerdict = '';
+        if (sha) {
+          // A failed fetch is transient (counted as a failure, no card comment); a commit without a readable verdict.json is a real "unverified".
+          try { va.git(['fetch', '--quiet', 'origin', `+refs/heads/${va.evidenceBranch(issue.identifier)}:refs/remotes/origin/${va.evidenceBranch(issue.identifier)}`]); } catch { /* branch gone: try the sha itself */ }
+          try { va.git(['cat-file', '-e', `${sha}^{commit}`]); } catch { try { va.git(['fetch', '--quiet', 'origin', sha]); } catch (e) { throw new Error(`could not fetch evidence commit ${sha}: ${e.message}`); } }
+          try { rawVerdict = va.git(['show', `${sha}:verdict.json`]); } catch { rawVerdict = ''; }
+        }
+        const verdictCheck = sha ? va.checkVerdict(rawVerdict, v.verdict) : { ok: false, why: 'the card names no evidence commit' };
+        if (!verdictCheck.ok) { await stuck(verdictCheck.why, unverifiedMarker(mac, sha)); continue; }
         const landRef = `land/${issue.identifier.toLowerCase()}-visual`;
         console.log(`[visual-land] ${issue.identifier}: approved, ${dryRun ? 'would push' : 'pushing'} origin/${hold} -> ${landRef}`);
         if (dryRun) continue;
@@ -133,4 +162,4 @@ async function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[visual-land] ${e.stack || e.message}`); process.exitCode = 3; });
 }
-module.exports = { planCard, main, landedMarker, expiredMarker, voidMarker };
+module.exports = { planCard, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };

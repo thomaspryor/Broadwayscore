@@ -524,6 +524,8 @@ export interface ShowCommercial {
   analystRecoupAsOf?: string | null;
   /** That post. */
   analystRecoupUrl?: string | null;
+  /** Our own estimate as a rounded [low, high] (BRO-6245). Used only when there is no analystRecoupPct; credited as "Our estimate". */
+  ourEstimateRangePct?: [number, number] | null;
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
   modelCostBasis?: number | null;
@@ -548,6 +550,7 @@ export interface SeasonStats {
   /** Every commercial show in the season (nonprofits and tour stops excluded). */
   totalCapital: import('./commercial-metrics').CapitalSummary;
   recoupedCount: number;
+  /** Commercial shows with a known outcome: the denominator of recoupedCount (BRO-6354). */
   totalShows: number;
   recoupedShows: string[];
 }
@@ -635,6 +638,8 @@ export interface CommercialShowRow {
   weeklyCost: number | null;
   /** isEstimatedRunningCost(): prints "~". */
   weeklyCostIsEstimate: boolean;
+  /** weeklyRunningCostBasis: breakeven and all-in figures get a caption (BRO-5109). */
+  weeklyCostBasis: 'running' | 'breakeven' | 'all-in' | null;
   /** getNonprofitProducer(): nonprofit company behind the production, else null. */
   nonprofitOrg: string | null;
   /** ShowCommercial.commercialConversion: the nonprofit run became a commercial run (BRO-5508). */
@@ -653,6 +658,7 @@ export interface CommercialShowRow {
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
   analystRecoupAsOf?: string | null;
   analystRecoupUrl?: string | null;
+  ourEstimateRangePct?: ShowCommercial['ourEstimateRangePct'];
   /** A closed show's trade-reported % returned (ShowCommercial.reportedReturn). */
   reportedReturn?: ShowCommercial['reportedReturn'];
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;

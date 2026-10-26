@@ -62,6 +62,11 @@ function cutAtProductionHeader(textLines) {
   return textLines.slice(0, productionHeaderStart(textLines, infoIdx));
 }
 
+// pdftotext ends each page with a form feed glued to the next page's first line
+// ("...last words\fTHE WINTER'S TALE"), which hid a page-top production caption
+// from every caps-line check (BRO-6287). Treat the form feed as a line break.
+const splitPdfLines = (text) => String(text).split(/\n|\f/);
+
 const normTitleLine = (line) => stripIndexSuffix(line.trim()).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 // Outlet names look like production titles (ALL CAPS) but never end a section.
@@ -86,13 +91,19 @@ const KNOWN_OUTLETS_UPPER = new Set([
 // (BRO-6127: the 2018 Pressure/The Band reviews were dropped for want of it).
 const outletKey = (t) => t.replace(/\s*\([^)]*\)\s*$/, '').replace(/^THE\s+/, '');
 const KNOWN_OUTLET_KEYS = new Set([...KNOWN_OUTLETS_UPPER].map(outletKey));
-const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t) || KNOWN_OUTLET_KEYS.has(outletKey(t));
+// BRO-6287: a bare masthead only counts when it is not also a plausible
+// production title ("THE SUN" is an outlet, "SUN" or "LIST" is a show); those
+// keep their exact "THE X" form.
+const AMBIGUOUS_BARE_KEYS = new Set(['I', 'SUN', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD']);
+const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t)
+  || (KNOWN_OUTLET_KEYS.has(outletKey(t))
+    && (!AMBIGUOUS_BARE_KEYS.has(outletKey(t)) || /^THE\s|\([^)]*\)\s*$/.test(t)));
 
 // `stats` (optional) is filled for the BRO-6097 coverage probe: whether the
 // production's Reviews section was found, how many outlet+date headers it
 // holds, and how many headers produced no review (text under 50 chars).
 function parsePdfReviews(text, showTitle, stats) {
-  const lines = text.split('\n');
+  const lines = splitPdfLines(text);
   const reviews = [];
 
   const titleUpper = showTitle.toUpperCase()
@@ -209,6 +220,7 @@ function parsePdfReviews(text, showTitle, stats) {
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
         if (stats) stats.headers++;
+        const foreignCaption = captionOwnedBy(lines, i, showTitle) === false;
         i += 3;
 
         // Skip blank line after critic name
@@ -229,11 +241,13 @@ function parsePdfReviews(text, showTitle, stats) {
           i++;
         }
 
-        let fullText = cutAtProductionHeader(textLines).map(l => l.trim()).filter(l => l).join('\n');
+        let fullText = stripTrailingCaption(cutAtProductionHeader(textLines)).map(l => l.trim()).filter(l => l).join('\n');
         // Clean PDF artifacts
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
-        if (stats && fullText.length <= 50) stats.shortDropped++;
-        if (fullText.length > 50) {
+        if (stats && !foreignCaption && fullText.length <= 50) stats.shortDropped++;
+        if (foreignCaption) {
+          if (stats) stats.captionDropped = (stats.captionDropped || 0) + 1;
+        } else if (fullText.length > 50) {
           // Convert outlet name to Title Case
           const outletTitle = outlet.split(/[\s.]+/)
             .map(w => w.charAt(0) + w.slice(1).toLowerCase())
@@ -258,8 +272,8 @@ function parsePdfReviews(text, showTitle, stats) {
 }
 
 // For multi-column pre-2019 PDFs: extract ALL reviews, filter by show title mention
-function parseRawPdfReviews(text, showTitle) {
-  const lines = text.split('\n');
+function parseRawPdfReviews(text, showTitle, venue) {
+  const lines = splitPdfLines(text);
   const allReviews = [];
   const runs = productionRuns(lines);
 
@@ -275,7 +289,7 @@ function parseRawPdfReviews(text, showTitle) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle, lines);
+        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionForeign(lines, i, showTitle, sectionOwnedBy(runs, i, showTitle, lines), venueOwnedBy(lines, i, venue, showTitle)) ? false : null;
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -288,7 +302,7 @@ function parseRawPdfReviews(text, showTitle) {
           i++;
         }
 
-        let fullText = cutAtProductionHeader(textLines).map(l => l.trim()).filter(l => l).join('\n');
+        let fullText = stripTrailingCaption(cutAtProductionHeader(textLines)).map(l => l.trim()).filter(l => l).join('\n');
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
 
         if (owned !== false && fullText.length > 200 && fullText.length < 15000) {
@@ -454,8 +468,8 @@ function mentionsTitle(fullText, showTitle) {
   return words.filter(w => count(w) > 0).length >= Math.ceil(words.length * 0.7);
 }
 
-function parseDefaultPdfReviews(text, showTitle) {
-  const lines = text.split('\n').map(l => l.trim());
+function parseDefaultPdfReviews(text, showTitle, venue) {
+  const lines = splitPdfLines(text).map(l => l.trim());
   const markers = [];
   for (let i = 0; i < lines.length; i++) {
     if (!isKnownOutletLine(lines[i])) continue;
@@ -488,8 +502,8 @@ function parseDefaultPdfReviews(text, showTitle) {
       .map((l, off) => ({ l, abs: m.start + 1 + off }))
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
-    const fullText = cutAtProductionHeader(body).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false) {
+    const fullText = stripTrailingCaption(cutAtProductionHeader(body)).join('\n').trim();
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && !captionForeign(lines, m.start, showTitle, sectionOwnedBy(runs, m.start, showTitle, lines), venueOwnedBy(lines, m.start, venue, showTitle))) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -547,6 +561,29 @@ const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length 
 const { trTitleMatches } = require('./tr-production-pick');
 const { foldDiacritics } = require('./title-match');
 
+// BRO-6302: a block title sharing a word with ours stays "unknown" (TR spells
+// titles its own way), but common title words do not count: KING LEAR kept
+// EXIT THE KING's and THE KING AND I's reviews, LOVE LETTERS kept LOVE BITES'.
+const GENERIC_TITLE_WORDS = new Set(['king', 'queen', 'prince', 'princess', 'lady', 'man', 'men', 'woman', 'women', 'girl', 'girls', 'boy', 'boys', 'love', 'night', 'nights', 'day', 'days', 'life', 'death', 'light', 'dark', 'great', 'little', 'old', 'new', 'one', 'two', 'three', 'last', 'first', 'play', 'show', 'story', 'house', 'home', 'world', 'time', 'christmas', 'that', 'this', 'into', 'what', 'when', 'who', 'all', 'not', 'are', 'was', 'you', 'your', 'our', 'his', 'her', 'broken', 'come', 'away', 'goes', 'over', 'out', 'way', 'wild', 'heart', 'blood', 'city', 'street', 'road', 'big', 'good', 'bad', 'young', 'black', 'white', 'red', 'blue', 'green']);
+// A long title wraps over caps lines; a line-end hyphen joins the halves of a
+// wrapped word ("A MIDSUM-" / "MER NIGHT'S DREAM").
+const joinWrapped = (parts) => parts.join(' ').replace(/(\w)-\s+(?=\w)/g, '$1');
+const titleWords = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
+// A block title of two or more words that are all in our title, or one that
+// opens it, is TR's short form of it ("ALL IN" for All In: Comedy About Love).
+function sharesTitleWord(blockTitle, showTitle) {
+  const all = titleWords(showTitle);
+  const theirs = titleWords(joinWrapped([blockTitle]));
+  const norm = (t) => foldDiacritics(String(t)).toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (theirs.length && theirs.every(w => all.includes(w))
+    && (theirs.length >= 2 || norm(showTitle).startsWith(`${norm(joinWrapped([blockTitle]))} `))) return true;
+  const distinctive = all.filter(w => !GENERIC_TITLE_WORDS.has(w));
+  if (distinctive.length) return theirs.some(w => distinctive.includes(w));
+  // A title of common words only (The King and I): a block naming something
+  // else as well (KING LEAR, EXIT THE KING) is another show.
+  return theirs.some(w => all.includes(w)) && theirs.every(w => all.includes(w) || GENERIC_TITLE_WORDS.has(w));
+}
+
 function productionRuns(lines) {
   const runs = [];
   lines.forEach((l, i) => {
@@ -559,7 +596,7 @@ function productionRuns(lines) {
       seen++;
       if (isCapsTitle(t) && parts.length < 3) parts.push(t); else if (parts.length) break;
     }
-    const title = parts.length ? parts.join(' ') : null;
+    const title = parts.length ? joinWrapped(parts) : null;
     runs.push({ line: i, title });
   });
   return runs;
@@ -574,9 +611,7 @@ function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
   if (trTitleMatches(run.title, showTitle)) return true;
   // TR spells titles its own way ("PRIDE AND PREJUDICE* (*SORT OF)"), so a block
   // that shares a real word with ours stays "unknown" instead of being dropped.
-  const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
-  const ours = new Set(words(showTitle));
-  if (words(run.title).some(w => ours.has(w))) return null;
+  if (sharesTitleWord(run.title, showTitle)) return null;
   // Our own run line may have been missed ("onwards", "01-28 February"): when our
   // title appears as a caps line after the other block's run line, we cannot tell.
   if (lines) {
@@ -585,6 +620,139 @@ function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
       if (isCapsTitle(t) && trTitleMatches(t, showTitle)) return null;
     }
   }
+  return false;
+}
+
+// BRO-6287: the next review's caption sits right above its outlet line, so it
+// lands at the tail of the review before it. Drop those trailing caps lines.
+function stripTrailingCaption(textLines) {
+  const out = textLines.slice();
+  const last = () => String(out[out.length - 1]).trim();
+  while (out.length && !last()) out.pop();
+  let n = 0;
+  while (out.length && n < 3 && isCapsTitle(last())) { out.pop(); n++; while (out.length && !last()) out.pop(); }
+  if (n && out.length && /^Reviews?$/.test(last())) out.pop();
+  return out;
+}
+
+// BRO-6287: 2020+ issues print each review under a caps caption naming its own
+// production ("SOUTH PACIFIC" above "FINANCIAL TIMES / 16 July 2021"), with no
+// run-dates line or venue header for the other guards to read. Looks at the
+// nearest non-blank line above the outlet line (up to two blank lines skipped):
+// true when it names our show, false when it names another one, null when
+// there is no caps caption. A caption sharing a real word with our title stays
+// null, as in sectionOwnedBy (TR spells titles its own way).
+// `inherit` (raw and default modes): a review with no caption of its own sits in
+// the block the nearest review above it belongs to, because TR prints the
+// caption only on a block's first review and again at each page top. Without
+// this a foreign block's second and later reviews (no caption directly above)
+// were read as unknown and kept (BRO-6287: South Pacific's FT review filed
+// under Be More Chill).
+const CAPTION_CHAIN_MAX = 30;
+const CAPTION_LOOKBACK = 700;
+function captionOwnedBy(lines, outletIdx, showTitle, { inherit = false } = {}, depth = 0) {
+  let k = outletIdx - 1;
+  while (k >= 0 && !String(lines[k]).trim() && outletIdx - k <= 2) k--;
+  if (k < 0) return null;
+  const parts = [];
+  // A long title wraps over up to three caps lines.
+  for (; k >= 0 && parts.length < 3; k--) {
+    const t = String(lines[k]).trim();
+    if (!isCapsTitle(t)) break;
+    parts.unshift(t);
+  }
+  if (!parts.length) return inherit ? inheritedCaptionOwner(lines, outletIdx, showTitle, depth) : null;
+  // The first half of a wrapped masthead ("INTERNATIONAL" / "NEW YORK TIMES").
+  if (parts.length === 1 && /^(INTERNATIONAL|SUNDAY|DAILY|EVENING|THE)$/.test(parts[0])) return null;
+  // An outlet we do not list ("WHATSONSTAGE.COM") is not a production caption.
+  if (parts.some(t => /\.(COM|CO\.UK|ORG|NET|UK)\b/.test(t))) return null;
+  const caption = joinWrapped(parts);
+  if (trTitleMatches(caption, showTitle)) return true;
+  if (sharesTitleWord(caption, showTitle)) return null;
+  return false;
+}
+
+// Ownership of a caption-less review: that of the previous outlet+date header.
+// The walk gives up (unknown) at anything that could start a different block
+// the guards can read better: a run-dates line, a production info line, or a
+// caps line that is, wraps into, or shares a word with our title.
+function inheritedCaptionOwner(lines, outletIdx, showTitle, depth) {
+  if (depth >= CAPTION_CHAIN_MAX) return null;
+  const memo = inheritMemo(lines, showTitle);
+  if (memo.has(outletIdx)) return memo.get(outletIdx);
+  const nearOurs = (t) => trTitleMatches(t, showTitle) || sharesTitleWord(t, showTitle);
+  let result = null;
+  for (let k = outletIdx - 1; k >= 0 && outletIdx - k <= CAPTION_LOOKBACK; k--) {
+    const t = String(lines[k]).trim();
+    if (RUN_DATES_LINE.test(t) || PRODUCTION_INFO_LINE.test(t)) break;
+    if (isCapsTitle(t)) {
+      const wrapped = [t, `${t} ${String(lines[k + 1]).trim()}`, `${t} ${String(lines[k + 1]).trim()} ${String(lines[k + 2]).trim()}`];
+      if (wrapped.some(w => /^[^a-z]+$/.test(w) && nearOurs(w))) break;
+    }
+    if (isReviewHeaderLine(lines, k)) {
+      result = captionOwnedBy(lines, k, showTitle, { inherit: true }, depth + 1);
+      break;
+    }
+  }
+  memo.set(outletIdx, result);
+  return result;
+}
+
+// An outlet line with its date on the next line, or (default mode) a listed
+// outlet with the date up to DEFAULT_DATE_WINDOW lines below.
+function isReviewHeaderLine(lines, k) {
+  const t = String(lines[k]).trim();
+  if (t === t.toUpperCase() && t.length > 3 && /^[A-Z]/.test(t) && isDateLine(String(lines[k + 1] || '').trim())) return true;
+  if (!isKnownOutletLine(t)) return false;
+  for (let j = k + 1; j <= Math.min(k + DEFAULT_DATE_WINDOW, lines.length - 1); j++) {
+    const u = String(lines[j]).trim();
+    if (isKnownOutletLine(u)) return false;
+    if (isDateLine(u)) return true;
+  }
+  return false;
+}
+
+const inheritMemos = new WeakMap();
+function inheritMemo(lines, showTitle) {
+  let byTitle = inheritMemos.get(lines);
+  if (!byTitle) { byTitle = new Map(); inheritMemos.set(lines, byTitle); }
+  if (!byTitle.has(showTitle)) byTitle.set(showTitle, new Map());
+  return byTitle.get(showTitle);
+}
+
+// A caption verdict from inheritance is a guess about the block above; a
+// positive section or venue match for the review outranks it.
+function captionForeign(lines, idx, showTitle, sec, ven) {
+  if (sec === true || ven === true) return false;
+  return captionOwnedBy(lines, idx, showTitle, { inherit: true }) === false;
+}
+
+// 2019+ issues have no run-dates lines; each production page opens with a
+// "Previews / Opens" header whose caps line names the venue ("WYNDHAM'S THEATRE",
+// "LONDON, YOUNG VIC THEATRE"). A review under a header naming a theatre that
+// shares no word with the show's venue belongs to another production.
+const VENUE_STOP = new Set(['the', 'theatre', 'theater', 'royal', 'london', 'national', 'reviews', 'review', 'from', 'printed', 'media', 'are', 'reproduced', 'pages', 'following', 'playscript', 'synopsis']);
+// Venues renamed after the issue was printed: shows.json carries today's name.
+const VENUE_ALIASES = [['stoppard', 'duke', 'york'], ['gillian', 'lynne', 'new', 'london'], ['sondheim', 'queen'], ['harold', 'pinter', 'comedy'], ['lyttelton', 'lyttleton', 'national'], ['noel', 'coward', 'albery'], ['lyric', 'sondheim']];
+const venueWords = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/['\u2019]s\b/g, 's').split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !VENUE_STOP.has(w));
+const wordsClose = (a, b) => a === b || (a.length >= 5 && b.length >= 5 && (a.startsWith(b.slice(0, 5)) || b.startsWith(a.slice(0, 5))));
+const sectionCache = new WeakMap();
+function venueOwnedBy(lines, lineIdx, venue, showTitle) {
+  const ours = venueWords(venue);
+  if (!ours.length) return null;
+  let sections = sectionCache.get(lines);
+  if (!sections) { sections = productionSections(lines); sectionCache.set(lines, sections); }
+  let sec = null;
+  for (const x of sections) { if (x.line <= lineIdx) sec = x; else break; }
+  if (!sec) return null;
+  const theirs = venueWords(sec.title);
+  if (!theirs.length) return null;
+  // The header also carries the production title; its words count as ours.
+  const mine = [...ours, ...venueWords(showTitle)];
+  if (theirs.some(w => mine.some(o => wordsClose(w, o)))) return true;
+  // Renamed theatre: the header and shows.json each hit the same alias group.
+  const hits = (ws, g) => ws.some(w => g.some(x => wordsClose(w, x)));
+  if (VENUE_ALIASES.some(g => hits(theirs, g) && hits(ours, g))) return true;
   return false;
 }
 
@@ -603,7 +771,7 @@ function productionSections(lines) {
 }
 
 function locateReviews(text, reviews, showTitle) {
-  const lines = text.split('\n');
+  const lines = splitPdfLines(text);
   const trimmed = lines.map(l => l.trim());
   const runs = productionRuns(lines);
   const sections = productionSections(lines);
@@ -616,13 +784,21 @@ function locateReviews(text, reviews, showTitle) {
     let run = null;
     for (const x of runs) { if (x.line <= line) run = x; else break; }
     const tail = String(r.fullText || '').split('\n').filter(Boolean).slice(-2).map(mk);
-    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle, lines) };
+    // BRO-6287: the masked 14 lines above the review's first text line (outlet,
+    // date, critic, caption), so a layout whose
+    // production boundaries the guards miss can be read without any prose.
+    const before = line < 0 ? [] : trimmed.slice(Math.max(0, line - 14), line).map(mk);
+    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, before, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle, lines) };
   });
 }
 
 module.exports = {
   productionRuns,
+  sharesTitleWord,
+  captionOwnedBy,
+  isKnownOutletLine,
   sectionOwnedBy,
+  venueOwnedBy,
   productionSections,
   locateReviews,
   maskPdfText,

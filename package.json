@@ -10,7 +10,7 @@
     "build": "next build",
     "build:ugc": "NEXT_PUBLIC_FEATURES=criticPages,castPages,westEnd,offBroadway,tonyPeople,tonyPredictions,userAccounts NEXT_PUBLIC_SANITY_DATASET=production SKIP_HEAVY_PREBUILD=true next build",
     "start": "next start",
-    "lint": "next lint",
+    "lint": "eslint src",
     "lint:design": "node scripts/lint-design-tokens.js",
     "test": "npm run test:data && npm run test:e2e",
     "test:data": "node scripts/validate-data.js && node scripts/validate-aggregator-truth.js",
@@ -115,7 +115,6 @@
     "tailwindcss": "^3.4.3",
     "ts-node": "^10.9.2",
     "tsx": "^4.23.15",
-    "twitter-api-v2": "^1.29.1",
     "typescript": "^5.4.5",
     "vercel": "^50.44.0"
   },

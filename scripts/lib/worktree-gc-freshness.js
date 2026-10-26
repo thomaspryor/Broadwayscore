@@ -62,4 +62,58 @@ function checkWorktreeGcFreshness(lastLineTimestamp, nowMs) {
   return { hoursStale, severity: hoursStale >= STALE_ERROR_HOURS ? 'error' : 'warn' };
 }
 
-module.exports = { checkWorktreeGcFreshness, lastTimestampFromLog, STALE_WARN_HOURS, STALE_ERROR_HOURS };
+/**
+ * BRO-2617: the combined log stays fresh while any one repo's pass is running,
+ * so a single repo (e.g. ios) going silent is invisible to the overall check.
+ * gc-merged-worktrees.sh writes a `DIGEST[<repo>]:` line for every repo on every
+ * pass, which makes it the per-repo heartbeat.
+ * @param {string|null|undefined} logText
+ * @returns {Record<string,string>} repo name -> newest `YYYY-MM-DD HH:MM:SS` of its DIGEST line
+ */
+function lastTimestampsByRepo(logText) {
+  const out = {};
+  if (typeof logText !== 'string') return out;
+  const lines = logText.split('\n');
+  for (let i = lines.length - 1; i >= 0; i--) {
+    const m = /^\[(\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2})\] DIGEST\[([^\]]+)\]:/.exec(lines[i]);
+    if (m && !(m[2] in out)) out[m[2]] = m[1];
+  }
+  return out;
+}
+
+/**
+ * @param {string|null|undefined} logText
+ * @param {number} nowMs
+ * @param {string[]} [expectedRepos] when non-empty, the only repos checked (each must have a heartbeat)
+ * @returns {Array<{repo:string, hoursStale:number|null, severity:'warn'|'error'}>} stale repos only.
+ *   A repo with no heartbeat at all reports hoursStale null, severity error. Empty when the
+ *   log has no DIGEST lines and nothing is expected.
+ */
+function checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos = []) {
+  const byRepo = lastTimestampsByRepo(logText);
+  // When the caller names the repos, check only those: a name left in the log by a renamed or
+  // removed repo would otherwise alarm forever.
+  const names = new Set(expectedRepos.length ? expectedRepos : Object.keys(byRepo));
+  const stale = [];
+  for (const repo of names) {
+    if (!byRepo[repo]) { stale.push({ repo, hoursStale: null, severity: 'error' }); continue; }
+    const r = checkWorktreeGcFreshness(byRepo[repo], nowMs);
+    if (r) stale.push({ repo, ...r });
+  }
+  return stale;
+}
+
+/** Pure: one payload per repo whose own DIGEST heartbeat is stale (BRO-2617). */
+function evaluateRepos(logText, nowMs, expectedRepos = []) {
+  if (logText == null) return [];
+  return checkWorktreeGcFreshnessByRepo(logText, nowMs, expectedRepos).map((s) => ({
+    conditionKey: `worktree-gc:stale:${s.repo}`,
+    title: `Infra: worktree GC stale for repo ${s.repo}`,
+    description: s.hoursStale == null
+      ? `worktree-gc.log has no DIGEST[${s.repo}] line at all, so the ${s.repo} repo's worktrees are not being garbage-collected.`
+      : `worktree-gc.log has no DIGEST[${s.repo}] line in the last ${s.hoursStale.toFixed(1)}h while other repos may still be logging, so the ${s.repo} repo's GC pass may have silently stopped.`,
+    severity: s.severity, disposition: 'digest',
+  }));
+}
+
+module.exports = { checkWorktreeGcFreshness, lastTimestampFromLog, lastTimestampsByRepo, checkWorktreeGcFreshnessByRepo, evaluateRepos, STALE_WARN_HOURS, STALE_ERROR_HOURS };

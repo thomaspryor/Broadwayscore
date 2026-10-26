@@ -183,7 +183,7 @@ try {
   // (Checks the full chrome binary; `install chromium` also installs the headless
   // shell, so a switch to --only-shell would need this probe revisited.)
   const candidate = playwright.chromium;
-  if (fs.existsSync(candidate.executablePath())) {
+  if (fs.existsSync(candidate.executablePath()) || require('./lib/playwright-exe').launchExtras(candidate).executablePath) {
     chromium = candidate;
   } else {
     console.warn('Playwright browser binary missing; using HTTP fallbacks');
@@ -1292,7 +1292,7 @@ async function scrapeShowScoreWithPlaywright(url, options = {}) {
   const { isOffBroadway = false, expectedVenue = null, showId = null, openingDate = null, closingDate = null } = options;
   let browser = null;
   try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...require('./lib/playwright-exe').launchExtras(chromium) });
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     });
@@ -2256,7 +2256,7 @@ async function searchBWWRoundup(show, year, options = {}) {
 async function scrapeBWWRoundupWithPlaywright(url) {
   let browser = null;
   try {
-    browser = await chromium.launch({ headless: true });
+    browser = await chromium.launch({ headless: true, ...require('./lib/playwright-exe').launchExtras(chromium) });
     const context = await browser.newContext({
       userAgent: 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
     });
@@ -4813,6 +4813,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         const trVal = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
         if (!trVal.ok) {
           console.log(`    ✗ TR archive page-title mismatch (${trVal.reason}) — quarantining`);
+          try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
+          throw new Error('quarantined');
+        }
+        // BRO-6089: canonical URL belongs to a round-up matched to a different show
+        const trClaim = require('./lib/tr-archive-claim').checkTrArchiveClaim(html, showId, require('./lib/tr-archive-claim').loadCoverageClaims());
+        if (!trClaim.ok) {
+          console.log(`    ✗ TR archive is another production's round-up (${trClaim.reason}) — quarantining`);
           try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
           throw new Error('quarantined');
         }

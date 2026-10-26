@@ -67,10 +67,12 @@ runs:
         # feedback-submitters.json (BRO-4453): reader name/email/message for
         # feedback reports, written by process-feedback.js. Private by design:
         # it is what keeps those details out of the public issues.
+        # season-payback-history.json (BRO-6335): daily per-season payback rows,
+        # appended by scripts/append-season-payback-history.ts.
         # Seed a new name in the private repo ({} or []) BEFORE adding it here:
         # checkout-core-data's canary fails every job when a CORE_FILES name is
         # missing from the clone (BRO-2937, scripts/lib/core-data-files.js).
-        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json feedback-submitters.json"
+        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json feedback-submitters.json season-payback-history.json"
         # Manifest of files this workflow actually modified — consumed by the
         # "Commit and push core data" step below to decide whether the
         # per-slug reconciliation merge (commercial.json, diary-shows.json) is

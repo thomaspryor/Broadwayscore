@@ -108,8 +108,11 @@ function makeCapEstimator(shows, commercialShows, isExcluded = hasNoInvestorsToR
   for (const s of shows) { if (s.slug) bySlug.set(s.slug, s); if (s.id) bySlug.set(s.id, s); }
   /** @type {DisclosedCap[]} */
   const disclosed = [];
+  const continuations = continuationIds(shows.filter((s) => s.slug && commercialShows?.[s.slug]).map((s) => ({
+    id: s.slug, openingDate: s.openingDate, capitalization: commercialShows[s.slug].capitalization, capitalizationSource: commercialShows[s.slug].capitalizationSource,
+  })));
   for (const [key, comm] of Object.entries(commercialShows || {})) {
-    if (!comm || comm.nonprofitOrg || isExcluded(comm) || !isDisclosedCapitalization(comm)) continue;
+    if (!comm || comm.nonprofitOrg || isExcluded(comm) || !isDisclosedCapitalization(comm) || continuations.has(key)) continue;
     const show = bySlug.get(key) || bySlug.get(comm.slug) || bySlug.get(key.replace(/-\d{4}$/, ''));
     const year = show && seasonYearOf(show.openingDate);
     if (year === null || !show) continue;
@@ -134,7 +137,30 @@ function optsWithCapEstimate(opts, show, comm) {
   return est ? { ...opts, capEstimate: est } : opts;
 }
 
+/**
+ * Ids of productions that run on capital already counted for an earlier
+ * production of the same title: same id stem (beetlejuice-2022 / -2019), the
+ * same capitalization figure, and a source that says it continued that
+ * production. Counting both puts one raise in the totals twice (BRO-6360).
+ * One definition for buildSeasonProfiles, getSeasonStats, the headline stats
+ * and the comparables pool.
+ * @param {Array<{id?: string|null, openingDate?: string|null, capitalization?: number|null, capitalizationSource?: string|null}>} entries
+ * @returns {Set<string>}
+ */
+function continuationIds(entries) {
+  const stem = (id) => id.replace(/-\d{4}$/, '');
+  const out = new Set();
+  for (const e of entries) {
+    if (!e.id || !e.openingDate || typeof e.capitalization !== 'number' || e.capitalization <= 0) continue;
+    if (!/\bcontinu(ed|es|ation|ing)\b/i.test(e.capitalizationSource || '')) continue;
+    if (entries.some((o) => o !== e && o.id && o.openingDate && stem(o.id) === stem(e.id)
+      && o.openingDate < e.openingDate && o.capitalization === e.capitalization)) out.add(e.id);
+  }
+  return out;
+}
+
 module.exports = {
+  continuationIds,
   optsWithCapEstimate,
   MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS,
   estimateCapitalization, capitalizationComparable, isDisclosedCapitalization, makeCapEstimator, percentile,

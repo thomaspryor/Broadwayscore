@@ -58,9 +58,11 @@ export default function OffBroadwayPage() {
     { name: 'Off-Broadway', url: `${BASE_URL}/off-broadway` },
   ]);
 
-  // SEO schema excludes previews/upcoming (they have no scores)
+  // SEO schema lists open shows only: the ~470 closed seasons made the JSON-LD 337 kB,
+  // serialized twice (HTML + flight), ~65% of the page. They stay reachable via the
+  // sitemap and show pages, same as /west-end (BRO-5991, BRO-6325).
   const itemListSchema = generateItemListSchema(
-    shows.filter(s => s.status !== 'previews' && s.status !== 'upcoming').map(show => ({
+    shows.filter(s => s.status === 'open').map(show => ({
       name: show.title,
       url: `${BASE_URL}/show/${show.slug}`,
       image: show.images?.hero,

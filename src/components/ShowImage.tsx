@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useMemo, ReactNode } from 'react';
-import { getCdnSrcSet } from '@/lib/images';
+import { getCdnSrcSet, getShowImageSrcSet } from '@/lib/images';
 import { catchEarlyImgError } from '@/lib/img-early-error';
 
 interface ShowImageProps {
@@ -41,14 +41,24 @@ export default function ShowImage({
 }: ShowImageProps) {
   const validSources = sources.filter((s): s is string => !!s);
   const [failedCount, setFailedCount] = useState(0);
+  // Source whose local variant srcset 404'd: retry that source's original before cascading.
+  const [srcSetFailedFor, setSrcSetFailedFor] = useState<string | null>(null);
 
   const currentSrc = validSources[failedCount];
 
   const srcSet = useMemo(() => {
     if (!sizes || !currentSrc) return undefined;
-    const set = getCdnSrcSet(currentSrc);
+    if (srcSetFailedFor === currentSrc) return undefined;
+    const set = getCdnSrcSet(currentSrc) || getShowImageSrcSet(currentSrc);
     return set || undefined;
-  }, [sizes, currentSrc]);
+  }, [sizes, currentSrc, srcSetFailedFor]);
+
+  // A missing sm/ variant makes the browser fail the whole <img> (it does not
+  // fall back to src), so drop the srcset once and reload the original.
+  const handleError = () => {
+    if (srcSet && currentSrc && getShowImageSrcSet(currentSrc)) setSrcSetFailedFor(currentSrc);
+    else setFailedCount(prev => prev + 1);
+  };
 
   if (!currentSrc) return <>{fallback}</>;
 
@@ -56,7 +66,7 @@ export default function ShowImage({
     <img
       // A fresh element per source, so the early-error ref never reads the
       // previous source's failed state and skips a fallback untried.
-      key={currentSrc}
+      key={`${currentSrc}${srcSet ? '' : '#o'}`}
       src={currentSrc}
       srcSet={srcSet}
       sizes={srcSet ? sizes : undefined}
@@ -68,8 +78,11 @@ export default function ShowImage({
       fetchPriority={priority ? 'high' : undefined}
       decoding={decoding}
       aria-hidden={ariaHidden}
-      ref={catchEarlyImgError(() => setFailedCount(prev => (validSources[prev] === currentSrc ? prev + 1 : prev)))}
-      onError={() => setFailedCount(prev => prev + 1)}
+      ref={catchEarlyImgError(() => {
+        if (srcSet && getShowImageSrcSet(currentSrc)) setSrcSetFailedFor(currentSrc);
+        else setFailedCount(prev => (validSources[prev] === currentSrc ? prev + 1 : prev));
+      })}
+      onError={handleError}
     />
   );
 }

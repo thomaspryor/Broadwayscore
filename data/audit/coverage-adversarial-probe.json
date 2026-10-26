@@ -1,43 +1,196 @@
 {
-  "generatedAt": "2026-10-19T18:44:51.565Z",
+  "generatedAt": "2026-10-26T18:42:06.157Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "the-hope-theory-off-broadway-2026",
-    "stories-the-tap-dance-sensation-west-end-2026",
-    "memoirs-of-amorous-gentlemen-off-broadway-2026",
-    "jena-friedman-motherfucker-off-broadway-2026",
-    "the-first-year-off-west-end-2026"
+    "night-city-off-west-end-2026",
+    "the-hungry-ghost-off-west-end-2026",
+    "our-sinatra-a-musical-celebration-off-broadway-2026",
+    "the-humanities-regional-2026",
+    "the-secret-circus-musical-off-broadway-2026"
   ],
-  "settlingSkipped": 7,
+  "settlingSkipped": 1,
   "shows": [
     {
-      "showId": "the-hope-theory-off-broadway-2026",
-      "title": "The Hope Theory",
-      "openingDate": "2026-09-17",
+      "showId": "night-city-off-west-end-2026",
+      "title": "Night City",
+      "openingDate": "2026-09-12",
       "sampleState": "measured",
-      "sampleReason": "opened 32d ago",
-      "naiveQuery": "The Hope Theory New York City Center/Stage II review",
+      "sampleReason": "opened 44d ago",
+      "naiveQuery": "Night City Southwark Playhouse review",
       "candidates": [
         {
-          "url": "https://www.theatermania.com/news/review-in-the-hope-theory-helder-guimaraes-attempts-to-conjure-magic-from-his-immigration-story_1854157/",
-          "state": "excluded",
-          "reason": "duplicateOf"
-        },
-        {
-          "url": "https://www.wsj.com/articles/the-hope-theory-review-a-distinctly-american-magic-show-c8e159f7",
+          "url": "https://www.londontheatre1.com/reviews/night-city-southwark-playhouse-borough/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.nytimes.com/2026/09/23/theater/off-broadway-theater-shows-don-juan-hope-theory.html",
+          "url": "https://www.thestage.co.uk/reviews/night-city-review-southwark-playhouse-borough-london",
           "state": "excluded",
-          "reason": "wrongShow"
+          "reason": "duplicateOf"
         },
         {
-          "url": "https://saysmesaysmom.blogspot.com/2026/10/more-theater-monday-hope-theory.html",
+          "url": "https://www.londonpubtheatres.com/review-night-city-at-southwark-playhouse-10-september-3-october-2026",
+          "state": "excluded",
+          "reason": "duplicateOf"
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/night-city-southwark-playh-26005",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://loureviews.blog/2026/09/12/play-review-night-city-at-southwark-playhouse-borough/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/night-city-at-southwark-playhouse-borough-review",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/09/12/night-city-southwark-playhouse-borough/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.westendbestfriend.co.uk/news/review-night-city-southwark-playhouse",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 31
+    },
+    {
+      "showId": "the-hungry-ghost-off-west-end-2026",
+      "title": "The Hungry Ghost",
+      "openingDate": "2026-10-06",
+      "sampleState": "measured",
+      "sampleReason": "opened 20d ago",
+      "naiveQuery": "The Hungry Ghost Bush Theatre review",
+      "candidates": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/10/review-the-hungry-ghost-the-bush-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://redbuslondinium.uk/2026/10/05/review-the-hungry-ghost-bush-theatre/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://theartsdesk.com/theatre/hungry-ghost-bush-theatre-review-enjoyable-gothicky-rom-com-if-bit-superficial",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-hungry-ghost-review-bush-theatre-studio-london-mei-leng-yew-mei-mac-isabella-wei",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 29
+    },
+    {
+      "showId": "our-sinatra-a-musical-celebration-off-broadway-2026",
+      "title": "Our Sinatra: A Musical Celebration",
+      "openingDate": "2026-09-15",
+      "sampleState": "measured",
+      "sampleReason": "opened 41d ago",
+      "naiveQuery": "Our Sinatra: A Musical Celebration The Marjorie S. Deane Little Theater review",
+      "candidates": [
+        {
+          "url": "https://nitelifeexchange.com/our-sinatra-a-musical-celebration-a-legend-within-a-legend/",
           "state": "gap",
           "reason": null
+        },
+        {
+          "url": "https://theaterlife.com/our-sinatra-a-musical-celebration/",
+          "state": "live",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 3
+    },
+    {
+      "showId": "the-humanities-regional-2026",
+      "title": "The Humanities",
+      "openingDate": "2026-09-13",
+      "sampleState": "measured",
+      "sampleReason": "opened 43d ago",
+      "naiveQuery": "The Humanities Victory Gardens Theater (Biograph Theater), Chicago, IL review",
+      "candidates": [
+        {
+          "url": "https://www.chicagotribune.com/2026/09/15/review-humanities-victory-gardens-theater/",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://www.theatreinchicago.com/the-humanities/13480/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.conversationswithedtracy.com/picksinsix/2026/9/15/picksinsix-review-the-humanities-victory-gardens-theater",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://aroundthetownchicago.com/theatre-reviews/the-humanities/",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 5
+    },
+    {
+      "showId": "the-secret-circus-musical-off-broadway-2026",
+      "title": "The Secret Circus Musical",
+      "openingDate": "2026-09-26",
+      "sampleState": "measured",
+      "sampleReason": "opened 30d ago",
+      "naiveQuery": "The Secret Circus Musical SoHo Playhouse review",
+      "candidates": [
+        {
+          "url": "https://thenerdparty.com/reviews/the-secret-circus-musical",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://onstagecolorado.com/the-secret-circus-musical-brings-big-feelings-to-denver/",
+          "state": "excluded",
+          "reason": "wrongProduction"
+        },
+        {
+          "url": "https://stagelync.com/news/secret-circus-soho-playhouse",
+          "state": "excluded",
+          "reason": "wrongShow"
         }
       ],
       "queries": [
@@ -47,132 +200,15 @@
         }
       ],
       "onDiskCount": 7
-    },
-    {
-      "showId": "stories-the-tap-dance-sensation-west-end-2026",
-      "title": "STORIES – The Tap Dance Sensation",
-      "openingDate": "2026-10-16",
-      "sampleState": "measured",
-      "sampleReason": "opened 3d ago",
-      "naiveQuery": "STORIES – The Tap Dance Sensation Peacock Theatre review",
-      "candidates": [
-        {
-          "url": "https://www.thereviewshub.com/26-stories-the-tap-dance-sensation-peacock-theatre-london-2/",
-          "state": "excluded",
-          "reason": "duplicateOf"
-        },
-        {
-          "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://whatsgoodtodo.com/stories-the-tap-dance-sensation-at-peacock-theatre-london-review/",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 21
-    },
-    {
-      "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
-      "title": "Memoirs of Amorous Gentlemen",
-      "openingDate": "2026-10-15",
-      "sampleState": "measured",
-      "sampleReason": "opened 4d ago",
-      "naiveQuery": "Memoirs of Amorous Gentlemen The Night Egg at the Culture Club review",
-      "candidates": [
-        {
-          "url": "https://www.nytimes.com/2026/10/16/theater/memoirs-of-amorous-gentlemen-review-duncan-sheik.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-memoirs-of-amorous-gentlemen-duncan-sheiks-dark-swan-song_1857256/",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 24
-    },
-    {
-      "showId": "jena-friedman-motherfucker-off-broadway-2026",
-      "title": "Jena Friedman: Motherfucker",
-      "openingDate": "2026-10-01",
-      "sampleState": "measured",
-      "sampleReason": "opened 18d ago",
-      "naiveQuery": "Jena Friedman: Motherfucker SoHo Playhouse review",
-      "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 0
-    },
-    {
-      "showId": "the-first-year-off-west-end-2026",
-      "title": "The First Year",
-      "openingDate": "2026-09-24",
-      "sampleState": "measured",
-      "sampleReason": "opened 25d ago",
-      "naiveQuery": "The First Year New Diorama Theatre review",
-      "candidates": [
-        {
-          "url": "https://www.thereviewshub.com/the-first-year-of-the-gaza-genocide-in-the-media-new-diorama-theatre-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/the-first-year-of-the-gaza-genocide-in-the-media-new-diorama-theatre-review",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.londonpubtheatres.com/review-the-first-year-of-the-gaza-genocide-in-the-media-at-new-diorama-theatre-23-10-october-2026",
-          "state": "gap",
-          "reason": null
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/sep/28/the-first-year-of-the-gaza-genocide-in-the-media-review-new-diorama-theatre-london",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/the-first-year-new-diorama-the-26050",
-          "state": "live",
-          "reason": null
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 10
-        }
-      ],
-      "onDiskCount": 13
     }
   ],
   "summary": {
     "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 2,
+    "gapCount": 4,
     "gapShows": [
-      "the-hope-theory-off-broadway-2026",
-      "the-first-year-off-west-end-2026"
+      "our-sinatra-a-musical-celebration-off-broadway-2026",
+      "the-humanities-regional-2026"
     ]
   }
 }

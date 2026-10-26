@@ -111,7 +111,7 @@ const EVIDENCE = Object.freeze({ HOLDS: 'holds', BROKEN: 'broken', UNKNOWN: 'unk
  * way is under-specified, not defective — a distinction audit-card-
  * verifiability.js already owns and this sweep should not re-litigate.
  */
-const NON_PROBATIVE_RE = /^\s*npx\s+(tsc|next\s+lint)\b/;
+const NON_PROBATIVE_RE = /^\s*(?:npx\s+(?:tsc|next\s+lint|eslint)|npm\s+run\s+lint)\b/;
 
 function isNonProbativeCommand(cmd) {
   return NON_PROBATIVE_RE.test(String(cmd || ''));
@@ -234,6 +234,8 @@ const MIS_ARMED = Object.freeze({
   // The path is gitignored, so no checkout built from origin/main can see it,
   // whether or not it exists on the machine that wrote the card.
   GITIGNORED: 'gitignored',
+  // Git confirms the old path was renamed and its replacement still exists.
+  RENAMED: 'renamed',
 });
 
 /**
@@ -269,7 +271,7 @@ const MIS_ARMED = Object.freeze({
  *
  * @param {string[]} paths every path the failing command names
  * @param {Object<string,{presentOnMain:boolean|null, everExisted:boolean|null,
- *   gitignored:boolean}>} facts resolved per path by the runner
+ *   gitignored:boolean, renamedTo?:string|null}>} facts resolved per path by the runner
  * @returns {{path:string, kind:string, paths:string[]}|null}
  */
 function adjudicateMisArmed(paths, facts) {
@@ -288,9 +290,12 @@ function adjudicateMisArmed(paths, facts) {
   if (!absent.length) return null;
 
   const kinds = absent.map((p) => {
-    // HISTORY DECIDES, AND ONLY A POSITIVE `never existed` ABSOLVES.
+    if (f[p].everExisted === true && typeof f[p].renamedTo === 'string' && f[p].renamedTo) {
+      return MIS_ARMED.RENAMED;
+    }
+    // Without a confirmed rename, only positive `never existed` evidence absolves.
     // `everExisted: true` means the path was tracked and is now gone, which is
-    // a real regression and is exactly what this sweep exists to catch; no
+    // a regression unless its rename was confirmed above; no
     // ignore rule may override it. `null` means the probe could not answer,
     // which is not evidence of innocence. Enforced here as well as in the
     // runner so that no future caller can absolve a card by asserting
@@ -527,8 +532,8 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
 
   // MIS-ARMED beats FAILED. A card whose acceptance command names a path that
   // has never existed in this repo cannot have its work judged by that
-  // command — the command was wrong the day it was written and would have
-  // failed identically before, during and after the work. Reporting it as
+  // command: it named the wrong path originally, or became stale after a
+  // confirmed rename. Reporting it as
   // FAILED accuses finished work of being broken, which is the worst output
   // this sweep can produce. Two of the 17 FAILED rows in the first live run
   // were exactly this (BRO-2304, BRO-2421: both name scripts/<x> where the
@@ -539,7 +544,9 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
   if (misArmed && evidence.state === EVIDENCE.BROKEN) {
     const why = misArmed.kind === MIS_ARMED.GITIGNORED
       ? 'which is gitignored, so the fresh origin/main checkout this sweep builds can never see it — the file may well exist on the machine that wrote the card'
-      : 'which has never existed in this repo';
+      : misArmed.kind === MIS_ARMED.RENAMED
+        ? 'which was renamed and whose replacement still exists on main'
+        : 'which has never existed in this repo';
     // A command can name several paths, and only the CONFIRMED-ABSENT ones are
     // adjudicated. Say so rather than implying the whole command was cleared:
     // a sibling path that is present on main was never run on its own, so its

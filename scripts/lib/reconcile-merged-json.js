@@ -79,6 +79,7 @@ function repoRoot() {
   }
 }
 
+const { registryPathMatches } = require('./registry-path-match');
 const { activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor, findEntry } = require('./core-data-merge-registry');
 
 // Kept in sync with resolve_conflicts() in push-with-retry.sh. `newline: false`
@@ -129,12 +130,12 @@ const API_FALLBACK_MERGE = apiFallbackMergeEntriesFor('public-repo').map((e) => 
 
 /** Pure: pick the merger for a path (exported so the test does not shell out). */
 function mergerFor(file) {
-  return MANAGED.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
+  return MANAGED.find((m) => registryPathMatches(m.file, file)) || null;
 }
 
 /** Pure: pick the apiFallbackMerge-eligible merger for a path, or null. */
 function apiFallbackMergerFor(file) {
-  return API_FALLBACK_MERGE.find((m) => file.endsWith(m.file.replace(/^data\//, ''))) || null;
+  return API_FALLBACK_MERGE.find((m) => registryPathMatches(m.file, file)) || null;
 }
 
 /** Pure: pick the merger for an EXPLICITLY-named path (BRO-257), unlike

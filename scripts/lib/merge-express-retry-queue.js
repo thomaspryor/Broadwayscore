@@ -9,7 +9,7 @@
 //   whole-file conflict resolution — the SECOND run's push would silently
 //   discard the FIRST run's already-committed retry entry for a different
 //   show, exactly the data-loss class already fixed for commercial.json,
-//   diary-shows.json, awards.json, and social-post-history.json (see their
+//   diary-shows.json and awards.json (see their
 //   merge-*.js siblings). Card #1889.
 //
 // Used by:

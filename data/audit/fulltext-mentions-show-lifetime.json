@@ -1,21 +1,12 @@
 {
-  "updatedAt": "2026-10-26T00:15:49.534Z",
-  "scanned": 2819,
-  "showsWithViolations": 383,
-  "totalViolations": 595,
-  "newSinceLastRun": 11,
+  "updatedAt": "2026-10-26T08:08:09.624Z",
+  "scanned": 2823,
+  "showsWithViolations": 382,
+  "totalViolations": 596,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "the-price-2017::chicagotribune--chris-jones.json",
-    "fun-home-2015::chicagotribune--chris-jones.json",
-    "betrayal-2013::ap--mark-kennedy.json",
-    "betrayal-2013::ew--thom-geier.json",
-    "betrayal-2013::nydailynews--joe-dziemianowicz.json",
-    "les-miserables-tour-2022::picksinsix--ed-tracy.json",
-    "exit-the-king-west-end-2018::independent--david-lister.json",
-    "gruesome-playground-injuries-off-broadway-2025::thewrap--robert-hofler.json",
-    "44-off-broadway-2025::nysr--david-finkle.json",
-    "44-off-broadway-2025::nytg--kyle-turner.json",
-    "44-off-broadway-2025::theater-scene--victor-gluck.json"
+    "till-the-stars-come-down-west-end-2024::financialtimes--sarah-hemming.json",
+    "is-god-is-west-end-2021::standard--nick-curtis.json"
   ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
@@ -450,6 +441,7 @@
     "lyonesse-west-end-2023::daily-mail--patrick-marmion.json",
     "the-confessions-west-end-2023::guardian--arifa-akbar.json",
     "the-motive-and-the-cue-west-end-2023::times-uk--dominic-maxwell.json",
+    "till-the-stars-come-down-west-end-2024::financialtimes--sarah-hemming.json",
     "till-the-stars-come-down-west-end-2024::guardian--arifa-akbar.json",
     "just-for-one-day-west-end-2024::guardian--arifa-akbar.json",
     "just-for-one-day-west-end-2024::i-paper--fiona-mountford.json",
@@ -512,6 +504,7 @@
     "frozen-west-end-2021::guardian--arifa-akbar.json",
     "frozen-west-end-2021::i-paper--sam-marlowe.json",
     "is-god-is-west-end-2021::guardian--arifa-akbar.json",
+    "is-god-is-west-end-2021::standard--nick-curtis.json",
     "pride-and-prejudice-sort-of-west-end-2021::timeout-london--andrzej-lukowski.json",
     "our-generation-west-end-2022::times-uk--clive-davis.json",
     "to-kill-a-mockingbird-west-end-2022::express-uk--neil-norman.json",
@@ -591,7 +584,6 @@
     "translations-west-end-2018::guardian--michael-billington.json",
     "translations-west-end-2018::independent--paul-taylor.json",
     "home-im-darling-west-end-2018::financialtimes--sarah-hemming.json",
-    "exit-the-king-west-end-2018::independent--david-lister.json",
     "pity-west-end-2018::guardian--michael-billington.json",
     "the-great-wave-west-end-2018::guardian--michael-billington.json",
     "cat-on-a-hot-tin-roof-west-end-2017::nytimes--ben-brantley.json",
@@ -6492,7 +6484,7 @@
       "showId": "copenhagen-west-end-2026",
       "title": "Copenhagen",
       "openingDate": "2026-04-07",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Copenhagen' (3820 chars): https://www.theguardian.com/stage/2026/apr/08/copenhagen-review-hampstead-theatre-london\n⚠️  times-uk/Clive Davis (times-uk--clive-davis.json) also too short to assess (0 chars): https://www.thetimes.com/culture/theatre-dance/article/copenhagen-review-hampstead-theatre-l0x02tqzs",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Copenhagen' (3820 chars): https://www.theguardian.com/stage/2026/apr/08/copenhagen-review-hampstead-theatre-london",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -9716,7 +9708,7 @@
       "showId": "the-motive-and-the-cue-west-end-2023",
       "title": "The Motive and the Cue",
       "openingDate": "2023-12-18",
-      "message": "times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'The Motive and the Cue' (2784 chars): https://www.thetimes.co.uk/article/the-motive-and-the-cue-review-an-ode-to-theatre-thrills-in-the-west-end-9kcmj6mss\n⚠️  timeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) also too short to assess (0 chars): https://www.timeout.com/london/theatre/the-motive-and-the-cue-review",
+      "message": "times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'The Motive and the Cue' (2784 chars): https://www.thetimes.co.uk/article/the-motive-and-the-cue-review-an-ode-to-theatre-thrills-in-the-west-end-9kcmj6mss",
       "violations": [
         {
           "filename": "times-uk--dominic-maxwell.json",
@@ -9740,8 +9732,24 @@
       "showId": "till-the-stars-come-down-west-end-2024",
       "title": "Till the Stars Come Down",
       "openingDate": "2024-01-31",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Till the Stars Come Down' (3269 chars): https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
+      "message": "financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) SHIPPED but fullText never mentions 'Till the Stars Come Down' (3168 chars): https://www.ft.com/content/7df93ec1-f196-4353-b623-f14f77c883f5\nguardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Till the Stars Come Down' (3269 chars): https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
       "violations": [
+        {
+          "filename": "financialtimes--sarah-hemming.json",
+          "url": "https://www.ft.com/content/7df93ec1-f196-4353-b623-f14f77c883f5",
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "haystackLength": 3168,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
         {
           "filename": "guardian--arifa-akbar.json",
           "url": "https://www.theguardian.com/stage/2024/feb/01/till-the-stars-come-down-review-national-theatre-dorfman-beth-mead",
@@ -10284,7 +10292,7 @@
       "showId": "next-to-normal-west-end-2024",
       "title": "Next to Normal",
       "openingDate": "2024-06-26",
-      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Next to Normal' (303 chars): https://www.thestage.co.uk/reviews/next-to-normal-review-wyndhams-theatre-london-caissie-levy-and-jamie-parker-michael-longhurst\n⚠️  telegraph/Kirsten Grant (telegraph--kirsten-grant.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/next-to-normal-donmar-warehouse-review-musical-bipolar/\n⚠️  thestage/Dave Fargnoli (thestage--dave-fargnoli.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/next-to-normal-review-donmar-warehouse-london-caissie-levy-michael-longhurst-tom-kitt-brian-yorkey-jamie-parker",
+      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Next to Normal' (303 chars): https://www.thestage.co.uk/reviews/next-to-normal-review-wyndhams-theatre-london-caissie-levy-and-jamie-parker-michael-longhurst",
       "violations": [
         {
           "filename": "thestage--sam-marlowe.json",
@@ -11036,7 +11044,7 @@
       "showId": "is-god-is-west-end-2021",
       "title": "Is God Is",
       "openingDate": "2021-09-15",
-      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Is God Is' (3353 chars): https://www.theguardian.com/stage/2021/sep/17/is-god-is-review-royal-court\n⚠️  standard/Nick Curtis (standard--nick-curtis.json) also too short to assess (0 chars): https://www.standard.co.uk/culture/theatre/is-god-is-review-royal-court-theatre-aleshea-harris-b955861.html",
+      "message": "guardian/Arifa Akbar (guardian--arifa-akbar.json) SHIPPED but fullText never mentions 'Is God Is' (3353 chars): https://www.theguardian.com/stage/2021/sep/17/is-god-is-review-royal-court\nstandard/Nick Curtis (standard--nick-curtis.json) SHIPPED but fullText never mentions 'Is God Is' (2637 chars): https://www.standard.co.uk/culture/theatre/is-god-is-review-royal-court-theatre-aleshea-harris-b955861.html",
       "violations": [
         {
           "filename": "guardian--arifa-akbar.json",
@@ -11044,6 +11052,22 @@
           "outletId": "guardian",
           "criticName": "Arifa Akbar",
           "haystackLength": 3353,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "standard--nick-curtis.json",
+          "url": "https://www.standard.co.uk/culture/theatre/is-god-is-review-royal-court-theatre-aleshea-harris-b955861.html",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "haystackLength": 2637,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -12697,30 +12721,6 @@
       ]
     },
     {
-      "showId": "exit-the-king-west-end-2018",
-      "title": "Exit the King",
-      "openingDate": "2018-07-25",
-      "message": "independent/David Lister (independent--david-lister.json) SHIPPED but fullText never mentions 'Exit the King' (303 chars): https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html\n⚠️  thestage/Natasha Tripney (thestage--natasha-tripney.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/exit-the-king-review-at-national-theatre-london--rhys-ifans-compelling-performance\n⚠️  timeout-london/Holly Williams (timeout-london--holly-williams.json) also too short to assess (0 chars): https://www.timeout.com/london/theatre/exit-the-king-review\n⚠️  times-uk/Ann Treneman (times-uk--ann-treneman.json) also too short to assess (0 chars): https://www.thetimes.co.uk/article/theatre-review-exit-the-king-at-the-olivier-theatre-b5pz5rd9n",
-      "violations": [
-        {
-          "filename": "independent--david-lister.json",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
-          "outletId": "independent",
-          "criticName": "David Lister",
-          "haystackLength": 303,
-          "textIssuesFlag": false,
-          "triage": {
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          }
-        }
-      ]
-    },
-    {
       "showId": "pity-west-end-2018",
       "title": "Pity",
       "openingDate": "2018-07-18",
@@ -13028,7 +13028,7 @@
       "showId": "death-of-england-closing-time-west-end-2024",
       "title": "Death of England: Closing Time",
       "openingDate": "2024-08-22",
-      "message": "london-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED but fullText never mentions 'Death of England: Closing Time' (2626 chars): https://www.londonboxoffice.co.uk/news/post/death-of-england-closing-time-review\n⚠️  telegraph/Dzifa Benson (telegraph--dzifa-benson.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-soho-place-review/\n⚠️  telegraph/Marianka Swain (telegraph--marianka-swain.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-national-theatre-review/\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/death-of-england-closing-time-review-sohoplace-london-erin-doherty-and-sharon-duncan-brewster-clint-dyer-roy-williams",
+      "message": "london-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED but fullText never mentions 'Death of England: Closing Time' (2626 chars): https://www.londonboxoffice.co.uk/news/post/death-of-england-closing-time-review\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/death-of-england-closing-time-review-sohoplace-london-erin-doherty-and-sharon-duncan-brewster-clint-dyer-roy-williams",
       "violations": [
         {
           "filename": "london-box-office--stuart-king.json",
@@ -13202,11 +13202,11 @@
     }
   ],
   "triage": {
-    "total": 595,
+    "total": 596,
     "counts": {
-      "excerpt": 165,
+      "excerpt": 164,
       "wrong-production": 12,
-      "unresolved": 339,
+      "unresolved": 341,
       "truncated": 79
     },
     "outletPlans": [
@@ -14572,9 +14572,9 @@
       },
       {
         "outletId": "financialtimes",
-        "total": 10,
+        "total": 11,
         "counts": {
-          "unresolved": 7,
+          "unresolved": 8,
           "excerpt": 2,
           "truncated": 1
         },
@@ -14654,6 +14654,15 @@
           },
           {
             "file": "teeth-n-smiles-west-end-2026/financialtimes--tim-bano.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "till-the-stars-come-down-west-end-2024/financialtimes--sarah-hemming.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"
@@ -15792,22 +15801,12 @@
       },
       {
         "outletId": "independent",
-        "total": 2,
+        "total": 1,
         "counts": {
-          "unresolved": 1,
-          "excerpt": 1
+          "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
-          {
-            "file": "exit-the-king-west-end-2018/independent--david-lister.json",
-            "bucket": "excerpt",
-            "evidence": [
-              "contentTier=excerpt"
-            ],
-            "nextStep": "recover-full-article-and-verify-attribution",
-            "requiresArticleReview": true
-          },
           {
             "file": "translations-west-end-2018/independent--paul-taylor.json",
             "bucket": "unresolved",
@@ -17193,9 +17192,9 @@
       },
       {
         "outletId": "standard",
-        "total": 30,
+        "total": 31,
         "counts": {
-          "unresolved": 24,
+          "unresolved": 25,
           "wrong-production": 1,
           "excerpt": 2,
           "truncated": 3
@@ -17258,6 +17257,15 @@
           },
           {
             "file": "consumed-west-end-2026/standard--nick-curtis.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "is-god-is-west-end-2021/standard--nick-curtis.json",
             "bucket": "unresolved",
             "evidence": [
               "no-conclusive-triage-metadata"

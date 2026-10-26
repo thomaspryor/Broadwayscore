@@ -72,7 +72,7 @@ export function YouVsCritics({
     return (
       <ModuleLocked
         title="You vs. the critics"
-        need={`Rate ${n} more show${n === 1 ? '' : 's'} with a critic score to unlock your taste profile.`}
+        need={`Rate ${n} more show${n === 1 ? '' : 's'} with a critic score to see your taste profile.`}
         scopeLabel={scope.kind !== 'all' ? scope.label : undefined}
       />
     );

@@ -35,10 +35,10 @@ function readLanded() {
   } catch { return null; }
 }
 
-async function readSummaries() {
+async function readSummaries(days = 4) {
   try {
     const { graphql } = require('./lib/linear-client.js');
-    const since = new Date(Date.now() - 4 * 86400_000).toISOString();
+    const since = new Date(Date.now() - days * 86400_000).toISOString();
     const out = [];
     let after = null;
     for (;;) {
@@ -145,4 +145,4 @@ async function main() {
 }
 
 if (require.main === module) main().then((c) => process.exit(c), (e) => { console.error(e.stack || e.message); process.exit(2); });
-module.exports = { toGhRuns };
+module.exports = { toGhRuns, readSummaries };

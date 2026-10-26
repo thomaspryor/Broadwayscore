@@ -210,12 +210,12 @@ function missingVerifyReason({ source, mode, parkReason, body, noVerify }) {
   return `${MISSING_VERIFY_MESSAGE} (${v.reason || 'no acceptance command found'})`;
 }
 
-async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly }) {
+async function createLinearIssue({ title, description, dispatch, park, self, priority, projectId, model, client, reuseTwin = false, source, dedupeOptOut, newAnyway, noVerify, macOnly, child }) {
   if (dedupeOptOut !== undefined && !Object.prototype.hasOwnProperty.call(cardDedupe.DEDUPE_OPT_OUTS, dedupeOptOut)) {
     throw new Error(`createLinearIssue: dedupeOptOut "${dedupeOptOut}" is not in card-dedupe.js DEDUPE_OPT_OUTS; add it there with its reason, or drop it`);
   }
   const dedupe = !dedupeOptOut && !newAnyway;
-  const disposition = resolveDisposition({ dispatch, park, self });
+  const disposition = resolveDisposition({ dispatch, park, self, child });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
     err.dispositionReason = disposition.reason;
@@ -390,7 +390,7 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
     // with --source routine:<name>). Owner/money/login/taste/irreversible/Mac/date reasons are not
     // "takeable", so those parks pass. Kill switch: LINEAR_TAKEABLE_PARK_REFUSE=0.
     if (takeable && process.env.LINEAR_TAKEABLE_PARK_REFUSE !== '0') {
-      const err = new Error(`Card refused: ${takeable} If this session is doing the work now, file it with --self. Nothing was filed.`);
+      const err = new Error(`Card refused: ${takeable} If this session is doing the work now, file it with --self; if you are starting a child session on it, file it with --child "<session title>" (BRO-6359). Nothing was filed.`);
       err.code = 'TAKEABLE_PARK';
       throw err;
     }

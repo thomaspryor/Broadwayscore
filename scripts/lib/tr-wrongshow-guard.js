@@ -13,7 +13,7 @@
  * checked before rejecting.
  */
 
-const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
+const { normalizeOutlet, normalizeCritic, editionGroupKey } = require('./review-normalization');
 const { foldDiacritics } = require('./title-match');
 const { titleMatchWords, wordPattern } = require('./title-word-match');
 
@@ -116,11 +116,19 @@ function isCorroboratedByRoundup(outlet, critic, roundupRows) {
   if (!Array.isArray(roundupRows) || roundupRows.length === 0) return false;
   const criticId = normalizeCritic(critic);
   if (criticId === 'unknown') return false;
+  // BRO-6287: Theatre Record labels the parent ("Daily Mail") for a split
+  // child's byline while a roundup lists the child ("Mail on Sunday"); compare
+  // edition families, the critic check below still pins the individual.
   const outletId = normalizeOutlet(outlet);
+  const familyKey = editionGroupKey(outletId);
   return roundupRows.some(row => {
-    if (normalizeOutlet(row.outlet) !== outletId) return false;
+    const rowOutletId = normalizeOutlet(row.outlet);
+    if (editionGroupKey(rowOutletId) !== familyKey) return false;
     const rowCriticId = normalizeCritic(row.critic);
-    return rowCriticId === 'unknown' || rowCriticId === criticId;
+    if (rowCriticId === criticId) return true;
+    // An unattributed roundup row only vouches for the exact outlet; across
+    // sibling editions it would clear any byline.
+    return rowCriticId === 'unknown' && rowOutletId === outletId;
   });
 }
 

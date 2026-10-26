@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T01:14:59.515Z",
+  "generatedAt": "2026-10-26T20:16:51.364Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-26",
-      "status": "previews",
+      "status": "open",
       "slug": "hospital-hour-off-broadway",
       "thumbnail": "/images/shows/hospital-hour-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -388,28 +388,27 @@
       "status": "open",
       "slug": "aftermath-art-new-york-off-broadway",
       "thumbnail": "/images/shows/aftermath-art-new-york-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 51.66,
-      "liveScore": 52,
-      "scoreDrift": 0.3400000000000034,
+      "siteScore": 57.99,
+      "liveScore": 58,
+      "scoreDrift": 0.00999999999999801,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 5,
       "t1": 0,
-      "t2": 2,
+      "t2": 4,
       "t3": 1,
       "positive": 0,
-      "mixed": 1,
+      "mixed": 3,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "5/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:3/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -490,10 +489,6 @@
         },
         {
           "name": "New York Post",
-          "isDualMarket": false
-        },
-        {
-          "name": "TheaterMania",
           "isDualMarket": false
         },
         {
@@ -765,6 +760,30 @@
           "m": 1,
           "n": 2,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T07:18:21.534Z",
+          "rc": 4,
+          "s": 55.72,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 0,
+          "m": 2,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T19:03:31.027Z",
+          "rc": 5,
+          "s": 57.99,
+          "t1": 0,
+          "t2": 4,
+          "t3": 1,
+          "p": 0,
+          "m": 3,
+          "n": 2,
+          "bc": "waiting"
         }
       ]
     },
@@ -944,25 +963,25 @@
       "status": "open",
       "slug": "garry-starr-classic-penguins-off-west-end",
       "thumbnail": "/images/shows/garry-starr-classic-penguins-off-west-end-2026/thumbnail.webp",
-      "siteScore": 90.83,
-      "liveScore": 91,
-      "scoreDrift": 0.1700000000000017,
+      "siteScore": 87.5,
+      "liveScore": 88,
+      "scoreDrift": 0.5,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 10,
-      "t1": 1,
-      "t2": 2,
-      "t3": 7,
-      "positive": 10,
-      "mixed": 0,
+      "total": 14,
+      "t1": 2,
+      "t2": 3,
+      "t3": 9,
+      "positive": 13,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3"
+          "T1:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1014,10 +1033,6 @@
         {
           "name": "The Mail on Sunday",
           "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
-          "isDualMarket": true
         }
       ],
       "missingT2": [
@@ -1027,10 +1042,6 @@
         },
         {
           "name": "Variety",
-          "isDualMarket": true
-        },
-        {
-          "name": "BroadwayWorld",
           "isDualMarket": true
         },
         {
@@ -1204,6 +1215,66 @@
           "t3": 7,
           "p": 10,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T08:59:40.544Z",
+          "rc": 11,
+          "s": 89.09,
+          "t1": 1,
+          "t2": 2,
+          "t3": 8,
+          "p": 10,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T09:45:20.423Z",
+          "rc": 11,
+          "s": 88.83,
+          "t1": 1,
+          "t2": 2,
+          "t3": 8,
+          "p": 10,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T12:04:40.723Z",
+          "rc": 11,
+          "s": 88.63,
+          "t1": 1,
+          "t2": 2,
+          "t3": 8,
+          "p": 10,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T17:34:11.652Z",
+          "rc": 12,
+          "s": 87.55,
+          "t1": 1,
+          "t2": 3,
+          "t3": 8,
+          "p": 11,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T18:37:23.435Z",
+          "rc": 14,
+          "s": 87.5,
+          "t1": 2,
+          "t2": 3,
+          "t3": 9,
+          "p": 13,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -1721,7 +1792,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-10-28",
-      "status": "upcoming",
+      "status": "previews",
       "slug": "the-revlon-girl-off-west-end",
       "thumbnail": "/images/shows/the-revlon-girl-off-west-end-2026/thumbnail.jpg",
       "daysUntil": 2,
@@ -1890,7 +1961,7 @@
       "openingDate": "2026-10-29",
       "status": "upcoming",
       "slug": "the-greatest-story-ever-off-broadway",
-      "thumbnail": null,
+      "thumbnail": "/images/shows/the-greatest-story-ever-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 3,
       "readinessChecks": {
         "wrongProduction": {

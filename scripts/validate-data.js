@@ -464,6 +464,25 @@ function validateNoDuplicates(shows) {
     ok('No shared ibdbUrls across shows');
   }
 
+  // BRO-6279: backfill-cast.js copies data/cast/<id>.json ibdbUrl back into shows.json, so a
+  // cast file on a different production page (e.g. the 1964 page on a 2020 revival)
+  // reverts any ibdbUrl correction. Advisory first (CLAUDE.md §19).
+  const castDir = path.join(__dirname, '..', 'data', 'cast');
+  if (fs.existsSync(castDir)) {
+    const castMismatch = [];
+    for (const s of shows) {
+      if (!s.ibdbUrl) continue;
+      const cf = path.join(castDir, `${s.id}.json`);
+      if (!fs.existsSync(cf)) continue;
+      try {
+        const cu = JSON.parse(fs.readFileSync(cf, 'utf8')).ibdbUrl;
+        if (cu && cu !== s.ibdbUrl) castMismatch.push(s.id);
+      } catch { /* unreadable cast file is not this check's concern */ }
+    }
+    if (castMismatch.length > 0) warn(`${castMismatch.length} cast file(s) carry a different ibdbUrl than shows.json (backfill-cast.js will revert shows.json): ${castMismatch.slice(0, 10).join(', ')}`);
+    else ok('Cast-file ibdbUrls match shows.json');
+  }
+
   // Market-specific slug validation
   const weShowsMissing = shows.filter(s => s.category === 'west-end' && !s.slug.includes('west-end'));
   const oweShowsMissing = shows.filter(s => s.category === 'off-west-end' && !s.slug.includes('off-west-end'));
@@ -5227,6 +5246,7 @@ function validateCrossMarketContamination() {
       isDualMarket: dualMarket.has(oid),
       isTier12: tier12Outlets.has(oid),
       isPreWindowDate,
+      allowCrossMarket: r.allowCrossMarket === true,
     });
     if (level === 'error') {
       usOnWeErrors++;
@@ -5290,6 +5310,7 @@ function validateCrossMarketContamination() {
       isDualMarket: dualMarket.has(oid),
       isTier12: tier12Outlets.has(oid),
       isBroadway,
+      allowCrossMarket: r.allowCrossMarket === true,
     });
     if (level === 'skip') continue;
     if (level === 'error') {

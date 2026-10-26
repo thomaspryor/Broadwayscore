@@ -192,3 +192,29 @@ test('against the REAL test.yml: the stranded-commit-cascade bash integration st
   assert.equal(v.line, 'VERIFY: bash scripts/lib/push-with-retry.stranded-commit-cascade.test.sh');
   assert.equal(v.note, null);
 });
+
+// BRO-6262: a failing unit test re-verifies against its own file, so the Done gate
+// is not held hostage by unrelated reds in the whole-suite proxy.
+test('a Unit Tests signature with a failing test file narrows the proxy to node --test <file>', () => {
+  const v = verifyForSignature({ job: 'Unit Tests', step: 'Run unit tests (no-data-dependency)', testFile: 'tests/unit/show-hero-integrity.test.mjs' }, FIXTURE_YML, { isTsxTest: () => false });
+  assert.equal(v.line, 'VERIFY: node --test tests/unit/show-hero-integrity.test.mjs');
+  assert.equal(explainUnsafeCheckCommand('node --test tests/unit/show-hero-integrity.test.mjs').ok, true);
+});
+
+test('a tsx-manifest test file gets npx tsx --test, and an unsafe path falls back to the proxy', () => {
+  const tsx = verifyForSignature({ job: 'Unit Tests', step: 'Run unit tests (no-data-dependency)', testFile: 'tests/unit/show-market.test.ts' }, FIXTURE_YML, { isTsxTest: () => true });
+  assert.equal(tsx.line, 'VERIFY: npx tsx --test tests/unit/show-market.test.ts');
+  const bad = verifyForSignature({ job: 'Unit Tests', step: 'Run unit tests (no-data-dependency)', testFile: '../etc/x.test.mjs' }, FIXTURE_YML, { isTsxTest: () => false });
+  assert.equal(bad.line, `VERIFY: ${JOB_PROXY_COMMANDS['Unit Tests']}`);
+});
+
+test('the default tsx check reads the real manifest', () => {
+  const tsxFile = fs.readFileSync(path.join(process.cwd(), 'tests/unit-test-manifest-tsx.txt'), 'utf8').split('\n').map((l) => l.trim()).find((l) => /\.test\.(m?js|ts)$/.test(l) && l.startsWith('tests/'));
+  if (!tsxFile) return;
+  assert.match(verifyForSignature({ job: 'Unit Tests', step: 'x', testFile: tsxFile }, FIXTURE_YML).line, /^VERIFY: npx tsx --test /);
+});
+
+test('a job with no proxy command never gets a narrowed file command (stays owner-judgment)', () => {
+  const v = verifyForSignature({ job: 'Some Unregistered Job', step: 'x', testFile: 'tests/unit/a.test.mjs' }, FIXTURE_YML, { isTsxTest: () => false });
+  assert.equal(v.line, 'VERIFY: owner-judgment');
+});

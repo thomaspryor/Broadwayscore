@@ -96,7 +96,7 @@ const SUPABASE_SHOW_ID_LOOKALIKES = [
 
 /** Tables the repo references without a CREATE TABLE anywhere in it — columns unknown, cannot confirm. */
 const SUPABASE_UNVERIFIED_TABLES = [
-  { table: 'push_tokens', referencedIn: 'supabase/migrations/20260422_security_advisor_fixes.sql (ALTER POLICY only), supabase/functions/delete-account/index.ts' },
+  { table: 'push_tokens', referencedIn: 'supabase/migrations/20260422_security_advisor_fixes.sql (ALTER POLICY only), supabase/functions/delete-account/handler.mjs' },
 ];
 
 function sqlLiteral(value) {

@@ -28,6 +28,8 @@
 
 'use strict';
 
+const { registryPathMatches } = require('./registry-path-match');
+
 const NEVER_FALLBACK = ['data/shows.json', 'data/reviews.json'];
 
 /**
@@ -56,7 +58,7 @@ function disqualifyingPath(changed, registry) {
       throw new TypeError(`api-fallback-disqualifier: registry.${name} is not an array (got ${typeof list}) — refusing to answer, which fails closed`);
     }
   }
-  const matches = (list) => (f) => list.some((m) => f.endsWith(String(m.file).replace(/^data\//, '')));
+  const matches = (list) => (f) => list.some((m) => registryPathMatches(m.file, f));
   const isManaged = matches(MANAGED);
   const isApiFallbackSafe = matches(API_FALLBACK_SAFE);
   const isApiFallbackMergeable = matches(API_FALLBACK_MERGE);

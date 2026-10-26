@@ -78,11 +78,12 @@ const RUNNING_MODEL_BAR_TYPES = ['play', 'musical'];
 
 /**
  * The analyst's figure as a [low, high] range, or null when the record has none or it
- * is malformed (BRO-5502).
+ * is malformed (BRO-5502). Falls back to ourEstimateRangePct (our own rounded range).
  * @returns {[number, number] | null}
  */
 function analystRange(comm) {
-  const p = comm && comm.analystRecoupPct;
+  // Our own static range (ourEstimateRangePct) stands in when no analyst figure exists.
+  const p = comm && (comm.analystRecoupPct || comm.ourEstimateRangePct);
   if (!Array.isArray(p) || p.length !== 2 || !p.every((v) => typeof v === 'number' && Number.isFinite(v) && v >= 0)) return null;
   return /** @type {[number, number]} */ ([Math.min(...p), Math.max(...p)]);
 }

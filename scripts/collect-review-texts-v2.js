@@ -656,6 +656,7 @@ async function main() {
 
   const browser = await chromium.launch({
     headless: true,
+    ...require('./lib/playwright-exe').launchExtras(chromium),
     args: [
       '--disable-blink-features=AutomationControlled',
       '--disable-dev-shm-usage',

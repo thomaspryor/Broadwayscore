@@ -18,7 +18,7 @@ import path from 'node:path';
 // authenticated.
 
 const require = createRequire(import.meta.url);
-const { acquireSendLock, releaseSendLock, fetchLock } = require('./send-lock.js');
+const { acquireSendLock, releaseSendLock, fetchLock, lockBranchRefusal, BRANCH } = require('./send-lock.js');
 
 function makeFakeGh(stateFile) {
   const binDir = fs.mkdtempSync(path.join(os.tmpdir(), 'fake-gh-send-lock-'));
@@ -218,5 +218,25 @@ test('acquireSendLock: after a clean release, a fresh acquire for the same purpo
     const second = acquireSendLock({ purpose: 'test-cycle', ttlMs: 5000 });
     assert.equal(second.acquired, true, second.reason);
     assert.notEqual(second.sessionId, first.sessionId);
+  });
+});
+
+// BRO-6276: test-send-lock.js committed its acquire/release cycles to origin/main
+// (six lock commits on 2026-10-25, each one a land-queue rebase for every waiting
+// run). A test-prefixed lock is now refused on main before any network call.
+test('lockBranchRefusal: test locks only off main, real locks only on main', () => {
+  assert.match(lockBranchRefusal('main', '__test_send_lock__-happy-path-1'), /refusing test lock/);
+  assert.equal(lockBranchRefusal('test/send-lock-scratch-1', '__test_send_lock__-x'), null);
+  assert.equal(lockBranchRefusal('main', 'broadway-preview-hamilton-2015'), null);
+  assert.equal(lockBranchRefusal('main', 'fantasy-weekly-2026-10-25'), null);
+  assert.match(lockBranchRefusal('test/send-lock-scratch-1', 'broadway-preview-hamilton-2015'), /real sends lock on main/);
+});
+
+test('acquireSendLock: a test-prefixed purpose on main is refused without writing the lock', { skip: BRANCH !== 'main' && 'SEND_LOCK_BRANCH is set' }, () => {
+  withFakeGh(() => {
+    const lock = acquireSendLock({ purpose: '__test_send_lock__-guard', ttlMs: 5000 });
+    assert.equal(lock.acquired, false);
+    assert.match(lock.reason, /refusing test lock/);
+    assert.equal(fetchLock().exists, false);
   });
 });

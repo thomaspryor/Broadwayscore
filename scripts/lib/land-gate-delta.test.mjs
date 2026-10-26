@@ -711,3 +711,11 @@ test('parseTscFailures keys out-of-tree node_modules errors the same from any ru
   // an in-tree path is untouched
   assert.ok([...parseTscFailures(`src/a.ts(1,1): ${err}`).keys()][0].startsWith('src/a.ts::'));
 });
+
+test('next-lint keys absolute ESLint stylish paths to the repo-relative file (BRO-5215)', async () => {
+  const { parseNextLintFailures } = await import('./land-gate-delta.js');
+  const a = parseNextLintFailures('/tmp/base-wt/src/app/x.tsx\n  3:1  error  Bad thing  some/rule\n');
+  const b = parseNextLintFailures('/home/u/repo/src/app/x.tsx\n  3:1  error  Bad thing  some/rule\n');
+  assert.deepEqual([...a.keys()], [...b.keys()]);
+  assert.ok([...a.keys()][0].startsWith('src/app/x.tsx'));
+});

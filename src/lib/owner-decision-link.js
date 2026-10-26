@@ -113,9 +113,12 @@ function splitUpDown(rest) {
 function parseDecisionBlock(description) {
   const out = { why: null, options: [], recommendation: null, defaultText: null, evidence: [] };
   const seen = new Set();
+  // Screenshots are only for visual approvals (BRO-6244): any other card with an Evidence line must not put images on the owner pages.
+  const visual = parseVisualApproval(description);
   for (const line of stripCode(description)) {
     const ev = EVIDENCE_RE.exec(line);
     if (ev) {
+      if (!visual) continue;
       const url = safeEvidenceUrl(ev[2]);
       if (url && out.evidence.length < MAX_EVIDENCE) out.evidence.push({ label: plain(ev[1]).slice(0, 80) || 'Screenshot', url });
       continue;
@@ -379,10 +382,13 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   const input = {};
   const answeredLine = 'ANSWERED by the owner (see the "Owner decision" comment on this card).';
   const lines = String(issue.description || '').split('\n');
-  const fixed = lines.map((l) => {
+  const rewritten = lines.map((l) => {
     const m = MARKER_RE.exec(l.replace(/`[^`]*`/g, ''));
     return m && questionHash(capQuestion(collapseSelfLinks(m[1]).replace(/\*+$/, '').trim())) === hash ? answeredLine : l;
   });
+  const settled = rewritten.join('\n') !== lines.join('\n')
+    && !rewritten.some((l) => MARKER_RE.test(l.replace(/`[^`]*`/g, '')));
+  const fixed = settled && !approved ? unparkOwnerHolds(rewritten) : rewritten;
   if (fixed.join('\n') !== lines.join('\n')) input.description = fixed.join('\n');
   const labels = (issue.labels && issue.labels.nodes) || [];
   if (labels.some((l) => l.name === AWAITING_OWNER_LABEL)) input.labelIds = labels.filter((l) => l.name !== AWAITING_OWNER_LABEL).map((l) => l.id);
@@ -395,6 +401,21 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   }
   if (Object.keys(input).length) await graphql(ISSUE_UPDATE, { id: issue.id, input });
   return { ...loaded, status: 'recorded', answer: { label: choice.label, text: cleanText }, moved: Boolean(input.stateId) };
+}
+
+// BRO-6330: a card parked for the owner's call kept its 'PARKED: needs the
+// owner's call' line after the answer, so the picker skipped it forever
+// (BRO-5605, BRO-5406). Once the card's last open decision is answered, a park
+// line that only waited on that call is marked UNPARKED, reason kept, in the
+// same form linear-drain-parked.js unparkDescription writes. Parks naming a
+// real block (keys, spend, the Mac, a machine-filed line) stay parked.
+const OWNER_CALL_PARK_RE = /^(\s*)PARKED\s*:(.*\b(?:owner'?s? (?:call|decision|approval|answer|go-ahead)|owner decision|product call|for owner approval|needs? (?:the )?owner)\b.*)$/i;
+const REAL_BLOCK_IN_PARK_RE = /\b(?:api key|keys?\b|token|credential|secret|password|mac\b|launchd|spend|credits\b|budget|auto-filed|owner-review|not an owner|§18|review gate)/i;
+function unparkOwnerHolds(lines) {
+  return lines.map((l) => {
+    const m = OWNER_CALL_PARK_RE.exec(l);
+    return m && !REAL_BLOCK_IN_PARK_RE.test(m[2]) ? `${m[1]}UNPARKED (owner-answered):${m[2]}` : l;
+  });
 }
 
 // ── the list page (BRO-6235) ────────────────────────────────────────────────
@@ -504,5 +525,5 @@ module.exports = {
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
-  loadDecision, recordAnswer, markerComments,
+  loadDecision, recordAnswer, markerComments, unparkOwnerHolds,
 };

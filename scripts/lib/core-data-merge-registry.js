@@ -57,7 +57,6 @@ const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeOweVenueCandidates } = require('./merge-owe-venue-candidates');
 const { mergeOutletRegistryStaging } = require('./merge-outlet-registry-staging');
 const { mergeOutletRegistry } = require('./merge-outlet-registry');
-const { mergeSocialPostHistory } = require('./merge-social-post-history');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
 const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
@@ -79,6 +78,8 @@ const { mergeGuardEscalationState } = require('./merge-guard-escalation-state');
 const { mergeBreakerTransitions } = require('./merge-breaker-transitions');
 const { mergeRetiredRecords } = require('./merge-retired-ids');
 const { mergeNewsletterState } = require('./merge-newsletter-state');
+const { mergeTriageItem } = require('./merge-triage-item');
+const { registryPathMatches } = require('./registry-path-match');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -150,20 +151,6 @@ const CORE_DATA_MERGE_REGISTRY = [
     notApiFallbackMerge: 'gitignored in the public repo (.gitignore data/diary-shows.json); private core-data owns it, so no push-with-retry.sh commit ever stages it and the flag would be inert',
   },
   {
-    file: 'social-post-history.json',
-    surface: 'public-repo',
-    status: 'active',
-    merge: mergeSocialPostHistory,
-    format: 'json',
-    newline: true,
-    // BRO-3333 (2026-10-13): per-post key union. generate-social-post.js
-    // does prune to the newest 365 posts, so the merge applies the same cap
-    // by date (BRO-5261 retro-review); without it, running on every
-    // fallback push resurrected every pruned post. social-post.yml uses a
-    // per-run concurrency group, so this is the file most likely to race.
-    apiFallbackMerge: true,
-  },
-  {
     file: 'newsletter-state.json',
     surface: 'public-repo',
     status: 'active',
@@ -231,9 +218,8 @@ const CORE_DATA_MERGE_REGISTRY = [
     // opening-night-express.yml uses a PER-SHOW concurrency group (see its
     // own comment on `concurrency:`), so multiple shows opening the same
     // night dispatch concurrently and can each append a retry entry to this
-    // file around the same time — same multi-writer shape as
-    // social-post-history.json. Reconciled ONLY via the case-arm path (same
-    // reasoning as feedback-request-ledger.json above); not opted into the
+    // file around the same time. Reconciled ONLY via the case-arm path (same
+    // multi-writer shape and reasoning as feedback-request-ledger.json above); not opted into the
     // post-rebase reconcile pass since the case-arm fires unconditionally on
     // an actual conflict, which two near-simultaneous appends reliably cause.
     optInReconcile: false,
@@ -1866,11 +1852,20 @@ const CORE_DATA_MERGE_REGISTRY = [
   // header) — a real per-key merge is a strict improvement on that existing
   // baseline, not a new correctness bar.
   //
-  // data/audit/triage/ remains NOT added: it is a DIRECTORY of per-item
-  // files (also written by rebuild-reviews.yml), a different shape from the
-  // generic {ours,remote}->{merged,stats} single-file contract this registry
-  // and push-via-git-api.sh's blob-overlay both assume — needs its own
-  // design, out of scope here.
+  // data/audit/triage/*.json (BRO-2782): a directory of per-item files, covered
+  // by one glob entry below ('/*.json' matches direct children only, see
+  // registry-path-match.js). Each file has one CI writer, so the merge is
+  // ours-wins (merge-triage-item.js).
+  {
+    file: 'audit/triage/*.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeTriageItem,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    optInReconcile: false,
+  },
   {
     file: 'audit/alert-ledger.json',
     surface: 'public-repo',
@@ -2170,6 +2165,8 @@ const CORE_DATA_MERGE_REGISTRY = [
   // submission id. Kept out of the public repo's GitHub issues. Every job
   // that checks out core data clones it, same as subscribers.json.
   { file: 'feedback-submitters.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, process-feedback.yml (concurrency group process-feedback); readers: auto-fix-feedback-bug, execute-approved-fix', writers: ['process-feedback.yml'], writersUnverifiable: 'written through feedback-submitter-store.js with the path passed in as a parameter, which the static scan cannot follow; verified by reading process-feedback.js (BRO-3514)' },
+  // BRO-6335: daily per-season payback estimate rows (append-only array).
+  { file: 'season-payback-history.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, commercial-stale-closures.yml (concurrency group commercial-data-write); reader: /biz/season/[season] at build', writers: ['commercial-stale-closures.yml'], writersUnverifiable: 'written by scripts/append-season-payback-history.ts via npx tsx, which the static workflow scan does not follow; a failed run leaves a gap for that date (each run adds one row per season for its own date); readers tolerate gaps' },
   // 2026 data audit (S0-T2/S0-T4): the retired-id registry and its archive of
   // deleted shows.json rows, append-only arrays written by retireId() in
   // scripts/lib/retired-show-ids.js. BRO-4398 added the first CI writer
@@ -2199,7 +2196,7 @@ const CORE_DATA_MERGE_REGISTRY = [
  */
 function findEntry(file, surface) {
   const candidates = surface ? CORE_DATA_MERGE_REGISTRY.filter((e) => e.surface === surface) : CORE_DATA_MERGE_REGISTRY;
-  return candidates.find((e) => file === e.file || file.endsWith('/' + e.file)) || null;
+  return candidates.find((e) => file === e.file || (e.file.includes('*') ? registryPathMatches(e.file, file) : file.endsWith('/' + e.file))) || null;
 }
 
 /** Active (generic-merge-eligible) entries for one surface, restricted to the

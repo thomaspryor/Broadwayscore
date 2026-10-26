@@ -14,6 +14,8 @@ const { findAgedStubs, assessShow } = require('../../scripts/lib/uncollected-str
 
 const NOW = Date.parse('2026-10-24T12:00:00Z');
 const hoursAgo = (h) => new Date(NOW - h * 3600 * 1000).toISOString();
+// The real findReviewsToProcess reads Date.now(); fixtures for it must be relative to the live clock (BRO-6328).
+const liveHoursAgo = (h) => new Date(Date.now() - h * 3600 * 1000).toISOString();
 
 test('isAgedNeverAttemptedStub: URL, zero attempts, older than 48h', () => {
   const base = { url: 'https://x.test/r', incompleteReason: 'not_attempted', fetchAttempts: [], firstSeenAt: hoursAgo(60) };
@@ -61,9 +63,9 @@ test('findReviewsToProcess (real function) queues an aged closed-show stub insid
       url: `https://example.test/${show}/${file}`, source: 'theatre-reviews', contentTier: 'stub',
       incompleteReason: 'not_attempted', fetchAttempts: [], ...extra,
     }));
-    for (let i = 0; i < 20; i++) write('open-show', `outlet${i}--critic.json`, { firstSeenAt: hoursAgo(1) });
-    write('closed-show', 'guardian--chris-wiegand.json', { firstSeenAt: hoursAgo(72) });
-    write('closed-show', 'standard--young.json', { firstSeenAt: hoursAgo(2) });
+    for (let i = 0; i < 20; i++) write('open-show', `outlet${i}--critic.json`, { firstSeenAt: liveHoursAgo(1) });
+    write('closed-show', 'guardian--chris-wiegand.json', { firstSeenAt: liveHoursAgo(72) });
+    write('closed-show', 'standard--young.json', { firstSeenAt: liveHoursAgo(2) });
     fs.writeFileSync(path.join(tmp, 'data/shows.json'), JSON.stringify({ shows: [
       { id: 'open-show', status: 'open', openingDate: '2026-09-01' },
       { id: 'closed-show', status: 'closed', openingDate: '2024-05-01' },

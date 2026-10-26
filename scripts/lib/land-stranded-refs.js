@@ -22,8 +22,8 @@
  *              routes it to the card the ref names.
  */
 
-const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
-const { PARKED_MAX_ATTEMPTS, isParkedLandJob } = require('./land-mutex');
+const { MAX_ATTEMPTS, latestJobByName } = require('./land-retry-on-cancel');
+const { PARKED_MAX_ATTEMPTS, isParkedLandJob, landWorkStarted } = require('./land-mutex');
 const { MAX_AGE_HOURS } = require('./land-queue-backoff');
 
 // One full re-run per ref per hour at most; the whole pass runs hourly.
@@ -87,15 +87,14 @@ function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt,
   if (latestRun.conclusion === 'success') return out('none', 'landed');
   if (isAbandonedRun(latestRun, now)) return out('none', 'abandoned');
 
-  const byName = (n) => (jobs || []).find((j) => j.name === n);
-  const checks = byName('Checks');
-  const land = byName('Land');
+  const checks = latestJobByName(jobs, 'Checks');
+  const land = latestJobByName(jobs, 'Land');
   const attempt = latestRun.run_attempt || 1;
 
   if (latestRun.conclusion === 'cancelled' || RERUNNABLE_CONCLUSIONS.has(latestRun.conclusion)) {
     // BRO-5196: a job that parked itself behind a deep queue never started landing.
     const parked = isParkedLandJob(land);
-    const landStarted = !parked && Boolean(land && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure'));
+    const landStarted = !parked && Boolean(land) && landWorkStarted(land);
     if (landStarted) return out('escalate', 'land-cancelled-mid-flight');
     const fastOwned = checks && checks.conclusion === 'success'
       && attempt < (parked ? PARKED_MAX_ATTEMPTS : MAX_ATTEMPTS)
@@ -123,18 +122,63 @@ function strandedMarker({ branch, tip, latestRun, reason }) {
 const REASON_TEXT = {
   'land-refused': 'the Land job refused it (most often the branch no longer rebases cleanly onto main, or a check that only runs at land time failed)',
   'checks-red': 'its Checks failed against main',
-  'evicted-budget-exhausted': `it was evicted from the landing queue ${STRANDED_MAX_ATTEMPT}+ times`,
+  'evicted-budget-exhausted': `its Land run was cancelled before landing (queue eviction or a manual cancel) ${STRANDED_MAX_ATTEMPT}+ times`,
   'land-cancelled-mid-flight': 'its Land job was cancelled after it had started landing',
   'no-run-for-tip': 'no Land run ever started for the current tip of the branch',
   'rerun-refused': 'GitHub refused to re-run its last Land run (for example, older than the 30-day re-run limit)',
 };
 
+// GitHub writes who cancelled a run as an annotation on each cancelled job:
+// "The run was canceled by @login." Admit's own park (and every other
+// workflow-token cancel) reads @github-actions[bot]; a person's or a
+// session's token reads their login (BRO-6276: a session hand-cancelled
+// other workers' land runs on 2026-10-26 and nothing said so).
+const CANCELLED_BY_RE = /The run was cancell?ed by @([A-Za-z0-9-]+(?:\[bot\])?)/;
+
+function cancelledByFromAnnotations(annotations) {
+  for (const a of annotations || []) {
+    const m = CANCELLED_BY_RE.exec(String((a && a.message) || ''));
+    if (m) return m[1];
+  }
+  return null;
+}
+
+// Admit parks with the workflow token (github-actions[bot]); any other login,
+// including another app's bot, is a hand cancel.
+const isHandCancel = (login) => Boolean(login) && login !== 'github-actions[bot]';
+
+/** The cancelled jobs whose annotations may name the canceller, Land first then Checks. */
+function cancelledJobs(jobs) {
+  const pick = (n) => (jobs || []).find((j) => j.name === n && j.conclusion === 'cancelled');
+  return [pick('Land'), pick('Checks')].filter(Boolean);
+}
+
+const FOLLOW_UP_TEXT = {
+  rerun: 'The stranded pass re-runs it in full this hour, so nothing is needed from this card unless that run fails too.',
+  none: 'The retry sweep resumes it on its own if it can; watch the land ref and re-push only if it is still on origin in an hour.',
+  wait: 'The stranded pass re-runs it on a later hourly pass.',
+};
+
+/** One note per hand-cancelled run attempt; the stranded marker keeps it to one post. */
+function buildHandCancelComment({ branch, tip, latestRun, cancelledBy, followUp }) {
+  return [
+    strandedMarker({ branch, tip, latestRun, reason: 'cancelled-by-hand' }),
+    '',
+    `Land run ${latestRun.html_url || latestRun.id} for \`${branch}\` (attempt ${latestRun.run_attempt || 1}) was cancelled by @${cancelledBy}, a person's or a session's token, not the landing queue.`,
+    FOLLOW_UP_TEXT[followUp] || 'Check the land ref; re-push it if it is still on origin.',
+    'Only the session that owns a land ref should cancel its runs.',
+    '',
+    'Posted by land-retry-cancelled.js --stranded (BRO-6276).',
+  ].join('\n');
+}
+
 /**
  * Comment for the card a stranded ref names. States the facts and the resume
  * steps; the marker line makes a second post for the same run a no-op.
  */
-function buildEscalationComment({ branch, tip, latestRun, reason }) {
-  const why = REASON_TEXT[reason] || `its latest Land run ended ${reason}`;
+function buildEscalationComment({ branch, tip, latestRun, reason, cancelledBy }) {
+  let why = REASON_TEXT[reason] || `its latest Land run ended ${reason}`;
+  if (isHandCancel(cancelledBy)) why += ` (cancelled by @${cancelledBy}, not by the landing queue)`;
   const runLine = latestRun && latestRun.html_url ? `Latest Land run: ${latestRun.html_url} (attempt ${latestRun.run_attempt || 1}).` : 'No Land run exists for this tip.';
   return [
     strandedMarker({ branch, tip, latestRun, reason }),
@@ -195,4 +239,5 @@ module.exports = {
   STRANDED_RETRY_MINUTES, STRANDED_MAX_ATTEMPT, NO_RUN_GRACE_MINUTES, MARKER_PREFIX, ABANDONED_AFTER_DAYS,
   REFUSAL_GRACE_MINUTES, CARD_IDLE_HOURS, HELD_CARD_DAYS,
   isAbandonedRun, decideStrandedRef, strandedMarker, buildEscalationComment, escalationAction, newestPerCard,
+  cancelledByFromAnnotations, isHandCancel, cancelledJobs, buildHandCancelComment,
 };

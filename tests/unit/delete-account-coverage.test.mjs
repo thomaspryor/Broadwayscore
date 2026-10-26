@@ -9,10 +9,12 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
+import { selectAll } from '../../supabase/functions/delete-account/handler.mjs';
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const migrationsDir = path.join(root, 'supabase/migrations');
-const fnSource = fs.readFileSync(path.join(root, 'supabase/functions/delete-account/index.ts'), 'utf8');
+// handler.mjs holds the deletion logic; index.ts is only the Deno entry point.
+const fnSource = fs.readFileSync(path.join(root, 'supabase/functions/delete-account/handler.mjs'), 'utf8');
 
 // Tables delete-account deliberately leaves alone, and why. Shared with the
 // live-catalog check in scripts/verify-supabase-schema.js (BRO-4534).
@@ -31,6 +33,18 @@ function userOwnedTables() {
   return owned;
 }
 
+// The live-catalog check reads the function source by path too. When the
+// handler moved out of index.ts it kept reading the now-empty entry file and
+// would have flagged every table (BRO-6290); both readers must see the deletes.
+test('verify-supabase-schema reads the file that holds the deletes', () => {
+  const script = fs.readFileSync(path.join(root, 'scripts/verify-supabase-schema.js'), 'utf8');
+  const m = script.match(/DELETE_ACCOUNT_FN = path\.join\(__dirname, '\.\.', ((?:'[^']+',?\s*)+)\)/);
+  assert.ok(m, 'DELETE_ACCOUNT_FN not found in verify-supabase-schema.js');
+  const rel = [...m[1].matchAll(/'([^']+)'/g)].map((x) => x[1]);
+  const src = fs.readFileSync(path.join(root, ...rel), 'utf8');
+  assert.match(src, /deleteRows\(fetch, base, auth, 'profiles'/, `${rel.join('/')} no longer holds the deletes`);
+});
+
 test('migrations declare the per-user tables this guard is meant to see', () => {
   const owned = userOwnedTables();
   for (const t of ['unmatched_imports', 'import_fetch_log', 'mezzanine_search_log', 'theatr_screenshot_log', 'user_show_stubs', 'plan_shares', 'diary_shares']) {
@@ -40,12 +54,12 @@ test('migrations declare the per-user tables this guard is meant to see', () => 
 
 test('delete-account removes or explicitly exempts every per-user table', () => {
   const missing = [...userOwnedTables()].filter((t) => !EXEMPT[t] && !fnSource.includes(`'${t}'`));
-  assert.deepEqual(missing, [], `delete-account/index.ts does not delete rows from: ${missing.join(', ')}`);
+  assert.deepEqual(missing, [], `delete-account/handler.mjs does not delete rows from: ${missing.join(', ')}`);
 });
 
 test('exemptions are not also deleted (stale exemption)', () => {
   for (const t of Object.keys(EXEMPT)) {
-    assert.ok(!fnSource.includes(`deleteRows(base, auth, '${t}'`), `${t} is exempt but delete-account deletes it`);
+    assert.ok(!fnSource.includes(`deleteRows(fetch, base, auth, '${t}'`), `${t} is exempt but delete-account deletes it`);
   }
 });
 
@@ -53,7 +67,7 @@ test('exemptions are not also deleted (stale exemption)', () => {
 // already gone. The Admin API answers 404, and treating that as a failure
 // left the user unable to ever finish deleting (BRO-4525).
 test('a 404 from the admin user delete counts as already deleted', () => {
-  const at = fnSource.indexOf('/auth/v1/admin/users/');
+  const at = fnSource.indexOf('const deleteUserRes');
   assert.ok(at > 0, 'admin user delete not found');
   const tail = fnSource.slice(at, at + 600);
   assert.match(tail, /status !== 404/, 'admin user delete must tolerate 404 so retries can finish');
@@ -61,14 +75,9 @@ test('a 404 from the admin user delete counts as already deleted', () => {
 
 // PostgREST returns at most max-rows per request (1000 by default), so a
 // single lookup left photo files in storage for anyone past 1000 photos
-// (BRO-4525). The edge function is Deno and can't be imported here, so run
-// its real selectAll against a fake PostgREST.
+// (BRO-4525). Run the edge function's real selectAll against a fake PostgREST.
 function loadSelectAll(fetchImpl) {
-  const src = fnSource.match(/async function selectAll[\s\S]*?\n}\n/)?.[0];
-  assert.ok(src, 'selectAll not found in delete-account/index.ts');
-  const ts = require('typescript');
-  const js = ts.transpileModule(src, { compilerOptions: { target: ts.ScriptTarget.ES2022 } }).outputText;
-  return new Function('fetch', `${js}; return selectAll;`)(fetchImpl);
+  return (...args) => selectAll(fetchImpl, ...args);
 }
 function fakePostgrest(total, maxRows, status = 200) {
   const urls = [];
@@ -103,7 +112,7 @@ test('selectAll returns null for a missing table and throws on other errors', as
 });
 
 test('delete-account reads lists and photos through selectAll', () => {
-  assert.match(fnSource, /selectAll<[^>]+>\(base, auth, 'lists'/);
-  assert.match(fnSource, /selectAll<[^>]+>\(base, auth, 'user_review_photos'/);
+  assert.match(fnSource, /selectAll\(fetch, base, auth, 'lists'/);
+  assert.match(fnSource, /selectAll\(fetch, base, auth, 'user_review_photos'/);
   assert.doesNotMatch(fnSource, /fetch\(`\$\{base\}\/rest\/v1\/(lists|user_review_photos)\?/, 'unpaged lookup is back');
 });

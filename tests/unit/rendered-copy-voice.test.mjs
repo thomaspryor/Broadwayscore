@@ -19,6 +19,8 @@ const SKIP = [
   'src/app/season-report', 'src/components/biz',
   // Shared with /biz and the Season Report, whose "—" placeholders are pinned by tests/unit/biz-format.test.ts.
   'src/lib/biz-format.ts', 'src/lib/season-profile.ts', 'src/config/commercial.ts',
+  // Analytics enum values and data-* attribute names, identifiers rather than copy ("unlocked" is the gate's own state name).
+  'src/lib/money-gate.ts',
   // Citation notes and dev sample strings, not site copy.
   'src/lib/olivier-cutoffs.ts', 'src/lib/tony-cutoffs.ts', 'src/lib/gate-logic.ts', 'src/lib/formatting.ts',
 ];

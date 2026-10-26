@@ -86,7 +86,7 @@ describe('BRO-264 item 2: ship-check as CI already covered by existing infra', (
     assert.doesNotMatch(prBlock[1], /paths:/, 'pull_request trigger must not be path-filtered');
     assert.match(src, /\n {2}typescript-check:/);
     assert.match(src, /npx tsc --noEmit/);
-    assert.match(src, /npx next lint/);
+    assert.match(src, /npm run lint/);
   });
 });
 

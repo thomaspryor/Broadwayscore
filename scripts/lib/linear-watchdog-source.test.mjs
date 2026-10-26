@@ -209,7 +209,7 @@ test('dispatchArgvFor routes each id namespace to its own dispatcher', () => {
   const wd = require('../dispatch-watchdog.js');
   const linear = wd.dispatchArgvFor('linear:BRO-3380');
   assert.ok(linear[0].endsWith('scripts/linear-next.js'), `expected linear-next.js, got ${linear[0]}`);
-  assert.deepEqual(linear.slice(1), ['--id', 'BRO-3380', '--headless'],
+  assert.deepEqual(linear.slice(1), ['--id', 'BRO-3380', '--headless', '--allow-fresh-claim'],
     'Linear work must go headless (no cmux terminal runtime, 83.0% vs 30.5% completion) AND detached — '
     + 'since BRO-3652 detach is linear-next\'s DEFAULT on the headless lane, and an EXPLICIT --detach is '
     + 'deliberately absent: on a mac-only (tab-routed) card the explicit flag is refused, the default takes '

@@ -28,8 +28,8 @@
 
 const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
-const { supersededByNewerRun, decideSweep, sweepStep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
+const { decideLandRetry, isRerunRefused, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
+const { supersededByNewerRun, decideSweep, sweepStep, listedRunRefusal, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
 const { resolveLandRun, readLatestLandRun } = require('./lib/land-run-identity');
 
 const USAGE = 'usage: node scripts/land-retry-cancelled.js --sweep | --run=<id> | --stranded [--only=<land/branch>] [--dry-run]';
@@ -49,7 +49,14 @@ if ([sweep, Boolean(runId), stranded].filter(Boolean).length !== 1 || (runId && 
 const ghRaw = (args) => runGhWithFallback(args, { exec: execFileSync, fallbackToken: process.env.GH_FALLBACK_TOKEN });
 const gh = (args) => JSON.parse(ghRaw(args));
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
-const identityOptions = { repo, read: (endpoint) => gh([endpoint]), readText: (endpoint) => ghRaw([endpoint]), cache: new Map() };
+// Listing reads are memoized per process: every sweep candidate's
+// readLatestLandRun walks the same workflow_dispatch pages (BRO-6276).
+const listingCache = new Map();
+const readListing = (endpoint) => {
+  if (!listingCache.has(endpoint)) listingCache.set(endpoint, gh([endpoint]));
+  return listingCache.get(endpoint);
+};
+const identityOptions = { repo, read: readListing, readText: (endpoint) => ghRaw([endpoint]), cache: new Map() };
 
 // Memoized: the targeted and sweep decisions can ask about the same run.
 const jobsCache = new Map();
@@ -58,18 +65,28 @@ const jobsOf = (id) => {
   return jobsCache.get(String(id));
 };
 
+/**
+ * Re-run one run's failed jobs. Returns 'requested', 'moved-on' (already going
+ * again) or 'refused' (BRO-6326: GitHub says the run cannot be retried; a
+ * refusal must not abort the sweep or consume a slot). Other errors throw.
+ */
 function rerun(id, seenAttempt) {
-  if (dry) { console.log(`dry-run: would re-run ${id}`); return; }
+  if (dry) { console.log(`dry-run: would re-run ${id}`); return 'requested'; }
   try {
     process.stdout.write(ghRaw(['-X', 'POST', `repos/${repo}/actions/runs/${id}/rerun-failed-jobs`]));
   } catch (err) {
     let after = null;
     try { after = gh([`repos/${repo}/actions/runs/${id}`]); } catch { /* read-back failed: surface the POST error, not this one */ }
-    if (!after || decideCancelledWait({ status: after.status, attempt: after.run_attempt, attemptBefore: seenAttempt }) !== 'resume') throw err;
-    console.log(`run ${id} already moved on (attempt ${after.run_attempt}, ${after.status}), likely re-run by the sweep; nothing to do`);
-    return;
+    if (after && decideCancelledWait({ status: after.status, attempt: after.run_attempt, attemptBefore: seenAttempt }) === 'resume') {
+      console.log(`run ${id} already moved on (attempt ${after.run_attempt}, ${after.status}), likely re-run by the sweep; nothing to do`);
+      return 'moved-on';
+    }
+    if (!isRerunRefused(err)) throw err;
+    console.log(`::warning::run ${id} cannot be retried (${String(err.message).split('\n')[0]}); skipped, not counted`);
+    return 'refused';
   }
   console.log(`re-run requested for ${id} (Land job only; Checks result kept)`);
+  return 'requested';
 }
 
 function runTargeted() {
@@ -91,7 +108,7 @@ function runTargeted() {
   // BRO-6015: resuming a parked run into a full queue re-parks it and spends
   // an attempt, the same check the sweep makes.
   if (d.parked && resumeSlotsNow() === 0) { console.log(`run ${runId}: parked, landing queue has no resume room yet; the sweep resumes it in order (nothing to do)`); return; }
-  rerun(runId, run.run_attempt);
+  if (rerun(runId, run.run_attempt) === 'refused') process.exitCode = 1;
 }
 
 /**
@@ -145,12 +162,15 @@ function runSweep() {
   let resumed = 0;
   let evictionRerun = false;
   for (const run of d.candidates) {
+    // BRO-6276: only survivors of the one-call jobs check pay for the lookup below.
+    const refusal = listedRunRefusal(run, { jobsOf, refs });
+    if (refusal) { console.log(`run ${run.id} ${run.head_branch}: skip (${refusal})`); continue; }
     const latest = readLatestLandRun(run.head_branch, identityOptions);
     if (supersededByNewerRun(run, latest)) {
       console.log(`run ${run.id} ${run.head_branch}: skip (newer run ${latest.id} ${latest.conclusion || latest.status})`);
       continue;
     }
-    // Decide on the fresh run, not the listing: a listed run may already have
+    // Decide again on the fresh run and the jobs read: a listed run may have
     // been re-run since (status back to queued/pending, conclusion null → skip).
     const fresh = latest || resolveLandRun(gh([`repos/${repo}/actions/runs/${run.id}`]), identityOptions);
     if (!fresh) continue;
@@ -165,10 +185,41 @@ function runSweep() {
     const step = sweepStep({ parked: Boolean(r.parked), slots, resumed, evictionRerun });
     if (step === 'stop') break;
     if (step === 'skip') { if (r.parked) console.log(`run ${run.id} ${run.head_branch}: parked, no resume room left this sweep; not resumed yet`); continue; }
-    rerun(run.id, fresh.run_attempt);
+    let outcome;
+    try { outcome = rerun(run.id, fresh.run_attempt); } catch (err) {
+      console.log(`::error::run ${run.id} ${run.head_branch}: re-run failed (${String(err.message).split('\n')[0]}); continuing the sweep`);
+      process.exitCode = 1;
+      continue;
+    }
+    if (outcome === 'refused') continue;
     if (step === 'resume') resumed += 1; else evictionRerun = true;
   }
   if (resumed) console.log(`resumed ${resumed} parked run(s) this sweep`);
+}
+
+// A hand cancel is news for the card even while its holder is active, so it
+// skips escalationAction's idle wait and never moves the card (BRO-6276).
+async function reportHandCancels(items) {
+  const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
+  const { strandedMarker, buildHandCancelComment } = require('./lib/land-stranded-refs.js');
+  for (const it of items) console.log(`::warning::land run ${it.latestRun.id} (${it.branch}) was cancelled by @${it.cancelledBy}, not by the landing queue`);
+  if (dry) { for (const it of items) console.log(`dry-run: would note on its card: ${strandedMarker({ ...it, reason: 'cancelled-by-hand' })}`); return; }
+  if (!process.env.LINEAR_API_KEY) return;
+  const linear = require('./lib/linear-client.js');
+  for (const it of items) {
+    const n = landRefCardNumber(it.branch);
+    if (n == null) continue;
+    try {
+      const { issue } = await linear.graphql(STRANDED_ISSUE_QUERY, { id: `BRO-${n}` }, { timeoutMs: 15000, maxAttempts: 2 });
+      if (!issue) continue;
+      const marker = strandedMarker({ ...it, reason: 'cancelled-by-hand' });
+      if (issue.comments.nodes.some((c) => String((c && c.body) || '').includes(marker))) continue;
+      await linear.createComment(issue.id, buildHandCancelComment(it));
+      console.log(`${it.branch}: hand cancel noted on BRO-${n}`);
+    } catch (err) {
+      console.log(`::warning::${it.branch}: could not note the hand cancel on BRO-${n} (${String(err.message).split('\n')[0]}); the next pass retries`);
+    }
+  }
 }
 
 // ---- --stranded (BRO-4802) ----
@@ -198,7 +249,7 @@ async function escalateStranded(items) {
   const { strandedMarker, buildEscalationComment, escalationAction, newestPerCard } = require('./lib/land-stranded-refs.js');
   for (const it of items) console.log(`::warning::land ref ${it.branch} is stranded (${it.reason}); its work is not on main`);
   items = newestPerCard(items, landRefCardNumber);
-  if (dry) { for (const it of items) console.log(`dry-run: would route to its card: ${strandedMarker(it)}`); return; }
+  if (dry) { for (const it of items) console.log(`dry-run: would route to its card: ${strandedMarker(it)}${it.cancelledBy ? ` (cancelled by @${it.cancelledBy})` : ''}`); return; }
   if (!process.env.LINEAR_API_KEY) { console.log('::warning::LINEAR_API_KEY not set: stranded landings are reported in this log only'); return; }
   const linear = require('./lib/linear-client.js');
   let todoId;
@@ -232,7 +283,8 @@ async function runStranded() {
   // Kill switch: set LAND_STRANDED_KILL_SWITCH=1 (repo variable) to stop all
   // re-runs and card routing without reverting code. The fast sweep is unaffected.
   if (/^(1|true)$/i.test(process.env.LAND_STRANDED_KILL_SWITCH || '')) { console.log('LAND_STRANDED_KILL_SWITCH set: stranded pass disabled'); return; }
-  const { decideStrandedRef, isAbandonedRun } = require('./lib/land-stranded-refs.js');
+  const { decideStrandedRef, isAbandonedRun, cancelledJobs, cancelledByFromAnnotations, isHandCancel } = require('./lib/land-stranded-refs.js');
+  const handCancels = [];
   if (dispatchInFlight()) { console.log('a dispatched Land run is in flight (it lists under main, not its ref): skipping this pass'); return; }
   const now = Date.now();
   // Newest successful landing per card, from any ref. Land deletes a landed
@@ -261,6 +313,16 @@ async function runStranded() {
         try { tipCommittedAt = gh([`repos/${repo}/commits/${tip}`]).commit.committer.date; } catch (err) { console.log(`${branch}: tip date unreadable (${String(err.message).split('\n')[0]})`); }
       }
       const d = decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt: cardLandedAt.get(landRefCardNumber(branch)), now });
+      // BRO-6276: name a hand cancel (a person's or session's token, not Admit's park).
+      // Either job's annotation may carry the canceller; a superseded ref is not owed a comment.
+      const cJobs = latestRun && latestRun.conclusion === 'cancelled' && d.reason !== 'superseded' ? cancelledJobs(jobs) : [];
+      for (const cJob of cJobs) {
+        try {
+          d.cancelledBy = cancelledByFromAnnotations(gh([`repos/${repo}/check-runs/${cJob.id}/annotations`]));
+        } catch (err) { console.log(`${branch}: cancel annotation unreadable (${String(err.message).split('\n')[0]})`); }
+        if (d.cancelledBy) break;
+      }
+      if (isHandCancel(d.cancelledBy) && d.action !== 'escalate') handCancels.push({ branch, tip, latestRun, cancelledBy: d.cancelledBy, followUp: d.action });
       if (d.reason !== 'abandoned' && d.reason !== 'superseded') console.log(`${branch} @${tip.slice(0, 10)}: ${d.action} (${d.reason})${latestRun ? ` run ${latestRun.id} attempt ${latestRun.run_attempt}` : ''}`);
       decisions.push({ branch, tip, latestRun, ...d });
     } catch (err) {
@@ -283,6 +345,7 @@ async function runStranded() {
     }
   }
   if (escalate.length) await escalateStranded(escalate);
+  if (handCancels.length) await reportHandCancels(handCancels);
   const superseded = decisions.filter((d) => d.reason === 'superseded').map((d) => d.branch);
   if (superseded.length) console.log(`${superseded.length} leftover ref(s) whose card landed from another ref (safe to delete): ${superseded.join(' ')}`);
   const abandoned = decisions.filter((d) => d.reason === 'abandoned').map((d) => d.branch);

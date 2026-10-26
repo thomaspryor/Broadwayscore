@@ -145,3 +145,12 @@ test('sourceName does not over-match look-alike domains', () => {
   assert.equal(sourceName('old.reddit.com'), 'Reddit');
   assert.ok(isSearch('www.search.com') && isSearch('metacrawler.com'));
 });
+
+test('plainProblem says a PostHog 504 timed out instead of calling it unreachable (BRO-6358)', () => {
+  const { plainProblem } = require('./traffic-report-human.js');
+  assert.equal(plainProblem('PostHog country query failed: PostHog API 504: {"detail":"Query has hit the max execution time"}'), 'PostHog country query failed: PostHog timed out');
+  assert.equal(plainProblem('PostHog country query failed: PostHog API 503: Service Unavailable'), 'PostHog country query failed: PostHog was unreachable');
+  assert.equal(plainProblem('PostHog landing query failed: The operation was aborted due to timeout'), 'PostHog landing query failed: PostHog timed out');
+  assert.equal(plainProblem('PostHog country query failed: skipped: PostHog time budget (12 min) used up'), 'PostHog country query failed: PostHog timed out');
+  assert.equal(plainProblem('GA4 landing query failed: quota'), 'GA4 landing query failed: quota');
+});

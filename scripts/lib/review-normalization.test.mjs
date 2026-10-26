@@ -141,3 +141,12 @@ test('resolveSplitOutletByCritic moves splitCritics bylines to the split child',
   assert.equal(resolveSplitOutletByCritic('daily-mail', ''), 'daily-mail');
   assert.equal(resolveSplitOutletByCritic('guardian', 'Mark Cook'), 'guardian');
 });
+
+// BRO-6287 (side item 2): extraction follows the heal's label policy.
+test('splitOutletForLabel: critic moves only a label with no edition signal', () => {
+  const { splitOutletForLabel } = require('./outlet-mismatch-heal.js');
+  assert.equal(splitOutletForLabel('daily-mail', 'Daily Mail', 'Robert Gore-Langton'), 'mail-on-sunday');
+  assert.equal(splitOutletForLabel('daily-mail', 'DAILY MAIL', 'Robert Gore-Langton'), 'mail-on-sunday');
+  assert.equal(splitOutletForLabel('daily-mail', 'Daily Mail', 'Quentin Crisp'), 'daily-mail');
+  assert.equal(splitOutletForLabel('daily-mail', 'Daily Mail', ''), 'daily-mail');
+});

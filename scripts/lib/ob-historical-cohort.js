@@ -100,6 +100,18 @@ function toAddShowAction(entry, { discoveredAt, dateSource, evidenceUrls = [] })
 }
 
 /**
+ * BRO-6254: link fields for an add-show split from another production of the
+ * same title (selectPromotable's transferOf). An earlier new run is linked
+ * from the later one (crossLinkFrom puts priorRuns on the existing row); a
+ * later new run names the earlier one (priorRunOf). {} when either run has
+ * no opening date, since add-show-action refuses a link without one.
+ */
+function transferLinkFields(entry, other) {
+  if (!entry || !other || !entry.openingDate || !other.openingDate) return {};
+  return entry.openingDate < other.openingDate ? { crossLinkFrom: other.id } : { priorRunOf: other.id };
+}
+
+/**
  * Is this shows.json row part of the Off-Broadway historical backfill? Older
  * backfilled rows carry the 'historical' tag; rows this cohort script writes
  * carry discoverySource 'ob-historical:<source>' (BRO-6153). Shared by the
@@ -111,4 +123,4 @@ function isObHistoricalRow(s) {
     || String(s.discoverySource || '').startsWith('ob-historical:');
 }
 
-module.exports = { isObHistoricalRow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };
+module.exports = { transferLinkFields, isObHistoricalRow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, MIN_RUN_DAYS };

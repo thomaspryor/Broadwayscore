@@ -20,8 +20,8 @@ const require = createRequire(import.meta.url);
 const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
-  selectRecheckScope, isBuildCodePath,
-  isPromisorFetchFailure,
+  selectRecheckScope, selectTrainRecheckScope, isBuildCodePath,
+  isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
@@ -983,4 +983,103 @@ test('makeVerifiedBaseChecks hands the scope to the checks seam; a failed diff m
   const diffArgs = [];
   run((args) => { if (args[0] === 'diff') diffArgs.push(...args); return args[0] === 'merge-base' ? '' : 'x.md'; });
   assert.ok(diffArgs.includes('--no-renames'), 'a rename on main shows both names to the overlap test');
+});
+
+test('BRO-6276 deadline: a lost race past the deadline stops before attempt 2 and hands back a clean refusal', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-deadline');
+    let clock = 0;
+    let pushCalls = 0;
+    const r = landBranch({
+      branch: 'feat-deadline', repoDir: w.repoDir,
+      checks: (...a) => { clock += 60 * 60 * 1000; return greenChecks(...a); },
+      pushMain: (o) => { pushCalls++; w.moveOrigin(); plainPush(o); },
+      now: () => clock, deadlineMs: 55 * 60 * 1000,
+    });
+    assert.equal(r.landed, false);
+    assert.equal(r.failedCheck, 'deadline');
+    assert.equal(r.attempts, 1);
+    assert.equal(pushCalls, 1, 'no second attempt once past the deadline');
+    assert.match(r.reason, /not starting attempt 2/);
+    assert.equal(w.isAncestorOfOrigin(tip), false);
+    assert.equal(w.worktreeCount(), 1, 'worktree cleaned up');
+  } finally { w.cleanup(); }
+});
+
+test('BRO-6276 deadline: under the deadline the retry still runs and lands', () => {
+  const w = makeWorld();
+  try {
+    const tip = w.makeBranch('feat-deadline-ok');
+    let pushCalls = 0;
+    const r = landBranch({
+      branch: 'feat-deadline-ok', repoDir: w.repoDir, checks: greenChecks,
+      pushMain: (o) => { pushCalls++; if (pushCalls === 1) w.moveOrigin(); plainPush(o); },
+      now: () => 0, deadlineMs: 55 * 60 * 1000,
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.equal(r.attempts, 2);
+    assert.notEqual(r.sha, tip);
+    assert.equal(w.isAncestorOfOrigin(r.sha), true);
+  } finally { w.cleanup(); }
+});
+
+test('BRO-6276 deadlineRefusal / landDeadlineMs: attempt 1 always runs; bad env values keep the default', () => {
+  assert.equal(deadlineRefusal({ attempt: 1, elapsedMs: 1e9, deadlineMs: 1 }), null);
+  assert.equal(deadlineRefusal({ attempt: 2, elapsedMs: 10, deadlineMs: 100 }), null);
+  assert.match(deadlineRefusal({ attempt: 3, elapsedMs: 100, deadlineMs: 100 }), /attempt 3/);
+  assert.equal(landDeadlineMs({}), DEFAULT_LAND_DEADLINE_MS);
+  assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '40' }), 40 * 60 * 1000);
+  assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '0' }), 0, '0 = no retries');
+  assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '4' }), 4 * 60 * 1000);
+  for (const bad of ['121', 'abc', '30.5', '-10', '']) assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: bad }), DEFAULT_LAND_DEADLINE_MS, bad);
+  assert.match(deadlineRefusal({ attempt: 2, elapsedMs: 0, deadlineMs: 0 }), /not starting attempt 2/);
+});
+
+test('BRO-6276 push marker: the sha about to be pushed is written before each push', () => {
+  const w = makeWorld();
+  const marker = path.join(w.repoDir, '..', `marker-${process.pid}`);
+  try {
+    w.makeBranch('feat-marker');
+    const seen = [];
+    const r = landBranch({
+      branch: 'feat-marker', repoDir: w.repoDir, checks: greenChecks, pushMarkerFile: marker,
+      pushMain: (o) => { seen.push([o.sha, fs.readFileSync(marker, 'utf8').trim()]); plainPush(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.deepEqual(seen, [[r.sha, r.sha]]);
+  } finally { fs.rmSync(marker, { force: true }); w.cleanup(); }
+});
+
+test('BRO-6276 selectTrainRecheckScope: small only when no two members (or main) share a file and every base is verified', () => {
+  const A40 = 'a'.repeat(40);
+  const B40 = 'b'.repeat(40);
+  const mem = (name, files, o = {}) => ({ name, base: A40, verified: true, ancestor: true, mainChanged: [], files, ...o });
+  const s = (members, extra = {}) => selectTrainRecheckScope({ members, ...extra });
+  assert.equal(s([mem('h', ['scripts/lib/a.js']), mem('r', ['scripts/lib/b.js'])]).mode, 'small', 'disjoint members');
+  assert.equal(s([mem('h', ['scripts/lib/a.js']), mem('r', ['scripts/lib/a.js'])]).mode, 'full', 'rider and holder share a file');
+  assert.equal(s([mem('h', ['x.js']), mem('r1', ['y.js']), mem('r2', ['y.js'])]).mode, 'full', 'two riders share a file');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'], { mainChanged: ['y.js'] })]).mode, 'full', 'main changed a rider file since its base');
+  assert.match(s([mem('h', ['x.js']), mem('r', ['y.js'], { verified: false })]).reason, /r has no verified base/, 'merge-base fallback is not a verified base');
+  assert.equal(s([mem('h', ['x.js'], { base: null, verified: false }), mem('r', ['y.js'])]).mode, 'full', 'holder without --verified-base');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'], { ancestor: false, mainChanged: null })]).mode, 'full', 'base not an ancestor of main');
+  assert.equal(s([mem('h', ['x.js']), mem('r', null)]).mode, 'full', 'unknown rider files');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'], { mainChanged: null })]).mode, 'full', 'main diff failed');
+  assert.equal(s([mem('h', ['x.js']), mem('r', ['y.js'])], { disabled: true }).mode, 'full', 'kill switch');
+  assert.equal(s([mem('h', ['x.js'])]).mode, 'full', 'one member is not a train');
+  // Build: src/ in one member and build code in another member (or main) → build runs.
+  const b1 = s([mem('h', ['src/app/page.tsx']), mem('r', ['next.config.js'], { base: B40 })]);
+  assert.deepEqual([b1.mode, b1.build], ['small', true]);
+  const b2 = s([mem('h', ['src/app/page.tsx']), mem('r', ['memory/notes.md'])]);
+  assert.deepEqual([b2.mode, b2.build], ['small', false]);
+  const b3 = s([mem('h', ['src/app/page.tsx'], { mainChanged: ['package-lock.json'] }), mem('r', ['docs.md'])]);
+  assert.equal(b3.build, true, 'main changed build code since the src/ member was verified');
+});
+
+test('BRO-6276 checkTimings: names where the in-lock re-check spent its time', () => {
+  assert.equal(
+    checkTimings({ safeMs: 252_400, extra: [{ name: 'merged-tree-tests', pass: true, ms: 543_000 }, { name: 'bash-syntax', pass: false, ms: 900 }, { name: 'no-ms', pass: true }] }),
+    'safe-checks 4m12s, merged-tree-tests 9m3s, bash-syntax 1s',
+  );
+  assert.equal(checkTimings({ safeMs: 0 }), 'safe-checks 0s');
 });

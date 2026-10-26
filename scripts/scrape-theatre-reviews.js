@@ -657,6 +657,16 @@ async function main() {
   try {
     orphanArchives = fs.readdirSync(ARCHIVE_DIR).filter(f => f.endsWith('.html')).map(f => f.replace(/\.html$/, '')).filter(id => !archivedFor.has(id));
   } catch { /* no archive dir */ }
+  // BRO-6089: an orphan whose canonical URL is a round-up matched to ANOTHER show
+  // is a wrong-production page; park it so gather-reviews/poller cannot replay it.
+  // Unclaimed orphans stay (gather-reviews also writes valid archives).
+  // Targeted runs shrink `matched`, so every other archive would look orphaned: full runs only.
+  // Claims = REST date-window matches that passed the archive guard, never legacy title-only ones.
+  const claimed = matched.filter(m => m.confidence !== 'legacy' && !entries.some(e => e.showId === m.show.id && e.skipped));
+  const quarantined = TARGET_SHOWS ? [] : require('./lib/tr-archive-claim').quarantineClaimedOrphans(
+    ARCHIVE_DIR, orphanArchives, claimed.map(m => ({ showId: m.show.id, url: m.roundup.url })), { dryRun: DRY_RUN });
+  for (const q of quarantined) console.log(`  [QUARANTINED] ${q.showId}.html is the round-up matched to ${q.owner}`);
+  if (!DRY_RUN) orphanArchives = orphanArchives.filter(id => !quarantined.some(q => q.showId === id));
 
   // A degraded full run (REST walk incomplete or fetches aborted) must not replace the last good report.
   const degraded = !TARGET_SHOWS && (!disc.complete || aborted);
@@ -688,7 +698,9 @@ function writeCoverage(entries, unmatched, orphanArchives, disc) {
   if (TARGET_SHOWS && prior && Array.isArray(prior.shows)) {
     // A targeted run replaces only its own shows; the rest of the last full run stays.
     const ids = new Set(entries.map(e => e.showId));
-    shows = [...prior.shows.filter(e => !ids.has(e.showId)), ...entries];
+    // BRO-6089: ...and a prior entry whose round-up URL a new entry now owns is stale (two owners of one URL).
+    const urls = new Set(entries.filter(e => e.roundupUrl && !e.skipped).map(e => e.roundupUrl.replace(/\/+$/, '').toLowerCase()));
+    shows = [...prior.shows.filter(e => !ids.has(e.showId) && !(e.roundupUrl && urls.has(e.roundupUrl.replace(/\/+$/, '').toLowerCase()))), ...entries];
     unmatchedOut = prior.unmatched || [];
   }
   // A show whose page was not fetched this run (budget, abort, failure) keeps its last good entry.

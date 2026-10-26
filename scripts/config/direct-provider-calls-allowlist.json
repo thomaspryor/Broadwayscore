@@ -50,5 +50,9 @@
   "scripts/evaluate-brightdata-serp.js": {
     "reason": "explicit provider bake-off/comparison eval tool (ScrapingBee vs Bright Data SERP quality) — by design calls both SERP endpoints directly to compare raw results, same category as scrapingdog-bakeoff.js",
     "addedAt": "2026-08-04"
+  },
+  "scripts/lib/cloud-secrets-smoke.js": {
+    "reason": "BRO-6258 diagnostic: one free usage read per provider to prove each cloud key works end to end; not page-content scraping, so fetchPage() does not fit",
+    "addedAt": "2026-10-26"
   }
 }

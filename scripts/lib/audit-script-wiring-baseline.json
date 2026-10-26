@@ -460,6 +460,11 @@
       "bucket": "b",
       "rank": 0,
       "reason": "BRO-2484 advisory heuristic: flags audience-facing guards with a unit test but no test proving the call site; run by hand (--strict to fail), exercised by tests/unit/audit-guard-call-sites.test.mjs"
+    },
+    "audit-lane-trouble-rate.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "BRO-2978: manual read of per-lane dispatch retry burn from the per-machine dispatch ledger (gitignored, absent in CI), so no workflow can run it"
     }
   }
 }

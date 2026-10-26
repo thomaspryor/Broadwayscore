@@ -43,7 +43,20 @@ async function main() {
   let logText = null;
   try { logText = fs.readFileSync(LOG_PATH, 'utf8'); } catch { /* missing */ }
   const payload = evaluate(logText, Date.now());
+  let expected = [];
+  try { expected = require('./lib/worktree-gc-repos').getGcRepos().map((r) => r.name); } catch { /* none */ }
+  // Per-repo alerts add information only while the overall log is still fresh; a total outage
+  // already raises the overall alert (one outage, one alert).
+  const repoPayloads = payload ? [] : evaluateRepos(logText, Date.now(), expected);
   const { routeAlert, resolveCondition } = require('./lib/owner-alert-router.js');
+  for (const rp of repoPayloads) {
+    console.log(`[worktree-gc-freshness] FAIL ${rp.title}`);
+    await routeAlert(rp).catch((e) => console.error(`[worktree-gc-freshness] alert failed: ${e.message}`));
+  }
+  // During a total outage the per-repo state is unknown: leave open per-repo incidents alone.
+  if (!payload) for (const name of expected) {
+    if (!repoPayloads.some((rp) => rp.conditionKey === `worktree-gc:stale:${name}`)) resolveCondition(`worktree-gc:stale:${name}`);
+  }
   if (payload) {
     console.log(`[worktree-gc-freshness] FAIL ${payload.title}`);
     await routeAlert(payload).catch((e) => console.error(`[worktree-gc-freshness] alert failed: ${e.message}`));
@@ -51,8 +64,11 @@ async function main() {
   }
   resolveCondition('worktree-gc:stale');
   resolveCondition('worktree-gc:log-missing');
+  if (repoPayloads.length) process.exit(1);
   console.log('[worktree-gc-freshness] ok');
 }
 
-module.exports = { evaluate };
+const { evaluateRepos } = require('./lib/worktree-gc-freshness');
+
+module.exports = { evaluate, evaluateRepos };
 if (require.main === module) main();

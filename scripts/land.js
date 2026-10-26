@@ -199,6 +199,7 @@ function main(argv = process.argv.slice(2), land = landBranch, markerCheck = tra
     ...(args['verified-base'] ? { checks: makeVerifiedBaseChecks({ verifiedBase: args['verified-base'] }) } : {}),
     riders,
     trainBases: args['verified-base'] ? [args['verified-base']] : [],
+    holderBase: args['verified-base'] || null,
     log: (m) => console.error(m),
   });
   if (autoTrain && result.landed && (result.riders || []).length) {

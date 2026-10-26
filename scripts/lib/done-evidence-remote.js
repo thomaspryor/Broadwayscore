@@ -223,9 +223,55 @@ function pathNeverExisted(path, opts = {}) {
   return n === 0;
 }
 
+/**
+ * Resolve a direct rename of a missing, previously tracked acceptance path.
+ * The destination must still exist and its history must reach the rename with
+ * only modifications since then. A reused destination is not the original work.
+ * Missing history, deletions and further renames cannot prove continuity.
+ * Bound both history (100 commits) and cost (ten additional GitHub calls).
+ */
+function resolvePathRename(path, { runGh = defaultRunGh, repo = REPO_SLUG, existsOnMain, ref = 'main' } = {}) {
+  if (!path || typeof existsOnMain !== 'function') return null;
+  let calls = 0;
+  const read = (endpoint) => {
+    if (calls >= 10) return null;
+    calls++;
+    try { return JSON.parse(runGh(['api', `repos/${repo}/${endpoint}`])); }
+    catch { return null; }
+  };
+  const history = (p, limit) => read(`commits?sha=${encodeURIComponent(ref)}&path=${encodeURIComponent(p)}&per_page=${limit}`);
+  const validSha = (sha) => typeof sha === 'string' && /^[0-9a-f]{40}$/i.test(sha);
+  const commits = history(path, 1);
+  if (!Array.isArray(commits) || !validSha(commits[0]?.sha)) return null;
+  const sha = commits[0].sha;
+  const commit = read(`commits/${sha}?per_page=100`);
+  if (!Array.isArray(commit?.files)) return null;
+  if (commit.files.some((f) => f?.filename === path && f.status === 'removed')) return null;
+  const renamed = commit.files.filter((f) => f?.status === 'renamed' && f.previous_filename === path);
+  if (renamed.length !== 1) return null;
+  const target = renamed[0].filename;
+  if (typeof target !== 'string' || !target || target === path || existsOnMain(target) !== true) return null;
+
+  // Do not follow a later rename of this name: it might belong to an unrelated
+  // file recreated after the original destination was removed or renamed away.
+  const targetHistory = history(target, 100);
+  if (!Array.isArray(targetHistory)) return null;
+  const original = targetHistory.findIndex((c) => c?.sha === sha);
+  if (original < 0) return null;
+  for (const change of targetHistory.slice(0, original)) {
+    if (!validSha(change?.sha)) return null;
+    const detail = read(`commits/${change.sha}?per_page=100`);
+    if (!Array.isArray(detail?.files)) return null;
+    const matches = detail.files.filter((f) => f?.filename === target || f?.previous_filename === target);
+    if (matches.length !== 1 || matches[0].filename !== target || matches[0].status !== 'modified') return null;
+  }
+  return target;
+}
+
 module.exports = {
   REPO_SLUG,
   pathNeverExisted,
+  resolvePathRename,
   GH_TIMEOUT_MS,
   defaultRunGh,
   cleanUrl,

@@ -1,0 +1,158 @@
+{
+  "issueNumber": "bro-6254",
+  "planId": "6ea4b253-dcdc-4354-af2f-46a77fcdc582",
+  "status": "applied",
+  "createdAt": "2026-10-25T23:05:36.023Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Add the May-Aug 2025 Playwrights Horizons run of Prince Faggot (Playbill-validated) as its own closed Off-Broadway show, cross-linked from the Studio Seaview transfer, and move its 8 June/July 2025 reviews off the Seaview row.",
+    "steps": [
+      "Append prince-faggot-playwrights-horizons-off-broadway-2025 (priorRuns link on prince-faggot-off-broadway-2025)",
+      "Move 8 review files prince-faggot-off-broadway-2025 -> prince-faggot-playwrights-horizons-off-broadway-2025"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "prince-faggot-playwrights-horizons-off-broadway-2025",
+          "title": "Prince Faggot",
+          "slug": "prince-faggot-playwrights-horizons-off-broadway-2025",
+          "venue": "Playwrights Horizons/Peter Jay Sharp Theater",
+          "previewsStartDate": "2025-05-30",
+          "openingDate": "2025-06-16",
+          "closingDate": "2025-08-03",
+          "status": "closed",
+          "category": "off-broadway",
+          "market": "broadway",
+          "type": "play",
+          "tags": [],
+          "discoverySource": "ob-historical:tm",
+          "discoveredAt": "2026-10-25T00:00:00.000Z",
+          "openingDateSource": "playbill-ob-historical",
+          "closingDateSource": "playbill-ob-historical",
+          "evidenceUrls": [
+            "https://playbill.com/production/prince-faggot-off-broadway-playwrights-horizons-peter-jay-sharp-theater-2025"
+          ]
+        },
+        "crossLinkFrom": "prince-faggot-off-broadway-2025"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/vulture--jackson-mchenry.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/theatermania--zachary-stewart.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/nytg--kyle-turner.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/thewrap--robert-hofler.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/this-week-in-new-york--unknown.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      },
+      {
+        "type": "review-file-op",
+        "operation": "move",
+        "sourcePath": "prince-faggot-off-broadway-2025/theater-scene--tony-marinelli.json",
+        "destPath": "prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json",
+        "description": "June 2025 review of the Playwrights Horizons run, filed on the Studio Seaview row"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T02:12:06.154Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added prince-faggot-playwrights-horizons-off-broadway-2025 (priorRuns link on prince-faggot-off-broadway-2025)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/vulture--jackson-mchenry.json → prince-faggot-playwrights-horizons-off-broadway-2025/vulture--jackson-mchenry.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/theatermania--zachary-stewart.json → prince-faggot-playwrights-horizons-off-broadway-2025/theatermania--zachary-stewart.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/nytg--kyle-turner.json → prince-faggot-playwrights-horizons-off-broadway-2025/nytg--kyle-turner.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json → prince-faggot-playwrights-horizons-off-broadway-2025/exeunt-magazine--read-more-articles-by-lane-williamson.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/theatre-reviews-limited--david-roberts.json → prince-faggot-playwrights-horizons-off-broadway-2025/theatre-reviews-limited--david-roberts.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/thewrap--robert-hofler.json → prince-faggot-playwrights-horizons-off-broadway-2025/thewrap--robert-hofler.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/this-week-in-new-york--unknown.json → prince-faggot-playwrights-horizons-off-broadway-2025/this-week-in-new-york--unknown.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved prince-faggot-off-broadway-2025/theater-scene--tony-marinelli.json → prince-faggot-playwrights-horizons-off-broadway-2025/theater-scene--tony-marinelli.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
+}

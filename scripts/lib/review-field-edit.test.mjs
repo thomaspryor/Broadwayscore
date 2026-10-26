@@ -819,6 +819,49 @@ test('outletId relabels an AP wire page to ap through the real writer (BRO-5289)
   assert.equal(after.url, url);
 });
 
+test('outletId relabel to ap also clears the AP-scan duplicate flags so the review is not excluded (BRO-5289)', async (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ap-relabel-flags-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'show'));
+  const url = 'https://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html';
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  for (const pointer of ['show/ap--associated-press.json', 'show/wsj--mark-kennedy.json']) {
+    const file = 'show/wsj--mark-kennedy.json';
+    fs.writeFileSync(path.join(root, file), JSON.stringify({ showId: 'show', outletId: 'wsj', outlet: 'The Wall Street Journal', criticName: 'Mark Kennedy', url, fullText: 'NEW YORK — a review.', isSyndicatedDuplicate: true, syndicatedPrimaryFile: pointer, _apContentDetected: true }));
+    const res = executeReviewFieldEditIn(root, { file, field: 'outletId', oldValue: 'wsj', newValue: 'ap' }, stamp);
+    assert.equal(res.ok, true, res.reason);
+    const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+    assert.equal(after.outletId, 'ap');
+    assert.ok(!after.isSyndicatedDuplicate, pointer);
+    assert.ok(!after.syndicatedPrimaryFile, pointer);
+    assert.ok(!after._apContentDetected);
+  }
+});
+
+test('an ap row with an AP wire url can drop its leftover AP-scan duplicate flags even when the pointer target is an empty stub (BRO-5289)', async (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ap-stub-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'show'));
+  const url = 'https://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html';
+  const body = 'NEW YORK — a review of the revival with plenty of words. '.repeat(30);
+  fs.writeFileSync(path.join(root, 'show/ap--associated-press.json'), JSON.stringify({ showId: 'show', outletId: 'ap', url, fullText: '' }));
+  fs.writeFileSync(path.join(root, 'show/wsj--other.json'), JSON.stringify({ showId: 'show', outletId: 'wsj', url: 'https://stream.wsj.com/x', fullText: body }));
+  fs.writeFileSync(path.join(root, 'show/ap--mark-kennedy.json'), JSON.stringify({ showId: 'show', outletId: 'ap', url, fullText: body, isSyndicatedDuplicate: true, syndicatedPrimaryFile: 'show/ap--associated-press.json', _apContentDetected: true }));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const a = executeReviewFieldEditIn(root, { file: 'show/ap--mark-kennedy.json', field: 'isSyndicatedDuplicate', oldValue: true, newValue: false }, stamp);
+  assert.equal(a.ok, true, a.reason);
+  const b = executeReviewFieldEditIn(root, { file: 'show/ap--mark-kennedy.json', field: 'syndicatedPrimaryFile', oldValue: 'show/ap--associated-press.json', newValue: null }, stamp);
+  assert.equal(b.ok, true, b.reason);
+  // a non-ap row with the same leftovers is not covered
+  fs.writeFileSync(path.join(root, 'show/wsj--other.json'), JSON.stringify({ showId: 'show', outletId: 'wsj', url, fullText: body, isSyndicatedDuplicate: true, syndicatedPrimaryFile: 'show/ap--associated-press.json', _apContentDetected: true }));
+  const c = executeReviewFieldEditIn(root, { file: 'show/wsj--other.json', field: 'isSyndicatedDuplicate', oldValue: true, newValue: false }, stamp);
+  assert.equal(c.ok, false);
+});
+
 test('outletId relabel is refused for any other outlet, a non-AP url, or a stale oldValue', () => {
   const wire = { outletId: 'wsj', url: 'https://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html' };
   const act = { field: 'outletId', oldValue: 'wsj', newValue: 'ap' };

@@ -14,7 +14,7 @@ const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..')
 
 test('pending runs, finished statuses skip, anything else refuses', () => {
   assert.equal(planStatusAction('pending'), 'run');
-  for (const s of ['applied', 'partial', 'rejected', 'validation-failed']) assert.equal(planStatusAction(s), 'already-applied');
+  for (const s of ['applied', 'partial', 'rejected', 'validation-failed', 'superseded']) assert.equal(planStatusAction(s), 'already-applied');
   for (const s of ['approved', undefined, '', 'Pending']) assert.equal(planStatusAction(s), 'error');
 });
 

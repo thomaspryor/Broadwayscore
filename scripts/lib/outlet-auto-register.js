@@ -368,7 +368,25 @@ function loadStagedOutletIds(rootDir) {
   }
 }
 
+// BRO-5823: the rebuild parks an unregisterable outlet here by design, so a
+// hygiene audit that fails on "unregistered live outlet" fires on every fresh
+// staging row before anyone can resolve it. Staged ids inside this window are
+// reported as pending, not failed; past it they fail (a human must decide).
+const STAGED_GRACE_DAYS = 3;
+
+/** Set of staged outletIds first seen within graceDays of nowMs. */
+function recentlyStagedOutletIds(stagingDoc, nowMs, graceDays = STAGED_GRACE_DAYS) {
+  const out = new Set();
+  for (const e of (stagingDoc && stagingDoc.staged) || []) {
+    const seen = e && e.firstSeenAt ? Date.parse(e.firstSeenAt) : NaN;
+    if (e && e.outletId && Number.isFinite(seen) && nowMs >= seen && nowMs - seen <= graceDays * 86400000) out.add(e.outletId);
+  }
+  return out;
+}
+
 module.exports = {
+  STAGED_GRACE_DAYS,
+  recentlyStagedOutletIds,
   STAGING_RELATIVE_PATH,
   STAGE_REASONS,
   criticNameSlugs,

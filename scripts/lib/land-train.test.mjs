@@ -200,6 +200,38 @@ test('train: holder + 2 riders land in ONE push after ONE combined check; per-br
   } finally { w.cleanup(); }
 });
 
+test('BRO-6276 train scope: verified, disjoint members get the small re-check; a member without a verified base makes it full', () => {
+  const w = makeWorld();
+  try {
+    const base = w.mainSha();
+    w.pushBranch('land/h', { 'h.txt': 'h\n' });
+    const tipA = w.pushBranch('land/a', { 'a.txt': 'a\n' });
+    const tipB = w.pushBranch('land/b', { 'b.txt': 'b\n' });
+    const scopes = [];
+    const run = (riders, holderBase = base) => {
+      const r = landBranch({
+        branch: 'land/h', source: 'origin', repoDir: w.clone(`runner-${scopes.length}`), riders, holderBase,
+        checks: () => [{ name: 'stop', pass: false, detail: 'stop here' }],
+        trainChecks: (o) => { scopes.push(o.recheckScope); return [{ name: 'stop', pass: false, detail: 'stop here' }]; },
+        pushMain: () => { throw new Error('must not push'); },
+      });
+      return r;
+    };
+    run([{ branch: 'land/a', tip: tipA, base }, { branch: 'land/b', tip: tipB, base }]);
+    assert.equal(scopes[0].mode, 'small', scopes[0].reason);
+    assert.equal(scopes[0].build, false);
+    run([{ branch: 'land/a', tip: tipA }, { branch: 'land/b', tip: tipB, base }]);
+    assert.equal(scopes[1].mode, 'full');
+    assert.match(scopes[1].reason, /land\/a has no verified base/);
+    run([{ branch: 'land/a', tip: tipA, base }], null);
+    assert.match(scopes[2].reason, /land\/h has no verified base/);
+    process.env.LAND_TRAIN_SMALL_RECHECK_DISABLED = 'true';
+    try { run([{ branch: 'land/a', tip: tipA, base }, { branch: 'land/b', tip: tipB, base }]); } finally { delete process.env.LAND_TRAIN_SMALL_RECHECK_DISABLED; }
+    assert.equal(scopes[3].mode, 'full');
+    assert.match(scopes[3].reason, /disabled/);
+  } finally { w.cleanup(); }
+});
+
 test('train: a conflicting rider is dropped, HEAD returns to the train, the next rider still rides', () => {
   const w = makeWorld();
   try {

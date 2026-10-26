@@ -16,8 +16,8 @@
       "other",
       "original"
     ],
-    "count": 912,
-    "updatedAt": "2026-10-21T21:01:00.416Z"
+    "count": 914,
+    "updatedAt": "2026-10-26T13:29:33.986Z"
   },
   "shows": {
     "110-in-the-shade-2007": {
@@ -8616,6 +8616,32 @@
       "classifiedAt": "2026-10-21",
       "check": {
         "path": [],
+        "source": "original",
+        "model": "gemini-2.5-flash"
+      },
+      "originalKind": "invented",
+      "originalKindNote": "fictional counterculture ensemble"
+    },
+    "hair-2009": {
+      "title": "Hair",
+      "openingDate": "2009-03-31",
+      "path": [
+        "off-broadway"
+      ],
+      "pathNote": "The Public Theater/Delacorte Theatre, 2008 (then Broadway in 2009).",
+      "source": "original",
+      "sourceTitle": null,
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/hair-481766",
+        "https://en.wikipedia.org/wiki/Hair_(musical)"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-26",
+      "check": {
+        "path": [
+          "off-broadway"
+        ],
         "source": "original",
         "model": "gemini-2.5-flash"
       },
@@ -17556,6 +17582,25 @@
       },
       "originalKind": "invented",
       "originalKindNote": "fictional Hollywood satire"
+    },
+    "spider-man-turn-off-the-dark-2011": {
+      "title": "Spider-Man: Turn Off the Dark",
+      "openingDate": "2011-06-14",
+      "path": [],
+      "pathNote": "Direct to Broadway; no earlier staged production led into the run.",
+      "source": "other",
+      "sourceTitle": "Spider-Man",
+      "confidence": "high",
+      "evidence": [
+        "https://www.ibdb.com/broadway-production/spider-man-turn-off-the-dark-488485"
+      ],
+      "model": "gpt-5.4-mini",
+      "classifiedAt": "2026-10-26",
+      "check": {
+        "path": [],
+        "source": "other",
+        "model": "gemini-2.5-flash"
+      }
     },
     "spongebob-squarepants-2017": {
       "title": "SpongeBob SquarePants",

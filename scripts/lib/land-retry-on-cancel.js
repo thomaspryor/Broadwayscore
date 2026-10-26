@@ -12,23 +12,48 @@
  * only the cancelled Land job and keeps the verified Checks result).
  *
  * Retry ONLY when: the run is cancelled, Checks succeeded, Land was cancelled
- * before doing any work (no step ran to completion past queueing — a Land job
- * cancelled mid-flight by a human must not be replayed), the land/** ref still
+ * before "Land the branch" ran (landWorkStarted; a job cancelled while landing
+ * must not be replayed). BRO-6291: a cancel during setup or the landing-mutex
+ * wait is retried too, nothing reached main; delete the land/** ref to stop a
+ * landing for good. Also required: the land/** ref still
  * exists (it is deleted once landed) at the same tip the run verified, and the attempt budget is not spent.
  */
 
-const { PARKED_MAX_ATTEMPTS, isParkedLandJob } = require('./land-mutex');
+const { PARKED_MAX_ATTEMPTS, isParkedLandJob, landWorkStarted } = require('./land-mutex');
 
 const MAX_ATTEMPTS = 6;
+// land.yml's Land job timeout-minutes (pinned by land-mutex.test.mjs). GitHub
+// reports a job deadline as "cancelled"; a Land job that ran this close to it
+// most likely timed out (hung mutex, checkout or install), and replaying it
+// would burn up to MAX_ATTEMPTS more two-hour runs. Leave it to a person.
+const LAND_JOB_TIMEOUT_MINUTES = 125;
+const TIMEOUT_SUSPECT_MINUTES = LAND_JOB_TIMEOUT_MINUTES - 5;
+
+function landRanToDeadline(land) {
+  const ms = Date.parse(land.completed_at) - Date.parse(land.started_at);
+  return Number.isFinite(ms) && ms >= TIMEOUT_SUSPECT_MINUTES * 60000;
+}
+
+// BRO-6326: `jobs?filter=latest` can list every attempt's job of the same name
+// (run 40307546415: attempt-1 Land cancelled + attempt-2 Land success). find()
+// took the stale first one, so a landed run looked retryable. Newest attempt
+// wins; started_at breaks ties (a job cancelled while queued may lack it).
+function latestJobByName(jobs, name) {
+  const key = (j) => [Number(j.run_attempt) || 0, Date.parse(j.started_at) || 0];
+  return (jobs || []).filter((j) => j.name === name).reduce((best, j) => {
+    if (!best) return j;
+    const [a, at] = key(j); const [b, bt] = key(best);
+    return a > b || (a === b && at > bt) ? j : best;
+  }, null) || undefined;
+}
 
 function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX_ATTEMPTS } = {}) {
   const no = (reason) => ({ retry: false, reason });
   if (!run) return no('no-run');
   if (run.conclusion !== 'cancelled') return no(`run-conclusion-${run.conclusion || 'none'}`);
   if (!/^land\//.test(run.head_branch || '')) return no('not-a-land-branch');
-  const byName = (n) => (jobs || []).find((j) => j.name === n);
-  const checks = byName('Checks');
-  const land = byName('Land');
+  const checks = latestJobByName(jobs, 'Checks');
+  const land = latestJobByName(jobs, 'Land');
   if (!checks || checks.conclusion !== 'success') return no('checks-not-success');
   if (!land) return no('no-land-job');
   if (land.conclusion !== 'cancelled') return no(`land-${land.conclusion || 'none'}`);
@@ -36,15 +61,16 @@ function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX
   // admit step cancelled the run before any work) is resumed like an eviction,
   // on its own, larger budget: it burns an attempt only when the queue is full again.
   const parked = isParkedLandJob(land);
-  const started = !parked && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
-  if (started) return no('land-started-work');
+  if (!parked && landWorkStarted(land)) return no('land-started-work');
+  if (!parked && landRanToDeadline(land)) return no('land-timed-out');
+  const setupRan = !parked && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
   if (!branchExists) return no('branch-gone');
   if (branchTip && run.head_sha && branchTip !== run.head_sha) return no('superseded-tip');
   const attempt = run.run_attempt || 1;
   if (attempt >= (parked ? Math.max(maxAttempts, PARKED_MAX_ATTEMPTS) : maxAttempts)) return no('attempts-exhausted');
   return parked
     ? { retry: true, reason: 'land-parked-behind-deep-queue', attempt, parked: true }
-    : { retry: true, reason: 'land-cancelled-while-queued', attempt };
+    : { retry: true, reason: setupRan ? 'land-cancelled-before-landing' : 'land-cancelled-while-queued', attempt };
 }
 
 // BRO-4651: GITHUB_TOKEN's per-repo quota is shared by every workflow and ran
@@ -97,6 +123,14 @@ function isRefNotFound(err) {
   return /\bHTTP 404\b/.test(errorText(err));
 }
 
+// BRO-6326: GitHub refuses rerun-failed-jobs with "HTTP 403 This workflow run
+// cannot be retried" for a run in an unretriable state. Matched on both the
+// status and the text so a permissions 403 still fails loudly.
+function isRerunRefused(err) {
+  const t = errorText(err);
+  return /\bHTTP 403\b/.test(t) && /cannot be retried/i.test(t);
+}
+
 /**
  * Pure: after a retry-eligible cancel, has the run been re-triggered?
  * 'resume' once the run is live again or its attempt number moved past the
@@ -115,4 +149,4 @@ function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
   return 'wait';
 }
 
-module.exports = { ghApiArgs, decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait };
+module.exports = { latestJobByName, isRerunRefused, ghApiArgs, decideLandRetry, MAX_ATTEMPTS, LAND_JOB_TIMEOUT_MINUTES, runGhWithFallback, isRefNotFound, decideCancelledWait };

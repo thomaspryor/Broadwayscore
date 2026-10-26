@@ -14,13 +14,19 @@ import assert from 'node:assert/strict';
 import {
   buildRecoupFindings,
   buildSeasonProfiles,
+  hasKnownOutcome,
   compareSeason,
   formatRowValue,
+  hasReturnedCoverage,
+  returnedCapitalShare,
   isOwnEstimate,
+  continuesEarlierRun,
   mix,
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
   seasonHistoryAverage,
+  selectSeasonAverageBase,
+  selectSeasonHistory,
   showGroup,
   trackedRecord,
   type SeasonShowInput,
@@ -98,14 +104,19 @@ test('baseline skips pandemic seasons; money rows need their own coverage', () =
   assert.equal(row('Musicals').current, 0.5);
   assert.equal(row('Musicals').currentDetail, '5 of 10');
   assert.equal(row('Musicals').last, 0.2);
+  // The third column is the season before last (owner, 2026-10-26).
+  assert.equal(cmp.prevSeason, '2023-2024');
+  assert.equal(row('Musicals').prev, 0.2);
+  assert.equal(row('Musicals').prevDetail, '2 of 10');
+  assert.equal(row('Disclosed capitalization (sum)').prev, 60e6);
   assert.equal(row('Musicals').avg, 6 / 30); // pooled 2+2+2 of 30; 2019-20's 9 musicals excluded
 
   // 2025-26 ended Jul 2026: still settling, so labelled "so far". All three
   // baseline seasons ended over a year before Sep 2026: settled.
   assert.equal(cmp.recoupUnsettled, true);
   assert.equal(cmp.baselineSeasons, 3);
-  assert.equal(row('Commercial shows recouped so far').avgSeasons, 3);
-  assert.equal(row('Commercial shows recouped so far').avg, 3 / 30);
+  assert.equal(row('Commercial shows recouped as of today').avgSeasons, 3);
+  assert.equal(row('Commercial shows recouped as of today').avg, 3 / 30);
 
   // Only 2024-25 and 2023-24 have disclosed capitalizations.
   const cap = row('Average capitalization, play');
@@ -139,7 +150,7 @@ test('recoupment average leaves out seasons still playing out', () => {
     ...season(2024, 10, { tracked: true }),
   ];
   const cmp = compareSeason(buildSeasonProfiles(shows), '2026-2027', '2026-10-20')!;
-  const r = cmp.rows.find((x) => x.label === 'Commercial shows recouped so far')!;
+  const r = cmp.rows.find((x) => x.label === 'Commercial shows recouped as of today')!;
   assert.equal(r.last, 0.1); // last season is still shown
   assert.equal(r.avgSeasons, 1); // but only 2024-25 is averaged
 });
@@ -229,7 +240,7 @@ test('a season under way: averages state what is disclosed, counted against the 
 test('shares of fewer than 3 shows are not stated; a disrupted last season still fills its column', () => {
   const shows = [
     show({ openingDate: '2021-10-01', commercial: com({ recouped: true }) }),
-    show({ openingDate: '2021-10-02', commercial: com({}) }),
+    show({ openingDate: '2021-10-02', commercial: com({ recouped: false }) }),
     ...season(2019, 5, { tracked: true }),
   ];
   const cmp = compareSeason(buildSeasonProfiles(shows), '2021-2022', '2026-10-20')!;
@@ -238,6 +249,8 @@ test('shares of fewer than 3 shows are not stated; a disrupted last season still
   assert.equal(recoup.currentDetail, '1 of 2');
   assert.equal(cmp.lastSeason, '2019-2020');
   assert.equal(cmp.lastDisrupted, true);
+  assert.equal(cmp.prevSeason, null); // nothing opened before 2019-20 in this fixture
+  assert.equal(recoup.prev, null);
   assert.equal(cmp.baselineSeasons, 0);
   assert.equal(recoup.last, 0.2);
 });
@@ -427,4 +440,158 @@ test('recouped show names are listed per bucket; shows that did not recoup are n
   const f = buildRecoupFindings(shows, '2026-10-20');
   const pr = f.buckets.find((b) => b.label === 'Play revivals')!;
   assert.deepEqual(pr.recoupedShows.map((s) => s.title), ['A Show', 'B Show']);
+});
+
+test('capital by outcome: closed-unrecouped and running shows, same per-show figures as the estimated total', () => {
+  const shows = [
+    show({ openingDate: '2025-10-01', status: 'closed', commercial: com({ capitalization: 10e6, recouped: false }) }),
+    show({ openingDate: '2025-10-02', status: 'closed', commercial: com({ capitalization: 6e6, recouped: true }) }),
+    show({ openingDate: '2025-10-03', status: 'open', commercial: com({ capitalization: 4e6, recouped: false }) }),
+    show({ openingDate: '2025-10-04', status: 'open', commercial: com({ capitalization: 3e6, recouped: true }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
+  assert.equal(p.estimatedCapital.total, 23e6);
+  assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 10e6, closedUnrecoupedShows: 1, running: 4e6, runningShows: 1 });
+});
+
+test('returned capital share: recouped, closed estimate, model and unopened cases (BRO-6335)', () => {
+  const cited = [{ url: 'https://example.com/a' }];
+  // Recouped: reported multiple only with a cited source, else 100%.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 2.5, sources: cited }), 'open'), { low: 2.5, mid: 2.5, high: 2.5 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 2.5 }), 'open'), { low: 1, mid: 1, high: 1 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true }), 'closed'), { low: 1, mid: 1, high: 1 });
+  // Closed, unrecouped: own estimate range first, then the model.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [20, 40], modelReturnedExCreditPct: [0, 5, 10] }), 'closed'), { low: 0.2, mid: 0.3, high: 0.4 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [10, 30, 50] }), 'closed'), { low: 0.1, mid: 0.3, high: 0.5 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPctV2: [-20, 30, 160] }), 'closed'), { low: 0, mid: 0.3, high: 0.99 });
+  // Running: the model, never the closed-show estimate.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [90, 95], modelRecoupmentPct: [10, 20, 30] }), 'open'), { low: 0.1, mid: 0.2, high: 0.3 });
+  // A hot model on a running unrecouped show never counts as fully repaid (a closed one gets no share, BRO-6360).
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [80, 140, 200] }), 'open'), { low: 0.8, mid: 0.99, high: 0.99 });
+  assert.equal(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [80, 140, 200] }), 'closed'), null);
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 3, sources: [{ note: 'no url' }] }), 'open'), { low: 1, mid: 1, high: 1 });
+  // No basis, or not open yet: nothing.
+  assert.equal(returnedCapitalShare(com({ recouped: false }), 'closed'), null);
+  assert.equal(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [10, 20, 30] }), 'announced'), null);
+});
+
+test('returned capital: sums capital x share per show with a low-high band, skipping shows with no basis', () => {
+  const shows = [
+    show({ openingDate: '2025-10-01', status: 'closed', commercial: com({ capitalization: 10e6, recouped: false, ourEstimateRangePct: [20, 40] }) }),
+    show({ openingDate: '2025-10-02', status: 'closed', commercial: com({ capitalization: 6e6, recouped: true }) }),
+    show({ openingDate: '2025-10-03', status: 'open', commercial: com({ capitalization: 4e6, recouped: false, modelRecoupmentPct: [0, 50, 100] }) }),
+    // Capital but no returned estimate: counted in `of`, not in `shows` or the capital base.
+    show({ openingDate: '2025-10-04', status: 'open', commercial: com({ capitalization: 5e6, recouped: false }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
+  assert.deepEqual(p.returnedCapital, { capital: 20e6, low: 2e6 + 6e6, mid: 3e6 + 6e6 + 2e6, high: 4e6 + 6e6 + 4e6 * 0.99, shows: 3, of: 4 });
+  assert.equal(hasReturnedCoverage(p), true);
+  // Fewer than MIN_RETURNED_SHOWS: not stated.
+  assert.equal(hasReturnedCoverage(buildSeasonProfiles(shows.slice(0, 2)).find((x) => x.season === '2025-2026')!), false);
+  // Below 60% of the capital-bearing shows: not stated.
+  const thin = buildSeasonProfiles([shows[0], shows[3], shows[3], shows[3]].map((s, i) => ({ ...s, openingDate: `2025-10-0${i + 1}` })));
+  assert.equal(hasReturnedCoverage(thin[0]), false);
+});
+
+test('closed shows with only a model-estimate label stay out of the recoup rate (BRO-6354)', () => {
+  const shows = [
+    show({ openingDate: '2016-01-10', status: 'closed', commercial: com({ designation: 'Easy Winner', recouped: true }) }),
+    show({ openingDate: '2016-02-10', status: 'closed', commercial: com({ designation: 'Flop', recouped: false }) }),
+    show({ openingDate: '2016-03-10', status: 'closed', commercial: com({ designation: 'Flop', recouped: null }) }),
+    show({ openingDate: '2016-04-10', status: 'closed', commercial: com({ designation: 'Fizzle' }) }),
+    show({ openingDate: '2016-05-10', status: 'open', commercial: com({ recouped: null }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2015-2016')!;
+  assert.deepEqual([p.recouped, p.outcomeKnown, p.commercial], [1, 3, 5]);
+  assert.equal(hasKnownOutcome('closed', { recouped: null }), false);
+  assert.equal(hasKnownOutcome('closed', { recouped: false }), true);
+  assert.equal(hasKnownOutcome('open', { recouped: null }), true);
+  assert.equal(hasKnownOutcome('upcoming', { recouped: null }), false);
+  assert.equal(hasKnownOutcome(undefined, { recouped: undefined }), false);
+  // The average row pools known outcomes only.
+  const avg = seasonHistoryAverage([p], null, '2026-10-26');
+  assert.deepEqual([avg.recouped?.recouped, avg.recouped?.commercial], [1, 3]);
+});
+
+test('closed, not recouped, no own estimate: a model at or above 100% gets no share (BRO-6360)', () => {
+  const hot = com({ recouped: false, modelReturnedExCreditPct: [167, 195, 221] });
+  assert.equal(returnedCapitalShare(hot, 'closed'), null);
+  // A model below 100% still counts, capped under full repayment.
+  const warm = returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [65, 98.2, 131] }), 'closed');
+  assert.ok(warm && warm.mid < 1 && warm.high < 1);
+  // Our own estimate still wins over a hot model.
+  const own = returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [60, 80], modelReturnedExCreditPct: [167, 195, 221] }), 'closed');
+  assert.deepEqual(own && { low: own.low, high: own.high }, { low: 0.6, high: 0.8 });
+});
+
+test('a continuation run does not count the same raise twice (BRO-6360)', () => {
+  const cap = 21_000_000;
+  const first = show({ id: 'beetlejuice-2019', type: 'musical', openingDate: '2019-04-25', status: 'closed', commercial: com({ capitalization: cap, recouped: false, capitalizationSource: 'SEC filing' }) });
+  const second = show({ id: 'beetlejuice-2022', type: 'musical', openingDate: '2022-04-08', status: 'closed', commercial: com({ capitalization: cap, recouped: false, capitalizationSource: 'The 2022 Marquis run continued that production.' }) });
+  assert.equal(continuesEarlierRun(second, [first, second]), true);
+  assert.equal(continuesEarlierRun(first, [first, second]), false);
+  const p = buildSeasonProfiles([first, second]).find((x) => x.season === '2021-2022')!;
+  assert.equal(p.estimatedCapital.total, 0);
+  assert.equal(p.commercial, 0);
+  assert.equal(p.capitalization.all.of, 0);
+  assert.equal(p.returnedCapital.of, 0);
+  // Same figure without a continuation source still counts (coincidence).
+  const other = show({ id: 'beetlejuice-2022', type: 'musical', openingDate: '2022-04-08', status: 'closed', commercial: com({ capitalization: cap, recouped: false, capitalizationSource: 'New raise' }) });
+  assert.equal(continuesEarlierRun(other, [first, other]), false);
+});
+
+test('every buildSeasonProfiles caller passes the show id (continuesEarlierRun needs it, BRO-6360)', async () => {
+  const fs = await import('node:fs');
+  for (const f of ['src/lib/data-commercial.ts', 'scripts/append-season-payback-history.ts']) {
+    const src = fs.readFileSync(f, 'utf8');
+    const i = src.indexOf('buildSeasonProfiles(');
+    assert.ok(i > 0 && /id: s\.slug,/.test(src.slice(i, i + 700)), `${f} must map id: s.slug into buildSeasonProfiles`);
+  }
+});
+
+test('continuation rule is exact: "discontinued" and mid at the 99 cap (BRO-6360)', () => {
+  const a = show({ id: 'x-2019', openingDate: '2019-04-25', commercial: com({ capitalization: 5e6 }) });
+  const b = show({ id: 'x-2022', openingDate: '2022-04-08', commercial: com({ capitalization: 5e6, capitalizationSource: 'The earlier plan was discontinued.' }) });
+  assert.equal(continuesEarlierRun(b, [a, b]), false);
+  assert.equal(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [90, 99, 120] }), 'closed'), null);
+  assert.ok(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [50, 98, 120] }), 'closed'));
+});
+
+test('Season by Season lists every season back to the oldest with tracked coverage (BRO-6362)', () => {
+  // 14 seasons 2012-13 .. 2025-26: only 2014-15 onward are tracked; 2012-13/2013-14 are not.
+  const shows: SeasonShowInput[] = [];
+  for (let y = 2012; y <= 2025; y++) {
+    for (let m = 1; m <= 4; m++) {
+      const tracked = y >= 2014;
+      shows.push(show({ openingDate: `${y}-10-0${m}`, commercial: tracked ? com({ recouped: true }) : null }));
+    }
+  }
+  const profiles = buildSeasonProfiles(shows);
+  const rows = selectSeasonHistory(profiles, '2025-2026').map((p) => p.season);
+  assert.equal(rows[0], '2025-2026');
+  assert.equal(rows[rows.length - 1], '2014-2015');
+  assert.equal(rows.length, 12); // more than the old 11-row window
+  assert.ok(!rows.includes('2013-2014'));
+  // A future season in the data is not shown; no coverage anywhere keeps only the current row.
+  assert.equal(selectSeasonHistory(profiles, '2020-2021')[0].season, '2020-2021');
+  assert.deepEqual(selectSeasonHistory(buildSeasonProfiles(shows.slice(0, 4)), '2012-2013').map((p) => p.season), ['2012-2013']);
+});
+
+test('selectSeasonHistory keeps uncovered gaps between covered seasons, drops future ones, and has no row cap (BRO-6362)', () => {
+  const mk = (y: number, tracked: boolean) => [1, 2, 3, 4].map((m) => show({ openingDate: `${y}-10-0${m}`, commercial: tracked ? com({ recouped: true }) : null }));
+  // 2010 covered, 2011-2013 uncovered, 2014 covered: gap rows stay; 2030 is in the future.
+  const profiles = buildSeasonProfiles([...mk(2010, true), ...mk(2011, false), ...mk(2012, false), ...mk(2013, false), ...mk(2014, true), ...mk(2030, true)]);
+  assert.deepEqual(selectSeasonHistory(profiles, '2014-2015').map((p) => p.season), ['2014-2015', '2013-2014', '2012-2013', '2011-2012', '2010-2011']);
+  // No current season given: every covered season is listed (no cap).
+  assert.equal(selectSeasonHistory(profiles, null).length, 6);
+});
+
+test('the average base stays the latest 11 seasons however many rows the table lists', () => {
+  const shows: SeasonShowInput[] = [];
+  for (let y = 2011; y <= 2025; y++) shows.push(...season(y, 10, { tracked: true }));
+  const profiles = buildSeasonProfiles(shows);
+  assert.equal(selectSeasonHistory(profiles, '2025-2026').length, 15);
+  const base = selectSeasonAverageBase(profiles, '2025-2026');
+  assert.equal(base.length, 11);
+  assert.equal(base[10].season, '2015-2016');
 });

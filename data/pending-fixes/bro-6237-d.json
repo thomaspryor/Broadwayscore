@@ -1,0 +1,126 @@
+{
+  "issueNumber": "bro-6237-d",
+  "planId": "a5974801-ba84-453c-9441-8a5f54a57bd1",
+  "status": "pending",
+  "createdAt": "2026-10-26T11:33:49.849Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6237: adjudicate 79 counted reviews carrying an unreviewed CV not-a-review flag (8 true non-reviews, 71 real reviews cleared) (part 4 of 4)",
+    "steps": [
+      "the-piano-lesson-2022/wsj--charles-isherwood.json: nonReviewManualClear",
+      "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json: nonReviewManualClear",
+      "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json: nonReviewManualClear",
+      "the-thanksgiving-play-2023/wsj--charles-isherwood.json: nonReviewManualClear",
+      "the-wiz-2024/broadwaynews--brittani-samuel.json: nonReviewManualClear",
+      "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json: nonReviewManualClear",
+      "tina-the-tina-turner-musical-west-end-2018/standard--fiona-mountford.json: nonReviewManualClear",
+      "topdog-underdog-2022/broadwaynews--brittani-samuel.json: nonReviewManualClear",
+      "tuck-everlasting-2016/ew--melissa-rose-bernardo.json: nonReviewManualClear",
+      "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json: nonReviewManualClear",
+      "war-horse-west-end-2026/whatsonstage--maygan-forbes.json: nonReviewManualClear",
+      "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-piano-lesson-2022/wsj--charles-isherwood.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-piano-lesson-2022/wsj--charles-isherwood.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-potluck-off-broadway-2026/one-minute-critic--steven-vargas.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-scottsboro-boys-2010/nydailynews--joe-dziemianowicz.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-thanksgiving-play-2023/wsj--charles-isherwood.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-thanksgiving-play-2023/wsj--charles-isherwood.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-wiz-2024/broadwaynews--brittani-samuel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "the-wiz-2024/broadwaynews--brittani-samuel.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tina-the-tina-turner-musical-west-end-2018/standard--fiona-mountford.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "tina-the-tina-turner-musical-west-end-2018/standard--fiona-mountford.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "topdog-underdog-2022/broadwaynews--brittani-samuel.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "topdog-underdog-2022/broadwaynews--brittani-samuel.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "tuck-everlasting-2016/ew--melissa-rose-bernardo.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "tuck-everlasting-2016/ew--melissa-rose-bernardo.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "ulysses-off-broadway-2026/one-minute-critic--matthew-wexler.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "war-horse-west-end-2026/whatsonstage--maygan-forbes.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "war-horse-west-end-2026/whatsonstage--maygan-forbes.json: nonReviewManualClear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json: nonReviewManualClear"
+      }
+    ]
+  }
+}

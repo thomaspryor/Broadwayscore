@@ -841,7 +841,21 @@ function pruneDone(opts = {}) {
   return { closed, skipped, disagreements };
 }
 
+// BRO-3000: a failed listing must never read as "cmux confirmed zero
+// workspaces". Four call sites hand-rolled this try/catch independently and
+// each shipped the bug once. `unavailable` is the classifyCmuxError() result
+// on failure and null on success; callers must check it before trusting an
+// empty `workspaces`.
+function resolveLiveWorkspaces(listWorkspacesFn = listWorkspaces) {
+  try {
+    return { workspaces: listWorkspacesFn() || [], unavailable: null, error: null };
+  } catch (e) {
+    return { workspaces: [], unavailable: classifyCmuxError(e), error: e };
+  }
+}
+
 module.exports = {
+  resolveLiveWorkspaces,
   CMUX, cmuxAvailable, run, _resetRunWarnings, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS,
   parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude, liveAgentIn, AGENT_TAG_RE, anyAgentAliveInTsv,
   hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef, flattenToSingleLine,

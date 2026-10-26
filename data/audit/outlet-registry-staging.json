@@ -1,7 +1,16 @@
 {
   "_comment": "Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.",
-  "updatedAt": "2026-10-25T17:02:53.055Z",
+  "updatedAt": "2026-10-26T19:30:34.001Z",
   "staged": [
+    {
+      "outletId": "inspiringtravelexperiences",
+      "reason": "name-unresolved",
+      "domainHint": "inspiringtravelexperiences.com",
+      "reviewCount": 1,
+      "exampleShowId": "the-pianist-off-west-end-2026",
+      "firstSeenAt": "2026-10-26T19:28:03.541Z",
+      "lastSeenAt": "2026-10-26T19:30:34.000Z"
+    },
     {
       "outletId": "the-showmance-already-happened",
       "reason": "no-domain",
@@ -9,16 +18,7 @@
       "reviewCount": 1,
       "exampleShowId": "anna-christie-off-broadway-2025",
       "firstSeenAt": "2026-10-25T16:53:00.991Z",
-      "lastSeenAt": "2026-10-25T17:02:53.055Z"
-    },
-    {
-      "outletId": "themetroland",
-      "reason": "name-unresolved",
-      "domainHint": "themetroland.com",
-      "reviewCount": 1,
-      "exampleShowId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
-      "firstSeenAt": "2026-10-24T09:31:53.539Z",
-      "lastSeenAt": "2026-10-25T17:02:53.055Z"
+      "lastSeenAt": "2026-10-26T19:30:34.000Z"
     }
   ]
 }

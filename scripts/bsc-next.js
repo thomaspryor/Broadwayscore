@@ -1449,7 +1449,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
       console.error(`  The nightly acceptance recheck can only verify Done work by re-running a command captured at dispatch.`);
       console.error(`  Fix one of:`);
       console.error(`    1. Add a backticked safe-form command to the card's "## Acceptance criteria":`);
-      console.error(`       node --test <file>.test.mjs | npx tsc --noEmit | npx next lint | test -f <path>`);
+      console.error(`       node --test <file>.test.mjs | npx tsc --noEmit | npm run lint | test -f <path>`);
       console.error(`       (criteria written only in the Notion page body are invisible here — put them in the card Notes via notion-brain update)`);
       console.error(`    2. Add "VERIFY: owner-judgment" to the card if this outcome cannot be machine-checked.`);
       console.error(`    3. Re-run with --allow-unverifiable to dispatch anyway (recorded in the ledger).`);

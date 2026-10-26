@@ -121,3 +121,10 @@ export function sortNewestFirst<T>(items: readonly T[], isoDateOf: (item: T) => 
     return da < db ? 1 : da > db ? -1 : 0;
   });
 }
+
+/** Label for a weekly cost figure; a breakeven or all-in gross is not a running cost (BRO-5109). */
+export function weeklyCostLabel(basis?: 'running' | 'breakeven' | 'all-in' | null): string {
+  if (basis === 'breakeven') return 'Weekly Breakeven';
+  if (basis === 'all-in') return 'Weekly Cost (all-in)';
+  return 'Weekly Cost';
+}

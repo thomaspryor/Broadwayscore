@@ -7,7 +7,7 @@ import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
-const { decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./land-retry-on-cancel.js');
+const { decideLandRetry, latestJobByName, isRerunRefused, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./land-retry-on-cancel.js');
 
 const run = (o = {}) => ({ head_sha: 'aaa', conclusion: 'cancelled', head_branch: 'land/bro-4234-owner-banner', run_attempt: 1, ...o });
 const jobs = (land = {}, checks = {}) => [
@@ -356,4 +356,55 @@ test('BRO-6012: a titled unfinished dispatch stays followable while its Checks l
   const finished404 = dispatchReader({ dispatch: done });
   finished404.readText = () => { throw new Error('gh: Not Found (HTTP 404)'); };
   assert.equal(resolveLandRun(done, finished404), null);
+});
+
+// BRO-6326: run 40307546415 listed attempt-1's cancelled Land AND attempt-2's
+// successful Land; the stale one made a landed run look retryable and its
+// rerun-failed-jobs 403 crashed the whole sweep.
+test('BRO-6326: the newest attempt\'s Land job decides, whatever the list order', () => {
+  const stale = { name: 'Land', run_attempt: 1, conclusion: 'cancelled', started_at: '2026-10-26T10:47:52Z', steps: [{ conclusion: 'cancelled' }] };
+  const fresh = { name: 'Land', run_attempt: 2, conclusion: 'success', started_at: '2026-10-26T12:03:03Z', steps: [] };
+  const checks = { name: 'Checks', run_attempt: 1, conclusion: 'success' };
+  for (const list of [[checks, stale, fresh], [checks, fresh, stale]]) {
+    assert.equal(latestJobByName(list, 'Land'), fresh);
+    assert.equal(decideLandRetry({ run: run({ run_attempt: 2 }), jobs: list, branchExists: true }).reason, 'land-success');
+  }
+  // started_at missing on the stale job: run_attempt still wins
+  assert.equal(latestJobByName([{ ...fresh }, { ...stale, started_at: null }], 'Land').run_attempt, 2);
+  assert.equal(latestJobByName([], 'Land'), undefined);
+});
+
+test('BRO-6326: isRerunRefused matches only the 403 "cannot be retried" refusal', () => {
+  assert.equal(isRerunRefused(new Error('gh: This workflow run cannot be retried (HTTP 403)')), true);
+  assert.equal(isRerunRefused({ stderr: 'gh: This workflow run cannot be retried (HTTP 403)' }), true);
+  assert.equal(isRerunRefused(new Error('gh: Resource not accessible by integration (HTTP 403)')), false);
+  assert.equal(isRerunRefused(new Error('gh: Server Error (HTTP 502)')), false);
+});
+
+test('BRO-6326: the stranded pass picks the newest Land job too', () => {
+  const { decideStrandedRef } = require('./land-stranded-refs.js');
+  const now = Date.parse('2026-10-26T12:30:00Z');
+  const latestRun = { id: 1, head_sha: 'aaa', status: 'completed', conclusion: 'cancelled', run_attempt: 2, updated_at: '2026-10-26T12:25:00Z', created_at: '2026-10-26T10:27:23Z' };
+  const jobs = [
+    { name: 'Checks', run_attempt: 1, conclusion: 'success' },
+    { name: 'Land', run_attempt: 1, conclusion: 'cancelled', started_at: '2026-10-26T10:47:52Z', steps: [{ conclusion: 'success' }, { conclusion: 'cancelled' }] },
+    { name: 'Land', run_attempt: 2, conclusion: 'success', started_at: '2026-10-26T12:03:03Z', steps: [] },
+  ];
+  const withStale = decideStrandedRef({ tip: 'aaa', latestRun, jobs: jobs.slice(0, 2), now });
+  const withBoth = decideStrandedRef({ tip: 'aaa', latestRun, jobs, now });
+  // the stale cancelled-mid-landing job alone escalates; with the newer attempt listed it must not
+  assert.equal(withStale.reason, 'land-cancelled-mid-flight');
+  assert.notEqual(withBoth.reason, 'land-cancelled-mid-flight');
+  assert.equal(withBoth.action, 'none');
+});
+
+test('BRO-6326: a refused re-run is skipped inside rerun() and never aborts or spends the sweep slot', () => {
+  const src = readFileSync(new URL('../land-retry-cancelled.js', import.meta.url), 'utf8');
+  assert.match(src, /isRerunRefused\(err\)/);
+  assert.match(src, /return 'refused'/);
+  assert.match(src, /if \(outcome === 'refused'\) continue;/);
+  // any other rerun failure continues the sweep and fails the job at the end
+  assert.match(src, /process\.exitCode = 1;\s*continue;/);
+  // a refused targeted retry (--run=) goes red again instead of exiting 0 silently
+  assert.match(src, /rerun\(runId, run\.run_attempt\) === 'refused'\) process\.exitCode = 1/);
 });

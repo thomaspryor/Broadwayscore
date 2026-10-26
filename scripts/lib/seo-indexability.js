@@ -153,13 +153,13 @@ function isThinClosedShow(s, enabled = thinRulesEnabled()) {
 }
 
 /**
- * Critic with a single review (or none) and no search traffic.
- * @param {{reviewCount?: number, hasSearchLanding?: boolean}} c
+ * Critic with a single review (or none) and no search traffic (PostHog landings or GSC impressions).
+ * @param {{reviewCount?: number, hasSearchLanding?: boolean, hasGscImpressions?: boolean}} c
  */
 function isThinCritic(c, enabled = thinRulesEnabled()) {
   if (!enabled) return false;
   if (!c) return true;
-  if (c.hasSearchLanding) return false;
+  if (c.hasSearchLanding || c.hasGscImpressions) return false;
   return (c.reviewCount || 0) <= 1;
 }
 

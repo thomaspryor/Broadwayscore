@@ -159,7 +159,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -2072,6 +2072,25 @@ test('WAKELESS: waiting on the owner needs no wake; bypass and kill switch', ski
   assertAllowed(runHook(t, STALE, { WAKELESS_GATE_DISABLE: '1' }), 'kill switch');
   assertAllowed(runHook(t, STALE.replace('KEEP OPEN', 'NO-VERIFY: container restarting\n\nKEEP OPEN'), WK_ON), 'bypass');
   assert.doesNotMatch(runHook(t, 'Done and landed.\n\nSAFE TO ARCHIVE', WK_ON).stderr, /nothing will wake it/i, 'SAFE is not this gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─── Child-wait gate (CHILDWAIT, BRO-6264) ───────────────────────────────────
+const CW_ON = { CHILDWAIT_GATE_DISABLE: '0' };
+const CW_CHILD = { userText: 'BRO-6154: fix probe\nBUDGET: 6h\n' };
+const CW_CLOSE = 'The probe workflow was started.\n\nStill running: the test run is in progress.\n\nYou need to: nothing.\n\nKEEP OPEN — the test run is in progress; once it finishes I extend the fix.';
+const CW_DISPATCH = toolUse('Bash', { command: 'gh workflow run we-historical-tr-probe.yml' });
+function assertChildWait(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /child worker session/i, `expected the CHILDWAIT message, got: ${r.stderr.slice(0, 400)}`);
+}
+test('CHILDWAIT: BRO-6154 replay — child fires a run after an old background wait, ends KEEP OPEN → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('childwait');
+  assertChildWait(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH], CW_CHILD), CW_CLOSE, CW_ON), 'stale bg wait before dispatch');
+  assertAllowed(runHook(writeTranscript(dir, [CW_DISPATCH, BG_WAIT], CW_CHILD), CW_CLOSE, CW_ON), 'bg poll armed after the dispatch');
+  assertAllowed(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH]), CW_CLOSE, CW_ON), 'not a child (human session)');
+  assertAllowed(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH], CW_CHILD), CW_CLOSE, { CHILDWAIT_GATE_DISABLE: '1' }), 'kill switch');
+  assertAllowed(runHook(writeTranscript(dir, [BG_WAIT, CW_DISPATCH], CW_CHILD), 'NO-VERIFY: x\n\n' + CW_CLOSE, CW_ON), 'bypass');
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

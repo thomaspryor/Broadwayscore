@@ -7,6 +7,9 @@ import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const {
+  budgetMinutesFrom,
+  CHECKOUT_ESTIMATE_SEC,
+  computeOtherStepsBudgetSec,
   buildMixedBundleAnnotations,
   computeBackoffSum,
   parseWorkflow,
@@ -28,6 +31,89 @@ const {
   MIN_TIMED_OUT_ATTEMPT_SEC,
   MIN_FUNDABLE_ATTEMPTS,
 } = require('./audit-push-retry-budgets.js');
+
+const budgetWorkflow = (steps) => `jobs:
+  audit:
+    timeout-minutes: 30
+    steps:
+${steps}
+      - name: Persist
+        run: bash scripts/lib/push-with-retry.sh
+`;
+
+test('BRO-2714: a script time budget lowers both reported margins', () => {
+  const [before] = auditWorkflowText(budgetWorkflow(''), 'budget.yml');
+  const [after] = auditWorkflowText(budgetWorkflow(`      - run: node audit.js --time-budget-min=9`), 'budget.yml');
+  assert.equal(after.otherStepsBudgetSec, 540);
+  assert.equal(before.marginSec - after.marginSec, 540);
+  assert.equal(before.marginWithResidualSec - after.marginWithResidualSec, 540);
+});
+
+test('BRO-2714: flag reader supports decimals and the scheduled env default, ignoring comment lines', () => {
+  assert.equal(budgetMinutesFrom('node audit.js --time-budget-min=2.5'), 2.5);
+  assert.equal(budgetMinutesFrom('# --time-budget-min=99\nnode audit.js'), null);
+  assert.equal(budgetMinutesFrom('node audit.js --time-budget-min=$BUDGET_MIN', "BUDGET_MIN: ${{ github.event.inputs.time_budget_min || '25' }}"), 25);
+  assert.equal(budgetMinutesFrom('node audit.js --time-budget-min=${BUDGET_MIN}', "BUDGET_MIN: ${{ github.event.inputs.time_budget_min || '2.5' }}"), 2.5);
+  assert.equal(budgetMinutesFrom('node audit.js --time-budget-min=$UNKNOWN'), null);
+});
+
+test('BRO-2714: Checkout cost follows the action, counts each checkout and respects an explicit cap', () => {
+  const [r] = auditWorkflowText(budgetWorkflow(`      - uses: actions/checkout@v5
+      - name: Another repository
+        uses: actions/checkout@abcdef
+      - uses: actions/checkout@v5
+        timeout-minutes: 2
+      - name: Checkout is only a name
+        run: echo ok`), 'budget.yml');
+  assert.equal(CHECKOUT_ESTIMATE_SEC, 569);
+  assert.equal(r.otherStepsBudgetSec, 2 * CHECKOUT_ESTIMATE_SEC + 120);
+});
+
+test('BRO-2714: explicit cap wins, while an uncapped script and sibling push add once each', () => {
+  const steps = parseWorkflow(budgetWorkflow(`      - name: Bounded
+        timeout-minutes: 3
+        run: |
+          node audit.js --time-budget-min=9
+          bash scripts/lib/push-with-retry.sh
+      - name: Unbounded
+        run: |
+          node audit.js --time-budget-min=2
+          bash scripts/lib/push-with-retry.sh`)).jobs[0].steps;
+  const calls = steps.map(step => ({ step, stepBudgetSec: 240, stepBudgetWithResidualSec: 300 }));
+  assert.equal(computeOtherStepsBudgetSec(steps, calls, calls[2]), 180 + 120 + 240);
+  assert.equal(computeOtherStepsBudgetSec(steps, calls, calls[2], 'stepBudgetWithResidualSec'), 180 + 120 + 300);
+});
+
+test('BRO-2714: estimates warn without newly arming the hard gate, and include a script before its own push', () => {
+  const text = budgetWorkflow(`      - uses: actions/checkout@v5`)
+    .replace('timeout-minutes: 30', 'timeout-minutes: 10')
+    .replace('run: bash scripts/lib/push-with-retry.sh', `run: |
+          node audit.js --time-budget-min=2
+          bash scripts/lib/push-with-retry.sh`);
+  const [r] = auditWorkflowText(text, 'budget.yml');
+  assert.equal(r.otherStepsBudgetSec, CHECKOUT_ESTIMATE_SEC + 120);
+  assert.equal(r.blockingOtherStepsBudgetSec, 0);
+  assert.ok(r.marginRatio < 0);
+  assert.ok(r.blockingMarginRatio > 0.15);
+  assert.ok(r.advisoryFlags.includes('job-timeout-margin-estimated-undersized'));
+  assert.ok(!r.flags.includes('job-timeout-margin-undersized'));
+});
+
+test('BRO-2714: real jobs include the same Checkout and script estimates as the bespoke budget ratchet', () => {
+  const root = new URL('../../.github/workflows/', import.meta.url);
+  const testText = readFileSync(new URL('test.yml', root), 'utf8');
+  const validation = auditWorkflowText(testText, 'test.yml').find(r => r.job === 'data-validation');
+  assert.ok(validation);
+  assert.ok(validation.otherStepsBudgetSec >= CHECKOUT_ESTIMATE_SEC);
+  assert.ok(validation.marginRatio < 0.73);
+  // BRO-2984 moved the persist step and Playbill sweep out of test.yml.
+  const sweepText = readFileSync(new URL('audit-provisional-venues.yml', root), 'utf8');
+  const sweep = parseWorkflow(sweepText).jobs.find(j => j.key === 'audit');
+  const script = sweep.steps.find(s => s.runText.includes('scripts/validate-show-venue.js'));
+  assert.equal(script.timeBudgetMinutes, 25);
+  const persist = auditWorkflowText(sweepText, 'audit-provisional-venues.yml').find(r => r.step.startsWith('Persist venue/date'));
+  assert.equal(persist.otherStepsBudgetSec, CHECKOUT_ESTIMATE_SEC + script.timeoutMinutes * 60);
+});
 
 // ── computeBackoffSum: N^2+4N, push-with-retry.sh's WAIT=3+i*2+jitter summed ──
 

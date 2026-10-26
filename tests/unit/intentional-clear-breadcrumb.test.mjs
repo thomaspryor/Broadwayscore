@@ -190,6 +190,12 @@ test('restore decision: intentional clear is NOT reverted; data-loss IS', () => 
 const MERGE_PATH_ONLY_BREADCRUMBS = new Set([
   'duplicateTextOf',
   'crossOutletPrimaryFile', 'crossOutletSimilarity', 'crossOutletMethod', 'crossOutletFlaggedAt',
+  // BRO-6302: the ensemble rejection family stays unprotected on purpose (flag-combined-reviews.js
+  // null-assigns it, see the rescoreCompletedAt note below). The Theatre Record lift
+  // (mergeTheatreRecordIntoExisting) clears it, and only safeWriteReview's merge-from-disk
+  // loop would copy it back, so that loop honors the fullTextTrimmed breadcrumb.
+  'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
+  'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction',
 ]);
 
 test('every CLEAR_BREADCRUMBS key is reachable by a loop that consults it', () => {
@@ -743,6 +749,11 @@ const READ_FIELD_RE = /\bd\.([A-Za-z_$][A-Za-z0-9_$]*)\b/g;
 // down: those are protected-field KEYS that are unprotected on purpose; this is
 // authoriser READS that are unprotected on purpose).
 const READ_UNPROTECTED_ALLOWLIST = new Map([
+  ['fullTextTrimmed',
+    'BRO-6302: the Theatre Record lift breadcrumb is stamped by mergeTheatreRecordIntoExisting in ' +
+    'the same working tree the write and the push-restore read, and is compared by its own `at` ' +
+    'against the committed copy, so a dropped value only makes the lift look stale (rejection kept). ' +
+    'Protecting it would resurrect a trimmed text length on the BRO-5141 header-bleed trims.'],
   ['duplicateClearReason',
     'must stay nullable — review-write-guard nulls it when a sibling becomes a ' +
     'live duplicate again (see the CLEAR_BREADCRUMBS header comment above). ' +

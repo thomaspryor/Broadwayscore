@@ -1037,3 +1037,30 @@ test('message-dispatched-workspace.js types only through sendToWorkspace (no raw
   assert.doesNotMatch(src, /cmux\(\[\s*'send(-key)?'/);
   assert.match(src, /cmuxws\.sendToWorkspace\(resolved\.ref, cmuxws\.flattenToSingleLine\(message\), \{ expectedTitle: resolved\.title \}\)/);
 });
+
+// ── BRO-3000: resolveLiveWorkspaces keeps "cmux down" distinct from "cmux empty"
+const { resolveLiveWorkspaces } = require('./cmux-workspaces.js');
+test('resolveLiveWorkspaces: success returns the list with unavailable=null', () => {
+  const r = resolveLiveWorkspaces(() => [{ ref: 'workspace:1', title: 'a' }]);
+  assert.deepEqual(r.workspaces, [{ ref: 'workspace:1', title: 'a' }]);
+  assert.equal(r.unavailable, null);
+  assert.equal(r.error, null);
+});
+test('resolveLiveWorkspaces: a genuinely empty listing is NOT unavailable', () => {
+  assert.deepEqual(resolveLiveWorkspaces(() => []), { workspaces: [], unavailable: null, error: null });
+  assert.deepEqual(resolveLiveWorkspaces(() => null).workspaces, []);
+});
+test('resolveLiveWorkspaces: a throwing listing degrades to [] but sets unavailable and keeps the error', () => {
+  const boom = new Error('cmux socket busy');
+  const r = resolveLiveWorkspaces(() => { throw boom; });
+  assert.deepEqual(r.workspaces, []);
+  assert.ok(r.unavailable, 'unavailable must be a truthy classification');
+  assert.equal(r.error, boom);
+});
+test('call sites use resolveLiveWorkspaces, not a hand-rolled listWorkspaces try/catch', () => {
+  const fs = require('fs');
+  for (const f of ['bsc-reconcile.js', 'notion-tasks-sync.js', 'audit-orphan-inprogress.js', 'dispatch-watchdog.js']) {
+    const src = fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
+    assert.match(src, /resolveLiveWorkspaces\(/, `${f} must use the shared helper`);
+  }
+});

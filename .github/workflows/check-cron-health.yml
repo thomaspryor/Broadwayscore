@@ -45,6 +45,8 @@ jobs:
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Weekly A/B Monitors"
             "check-flag-parity.yml|184|Check Flag Parity"
+            # BRO-6336: drains commercial pending-review entries daily; if it stops, the queue piles up again.
+            "commercial-pending-daily.yml|54|Commercial Pending Review"
             # BRO-4373: the dead-Mac detector. If IT silently stops, the next Mac outage is invisible again.
             "check-morning-digest-sent.yml|36|Check Morning Digest Sent"
             # Sunday 06:00 UTC weekly offsite backup. CRITICAL, not digest-only: this is
@@ -109,6 +111,9 @@ jobs:
             # invisible again — the exact failure mode it was built to fix (S1-T4,
             # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
             "commercial-pending-review-notify.yml|36|Commercial Pending Review Notify"
+            # BRO-6219: feeds the iOS "Closing date announced" alert. Daily 13:20 UTC;
+            # if it dies, no closing alert goes out. 36h = daily cadence + 12h cushion.
+            "detect-show-events.yml|36|Detect Show Events"
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
             # BRO-4601: tour Now/Next lines and Tour Schedule cards go stale if this dies.
             "fetch-tour-schedules.yml|36|Fetch Tour Schedules"
@@ -242,6 +247,22 @@ jobs:
             # Same throttled-hourly band as audit-aggregator-gap (BRO-3867: real gap p95 8.0h, max 12.1h). Mirrored in
             # TIGHT_BY_DESIGN (scripts/audit-cron-health-coverage.js); do not tighten back.
             "codex-lane-health.yml|12|Codex Lane Health"
+            # BRO-6244: ships owner-approved UI changes (cron 11,31,51). GitHub dropped its schedule
+            # between 2026-10-25 and 01:20Z (an Approve sat 90 min), so cron-redispatch replaces a
+            # missing run after 0.75h (input + redispatch-after-hours in the workflow). 13h = 1/3h gap
+            # cushion + 12h; a run with no cards exits 0, so a success always means the lander ran.
+            "visual-approval-land.yml|13|Visual Approval Land"
+            # BRO-6351: one email per owner decision (cron 7,27,47). GitHub ran it 4 times in 17h on
+            # 2026-10-26 and 5 decisions waited hours; cron-redispatch replaces a missing run after 0.75h
+            # (input + redispatch-after-hours in the workflow; a redispatch is the tick, never the roundup).
+            # 13h = 1/3h gap + 12h cushion; no TIGHT_BY_DESIGN entry needed.
+            "owner-decision-emails.yml|13|Owner Decision Emails"
+            # BRO-6242: posts Critic Score cards (cron :23). GitHub ran the hourly schedule twice in 14h on
+            # 2026-10-26 and a morning-after post slipped, so cron-redispatch replaces a missing run after 1h
+            # (input + redispatch-after-hours in the workflow). 13h = 1h gap + 12h cushion. A run with nothing
+            # due exits 0; a run fails on a Buffer-side problem (disconnected channel, unsent post), which its
+            # own notify-failure already reports, so staleness here means the job itself is not running.
+            "social-autopost.yml|13|Social Autopost"
             # Same-night Express retry dispatcher (card #1889); scheduled hourly at :50.
             # A dead cron here means a queued
             # same-night retry never dispatches — the exact silent-miss this

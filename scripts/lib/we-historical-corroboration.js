@@ -30,9 +30,10 @@ const { isDateInSeason } = require('./we-seasons');
 const DEFAULT_DAY_TOLERANCE = 14;
 
 // discoverySource values promote-historical-we.js writes: WOS-listing-led
-// rows, and review-led rows dated from Theatre Record (BRO-5031). Revert and
+// rows, review-led rows dated from Theatre Record (BRO-5031), and rows dated
+// from archived Official London Theatre listings (BRO-6343). Revert and
 // the season audit must cover both.
-const WE_HISTORICAL_DISCOVERY_SOURCES = new Set(['we-historical:wos', 'we-historical:tr']);
+const WE_HISTORICAL_DISCOVERY_SOURCES = new Set(['we-historical:wos', 'we-historical:tr', 'we-historical:olt']);
 const MIN_RUN_DAYS = 14;
 
 // WOS genre slugs that are not plays or musicals. Opera/dance at the

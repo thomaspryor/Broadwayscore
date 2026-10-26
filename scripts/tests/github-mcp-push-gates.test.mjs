@@ -164,6 +164,22 @@ test('the stub seam is ignored unless BSC_HOOK_TEST=1', () => {
   assert.equal(r.seen, null);
 });
 
+test('BRO-6244: writes to visual-hold/* and visual-evidence/* skip the gate; the regex matches the Bash hook\'s _HOLD_RE branch part', () => {
+  for (const branch of ['visual-hold/bro-7', 'visual-evidence/bro-7']) {
+    const r = run(ui({ branch }), { env: { STUB_RC: '2' } });
+    assert.equal(r.status, 0, branch);
+    assert.equal(r.seen, null, `${branch}: the gate must not even run`);
+  }
+  for (const branch of ['heads/visual-hold/bro-7', 'refs/tags/visual-hold/bro-7']) {
+    assert.notEqual(run(ui({ branch }), { env: { STUB_RC: '2' } }).seen, null, `${branch}: only refs/heads/ is stripped`);
+  }
+  assert.equal(run(ui({ branch: 'refs/heads/visual-hold/bro-7' }), { env: { STUB_RC: '2' } }).seen, null, 'full ref of a hold branch skips');
+  const lookalike = run(ui({ branch: 'visual-holdx/bro-7' }), { env: { STUB_RC: '2' } });
+  assert.notEqual(lookalike.seen, null, 'a lookalike branch still reaches the gate');
+  const re = (f) => /visual-\(hold\|evidence\)\/\[A-Za-z0-9\._-\]\+/.exec(fs.readFileSync(f, 'utf8'));
+  assert.ok(re(ADAPTER) && re(path.join(HOOKS, 'pre-push-visual-gate.sh')));
+});
+
 test('UI_PATTERN is identical to pre-push-visual-gate.sh\'s (drift guard)', () => {
   const pat = (f) => fs.readFileSync(f, 'utf8').match(/^UI_PATTERN='([^']+)'/m)?.[1];
   assert.ok(pat(path.join(HOOKS, 'pre-push-visual-gate.sh')));

@@ -35,7 +35,6 @@ const { BSC_DAILY_TITLE_RE } = require('./lib/task-store-archive.js');
 const { readLease, leaseLooksLive } = require('./lib/bsc-runner.js');
 const { findLiveWorkspaceForTask } = require('./lib/dispatch-guards.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
-const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 // Reuse task-reclaim.js's constants/helpers rather than re-declaring copies —
 // same idle bar (48h) and same "never make an Archived/Cancelled card
 // dispatchable again" rule as the archive-trapped case (card #1402) this
@@ -1070,10 +1069,12 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
   // exact wiring is testable without a live cmux process.
   let workspaces = [];
   let cmuxUnavailable = null;
-  try {
-    workspaces = listWorkspacesFn() || [];
-  } catch (e) {
-    cmuxUnavailable = classifyCmuxError(e);
+  {
+    const r = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
+    workspaces = r.workspaces;
+    cmuxUnavailable = r.unavailable;
+  }
+  if (cmuxUnavailable) {
     console.error(`[sync] reconcile: cmux listing failed (${cmuxUnavailable}) — liveness guard fails closed this run (no in_progress task will be downgraded on a workspace check)`);
   }
   const leaseAliveOf = (taskId) => {
@@ -1235,11 +1236,12 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
         // and this lock, across up to `limit` sequential Notion GETs — must
         // fail closed the same way, not silently trust the stale snapshot.
         let freshCmuxUnavailable = cmuxUnavailable;
-        try {
-          freshWorkspaces = listWorkspacesFn() || [];
-          freshCmuxUnavailable = null;
-        } catch (e) {
-          freshCmuxUnavailable = classifyCmuxError(e);
+        {
+          const r = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
+          if (!r.unavailable) freshWorkspaces = r.workspaces;
+          freshCmuxUnavailable = r.unavailable;
+        }
+        if (freshCmuxUnavailable) {
           console.error(`[sync] reconcile: in-lock cmux re-check failed (${freshCmuxUnavailable}) for #${entry.taskId} — skipping this downgrade`);
         }
         const recheck = planLivenessDowngrade(freshTask, card, { leaseAliveOf, liveWorkspaceOf: (t) => liveWorkspaceOf(t, freshWorkspaces, freshCmuxUnavailable) });

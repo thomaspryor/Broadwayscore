@@ -52,6 +52,8 @@ const GA_ROW_LIMIT = 250000;
 // Treat a full page as truncation.
 const PH_ROW_LIMIT = 100000;
 const SEARCH_QUALITY_DAYS = 42;
+const PH_CHUNK_DAYS = 28;
+const PH_BUDGET_MS = 12 * 60000;
 
 // ---------- pure helpers (exported for tests) ----------
 
@@ -252,14 +254,37 @@ function isTransientPostHogError(e) {
   return /time-?out|ECONNRESET|fetch failed/i.test(msg);
 }
 
+/** Split [startDate, endDate] (inclusive YYYY-MM-DD) into consecutive windows of at most `days` days. */
+function dateChunks(startDate, endDate, days) {
+  const out = [];
+  const DAY = 86400000;
+  for (let t = Date.parse(startDate); t <= Date.parse(endDate); t += days * DAY) {
+    const end = Math.min(t + (days - 1) * DAY, Date.parse(endDate));
+    out.push({ startDate: new Date(t).toISOString().slice(0, 10), endDate: new Date(end).toISOString().slice(0, 10) });
+  }
+  return out;
+}
+
 /**
  * Sessions per day keyed by `expr`, attributed by session ENTRY properties and
  * bucketed by session start. `extraWhere` is appended after the Real Users lens.
+ * Runs one query per PH_CHUNK_DAYS window, each retried on its own: the full
+ * 13-week scan hit PostHog's max execution time (504) on 3 queries in run
+ * 40357114005 once traffic stepped up (BRO-6358). A row is kept only by the
+ * chunk its date falls in, so a session crossing a chunk boundary counts once.
  */
-async function phDaily(expr, { startDate, endDate }, extraWhere = '') {
+async function phDaily(expr, range, extraWhere = '', { query = phQuery, retry = withRetry } = {}) {
+  const out = [];
+  for (const chunk of dateChunks(range.startDate, range.endDate, PH_CHUNK_DAYS)) {
+    out.push(...await retry(() => phDailyWindow(expr, chunk, extraWhere, query)));
+  }
+  return out;
+}
+
+async function phDailyWindow(expr, { startDate, endDate }, extraWhere, query) {
   // Explicit LIMIT — HogQL silently caps GROUP BY results at ~100 rows
   // (memory/feedback_posthog_hogql_default_row_limit.md).
-  const rows = await phQuery(`
+  const rows = await query(`
     SELECT toDate(session.$start_timestamp) AS d, ${expr} AS k,
            count(DISTINCT $session_id) AS sessions, count(DISTINCT person_id) AS users
     FROM events
@@ -320,9 +345,13 @@ async function fetchPostHog(range) {
   const out = { errors: {} };
   // Sequential on purpose: each query joins sessions + persons over the whole
   // window; six in parallel is how HogQL query timeouts happen.
+  // Chunking turned 9 queries into ~30; cap the whole pass so slow chunks
+  // cannot eat the 30-min job (refreshHistory still needs its own 12 min).
+  const deadline = Date.now() + PH_BUDGET_MS;
   for (const [name, [expr, where, days]] of Object.entries(specs)) {
+    if (Date.now() > deadline) { out[name] = []; out.errors[name] = `skipped: PostHog time budget (${PH_BUDGET_MS / 60000} min) used up`; continue; }
     const r = days ? { ...range, startDate: weekStart(new Date(Date.parse(range.endDate) - days * 86400000).toISOString().slice(0, 10)) } : range;
-    try { out[name] = await withRetry(() => phDaily(expr, r, where)); }
+    try { out[name] = await phDaily(expr, r, where); }
     catch (e) { out[name] = []; out.errors[name] = e.message; }
   }
   if (Object.keys(out.errors).length === Object.keys(specs).length) {
@@ -751,7 +780,7 @@ async function main() {
   }
 }
 
-module.exports = { phDaily, fetchPostHog, weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, trendsFor, newSources, indexReferralLanding, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
+module.exports = { phDaily, dateChunks, fetchPostHog, weekStart, median, bucketWeekly, detectSpikes, allWeeks, recentChange, trendsFor, newSources, indexReferralLanding, buildReport, mdCell, normalizeCampaign, withRetry, isTransientPostHogError };
 
 if (require.main === module) {
   main().catch((e) => { console.error(e); process.exit(1); });

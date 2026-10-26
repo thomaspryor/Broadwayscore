@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4435",
   "planId": "8d4c64b2-df50-4225-bed6-a10158663e3d",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-09-30T17:15:00.000Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,7 @@
         "description": "NYT RSS dc:creator for https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneath-the-hate-and-self-hate.html is Helen Shaw"
       }
     ]
-  }
+  },
+  "supersededReason": "Superseded in BRO-5935: degenerates-off-broadway-2026/nytimes--unknown.json already has criticName Helen Shaw. The requested outcome is present; the oldValue Unknown no longer matches.",
+  "supersededAt": "2026-10-26T13:01:47.852Z"
 }

@@ -18,6 +18,10 @@
 
 const crypto = require('crypto');
 const { dataFixesEnabled, canDispatchWorkflows } = require('./codex-data-fixes.js');
+// BRO-6303: the summary format and parser are what the trust ladder grades Codex on, so they live in a
+// file Codex can never land an edit to (codex-trust-ladder.js isProtectedPath).
+const { LANES, summaryHeading, parseSummaryHeading, laneOfSummary, runnerSummaryFacts, runnerSummaryText } = require('./codex-runner-grading.js');
+const TL = require('./codex-trust-ladder.js');
 
 const AUTH_MARKER = '<!-- codex-auth-v1 -->';
 // Opens every comment the runner posts when Codex could not finish a card, so
@@ -42,6 +46,12 @@ const STRUCTURAL_MEMORY_MS = 60 * 24 * 3600_000;
 // path settles the landing (this run, reconcileLanded, recoverOrphans) returns the card
 // to Todo instead of closing it.
 const PARTIAL_MARKER = '<!-- codex-runner-partial -->';
+// BRO-6260: one more Codex try for a card Codex bounced. A retry note lifts the bounce memory for every note
+// before it (a bounce after it counts as usual), so a card gets one retry per note; scripts/codex-retry-backfill.js
+// posts them once. And a plain bounce nobody touched for UNCLAIMED_RETRY_MS returns the card to Codex, once per
+// STRUCTURAL_MEMORY_MS: the Claude lane did not take it, so leaving it banned only leaves it undone.
+const RETRY_MARKER = '<!-- codex-runner-retry -->';
+const UNCLAIMED_RETRY_MS = 7 * 24 * 3600_000;
 const HKDF_SALT = 'bsc-codex-runner-auth-v1';
 
 /** Bound card runs to their host; PR landings keep an unlimited default. */
@@ -474,7 +484,7 @@ function classifyBounce({ envBlocked = null, blocked = null, remaining = [], rep
   const text = [envBlocked, blocked, ...(Array.isArray(remaining) ? remaining : []), String(report || '').slice(0, 700)]
     .filter(Boolean).join('\n');
   // A pre-review block is Codex's own slip unless it touched workflows (a symlink or token material is not structural).
-  if (/\.github\/workflows/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
+  if (/\.github\/workflows|trust ladder/.test(String(blocked || '')) || bounceSays(BOUNCE_FORBIDDEN_RE, text)) return 'forbidden-files';
   if (BOUNCE_FAILING_RE.test(text)) return 'genuine-failure';
   if (bounceSays(BOUNCE_CRED_RE, text, { needVerb: true })) return 'missing-credential';
   if (bounceSays(BOUNCE_MAC_RE, text)) return 'mac-or-private';
@@ -490,22 +500,64 @@ function bounceClassOf(body) {
   return m ? m[1] : null;
 }
 
+/** The comments after the newest retry note (all of them when there is none). */
+function sinceRetry(comments) {
+  const at = comments.reduce((m, c) => (String(c.body || '').startsWith(RETRY_MARKER) ? Math.max(m, Date.parse(c.createdAt)) : m), -Infinity);
+  return comments.filter((c) => Date.parse(c.createdAt) > at);
+}
+/** The retry to run: the newest comment is a retry note (no Codex run has taken the card since). */
+function parseCodexRetry(comments) {
+  const list = (Array.isArray(comments) ? comments : (comments && comments.nodes) || [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  return list[0] && String(list[0].body || '').startsWith(RETRY_MARKER) ? { findings: String(list[0].body).split('\n').slice(1).join('\n').trim() } : null;
+}
+/** The retry note: the reviewer's findings from the bounce note, for Codex to address this time. */
+function retryBody({ findings = '', reason = '' } = {}) {
+  return [
+    RETRY_MARKER,
+    '## Codex runner: one more Codex try',
+    '',
+    `${reason || 'Codex bounced this card and no Claude worker has taken it.'} The next Codex run takes it first. Address the findings from the earlier attempt below; if a finding is wrong, show the evidence in your report.`,
+    '',
+    findings ? String(findings).slice(0, 6000) : '(No findings were recorded; see the earlier Codex runner note.)',
+  ].join('\n');
+}
+
 /**
  * True when Codex failed this card within the last 14 days (a 'landed part' note counts for only 3 days,
  * and two of them in 14 days ban it for the full 14), or the runner crashed on it twice
  * (a card that breaks the runner every time must not take a slot on every run).
+ * A retry note (BRO-6260) forgets the plain and partial bounces before it; structural holds and crash
+ * notes still count across it. A card's first plain bounce in 60 days that nobody answered for 7 days
+ * stops counting (no Claude worker took it); a second one bans it for the usual 14 days.
  */
 function codexBouncedRecently(comments, nowMs) {
-  const all = Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : [];
+  const raw = Array.isArray(comments) ? comments.filter((c) => c && Number.isFinite(Date.parse(c.createdAt))) : [];
+  if (structuralBounceHolds(raw, nowMs)) return true;
+  const all = sinceRetry(raw);
   const recent = all.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS);
   const isPartial = (c) => String(c.body || '').startsWith(`${BOUNCED_MARKER}\n${PARTIAL_HEADING}`);
   const partials = recent.filter(isPartial);
-  if (structuralBounceHolds(all, nowMs)) return true;
+  const full = all.filter((c) => isCodexBounce(c.body) && !isPartial(c) && nowMs - Date.parse(c.createdAt) < STRUCTURAL_MEMORY_MS);
+  const newest = full.reduce((m, c) => (!m || Date.parse(c.createdAt) > Date.parse(m.createdAt) ? c : m), null);
+  const unclaimed = (c) => c === newest && full.length === 1 && nowMs - Date.parse(c.createdAt) >= UNCLAIMED_RETRY_MS
+    && !all.some((o) => Date.parse(o.createdAt) > Date.parse(c.createdAt));
   // A full disk is the machine's fault, so it never counts toward the card's two crashes (BRO-5384).
-  return recent.some((c) => isCodexBounce(c.body) && !isPartial(c))
+  return recent.some((c) => isCodexBounce(c.body) && !isPartial(c) && !unclaimed(c))
     || partials.length >= PARTIAL_MAX_PER_MEMORY
     || partials.some((c) => nowMs - Date.parse(c.createdAt) < PARTIAL_MEMORY_MS)
-    || recent.filter((c) => isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
+    || raw.filter((c) => nowMs - Date.parse(c.createdAt) < BOUNCE_MEMORY_MS && isCrashNote(c.body) && !DISK_FULL_RE.test(String(c.body))).length >= 2;
+}
+
+/**
+ * A person's word, not the Claude worker's own session report or an automatic note. Every comment on this
+ * board posts under the owner's account, so the body decides, never the author.
+ */
+function isPersonComment(body) {
+  const { isMachineComment } = require('./cloud-worker-pick.js');
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  return !(isMachineComment(body) || parseSessionReportStatus(body) != null || /^\W*(?:Outcome\b|Auto-filed\b|Session report\b|Checkpoint\b|#+ *(?:Progress|Board worker)\b)/i.test(String(body || '')));
 }
 
 /**
@@ -523,11 +575,7 @@ function structuralBounceHolds(comments, nowMs) {
   if (last < 0) return false;
   const after = sorted.slice(last + 1);
   if (after.some((c) => CODEX_OK_RE.test(String(c.body || '')))) return false;
-  // A person's word, not the Claude worker's own session report or an automatic note.
-  const { isMachineComment } = require('./cloud-worker-pick.js');
-  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
-  const isBot = (b) => isMachineComment(b) || parseSessionReportStatus(b) != null || /^\W*(?:Outcome\b|Auto-filed\b|Session report\b)/i.test(String(b || ''));
-  return !after.some((c) => !isBot(c.body));
+  return !after.some((c) => isPersonComment(c.body));
 }
 
 /**
@@ -606,15 +654,33 @@ function stripHookNoise(text) {
  * most of them Mac-only, credential- or credit-bound, workflow wiring the runner never lands,
  * private-data or live-site work, or multi-phase). -> { skip: reason|null, score } where a
  * higher score goes first. Mac-only is a skip; the rest only lowers the score, and a score at
- * or under CODEX_MIN_SCORE is a skip ('too-broad').
+ * or under minScore is a skip ('too-broad').
+ *
+ * BRO-6303: what Codex may take comes from the trust ladder (codex-trust-ladder.js): minScore (-6,
+ * or -9 once the larger-cards rung is earned), the cloud lane's data route and review-texts. A
+ * caller scoring many cards reads codexLadderAccess() once and passes `ladder`. In shadow mode, or
+ * with no ladder, access is the pre-ladder baseline, so the result is what it was before.
  */
-const CODEX_MIN_SCORE = -6;
+const CODEX_MIN_SCORE = TL.BASELINE_MIN_SCORE; // the pre-ladder floor; the live one is ladder.minScore
+const codexLadderAccess = (opts) => TL.ladderAccess(opts);
+const CODEX_REVIEW_TEXTS_RE = /review-texts\b/i;
+/**
+ * Whether daily-runner.js provideData links the private review-texts clone into a worktree. An
+ * explicit reviewTexts (false for the land-check batches) wins; the default is the ladder's
+ * review-texts rung, and a locked rung tells Codex why it is missing.
+ * -> { link, note: prompt text when not linked because of the ladder, else null }
+ */
+function reviewTextsPlan({ ladder, reviewTexts } = {}) {
+  const locked = !!(ladder && ladder.reviewTextsLocked);
+  const link = reviewTexts === undefined ? !locked : !!reviewTexts;
+  return { link, note: !link && locked && reviewTexts === undefined ? 'locked for Codex by the trust ladder. If the card needs it, say so in a REMAINING line.' : null };
+}
 const CODEX_MAC_RE = /\b(?:launchd|launchctl|LaunchAgents?|cmux|Keychain|Mac[- ]only|on the Mac|Mac launcher|~\/Library)\b/i;
 const CODEX_PENALTIES = [
   [/\.github\/workflows\/|\b(?:new|weekly|daily|nightly) (?:cron|workflow)\b|\bwire\b[^.\n]{0,60}\b(?:cron|workflow)\b/i, 4, 'workflow'],
   [/\bcredentials?\b|\bcredits\b|\bAPI key\b|\bsecrets?\b/i, 3, 'credentials'],
   [/\bbackfill\b|corpus[- ]wide|\bevery (?:show|review)\b|\blifetime sweep\b|\bre-?scrape\b/i, 3, 'bulk-data'],
-  [/\blive (?:site|page|pages|scrape|fetch)\b|\bprivate (?:data|repo)\b|review-texts\b|core-data\b/i, 3, 'private-or-live-data'],
+  [new RegExp(`\\blive (?:site|page|pages|scrape|fetch)\\b|\\bprivate (?:data|repo)\\b|${CODEX_REVIEW_TEXTS_RE.source}|core-data\\b`, 'i'), 3, 'private-or-live-data'],
   [/\bPhase \d\b|\bmulti-part\b|\bfollow-?ups?\b/i, 2, 'multi-phase'],
 ];
 // Work the runner cannot finish however small the card (BRO-5384: 12 of 24 cards rejected on
@@ -648,9 +714,20 @@ const CODEX_DATA_ROUTE_RE = /\b(?:pending-fixes|new-fix-plan|execute-approved-fi
 const CODEX_DIRECT_PRIVATE_RE = /\bbroadway-(?:review-texts|scorecard-data)\b/i;
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
-function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now(), canDispatch = canDispatchWorkflows() } = {}) {
+function codexCardFit({
+  title = '', description = '', verify = '', comments = [], nowMs = Date.now(), canDispatch = canDispatchWorkflows(),
+  ladder = codexLadderAccess(), minScore = ladder.minScore,
+  // The GHA lane stays outside the ladder for the data route: it can always dispatch the apply (BRO-6260).
+  dataRouteLocked = process.env.GITHUB_ACTIONS !== 'true' && !!ladder.cloudDataRouteLocked,
+  reviewTextsLocked = !!ladder.reviewTextsLocked,
+} = {}) {
   const text = `${title}\n${description}`;
   if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
+  // The runner refuses to land a change to a protected file (TL.isProtectedPath), so a card naming one never starts.
+  const prot = TL.PROTECTED_CARD_RE.exec(text);
+  if (prot) return { skip: 'protected-path', score: -Infinity, why: [`protected-path: ${prot[0]}`] };
+  // A locked rung is a capability, like data-route-gha-only below: CODEX-OK does not lift it.
+  if (reviewTextsLocked && CODEX_REVIEW_TEXTS_RE.test(text)) return { skip: 'review-texts-locked', score: -Infinity, why: ['review-texts-locked: the trust ladder has review-texts locked for Codex'] };
   const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
   // BRO-6175: a card that names the reviewed pending-fixes route can be done by the Codex lane, which writes
   // the plan and the runner applies it after the landing (codex-data-fixes.js). 'data-route' skips then fire
@@ -659,6 +736,7 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   // BRO-6194: the route's apply step is a workflow dispatch, which only the GHA lane is known to be able to make.
   // A runner that cannot dispatch never picks a route card (CODEX-OK does not lift this: it is a capability, not a judgment).
   if (viaRoute && !canDispatch) return { skip: 'data-route-gha-only', score: -Infinity, why: ['data-route-gha-only: the data-fix route needs a runner that can dispatch workflows'] };
+  if (viaRoute && dataRouteLocked) return { skip: 'data-route-locked', score: -Infinity, why: ['data-route-locked: the trust ladder has the cloud data route locked'] };
   for (const [name, re, flag] of ok ? [] : CODEX_HARD_SKIPS) {
     if (flag === 'data-route' && dataFixesEnabled()) {
       const direct = CODEX_DIRECT_PRIVATE_RE.exec(text);
@@ -686,7 +764,9 @@ function codexCardFit({ title = '', description = '', verify = '', comments = []
   if (items > 3) { score -= 2; why.push(`acceptance-items:${items}`); }
   // A fix round an earlier run could not fit goes first, so a SHIP-WITH-FIXES always gets it.
   if (parseSwfCarry(comments, nowMs)) { score += 10; why.push('swf-carry'); }
-  return { skip: score <= CODEX_MIN_SCORE ? 'too-broad' : null, score, why };
+  // A retry is a fresh attempt, so it never lifts a too-broad card over the line.
+  else if (score > minScore && parseCodexRetry(comments)) { score += 10; why.push('retry'); }
+  return { skip: score <= minScore ? 'too-broad' : null, score, why };
 }
 
 /**
@@ -743,12 +823,8 @@ function loginExpiryWhy({ authText, nowMs, runMs, marginMs = 30 * 60_000 }) {
  * Assumption: the CLI does not refresh earlier than margin (30 min) before expiry.
  */
 
-/**
- * Codex lanes (BRO-5730). Each lane owns its own slots, so the cloud routine (cloud) and the
- * GitHub runner (gha) run at the same time without sharing a slot's lock or worktrees.
- * MAX_SLOTS covers every lane: --lock-status reads all of their locks.
- */
-const LANES = { cloud: { base: 0, max: 3 }, gha: { base: 3, max: 2 } };
+// Codex lanes (BRO-5730): LANES lives in codex-runner-grading.js, since which lane posted a summary is graded.
+// MAX_SLOTS covers every lane: --lock-status reads all of their locks.
 const MAX_SLOTS = Math.max(...Object.values(LANES).map((l) => l.base + l.max));
 /** The slot numbers of a lane, or of every lane for 'all'; null for an unknown lane. */
 function laneSlotList(lane) {
@@ -868,9 +944,18 @@ function execBudgetMs({ untilMs, nowMs, capMs, landChecksMs = LAND_CHECKS_MS }) 
 }
 /** Time a card needs before the wrap-up so its review fits: verify (its 10-min timeout), a minimum exec, the land checks, the review. */
 const CARD_VERIFY_MS = 10 * 60_000;
-function cardStartMs(landChecksMs = LAND_CHECKS_MS) {
-  return CARD_VERIFY_MS + FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
+function cardStartMs(landChecksMs = LAND_CHECKS_MS, { laterCard = false, discountMs = LATER_CARD_DISCOUNT_MS } = {}) {
+  const full = CARD_VERIFY_MS + FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
+  if (!laterCard || !(discountMs > 0)) return full;
+  // Never below the unmeasured minimum (verify, minimum exec, default land checks, review): under
+  // it the review cannot fit and the card is handed back unjudged (BRO-5384).
+  const floor = CARD_VERIFY_MS + FIX_EXEC_MIN_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS;
+  return Math.max(floor, full - discountMs);
 }
+// The measured land checks (mutex wait included, clamped to 30 min) put the full gate at 85 min,
+// so a cloud slot that finished one card never had room for a second although 11 of 45 cards in
+// 2 days took under 40 min (BRO-6304). After a first card the gate drops by this much, floored above.
+const LATER_CARD_DISCOUNT_MS = Number(process.env.CODEX_LATER_CARD_DISCOUNT_MS ?? 20 * 60_000);
 
 /**
  * When the next fix round must finish (BRO-5384). A REJECT's round keeps to the card budget;
@@ -969,17 +1054,31 @@ function checkModel({ files = [], classify = () => ({ inScope: false }) } = {}) 
 }
 
 /**
+ * The skip the trust ladder adds over the pre-ladder baseline right now (BRO-6303), or null: the
+ * runner re-asks it before claiming, so a relock after the pick, or an --ids card, is held to the
+ * ladder too. Skips the baseline already makes are the picker's business, not this check's.
+ */
+function ladderSkip(card, { ladder = codexLadderAccess(), ...opts } = {}) {
+  const now = codexCardFit({ ...card, ...opts, ladder });
+  if (!now.skip) return null;
+  const base = codexCardFit({ ...card, ...opts, ladder, minScore: TL.BASELINE_MIN_SCORE, dataRouteLocked: false, reviewTextsLocked: false });
+  return base.skip ? null : now.skip;
+}
+
+/**
  * Codex first (BRO-5384, owner 2026-10-15: Codex carries the load, Claude is the fallback): while a
  * Codex runner is live, the Claude worker leaves a card to Codex when Codex would take it: fit
  * (codexCardFit), not bounced by Codex, not Urgent and not START-NOW (those go to whoever is free).
  */
-function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
+function leaveToCodex(issue, { nowMs, verify = '', startNow = false, ladder = codexLadderAccess() } = {}) {
   if (!issue || Number(issue.priority) === 1 || startNow) return false;
   const comments = (issue.comments && issue.comments.nodes) || [];
   if (codexBouncedRecently(comments, nowMs)) return false;
-  // Default canDispatch: the Claude worker is not a dispatch-capable Codex runner, so it keeps data-route cards
-  // itself rather than leaving them to a Codex lane that may be only the cloud one (BRO-6194).
-  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs }).skip;
+  // Every Codex lane can apply a data-fix plan now (GHA has actions: write; the cloud lane runs with
+  // CODEX_CAN_DISPATCH=1, BRO-6260), so data-route cards are left to Codex like any other fit card (BRO-6194 kept them).
+  // A locked cloud data route still leaves route cards here: the GHA lane, outside the ladder, takes them
+  // within hours (codex-runner.yml fires several times a day), so dataRouteLocked: false.
+  return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs, canDispatch: true, ladder, dataRouteLocked: false }).skip;
 }
 
 /**
@@ -1142,8 +1241,16 @@ function touchesSite(files, sitePaths) {
   return (files || []).some((f) => (sitePaths || []).some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p)));
 }
 
-function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs }) {
-  return verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed ? runEndMs : Math.min(cardDeadlineMs, runEndMs);
+/**
+ * The deadline of a fix round: the card budget, or the rest of the run for the first SHIP-WITH-FIXES round
+ * (BRO-5384) and for a REJECT round (BRO-6260: a REJECT gets one fix round, MAX_ATTEMPTS = 2, and capping it at the
+ * 60-min card budget banned 58% of bounced cards for 14 days on their first try, before that round ever ran).
+ * rejectRunEnd false (CODEX_REJECT_RUN_END=0) restores the card budget for REJECT.
+ */
+function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs, rejectRunEnd = true }) {
+  if (verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed) return runEndMs;
+  if (verdict === 'REJECT' && rejectRunEnd) return runEndMs;
+  return Math.min(cardDeadlineMs, runEndMs);
 }
 
 /**
@@ -1154,51 +1261,6 @@ function landWaitMinutes({ hardEndMs, wrapUpMs, nowMs }) {
   return Math.min(90, Math.floor((hardEndMs - wrapUpMs - nowMs) / 60_000));
 }
 
-/**
- * BRO-5287 acceptance over the runner's own "## Codex runner" summaries (BRO-4745 comments):
- * at least `minRuns` summaries, none whose "Stopped early" line names the lock, and at least one
- * card landed. -> { ok, runs, landed, problems[] }
- */
-/** The counts one "## Codex runner" summary body reports: { landed, crashed, stop }. */
-/**
- * The run summary heading (BRO-6139). Before it, a single-slot launch of EITHER lane posted no
- * "(slot N)" and readers took it for the cloud lane; now every summary names its slot and the
- * lane that launched it (a gha launch that fell back to slot 0 is still lane gha).
- */
-function summaryHeading({ date, worked, mins, slot = 0, lane = 'cloud' }) {
-  return `## Codex runner ${date}: ${worked} card(s) worked in ${mins} min (slot ${Number(slot) || 0}) (lane ${lane})`;
-}
-const SUMMARY_HEADING_RE = /^## Codex runner (\d{4}-\d{2}-\d{2}): (\d+) card\(s\) worked in (\d+) min/;
-/**
- * -> { date, worked, mins, slot, lane } or null (not a run summary). slot is null when the heading
- * has none; lane is null for a summary from before the lane marker (laneOfSummary decides those).
- */
-function parseSummaryHeading(body) {
-  const head = String(body || '').split('\n')[0];
-  const m = head.match(SUMMARY_HEADING_RE);
-  if (!m) return null;
-  const slot = head.match(/\(slot (\d+)\)/);
-  const lane = head.match(/\(lane (cloud|gha)\)/);
-  return { date: m[1], worked: Number(m[2]), mins: Number(m[3]), slot: slot ? Number(slot[1]) : null, lane: lane ? lane[1] : null };
-}
-/**
- * Which lane posted a summary. The marker when present; else slot 3+ is gha and an explicit slot
- * 0-2 is cloud (a gha fallback to slot 0 always ran one slot, so it had no slot). A legacy
- * slotless summary is gha only when a codex-runner.yml run covered its whole "worked in M min"
- * span (ghRuns [{ startMs, endMs }]); a cloud run that merely ended near a 3-min gha stand-down
- * must not count. Without ghRuns it stays cloud, as before. -> 'cloud' | 'gha' | null
- */
-function laneOfSummary(body, createdAtMs, ghRuns = null) {
-  const h = parseSummaryHeading(body);
-  if (!h) return null;
-  if (h.lane) return h.lane;
-  if (h.slot !== null) return h.slot >= LANES.gha.base ? 'gha' : 'cloud';
-  const startedMs = createdAtMs - h.mins * 60_000;
-  const SLACK = 5 * 60_000;
-  const inGha = Array.isArray(ghRuns) && ghRuns.some((r) => Number.isFinite(r.startMs) && r.startMs <= startedMs + SLACK
-    && createdAtMs <= (Number.isFinite(r.endMs) ? r.endMs : Infinity) + SLACK);
-  return inGha ? 'gha' : 'cloud';
-}
 
 /**
  * A runner that exits without a summary says why (BRO-6139 stage 2): one comment on the runner
@@ -1337,21 +1399,6 @@ function abReport(bodies, { sinceMs = 0, createdAtMs = [], lane = null } = {}) {
   return out;
 }
 
-function runnerSummaryFacts(body) {
-  const list = (label) => {
-    const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
-    return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
-  };
-  const landedIds = [...list('Landed and Done'), ...list('Landed part, back to Todo with what is left')];
-  return {
-    landed: landedIds.length,
-    landedIds, // BRO-5671: the ids, for cost per landed card
-    hasCheckLine: /^- Claude check: \d+ review\(s\), \$[\d.]+/m.test(String(body || '')),
-    crashed: list('Runner error mid-card \\(back to Todo\\)').length,
-    stop: (String(body || '').match(/^- Stopped early: (.*)$/m) || [])[1] || '',
-    checkUsd: Number((String(body || '').match(/^- Claude check: \d+ review\(s\), \$([\d.]+)/m) || [])[1]) || 0,
-  };
-}
 
 /**
  * BRO-5384 acceptance: cards per firing and landed share from runner summaries. Each slot posts
@@ -1467,6 +1514,68 @@ function staleTmpEntries(entries, nowMs) {
   }).map((e) => e.name);
 }
 
+// BRO-6304: .claude/worktrees/<name> that a Claude worker lane left behind (a skipped cleanup step or a
+// dead session, ~1.3 GB each). The runner's own slot worktrees are kept on purpose.
+const CODEX_SLOT_WORKTREE = /^codex-runner(-base)?(-\d+)?$/;
+const CLAUDE_WORKTREE_IDLE_MS = 3 * 3600_000;
+/**
+ * Names safe to remove. entries: [{ name, newestMs, liveCwd, dirty, unpushed, locked }] where
+ * newestMs is the newest mtime of the tree's files AND its git metadata (HEAD, index, logs/HEAD),
+ * liveCwd a process has its cwd inside, dirty uncommitted or untracked files, unpushed commits
+ * beyond origin/main, locked git's own lock. An unknown field (null/undefined) keeps the tree.
+ */
+function staleClaudeWorktrees(entries, nowMs, idleMs = CLAUDE_WORKTREE_IDLE_MS) {
+  return (entries || []).filter((e) => e && !CODEX_SLOT_WORKTREE.test(String(e.name))
+    && e.liveCwd === false && e.dirty === false && e.unpushed === false && e.locked === false
+    && Number.isFinite(e.newestMs) && nowMs - e.newestMs > idleMs).map((e) => e.name);
+}
+
+/** Paths of `locked` worktrees in `git worktree list --porcelain` text. */
+function lockedWorktreePaths(porcelain) {
+  return new Set(String(porcelain || '').split('\n\n').filter((b) => /^locked/m.test(b))
+    .map((b) => (b.match(/^worktree (.*)$/m) || [])[1]).filter(Boolean));
+}
+/** True when any process cwd is `dir` or inside it. */
+function cwdInside(cwds, dir) { return (cwds || []).some((c) => c === dir || String(c).startsWith(`${dir}/`)); }
+/**
+ * Newest mtime of files under `dir`, skipping .git, node_modules, .next, data and public (copies and
+ * images that are 100k+ files and say nothing about a worker's activity). Stops once one is newer
+ * than `cutoffMs`. An unfinished walk (budget spent) returns `nowMs`, which keeps the tree.
+ */
+function newestMtimeMs(dir, cutoffMs, { maxFiles = 250_000, nowMs = Date.now() } = {}) {
+  const fs = require('fs'), path = require('path');
+  const skip = new Set(['.git', 'node_modules', '.next', 'data', 'public']);
+  let left = maxFiles, newest = 0;
+  const stack = [dir];
+  while (stack.length && left > 0) {
+    const d = stack.pop();
+    let names = [];
+    try { names = fs.readdirSync(d, { withFileTypes: true }); } catch { continue; }
+    for (const e of names) {
+      if (skip.has(e.name)) continue;
+      left--;
+      const full = path.join(d, e.name);
+      try {
+        const st = fs.lstatSync(full);
+        if (st.mtimeMs > newest) newest = st.mtimeMs;
+        if (newest > cutoffMs) return newest;
+        if (e.isDirectory()) stack.push(full);
+      } catch { /* vanished */ }
+    }
+  }
+  return left > 0 ? newest : nowMs;
+}
+/** Gitignored work that `git status` and `git worktree remove` do not protect: a .env*, or a real (not linked) data/review-texts clone. */
+function holdsIgnoredWork(wt) {
+  const fs = require('fs'), path = require('path');
+  try { if (fs.readdirSync(wt).some((n) => /^\.env(\..+)?$/.test(n) && !/\.(example|sample|template)$/.test(n))) return true; } catch { return true; }
+  try {
+    const st = fs.lstatSync(path.join(wt, 'data/review-texts'));
+    if (st.isDirectory() && fs.existsSync(path.join(wt, 'data/review-texts/.git'))) return true;
+  } catch { /* absent */ }
+  return false;
+}
+
 // One slot's worktree or base worktree (public/images + data, measured 2026-10-16).
 const WORKTREE_BYTES = 1.4e9;
 /**
@@ -1547,7 +1656,7 @@ module.exports = {
   parseModelCandidates, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
-  runnerSummaryFacts,
+  runnerSummaryFacts, runnerSummaryText, codexLadderAccess, reviewTextsPlan, ladderSkip,
   runnerHealth,
   codexExitTransient,
   stripHookNoise,
@@ -1564,6 +1673,10 @@ module.exports = {
   SWF_CARRY_MARKER,
   swfCarryBody,
   parseSwfCarry,
+  parseCodexRetry,
+  retryBody,
+  RETRY_MARKER,
+  UNCLAIMED_RETRY_MS,
   fixRoundDeadline,
   checkModel,
   landedPerLane, LANDED_LOG_FORMAT,
@@ -1601,6 +1714,7 @@ module.exports = {
   bounceClassLine,
   bounceClassOf,
   structuralBounceHolds,
+  isPersonComment,
   STRUCTURAL_BOUNCE_CLASSES,
   STRUCTURAL_MEMORY_MS,
   PARTIAL_MARKER,
@@ -1617,6 +1731,14 @@ module.exports = {
   isCodexBounce,
   MIN_FREE_DISK_BYTES,
   staleTmpEntries,
+  staleClaudeWorktrees,
+  CLAUDE_WORKTREE_IDLE_MS,
+  lockedWorktreePaths,
+  cwdInside,
+  newestMtimeMs,
+  holdsIgnoredWork,
+  CODEX_SLOT_WORKTREE,
+  LATER_CARD_DISCOUNT_MS,
   slotsForDisk,
   isDiskFailure,
   encryptAuth,

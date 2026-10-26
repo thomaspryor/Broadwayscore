@@ -23,6 +23,7 @@
  */
 
 const crypto = require('crypto');
+const { forEachLine, detach } = require('./log-lines');
 
 const DEFAULT_THRESHOLD_HOURS = 2;
 
@@ -281,7 +282,9 @@ const TAP_NOT_OK_RE = /^\s*not ok \d+ - (.+?)\s*$/;
  * @returns {string|null} the first TAP failing test name in this job's log, or null
  */
 function firstFailingTestNameInJobLog(jobLogText) {
-  for (const raw of String(jobLogText || '').split('\n')) {
+  let name = null;
+  // BRO-6257: walk lines lazily; a whole-log split OOMs on multi-MB logs.
+  forEachLine(jobLogText, (raw) => {
     // Strip the leading GH Actions timestamp the same way trunk-status.js's
     // parseFailedLog does for its differently-shaped (tab-framed) input —
     // `\S*Z ` matches "2026-09-20T18:38:38.2331444Z ". A line that starts
@@ -292,9 +295,36 @@ function firstFailingTestNameInJobLog(jobLogText) {
     // below, since it no longer starts with "not ok" after whitespace.
     const line = raw.replace(/^\S*Z\s?/, '').replace(/\r$/, '');
     const m = TAP_NOT_OK_RE.exec(line);
-    if (m) return m[1].trim();
-  }
-  return null;
+    if (m) name = detach(m[1].trim());
+    return Boolean(m);
+  });
+  return name;
+}
+
+// BRO-6262: the test FILE behind firstFailingTestNameInJobLog()'s test. node's
+// TAP reporter prints `location: '<abs>/<file>.test.mjs:L:C'` in the diagnostic
+// block right after the `not ok` line, which names the file directly (a test
+// title is not unique across files and may be built from a template literal, so
+// grepping the source for it is unreliable). Returns the repo-relative path
+// (from its first tests/ scripts/ or src/ segment) or null.
+const TAP_LOCATION_RE = /location:\s*['"]?(?:[^'"\n]*?[\/])?((?:tests|scripts|src)\/[\w@./-]+\.test\.(?:m?js|cjs|ts)):\d+/;
+function firstFailingTestFileInJobLog(jobLogText) {
+  // BRO-6257: lazy walk, no whole-log line array. Only the 24 lines after the
+  // first `not ok` are searched, and a second `not ok` ends the search.
+  let notOkAt = -1;
+  let file = null;
+  forEachLine(jobLogText, (raw, n) => {
+    const line = raw.replace(/^\S*Z\s?/, '').replace(/\r$/, '');
+    if (notOkAt === -1) {
+      if (TAP_NOT_OK_RE.test(line)) notOkAt = n;
+      return false;
+    }
+    if (n >= notOkAt + 25 || TAP_NOT_OK_RE.test(line)) return true;
+    const m = TAP_LOCATION_RE.exec(line);
+    if (m) file = detach(m[1]);
+    return Boolean(m);
+  });
+  return file;
 }
 
 // BRO-4151: `testNameByJob` is a JOB-wide scan (firstFailingTestNameInJobLog
@@ -472,6 +502,7 @@ module.exports = {
   RED_SIGNATURE_PREFIX,
   stepFailureSignature,
   firstFailingTestNameInJobLog,
+  firstFailingTestFileInJobLog,
   isBashIntegrationStep,
   isBashTestStepCommand,
   failingStepSignatures,

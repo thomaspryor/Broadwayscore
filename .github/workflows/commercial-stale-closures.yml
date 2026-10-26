@@ -17,6 +17,9 @@ name: Commercial Stale Closures Classifier
 # used to appear only on opening night, so the season report had no record for
 # announced shows).
 #
+# Also appends the daily per-season payback row to season-payback-history.json
+# (BRO-6335).
+#
 # Concurrency group commercial-data-write — queues with Friday, Saturday,
 # (future) RSS poller.
 
@@ -103,6 +106,16 @@ jobs:
         # within a day instead of waiting for Friday. Local math, no API spend.
         if: inputs.dry_run != true
         run: node scripts/merge-model-recoupment.js
+
+      - name: Record season payback history
+        # BRO-6335: one row per season per day (capital, money back low/mid/high)
+        # so /biz/season/[season] can show how a season's payback has grown.
+        # Reads the freshly refreshed commercial.json; same-day reruns replace
+        # the day's row. continue-on-error: a failed append never blocks the
+        # Fizzle classifications or their push.
+        if: inputs.dry_run != true
+        continue-on-error: true
+        run: npx tsx scripts/append-season-payback-history.ts
 
       - name: Validate post-classification
         # No continue-on-error: ship-check CDX-P0-4. If validate-data rejects

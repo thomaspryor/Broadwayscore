@@ -172,10 +172,29 @@ async function runRehearsal({ fixture, workDir, keep = false, scoreReview, regen
 /** Persist the outcome the arm gate reads. Failures are trimmed: the record is small and safe to commit. */
 function recordRehearsal(file, result, { at = Date.now(), kind = 'synthetic', laneHash = null, error = null } = {}) {
   const rec = { at: new Date(at).toISOString(), pass: result.pass === true, kind, laneHash, ...(error ? { error: String(error).slice(0, 300) } : {}), checked: result.verdict && result.verdict.checked, failures: ((result.verdict && result.verdict.failures) || []).slice(0, 10), checks: result.checks ? { unexpected: result.checks.unexpected.length, decoyLeaks: result.checks.decoyLeaks.length, bystandersSurvived: result.checks.bystandersSurvived, timedOut: result.checks.timedOut } : null };
+  // BRO-6276: the record is committed to main on every scripts/lib push (~54 commits a day, nearly all a new
+  // `at` only), and every one of them races the land queue's push. Keep the file as it is when only `at` would
+  // change and it is still fresh; the arm gate allows 8 days, so a pass up to 1 day old arms exactly the same.
+  if (!shouldRewriteRehearsalRecord(readRehearsalRecord(file), rec, { now: at })) return readRehearsalRecord(file);
   fs.mkdirSync(path.dirname(file), { recursive: true });
   fs.writeFileSync(`${file}.tmp`, `${JSON.stringify(rec, null, 2)}\n`);
   fs.renameSync(`${file}.tmp`, file);
   return rec;
+}
+
+const REHEARSAL_REFRESH_MS = DAY_MS;
+
+/**
+ * Whether a new rehearsal record must replace the one on disk. Anything but the timestamp differing (a failure, a
+ * crash, new lane code, other counts) always rewrites, as does a previous record that is missing, unreadable or older
+ * than REHEARSAL_REFRESH_MS. Pure.
+ */
+function shouldRewriteRehearsalRecord(prev, next, { now = Date.now() } = {}) {
+  if (!prev || typeof prev !== 'object') return true;
+  const prevAt = Date.parse(prev.at);
+  if (!Number.isFinite(prevAt) || now - prevAt >= REHEARSAL_REFRESH_MS || prevAt > now) return true;
+  const strip = ({ at: _at, ...rest }) => JSON.stringify(rest);
+  return strip(prev) !== strip(JSON.parse(JSON.stringify(next)));
 }
 
 function readRehearsalRecord(file) {
@@ -201,4 +220,4 @@ function armDecision(record, { now = Date.now(), maxAgeMs = DEFAULT_ARM_MAX_AGE_
   return { arm: true, reason: 'last-rehearsal-passed' };
 }
 
-module.exports = { DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeFiles, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, armDecision, buildAdapters };
+module.exports = { DEFAULT_ARM_MAX_AGE_MS, DEFAULT_LATENCY, laneCodeFiles, laneCodeHash, runRehearsal, recordRehearsal, readRehearsalRecord, shouldRewriteRehearsalRecord, REHEARSAL_REFRESH_MS, armDecision, buildAdapters };

@@ -29,10 +29,10 @@ interface EmailCaptureModalProps {
   /** If true, modal cannot be dismissed — user must enter email */
   blocking?: boolean;
   /**
-   * Extra analytics props stamped by ProGateContext at fire time (A/B variant
-   * + trigger_source) — merged into gate_modal_shown / email_captured.
+   * Extra analytics props stamped by ProGateContext at fire time (A/B variant,
+   * trigger_source and session page views), merged into shown/captured events.
    */
-  analyticsProps?: Record<string, string | undefined>;
+  analyticsProps?: Record<string, string | number | undefined>;
 }
 
 export interface CapturedUserData {

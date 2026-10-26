@@ -83,6 +83,10 @@ const { SITE_PATHS, SITE_DATA_FILES } = require('./should-deploy-gate.js');
 const { collectBuildScriptDependencies } = require('./build-script-dependencies.js');
 
 const MAX_ATTEMPTS = 3;
+// BRO-6276 deadman: no retry attempt starts once this much wall time has gone. One attempt can take ~50 min
+// (merged-tree suite 30 + build 20), and the Land job dies at 125 min with the mutex held (run 40246798624 held it
+// 588s on one attempt). Stopping at the attempt boundary hands the lock back cleanly with a result file.
+const DEFAULT_LAND_DEADLINE_MS = 55 * 60 * 1000;
 // Inert-churn re-rebases allowed per attempt before a full re-check is forced.
 const MAX_CHURN_SKIPS = 10;
 const REPO_ROOT = path.join(__dirname, '..', '..');
@@ -170,6 +174,23 @@ function classifyIntervening(files) {
  */
 function classifyPushFailure({ baseSha, nowBase }) {
   return nowBase && baseSha && nowBase !== baseSha ? 'race' : 'rejected';
+}
+
+/**
+ * The deadline for starting another attempt, from LAND_DEADLINE_MIN (whole minutes, 5..120) or the default.
+ * Anything else falls back to the default rather than switching the deadman off.
+ */
+function landDeadlineMs(env = process.env) {
+  const raw = env.LAND_DEADLINE_MIN;
+  const min = /^\d+$/.test(String(raw ?? '').trim()) ? Number(raw) : NaN;
+  // 0 = no retries (land.yml's deadman has under one attempt of time left).
+  return min >= 0 && min <= 120 ? min * 60 * 1000 : DEFAULT_LAND_DEADLINE_MS;
+}
+
+/** Why attempt N must not start (null = go). Attempt 1 always runs: the deadline only stops retries. Pure. */
+function deadlineRefusal({ attempt, elapsedMs, deadlineMs }) {
+  if (attempt <= 1 || !(elapsedMs >= deadlineMs)) return null;
+  return `${Math.round(elapsedMs / 60000)} min spent, past the ${Math.round(deadlineMs / 60000)} min deadline: not starting attempt ${attempt}, handing the landing mutex back`;
 }
 
 /** Whether a failed attempt gets another go. Bounded, never unbounded. */
@@ -324,6 +345,41 @@ function selectRecheckScope({ ancestor, intervening, changedFiles, disabled = fa
 }
 
 /**
+ * selectRecheckScope for a merge train (BRO-6276). To member i, every other
+ * member's files are exactly like main changing after i was verified, so
+ * member i's intervening set is main's files since ITS verified base plus the
+ * other members' files, and each member goes through selectRecheckScope.
+ * 'small' only when every member is small; build is the OR. Full when the
+ * switch is set, any member lacks a verified base (a rider whose ticket had
+ * no Land-Base only has a merge-base, which no gauntlet verified), its base
+ * is not an ancestor of main, or any diff failed (null). Fails closed.
+ * @param {{members:Array<{name:string, base:(string|null), verified:boolean, ancestor:boolean, mainChanged:(string[]|null), files:(string[]|null)}>, disabled?:boolean, buildScripts?:(Set<string>|null)}} o
+ * @returns {{mode:'full'|'small', build:boolean, reason:string}}
+ */
+function selectTrainRecheckScope({ members, disabled = false, buildScripts = null }) {
+  const full = (reason) => ({ mode: 'full', build: true, reason });
+  if (disabled) return full('small re-check disabled (LAND_SMALL_RECHECK_DISABLED / LAND_TRAIN_SMALL_RECHECK_DISABLED)');
+  if (!Array.isArray(members) || members.length < 2) return full('not a train');
+  for (const m of members) {
+    if (!m.verified || !/^[0-9a-f]{40}$/.test(String(m.base || ''))) return full(`${m.name} has no verified base`);
+    if (!Array.isArray(m.files)) return full(`files ${m.name} changed are unknown`);
+  }
+  let build = false;
+  for (const m of members) {
+    const others = members.filter((x) => x !== m).flatMap((x) => x.files);
+    const scope = selectRecheckScope({
+      ancestor: m.ancestor,
+      intervening: Array.isArray(m.mainChanged) ? [...m.mainChanged, ...others] : null,
+      changedFiles: m.files,
+      buildScripts,
+    });
+    if (scope.mode !== 'small') return full(`${m.name}: ${scope.reason}`);
+    build = build || scope.build;
+  }
+  return { mode: 'small', build, reason: `no file changed by two of the ${members.length} members or by main since their verified bases; build ${build ? 'runs' : 'skipped (deploy builds it)'}` };
+}
+
+/**
  * A checks seam that reuses an upstream verdict when decideVerifiedBaseSkip
  * allows it and otherwise runs `checks` (the full default gauntlet). On the
  * skip path the throwaway worktree is still prepared (node_modules link,
@@ -401,8 +457,14 @@ function mergedTreeGateInput(changedFiles, interveningTests) {
   return [...new Set([...(changedFiles || []), ...(interveningTests || [])].map(String))];
 }
 
-// recheckScope (selectRecheckScope) comes only from makeVerifiedBaseChecks;
-// every other caller (plain land, the merge train) passes none and gets the
+/** "safe-checks 4m12s, merged-tree-tests 9m3s" for the in-lock re-check log (BRO-6276). */
+function checkTimings({ safeMs, extra = [] }) {
+  const fmt = (ms) => { const s = Math.round(ms / 1000); return s >= 60 ? `${Math.floor(s / 60)}m${s % 60}s` : `${s}s`; };
+  return [`safe-checks ${fmt(safeMs)}`, ...extra.filter(r => Number.isFinite(r.ms)).map(r => `${r.name} ${fmt(r.ms)}`)].join(', ');
+}
+
+// recheckScope comes from makeVerifiedBaseChecks (selectRecheckScope) or the
+// merge train (selectTrainRecheckScope); a plain land passes none and gets the
 // full re-check, and the holder-alone retry after a red train forces full.
 // A small re-check whose floor selects no test passes: the branch already ran
 // the full gauntlet upstream (land.yml Checks), which is the proof tier 3's
@@ -422,6 +484,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
   if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
   // The npm ci outcome (own install, or a FAILED fallback naming its log).
   for (const l of linked) if (l.startsWith('node_modules (')) log(`[land] ${l}`);
+  const safeStart = Date.now();
   const results = runSafeChecks({
     cwd,
     changedFiles: files,
@@ -435,11 +498,13 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
     prepareFrom: repoDir,
   });
 
+  const safeEnd = Date.now();
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'land-branch-home-'));
   try {
     const env = checksEnv({ home });
     const extra = [];
     const run = (name, argv, opts = {}) => {
+      const startedAt = Date.now();
       try {
         execFileSync(argv[0], argv.slice(1), {
           cwd, stdio: ['pipe', 'pipe', 'pipe'], encoding: 'utf8',
@@ -450,7 +515,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
           // dry-run of this lib (BRO-3873).
           maxBuffer: CHECK_OUTPUT_MAX_BYTES,
         });
-        extra.push({ name, pass: true });
+        extra.push({ name, pass: true, ms: Date.now() - startedAt });
       } catch (err) {
         if (err && err.code === 'ENOBUFS') err.stderr = `${err.stderr || ''}\ncheck output exceeded CHECK_OUTPUT_MAX_BYTES (${CHECK_OUTPUT_MAX_BYTES}) — the check was killed, this is NOT a verdict on the code`;
         // Keep the full output: the detail string is a summary, and a merged-
@@ -460,7 +525,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
           logPath = path.join(os.tmpdir(), `land-branch-${name.replace(/[^\w.-]+/g, '_')}-${Date.now()}.log`);
           fs.writeFileSync(logPath, `# ${argv.join(' ')}\n# exit ${err.status}${err.signal ? ` signal ${err.signal}` : ''}\n\n${err.stdout || ''}\n--- stderr ---\n${err.stderr || ''}\n`);
         } catch { logPath = null; }
-        extra.push({ name, pass: false, detail: `${(opts.detail || defaultDetail)(err)}${logPath ? ` [full output: ${logPath}]` : ''}` });
+        extra.push({ name, pass: false, ms: Date.now() - startedAt, detail: `${(opts.detail || defaultDetail)(err)}${logPath ? ` [full output: ${logPath}]` : ''}` });
       }
     };
     // Syntax floor for shell — tier 3's node --check has no shell counterpart.
@@ -490,6 +555,9 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
     const proven = extra.some(r => r.pass) ;
     const merged = results.filter(r => !(r.name === 'no-checks' && proven)).concat(extra);
     log(`[land] checks: ${merged.length ? merged.map(r => `${r.name}=${r.pass ? 'ok' : 'FAIL'}`).join(', ') : 'none applicable'}`);
+    // BRO-6276: the in-lock re-check is the landing queue's throughput cap
+    // (14-18 min per train on 2026-10-25); say where the time went.
+    log(`[land] check timings: ${checkTimings({ safeMs: safeEnd - safeStart, extra })}`);
     return merged;
   } finally {
     try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* best effort */ }
@@ -557,6 +625,9 @@ function defaultPushMain({ cwd, log = () => {} }) {
  * @param {string[]} [o.trainBases] the bases the branch and riders were verified
  *                                 at: test files main changed since then feed
  *                                 the merged-tree floor (BRO-5180)
+ * @param {string} [o.holderBase] the base this branch's checks verified
+ *                                 (--verified-base); a train re-checks small
+ *                                 only when every member has one (BRO-6276)
  * @param {function} [o.trainChecks] checks seam for a train (default defaultChecks)
  * @returns {{landed:boolean, sha:string|null, attempts:number, wallMs:number, failedCheck:string|null, reason:string|null, pushed:boolean, files:string[], verified:'LANDED'|'UNKNOWN'|null, contentNote:string|null, baseSha:string|null}}
  */
@@ -565,12 +636,12 @@ function landBranch(o) {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
-    riders = [], trainBases = [], trainChecks = defaultChecks,
+    riders = [], trainBases = [], holderBase = null, trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now, pushMarkerFile = process.env.LAND_PUSH_MARKER || null,
   } = o || {};
-  const t0 = Date.now();
+  const t0 = now();
   const trainDropped = []; // BRO-5282: riders not landed by this run, and why
   const done = (patch) => ({
-    landed: false, sha: null, attempts: 0, wallMs: Date.now() - t0,
+    landed: false, sha: null, attempts: 0, wallMs: now() - t0,
     failedCheck: null, reason: null, pushed: false, files: [], verified: null, contentNote: null,
     baseSha: null, verifiedBase: null, churnSkips: 0, riders: [], trainDropped, ...patch,
   });
@@ -721,7 +792,8 @@ function landBranch(o) {
         if (!mb) { drop('no merge-base with main'); continue; }
         // No Land-Base on the ticket: the merge-base is at or before the base
         // its checks rebased onto, so the intervening-test set only grows.
-        const base = /^[0-9a-f]{40}$/.test(String(r.base || '')) ? r.base : mb;
+        const verified = /^[0-9a-f]{40}$/.test(String(r.base || ''));
+        const base = verified ? r.base : mb;
         try {
           rebaseOnto(prev, { rangeFrom: mb, tip: r.tip });
         } catch (err) {
@@ -735,7 +807,9 @@ function landBranch(o) {
         }
         const now = git(['rev-parse', 'HEAD'], workdir);
         if (now === prev) { drop('nothing left to land after the rebase (already on main or in the train)'); continue; }
-        added.push({ ...r, base, count: Number(git(['rev-list', '--count', `${prev}..${now}`], workdir)) });
+        // BRO-6276: the rider's own rebased files, renames split, for the train scope.
+        const filesOut = gitOrNull(['diff', '--name-only', '--no-renames', prev, now], workdir);
+        added.push({ ...r, base, verified, files: filesOut === null ? null : filesOut.split('\n').filter(Boolean), count: Number(git(['rev-list', '--count', `${prev}..${now}`], workdir)) });
         log(`[land] train: + ${r.branch} @ ${r.tip.slice(0, 10)} (${added[added.length - 1].count} commit(s))`);
       }
       return added;
@@ -754,8 +828,36 @@ function landBranch(o) {
       return [...set];
     };
 
+    // BRO-6276: the holder and each rider as train members for
+    // selectTrainRecheckScope; every git failure reads as unknown (full).
+    const trainRecheckScope = (baseSha) => {
+      const disabled = process.env.LAND_SMALL_RECHECK_DISABLED === 'true' || process.env.LAND_TRAIN_SMALL_RECHECK_DISABLED === 'true';
+      if (disabled) return selectTrainRecheckScope({ members: [], disabled });
+      const filesOf = (out) => (out === null ? null : out.split('\n').filter(Boolean));
+      const member = (name, base, verified, files) => {
+        const ancestor = verified && gitOrNull(['merge-base', '--is-ancestor', base, baseSha], workdir) !== null;
+        const mainChanged = ancestor ? filesOf(gitOrNull(['diff', '--name-only', '--no-renames', `${base}..${baseSha}`], workdir)) : null;
+        return { name, base, verified, ancestor, mainChanged, files };
+      };
+      const holderVerified = /^[0-9a-f]{40}$/.test(String(holderBase || ''));
+      const members = [
+        member(branch, holderBase, holderVerified, filesOf(gitOrNull(['diff', '--name-only', '--no-renames', baseSha, holderHead], workdir))),
+        ...train.map((r) => member(r.branch, r.base, r.verified === true, r.files)),
+      ];
+      const all = members.flatMap((m) => m.files || []);
+      const mains = members.flatMap((m) => m.mainChanged || []);
+      const buildScripts = all.some((f) => f.startsWith('src/')) && [...all, ...mains].some((f) => f.startsWith('scripts/'))
+        ? collectBuildScriptDependencies(workdir) : null;
+      return selectTrainRecheckScope({ members, buildScripts });
+    };
+
     let lastReason = null;
     for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+      const lateBy = deadlineRefusal({ attempt, elapsedMs: now() - t0, deadlineMs });
+      if (lateBy) {
+        log(`[land] ${lateBy}`);
+        return done({ attempts: attempt - 1, failedCheck: 'deadline', reason: `${lateBy} (last: ${lastReason || 'n/a'})`.slice(0, 500) });
+      }
       discardResidue(`attempt ${attempt}`);
       git(['fetch', remote, target], workdir);
       // Pin the base: every later step (rebase, diff, moved-check, trailer)
@@ -792,7 +894,9 @@ function landBranch(o) {
       if (train.length) {
         const interveningTests = trainInterveningTests(baseSha, [...trainBases, ...train.map((r) => r.base)]);
         log(`[land] train: ONE merged-tree re-check for ${train.length + 1} branch(es) (+${interveningTests.length} test file(s) changed on main since their verified bases)`);
-        results = trainChecks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log, interveningTests }) || [];
+        const recheckScope = trainRecheckScope(baseSha);
+        log(`[land] train: ${recheckScope.mode} re-check: ${recheckScope.reason}`);
+        results = trainChecks({ cwd: workdir, changedFiles: files, baseSha, repoDir, log, interveningTests, recheckScope }) || [];
         const trainFailed = firstFailedCheck(results);
         if (trainFailed) {
           // Degenerate bisect: the holder alone, exactly as without a train.
@@ -872,6 +976,9 @@ function landBranch(o) {
       if (beforePush) beforePush({ cwd: workdir, baseSha: landBase, verifiedBase: baseSha, git: (args) => git(args, workdir) });
       head = git(['rev-parse', 'HEAD'], workdir);
 
+      // BRO-6276: land.yml's deadman can kill us between this push and the
+      // result file; the marker lets it tell "landed" from "refused".
+      if (pushMarkerFile) { try { fs.writeFileSync(pushMarkerFile, `${head}\n`); } catch (_) { /* advisory */ } }
       try {
         pushMain({ cwd: workdir, sha: head, log });
       } catch (err) {
@@ -961,6 +1068,8 @@ function landBranch(o) {
 }
 
 module.exports = {
+  DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
+  checkTimings,
   isPromisorFetchFailure,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,
@@ -971,6 +1080,7 @@ module.exports = {
   isInertForVerification,
   isBuildCodePath,
   selectRecheckScope,
+  selectTrainRecheckScope,
   classifyIntervening,
   landBranch,
   defaultChecks,

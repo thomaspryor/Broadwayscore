@@ -20,11 +20,14 @@
  * before it still carries `group: landing`) during the changeover.
  */
 
-const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
+const { MAX_ATTEMPTS, decideLandRetry } = require('./land-retry-on-cancel');
 const { isMainRedBranch } = require('./land-main-red');
 
 const MAX_AGE_HOURS = 24;
-const MAX_INSPECT = 10;
+// Candidates a sweep inspects. Each costs one jobs read; only those still
+// retry-eligible on it pay for the per-branch lookup (BRO-6276). At 10, ten
+// dead runs (cancelled mid-work by hand) hid ~20 parked ones for hours.
+const MAX_INSPECT = 40;
 const { PARKED_MAX_ATTEMPTS } = require('./land-mutex');
 
 /**
@@ -49,6 +52,17 @@ function pickStrandedCandidates(cancelledRuns, { refs, now = Date.now(), maxAgeH
     .filter((r) => (r.run_attempt || 1) < maxAttempts)
     .filter((r) => tipOf(r.head_branch) && tipOf(r.head_branch) === r.head_sha)
     .sort((a, b) => (isMainRedBranch(b.head_branch) - isMainRedBranch(a.head_branch)) || (Date.parse(a.created_at) - Date.parse(b.created_at)));
+}
+
+/**
+ * BRO-6276: the listed run's own refusal (one jobs read), or null while it may
+ * still retry. Started work, failed Checks and a spent budget are final for that
+ * attempt, so the sweep skips it before paying for the per-branch lookup.
+ */
+function listedRunRefusal(run, { jobsOf, refs }) {
+  const tip = refs instanceof Map ? refs.get(run.head_branch) : (refs || {})[run.head_branch];
+  const r = decideLandRetry({ run, jobs: jobsOf(run.id), branchExists: true, branchTip: tip });
+  return r.retry ? null : r.reason;
 }
 
 /** A newer Land run exists for the candidate's branch (a re-push or a refusal since): leave it. */
@@ -83,4 +97,4 @@ function sweepStep({ parked, slots, resumed, evictionRerun }) {
   return evictionRerun ? 'stop' : 'skip';
 }
 
-module.exports = { MAX_AGE_HOURS, MAX_INSPECT, pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep };
+module.exports = { listedRunRefusal, MAX_AGE_HOURS, MAX_INSPECT, pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep };

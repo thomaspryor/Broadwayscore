@@ -202,11 +202,6 @@ const CRITICAL_PATTERNS = [
     description: 'generate-homepage-archive must use loadReviewsWithBlog() so homepage archive matches show-page scores.',
   },
   {
-    file: 'scripts/generate-social-post.js',
-    pattern: 'loadReviewsWithBlog',
-    description: 'generate-social-post must use loadReviewsWithBlog() so social post scores match show-page scores.',
-  },
-  {
     file: 'scripts/generate-status-page.js',
     pattern: 'loadReviewsWithBlog',
     description: 'generate-status-page must use loadReviewsWithBlog() so public/opening-night-status.json scores match show-page scores.',

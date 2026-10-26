@@ -59,6 +59,7 @@
 'use strict';
 
 const fs = require('fs');
+const { FILER_REFRESH_MARKER } = require('./filer-refresh-marker.js');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
 const { numberFreeTitle } = require('./card-dedupe');
@@ -207,6 +208,8 @@ const ON_SHOW_SUFFIX_RE = /^(.+?) on (.+)$/;
 const PER_SHOW_KIND_PATTERNS = [
   { re: /^Review gap — "(.+)" missing \d+ cited review\(s\)$/, condition: 'Review gaps (cited reviews not yet collected)' },
   { re: /^([a-z0-9][a-z0-9-]*): \d+ review\(s\) need a decision\b/, condition: 'Reviews need a decision (rejected real review or score outside rating)' },
+  // BRO-6338: replay-pending-bylines.js files one card per show (conditionKey pending-unrecoverable:<show>); 4 of 23 digest cards in 72h.
+  { re: /^\d+ review\(s\) for ([a-z0-9][a-z0-9-]*) stuck in _pending with no text and no byline$/, condition: 'Reviews stuck in _pending with no text and no byline' },
 ];
 
 function splitOnShowSuffix(name) {
@@ -775,7 +778,7 @@ function fileCard(title, notes, { log = () => {}, refreshNotesOnReattach = false
       // change day to day, so refreshing here would just be daily spam.
       if (refreshNotesOnReattach) {
         try {
-          execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', fm[1], '--comment', notes],
+          execFileSync('node', [path.join(REPO, 'scripts', 'linear-brain.js'), 'update', fm[1], '--comment', `${FILER_REFRESH_MARKER}\n${notes}`],
             { cwd: REPO, encoding: 'utf8', timeout: 30000 });
           log(`[digest-autofix] refreshed ${fm[1]}'s acceptance criteria via comment (fold membership may have changed)`);
         } catch (err) {

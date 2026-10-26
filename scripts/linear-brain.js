@@ -6,7 +6,7 @@
  *
  * Usage:
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
- *     [--dispatch | --self | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
+ *     [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
  *     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
  *     [--mac-only "<what needs the Mac and why>"]
  *
@@ -44,7 +44,7 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
-    [--dispatch | --self | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
+    [--dispatch | --self | --child "<what>" | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet] [--source <filer>] [--new-anyway "<reason>"] [--dedupe-opt-out <name>]
     [--no-verify "<reason>"] [--mac-only "<what needs the Mac and why>"]
   node scripts/linear-brain.js find "search term"
@@ -55,6 +55,8 @@ Usage:
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
   create: --dispatch, --self or --park "<reason>" is REQUIRED. None given → exit 2.
+          --child "<child session title>" (BRO-6359): a create_session child is starting on this card now.
+          Filed like --self (In Progress, claimed) so no worker takes it; CLOUD.md § Starting a worker session.
           --self (BRO-6130): this session is already doing the work (an owner request, a
           fix it is making now). Files the card In Progress with the claim comment, the
           same trace "linear-session.js claim" leaves. The card is never swapped for
@@ -783,6 +785,17 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error('--mac-only needs a reason of at least 10 characters (what needs the Mac and why).');
     process.exit(1);
   }
+  // BRO-6359: --child "<child session title/task>": a child session (create_session) is starting on this card now.
+  // Filed like --self (In Progress + claim comment) so the Mac worker, cloud-worker-pick and linear-next skip it.
+  const childArg = args.child;
+  if (childArg !== undefined && (childArg === true || String(childArg).trim().length < 10)) {
+    console.error('--child needs the child session title or task, at least 10 characters (e.g. "BRO-N: <short>").');
+    process.exit(1);
+  }
+  if (childArg !== undefined && (args.self || macOnly !== undefined)) {
+    console.error('--child conflicts with --self and --mac-only: a child-claimed card is worked now by the child session.');
+    process.exit(1);
+  }
   if (args.self && macOnly !== undefined) {
     console.error('--self and --mac-only conflict: a self-claimed card is worked now by this session. Use --dispatch --mac-only for Mac work.');
     process.exit(1);
@@ -821,6 +834,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       dispatch: args.dispatch,
       park: args.park,
       self: args.self,
+      child: childArg,
       priority: args.priority !== undefined ? Number(args.priority) : undefined,
       projectId: args['project-id'],
       model: args.model,
@@ -852,12 +866,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // BRO-6130: same trace `linear-session.js claim` leaves, so the next claimer sees who holds it.
       const lsr = require('./lib/linear-session-reporting');
       try {
-        await createCommentFn(result.issue.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }));
+        const childLine = childArg !== undefined ? `\nChild session starting on this card now: ${String(childArg).trim()}. Workers: do not take it.` : '';
+        await createCommentFn(result.issue.id, lsr.buildClaimComment({ sessionRef: lsr.claimSessionRef(), ts: new Date().toISOString() }) + childLine);
       } catch (e) {
         console.error(`[linear-brain] WARN could not post the claim comment: ${e.message}`);
       }
       console.log(lsr.buildIssueIdMarker(result.issue.id));
-      console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, claimed by this session (--self)`);
+      console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, claimed by this session (${childArg !== undefined ? '--child' : '--self'})`);
     } else if (result.mode === 'dispatch') {
       console.error(`ISSUE-FILED: ${result.issue.identifier} ("${result.issue.title}") — state=${result.stateName}, not yet running (bsc-next Linear support pending #1303)`);
     } else if (result.autoTodo) {

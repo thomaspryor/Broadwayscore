@@ -29,7 +29,7 @@ import { useLocalWatchlist } from '@/hooks/useLocalWatchlist';
 import { selectDeviceSavedShows } from '@/lib/device-saved-shows';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
-import { ShowSearchDropdown } from '@/components/show-cards';
+import { AddShowCard, ShowSearchDropdown } from '@/components/show-cards';
 import MiniStars from '@/components/user/Stars';
 const StatsTab = dynamic(() => import('@/components/my-shows/stats/StatsTab'), { ssr: false });
 import { TitleTabs, DiarySegmented } from '@/components/my-shows/MyShowsNav';
@@ -643,7 +643,7 @@ export default function MyShowsClient() {
             <p className="text-sm text-gray-400 mb-3">
               These are only in this browser. Sign in below to keep them on every device.
             </p>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+            <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {deviceSavedShows.map(({ show, closed }) => (
                 <PosterGridCard
                   key={show.id}
@@ -880,7 +880,7 @@ export default function MyShowsClient() {
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
       {(activeTab === 'diary' || activeTab === 'watchlist') && (
-        <div className="flex items-center justify-end gap-2 py-1.5 mb-2">
+        <div data-testid="my-shows-controls" className="flex items-center justify-end gap-2 py-1.5 mb-2">
           {activeTab === 'diary' && canSharePlans && (
             <button
               type="button"
@@ -993,7 +993,7 @@ export default function MyShowsClient() {
                       ))}
                     </div>
                   ) : (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {upcomingWatchlistEntries.map(entry => {
                         const entryShow = showMap[entry.show_id];
                         const entrySlug = entryShow?.slug || entry.show_id;
@@ -1035,7 +1035,7 @@ export default function MyShowsClient() {
                           }} />
                         </div>
                       ) : (
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                           {pastReviews.map(review => (
                             <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} showYear />
                           ))}
@@ -1098,7 +1098,7 @@ export default function MyShowsClient() {
                             )}
                           </div>
                         ) : (
-                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {reviewsByYear[year].map(review => (
                               <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} />
                             ))}
@@ -1136,7 +1136,7 @@ export default function MyShowsClient() {
           ) : watchlistSort === 'alphabetical' ? (
             /* Flat alphabetical list — no booked/unbooked split */
             watchlistView === 'grid' ? (
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {sortedWatchlist.map(entry => (
                   <WatchlistCard
                     key={entry.id}
@@ -1176,7 +1176,7 @@ export default function MyShowsClient() {
                 <section>
                   <SectionBand title="Upcoming" count={upcomingBookedWatchlist.length} />
                   {watchlistView === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {upcomingBookedWatchlist.map(entry => (
                         <WatchlistCard
                           key={entry.id}
@@ -1222,7 +1222,7 @@ export default function MyShowsClient() {
                     <SectionBand title="Not yet booked" count={unbookedWatchlist.length} />
                   )}
                   {watchlistView === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {unbookedWatchlist.map(entry => (
                         <WatchlistCard
                           key={entry.id}
@@ -1425,7 +1425,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
   );
 
   return (
-    <div className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div data-testid="diary-card" className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card — getShowHref always returns a URL
           (diary-only shows link to /diary-show/[id]); the `href &&` guard is
           defensive only. */}
@@ -1439,7 +1439,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       {/* Info — date above review text, consistent font sizes */}
       <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
+        {show?.venue && <p data-testid="diary-venue" className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {review.date_seen && (
           <p className="text-xs text-amber-400 mt-0.5">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
@@ -1465,7 +1465,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
           2026-07-13). Mobile keeps icons IN-FLOW on the right:
           the absolute corner collided with row content at 390px. */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 flex items-center gap-1.5">
-        <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
+        <span data-testid="diary-desktop-rating" className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
         <div className="flex md:hidden items-center gap-0.5 pointer-events-auto">{actionIcons}</div>
       </div>
       {/* Desktop edit + delete — top-right corner, revealed on hover */}
@@ -1498,7 +1498,7 @@ function DiaryGridCard({ review, show, showYear = false }: { review: UserReview;
       // No corner buttons: the show page edits or deletes the rating
       // (owner, 2026-10-03).
       meta={
-        <div className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]">
+        <div data-testid="diary-rating" data-rating={review.rating} className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]">
           {review.rating > 0 && <MiniStars rating={review.rating} size="md" filledOnly />}
         </div>
       }
@@ -1919,7 +1919,7 @@ function ToBeRatedSection({ entries, showMap, idPrefix }: {
         <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-amber-500" />
         <span className="text-xs font-semibold text-amber-500">{entries.length}</span>
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+      <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {entries.map(entry => {
           const show = showMap[entry.show_id];
           const title = show?.title || entry.show_id;
@@ -1937,51 +1937,6 @@ function ToBeRatedSection({ entries, showMap, idPrefix }: {
         })}
       </div>
     </section>
-  );
-}
-
-/** (+) card to add shows — placed at end of grid views */
-function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' | 'watchlist'; variant?: 'grid' | 'list'; onOpen: () => void }) {
-  const openAndReveal = () => {
-    onOpen();
-    // The search input mounts in the page HEADER — from the bottom of a long
-    // list the open is off-screen and reads as a dead button on mobile
-    // (owner, 2026-07-20). Scroll it into view and focus it.
-    requestAnimationFrame(() => {
-      const input = document.querySelector<HTMLInputElement>('input[placeholder^="Search to"]');
-      input?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      input?.focus({ preventScroll: true });
-    });
-  };
-  if (variant === 'list') {
-    return (
-      <button
-        type="button"
-        onClick={openAndReveal}
-        className="flex items-center justify-center gap-2 w-full px-4 py-3 rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
-        aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
-      >
-        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        <span className="text-xs font-medium">{context === 'diary' ? 'Rate a show' : 'Add a show'}</span>
-      </button>
-    );
-  }
-  return (
-    <button
-      type="button"
-      onClick={openAndReveal}
-      // Poster-sized, top-aligned: the grid would otherwise stretch it to the
-      // tallest card in the row (name, stars, date controls), owner 2026-10-03.
-      className="self-start aspect-[2/3] flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
-      aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
-    >
-      <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-      </svg>
-      <span className="text-xs font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
-    </button>
   );
 }
 

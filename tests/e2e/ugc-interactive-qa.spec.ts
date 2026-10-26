@@ -264,9 +264,7 @@ test.describe('Layout consistency — mobile (390px)', () => {
     await page.getByRole('button', { name: 'Grid view' }).click();
     await page.waitForTimeout(500);
 
-    const heights = await page.evaluate(() => {
-      // Find grid container for Past Shows
-      const gridContainers = document.querySelectorAll('.grid');
+    const heights = await page.getByTestId('my-shows-grid').evaluateAll(gridContainers => {
       const results: { heights: number[]; maxDiff: number } = { heights: [], maxDiff: 0 };
 
       gridContainers.forEach(grid => {
@@ -304,7 +302,7 @@ test.describe('Layout consistency — mobile (390px)', () => {
       // never ran.
       const add = page.getByRole('button', { name: tab === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist' });
       await expect(add).toBeVisible();
-      const poster = add.locator('xpath=..').locator('.aspect-\\[2\\/3\\]').first();
+      const poster = page.getByTestId('my-shows-grid').filter({ has: add }).getByTestId('poster-grid-image').first();
       const [a, p] = [await add.boundingBox(), await poster.boundingBox()];
       expect(a && p, `${tab}: add card or sibling poster not found`).toBeTruthy();
       expect(Math.abs(a!.height - p!.height), `${tab}: add ${a!.height}px vs poster ${p!.height}px`).toBeLessThanOrEqual(2);
@@ -318,8 +316,8 @@ test.describe('Layout consistency — mobile (390px)', () => {
     // Owner, 2026-10-03 (BRO-4558): the 44px trash circles covered the
     // posters on phones; delete is on the show page (and list view).
     const panel = page.locator('[role="tabpanel"]');
-    expect(await panel.locator('.grid a[aria-label^="View "]').count()).toBeGreaterThan(0);
-    await expect(panel.locator('.grid button[aria-label="Delete rating"]')).toHaveCount(0);
+    expect(await panel.getByTestId('poster-grid-card').getByRole('link', { name: /^View / }).count()).toBeGreaterThan(0);
+    await expect(panel.getByTestId('poster-grid-card').getByRole('button', { name: 'Delete rating' })).toHaveCount(0);
   });
 });
 
@@ -350,7 +348,7 @@ test.describe('Desktop layout (1440px)', () => {
     expect(opacity, 'Edit icons visible without hover on desktop').toBe('0');
 
     // After hovering the card, they should become visible
-    const card = page.locator('.group\\/diary').first();
+    const card = page.getByTestId('diary-card').first();
     await card.hover();
     await page.waitForTimeout(200);
 

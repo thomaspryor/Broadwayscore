@@ -11,14 +11,17 @@
  */
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import { openRowLink } from '@/lib/row-click';
 import {
   getDesignationSortOrder,
   getTrendColor,
   getTrendIcon,
 } from '@/config/commercial';
 import type { CommercialShowRow } from '@/lib/data-types';
-import { formatCurrency, formatCapitalization } from '@/lib/biz-format';
+import { formatCurrency, formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import {
   getRecoupedCellSummary,
   getDesignationDisplay,
@@ -138,21 +141,23 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   }
 
   if (cell.kind === 'analyst') {
-    const title = cell.withModel
+    const title = cell.ours
+      ? 'Our own estimate, not a reported figure. See methodology.'
+      : cell.withModel
       ? `Range spanning an r/Broadway analyst's estimate (u/Boring_Waltz_9545) and our model, not a reported figure. See methodology.`
       : `Estimate published by an r/Broadway analyst (u/Boring_Waltz_9545), not a reported figure. See methodology.`;
     if (cell.range[0] >= 100) {
       return (
         <div title={title}>
           <div className="text-xs text-gray-300">Est. recouped, not yet announced</div>
-          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} compact />
+          <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} ours={cell.ours} compact />
         </div>
       );
     }
     return (
       <div className="w-36 sm:w-40" title={title}>
         <RecoupmentProgressBar estimatedPct={cell.range} />
-        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} compact />
+        <AnalystEstimateCredit asOf={cell.asOf} url={cell.url} withModel={cell.withModel} ours={cell.ours} compact />
       </div>
     );
   }
@@ -173,6 +178,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
 }
 
 export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTableProps) {
+  const router = useRouter();
   const [sortColumn, setSortColumn] = useState<SortColumn>('designation');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expanded, setExpanded] = useState(false);
@@ -323,14 +329,16 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
               return (
                 <tr
                   key={show.slug}
-                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                  className="group border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer"
+                  onClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
+                  onAuxClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
                 >
                   <td className="py-3 px-4">
                     <Link
                       href={`/show/${show.slug}`}
-                      className="font-medium text-white hover:text-brand transition-colors"
+                      className="font-medium text-white group-hover:text-brand transition-colors"
                     >
-                      {show.title}
+                      <RowLinkArrow label={show.title} />
                     </Link>
                   </td>
                   <td className="py-3 px-4">
@@ -382,7 +390,12 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                     {show.weeklyCost == null ? (
                       <span className="text-gray-500">—</span>
                     ) : (
-                      `${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`
+                      <>
+                        {`${show.weeklyCostIsEstimate ? '~' : ''}${formatCurrency(show.weeklyCost)}`}
+                        {show.weeklyCostBasis && show.weeklyCostBasis !== 'running' && (
+                          <span className="block text-[10px] text-gray-500">{weeklyCostLabel(show.weeklyCostBasis)}</span>
+                        )}
+                      </>
                     )}
                   </td>
                   <td className="py-3 px-4 hidden lg:table-cell">

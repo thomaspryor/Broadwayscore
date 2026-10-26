@@ -23,6 +23,11 @@ name: Land
 #             lost because the older tip is never landed — the `land` job
 #             refuses a tip that is not the one its checks verified via
 #             --expect-tip). Runs in parallel across branches.
+#             The group carries event_name (BRO-6276): a hand dispatch for
+#             land/X can no longer cancel the live push run's checks, and the
+#             dispatch-guard job refuses a dispatch while a push run for the
+#             branch is live or parked, so it cannot evict that run's pending
+#             Land job either.
 #   land    — PER BRANCH too (`landing-<branch>`, cancel-in-progress
 #             false), and the fast-forward is serialized by a FIFO git-ref
 #             mutex (scripts/land-mutex.js, BRO-5112) shared with
@@ -44,7 +49,7 @@ name: Land
 # scripts/lib/land-gauntlet.sh, run on the rebased branch first and then on
 # origin/main @ base for the branch's RED gates only (a gate green on the
 # branch needs no base, BRO-5670) — and judged by scripts/lib/land-gate-delta.js:
-#   - TypeScript Check: tsc root + tsc scripts/llm-scoring + next lint
+#   - TypeScript Check: tsc root + tsc scripts/llm-scoring + eslint
 #   - Unit Tests: the no-data-dependency batch and the scripts/lib batch,
 #     the same manifests/timeouts as test.yml (the bash integration tests and
 #     the slow network batch are not repeated here)
@@ -94,14 +99,42 @@ env:
   BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
 
 jobs:
+  # BRO-6276: a hand dispatch while a push run for the same branch is live or
+  # parked would compete with it for the one pending slot in landing-<branch>.
+  # Refuse it here (fails closed; kill switch: repo variable
+  # LAND_DISPATCH_GUARD_DISABLED=true). Push runs pass straight through. A
+  # refusal leaves Checks skipped, so neither land nor alert-red runs.
+  dispatch-guard:
+    name: Dispatch guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout the guard
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v5
+        with:
+          # The guard reuses the sweep's decideLandRetry, so it needs scripts/lib.
+          sparse-checkout: scripts/lib/
+          sparse-checkout-cone-mode: false
+      - name: Refuse a dispatch that would compete with a live push run
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          REPO: ${{ github.repository }}
+          LAND_DISPATCH_GUARD_DISABLED: ${{ vars.LAND_DISPATCH_GUARD_DISABLED }}
+        run: node scripts/lib/land-dispatch-guard.js
+
   checks:
     name: Checks
+    needs: dispatch-guard
     runs-on: ubuntu-latest
-    # Per-branch: a newer push to the same land/** branch cancels the older
-    # tip's checks. Safe: the older tip is never landed (the land job pins the
-    # tip it verified with --expect-tip), so a cancelled run here loses nothing.
+    # Per-branch AND per-event: a newer push to the same land/** branch cancels
+    # the older tip's checks. Safe: the older tip is never landed (the land job
+    # pins the tip it verified with --expect-tip), so a cancelled run here loses
+    # nothing. event_name keeps a hand dispatch out of the push run's group.
     concurrency:
-      group: land-checks-${{ github.event.inputs.branch || github.ref_name }}
+      group: land-checks-${{ github.event_name }}-${{ github.event.inputs.branch || github.ref_name }}
       # concurrency-cancel-ok: per-branch group on land/** pushes only (never
       # main); a superseded tip is never landed, so cancelling its checks is
       # latest-wins by design, not a lost validation. Read by
@@ -706,6 +739,8 @@ jobs:
           LAND_MUTEX_PARK_DEPTH: ${{ vars.LAND_MUTEX_PARK_DEPTH }}
           LAND_MUTEX_RESUME_HEADROOM: ${{ vars.LAND_MUTEX_RESUME_HEADROOM }}
         run: |
+          # BRO-6276: the Land step sizes its deadman from the job's real start.
+          if [ -n "${GITHUB_ENV:-}" ]; then echo "LAND_JOB_STARTED_AT=$(date +%s)" >> "$GITHUB_ENV"; fi
           cap="${LAND_MUTEX_PARK_DEPTH:-4}"
           if [ "$LAND_MUTEX_DISABLED" = "true" ] || [ "$cap" = "0" ]; then echo "parking disabled; proceeding"; exit 0; fi
           lower="${BRANCH,,}"
@@ -839,6 +874,8 @@ jobs:
           # build only when both sides changed build code) unless a file
           # changed on both sides; true restores the full re-check.
           LAND_SMALL_RECHECK_DISABLED: ${{ vars.LAND_SMALL_RECHECK_DISABLED }}
+          # BRO-6276: true sends merge trains back to the full re-check only.
+          LAND_TRAIN_SMALL_RECHECK_DISABLED: ${{ vars.LAND_TRAIN_SMALL_RECHECK_DISABLED }}
           # BRO-5783: job-local stamp so the pre-push tsc (66-80s, run under the
           # mutex) is skipped on a retry push of an identical code tree. Kill
           # switch: repo variable LAND_TSC_STAMP_DISABLED=1. See scripts/lib/tsc-stamp.js.
@@ -855,20 +892,62 @@ jobs:
         # --riders-file / --train-landed-only: BRO-5282 merge train (see the
         #   step above). A run whose mutex wait ended on a train marker only
         #   confirms that marker and never lands without the lock.
+        # BRO-6276 deadman: the job dies at 125 min with the mutex held, and a
+        #   long queue wait eats into that. The backstop is what is left of a
+        #   110 min budget from the job's start (15 min for the ledger/release
+        #   steps below); land.js stops starting retry attempts 50 min before
+        #   it (LAND_DEADLINE_MIN, land-branch.js deadlineRefusal), so the
+        #   timeout only fires on a real hang.
         run: |
           set +e
           TRAIN_ARGS=()
           if [ "$TRAIN_LANDED" = "true" ]; then TRAIN_ARGS+=(--train-landed-only)
           elif [ -s /tmp/land-riders.json ]; then TRAIN_ARGS+=(--riders-file /tmp/land-riders.json); fi
-          node scripts/land.js --branch "$BRANCH" --source origin \
+          started="${LAND_JOB_STARTED_AT:-}"
+          case "$started" in ''|*[!0-9]*) echo "::warning::LAND_JOB_STARTED_AT missing, sizing the deadman from now (the 125 min job timeout still caps it)"; started=$(date +%s) ;; esac
+          backstop=$(( 110 - ($(date +%s) - started) / 60 ))
+          [ "$backstop" -lt 10 ] && backstop=10
+          # Under 50 min of backstop left means no room for a retry: deadline 0
+          # refuses attempt 2 outright instead of starting one the kill cuts off.
+          deadline=$(( backstop - 50 )); [ "$deadline" -gt 55 ] && deadline=55; [ "$deadline" -lt 0 ] && deadline=0
+          echo "deadman: ${backstop} min backstop, no new attempt after ${deadline} min"
+          rm -f /tmp/land-pushed-sha
+          LAND_PUSH_MARKER=/tmp/land-pushed-sha LAND_DEADLINE_MIN="$deadline" timeout --kill-after=60s "${backstop}m" \
+            node scripts/land.js --branch "$BRANCH" --source origin \
             --expect-tip "$TIP" --verified-base "$BASE" "${TRAIN_ARGS[@]}" \
             --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
           rc=${PIPESTATUS[0]}
           set -e
+          if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
+            # Children (git push, the check runners) outlive the killed node.
+            pkill -f 'scripts/land.js' || true
+            pkill -x git || true
+          fi
           if [ ! -f /tmp/land-result.json ]; then
+            # Killed after the push went through but before land.js wrote its
+            # result: the marker holds the sha it pushed. On main = landed (the
+            # next step re-verifies ancestry before deleting the ref); riders
+            # stay unmarked and finish on their own run as already on main.
+            pushed="$(cat /tmp/land-pushed-sha 2>/dev/null || true)"
+            if { [ "$rc" = "124" ] || [ "$rc" = "137" ]; } && [ -n "$pushed" ] \
+              && git fetch -q origin main && git merge-base --is-ancestor "$pushed" origin/main; then
+              { echo "landed=true"; echo "sha=$pushed"; echo "attempts="; echo "failed_check="
+                echo "reason=land.js was killed by the ${backstop} min deadman after its push; ${pushed:0:10} is on main"; } >> "$GITHUB_OUTPUT"
+              echo "::warning::land.js killed by the ${backstop} min deadman after pushing ${pushed:0:10}, which is on main: reporting landed"
+              exit 0
+            fi
             echo "landed=false" >> "$GITHUB_OUTPUT"
-            echo "failed_check=fatal" >> "$GITHUB_OUTPUT"
-            echo "::error::land.js exited $rc without a result — see the log above"
+            if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
+              # A push may have gone through before the kill. The ref is kept
+              # (not landed), so the branch's next Land run reports
+              # rebased-to-empty if it did.
+              echo "failed_check=deadman" >> "$GITHUB_OUTPUT"
+              echo "reason=land.js hung past the ${backstop} min deadman and was killed; it may have pushed before the kill, re-run the land to confirm" >> "$GITHUB_OUTPUT"
+              echo "::error::land.js killed by the ${backstop} min deadman (rc $rc); mutex released below"
+            else
+              echo "failed_check=fatal" >> "$GITHUB_OUTPUT"
+              echo "::error::land.js exited $rc without a result — see the log above"
+            fi
             exit 0
           fi
           node -e '
@@ -907,7 +986,7 @@ jobs:
         env:
           LAND_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          if [ -f scripts/land-train.js ]; then node scripts/land-train.js mark --result-file /tmp/land-result.json; fi
+          if [ -f scripts/land-train.js ] && [ -f /tmp/land-result.json ]; then node scripts/land-train.js mark --result-file /tmp/land-result.json; fi
 
       - name: Verify ancestry, then delete the land/** ref
         if: steps.land.outputs.landed == 'true'

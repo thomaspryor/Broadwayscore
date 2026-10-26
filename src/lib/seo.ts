@@ -424,7 +424,7 @@ export function generateTheaterSchema(theater: {
   };
 }
 
-// ItemList Schema - For browse/best-of pages
+// ItemList Schema - For show lists and explicitly typed people indexes
 export function generateItemListSchema(items: {
   name: string;
   url: string;
@@ -439,13 +439,20 @@ export function generateItemListSchema(items: {
   status?: string;
   ticketLinks?: { platform: string; url: string; priceFrom?: number }[];
   category?: string;
-}[], listName: string) {
+}[], listName: string, itemType: 'TheaterEvent' | 'Person' = 'TheaterEvent') {
   return {
     '@context': 'https://schema.org',
     '@type': 'ItemList',
     name: listName,
     numberOfItems: items.length,
     itemListElement: items.map((item, index) => {
+      if (itemType === 'Person') {
+        return {
+          '@type': 'ListItem',
+          position: index + 1,
+          item: { '@type': 'Person', name: item.name, url: item.url },
+        };
+      }
       // A national tour has no single house or dates to state here ("North
       // American Tour" is not an address): list its page by URL only; the tour
       // page itself carries the event data (BRO-4601 SEO).

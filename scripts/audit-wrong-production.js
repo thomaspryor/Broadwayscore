@@ -14,11 +14,15 @@
  */
 
 const fs = require('fs');
+const { exitOnHelp } = require('./lib/cli-help.js');
+
+// --help/-h before any work: --fix writes review files (BRO-1711 help-flag guard).
+exitOnHelp(module);
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { parseHistoricalDate } = require('./lib/date-utils');
-const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { invalidateWrongProductionAutoClear, safeWriteReview } = require('./lib/review-write-guard');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -577,12 +581,11 @@ for (const [showId, showFindings] of Object.entries(byShow).sort((a, b) => a[0].
     if (FIX_MODE) {
       const filePath = path.join(reviewTextsDir, showId, f.file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-      if (!data.wrongProduction && !shouldSkipWrongProductionAudit(data) && !laneBypasses(data, 'wrongProduction')) {
+      if (!data.wrongProduction && data._locked !== true && !shouldSkipWrongProductionAudit(data) && !laneBypasses(data, 'wrongProduction')) {
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Auto-flagged by audit: ${f.findings.map(ff => ff.type + ': ' + ff.detail).join('; ')}`;
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-        fixCount++;
+        if (safeWriteReview(filePath, data).wrote) fixCount++;
       }
     }
   }

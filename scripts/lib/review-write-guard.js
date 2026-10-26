@@ -988,6 +988,21 @@ const _manualClearFallbackCleared = (field) => (d, committed) => {
   return JSON.stringify(committed[field]) === JSON.stringify(prior[field]);
 };
 
+// BRO-6154/6302 breadcrumb: the Theatre Record merge replaced a wrong-production
+// text and stamped fullTextTrimmed.at. Honored only while that stamp is newer than
+// the committed copy's, so one lift never excuses a later re-flag (ensemble
+// re-rejection, human wrongShow) and every fresh lift of a re-rejected file works.
+function _trWrongProductionTextReplaced(d, committed) {
+  const t = d && d.fullTextTrimmed;
+  if (!t || !/BRO-6154/.test(String(t.reason || ''))) return false;
+  const at = Date.parse(t.at);
+  if (!Number.isFinite(at)) return false;
+  const prior = committed && committed.fullTextTrimmed;
+  if (!prior || !/BRO-6154/.test(String(prior.reason || ''))) return true;
+  const priorAt = Date.parse(prior.at);
+  return !Number.isFinite(priorAt) || at > priorAt;
+}
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -1029,6 +1044,12 @@ const CLEAR_BREADCRUMBS = {
   wrongProductionAutoClearedAt: _clearBreadcrumbRetracted('wrongProductionAutoClearedAt'),
   wrongShowAutoCleared: _clearBreadcrumbRetracted('wrongShowAutoCleared'),
   wrongShowAutoClearedAt: _clearBreadcrumbRetracted('wrongShowAutoClearedAt'),
+  // BRO-6302: mergeTheatreRecordIntoExisting swapped a wrong-production TR text
+  // for the section-aware one and lifted the ensemble wrong_show rejection,
+  // stamping fullTextTrimmed (BRO-6154). Without these entries the merge-mode
+  // restore pass copied the rejection straight back from disk.
+  ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
+    'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction', 'stuckRescoreCleared', 'stuckRescoreClearedAt', 'wrongShowReason', 'wrongShowNote'].map((k) => [k, _trWrongProductionTextReplaced])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
   // shares the SAME field-scope key as crossOutletVerified above — every
@@ -1076,9 +1097,9 @@ const CLEAR_BREADCRUMBS = {
   // alongside the flag/note, but the original plan only gated wrongShow/
   // wrongShowNote, which would have left a stale wrongShowReason resurrectable
   // by the restore even while wrongShow itself stayed freshness-protected cleared.
-  wrongShow: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
-  wrongShowReason: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
-  wrongShowNote: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
+  wrongShow: (d, c) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d) || _trWrongProductionTextReplaced(d, c),
+  wrongShowReason: (d, c) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d) || _trWrongProductionTextReplaced(d, c),
+  wrongShowNote: (d, c) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d) || _trWrongProductionTextReplaced(d, c),
   wrongFullText: _wrongArticleCleared,
   wrongAttribution: _wrongArticleCleared,
   // wrongAttributionReason (task #1624, found by ship-check codebase review):

@@ -49,7 +49,7 @@ export default function MusicalsSinceReopeningPage() {
           { label: 'Musicals opened', value: data.total },
           { label: 'Originals recouped', value: `${data.originals.recouped} of ${data.originals.total}`, subValue: 'of those opened, incl. pop-catalog and running shows' },
           { label: 'Revivals recouped', value: `${revival.recouped} of ${revival.total}`, subValue: 'of those opened, incl. running shows' },
-          { label: 'Median months to recoup', value: data.medianMonthsToRecoup == null ? '—' : Math.round(data.medianMonthsToRecoup), subValue: `${data.medianSample} recouped shows with a known date` },
+          { label: 'Median months to recoup', value: data.medianMonthsToRecoup == null ? '–' : Math.round(data.medianMonthsToRecoup), subValue: `${data.medianSample} recouped shows with a known date` },
         ]}
       />
 
@@ -80,7 +80,7 @@ export default function MusicalsSinceReopeningPage() {
               <div className="text-xs text-gray-500 mt-1">
                 {MUSICAL_KIND_SHORT[r.kind]} · opened {month(r.openingDate)}
                 {r.monthsToRecoup != null && ` · recouped in about ${r.monthsToRecoup} months`}
-                {r.analystRange && ` · analyst estimate: ${r.analystRange[0]}% to ${r.analystRange[1]}% of capital returned`}
+                {r.analystRange && ` · ${r.rangeIsOurs ? 'our' : 'analyst'} estimate: ${r.analystRange[0]}% to ${r.analystRange[1]}% of capital returned`}
               </div>
             </li>
           ))}

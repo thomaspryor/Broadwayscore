@@ -48,10 +48,10 @@ test('BRO-3157: a notes retraction cannot fall back to an Outcome command', () =
 });
 
 test('BRO-3157: an Outcome retraction refuses notes and snapshot until a newer comment restores verification', () => {
-  for (const comments of [[], ['VERIFY: npx next lint']]) {
+  for (const comments of [[], ['VERIFY: npm run lint']]) {
     const card = done({ notes: 'VERIFY: npx tsc --noEmit', outcome: 'VERIFY: retracted', comments });
     const result = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()] })[0];
-    assert.equal(result.verifyCmd, comments.length ? 'npx next lint' : null);
+    assert.equal(result.verifyCmd, comments.length ? 'npm run lint' : null);
     if (!comments.length) assert.match(result.reason, /retracted/);
   }
 });
@@ -92,10 +92,10 @@ test('the LATEST dispatch of a card wins (a re-dispatch may change the command)'
     doneCards: [done()],
     launchEntries: [
       launch({ ts: '2026-07-20T00:00:00Z', verifyCmd: 'npx tsc --noEmit' }),
-      launch({ ts: '2026-07-24T00:00:00Z', verifyCmd: 'npx next lint' }),
+      launch({ ts: '2026-07-24T00:00:00Z', verifyCmd: 'npm run lint' }),
     ],
   });
-  assert.equal(out[0].verifyCmd, 'npx next lint');
+  assert.equal(out[0].verifyCmd, 'npm run lint');
 });
 
 test('non-launch ledger events are ignored', () => {
@@ -267,7 +267,7 @@ test('selectRecheckTargets: the fallback path still respects isClaimed', () => {
 test('selectRecheckTargets: a dispatch-ledger launch entry still takes priority over the notes fallback', () => {
   const card = {
     id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.2,
-    notes: '## Acceptance criteria\n`npx next lint` passes',
+    notes: '## Acceptance criteria\n`npm run lint` passes',
   };
   const out = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW });
   assert.equal(out[0].verifyCmd, 'node --test tests/unit/a.test.mjs');
@@ -484,7 +484,7 @@ test('a launch with neither id is still unmatchable (nothing to key it on)', () 
 });
 
 test('selectRecheckTargets: without a lastRecheckedAt lookup (the default), order is unaffected — every existing single-card caller stays correct', () => {
-  const card = { id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.2, notes: '## Acceptance criteria\n`npx next lint` passes' };
+  const card = { id: 'card-1', name: 'Fix the thing', status: 'Done', ageDays: 0.2, notes: '## Acceptance criteria\n`npm run lint` passes' };
   const out = selectRecheckTargets({ doneCards: [card], launchEntries: [launch()], now: NOW });
   assert.equal(out.length, 1);
   assert.equal(out[0].cardId, 'card-1');
@@ -540,7 +540,7 @@ test('BRO-3434: the fallback is additive only — a non-null snapshot still wins
 // validation passes the phantom because it checks command SHAPE, not file
 // existence, so the nightly run would execute it and report `fail` for a fix
 // that is correct and live on main. Preferring the card outright would fix
-// this but would also let a GENERIC card command (`npx next lint`) displace a
+// this but would also let a GENERIC card command (`npm run lint`) displace a
 // SPECIFIC snapshot (`node --test ...`) — the degradation
 // autonomous-verify-cmd.js's rank() comment warns about, and the case the
 // "launch entry still takes priority" test above fixtures exactly. The fix
@@ -563,7 +563,7 @@ test('BRO-3446: a GENERIC comment correction still cannot displace a SPECIFIC sn
   const out = selectRecheckTargets({
     doneCards: [done({
       notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
-      comments: ['VERIFY: npx next lint'],
+      comments: ['VERIFY: npm run lint'],
     })],
     launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],
   });
@@ -583,7 +583,7 @@ test('BRO-3446: a later, unrelated generic comment does not shadow an earlier sp
       notes: '## Acceptance criteria\nVERIFY: node --test tests/unit/feedback-formspree-status-check.test.mjs',
       comments: [
         'VERIFY: node --test src/app/api/__tests__/notion-write-is-non-fatal.test.mjs',
-        'VERIFY: npx next lint',
+        'VERIFY: npm run lint',
       ],
     })],
     launchEntries: [launch({ verifyCmd: 'node --test tests/unit/feedback-formspree-status-check.test.mjs' })],

@@ -172,7 +172,7 @@ function evaluate(f, { now = Date.now() } = {}) {
 
   if (f.stalePendingPlans) {
     const d = describeStale(f.stalePendingPlans);
-    add('pending-fixes', d ? 'warn' : 'ok', d || 'no pending fix plan older than 7 days');
+    add('pending-fixes', d ? 'warn' : 'ok', d || 'no unresolved fix plan older than 7 days');
   }
 
   if (f.auditTreeClean) {

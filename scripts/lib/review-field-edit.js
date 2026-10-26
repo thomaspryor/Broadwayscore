@@ -430,6 +430,13 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     // Display name and breadcrumb travel with the id (the outlet-split relabel stamps the same pair).
     next.outlet = require('./review-normalization').getOutletDisplayName(newValue) || newValue;
     next.outletIdCorrectedFrom = record.outletId || null;
+    // The AP detector flags AP copy under another outlet as a syndicated duplicate (detect-syndicated-duplicates.js);
+    // on the AP row itself that stamp would exclude the review the relabel exists to recover.
+    if (record._apContentDetected === true && record.isSyndicatedDuplicate === true) {
+      next.isSyndicatedDuplicate = false;
+      next.syndicatedPrimaryFile = null;
+      next._apContentDetected = false;
+    }
     next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`;
   }
   if (field === 'originalScore') {
@@ -495,7 +502,7 @@ function unexpectedChanges(before, after, field, expectedKeys = []) {
       for (const k of ['outletId', 'outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
     }
   }
-  if (field === 'outletId') for (const k of ['outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason']) expected.add(k);
+  if (field === 'outletId') for (const k of ['outlet', 'outletIdCorrectedFrom', 'outletIdCorrectedReason', 'isSyndicatedDuplicate', 'syndicatedPrimaryFile', '_apContentDetected']) expected.add(k);
   // BRO-4888: the write guard resolves a duplicate-pointer pair itself. Setting
   // duplicateClearReason on a file that points at a same-url sibling makes it
   // refuse the cycle and clear that file's own duplicateOf/duplicateReason;
@@ -579,6 +586,10 @@ function syndicatedHealDecision(reviewTextsDir, ctx, record) {
  * article) or {syndicatedDanglingClear: true} (none does, so the secondary is the only copy). {} when the pointer
  * resolves to an existing file.
  */
+function isApWireUrl(url) {
+  try { return require('./ap-wire-detect').AP_WIRE_URL.test(new URL(url).pathname); } catch { return false; }
+}
+
 function syndicatedDanglingContext(reviewTextsDir, ctx, record) {
   const fs = require('fs');
   const path = require('path');
@@ -625,6 +636,9 @@ function executeReviewFieldEditIn(reviewTextsDir, action, stamp) {
   if ((action.field === 'isSyndicatedDuplicate' || action.field === 'syndicatedPrimaryFile')
       && typeof record.syndicatedPrimaryFile === 'string' && !isSelfSyndicationPointer(record, ctx)) {
     ctx.syndicatedHeal = syndicatedHealDecision(reviewTextsDir, ctx, record) === 'clear';
+    // The AP scan never flags ap-- files itself (detect-syndicated-duplicates.js skips them), so on an AP-outlet row
+    // with an AP wire url the stamp is a leftover from when the page was filed under another outlet (BRO-5289).
+    if (!ctx.syndicatedHeal && record.outletId === 'ap' && record._apContentDetected === true && isApWireUrl(record.url)) ctx.syndicatedHeal = true;
     Object.assign(ctx, syndicatedDanglingContext(reviewTextsDir, ctx, record));
   }
   const res = applyReviewFieldEdit(record, action, stamp, ctx);

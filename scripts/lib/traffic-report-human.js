@@ -22,6 +22,14 @@ const fs = require('fs');
 const path = require('path');
 
 const { CUTOVERS, cutoverWeeks, weekStart } = require('./analytics-cutovers');
+
+/** A query error in owner words: a 504/timeout is PostHog being slow, not unreachable (BRO-6358). */
+function plainProblem(p) {
+  return p.replace(/PostHog API (\d{3}):[\s\S]*/, (m, st) => (st === '504' || /execution time|time-?out/i.test(m)
+    ? 'PostHog timed out' : 'PostHog was unreachable'))
+    .replace(/^(PostHog \w+ query failed: )(The operation was aborted due to timeout|skipped: PostHog time budget[\s\S]*)$/, '$1PostHog timed out');
+}
+
 function helpers() { return require('../analyze-traffic-sources'); } // lazy: that file requires nothing from here
 
 // ---------- naming ----------
@@ -221,7 +229,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
   md.push('');
 
   if (problems.length) {
-    md.push(`> Part of the data did not load this week, so some sections may be thin: ${problems.map((p) => p.replace(/PostHog API \d{3}:[\s\S]*/, 'PostHog was unreachable')).join('; ')}.`);
+    md.push(`> Part of the data did not load this week, so some sections may be thin: ${problems.map(plainProblem).join('; ')}.`);
     md.push('');
   }
 
@@ -518,4 +526,4 @@ function utmName(k) {
   return sourceName(src) + (medium ? ` (${medium})` : '');
 }
 
-module.exports = { buildHumanSummary, pageName, sourceName, isSearch, isOwnTooling, isDirect, mergeSeries, channelName, utmName, loadShows };
+module.exports = { plainProblem, buildHumanSummary, pageName, sourceName, isSearch, isOwnTooling, isDirect, mergeSeries, channelName, utmName, loadShows };

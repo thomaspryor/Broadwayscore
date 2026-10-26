@@ -2493,7 +2493,7 @@ const crossShowFingerprints = new Map();
             d.isNonReviewReason = d.isNonReviewReason || `CV-promoted (not a review): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && !ppOwnShowEvidence && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
+        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
           // Both flags true: genuinely a review, just of a different production — wrongShow family.
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
@@ -5533,6 +5533,8 @@ showDirs.forEach(showId => {
         dtliThumb: data.dtliThumb || null,
         bwwThumb: data.bwwThumb || null,
         contentTier: data.contentTier || 'none',
+        // BRO-6369: surface the human cross-market approval so validate-data's reverse check agrees with the rebuild guard.
+        ...(data.allowCrossMarket === true ? { allowCrossMarket: true } : {}),
         // Ensemble scoring metadata (for confidence analysis + auditing)
         ...(data.ensembleData ? {
           scoreDelta: data.ensembleData.scoreDelta || 0,

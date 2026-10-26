@@ -75,6 +75,11 @@ on:
       - 'scripts/linear-decision-reply-drain.js'
       # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
       - 'scripts/codex-lane-alarm.js'
+      # BRO-6263: Codex trust ladder, tested by tests/unit/codex-trust-ladder.test.mjs.
+      - 'scripts/codex-trust-ladder.js'
+      - 'scripts/lib/codex-trust-ladder.js'
+      # BRO-6260: one-time Codex retry backfill, tested by tests/unit/codex-retry-backfill.test.mjs.
+      - 'scripts/codex-retry-backfill.js'
       # BRO-6139: its replay() is the change-safety gate, tests/unit/codex-lane-backtest-replay.test.mjs.
       - 'scripts/backtest-codex-lane-health.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
@@ -459,8 +464,6 @@ on:
       - 'scripts/scrape-theatre-reviews.js'
       # tests/unit/audience-full-snapshot.test.mjs
       - 'scripts/snapshot-audience-full.js'
-      # tests/unit/social-card-score-gate.test.mjs
-      - 'scripts/social-image-generator.js'
       # --- BRO-3202, third shape: scripts this very workflow EXECUTES (a
       # `run: node scripts/…` step in a job that runs on push) but that had no
       # push-path entry, so editing one of them alone triggered zero CI — the
@@ -566,7 +569,6 @@ on:
       - 'scripts/generate-mobile-data.js'
       - 'scripts/generate-outlet-logos.js'
       - 'scripts/generate-show-lookup.js'
-      - 'scripts/generate-social-post.js'
       - 'scripts/generate-status-page.js'
       - 'scripts/land-retry-cancelled.js'
       - 'scripts/linear-reclaim-abandoned.js'
@@ -776,10 +778,15 @@ on:
       - 'scripts/cloud-dispatch.js'
       - 'scripts/cloud-doctor.js'
       - 'scripts/new-fix-plan.js'
+      # BRO-6266: chat-answer recorder (tested by owner-decision-quiet-period.test.mjs).
+      - 'scripts/record-owner-answer.js'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
       - 'supabase/functions/**'
+      # BRO-6290: delete-account-coverage.test.mjs checks this script reads the
+      # file that holds the account deletes.
+      - 'scripts/verify-supabase-schema.js'
       # Table-parsing scrapers audited for column-count brittleness (task
       # BRO-47/#118/#1331): each calls assertTableSchema (scripts/lib/,
       # globbed above; scrape-alltime.ts also uses findColumnIndex) before
@@ -1360,11 +1367,6 @@ on:
       # node --test batch). Path-listed so a solo lib edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'tests/unit/merge-diary-shows.test.mjs'
-      # social-post-history.json rebase-race reconciliation (Notion
-      # 3a5637c5-416f-812a). Pure merge fn in scripts/lib/merge-social-post-history.js;
-      # test lives in tests/unit/ (in the node --test batch). Path-listed so a
-      # solo lib edit triggers CI (feedback_test_yml_push_path_allowlist).
-      - 'tests/unit/merge-social-post-history.test.mjs'
       # feedback-request-ledger.json rebase-race reconciliation (task #1440).
       # Pure merge fn in scripts/lib/merge-feedback-ledger.js; test lives in
       # tests/unit/ (in the node --test batch). Path-listed so a solo lib edit
@@ -2872,6 +2874,7 @@ on:
       # in the lib-test glob; path-listed so a solo edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-dispatch-dead-rate.js'
+      - 'scripts/audit-lane-trouble-rate.js'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
@@ -4604,7 +4607,7 @@ jobs:
     # before it (30953715470) cancelled this same job too.
     #
     # 5 minutes never fit the work: checkout + npm ci + a private core-data
-    # checkout + two generated manifests + TWO tsc passes + next lint + two
+    # checkout + two generated manifests + TWO tsc passes + eslint + two
     # audits. unit-tests does strictly less and already gets 10.
     # Timeouts only bound the worst case — a job that finishes in 4 minutes
     # still finishes in 4 minutes — so headroom is free and a too-tight bound
@@ -4654,7 +4657,7 @@ jobs:
         # that no CI check caught because root tsc skips scripts/. Adding
         # this gate would have failed the merge and prevented the bug.
         run: npx tsc --noEmit -p scripts/llm-scoring/tsconfig.json
-      - name: next lint
+      - name: eslint
         # if: always() so lint runs even if tsc above fails — they're independent
         # gates and either failure should surface in this job.
         # Why this gate exists: 2026-05-23 — next.config.js sets
@@ -4664,7 +4667,7 @@ jobs:
         # (no --max-warnings) matches the prior in-build behavior: errors fail,
         # existing warnings (e.g. <img> tag advisories) don't block merges.
         if: always()
-        run: npx next lint
+        run: npm run lint
       - name: Audit NFT-excluded runtime reads
         # if: always() so this runs even if tsc/lint fail above — independent gate.
         # Why this gate exists: 2026-05-23 — commit e2154a1b23 added data/cast/**
@@ -4958,6 +4961,13 @@ jobs:
         # Advisory first (CLAUDE.md section 19).
         continue-on-error: true
         run: node scripts/resize-show-images.js --check
+
+      - name: Show image list variants (BRO-6277, advisory)
+        # Every poster/thumbnail original wider than its variant width needs
+        # public/images/shows/<id>/sm/<file>.webp (list/card srcset). Fix with
+        # `node scripts/resize-show-images.js --variants`. Advisory first (section 19).
+        continue-on-error: true
+        run: node scripts/resize-show-images.js --check-variants
 
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)

@@ -54,7 +54,7 @@ const SCRIPT_PATH = path.join(__dirname, 'push-with-retry.sh');
  * @param {boolean} [opts.reconcileMergedJson] set PUSH_RECONCILE_MERGED_JSON=1
  *                                  for this call. Turn it ON when the commit
  *                                  touches a union-merged file (commercial*.json,
- *                                  diary-shows.json, social-post-history.json):
+ *                                  diary-shows.json):
  *                                  `rebase -X theirs` resolves those in favour of
  *                                  the local side WITHOUT conflicting, so the
  *                                  per-slug merger never runs and a concurrent

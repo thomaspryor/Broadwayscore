@@ -14,7 +14,7 @@ export function isThinShow(show: { slug?: string; id?: string; status?: string; 
 
 export function isThinCriticPage(critic: { reviewCount?: number }, slug: string): boolean {
   if (!thinRulesEnabled()) return false;
-  return isThinCritic({ reviewCount: critic.reviewCount, hasSearchLanding: hasSearchLanding(`/critics/${slug}`) });
+  return isThinCritic({ reviewCount: critic.reviewCount, hasSearchLanding: hasSearchLanding(`/critics/${slug}`), hasGscImpressions: hasGscImpressions(`/critics/${slug}`) });
 }
 
 /** The one show-indexability predicate: the tour rule plus the thin rule. Page robots and the sitemap both call it. */

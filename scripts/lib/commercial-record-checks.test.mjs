@@ -500,3 +500,23 @@ test('a plan that writes a record with no designation fails its touched-record c
   assert.ok(touchedRecordProblems({ shows: { hamilton: { ...noLabel, designation: null } } }, shows, ['hamilton'], {}).some(e => /invalid designation "missing"/.test(e)));
   assert.ok(!touchedRecordProblems({ shows: { hamilton: ok } }, shows, ['hamilton'], {}).some(e => /invalid designation/.test(e)));
 });
+
+test('ourEstimateRangePct: shape, rounding to 5 and no use on a recouped show (BRO-6245)', () => {
+  const e = (rec) => commercialRecordErrors('k', { designation: 'Fizzle', recouped: false, designationBasis: 'reported-loss', ...rec }, {})
+    .filter((m) => m.includes('ourEstimateRangePct')).length;
+  assert.equal(e({ ourEstimateRangePct: [10, 30] }), 0);
+  assert.equal(e({ ourEstimateRangePct: [10] }), 1);
+  assert.equal(e({ ourEstimateRangePct: [30, 10] }), 1);
+  assert.equal(e({ ourEstimateRangePct: [12, 30] }), 1);
+  assert.equal(e({ ourEstimateRangePct: [10, 30], analystRecoupPct: [10, 20] }), 1);
+  assert.equal(e({ ourEstimateRangePct: [10, 30], estimatedRecoupmentPct: [10, 20] }), 1);
+  assert.equal(e({ designation: 'Windfall', recouped: true, recoupedDate: '2024-01', ourEstimateRangePct: [100, 120] }), 1);
+});
+
+test('ourEstimateRangePct sizes a model-estimate Fizzle/Flop like the analyst range (BRO-6245)', () => {
+  const closed = { showRecord: { slug: 'k', status: 'closed' } };
+  const w = (rec) => commercialRecordWarnings('k', { recouped: false, designationBasis: 'model-estimate', ...rec }, closed)
+    .filter((m) => m.includes('% returned (Fizzle is')).length;
+  assert.equal(w({ designation: 'Flop', ourEstimateRangePct: [30, 50] }), 1);
+  assert.equal(w({ designation: 'Fizzle', ourEstimateRangePct: [30, 50] }), 0);
+});

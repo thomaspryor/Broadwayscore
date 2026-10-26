@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-25T23:51:42.053Z",
+  "generatedAt": "2026-10-26T21:05:15.737Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -22,11 +22,6 @@
       "id": "surinderella-off-west-end-2026",
       "title": "Surinderella",
       "openingDate": "2026-10-21"
-    },
-    {
-      "id": "lincoln-in-the-bardo-off-broadway-2026",
-      "title": "Lincoln in the Bardo",
-      "openingDate": "2026-10-19"
     },
     {
       "id": "king-of-the-yees-off-broadway-2026",
@@ -74,11 +69,6 @@
       "openingDate": "2026-10-24"
     },
     {
-      "id": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "openingDate": "2026-10-19"
-    },
-    {
       "id": "garry-starr-classic-penguins-off-west-end-2026",
       "title": "Garry Starr Classic Penguins",
       "openingDate": "2026-10-23"
@@ -94,6 +84,11 @@
       "openingDate": "2026-10-20"
     },
     {
+      "id": "hospital-hour-off-broadway-2026",
+      "title": "Hospital Hour",
+      "openingDate": "2026-10-26"
+    },
+    {
       "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
       "title": "Queeney Todd: The Demon Bottom of Fleet Street",
       "openingDate": "2026-10-22"
@@ -104,19 +99,19 @@
       "openingDate": "2026-10-23"
     },
     {
-      "id": "women-who-eat-off-broadway-2026",
-      "title": "Women Who Eat",
+      "id": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
       "openingDate": "2026-10-22"
     },
     {
-      "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
-      "title": "The Nicest Body Ever Seen Around These Parts",
-      "openingDate": "2026-10-19"
+      "id": "women-who-eat-off-broadway-2026",
+      "title": "Women Who Eat",
+      "openingDate": "2026-10-22"
     }
   ],
   "skipped": [
     {
-      "showId": "hospital-hour-off-broadway-2026",
+      "showId": "i-became-we-off-broadway-2026",
       "reason": "no data/review-texts directory for this show"
     }
   ],
@@ -125,6 +120,10 @@
     {
       "outletId": "thereviewshub",
       "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
       "outletId": "front-row-center",
@@ -151,9 +150,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 684,
+  "itemsScanned": 689,
   "matchedGaps": 3,
-  "possibleGaps": 2,
+  "possibleGaps": 1,
   "gaps": [
     {
       "showId": "machine-learning-off-broadway-2026",
@@ -168,28 +167,19 @@
       "showId": "phyl-off-broadway-2026",
       "title": "Phyl",
       "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/23/phyl-mint-theater-review/",
-      "headline": "Off-Broadway Review: PHYL (Mint Theater Company at Theatre Row)",
-      "publishDate": "2026-10-23"
+      "outletId": "this-week-in-new-york",
+      "url": "https://twi-ny.com/2026/10/26/phyl-cicely-hamilton-mint-theater/",
+      "headline": "SICK OF THE PROPER ATTITUDE: THE MINT’S PHYL AT THEATRE ROW",
+      "publishDate": "2026-10-26"
     },
     {
-      "showId": "phyl-off-broadway-2026",
-      "title": "Phyl",
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
       "level": "matched",
-      "outletId": "off-off-online",
-      "url": "https://www.offoffonline.com/offoffonline/2026/10/19/phyl",
-      "headline": "Phyl",
-      "publishDate": "2026-10-25"
-    },
-    {
-      "showId": "copperfield-the-new-musical-off-broadway-2026",
-      "title": "Copperfield! The New Musical",
-      "level": "possible",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
-      "headline": "The Curious Case of Benjamin Button *****",
-      "publishDate": "2026-10-21"
+      "outletId": "adventuresintheatreland",
+      "url": "https://www.adventuresintheatreland.com/post/the-pianist-park-theatre",
+      "headline": "The Pianist | Park Theatre",
+      "publishDate": "2026-10-26"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",

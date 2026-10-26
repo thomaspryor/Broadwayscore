@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import EmailTomLink from '@/components/EmailTomLink';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 
 interface FooterMarketContentProps {
@@ -169,6 +170,10 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
             Give Feedback
           </Link>
         </div>
+        <p className="mt-3 text-sm text-gray-400">
+          Questions, ideas, requests?{' '}
+          <EmailTomLink className="text-brand hover:text-brand-hover underline" />
+        </p>
       </div>
     </>
   );

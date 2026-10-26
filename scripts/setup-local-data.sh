@@ -171,7 +171,7 @@ fi
 SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json)
 
 # Files that should be regular copies (read-only for most purposes)
-COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json)
+COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json season-payback-history.json)
 
 # BRO-5217: a cloud session gets plain COPIES of SYMLINK_FILES instead. The
 # clone lives outside the session's working directory, so every Bash command

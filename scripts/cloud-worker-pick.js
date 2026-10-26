@@ -140,7 +140,7 @@ async function firstUnpaused(queue, nowMs, historySkipped, breakerSkip = () => f
       const nodes = pre || (full && full.comments ? full.comments.nodes : []);
       // Both reads cap at 50 comments; past that the latest report may be cut off.
       if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
-      reason = historySkipReason(queue[i].issue, nodes, nowMs);
+      reason = historySkipReason(queue[i].issue, nodes, nowMs, { cloudLane: !process.argv.includes('--codex') });
       // Comments fetched just now: the per-card cap can apply only here.
       if (!reason && !pre && breakerSkip(queue[i], nodes)) continue;
     } catch (err) {
@@ -201,8 +201,11 @@ async function main() {
     // --codex (the Codex runner, BRO-5287): drop cards an unattended Codex run cannot finish
     // (Mac-only, too broad) and, within each tier, put the best-suited (small, one-test VERIFY) first.
     if (process.argv.includes('--codex')) {
-      const { codexCardFit } = require('./lib/codex-runner.js');
-      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes })]));
+      const { codexCardFit, codexLadderAccess } = require('./lib/codex-runner.js');
+      // The trust ladder (BRO-6303), read once per pick from origin/main: min score, cloud data route, review-texts.
+      const ladder = codexLadderAccess();
+      console.error(`[cloud-worker-pick] codex ladder: ${ladder.mode} (${ladder.source}) minScore=${ladder.minScore} dataRouteLocked=${ladder.cloudDataRouteLocked} reviewTextsLocked=${ladder.reviewTextsLocked}`);
+      const fit = new Map(rest.map((q) => [q, codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyCommand(q.issue), comments: q.issue.comments && q.issue.comments.nodes, ladder })]));
       for (const [q, f] of fit) if (f.skip) console.error(`[cloud-worker-pick] codex skip ${q.issue.identifier}: ${f.skip} (${f.why.join(',')})`);
       const tierRank = new Map(rest.map((q) => [q.tier, 0]));
       [...tierRank.keys()].forEach((t, i) => tierRank.set(t, i)); // queue order already goes P0/P1, P2, P3

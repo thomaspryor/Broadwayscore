@@ -93,6 +93,7 @@ const FEEDBACK_EDITABLE_FIELDS = {
     'isEstimate', 'weeklyRunningCostSource', 'costMethodology',
     'needsLossEvidence', 'designationBasis',
     'estimatedRecoupmentPct', 'estimatedRecoupmentSource', 'estimatedRecoupmentDate',
+    'ourEstimateRangePct',
     'weeklyRunningCostBasis', 'commercialConversion',
     // capitalizationBasis: 'maximum' (a Form D offering maximum or an "up to"
     // figure, printed "up to $X"), 'sold' or 'reported' (BRO-5660; values in

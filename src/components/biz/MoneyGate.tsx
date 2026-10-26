@@ -14,6 +14,7 @@
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 import { useAuth } from '@/contexts/AuthContext';
 import { featureFlags } from '@/config/feature-flags';
 import {
@@ -22,13 +23,16 @@ import {
   MONEY_ROLES,
   MONEY_UNLOCKED_EVENT,
   isMoneyUnlocked,
-  isValidMoneyEmail,
   markMoneyUnlocked,
   moneyGatePaywallSchema,
+  moneyUnlockReason,
   submitMoneySignup,
+  retryPendingMoneySignups,
   unlockForExistingReader,
+  type MoneyBypassReason,
   type MoneyRole,
 } from '@/lib/money-gate';
+import { MONEY_EMAIL_PROBLEM_MESSAGES, moneyEmailProblem, suggestMoneyEmail } from '@/lib/money-email';
 
 interface MoneyGateProps {
   children: ReactNode;
@@ -45,26 +49,46 @@ interface MoneyGateProps {
 // the lock flash for a frame.
 const useIsoLayoutEffect = typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
+// money_gate_bypassed counts readers who see the money data without the gate.
+// Like money_gate_shown it fires when the content scrolls into view, and once
+// per page view: a page with several gates, or a sign-in after a load-time
+// unlock, must not count twice. The flag resets when the page's last gate unmounts.
+type Bypass = { reason: MoneyBypassReason; when: 'load' | 'midvisit' };
+let mountedGates = 0;
+let bypassTracked = false;
+function trackMoneyBypass(page: MoneyGateProps['page'], { reason, when }: Bypass) {
+  if (bypassTracked) return;
+  bypassTracked = true;
+  track('money_gate_bypassed', { page, reason, when });
+  gaEvent('money_gate_bypassed', { page, reason, when });
+  captureEvent('money_gate_bypassed', { page, reason, when, path: window.location.pathname });
+}
+
 export default function MoneyGate({ children, page, preview = 'tall', schema = true }: MoneyGateProps) {
   // null until mounted: the server render is the locked markup, and CSS
   // (driven by the boot script's <html> attribute) decides what shows.
   const [unlocked, setUnlocked] = useState<boolean | null>(null);
   const [justUnlocked, setJustUnlocked] = useState(false);
+  const [bypass, setBypass] = useState<Bypass | null>(null);
   const lockRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
   const { isAuthenticated } = useAuth();
 
   useIsoLayoutEffect(() => {
-    const unlockedNow = isMoneyUnlocked();
+    const reason = moneyUnlockReason();
+    const unlockedNow = reason !== null;
     // A bypass unlock is page-only: after sign-out and a client navigation the
     // attribute would outlive it and leave the content shown but inert.
     if (unlockedNow) document.documentElement.setAttribute('data-money-unlocked', '');
     else document.documentElement.removeAttribute('data-money-unlocked');
     setUnlocked(unlockedNow);
+    if (reason) setBypass({ reason, when: 'load' });
     const onUnlock = () => setUnlocked(true);
     // Joining the main list elsewhere on the page (footer, header) counts too.
-    const onSubscribed = () => { if (isMoneyUnlocked()) unlockForExistingReader(); };
+    const onSubscribed = () => {
+      if (isMoneyUnlocked() && unlockForExistingReader()) setBypass({ reason: 'subscriber', when: 'midvisit' });
+    };
     window.addEventListener(MONEY_UNLOCKED_EVENT, onUnlock);
     window.addEventListener('bsc_subscribed', onSubscribed);
     return () => {
@@ -73,9 +97,24 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
     };
   }, []);
 
+  // A sign-up whose save failed on an earlier page view is retried here (BRO-6289).
+  useEffect(() => {
+    retryPendingMoneySignups().then(({ stored, remaining }) => {
+      if (stored) captureEvent('money_gate_signup_retried', { stored, remaining });
+    }).catch(() => { /* stays queued for the next page view */ });
+  }, []);
+
+  useEffect(() => {
+    mountedGates += 1;
+    return () => {
+      mountedGates -= 1;
+      if (mountedGates === 0) bypassTracked = false;
+    };
+  }, []);
+
   // Signed in (on load or mid-visit): unlock without asking for an email.
   useEffect(() => {
-    if (isAuthenticated) unlockForExistingReader();
+    if (isAuthenticated && unlockForExistingReader()) setBypass({ reason: 'account', when: 'midvisit' });
   }, [isAuthenticated]);
 
   // Locked content is blurred: keep keyboard focus and screen readers out of
@@ -93,6 +132,7 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
       if (document.documentElement.hasAttribute('data-money-unlocked')) { io.disconnect(); return; }
       if (entries.some((e) => e.isIntersecting)) {
         track('money_gate_shown', { page });
+        gaEvent('money_gate_shown', { page });
         captureEvent('money_gate_shown', { page, path: window.location.pathname });
         io.disconnect();
       }
@@ -100,6 +140,18 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
     io.observe(el);
     return () => io.disconnect();
   }, [unlocked, page]);
+
+  useEffect(() => {
+    if (!bypass || !contentRef.current) return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        trackMoneyBypass(page, bypass);
+        io.disconnect();
+      }
+    });
+    io.observe(contentRef.current);
+    return () => io.disconnect();
+  }, [bypass, page]);
 
   // The submit button disappears with the card: move focus to the confirmation.
   useEffect(() => {
@@ -144,28 +196,44 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
   const [role, setRole] = useState<MoneyRole | ''>('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  // A likely typo (gmial.com): offered once, never forced. 'Keep mine' skips it.
+  const [suggestion, setSuggestion] = useState<string | null>(null);
+  const [keepMine, setKeepMine] = useState('');
   const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!isValidMoneyEmail(email)) {
-      setError('Please enter a valid email address.');
+    setSuggestion(null);
+    const problem = moneyEmailProblem(email);
+    if (problem) {
+      setError(MONEY_EMAIL_PROBLEM_MESSAGES[problem]);
+      captureEvent('money_gate_email_refused', { page, reason: problem });
+      return;
+    }
+    const fix = email.trim() === keepMine ? null : suggestMoneyEmail(email);
+    if (fix) {
+      setKeepMine(email.trim()); // offered once: pressing Unlock again goes ahead
+      setSuggestion(fix);
       return;
     }
     setSubmitting(true);
     const result = await submitMoneySignup(email, role, `${page}:${window.location.pathname}`);
     setSubmitting(false);
-    if (result === 'invalid') {
-      setError('Please enter a valid email address.');
+    if (result === 'invalid' || result === 'no_mail_server') {
+      const reason = result === 'invalid' ? 'format' : result;
+      setError(MONEY_EMAIL_PROBLEM_MESSAGES[reason]);
+      captureEvent('money_gate_email_refused', { page, reason });
       return;
     }
     const props = { page, role: role || 'none', stored: result === 'stored' };
     track('money_gate_unlocked', props);
+    gaEvent('money_gate_unlocked', { page, role: props.role, stored: String(props.stored) });
     captureEvent('money_gate_unlocked', { ...props, path: window.location.pathname });
     markMoneyUnlocked();
     onUnlocked();
-  }, [email, role, page, onUnlocked]);
+  }, [email, role, page, onUnlocked, keepMine]);
 
   return (
     <div className="money-gate-card card-premium mx-auto w-full max-w-lg rounded-2xl border border-brand/25 bg-surface-elevated p-5 shadow-2xl sm:p-7">
@@ -180,7 +248,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
       </div>
       <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Unlock the Money Scorecard</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-300">
-        Show-by-show capitalization, recoupment and box office for every Broadway show.
+        Always free. Show-by-show capitalization, recoupment and box office for every Broadway show.
         One sign&#8209;up unlocks every page.
       </p>
 
@@ -188,12 +256,13 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         <label htmlFor={`${id}-email`} className="sr-only">Email address</label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <input
+            ref={inputRef}
             id={`${id}-email`}
             type="email"
             inputMode="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); setSuggestion(null); setError(''); }}
             placeholder="you@example.com"
             required
             aria-invalid={error ? true : undefined}
@@ -233,6 +302,27 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
           </div>
         </fieldset>
 
+        {suggestion && (
+          <div role="status" className="money-gate-suggestion mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-score-tepid/30 bg-score-tepid/10 px-3 py-2 text-xs text-gray-200">
+            <span className="min-w-0 break-all">Did you mean <strong className="text-white">{suggestion}</strong>?</span>
+            <span className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setEmail(suggestion); setSuggestion(null); inputRef.current?.focus(); }}
+                className="min-h-[36px] rounded-full border border-brand bg-brand/10 px-3 font-medium text-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                Use it
+              </button>
+              <button
+                type="button"
+                onClick={() => { setKeepMine(email.trim()); setSuggestion(null); inputRef.current?.focus(); }}
+                className="min-h-[36px] rounded-full border border-white/10 bg-white/5 px-3 font-medium text-gray-300 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                Keep mine
+              </button>
+            </span>
+          </div>
+        )}
         {error && (
           <p id={`${id}-error`} role="alert" className="mt-3 text-xs text-score-skip">{error}</p>
         )}

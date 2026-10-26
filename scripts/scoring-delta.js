@@ -531,6 +531,7 @@ function printCannotAutoVerifyBanner(rebuildLoopTouch) {
   console.log('     explainOutletDomainMismatch over the full corpus.)');
   console.log('  3. Paste the corpus-scan count to the user before merging — this tool\'s');
   console.log('     flip count above does not cover this change.');
+  console.log('  Direct before/after rebuild: node scripts/cloud-run-script.js --review-texts --timeout=55 scripts/rebuild-inclusion-diff.js --base=<40-char sha> --head=<40-char sha>');
   console.log('');
   console.log('Note: this check is anchored on logExclusion(...) call sites specifically —');
   console.log('it cannot see an inclusion-affecting change with NO logExclusion(...) call');

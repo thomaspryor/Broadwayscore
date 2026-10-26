@@ -1,0 +1,73 @@
+{
+  "issueNumber": "bro-6336-d",
+  "planId": "7f23b02f-13fd-4400-bed9-1ecac5d397e7",
+  "status": "partial",
+  "createdAt": "2026-10-26T14:37:28.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Probe: no-op check whether live capitalization already equals the figures (BRO-6336)",
+    "steps": [
+      "commercial.json: king-lear-2019.capitalization",
+      "commercial.json: king-lear-2019.capitalizationSource",
+      "commercial.json: king-lear-2019.sources",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalization",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalizationSource",
+      "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.sources",
+      "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalization",
+      "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalizationSource",
+      "commercial.json: midnight-in-the-garden-of-good-and-evil.sources"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "king-lear-2019",
+        "field": "capitalization",
+        "oldValue": 4900000,
+        "newValue": 4900000,
+        "description": "commercial.json: king-lear-2019.capitalization (probe: oldValue=newValue)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "frankie-and-johnny-in-the-clair-de-lune-2019",
+        "field": "capitalization",
+        "oldValue": 4100000,
+        "newValue": 4100000,
+        "description": "commercial.json: frankie-and-johnny-in-the-clair-de-lune-2019.capitalization (probe: oldValue=newValue)"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "midnight-in-the-garden-of-good-and-evil",
+        "field": "capitalization",
+        "oldValue": 25000000,
+        "newValue": 25000000,
+        "description": "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalization (probe: oldValue=newValue)"
+      }
+    ]
+  },
+  "executedAt": "2026-10-26T18:10:45.799Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for midnight-in-the-garden-of-good-and-evil"
+    }
+  ],
+  "executedIn": "ci"
+}

@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-25T23:39:13.532Z",
+  "lastChecked": "2026-10-26T07:50:34.808Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -19,12 +19,12 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.6% scored (32991/33470)"
+      "message": "98.4% scored (33184/33736)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "25 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+      "message": "24 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1703 outlet(s), 61659 review(s)"
+      "message": "No broken-extractor signature in 1703 outlet(s), 61729 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1703 outlet(s), 61659 review(s)"
+      "message": "No broken-extractor signature in 1703 outlet(s), 61729 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -69,7 +69,7 @@
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 6d ago)"
+      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 7d ago)"
     }
   ]
 }

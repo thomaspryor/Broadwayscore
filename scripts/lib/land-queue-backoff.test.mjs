@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep, MAX_INSPECT } = require('./land-queue-backoff.js');
+const { listedRunRefusal, pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep, MAX_INSPECT } = require('./land-queue-backoff.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
 const NOW = Date.parse('2026-10-05T02:00:00Z');
@@ -63,6 +63,13 @@ test('supersededByNewerRun: a refused or re-pushed newer run on the branch wins'
   assert.equal(supersededByNewerRun(cand, undefined), false);
 });
 
+test('a dozen older dead candidates no longer hide a parked one (BRO-6276)', () => {
+  const cancelledRuns = Array.from({ length: 13 }, (_, i) => run({ id: i + 1, created_at: at(200 - i) }));
+  const d = decideSweep({ cancelledRuns, refs: refsFor(cancelledRuns), now: NOW });
+  assert.equal(d.candidates.at(-1).id, 13);
+  assert.ok(MAX_INSPECT >= 33, 'covers the 33 candidates seen live on 2026-10-26');
+});
+
 test('decideSweep caps the inspected candidates', () => {
   const cancelledRuns = Array.from({ length: MAX_INSPECT + 3 }, (_, i) => run({ id: i + 1, created_at: at(100 - i) }));
   const d = decideSweep({ cancelledRuns, refs: refsFor(cancelledRuns), now: NOW });
@@ -98,6 +105,10 @@ test('wiring (BRO-5112): per-branch Land group, mutex around land.js, sweep with
   assert.match(js, /supersededByNewerRun\(/);
   // the retry decision uses the fresh per-branch run, not the possibly stale listing
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
+  // BRO-6276: dead candidates are refused on their own jobs before the per-branch
+  // lookup, and listing reads are shared across candidates
+  assert.match(js, /listedRunRefusal\(run, \{ jobsOf, refs \}\)[\s\S]*?if \(refusal\)[\s\S]*?readLatestLandRun\(run\.head_branch/);
+  assert.match(js, /read: readListing/);
 });
 
 // BRO-6015: walk a sweep's eligible candidates through sweepStep, as runSweep does.
@@ -134,4 +145,23 @@ test('sweepStep: at most one eviction re-run per sweep', () => {
   // room not read yet when the second eviction comes up: it skips, never stopping the scan
   assert.equal(walk(['E', 'E', 'P'], 0), 'rerun,skip,stop');
   assert.equal(walk(['E', 'E', 'P', 'P'], 1), 'rerun,skip,resume,stop');
+});
+
+// BRO-6276: dead candidates are refused on one jobs read each, so only the parked
+// run would pay for the per-branch lookup.
+test('listedRunRefusal refuses dead runs on their jobs and keeps the parked one', () => {
+  const landJob = (steps) => [{ name: 'Checks', conclusion: 'success' }, { name: 'Land', conclusion: 'cancelled', steps }];
+  const started = landJob([{ name: 'Set up job', conclusion: 'success' }, { name: 'Rebase', conclusion: 'success' }, { name: 'Land', conclusion: 'cancelled' }]);
+  const failedChecks = [{ name: 'Checks', conclusion: 'failure' }, { name: 'Land', conclusion: 'skipped', steps: [] }];
+  const parked = landJob([{ name: 'Set up job', conclusion: 'success' }, { name: 'Admit to the landing queue', conclusion: 'cancelled' }, { name: 'Complete job', conclusion: 'success' }]);
+  const dead = Array.from({ length: 12 }, (_, i) => run({ id: 100 + i, created_at: at(30) }));
+  const live = run({ id: 999, created_at: at(30) });
+  const all = [...dead, live];
+  const calls = [];
+  const jobsOf = (id) => { calls.push(id); return id === 999 ? parked : (id % 2 ? started : failedChecks); };
+  const refs = refsFor(all);
+  const out = all.map((r) => listedRunRefusal(r, { jobsOf, refs }));
+  assert.equal(out.filter(Boolean).length, 12);
+  assert.equal(out[12], null);
+  assert.deepEqual(calls, all.map((r) => r.id));
 });

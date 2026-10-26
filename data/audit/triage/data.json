@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-25T23:39:13.533Z",
+  "lastChecked": "2026-10-26T07:50:34.809Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -63,8 +63,8 @@
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "pass",
-      "message": "Every discovered review URL for live shows was fetched"
+      "status": "warn",
+      "message": "2 discovered review URL(s) across 1 live show(s) were never fetched. First: the-notebook-tour-2025 (2 stranded)"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
@@ -84,17 +84,17 @@
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "68 review(s) with no usable text, 57 rejected although verified as a review, 19 never scored, 28 with a blocked URL (0 published on the site), across 459 current shows"
+      "message": "72 review(s) with no usable text, 58 rejected although verified as a review, 26 never scored, 28 with a blocked URL (0 published on the site), across 460 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31234 checked"
+      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31502 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "65 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
+      "message": "66 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -104,12 +104,12 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 580 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 579 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (1 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored)"
+      "message": "1 discovered review(s) not reaching the composite score (1 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored); 1 newer still in flight"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",

@@ -136,7 +136,7 @@ test('a season key samples that season only, even outside WE_SEASONS', () => {
   assert.deepEqual(fc.parseCohortKey('we-historical-2024-2025'), { base: 'we-historical', season: '2024-2025' });
   // Review-led TR rows are gated by the season audit, so the season sample draws them too (BRO-5851).
   assert.deepEqual(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).ids.map((r) => r.id).sort(), ['a', 'd']);
-  assert.match(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).label, /2024-2025 \(we-historical:wos \+ we-historical:tr\)/);
+  assert.match(fc.drawSample(shows, 'we-historical-2024-2025', 10, 1).label, /2024-2025 \(we-historical:wos \+ we-historical:tr \+ we-historical:olt\)/);
   // The cross-season cohort is unchanged: WOS rows in WE_SEASONS only.
   assert.deepEqual(fc.cohortRows(shows, 'we-historical').map((r) => r.id), ['b']);
   assert.throws(() => fc.parseCohortKey('nope'));

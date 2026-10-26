@@ -355,24 +355,6 @@
       "kind": "assignment",
       "snippet": "if (show.venue) entry.venue = show.venue;"
     },
-    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },": {
-      "file": "scripts/generate-social-post.js",
-      "line": 381,
-      "kind": "literal",
-      "snippet": "imageData: { title: pick.title, score: pick.score, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id },"
-    },
-    "scripts/generate-social-post.js::imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id ": {
-      "file": "scripts/generate-social-post.js",
-      "line": 346,
-      "kind": "literal",
-      "snippet": "imageData: { title: pick.title, score: pick.criticScore, reviewCount: pick.reviewCount, tier1And2Count: pick.tier1And2Count, venue: pick.venue, showId: pick.id "
-    },
-    "scripts/generate-social-post.js::imageData: { title: show.title, score, reviewCount, tier1And2Count: r?.tier1And2Count, venue: show.venue, showId: show.id },": {
-      "file": "scripts/generate-social-post.js",
-      "line": 449,
-      "kind": "literal",
-      "snippet": "imageData: { title: show.title, score, reviewCount, tier1And2Count: r?.tier1And2Count, venue: show.venue, showId: show.id },"
-    },
     "scripts/lib/aggregator-candidate-extract.js::if (!chosen || preferLast) chosen = { venue: cleanVenue(m[1]), index: m.index };": {
       "file": "scripts/lib/aggregator-candidate-extract.js",
       "line": 84,
@@ -636,12 +618,6 @@
       "line": 500,
       "kind": "literal",
       "snippet": "venue: show.venue,"
-    },
-    "scripts/social-infographics/gather-post-data.js::venue: master.venue,": {
-      "file": "scripts/social-infographics/gather-post-data.js",
-      "line": 60,
-      "kind": "literal",
-      "snippet": "venue: master.venue,"
     },
     "scripts/sweep-we-aggregators.js::venue: show.venue,": {
       "file": "scripts/sweep-we-aggregators.js",

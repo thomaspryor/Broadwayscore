@@ -1,11 +1,16 @@
 {
-  "generatedAt": "2026-10-26T00:04:52.296Z",
-  "bannerText": "64/214 Done(14d) verified on main · 3 FAILED · 0 vacuous · 14 stuck-but-done — PARTIAL RUN: 152 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-26T07:57:54.445Z",
+  "bannerText": "93/231 Done(14d) verified on main · 6 FAILED · 2 vacuous · 14 stuck-but-done — PARTIAL RUN: 134 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-4776 — P3: 8 tour runtimes copied from the Broadway parent disagree with the tour's own page by 5 to 10 minutes",
       "detail": "not ok: every national tour has a synopsis, or is a documented gap | first failure: tours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-music",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4776/p3-8-tour-runtimes-copied-from-the-broadway-parent-disagree-with-the"
+    },
+    {
+      "title": "FAILED BRO-6226 — Critics' Take 'Based on N reviews' overcounts vs the on-site review count (Benjamin Button OB shows 27, score uses 23)",
+      "detail": "[audit-critic-consensus-contamination] 1289 fail, 0 warn [fail] 1536-west-end-2026 REVIEWCOUNT_DRIFT:consensus=19,actual=0,diff=19 text: Ava Pickett's debut play earns rave review…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6226/critics-take-based-on-n-reviews-overcounts-vs-the-on-site-review-count"
     },
     {
       "title": "FAILED BRO-6188 — Recoupment model: pre-2020 musicals with a known small capitalization read far too negative (Next to Normal -218% vs recouped); eraIndex for musicals trade-off",
@@ -18,30 +23,25 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6184/land-gate-merged-tree-tests-killed-run-blocks-without-consulting"
     },
     {
-      "title": "STUCK BRO-5289 — Recover AP's own verdict for 3 shows whose AP review was filed under WSJ (resolveOutletFromUrl: AP wire ids)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5289/recover-aps-own-verdict-for-3-shows-whose-ap-review-was-filed-under"
+      "title": "FAILED BRO-6170 — Web My Shows: add Stats and Feed (Timeline + Photo wall) tabs to match the iOS app",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/my-shows-stats-feed.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6170/web-my-shows-add-stats-and-feed-timeline-photo-wall-tabs-to-match-the"
     },
     {
-      "title": "STUCK BRO-5249 — BSC Daily: Quality: corpus drift",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5249/bsc-daily-quality-corpus-drift"
+      "title": "FAILED BRO-6166 — Morning digest Review queue lists cards that are not for the owner: the 👑 OWNER marker matches any mention of the coordinator tab",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/in-review-backlog.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6166/morning-digest-review-queue-lists-cards-that-are-not-for-the-owner-the"
     },
     {
-      "title": "STUCK BRO-5088 — Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "title": "STUCK BRO-4847 — UX audit: The affordance for adding a show to the watchlist is inconsistent between views: it's a large tappable card in",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5088/fact-check-1-follow-up-unsourced-director-rows-steinberg-as-broadway"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4847/ux-audit-the-affordance-for-adding-a-show-to-the-watchlist-is"
     },
     {
-      "title": "STUCK BRO-5076 — T1/T2 silent gap on near-opening show: Good Time Charlie — talkinbroadway",
+      "title": "STUCK BRO-3485 — P2: done-evidence sweep still accuses a card whose test was MOVED, not deleted",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5076/t1t2-silent-gap-on-near-opening-show-good-time-charlie-talkinbroadway"
-    },
-    {
-      "title": "STUCK BRO-4695 — BSC Daily: Data quality: cross-outlet attribution drift",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4695/bsc-daily-data-quality-cross-outlet-attribution-drift"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3485/p2-done-evidence-sweep-still-accuses-a-card-whose-test-was-moved-not"
     }
   ],
-  "moreCount": 9
+  "moreCount": 14
 }

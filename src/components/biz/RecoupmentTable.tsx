@@ -6,7 +6,10 @@
  */
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import { openRowLink } from '@/lib/row-click';
 import { formatCapitalization } from '@/lib/biz-format';
 
 interface RecoupmentShow {
@@ -62,6 +65,7 @@ function SortIcon({ active, direction }: { active: boolean; direction: SortDirec
 }
 
 export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
+  const router = useRouter();
   const [sortColumn, setSortColumn] = useState<SortColumn>('date');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
@@ -154,14 +158,16 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
             {sortedShows.map((show) => (
               <tr
                 key={show.slug}
-                className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                className="group border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer"
+                onClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
+                onAuxClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
               >
                 <td className="py-3 px-4">
                   <Link
                     href={`/show/${show.slug}`}
-                    className="font-medium text-white hover:text-brand transition-colors"
+                    className="font-medium text-white group-hover:text-brand transition-colors"
                   >
-                    {show.title}
+                    <RowLinkArrow label={show.title} />
                   </Link>
                 </td>
                 <td className="py-3 px-4 text-gray-400 hidden sm:table-cell">

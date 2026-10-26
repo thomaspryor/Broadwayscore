@@ -11,9 +11,14 @@ interface AnalystEstimateCreditProps {
   url: string | null | undefined;
   compact?: boolean;
   withModel?: boolean;
+  /** Our own range, no analyst figure behind it (ourEstimateRangePct): credited "Our estimate", nothing else. */
+  ours?: boolean;
 }
 
-export default function AnalystEstimateCredit({ asOf, url, compact = false, withModel = false }: AnalystEstimateCreditProps) {
+export default function AnalystEstimateCredit({ asOf, url, compact = false, withModel = false, ours = false }: AnalystEstimateCreditProps) {
+  if (ours) {
+    return <p className={compact ? 'text-[10px] text-gray-500 mt-1' : 'text-[11px] text-gray-500'} data-testid="analyst-credit">Our estimate</p>;
+  }
   const when = formatEstimateDate(asOf, compact ? 'short' : 'long');
   // The date never splits; a narrow table cell breaks before it instead of
   // clipping it (a one-line credit overflowed its 144px cell at 360-414px).

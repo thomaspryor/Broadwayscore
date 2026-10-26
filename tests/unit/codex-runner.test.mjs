@@ -3,15 +3,33 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import fs, { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
+// BRO-6303: codexCardFit's defaults read the committed trust ladder. Pin them to the pre-ladder
+// baseline (the kill switch) so an owner flipping the ladder live never changes these tests; the
+// ladder cases below pass their access explicitly, built by the real L.access().
+process.env.CODEX_TRUST_LADDER_DISABLED = '1';
 const r = require('../../scripts/lib/codex-runner.js');
+const L = require('../../scripts/lib/codex-trust-ladder.js');
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+// Ladder access as the runner gets it: L.access() over a state file.
+const ladderOf = (unlocked, mode = 'live') => {
+  const st = L.seedState('2026-10-26T00:00:00.000Z');
+  for (const k of Object.keys(st.rungs)) st.rungs[k].unlocked = unlocked.includes(k);
+  return L.access({ state: { ...st, mode }, owner: L.seedOwner(), env: {} });
+};
+const LADDERS = [
+  ['baseline (shadow)', ladderOf(['cloud-data-route', 'review-texts-ro'], 'shadow'), -6],
+  ['live, larger-cards locked', ladderOf(['cloud-data-route', 'review-texts-ro']), -6],
+  ['live, larger-cards earned', ladderOf(['larger-cards', 'cloud-data-route', 'review-texts-ro']), -9],
+];
 
 const AUTH = JSON.stringify({ auth_mode: 'chatgpt', last_refresh: '2026-10-05T22:26:32Z', tokens: { id_token: 'x' } });
 
@@ -172,7 +190,8 @@ test('stopReason: time, weekly cap, reject streak, Done refusal', () => {
 test('codexBouncedRecently: only the runner marker, only for 14 days', () => {
   const now = Date.parse('2026-10-20T00:00:00Z');
   const c = (body, at) => ({ body, createdAt: at });
-  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-10T00:00:00Z')], now), true);
+  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-15T00:00:00Z')], now), true);
+  assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nfindings`, '2026-10-10T00:00:00Z'), c('Claimed by worker', '2026-10-11T00:00:00Z')], now), true);
   assert.equal(r.codexBouncedRecently([c(`${r.BOUNCED_MARKER}\nold`, '2026-10-01T00:00:00Z')], now), false);
   assert.equal(r.codexBouncedRecently([c('a human mentions codex-runner-bounced', '2026-10-19T00:00:00Z')], now), false);
   assert.equal(r.codexBouncedRecently(undefined, now), false);
@@ -307,7 +326,7 @@ test('dropDataDir: unlinks the symlink (target untouched), removes a test-made d
     assert.equal(dropDataDir(link, wt), 'none');
     assert.equal(dropDataDir(shared, wt), 'skipped', 'a real dir outside the worktree is never removed');
     assert.ok(fs.existsSync(shared));
-  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 3 }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('emptyBatchVerdict: an empty node unit batch fails closed; empty scripts/lib batch reads clean (BRO-2483)', () => {
@@ -368,16 +387,126 @@ test('codexExitTransient/stripHookNoise: a capacity error is retried and quoted,
   assert.ok(!s.includes('hook:') && s.includes('at capacity'));
 });
 
-test('codexCardFit: Mac-only and too-broad cards are skipped, one-test cards go first', () => {
-  assert.equal(r.codexCardFit({ title: 'P3: opening-night monitor harness: launchd env lacks .env keys', description: '' }).skip, 'mac-only');
-  assert.equal(r.codexCardFit({ title: 'cmux launcher reports ok:false on a launch that actually succeeded', description: '' }).skip, 'mac-only');
-  const broad = r.codexCardFit({ title: 'Wire scripts/audit-exclusion-flags.js into a report-only weekly cron', description: 'Add .github/workflows/x.yml. Reads review-texts. Phase 2 follow-ups.', verify: 'node --test tests/unit/x.test.mjs' });
-  assert.equal(broad.skip, 'workflow-edit', 'a workflow edit is a hard skip since BRO-5384');
-  assert.equal(r.codexCardFit({ title: 'Wire a report-only weekly cron', description: 'Reads review-texts. Phase 2 follow-ups. Needs an API key.', verify: '' }).skip, 'too-broad');
-  const small = r.codexCardFit({ title: 'isUkOutletUrl calls US sites UK', description: 'Fix the regex.\n## Acceptance criteria\n- test passes', verify: 'node --test scripts/lib/venue-classification.test.mjs' });
+for (const [name, ladder, floor] of LADDERS) test(`codexCardFit [${name}]: Mac-only and too-broad cards are skipped, one-test cards go first`, () => {
+  const fit = (card) => r.codexCardFit({ ...card, ladder });
+  assert.equal(ladder.minScore, floor);
+  assert.equal(fit({ title: 'P3: opening-night monitor harness: launchd env lacks .env keys', description: '' }).skip, 'mac-only');
+  assert.equal(fit({ title: 'cmux launcher reports ok:false on a launch that actually succeeded', description: '' }).skip, 'mac-only');
+  assert.equal(fit({ title: 'Wire scripts/audit-exclusion-flags.js into a report-only weekly cron', description: 'Add .github/workflows/x.yml. Reads review-texts. Phase 2 follow-ups.', verify: 'node --test tests/unit/x.test.mjs' }).skip, 'workflow-edit');
+  assert.equal(fit({ title: 'Wire a report-only weekly cron', description: 'Reads review-texts. Phase 2 follow-ups. Needs an API key.', verify: '' }).skip, 'too-broad', '-12 is too broad on every rung');
+  // -8 (credentials, review-texts, multi-phase): too broad at the -6 floor, taken once larger-cards widens it to -9.
+  const mid = fit({ title: 'Tidy the scorer', description: 'Needs an API key. Reads review-texts. Phase 2.', verify: '' });
+  assert.equal(mid.score, -8);
+  assert.equal(mid.skip, floor === -9 ? null : 'too-broad');
+  // At exactly the floor it is still a skip; a retry never lifts it over the line.
+  // -6: credentials + review-texts; -9: those, multi-phase and one extra 1k of description.
+  const atFloor = fit({ title: 'Tidy the scorer', description: floor === -6 ? 'Needs an API key. Reads review-texts.' : `Needs an API key. Reads review-texts. Phase 2.\n${'x'.repeat(2500)}`, verify: '' });
+  assert.equal(atFloor.score, floor);
+  assert.equal(atFloor.skip, 'too-broad');
+  const small = fit({ title: 'isUkOutletUrl calls US sites UK', description: 'Fix the regex.\n## Acceptance criteria\n- test passes', verify: 'node --test scripts/lib/venue-classification.test.mjs' });
   assert.equal(small.skip, null);
-  const vague = r.codexCardFit({ title: 'Some fix', description: 'x'.repeat(4000), verify: 'npx tsc --noEmit' });
-  assert.ok(small.score > vague.score);
+  assert.ok(small.score > fit({ title: 'Some fix', description: 'x'.repeat(4000), verify: 'npx tsc --noEmit' }).score);
+});
+
+test('codexCardFit: with the ladder in shadow it returns exactly what the pre-ladder baseline does (BRO-6303)', () => {
+  const committed = JSON.parse(readFileSync(join(ROOT, L.STATE_FILE), 'utf8'));
+  const shadow = L.access({ state: { ...committed, mode: 'shadow' }, owner: L.seedOwner(), env: {} });
+  const baseline = { minScore: -6, dataRouteLocked: false, reviewTextsLocked: false };
+  const cards = [
+    { title: 'Wire a report-only weekly cron', description: 'Reads review-texts. Phase 2 follow-ups. Needs an API key.' },
+    { title: 'Tidy the scorer', description: 'Needs an API key. Reads review-texts. Phase 2.' },
+    { title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json with new-fix-plan.' },
+    { title: 'isUkOutletUrl calls US sites UK', description: 'Fix the regex.', verify: 'node --test tests/unit/x.test.mjs' },
+  ];
+  for (const c of cards) for (const canDispatch of [true, false]) {
+    assert.deepEqual(r.codexCardFit({ ...c, canDispatch, ladder: shadow }), r.codexCardFit({ ...c, canDispatch, ...baseline, ladder: shadow }), c.title);
+    assert.deepEqual(r.codexCardFit({ ...c, canDispatch }), r.codexCardFit({ ...c, canDispatch, ...baseline }), `${c.title}: default read`);
+  }
+});
+
+test('codexCardFit: a locked cloud data route skips route cards on the cloud lane only; the GHA lane stays outside the ladder', () => {
+  const locked = ladderOf(['review-texts-ro']);
+  const route = { title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json.\nCODEX-OK', verify: 'node --test tests/unit/x.test.mjs', canDispatch: true };
+  const keep = process.env.GITHUB_ACTIONS;
+  try {
+    delete process.env.GITHUB_ACTIONS;
+    assert.equal(r.codexCardFit({ ...route, ladder: locked }).skip, 'data-route-locked', 'CODEX-OK does not lift a locked rung');
+    assert.equal(r.codexCardFit({ ...route, ladder: ladderOf(['cloud-data-route', 'review-texts-ro']) }).skip, null, 'unlocked: taken');
+    assert.equal(r.codexCardFit({ title: 'Fix the regex', description: 'Fix it.', ladder: locked }).skip, null, 'a non-route card is untouched');
+    process.env.GITHUB_ACTIONS = 'true';
+    assert.equal(r.codexCardFit({ ...route, ladder: locked }).skip, null, 'GHA lane: outside the ladder');
+    // The Claude worker still leaves route cards to Codex: the GHA lane takes them.
+    delete process.env.GITHUB_ACTIONS;
+    assert.equal(r.leaveToCodex({ priority: 3, title: route.title, description: route.description, comments: { nodes: [] } }, { nowMs: Date.now(), verify: route.verify, ladder: locked }), true);
+  } finally { if (keep === undefined) delete process.env.GITHUB_ACTIONS; else process.env.GITHUB_ACTIONS = keep; }
+});
+
+test('codexCardFit: a card naming a protected trust-ladder file never starts; the runner itself stays open (BRO-6303)', () => {
+  for (const f of ['scripts/codex-lane-alarm.js', 'scripts/lib/codex-lane-health.js', 'scripts/lib/codex-runner-grading.js', 'data/audit/codex-trust-ladder-owner.json']) {
+    const fit = r.codexCardFit({ title: 'Fix the alarm', description: `Edit ${f}.\nCODEX-OK`, verify: 'node --test tests/unit/x.test.mjs' });
+    assert.equal(fit.skip, 'protected-path', f);
+  }
+  assert.equal(r.codexCardFit({ title: 'Fix the runner', description: 'Edit scripts/lib/codex-runner.js.', verify: 'node --test tests/unit/x.test.mjs' }).skip, null);
+  // A commit the runner refused for a protected file is a structural bounce, not Codex's slip.
+  assert.equal(r.classifyBounce({ blocked: 'Codex edited the trust ladder (its own grading rules or the inputs they read), which the runner never lands' }), 'forbidden-files');
+  assert.match(readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8'), /TL\.isProtectedPath\(n\)\)\) return \{ hasDiff: true, blocked: 'Codex edited the trust ladder/);
+});
+
+test('ladderSkip: only the skips the ladder adds now; null in shadow, so a picked card is never dropped by it today', () => {
+  const card = { title: 'Fix the excerpt trimmer', description: 'Reads data/review-texts to check the trim.', verify: 'node --test tests/unit/x.test.mjs' };
+  const route = { title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json.', verify: 'node --test tests/unit/x.test.mjs', canDispatch: true };
+  const keep = process.env.GITHUB_ACTIONS;
+  try {
+    delete process.env.GITHUB_ACTIONS;
+    for (const [, ladder] of LADDERS) for (const c of [card, route, { title: 'Mac thing', description: 'launchd only' }]) assert.equal(r.ladderSkip(c, { ladder }), null);
+    assert.equal(r.ladderSkip(card, { ladder: ladderOf(['cloud-data-route']) }), 'review-texts-locked', 'relocked since the pick');
+    assert.equal(r.ladderSkip(route, { ladder: ladderOf(['review-texts-ro']) }), 'data-route-locked');
+    assert.equal(r.ladderSkip({ title: 'Mac thing', description: 'launchd only' }, { ladder: ladderOf([]) }), null, 'a baseline skip is the picker\'s, not the ladder\'s');
+    // A card only a widened floor admitted (-8) is ruled out once larger-cards is relocked, which the baseline already does.
+    const mid = { title: 'Tidy the scorer', description: 'Needs an API key. Reads review-texts. Phase 2.' };
+    assert.equal(r.ladderSkip(mid, { ladder: ladderOf(['larger-cards', 'cloud-data-route', 'review-texts-ro']) }), null);
+  } finally { if (keep === undefined) delete process.env.GITHUB_ACTIONS; else process.env.GITHUB_ACTIONS = keep; }
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /const ladderWhy = R\.ladderSkip\(\{ title: card\.title, description: card\.description, verify: verifyCommand\(card\) \|\| '', comments, nowMs: Date\.now\(\) \}\);\n\s+if \(ladderWhy\)/);
+});
+
+test('leaveCodexCards: route cards are scored like leaveToCodex sees them, whatever the cloud data-route rung says', () => {
+  const src = readFileSync(join(ROOT, 'scripts/lib/cloud-worker-pick.js'), 'utf8');
+  assert.match(src, /leaveToCodex\(q\.issue, \{[^}]*ladder \}\)/);
+  assert.match(src, /comments: q\.issue\.comments\.nodes, nowMs, ladder, dataRouteLocked: false \}\)\.score/);
+});
+
+test('provideData: review-texts are linked by the ladder rung unless the caller says otherwise (BRO-6303)', () => {
+  const open = ladderOf(['cloud-data-route', 'review-texts-ro']);
+  const locked = ladderOf(['cloud-data-route']);
+  assert.deepEqual(r.reviewTextsPlan({ ladder: open }), { link: true, note: null });
+  assert.deepEqual(r.reviewTextsPlan({ ladder: ladderOf(['cloud-data-route', 'review-texts-ro'], 'shadow') }), { link: true, note: null }, 'shadow: linked, as before the ladder');
+  assert.equal(r.reviewTextsPlan({ ladder: locked }).link, false);
+  assert.match(r.reviewTextsPlan({ ladder: locked }).note, /locked for Codex by the trust ladder/);
+  assert.equal(r.reviewTextsPlan({ ladder: L.access({ corrupt: true, env: {} }) }).link, false, 'corrupt fails closed');
+  assert.deepEqual(r.reviewTextsPlan({ ladder: open, reviewTexts: false }), { link: false, note: null }, 'land-check batches stay unlinked and silent');
+  assert.deepEqual(r.reviewTextsPlan({ ladder: locked, reviewTexts: false }), { link: false, note: null });
+  // The runner wires it: provideData's default reads the ladder, and only the land-check batches pass false.
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /function provideData\(dest, \{ ladder = R\.codexLadderAccess\(\), reviewTexts \} = \{\}\) \{\n\s+const rt = R\.reviewTextsPlan\(\{ ladder, reviewTexts \}\);/);
+  assert.deepEqual([...src.matchAll(/provideData\([^)]*reviewTexts: (\w+)/g)].map((m) => m[1]), ['false']);
+  // A relock mid-run removes a link an earlier card got (git clean without -x keeps it).
+  assert.match(src, /if \(!rt\.link && present\(to\) && fs\.lstatSync\(to\)\.isSymbolicLink\(\)\) fs\.unlinkSync\(to\);/);
+});
+
+test('codexCardFit: locked review-texts skips a card that needs them; unlocked only lowers its score', () => {
+  const card = { title: 'Fix the excerpt trimmer', description: 'Reads data/review-texts to check the trim.', verify: 'node --test tests/unit/x.test.mjs' };
+  const locked = r.codexCardFit({ ...card, ladder: ladderOf(['cloud-data-route']) });
+  assert.equal(locked.skip, 'review-texts-locked');
+  assert.equal(r.codexCardFit({ ...card, description: `${card.description}\nCODEX-OK`, ladder: ladderOf(['cloud-data-route']) }).skip, 'review-texts-locked', 'CODEX-OK does not lift it');
+  const open = r.codexCardFit({ ...card, ladder: ladderOf(['cloud-data-route', 'review-texts-ro']) });
+  assert.equal(open.skip, null);
+  assert.ok(open.why.includes('private-or-live-data'));
+  assert.equal(r.codexCardFit({ title: 'Fix the regex', description: 'Fix it.', ladder: ladderOf([]) }).skip, null, 'a card without review-texts is untouched');
+  // A corrupt ladder file fails closed: every rung locked, the baseline floor.
+  const corrupt = L.access({ corrupt: true, env: {} });
+  assert.equal(r.codexCardFit({ ...card, ladder: corrupt }).skip, 'review-texts-locked');
+  assert.equal(corrupt.minScore, -6);
 });
 
 test('codexExitTransient: only Codex ERROR lines near the end count', () => {
@@ -467,7 +596,7 @@ test('runnerHealth: a lapsed Codex login reads as such, and the row is internal-
 
 test('runnerSummaryFacts: one parser for the lane alarm and the daily row', () => {
   const b = '## Codex runner 2026-10-14: 2 card(s) worked in 90 min\n- Landed and Done: BRO-1, \n- Landed part, back to Todo with what is left: BRO-2\n- Runner error mid-card (back to Todo): BRO-3, BRO-4\n- Stopped early: no';
-  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, landedIds: ['BRO-1', 'BRO-2'], hasCheckLine: false, crashed: 2, stop: 'no', checkUsd: 0 });
+  assert.deepEqual(r.runnerSummaryFacts(b), { landed: 2, landedIds: ['BRO-1', 'BRO-2'], hasCheckLine: false, rejected: 0, crashed: 2, stop: 'no', checkUsd: 0 });
   assert.equal(r.runnerSummaryFacts(`${b}\n- Claude check: 2 review(s), $1.25 API cost`).hasCheckLine, true);
   assert.match(r.runnerHealth([{ createdAt: '2026-10-14T09:00:00Z', body: b }], Date.parse('2026-10-14T10:00:00Z')).message, /2 card\(s\) landed, 2 crashed/);
 });
@@ -555,7 +684,10 @@ test('fixRoundDeadline: a SHIP-WITH-FIXES round is not cut by the 60-min card bu
   const hard = t0 + 112 * 60_000;
   const fits = (deadline) => r.fixRoundFits({ deadlineMs: deadline, nowMs: now, hardEndMs: hard, wrapUpMs: 8 * 60_000 });
   assert.equal(fits(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), true);
-  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd })), false, 'a REJECT keeps to the card budget');
+  // BRO-6260: a REJECT's one fix round gets the rest of the run too (it was banned 14 days before it ran).
+  assert.equal(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd }), runEnd);
+  assert.equal(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), runEnd);
+  assert.equal(fits(r.fixRoundDeadline({ verdict: 'REJECT', swfRoundUsed: false, cardDeadlineMs: card, runEndMs: runEnd, rejectRunEnd: false })), false, 'kill switch: a REJECT keeps to the card budget');
   assert.equal(r.fixRoundDeadline({ verdict: 'SHIP-WITH-FIXES', swfRoundUsed: true, cardDeadlineMs: card, runEndMs: runEnd }), card, 'only the first one');
   // A verdict at minute 50 leaves under exec + land checks + review before the hard stop: that
   // round is carried to the next run (swfCarryBody) instead of being dropped.
@@ -594,7 +726,7 @@ test('daily-runner: execs, fix rounds and card starts use the measured land-chec
   assert.match(src, /finally \{ landChecksMs = Math\.min\(2 \* R\.LAND_CHECKS_MS, Math\.max\(R\.LAND_CHECKS_MS, Date\.now\(\) - t0\)\); \}/);
   assert.match(src, /const runExecMs = \(\) => R\.execBudgetMs\(\{ untilMs: HARD_END_MS - WRAP_UP_MS, nowMs: Date\.now\(\), capMs: CODEX_TIMEOUT_MS, landChecksMs \}\)/);
   assert.match(src, /const fixExecMs = \(\) => Math\.min\(runExecMs\(\),/);
-  assert.match(src, /fitsBeforeHardStop\(R\.cardStartMs\(landChecksMs\)\)/);
+  assert.match(src, /fitsBeforeHardStop\(R\.cardStartMs\(landChecksMs, \{ laterCard: worked > 0 \}\)\)/);
   assert.doesNotMatch(src, /CARD_START_MIN_MS/);
   assert.match(src, /linkNodeModules\(BASE_WT\);/, 'the base tree is linked like the slot tree');
 });
@@ -717,7 +849,9 @@ test('reviewerSandboxAuth and REVIEWER_READ_DENY', () => {
 
 test('board-workers.md starts three slots with budgets that leave a SHIP-WITH-FIXES round', () => {
   const doc = readFileSync(join(ROOT, 'docs/cloud-routines/board-workers.md'), 'utf8');
-  const cmd = (doc.match(/`(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  const cmd = (doc.match(/`(?:CODEX_CAN_DISPATCH=1 )?(node scripts\/codex\/daily-runner\.js --slots[^`]+)`/) || [])[1] || '';
+  // BRO-6260: the cloud lane applies data-fix plans (cloud sessions dispatch through scripts/cloud-dispatch.js).
+  assert.match(doc, /`CODEX_CAN_DISPATCH=1 node scripts\/codex\/daily-runner\.js --slots/);
   const flag = (n) => Number((cmd.match(new RegExp(`--${n} (\\d+)`)) || [])[1]);
   assert.ok(flag('slots') >= 3 && flag('slots') <= 4, cmd);
   assert.ok(flag('limit') >= flag('slots') * 2, 'at least two cards per slot');
@@ -781,6 +915,16 @@ test('leaveToCodex: the Claude worker leaves fit cards to a live Codex runner, n
   assert.equal(r.leaveToCodex({ ...card, description: 'Then edit .github/workflows/land.yml.' }, { nowMs: now, verify }), false, 'Codex cannot do it');
   const bounced = { ...card, comments: { nodes: [{ body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed`, createdAt: new Date(now - 3600_000).toISOString() }] } };
   assert.equal(r.leaveToCodex(bounced, { nowMs: now, verify }), false, 'Codex already tried');
+  // BRO-6260: both Codex lanes apply data-fix plans, so a data-route card is left to Codex even from a
+  // process that cannot dispatch itself (the Claude worker), unless the data-fix route is switched off.
+  const keep = { g: process.env.GITHUB_ACTIONS, c: process.env.CODEX_CAN_DISPATCH, k: process.env.CODEX_DATA_FIXES_DISABLED };
+  try {
+    delete process.env.GITHUB_ACTIONS; delete process.env.CODEX_CAN_DISPATCH; delete process.env.CODEX_DATA_FIXES_DISABLED;
+    const route = { ...card, title: 'Fix the Hamilton venue field', description: 'Write data/pending-fixes/bro-1.json.' };
+    assert.equal(r.leaveToCodex(route, { nowMs: now, verify }), true, 'data-route card goes to Codex');
+  } finally {
+    for (const [k, v] of [['GITHUB_ACTIONS', keep.g], ['CODEX_CAN_DISPATCH', keep.c], ['CODEX_DATA_FIXES_DISABLED', keep.k]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+  }
 });
 
 test('savings line: check $ per landed card in the summary and the health row; landed cards per lane from git log', () => {
@@ -793,9 +937,14 @@ test('savings line: check $ per landed card in the summary and the health row; l
   const C = 'Claude Sonnet 5.5 <noreply@anthropic.com>';
   const mac = [`Tom Pryor\t${C}\tfix: x (BRO-30)`, 'Tom Pryor\t\tBRO-31 by hand', `Codex runner\t${C}\tBRO-32`, `github-actions[bot]\t${C}\tBRO-33 rebuild`, `Tom Pryor\t${C}\ta\tb BRO-34`].join('\n');
   assert.deepEqual(r.landedPerLane(mac), { codex: 1, claude: 2 });
-  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
-  assert.match(src, /- Claude check by model: /);
-  assert.match(src, /- Landed on main, last 24h: /);
+  // BRO-6303: the lines come from R.runnerSummaryText, and what it writes runnerSummaryFacts reads back.
+  const stats = { landed: ['BRO-1', 'BRO-2'], landedPartial: [], alreadyFixed: [], bounced: ['BRO-3'], inReview: [], landFailed: [], crashed: [], recoveredStops: [], carried: [], outOfTime: [], wouldLand: [] };
+  const text = r.runnerSummaryText({ heading: r.summaryHeading({ date: '2026-10-15', worked: 3, mins: 100 }), stats, worked: 3, skipped: 0, picks: [1, 2, 3], stop: null, settingsLine: '- Codex settings: x', weeklyPct: 10, checkCount: 4, checkSpentUsd: 1.2, checkByModel: { opus: { n: 4, usd: 1.2 } }, landedPerLane: 'Codex runner 2 card(s), Claude sessions 1 card(s)', ladderLine: '- Trust ladder: shadow' });
+  assert.match(text, /^- Claude check by model: opus 4 \(\$1\.20\); per landed card: \$0\.60$/m);
+  assert.match(text, /^- Landed on main, last 24h: Codex runner 2/m);
+  assert.match(text, /^- Trust ladder: shadow$/m);
+  assert.deepEqual(r.runnerSummaryFacts(text), { landed: 2, landedIds: ['BRO-1', 'BRO-2'], hasCheckLine: true, rejected: 1, crashed: 0, stop: 'no', checkUsd: 1.2 });
+  assert.match(readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8'), /landedPerLane: SLOT === 0 \? landedPerLane\(\) : null,\n\s+ladderLine: ladderLine\(\)/);
 });
 
 test('firingThroughput: slot summaries of one firing count once; cards per firing and landed share (BRO-5384 acceptance)', () => {
@@ -1092,7 +1241,8 @@ test('codexBouncedRecently: partial landings are remembered 3 days, twice in 14 
   assert.equal(r.codexBouncedRecently([partial(1)], now), true, 'fresh partial: wait');
   assert.equal(r.codexBouncedRecently([partial(4)], now), false, 'one partial 4 days ago: Codex may finish it');
   assert.equal(r.codexBouncedRecently([partial(4), partial(9)], now), true, 'second partial in 14 days: Claude lane');
-  assert.equal(r.codexBouncedRecently([rejected(10)], now), true, 'a rejection keeps the 14-day ban');
+  assert.equal(r.codexBouncedRecently([rejected(6)], now), true, 'a rejection keeps the ban');
+  assert.equal(r.codexBouncedRecently([rejected(10)], now), false, 'BRO-6260: a rejection nobody took for 7 days returns to Codex');
   assert.equal(r.codexBouncedRecently([partial(4), rejected(6)], now), true);
   assert.equal(r.codexBouncedRecently([rejected(15)], now), false);
 });
@@ -1102,6 +1252,34 @@ test('codexCardFit: work that waits on a date, a scheduled run or the owner is s
   for (const d of ['Fix it.\nRECHECK-AFTER: 2026-10-30', 'Confirm the next scheduled audit-aggregator-gap.yml run passes', 'The owner must settle the acceptance line']) assert.equal(fit(d).skip, 'waits-on-later-event', d);
   assert.equal(fit('Fix it, then add a test.').skip, null);
   for (const d of ['The owner must never be the one catching it', 'so the owner needs to see the failure', 'Add a test that RECHECK-AFTER: 2026-11-01 stamps parse', 'Fix the parser for the next scheduled data-health-check.yml run output']) assert.equal(fit(d).skip, null, d);
+});
+
+test('BRO-6260 retry note: lifts the bounces before it once, the picker and fit treat it like a carry', () => {
+  const now = Date.parse('2026-10-26T12:00:00Z');
+  const day = 24 * 3600_000;
+  const at = (d) => new Date(now - d * day).toISOString();
+  const rejected = (d) => ({ createdAt: at(d), body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n\nREJECT` });
+  const structural = (d) => ({ createdAt: at(d), body: `${r.BOUNCED_MARKER}\n## Codex runner: not landed, left for the Claude worker\n<!-- codex-bounce-class: owner-decision -->\n` });
+  const retry = (d) => ({ createdAt: at(d), body: r.retryBody({ findings: 'Add the missing test.' }) });
+  const claim = (d) => ({ createdAt: at(d), body: 'Claimed by worker' });
+  assert.equal(r.codexBouncedRecently([rejected(2)], now), true);
+  assert.equal(r.codexBouncedRecently([rejected(2), retry(1)], now), false, 'retry lifts it');
+  assert.equal(r.codexBouncedRecently([rejected(3), retry(2), rejected(1)], now), true, 'a bounce after the retry counts');
+  assert.equal(r.codexBouncedRecently([structural(5), retry(1)], now), true, 'a retry never lifts a structural hold');
+  const crash = (d) => ({ createdAt: at(d), body: "## Codex runner: stopped mid-card\n\nThe runner died on this card." });
+  assert.equal(r.codexBouncedRecently([crash(4), crash(3)], now), true);
+  assert.equal(r.codexBouncedRecently([crash(4), crash(3), retry(1)], now), true, 'crash notes still count across a retry');
+  assert.deepEqual(r.parseCodexRetry([rejected(2), retry(1)]), { findings: r.retryBody({ findings: 'Add the missing test.' }).split('\n').slice(1).join('\n').trim() });
+  assert.equal(r.parseCodexRetry([retry(2), claim(1)]), null, 'only while it is the newest comment');
+  const fit = r.codexCardFit({ title: 'Fix the thing', description: 'Fix it.', verify: 'node --test tests/unit/x.test.mjs', comments: [rejected(2), retry(1)], nowMs: now });
+  assert.ok(fit.why.includes('retry') && fit.skip === null);
+  const broad = r.codexCardFit({ title: 'Fix the thing', description: 'x'.repeat(20000), comments: [rejected(2), retry(1)], nowMs: now });
+  assert.ok(broad.skip === 'too-broad' && !broad.why.includes('retry'), 'a retry never lifts a too-broad card');
+  // Unclaimed: one plain bounce, nothing after it for 7 days -> back to Codex; a second bounce in 60 days stays out.
+  assert.equal(r.codexBouncedRecently([rejected(8)], now), false);
+  assert.equal(r.codexBouncedRecently([rejected(8), claim(7)], now), true);
+  assert.equal(r.codexBouncedRecently([rejected(30), rejected(8)], now), true);
+  assert.equal(r.codexBouncedRecently([structural(20)], now), true, 'structural holds are unchanged');
 });
 
 // BRO-6144: route by bounce reason. Texts below are the 2026-10-24 live-run bounce notes.
@@ -1241,4 +1419,73 @@ test('abReport: lane filter and a carried card is counted once', () => {
   const mk = (lane) => `${r.summaryHeading({ date: '2026-10-26', worked: 1, mins: 10, slot: 3, lane })}\n- Landed and Done: BRO-1\n${line}`;
   assert.deepEqual(Object.keys(r.abReport([mk('cloud')], { lane: 'gha' })), []);
   assert.equal(r.abReport([mk('gha'), mk('gha')], { lane: 'gha' }).high.cards, 1);
+});
+
+test('staleClaudeWorktrees: only idle, clean, pushed, unlocked, unwatched non-runner trees (BRO-6304)', () => {
+  const NOW = Date.parse('2026-10-26T12:00:00Z');
+  const old = NOW - 4 * 3600_000;
+  const ok = { liveCwd: false, dirty: false, unpushed: false, locked: false, newestMs: old };
+  const entries = [
+    { name: 'bro-1', ...ok },
+    { name: 'bro-live', ...ok, liveCwd: true },
+    { name: 'bro-dirty', ...ok, dirty: true },
+    { name: 'bro-ahead', ...ok, unpushed: true },
+    { name: 'bro-locked', ...ok, locked: true },
+    { name: 'bro-recent', ...ok, newestMs: NOW - 3600_000 },
+    { name: 'bro-unknown', ...ok, dirty: null },
+    { name: 'bro-nomtime', ...ok, newestMs: undefined },
+    { name: 'codex-runner', ...ok },
+    { name: 'codex-runner-base', ...ok },
+    { name: 'codex-runner-2', ...ok },
+    { name: 'codex-runner-base-3', ...ok },
+  ];
+  assert.deepEqual(r.staleClaudeWorktrees(entries, NOW), ['bro-1']);
+  assert.deepEqual(r.staleClaudeWorktrees(null, NOW), []);
+  // a name that only resembles a slot worktree is not one
+  assert.deepEqual(r.staleClaudeWorktrees([{ name: 'codex-runner-fix', ...ok }], NOW), ['codex-runner-fix']);
+});
+
+test('cardStartMs: a later card starts earlier but never below the unmeasured minimum (BRO-6304)', () => {
+  const min = (ms) => ms / 60_000;
+  assert.equal(min(r.cardStartMs(30 * 60_000)), 85, 'measured land checks are clamped to 30 min by the runner');
+  assert.equal(min(r.cardStartMs(30 * 60_000, { laterCard: true })), 70, 'the 20-min discount hits the floor');
+  assert.equal(min(r.cardStartMs(30 * 60_000, { laterCard: true, discountMs: 5 * 60_000 })), 80);
+  assert.equal(min(r.cardStartMs(15 * 60_000, { laterCard: true })), 70, 'never under the minimum');
+  assert.equal(min(r.cardStartMs(30 * 60_000, { laterCard: true, discountMs: 0 })), 85, 'discount 0 = off');
+});
+
+test('worktree facts: locked paths, cwd match, ignored work, mtime walk (BRO-6304)', () => {
+  const porcelain = 'worktree /a/main\nHEAD abc\n\nworktree /a/wt1\nHEAD def\nlocked reason\n\nworktree /a/wt2\nHEAD 123\n';
+  assert.deepEqual([...r.lockedWorktreePaths(porcelain)], ['/a/wt1']);
+  assert.equal(r.cwdInside(['/x', '/a/wt2/src'], '/a/wt2'), true);
+  assert.equal(r.cwdInside(['/a/wt22'], '/a/wt2'), false, 'prefix without a separator is another dir');
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6304-'));
+  try {
+    assert.equal(r.holdsIgnoredWork(d), false);
+    fs.writeFileSync(path.join(d, '.env.sanity.example'), 'x');
+    assert.equal(r.holdsIgnoredWork(d), false, 'a tracked example file is not work');
+    fs.rmSync(path.join(d, '.env.sanity.example'));
+    fs.writeFileSync(path.join(d, '.env.bak-1'), 'x');
+    assert.equal(r.holdsIgnoredWork(d), true, 'an ignored .env goes with the tree');
+    fs.rmSync(path.join(d, '.env.bak-1'));
+    fs.mkdirSync(path.join(d, 'data/review-texts/.git'), { recursive: true });
+    assert.equal(r.holdsIgnoredWork(d), true, 'a real review-texts clone');
+    fs.mkdirSync(path.join(d, 'src'));
+    const f = path.join(d, 'src/a.js');
+    fs.writeFileSync(f, 'x');
+    const old = new Date('2026-10-01T00:00:00Z');
+    fs.utimesSync(f, old, old); fs.utimesSync(path.join(d, 'src'), old, old);
+    fs.utimesSync(d, old, old);
+    assert.equal(r.newestMtimeMs(d, Date.now() - 1000), old.getTime(), 'skips data/, finds the old src file');
+    assert.equal(r.newestMtimeMs(d, Date.now() - 1000, { maxFiles: 1, nowMs: 42 }), 42, 'budget spent = keep (now)');
+  } finally { fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('pruneDisk wiring: the runner prunes Claude worktrees and logs disk usage when low (BRO-6304)', () => {
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /pruneClaudeWorktrees\(\);/);
+  assert.match(src, /R\.staleClaudeWorktrees\(entries, now\)/);
+  assert.match(src, /\['worktree', 'remove', path\.join\(dir, name\)\]/);
+  assert.doesNotMatch(src, /'worktree', 'remove', '--force'/);
+  assert.match(src, /logDiskUsage\(/);
 });

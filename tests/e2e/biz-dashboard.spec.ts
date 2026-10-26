@@ -1,14 +1,14 @@
 import { test, expect } from './helpers/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
-import { requireFeature } from './helpers/feature-flags';
+import { requireFeature, skipOnPrUntilLive } from './helpers/feature-flags';
 
 // /biz dashboard is gated behind the `commercial` feature flag
-// (src/config/feature-flags.ts). When the flag is off (default on prod),
-// requireFeature() skips every test in the three describes below at
-// collection time. When `commercial` launches and NEXT_PUBLIC_FEATURES
-// includes it at test runtime, the tests auto-enable — no manual unskip step.
+// (src/config/feature-flags.ts), released 2026-10-26 (BRO-6192), so these run.
+// requireFeature() still skips them if the flag is pulled again, and
+// skipOnPrUntilLive() skips them on PR runs until /biz is on production.
 test.describe('/biz Dashboard - Basic Tests', () => {
   requireFeature('commercial');
+  test.beforeEach(async ({ request }) => skipOnPrUntilLive(request, '/biz'));
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
@@ -31,16 +31,14 @@ test.describe('/biz Dashboard - Basic Tests', () => {
 
   test('main header and subtitle render', async ({ page }) => {
     await expect(page.locator('h1')).toContainText('Broadway Money Scorecard');
-    await expect(page.getByText('Recoupment data and investment metrics')).toBeVisible();
+    await expect(page.getByText('Who made money on Broadway, and who lost it')).toBeVisible();
   });
 
-  test('season stats section renders', async ({ page }) => {
-    // Look for season indicators - either "By Season" section header or season year text
-    const hasBySeasonHeader = await page.getByText('By Season').isVisible().catch(() => false);
-    const has2024Season = await page.getByText('2024-2025').isVisible().catch(() => false);
-
-    // Accept either format
-    expect(hasBySeasonHeader || has2024Season).toBeTruthy();
+  // BRO-6283: the four season cards are gone; the Season by Season table leads the page.
+  test('season by season table renders first', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'Season by Season', exact: true })).toBeVisible();
+    await expect(page.getByTestId('season-history')).toBeVisible();
+    await expect(page.getByText('Capital at Risk')).toHaveCount(0);
   });
 
   // BRO-4721: the JSON/CSV "(soon)" buttons were removed until downloads ship.
@@ -49,9 +47,13 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page.getByRole('button', { name: /CSV/i })).toHaveCount(0);
   });
 
-  test('back link returns to homepage', async ({ page }) => {
-    await page.click('text=All Shows');
-    await expect(page).toHaveURL('/');
+  // BRO-6286: the "All Shows" back link gave way to a stat strip; site nav covers home.
+  test('hero stat strip shows three non-zero numbers', async ({ page }) => {
+    const values = page.locator('[data-testid="biz-hero-stats"] dd');
+    await expect(values).toHaveCount(3);
+    for (const text of await values.allTextContents()) {
+      expect(text).toMatch(/^\$?[1-9][\d,.]*[MB]?$/);
+    }
   });
 
   // Skipped 2026-05-22: /biz dashboard was simplified — no designation legend
@@ -62,6 +64,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
 
 test.describe('/biz Dashboard - Tables', () => {
   requireFeature('commercial');
+  test.beforeEach(async ({ request }) => skipOnPrUntilLive(request, '/biz'));
 
   test.beforeEach(async ({ page }) => {
     await page.goto('/biz');
@@ -91,6 +94,7 @@ test.describe('/biz Dashboard - Tables', () => {
 
 test.describe('/biz Dashboard - Navigation', () => {
   requireFeature('commercial');
+  test.beforeEach(async ({ request }) => skipOnPrUntilLive(request, '/biz'));
 
   // Skipped 2026-05-22: /biz dashboard no longer renders direct /show/* links
   // in its initial HTML. Test times out waiting for a[href^="/show/"] that

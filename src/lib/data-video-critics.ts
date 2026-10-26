@@ -1,6 +1,7 @@
 import videoCreatorsData from '@/../data/video-creators.json';
 import videoReviewsData from '@/../data/video-reviews.json';
 import showsData from '@/../data/shows.json';
+import { versionedImagePath } from './versioned-image-path';
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
 
 export interface VideoCreatorProfile {
@@ -65,7 +66,7 @@ function buildCreatorProfile(creator: typeof creators[0]): VideoCreatorProfile |
           showId,
           showTitle: show?.title || showId.replace(/-\d{4}$/, '').replace(/-/g, ' '),
           showSlug: show?.slug || showId.replace(/-\d{4}$/, ''),
-          showThumbnail: show?.images?.poster || show?.images?.thumbnail || null,
+          showThumbnail: versionedImagePath(show?.images?.poster || show?.images?.thumbnail) || null,
           showOpeningDate: show?.openingDate || null,
           score: r.score,
           bucket: r.bucket || null,

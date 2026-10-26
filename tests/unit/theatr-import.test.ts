@@ -249,3 +249,23 @@ test('reactionCounts counts only reaction-rated rows, per reaction', () => {
     { scoreRating: null },
   ]), { recommend: 2 });
 });
+
+test('reviews cut off between screenshots are counted, unless another copy had the whole review', () => {
+  const { entries, reviewsCutOff } = theatrRowsPipeline([
+    [
+      row({ title: 'A', monthDay: '10-05', score: 68, rating: 3.5, reviewCutOff: true }),
+      row({ title: 'B', monthDay: '10-03', reviewCutOff: true }),
+    ],
+    [
+      // Context screenshot: B again, this time with the whole review.
+      row({ title: 'B', monthDay: '10-03', review: 'Full text.' }),
+      row({ title: 'C', monthDay: '10-01', reaction: 'recommend', reviewCutOff: true }),
+      row({ title: 'D', list: 'interested', screen: 'collection', reviewCutOff: true }),
+    ],
+  ], TODAY);
+  assert.equal(reviewsCutOff, 2);
+  assert.equal(entries.find((e) => e.title === 'B')?.reviewText, 'Full text.');
+  const n = theatrNotices(entries, { picked: 2, failedScreenshots: 0, unreadable: 0, reviewsCutOff }).join(' ');
+  assert.match(n, /2 review\(s\) were cut off between screenshots/);
+  assert.doesNotMatch(theatrNotices(entries, { picked: 2, failedScreenshots: 0, unreadable: 0 }).join(' '), /cut off/);
+});

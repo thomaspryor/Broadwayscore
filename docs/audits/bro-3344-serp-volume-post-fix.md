@@ -1,0 +1,201 @@
+# BRO-3344 production verification, 2026-10-26
+
+The ledger does **not** confirm a reduction in total ScrapingBee SERP volume or
+credits. For the complete UTC week October 19 through 25, it records 3,138 calls
+and 75,375 credits, up 477.9% and 482.0% from the card's August 31 baseline.
+Explicit null-fallback calls decreased from 543 to 332, down 38.9%; their share
+decreased from 100% to 10.58%. This narrower improvement cannot establish that
+BRO-2939 caused the change: traffic, callers and instrumentation also changed.
+
+This is a verification result, not a new provider-routing fix. Existing main
+already tags fallbacks and records scrubbed SD diagnostics. The missing
+`tests/unit/serp-volume-post-fix.test.mjs` prevented the card's acceptance command
+from running. The added test exercises the real read-only analyzer, including
+negative evidence and incomplete coverage; passing it does not assert that
+production spend fell.
+
+## Comparison
+
+Baseline numbers are supplied by BRO-3344, not reconstructed from a baseline
+ledger. Post-fix figures below are observed ledger calls and recorded credits,
+not independently reconciled provider invoices or a dollar estimate.
+
+| Metric | Week of August 31 | October 19 to 25 |
+| --- | ---: | ---: |
+| SB SERP calls | 543 | 3,138 |
+| SB SERP credits | 12,950 | 75,375 |
+| All SB credits | 13,372 | 158,841 |
+| SERP share of SB credits | 96.84% | 47.45% |
+| Explicit null-fallback SB SERP calls | 543 | 332 |
+| Null-fallback share of SB SERP calls | 100% | 10.58% |
+| `fallback_from=scrapingdog` calls / credits | Not available | 1,746 / 41,875 |
+| `fallback_from=brightdata` calls / credits | Not available | 1,060 / 25,200 |
+| Missing fallback tags | Not available | 0 |
+
+| UTC day | SB SERP calls | Credits |
+| --- | ---: | ---: |
+| 2026-10-19 | 265 | 6,500 |
+| 2026-10-20 | 450 | 11,075 |
+| 2026-10-21 | 390 | 9,625 |
+| 2026-10-22 | 372 | 9,200 |
+| 2026-10-23 | 690 | 16,275 |
+| 2026-10-24 | 438 | 10,350 |
+| 2026-10-25 | 533 | 12,350 |
+
+The adjacent October 18 to 24 week gives the same direction: 2,785 calls,
+67,525 credits, 339 explicit null fallbacks. The result does not depend on
+choosing just the latest week.
+
+The largest callers by credits are `gather-reviews.js` (1,557 calls / 36,725
+credits), `opening-night-poller.js` (600 / 14,750), and
+`discover-opening-night-reviews.js` (402 / 9,925). The 332 null-fallback calls
+are entirely `discover-opening-night-reviews.js` (197 / 4,925) and
+`ob-discovery-ticket-links.js` (135 / 3,375). Null does not by itself prove a
+latched breaker: skipped, unavailable or deliberately bypassed providers also
+produce null. A non-null tag identifies the preceding provider, not necessarily
+an HTTP failure: a successful empty result can also cascade. Tags do not retain
+the complete SD to BD to SB chain.
+
+## Scrapingdog 400 diagnostics
+
+There are 100,441 SD SERP ledger rows in the week, including 2,301 failures.
+Of those failures, 2,283 (99.22%) have HTTP status 400. These are ledger events,
+not a request-retry count. Thirty-six failure rows lack `detail`.
+
+All 2,247 HTTP 400 rows with diagnostics report the same provider message:
+`Something went wrong, please try again`. The largest request-shape groups are:
+
+| Message | Quoted | Operators | Non-ASCII | HTTP 400 calls |
+| --- | --- | ---: | --- | ---: |
+| Same generic provider message | true | 3 | false | 1,558 |
+| Same generic provider message | true | 1 | false | 304 |
+| Same generic provider message | true | 4 | false | 173 |
+| Same generic provider message | true | 5 | false | 126 |
+| Same generic provider message | true | 3 | true | 41 |
+| Missing detail | unknown | unknown | unknown | 36 |
+| Same generic provider message | true | 6 | false | 22 |
+| Same generic provider message | true | 2 | false | 12 |
+| Same generic provider message | false | 3 | false | 4 |
+| Same generic provider message | true | 1 | true | 4 |
+| Same generic provider message | true | 5 | true | 2 |
+| Same generic provider message | true | 4 | true | 1 |
+
+The remaining 18 failure rows are eight HTTP 502s, seven timeouts and three
+connection resets. The logged failure class is a generic SD API error. These
+diagnostics do not name a rejected parameter or prove that quotes, operators or
+non-ASCII text caused the 400s. A provider-side explanation or controlled live
+probe is still needed for that precise cause. No paid probe was made here.
+The ledger also lacks a per-process breaker-transition correlation, so this
+comparison cannot independently prove a five-failure trip followed by healing.
+
+## Sources and reproduction
+
+The raw ledger rotates. The current checkout alone covers October 24 to 26,
+which cannot answer a full-week question. Daily aggregates retain volume but
+drop `fallback_from` and `detail`; absent fields must not be read as null tags.
+Historical raw snapshots were recovered through public read-only GitHub HTTP
+requests, without scraping, private-repo writes or credentials.
+
+Each source is `data/audit/scraper-spend-ledger.jsonl` at the following immutable
+main commit. Their time ranges overlap, avoiding holes between snapshots.
+
+| Commit | Rows | Earliest UTC timestamp | Latest UTC timestamp |
+| --- | ---: | --- | --- |
+| [01aaa7e3f101a1d760f554a352ddf0b651c2d7fc](https://github.com/thomaspryor/Broadwayscore/commit/01aaa7e3f101a1d760f554a352ddf0b651c2d7fc) | 69,524 | Oct 18 00:00:02.013 | Oct 20 23:59:38.221 |
+| [385e875ff21e1fb626dfba774629a49c72de9613](https://github.com/thomaspryor/Broadwayscore/commit/385e875ff21e1fb626dfba774629a49c72de9613) | 77,387 | Oct 20 00:00:07.132 | Oct 22 23:56:06.698 |
+| [b56c1f2f4d194e343f4204c7d17a81009573aacc](https://github.com/thomaspryor/Broadwayscore/commit/b56c1f2f4d194e343f4204c7d17a81009573aacc) | 84,541 | Oct 22 00:00:03.315 | Oct 24 23:51:33.164 |
+| [3835dc6d8ea2733fda7e5dcfaf6f196142361cbf](https://github.com/thomaspryor/Broadwayscore/commit/3835dc6d8ea2733fda7e5dcfaf6f196142361cbf) | 64,767 | Oct 24 00:00:07.215 | Oct 26 04:47:22.664 |
+
+Union these snapshots using exact-record identity, matching the existing ledger
+merge policy. This gives 216,907 distinct input records. The SHA-256 of sorted
+unique input lines, joined with newlines and a final newline, is
+`140275fb48e65c05d941d223e7069f4ac7967b3064d4e68f3ca79e72af755d59`.
+Exact duplicates are counted once, including one duplicate in October 25's
+current raw ledger. Genuine differences in any field remain separate records.
+Ledger capture can still omit calls upstream; overlapping snapshots cannot
+prove completeness relative to the provider's billing system.
+
+To reproduce, download the four immutable raw files into a temporary directory
+inside the checkout, naming them by commit, then run:
+
+```bash
+node scripts/lib/serp-volume-post-fix.js 2026-10-19 2026-10-26 \
+  snapshots/01aaa7e3f101a1d760f554a352ddf0b651c2d7fc.jsonl \
+  snapshots/385e875ff21e1fb626dfba774629a49c72de9613.jsonl \
+  snapshots/b56c1f2f4d194e343f4204c7d17a81009573aacc.jsonl \
+  snapshots/3835dc6d8ea2733fda7e5dcfaf6f196142361cbf.jsonl
+node --test tests/unit/serp-volume-post-fix.test.mjs
+```
+
+The analyzer makes zero network, paid-provider or LLM calls, writes no ledger
+and has no cron. It exits 2 with `comparison: null` for an incomplete window or
+missing attribution, and exits 1 for missing files or invalid JSON/dates.
+Its test is collected by the existing `unit-test-collection.js` CI caller.
+Remove downloaded snapshots after use; no raw ledger is included in this diff.
+
+## Before/after and existing implementation
+
+Before editing, the existing `topCallers()`, `topCallersByCredits()` and
+`creditsByProvider()` reducers were run on the same recovered real records.
+After editing, all seven daily counts and credits and both caller rankings
+matched exactly. The sorted input SHA-256 stayed unchanged. Zero source
+records changed. Examples before and after: October 19 265 / 6,500; October 23
+690 / 16,275; October 25 533 / 12,350.
+
+The real writers/callers are `recordProviderCall()` in
+`scripts/lib/provider-telemetry.js` and `_serpWithChain()` in
+`scripts/lib/url-discovery.js`. Main already has `withSpendFallback()`,
+`if (sdAttempt.ran)` and `scrapingdogSerpFailureDetail()`. They were inspected
+and left unchanged. `aggregateLedgerByDay()` in `provider-spend-core.js`, called
+by `check-provider-spend.js`, deliberately omits the raw diagnostic dimensions;
+the audit therefore reads raw snapshots instead of changing that writer.
+
+`git ls-tree origin/main tests/unit/serp-volume-post-fix.test.mjs` was empty and
+the acceptance command initially failed with `Could not find` that path.
+`git log -S 'serp-volume-post-fix' --oneline -5` was also checked; this shallow
+checkout exposes a boundary checkpoint, which cannot establish the original
+fix's history. The GitHub comparison of the stranded
+`land/bro-3344-serp-fallback-5036-plan` branch showed old telemetry plus unrelated
+image/BRO-5036 changes, not a missing volume verification test. No branch was
+merged, pushed or deleted.
+
+## Validation record
+
+Commands below used the temporary download filenames from this run. The
+temporary directory was removed afterwards; the immutable sources above allow
+the same input to be reconstructed.
+
+```bash
+# Initially failed: Could not find 'tests/unit/serp-volume-post-fix.test.mjs'.
+# After the change: 5 tests passed, 0 failed.
+node --test tests/unit/serp-volume-post-fix.test.mjs
+
+# Passed: 5 tests, 0 failures.
+node --test --test-timeout 300000 tests/unit/serp-volume-post-fix.test.mjs
+
+# Passed: 10 tests, 0 failures.
+node --test --test-timeout 300000 scripts/lib/serp-fallback-attribution.test.mjs scripts/lib/provider-telemetry.test.mjs
+
+# Passed, exit 0: 3,138 calls / 75,375 credits / 332 null fallbacks.
+node scripts/lib/serp-volume-post-fix.js 2026-10-19 2026-10-26 .tmp-bro-3344/2026-10-21.jsonl .tmp-bro-3344/2026-10-23.jsonl .tmp-bro-3344/2026-10-25.jsonl data/audit/scraper-spend-ledger.jsonl
+
+# Passed, exit 0: 2,785 calls / 67,525 credits / 339 null fallbacks.
+node scripts/lib/serp-volume-post-fix.js 2026-10-18 2026-10-25 .tmp-bro-3344/2026-10-19.jsonl .tmp-bro-3344/2026-10-21.jsonl .tmp-bro-3344/2026-10-23.jsonl .tmp-bro-3344/2026-10-25.jsonl data/audit/scraper-spend-ledger.jsonl
+
+# Correct refusal, exit 2: five missing days, comparison null.
+node scripts/lib/serp-volume-post-fix.js 2026-10-19 2026-10-26 data/audit/scraper-spend-ledger.jsonl
+
+# Passed: lint-workflows.exit = 0; log ends "all gates green".
+# actionlint unavailable, explicitly skipped by the harness.
+GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet
+
+# Passed; exact test path printed, proving existing CI collection.
+node scripts/lib/unit-test-collection.js | rg '^tests/unit/serp-volume-post-fix.test.mjs$'
+
+# Passed, no whitespace errors.
+git diff --check
+```
+
+No TypeScript, UI, scoring or content-quality pattern files changed, so their
+specialized commands were not applicable. Only the four intended files remain
+in the working tree. No commit, push, PR, workflow edit or Linear write was made.

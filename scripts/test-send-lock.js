@@ -9,13 +9,17 @@
  *     a real broadcast for more than ~5 seconds.
  *   - Cleanup guard runs at start AND in finally to force-delete any lock
  *     whose purpose starts with TEST_PURPOSE_PREFIX.
- *   - Creates real commits on origin/main for the lock file only. Two commits
- *     per acquire/release cycle. This is auditable in the git log.
+ *   - Writes only to a per-run scratch branch test/send-lock-scratch-<pid>
+ *     (or SEND_LOCK_BRANCH, which must start with test/), created from main at
+ *     start and deleted at exit if this run created it. It used to commit to
+ *     origin/main, two commits per cycle (BRO-6276).
  *
  * Run: node scripts/test-send-lock.js
  */
 
 const { execSync } = require('child_process');
+
+process.env.SEND_LOCK_BRANCH = process.env.SEND_LOCK_BRANCH || `test/send-lock-scratch-${process.pid}`;
 const {
   acquireSendLock,
   releaseSendLock,
@@ -23,9 +27,46 @@ const {
   deleteLock,
   LOCK_PATH,
   REPO,
+  BRANCH,
+  TEST_PURPOSE_PREFIX: LIB_TEST_PREFIX,
 } = require('./lib/send-lock');
 
-const TEST_PURPOSE_PREFIX = '__test_send_lock__';
+if (!BRANCH.startsWith('test/')) {
+  console.error(`FATAL: test-send-lock.js only writes to a test/ scratch branch, not "${BRANCH}". Unset SEND_LOCK_BRANCH.`);
+  process.exit(1);
+}
+
+let createdScratchBranch = false;
+
+function gh(args, input) {
+  return execSync(`gh api ${args}`, { encoding: 'utf8', stdio: ['pipe', 'pipe', 'pipe'], input });
+}
+
+// Create the scratch branch from main's tip if it does not exist yet.
+function ensureScratchBranch() {
+  try {
+    gh(`repos/${REPO}/git/ref/heads/${BRANCH}`);
+    return;
+  } catch (err) {
+    if (!/HTTP 404/.test(String(err.stderr || ''))) throw err;
+  }
+  const mainSha = JSON.parse(gh(`repos/${REPO}/git/ref/heads/main`)).object.sha;
+  gh(`--method POST repos/${REPO}/git/refs --input -`, JSON.stringify({ ref: `refs/heads/${BRANCH}`, sha: mainSha }));
+  createdScratchBranch = true;
+  console.log(`  (created scratch branch ${BRANCH})`);
+}
+
+function deleteScratchBranch() {
+  if (!createdScratchBranch) return;
+  try {
+    gh(`--method DELETE repos/${REPO}/git/refs/heads/${BRANCH}`);
+    console.log(`  (deleted scratch branch ${BRANCH})`);
+  } catch (err) {
+    console.log(`  (scratch branch delete failed: ${String(err.stderr || err.message).trim()})`);
+  }
+}
+
+const TEST_PURPOSE_PREFIX = `${LIB_TEST_PREFIX}send_lock__`;
 
 let passed = 0;
 let failed = 0;
@@ -78,6 +119,7 @@ async function runTests() {
     process.exit(1);
   }
   console.log('Pre-flight: gh auth OK');
+  ensureScratchBranch();
   cleanupTestLock('startup');
   console.log('');
 
@@ -211,6 +253,11 @@ async function runTests() {
   // ---------------------------------------------------------------------------
   cleanupTestLock('shutdown');
 }
+
+process.on('exit', deleteScratchBranch);
+// Default signal handling skips 'exit', which would orphan the scratch branch.
+process.on('SIGINT', () => process.exit(130));
+process.on('SIGTERM', () => process.exit(143));
 
 runTests()
   .then(() => {

@@ -21,13 +21,14 @@ const { chromium } = require('playwright');
 const { isLikelyWrongProduction, isLikelyTourReview } = require('./lib/review-guards');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 const { isLateTheatreRecordReviewOfBroadwayShow } = require('./lib/tr-late-review-guard');
-const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, resolveSplitOutletByCritic, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, getOutletDisplayName: getRegistryDisplayName } = require('./lib/review-normalization');
+const { splitOutletForLabel } = require('./lib/outlet-mismatch-heal');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
 const { pickTrProduction, trTitleMatches } = require('./lib/tr-production-pick');
 const { pdfUrlVariants, nonPdfHead } = require('./lib/tr-pdf-url');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
-const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
+const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting, isTrNoRecordCandidate, shouldSweepNoRecord } = require('./lib/review-text-identity');
 
 const { DATE_SHORT, parseShortDate, parsePdfReviews, parseRawPdfReviews, parseDefaultPdfReviews, mergeDefaultReviews, maskPdfText, locateReviews, productionRuns } = require('./lib/tr-pdf-parse');
 const { foldDiacritics } = require('./lib/title-match');
@@ -122,7 +123,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
   }
 
   const rawText = text;
-  const rawReviews = parseRawPdfReviews(text, show.title);
+  const rawReviews = parseRawPdfReviews(text, show.title, show.venue);
   try { dumpPdfText(show.id, 'raw', text, show.title); } catch (_) {}
   // Plain column-order mode (BRO-6097): recovers the pre-2020 reviews that
   // neither -layout nor -raw can pair into outlet + date + critic.
@@ -131,7 +132,7 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
     console.log(`  pdftotext (default) failed: ${e.message}`);
   }
   // Kill switch: TR_DEFAULT_MODE_DISABLED=true restores the layout + raw behaviour.
-  const defaultReviews = process.env.TR_DEFAULT_MODE_DISABLED === 'true' ? [] : parseDefaultPdfReviews(defaultText, show.title);
+  const defaultReviews = process.env.TR_DEFAULT_MODE_DISABLED === 'true' ? [] : parseDefaultPdfReviews(defaultText, show.title, show.venue);
   if (dumpDir && defaultText) { try { dumpPdfText(show.id, 'default', defaultText, show.title); } catch (_) {} }
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { defaultReviews: defaultReviews.length }) });
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { rawReviews: rawReviews.length }) });
@@ -164,6 +165,9 @@ async function extractReviewsFromPDF(page, context, pdfUrl, show) {
 
   probeNote(show.id, { pdf: Object.assign(PROBE[show.id].pdf, { merged: reviews.length }) });
   fs.unlinkSync(tmpFile);
+  // BRO-6365: downloaded and parsed (as opposed to every `return []` failure above).
+  // Default mode recovers the pre-2020 reviews, so a run without it proves nothing.
+  reviews.parsedOk = !!defaultText && process.env.TR_DEFAULT_MODE_DISABLED !== 'true';
   return reviews;
 }
 
@@ -511,7 +515,9 @@ async function main() {
   }
 
   // ─── Shared: extract reviews from a production page link ───
-  async function processShowFromLink(show, productionLink) {
+  // `picked`: the link is this show's own production, chosen by its per-show
+  // search (not a browse-listing match), so it speaks for every TR file of it.
+  async function processShowFromLink(show, productionLink, { picked = false } = {}) {
     const isPDF = productionLink.includes('/volume/') || productionLink.includes('/issue/');
     let reviews;
 
@@ -587,6 +593,7 @@ async function main() {
       return roundupRowsPromise;
     }
 
+    const touchedFiles = new Set();
     for (const review of reviews) {
       if (!review.fullText || review.fullText.length < 100) continue;
 
@@ -597,7 +604,7 @@ async function main() {
       }
 
       const parentOutletId = getOutletId(review.outlet);
-      const outletId = resolveSplitOutletByCritic(parentOutletId, review.critic);
+      const outletId = splitOutletForLabel(parentOutletId, review.outlet, review.critic);
       const outletDisplay = getRegistryDisplayName(outletId) || review.outlet;
       const filename = makeFilename(outletId, review.critic);
       const filepath = path.join(showDir, filename);
@@ -607,12 +614,18 @@ async function main() {
       const existingVariant = findExistingReviewFile(showDir, outletId, review.critic);
       // The same review may still sit under the parent label (daily-mail for a
       // Mail on Sunday critic) until the outlet-mismatch heal moves it: held, not new.
-      if (parentOutletId !== outletId && findExistingReviewFile(showDir, parentOutletId, review.critic)) {
+      // BRO-6302: a review this section yields but the run skips because its file
+      // exists is still on the page; the NO-RECORD sweep below must not stamp it.
+      const seen = (p) => { if (p) touchedFiles.add(p); };
+      const parentFile = parentOutletId !== outletId ? findExistingReviewFile(showDir, parentOutletId, review.critic) : null;
+      if (parentFile) {
+        seen(parentFile.path);
         skippedCount++;
         heldCount++;
         continue;
       }
       if ((fileExists || existingVariant) && !noSkipExisting) {
+        seen(fileExists ? filepath : existingVariant.path);
         skippedCount++;
         heldCount++;
         continue;
@@ -768,6 +781,7 @@ async function main() {
       const target = resolveFreshTheatreRecordTarget(showDir, outletId, filepath, review);
       if (target.action === 'skip') {
         console.log(`    SKIP: ${filename} — ${target.reason} (${path.basename(target.path)})`);
+        seen(target.path);
         skippedCount++;
         heldCount++;
         continue;
@@ -775,6 +789,7 @@ async function main() {
       if (target.action === 'merge') {
         const targetName = path.basename(target.path);
         const existing = target.data;
+        touchedFiles.add(target.path);
         const merged = mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic: target.fillCritic });
         if (dryRun) {
           console.log(`    MERGE: ${filename} -> ${targetName} (${target.reason}; adding TR data to existing review)`);
@@ -785,10 +800,30 @@ async function main() {
       } else if (dryRun) {
         console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       } else {
+        touchedFiles.add(filepath);
         safeWriteReview(filepath, reviewData);
         console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       }
       newCount++;
+    }
+
+    // BRO-6154: a file the scorer rejected as another show's review that this
+    // production's section no longer yields means Theatre Record has no record of
+    // that outlet+critic under this production. Say so on the file.
+    // BRO-6302: with the per-show pick, a rejected file taken from a different TR
+    // page (an earlier run's wrong production pick: Come From Away's 2021
+    // reopening listing, The Play That Goes Wrong's 2020 return) is covered too.
+    // BRO-6365: a picked production whose PDF parsed cleanly but yielded nothing
+    // for this show (pigeon-english, still-no-idea) has no record of any of its files.
+    if (shouldSweepNoRecord({ reviewCount: reviews.length, picked, isPDF, parsedOk: reviews.parsedOk }) && fs.existsSync(showDir)) {
+      for (const f of fs.readdirSync(showDir)) {
+        const fp = path.join(showDir, f);
+        if (!f.endsWith('.json') || touchedFiles.has(fp)) continue;
+        let d; try { d = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
+        if (!isTrNoRecordCandidate(d, productionLink, { picked })) continue;
+        console.log(`    NO-RECORD: ${f} (rejected as another show's text; not in this production's TR section)`);
+        if (!dryRun) safeWriteReview(fp, { ...d, trNoRecordForProduction: { reason: 'Theatre Record has no review by this outlet and critic under this production (BRO-6154)', at: new Date().toISOString() } });
+      }
     }
 
     if (newCount === 0 && reviews.length > 0) {
@@ -881,7 +916,7 @@ async function main() {
     console.log(`  Found: ${bestResult.title} @ ${bestResult.venue}`);
     console.log(`  Link: ${bestResult.link}`);
 
-    return processShowFromLink(show, bestResult.link);
+    return processShowFromLink(show, bestResult.link, { picked: true });
   }
 
   // ─── Main processing loop ───

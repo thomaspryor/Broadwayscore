@@ -17,6 +17,7 @@
 
 require('./lib/cli-help').exitOnHelp(module);
 const { isStaleBaseline, stampDetectedAt } = require('./lib/follow-digest-prune');
+const { diffClosingDate } = require('./lib/show-change-diff');
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
@@ -213,28 +214,23 @@ function detectChanges(currentState, previousState, extras) {
       });
     }
 
-    // Closing date change — split into subtypes
-    if (current.closingDate !== prev.closingDate) {
-      if (!prev.closingDate && current.closingDate) {
-        showChanges.push({
-          type: 'closing-announced',
-          message: `Closing date announced: ${formatDate(current.closingDate)}`,
-        });
-      } else if (prev.closingDate && current.closingDate) {
-        const prevDate = new Date(prev.closingDate);
-        const currDate = new Date(current.closingDate);
-        if (currDate > prevDate) {
-          showChanges.push({
-            type: 'closing-extended',
-            message: `Run extended through ${formatDate(current.closingDate)}`,
-          });
-        } else if (currDate < prevDate) {
-          showChanges.push({
-            type: 'closing-shortened',
-            message: `Closing date moved up to ${formatDate(current.closingDate)}`,
-          });
-        }
-      }
+    // Closing date change — split into subtypes (pure diff: scripts/lib/show-change-diff.js)
+    const closingChange = diffClosingDate(prev.closingDate, current.closingDate);
+    if (closingChange === 'closing-announced') {
+      showChanges.push({
+        type: 'closing-announced',
+        message: `Closing date announced: ${formatDate(current.closingDate)}`,
+      });
+    } else if (closingChange === 'closing-extended') {
+      showChanges.push({
+        type: 'closing-extended',
+        message: `Run extended through ${formatDate(current.closingDate)}`,
+      });
+    } else if (closingChange === 'closing-shortened') {
+      showChanges.push({
+        type: 'closing-shortened',
+        message: `Closing date moved up to ${formatDate(current.closingDate)}`,
+      });
     }
 
     // New reviews (threshold: 3+)

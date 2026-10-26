@@ -40,7 +40,7 @@ archived: true
 
 4. If the new path runs in a GitHub Actions workflow step, that step MUST set `GH_TOKEN: ${{ github.token }}` in `env:` — otherwise `gh api` in the lock helper fails auth and the lock refuses, blocking the send.
 
-5. Test coverage: add cases to `scripts/test-send-lock.js` if the new path has novel lock semantics. The existing 29 cases cover happy path, contention, expiry takeover, defensive release, idempotent release — most new callers are covered by those if they just use the helper as-is.
+5. Test coverage: add fast cases to `scripts/lib/send-lock.test.mjs` (fake gh). `scripts/test-send-lock.js` is the live check; it writes only to the per-run scratch branch `test/send-lock-scratch-<pid>`, deleted on exit (a `__test_` lock on main is refused, BRO-6276). Add cases there if the new path has novel lock semantics. The existing 29 cases cover happy path, contention, expiry takeover, defensive release, idempotent release — most new callers are covered by those if they just use the helper as-is.
 
 **Lock file:** `data/email-send.lock` on origin/main, public repo, non-sensitive. Schema: `{ sessionId, acquiredAt, expiresAt, purpose, holder, workflowRunId }`. TTL 5 min. Expired locks auto-take-over on the next acquisition attempt.
 

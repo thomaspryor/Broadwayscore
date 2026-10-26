@@ -5,6 +5,7 @@ src/app/api/__tests__/mezzanine-token-route.test.mjs
 src/app/api/__tests__/submit-review-pii-route.test.mjs
 tests/unit/HoverRateStars.test.mjs
 tests/unit/ads-decision.test.ts
+tests/unit/ads-txt-route.test.ts
 tests/unit/analytics-redaction.test.ts
 tests/unit/anchored-markets-consistency.test.ts
 tests/unit/api-approve-fix.test.mjs
@@ -34,6 +35,7 @@ tests/unit/cast-changes-filters-parity.test.ts
 tests/unit/cast-index.test.ts
 tests/unit/cite-score.test.ts
 tests/unit/commercial-display.test.mjs
+tests/unit/commercial-headline-stats.test.ts
 tests/unit/commercial-metrics.test.ts
 tests/unit/commercial-model-display-guard.test.mjs
 tests/unit/commercial-public-source.test.mjs
@@ -108,12 +110,15 @@ tests/unit/review-expectation.test.ts
 tests/unit/review-photos.test.ts
 tests/unit/robots-api-disallow.test.ts
 tests/unit/robots-meta-nonprod.test.ts
+tests/unit/row-click.test.ts
 tests/unit/run-age-label.test.mjs
 tests/unit/score-breakdown-tier.test.ts
 tests/unit/scoring-parity.test.ts
+tests/unit/search-intents.test.mjs
 tests/unit/season-profile.test.ts
 tests/unit/season-show-list.test.ts
 tests/unit/season-stats-enhancement-filter.test.mjs
+tests/unit/seo-cast-composers-itemlist.test.mjs
 tests/unit/seo-regional-country.test.mjs
 tests/unit/seo-review-snippet-policy.test.mjs
 tests/unit/seo-show-no-venue.test.mjs
@@ -135,6 +140,7 @@ tests/unit/show-origins.test.ts
 tests/unit/show-score-tbd.test.ts
 tests/unit/show-slug-aliases.test.ts
 tests/unit/showtime-picker.test.ts
+tests/unit/site-image-versioning.test.mjs
 tests/unit/slug-redirects.test.ts
 tests/unit/social-preview-metadata.test.ts
 tests/unit/social-pulse-display.test.mjs

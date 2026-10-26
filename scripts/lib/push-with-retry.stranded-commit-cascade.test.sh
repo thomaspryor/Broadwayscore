@@ -128,9 +128,9 @@ node -e '
     if (!Array.isArray(API_FALLBACK_SAFE)) throw new Error("API_FALLBACK_SAFE is not an array");
     if (!Array.isArray(API_FALLBACK_MERGE)) throw new Error("API_FALLBACK_MERGE is not an array");
     const target = process.argv[2];
+    const { registryPathMatches } = require(process.argv[1].replace(/reconcile-merged-json\.js$/, "registry-path-match.js"));
     const hit = (list) => list.some((e) => {
-      const suffix = String(e.file).replace(/^data\//, "");
-      return target === e.file || target.endsWith(suffix);
+      return target === e.file || registryPathMatches(e.file, target);
     });
     process.exit(hit(API_FALLBACK_SAFE) || hit(API_FALLBACK_MERGE) ? 0 : 1);
   ' "$REGISTRY_PROBE_MODULE" "$STRANDED_PATH" 2>"$PREMISE_ERR"

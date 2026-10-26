@@ -62,6 +62,7 @@ const { verifyCommand } = require(path.join(ROOT, 'scripts/lib/linear-drain-park
 const { makeVerifyCmdEvidence } = require(path.join(ROOT, 'scripts/lib/linear-cmd-execution.js'));
 const R = require(path.join(ROOT, 'scripts/lib/codex-runner.js'));
 const DF = require(path.join(ROOT, 'scripts/lib/codex-data-fixes.js'));
+const TL = require(path.join(ROOT, 'scripts/lib/codex-trust-ladder.js'));
 const PF = require(path.join(ROOT, 'scripts/lib/codex-sandbox-preflight.js'));
 const { createSandbox, sandboxUser, judgeLandSandboxed, readSandboxFile, JSON_MARK } = require(path.join(ROOT, 'scripts/lib/codex-sandbox.js'));
 
@@ -265,6 +266,76 @@ function freeDisk() {
   return free;
 }
 
+/** Process cwds, so a worktree a live process stands in is never a candidate. */
+function liveCwds() {
+  const out = [];
+  try { for (const pid of fs.readdirSync('/proc')) if (/^\d+$/.test(pid)) { try { out.push(fs.readlinkSync(`/proc/${pid}/cwd`)); } catch { /* not ours or gone */ } } } catch { /* no /proc */ }
+  return out;
+}
+
+/**
+ * Remove .claude/worktrees/<name> a Claude worker lane left behind (BRO-6304: ~1.3 GB each filled
+ * the cloud container: "only 1.4 GB of disk left"). R.staleClaudeWorktrees decides; this gathers the
+ * facts, and a tree with any unknown fact is kept. Plain `git worktree remove`, never --force.
+ */
+function pruneClaudeWorktrees() {
+  const dir = path.join(ROOT, '.claude/worktrees');
+  let names = [];
+  try { names = fs.readdirSync(dir).filter((n) => !R.CODEX_SLOT_WORKTREE.test(n)); } catch { return; }
+  if (!names.length) return;
+  const now = Date.now();
+  const cutoff = now - R.CLAUDE_WORKTREE_IDLE_MS;
+  // unbounded-fetch-ok: the runner works in a full clone (never a fetch-depth:1 workflow checkout) and needs history for git cherry
+  sh('git', ['fetch', '-q', 'origin', 'main'], { cwd: ROOT, timeoutMs: 60_000 });
+  const lockedPaths = R.lockedWorktreePaths(sh('git', ['worktree', 'list', '--porcelain'], { cwd: ROOT }).stdout);
+  const cwds = liveCwds();
+  const entries = names.map((name) => {
+    const wt = path.join(dir, name);
+    let real = wt;
+    try { real = fs.realpathSync(wt); } catch { return { name }; }
+    const entry = { name, liveCwd: R.cwdInside(cwds, real), locked: lockedPaths.has(wt) || lockedPaths.has(real) };
+    let gitdir = null;
+    try { gitdir = fs.readFileSync(path.join(wt, '.git'), 'utf8').match(/^gitdir:\s*(.+)$/m)?.[1]?.trim() || null; } catch { /* not a worktree */ }
+    if (!gitdir) return entry;
+    let meta = 0;
+    for (const f of ['HEAD', 'index', 'logs/HEAD']) { try { meta = Math.max(meta, fs.statSync(path.join(gitdir, f)).mtimeMs); } catch { /* absent */ } }
+    // Cheapest checks first: a tree with a live process or a recent touch needs no git calls.
+    if (entry.liveCwd || entry.locked || !meta || now - meta <= R.CLAUDE_WORKTREE_IDLE_MS) return { ...entry, newestMs: now - meta <= R.CLAUDE_WORKTREE_IDLE_MS ? meta : undefined };
+    const newest = R.newestMtimeMs(wt, cutoff);
+    const status = sh('git', ['--no-optional-locks', 'status', '--porcelain'], { cwd: wt, timeoutMs: 60_000 });
+    // `git cherry`: a commit that landed rebased on main has an equivalent there ('-'); '+' is work main lacks.
+    const ahead = sh('git', ['cherry', 'origin/main', 'HEAD'], { cwd: wt, timeoutMs: 60_000 });
+    return {
+      ...entry, newestMs: Math.max(meta, newest),
+      // `git status` and `worktree remove` ignore gitignored files: a .env, or a real review-texts clone
+      // with unpushed commits, would go with the tree. Keep any tree holding one (BRO-6304 ship-check).
+      dirty: status.code === 0 ? status.stdout.trim() !== '' || R.holdsIgnoredWork(wt) : null,
+      unpushed: ahead.code === 0 ? /^\+/m.test(ahead.stdout) : null,
+    };
+  });
+  const doomed = R.staleClaudeWorktrees(entries, now);
+  const removed = [];
+  for (const name of doomed) {
+    // Non-throwing: a sibling slot may have removed it already.
+    const r = sh('git', ['worktree', 'remove', path.join(dir, name)], { cwd: ROOT, timeoutMs: 120_000 });
+    if (r.code === 0) removed.push(name); else log(`pruneDisk: worktree ${name} kept (${tail(r.out, 120).trim()})`);
+  }
+  if (removed.length) log(`pruneDisk: removed ${removed.length} stale Claude worktree(s): ${removed.slice(0, 8).join(', ')}`);
+  else log(`pruneDisk: ${names.length} non-runner worktree(s), none stale+clean+pushed`);
+}
+
+/** What holds the disk, for the run log when it runs low (BRO-6304): worktrees, temp dir, Codex home. */
+function logDiskUsage(why) {
+  const kb = (p) => { const r = sh('du', ['-sk', p], { timeoutMs: 30_000 }); return r.code === 0 || r.stdout ? Number(r.stdout.split('\t')[0]) || 0 : 0; };
+  const rows = [];
+  const add = (label, p) => { try { fs.statSync(p); rows.push([label, kb(p)]); } catch { /* absent */ } };
+  try { for (const n of fs.readdirSync(path.join(ROOT, '.claude/worktrees'))) add(`worktrees/${n}`, path.join(ROOT, '.claude/worktrees', n)); } catch { /* none */ }
+  try { for (const n of fs.readdirSync(os.tmpdir())) add(`tmp/${n}`, path.join(os.tmpdir(), n)); } catch { /* none */ }
+  add('CODEX_HOME', CODEX_HOME);
+  const top = rows.sort((a, b) => b[1] - a[1]).slice(0, 8).map(([l, k]) => `${l} ${(k / 1e6).toFixed(1)}G`);
+  log(`disk usage (${why}): ${top.join(', ') || 'nothing measurable'}`);
+}
+
 /**
  * Delete what killed tests and data copies left in the temp dir (R.staleTmpEntries: only known
  * prefixes, past an age no live run reaches, so a sibling slot's own temp dirs are safe) and
@@ -272,6 +343,8 @@ function freeDisk() {
  * 2 h, so leaks pile up across firings (BRO-5422/5443: 1.7 GB per leaked /tmp/bro-5217-*).
  */
 function pruneDisk() {
+  const lowFree = freeDisk();
+  if (lowFree != null && lowFree < R.MIN_FREE_DISK_BYTES * 3) logDiskUsage(`${(lowFree / 1e9).toFixed(1)} GB free, before pruning`);
   const tmp = os.tmpdir();
   let entries = [];
   try {
@@ -284,6 +357,7 @@ function pruneDisk() {
   for (const name of stale) { try { fs.rmSync(path.join(tmp, name), { recursive: true, force: true }); } catch (e) { log(`pruneDisk: ${name} kept (${e.code || e.message})`); } }
   // Safe beside a sibling slot's `git worktree add`: git locks a worktree while it initializes.
   sh('git', ['worktree', 'prune'], { cwd: ROOT });
+  pruneClaudeWorktrees();
   if (stale.length) log(`pruneDisk: removed ${stale.length} stale temp dir(s): ${stale.slice(0, 8).join(', ')}`);
 }
 
@@ -291,10 +365,12 @@ function pruneDisk() {
  * Give a freshly cleaned worktree the private data the main checkout has (R.DATA_FILES
  * copied, data/review-texts linked), since `git clean -x` removes it. reviewTexts: false
  * for the land-check batches: land.yml has no review texts either, and those batches run
- * outside the Codex sandbox, so a test write must not reach the shared clone.
+ * outside the Codex sandbox, so a test write must not reach the shared clone. The default is the
+ * trust ladder's review-texts rung (BRO-6303): unlocked links it, locked does not and says why.
  * -> { lines (for the prompts), dirs (real paths the reviewer may read) }
  */
-function provideData(dest, { reviewTexts = true } = {}) {
+function provideData(dest, { ladder = R.codexLadderAccess(), reviewTexts } = {}) {
+  const rt = R.reviewTextsPlan({ ladder, reviewTexts });
   const src = path.join(ROOT, 'data');
   const provided = [];
   const missing = [];
@@ -312,7 +388,13 @@ function provideData(dest, { reviewTexts = true } = {}) {
   for (const name of R.DATA_DIRS) {
     const from = path.join(src, name);
     const to = path.join(dest, 'data', name);
-    if (!reviewTexts || !fs.existsSync(from)) { if (reviewTexts) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`); continue; }
+    if (!rt.link || !fs.existsSync(from)) {
+      if (rt.link) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`);
+      else if (rt.note) lines.push(`- data/${name}: ${rt.note}`);
+      // A relock mid-run: a link an earlier card got (git clean without -x keeps it) goes now.
+      if (!rt.link && present(to) && fs.lstatSync(to).isSymbolicLink()) fs.unlinkSync(to);
+      continue;
+    }
     const real = fs.realpathSync(from);
     let cfg = '';
     try { cfg = fs.readFileSync(path.join(real, '.git', 'config'), 'utf8'); } catch { /* not a clone */ }
@@ -497,9 +579,10 @@ const CHECK_BINARY_LINES = 1000; // a binary file is never "small"
 /** Commit Codex's working-tree changes (message: a --pr landing's own). -> { hasDiff, blocked } */
 function commitAttempt(card, attempt, message = null) {
   git(['add', '-A']); // node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
-  const names = git(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
+  const names = git(['diff', '--cached', '--name-only', '--no-renames']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
+  if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder (its own grading rules or the inputs they read), which the runner never lands' };
   // A staged symlink could point at the private data the runner links in (land refuses tracked symlinks too).
   if (/^:\d+ 120000 /m.test(git(['diff', '--cached', '--raw']))) return { hasDiff: true, blocked: 'the change adds a symlink, which the runner never lands' };
   if (R.looksLikeSecretLeak(git(['diff', '--cached']))) return { hasDiff: true, blocked: 'the diff looks like it carries token material' };
@@ -696,7 +779,7 @@ async function settleLanded(id, stats, { partial, remaining = [], body, countRef
   // landing comes through here, so a recovered or reconciled landing cannot reach Done unapplied.
   // With the kill switch on, a pending plan still bounces the card (never Done unapplied), it is just not dispatched.
   if (!OPTS.dryRun) {
-    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled(), canDispatch: DF.canDispatchWorkflows() });
+    const ap = await applyLandedPlans(id, { dispatch: DF.dataFixesEnabled(), canDispatch: DF.canDispatchWorkflows(), applyWaitMin: R.landWaitMinutes({ hardEndMs: HARD_END_MS, wrapUpMs: WRAP_UP_MS, nowMs: Date.now() }) });
     if (ap.kind === 'deferred') {
       // Not a failure and not a bounce (a bounce would hide the card from the GHA lane for 14 days): the card stays
       // In Progress with its landing on main, and a runner that can dispatch applies it on its next reconcile.
@@ -800,6 +883,9 @@ async function workCard(pick, stats, inFlight) {
     const why = await pickedCardNowUnfit(id, card, comments, pick.tier);
     if (why) { log(`${id}: no longer pickable (${why}), skipped`); return 'skip'; }
   }
+  // The trust ladder as it is now (BRO-6303): a rung relocked since the pick, or an --ids card it rules out.
+  const ladderWhy = R.ladderSkip({ title: card.title, description: card.description, verify: verifyCommand(card) || '', comments, nowMs: Date.now() });
+  if (ladderWhy) { log(`${id}: the trust ladder rules it out now (${ladderWhy}), skipped`); return 'skip'; }
   const body = R.cardBody(card.description, comments);
   // A SHIP-WITH-FIXES round an earlier run had no time for: resume it (BRO-5384).
   const carry = R.parseSwfCarry(comments, Date.now());
@@ -845,8 +931,8 @@ async function workCard(pick, stats, inFlight) {
     // card budget. The land checks and review after the last exec still run, so
     // a card can overrun the budget by those (bounded by their own timeouts).
     const cardDeadline = Math.min(claimedMs + OPTS.cardMaxMinutes * 60_000, HARD_END_MS - WRAP_UP_MS);
-    // The current round's deadline: the card budget, or for the first SHIP-WITH-FIXES round the
-    // rest of the run (R.fixRoundDeadline, BRO-5384).
+    // The current round's deadline: the card budget, or for the first SHIP-WITH-FIXES round and a REJECT
+    // round the rest of the run (R.fixRoundDeadline, BRO-5384, BRO-6260).
     let roundDeadline = cardDeadline;
     // A fix round's exec gets what is left after the review (down to 15 min), not a fixed 45:
     // reserving a whole 45-min exec + 30-min review never fit the routine's 60-min card budget,
@@ -949,13 +1035,13 @@ async function workCard(pick, stats, inFlight) {
       }
       if (step !== 'fix-round' && step !== 'env-retry') break;
       const deadline = step === 'fix-round'
-        ? R.fixRoundDeadline({ verdict: check.verdict, swfRoundUsed, cardDeadlineMs: cardDeadline, runEndMs: HARD_END_MS - WRAP_UP_MS })
+        ? R.fixRoundDeadline({ verdict: check.verdict, swfRoundUsed, cardDeadlineMs: cardDeadline, runEndMs: HARD_END_MS - WRAP_UP_MS, rejectRunEnd: process.env.CODEX_REJECT_RUN_END !== '0' })
         : roundDeadline;
       const swfRound = step === 'fix-round' && check.verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed;
       if (!execFits(deadline)) {
         // A SHIP-WITH-FIXES verdict always gets its fix round: in the next run if not in this one.
         if (swfRound) { carryOver = true; break; }
-        step = 'bounce'; check.text += `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break;
+        step = 'bounce'; check.text += check.verdict === 'REJECT' && process.env.CODEX_REJECT_RUN_END !== '0' ? '\n\n(The run had no time left for another round.)' : `\n\n(The runner's ${OPTS.cardMaxMinutes}-minute card budget ran out before another round.)`; break;
       }
       roundDeadline = deadline;
       if (swfRound) swfRoundUsed = true;
@@ -1429,6 +1515,17 @@ function landedPerLane() {
   } catch { return 'unknown (git log failed)'; }
 }
 
+/** The trust ladder access this run started under (BRO-6303), for the summary; a mid-run change says so. */
+let runLadder = null;
+function ladderLine() {
+  try {
+    const now = R.codexLadderAccess();
+    const start = runLadder || now;
+    const same = ['source', 'minScore', 'cloudDataRouteLocked', 'reviewTextsLocked'].every((k) => start[k] === now[k]);
+    return `${TL.accessLine(start)}${same ? '' : ` (changed mid-run, now: ${TL.accessLine(now).replace(/^- Trust ladder: /, '')})`}`;
+  } catch (e) { return `- Trust ladder: unreadable (${String(e && e.message || e).slice(0, 80)})`; }
+}
+
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
 async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
   let subjects = '';
@@ -1443,7 +1540,7 @@ async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
     if (!notes.length || !notes[0].body.startsWith('## Codex runner: landing did not finish')) continue;
     // A deferred data-fix apply is for a runner that can dispatch; a cloud slot re-reading it would only defer again.
     const deferred = notes[0].body.startsWith(DEFER_HEADING);
-    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canDispatchWorkflows() })) continue;
+    if (DF.reconcileSkips({ deferred, onlyDeferred, canDispatch: DF.canReconcileDeferred() })) continue;
     await settleLanded(id, stats, { partial: await partialLanding(id, NaN), body: 'The runner\'s commit for this card is on main; an earlier run stopped waiting before the landing finished.' });
   }
 }
@@ -1514,6 +1611,7 @@ async function runLocked(startedMs) {
   let worked = 0;
   let stop = null;
   let picks;
+  runLadder = R.codexLadderAccess(); // what this run starts under, for the summary (BRO-6303)
   try { picks = await pickCards(); } catch (e) { throw startFailure('picker', e.message, 1); }
   let skipped = 0;
   for (const pick of picks) {
@@ -1527,7 +1625,7 @@ async function runLocked(startedMs) {
     // in a row stop only this slot: they can be this slot's cards.
     if (stop && (stats.aborted || stats.doneRefusals || diskLow)) stopAllSlots(stop);
     if (!stop) { const other = runStop(); if (other) stop = `another slot stopped this launch (${other})`; }
-    if (!stop && !fitsBeforeHardStop(R.cardStartMs(landChecksMs))) stop = `under ${Math.round((R.cardStartMs(landChecksMs) + WRAP_UP_MS) / 60_000)} min left before the ${OPTS.hardStopMinutes}-min hard stop (a card's exec, land checks and review would not fit)`;
+    if (!stop && !fitsBeforeHardStop(R.cardStartMs(landChecksMs, { laterCard: worked > 0 }))) stop = `under ${Math.round((R.cardStartMs(landChecksMs, { laterCard: worked > 0 }) + WRAP_UP_MS) / 60_000)} min left before the ${OPTS.hardStopMinutes}-min hard stop (a card's exec, land checks and review would not fit)`;
     let held = true;
     try { held = refreshLock(MAX_STAMP_GAP_MS); } catch { /* transient git error: the keep-alive retries */ }
     if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';
@@ -1549,33 +1647,16 @@ async function runLocked(startedMs) {
   saveLogin();
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
-  const list = (a) => (a.length ? a.join(', ') : 'none');
-  const landedCount = stats.landed.length + stats.landedPartial.length;
-  const text = [
-    R.summaryHeading({ date: new Date().toISOString().slice(0, 10), worked, mins, slot: SLOT, lane: OPTS.lane }),
-    `- Landed and Done: ${list(stats.landed)}`,
-    `- Landed part, back to Todo with what is left: ${list(stats.landedPartial)}`,
-    `- Already fixed, closed: ${list(stats.alreadyFixed)}`,
-    `- Did not pass the Claude check, back to Todo: ${list(stats.bounced)}`,
-    `- In Review (the Done gate would not close it): ${list(stats.inReview)}`,
-    `- Landing did not finish (left In Progress for resume): ${list(stats.landFailed)}`,
-    `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
-    ...stats.recoveredStops.map((details) => `- Recovered stopped session: ${details}`),
-    ...(stats.carried.length ? [`- SHIP-WITH-FIXES, fix round carried to the next run: ${list(stats.carried)}`] : []),
-    ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
-    ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
-    R.codexSettingsLine(codexUsed),
-    `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
-    `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
-    // BRO-5384 savings line: what the Codex lane costs in Claude, by model and per landed card.
-    `- Claude check by model: ${Object.entries(checkByModel).map(([k, v]) => `${k} ${v.n} ($${v.usd.toFixed(2)})`).join(', ') || 'none'}; per landed card: ${landedCount ? `$${(checkSpentUsd / landedCount).toFixed(2)}` : 'n/a (nothing landed)'}`,
-    // A pinned lane shows in the next summary instead of days later (BRO-6129: one slot for 13 h unnoticed).
-    ...(process.env.CODEX_SLOT_SHORTFALL ? [`- Slots: ${process.env.CODEX_SLOT_SHORTFALL}`] : []),
-    ...(SLOT === 0 ? [`- Landed on main, last 24h: ${landedPerLane()}`] : []),
-    `- Stopped early: ${stop || 'no'}`,
-    // A run that did no work says why (BRO-6139), so "0 worked, stopped early: no" is never the whole story.
-    ...(worked ? [] : [`- Why nothing was worked: ${!picks.length ? 'the picker returned no Codex-fit card' : stop ? 'stopped early (above)' : `all ${picks.length} picked card(s) were skipped (taken by another slot, no longer Todo, or unfit now; see the run log)`}${skipped ? ` (${skipped} skipped)` : ''}`]),
-  ].join('\n');
+  const text = R.runnerSummaryText({
+    heading: R.summaryHeading({ date: new Date().toISOString().slice(0, 10), worked, mins, slot: SLOT, lane: OPTS.lane }),
+    stats, worked, skipped, picks, stop,
+    settingsLine: R.codexSettingsLine(codexUsed),
+    weeklyPct: weeklyPct(),
+    checkCount, checkSpentUsd, checkByModel,
+    slotShortfall: process.env.CODEX_SLOT_SHORTFALL,
+    landedPerLane: SLOT === 0 ? landedPerLane() : null,
+    ladderLine: ladderLine(),
+  });
   log(text);
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
   summaryPosted = true; // a later crash is not a run that "did not start"
@@ -1712,7 +1793,7 @@ async function runPr(n) {
   }
 }
 
-module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };
+module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans, pruneClaudeWorktrees };
 if (require.main === module) {
   main().catch(async (e) => {
     log(`runner failed: ${e && e.stack ? e.stack : e}`);

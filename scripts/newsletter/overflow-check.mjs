@@ -21,6 +21,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { chromium } from 'playwright';
+import { createRequire } from 'node:module';
 
 const MAX_WIDTH = 420;
 const VIEWPORT = 375;
@@ -40,7 +41,7 @@ if (!fs.existsSync(htmlPath)) {
   process.exit(1);
 }
 
-const browser = await chromium.launch();
+const browser = await chromium.launch(createRequire(import.meta.url)('../lib/playwright-exe.js').launchExtras(chromium));
 try {
   const page = await browser.newPage({ viewport: { width: VIEWPORT, height: 900 } });
   await page.goto('file://' + htmlPath);

@@ -1,15 +1,35 @@
 {
   "system": "workflow repeat-failure",
   "status": "error",
-  "lastChecked": "2026-10-25T23:39:13.537Z",
+  "lastChecked": "2026-10-26T07:50:34.813Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
+      "name": "Workflow repeat-failure: Deploy to Vercel",
+      "status": "error",
+      "message": "Deploy to Vercel failed 11 times in the last 24h — likely broken, not transient."
+    },
+    {
       "name": "Workflow repeat-failure: Test Suite",
       "status": "error",
-      "message": "Test Suite failed 5 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 9 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Test UGC Features",
+      "status": "error",
+      "message": "Test UGC Features failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: Deploy Demo Site",
+      "status": "error",
+      "message": "Deploy Demo Site failed 3 times in the last 24h — likely broken, not transient."
+    },
+    {
+      "name": "Workflow repeat-failure: WE Historical TR OCR Probe",
+      "status": "warn",
+      "message": "WE Historical TR OCR Probe failed 2 times in the last 24h — likely broken, not transient."
     }
   ]
 }

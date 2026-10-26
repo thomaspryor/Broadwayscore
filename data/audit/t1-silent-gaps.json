@@ -1,8 +1,29 @@
 {
-  "generatedAt": "2026-10-25T23:51:26.783Z",
+  "generatedAt": "2026-10-26T21:04:54.541Z",
   "windowDays": 45,
-  "showsScanned": 203,
+  "showsScanned": 198,
   "gaps": [
+    {
+      "showId": "lincoln-in-the-bardo-off-broadway-2026",
+      "title": "Lincoln in the Bardo",
+      "openingDate": "2026-10-19",
+      "file": "washpost--philip-kennicott.json",
+      "outletId": "washpost",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "recoverable": false,
+      "url": "https://www.washingtonpost.com/entertainment/theater/2026/10/22/how-lincoln-bardo-found-words-presidents-operatic-grief/",
+      "recovery": null,
+      "recoveryCount": 0,
+      "forumLinkRecoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
+      "firstSeen": "2026-10-25T17:52:33.957Z",
+      "fileAgeHours": 27.20457,
+      "gapSeenAt": "2026-10-26T08:25:16.367Z",
+      "nonTerminalAgeHours": 12.660603611111112,
+      "needsManualRecovery": false
+    },
     {
       "showId": "high-school-musical-off-west-end-2026",
       "title": "High School Musical",
@@ -19,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 34.5002775,
+      "fileAgeHours": 55.724264444444444,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 20.548118055555555,
+      "nonTerminalAgeHours": 41.772495,
       "needsManualRecovery": false
     },
     {
@@ -39,9 +60,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 799.1815872222222,
+      "fileAgeHours": 820.4057333333334,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 69.57094388888889,
+      "nonTerminalAgeHours": 90.79532083333334,
       "needsManualRecovery": true
     }
   ],

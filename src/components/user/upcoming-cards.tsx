@@ -122,9 +122,9 @@ export function PosterGridCard({ href, posterUrl, date, title, ariaLabel, badge,
   children?: ReactNode;
 }) {
   return (
-    <div className="group/grid flex flex-col min-w-0">
+    <div data-testid="poster-grid-card" className="group/grid flex flex-col min-w-0">
       <CardLinkOrDiv href={href} className="block" ariaLabel={ariaLabel ?? (date ? `View ${title}, ${date}` : `View ${title}`)}>
-        <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-surface-overlay">
+        <div data-testid="poster-grid-image" className="relative aspect-[2/3] rounded-xl overflow-hidden bg-surface-overlay">
           <Poster url={posterUrl} iconClass="text-3xl" />
           {badge !== undefined && <PosterBadge badge={badge} />}
           {children}

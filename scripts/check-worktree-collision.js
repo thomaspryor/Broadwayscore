@@ -25,6 +25,7 @@
 const { execFileSync } = require('child_process');
 const { evaluateWorktreeEntry } = require('./lib/duplicate-dispatch-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { parseWorktreePorcelain } = require('./lib/worktree-lock-parse');
 
 function getWorktreeState(name, repoRoot) {
   let porcelain;
@@ -39,17 +40,8 @@ function getWorktreeState(name, repoRoot) {
   }
 
   const targetPath = `${repoRoot}/.claude/worktrees/${name}`;
-  const blocks = porcelain.trim().split('\n\n');
-  for (const block of blocks) {
-    const lines = block.split('\n');
-    const pathLine = lines.find(l => l.startsWith('worktree '));
-    if (!pathLine) continue;
-    const wtPath = pathLine.slice('worktree '.length).trim();
+  for (const { path: wtPath, locked, lockReason } of parseWorktreePorcelain(porcelain)) {
     if (wtPath !== targetPath) continue;
-
-    const lockLine = lines.find(l => l.startsWith('locked'));
-    const locked = Boolean(lockLine);
-    const lockReason = lockLine ? lockLine.slice('locked'.length).trim() : null;
 
     let dirty = false;
     try {

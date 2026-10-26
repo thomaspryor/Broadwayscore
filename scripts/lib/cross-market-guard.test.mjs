@@ -27,6 +27,13 @@ test('isDualMarket outlet is always skipped (legit by definition)', () => {
   );
 });
 
+test('allowCrossMarket review is skipped even for a Tier 1/2 London outlet on Broadway (BRO-6369)', () => {
+  const base = { region: 'london', isDualMarket: false, isTier12: true, isBroadway: true };
+  assert.equal(classifyReverseCrossMarket(base).level, 'error');
+  assert.equal(classifyReverseCrossMarket({ ...base, allowCrossMarket: true }).level, 'skip');
+  assert.equal(classifyReverseCrossMarket({ ...base, allowCrossMarket: 'yes' }).level, 'error');
+});
+
 test('non-London outlet is skipped regardless of category/tier', () => {
   assert.equal(
     classifyReverseCrossMarket({ region: 'us', isDualMarket: false, isTier12: false, isBroadway: true }).level,
@@ -563,4 +570,11 @@ test('outletRegionExplicitlyNotLondon: region-less qualifies only after an expli
   assert.equal(outletRegionExplicitlyNotLondon({}), false);
   assert.equal(outletRegionExplicitlyNotLondon(null), false);
   assert.equal(outletRegionExplicitlyNotLondon({ regionCorrectedBy: 'BRO-5896' }), true);
+});
+
+test('allowCrossMarket skips the forward US-on-WE check too (BRO-6369)', () => {
+  const base = { region: 'us', isDualMarket: false, isTier12: false, isPreWindowDate: true };
+  const off = classifyUsOnWeCrossMarket(base).level;
+  assert.notEqual(off, 'skip');
+  assert.equal(classifyUsOnWeCrossMarket({ ...base, allowCrossMarket: true }).level, 'skip');
 });

@@ -44,7 +44,6 @@ const { taskBranchEvidence, notionMarkerOf } = require('./lib/task-reclaim.js');
 const { classifyOrphanInProgress } = require('./lib/orphan-inprogress-triage.js');
 const ledger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
-const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { foldDiacritics } = require('./lib/title-match');
 
 const USAGE = `audit-orphan-inprogress.js — classify in_progress tasks with no live cmux workspace (task #1705).
@@ -91,9 +90,7 @@ function loadLiveTasks(dir) {
  */
 function findOrphans({ loadTasksFn = loadLiveTasks, dir = tasksDir(), listWorkspacesFn = cmuxws.listWorkspaces } = {}) {
   const tasks = loadTasksFn(dir).filter((t) => t.status === 'in_progress');
-  let workspaces = [];
-  let cmuxUnavailable = null;
-  try { workspaces = listWorkspacesFn() || []; } catch (e) { cmuxUnavailable = classifyCmuxError(e); }
+  const { workspaces, unavailable: cmuxUnavailable } = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
   const orphans = tasks.filter((t) => !workspaces.some((w) => ledger.titleMatchesSubject(w.title, t.subject)));
   return { orphans, cmuxUnavailable };
 }
@@ -210,12 +207,26 @@ function writeVerified(destPath, body) {
   return fs.readFileSync(destPath, 'utf8') === body;
 }
 
-function applyDecision(decision, { dir, now, dryRun, cardOfCache }) {
+function applyDecision(decision, { dir, now, dryRun, cardOfCache, listWorkspacesFn = cmuxws.listWorkspaces }) {
   const id = decision.id;
   const file = path.join(dir, `${id}.json`);
   let task;
   try { task = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return { id, done: false, why: 'task file vanished mid-run' }; }
   if (task.status !== 'in_progress') return { id, done: false, why: `no longer in_progress (now ${task.status})` };
+
+  // BRO-3003: findOrphans() listed workspaces once, long before this mutation
+  // (classification does git scans and Notion fetches). A session that started
+  // on the task since then must not have it flipped under it, so re-list right
+  // before writing, and fail closed if cmux cannot be asked.
+  if (!dryRun) {
+    const { workspaces: live, unavailable } = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
+    if (unavailable) {
+      return { id, done: false, why: `live recheck failed (${unavailable}) — left untouched` };
+    }
+    if (live.some((w) => ledger.titleMatchesSubject(w.title, task.subject))) {
+      return { id, done: false, why: 'a live workspace now matches this task — left untouched' };
+    }
+  }
 
   if (decision.bucket === 'NEEDS-REVIEW') {
     if (dryRun) return { id, done: true, action: 'left-in-progress' };

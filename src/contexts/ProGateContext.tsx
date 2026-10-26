@@ -214,7 +214,10 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // merged into gate_modal_shown / gate_modal_dismissed / email_captured so the
   // A/B analysis can attribute every event to an arm and demix the
   // return_visitor trigger name (which both the scroll and mouseleave paths reuse).
-  const [gateFireMeta, setGateFireMeta] = useState<GateFireMeta>({});
+  const [gateFireMeta, setGateFireMeta] = useState<GateFireMeta & {
+    pageViewCount?: number;
+    minPageViewsForPassiveGate?: number;
+  }>({});
 
   // Returns whether the modal actually opened. Callers MUST gate their own
   // "already fired this session" latches (exitIntentFired, scrollFired,
@@ -254,7 +257,11 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
         )) return false;
       } catch { /* localStorage unavailable — fail open, show the modal */ }
     }
-    setGateFireMeta(meta);
+    setGateFireMeta({
+      ...meta,
+      pageViewCount: sessionPageViewsRef.current,
+      minPageViewsForPassiveGate: emailCaptureConfig.minPageViewsForPassiveGate,
+    });
     setModalTrigger(trigger);
     setModalBlocking(blocking);
     setModalOpen(true);
@@ -281,6 +288,10 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   useEffect(() => {
     if (!needsRecapture || !isClient || isAuthenticated) return;
     const timer = setTimeout(() => {
+      setGateFireMeta({
+        pageViewCount: sessionPageViewsRef.current,
+        minPageViewsForPassiveGate: emailCaptureConfig.minPageViewsForPassiveGate,
+      });
       setModalTrigger('recapture');
       setModalBlocking(false);
       setModalOpen(true);

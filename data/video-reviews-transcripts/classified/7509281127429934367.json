@@ -10,8 +10,8 @@
   "wordCount": 244,
   "collectedAt": "2026-04-13T03:17:21.233Z",
   "fileName": "7509281127429934367.json",
-  "showId": null,
-  "showTitle": "Bowl EP",
+  "showId": "bowl-ep-off-broadway-2025",
+  "showTitle": "BOWL EP",
   "reviewType": "review",
   "classificationConfidence": "high",
   "classificationReason": "Creator clearly saw and reviewed this play at Vineyard Theatre/National Black Theatre, but it's not on the provided list",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is reviewing 'Bowl EP' at Vineyard Theatre, not 'Classified' as specified in the prompt. The content creator clearly states they are reviewing Bowl EP throughout the transcript.",
-  "scoredAt": "2026-04-13T13:25:13.184Z"
+  "scoredAt": "2026-04-13T13:25:13.184Z",
+  "rematch": {
+    "candidates": [
+      "bowl-ep-off-broadway-2025"
+    ],
+    "result": "bowl-ep-off-broadway-2025",
+    "reason": "The transcript explicitly mentions 'Bowl EP' at Vineyard Theatre, matching the listed Off-Broadway production at that venue within its run dates.",
+    "checkedAt": "2026-10-26T10:23:04.681Z"
+  },
+  "showIdSource": "rematch"
 }

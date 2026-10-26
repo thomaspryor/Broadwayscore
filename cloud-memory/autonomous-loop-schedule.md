@@ -174,7 +174,6 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 14:00 | Sun | update-theatr.yml | Theatr update |
 | 15:00 | daily | audit-opening-dates.yml | opening date audit |
 | 15:00 | daily | opening-night-reviews.yml | opening-night review gather (PM) |
-| 15:00 | daily | social-post.yml | social post |
 | 15:00 | Mon | fix-todaytix-links.yml | TodayTix link fix |
 | 15:00 | Mon | collection-coverage-report.yml | collection coverage report |
 | 15:00 | Tue | weekly-grosses.yml | weekly grosses |

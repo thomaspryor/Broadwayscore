@@ -230,7 +230,7 @@ async function getClosedShowTicketClicks() {
 // Gate modal funnel. Modal-only for email_captured: that event also fires from
 // inline header/footer forms (no `trigger` property), which would overstate
 // gate captures. gate_modal_shown/dismissed only ever fire from the modal, so
-// they're unaffected. See ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md.
+// they're unaffected. See docs/experiments/gate-cold-start.md.
 async function getGateFunnel() {
   return phQuery(`
     SELECT event, count() AS n, count(DISTINCT person_id) AS users

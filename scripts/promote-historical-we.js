@@ -52,6 +52,7 @@ const { productionIdYear } = require('./lib/todaytix-dates');
 const { venueFamily, decideWeHistoricalPromotion, WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('./lib/we-review-led-candidates');
 const { candidatesPath } = require('./discover-historical-shows-we');
+const { oltPath } = require('./build-we-olt-season');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 
@@ -79,6 +80,9 @@ const DISCOVERY_SOURCE = 'we-historical:wos';
 // Review-led rows (BRO-5031): WOS reviewed, never listed; dated from the
 // Theatre Record production page saved by resolve-we-unlisted-tr.js.
 const REVIEW_LED_DISCOVERY_SOURCE = 'we-historical:tr';
+// Listing-led rows dated from an archived Official London Theatre show page
+// (build-we-olt-season.js, BRO-6343), for seasons WOS no longer lists.
+const OLT_DISCOVERY_SOURCE = 'we-historical:olt';
 
 const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
 
@@ -146,7 +150,8 @@ function buildVenueSpellings(shows) {
 // that says musical > a same-titled musical already in shows.json > 'play',
 // flagged as guessed so the dry run lists it for the hand check.
 function inferShowType(candidate, musicalTitles = new Set()) {
-  if (candidate.type === 'musical' || candidate.type === 'play') return { type: candidate.type, guessed: false };
+  // 'special' (magic, variety) only ever comes from a hand override.
+  if (['musical', 'play', 'special'].includes(candidate.type)) return { type: candidate.type, guessed: false };
   const genres = candidate.genres || [];
   if (genres.includes('musical') || titleSaysMusical(candidate.title)) return { type: 'musical', guessed: false };
   // Only when WOS gave no genre: an explicit 'play' wins. The 2019 Lyttelton
@@ -168,8 +173,9 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
   // precedent): same-title productions in different years stay distinct.
   const id = `${withMarketSuffix(slugify(normalizedTitle), 'west-end')}-${year}`;
   const reviewLed = candidate.origin === 'review-led';
-  const dateSource = reviewLed ? 'theatre-record' : 'whatsonstage';
-  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.wosReview, candidate.sourceUrls?.theatreRecord].filter(Boolean);
+  const olt = candidate.origin === 'olt';
+  const dateSource = reviewLed ? 'theatre-record' : olt ? 'official-london-theatre' : 'whatsonstage';
+  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.olt, candidate.sourceUrls?.wosReview, candidate.sourceUrls?.theatreRecord].filter(Boolean);
   return {
     id,
     title: normalizedTitle,
@@ -186,7 +192,7 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
     type: inferShowType(candidate, musicalTitles).type,
     tags: ['historical'],
     season: candidate.season,
-    discoverySource: reviewLed ? REVIEW_LED_DISCOVERY_SOURCE : DISCOVERY_SOURCE,
+    discoverySource: reviewLed ? REVIEW_LED_DISCOVERY_SOURCE : olt ? OLT_DISCOVERY_SOURCE : DISCOVERY_SOURCE,
     discoveredAt: new Date().toISOString(),
     ...(candidate.openingDate ? { openingDateSource: candidate.openingDateSource || dateSource } : {}),
     closingDateSource: dateSource,
@@ -292,7 +298,7 @@ function buildAddShowPlan(name, season, entries, planId) {
     createdAt: new Date().toISOString(),
     submitter: { name: null, email: null },
     plan: {
-      summary: `Add ${entries.length} closed West End production(s) for ${season} found through Theatre Record (reviewed on WOS, never listed there; ${card}).`,
+      summary: `Add ${entries.length} closed West End production(s) for ${season} from the historical backfill (${[...new Set(entries.map(e => e.discoverySource))].join(', ')}; ${card}).`,
       steps: entries.map(e => `Append ${e.id} (${e.venue}, ${e.previewsStartDate || e.openingDate} to ${e.closingDate})`),
       riskLevel: 'Low',
       actions: entries.map(show => ({ type: 'add-show', show })),
@@ -364,11 +370,13 @@ function main() {
   if (args.includes('--revert')) return revert(season, apply);
 
   const file = candidatesPath(season);
-  if (!fs.existsSync(file)) {
-    console.error(`No candidates file at ${path.relative(ROOT, file)} — run discover-historical-shows-we.js --season=${season} first.`);
+  // Listing-led rows from archived Official London Theatre pages (BRO-6343).
+  const oltAudit = readJson(oltPath(season), null);
+  if (!fs.existsSync(file) && !oltAudit) {
+    console.error(`No candidates file at ${path.relative(ROOT, file)} — run discover-historical-shows-we.js --season=${season} (or build-we-olt-season.js) first.`);
     process.exit(1);
   }
-  const audit = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const audit = readJson(file, { candidates: [], generatedAt: 'n/a' });
   const approvals = readJson(APPROVALS_PATH, {});
   const showsData = loadShows();
   // Review-led candidates are rebuilt from the saved TR lookups against the
@@ -377,12 +385,16 @@ function main() {
   const reviewLedCandidates = reviewLed
     ? buildReviewLedCandidates({ season, lookups: reviewLed.lookups, shows: showsData.shows })
     : [];
-  const candidates = [...(audit.candidates || []), ...reviewLedCandidates];
+  const oltCandidates = oltAudit?.candidates || [];
+  // Dated listings first: a review-led row for the same production then
+  // dedups against the listing row promoted ahead of it.
+  const candidates = [...(audit.candidates || []), ...oltCandidates, ...reviewLedCandidates];
   const { toPromote, skipped, typeGuessed } = planPromotions({ candidates, shows: showsData.shows, approvals, only });
 
   const unknownOnly = [...only].filter(t => !candidates.some(c => c.title === t));
   if (unknownOnly.length) console.log(`--only titles not in the candidates file: ${unknownOnly.join(' | ')}`);
   console.log(`Candidates: ${audit.candidates?.length || 0} (file generated ${audit.generatedAt})`);
+  console.log(`Official London Theatre candidates: ${oltCandidates.length}${oltAudit ? ` (file generated ${oltAudit.generatedAt})` : ''}`);
   console.log(`Review-led candidates (Theatre Record): ${reviewLedCandidates.length}${reviewLed ? ` (lookups ${reviewLed.generatedAt})` : ' (no lookup file; run we-historical-tr-resolve.yml)'}`);
   console.log(`Will promote: ${toPromote.length}`);
   for (const e of toPromote) console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.previewsStartDate || '?'} / ${e.openingDate || '?'} → ${e.closingDate}`);

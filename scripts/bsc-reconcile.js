@@ -68,7 +68,7 @@ const reviveSessionLib = require('./lib/revive-session.js');
 const bscNext = require('./bsc-next.js');
 const { readLease, releaseLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS, runJob, LEASE_ROOT, REPO } = require('./lib/bsc-runner.js');
 const { RECHECK_AFTER_RE } = require('./lib/recheck-stamp.js');
-const { summarizeCmuxFailures, classifyCmuxError } = require('./lib/cmux-socket-auth.js');
+const { summarizeCmuxFailures } = require('./lib/cmux-socket-auth.js');
 // BRO-4054: red-main signature cards are dispatched by THIS tick (the most
 // frequent Linear-capable loop on the Mac) — see runRedFirstPassBounded().
 const redFirst = require('./lib/red-first-dispatch.js');
@@ -655,17 +655,17 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   let workspaces = [];
   // BRO-2993: a failed listing must NOT read the same as "cmux confirmed
   // zero workspaces" — the two are opposite evidence for the liveTab guard
-  // below. `cmuxUnavailable` (set only in the catch) makes the distinction
+  // below. `cmuxUnavailable` (set only when the listing fails) makes the distinction
   // explicit so the guard can fail closed instead of silently becoming a
   // no-op on an empty array. The failure still has to be SEEN either way:
   // this was the third blind spot in BRO-2959, where an auth rejection here
   // produced literally no output at all.
   let cmuxUnavailable = null;
-  try {
-    workspaces = listWorkspacesFn() || [];
-  } catch (e) {
-    cmuxUnavailable = classifyCmuxError(e);
-    reportFn({ kind: 'untracked-sweep-error', detail: `cmux listing failed: ${e.message}` });
+  {
+    const r = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
+    workspaces = r.workspaces;
+    cmuxUnavailable = r.unavailable;
+    if (r.error) reportFn({ kind: 'untracked-sweep-error', detail: `cmux listing failed: ${r.error.message}` });
   }
 
   const flipped = [];
@@ -804,7 +804,9 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     } catch { /* card correction is best-effort; local flip is authoritative */ }
   }
 
-  if (!dryRun) {
+  // BRO-2994: a sweep that ran blind (cmux listing failed) must not stamp the
+  // cadence gate, or the outage suppresses the retry for the full 6h interval.
+  if (!dryRun && !cmuxUnavailable) {
     try {
       fs.mkdirSync(path.dirname(statePath), { recursive: true });
       fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: new Date(nowFn()).toISOString(), flipped, skipped: skipped.length }, null, 2));

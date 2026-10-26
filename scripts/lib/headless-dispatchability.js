@@ -47,6 +47,8 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./no-dispatch-marker.js');
 const { hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
+const { classifyStatus: visualApprovalStatus } = require('./visual-approval.js');
 const { AUTO_FILED_MARKER: ALERT_ROUTER_FILED_MARKER } = require('./linear-drain-parked.js');
 
 // Anchored to the leading `PARKED:` line, same reasoning and same shape as
@@ -318,7 +320,7 @@ function hasOnlyWorkerTakeableParks(notes, now = new Date()) {
 function takeableParkAdvisory(reason) {
   if (!isWorkerTakeableParkReason(reason)) return null;
   return 'PARK-ADVISORY: this park reason names nothing a worker cannot do (no owner call, key, date, spend or Mac). '
-    + 'File it with --dispatch and a VERIFY line so it lands in Todo. Parked, it waits for the daily unpark drain, '
+    + 'File it with --dispatch and a VERIFY line so it lands in Todo, or with --child "<session title>" if a child session is starting on it now (BRO-6359). Parked, it waits for the daily unpark drain, '
     + 'which moves it to Todo only if it has a safe VERIFY (BRO-5626).';
 }
 
@@ -367,6 +369,20 @@ function commentClearsOwnerGate(comments) {
     if (OWNER_CLEAR_COMMENT_RE.test(body)) return true;
   }
   return false;
+}
+
+// BRO-6357: a card whose visual approval is still waiting on the owner (or approved and
+// waiting for the lander) is the owner's, whatever a later comment says. Comments here
+// are plain bodies, so the latest-ask filter in classifyStatus is not applied; markers
+// from an earlier ask can only make the card look answered, never the reverse.
+function visualAskOpen(notes, comments) {
+  if (!parseVisualApproval(notes)) return false;
+  // Bodies carry no timestamps, so apply classifyStatus's latest-ask cutoff by position (callers pass oldest first).
+  const bodies = (comments || []).map((body) => String(body || ''));
+  let from = 0;
+  bodies.forEach((b, i) => { if (/^Asked the owner to look at/.test(b.trim())) from = i; });
+  const state = visualApprovalStatus(notes, bodies.slice(from).map((body) => ({ body })));
+  return state === 'waiting' || state === 'approved';
 }
 
 function classifyHeadlessDispatchability(card = {}, opts = {}) {
@@ -423,7 +439,8 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const comments = Array.isArray(card.comments) ? card.comments : [];
   let ownerHit = firstMatch(OWNER_DECISION_RES, text);
   if (ownerHit && comments.length) {
-    if (commentClearsOwnerGate(comments)) ownerHit = null;
+    if (visualAskOpen(notes, comments)) { /* only the owner's tap answers a visual ask */ }
+    else if (commentClearsOwnerGate(comments)) ownerHit = null;
     else if (OWNER_JUDGMENT_RE.test(ownerHit)) {
       // A newer safe VERIFY supersedes the owner-judgment marker only (the
       // marker says "no command"); it never answers a DECISION NEEDED.
@@ -482,6 +499,7 @@ if (require.main === module) {
 
 module.exports = {
   commentClearsOwnerGate,
+  visualAskOpen,
   BLOCKERS,
   UI_PATH_RE,
   UI_CARD_CLASS_RE,

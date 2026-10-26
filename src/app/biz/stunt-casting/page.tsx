@@ -92,7 +92,7 @@ const MIN_RECOUP_COMPARE_N = 30;
 
 function fmtPct(r: Rate): string {
   // From the raw counts: r.pct is already rounded to 0.1, and rounding twice can skew by a point.
-  return r.n >= MIN_PCT_N ? `${Math.round((r.hits / r.n) * 100)}%` : '—';
+  return r.n >= MIN_PCT_N ? `${Math.round((r.hits / r.n) * 100)}%` : '–';
 }
 
 function Bar({ pct, tone }: { pct: number | null; tone: 'brand' | 'muted' }) {
@@ -140,10 +140,10 @@ function HeadlinerList({ headliners, onlyCelebrities }: { headliners: Headliner[
 }
 
 function money(n: number | null): string {
-  return n == null ? '—' : `$${Math.round(n)}`;
+  return n == null ? '–' : `$${Math.round(n)}`;
 }
 function num(n: number | null, digits = 0): string {
-  return n == null ? '—' : n.toFixed(digits);
+  return n == null ? '–' : n.toFixed(digits);
 }
 
 /**
@@ -176,13 +176,13 @@ function payoff(star: Group, noStar: Group, noun: string): string | null {
 function CommercialTable({ label, star, noStar }: { label: string; star: Group; noStar: Group }) {
   const rowsDef: Array<{ k: string; f: (g: Group) => string; hint?: string }> = [
     { k: 'Productions', f: (g) => String(g.n) },
-    { k: 'Gross vs. typical show', f: (g) => (g.medianGrossIndex == null ? '—' : `${num(g.medianGrossIndex, 2)}×`), hint: 'median, opening weeks' },
-    { k: 'Capacity', f: (g) => (g.medianCapacity == null ? '—' : `${num(g.medianCapacity)}%`), hint: 'median, opening weeks' },
+    { k: 'Gross vs. typical show', f: (g) => (g.medianGrossIndex == null ? '–' : `${num(g.medianGrossIndex, 2)}×`), hint: 'median, opening weeks' },
+    { k: 'Capacity', f: (g) => (g.medianCapacity == null ? '–' : `${num(g.medianCapacity)}%`), hint: 'median, opening weeks' },
     { k: 'Average ticket', f: (g) => money(g.medianAtp), hint: 'median, opening weeks' },
     { k: 'Weeks of grosses reported', f: (g) => num(g.medianWeeks), hint: 'median, whole run' },
     {
       k: 'Recouped',
-      f: (g) => (g.decidedN >= MIN_PCT_N && g.recoupPct != null ? `${Math.round(g.recoupPct)}% of ${g.decidedN}` : '—'),
+      f: (g) => (g.decidedN >= MIN_PCT_N && g.recoupPct != null ? `${Math.round(g.recoupPct)}% of ${g.decidedN}` : '–'),
       hint: 'commercial runs with a settled outcome',
     },
   ];

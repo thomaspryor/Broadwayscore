@@ -236,3 +236,30 @@ test('buildReport renders rising/falling, new sites and referral landing section
   assert.match(md, /## Where referral traffic lands[\s\S]*\| www\.reddit\.com \| 40 \|/);
   assert.ok(md.indexOf('## Rising and falling') < md.indexOf('## PostHog (Real Users lens)')); // in the emailed summary
 });
+
+test('dateChunks covers the range in consecutive windows with no gap or overlap (BRO-6358)', () => {
+  const { dateChunks } = require('../analyze-traffic-sources.js');
+  const c = dateChunks('2026-07-27', '2026-10-26', 28);
+  assert.deepEqual(c.map((x) => [x.startDate, x.endDate]), [
+    ['2026-07-27', '2026-08-23'], ['2026-08-24', '2026-09-20'], ['2026-09-21', '2026-10-18'], ['2026-10-19', '2026-10-26'],
+  ]);
+  assert.deepEqual(dateChunks('2026-10-26', '2026-10-26', 28), [{ startDate: '2026-10-26', endDate: '2026-10-26' }]);
+});
+
+test('phDaily queries each chunk, retries per chunk, and keeps a boundary-crossing row only in its own chunk (BRO-6358)', async () => {
+  const { phDaily } = require('../analyze-traffic-sources.js');
+  const calls = [];
+  let failedOnce = false;
+  const query = async (sql) => {
+    const [, s] = sql.match(/toDateTime\('(\d{4}-\d{2}-\d{2}) 00:00:00'\)/);
+    calls.push(s);
+    if (s === '2026-08-24' && !failedOnce) { failedOnce = true; throw new Error('PostHog API 504: max execution time'); }
+    // Each chunk also reports the previous day (a session that started before the chunk began).
+    const prev = new Date(Date.parse(s) - 86400000).toISOString().slice(0, 10);
+    return [[s, 'a', 2, 1], [prev, 'a', 5, 5]];
+  };
+  const retry = (fn) => withRetry(fn, { sleep: async () => {} });
+  const rows = await phDaily('x', { startDate: '2026-07-27', endDate: '2026-10-26' }, '', { query, retry });
+  assert.deepEqual(calls, ['2026-07-27', '2026-08-24', '2026-08-24', '2026-09-21', '2026-10-19']);
+  assert.deepEqual(rows.map((r) => r.date), ['2026-07-27', '2026-08-24', '2026-09-21', '2026-10-19']);
+});

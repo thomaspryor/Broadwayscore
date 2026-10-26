@@ -1,0 +1,83 @@
+{
+  "issueNumber": "bro-6245-d-b",
+  "planId": "6f060ae6-aa6d-457c-9863-bae4047eaac4",
+  "status": "superseded",
+  "createdAt": "2026-10-26T11:51:30.169Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Our estimate updates for recouped and closed shows. (part 2 of 2)",
+    "steps": [
+      "commercial.json: parade-2023.estimatedRecoupmentSource",
+      "commercial.json: parade-2023.designationBasis",
+      "commercial.json: parade-2023.humanReviewedDesignation",
+      "anastasia-2017: add commercial entry (recouped per press rep, Apr 2022)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "estimatedRecoupmentSource",
+        "oldValue": "Inferred: $6.5M cap, ~20-week run, $659K nut. Tony win drove strong late grosses. $3M tax credit offset ~46% of cap.",
+        "newValue": null,
+        "description": "commercial.json: parade-2023.estimatedRecoupmentSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": null,
+        "description": "commercial.json: parade-2023.designationBasis"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "parade-2023",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: parade-2023.humanReviewedDesignation"
+      },
+      {
+        "type": "add-commercial-entry",
+        "description": "anastasia-2017: add commercial entry (recouped per press rep, Apr 2022)",
+        "slug": "anastasia-2017",
+        "entry": {
+          "designation": "Trickle",
+          "recouped": true,
+          "recoupedDate": "2022-04",
+          "recoupedSource": "BroadwayWorld forum (Apr 5, 2022), relaying the show's press rep: \"Anastasia has recouped its production costs, according to a press rep.\" https://forum.broadwayworld.com/thread/ANASTASIA-Recoups",
+          "capitalization": 12500000,
+          "capitalizationBasis": "reported",
+          "capitalizationSource": "Forbes (Aug 21, 2018), citing a production source: Anastasia \"will have recouped its $12.5 million investment by the time the tour launches.\" https://www.forbes.com/sites/leeseymour/2018/08/21/anastasia-plans-massive-unconventional-international-rollout/",
+          "notes": "Broadway run at the Broadhurst (opened Apr 24, 2017, closed Mar 31, 2019, 808 performances). Its SEC filing allowed a capitalization of up to $15M (Broadway News); a production source put the investment at $12.5M. No recoupment was announced during the Broadway run; the press rep's April 2022 statement came after the US tour and several international productions had opened.",
+          "sources": [
+            {
+              "type": "trade",
+              "url": "https://www.forbes.com/sites/leeseymour/2018/08/21/anastasia-plans-massive-unconventional-international-rollout/",
+              "date": "2018-08-21"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/anastasia-posts-closing-notice-for-march-31/",
+              "date": "2019-02-05"
+            },
+            {
+              "type": "reddit",
+              "url": "https://forum.broadwayworld.com/thread/ANASTASIA-Recoups",
+              "date": "2022-04-05"
+            }
+          ]
+        }
+      }
+    ]
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332; same applied-locally state as this plan's siblings)."
+}

@@ -28,6 +28,7 @@ const NEEDLE = 'api.resend.com';
 
 const ALLOWLIST = new Set([
   // Router + base send lib
+  'scripts/lib/cloud-secrets-smoke.js', // BRO-6258: read-only GET /domains key check for check-cloud-secrets.js --smoke; sends nothing
   'scripts/lib/discord-notify.js', // sendAlert() — the shared human-disposition email path
   // KEEP — owner-confirmed product emails (email-consolidation-plan-2026-07-21.md)
   'scripts/send-morning-digest.js', // the ONE scheduled owner email/day (loop retired 2026-07-27)

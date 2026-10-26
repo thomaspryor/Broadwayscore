@@ -77,6 +77,36 @@ jobs:
             exit 1
           fi
           npx supabase secrets set "ANTHROPIC_API_KEY=$THEATR_KEY" --project-ref "$SUPABASE_PROJECT_REF"
+      - name: Unit-test delete-account (Apple token revocation)
+        # handler.mjs/apple-revoke.mjs are plain JS, so deno check above does
+        # not type them; this runs the real handler with a mocked fetch.
+        run: node --test tests/unit/apple-revoke.test.mjs tests/unit/delete-account-coverage.test.mjs
+      - name: Push the Apple key delete-account reads
+        # Account deletion revokes the user's Sign in with Apple grant
+        # (App Review 5.1.1(v), BRO-6290) with the same key rotate-apple-secret.yml
+        # signs the web client secret with. Management API instead of
+        # `supabase secrets set` because the value is a multi-line PEM. Never
+        # printed. Fails loud when the secret is missing: deletions would still
+        # work but silently stop revoking (reason not_configured). After
+        # rotating the key, change APPLE_KEY_ID in apple-revoke.mjs in the same
+        # commit, or dispatch this workflow if only the secret changed.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          APPLE_PRIVATE_KEY: ${{ secrets.APPLE_PRIVATE_KEY }}
+        run: |
+          node -e '
+            const key = process.env.APPLE_PRIVATE_KEY;
+            if (!key) { console.log("::error::No APPLE_PRIVATE_KEY secret, so account deletion cannot revoke Sign in with Apple tokens"); process.exit(1); }
+            fetch(`https://api.supabase.com/v1/projects/${process.env.SUPABASE_PROJECT_REF}/secrets`, {
+              method: "POST",
+              headers: { Authorization: `Bearer ${process.env.SUPABASE_ACCESS_TOKEN}`, "Content-Type": "application/json" },
+              body: JSON.stringify([{ name: "APPLE_PRIVATE_KEY", value: key }]),
+            }).then((r) => {
+              console.log(`set APPLE_PRIVATE_KEY: HTTP ${r.status}`);
+              if (!r.ok) process.exit(1);
+            });
+          '
       - name: Deploy edge functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}

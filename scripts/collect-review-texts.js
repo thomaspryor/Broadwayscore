@@ -73,6 +73,7 @@ const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('
 const { shouldPushReviewTextsCheckpoint, countUnpushedCommits, decideCheckpointAction } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
+require('./lib/cloud-proxy'); // BRO-6258: route ScrapingBee through the cloud egress proxy
 
 const USAGE = `collect-review-texts.js — multi-tier fallback review text scraper.
 
@@ -6811,6 +6812,7 @@ async function setupBrowser() {
 
   const newBrowser = await chromium.launch({
     headless: true,
+    ...require('./lib/playwright-exe').launchExtras(chromium),
     args: [
       '--no-sandbox',
       '--disable-setuid-sandbox',

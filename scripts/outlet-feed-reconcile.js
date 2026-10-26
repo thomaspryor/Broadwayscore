@@ -71,8 +71,9 @@ async function gatherFeedItems(lookbackDays) {
   const jobs = [];
   for (const [outletId, sc] of Object.entries(poller.OUTLET_STRATEGY_CONFIG)) {
     if (poller.SKIP_OUTLETS.has(outletId)) continue;
-    if (sc.strategy === 'rss') jobs.push([outletId, () => poller.fetchViaRss(outletId, sc, cutoff)]);
-    else if (sc.strategy === 'sitemap') jobs.push([outletId, () => poller.fetchViaSitemap(outletId, sc, cutoff)]);
+    // proxyRetry off (rss + sitemap): this step is plain HTTP by design (no scraper secrets, 5-min budget).
+    if (sc.strategy === 'rss') jobs.push([outletId, () => poller.fetchViaRss(outletId, sc, cutoff, { proxyRetry: false })]);
+    else if (sc.strategy === 'sitemap') jobs.push([outletId, () => poller.fetchViaSitemap(outletId, sc, cutoff, { proxyRetry: false })]);
     else if (sc.strategy === 'listing-html' && sc.usePlainFetch) jobs.push([outletId, () => poller.fetchViaListingHtml(outletId, sc.url, sc.urlFilter, true)]);
   }
   for (const [outletId, cfg] of Object.entries(poller.WP_API_CONFIG)) {

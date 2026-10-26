@@ -21,6 +21,7 @@ const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
 const { consensusDisplayCount } = require('./lib/consensus-display-count');
+const { publicCoverageVerdict } = require('./lib/public-coverage-verdict');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { mayServeDiskImage } = require('./lib/image-source-match');
 const { versionedImagePath } = require('./lib/versioned-image-path');
@@ -873,7 +874,7 @@ for (const show of visibleShows) {
   } catch { /* skip if cast file is malformed */ }
 
   // Coverage Verdict (task #906) — compact public summary only, see loader above.
-  const cov = coverageVerdictByShow[show.id];
+  const cov = publicCoverageVerdict(coverageVerdictByShow[show.id], detail.rv, { showId: show.id });
   if (cov) {
     detail.cov = cov;
   }
@@ -955,7 +956,7 @@ if (!SHOW_ARG) {
   const visibleIds = new Set(visibleShows.map(s => s.id));
   // Only touch this script's own `{id}.json` outputs — NOT sibling artifacts
   // that share the directory but are written by other scripts, e.g.
-  // `{id}.social.json` (generate-social-post.js, see src/lib/data-social-pulse.ts).
+  // `{id}.social.json` (fetch-social-pulse.js, see src/lib/data-social-pulse.ts).
   // Show ids are plain [a-z0-9-]+ slugs (no dots), so a strict match excludes
   // any multi-suffix filename automatically.
   const DETAIL_FILE_RE = /^([a-z0-9-]+)\.json$/;

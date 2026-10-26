@@ -257,6 +257,10 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Audience scores are out of date.' },
   { match: /^Audience coverage: open-show gaps$/, urgency: 'this-week',
     humanAction: 'A currently-running show has audience ratings on a source that never linked — usually a title/venue mismatch. The check message names the source(s) and the correct override knob (MEZZANINE_OVERRIDES in scrape-mezzanine-audience.js, or THEATR_OVERRIDES in scrape-theatr-audience.js — they are separate). Open Claude Code and say: "Add the override for the flagged show and re-run that source’s scraper." Details in data/audit/mezzanine-coverage.json / theatr-coverage.json.' },
+  // BRO-6336: 180 deep-research results sat unreviewed for four months. The verified auto-apply pass
+  // (commercial-pending-daily.yml) should keep the queue near empty; this fires when it does not.
+  { match: /^Commercial pending-review queue$/, urgency: 'fix-now', workflow: 'commercial-pending-daily.yml',
+    humanAction: 'Money Scorecard research results are piling up unreviewed. The daily automatic check applies what a source page confirms and emails the rest; open the latest "Commercial Pending Review" run to see why entries are stuck.' },
   { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
   // BRO-6159: advisory only; persistent gaps use the existing alert router.
@@ -2064,6 +2068,24 @@ function checkOutletHealth() {
 // missing/unreadable history file is also a warn (informational monitor,
 // not a ship-blocker) since a first-ever week or a not-yet-run cron
 // legitimately has no file yet.
+// BRO-6336: the pending-review queue must stay small and young. Pure thresholds live in lib/pending-health.js.
+function checkCommercialPendingQueue({ pendingFile = path.join(DATA_DIR, 'commercial-pending-review.json'), now = Date.now() } = {}) {
+  return [
+    runCheck('Commercial pending-review queue', () => {
+      const name = 'Commercial pending-review queue';
+      const { pendingQueueHealth } = require('./lib/pending-health');
+      if (!fs.existsSync(pendingFile)) return { name, status: 'pass', message: 'No pending file: nothing waits.' };
+      let pending;
+      try { pending = readJSON(pendingFile); } catch (err) { return { name, status: 'error', message: `Failed to parse commercial-pending-review.json: ${err.message}` }; }
+      const { ok, problems, stats } = pendingQueueHealth(pending, now);
+      const { formatBacklogLine } = require('./lib/pending-review-backlog');
+      return ok
+        ? { name, status: 'pass', message: formatBacklogLine(stats) }
+        : { name, status: 'error', message: `${formatBacklogLine(stats)} Over the limit: ${problems.join('; ')}.`, hint: 'Run the Commercial Pending Review workflow; entries it cannot verify are emailed to the owner.' };
+    }),
+  ];
+}
+
 function checkCommercialModelDrift() {
   return [
     runCheck('Commercial model drift', () => {
@@ -2945,20 +2967,18 @@ function checkAutofixEffectiveness() {
     raw = fs.readFileSync(file, 'utf-8');
   } catch (err) {
     if (err.code === 'ENOENT') {
-      // WARN, never ERROR. The ledger is untracked, so in CI it is always absent:
-      // erroring here would paint the digest red every single morning forever —
-      // including after the loop is fully healthy — and burn one of the three
-      // daily auto-dispatch slots on a card no CI session can fix. That is the
-      // failure this row exists to prevent, so it must not commit it. Warn keeps
-      // the blind spot visible without escalating; tracking the ledger is the
-      // real fix (card "health digest is blind in CI — 6 untracked ledgers").
+      // WARN, never ERROR: missing input cannot establish loop failure.
+      // This ledger is git-tracked and normally present in CI. ENOENT means
+      // this checkout is missing it; restore the file or read the dispatch host.
+      // A committed snapshot can lag live host activity, but that is distinct
+      // from absence and follows the normal assessment path below.
       return [{
         name,
         status: 'warn',
         unmeasurable: true,
         message: 'Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. '
-          + 'It is untracked, so CI never sees it — this row cannot judge the loop from this environment.',
-        hint: 'Track the ledger (or run this check on the dispatch host) so auto-fix success rate becomes visible where the digest is generated.',
+          + 'The ledger is git-tracked and normally available in CI; this checkout cannot judge the loop without it.',
+        hint: 'Restore the tracked ledger in this checkout, or run this check on the dispatch host for current outcomes. Committed snapshots can lag live activity.',
       }];
     }
     // Fail loud: a check that cannot read its input must not report healthy —
@@ -3007,10 +3027,11 @@ function checkAutofixEffectiveness() {
 // dispatch anything AT ALL today" — the exact question that would have caught
 // the 8/5-8/9 starvation (task #1184) on day 2 instead of day 5. These two
 // rows close that gap: a live end-to-end canary (scripts/lib/autofix-canary.js)
-// and a daily throughput rollup with an explicit zero-activity alarm. Both
-// ledgers are gitignored/per-machine (same as digest-autofix-ledger.jsonl
-// above) — ENOENT reads as `null` (never `[]`) so the pure functions can tell
-// "absent here" from "present and empty", and both follow the same
+// and a daily throughput rollup with an explicit zero-activity alarm. The
+// canary and backlog-drain ledgers are gitignored/Mac-local; the digest
+// ledger is git-tracked, but CI sees a potentially stale committed snapshot.
+// ENOENT reads as `null` (never `[]`) so the pure functions can tell
+// "absent here" from "present and empty", and both checks follow the same
 // warn-never-error-never-silent-pass rule task #1221 exists to enforce.
 function readJsonlLedgerOrNull(absPath) {
   if (!fs.existsSync(absPath)) return null;
@@ -4815,6 +4836,7 @@ function silentGapBacklogResults(report, now = new Date()) {
 // card-verifiability.json, regenerated daily from the frozen Notion mirror);
 // only the Linear report is read now.
 const LINEAR_VERIFIABILITY_STALE_MS = 3 * 24 * 60 * 60 * 1000; // the audit runs daily; 3 days means it stopped
+const { ownerJudgmentLimboResults } = require('./lib/owner-judgment-limbo-guard.js');
 
 // BRO-5164: a report count that can back a pass row: a real number (or a
 // numeric string), never null/''/[]/{} that the ||0 coercions turn into 0.
@@ -5014,7 +5036,10 @@ function readAuditJsonOrNull(file) {
 function checkCardVerifiabilityBacklog() {
   const cvLinear = readAuditJsonOrNull('card-verifiability-linear.json');
   const drainMetric = readAuditJsonOrNull('backlog-drain-metric.json');
-  return cvLinear || drainMetric ? cardVerifiabilityBacklogResults(drainMetric, cvLinear) : [];
+  return [
+    ...cardVerifiabilityBacklogResults(drainMetric, cvLinear),
+    ...ownerJudgmentLimboResults(cvLinear),
+  ];
 }
 function checkCoverageHoles() {
   const report = readAuditJsonOrNull('coverage-holes.json');
@@ -6136,6 +6161,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCloudMemoryDrift(),
     ...checkTourAutomation(),
     ...checkOutletHealth(),
+    ...checkCommercialPendingQueue(),
     ...checkCommercialModelDrift(),
     checkBizOgCoverage(),
     ...checkCookieExpiration(),
@@ -6379,4 +6405,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };

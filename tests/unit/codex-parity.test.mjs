@@ -17,7 +17,10 @@ const { mergeToml, unmergeToml, mergeHooks } = require('../../scripts/codex/inst
 // End-to-end runs use only the repo's hooks and a private shadow dir, so a
 // developer's own ~/.claude hooks never run inside the test.
 const ISOLATED_ENV = { ...process.env, CODEX_HOOK_ADAPTER_USER_SETTINGS: '/nonexistent/settings.json',
-  CODEX_HOOK_ADAPTER_SHADOW_DIR: mkdtempSync(join(tmpdir(), 'codex-shadow-test-')) };
+  CODEX_HOOK_ADAPTER_SHADOW_DIR: mkdtempSync(join(tmpdir(), 'codex-shadow-test-')),
+  // A fresh HOME too: the repo's guard copies skip themselves when ~/.claude/hooks has the master
+  // copy (BRO-4238), so on a Mac with ~/.claude the isolated run had no guard and failed locally.
+  HOME: mkdtempSync(join(tmpdir(), 'codex-parity-home-')) };
 const settings = JSON.parse(readFileSync(join(ROOT, '.claude', 'settings.json'), 'utf8'));
 const codexHooks = JSON.parse(readFileSync(join(ROOT, '.codex', 'hooks.json'), 'utf8'));
 

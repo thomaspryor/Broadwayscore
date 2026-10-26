@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { execFileSync, spawn } from 'node:child_process';
-import { mkdtempSync, rmSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -78,6 +78,32 @@ test('liveness: completed or re-run as a newer attempt is gone; unreadable is go
   assert.equal(m.ticketLiveness(t, { status: 'queued', run_attempt: 2 }, { now: NOW }), 'gone');
   assert.equal(m.ticketLiveness(t, null, { now: NOW }), 'live');
   assert.equal(m.ticketLiveness(T('1', { at: NOW - m.STALE_AGE_MS - 1 }), null, { now: NOW }), 'gone');
+});
+
+test('HTTP 404 identifies a missing run; other lookup failures keep the age fallback', () => {
+  const { isRefNotFound } = require('./land-retry-on-cancel.js');
+  assert.equal(isRefNotFound({ stderr: Buffer.from('gh: Not Found (HTTP 404)') }), true);
+  for (const message of ['gh: Forbidden (HTTP 403)', 'gh: rate limit exceeded (HTTP 429)', 'gh: Server Error (HTTP 502)', 'connect ETIMEDOUT', 'Not Found']) {
+    assert.equal(isRefNotFound({ stderr: message }), false, message);
+  }
+});
+
+test('a fresh missing holder is broken; unreadable and in_progress holders keep the lock', () => {
+  const holder = T('1', { at: NOW - 1000 });
+  for (const [run, expectedLiveness, expectedAction] of [
+    [{ status: 'missing' }, 'gone', 'break-lock'],
+    [null, 'live', 'wait'],
+    [{ status: 'in_progress', run_attempt: 1 }, 'live', 'wait'],
+  ]) {
+    const verdict = m.ticketLiveness(holder, run, { now: NOW });
+    assert.equal(verdict, expectedLiveness);
+    const d = m.decideStep({ state: state([holder, T('2')], holder.sha), self: me,
+      liveness: (ref) => ref === holder.ref ? verdict : undefined,
+      stuck: { ref: holder.ref, since: NOW - m.GRACE_MS }, now: NOW });
+    assert.equal(d.action, expectedAction);
+    assert.equal(d.reason, expectedAction === 'break-lock' ? 'holder-gone' : 'locked');
+    if (d.action === 'break-lock') assert.equal(d.sha, holder.sha);
+  }
 });
 
 test('poll delay grows to the cap with jitter', () => {
@@ -157,6 +183,30 @@ test('CLI: a dead holder (lock + ticket left past the age cap) is broken and the
     assert.match(a.out, /dropped stale ticket/, a.out);
     assert.match(a.out, /holding the landing lock/, a.out);
     await run(['release'], cliEnv(ctx.remote, 21), ctx.work);
+  } finally {
+    rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('CLI: HTTP 404 breaks a fresh holder through leased recovery and the waiter proceeds', { timeout: 30000 }, async () => {
+  const ctx = setup();
+  try {
+    const bin = path.join(ctx.dir, 'bin');
+    mkdirSync(bin);
+    writeFileSync(path.join(bin, 'gh'), '#!/usr/bin/env node\nprocess.stderr.write("gh: Not Found (HTTP 404)\\n"); process.exit(1);\n', { mode: 0o755 });
+    const tree = execFileSync('git', ['-C', ctx.work, 'hash-object', '-t', 'tree', '-w', '/dev/null'], { encoding: 'utf8' }).trim();
+    const sha = execFileSync('git', ['-C', ctx.work, '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit-tree', tree, '-m', 'missing run'], { encoding: 'utf8' }).trim();
+    const holder = m.ticketName({ mainRed: false, enqueuedAt: Date.now(), runId: '99', attempt: 1 });
+    execFileSync('git', ['-C', ctx.work, 'push', '-q', ctx.remote, `${sha}:${holder}`, `${sha}:${m.LOCK_REF}`]);
+    const env = cliEnv(ctx.remote, 22, { LAND_MUTEX_NO_API: '0', PATH: `${bin}${path.delimiter}${process.env.PATH}` });
+    const a = await run(['acquire'], env, ctx.work);
+    assert.equal(a.code, 0, a.out);
+    assert.match(a.out, /broke stale lock .* \(holder-gone\)/, a.out);
+    assert.match(a.out, /dropped stale ticket/, a.out);
+    assert.match(a.out, /holding the landing lock/, a.out);
+    const r = await run(['release'], env, ctx.work);
+    assert.equal(r.code, 0, r.out);
+    assert.equal(execFileSync('git', ['ls-remote', ctx.remote, 'refs/land-mutex/*'], { encoding: 'utf8' }).trim(), '');
   } finally {
     rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
@@ -314,4 +364,74 @@ test('the client-side cancel budget covers a parked run (no false REFUSED while 
   assert.ok(lb.MAX_CANCEL_RETRIES === undefined || lb.MAX_CANCEL_RETRIES >= m.PARKED_MAX_ATTEMPTS - 1);
   const d = lb.decideCancelledLandRetry({ landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a', tip: 'a', retriesUsed: m.PARKED_MAX_ATTEMPTS - 2 });
   assert.equal(d.retry, true);
+});
+
+// ---- BRO-6291: cancelled during the landing-mutex wait ----
+// Steps of job 121404859310 (run 40258680877 attempt 2, 2026-10-26), as the
+// jobs API returned them: setup and the always() cleanup steps succeeded,
+// "Wait for the landing mutex" was cancelled, "Land the branch" never ran.
+const mutexCancelledLand = (landConclusion = 'skipped') => ({
+  name: 'Land',
+  conclusion: 'cancelled',
+  steps: [
+    ['Set up job', 'success'], [m.PARK_STEP_NAME, 'success'], ['Checkout main', 'success'], ['Configure git', 'success'],
+    ['Setup Node.js', 'success'], ['Install dependencies', 'success'], ['Checkout core data', 'success'],
+    ['Generate gitignored manifests', 'success'], ['Wait for the landing mutex', landConclusion === 'skipped' ? 'cancelled' : 'success'],
+    ['Form the merge train', landConclusion === 'skipped' ? 'skipped' : 'success'], ['Seed the tsc stamp from the checks job', 'skipped'],
+    [m.LAND_STEP_NAME, landConclusion], ["Mark the train's riders landed", 'skipped'], ['Verify ancestry, then delete the land/** ref', 'skipped'],
+    ['Alert — landing refused', 'skipped'], ['Commit alert-router ledger changes', 'success'], ['Release the landing mutex', 'success'],
+    ['Request a production deploy', 'skipped'], ['Fail the job on a refused landing', 'skipped'], ['Notify on failure', 'skipped'],
+    ['Post Setup Node.js', 'skipped'], ['Post Checkout main', 'success'], ['Complete job', 'success'],
+  ].map(([name, conclusion], i) => step(name, i + 1, conclusion)),
+});
+
+test('landWorkStarted: anchored on the Land the branch step', () => {
+  assert.equal(m.landWorkStarted(mutexCancelledLand()), false);
+  // cancelled while land.js ran: it may have pushed, so it counts as started
+  assert.equal(m.landWorkStarted(mutexCancelledLand('cancelled')), true);
+  assert.equal(m.landWorkStarted(mutexCancelledLand('success')), true);
+  assert.equal(m.landWorkStarted(mutexCancelledLand('failure')), true);
+  assert.equal(m.landWorkStarted({ steps: [step(m.LAND_STEP_NAME, 12, null)].map((s) => ({ ...s, status: 'in_progress' })) }), true);
+  // unknown job shape (no Land the branch step): the old any-step rule stays
+  assert.equal(m.landWorkStarted({ steps: [step('Set up job', 1, 'success'), step('x', 2, 'cancelled')] }), true);
+  assert.equal(m.landWorkStarted({ steps: [step('x', 1, 'cancelled')] }), false);
+  assert.equal(m.landWorkStarted(evictedLand()), false);
+  assert.equal(m.landWorkStarted(null), false);
+});
+
+test('decideLandRetry: a Land job cancelled at the mutex wait, Land the branch skipped, is RETRY', () => {
+  const d = decideLandRetry({ run: runOf({ run_attempt: 2 }), jobs: [checksOk, mutexCancelledLand()], branchExists: true, branchTip: 'abc' });
+  assert.equal(d.retry, true);
+  assert.equal(d.reason, 'land-cancelled-before-landing');
+  assert.equal(d.parked, undefined);
+  // the same run cancelled while Land the branch ran is never replayed
+  assert.equal(decideLandRetry({ run: runOf({ run_attempt: 2 }), jobs: [checksOk, mutexCancelledLand('cancelled')], branchExists: true, branchTip: 'abc' }).reason, 'land-started-work');
+  // eviction budget, not the parked one
+  assert.equal(decideLandRetry({ run: runOf({ run_attempt: 6 }), jobs: [checksOk, mutexCancelledLand()], branchExists: true, branchTip: 'abc' }).reason, 'attempts-exhausted');
+  // a plain queue eviction keeps its reason
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, evictedLand()], branchExists: true, branchTip: 'abc' }).reason, 'land-cancelled-while-queued');
+});
+
+test('decideStrandedRef: a mutex-wait cancel is not escalated as mid-flight; a cancel inside Land the branch is', () => {
+  const base = { tip: 'abc', latestRun: runOf({ run_attempt: 2 }), now: NOW };
+  assert.notEqual(decideStrandedRef({ ...base, jobs: [checksOk, mutexCancelledLand()] }).reason, 'land-cancelled-mid-flight');
+  assert.deepEqual(decideStrandedRef({ ...base, jobs: [checksOk, mutexCancelledLand('cancelled')] }), { action: 'escalate', reason: 'land-cancelled-mid-flight' });
+});
+
+test('LAND_STEP_NAME is the land.js step in land.yml (a rename must break this test, not the anchor)', () => {
+  const land = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  // Exact name to end of line, and land.js inside this step (no later `- name:` in between).
+  const re = new RegExp(`\\n\\s*- name: ${m.LAND_STEP_NAME}\\n(?:(?!\\s*- name:)[^\\n]*\\n){0,60}?[^\\n]*node scripts/land\\.js`);
+  assert.match(land, re);
+});
+
+test('a Land job that ran to its deadline is not auto-retried (GitHub reports a timeout as cancelled)', () => {
+  const land = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const { LAND_JOB_TIMEOUT_MINUTES } = require('./land-retry-on-cancel.js');
+  assert.match(land, new RegExp(`\\n  land:\\n(?:(?!\\n  \\w)[\\s\\S])*?timeout-minutes: ${LAND_JOB_TIMEOUT_MINUTES}\\n`));
+  const runOf = (o = {}) => ({ conclusion: 'cancelled', head_branch: 'land/x', head_sha: 'abc', run_attempt: 1, ...o });
+  const checksOk = { name: 'Checks', conclusion: 'success' };
+  const timed = (min) => ({ ...mutexCancelledLand(), started_at: '2026-10-26T03:00:00Z', completed_at: new Date(Date.parse('2026-10-26T03:00:00Z') + min * 60000).toISOString() });
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, timed(124)], branchExists: true, branchTip: 'abc' }).reason, 'land-timed-out');
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, timed(40)], branchExists: true, branchTip: 'abc' }).reason, 'land-cancelled-before-landing');
 });

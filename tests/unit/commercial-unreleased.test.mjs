@@ -1,15 +1,16 @@
 /**
- * The commercial scorecard (capitalization, recoupment, Hit/Flop designations)
- * is unreleased on prod (owner, 2026-10-04). Prod builds run with the
- * `commercial` flag off; demo builds turn every flag on.
+ * The Money Scorecard (capitalization, recoupment, Hit/Flop designations, /biz)
+ * was released on prod 2026-10-26 (BRO-6192), the way the site releases
+ * features: the `commercial` getter returns true and the name left
+ * PROD_HELD_FEATURES. These tests pin that released state, so a prod build
+ * (which no longer lists `commercial` in NEXT_PUBLIC_FEATURES) still ships /biz,
+ * its browse pages, sitemap entries and llms.txt line. The post-deploy smoke
+ * test 'Money Scorecard is live' checks what the live site serves.
  *
- * Before this guard, hiding the section was not enough: the show page handed
- * commercial data to a client component (so it sat in every Broadway show
- * page's RSC payload), /browse/biggest-broadway-flops was public, and llms.txt
- * and the sitemap advertised /biz. These tests fail if a page starts loading
- * commercial data without the flag, or a browse page built on it ships ungated.
- * They read source, so they cannot see every indirection; the post-deploy smoke
- * test 'commercial scorecard stays unreleased' checks what the live site serves.
+ * Box Office Scorecard v2 (boxOfficeV2) is still held: the guards below keep
+ * its data and components behind commercial AND boxOfficeV2.
+ *
+ * File name kept from the unreleased era so references to it stay valid.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -17,18 +18,23 @@ import { readFileSync, readdirSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-// Prod's flag state: commercial off. feature-flags.ts reads this at import time.
+// Prod's flag state after the release: commercial is not listed in the env.
+// feature-flags.ts reads this at import time.
 process.env.NEXT_PUBLIC_FEATURES = '';
 
 const ROOT = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 const { featureFlags, PROD_HELD_FEATURES } = await import('../../src/config/feature-flags.ts');
 const { BROWSE_PAGES, getAllBrowseSlugs, getBrowsePageConfig } = await import('../../src/config/browse-pages.ts');
 
-test('commercial flag is off when NEXT_PUBLIC_FEATURES does not list it', () => {
-  assert.equal(featureFlags.commercial, false);
+test('commercial is released: on without NEXT_PUBLIC_FEATURES and not prod-held', () => {
+  assert.equal(featureFlags.commercial, true);
+  assert.equal(PROD_HELD_FEATURES.has('commercial'), false);
+  const src = readFileSync(path.join(ROOT, 'src/config/feature-flags.ts'), 'utf8');
+  assert.match(src, /get commercial\(\) \{ return true; \}/, 'commercial getter must return true (launched)');
 });
 
-test('every browse page that reads commercial data requires the commercial flag', () => {
+test('every browse page that reads commercial data is tagged with the commercial flag', () => {
+  // Keeps the kill switch working: turning the getter off must drop these pages.
   const offenders = Object.values(BROWSE_PAGES)
     .filter((cfg) => [cfg.filter, cfg.dataFilter, cfg.customSort, cfg.sectionGroup]
       .some((fn) => typeof fn === 'function' && /getShowCommercial/.test(fn.toString())))
@@ -37,16 +43,72 @@ test('every browse page that reads commercial data requires the commercial flag'
   assert.deepEqual(offenders, [], `add requiresFeature: 'commercial' to: ${offenders.join(', ')}`);
 });
 
-test('commercial browse pages do not exist while the flag is off', () => {
+test('commercial browse pages exist on a prod build', () => {
   const gated = Object.values(BROWSE_PAGES).filter((cfg) => cfg.requiresFeature === 'commercial');
-  assert.ok(gated.some((cfg) => cfg.slug === 'biggest-broadway-flops'), 'expected the flops page to be gated');
+  assert.ok(gated.some((cfg) => cfg.slug === 'biggest-broadway-flops'), 'expected the flops page to be tagged');
   const slugs = new Set(getAllBrowseSlugs());
   for (const cfg of gated) {
-    assert.equal(slugs.has(cfg.slug), false, `${cfg.slug} is still in getAllBrowseSlugs()`);
-    assert.equal(getBrowsePageConfig(cfg.slug), undefined, `${cfg.slug} still resolves in getBrowsePageConfig()`);
+    assert.ok(slugs.has(cfg.slug), `${cfg.slug} is missing from getAllBrowseSlugs()`);
+    assert.ok(getBrowsePageConfig(cfg.slug), `${cfg.slug} does not resolve in getBrowsePageConfig()`);
   }
-  assert.ok(getBrowsePageConfig('best-broadway-musicals-all-time') || getAllBrowseSlugs().length > 50,
-    'ungated browse pages must still resolve');
+});
+
+test('/biz surfaces advertise the Money Scorecard behind the flag only', () => {
+  // Sitemap, llms.txt and the footer read the flag, so they follow the release
+  // and the kill switch together.
+  const sitemap = readFileSync(path.join(ROOT, 'src/app/sitemap.ts'), 'utf8');
+  assert.match(sitemap, /featureFlags\.commercial \? \[[\s\S]*?\/biz`[\s\S]*?BIZ_TOPIC_PATHS[\s\S]*?getSeasonsWithCommercialData\(\)\.filter\(isIndexedCommercialSeason\)/);
+  const llms = readFileSync(path.join(ROOT, 'src/app/llms.txt/route.ts'), 'utf8');
+  assert.match(llms, /featureFlags\.commercial \? `- \[Money Scorecard\]/);
+  const footer = readFileSync(path.join(ROOT, 'src/components/FooterMarketContent.tsx'), 'utf8');
+  assert.match(footer, /featureFlags\.commercial && <li><Link href="\/biz"/);
+  // Every topic page listed in the sitemap is a real route.
+  const topics = sitemap.match(/BIZ_TOPIC_PATHS = \[([^\]]*)\]/)[1].match(/'([^']+)'/g).map((q) => q.slice(1, -1));
+  assert.ok(topics.length >= 5);
+  for (const t of topics) {
+    assert.ok(statSync(path.join(ROOT, 'src/app/biz', t, 'page.tsx')).isFile(), `src/app/biz/${t}/page.tsx missing`);
+  }
+});
+
+// Thin season pages are the one exception: noindex below MIN_INDEXED_SEASON_SHOWS.
+const SEASON_PAGE = 'src/app/biz/season/[season]/page.tsx';
+
+test('/biz pages carry no robots noindex (thin season pages aside)', () => {
+  const files = walk(path.join(ROOT, 'src/app/biz'));
+  assert.ok(files.length >= 7);
+  const offenders = files.filter((f) => path.relative(ROOT, f) !== SEASON_PAGE)
+    .filter((f) => /noindex|index:\s*false/.test(readFileSync(f, 'utf8')))
+    .map((f) => path.relative(ROOT, f));
+  assert.deepEqual(offenders, [], `remove noindex from: ${offenders.join(', ')}`);
+  const season = readFileSync(path.join(ROOT, SEASON_PAGE), 'utf8');
+  assert.match(season, /isIndexedCommercialSeason\(params\.season\) \? \{\} : \{ robots: \{ index: false, follow: true \} \}/);
+});
+
+const { getSeasonsWithCommercialData, isIndexedCommercialSeason, getShowsBySeasonWithCommercial, MIN_INDEXED_SEASON_SHOWS } =
+  await import('../../src/lib/data-commercial.ts');
+
+test('only seasons with enough tracked shows are indexed', () => {
+  const seasons = getSeasonsWithCommercialData();
+  const indexed = seasons.filter(isIndexedCommercialSeason);
+  assert.ok(indexed.length >= 5, 'recent seasons should be indexed');
+  for (const s of seasons) {
+    assert.equal(isIndexedCommercialSeason(s), getShowsBySeasonWithCommercial(s).length >= MIN_INDEXED_SEASON_SHOWS, s);
+  }
+});
+
+// Commercial data loads only through data-commercial.ts (toPublicShowCommercial
+// keeps raw research notes out of page payloads), whatever the flag says.
+const COMMERCIAL_JSON_READERS = new Set([
+  'src/lib/data-commercial.ts',
+  'src/lib/data-tony-predictions.ts', // only drops "Tour Stop" shows from Tony eligibility
+]);
+
+test('only the allowlisted modules import commercial.json', () => {
+  const offenders = ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)))
+    .filter((f) => /commercial\.json['"]/.test(readFileSync(f, 'utf8')))
+    .map((f) => path.relative(ROOT, f))
+    .filter((rel) => !COMMERCIAL_JSON_READERS.has(rel));
+  assert.deepEqual(offenders, [], `read commercial data through data-commercial.ts:\n${offenders.join('\n')}`);
 });
 
 function walk(dir) {
@@ -56,60 +118,12 @@ function walk(dir) {
   });
 }
 
-// Server-side readers of commercial.json that never emit commercial figures.
-// Anything else importing it must go through data-commercial's loaders.
-// Released public pages that show commercial aggregates only (owner-approved, BRO-5777).
-// Path to Broadway (BRO-5842): recoupment rates by route/source, aggregates only, held behind its own flag.
-const PUBLIC_AGGREGATE_ROUTES = new Set(['src/app/season-report/page.tsx', 'src/app/path-to-broadway/page.tsx']);
-const COMMERCIAL_JSON_READERS = new Set([
-  'src/lib/data-commercial.ts',
-  'src/lib/data-tony-predictions.ts', // only drops "Tour Stop" shows from Tony eligibility
-]);
-
-test('pages only load commercial data behind featureFlags.commercial', () => {
-  const src = readFileSync(path.join(ROOT, 'src/lib/data-commercial.ts'), 'utf8');
-  // getSeason is a date helper, not commercial data.
-  const dataFns = [...src.matchAll(/^export (?:async )?(?:function|const) (\w+)/gm)]
-    .map((m) => m[1]).filter((n) => n !== 'getSeason');
-  assert.ok(dataFns.includes('getShowCommercial'), 'data-commercial exports not found; update this guard');
-  const offenders = [];
-  // src/lib too: a helper there that loads commercial data and is called from a
-  // page would otherwise slip past a scan of the page alone.
-  const files = ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)));
-  for (const file of files) {
-    const rel = path.relative(ROOT, file);
-    if (rel === 'src/lib/data-commercial.ts') continue;
-    const text = readFileSync(file, 'utf8');
-    if (/commercial\.json['"]/.test(text) && !COMMERCIAL_JSON_READERS.has(rel)) {
-      offenders.push(`${rel}: imports commercial.json directly`);
-    }
-    // Follow renamed imports (`getShowCommercial as gsc`) as well as the real names.
-    const names = new Set(dataFns);
-    for (const m of text.matchAll(/\b(\w+)\s+as\s+(\w+)/g)) if (names.has(m[1])) names.add(m[2]);
-    const call = new RegExp(`\\b(${[...names].join('|')})\\s*\\(`);
-    if (!call.test(text)) continue;
-    // A route that 404s while the flag is off may load whatever it likes.
-    if (/if \(!featureFlags\.commercial\) notFound\(\);/.test(text)) continue;
-    // The public Season Report shows recoupment aggregates and names only shows that
-    // recouped (no budgets, running costs or shows that did not recoup); the owner
-    // released it 2026-10-20 (BRO-5777) and asked for show links 2026-10-21 (BRO-5808).
-    if (PUBLIC_AGGREGATE_ROUTES.has(rel)) continue;
-    text.split('\n').forEach((line, i) => {
-      if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line) && !line.includes('featureFlags.commercial')) {
-        offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
-      }
-    });
-  }
-  assert.deepEqual(offenders, [], `gate these on featureFlags.commercial:\n${offenders.join('\n')}`);
-});
-
 // BRO-5007: Box Office Scorecard v2 is not public yet (owner, 2026-10-10).
 const { computeDemoFlags } = await import('../../scripts/lib/demo-feature-flags.js');
 
 test('boxOfficeV2 is off without the env var and held back from production', () => {
   assert.equal(featureFlags.boxOfficeV2, false);
   assert.ok(PROD_HELD_FEATURES.has('boxOfficeV2'), 'boxOfficeV2 must stay in PROD_HELD_FEATURES until released');
-  assert.ok(PROD_HELD_FEATURES.has('commercial'));
 });
 
 test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', () => {
@@ -117,8 +131,7 @@ test('the public demo build leaves prod-held flags off (boxOfficeV2 included)', 
   const flags = computeDemoFlags(src);
   assert.ok(flags.length > 5, 'demo flag list unexpectedly short');
   assert.ok(!flags.includes('boxOfficeV2'), 'boxOfficeV2 must not be enabled on demo.broadwayscorecard.com');
-  // commercial's demo behavior is pending an owner decision: unchanged (allowlisted).
-  assert.ok(flags.includes('commercial'), 'commercial stays on demo until the owner decides');
+  assert.ok(flags.includes('commercial'), 'commercial is released, so demo keeps it on');
   assert.ok(!PROD_HELD_FEATURES.has('seasonReport'), 'seasonReport is released (BRO-5777)');
   const wf = readFileSync(path.join(ROOT, '.github/workflows/vercel-demo.yml'), 'utf8');
   const codeLines = wf.split('\n').filter((l) => !/^\s*#/.test(l));
@@ -220,10 +233,13 @@ test('held components are dynamic() from client modules only, behind the build-t
     `write these as process.env.HELD_BOX_OFFICE_BUILD === 'true' ? dynamic(...) : () => null:\n${unguarded.join('\n')}`);
 });
 
-test('next.config inlines HELD_BOX_OFFICE_BUILD from both held flags', () => {
+test('next.config inlines HELD_BOX_OFFICE_BUILD from boxOfficeV2 (commercial is always on)', () => {
   const cfg = readFileSync(path.join(ROOT, 'next.config.js'), 'utf8');
   assert.match(cfg, /HELD_BOX_OFFICE_BUILD:\s*heldBoxOfficeBuild/);
-  assert.match(cfg, /includes\('commercial'\)\s*&&\s*builtFeatures\.includes\('boxOfficeV2'\)/);
+  // A prod env without 'commercial' must still fold the held chunks in once
+  // boxOfficeV2 is listed, or the runtime flags and the build disagree.
+  assert.match(cfg, /heldBoxOfficeBuild = builtFeatures\.includes\('boxOfficeV2'\);/);
+  assert.equal(featureFlags.commercial, true);
 });
 
 test('every leak sentinel is held-only copy', () => {

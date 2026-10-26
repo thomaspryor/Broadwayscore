@@ -18,6 +18,7 @@
  */
 const { sanitizeForPublicRecord, commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
 const { stampDesignationBasis } = require('./commercial-apply-gate');
+const { methodologyForCostSource } = require('./waltz-cost-gap-fill');
 const { isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
 
 function changedFields(before, after) {
@@ -38,6 +39,11 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
     if (change.isEstimate && change.field !== 'designation') {
       draft.isEstimate = { ...(draft.isEstimate || {}), [change.field]: true };
     }
+  }
+  // A cost the tip adds to a record with no method gets the one its source
+  // reads as (BRO-6297: a cited cost with no method splits site from model).
+  if (proposedChanges.some((c) => c.field === 'weeklyRunningCost') && draft.weeklyRunningCost > 0 && !draft.costMethodology) {
+    draft.costMethodology = methodologyForCostSource(draft.weeklyRunningCostSource);
   }
   // A loss label the tip names takes the size the record's evidence supports
   // (owner 2026-10-18, BRO-5636): an estimate the tip adds counts. A label a

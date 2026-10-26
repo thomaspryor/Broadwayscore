@@ -351,3 +351,22 @@ test('src/lib/owner-decision-link.js reads the DECISION NEEDED line like decisio
     assert.equal(a, b, text);
   }
 });
+
+// BRO-6330: an answer that settles the card's last open decision marks an
+// owner-call park line UNPARKED; a second open decision keeps the card parked.
+test('recordAnswer unparks an owner-call park line only when no decision stays open', async () => {
+  const park = "PARKED: needs the owner's call on caveat versus adding the credit";
+  let f = fakeLinear({ description: `${park}\n\n${TEMPLATE}` });
+  await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '' });
+  assert.match(f.card.description, /^UNPARKED \(owner-answered\): needs the owner's call/);
+  assert.doesNotMatch(f.card.description, /^\s*PARKED\s*:/m);
+
+  const second = 'DECISION NEEDED: Also rename the tile?\nOption A - Yes: clearer / churn\nOption B - No: stable / vague';
+  f = fakeLinear({ description: `${park}\n\n${TEMPLATE}\n\n${second}` });
+  await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '' });
+  assert.match(f.card.description, /^PARKED: needs the owner's call/, 'second decision still open: stays parked');
+
+  f = fakeLinear({ description: `PARKED: owner must add the API key\n\n${TEMPLATE}` });
+  await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '' });
+  assert.match(f.card.description, /^PARKED: owner must add the API key/, 'a real block stays parked');
+});

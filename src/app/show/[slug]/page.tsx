@@ -39,6 +39,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
+import { getReviewListItems, REVIEWS_INLINE_COUNT } from '@/lib/show-review-items';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
@@ -49,11 +50,10 @@ import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
 import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
-import TicketButtonsAB from '@/components/TicketButtonsAB';
+import ShowPageTicketCTA from '@/components/ShowPageTicketCTA';
 import { sortTicketLinks } from '@/lib/ticket-utils';
-import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import { getComparisonsForShow } from '@/config/comparisons';
-import { serializeShowForClient } from '@/lib/serialize-show';
+import { createShowSerializer } from '@/lib/serialize-show';
 import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
 import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -335,12 +335,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
     ? getShowRanks(show.id, { format: show.type })
     : null;
-  // The commercial scorecard is unreleased (owner, 2026-10-04). Load its data
-  // only when the flag is on: ShowPageBelowFold is a client component, so
-  // anything passed to it lands in the page's RSC payload even when its
-  // section is hidden. Gating the render alone leaked capitalization and
-  // recoupment figures into every Broadway show page's source.
-  // Even with the flag on, only the allowlisted, publishable part of the
+  // The Money Scorecard was released 2026-10-26 (BRO-6192); to pull it, set the
+  // commercial getter back to has('commercial') and rebuild. ShowPageBelowFold
+  // is a client component, so anything passed to it lands in the page's RSC
+  // payload even when its section is hidden.
+  // Only the allowlisted, publishable part of the
   // record is sent (toPublicShowCommercial): raw research notes would
   // otherwise sit in the page source though the card never prints them.
   const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
@@ -379,8 +378,12 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // RSC flight payload. On /show/hamilton that was 645KB of the 781KB document,
   // 643 review objects, none of which any card renders (the cards read only
   // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
+  // One memoized slim serializer for every card list: a show in both the compact
+  // row and a shelf is emitted once, and the cards never read creativeTeam/runtime (BRO-6278).
+  const serialize = createShowSerializer();
+  const serializeRelated = (s: Parameters<typeof serialize>[0]) => serialize(s, { slim: true });
   const relatedShowsOpenRaw = getRelatedShowsOpen(show);
-  const relatedShowsOpen = relatedShowsOpenRaw.map(s => serializeShowForClient(s));
+  const relatedShowsOpen = relatedShowsOpenRaw.map(s => serializeRelated(s));
   // A show already in "Open Shows You Might Like" (e.g. Oh, Mary! playing Off-Broadway)
   // must not reappear in "Closed" for its Broadway run, so drop closed recs whose title matches.
   const openRecTitles = new Set(relatedShowsOpen.map(s => s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()));
@@ -389,7 +392,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         .filter(s => !openRecTitles.has(s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()))
         .slice(0, 6)
     : [];
-  const relatedShowsClosed = relatedShowsClosedRaw.map(s => serializeShowForClient(s));
+  const relatedShowsClosed = relatedShowsClosedRaw.map(s => serializeRelated(s));
   // related-shows-position A/B (BRO-5989): reuses the page's own open/closed rec lists
   // (West End exclusion and open/closed title dedupe included), then keeps only pages
   // the sitemap would list so the test row never links a noindex page. Pages with no
@@ -399,9 +402,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         [...relatedShowsOpenRaw, ...relatedShowsClosedRaw],
         show.id,
         (s: (typeof relatedShowsOpenRaw)[number]) => isShowIndexable(s, s.slug),
-      ).map(s => serializeShowForClient(s))
+      ).map(s => serializeRelated(s))
     : [];
-  const otherProductions = getOtherProductions(show).map(s => serializeShowForClient(s));
+  const otherProductions = getOtherProductions(show).map(s => serializeRelated(s));
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
 
@@ -426,6 +429,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
     if (stop) tourReviewCounts[stopKey(stop)] = (tourReviewCounts[stopKey(stop)] ?? 0) + 1;
   }
 
+  const reviewItems = getReviewListItems(show);
   const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
     ...show,
     venue: tourVenue ?? show.venue,
@@ -838,7 +842,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
             <div className="flex flex-wrap gap-2 min-w-0 flex-1">
               {/* Ticket Links — A/B tested (which platform gets the filled primary CTA) */}
-              <TicketButtonsAB
+              <ShowPageTicketCTA
                 showName={show.title}
                 showId={show.id}
                 showSlug={show.slug}
@@ -847,22 +851,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
                 showVenue={show.venue}
                 showScore={show.criticScore?.score ?? null}
                 ticketLinks={sortedTicketLinks}
+                rawTicketLinks={show.ticketLinks}
                 officialUrl={show.officialUrl}
                 pageType="show"
                 buttonClassName="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-overlay hover:bg-white/10 text-gray-300 hover:text-white text-xs leading-none font-medium transition-colors border border-white/10"
               />
-
-              {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an
-                  explicit note instead of leaving a silent gap where the ticket
-                  button used to be — users hunting for a "Get Tickets" button
-                  rage-clicked the empty space (CLAUDE.md card #228, task #90).
-                  See getTicketCtaNote for why 'closed' checks status alone. */}
-              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
-                <p className="w-full text-xs text-gray-500">This show has closed. Tickets are no longer available.</p>
-              )}
-              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
-                <p className="w-full text-xs text-gray-500">Tickets aren&apos;t on sale yet. Check back closer to opening.</p>
-              )}
 
               {/* Lottery/Rush — subdued style, not a revenue link */}
               {featureFlags.discountTickets && lotteryRush && show.status !== 'closed' && (
@@ -969,15 +962,19 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               </RedesignOn>
             )}
 
-            <ReviewsList reviews={show.criticScore.reviews.map(r => ({
-              ...r,
-              outletSlug: getOutletSlugById(r.outletId) || undefined,
-              outletBadge: getOutletBadge(r.outletId, r.outlet),
-              criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
-              priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
-              stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : null,
-              isTopCritic: !!(r.criticName && TOP_CRITICS.has(r.criticName)),
-            }))} initialCount={5} category={show.category} showTiers={!isOpera} />
+            {/* Only the cards in the server markup go inline; the rest load from reviews.json (BRO-6278). */}
+            <ReviewsList
+              reviews={reviewItems.slice(0, REVIEWS_INLINE_COUNT)}
+              more={reviewItems.length > REVIEWS_INLINE_COUNT ? {
+                url: `/show/${show.slug}/reviews.json`,
+                totalCount: reviewItems.length,
+                hasTierChips: reviewItems.some(r => r.tier),
+                hasStops: reviewItems.some(r => r.stopLabel),
+              } : undefined}
+              initialCount={REVIEWS_INLINE_COUNT}
+              category={show.category}
+              showTiers={!isOpera}
+            />
 
             {/* Subtle in-card methodology link — explains how CriticScore is
                 computed without a verbose accordion. Links to the same

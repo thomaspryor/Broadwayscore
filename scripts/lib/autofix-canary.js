@@ -322,7 +322,7 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, linear
       name,
       status: 'warn',
       unmeasurable: true,
-      message: 'Autofix throughput is not measurable from this environment — both data/audit/digest-autofix-ledger.jsonl and data/audit/backlog-drain-ledger.jsonl are gitignored/per-machine and absent here.',
+      message: 'Autofix throughput is not measurable from this environment: data/audit/digest-autofix-ledger.jsonl and data/audit/backlog-drain-ledger.jsonl are absent or unreadable here, and Linear pipeline activity is unavailable.',
     };
   }
 

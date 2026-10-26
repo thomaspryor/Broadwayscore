@@ -115,6 +115,23 @@ function planStatusWarning(name, plan) {
  * nothing. basePlan is the plan on main, null when the branch adds the file.
  */
 function finishedOnBranchProblems(name, basePlan, plan) {
+  // BRO-5935: withdrawing an obsolete plan is allowed without pretending it
+  // ran in CI. Keep its identity and actions as evidence of what was dropped.
+  if (plan && plan.status === 'superseded') {
+    const problems = [];
+    if (!basePlan || !['pending', 'partial', 'validation-failed', 'superseded'].includes(basePlan.status)) {
+      problems.push(`${name}: superseded must withdraw an existing unresolved plan`);
+    }
+    if (typeof plan.supersededReason !== 'string' || !plan.supersededReason.trim() ||
+        typeof plan.supersededAt !== 'string' || Number.isNaN(Date.parse(plan.supersededAt))) {
+      problems.push(`${name}: superseded needs a dated supersededAt and a nonempty supersededReason explaining the current-data evidence`);
+    }
+    if (basePlan && (basePlan.planId !== plan.planId || basePlan.issueNumber !== plan.issueNumber ||
+        JSON.stringify(basePlan.plan) !== JSON.stringify(plan.plan))) {
+      problems.push(`${name}: superseding must preserve the original plan identity and actions`);
+    }
+    return problems;
+  }
   if (!plan || !DONE_STATUSES.has(plan.status)) return [];
   if (basePlan && !isPending(basePlan)) return [];
   const how = basePlan ? 'moves it from "pending" to' : 'adds it as';

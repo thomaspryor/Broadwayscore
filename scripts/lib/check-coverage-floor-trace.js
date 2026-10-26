@@ -33,6 +33,8 @@ function checkNft(nftPath, repoRoot) {
   if (!files.includes(SNAPSHOT)) problems.push(`missing ${SNAPSHOT}`);
   const audit = files.filter(f => f.startsWith('data/audit/'));
   if (audit.length) problems.push(`traces ${audit.length} data/audit file(s): ${audit.slice(0, 3).join(', ')}`);
+  const imgs = files.filter(f => f.startsWith('public/images/'));
+  if (imgs.length) problems.push(`traces ${imgs.length} public/images file(s): ${imgs.slice(0, 3).join(', ')}`);
   return { ok: problems.length === 0, problems };
 }
 
@@ -59,6 +61,17 @@ function main() {
     if (!ok) failed = true;
   }
   if (!checked) { console.error('no show-route trace files found; did next build run?'); process.exit(2); }
+  // BRO-6277: no function anywhere may trace show art (it broke prod deploys).
+  const imageTracers = [];
+  (function walk(dir) {
+    for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+      const f = path.join(dir, e.name);
+      if (e.isDirectory()) walk(f);
+      else if (e.name.endsWith('.nft.json') && !checkNft(f, repoRoot).problems.every(p => !p.includes('public/images'))) imageTracers.push(path.relative(nextDir, f));
+    }
+  })(path.join(nextDir, 'server'));
+  console.log(`${imageTracers.length ? 'FAIL' : 'ok  '} no server trace includes public/images${imageTracers.length ? ': ' + imageTracers.slice(0, 3).join(', ') : ''}`);
+  if (imageTracers.length) failed = true;
   // The traced file must also carry verdicts: an empty snapshot is a floor
   // that can never hold a score.
   const snap = readSnapshot(path.join(repoRoot, SNAPSHOT));

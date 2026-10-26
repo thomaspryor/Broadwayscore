@@ -1,40 +1,40 @@
 {
-  "generatedAt": "2026-10-26T00:18:06.469Z",
+  "generatedAt": "2026-10-26T08:10:13.146Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "c9319831ccf9cc4ab6fb5eb538bdde32f5f46351",
+  "latestRunHeadSha": "e62fb263521dbfc764ce1cb5f84f438484f126bb",
   "state": "RED",
-  "consecutiveFailures": 21,
+  "consecutiveFailures": 49,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
   "redSince": "2026-10-25T19:56:32Z",
-  "redForHours": 4.359574722222222,
+  "redForHours": 12.22809611111111,
   "redDurationIsFloor": false,
   "lastSuccessAt": "2026-10-25T19:39:41Z",
-  "latestFailedRunId": "40246292531",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40246292531",
-  "decidedRuns": 99,
+  "latestFailedRunId": "40287023009",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40287023009",
+  "decidedRuns": 97,
   "verdictLag": {
-    "verdictSha": "c9319831ccf9cc4ab6fb5eb538bdde32f5f46351",
-    "verdictAt": "2026-10-25T23:46:52Z",
-    "verdictAgeHours": 0.5206858333333333,
-    "newerHeads": 1,
-    "runsInFlight": 1,
+    "verdictSha": "e62fb263521dbfc764ce1cb5f84f438484f126bb",
+    "verdictAt": "2026-10-26T07:38:25Z",
+    "verdictAgeHours": 0.5300405555555555,
+    "newerHeads": 3,
+    "runsInFlight": 3,
     "lagging": false
   },
   "failingJobs": [
     {
-      "name": "Unit Tests",
-      "steps": [
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
       "name": "Data Validation",
       "steps": [
         "Audit outlet-registry gaps"
+      ]
+    },
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
       ]
     },
     {
@@ -49,7 +49,7 @@
       "path": "scripts/lib/musical-model-backtest.test.mjs",
       "job": "Unit Tests",
       "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
-      "evidence": "not ok 7431 - reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside"
+      "evidence": "not ok 7452 - reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside"
     }
   ],
   "topFailingJob": "Unit Tests"

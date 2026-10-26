@@ -208,9 +208,8 @@ function readLedgerCached() {
 // it). Map<ref,title> otherwise.
 function liveTitleMap() {
   if (!cmuxws.cmuxAvailable()) return null;
-  let list;
-  try { list = cmuxws.listWorkspaces(); } catch { return null; }
-  if (!Array.isArray(list) || list.length === 0) return null;
+  const { workspaces: list, unavailable } = cmuxws.resolveLiveWorkspaces(() => cmuxws.listWorkspaces());
+  if (unavailable || !Array.isArray(list) || list.length === 0) return null;
   const m = new Map();
   for (const w of list) m.set(w.ref, w.title);
   return m;
@@ -452,7 +451,7 @@ function dispatchArgvFor(taskId) {
   // simply takes the tab path in-process — this lane has no mac-only filter
   // upstream, so the explicit flag would have parked every such card as
   // "redispatch never produced a launch" (ship-check finding).
-  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless'];
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless', '--allow-fresh-claim'];
   return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
 }
 
