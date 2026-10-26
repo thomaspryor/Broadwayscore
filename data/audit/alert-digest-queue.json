@@ -1229,6 +1229,20 @@
     "queuedAt": "2026-10-26T16:42:17.268Z"
   },
   {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T17:09:01.781Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-6353-mvpgihka",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6353-mvpgihka",
     "description": "land.yml did not land land/job/linear-BRO-6353-mvpgihka: the rebase gate went red at 9dd788bf56. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6353-mvpgihka @ 9dd788bf56 (origin/land/job/linear-BRO-6353-mvpgihka) → origin/main @ 242f9eeaac REFUSED: rebase: branch would not rebase cleanly onto origin/main @ bc7c047432: Rebasing (1/2) error: could not apply 24ce4315e3f... test: exclude two-part production from star-play loss-side guard (BRO-6353) hint: Resolve all conflicts manually, mark them as resolved with hi Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40359238199",
