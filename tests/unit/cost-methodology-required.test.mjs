@@ -13,3 +13,14 @@ test('with a costMethodology, or with no cost, it is not', () => {
   assert.ok(!has({ ...base, costMethodology: 'producer-confirmed' }));
   assert.ok(!has({ weeklyRunningCost: 700000 }));
 });
+
+const { buildTipRecord } = require('../../scripts/lib/commercial-tip-record');
+test('a tip that adds a cited cost to a method-less record is not refused for the missing method', () => {
+  const shows = { x: { designation: 'Unknown' } };
+  const r = buildTipRecord({ shows }, [{ slug: 'x' }], 'x', [
+    { field: 'weeklyRunningCost', newValue: 700000 },
+    { field: 'weeklyRunningCostSource', newValue: 'Deadline (Oct 3, 2026): weekly costs of $700,000' },
+  ]);
+  assert.ok(!/costMethodology/.test(r.refusedReason || ''), r.refusedReason);
+  if (r.record) assert.ok(r.record.costMethodology);
+});
