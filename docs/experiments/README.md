@@ -123,6 +123,27 @@ output. Every experiment with a significance test MUST also ship:
 4. Both new files added to `test.yml`'s push-path allow-list
    (`feedback_test_yml_push_path_allowlist`) so a solo edit still runs CI.
 
+## Guardrail expectation drift (BRO-2970)
+
+The weekly flag-parity monitor also calls
+`scripts/lib/experiment-guardrail-auditor.js`. This is log-only and makes no
+additional API calls. Its first adapter compares gate-cold-start's documented
+post-recalibration expectation (control:cold-start shown = 2.5:1) with pooled
+shown counts from up to four complete, non-overlapping weekly analyzer
+readouts. A discrepancy greater than 2x in either direction logs a warning.
+The flag monitor's existing state file retains the bounded readout history.
+Partial windows, unhealthy flag readouts, fewer than 100 total shown people,
+stale measurements and missing state cannot produce a healthy verdict.
+The report includes the number of usable weeks, including during warm-up.
+
+Gate-cold-start concluded on September 15, so the weekly audit currently
+reports it as skipped. It only reads measurements for a registered, active
+split with two nonzero arms. Other experiments are not covered by this first
+adapter. When adding another adapter, use that experiment's actual expectation
+and analyzer schema; do not reuse the historical cold-start ratio.
+The acceptance test imports the library directly so changes to the audited
+logic are covered by CI's existing `scripts/lib/**` push path.
+
 ## Why this exists
 
 `scripts/lib/flag-registry.js` is enforced two ways:

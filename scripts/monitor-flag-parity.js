@@ -21,7 +21,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { runWeeklyMonitor } = require('./lib/weekly-monitor-runner');
+const { runWeeklyMonitor, loadState } = require('./lib/weekly-monitor-runner');
+const { auditRegisteredGuardrails, formatGuardrailAudit } = require('./lib/experiment-guardrail-auditor');
 const { decideFlagParityAlerts } = require('./lib/flag-parity-rules');
 const { REGISTERED_FLAGS, extractReferencedFlagKeys, checkFlagParity, evaluateFlagHealth } = require('./lib/flag-registry');
 
@@ -87,12 +88,17 @@ async function loadData() {
     console.log(`WARNING: ${unresolved.length} getFeatureFlag() call(s) with an arg the static scanner couldn't resolve: ${JSON.stringify(unresolved)} — these are invisible to this monitor and the CI gate.`);
   }
 
-  return { flagHealth, unregistered };
+  const guardrailDrift = auditRegisteredGuardrails({
+    registry: REGISTERED_FLAGS,
+    history: loadState(STATE_PATH)?.lastSummary?.guardrailDrift?.snapshots,
+  });
+  return { flagHealth, unregistered, guardrailDrift };
 }
 
-function logData({ flagHealth, unregistered }) {
+function logData({ flagHealth, unregistered, guardrailDrift }) {
   console.log(`Flag health: ${JSON.stringify(flagHealth)}`);
   console.log(`Unregistered: ${JSON.stringify(unregistered.map((u) => u.key))}`);
+  console.log(formatGuardrailAudit(guardrailDrift));
 }
 
 // Deliberately never fails the job on alert conditions — the email alert IS
