@@ -40,6 +40,16 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page.getByText(/For the first time ever, Broadway profitability in one public database/)).toBeVisible();
   });
 
+  // BRO-6376: the nowrap pill measured 310px against 288px of room at 320px wide.
+  test('eyebrow pill fits the narrowest phone', async ({ page }) => {
+    await page.setViewportSize({ width: 320, height: 800 });
+    const pill = page.getByText('The Broadway profitability database', { exact: true });
+    await expect(pill).toBeVisible();
+    const box = await pill.boundingBox();
+    expect(box).not.toBeNull();
+    expect(box!.x + box!.width).toBeLessThanOrEqual(320 - 16);
+  });
+
   // BRO-6283: the four season cards are gone; the Season by Season table leads the page.
   test('season by season table renders first', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Season by Season', exact: true })).toBeVisible();
