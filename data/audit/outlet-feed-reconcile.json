@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T12:12:09.521Z",
+  "generatedAt": "2026-10-26T15:37:17.823Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,10 +138,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -152,16 +148,21 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 632,
-  "matchedGaps": 8,
+  "itemsScanned": 679,
+  "matchedGaps": 9,
   "possibleGaps": 1,
   "gaps": [
+    {
+      "showId": "derren-brown-only-human-west-end-2026",
+      "title": "Derren Brown: Only Human",
+      "level": "matched",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/26/review-of-derren-brown-only-human-mind-mangling-show-is-barely-mind-blowing/",
+      "headline": "Review of &#8216;Derren Brown: Only Human&#8217;: &#8220;Mentalist show is barely mind-blowing&#8221;",
+      "publishDate": "2026-10-26"
+    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -229,9 +230,9 @@
       "showId": "the-pianist-off-west-end-2026",
       "title": "The Pianist",
       "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/oct/26/the-pianist-review-park-theatre-london",
-      "headline": "The Pianist review – Władysław Szpilman’s Holocaust memoir retold with his own music",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-pianist-park-theatre",
+      "headline": "Review: The Pianist (Park Theatre)",
       "publishDate": "2026-10-26"
     },
     {
