@@ -16,6 +16,8 @@ import {
   buildSeasonProfiles,
   compareSeason,
   formatRowValue,
+  hasReturnedCoverage,
+  returnedCapitalShare,
   isOwnEstimate,
   mix,
   MIX_ROW_LABELS_HIDDEN,
@@ -446,4 +448,37 @@ test('capital by outcome: closed-unrecouped and running shows, same per-show fig
   const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
   assert.equal(p.estimatedCapital.total, 23e6);
   assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 10e6, closedUnrecoupedShows: 1, running: 4e6, runningShows: 1 });
+});
+
+test('returned capital share: recouped, closed estimate, model and unopened cases (BRO-6335)', () => {
+  const cited = [{ url: 'https://example.com/a' }];
+  // Recouped: reported multiple only with a cited source, else 100%.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 2.5, sources: cited }), 'open'), { low: 2.5, mid: 2.5, high: 2.5 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 2.5 }), 'open'), { low: 1, mid: 1, high: 1 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true }), 'closed'), { low: 1, mid: 1, high: 1 });
+  // Closed, unrecouped: own estimate range first, then the model.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [20, 40], modelReturnedExCreditPct: [0, 5, 10] }), 'closed'), { low: 0.2, mid: 0.3, high: 0.4 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [10, 30, 50] }), 'closed'), { low: 0.1, mid: 0.3, high: 0.5 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPctV2: [-20, 30, 160] }), 'closed'), { low: 0, mid: 0.3, high: 1 });
+  // Running: the model, never the closed-show estimate.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [90, 95], modelRecoupmentPct: [10, 20, 30] }), 'open'), { low: 0.1, mid: 0.2, high: 0.3 });
+  // No basis, or not open yet: nothing.
+  assert.equal(returnedCapitalShare(com({ recouped: false }), 'closed'), null);
+  assert.equal(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [10, 20, 30] }), 'announced'), null);
+});
+
+test('returned capital: sums capital x share per show with a low-high band, skipping shows with no basis', () => {
+  const shows = [
+    show({ openingDate: '2025-10-01', status: 'closed', commercial: com({ capitalization: 10e6, recouped: false, ourEstimateRangePct: [20, 40] }) }),
+    show({ openingDate: '2025-10-02', status: 'closed', commercial: com({ capitalization: 6e6, recouped: true }) }),
+    show({ openingDate: '2025-10-03', status: 'open', commercial: com({ capitalization: 4e6, recouped: false, modelRecoupmentPct: [0, 50, 100] }) }),
+    // Capital but no returned estimate: counted in `of`, not in `shows` or the capital base.
+    show({ openingDate: '2025-10-04', status: 'open', commercial: com({ capitalization: 5e6, recouped: false }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
+  assert.deepEqual(p.returnedCapital, { capital: 20e6, low: 2e6 + 6e6, mid: 3e6 + 6e6 + 2e6, high: 4e6 + 6e6 + 4e6, shows: 3, of: 4 });
+  assert.equal(hasReturnedCoverage(p), true);
+  // Below 60% of the capital-bearing shows: not stated.
+  const thin = buildSeasonProfiles([shows[0], shows[3], shows[3], shows[3]].map((s, i) => ({ ...s, openingDate: `2025-10-0${i + 1}` })));
+  assert.equal(hasReturnedCoverage(thin[0]), false);
 });

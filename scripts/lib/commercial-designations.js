@@ -46,6 +46,17 @@ function ownReturnedEstimatePct(entry) {
   }
   return null;
 }
+/**
+ * The same estimate as ownReturnedEstimatePct, as a [low, high] % range (a
+ * single figure is a point range); null when the record has none (BRO-6335).
+ */
+function ownReturnedRangePct(entry) {
+  for (const v of [entry?.analystRecoupPct, entry?.estimatedRecoupmentPct, entry?.ourEstimateRangePct]) {
+    if (Array.isArray(v) && v.length === 2 && v.every(Number.isFinite)) return [Math.min(v[0], v[1]), Math.max(v[0], v[1])];
+    if (Number.isFinite(v)) return [v, v];
+  }
+  return null;
+}
 /** Model data qualities good enough to split Fizzle from Flop. */
 const SPLIT_MODEL_QUALITIES = new Set(['medium', 'high']);
 /**
@@ -253,7 +264,7 @@ module.exports = {
   hasNoInvestorsToRepay,
   DESIGNATION_BASES, VALID_DESIGNATION_BASES,
   VALID_DESIGNATIONS, canonicalDesignation,
-  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
+  TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, ownReturnedRangePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
   LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,

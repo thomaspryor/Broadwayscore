@@ -8,6 +8,7 @@
 // fixtures.
 
 import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
+import { ownReturnedRangePct } from '../../scripts/lib/commercial-designations';
 import { sourceOpensAsEstimate } from '../../scripts/lib/public-source-text';
 import { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization } from '../../scripts/lib/cap-comparables';
 
@@ -38,6 +39,16 @@ export interface SeasonShowInput {
     productionType?: string | null;
     /** Producing nonprofit (Roundabout, MTC, LCT...), also set on enhancement and converted runs. */
     nonprofitOrg?: string | null;
+    /** A reported multiple of capitalization returned (only counts with a cited source). */
+    investorMultiple?: number | null;
+    /** Our own estimate of the share of capitalization returned (ownReturnedRangePct reads these). */
+    analystRecoupPct?: number[] | number | null;
+    estimatedRecoupmentPct?: number[] | number | null;
+    ourEstimateRangePct?: number[] | number | null;
+    /** Our recoupment model, % of capitalization returned as [low, mid, high]. */
+    modelReturnedExCreditPct?: number[] | null;
+    modelRecoupmentPctV2?: number[] | null;
+    modelRecoupmentPct?: number[] | null;
   } | null;
 }
 
@@ -81,7 +92,21 @@ export interface SeasonProfile {
    * risk in running shows). Shows with no figure count in neither.
    */
   capitalByOutcome: { closedUnrecouped: number; closedUnrecoupedShows: number; running: number; runningShows: number };
+  /** Our estimate of the money that has come back to investors (returnedCapitalShare), with a low-high band. */
+  returnedCapital: ReturnedCapital;
   runningCost: { musical: MoneyAggregate; play: MoneyAggregate };
+}
+
+export interface ReturnedCapital {
+  /** Capital of the shows with a returned estimate: the "of $Y in" the dollars below come back from. */
+  capital: number;
+  low: number;
+  mid: number;
+  high: number;
+  /** Opened commercial shows with a capital figure and a returned estimate. */
+  shows: number;
+  /** Opened commercial shows with a capital figure (the coverage denominator for `shows`). */
+  of: number;
 }
 
 export interface CapitalEstimate {
@@ -145,6 +170,7 @@ function emptyProfile(season: string): SeasonProfile {
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
     estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
     capitalByOutcome: { closedUnrecouped: 0, closedUnrecoupedShows: 0, running: 0, runningShows: 0 },
+    returnedCapital: { capital: 0, low: 0, mid: 0, high: 0, shows: 0, of: 0 },
     runningCost: { musical: emptyMoney(), play: emptyMoney() },
   };
 }
@@ -169,6 +195,43 @@ export function isOwnEstimate(c: Pick<NonNullable<SeasonShowInput['commercial']>
   // disclosed counts.
   return typeof c.capitalization === 'number' && c.capitalization > 0
     && (c.isEstimate?.capitalization === true || sourceOpensAsEstimate(c.capitalizationSource));
+}
+
+const clampPct = (v: number) => Math.min(100, Math.max(0, v));
+
+function triple(v: unknown): [number, number, number] | null {
+  return Array.isArray(v) && v.length === 3 && v.every((n) => Number.isFinite(n)) ? [v[0], v[1], v[2]] : null;
+}
+
+/**
+ * Share of a show's capitalization that has come back to investors, as
+ * fractions (1 = all of it) low <= mid <= high; null with no basis (BRO-6335).
+ *  - recouped: the reported multiple when the record cites a source, else 1.
+ *  - closed, not recouped: our own estimate of the share returned (a range
+ *    counts as low-high), else the model's [low, mid, high]; clamped to 0-100%.
+ *  - running, not recouped: the model's [low, mid, high], clamped.
+ * Not-yet-open shows have no share (nothing has played to return).
+ */
+export function returnedCapitalShare(
+  c: NonNullable<SeasonShowInput['commercial']>, status: string | null | undefined,
+): { low: number; mid: number; high: number } | null {
+  if (c.recouped === true) {
+    const m = c.investorMultiple;
+    const reported = typeof m === 'number' && Number.isFinite(m) && m > 0 && Array.isArray(c.sources) && c.sources.length > 0;
+    const v = reported ? m : 1;
+    return { low: v, mid: v, high: v };
+  }
+  let pct: [number, number, number] | null = null;
+  if (status === 'closed') {
+    const own = ownReturnedRangePct(c);
+    if (own) pct = [own[0], (own[0] + own[1]) / 2, own[1]];
+  }
+  if (!pct && (status === 'closed' || status === 'open' || status === 'previews')) {
+    pct = triple(c.modelReturnedExCreditPct) ?? triple(c.modelRecoupmentPctV2) ?? triple(c.modelRecoupmentPct);
+  }
+  if (!pct) return null;
+  const [lo, mid, hi] = pct.map(clampPct).sort((a, b) => a - b);
+  return { low: lo / 100, mid: mid / 100, high: hi / 100 };
 }
 
 interface RecordFacts {
@@ -278,6 +341,18 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
         p.estimatedCapital.estimated++;
       }
     }
+    if (showCap !== null && (c.recouped === true || show.status === 'closed' || show.status === 'open' || show.status === 'previews')) {
+      p.returnedCapital.of++;
+      const share = returnedCapitalShare(c, show.status);
+      if (share) {
+        const r = p.returnedCapital;
+        r.shows++;
+        r.capital += showCap;
+        r.low += showCap * share.low;
+        r.mid += showCap * share.mid;
+        r.high += showCap * share.high;
+      }
+    }
     if (showCap !== null && c.recouped !== true) {
       if (show.status === 'closed') {
         p.capitalByOutcome.closedUnrecouped += showCap;
@@ -318,6 +393,15 @@ export function hasFullCapitalCoverage(p: SeasonProfile): boolean {
 /** Tracked well enough that the estimated capital total (disclosed + estimates) can be stated. */
 export function hasEstimatedCapital(p: SeasonProfile): boolean {
   return hasTrackedCoverage(p) && p.commercial > 0;
+}
+
+/** Share of opened commercial shows (with a capital figure) that have a returned estimate before the dollars back are stated. */
+export const MIN_RETURNED_COVERAGE = 0.6;
+
+/** Enough tracked shows with a returned estimate that "about $X back of $Y in" can be stated. */
+export function hasReturnedCoverage(p: SeasonProfile): boolean {
+  const r = p.returnedCapital;
+  return hasEstimatedCapital(p) && r.of > 0 && r.capital > 0 && r.shows / r.of >= MIN_RETURNED_COVERAGE;
 }
 
 export interface HistoryAverage {
