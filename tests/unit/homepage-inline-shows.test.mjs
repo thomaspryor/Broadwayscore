@@ -23,13 +23,14 @@ const read = (rel) => fs.readFileSync(path.join(ROOT, rel), 'utf8');
 
 function weShowsFilter(src) {
   const start = src.indexOf('const weShows = getWestEndShows().filter(');
-  assert.notEqual(start, -1, 'weShows = getWestEndShows().filter( not found in src/app/page.tsx');
+  assert.notEqual(start, -1, 'weShows = getWestEndShows().filter( not found in src/lib/homepage-extra.ts');
   return src.slice(start, src.indexOf(');', start));
 }
 
-test('page.tsx inlines only non-closed West End shows', () => {
+test('homepage-extra.json carries only non-closed West End shows', () => {
+  // BRO-6278 moved the West End list out of page.tsx into src/lib/homepage-extra.ts (served as /homepage-extra.json).
   // Must be the first conjunct of the filter (an `||` alternative would not exclude closed rows).
-  assert.match(weShowsFilter(read('src/app/page.tsx')), /\.filter\(s =>\s*s\.status !== 'closed' &&/);
+  assert.match(weShowsFilter(read('src/lib/homepage-extra.ts')), /\.filter\(s =>\s*s\.status !== 'closed' &&/);
 });
 
 test('page.tsx cache-busts on the West End archive too', () => {
