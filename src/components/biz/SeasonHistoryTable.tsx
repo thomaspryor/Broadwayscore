@@ -82,7 +82,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
               return (
                 <tr key={p.season} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-2.5 px-3 whitespace-nowrap sticky left-0 z-10 bg-surface-raised">
-                    {linkSeasons ? (
+                    {linkSeasons && p.tracked > 0 ? (
                       <Link href={`/biz/season/${p.season}`} className="group text-brand hover:text-brand-hover font-medium">
                         <RowLinkArrow label={p.season} />
                       </Link>
