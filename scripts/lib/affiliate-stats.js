@@ -468,6 +468,9 @@ function buildWindow(days, { completeDays = false, now = new Date() } = {}) {
     // +12h keeps a DST hour from landing on the wrong calendar day.
     const start = pacificMidnight(new Date(end.getTime() - days * DAY_MS + 12 * 60 * 60 * 1000));
     return {
+      // No buffer: the Impact bounds are exact instants, so a day past this
+      // midnight would pull the send day's orders into the week. A buffer
+      // would not catch reporting lag either (the query time is the same).
       start, end, endBuffered: end,
       startDate: fmtPacificDate(start),
       endDate: fmtPacificDate(new Date(end.getTime() - 12 * 60 * 60 * 1000)), // last whole day, inclusive
@@ -484,7 +487,7 @@ function buildWindow(days, { completeDays = false, now = new Date() } = {}) {
  * timeouts and captures failures in errors[].
  *
  * @param {object} opts
- * @param {number} opts.days - Lookback window (clamped 1-45)
+ * @param {number} opts.days - Lookback window (clamped 1-44)
  * @param {boolean} [opts.includeWoW=false] - Fetch prior equivalent window for delta
  * @param {boolean} [opts.completeDays=false] - Whole Pacific days ending yesterday (see buildWindow)
  * @param {Date} [opts.now] - Injectable clock

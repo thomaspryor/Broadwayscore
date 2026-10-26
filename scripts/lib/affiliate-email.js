@@ -147,8 +147,8 @@ function buildAffiliateReportHtml(stats) {
   // Per-platform table
   let platformHtml = '';
   if (perPlatform && perPlatform.length > 0) {
-    // Tight padding + breakable platform names: six columns at 8px padding
-    // pushed the whole email to ~556px on a 390px phone.
+    // Tight padding: six columns at 8px padding pushed the whole email to
+    // ~556px on a 390px phone.
     const hs = 'font-size:10px;text-transform:uppercase;letter-spacing:0.3px;color:rgba(255,255,255,0.35);font-weight:600;padding:0 4px 8px;font-family:' + FONT;
     const cs = 'font-size:13px;color:rgba(255,255,255,0.85);padding:10px 4px;font-family:' + FONT + ';border-top:1px solid rgba(255,255,255,0.06)';
     const dash = '<span style="color:rgba(255,255,255,0.25)">\u2014</span>';
@@ -166,7 +166,7 @@ function buildAffiliateReportHtml(stats) {
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${r.epc != null ? '$' + r.epc.toFixed(3) : dash}</td>
       </tr>`;
     }).join('');
-    platformHtml = card('By platform', `
+    const table = rows ? `
       <table width="100%" cellpadding="0" cellspacing="0">
         <tr>
           <th align="left" style="${hs}">Platform</th>
@@ -177,9 +177,10 @@ function buildAffiliateReportHtml(stats) {
           <th align="right" style="${hs}">EPC</th>
         </tr>
         ${rows}
-      </table>
+      </table>` : '';
+    platformHtml = card('By platform', `${table}
       ${unpaid.length ? `<p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};line-height:1.5;">${htmlInt(unpaidClicks)} clicks went to sellers with no affiliate program: ${unpaid.map(r => `${esc(r.platform)} ${htmlInt(r.clicks)}`).join(', ')}.</p>` : ''}
-      <p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.25);font-family:${FONT};">CR = conversion rate. EPC = earnings per click.</p>
+      ${rows ? `<p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.25);font-family:${FONT};">CR = conversion rate. EPC = earnings per click.</p>` : ''}
     `);
   }
 
