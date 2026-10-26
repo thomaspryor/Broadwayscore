@@ -4836,6 +4836,7 @@ function silentGapBacklogResults(report, now = new Date()) {
 // card-verifiability.json, regenerated daily from the frozen Notion mirror);
 // only the Linear report is read now.
 const LINEAR_VERIFIABILITY_STALE_MS = 3 * 24 * 60 * 60 * 1000; // the audit runs daily; 3 days means it stopped
+const { ownerJudgmentLimboResults } = require('./lib/owner-judgment-limbo-guard.js');
 
 // BRO-5164: a report count that can back a pass row: a real number (or a
 // numeric string), never null/''/[]/{} that the ||0 coercions turn into 0.
@@ -5035,7 +5036,10 @@ function readAuditJsonOrNull(file) {
 function checkCardVerifiabilityBacklog() {
   const cvLinear = readAuditJsonOrNull('card-verifiability-linear.json');
   const drainMetric = readAuditJsonOrNull('backlog-drain-metric.json');
-  return cvLinear || drainMetric ? cardVerifiabilityBacklogResults(drainMetric, cvLinear) : [];
+  return [
+    ...cardVerifiabilityBacklogResults(drainMetric, cvLinear),
+    ...ownerJudgmentLimboResults(cvLinear),
+  ];
 }
 function checkCoverageHoles() {
   const report = readAuditJsonOrNull('coverage-holes.json');

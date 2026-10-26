@@ -56,6 +56,7 @@ const { redactEmails } = require('./lib/pii-scan.js');
 const { findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 const { evaluateLinearIssue, evaluateLinearIssues } = require('./lib/linear-issue-verifiability.js');
+const { auditOwnerJudgmentLimbo } = require('./lib/owner-judgment-limbo-guard.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
 // graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
@@ -312,6 +313,9 @@ async function runLinearAudit(limit, opts = {}) {
   const readOpts = { ...opts, log: console.error };
   const evaluated = await evaluateLinearIssues(issues.slice(0, limit), readOpts);
   const report = buildReport(evaluated);
+  report.ownerJudgmentLimbo = await auditOwnerJudgmentLimbo(issues.slice(0, limit), readOpts);
+  // A manually limited audit must not advertise a complete board-wide count.
+  if (limit < issues.length) report.ownerJudgmentLimbo.complete = false;
   if (opts.measureOnly) return report;
   const initial = findCardCheckPathDefects(evaluated, { log: console.error });
   const flaggedCount = initial.missing.length + initial.vacuous.length;
