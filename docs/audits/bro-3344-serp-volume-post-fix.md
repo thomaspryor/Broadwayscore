@@ -42,9 +42,12 @@ not independently reconciled provider invoices or a dollar estimate.
 | 2026-10-24 | 438 | 10,350 |
 | 2026-10-25 | 533 | 12,350 |
 
-The adjacent October 18 to 24 week gives the same direction: 2,785 calls,
-67,525 credits, 339 explicit null fallbacks. The result does not depend on
-choosing just the latest week.
+The adjacent October 18 to 24 window contains 2,785 observed calls,
+67,525 credits and 339 explicit null fallbacks. However, the four immutable
+snapshots documented below do not bracket its start: their earliest record is
+October 18 at 00:00:02.013. With those inputs the analyzer correctly exits 2,
+with `coverage.spansWindow=false` and `comparison=null`. These adjacent-window
+counts are not a second verified full-week comparison.
 
 The largest callers by credits are `gather-reviews.js` (1,557 calls / 36,725
 credits), `opening-night-poller.js` (600 / 14,750), and
@@ -199,3 +202,65 @@ git diff --check
 No TypeScript, UI, scoring or content-quality pattern files changed, so their
 specialized commands were not applicable. Only the four intended files remain
 in the working tree. No commit, push, PR, workflow edit or Linear write was made.
+
+## Follow-up recheck on main, 2026-10-26
+
+At the start of this follow-up, HEAD and origin/main were both `a844016e`.
+The acceptance command already passed, with 5 tests and 0 failures, and
+`git diff origin/main -- tests/unit/serp-volume-post-fix.test.mjs scripts/lib/serp-volume-post-fix.js`
+was empty. The `git log -S 'serp-volume-post-fix' --oneline -5` search returned
+the shallow boundary checkpoint `f5757288`; it does not establish the original
+merge history. No analyzer, telemetry or routing change was needed.
+
+Downloading the same four immutable snapshots reproduced 216,907 distinct
+records and the input SHA-256 above. The real CLI reproduced all three cases:
+
+| Input / UTC window | Exit | SB calls / credits | Comparison |
+| --- | ---: | ---: | --- |
+| Four snapshots, October 19 to 25 | 0 | 3,138 / 75,375 | Available |
+| Four snapshots, October 18 to 24 | 2 | 2,785 / 67,525 | Unavailable: start not bracketed |
+| Checkout ledger, October 19 to 25 | 2 | 971 / 22,700 | Unavailable: October 19 to 23 absent |
+
+The last row uses the checkout ledger through October 26 at 22:56:17.212 UTC.
+Only the report's adjacent-window coverage claim changed. Source records and
+all analyzer outputs stayed unchanged before and after that documentation fix.
+Three daily examples remain October 19: 265 / 6,500; October 23: 690 / 16,275;
+October 25: 533 / 12,350.
+
+The actual writers remain `recordProviderCall()` in `provider-telemetry.js`
+and the provider calls and `_serpWithChain()` in `url-discovery.js`. Raw ledger
+rows have neither process/run identifiers nor consecutive-failure counts or
+half-open outcomes. The 80 existing `breaker-transitions.jsonl` rows describe
+daily spend ceilings written by `check-sd-breaker.js` and `check-bd-breaker.js`,
+not the five-failure SERP guards. They cannot establish the requested recovery.
+
+Read-only GitHub access also recovered three production job logs from October
+25, without triggering any workflow or provider request:
+
+| Job | SD SERP error markers | BD SERP error markers | Half-open / threshold markers |
+| --- | ---: | ---: | ---: |
+| [Gather reviews](https://github.com/thomaspryor/Broadwayscore/actions/runs/40171074500/job/121103906768) | 3 | 1 | 0 |
+| [Collect review texts](https://github.com/thomaspryor/Broadwayscore/actions/runs/40172360547/job/121105714857) | 0 | 0 | 0 |
+| [Collect review texts](https://github.com/thomaspryor/Broadwayscore/actions/runs/40172915833/job/121107404421) | 3 | 1 | 0 |
+
+Every observed counted SERP error in these jobs was `1/5`. This sample does
+not show a trip and cannot verify recovery after a trip. Logs were inspected
+without retaining review text or queries in this report.
+
+The 2,247 instrumented HTTP 400 rows still give only the same generic provider
+message. There is no `SCRAPINGDOG_API_KEY` in this worker's environment, so a
+controlled live probe could not be performed. The exact 400 cause and a real
+five-failure trip followed by recovery remain unverified. Lowering the observed
+weekly spend remains work for the named cluster cards, BRO-3386 and BRO-4936;
+this verification supplies no evidence for a safe routing change.
+
+The following focused command passed with 34 tests and 0 failures:
+
+```bash
+node --test --test-timeout 300000 tests/unit/serp-volume-post-fix.test.mjs scripts/lib/serp-chain-order.test.mjs scripts/lib/serp-fallback-attribution.test.mjs scripts/lib/provider-telemetry.test.mjs
+```
+
+The existing test imports the production analyzer, and
+`scripts/lib/unit-test-collection.js` still collects that test. No function,
+flag, script, cron or paid call was added. The analyzer continues to make zero
+network or LLM calls. Temporary snapshots and logs were removed after checking.
