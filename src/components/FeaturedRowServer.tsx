@@ -6,7 +6,8 @@
  * Uses plain <img> tags instead of ShowImage (which is 'use client').
  */
 import Link from 'next/link';
-import { getOptimizedImageUrl, getCdnSrcSet } from '@/lib/images';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { getServerImageSrcSet } from '@/lib/show-image-srcset.server';
 import { getMarketLabel } from '@/lib/venue-classification';
 import { MustSeeCrown, getScoreColorClass } from '@/components/show-cards/ScoreBadge';
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
@@ -46,7 +47,7 @@ function ServerMiniShowCard({ show, priority, eager }: { show: ServerShelfShow; 
         ? getOptimizedImageUrl(show.images.hero, 'card')
         : null;
 
-  const srcSet = imgSrc ? getCdnSrcSet(imgSrc) : '';
+  const srcSet = imgSrc ? getServerImageSrcSet(imgSrc) : '';
 
   return (
     <Link
