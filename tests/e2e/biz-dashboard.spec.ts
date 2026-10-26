@@ -34,6 +34,12 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page.getByText('Who made money on Broadway, and who lost it')).toBeVisible();
   });
 
+  // BRO-6376: the header names the page a profitability database.
+  test('header positions the page as a profitability database', async ({ page }) => {
+    await expect(page.getByText('The Broadway profitability database', { exact: true })).toBeVisible();
+    await expect(page.getByText(/For the first time ever, Broadway profitability in one public database/)).toBeVisible();
+  });
+
   // BRO-6283: the four season cards are gone; the Season by Season table leads the page.
   test('season by season table renders first', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Season by Season', exact: true })).toBeVisible();

@@ -55,7 +55,7 @@ import ShareButton from '@/components/biz/ShareButton';
 import { getMarketDate } from '@/lib/date-utils';
 
 const OG_ALT = 'Broadway Money Scorecard: who made money on Broadway, and who lost it';
-const PAGE_TITLE = "Broadway Money Scorecard: Who Recouped and Who Didn't";
+const PAGE_TITLE = "Broadway Profitability Database: Who Recouped and Who Didn't";
 
 // Headline numbers for the hero and the meta description (BRO-6286).
 function formatBillions(n: number): string {
@@ -64,7 +64,7 @@ function formatBillions(n: number): string {
 
 const HERO = getCommercialHeadlineStats();
 const OG_DESCRIPTION =
-  `Which Broadway shows paid back their investors, and which didn't. Capitalization, weekly running costs and recoupment for ${HERO.productions} commercial productions, from SEC filings, trade press and weekly box office grosses.`;
+  `The first public Broadway profitability database. Which shows paid back their investors, and which didn't. Capitalization, weekly running costs and recoupment for ${HERO.productions} commercial productions, from SEC filings, trade press and weekly box office grosses.`;
 
 export const metadata: Metadata = {
   title: { absolute: PAGE_TITLE },
@@ -173,9 +173,9 @@ export default function BizDashboard() {
         <header className="mb-10">
           <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
             <span className="inline-flex items-center whitespace-nowrap rounded-full border border-brand/40 px-2.5 sm:px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] sm:tracking-[0.18em] text-brand">
-              The business of Broadway
+              The Broadway profitability database
             </span>
-            <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0" />
+            <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0 ml-auto" />
             {/* JSON/CSV download buttons removed (owner decision, BRO-4721): they
                 only opened a waitlist and read as unfinished. GatedDownloadButtons
                 is kept for when downloads ship. */}
@@ -187,9 +187,10 @@ export default function BizDashboard() {
             Who made money on Broadway, and who lost it
           </p>
           <p className="text-base text-gray-400 mt-3 max-w-3xl">
-            Capitalization, weekly running costs and recoupment for every commercial Broadway
-            production we can document, built from SEC filings, trade press and The Broadway
-            League&apos;s weekly grosses.
+            For the first time ever, Broadway profitability in one public database:
+            capitalization, weekly running costs and recoupment for every commercial production
+            we can document, built from SEC filings, trade press and The Broadway League&apos;s
+            weekly grosses.
           </p>
 
           <dl className="grid grid-cols-3 gap-3 sm:gap-4 mt-6 max-w-3xl" data-testid="biz-hero-stats">
