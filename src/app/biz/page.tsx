@@ -26,6 +26,7 @@ import {
 } from '@/lib/data-commercial';
 import { getAllShows } from '@/lib/data-core';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
+import { selectSeasonHistory } from '@/lib/season-profile';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
@@ -91,14 +92,12 @@ export default function BizDashboard() {
   // Get data for all sections
 
   // Season profile: this season vs last season and the 10-season average, and
-  // the last 11 seasons side by side (season-profile.ts).
+  // every season with tracked coverage side by side (season-profile.ts).
   const today = getMarketDate('broadway');
   const currentSeason = getSeason(today);
   const currentComparison = currentSeason ? getSeasonComparison(currentSeason) : null;
   const profiles = getSeasonProfiles();
-  const seasonHistory = profiles
-    .filter((p) => !currentSeason || p.season <= currentSeason)
-    .slice(0, 11);
+  const seasonHistory = selectSeasonHistory(profiles, currentSeason);
   // The Season Report's visuals (owner, 2026-10-21); its Key Findings are linked, not repeated.
   const scores = new Map(getAllShows().map((s) => [s.slug, s.compositeScore == null ? null : Math.round(s.compositeScore)]));
   const recoupFindings = getRecoupFindings(scores, today);

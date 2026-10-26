@@ -414,6 +414,20 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
   return Array.from(bySeason.values()).sort((a, b) => b.season.localeCompare(a.season));
 }
 
+/**
+ * Rows for the Season by Season table (BRO-6362): newest first, from the
+ * current season back through the oldest season that clears hasTrackedCoverage,
+ * so a backfilled season appears without a code change. No fixed row cap.
+ */
+export function selectSeasonHistory(profiles: SeasonProfile[], currentSeason: string | null): SeasonProfile[] {
+  const upTo = profiles.filter((p) => !currentSeason || p.season <= currentSeason);
+  let oldest = -1;
+  upTo.forEach((p, i) => {
+    if (p.season === currentSeason || hasTrackedCoverage(p)) oldest = i;
+  });
+  return upTo.slice(0, oldest + 1);
+}
+
 /** Enough commercial.json coverage to state nonprofit share and recoupment counts. */
 export function hasTrackedCoverage(p: SeasonProfile): boolean {
   return p.productions > 0 && p.tracked / p.productions >= MIN_TRACKED_SHARE;

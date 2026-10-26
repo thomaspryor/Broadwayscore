@@ -25,6 +25,7 @@ import {
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
   seasonHistoryAverage,
+  selectSeasonHistory,
   showGroup,
   trackedRecord,
   type SeasonShowInput,
@@ -553,4 +554,23 @@ test('continuation rule is exact: "discontinued" and mid at the 99 cap (BRO-6360
   assert.equal(continuesEarlierRun(b, [a, b]), false);
   assert.equal(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [90, 99, 120] }), 'closed'), null);
   assert.ok(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [50, 98, 120] }), 'closed'));
+
+test('Season by Season lists every season back to the oldest with tracked coverage (BRO-6362)', () => {
+  // 14 seasons 2012-13 .. 2025-26: only 2014-15 onward are tracked; 2012-13/2013-14 are not.
+  const shows: SeasonShowInput[] = [];
+  for (let y = 2012; y <= 2025; y++) {
+    for (let m = 1; m <= 4; m++) {
+      const tracked = y >= 2014;
+      shows.push(show({ openingDate: `${y}-10-0${m}`, commercial: tracked ? com({ recouped: true }) : null }));
+    }
+  }
+  const profiles = buildSeasonProfiles(shows);
+  const rows = selectSeasonHistory(profiles, '2025-2026').map((p) => p.season);
+  assert.equal(rows[0], '2025-2026');
+  assert.equal(rows[rows.length - 1], '2014-2015');
+  assert.equal(rows.length, 12); // more than the old 11-row window
+  assert.ok(!rows.includes('2013-2014'));
+  // A future season in the data is not shown; no coverage anywhere keeps only the current row.
+  assert.equal(selectSeasonHistory(profiles, '2020-2021')[0].season, '2020-2021');
+  assert.deepEqual(selectSeasonHistory(buildSeasonProfiles(shows.slice(0, 4)), '2012-2013').map((p) => p.season), ['2012-2013']);
 });

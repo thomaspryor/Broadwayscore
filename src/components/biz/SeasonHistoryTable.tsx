@@ -1,5 +1,5 @@
 /**
- * SeasonHistoryTable - the last 11 Broadway seasons side by side: mix
+ * SeasonHistoryTable - every covered Broadway season side by side: mix
  * (musicals, revivals within each bucket), nonprofit share, recoupment and
  * disclosed and estimated capitalization (buildSeasonProfiles in
  * season-profile.ts), with an average row under it (seasonHistoryAverage).
