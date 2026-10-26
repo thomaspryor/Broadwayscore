@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6336-d",
   "planId": "7f23b02f-13fd-4400-bed9-1ecac5d397e7",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-26T14:37:28.000Z",
   "submitter": {
     "name": null,
@@ -50,5 +50,24 @@
         "description": "commercial.json: midnight-in-the-garden-of-good-and-evil.capitalization (probe: oldValue=newValue)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T18:06:28.707Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for midnight-in-the-garden-of-good-and-evil"
+    }
+  ],
+  "executedIn": "ci"
 }
