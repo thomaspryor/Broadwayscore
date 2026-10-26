@@ -115,6 +115,40 @@ function access({ state, owner, corrupt = false, env = process.env } = {}) {
   };
 }
 
+/**
+ * access() as the runner sees it now: the two ladder files read from origin/main (so a Codex worktree's
+ * own copy never counts and an owner flip on main is seen without a pull), else from the working tree
+ * when there is no origin/main ref (shallow or detached checkout). Cached ACCESS_TTL_MS per root: the
+ * picker is a fresh process per pick, and a ~2h runner still sees a relock within minutes.
+ * -> access() + { mode, ref: 'origin/main'|'worktree' }
+ */
+const ACCESS_TTL_MS = 5 * 60_000;
+const accessCache = new Map();
+function ladderAccess({ root = path.resolve(__dirname, '..', '..'), env = process.env, nowMs = Date.now(), git = null } = {}) {
+  const hit = accessCache.get(root);
+  const killedNow = killed(null, env);
+  if (!killedNow && hit && nowMs - hit.at < ACCESS_TTL_MS) return hit.value;
+  const run = git || ((args) => require('child_process').execFileSync('git', args, { cwd: root, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], timeout: 15_000 }));
+  let onMain = false;
+  try { run(['rev-parse', '--verify', '--quiet', 'origin/main^{commit}']); onMain = true; } catch { /* no ref: read the working tree */ }
+  const readFile = onMain ? (p) => {
+    const rel = path.relative(root, p).split(path.sep).join('/');
+    // The ref exists, so a failed show is a file that is not on main: "not set up", never corrupt.
+    try { return run(['show', `origin/main:${rel}`]); } catch { const e = new Error(`${rel} not on origin/main`); e.code = 'ENOENT'; throw e; }
+  } : undefined;
+  const files = loadFiles(root, readFile);
+  const value = { ...access({ ...files, env }), mode: files.corrupt ? 'corrupt' : files.state ? String(files.state.mode || 'shadow') : 'not set up', ref: onMain ? 'origin/main' : 'worktree' };
+  if (!killedNow) accessCache.set(root, { at: nowMs, value });
+  return value;
+}
+ladderAccess.clearCache = () => accessCache.clear();
+
+/** The BRO-4745 summary line: what access the ladder gave this run. */
+function accessLine(a) {
+  const open = (locked) => (locked ? 'locked' : 'open');
+  return `- Trust ladder: ${a.mode || '?'} (${a.source}${a.ref ? `, read from ${a.ref}` : ''}); min score ${a.minScore}, cloud data route ${open(a.cloudDataRouteLocked)}, review-texts ${open(a.reviewTextsLocked)}`;
+}
+
 // ---------- the record ----------
 
 /** Rejection stats over the last windowDays from the BRO-4745 runner summaries (facts from runnerSummaryFacts). */
@@ -266,14 +300,21 @@ function summarize(state, owner, recordQualifies, nowMs) {
   };
 }
 
-/** Files the runner must never land: Codex cannot edit the rules that grade it. */
+/**
+ * Files the runner must never land: Codex cannot edit the rules that grade it, nor the inputs they
+ * read (BRO-6303): the run-summary format and parser, the summary reader and the lane-health breaches.
+ */
+const PROTECTED_FILES = new Set([
+  'scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js',
+  'scripts/lib/codex-runner-grading.js', 'scripts/codex-lane-alarm.js', 'scripts/lib/codex-lane-health.js',
+]);
 function isProtectedPath(name) {
   const n = String(name || '');
-  return n === 'scripts/lib/codex-trust-ladder.js' || n === 'scripts/codex-trust-ladder.js' || n.startsWith('data/audit/codex-trust-ladder');
+  return PROTECTED_FILES.has(n) || n.startsWith('data/audit/codex-trust-ladder');
 }
 
 module.exports = {
-  isProtectedPath,
+  isProtectedPath, ladderAccess, accessLine, ACCESS_TTL_MS,
   POLICY, RUNGS, NEVER, STATE_FILE, OWNER_FILE, BASELINE_MIN_SCORE, WIDE_MIN_SCORE, GIT_LOG_FORMAT,
   seedState, seedOwner, loadFiles, access, rejectionStats, gitRegressions, parseCommits, evaluate,
 };

@@ -292,10 +292,12 @@ function pruneDisk() {
  * Give a freshly cleaned worktree the private data the main checkout has (R.DATA_FILES
  * copied, data/review-texts linked), since `git clean -x` removes it. reviewTexts: false
  * for the land-check batches: land.yml has no review texts either, and those batches run
- * outside the Codex sandbox, so a test write must not reach the shared clone.
+ * outside the Codex sandbox, so a test write must not reach the shared clone. The default is the
+ * trust ladder's review-texts rung (BRO-6303): unlocked links it, locked does not and says why.
  * -> { lines (for the prompts), dirs (real paths the reviewer may read) }
  */
-function provideData(dest, { reviewTexts = true } = {}) {
+function provideData(dest, { ladder = R.codexLadderAccess(), reviewTexts = !ladder.reviewTextsLocked } = {}) {
+  const ladderLocked = !!ladder.reviewTextsLocked;
   const src = path.join(ROOT, 'data');
   const provided = [];
   const missing = [];
@@ -313,7 +315,11 @@ function provideData(dest, { reviewTexts = true } = {}) {
   for (const name of R.DATA_DIRS) {
     const from = path.join(src, name);
     const to = path.join(dest, 'data', name);
-    if (!reviewTexts || !fs.existsSync(from)) { if (reviewTexts) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`); continue; }
+    if (!reviewTexts || !fs.existsSync(from)) {
+      if (reviewTexts) lines.push(`- data/${name}: not available in this run. If the card needs it, say so in a REMAINING line.`);
+      else if (ladderLocked) lines.push(`- data/${name}: locked for Codex by the trust ladder. If the card needs it, say so in a REMAINING line.`);
+      continue;
+    }
     const real = fs.realpathSync(from);
     let cfg = '';
     try { cfg = fs.readFileSync(path.join(real, '.git', 'config'), 'utf8'); } catch { /* not a clone */ }
@@ -1431,6 +1437,11 @@ function landedPerLane() {
   } catch { return 'unknown (git log failed)'; }
 }
 
+/** The trust ladder access this run worked under (BRO-6303), for the summary. */
+function ladderLine() {
+  try { return TL.accessLine(R.codexLadderAccess()); } catch (e) { return `- Trust ladder: unreadable (${String(e && e.message || e).slice(0, 80)})`; }
+}
+
 /** Close cards whose runner commit reached main after an earlier run stopped waiting (left In Progress). */
 async function reconcileLanded(stats, { onlyDeferred = false } = {}) {
   let subjects = '';
@@ -1551,33 +1562,16 @@ async function runLocked(startedMs) {
   saveLogin();
 
   const mins = Math.round((Date.now() - startedMs) / 60_000);
-  const list = (a) => (a.length ? a.join(', ') : 'none');
-  const landedCount = stats.landed.length + stats.landedPartial.length;
-  const text = [
-    R.summaryHeading({ date: new Date().toISOString().slice(0, 10), worked, mins, slot: SLOT, lane: OPTS.lane }),
-    `- Landed and Done: ${list(stats.landed)}`,
-    `- Landed part, back to Todo with what is left: ${list(stats.landedPartial)}`,
-    `- Already fixed, closed: ${list(stats.alreadyFixed)}`,
-    `- Did not pass the Claude check, back to Todo: ${list(stats.bounced)}`,
-    `- In Review (the Done gate would not close it): ${list(stats.inReview)}`,
-    `- Landing did not finish (left In Progress for resume): ${list(stats.landFailed)}`,
-    `- Runner error mid-card (back to Todo): ${list(stats.crashed)}`,
-    ...stats.recoveredStops.map((details) => `- Recovered stopped session: ${details}`),
-    ...(stats.carried.length ? [`- SHIP-WITH-FIXES, fix round carried to the next run: ${list(stats.carried)}`] : []),
-    ...(stats.outOfTime.length ? [`- Out of time before review, not judged (back to Todo): ${list(stats.outOfTime)}`] : []),
-    ...(stats.wouldLand.length ? [`- Passed, not landed (--no-land): ${list(stats.wouldLand)}`] : []),
-    R.codexSettingsLine(codexUsed),
-    `- Codex weekly allowance used: ${weeklyPct() ?? 'unknown'}%`,
-    `- Claude check: ${checkCount} review(s), $${checkSpentUsd.toFixed(2)} API cost`,
-    // BRO-5384 savings line: what the Codex lane costs in Claude, by model and per landed card.
-    `- Claude check by model: ${Object.entries(checkByModel).map(([k, v]) => `${k} ${v.n} ($${v.usd.toFixed(2)})`).join(', ') || 'none'}; per landed card: ${landedCount ? `$${(checkSpentUsd / landedCount).toFixed(2)}` : 'n/a (nothing landed)'}`,
-    // A pinned lane shows in the next summary instead of days later (BRO-6129: one slot for 13 h unnoticed).
-    ...(process.env.CODEX_SLOT_SHORTFALL ? [`- Slots: ${process.env.CODEX_SLOT_SHORTFALL}`] : []),
-    ...(SLOT === 0 ? [`- Landed on main, last 24h: ${landedPerLane()}`] : []),
-    `- Stopped early: ${stop || 'no'}`,
-    // A run that did no work says why (BRO-6139), so "0 worked, stopped early: no" is never the whole story.
-    ...(worked ? [] : [`- Why nothing was worked: ${!picks.length ? 'the picker returned no Codex-fit card' : stop ? 'stopped early (above)' : `all ${picks.length} picked card(s) were skipped (taken by another slot, no longer Todo, or unfit now; see the run log)`}${skipped ? ` (${skipped} skipped)` : ''}`]),
-  ].join('\n');
+  const text = R.runnerSummaryText({
+    heading: R.summaryHeading({ date: new Date().toISOString().slice(0, 10), worked, mins, slot: SLOT, lane: OPTS.lane }),
+    stats, worked, skipped, picks, stop,
+    settingsLine: R.codexSettingsLine(codexUsed),
+    weeklyPct: weeklyPct(),
+    checkCount, checkSpentUsd, checkByModel,
+    slotShortfall: process.env.CODEX_SLOT_SHORTFALL,
+    landedPerLane: SLOT === 0 ? landedPerLane() : null,
+    ladderLine: ladderLine(),
+  });
   log(text);
   if (!OPTS.dryRun) await linearBrain(['update', RUNNER_CARD, '--comment', text]);
   summaryPosted = true; // a later crash is not a run that "did not start"

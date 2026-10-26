@@ -399,14 +399,15 @@ function historySkipReason(issue, nodes, nowMs, { cloudLane = false } = {}) {
  * -> { queue, left: [identifier] }
  */
 function leaveCodexCards(queue, { nowMs, verifyOf = () => '', cap = 9 } = {}) {
-  const { leaveToCodex, codexCardFit } = require('./codex-runner.js');
+  const { leaveToCodex, codexCardFit, codexLadderAccess } = require('./codex-runner.js');
+  const ladder = codexLadderAccess(); // once per pick (BRO-6303)
   const tierRank = new Map();
   for (const q of queue) if (!tierRank.has(q.tier)) tierRank.set(q.tier, tierRank.size);
   const fit = queue.filter((q) => !q.resume
     && q.issue.comments && Array.isArray(q.issue.comments.nodes)
     && !historySkipReason(q.issue, q.issue.comments.nodes, nowMs)
-    && leaveToCodex(q.issue, { nowMs, verify: verifyOf(q.issue), startNow: isStartNow(q.issue, nowMs) }))
-    .map((q) => ({ q, score: codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyOf(q.issue), comments: q.issue.comments.nodes, nowMs }).score }))
+    && leaveToCodex(q.issue, { nowMs, verify: verifyOf(q.issue), startNow: isStartNow(q.issue, nowMs), ladder }))
+    .map((q) => ({ q, score: codexCardFit({ title: q.issue.title, description: q.issue.description, verify: verifyOf(q.issue), comments: q.issue.comments.nodes, nowMs, ladder }).score }))
     .sort((a, b) => tierRank.get(a.q.tier) - tierRank.get(b.q.tier) || b.score - a.score);
   const leave = new Set(fit.slice(0, Math.max(0, cap)).map((x) => x.q));
   return { queue: queue.filter((q) => !leave.has(q)), left: [...leave].map((q) => q.issue.identifier) };
