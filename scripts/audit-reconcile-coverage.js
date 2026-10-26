@@ -3,7 +3,7 @@
  * Lint guard: every workflow step that pushes through push-with-retry.sh AND
  * commits a union-merged managed JSON file (commercial.json,
  * commercial-pending-review.json, commercial-research-queue.json,
- * diary-shows.json, social-post-history.json) must set
+ * diary-shows.json) must set
  * PUSH_RECONCILE_MERGED_JSON=1 on that step. Task #574.
  *
  * WHY THIS EXISTS

@@ -11,7 +11,7 @@
  */
 const R = require('./lib/codex-runner.js');
 const L = require('./lib/linear-client.js');
-const { isMachineComment } = require('./lib/cloud-worker-pick.js');
+const { historySkipReason } = require('./lib/cloud-worker-pick.js');
 
 // Genuine failures and an owner decision (BRO-6260 parent note), and two cards checked by hand.
 const LEAVE_ALONE = new Set(['BRO-5163', 'BRO-4318', 'BRO-5263', 'BRO-4672', 'BRO-3408', 'BRO-2632']);
@@ -41,7 +41,7 @@ function bounceFindings(body) {
 }
 
 /** Pure selection over one card's comments and state -> { kind, findings } | { skip }. */
-function planRetry({ identifier, stateType, comments, nowMs = Date.now() }) {
+function planRetry({ identifier, stateType, comments, nowMs = Date.now(), issue = null }) {
   if (LEAVE_ALONE.has(identifier)) return { skip: 'leave-alone' };
   if (!OPEN_STATE_TYPES.has(stateType)) return { skip: `state ${stateType}` };
   const list = (comments || []).filter((c) => c && Number.isFinite(Date.parse(c.createdAt)));
@@ -49,12 +49,19 @@ function planRetry({ identifier, stateType, comments, nowMs = Date.now() }) {
   const bounces = list.filter((c) => R.isCodexBounce(c.body)).sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
   if (!bounces.length) return { skip: 'no bounce note on the card' };
   const at = Date.parse(bounces[0].createdAt);
-  // A person answered the bounce (took it, decided it, or explained why it stays): their call, not ours.
-  if (list.some((c) => Date.parse(c.createdAt) > at && !isMachineComment(c.body))) return { skip: 'a person replied after the bounce' };
+  // A written note answered the bounce (a handoff, a reservation, "already applied"): its call, not ours.
+  if (list.some((c) => Date.parse(c.createdAt) > at && R.isPersonComment(c.body))) return { skip: 'a written note answered the bounce' };
   // An older structural bounce still standing (owner decision, missing credential) keeps the card out.
   if (R.structuralBounceHolds(list, nowMs)) return { skip: 'an earlier structural bounce still holds' };
   const kind = retryKind(bounces[0].body);
   if (!kind) return { skip: `newest bounce is ${R.bounceClassOf(bounces[0].body) || 'not retryable'}` };
+  // The runner would still pass it over (Mac-only, too broad, paused for a blocker): a note would change nothing.
+  if (issue) {
+    const fit = R.codexCardFit({ title: issue.title, description: issue.description, comments: list, nowMs, canDispatch: true });
+    if (fit.skip) return { skip: `codex fit: ${fit.skip}` };
+    const held = historySkipReason(issue, list, nowMs);
+    if (held) return { skip: `pause history: ${held}` };
+  }
   return { kind, findings: bounceFindings(bounces[0].body) };
 }
 
@@ -69,7 +76,7 @@ async function main() {
   for (const id of ids) {
     const issue = await L.getIssue(id);
     if (!issue) { console.log(`${id}: not found`); tally.skipped++; continue; }
-    const plan = planRetry({ identifier: id, stateType: issue.state && issue.state.type, comments: (issue.comments && issue.comments.nodes) || [] });
+    const plan = planRetry({ identifier: id, stateType: issue.state && issue.state.type, comments: (issue.comments && issue.comments.nodes) || [], issue });
     if (plan.skip) { console.log(`${id}: skip (${plan.skip})`); tally.skipped++; continue; }
     tally.byKind[plan.kind] = (tally.byKind[plan.kind] || 0) + 1;
     const reason = plan.kind === 'partial'

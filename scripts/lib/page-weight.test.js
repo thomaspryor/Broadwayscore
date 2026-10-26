@@ -1,7 +1,7 @@
 'use strict';
 const test = require('node:test');
 const assert = require('node:assert');
-const { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, measureHtml, evaluateBudget } = require('./page-weight.js');
+const { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, CORE_PAGE_BUDGETS, measureHtml, evaluateBudget } = require('./page-weight.js');
 
 const budget = MARKET_PAGE_BUDGETS[0];
 
@@ -36,6 +36,14 @@ test('budgets cover the three market pages at the card thresholds', () => {
 test('hub page budgets stay under Googlebot\'s 2MB read limit (BRO-5968)', () => {
   assert.ok(HUB_PAGE_BUDGETS.some(b => b.route === '/browse/best-broadway-shows-all-time'));
   for (const b of HUB_PAGE_BUDGETS) { assert.ok(b.maxBytes < 2_000_000, `${b.route} budget must stay under 2MB`); }
-  const routes = [...MARKET_PAGE_BUDGETS, ...HUB_PAGE_BUDGETS].map(b => b.route);
+  const routes = [...MARKET_PAGE_BUDGETS, ...HUB_PAGE_BUDGETS, ...CORE_PAGE_BUDGETS].map(b => b.route);
   assert.strictEqual(new Set(routes).size, routes.length, 'no route budgeted twice');
+});
+
+test('core page budgets cover the homepage and a show page (BRO-6278)', () => {
+  assert.deepStrictEqual(CORE_PAGE_BUDGETS.map(b => b.route), ['/', '/show/hamilton-2015/']);
+  const home = CORE_PAGE_BUDGETS[0];
+  // Pre-trim the homepage was 662,757 bytes; a re-inlined shelf payload must trip the budget.
+  assert.strictEqual(evaluateBudget(home, 'x'.repeat(662_757)).violations.length, 1);
+  assert.deepStrictEqual(evaluateBudget(home, 'x'.repeat(324_535)).violations, []);
 });

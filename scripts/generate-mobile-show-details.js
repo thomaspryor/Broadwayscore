@@ -956,7 +956,7 @@ if (!SHOW_ARG) {
   const visibleIds = new Set(visibleShows.map(s => s.id));
   // Only touch this script's own `{id}.json` outputs — NOT sibling artifacts
   // that share the directory but are written by other scripts, e.g.
-  // `{id}.social.json` (generate-social-post.js, see src/lib/data-social-pulse.ts).
+  // `{id}.social.json` (fetch-social-pulse.js, see src/lib/data-social-pulse.ts).
   // Show ids are plain [a-z0-9-]+ slugs (no dots), so a strict match excludes
   // any multi-suffix filename automatically.
   const DETAIL_FILE_RE = /^([a-z0-9-]+)\.json$/;

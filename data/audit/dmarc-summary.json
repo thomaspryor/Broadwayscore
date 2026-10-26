@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-25T14:57:46.012Z",
-  "windowStart": "2026-10-18T00:00:00.000Z",
-  "windowEnd": "2026-10-24T23:59:59.000Z",
+  "generatedAt": "2026-10-26T09:56:04.238Z",
+  "windowStart": "2026-10-19T00:00:00.000Z",
+  "windowEnd": "2026-10-25T23:59:59.000Z",
   "undatedReports": 0,
   "forwarders": {
     "sourceCount": 17,
@@ -13,9 +13,9 @@
   "reportCount": 13,
   "duplicatesDropped": 0,
   "reporters": {
-    "google.com": 7,
     "Enterprise Outlook": 3,
-    "Outlook.com": 3
+    "Outlook.com": 3,
+    "google.com": 7
   },
   "policy": {
     "domain": "broadwayscorecard.com",
@@ -28,8 +28,8 @@
   },
   "policyTimeline": [
     {
-      "observedAt": "2026-10-18T00:00:00.000Z",
-      "reporter": "google.com",
+      "observedAt": "2026-10-19T00:00:00.000Z",
+      "reporter": "Enterprise Outlook",
       "p": "reject",
       "sp": "reject",
       "pct": 100,
@@ -38,28 +38,28 @@
     }
   ],
   "messages": {
-    "total": 2420,
-    "pass": 2420,
+    "total": 2474,
+    "pass": 2474,
     "fail": 0,
     "passRate": 1
   },
   "authSplit": {
-    "both": 2376,
+    "both": 2430,
     "dkimOnly": 44,
     "spfOnly": 0,
     "neither": 0
   },
   "dispositions": {
-    "none": 2420
+    "none": 2474
   },
   "headerFroms": {
-    "broadwayscorecard.com": 2420
+    "broadwayscorecard.com": 2474
   },
   "sources": [
     {
-      "ip": "54.240.48.60",
-      "count": 63,
-      "pass": 63,
+      "ip": "54.240.11.115",
+      "count": 67,
+      "pass": 67,
       "fail": 0,
       "dkimDomains": [
         "amazonses.com",
@@ -78,14 +78,14 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.189",
-      "count": 63,
-      "pass": 63,
+      "ip": "54.240.11.146",
+      "count": 66,
+      "pass": 66,
       "fail": 0,
       "dkimDomains": [
         "amazonses.com",
@@ -104,8 +104,8 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
@@ -130,12 +130,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.146",
+      "ip": "54.240.48.64",
       "count": 62,
       "pass": 62,
       "fail": 0,
@@ -156,14 +156,14 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.37",
-      "count": 60,
-      "pass": 60,
+      "ip": "54.240.48.60",
+      "count": 61,
+      "pass": 61,
       "fail": 0,
       "dkimDomains": [
         "amazonses.com",
@@ -182,12 +182,38 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.64",
+      "ip": "54.240.48.54",
+      "count": 59,
+      "pass": 59,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.189",
       "count": 58,
       "pass": 58,
       "fail": 0,
@@ -208,38 +234,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.115",
-      "count": 58,
-      "pass": 58,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.136",
+      "ip": "54.240.11.161",
       "count": 57,
       "pass": 57,
       "fail": 0,
@@ -260,38 +260,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
       "ip": "54.240.48.51",
-      "count": 56,
-      "pass": 56,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.30",
       "count": 55,
       "pass": 55,
       "fail": 0,
@@ -312,12 +286,90 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.187",
+      "ip": "54.240.11.150",
+      "count": 55,
+      "pass": 55,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.151",
+      "count": 55,
+      "pass": 55,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.35",
+      "count": 55,
+      "pass": 55,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.31",
       "count": 54,
       "pass": 54,
       "fail": 0,
@@ -338,12 +390,90 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.35",
+      "ip": "54.240.11.37",
+      "count": 54,
+      "pass": 54,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.62",
+      "count": 54,
+      "pass": 54,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.185",
+      "count": 54,
+      "pass": 54,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.27",
       "count": 53,
       "pass": 53,
       "fail": 0,
@@ -364,168 +494,90 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.150",
-      "count": 52,
-      "pass": 52,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.153",
-      "count": 52,
-      "pass": 52,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.185",
-      "count": 52,
-      "pass": 52,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.48",
-      "count": 51,
-      "pass": 51,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.52",
-      "count": 51,
-      "pass": 51,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.57",
-      "count": 50,
-      "pass": 50,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
       "ip": "54.240.11.135",
+      "count": 51,
+      "pass": 51,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.136",
+      "count": 51,
+      "pass": 51,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.61",
+      "count": 51,
+      "pass": 51,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.52",
       "count": 50,
       "pass": 50,
       "fail": 0,
@@ -546,168 +598,246 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.31",
-      "count": 49,
-      "pass": 49,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.54",
-      "count": 49,
-      "pass": 49,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.56",
-      "count": 48,
-      "pass": 48,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.61",
-      "count": 48,
-      "pass": 48,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.147",
-      "count": 48,
-      "pass": 48,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.188",
-      "count": 48,
-      "pass": 48,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
       "ip": "54.240.48.49",
+      "count": 50,
+      "pass": 50,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.152",
+      "count": 50,
+      "pass": 50,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.48",
+      "count": 50,
+      "pass": 50,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.188",
+      "count": 49,
+      "pass": 49,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.147",
+      "count": 49,
+      "pass": 49,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.153",
+      "count": 49,
+      "pass": 49,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.187",
+      "count": 48,
+      "pass": 48,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.140",
+      "count": 48,
+      "pass": 48,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.28",
+      "count": 48,
+      "pass": 48,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.63",
       "count": 47,
       "pass": 47,
       "fail": 0,
@@ -728,14 +858,14 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
       "ip": "54.240.11.33",
-      "count": 46,
-      "pass": 46,
+      "count": 45,
+      "pass": 45,
       "fail": 0,
       "dkimDomains": [
         "amazonses.com",
@@ -754,116 +884,38 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.48.59",
+      "count": 45,
+      "pass": 45,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
       "ip": "54.240.11.36",
-      "count": 46,
-      "pass": 46,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.134",
-      "count": 46,
-      "pass": 46,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.152",
-      "count": 46,
-      "pass": 46,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.161",
-      "count": 46,
-      "pass": 46,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.27",
       "count": 45,
       "pass": 45,
       "fail": 0,
@@ -884,12 +936,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.142",
+      "ip": "54.240.48.65",
       "count": 45,
       "pass": 45,
       "fail": 0,
@@ -910,38 +962,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.162",
-      "count": 45,
-      "pass": 45,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.48.66",
+      "ip": "54.240.48.57",
       "count": 44,
       "pass": 44,
       "fail": 0,
@@ -962,12 +988,38 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.59",
+      "ip": "54.240.11.149",
+      "count": 44,
+      "pass": 44,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.138",
       "count": 43,
       "pass": 43,
       "fail": 0,
@@ -988,60 +1040,8 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.114",
-      "count": 43,
-      "pass": 43,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.140",
-      "count": 43,
-      "pass": 43,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
@@ -1066,12 +1066,38 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.62",
+      "ip": "54.240.48.66",
+      "count": 43,
+      "pass": 43,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.162",
       "count": 42,
       "pass": 42,
       "fail": 0,
@@ -1092,12 +1118,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.63",
+      "ip": "54.240.48.56",
       "count": 42,
       "pass": 42,
       "fail": 0,
@@ -1118,12 +1144,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.48.65",
+      "ip": "54.240.11.142",
       "count": 42,
       "pass": 42,
       "fail": 0,
@@ -1144,64 +1170,38 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.149",
-      "count": 42,
-      "pass": 42,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.28",
-      "count": 41,
-      "pass": 41,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
       "ip": "54.240.48.186",
+      "count": 42,
+      "pass": 42,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.139",
       "count": 41,
       "pass": 41,
       "fail": 0,
@@ -1222,12 +1222,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.138",
+      "ip": "54.240.11.30",
       "count": 40,
       "pass": 40,
       "fail": 0,
@@ -1248,38 +1248,12 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.139",
-      "count": 39,
-      "pass": 39,
-      "fail": 0,
-      "dkimDomains": [
-        "amazonses.com",
-        "broadwayscorecard.com"
-      ],
-      "spfDomains": [
-        "send.broadwayscorecard.com"
-      ],
-      "dkimSelectors": [
-        "224i4yxa5dv7c2xz3womw6peuasteono",
-        "resend"
-      ],
-      "headerFroms": [
-        "broadwayscorecard.com"
-      ],
-      "dispositions": [
-        "none"
-      ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T23:59:59.000Z",
-      "classification": "resend"
-    },
-    {
-      "ip": "54.240.11.151",
+      "ip": "54.240.11.114",
       "count": 38,
       "pass": 38,
       "fail": 0,
@@ -1300,14 +1274,14 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-24T00:00:00.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     },
     {
-      "ip": "54.240.11.34",
-      "count": 32,
-      "pass": 32,
+      "ip": "54.240.11.134",
+      "count": 38,
+      "pass": 38,
       "fail": 0,
       "dkimDomains": [
         "amazonses.com",
@@ -1326,19 +1300,45 @@
       "dispositions": [
         "none"
       ],
-      "firstSeen": "2026-10-18T00:00:00.000Z",
-      "lastSeen": "2026-10-23T23:59:59.000Z",
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
+      "classification": "resend"
+    },
+    {
+      "ip": "54.240.11.34",
+      "count": 36,
+      "pass": 36,
+      "fail": 0,
+      "dkimDomains": [
+        "amazonses.com",
+        "broadwayscorecard.com"
+      ],
+      "spfDomains": [
+        "send.broadwayscorecard.com"
+      ],
+      "dkimSelectors": [
+        "224i4yxa5dv7c2xz3womw6peuasteono",
+        "resend"
+      ],
+      "headerFroms": [
+        "broadwayscorecard.com"
+      ],
+      "dispositions": [
+        "none"
+      ],
+      "firstSeen": "2026-10-19T00:00:00.000Z",
+      "lastSeen": "2026-10-25T23:59:59.000Z",
       "classification": "resend"
     }
   ],
   "findings": [],
   "lifetime": {
-    "reportCount": 265,
-    "messages": 15832,
+    "reportCount": 266,
+    "messages": 16418,
     "failures": 0,
     "passRate": 1,
     "firstReport": "2026-03-13T00:00:00.000Z",
-    "lastReport": "2026-10-24T23:59:59.000Z",
-    "spanDays": 226
+    "lastReport": "2026-10-25T23:59:59.000Z",
+    "spanDays": 227
   }
 }

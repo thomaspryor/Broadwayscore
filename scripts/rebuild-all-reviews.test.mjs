@@ -215,10 +215,11 @@ test('BRO-720 wiring: rebuild imports isDateOnlyAutoReason from the autoclear li
 
 // BRO-5805 — a CV wrongProduction / wrongShow / film-TV verdict on a body that names most of the show's own
 // cast is advisory. Seven real Talkin' Broadway reviews sat excluded on such verdicts (2026-10-21).
-test('BRO-5805 wiring: all three CV promotion branches are gated on ppOwnShowEvidence', () => {
+test('BRO-5805 wiring: wrong-production and film/TV CV promotions are gated on ppOwnShowEvidence, not-a-review is not', () => {
   const src = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
   assert.ok(/const ppOwnShowEvidence = !cvLowButStrong && ownShowTextEvidence\(d\.fullText, showById\[sid\]\)\.strong;/.test(src));
   assert.ok(/!ppVenueCarveout && !ppOwnShowEvidence\) \{/.test(src), 'wrongProduction promotion');
-  assert.ok(/cv\.wrongProduction === true && !ensembleSaysReview && !ppOwnShowEvidence && d\.wrongShow !== true/.test(src), 'wrongShow promotion');
+  // Cast overlap shows which show a text is about, not that it is a review: the not-a-review branch stays ungated.
+  assert.ok(/cv\.wrongArticle === true && cv\.wrongProduction === true && !ensembleSaysReview && d\.wrongShow !== true/.test(src), 'not-a-review promotion ungated');
   assert.ok(/cv\.isFilmTv === true && !ensembleSaysReview && !ppOwnShowEvidence && d\.wrongShow !== true/.test(src), 'film/TV promotion');
 });

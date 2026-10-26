@@ -7,7 +7,7 @@
  * CSS zoom to 1080x1350, Instagram's 4:5 feed size. SITE_CSS below is copied from
  * src/app/globals.css; social-autopost.test.mjs fails if the two drift.
  *
- * Quality rules (the reason this replaced scripts/social-image-generator.js):
+ * Quality rules (the reason this replaced the retired Twitter card generator):
  *   - the poster is never stretched past its native size (art.js checks it)
  *   - Inter is embedded from public/fonts, so text never falls back to a system font
  *   - text that does not fit after shrinking fails the render instead of being clipped

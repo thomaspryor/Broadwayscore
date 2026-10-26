@@ -182,6 +182,82 @@
     "queuedAt": "2026-10-26T08:10:23.263Z"
   },
   {
+    "conditionKey": "corpus-drift:show-score-urls",
+    "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
+    "description": "check-corpus-drift.js audit \"show-score-urls\" (node scripts/audit-show-score-urls.js --strict) has been drifting. Latest output:\n\n    ! Page venue \"Palace Theatre\" != show venue \"Winter Garden Theatre\"\n\n  a-few-good-men-2026:\n    URL: https://www.show-score.com/broadway-shows/a-few-good-men-broadway\n    Show: A Few Good Men @ Vivian Beaumont Theater (previews, opens 2026-10-29)\n    Page venue: Vivian Beaumont Theater, Lincoln Center Theater\n    Review dates: 0 dates found\n    ! Page venue \"Vivian Beaumont Theater, Lincoln Center Theater\" != show venue \"Vivian Beaumont Theater\"\n\nSUSPICIOUS — no archive to verify (38):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 28 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (3):\n  betrayal-2013: https://www.show-score.com/broadway-shows/betrayal\n    35/35 page dates (earliest 2019-03-13) come over 365 days after this production closed 2014-01-05: another production's page [archived page dates]\n  fish-off-broadway-2026: https://www.show-score.com/off-broadway-shows/fish-signature-theatre-company\n    wrong-production page: 5/5 page dates (latest 2024-04-12) predate this production's start 2026-09-26 by over 60 days: another production's page [extractor rejection]\n  elektra-off-broadway-2026: https://www.show-score.com/off-broadway-shows/elektra-theatre-for-a-new-audience\n    wrong-production page: 5/5 page dates (latest 2022-04-13) predate this production's start 2026-11-10 by over 60 days: another production's page [extractor rejection]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      5\n  Suspicious (no arch): 38\n  Other production:     3\n  OK:                   734\n  No archive:           113\n  Total checked:        891",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T09:19:05.882Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6276-mvol00jh",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6276-mvol00jh",
+    "description": "land.yml did not land land/job/linear-BRO-6276-mvol00jh: the rebase gate went red at 5afee90fd2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6276-mvol00jh @ 5afee90fd2 (origin/land/job/linear-BRO-6276-mvol00jh) → origin/main @ 270322065e REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 270322065e: Rebasing (1/4) error: could not apply 9494974205d... BRO-6276: land queue: shell timeout on in-lock land.js, lock-hold deadman, per-check timings hint: Resolve all conflicts manually, mark them as Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40258647485",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6276-mvol00jh"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5afee90fd25e794b1efd2af3f0f01ebacc8cb660"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40258647485"
+      }
+    ],
+    "queuedAt": "2026-10-26T09:12:42.289Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6219-web-alerts-r2",
+    "title": "Landing blocked: rebase red on land/bro-6219-web-alerts-r2",
+    "description": "land.yml did not land land/bro-6219-web-alerts-r2: the rebase gate went red at 54b738f5a9. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6219-web-alerts-r2 @ 54b738f5a9 (origin/land/bro-6219-web-alerts-r2) → origin/main @ 613d44eeae REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 613d44eeae: Rebasing (1/1) error: could not apply 54b738f5a92... feat(alerts): closing-date events, reviews-in push dispatch (id+slug, West End, marker after success) (BRO-6219) hint: Resolve all conflicts manually, mark Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40277719149",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6219-web-alerts-r2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "54b738f5a92a0c7690cae033e1393baf4c11ba04"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40277719149"
+      }
+    ],
+    "queuedAt": "2026-10-26T09:12:04.033Z"
+  },
+  {
     "conditionKey": "land:land/bro-6276-dispatch-guard",
     "title": "Landing blocked: unit-tests-node red on land/bro-6276-dispatch-guard",
     "description": "land.yml did not land land/bro-6276-dispatch-guard: the unit-tests-node gate went red at 2c1e58e7b3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40294286798",
@@ -211,5 +287,50 @@
       }
     ],
     "queuedAt": "2026-10-26T09:02:49.538Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +13 more). Checked 2026-10-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T10:15:19.880Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6298-az-lookups",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6298-az-lookups",
+    "description": "land.yml did not land land/bro-6298-az-lookups: the unit-tests-node gate went red at 029d487473. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40302983919",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6298-az-lookups"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "029d4874735464897a4de6815a27d7dbfb86c4e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40302983919"
+      }
+    ],
+    "queuedAt": "2026-10-26T10:18:57.300Z"
   }
 ]

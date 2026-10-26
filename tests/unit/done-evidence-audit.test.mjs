@@ -46,6 +46,7 @@ const {
   pullIsOnMain,
   resolveEvidenceUrl,
   pathPredatesCard,
+  resolvePathRename,
 } = require('../../scripts/lib/done-evidence-remote.js');
 const {
   mapIssueToCard,
@@ -429,6 +430,169 @@ test('pathNeverExisted distinguishes "wrong path" from "deleted path", and fails
   assert.equal(pathNeverExisted('scripts/real.sh', { runGh: () => '1' }), false, 'had commits = genuinely removed');
   assert.equal(pathNeverExisted('scripts/x.sh', { runGh: () => null }), null, 'unresolved is never a verdict');
   assert.equal(pathNeverExisted(null, { runGh: () => '0' }), null);
+});
+
+test('BRO-3485: a confirmed rename makes the stale acceptance path UNVERIFIABLE', () => {
+  const oldPath = 'tests/unit/moved.test.mjs';
+  const misArmed = adjudicateMisArmed([oldPath], {
+    [oldPath]: { presentOnMain: false, everExisted: true, renamedTo: 'scripts/lib/moved.test.mjs' },
+  });
+  const result = classifyCard({
+    card: doneCard(), cmd: `node --test ${oldPath}`, runResult: FAIL, misArmed,
+  });
+  assert.equal(result.verdict, VERDICTS.UNVERIFIABLE);
+  assert.equal(result.misArmed, true);
+  assert.match(result.detail, /renamed/);
+  assert.doesNotMatch(result.detail, /never existed/);
+});
+
+test('BRO-3485: remote rename proof is wired through adjudication and classification', () => {
+  const calls = [];
+  const sha = 'a'.repeat(40);
+  const oldPath = 'tests/unit/old.test.mjs';
+  const newPath = 'scripts/lib/new.test.mjs';
+  const renamedTo = resolvePathRename(oldPath, {
+    repo: 'owner/repo',
+    runGh: (args) => {
+      calls.push(args);
+      if (calls.length !== 2) return JSON.stringify([{ sha }]);
+      return JSON.stringify({ files: [{ status: 'renamed', previous_filename: oldPath, filename: newPath }] });
+    },
+    existsOnMain: (p) => p === newPath,
+  });
+  assert.equal(renamedTo, newPath);
+  assert.deepEqual(calls, [
+    ['api', 'repos/owner/repo/commits?sha=main&path=tests%2Funit%2Fold.test.mjs&per_page=1'],
+    ['api', `repos/owner/repo/commits/${sha}?per_page=100`],
+    ['api', 'repos/owner/repo/commits?sha=main&path=scripts%2Flib%2Fnew.test.mjs&per_page=100'],
+  ]);
+  const misArmed = adjudicateMisArmed([oldPath], {
+    [oldPath]: { presentOnMain: false, everExisted: true, renamedTo },
+  });
+  assert.equal(misArmed.kind, MIS_ARMED.RENAMED);
+  assert.equal(classifyCard({ card: doneCard(), cmd: `node --test ${oldPath}`, runResult: FAIL, misArmed }).verdict, VERDICTS.UNVERIFIABLE);
+});
+
+test('BRO-3485: a reused intermediate path cannot redirect a deleted rename chain', () => {
+  const sha = 'b'.repeat(40);
+  let source;
+  let calls = 0;
+  const renamedTo = resolvePathRename('old.mjs', {
+    runGh: ([, endpoint]) => {
+      calls++;
+      if (endpoint.includes('?sha=main')) {
+        source = new URL(`https://api.github.com/${endpoint}`).searchParams.get('path');
+        return JSON.stringify([{ sha }]);
+      }
+      return JSON.stringify({ files: [{ status: 'renamed', previous_filename: source, filename: source === 'old.mjs' ? 'middle.mjs' : 'new.mjs' }] });
+    },
+    existsOnMain: (p) => p === 'new.mjs',
+  });
+  assert.equal(renamedTo, null);
+  assert.equal(calls, 2);
+});
+
+test('BRO-3485: deletion, recreation, incomplete API answers and missing replacements never prove a rename', () => {
+  const sha = 'c'.repeat(40);
+  for (const files of [
+    [{ status: 'removed', filename: 'old.mjs' }],
+    [{ status: 'added', filename: 'old.mjs' }],
+    [{ status: 'renamed', previous_filename: 'other.mjs', filename: 'new.mjs' }],
+    [], null,
+  ]) {
+    assert.equal(resolvePathRename('old.mjs', {
+      runGh: ([, endpoint]) => JSON.stringify(endpoint.includes('?sha=main') ? [{ sha }] : { files }),
+      existsOnMain: () => true,
+    }), null);
+  }
+  for (const response of [null, '', 'not json', '{}', '[]', '[{}]']) {
+    assert.equal(resolvePathRename('old.mjs', { runGh: () => response, existsOnMain: () => true }), null);
+  }
+  for (const present of [false, null]) {
+    assert.equal(resolvePathRename('old.mjs', {
+      runGh: ([, endpoint]) => JSON.stringify(endpoint.includes('?sha=main') ? [{ sha }] : {
+        files: [{ status: 'renamed', previous_filename: 'old.mjs', filename: 'new.mjs' }],
+      }),
+      existsOnMain: () => present,
+    }), null);
+  }
+});
+
+test('BRO-3485: destination continuity allows modifications, rejects reuse and incomplete history', () => {
+  const sha = 'd'.repeat(40);
+  const later = 'e'.repeat(40);
+  for (const status of ['modified', 'added', 'removed', 'renamed', null]) {
+    const result = resolvePathRename('old.mjs', {
+      ref: 'f'.repeat(40),
+      runGh: ([, endpoint]) => {
+        if (endpoint.includes('?sha=')) {
+          assert.match(endpoint, /sha=f{40}&/);
+          return JSON.stringify(endpoint.includes('path=old.mjs') ? [{ sha }] : [{ sha: later }, { sha }]);
+        }
+        return JSON.stringify({ files: endpoint.includes(later)
+          ? status ? [{ status, filename: 'new.mjs' }] : []
+          : [{ status: 'renamed', previous_filename: 'old.mjs', filename: 'new.mjs' }] });
+      },
+      existsOnMain: () => true,
+    });
+    assert.equal(result, status === 'modified' ? 'new.mjs' : null, status);
+  }
+  for (const history of [null, [], [{ sha: later }]]) {
+    assert.equal(resolvePathRename('old.mjs', {
+      runGh: ([, endpoint]) => JSON.stringify(endpoint.includes('path=old.mjs') ? [{ sha }]
+        : endpoint.includes('path=new.mjs') ? history
+          : { files: [{ status: 'renamed', previous_filename: 'old.mjs', filename: 'new.mjs' }] }),
+      existsOnMain: () => true,
+    }), null);
+  }
+});
+
+test('BRO-3485: rename-away and destination recreation cannot absolve deleted work', () => {
+  const sha = 'a'.repeat(40);
+  const moved = 'b'.repeat(40);
+  const recreated = 'c'.repeat(40);
+  assert.equal(resolvePathRename('old.mjs', {
+    runGh: ([, endpoint]) => {
+      if (endpoint.includes('path=old.mjs')) return JSON.stringify([{ sha }]);
+      if (endpoint.includes('path=middle.mjs')) return JSON.stringify([{ sha: recreated }, { sha: moved }, { sha }]);
+      return JSON.stringify({ files: endpoint.includes(recreated)
+        ? [{ status: 'added', filename: 'middle.mjs' }]
+        : endpoint.includes(moved)
+          ? [{ status: 'renamed', previous_filename: 'middle.mjs', filename: 'deleted.mjs' }]
+          : [{ status: 'renamed', previous_filename: 'old.mjs', filename: 'middle.mjs' }] });
+    },
+    existsOnMain: (p) => p === 'middle.mjs',
+  }), null);
+});
+
+test('BRO-3485: long destination histories have bounded API cost', () => {
+  for (const changes of [7, 8]) {
+    const sha = 'a'.repeat(40);
+    let calls = 0;
+    const result = resolvePathRename('old.mjs', {
+      runGh: ([, endpoint]) => {
+        calls++;
+        if (endpoint.includes('path=old.mjs')) return JSON.stringify([{ sha }]);
+        if (endpoint.includes('path=new.mjs')) return JSON.stringify([...Array.from({ length: changes }, (_, i) => ({ sha: String(i).repeat(40) })), { sha }]);
+        return JSON.stringify({ files: endpoint.includes(sha)
+          ? [{ status: 'renamed', previous_filename: 'old.mjs', filename: 'new.mjs' }]
+          : [{ status: 'modified', filename: 'new.mjs' }] });
+      },
+      existsOnMain: () => true,
+    });
+    assert.equal(result, changes === 7 ? 'new.mjs' : null);
+    assert.equal(calls, 10);
+  }
+});
+
+test('BRO-3485: a renamed sibling cannot absolve a genuine deletion or unknown history', () => {
+  for (const everExisted of [true, null]) {
+    const facts = {
+      'old.mjs': { presentOnMain: false, everExisted: true, renamedTo: 'new.mjs' },
+      'deleted.mjs': { presentOnMain: false, everExisted, gitignored: true },
+    };
+    assert.equal(adjudicateMisArmed(Object.keys(facts), facts), null);
+  }
 });
 
 // ── remote evidence resolution ─────────────────────────────────────────────

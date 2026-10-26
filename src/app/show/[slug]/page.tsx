@@ -39,6 +39,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
+import { getReviewListItems, REVIEWS_INLINE_COUNT } from '@/lib/show-review-items';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
@@ -52,7 +53,7 @@ import TicketLink from '@/components/TicketLink';
 import ShowPageTicketCTA from '@/components/ShowPageTicketCTA';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getComparisonsForShow } from '@/config/comparisons';
-import { serializeShowForClient } from '@/lib/serialize-show';
+import { createShowSerializer } from '@/lib/serialize-show';
 import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
 import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -377,8 +378,12 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // RSC flight payload. On /show/hamilton that was 645KB of the 781KB document,
   // 643 review objects, none of which any card renders (the cards read only
   // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
+  // One memoized slim serializer for every card list: a show in both the compact
+  // row and a shelf is emitted once, and the cards never read creativeTeam/runtime (BRO-6278).
+  const serialize = createShowSerializer();
+  const serializeRelated = (s: Parameters<typeof serialize>[0]) => serialize(s, { slim: true });
   const relatedShowsOpenRaw = getRelatedShowsOpen(show);
-  const relatedShowsOpen = relatedShowsOpenRaw.map(s => serializeShowForClient(s));
+  const relatedShowsOpen = relatedShowsOpenRaw.map(s => serializeRelated(s));
   // A show already in "Open Shows You Might Like" (e.g. Oh, Mary! playing Off-Broadway)
   // must not reappear in "Closed" for its Broadway run, so drop closed recs whose title matches.
   const openRecTitles = new Set(relatedShowsOpen.map(s => s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()));
@@ -387,7 +392,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         .filter(s => !openRecTitles.has(s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()))
         .slice(0, 6)
     : [];
-  const relatedShowsClosed = relatedShowsClosedRaw.map(s => serializeShowForClient(s));
+  const relatedShowsClosed = relatedShowsClosedRaw.map(s => serializeRelated(s));
   // related-shows-position A/B (BRO-5989): reuses the page's own open/closed rec lists
   // (West End exclusion and open/closed title dedupe included), then keeps only pages
   // the sitemap would list so the test row never links a noindex page. Pages with no
@@ -397,9 +402,9 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         [...relatedShowsOpenRaw, ...relatedShowsClosedRaw],
         show.id,
         (s: (typeof relatedShowsOpenRaw)[number]) => isShowIndexable(s, s.slug),
-      ).map(s => serializeShowForClient(s))
+      ).map(s => serializeRelated(s))
     : [];
-  const otherProductions = getOtherProductions(show).map(s => serializeShowForClient(s));
+  const otherProductions = getOtherProductions(show).map(s => serializeRelated(s));
   const comparisons = getComparisonsForShow(show.slug);
   const videoReviews = getVideoReviews(show.id);
 
@@ -424,6 +429,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
     if (stop) tourReviewCounts[stopKey(stop)] = (tourReviewCounts[stopKey(stop)] ?? 0) + 1;
   }
 
+  const reviewItems = getReviewListItems(show);
   const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
     ...show,
     venue: tourVenue ?? show.venue,
@@ -956,15 +962,19 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               </RedesignOn>
             )}
 
-            <ReviewsList reviews={show.criticScore.reviews.map(r => ({
-              ...r,
-              outletSlug: getOutletSlugById(r.outletId) || undefined,
-              outletBadge: getOutletBadge(r.outletId, r.outlet),
-              criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
-              priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
-              stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : null,
-              isTopCritic: !!(r.criticName && TOP_CRITICS.has(r.criticName)),
-            }))} initialCount={5} category={show.category} showTiers={!isOpera} />
+            {/* Only the cards in the server markup go inline; the rest load from reviews.json (BRO-6278). */}
+            <ReviewsList
+              reviews={reviewItems.slice(0, REVIEWS_INLINE_COUNT)}
+              more={reviewItems.length > REVIEWS_INLINE_COUNT ? {
+                url: `/show/${show.slug}/reviews.json`,
+                totalCount: reviewItems.length,
+                hasTierChips: reviewItems.some(r => r.tier),
+                hasStops: reviewItems.some(r => r.stopLabel),
+              } : undefined}
+              initialCount={REVIEWS_INLINE_COUNT}
+              category={show.category}
+              showTiers={!isOpera}
+            />
 
             {/* Subtle in-card methodology link — explains how CriticScore is
                 computed without a verbose accordion. Links to the same

@@ -57,7 +57,6 @@ const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeOweVenueCandidates } = require('./merge-owe-venue-candidates');
 const { mergeOutletRegistryStaging } = require('./merge-outlet-registry-staging');
 const { mergeOutletRegistry } = require('./merge-outlet-registry');
-const { mergeSocialPostHistory } = require('./merge-social-post-history');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
 const { mergeScraperSpendLedger } = require('./merge-scraper-spend-ledger');
@@ -150,20 +149,6 @@ const CORE_DATA_MERGE_REGISTRY = [
     notApiFallbackMerge: 'gitignored in the public repo (.gitignore data/diary-shows.json); private core-data owns it, so no push-with-retry.sh commit ever stages it and the flag would be inert',
   },
   {
-    file: 'social-post-history.json',
-    surface: 'public-repo',
-    status: 'active',
-    merge: mergeSocialPostHistory,
-    format: 'json',
-    newline: true,
-    // BRO-3333 (2026-10-13): per-post key union. generate-social-post.js
-    // does prune to the newest 365 posts, so the merge applies the same cap
-    // by date (BRO-5261 retro-review); without it, running on every
-    // fallback push resurrected every pruned post. social-post.yml uses a
-    // per-run concurrency group, so this is the file most likely to race.
-    apiFallbackMerge: true,
-  },
-  {
     file: 'newsletter-state.json',
     surface: 'public-repo',
     status: 'active',
@@ -231,9 +216,8 @@ const CORE_DATA_MERGE_REGISTRY = [
     // opening-night-express.yml uses a PER-SHOW concurrency group (see its
     // own comment on `concurrency:`), so multiple shows opening the same
     // night dispatch concurrently and can each append a retry entry to this
-    // file around the same time — same multi-writer shape as
-    // social-post-history.json. Reconciled ONLY via the case-arm path (same
-    // reasoning as feedback-request-ledger.json above); not opted into the
+    // file around the same time. Reconciled ONLY via the case-arm path (same
+    // multi-writer shape and reasoning as feedback-request-ledger.json above); not opted into the
     // post-rebase reconcile pass since the case-arm fires unconditionally on
     // an actual conflict, which two near-simultaneous appends reliably cause.
     optInReconcile: false,

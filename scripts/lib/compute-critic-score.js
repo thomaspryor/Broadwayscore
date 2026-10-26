@@ -17,7 +17,6 @@
  *   - scripts/generate-homepage-archive.js
  *   - scripts/compute-gold-lists.js
  *   - scripts/preview-gold-lists.js
- *   - scripts/generate-social-post.js
  */
 
 const path = require('path');

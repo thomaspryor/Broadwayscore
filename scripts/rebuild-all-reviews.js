@@ -2493,7 +2493,7 @@ const crossShowFingerprints = new Map();
             d.isNonReviewReason = d.isNonReviewReason || `CV-promoted (not a review): ${(cv.reasoning || '').substring(0, 200)}`;
             promoted = true;
           }
-        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && !ppOwnShowEvidence && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
+        } else if (cv.wrongArticle === true && cv.wrongProduction === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'wrongProduction')) {
           // Both flags true: genuinely a review, just of a different production — wrongShow family.
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;

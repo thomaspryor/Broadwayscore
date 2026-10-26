@@ -34,8 +34,15 @@ test('planRetry: open cards only, once, newest bounce decides, leave-alone list 
   assert.equal(B.planRetry({ ...base, comments: [...base.comments, c(R.retryBody({ findings: 'x' }), '2026-10-21T00:00:00Z')] }).skip, 'already retried');
   assert.match(B.planRetry({ ...base, comments: [...base.comments, c(note(NOT_LANDED, 'owner-decision'), '2026-10-22T00:00:00Z')] }).skip, /structural/);
   // A person replying after the bounce keeps the card out; a machine note after it does not.
-  assert.equal(B.planRetry({ ...base, comments: [...base.comments, c('I will take this one by hand.', '2026-10-21T00:00:00Z')] }).skip, 'a person replied after the bounce');
+  assert.equal(B.planRetry({ ...base, comments: [...base.comments, c('I will take this one by hand.', '2026-10-21T00:00:00Z')] }).skip, 'a written note answered the bounce');
   assert.equal(B.planRetry({ ...base, comments: [...base.comments, c('Claimed by worker slot 2', '2026-10-21T00:00:00Z')] }).kind, 'not-landed');
+  // Every comment posts under the owner's account: worker session reports and checkpoints are not a person.
+  for (const body of ['**Session report (paused)** Not worked this firing.', 'Checkpoint (2026-10-22 15:45 UTC): batch landing.', '## Board worker: report-mode run']) {
+    assert.equal(B.planRetry({ ...base, comments: [...base.comments, c(body, '2026-10-21T00:00:00Z')] }).kind, 'not-landed', body);
+  }
+  // With the card, the runner's own fit check applies: a Mac-only card gets no note.
+  const issue = { identifier: 'BRO-1', priority: 3, title: 'Fix the hook', description: 'Run it on the Mac in ~/.claude/hooks.' };
+  assert.match(B.planRetry({ ...base, issue }).skip || '', /codex fit/);
   // An older structural bounce still standing keeps the card out, and survives a retry note in the runner too.
   const held = [c(note(NOT_LANDED, 'owner-decision'), '2026-10-05T00:00:00Z'), ...base.comments];
   assert.match(B.planRetry({ ...base, comments: held, nowMs: Date.parse('2026-10-24T00:00:00Z') }).skip, /structural/);
