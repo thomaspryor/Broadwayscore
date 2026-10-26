@@ -1417,5 +1417,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T19:39:57.217Z"
+  },
+  {
+    "conditionKey": "land:land/bro-3000-fix",
+    "title": "Landing blocked: colocated-tests red on land/bro-3000-fix",
+    "description": "land.yml did not land land/bro-3000-fix: the colocated-tests gate went red at 2b33c29c04. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-3000-fix @ 2b33c29c04 (origin/land/bro-3000-fix) → origin/main @ 8edffea7a2 [land] attempt 1/3: rebased onto 8edffea7a2, 6 file(s) changed — running checks [land] verified-base: main moved 03f319a69c → 8edffea7a2 across 146 file(s), substantive — re-checking on the merged tree (+2 test file(s) changed on main since the verified base); full re-check: branch and main both changed 2 f Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40385746584",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-3000-fix"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "2b33c29c0496e713cc4f51222a871e63d8aa2519"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40385746584"
+      }
+    ],
+    "queuedAt": "2026-10-26T19:53:23.856Z"
   }
 ]
