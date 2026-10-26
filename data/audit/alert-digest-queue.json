@@ -1294,5 +1294,36 @@
       }
     ],
     "queuedAt": "2026-10-26T01:52:51.515Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5215-eslint-cli",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5215-eslint-cli",
+    "description": "land.yml did not land land/bro-5215-eslint-cli: the unit-tests-node gate went red at 1e86c3f5af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40254879732",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5215-eslint-cli"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1e86c3f5afd6b95f95ce1691b134a83e7621b294"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40254879732"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:01:36.719Z"
   }
 ]
