@@ -79,6 +79,15 @@ function tesseractStats(imgPath) {
       const jar2 = path.join(tmp2, 'c.txt');
       fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
       try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
+      if (pg === 'azparse') {
+        // parsed A-Z entries (title, type, dates, page ref) as one JSON line per entry; no prose
+        const { parseAzEntries } = require('./lib/tr-az-parse');
+        const raw = sh('pdftotext', ['-raw', pdf2, '-']);
+        const entries = parseAzEntries(raw);
+        console.log(`AZ ${hitPath} entries=${entries.length}`);
+        entries.forEach(e => console.log('AZE ' + JSON.stringify([hitPath.replace('/archive/issue/', ''), e.title, e.type, e.opened, e.seasonFrom, e.seasonTo, e.closes, e.page])));
+        continue;
+      }
       if (pg === 'az') {
         // the issue's "A-Z of productions" listing: layout lines clipped to 60 chars (title/venue/date columns, no review prose)
         const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
