@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T12:32:50.649Z",
+  "timestamp": "2026-10-26T13:33:32.284Z",
   "stats": {
-    "totalReviews": 61914,
-    "alreadyFlagged": 21491,
+    "totalReviews": 61948,
+    "alreadyFlagged": 21492,
     "dateGuardCatches": 223,
     "directorMismatch": 2280,
-    "tvFilmSignals": 1765,
+    "tvFilmSignals": 1766,
     "londonSignals": 2999,
-    "offBroadwaySignals": 547,
+    "offBroadwaySignals": 549,
     "yearMismatch": 206,
-    "noPublishDate": 5469
+    "noPublishDate": 5467
   },
   "findings": [
     {
@@ -24223,6 +24223,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "irishtown-off-broadway-2025",
+      "file": "nysr--roma-torre.json",
+      "publishDate": "2025-04-13",
+      "url": "https://nystagereview.com/2025/04/13/irishtown-new-comedy-in-a-fun-brogue/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -61202,6 +61215,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "all-the-worlds-a-stage-off-broadway-2025",
+      "file": "nytimes--juan-a-ramirez.json",
+      "publishDate": "2025-04-29",
+      "url": "https://www.nytimes.com/2025/04/29/theater/all-the-worlds-a-stage-rheology-review.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
         }
       ]
     },
@@ -99834,6 +99860,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-swamp-dwellers-off-broadway-2025",
+      "file": "theatrely--joey-sims.json",
+      "score": null,
+      "publishDate": "2025-04-18",
+      "url": "https://www.theatrely.com/post/the-swamp-dwellers-koskys-threepenny-opera-review-roundup",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"bam\""
         }
       ]
     },
