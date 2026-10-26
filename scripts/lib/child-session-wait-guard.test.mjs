@@ -49,3 +49,7 @@ test('KEEP OPEN not about CI, or other verdicts, pass', () => {
   assert.equal(childWaitDecision({ ...bro6154, closing: 'KEEP OPEN — waiting on the owner reply' }).block, false);
   assert.equal(childWaitDecision({ ...bro6154, closing: 'SAFE TO ARCHIVE — done' }).block, false);
 });
+test('real send_message shape (session_id: "@parent") passes', () => {
+  const msg = { idx: 11, name: 'mcp__claude-code-remote__send_message', input: { session_id: '@parent', message: 'waiting' }, ok: true };
+  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, msg] }).block, false);
+});

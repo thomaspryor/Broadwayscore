@@ -466,6 +466,7 @@ def _is_owner_record(r, text):
     return bool(t) and not t.startswith(('<', '[Request interrupted', 'This session is being continued'))
 
 events = []  # list of (kind, payload)
+_user_prompts = []  # early non-meta user texts; CHILDWAIT looks for the worker `BUDGET:` line (BRO-6264)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
 result_ts_by_id = {}  # tool_use_id -> transcript timestamp of its result (scoring gate)
@@ -528,6 +529,8 @@ try:
                 # consumers keep seeing exactly what they saw before.
                 if isinstance(content, str):
                     events.append(('user_notice', content))
+                    if len(_user_prompts) < 6 and not r.get('isMeta'):
+                        _user_prompts.append(content[:6000])
                     # The owner's own typed prompt (origin.kind 'human'; older
                     # transcripts: no origin, not meta, not a <notice>). Stop-hook
                     # feedback is isMeta. Consumed by the chain gate only.
@@ -546,6 +549,8 @@ try:
                 # reference-attached and override-active-for-push checks.
                 _list_text = ''.join(c.get('text', '') or '' for c in content
                                      if isinstance(c, dict) and c.get('type') == 'text')
+                if _list_text and len(_user_prompts) < 6 and not r.get('isMeta'):
+                    _user_prompts.append(_list_text[:6000])
                 if _list_text and _is_owner_record(r, _list_text):
                     events.append(('user_human', ''))
                 for c in content:
@@ -1303,6 +1308,48 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
             if not _wk_owner and not (_lw['triggers'] or _lw['agents'] or _lw['children']
                                       or _lw['waits'] or _lw['pr_watch']):
                 _ve_block("WAKELESS")
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
+# ─── Child-wait gate (CHILDWAIT, BRO-6264, 2026-10-26) ──────────────────────
+# A child worker session has no human and no subscription to a run it fired,
+# so "KEEP OPEN — the test run is in progress" is never answered (BRO-6154 sat
+# ~1 day). WAKELESS passed it because ANY earlier background Bash counts as
+# armed. Here, for a child (prompt carries the worker `BUDGET: Nh` line)
+# waiting on CI, a wake only counts if armed AFTER the last run it started: a
+# background poll/Monitor or a report-back to @parent. Decision lives in
+# scripts/lib/child-session-wait-guard.js. Kill switch CHILDWAIT_GATE_DISABLE=1.
+# Fail-open.
+if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
+    try:
+        _cw_text, _cw_last = _closing()
+        _cw_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-session-wait-guard.js')
+        if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '')
+                and not _ve_seen('CHILDWAIT') and os.path.isfile(_cw_js)
+                and not _owner_must_act(_cw_text)):
+            import subprocess
+            _cw_done = set()
+            for _k, _p in events:
+                if _k in ('user_notice', 'user_text'):
+                    for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', _p or '', flags=re.DOTALL):
+                        _im = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
+                        if _im:
+                            _cw_done.add(_im.group(1))
+            _cw_tools = []
+            for _i, (_k, _p) in enumerate(events):
+                if _k != 'tool':
+                    continue
+                _nm, _inp, _tid = _p
+                _res = tool_results_by_id.get(_tid, '') or ''
+                _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res)
+                _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp if isinstance(_inp, dict) else {},
+                                  'ok': _tid not in tool_error_ids, 'taskId': _bm.group(1) if _bm else None})
+            _cw = subprocess.run(['node', _cw_js], input=json.dumps({
+                'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last,
+                'tools': _cw_tools, 'done': sorted(_cw_done), 'env': dict(os.environ)}),
+                capture_output=True, text=True, timeout=10)
+            if json.loads(_cw.stdout or '{}').get('block'):
+                _ve_block("CHILDWAIT")
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
@@ -2294,6 +2341,11 @@ fi
 
 if [[ "$result" == "WAKELESS" ]]; then
   echo "🛑 BLOCKED: KEEP OPEN says this session is waiting on something, but nothing will wake it to check (BRO-5881: sessions sat 10-19 hours on 'I will check it at 14:56'). Before ending the turn, start the wait: a Bash with run_in_background: true and timeout up to 7200000 that polls until the thing finishes (land: node scripts/lib/wait-for-land.js land/<name> 60 --prod; a workflow run: loop on that run's own id (actions/runs/<id>), never on the newest run of the workflow, which another session may have started; a deploy: node scripts/check-prod-deploy.js <sha> --wait), or Monitor. Its exit wakes you; if it times out, start another. send_later is denied here (it prompts the owner's phone). If you are waiting on the owner, end ACTION NEEDED FROM YOU with a DECISION NEEDED block or a 'You need to:' line naming what they must do. If nothing is actually pending, finish the work or end SAFE TO ARCHIVE. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "CHILDWAIT" ]]; then
+  echo "🛑 BLOCKED: this is a child worker session with no human, and KEEP OPEN says it is waiting on CI or a run it started, but nothing started after that run will wake it (BRO-6264: BRO-6154 sat about a day after firing a workflow). Wait for CI inside your turn: a Bash with run_in_background: true that polls that run's own id (actions/runs/<id>) or node scripts/lib/wait-for-land.js land/<name> 60 --prod, or Monitor, started AFTER the run; its exit wakes you. Or first send_message @parent with the run URL and what you will do when it ends. Never end a turn waiting on CI. Bypass: NO-VERIFY: <reason>. Kill switch CHILDWAIT_GATE_DISABLE=1." >&2
   exit 2
 fi
 
