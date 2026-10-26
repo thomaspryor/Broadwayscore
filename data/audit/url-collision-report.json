@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-26T19:51:19.936Z",
+  "generatedAt": "2026-10-26T21:07:14.264Z",
   "summary": {
-    "total": 11,
-    "high": 6,
-    "medium": 4,
+    "total": 13,
+    "high": 7,
+    "medium": 5,
     "low": 1
   },
   "collisions": [
@@ -33,6 +33,42 @@
       "suggestedWinner": "an-american-in-paris-tour-2022",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K9T8I0",
+      "normalizedUrl": "https://lightingandsoundamerica.com/news/story.asp",
+      "candidates": [
+        {
+          "showId": "beckett-briefs-off-broadway-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "February 3rd, 2025",
+          "openingDate": "2025-01-26",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "kowalski-off-broadway-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "January 28th, 2025",
+          "openingDate": "2025-01-25",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        },
+        {
+          "showId": "the-jonathan-larson-project-off-broadway-2025",
+          "file": "lighting-and-sound-america--david-barbour.json",
+          "publishDate": "March 11th, 2025",
+          "openingDate": "2025-03-10",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "lighting-and-sound-america"
+        }
+      ],
+      "suggestedWinner": "the-jonathan-larson-project-off-broadway-2025",
+      "reason": "publishDate March 11th, 2025 is 1 days from the-jonathan-larson-project-off-broadway-2025 but also 3 days from kowalski-off-broadway-2025",
+      "confidence": "medium"
     },
     {
       "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
@@ -167,6 +203,33 @@
       ],
       "suggestedWinner": "hadestown-west-end-2018",
       "reason": "publishDate 2018-11-14 is 1 days from hadestown-west-end-2018 opening (2018-11-13); next closest is 417 days from hadestown-west-end-2024",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2?syn-25a6b1a6=1",
+      "normalizedUrl": "https://ft.com/content/123b9505-14d8-45b1-88ec-d3fb845f71b2",
+      "candidates": [
+        {
+          "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+          "file": "financialtimes--sarah-hemming.json",
+          "publishDate": "2026-07-08",
+          "openingDate": "2026-10-16",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "financialtimes"
+        },
+        {
+          "showId": "jesus-christ-superstar-west-end-2026",
+          "file": "financialtimes--sarah-hemming.json",
+          "publishDate": "2026-07-08",
+          "openingDate": "2026-07-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "financialtimes"
+        }
+      ],
+      "suggestedWinner": "jesus-christ-superstar-west-end-2026",
+      "reason": "publishDate 2026-07-08 is 1 days from jesus-christ-superstar-west-end-2026 opening (2026-07-07); next closest is 100 days from jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "confidence": "high"
     },
     {
