@@ -443,6 +443,23 @@ export function returnedCapitalText(p: SeasonProfile): { headline: string; range
   };
 }
 
+/** Seasons the history average rests on: the season under way plus the ten before it (BASELINE_SEASONS + 1). */
+const HISTORY_AVERAGE_ROWS = BASELINE_SEASONS + 1;
+
+/**
+ * The rows of the season-by-season table (newest first): every season up to the
+ * one under way, back to the oldest that clears hasTrackedCoverage (BRO-6362;
+ * a fixed 11-row cap cut 2014-2015). `averageBase` stays the latest 11 so the
+ * average row does not move when older rows are listed.
+ */
+export function seasonHistoryWindow(profiles: SeasonProfile[], currentSeason: string | null): { rows: SeasonProfile[]; averageBase: SeasonProfile[] } {
+  const upToNow = profiles.filter((p) => !currentSeason || p.season <= currentSeason);
+  let oldest = -1;
+  upToNow.forEach((p, i) => { if (hasTrackedCoverage(p)) oldest = i; });
+  const averageBase = upToNow.slice(0, HISTORY_AVERAGE_ROWS);
+  return { rows: upToNow.slice(0, Math.max(oldest + 1, HISTORY_AVERAGE_ROWS)), averageBase };
+}
+
 export interface HistoryAverage {
   /** Seasons averaged: finished, with openings, pandemic seasons left out. */
   seasons: number;

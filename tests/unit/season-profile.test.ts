@@ -24,6 +24,7 @@ import {
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
   seasonHistoryAverage,
+  seasonHistoryWindow,
   showGroup,
   trackedRecord,
   type SeasonShowInput,
@@ -507,4 +508,18 @@ test('closed shows with only a model-estimate label stay out of the recoup rate 
   // The average row pools known outcomes only.
   const avg = seasonHistoryAverage([p], null, '2026-10-26');
   assert.deepEqual([avg.recouped?.recouped, avg.recouped?.commercial], [1, 3]);
+});
+
+test('the history window lists every season back to the oldest tracked one, and the average stays on the latest 11', () => {
+  const shows: SeasonShowInput[] = [];
+  for (let y = 2013; y <= 2026; y++) shows.push(...season(y, 10, { tracked: y !== 2013 }));
+  const ps = buildSeasonProfiles(shows);
+  const { rows, averageBase } = seasonHistoryWindow(ps, '2026-2027');
+  assert.equal(rows[0].season, '2026-2027');
+  assert.equal(rows[rows.length - 1].season, '2014-2015');
+  assert.equal(rows.length, 13);
+  assert.equal(averageBase.length, 11);
+  assert.equal(averageBase[averageBase.length - 1].season, '2016-2017');
+  // Fewer seasons than the cap: all of them, no padding.
+  assert.equal(seasonHistoryWindow(ps.slice(-3), '2026-2027').rows.length, 3);
 });
