@@ -161,6 +161,10 @@ export function normalizeExtraction(extraction, today) {
       score,
       rating: scoreToRating(score),
       review,
+      // A review the model saw only part of. Never imported (partial text
+      // would be the user's words with holes), but counted so the preview can
+      // say so and how to get it: overlapping screenshots.
+      reviewCutOff: attended && !review && row?.review_cut_off === true,
       reaction: attended && REACTIONS.has(row?.reaction) ? row.reaction : null,
     });
   }

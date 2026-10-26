@@ -65,7 +65,7 @@ describe('isIsoDate', () => {
 
 const row = (over = {}) => ({
   title: 'Hamilton', venue: null, list: 'attended', screen: 'activity', date: null,
-  month_day: null, year_hint: null, reaction: null, score_text: null, review: null, ...over,
+  month_day: null, year_hint: null, reaction: null, score_text: null, review: null, review_cut_off: false, ...over,
 });
 
 describe('normalizeExtraction', () => {
@@ -79,7 +79,7 @@ describe('normalizeExtraction', () => {
     assert.strictEqual(dropped, 0);
     assert.deepStrictEqual(entries[0], {
       title: 'The 25th Annual Putnam County Spelling Bee', venue: 'New World Stages', list: 'attended', screen: 'activity',
-      date: null, monthDay: '03-10', yearHint: null, score: 84, rating: 4, review: 'Fun.\n\n84/100.', reaction: 'recommend',
+      date: null, monthDay: '03-10', yearHint: null, score: 84, rating: 4, review: 'Fun.\n\n84/100.', reviewCutOff: false, reaction: 'recommend',
     });
     assert.strictEqual(entries[1].title, 'Kyoto');
     assert.strictEqual(entries[1].yearHint, 2025);
@@ -140,6 +140,20 @@ describe('normalizeExtraction', () => {
     for (const bad of [null, {}, { entries: 'x' }, { entries: [null, 7] }]) {
       assert.deepStrictEqual(normalizeExtraction(bad, TODAY).entries, []);
     }
+  });
+});
+
+describe('review_cut_off', () => {
+  it('flags a seen show whose review was cut off, and only then', () => {
+    const { entries } = normalizeExtraction({
+      entries: [
+        row({ title: 'A', review_cut_off: true }),
+        row({ title: 'B', review_cut_off: true, review: 'Full text.' }),
+        row({ title: 'C', list: 'interested', review_cut_off: true }),
+        row({ title: 'D', review_cut_off: 'yes' }),
+      ],
+    }, TODAY);
+    assert.deepStrictEqual(entries.map(e => e.reviewCutOff), [true, false, false, false]);
   });
 });
 
