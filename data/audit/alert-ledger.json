@@ -245,16 +245,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T07:11:52.509Z",
-      "lastSeen": "2026-10-26T10:51:44.747Z",
-      "lastNotifiedAt": "2026-10-26T07:11:52.509Z",
-      "lastSurfacedAt": "2026-10-26T07:11:52.509Z",
-      "notifyCount": 172,
+      "incidentOpenedAt": "2026-10-26T11:40:43.729Z",
+      "lastSeen": "2026-10-26T11:40:43.729Z",
+      "lastNotifiedAt": "2026-10-26T11:40:43.729Z",
+      "lastSurfacedAt": "2026-10-26T11:40:43.729Z",
+      "notifyCount": 173,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "silentRefires": 6
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6763,15 +6762,15 @@
       "resolveReason": "absent"
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "incidentOpenedAt": "2026-10-26T06:27:53.263Z",
-      "lastSeen": "2026-10-26T07:26:40.062Z",
-      "lastNotifiedAt": "2026-10-26T06:27:53.263Z",
+      "incidentOpenedAt": "2026-10-26T11:40:43.347Z",
+      "lastSeen": "2026-10-26T11:40:43.347Z",
+      "lastNotifiedAt": "2026-10-26T11:40:43.347Z",
       "lastSurfacedAt": null,
-      "notifyCount": 14,
+      "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-6281",
       "dispatch": {
@@ -6780,9 +6779,7 @@
         "runId": "40256915379",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
       },
-      "absentRunIds": [],
-      "resolvedAt": "2026-10-26T07:34:11.770Z",
-      "resolveReason": "job-green"
+      "absentRunIds": []
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -26255,7 +26252,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
       "absentRunIds": [
-        "40306853732"
+        "40306853732",
+        "40312170901"
       ],
       "silentRefires": 22
     },
@@ -27416,12 +27414,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"hook file and line budget does not regrow\"",
       "firstSeen": "2026-10-26T10:51:44.343Z",
       "incidentOpenedAt": "2026-10-26T10:51:44.343Z",
-      "lastSeen": "2026-10-26T10:51:44.343Z",
+      "lastSeen": "2026-10-26T11:40:43.336Z",
       "lastNotifiedAt": "2026-10-26T10:51:44.343Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6307"
+      "linearIdentifier": "BRO-6307",
+      "silentRefires": 1
     },
     "land:land/bro-6298-az-lookups": {
       "status": "open",
