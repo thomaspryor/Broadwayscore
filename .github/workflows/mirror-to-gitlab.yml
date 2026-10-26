@@ -50,8 +50,8 @@ jobs:
             | jq -r '.statistics.storage_size // 0')
           echo "GitLab storage_size=${SIZE} bytes; GitHub clone: heads=$(git -C repo.git for-each-ref refs/heads | wc -l) size=$(du -sh repo.git | cut -f1)"
           if [ "$SIZE" -gt 8000000000 ]; then
-            echo "Over 8 GB: requesting GitLab housekeeping (prune, then eager_repack)"
-            for TASK in prune eager_repack; do
+            echo "Over 8 GB: requesting GitLab housekeeping (prune, then gc)"
+            for TASK in prune gc; do
               curl -s -o /dev/null -w "housekeeping ${TASK}: HTTP %{http_code}\n" -X POST \
                 -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
                 "https://gitlab.com/api/v4/projects/${PROJECT}/housekeeping?task=${TASK}"
