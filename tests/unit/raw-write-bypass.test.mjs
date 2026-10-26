@@ -15,12 +15,12 @@ for (const file of FILES) {
   const src = fs.readFileSync(path.join(scriptsDir, file), 'utf8');
 
   test(`${file} imports and calls safeWriteReview`, () => {
-    assert.match(src, /safeWriteReview\s*\}?\s*=\s*require\(['"]\.\/lib\/review-write-guard['"]\)/);
-    assert.match(src, /safeWriteReview\(/);
+    assert.match(src, /\{[^}]*\bsafeWriteReview\b[^}]*\}\s*=\s*require\(['"]\.\/lib\/review-write-guard['"]\)/);
+    assert.match(src.replace(/\/\/.*$/gm, ''), /safeWriteReview\(/);
   });
 
   test(`${file} has no raw fs.writeFileSync of a review file`, () => {
-    const raw = [...src.matchAll(/fs\.writeFileSync\(\s*([^,]+),/g)]
+    const raw = [...src.matchAll(/(?:fs\.)?(?:promises\.)?(?:writeFileSync|writeFile|appendFileSync|renameSync)\(\s*([^,]+),/g)]
       .map((m) => m[1].trim())
       .filter((target) => !ALLOWED_RAW_TARGETS.has(target));
     assert.deepEqual(raw, []);
