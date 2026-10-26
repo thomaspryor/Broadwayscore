@@ -109,8 +109,8 @@ test('baseline skips pandemic seasons; money rows need their own coverage', () =
   // baseline seasons ended over a year before Sep 2026: settled.
   assert.equal(cmp.recoupUnsettled, true);
   assert.equal(cmp.baselineSeasons, 3);
-  assert.equal(row('Commercial shows recouped so far').avgSeasons, 3);
-  assert.equal(row('Commercial shows recouped so far').avg, 3 / 30);
+  assert.equal(row('Commercial shows recouped as of today').avgSeasons, 3);
+  assert.equal(row('Commercial shows recouped as of today').avg, 3 / 30);
 
   // Only 2024-25 and 2023-24 have disclosed capitalizations.
   const cap = row('Average capitalization, play');
@@ -144,7 +144,7 @@ test('recoupment average leaves out seasons still playing out', () => {
     ...season(2024, 10, { tracked: true }),
   ];
   const cmp = compareSeason(buildSeasonProfiles(shows), '2026-2027', '2026-10-20')!;
-  const r = cmp.rows.find((x) => x.label === 'Commercial shows recouped so far')!;
+  const r = cmp.rows.find((x) => x.label === 'Commercial shows recouped as of today')!;
   assert.equal(r.last, 0.1); // last season is still shown
   assert.equal(r.avgSeasons, 1); // but only 2024-25 is averaged
 });
