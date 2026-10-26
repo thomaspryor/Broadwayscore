@@ -77,6 +77,7 @@ test('LOCAL_SHOW_IMAGE accepts the ?v=<hash> that BRO-6197 appends and carries i
   assert.equal(hit[4], '?v=9e8a06b8');
   assert.ok(re.exec('/images/shows/x-2024/thumbnail.jpg'));
   assert.equal(re.exec('/images/shows/x-2024/hero.webp?v=1'), null);
+  assert.equal(re.exec('/images/shows/x-2024/poster.webp?foo=bar'), null);
 });
 
 test('server srcset helper never builds an fs path from process.cwd() (traces public/ into serverless bundles, broke prod deploys)', () => {

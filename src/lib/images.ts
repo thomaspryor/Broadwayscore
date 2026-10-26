@@ -111,7 +111,7 @@ export function isOptimizableCDN(url: string | undefined): boolean {
 export const VARIANT_WIDTHS = { poster: 256, thumbnail: 240 } as const;
 const ORIGINAL_WIDTH_CAPS = { poster: 480, thumbnail: 540 } as const;
 // Optional ?v=<hash> (BRO-5734/6197 content versioning) is carried onto the variant so it busts caches exactly when the original does.
-const LOCAL_SHOW_IMAGE = /^(\/images\/shows\/[^/?#]+)\/(poster|thumbnail)\.(webp|jpe?g|png)(\?[^#]*)?$/i;
+const LOCAL_SHOW_IMAGE = /^(\/images\/shows\/[^/?#]+)\/(poster|thumbnail)\.(webp|jpe?g|png)(\?v=[0-9a-f]+)?$/i;
 
 /** `/images/shows/<id>/sm/<role>.<ext>.webp` for a canonical local poster/thumbnail URL, else ''. */
 export function getShowImageVariantUrl(url: string | undefined | null): string {
