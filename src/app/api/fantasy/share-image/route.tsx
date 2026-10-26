@@ -1,4 +1,4 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/og';
 import { NextRequest } from 'next/server';
 import { interFontOption } from '@/lib/og-fonts';
 import seasonConfig from '@/config/fantasy-season.json';

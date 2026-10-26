@@ -15,7 +15,7 @@ const tip = {
   slug: 'hamilton',
   title: 'Hamilton',
   changes: [
-    { field: 'weeklyRunningCost', oldValue: 600000, newValue: 650000 },
+    { field: 'capitalization', oldValue: 12000000, newValue: 12500000 },
     { field: 'recouped', oldValue: null, newValue: true },
   ],
   confidence: 'high',
@@ -32,7 +32,7 @@ test('queues the tip as a human-review row the daily apply pass holds', () => {
   assert.equal(row.requiresHumanReview, true);
   assert.equal(gate.requiresHumanReview(row), true, 'apply-commercial-pending must see it as a held row');
   assert.equal(gate.hasRecoupedClaim(row), true, 'the recouped claim travels with the row for the person to settle');
-  assert.equal(row.weeklyRunningCost, 650000);
+  assert.equal(row.capitalization, 12500000);
   assert.equal(row.detectedBy, 'github-tip');
   assert.equal(row.tipIssue, 4242);
   assert.deepEqual(row.sources, [{ type: 'tip', url: tip.source, date: '2026-10-26' }]);
@@ -62,14 +62,14 @@ test('github-tip is not a trusted detectedBy, so its recouped claim never auto-a
 
 test('merges onto a research row already queued for the show instead of replacing it', () => {
   const prior = {
-    title: 'Hamilton', slug: 'hamilton', capitalization: 12500000, confidence: 'medium',
+    title: 'Hamilton', slug: 'hamilton', estimatedRecoupmentPct: 40, confidence: 'medium',
     sources: [{ type: 'article', url: 'https://playbill.com/hamilton-cap', date: '2026-09-01' }],
     researchedAt: '2026-09-01T00:00:00.000Z', backfill: 'BRO-4990', requiresHumanReview: true,
   };
   const row = queueTipForReview({ shows: { hamilton: prior } }, tip).shows.hamilton;
-  assert.equal(row.capitalization, 12500000, 'research figure kept');
+  assert.equal(row.estimatedRecoupmentPct, 40, 'research figure kept');
   assert.equal(row.backfill, 'BRO-4990', 'research hold metadata kept');
-  assert.equal(row.weeklyRunningCost, 650000, 'tip field wins');
+  assert.equal(row.capitalization, 12500000, 'tip field wins');
   assert.equal(row.requiresHumanReview, true);
   assert.equal(row.sources.length, 2);
   assert.equal(row.sources[1].type, 'tip');

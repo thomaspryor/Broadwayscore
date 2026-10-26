@@ -1,4 +1,4 @@
-import { ImageResponse } from '@vercel/og';
+import { ImageResponse } from 'next/og';
 import { interFontOption } from '@/lib/og-fonts';
 import { NextRequest } from 'next/server';
 
