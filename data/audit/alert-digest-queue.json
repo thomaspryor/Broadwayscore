@@ -1263,5 +1263,36 @@
       }
     ],
     "queuedAt": "2026-10-26T01:36:08.671Z"
+  },
+  {
+    "conditionKey": "land:land/owner-decision-quiet",
+    "title": "Landing blocked: unit-tests-node red on land/owner-decision-quiet",
+    "description": "land.yml did not land land/owner-decision-quiet: the unit-tests-node gate went red at 29d79265cb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40254715277",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/owner-decision-quiet"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "29d79265cb30673366641ad7d34863a2c705c8ab"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40254715277"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:52:51.515Z"
   }
 ]
