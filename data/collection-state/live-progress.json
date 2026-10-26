@@ -1,29 +1,40 @@
 {
-  "updatedAt": "2026-10-26T18:04:35.315Z",
-  "processed": 222,
-  "failed": 168,
-  "successRate": "56.9%",
+  "updatedAt": "2026-10-26T18:22:05.208Z",
+  "processed": 29,
+  "failed": 3,
+  "successRate": "90.6%",
   "tierBreakdown": {
-    "playwright": 116,
+    "playwright": 25,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 10,
-    "scrapingbee": 13,
-    "brightdata": 11,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 67
+    "archive": 3
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-26T17:18:28.997Z",
+      "t": "2026-10-26T18:11:00.149Z",
       "event": "bb-session",
-      "session": "cecc40a4",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+      "session": "fececa7c",
+      "url": "https://www.nytimes.com/2025/04/23/theater/grief-camp-review-atlantic-theater.ht"
     },
     {
-      "t": "2026-10-26T17:18:29.901Z",
+      "t": "2026-10-26T18:11:00.908Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T18:11:53.789Z",
+      "event": "bb-session",
+      "session": "1bb299a6",
+      "url": "https://www.nytimes.com/2025/04/23/theater/grief-camp-review-atlantic-theater.ht"
+    },
+    {
+      "t": "2026-10-26T18:11:54.443Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
