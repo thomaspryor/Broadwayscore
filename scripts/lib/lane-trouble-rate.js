@@ -19,7 +19,7 @@
  * Pure: takes entries + nowMs, no clock, no I/O (CLAUDE.md rule 15).
  */
 
-const { laneOf, tsOf, DAY_MS } = require('./dispatch-attempts.js');
+const { laneOf, tsOf, DAY_MS, PAIR_WINDOW_MS } = require('./dispatch-attempts.js');
 const { JOB_EVENTS } = require('./dispatch-ledger.js');
 const { JOB_LANE } = require('./dispatch-health.js');
 
@@ -59,8 +59,11 @@ function computeLaneTroubleRate(entries, { nowMs, windowDays = 7 } = {}) {
       const upper = i + 1 < launches.length ? launches[i + 1].ts : Infinity;
       const hits = rows.filter((r) => troubleSet.has(r.e.event)
         && String(r.e.taskId) === taskId
-        && (lane === JOB_LANE || r.e.workspaceRef === launch.e.workspaceRef)
-        && r.ts >= launch.ts && r.ts < upper);
+        // a failed tab launch writes its `dead` row just BEFORE its `launch` row
+        // (failedLaunchEntries), so the lower bound reaches back PAIR_WINDOW_MS;
+        // `launch-failed` rows carry no workspaceRef, so they match on taskId alone
+        && (lane === JOB_LANE || !r.e.workspaceRef || r.e.workspaceRef === launch.e.workspaceRef)
+        && r.ts >= launch.ts - (lane === JOB_LANE ? 0 : PAIR_WINDOW_MS) && r.ts < upper);
       const L = laneStats();
       L.launches++;
       taskCounted = true;
