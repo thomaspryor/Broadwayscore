@@ -17,7 +17,8 @@
  * Error contract (single channel — the client checks body.ok, never status):
  * HTTP 200 with {ok:false, error: 'unauthorized'|'internal'} for handled
  * failures; non-200 only for bugs. A successful call that carried an Apple
- * authorization code also returns revoked: true|false (BRO-6290).
+ * authorization code also returns revoked: true|false, plus revokeReason when
+ * false (BRO-6290).
  *
  * Plain ESM so tests/unit/apple-revoke.test.mjs can run the real handler under
  * Node with a mocked fetch; index.ts is the Deno entry point.
@@ -105,19 +106,22 @@ async function readAppleCode(req) {
   }
 }
 
-/** The account's Apple subject ids, read before the auth user is deleted.
- *  Any failure reads as none, which skips the revoke (deletion still runs). */
+/** The account's Apple subject ids, read before the auth user is deleted;
+ *  null when the lookup failed. Either way the deletion still runs; the
+ *  revoke is skipped and the app tells the user how to disconnect Apple by
+ *  hand. A retry after a lost response finds the auth user gone (404), so it
+ *  cannot revoke either. */
 async function appleUserIds(fetch, base, auth, userId) {
   try {
     const res = await fetch(`${base}/auth/v1/admin/users/${userId}`, { headers: auth });
-    if (!res.ok) return [];
+    if (!res.ok) return null;
     const user = await res.json();
     return (user.identities || [])
       .filter((i) => i && i.provider === 'apple')
       .map((i) => (i.identity_data && i.identity_data.sub) || i.provider_id || i.id)
       .filter((id) => typeof id === 'string' && id.length > 0);
   } catch {
-    return [];
+    return null;
   }
 }
 
@@ -125,13 +129,17 @@ async function appleUserIds(fetch, base, auth, userId) {
  *  Logged so the function logs show revoked: true|false and why. */
 async function revokeApple(revoke, args) {
   let result;
-  try {
-    result = await revoke(args);
-  } catch {
-    result = { revoked: false, reason: 'error' };
+  if (args.appleUserIds === null) {
+    result = { revoked: false, reason: 'identity_lookup_failed' };
+  } else {
+    try {
+      result = await revoke(args);
+    } catch {
+      result = { revoked: false, reason: 'error' };
+    }
   }
   console.log('[delete-account] apple revoke:', JSON.stringify(result));
-  return result.revoked;
+  return result;
 }
 
 /**
@@ -154,7 +162,7 @@ export async function handleDeleteAccount(req, { env, fetch = globalThis.fetch, 
   const appleCode = await readAppleCode(req);
 
   try {
-    const appleIds = appleCode ? await appleUserIds(fetch, base, auth, userId) : [];
+    const appleIds = appleCode ? await appleUserIds(fetch, base, auth, userId) : null;
 
     // list_items references lists.id, not the user directly — resolve the
     // caller's list ids first so their items are cleaned up before the lists.
@@ -214,13 +222,15 @@ export async function handleDeleteAccount(req, { env, fetch = globalThis.fetch, 
     // Only after the account is gone, so a failed deletion never leaves a
     // live account with its Apple grant revoked.
     if (!appleCode) return json(req, { ok: true });
-    const revoked = await revokeApple(revoke, {
+    // Only the iOS app sends a code (Apple's rule covers App Store apps; the
+    // web client is a different services id), so web deletions never revoke.
+    const result = await revokeApple(revoke, {
       authorizationCode: appleCode,
       appleUserIds: appleIds,
       privateKeyPem: env('APPLE_PRIVATE_KEY'),
       fetchImpl: fetch,
     });
-    return json(req, { ok: true, revoked });
+    return json(req, result.revoked ? { ok: true, revoked: true } : { ok: true, revoked: false, revokeReason: result.reason });
   } catch (e) {
     console.error('[delete-account] failed:', e instanceof Error ? e.message : e);
     return json(req, { ok: false, error: 'internal' });
