@@ -21842,7 +21842,7 @@
       "linearIdentifier": null
     },
     "time-bomb-tests:unit:tests/unit/broadway-fantasy-league.test.mjs::draftable show catalog (data/fantasy-league.json)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/broadway-fantasy-league.test.mjs — draftable show catalog (data/fantasy-league.json)",
       "firstSeen": "2026-10-19T20:36:23.865Z",
@@ -21852,10 +21852,11 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5720"
+      "linearIdentifier": "BRO-5720",
+      "resolvedAt": "2026-10-26T20:28:49.805Z"
     },
     "time-bomb-tests:unit:tests/unit/broadway-fantasy-league.test.mjs::shows marked CriticScore-ineligible (locked) actually carry a score": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Time-bomb test armed: tests/unit/broadway-fantasy-league.test.mjs — shows marked CriticScore-ineligible (locked) actually carry a score",
       "firstSeen": "2026-10-19T20:36:26.693Z",
@@ -21865,7 +21866,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-5721"
+      "linearIdentifier": "BRO-5721",
+      "resolvedAt": "2026-10-26T20:28:49.815Z"
     },
     "review-gap:opening-window:copperfield-the-new-musical-off-broadway-2026": {
       "status": "resolved",
@@ -28175,8 +28177,137 @@
       "lastSurfacedAt": "2026-10-26T19:53:23.855Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-26T20:22:06.731Z"
+      "linearIdentifier": null
+    },
+    "time-bomb-tests:unit:scripts/backlog-drain.test.mjs::main: tick lock releases on empty tasks and errors; help never acquires it": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/backlog-drain.test.mjs — main: tick lock releases on empty tasks and errors; help never acquires it",
+      "firstSeen": "2026-10-26T20:28:49.823Z",
+      "incidentOpenedAt": "2026-10-26T20:28:49.823Z",
+      "lastSeen": "2026-10-26T20:28:49.823Z",
+      "lastNotifiedAt": "2026-10-26T20:28:49.823Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6381"
+    },
+    "time-bomb-tests:unit:scripts/backlog-drain.test.mjs::reconcileAndAppend: lock busy skips the tick instead of appending": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: scripts/backlog-drain.test.mjs — reconcileAndAppend: lock busy skips the tick instead of appending",
+      "firstSeen": "2026-10-26T20:28:52.137Z",
+      "incidentOpenedAt": "2026-10-26T20:28:52.137Z",
+      "lastSeen": "2026-10-26T20:28:52.137Z",
+      "lastNotifiedAt": "2026-10-26T20:28:52.137Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6382"
+    },
+    "time-bomb-tests:unit-tsx:tests/unit/fantasy-roster-privacy.test.ts::roster privacy": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — roster privacy",
+      "firstSeen": "2026-10-26T20:28:53.861Z",
+      "incidentOpenedAt": "2026-10-26T20:28:53.861Z",
+      "lastSeen": "2026-10-26T20:28:53.861Z",
+      "lastNotifiedAt": "2026-10-26T20:28:53.861Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6383"
+    },
+    "time-bomb-tests:unit-tsx:tests/unit/fantasy-roster-privacy.test.ts::teams the database hid still count": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — teams the database hid still count",
+      "firstSeen": "2026-10-26T20:28:55.914Z",
+      "incidentOpenedAt": "2026-10-26T20:28:55.914Z",
+      "lastSeen": "2026-10-26T20:28:55.914Z",
+      "lastNotifiedAt": "2026-10-26T20:28:55.914Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6384"
+    },
+    "time-bomb-tests:unit-tsx:tests/unit/fantasy-roster-privacy.test.ts::the standings code keeps team names and counts for hidden rosters": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/fantasy-roster-privacy.test.ts — the standings code keeps team names and counts for hidden rosters",
+      "firstSeen": "2026-10-26T20:28:57.549Z",
+      "incidentOpenedAt": "2026-10-26T20:28:57.549Z",
+      "lastSeen": "2026-10-26T20:28:57.549Z",
+      "lastNotifiedAt": "2026-10-26T20:28:57.549Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6385"
+    },
+    "time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::an earlier all-market run started 5h ago does not cover us": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — an earlier all-market run started 5h ago does not cover us",
+      "firstSeen": "2026-10-26T20:28:59.136Z",
+      "incidentOpenedAt": "2026-10-26T20:28:59.136Z",
+      "lastSeen": "2026-10-26T20:28:59.136Z",
+      "lastNotifiedAt": "2026-10-26T20:28:59.136Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6386"
+    },
+    "time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::cutoff boundary: just under counts, just over does not": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — cutoff boundary: just under counts, just over does not",
+      "firstSeen": "2026-10-26T20:29:00.820Z",
+      "incidentOpenedAt": "2026-10-26T20:29:00.820Z",
+      "lastSeen": "2026-10-26T20:29:00.820Z",
+      "lastNotifiedAt": "2026-10-26T20:29:00.820Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6387"
+    },
+    "time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::Redundancy guard ignores earlier runs near their loop deadline (BRO-6037)": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/opening-night-orchestrator-cron.test.mjs — Redundancy guard ignores earlier runs near their loop deadline (BRO-6037)",
+      "firstSeen": "2026-10-26T20:29:02.345Z",
+      "incidentOpenedAt": "2026-10-26T20:29:02.345Z",
+      "lastSeen": "2026-10-26T20:29:02.345Z",
+      "lastNotifiedAt": "2026-10-26T20:29:02.345Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6388"
+    },
+    "time-bomb-tests:unit:tests/unit/pre-push-hook.test.mjs::reapStaleTempWorktrees: reaps stale fixture debris, keeps fresh fixtures and session worktrees": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/pre-push-hook.test.mjs — reapStaleTempWorktrees: reaps stale fixture debris, keeps fresh fixtures and session worktrees",
+      "firstSeen": "2026-10-26T20:29:03.817Z",
+      "incidentOpenedAt": "2026-10-26T20:29:03.817Z",
+      "lastSeen": "2026-10-26T20:29:03.817Z",
+      "lastNotifiedAt": "2026-10-26T20:29:03.817Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6389"
+    },
+    "time-bomb-tests:unit:tests/unit/pre-push-visual-gate.test.mjs::a hung Linear request times out and the actual hook still blocks": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Time-bomb test armed: tests/unit/pre-push-visual-gate.test.mjs — a hung Linear request times out and the actual hook still blocks",
+      "firstSeen": "2026-10-26T20:29:05.567Z",
+      "incidentOpenedAt": "2026-10-26T20:29:05.567Z",
+      "lastSeen": "2026-10-26T20:29:05.567Z",
+      "lastNotifiedAt": "2026-10-26T20:29:05.567Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6390"
     }
   }
 }
