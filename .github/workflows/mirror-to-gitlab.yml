@@ -36,20 +36,27 @@ jobs:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
 
-      - name: Report GitLab storage (BRO-6363)
-        # Pushes fail with "exceeded the allocated storage" (pre-receive hook declined),
-        # which the failure alert mislabels as push-contention. Log the numbers so the
-        # cause is visible in the run log. Read-only; never fails the job.
+      - name: Report GitLab storage and compact when near quota (BRO-6363)
+        # Pushes failed with "exceeded the allocated storage" (pre-receive hook declined)
+        # for 3+ days: GitLab held 12.2 GB (free limit 10 GB) vs 4 GB on GitHub, because
+        # force-pushes leave unreachable objects that only GitLab housekeeping removes.
+        # The failure alert mislabels this as push-contention, so log the numbers here and
+        # ask GitLab to prune + repack when over 8 GB. Never fails the job.
         continue-on-error: true
         run: |
           PROJECT=$(echo "${GITLAB_NAMESPACE}/broadwayscorecard" | sed 's/\//%2F/g')
-          curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+          SIZE=$(curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
             "https://gitlab.com/api/v4/projects/${PROJECT}?statistics=true" \
-            | jq '{statistics, visibility, namespace: .namespace.full_path}'
-          curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
-            "https://gitlab.com/api/v4/namespaces/$(echo "${GITLAB_NAMESPACE}" | sed 's/\//%2F/g')" \
-            | jq '{plan, root_repository_size, members_count_with_descendants}'
-          echo "GitHub refs: heads=$(git -C repo.git for-each-ref refs/heads | wc -l) tags=$(git -C repo.git for-each-ref refs/tags | wc -l); repo size: $(du -sh repo.git | cut -f1)"
+            | jq -r '.statistics.storage_size // 0')
+          echo "GitLab storage_size=${SIZE} bytes; GitHub clone: heads=$(git -C repo.git for-each-ref refs/heads | wc -l) size=$(du -sh repo.git | cut -f1)"
+          if [ "$SIZE" -gt 8000000000 ]; then
+            echo "Over 8 GB: requesting GitLab housekeeping (prune, then eager_repack)"
+            for TASK in prune eager_repack; do
+              curl -s -o /dev/null -w "housekeeping ${TASK}: HTTP %{http_code}\n" -X POST \
+                -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
+                "https://gitlab.com/api/v4/projects/${PROJECT}/housekeeping?task=${TASK}"
+            done
+          fi
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
@@ -58,7 +65,7 @@ jobs:
         id: push
         run: |
           cd repo.git
-          git push --force "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadwayscorecard.git" 'refs/heads/*:refs/heads/*' 'refs/tags/*:refs/tags/*' 2>&1
+          git push --force --prune "https://oauth2:${GITLAB_TOKEN}@gitlab.com/${GITLAB_NAMESPACE}/broadwayscorecard.git" 'refs/heads/*:refs/heads/*' 'refs/tags/*:refs/tags/*' 2>&1
         env:
           GITLAB_TOKEN: ${{ secrets.GITLAB_MIRROR_TOKEN }}
           GITLAB_NAMESPACE: ${{ vars.GITLAB_NAMESPACE }}
