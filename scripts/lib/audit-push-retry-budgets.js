@@ -112,6 +112,7 @@ try {
   // eslint-disable-next-line global-require
   const { CORE_DATA_MERGE_REGISTRY, activeEntriesFor, apiFallbackSafeEntriesFor, apiFallbackMergeEntriesFor } = require('./core-data-merge-registry.js');
   for (const entry of CORE_DATA_MERGE_REGISTRY) {
+    if (entry.file.includes('*')) continue; // glob entry (BRO-2782): no basename to key by
     const base = entry.file.split('/').pop();
     const prev = MANAGED_FILE_INFO.get(base);
     const apiFallbackSafe = entry.apiFallbackSafe === true && (prev ? prev.apiFallbackSafe : true);
@@ -161,7 +162,7 @@ function classifyPushFallbackSafety(filePath) {
   // when a registry glob entry ('audit/triage/*.json') owns that directory.
   // Only .json children are covered; anything else the add stages is still
   // disqualified at push time by the real disqualifier, which sees file paths.
-  const dirOwned = (f) => filePath.endsWith('/') && f.endsWith('/*.json') && filePath.endsWith(f.slice(0, -'*.json'.length));
+  const dirOwned = (f) => filePath.endsWith('/') && f.endsWith('/*.json') && (filePath === 'data/' + f.slice(0, -'*.json'.length) || filePath.endsWith('/' + f.slice(0, -'*.json'.length)));
   const isApiFallbackMerge = PUBLIC_REPO_API_FALLBACK_MERGE_FILES.some((f) => registryPathMatches(f, filePath) || dirOwned(f));
   // BRO-3663: `disqualifiesFallback` is no longer a hand-maintained mirror of
   // the shell's `hit` expression — that expression no longer exists. It now

@@ -56,3 +56,9 @@ test('a bare `git add data/audit/triage/` is classified as merge-covered (rule z
   assert.equal(classifyPushFallbackSafety('data/audit/triage/').isApiFallbackMerge, true);
   assert.equal(classifyPushFallbackSafety('data/audit/other-dir/').isApiFallbackMerge, false);
 });
+
+test('glob entries do not pollute MANAGED_FILE_INFO; dir match is segment-anchored', () => {
+  const { managedFileInfo, classifyPushFallbackSafety } = require('./audit-push-retry-budgets.js');
+  assert.equal(managedFileInfo('git add data/review-texts/*/*.json').touches, false);
+  assert.equal(classifyPushFallbackSafety('data/foo-audit/triage/').isApiFallbackMerge, false);
+});
