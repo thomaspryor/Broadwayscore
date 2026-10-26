@@ -609,7 +609,7 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   const settled = tracked.filter(isSettled);
   const recoupUnsettled = !isSettled(cur) || (!!last && !isSettled(last));
   rows.push({
-    label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped so far',
+    label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped as of today',
     format: 'pct',
     current: trackedOk || inProgress ? sampledShare(cur.recouped, cur.commercial) : null,
     currentDetail: trackedOk || inProgress ? pctDetail(cur.recouped, cur.commercial) : null,
