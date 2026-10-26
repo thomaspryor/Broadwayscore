@@ -1875,5 +1875,36 @@
       }
     ],
     "queuedAt": "2026-10-26T07:11:34.698Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6268-probe-modes",
+    "title": "Landing blocked: rebase red on land/bro-6268-probe-modes",
+    "description": "land.yml did not land land/bro-6268-probe-modes: the rebase gate went red at 6e9266716c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40285444099",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6268-probe-modes"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "6e9266716c0672269e81ab1996852ecfd8519c16"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40285444099"
+      }
+    ],
+    "queuedAt": "2026-10-26T07:24:40.490Z"
   }
 ]
