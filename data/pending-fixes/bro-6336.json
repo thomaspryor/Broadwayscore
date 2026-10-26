@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6336",
   "planId": "312a3b3f-3587-4226-b370-a8028f3dffd1",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-26T14:37:28.000Z",
   "submitter": {
     "name": null,
@@ -133,5 +133,54 @@
         "description": "commercial.json: midnight-in-the-garden-of-good-and-evil.sources"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T15:39:46.106Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalizationSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for king-lear-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalization: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": false,
+      "reason": "commercial.json:capitalizationSource: value changed since plan"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for frankie-and-johnny-in-the-clair-de-lune-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalization updated for midnight-in-the-garden-of-good-and-evil"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for midnight-in-the-garden-of-good-and-evil"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: sources updated for midnight-in-the-garden-of-good-and-evil"
+    }
+  ],
+  "executedIn": "ci"
 }
