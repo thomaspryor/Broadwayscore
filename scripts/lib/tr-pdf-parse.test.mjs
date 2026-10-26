@@ -436,3 +436,33 @@ test('isKnownOutletLine: printed mastheads match, ambiguous bare keys do not', (
   for (const no of ['SUN', 'I', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD', 'AFTER LIFE'])
     assert.equal(isKnownOutletLine(no), false, no);
 });
+
+// BRO-6287: 2021 issues have no run-dates lines or venue headers, only a caps
+// caption (production title) directly above each review's outlet line. The
+// structure below is copied from the masked layout diagnostic of the Be More
+// Chill / South Pacific / After Life issues; the prose is filler.
+const { captionOwnedBy } = require('./tr-pdf-parse.js');
+const CHILL_BODY = 'Be More Chill: the staging is lively and the songs land well, with a cast that sells every beat of the show. '.repeat(4);
+const chillIssue = [
+  'Reviews', '', 'BE MORE CHILL', 'Daily Mail', '', 'BE MORE CHILL', 'FINANCIAL TIMES', '12 July 2021', 'Hannah Bennett', CHILL_BODY, 'It is a fine night out.',
+  '', 'SOUTH PACIFIC', 'FINANCIAL TIMES', '16 July 2021', 'Another Critic', CHILL_BODY, 'Rodgers and Hammerstein again.',
+  '', 'BE MORE CHILL', 'THE GUARDIAN', '13 July 2021', 'Third Critic', CHILL_BODY, 'Squip.',
+].join('\n');
+
+test('captionOwnedBy: our caption true, foreign caption false, none null', () => {
+  const lines = chillIssue.split('\n');
+  const at = (txt, nth = 0) => lines.map((l, i) => l === txt ? i : -1).filter(i => i >= 0)[nth];
+  assert.equal(captionOwnedBy(lines, at('FINANCIAL TIMES', 0), 'Be More Chill'), true);
+  assert.equal(captionOwnedBy(lines, at('FINANCIAL TIMES', 1), 'Be More Chill'), false);
+  assert.equal(captionOwnedBy(lines, at('THE GUARDIAN'), 'Be More Chill'), true);
+  assert.equal(captionOwnedBy(['text', 'some prose line.', 'FINANCIAL TIMES'], 2, 'Be More Chill'), null);
+  // a title that shares a real word stays unknown rather than being dropped
+  assert.equal(captionOwnedBy(['PRIDE AND PREJUDICE* (*SORT OF)', 'GUARDIAN'], 1, 'Pride and Prejudice (sort of)'), true);
+});
+
+test('default and raw parsers drop the review captioned with another show', () => {
+  const def = parseDefaultPdfReviews(chillIssue, 'Be More Chill', null);
+  const outlets = def.map(r => `${r.outlet}|${r.date}`);
+  assert.ok(outlets.some(o => o.includes('12 July 2021')), 'ours kept');
+  assert.ok(!outlets.some(o => o.includes('16 July 2021')), 'South Pacific review dropped: ' + outlets);
+});

@@ -215,6 +215,7 @@ function parsePdfReviews(text, showTitle, stats) {
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
         if (stats) stats.headers++;
+        const captionForeign = captionOwnedBy(lines, i, showTitle) === false;
         i += 3;
 
         // Skip blank line after critic name
@@ -239,7 +240,9 @@ function parsePdfReviews(text, showTitle, stats) {
         // Clean PDF artifacts
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
         if (stats && fullText.length <= 50) stats.shortDropped++;
-        if (fullText.length > 50) {
+        if (captionForeign) {
+          if (stats) stats.captionDropped = (stats.captionDropped || 0) + 1;
+        } else if (fullText.length > 50) {
           // Convert outlet name to Title Case
           const outletTitle = outlet.split(/[\s.]+/)
             .map(w => w.charAt(0) + w.slice(1).toLowerCase())
@@ -281,7 +284,7 @@ function parseRawPdfReviews(text, showTitle, venue) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false ? false : null;
+        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionOwnedBy(lines, i, showTitle) === false ? false : null;
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -495,7 +498,7 @@ function parseDefaultPdfReviews(text, showTitle, venue) {
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
     const fullText = cutAtProductionHeader(body).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false) {
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && captionOwnedBy(lines, m.start, showTitle) !== false) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -594,6 +597,33 @@ function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
   return false;
 }
 
+// BRO-6287: 2020+ issues print each review under a caps caption naming its own
+// production ("SOUTH PACIFIC" above "FINANCIAL TIMES / 16 July 2021"), with no
+// run-dates line or venue header for the other guards to read. Looks at the
+// nearest non-blank line above the outlet line (one blank-line gap allowed):
+// true when it names our show, false when it names another one, null when
+// there is no caps caption. A caption sharing a real word with our title stays
+// null, as in sectionOwnedBy (TR spells titles its own way).
+function captionOwnedBy(lines, outletIdx, showTitle) {
+  let k = outletIdx - 1;
+  while (k >= 0 && !String(lines[k]).trim() && outletIdx - k <= 2) k--;
+  if (k < 0) return null;
+  const parts = [];
+  // A long title wraps over up to three caps lines.
+  for (; k >= 0 && parts.length < 3; k--) {
+    const t = String(lines[k]).trim();
+    if (!isCapsTitle(t)) break;
+    parts.unshift(t);
+  }
+  if (!parts.length) return null;
+  const caption = parts.join(' ');
+  if (trTitleMatches(caption, showTitle)) return true;
+  const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
+  const ours = new Set(words(showTitle));
+  if (words(caption).some(w => ours.has(w))) return null;
+  return false;
+}
+
 // 2019+ issues have no run-dates lines; each production page opens with a
 // "Previews / Opens" header whose caps line names the venue ("WYNDHAM'S THEATRE",
 // "LONDON, YOUNG VIC THEATRE"). A review under a header naming a theatre that
@@ -661,6 +691,7 @@ function locateReviews(text, reviews, showTitle) {
 
 module.exports = {
   productionRuns,
+  captionOwnedBy,
   isKnownOutletLine,
   sectionOwnedBy,
   venueOwnedBy,
