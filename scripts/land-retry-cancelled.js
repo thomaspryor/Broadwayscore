@@ -29,7 +29,7 @@
 const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
-const { supersededByNewerRun, decideSweep, sweepStep, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
+const { supersededByNewerRun, decideSweep, sweepStep, listedRunRefusal, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
 const { resolveLandRun, readLatestLandRun } = require('./lib/land-run-identity');
 
 const USAGE = 'usage: node scripts/land-retry-cancelled.js --sweep | --run=<id> | --stranded [--only=<land/branch>] [--dry-run]';
@@ -152,18 +152,15 @@ function runSweep() {
   let resumed = 0;
   let evictionRerun = false;
   for (const run of d.candidates) {
-    // BRO-6276: refuse on the listed run's own jobs first (one call). A refusal
-    // there (started work, failed Checks, budget spent) is final for that
-    // attempt, and a run re-run since is in flight, so skipping it is right.
-    // Only survivors pay for the per-branch lookup below.
-    const listed = decideLandRetry({ run, jobs: jobsOf(run.id), branchExists: true, branchTip: refs.get(run.head_branch) });
-    if (!listed.retry) { console.log(`run ${run.id} ${run.head_branch}: skip (${listed.reason})`); continue; }
+    // BRO-6276: only survivors of the one-call jobs check pay for the lookup below.
+    const refusal = listedRunRefusal(run, { jobsOf, refs });
+    if (refusal) { console.log(`run ${run.id} ${run.head_branch}: skip (${refusal})`); continue; }
     const latest = readLatestLandRun(run.head_branch, identityOptions);
     if (supersededByNewerRun(run, latest)) {
       console.log(`run ${run.id} ${run.head_branch}: skip (newer run ${latest.id} ${latest.conclusion || latest.status})`);
       continue;
     }
-    // Decide on the fresh run, not the listing: a listed run may already have
+    // Decide again on the fresh run and a fresh jobs read: a listed run may have
     // been re-run since (status back to queued/pending, conclusion null → skip).
     const fresh = latest || resolveLandRun(gh([`repos/${repo}/actions/runs/${run.id}`]), identityOptions);
     if (!fresh) continue;

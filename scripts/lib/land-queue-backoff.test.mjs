@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 
 const require = createRequire(import.meta.url);
-const { pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep, MAX_INSPECT } = require('./land-queue-backoff.js');
+const { listedRunRefusal, pickStrandedCandidates, supersededByNewerRun, decideSweep, sweepStep, MAX_INSPECT } = require('./land-queue-backoff.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
 const NOW = Date.parse('2026-10-05T02:00:00Z');
@@ -107,7 +107,7 @@ test('wiring (BRO-5112): per-branch Land group, mutex around land.js, sweep with
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
   // BRO-6276: dead candidates are refused on their own jobs before the per-branch
   // lookup, and listing reads are shared across candidates
-  assert.match(js, /decideLandRetry\(\{ run, jobs: jobsOf\(run\.id\)[\s\S]*?if \(!listed\.retry\)[\s\S]*?readLatestLandRun\(run\.head_branch/);
+  assert.match(js, /listedRunRefusal\(run, \{ jobsOf, refs \}\)[\s\S]*?if \(refusal\)[\s\S]*?readLatestLandRun\(run\.head_branch/);
   assert.match(js, /read: readListing/);
 });
 
@@ -145,4 +145,23 @@ test('sweepStep: at most one eviction re-run per sweep', () => {
   // room not read yet when the second eviction comes up: it skips, never stopping the scan
   assert.equal(walk(['E', 'E', 'P'], 0), 'rerun,skip,stop');
   assert.equal(walk(['E', 'E', 'P', 'P'], 1), 'rerun,skip,resume,stop');
+});
+
+// BRO-6276: dead candidates are refused on one jobs read each, so only the parked
+// run would pay for the per-branch lookup.
+test('listedRunRefusal refuses dead runs on their jobs and keeps the parked one', () => {
+  const landJob = (steps) => [{ name: 'Checks', conclusion: 'success' }, { name: 'Land', conclusion: 'cancelled', steps }];
+  const started = landJob([{ name: 'Set up job', conclusion: 'success' }, { name: 'Rebase', conclusion: 'success' }, { name: 'Land', conclusion: 'cancelled' }]);
+  const failedChecks = [{ name: 'Checks', conclusion: 'failure' }, { name: 'Land', conclusion: 'skipped', steps: [] }];
+  const parked = landJob([{ name: 'Set up job', conclusion: 'success' }, { name: 'Admit to the landing queue', conclusion: 'cancelled' }, { name: 'Complete job', conclusion: 'success' }]);
+  const dead = Array.from({ length: 12 }, (_, i) => run({ id: 100 + i, created_at: at(30) }));
+  const live = run({ id: 999, created_at: at(30) });
+  const all = [...dead, live];
+  const calls = [];
+  const jobsOf = (id) => { calls.push(id); return id === 999 ? parked : (id % 2 ? started : failedChecks); };
+  const refs = refsFor(all);
+  const out = all.map((r) => listedRunRefusal(r, { jobsOf, refs }));
+  assert.equal(out.filter(Boolean).length, 12);
+  assert.equal(out[12], null);
+  assert.deepEqual(calls, all.map((r) => r.id));
 });
