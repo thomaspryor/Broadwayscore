@@ -93,6 +93,14 @@ jobs:
           fi
           node scripts/audit-non-reviews.js $ARGS
 
+      - name: Report unadjudicated CV not-a-review flags (advisory)
+        if: inputs.audit == 'all' || inputs.audit == 'non-reviews' || github.event_name == 'schedule'
+        continue-on-error: true
+        run: |
+          # BRO-6237: counted reviews carrying a collector-CV "not a review" verdict no human adjudicated.
+          node scripts/audit-unadjudicated-cv-flags.js | tee /tmp/cv-flags.txt
+          echo "### Unadjudicated CV not-a-review flags: $(tail -1 /tmp/cv-flags.txt)" >> "$GITHUB_STEP_SUMMARY"
+
       - name: Run cross-outlet duplicate detection
         if: inputs.audit == 'all' || inputs.audit == 'duplicates' || github.event_name == 'schedule'
         env:
