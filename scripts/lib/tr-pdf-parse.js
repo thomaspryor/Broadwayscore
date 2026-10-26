@@ -62,6 +62,11 @@ function cutAtProductionHeader(textLines) {
   return textLines.slice(0, productionHeaderStart(textLines, infoIdx));
 }
 
+// pdftotext ends each page with a form feed glued to the next page's first line
+// ("...last words\fTHE WINTER'S TALE"), which hid a page-top production caption
+// from every caps-line check (BRO-6287). Treat the form feed as a line break.
+const splitPdfLines = (text) => String(text).split(/\n|\f/);
+
 const normTitleLine = (line) => stripIndexSuffix(line.trim()).normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
 // Outlet names look like production titles (ALL CAPS) but never end a section.
@@ -98,7 +103,7 @@ const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t)
 // production's Reviews section was found, how many outlet+date headers it
 // holds, and how many headers produced no review (text under 50 chars).
 function parsePdfReviews(text, showTitle, stats) {
-  const lines = text.split('\n');
+  const lines = splitPdfLines(text);
   const reviews = [];
 
   const titleUpper = showTitle.toUpperCase()
@@ -268,7 +273,7 @@ function parsePdfReviews(text, showTitle, stats) {
 
 // For multi-column pre-2019 PDFs: extract ALL reviews, filter by show title mention
 function parseRawPdfReviews(text, showTitle, venue) {
-  const lines = text.split('\n');
+  const lines = splitPdfLines(text);
   const allReviews = [];
   const runs = productionRuns(lines);
 
@@ -284,7 +289,7 @@ function parseRawPdfReviews(text, showTitle, venue) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionOwnedBy(lines, i, showTitle) === false ? false : null;
+        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionOwnedBy(lines, i, showTitle, { inherit: true }) === false ? false : null;
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -464,7 +469,7 @@ function mentionsTitle(fullText, showTitle) {
 }
 
 function parseDefaultPdfReviews(text, showTitle, venue) {
-  const lines = text.split('\n').map(l => l.trim());
+  const lines = splitPdfLines(text).map(l => l.trim());
   const markers = [];
   for (let i = 0; i < lines.length; i++) {
     if (!isKnownOutletLine(lines[i])) continue;
@@ -498,7 +503,7 @@ function parseDefaultPdfReviews(text, showTitle, venue) {
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
     const fullText = stripTrailingCaption(cutAtProductionHeader(body)).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && captionOwnedBy(lines, m.start, showTitle) !== false) {
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && captionOwnedBy(lines, m.start, showTitle, { inherit: true }) !== false) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -616,7 +621,15 @@ function stripTrailingCaption(textLines) {
 // true when it names our show, false when it names another one, null when
 // there is no caps caption. A caption sharing a real word with our title stays
 // null, as in sectionOwnedBy (TR spells titles its own way).
-function captionOwnedBy(lines, outletIdx, showTitle) {
+// `inherit` (raw and default modes): a review with no caption of its own sits in
+// the block the nearest review above it belongs to, because TR prints the
+// caption only on a block's first review and again at each page top. Without
+// this a foreign block's second and later reviews (no caption directly above)
+// were read as unknown and kept (BRO-6287: South Pacific's FT review filed
+// under Be More Chill).
+const CAPTION_CHAIN_MAX = 30;
+const CAPTION_LOOKBACK = 700;
+function captionOwnedBy(lines, outletIdx, showTitle, { inherit = false } = {}, depth = 0) {
   let k = outletIdx - 1;
   while (k >= 0 && !String(lines[k]).trim() && outletIdx - k <= 2) k--;
   if (k < 0) return null;
@@ -627,7 +640,7 @@ function captionOwnedBy(lines, outletIdx, showTitle) {
     if (!isCapsTitle(t)) break;
     parts.unshift(t);
   }
-  if (!parts.length) return null;
+  if (!parts.length) return inherit ? inheritedCaptionOwner(lines, outletIdx, showTitle, depth) : null;
   // The first half of a wrapped masthead ("INTERNATIONAL" / "NEW YORK TIMES").
   if (parts.length === 1 && /^(INTERNATIONAL|SUNDAY|DAILY|EVENING|THE)$/.test(parts[0])) return null;
   // An outlet we do not list ("WHATSONSTAGE.COM") is not a production caption.
@@ -638,6 +651,20 @@ function captionOwnedBy(lines, outletIdx, showTitle) {
   const ours = new Set(words(showTitle));
   if (words(caption).some(w => ours.has(w))) return null;
   return false;
+}
+
+// Ownership of a caption-less review: that of the previous outlet+date header,
+// unless our own title shows up as a caps line in between.
+function inheritedCaptionOwner(lines, outletIdx, showTitle, depth) {
+  if (depth >= CAPTION_CHAIN_MAX) return null;
+  for (let k = outletIdx - 1; k >= 0 && outletIdx - k <= CAPTION_LOOKBACK; k--) {
+    const t = String(lines[k]).trim();
+    if (isCapsTitle(t) && trTitleMatches(t, showTitle)) return null;
+    if (t === t.toUpperCase() && t.length > 3 && /^[A-Z]/.test(t) && isDateLine(String(lines[k + 1] || '').trim())) {
+      return captionOwnedBy(lines, k, showTitle, { inherit: true }, depth + 1);
+    }
+  }
+  return null;
 }
 
 // 2019+ issues have no run-dates lines; each production page opens with a
@@ -684,7 +711,7 @@ function productionSections(lines) {
 }
 
 function locateReviews(text, reviews, showTitle) {
-  const lines = text.split('\n');
+  const lines = splitPdfLines(text);
   const trimmed = lines.map(l => l.trim());
   const runs = productionRuns(lines);
   const sections = productionSections(lines);

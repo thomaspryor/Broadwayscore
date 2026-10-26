@@ -485,3 +485,34 @@ test('captionOwnedBy: domain-like outlets and blank gaps', () => {
   assert.equal(captionOwnedBy(['WHATSONSTAGE.COM', 'THE GUARDIAN'], 1, 'Frozen'), null);
   assert.equal(captionOwnedBy(['FROZEN', '', 'THE GUARDIAN'], 2, 'Frozen'), true);
 });
+
+// BRO-6287: structure copied from the masked raw diagnostic of Be More Chill
+// (vol 41 issue 13). pdftotext glues each page's form feed to the next page's
+// first line, so a page-top caption ("...\fTHE WINTER'S TALE") was invisible,
+// and only a block's first review has a caption; later ones must inherit it.
+test('raw parser: form-feed captions and caption inheritance drop another show\'s later reviews', () => {
+  const body = 'Be More Chill: the staging is lively and the songs land well, with a cast that sells every beat of the show. '.repeat(4);
+  const foreign = 'A Winter\'s Tale with a spare, fast staging and a company that handles the verse with ease and speed. '.repeat(4);
+  const issue = [
+    'Jane Doe\fBE MORE CHILL', 'EVERYTHING-THEATRE.CO.UK', '07 July 2021', 'Mary Pollard', body,
+    'DAILY MAIL', '16 July 2021', 'Patrick Marmion', body,
+    'last words of page\fTHE WINTER’S TALE', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign,
+    'CHICHESTER OBSERVER', '13 July 2021', 'Phil Hewitt', foreign,
+    'FINANCIAL TIMES', '16 July 2021', 'Sarah Hemming', foreign,
+    'page end\fBE MORE CHILL', 'THE GUARDIAN', '14 July 2021', 'Third Critic', body,
+  ].join('\n');
+  const raw = parseRawPdfReviews(issue, 'Be More Chill', null);
+  const got = raw.map(r => `${r.outlet}|${r.date}`).join(' ; ');
+  assert.ok(/Daily Mail\|16 July 2021/.test(got), 'ours kept (inherits our caption): ' + got);
+  assert.ok(/Guardian\|14 July 2021/.test(got), 'ours after a foreign block kept: ' + got);
+  for (const d of ['12 July 2021|', '13 July 2021|']) assert.ok(!got.includes(d), 'foreign dropped');
+  assert.ok(!/Financial Times\|16 July 2021/.test(got), 'foreign FT (no caption of its own) dropped: ' + got);
+  assert.ok(!/Stage\|12 July/.test(got) && !/Chichester/.test(got), got);
+  // inheritance is a raw/default behaviour only: the bare call stays unknown
+  const lines = issue.split(/\n|\f/);
+  const ft = lines.indexOf('FINANCIAL TIMES');
+  assert.equal(captionOwnedBy(lines, ft, 'Be More Chill'), null);
+  assert.equal(captionOwnedBy(lines, ft, 'Be More Chill', { inherit: true }), false);
+  // our own caption between a foreign block and the review restores ownership
+  assert.equal(captionOwnedBy(lines, lines.indexOf('THE GUARDIAN'), 'Be More Chill', { inherit: true }), true);
+});
