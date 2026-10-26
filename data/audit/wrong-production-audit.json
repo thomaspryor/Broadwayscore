@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T19:03:15.793Z",
+  "timestamp": "2026-10-26T19:18:46.071Z",
   "stats": {
-    "totalReviews": 62224,
-    "alreadyFlagged": 21528,
+    "totalReviews": 62234,
+    "alreadyFlagged": 21530,
     "dateGuardCatches": 223,
     "directorMismatch": 2292,
     "tvFilmSignals": 1771,
-    "londonSignals": 3002,
+    "londonSignals": 3004,
     "offBroadwaySignals": 551,
     "yearMismatch": 210,
-    "noPublishDate": 5526
+    "noPublishDate": 5524
   },
   "findings": [
     {
@@ -98456,6 +98456,32 @@
       "score": 78,
       "publishDate": "2021-08-11",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "file": "inspiringtravelexperiences--the-travel-tipster.json",
+      "publishDate": "2026-10-24",
+      "url": "https://inspiringtravelexperiences.com/reviews/entertainment/the-pianist-park-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "file": "jolienstheatrediary--jolien.json",
+      "publishDate": "2026-10-25",
+      "url": "https://www.jolienstheatrediary.com/reviews/review-the-pianist-the-park-theatre-london",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
