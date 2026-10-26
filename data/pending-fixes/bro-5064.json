@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5064",
   "planId": "2d457ced-55e3-4092-ba73-fd5a292e7025",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-12T23:30:00.000Z",
   "submitter": {
     "name": null,
@@ -41,5 +41,7 @@
         "description": "londontheatre.co.uk prints no critic rating (publishesNoCriticRating). This value is a Show Score placeholder written by gather-reviews createReviewFile (source show-score-playwright, no originalScoreSource); cleared so check-score-integrity (P0) passes. The writer is fixed in the same change (BRO-5064)."
       }
     ]
-  }
+  },
+  "supersededReason": "Superseded in BRO-5935: all three targeted London Theatre originalScore values are now sourced star ratings with originalScoreSource londontheatre-page-json (4/5 stars, 4/5 stars, 3/5 stars). The obsolete numeric placeholders are gone. Clearing these ratings would discard newer source-backed data.",
+  "supersededAt": "2026-10-26T13:01:47.853Z"
 }

@@ -94,6 +94,24 @@ test('finishedOnBranchProblems and localRunProblems (fixtures, BRO-5647)', () =>
   assert.deepEqual(localRunProblems('bro-1.json', p('applied')), []);
 });
 
+test('superseding withdraws an existing unresolved plan with evidence and preserves its actions', () => {
+  const base = plan([edit('notes', 'Existing correction')]);
+  const withdrawn = { ...base, status: 'superseded', supersededAt: '2026-10-26T12:00:00Z', supersededReason: 'BRO-5935: current data already has the requested value.' };
+  assert.equal(planStatusWarning('bro-1.json', withdrawn), null);
+  for (const status of ['pending', 'partial', 'validation-failed', 'superseded']) {
+    assert.deepEqual(finishedOnBranchProblems('bro-1.json', { ...base, status }, withdrawn), []);
+  }
+  for (const old of [null, { ...base, status: 'applied' }, { ...base, status: 'rejected' }]) {
+    assert.match(finishedOnBranchProblems('bro-1.json', old, withdrawn).join(''), /existing unresolved plan/);
+  }
+  for (const extra of [{ supersededReason: '' }, { supersededReason: '  ' }, { supersededAt: undefined }, { supersededAt: 'invalid' }]) {
+    assert.match(finishedOnBranchProblems('bro-1.json', base, { ...withdrawn, ...extra }).join(''), /supersededAt.*supersededReason/);
+  }
+  for (const extra of [{ planId: 'different' }, { issueNumber: 'different' }, { plan: { ...base.plan, actions: [] } }]) {
+    assert.match(finishedOnBranchProblems('bro-1.json', base, { ...withdrawn, ...extra }).join(''), /preserve the original plan/);
+  }
+});
+
 // BRO-5892: two BRO-5853 authoring traps, caught before land.
 test('planShapeProblems: issueNumber must name the file, review-file-op paths carry no data/review-texts/ prefix', () => {
   assert.deepEqual(planShapeProblems('bro-9-b.json', plan(many(1), { issueNumber: 'bro-9-b' })), []);

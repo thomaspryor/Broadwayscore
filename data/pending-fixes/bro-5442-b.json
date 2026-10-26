@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5442-b",
   "planId": "add385a3-70c4-42a5-85d4-6b2c18539dfd",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-16T08:50:00.000Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,7 @@
         "description": "BRO-5442: keep the record consistent with isNonReview false (existing nonReviewOverride)."
       }
     ]
-  }
+  },
+  "supersededReason": "Superseded in BRO-5935: the Brighton Beach LA Times record now has a later manual non-review decision that explicitly overrules the 2026-08-15 review override. The stored reason differs from oldValue; preserve the newer decision rather than clearing its explanation.",
+  "supersededAt": "2026-10-26T13:01:47.853Z"
 }
