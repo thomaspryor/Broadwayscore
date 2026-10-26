@@ -1443,5 +1443,36 @@
       }
     ],
     "queuedAt": "2026-10-26T02:41:56.031Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5989-probe",
+    "title": "Landing blocked: rebase red on land/bro-5989-probe",
+    "description": "land.yml did not land land/bro-5989-probe: the rebase gate went red at b4c364c23a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5989-probe @ b4c364c23a (origin/land/bro-5989-probe) → origin/main @ cb9d4c25db REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 1d5e39a715: Rebasing (1/1) error: could not apply b4c364c23ac... test(seo): RECHECK-AFTER probe for related-shows-position sample size (BRO-5989) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <confli Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40253522325",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5989-probe"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b4c364c23ac5a6553e07b9887739d5d31a013835"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40253522325"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:57:33.191Z"
   }
 ]
