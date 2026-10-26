@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T00:04:36.626Z",
+  "timestamp": "2026-10-26T00:58:41.553Z",
   "stats": {
-    "totalReviews": 61687,
+    "totalReviews": 61730,
     "alreadyFlagged": 21487,
     "dateGuardCatches": 223,
-    "directorMismatch": 2243,
-    "tvFilmSignals": 1754,
-    "londonSignals": 2979,
+    "directorMismatch": 2263,
+    "tvFilmSignals": 1753,
+    "londonSignals": 2983,
     "offBroadwaySignals": 544,
-    "yearMismatch": 202,
-    "noPublishDate": 5481
+    "yearMismatch": 204,
+    "noPublishDate": 5480
   },
   "findings": [
     {
@@ -249,6 +249,19 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "albany-times-union--katherine-kiessling.json",
+      "publishDate": "2025-09-24",
+      "url": "https://www.timesunion.com/theater/article/review-a-beautiful-noise-neil-diamond-21060911.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "broadwayworld--andrew-burrill.json",
       "score": 90,
       "publishDate": "2026-07-12",
@@ -478,6 +491,19 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2025-07-11",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-07-11/neil-diamond-beautiful-noise-musical-review-american-idol-winner-nick-fradiani-pantages",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 75,
       "publishDate": "2026-06-24",
@@ -581,6 +607,19 @@
     },
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "stage-raw--steven-morris.json",
+      "publishDate": "2025-07-14",
+      "url": "https://stageraw.com/a-beautiful-noise-the-neil-diamond-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "syracuse-herald-journal--len-fonte.json",
       "score": 75,
       "publishDate": "2026-06-10",
@@ -599,6 +638,19 @@
       "score": 58,
       "publishDate": "2026-05-03",
       "url": "https://www.theglobeandmail.com/culture/stage/article-neil-diamond-musical-beautiful-noise-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "the-show-report--theshowreport.json",
+      "publishDate": "2025-07-30",
+      "url": "https://www.theshowreport.org/post/review-the-neil-diamond-musical-a-beautiful-noise",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4122,7 +4174,7 @@
       "file": "guardian--michael-billington.json",
       "score": 85,
       "publishDate": "2016-12-22",
-      "url": null,
+      "url": "https://www.theguardian.com/stage/2016/dec/30/art-review-finney-stott-and-courtenay-are-a-blistering-trio",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4428,6 +4480,45 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "broadwayworld--samantha-wu.json",
+      "publishDate": "2025-07-30",
+      "url": "https://www.broadwayworld.com/toronto/article/Review-BACK-TO-THE-FUTURE-THE-MUSICAL-at-CAA-Ed-Mirvish-Theatre-20250730",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "buffalo-theatre-guide--unknown.json",
+      "publishDate": "2025-06-26",
+      "url": "https://buffalotheatreguide.com/2025/06/26/theatre-review-back-to-the-future-the-musical-at-sheas-buffalo-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "buffalorising--anthony-higgins.json",
+      "publishDate": "2025-06-28",
+      "url": "https://www.buffalorising.com/2025/06/great-scott-back-to-the-future-the-musical-electrifies-sheas-a-time-traveling-spectacle-with-fan-favorite-moments-and-a-dash-of-80s-weird/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "fwtx--john-henry.json",
       "publishDate": "2026-03-23",
       "url": "https://fwtx.com/culture/back-to-the-future-musical-lands-at-bass-hall/",
@@ -4483,10 +4574,36 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "roc-city-mag--leah-stacy.json",
+      "publishDate": "2025-06-18",
+      "url": "https://www.roccitymag.com/arts-entertainment/theater-review-back-to-the-future-the-musical-19226083/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "the-cap-times--lindsay-christians.json",
       "score": 63,
       "publishDate": "2026-03-11",
       "url": "https://captimes.com/entertainment/arts-and-theatre/back-to-the-future-musical-tour-is-all-spark-no-substance/article_d3c3b5ef-50cf-404e-b29c-ce62fb352138.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
+      "file": "the-globe-and-mail--aisling-murphy.json",
+      "publishDate": "2025-07-28",
+      "url": "https://www.theglobeandmail.com/arts/article-back-to-the-future-musical-toronto/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -5754,6 +5871,19 @@
       "score": 79,
       "publishDate": "2026-06-20",
       "url": "https://buffalotheatreguide.com/2026/06/20/the-book-of-mormon-returns-to-sheas/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "city-pulse--by-karen-rich.json",
+      "publishDate": "2025-06-20",
+      "url": "https://lansingcitypulse.com/the-book-of-mormon-not-your-mothers-broadway-musical/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -12368,7 +12498,7 @@
     {
       "showId": "death-of-england-closing-time-west-end-2024",
       "file": "whatsonstage--alun-hood.json",
-      "score": 65,
+      "score": 67,
       "publishDate": "2024-08-29",
       "url": "https://www.whatsonstage.com/news/death-of-england-closing-time-in-the-west-end-review_1625939/",
       "findings": [
@@ -12396,7 +12526,7 @@
     {
       "showId": "death-of-england-michael-delroy-west-end-2024",
       "file": "guardian--arifa-akbar.json",
-      "score": 78,
+      "score": 76,
       "publishDate": "2024-07-31",
       "url": "https://www.theguardian.com/stage/article/2024/jul/31/death-of-england-the-plays-review-brexit-voting-bailiff-electrifies-this-post-boris-revamp",
       "findings": [
@@ -19218,6 +19348,19 @@
       ]
     },
     {
+      "showId": "hamilton-tour-2024",
+      "file": "clevescene--gwendolyn-kocher.json",
+      "publishDate": "2025-06-20",
+      "url": "https://www.clevescene.com/arts/not-just-another-hamilton-review-as-the-musical-returns-to-playhouse-square-46862200/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
       "showId": "hamilton-west-end-2021",
       "file": "daily-mail--robert-gore-langton.json",
       "score": 93,
@@ -19528,6 +19671,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2026 (6x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "broadwayworld--roger-catlin.json",
+      "publishDate": "2025-07-19",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-HARRY-POTTER-AND-THE-CURSED-CHILD-at-National-Theatre-20250719",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (0x). 2026 matches production: harry-potter-and-the-cursed-child-one-part-west-end-2026"
         }
       ]
     },
@@ -26426,6 +26587,24 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "arts-knoxville--alan-sherrod.json",
+      "publishDate": "2025-07-31",
+      "url": "https://artsknoxville.com/2025/07/31/review-national-tour-of-les-miserables-showstopping-relevance-in-the-21st-century/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "boston-herald--jed-gottlieb.json",
       "publishDate": "2026-06-05",
       "url": "https://www.bostonherald.com/2026/06/05/catch-an-amazing-les-miserables/",
@@ -29566,6 +29745,24 @@
       ]
     },
     {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2025-06-22",
+      "url": "https://www.sandiegouniontribune.com/2025/06/22/ten-things-to-know-about-moulin-rouge-the-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (3x) more than 2022 (0x). 2019 matches production: moulin-rouge-2019"
+        }
+      ]
+    },
+    {
       "showId": "mr-saturday-night-2022",
       "file": "amny--matt-windman.json",
       "score": 42,
@@ -32295,6 +32492,7 @@
     {
       "showId": "oh-mary-west-end-2025",
       "file": "london-theatre-reviews--stuart-james.json",
+      "score": 93,
       "publishDate": "2025-12-19",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26495",
       "findings": [
@@ -34974,29 +35172,15 @@
     },
     {
       "showId": "pippin-2013",
-      "file": "ap--associated-press.json",
-      "score": 78,
-      "publishDate": "April 25, 2013",
-      "url": "http://www.thenewstribune.com/2013/04/25/2573239/review-new-pippin-mixed-with-circus.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"amazon prime\""
-        }
-      ]
-    },
-    {
-      "showId": "pippin-2013",
       "file": "ap--mark-kennedy.json",
-      "score": 82,
-      "publishDate": "2013-04-25",
-      "url": "https://www.thenewstribune.com/2013/04/25/2573239/review-new-pippin-mixed-with-circus.html",
+      "score": 81,
+      "publishDate": "April 25, 2013",
+      "url": "https://online.wsj.com/article/APfaedcde8df674391ae1edbf18ea9ac33.html",
       "findings": [
         {
-          "type": "TV_FILM_SIGNAL",
+          "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"amazon prime\""
+          "detail": "Mentions director \"bob fosse\" from pippin-1972"
         }
       ]
     },
@@ -35258,20 +35442,6 @@
       "score": 77,
       "publishDate": "April 25, 2013",
       "url": "http://www.vulture.com/2013/04/theater-review-pippin.html?mid=googlenews",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"bob fosse\" from pippin-1972"
-        }
-      ]
-    },
-    {
-      "showId": "pippin-2013",
-      "file": "wsj--associated-press.json",
-      "score": 81,
-      "publishDate": "April 25, 2013",
-      "url": "https://online.wsj.com/article/APfaedcde8df674391ae1edbf18ea9ac33.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -38039,6 +38209,7 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "i-paper--fiona-mountford.json",
+      "score": 86,
       "publishDate": "2024-08-22",
       "url": "https://inews.co.uk/culture/arts/shifters-review-glorious-tender-profound-3239467",
       "findings": [
@@ -38052,21 +38223,9 @@
     {
       "showId": "shifters-west-end-2024",
       "file": "independent--alice-saville.json",
+      "score": 82,
       "publishDate": "2024-08-22",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/shifters-review-west-end-benedict-lombe-b2599597.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"lynette linton\" from shifters-off-broadway-2026"
-        }
-      ]
-    },
-    {
-      "showId": "shifters-west-end-2024",
-      "file": "timeout-london--anya-ryan.json",
-      "publishDate": "2024-08-22",
-      "url": "https://www.timeout.com/london/theatre/shifters-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39091,6 +39250,19 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "broadwayworld--courtney-symes.json",
+      "publishDate": "2025-09-11",
+      "url": "https://www.broadwayworld.com/sacramento/article/Review-SOME-LIKE-IT-HOT-Sizzles-at-Broadway-Sacramento-20250911",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "broadwayworld--david-friscic.json",
       "score": 91,
       "publishDate": "2025-11-28",
@@ -39151,6 +39323,19 @@
     },
     {
       "showId": "some-like-it-hot-tour-2024",
+      "file": "la-excites--imaan-jalali.json",
+      "publishDate": "2025-07-31",
+      "url": "https://laexcites.com/2025/07/31/review-some-like-it-hot-musical-hollywood-pantages-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
       "score": 87,
       "publishDate": "2025-11-27",
@@ -39165,6 +39350,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "nerds-of-color--edward-hong.json",
+      "publishDate": "2025-08-10",
+      "url": "https://thenerdsofcolor.org/2025/08/10/a-los-angeles-theatre-review-some-like-it-hot/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "onstage-colorado--kimberly-nicoletti.json",
+      "publishDate": "2025-07-09",
+      "url": "https://onstagecolorado.com/some-like-it-hot-sizzles-with-high-energy-song-dance-and-character/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
         }
       ]
     },
@@ -42473,7 +42684,7 @@
     {
       "showId": "the-39-steps-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 37,
+      "score": 38,
       "publishDate": "2024-08-20",
       "url": "https://www.standard.co.uk/culture/theatre/the-39-steps-trafalgar-theatre-review-b1177390.html",
       "findings": [
@@ -49331,6 +49542,19 @@
     },
     {
       "showId": "the-outsiders-tour-2025",
+      "file": "oc-register--christopher-smith.json",
+      "publishDate": "2026-10-22",
+      "url": "https://www.ocregister.com/2026/10/22/review-the-outsiders-fights-to-hold-viewers-interest-in-costa-mesa/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"danya taymor\" from the-outsiders-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
       "file": "oklahoma-city-free-press--matthew-viriyapah.json",
       "score": 79,
       "publishDate": "2026-08-26",
@@ -51202,7 +51426,7 @@
     {
       "showId": "the-score-west-end-2025",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 63,
+      "score": 61,
       "publishDate": "February 28th, 2025",
       "url": "https://www.londontheatre.co.uk/reviews/the-score-review-theatre-royal-haymarket",
       "findings": [
@@ -51296,7 +51520,7 @@
     {
       "showId": "the-score-west-end-2025",
       "file": "whatsonstage--lucinda-everett.json",
-      "score": 59,
+      "score": 63,
       "publishDate": "February 28th, 2025",
       "url": "https://www.whatsonstage.com/news/the-score-starring-brian-cox-in-the-west-end-review_1666965/",
       "findings": [
@@ -53847,6 +54071,24 @@
     },
     {
       "showId": "tru-off-west-end-2026",
+      "file": "fairypoweredproductions--unknown.json",
+      "publishDate": "2026-10-19",
+      "url": "https://fairypoweredproductions.com/nathalie-harrison-joins-jesse-tyler-ferguson-in-jay-presson-allens-tru-at-the-menier-chocolate-factory/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
       "file": "financialtimes--julianna-barnaby.json",
       "publishDate": "2026-09-28",
       "url": "https://www.westendtheatre.com/369207/news/tru-reviews/",
@@ -54352,7 +54594,7 @@
       "file": "telegraph--dominic-cavendish.json",
       "score": 76,
       "publishDate": "2018-12-04",
-      "url": null,
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/true-west-review-vaudeville-theatre-kit-harington-proves-mettle/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -57704,6 +57946,19 @@
       "score": 89,
       "publishDate": "2024-04-27",
       "url": "https://www.courant.com/2024/04/27/theater-review-wicked-is-as-great-and-powerful-as-ever-in-three-week-return-to-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "indianapolisrecorder--chloe-mcgowan.json",
+      "publishDate": "2025-06-23",
+      "url": "https://indianapolisrecorder.com/review-wicked-is-magically-immersive-theatre-experience/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -62484,7 +62739,7 @@
     {
       "showId": "ballet-shoes-west-end-2025",
       "file": "broadwayworld--christiana-rose.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2025-11-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-BALLET-SHOES-National-Theatre-20251126",
       "findings": [
@@ -62512,7 +62767,7 @@
     {
       "showId": "ballet-shoes-west-end-2025",
       "file": "london-theatre--aliya-al-hassan.json",
-      "score": 96,
+      "score": 95,
       "publishDate": "2025-11-26",
       "url": "https://www.londontheatre.co.uk/reviews/ballet-shoes-review-national-theatre-2",
       "findings": [
@@ -65474,6 +65729,7 @@
     {
       "showId": "cats-west-end-2026",
       "file": "musical-theatre-review--ron-cohen.json",
+      "score": 95,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/cats-regents-park-open-air-theatre/",
       "findings": [
@@ -72259,7 +72515,7 @@
       "file": "thereviewshub--john-cutler.json",
       "score": 71,
       "publishDate": "2023-06-09",
-      "url": null,
+      "url": "https://www.thereviewshub.com/groundhog-day-the-old-vic-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -73519,6 +73775,45 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "dc-theater-arts--jennifer-georgia.json",
+      "publishDate": "2025-07-19",
+      "url": "https://dctheaterarts.org/2025/07/19/harry-potter-and-the-cursed-child-is-a-visual-and-magical-treat-at-the-national/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "hotchka--unknown.json",
+      "publishDate": "2025-07-17",
+      "url": "https://hotchka.com/harry-potter-and-the-cursed-child-review-washington-dc-national-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "harry-potter-tour-2024",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2025-07-17",
+      "url": "https://mdtheatreguide.com/2025/07/theatre-review-harry-potter-and-the-cursed-child-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -86681,7 +86976,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2024",
       "file": "guardian--susannah-clapp.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2024-05-26",
       "url": "https://www.theguardian.com/stage/article/2024/may/26/the-week-in-theatre-romeo-and-juliet-duke-of-yorks-tom-holland-francesca-amewudah-rivers-jamie-lloyd-review-richard-iii-shakespeares-globe-michelle-terry-passing-strange-young-vic-giles-tereira?CMP=Share_iOSApp_Other",
       "findings": [
@@ -92668,7 +92963,7 @@
     {
       "showId": "the-constituent-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 82,
+      "score": 78,
       "publishDate": "2024-06-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-CONSTITUENT-The-Old-Vic-20240626",
       "findings": [
@@ -95514,6 +95809,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "independent--ella-duggan.json",
+      "score": 62,
       "publishDate": "2025-09-19",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/land-of-the-living-juliet-stevenson-b2829840.html",
       "findings": [
@@ -95541,7 +95837,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 59,
+      "score": 64,
       "publishDate": "2025-09-19",
       "url": "https://www.londontheatre.co.uk/reviews/the-land-of-the-living-review-juliet-stevenson-gives-a-powerhouse",
       "findings": [
@@ -95555,7 +95851,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "standard--anya-ryan.json",
-      "score": 55,
+      "score": 57,
       "publishDate": "2025-09-19",
       "url": "https://www.standard.co.uk/culture/theatre/the-land-of-the-living-national-theatre-review-juliet-stevenson-b1248614.html",
       "findings": [
@@ -95569,7 +95865,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "thestage--tom-wicker.json",
-      "score": 63,
+      "score": 67,
       "publishDate": "2025-09-19",
       "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatre-london-stephen-daldry-juliet-stevenson",
       "findings": [
@@ -97794,7 +98090,7 @@
       "file": "theatre-weekly--greg-stewart.json",
       "score": 75,
       "publishDate": "2020-02-25",
-      "url": null,
+      "url": "https://theatreweekly.com/review-the-prince-of-egypt-at-the-dominion-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
