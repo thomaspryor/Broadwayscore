@@ -301,5 +301,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T10:15:19.880Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6298-az-lookups",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6298-az-lookups",
+    "description": "land.yml did not land land/bro-6298-az-lookups: the unit-tests-node gate went red at 029d487473. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40302983919",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6298-az-lookups"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "029d4874735464897a4de6815a27d7dbfb86c4e3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40302983919"
+      }
+    ],
+    "queuedAt": "2026-10-26T10:18:57.300Z"
   }
 ]
