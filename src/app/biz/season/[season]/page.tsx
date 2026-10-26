@@ -16,6 +16,7 @@ import {
   getShowsBySeasonWithCommercial,
   getSeasonComparison,
   getSeasonProfiles,
+  getSeasonPaybackHistory,
   isIndexedCommercialSeason,
 } from '@/lib/data-commercial';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
@@ -25,7 +26,7 @@ import AllShowsTable from '@/components/biz/AllShowsTable';
 import MoneyGate from '@/components/biz/MoneyGate';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
-import { formatRowValue } from '@/lib/season-profile';
+import { formatRowValue, returnedCapitalText } from '@/lib/season-profile';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 import EmailTomLink from '@/components/EmailTomLink';
 
@@ -105,6 +106,8 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
   const profile = getSeasonProfiles().find((p) => p.season === season) ?? null;
   const est = profile && profile.estimatedCapital.total > 0 ? profile.estimatedCapital : null;
   const outcome = profile?.capitalByOutcome ?? null;
+  const back = profile ? returnedCapitalText(profile) : null;
+  const backHistory = back ? getSeasonPaybackHistory(season) : [];
   const openShows = shows.filter(s => s.status === 'open' || s.status === 'previews').length;
   const closedShows = shows.filter(s => s.status === 'closed').length;
 
@@ -206,6 +209,26 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             )}
           </div>
         </div>
+
+        {/* Money back so far (estimate), and how it has grown since we started tracking it (BRO-6335) */}
+        {back && profile && (
+          <div className="bg-surface-overlay rounded-xl p-4 border border-white/5 mb-8" data-testid="season-money-back">
+            <div className="text-xl sm:text-2xl font-bold text-emerald-400">{back.headline}</div>
+            <div
+              className="text-xs text-gray-500 mt-1"
+              title="Our estimate. Recouped shows count at their reported return, else all of their capital; other shows at our estimate of what has come back, from weekly grosses and costs. Only shows we can estimate are counted."
+            >
+              Estimate, {back.range} ({back.share} of the capital in {profile.returnedCapital.shows} shows). It rises as running shows pay back.
+            </div>
+            {backHistory.length > 1 && (
+              <div className="text-xs text-gray-500 mt-1">
+                {backHistory[0].date}: about {formatRowValue('money', backHistory[0].returnedMid)} back
+                {' · '}
+                {backHistory[backHistory.length - 1].date}: about {formatRowValue('money', backHistory[backHistory.length - 1].returnedMid)} back
+              </div>
+            )}
+          </div>
+        )}
 
         {/* Mix, capital and recoupment vs last season and the 10-season average */}
         {comparison && (

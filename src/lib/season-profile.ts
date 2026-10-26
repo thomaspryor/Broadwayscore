@@ -404,6 +404,22 @@ export function hasReturnedCoverage(p: SeasonProfile): boolean {
   return hasEstimatedCapital(p) && r.of > 0 && r.capital > 0 && r.shows / r.of >= MIN_RETURNED_COVERAGE;
 }
 
+/**
+ * "about $X back of $Y in" with the band, for /biz and the season page
+ * (BRO-6335). Always an estimate; the range is the low-high band. null where
+ * hasReturnedCoverage fails.
+ */
+export function returnedCapitalText(p: SeasonProfile): { headline: string; range: string; share: string } | null {
+  if (!hasReturnedCoverage(p)) return null;
+  const r = p.returnedCapital;
+  const money = (v: number) => formatRowValue('money', v);
+  return {
+    headline: `about ${money(r.mid)} back of ${money(r.capital)} in`,
+    range: `${money(r.low)} to ${money(r.high)}`,
+    share: `${Math.round((r.mid / r.capital) * 100)}%`,
+  };
+}
+
 export interface HistoryAverage {
   /** Seasons averaged: finished, with openings, pandemic seasons left out. */
   seasons: number;

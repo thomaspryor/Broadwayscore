@@ -59,6 +59,8 @@ import {
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
 import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
+import fs from 'fs';
+import path from 'path';
 import { getMarketDate } from './date-utils';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { conversionOf, isConvertedToCommercial, commercialRunWeeks, recoupClockStart } from '../../scripts/lib/commercial-conversion';
@@ -402,6 +404,37 @@ export function getSeasonShowList(season: string): { dated: SeasonListShow[]; un
       .map(pick)
       .sort((a, b) => a.title.localeCompare(b.title)),
   };
+}
+
+export interface SeasonPaybackPoint {
+  date: string;
+  capital: number;
+  returnedLow: number;
+  returnedMid: number;
+  returnedHigh: number;
+  shows: number;
+  of: number;
+}
+
+let paybackHistoryCache: Record<string, SeasonPaybackPoint[]> | null = null;
+
+/**
+ * One season's estimated payback over time (data/season-payback-history.json,
+ * appended daily by commercial-stale-closures.yml, BRO-6335), oldest first.
+ * Empty before the file exists (cloud sessions, first run).
+ */
+export function getSeasonPaybackHistory(season: string): SeasonPaybackPoint[] {
+  if (!paybackHistoryCache) {
+    paybackHistoryCache = {};
+    try {
+      const rows = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data', 'season-payback-history.json'), 'utf8'));
+      for (const r of Array.isArray(rows) ? rows : []) (paybackHistoryCache[r.season] ??= []).push(r);
+      for (const list of Object.values(paybackHistoryCache)) list.sort((a, b) => a.date.localeCompare(b.date));
+    } catch {
+      /* no history file yet */
+    }
+  }
+  return paybackHistoryCache[season] ?? [];
 }
 
 export function getSeasonProfiles(): SeasonProfile[] {

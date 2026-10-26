@@ -120,6 +120,7 @@ data/pending-fixes/*
 
 # Opening night broadcast dedup state (regenerated from Formspree sync + send receipts)
 data/opening-night-sent.json
+data/season-payback-history.json
 
 # Opening-night monitor's runtime lock — mkdir'd/rm'd every launch cycle; a
 # `git add -A` picking it up would let a later checkout/clean reset its

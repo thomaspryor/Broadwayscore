@@ -13,6 +13,7 @@ import {
   formatRowValue,
   hasEstimatedCapital,
   hasFullCapitalCoverage,
+  returnedCapitalText,
   hasTrackedCoverage,
   seasonHistoryAverage,
   type SeasonProfile,
@@ -63,6 +64,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Recouped</th>
               {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Disclosed<br />capital</th>}
               {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Est. total<br />capital</th>}
+              {showCapital && <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Est. money<br />back so far</th>}
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Musicals</th>
               <th className="py-3 px-3 font-medium text-center whitespace-nowrap">Revivals</th>
               <th className="hidden md:table-cell py-3 px-3 font-medium text-center whitespace-nowrap">Revivals among<br />musicals</th>
@@ -76,6 +78,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
               // Sums sit side by side only where nearly every budget is public.
               const capital = hasFullCapitalCoverage(p) && p.season !== currentSeason;
               const current = p.season === currentSeason;
+              const back = returnedCapitalText(p);
               return (
                 <tr key={p.season} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-2.5 px-3 whitespace-nowrap sticky left-0 z-10 bg-surface-raised">
@@ -106,6 +109,13 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                       {hasEstimatedCapital(p) && !current ? formatRowValue('money', p.estimatedCapital.total) : '—'}
                       {hasEstimatedCapital(p) && !current && estimateNotes(p).map((n) => <span key={n} className="block text-xs text-gray-500">{n}</span>)}
+                    </td>
+                  )}
+                  {showCapital && (
+                    <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap" data-testid="season-money-back">
+                      {back ? `~${formatRowValue('money', p.returnedCapital.mid)} back` : '—'}
+                      {back && <span className="block text-xs text-gray-500">of {formatRowValue('money', p.returnedCapital.capital)} in</span>}
+                      {back && <span className="block text-xs text-gray-500">{back.range}</span>}
                     </td>
                   )}
                   <td className="py-2.5 px-3 text-center text-gray-300">
@@ -147,6 +157,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                     {cellNote(seasonsNote(avg.estimatedCapital.seasons, avg.seasons))}
                   </td>
                 )}
+                {showCapital && <td className="py-2.5 px-3 text-center text-gray-500">—</td>}
                 <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
                   {sharePct(avg.musicals.share)}
                   {cellNote(avg.musicals.count == null ? null : `${Math.round(avg.musicals.count)} a season`)}
@@ -168,7 +179,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
         productions (nonprofit runs and tour stops have no investors to repay). &ldquo;—&rdquo; means we track too few of
         that season&apos;s productions to say{showCapital && '; a disclosed capital sum shows only where at least 80% of budgets are disclosed'}. Recent seasons&apos;
         recoupment counts can still rise.
-        {showCapital && ' Est. total capital adds, for each tracked commercial production with no public figure, our own estimate of its budget where we have one (never counted as disclosed), else the median disclosed capitalization of similar shows (same type and original or revival, opening within two seasons, else four, else the same type within four); left out are nonprofit-presented runs with no public figure and productions we do not track (the cell counts them). Disclosed figures include SEC filing maximums, so both capital columns can run high.'}
+        {showCapital && ' Est. total capital adds, for each tracked commercial production with no public figure, our own estimate of its budget where we have one (never counted as disclosed), else the median disclosed capitalization of similar shows (same type and original or revival, opening within two seasons, else four, else the same type within four); left out are nonprofit-presented runs with no public figure and productions we do not track (the cell counts them). Disclosed figures include SEC filing maximums, so both capital columns can run high. Est. money back so far is our estimate of how much of the capital in those shows has come back to investors (recouped shows at their reported return, otherwise our estimate from weekly grosses and costs), with the range below it; it counts only shows we can estimate and rises as running shows pay back.'}
         {' '}The average row covers finished seasons, leaving out the season under way and the pandemic seasons; recoupment averages only seasons that ended over a year ago.
       </p>
     </div>

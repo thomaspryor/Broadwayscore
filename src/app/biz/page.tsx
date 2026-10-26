@@ -228,7 +228,7 @@ export default function BizDashboard() {
         {seasonHistory.length > 0 && (
           <section className="mb-8">
             <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
-            <p className="text-sm text-gray-400 -mt-2 mb-3">How many commercial shows paid back their investors, and how much money went in. Tap a season for every show.</p>
+            <p className="text-sm text-gray-400 -mt-2 mb-3">How many commercial shows paid back their investors, how much money went in and our estimate of how much has come back. Tap a season for every show.</p>
             <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} asOf={today} />
           </section>
         )}
