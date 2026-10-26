@@ -46,13 +46,15 @@ async function excerpt(q, cache) {
   if (!process.env.OPENAI_API_KEY) throw new Error('long quote needs OPENAI_API_KEY to pick a short excerpt: ' + q.slice(0, 60));
   const body = { model: process.env.EXCERPT_MODEL || 'gpt-5.4-mini', response_format: { type: 'json_object' }, messages: [{ role: 'user', content:
     `A theatre critic wrote this line:\n\n${q}\n\nCopy out ONE contiguous span of it, 5 to 14 words, that carries the critic's opinion of the show and reads naturally when spoken aloud on its own. Copy it character for character: do not change, add or drop any word or punctuation inside the span. Reply as JSON: {"span": "..."}` }] };
+  // the model sometimes copies too little or paraphrases; ask again before giving up (3 tries)
+  for (let t = 1; ; t++) {
   const res = await fetch('https://api.openai.com/v1/chat/completions', { method: 'POST', headers: { 'Content-Type': 'application/json', Authorization: 'Bearer ' + process.env.OPENAI_API_KEY }, body: JSON.stringify(body) });
   const j = await res.json(); if (j.error) throw new Error('excerpt model: ' + j.error.message);
   let span = JSON.parse(j.choices[0].message.content).span.trim().replace(/[.,;:]$/, '');
   const i = norm1(q).indexOf(norm1(span));
-  if (i < 0 || words(span) < 4 || words(span) > 16) throw new Error(`excerpt is not a verbatim 4-16 word span of the quote: "${span}"`);
-  span = q.slice(i, i + span.length);
-  return (cache[q] = span);
+  if (i < 0 || words(span) < 4 || words(span) > 16) { if (t < 3) continue; throw new Error(`excerpt is not a verbatim 4-16 word span of the quote after 3 tries: "${span}"`); }
+  return (cache[q] = q.slice(i, i + span.length));
+  }
 }
 
 // Wording rotates per show so a feed of these never reads the same twice. Each slot lists interchangeable lines;
@@ -95,7 +97,12 @@ const LINES = {
   capVerdict: ['{T} just opened {where} and {n} critics have weighed in. Critic Score: {s}, {label}. {Aud} Every review is at broadwayscorecard.com', 'The {night} reviews for {T} are in: {n} critics, Critic Score {s}, {label}. {Aud} Every review is at broadwayscorecard.com', '{n} critics have reviewed {T} so far. The Critic Score is {s}, {label}. {Aud} Read them all at broadwayscorecard.com'],
   capReveal: ['{n} critics weighed in on {T}. One score: {s}, {label}. Audiences give it {a} {g}. Every review is at broadwayscorecard.com', '{n} reviews of {T}, one number: {s}, {label}. Audiences give it {a} {g}. Every review is at broadwayscorecard.com', '{T}: {n} critics, one Critic Score of {s} ({label}). Audiences give it {a} {g}. Every review is at broadwayscorecard.com'],
   capEvery: ['All {n} reviews of {T}: {tally}. Critic Score: {s}, {label}. Every review is at broadwayscorecard.com', '{n} critics on {T}, sorted: {tally}. That adds up to a Critic Score of {s}, {label}. Every review is at broadwayscorecard.com', 'Every review of {T} in one place: {tally}. Critic Score {s}, {label}. Read them at broadwayscorecard.com'],
-  capTop5: ['{L}, ranked by Critic Score. Every score is at broadwayscorecard.com', '{L}, by Critic Score. Do you agree with number one? Every score is at broadwayscorecard.com', '{L}, ranked by what critics said. The full list is at broadwayscorecard.com'],
+  // a question for the comments, so people answer back (owner ask 2026-10-26)
+  askVerdict: ['Seen it yet? Are you with the critics on this one?', 'Did the critics get it right?', 'If you saw it, what would you give it?', 'Fair score, or way off?'],
+  askReveal: ['If you saw it, would you score it higher or lower than {s}?', 'Is {s} fair? What would you give it?', 'Seen it? Does {s} sound right to you?'],
+  askEvery: ['Did you love it as much as the critics did?', 'Seen it? Where would your review land?', 'Which of these reviews is closest to yours?'],
+  askTop5: ['Is anything missing from this list?', 'Do you agree with number one?', 'Which show would you put at the top?'],
+  capTop5: ['{L}, ranked by Critic Score. Every score is at broadwayscorecard.com', '{L}, by Critic Score. Every score is at broadwayscorecard.com', '{L}, ranked by what critics said. The full list is at broadwayscorecard.com'],
 };
 const line = (slot, key, v) => { const o = pick(slot, LINES[slot], key); return Array.isArray(o) ? [fill(o[0], v), o[1]] : [fill(o, v), null]; };
 const tagFor = t => '#' + t.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/^The /, '').replace(/[^A-Za-z0-9]/g, '');
@@ -112,7 +119,7 @@ async function plan(fmt, key, cache) {
     const spokenTitle = L.title.replace(/\d+/g, d => W(+d));
     const parts = shows.slice().reverse().map((s, i) => `${i === 4 ? 'And number one' : 'Number ' + W(5 - i)}: ${s.title}${/[!?]$/.test(s.title) ? '' : ','} ${i === 4 ? 'with ' : ''}${W(s.score)}${i === 4 ? '!' : '.'}`);
     const v = { L: spokenTitle, l: spokenTitle[0].toLowerCase() + spokenTitle.slice(1) };
-    const caption = line('capTop5', K, { L: L.title, l: L.title }) [0] + '\n\n#Broadway #Theater #NYC';
+    const caption = line('capTop5', K, { L: L.title, l: L.title }) [0] + '\n\n' + line('askTop5', K, {})[0] + '\n\n#Broadway #Theater #NYC';
     const keep = { prompt: shows.slice().reverse().flatMap((s, i) => [`number ${W(5 - i)}`, s.title, W(s.score)]), caption: [L.title] };
     return { fmt, key, caption, keep, prompt: `[excited] ${line('top5Lead', K, v)[0]} ${parts.join(' ')} ${L.endLine} ${line('top5End', K, v)[0]}` };
   }
@@ -129,7 +136,7 @@ async function plan(fmt, key, cache) {
     });
     const [sc, scoreLead] = line('everyScore', K, { s: W(score) });
     const tallyCap = items.map(([k]) => `${c[k]} ${k === 'rave' ? (c[k] === 1 ? 'rave' : 'raves') : k}`).join(', ');
-    const caption = line('capEvery', K, { n: N, T: m.title, tally: tallyCap, s: score, label }) [0] + '\n\n' + hashtags(m);
+    const caption = line('capEvery', K, { n: N, T: m.title, tally: tallyCap, s: score, label }) [0] + '\n\n' + line('askEvery', K, { s: score })[0] + '\n\n' + hashtags(m);
     const keep = { prompt: [`${W(N)} critics`, ...items.map(([k]) => k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k), scoreLead, W(score), label, 'every review'], caption: [tallyCap, `${score}`, label] };
     return { fmt, key, caption, keep, cue: { score: scoreLead }, prompt: `[excited] ${line('everyOpen', K, { T: m.title, N: cap(W(N)), n: W(N) })[0]} ${lines.join(' ')} ${sc} ${label}. ${line('signoff', K, {})[0]}` };
   }
@@ -145,7 +152,7 @@ async function plan(fmt, key, cache) {
       .map(([k, many]) => c[k] === 1 && k === 'rave' ? 'one rave' : `${W(c[k])} ${many}`);
     const tally = items.length > 1 ? items.slice(0, -1).join(', ') + ', and ' + items[items.length - 1] : items[0];
     const [sc, scoreLead] = line('verdictScore', K, { s: W(score) });
-    const caption = line('capVerdict', K, { T: m.title, where: WHERE[m.category], night, n: N, s: score, label, Aud: audCap }) [0].replace(/^./, ch => ch.toUpperCase()) + '\n\n' + hashtags(m);
+    const caption = line('capVerdict', K, { T: m.title, where: WHERE[m.category], night, n: N, s: score, label, Aud: audCap }) [0].replace(/^./, ch => ch.toUpperCase()) + '\n\n' + line('askVerdict', K, { s: score })[0] + '\n\n' + hashtags(m);
     const keep = { prompt: [`${W(N)} critics`, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), tally, scoreLead, W(score), label, 'audiences', G, 'every review'], caption: [`${N} critics`, `${score}`, label, audCap] };
     return { fmt, key, quotes: picks, caption, keep, cue: { score: scoreLead, aud: 'audiences' }, prompt: `[excited] ${open} ${quotes} ${line('tally', K, { Tally: cap(tally), tally })[0]} ${sc} ${label}. ${line(dir, K, av)[0]} ${line('signoff', K, {})[0]}` };
   }
@@ -153,7 +160,7 @@ async function plan(fmt, key, cache) {
     const [cnt, count] = line('revealCount', K, {}), [qi, quotesIn] = line('revealQuotes', K, {});
     const [vs, vsLead] = line('revealVs', K, { s: W(score) }), [al, audLead] = line('revealAud', K, av);
     const gap = line({ audMore: 'gapMore', audLess: 'gapLess', audSame: 'gapSame' }[dir], K, {})[0];
-    const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + hashtags(m);
+    const caption = line('capReveal', K, { n: N, T: m.title, s: score, label, a: av.a, g: aud.grade }) [0] + '\n\n' + line('askReveal', K, { s: score })[0] + '\n\n' + hashtags(m);
     const keep = { prompt: [`${W(N)} critics`, count, W(score), label, quotesIn, ...picks.flatMap(q => [q.say, q.ex.replace(/[.!?]+$/, '')]), `${vsLead} ${W(score)}`, audLead, G, gap, 'every review'], caption: [`${score}`, label, aud.grade] };
     return { fmt, key, quotes: picks, caption, keep, gapLine: gap, cue: { count, quotesIn, vs: vsLead, aud: audLead }, prompt: `[excited] ${cap(line('revealOpen', K, { N: cap(W(N)), n: W(N), T: m.title })[0])} ${cnt} ${cap(W(score))}! ${label}. ${qi} ${quotes} ${vs} ${al} ${gap} ${line('revealEnd', K, {})[0]}` };
   }
