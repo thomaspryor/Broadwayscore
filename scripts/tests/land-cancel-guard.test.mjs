@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
 import { fileURLToPath } from 'node:url';
 
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
@@ -20,7 +20,7 @@ const run = (session, wf = '.github/workflows/land.yml') => JSON.stringify({
   head_commit: { message: `fix: thing\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nClaude-Session: https://claude.ai/code/session_${session}` },
 });
 function hook(toolInput, runJson, extraEnv = {}, toolName = 'Bash') {
-  const r = spawnSync('bash', [HOOK], {
+  const r = spawnSyncStdinFile('bash', [HOOK], {
     input: JSON.stringify({ tool_name: toolName, tool_input: toolInput }),
     env: { PATH: process.env.PATH, HOME: home, CLAUDE_CODE_REMOTE_SESSION_ID: `cse_${ME}`, LAND_CANCEL_GUARD_RUN_JSON: runJson, ...extraEnv },
     encoding: 'utf8',
