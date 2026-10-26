@@ -139,7 +139,7 @@ function pickTrForReview(results, review, opts = {}) {
   if (rm == null) return null;
   const hits = (results || [])
     .filter(r => r && titlesMatch(r.title, review.title))
-    .filter(r => isLondonVenue(r.venue, { pdfEra: /\/volume\//.test(r.link || '') }) && sameVenueFamily(trVenueName(r.venue), review.venue))
+    .filter(r => isLondonVenue(r.venue, { pdfEra: /\/volume\//.test(r.link || '') }) && (sameVenueFamily(trVenueName(r.venue), review.venue) || (review.source === 'tr-az' && !review.venue)))
     .map(r => ({ r, m: trIssueMonthRange(r.link) }))
     .filter(x => x.m != null && x.m.hi >= rm - 3 && x.m.lo <= rm + 1)
     .map(x => ({ r: x.r, d: rm < x.m.lo ? x.m.lo - rm : rm > x.m.hi ? rm - x.m.hi : 0, w: x.m.hi - x.m.lo }))
@@ -315,7 +315,8 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
       venue: ntStageVenue(review.venue, row.tr?.venue) || review.venue,
       genres: [],
       season,
-      signals: ['wos-review'],
+      // an A-Z row (BRO-6298) is a listing in Theatre Record's own A-Z of London productions, not a WOS review
+      signals: [review.source === 'tr-az' ? 'tr-az' : 'wos-review'],
       origin: 'review-led',
       sourceUrls: { wosReview: review.url, ...(row.tr?.link ? { theatreRecord: row.tr.link } : {}) },
     };

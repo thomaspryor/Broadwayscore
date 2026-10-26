@@ -15,6 +15,11 @@ on:
         description: 'Comma-separated seasons, e.g. 2019-2020,2020-2021'
         required: true
         type: string
+      resume:
+        description: 'Keep finished rows of an earlier partial run (BRO-6298)'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -51,7 +56,12 @@ jobs:
           TR_EMAIL: ${{ secrets.TR_EMAIL }}
           TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
           SEASONS: ${{ inputs.seasons }}
-        run: node scripts/resolve-we-unlisted-tr.js --seasons="$SEASONS"
+          RESUME: ${{ inputs.resume }}
+        # --budget-min stops the lookups before the step timeout so the rows done so far are still committed
+        run: |
+          ARGS=(--seasons="$SEASONS" --budget-min=36)
+          if [ "$RESUME" = "true" ]; then ARGS+=(--resume); fi
+          node scripts/resolve-we-unlisted-tr.js "${ARGS[@]}"
 
       - name: Commit lookup files
         env:
