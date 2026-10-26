@@ -245,10 +245,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T13:49:09.630Z",
-      "lastSeen": "2026-10-26T14:52:02.925Z",
-      "lastNotifiedAt": "2026-10-26T13:49:09.630Z",
-      "lastSurfacedAt": "2026-10-26T13:49:09.630Z",
+      "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
+      "lastSeen": "2026-10-26T14:57:22.280Z",
+      "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
+      "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
       "cardId": null,
       "linearIdentifier": null,
@@ -27549,7 +27549,7 @@
       "resolvedAt": "2026-10-26T13:43:52.545Z"
     },
     "test-yml:red:Unit Tests:78db5ec3": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"findReviewsToProcess (real function) queues an aged closed-show stub inside the cut\"",
       "firstSeen": "2026-10-26T13:23:21.343Z",
@@ -27562,9 +27562,12 @@
       "linearIdentifier": "BRO-6328",
       "silentRefires": 1,
       "absentRunIds": [
-        "40335342653",
-        "40340282651"
-      ]
+        "40333144748",
+        "40336990940",
+        "40340690095"
+      ],
+      "resolvedAt": "2026-10-26T14:57:21.913Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/job/linear-BRO-6307-mvp4vz58": {
       "status": "open",
@@ -27726,8 +27729,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6334",
+      "silentRefires": 1,
       "absentRunIds": [
-        "40340282651"
+        "40340690095"
       ]
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
@@ -27762,20 +27766,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"a stored comparables figure never sits on a record that also has a capitalization\"",
-      "firstSeen": "2026-10-26T14:52:00.600Z",
-      "incidentOpenedAt": "2026-10-26T14:52:00.600Z",
-      "lastSeen": "2026-10-26T14:52:00.600Z",
-      "lastNotifiedAt": "2026-10-26T14:52:00.600Z",
+      "firstSeen": "2026-10-26T14:57:21.925Z",
+      "incidentOpenedAt": "2026-10-26T14:57:21.925Z",
+      "lastSeen": "2026-10-26T14:57:21.925Z",
+      "lastNotifiedAt": "2026-10-26T14:57:21.925Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6344",
-      "dispatch": {
-        "requestedAt": "2026-10-26T14:52:00.600Z",
-        "mode": "dispatch-at-filing",
-        "runId": "40340282651",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40340282651"
-      }
+      "linearIdentifier": "BRO-6344"
     },
     "land:land/bro-6302-tr-lift-honored": {
       "status": "open",
