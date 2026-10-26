@@ -33,9 +33,30 @@ const crypto = require('crypto');
 
 const REPO = 'thomaspryor/Broadwayscore';
 const LOCK_PATH = 'data/email-send.lock';
-const BRANCH = 'main';
+// SEND_LOCK_BRANCH points the lock at a scratch branch: scripts/test-send-lock.js
+// does this so its acquire/release cycles never commit to main (BRO-6276).
+const BRANCH = process.env.SEND_LOCK_BRANCH || 'main';
+// Purposes starting with this are test locks. A test lock may never be written
+// to main, and a real lock may never be written anywhere else (it would not
+// serialize against the workflows locking on main).
+const TEST_PURPOSE_PREFIX = '__test_';
 const DEFAULT_TTL_MS = 5 * 60 * 1000; // 5 minutes
 const MAX_RETRIES = 3;
+
+/**
+ * Test locks only off main, real locks only on main. Returns a reason string,
+ * or null when allowed. Guards acquireSendLock; putLock/deleteLock are raw.
+ */
+function lockBranchRefusal(branch, purpose) {
+  const isTest = String(purpose || '').startsWith(TEST_PURPOSE_PREFIX);
+  if (branch === 'main' && isTest) {
+    return `refusing test lock "${purpose}" on main: set SEND_LOCK_BRANCH to a scratch branch`;
+  }
+  if (branch !== 'main' && !isTest) {
+    return `refusing lock "${purpose}" on ${branch}: real sends lock on main, unset SEND_LOCK_BRANCH`;
+  }
+  return null;
+}
 
 /**
  * Run `gh api` and return the parsed result. Distinguishes 404 (file missing)
@@ -136,6 +157,9 @@ function deleteLock(sha, message) {
  */
 function acquireSendLock(opts = {}) {
   const { purpose = 'unknown', ttlMs = DEFAULT_TTL_MS, now = Date.now() } = opts;
+
+  const refusal = lockBranchRefusal(BRANCH, purpose);
+  if (refusal) return { acquired: false, reason: refusal };
 
   const sessionId = crypto.randomUUID();
   const acquiredAt = new Date(now).toISOString();
@@ -245,7 +269,10 @@ module.exports = {
   fetchLock,
   putLock,
   deleteLock,
+  lockBranchRefusal,
   LOCK_PATH,
   REPO,
+  BRANCH,
+  TEST_PURPOSE_PREFIX,
   DEFAULT_TTL_MS,
 };
