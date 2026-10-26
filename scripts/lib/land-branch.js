@@ -457,6 +457,12 @@ function mergedTreeGateInput(changedFiles, interveningTests) {
   return [...new Set([...(changedFiles || []), ...(interveningTests || [])].map(String))];
 }
 
+/** "safe-checks 4m12s, merged-tree-tests 9m3s" for the in-lock re-check log (BRO-6276). */
+function checkTimings({ safeMs, extra = [] }) {
+  const fmt = (ms) => { const s = Math.round(ms / 1000); return s >= 60 ? `${Math.floor(s / 60)}m${s % 60}s` : `${s}s`; };
+  return [`safe-checks ${fmt(safeMs)}`, ...extra.filter(r => Number.isFinite(r.ms)).map(r => `${r.name} ${fmt(r.ms)}`)].join(', ');
+}
+
 // recheckScope comes from makeVerifiedBaseChecks (selectRecheckScope) or the
 // merge train (selectTrainRecheckScope); a plain land passes none and gets the
 // full re-check, and the holder-alone retry after a red train forces full.
@@ -478,6 +484,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
   if (linked.length) log(`[land] linked ${linked.length} gitignored path(s) into the worktree (node_modules/core data)`);
   // The npm ci outcome (own install, or a FAILED fallback naming its log).
   for (const l of linked) if (l.startsWith('node_modules (')) log(`[land] ${l}`);
+  const safeStart = Date.now();
   const results = runSafeChecks({
     cwd,
     changedFiles: files,
@@ -491,11 +498,13 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
     prepareFrom: repoDir,
   });
 
+  const safeEnd = Date.now();
   const home = fs.mkdtempSync(path.join(os.tmpdir(), 'land-branch-home-'));
   try {
     const env = checksEnv({ home });
     const extra = [];
     const run = (name, argv, opts = {}) => {
+      const startedAt = Date.now();
       try {
         execFileSync(argv[0], argv.slice(1), {
           cwd, stdio: ['pipe', 'pipe', 'pipe'], encoding: 'utf8',
@@ -506,7 +515,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
           // dry-run of this lib (BRO-3873).
           maxBuffer: CHECK_OUTPUT_MAX_BYTES,
         });
-        extra.push({ name, pass: true });
+        extra.push({ name, pass: true, ms: Date.now() - startedAt });
       } catch (err) {
         if (err && err.code === 'ENOBUFS') err.stderr = `${err.stderr || ''}\ncheck output exceeded CHECK_OUTPUT_MAX_BYTES (${CHECK_OUTPUT_MAX_BYTES}) — the check was killed, this is NOT a verdict on the code`;
         // Keep the full output: the detail string is a summary, and a merged-
@@ -516,7 +525,7 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
           logPath = path.join(os.tmpdir(), `land-branch-${name.replace(/[^\w.-]+/g, '_')}-${Date.now()}.log`);
           fs.writeFileSync(logPath, `# ${argv.join(' ')}\n# exit ${err.status}${err.signal ? ` signal ${err.signal}` : ''}\n\n${err.stdout || ''}\n--- stderr ---\n${err.stderr || ''}\n`);
         } catch { logPath = null; }
-        extra.push({ name, pass: false, detail: `${(opts.detail || defaultDetail)(err)}${logPath ? ` [full output: ${logPath}]` : ''}` });
+        extra.push({ name, pass: false, ms: Date.now() - startedAt, detail: `${(opts.detail || defaultDetail)(err)}${logPath ? ` [full output: ${logPath}]` : ''}` });
       }
     };
     // Syntax floor for shell — tier 3's node --check has no shell counterpart.
@@ -546,6 +555,9 @@ function defaultChecks({ cwd, changedFiles, interveningTests = [], recheckScope 
     const proven = extra.some(r => r.pass) ;
     const merged = results.filter(r => !(r.name === 'no-checks' && proven)).concat(extra);
     log(`[land] checks: ${merged.length ? merged.map(r => `${r.name}=${r.pass ? 'ok' : 'FAIL'}`).join(', ') : 'none applicable'}`);
+    // BRO-6276: the in-lock re-check is the landing queue's throughput cap
+    // (14-18 min per train on 2026-10-25); say where the time went.
+    log(`[land] check timings: ${checkTimings({ safeMs: safeEnd - safeStart, extra })}`);
     return merged;
   } finally {
     try { fs.rmSync(home, { recursive: true, force: true }); } catch { /* best effort */ }
@@ -1057,6 +1069,7 @@ function landBranch(o) {
 
 module.exports = {
   DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
+  checkTimings,
   isPromisorFetchFailure,
   PROMISOR_REBASE_RETRIES,
   MAX_ATTEMPTS,

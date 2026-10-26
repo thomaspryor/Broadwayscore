@@ -21,7 +21,7 @@ const {
   landBranch, defaultPushMain, firstFailedCheck, classifyPushFailure, shouldRetry, decideCancelledLandRetry, decideCancelledWait, MAX_CANCEL_RETRIES, isPlausibleBranchName, formatLandLine, MAX_ATTEMPTS,
   isInertForVerification, classifyIntervening, decideVerifiedBaseSkip, makeVerifiedBaseChecks, mergedTreeGateInput, CAPPED_DOCS_TEST,
   selectRecheckScope, selectTrainRecheckScope, isBuildCodePath,
-  isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal,
+  isPromisorFetchFailure, DEFAULT_LAND_DEADLINE_MS, landDeadlineMs, deadlineRefusal, checkTimings,
 } = require('./land-branch.js');
 const { selectTestFiles } = require('./merge-post-merge-test-gate.js');
 
@@ -1074,4 +1074,12 @@ test('BRO-6276 selectTrainRecheckScope: small only when no two members (or main)
   assert.deepEqual([b2.mode, b2.build], ['small', false]);
   const b3 = s([mem('h', ['src/app/page.tsx'], { mainChanged: ['package-lock.json'] }), mem('r', ['docs.md'])]);
   assert.equal(b3.build, true, 'main changed build code since the src/ member was verified');
+});
+
+test('BRO-6276 checkTimings: names where the in-lock re-check spent its time', () => {
+  assert.equal(
+    checkTimings({ safeMs: 252_400, extra: [{ name: 'merged-tree-tests', pass: true, ms: 543_000 }, { name: 'bash-syntax', pass: false, ms: 900 }, { name: 'no-ms', pass: true }] }),
+    'safe-checks 4m12s, merged-tree-tests 9m3s, bash-syntax 1s',
+  );
+  assert.equal(checkTimings({ safeMs: 0 }), 'safe-checks 0s');
 });
