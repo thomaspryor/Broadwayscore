@@ -44,7 +44,7 @@ name: Land
 # scripts/lib/land-gauntlet.sh, run on the rebased branch first and then on
 # origin/main @ base for the branch's RED gates only (a gate green on the
 # branch needs no base, BRO-5670) — and judged by scripts/lib/land-gate-delta.js:
-#   - TypeScript Check: tsc root + tsc scripts/llm-scoring + next lint
+#   - TypeScript Check: tsc root + tsc scripts/llm-scoring + eslint
 #   - Unit Tests: the no-data-dependency batch and the scripts/lib batch,
 #     the same manifests/timeouts as test.yml (the bash integration tests and
 #     the slow network batch are not repeated here)

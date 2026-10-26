@@ -111,7 +111,7 @@ const EVIDENCE = Object.freeze({ HOLDS: 'holds', BROKEN: 'broken', UNKNOWN: 'unk
  * way is under-specified, not defective — a distinction audit-card-
  * verifiability.js already owns and this sweep should not re-litigate.
  */
-const NON_PROBATIVE_RE = /^\s*npx\s+(tsc|next\s+lint)\b/;
+const NON_PROBATIVE_RE = /^\s*(?:npx\s+(?:tsc|next\s+lint|eslint)|npm\s+run\s+lint)\b/;
 
 function isNonProbativeCommand(cmd) {
   return NON_PROBATIVE_RE.test(String(cmd || ''));

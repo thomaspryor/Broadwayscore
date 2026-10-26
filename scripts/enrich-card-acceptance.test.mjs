@@ -48,7 +48,7 @@ test('BRO-5266: data drafts cannot use unit tests or code-only fallback commands
     'node --test scripts/lib/reviews-backfill.test.mjs',
     'npx tsx --test tests/unit/backfill.test.ts',
     'node scripts/lib/reviews-backfill.test.mjs',
-    'npx tsc --noEmit', 'npx next lint', 'test -f scripts/enrich-card-acceptance.js',
+    'npx tsc --noEmit', 'npm run lint', 'test -f scripts/enrich-card-acceptance.js',
   ]) {
     let writes = 0;
     const result = await enrichOneCard({ name: 'Backfill reviews/images', tags: [] }, {
@@ -498,7 +498,7 @@ test('logEnrichmentWrite redacts real emails out of previousNotes/newNotes befor
 // safe command keeps its backticks, no gratuitous behavior change" — was made
 // without knowing that such a span can STEAL the arming slot: extractVerifyCmd
 // picks the FIRST span of the highest rank, so the section below arms the card
-// on `npx next lint` while the enricher validated, logged and audited
+// on `npm run lint` while the enricher validated, logged and audited
 // `npx tsc --noEmit`. Harmless for two path-free repo-wide checks; the same
 // shape with a `node --test` span names a test file whose paths were never
 // resolved, and the card can never pass (the #171 unpassable-card class).
@@ -518,7 +518,7 @@ test('guardrail 3: a safe extra command that would outrank the validated one is 
       llmCalls += 1;
       return JSON.stringify({
         command: 'npx tsc --noEmit',
-        acceptanceCriteria: '## Acceptance criteria\nAlso `npx next lint` stays clean; verify with `npx tsc --noEmit`.',
+        acceptanceCriteria: '## Acceptance criteria\nAlso `npm run lint` stays clean; verify with `npx tsc --noEmit`.',
       });
     },
     notionBrain: fakeNotionBrain(calls),
@@ -526,7 +526,7 @@ test('guardrail 3: a safe extra command that would outrank the validated one is 
   });
   assert.equal(r.action, 'failed');
   assert.match(r.detail, /command-mismatch/);
-  assert.match(r.detail, /npx next lint/, 'the refusal must name the command that would actually have run');
+  assert.match(r.detail, /npm run lint/, 'the refusal must name the command that would actually have run');
   assert.equal(llmCalls, 2, 'a mismatch is retryable — the model gets told to name exactly one command');
   assert.equal(calls.length, 0);
 });
@@ -543,13 +543,13 @@ test('guardrail 3: a safe extra command that does NOT outrank the validated one 
   }, {
     callLLM: async () => JSON.stringify({
       command: cmd,
-      acceptanceCriteria: `## Acceptance criteria\nAlso \`npx next lint\` stays clean; verify with \`${cmd}\`.`,
+      acceptanceCriteria: `## Acceptance criteria\nAlso \`npm run lint\` stays clean; verify with \`${cmd}\`.`,
     }),
     notionBrain: fakeNotionBrain(calls),
     logPath: SCRATCH_LOG_PATH,
   });
   assert.equal(r.action, 'llm-enriched', r.detail);
-  assert.ok(/`npx next lint`/.test(writtenNotes(calls)), 'a safe extra command must keep its backticks');
+  assert.ok(/`npm run lint`/.test(writtenNotes(calls)), 'a safe extra command must keep its backticks');
   assert.deepEqual(r.demotedSpans, [], 'nothing should be demoted when every span is safe');
 });
 
@@ -723,7 +723,7 @@ test('dry-run mode never calls notionBrain even on a successful enrichment', asy
   const calls = [];
   const card = { id: 'c5', name: 'Fix scoring bug', category: 'Product', tags: [], notes: '## Problem\nBug.' };
   const r = await enrichOneCard(card, {
-    callLLM: async () => JSON.stringify({ command: 'npx next lint', acceptanceCriteria: '## Acceptance criteria\n`npx next lint` is clean' }),
+    callLLM: async () => JSON.stringify({ command: 'npm run lint', acceptanceCriteria: '## Acceptance criteria\n`npm run lint` is clean' }),
     notionBrain: fakeNotionBrain(calls),
     dryRun: true, logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'llm-enriched');
@@ -976,7 +976,7 @@ test('enrichOneCard: dry-run mode never calls opts.writeCard either', async () =
   const writeCalls = [];
   const card = { id: 'issue-uuid-2', name: 'Some Linear issue', category: null, tags: [], notes: '## Problem\nBug.' };
   const r = await enrichOneCard(card, {
-    callLLM: async () => JSON.stringify({ command: 'npx next lint', acceptanceCriteria: '## Acceptance criteria\n`npx next lint` is clean' }),
+    callLLM: async () => JSON.stringify({ command: 'npm run lint', acceptanceCriteria: '## Acceptance criteria\n`npm run lint` is clean' }),
     writeCard: async (c, newNotes) => { writeCalls.push({ id: c.id, newNotes }); },
     dryRun: true, logPath: SCRATCH_LOG_PATH });
   assert.equal(r.action, 'llm-enriched');

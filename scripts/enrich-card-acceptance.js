@@ -672,7 +672,7 @@ function buildEnrichPrompt(card) {
 This is a DATA OUTCOME card. Never name node --test, npx tsx --test, a .test file, tsc, lint or test -f. Do not invent a blocking unit test that asserts live data. If no supported read-only probe proves the claim, return an empty command so the card stays unchanged.` : `
   - node --test <path>.test.mjs   (a real existing test, OR a new one this work would add; name it tests/unit/<short-name>.test.mjs, scripts/lib/<short-name>.test.mjs, or scripts/<short-name>.test.mjs, matching the file the card's Problem/Suggested-approach text is actually about)
   - npx tsc --noEmit
-  - npx next lint
+  - npm run lint
   - test -f <path under docs/, memory/, tests/, src/, or scripts/>`;
   return `You are drafting the missing "## Acceptance criteria" section for a software backlog card so a dispatcher can verify it was actually done, by RE-RUNNING one command.
 

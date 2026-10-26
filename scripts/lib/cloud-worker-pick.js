@@ -304,7 +304,7 @@ function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
 const START_NOW_FIX_HINTS = {
   'parked-or-backlog': 'file it with --dispatch, not --park',
   'not-p0-p1': 'file it with --priority 1 or 2',
-  'no-safe-verify': 'add a safe-form "VERIFY: <cmd>" line (node --test <path>.test.mjs, npx tsc --noEmit, npx next lint, test -f <path>)',
+  'no-safe-verify': 'add a safe-form "VERIFY: <cmd>" line (node --test <path>.test.mjs, npx tsc --noEmit, npm run lint, test -f <path>)',
   'owner-judgment': 'the card says a person must judge it (VERIFY: owner-judgment); drop START-NOW or replace the marker with a safe-form VERIFY',
   'verify-not-cloud-runnable': 'use a narrower VERIFY than the whole unit suite',
   'no-dispatch-marker': 'drop NO-DISPATCH or drop START-NOW',

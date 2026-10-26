@@ -240,7 +240,7 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   if (files.some(f => /\.(ts|tsx)$/.test(f))) add('tsc', ['npx', 'tsc', '--noEmit']);
 
   if (tier === 3 && hasSrcChange(files)) {
-    add('next lint', ['npx', 'next', 'lint']);
+    add('next lint', ['npm', 'run', 'lint']);
     // The build is the check that actually describes the live site. Skippable
     // by config (tier3BuildCheck:false) for an owner who wants the loop
     // cheaper, never by an implementer or a card.

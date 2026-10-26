@@ -43,7 +43,7 @@ test('decideAutoClose closes an open stamped card whose real test passed', () =>
 });
 
 test('decideAutoClose keeps file-exists and generic checks open', () => {
-  for (const verifyCmd of ['test -f docs/a.md', 'npx next lint', 'node scripts/validate-data.js', 'node scripts/run-unit-tests.js', 'node scripts/check-canary-marker.js --date=2026-10-01', 'node scripts/audit-orphan-tests.js', 'npx tsc --noEmit']) {
+  for (const verifyCmd of ['test -f docs/a.md', 'npm run lint', 'node scripts/validate-data.js', 'node scripts/run-unit-tests.js', 'node scripts/check-canary-marker.js --date=2026-10-01', 'node scripts/audit-orphan-tests.js', 'npx tsc --noEmit']) {
     const d = core.decideAutoClose({ card: goodCard, target: { ...goodTarget, verifyCmd }, result: pass });
     assert.equal(d.close, false, verifyCmd);
   }

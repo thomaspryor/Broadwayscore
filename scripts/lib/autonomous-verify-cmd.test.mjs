@@ -22,7 +22,7 @@ Something is broken.
 
 test('pulls the command out of a VERIFY line when there is no section', () => {
   assert.equal(extract('- VERIFY: `npx tsc --noEmit` is clean').cmd, 'npx tsc --noEmit');
-  assert.equal(extract('**VERIFY**: `npx next lint`').cmd, 'npx next lint');
+  assert.equal(extract('**VERIFY**: `npm run lint`').cmd, 'npm run lint');
 });
 
 // BRO-2585: cards are routinely written as `VERIFY: node --test x.test.mjs`
