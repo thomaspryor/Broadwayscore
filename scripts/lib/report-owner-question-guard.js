@@ -7,7 +7,17 @@
  */
 const { hasInlineDecision } = require('./decision-card-parse.js');
 
+// hasInlineDecision is case-insensitive, so "Owner decision needed: add X?" in prose passes it.
+// A real block is the literal uppercase marker, so only those lines are handed to it.
+function hasRealBlock(text) {
+  const marked = String(text || '').split('\n').filter((l) => l.includes('DECISION NEEDED')).join('\n');
+  return !!marked && hasInlineDecision(marked);
+}
+
 // Statuses where a report hands work back. A done report that mentions the owner is a finished job.
+// Phrases namesOwnerHold misses: its negation window reads "without an owner call" as a negation.
+const EXTRA_OWNER_ASK_RE = /\bquestions? for (?:the )?owner\b|\bwithout an? owner (?:call|decision)\b|\bowner (?:must|should|has to|needs to) (?:decide|choose|pick|answer)\b/i;
+
 const GUARDED_STATUSES = new Set(['paused', 'blocked', 'in-review']);
 
 /**
@@ -18,8 +28,8 @@ function checkHiddenOwnerQuestion({ status, summary, verification, description }
   if (!GUARDED_STATUSES.has(status)) return { hidden: false };
   const { namesOwnerHold } = require('./cloud-worker-pick.js');
   const reportText = [summary, verification].filter(Boolean).join('\n');
-  if (!namesOwnerHold(reportText)) return { hidden: false };
-  if (hasInlineDecision(reportText) || hasInlineDecision(description)) return { hidden: false };
+  if (!namesOwnerHold(reportText) && !EXTRA_OWNER_ASK_RE.test(reportText)) return { hidden: false };
+  if (hasRealBlock(reportText) || hasRealBlock(description)) return { hidden: false };
   return {
     hidden: true,
     reason:

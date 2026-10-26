@@ -35,6 +35,14 @@ test('negated mentions, unrelated reports and done reports are not blocked', () 
   assert.equal(checkHiddenOwnerQuestion({}).hidden, false);
 });
 
+test('lowercase prose "owner decision needed: ..." is not a block (the real BRO-6128 and BRO-5447 reports)', () => {
+  const r128 = 'Owner decision needed: add the Liberation national tour as a tracked tour of liberation-2025? Wikipedia does not confirm the launch.';
+  const r5447 = 'Not fixable without an owner call. QUESTION FOR OWNER: discard or send late? Recommendation: discard.';
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: r128 }).hidden, true);
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: r5447 }).hidden, true);
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: r128 + '\n' + BLOCK }).hidden, false);
+});
+
 test('verification text is checked too', () => {
   assert.equal(checkHiddenOwnerQuestion({ status: 'in-review', summary: 'ok', verification: 'needs the owner approval' }).hidden, true);
 });
