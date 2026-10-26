@@ -13,8 +13,7 @@ import { TIER_DISPLAY, TIER_LIST, tierPercent, type OutletTier } from '@/config/
 import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from '@/components/show-cards/OutletTierChip';
 import { nestQuotes } from '@/lib/nest-quotes';
 
-interface Review {
-  showId: string;
+export interface ReviewListItem {
   outletId: string;
   outlet: string;
   outletSlug?: string;
@@ -44,12 +43,38 @@ interface Review {
 }
 
 interface ReviewsListProps {
-  reviews: Review[];
+  reviews: ReviewListItem[];
   initialCount?: number;
   category?: string;
   // Opera shows weight every outlet equally (engine.ts flattens tiers), so a
   // T1 chip on every row would say nothing. The show page passes false there.
   showTiers?: boolean;
+  /**
+   * Set when `reviews` holds only the first rows (BRO-6278): the rest are
+   * fetched from `moreUrl` after hydration, since only `initialCount` cards
+   * are in the server markup. The flags come from the full list so the tier
+   * key and city sort render exactly as they would with everything inline.
+   */
+  more?: { url: string; totalCount: number; hasTierChips: boolean; hasStops: boolean };
+}
+
+const moreCache = new Map<string, Promise<ReviewListItem[] | null>>();
+function loadMore(url: string): Promise<ReviewListItem[] | null> {
+  let p = moreCache.get(url);
+  if (!p) {
+    p = fetch(url)
+      .then(r => {
+        if (!r.ok) throw new Error(`${url} HTTP ${r.status}`);
+        return r.json() as Promise<ReviewListItem[]>;
+      })
+      .catch((e) => {
+        console.error('Failed to load more reviews:', e);
+        moreCache.delete(url); // allow retry on the next interaction
+        return null;
+      });
+    moreCache.set(url, p);
+  }
+  return p;
 }
 
 function ChevronDownIcon({ className }: { className?: string }) {
@@ -301,7 +326,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop, showTiers = true }: { review: Review; isLast: boolean; category?: string; hideStop?: boolean; showTiers?: boolean }) {
+const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop, showTiers = true }: { review: ReviewListItem; isLast: boolean; category?: string; hideStop?: boolean; showTiers?: boolean }) {
   const goldMin = getGoldThreshold(category);
   let scoreLabel: string;
   if (review.reviewScore >= goldMin) scoreLabel = 'Critical Gold';
@@ -424,9 +449,28 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
 
 type SortMode = 'score' | 'date' | 'city';
 
-export default function ReviewsList({ reviews, initialCount = 5, category, showTiers = true }: ReviewsListProps) {
+export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, category, showTiers = true, more }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
   const [sortMode, setSortMode] = useState<SortMode>('score');
+  const [rest, setRest] = useState<ReviewListItem[] | null>(null);
+  const moreUrl = more?.url;
+  // Prefetch when the browser is idle so Show more and the sorts are instant;
+  // an interaction before that fetches too.
+  useEffect(() => {
+    if (!moreUrl) return;
+    let cancelled = false;
+    const go = () => { loadMore(moreUrl).then(d => { if (!cancelled && d) setRest(d); }); };
+    const hasIdle = 'requestIdleCallback' in window;
+    const id = hasIdle ? window.requestIdleCallback(go) : window.setTimeout(go, 1500);
+    return () => {
+      cancelled = true;
+      if (hasIdle) window.cancelIdleCallback(id); else window.clearTimeout(id);
+    };
+  }, [moreUrl]);
+  const ensureMore = () => { if (moreUrl && !rest) loadMore(moreUrl).then(d => { if (d) setRest(d); }); };
+  const inlineKeys = useMemo(() => new Set(inlineReviews.map(getReviewKey)), [inlineReviews]);
+  const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest.filter(r => !inlineKeys.has(getReviewKey(r)))] : inlineReviews), [inlineReviews, inlineKeys, rest]);
+  const totalCount = more ? Math.max(more.totalCount, reviews.length) : reviews.length;
 
   const sortedReviews = useMemo(() => {
     if (sortMode === 'date') {
@@ -447,36 +491,36 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
     }
     return reviews; // already sorted by score from engine
   }, [reviews, sortMode]);
-  const hasStops = reviews.some(r => r.stopLabel);
+  const hasStops = more ? more.hasStops : reviews.some(r => r.stopLabel);
   // Same rule as the per-row chips: no tiered review, no key.
-  const hasTierChips = showTiers && reviews.some(r => r.tier);
+  const hasTierChips = showTiers && (more ? more.hasTierChips : reviews.some(r => r.tier));
 
-  const shouldCollapse = sortedReviews.length > initialCount;
+  const shouldCollapse = totalCount > initialCount;
   const displayedReviews = shouldCollapse && !isExpanded
     ? sortedReviews.slice(0, initialCount)
     : sortedReviews;
-  const hiddenCount = sortedReviews.length - initialCount;
+  const hiddenCount = totalCount - initialCount;
 
   return (
     <div className="space-y-2" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
-      {reviews.length > 3 && (
+      {totalCount > 3 && (
         <div className="flex items-center gap-3 text-xs text-gray-500 mb-1">
           <span>Sort:</span>
           <button
-            onClick={() => setSortMode('score')}
+            onClick={() => { ensureMore(); setSortMode('score'); }}
             className={`font-medium transition-colors ${sortMode === 'score' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
           >
             By Score
           </button>
           <button
-            onClick={() => setSortMode('date')}
+            onClick={() => { ensureMore(); setSortMode('date'); }}
             className={`font-medium transition-colors ${sortMode === 'date' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
           >
             By Date
           </button>
           {hasStops && (
             <button
-              onClick={() => setSortMode('city')}
+              onClick={() => { ensureMore(); setSortMode('city'); }}
               className={`font-medium transition-colors ${sortMode === 'city' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
             >
               By City
@@ -523,7 +567,7 @@ export default function ReviewsList({ reviews, initialCount = 5, category, showT
 
       {shouldCollapse && (
         <button
-          onClick={() => setIsExpanded(!isExpanded)}
+          onClick={() => { ensureMore(); setIsExpanded(!isExpanded); }}
           className="w-full py-3 px-4 mt-2 flex items-center justify-center gap-2 text-sm font-medium text-brand hover:text-brand-hover bg-surface-overlay/50 hover:bg-surface-overlay rounded-lg transition-all border border-white/5 hover:border-white/10"
           aria-expanded={isExpanded}
           aria-controls="reviews-list"

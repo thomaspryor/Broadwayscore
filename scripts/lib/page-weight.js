@@ -25,6 +25,16 @@ const HUB_PAGE_BUDGETS = [
   { route: '/cast', htmlFile: 'cast.html', maxBytes: 1_800_000, maxImgs: 150 },
 ];
 
+// The two highest-traffic page types (BRO-6278). The homepage inlined ~300kB of
+// shelf and search data it only needs after scroll; show pages inlined every
+// review row and related-show card. Budgets sit ~20% above the post-trim size
+// so ordinary data growth passes and a re-inlined payload does not.
+// Show pages: one representative route (a long-running Broadway show).
+const CORE_PAGE_BUDGETS = [
+  { route: '/', htmlFile: 'index.html', maxBytes: 400_000, maxImgs: 120 },
+  { route: '/show/hamilton-2015/', htmlFile: 'show/hamilton-2015.html', maxBytes: 330_000, maxImgs: 120 },
+];
+
 function measureHtml(html) {
   const bytes = Buffer.byteLength(html, 'utf8');
   const imgs = (html.match(/<img\b/gi) || []).length;
@@ -39,4 +49,4 @@ function evaluateBudget(budget, html) {
   return { route: budget.route, bytes, imgs, violations };
 }
 
-module.exports = { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, measureHtml, evaluateBudget };
+module.exports = { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, CORE_PAGE_BUDGETS, measureHtml, evaluateBudget };

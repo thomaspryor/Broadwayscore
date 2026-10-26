@@ -23,6 +23,7 @@ import { getShowListEmptyState } from '@/lib/show-list-empty-state';
 import ScrollRow from '@/components/ScrollRow';
 import { useHydrationSafeNow } from '@/hooks/useHydrationSafeNow';
 import { displaysCriticScore } from '@/lib/critic-score-display';
+import type { HomepageExtra } from '@/lib/homepage-extra';
 
 export interface FeaturedRowData {
   title: string;
@@ -63,15 +64,12 @@ interface HomePageClientProps {
   shows: HomepageShow[];
   archiveHash?: string;
   upcomingShows: HomepageShow[];
-  offBroadwayShows?: HomepageShow[];
-  westEndShows?: HomepageShow[];
   totalShows: number;
   totalReviews: number;
   totalCritics?: number;
   totalOutlets?: number;
   skipHero?: boolean;
   skipFirstMusicals?: boolean;
-  featuredRows?: FeaturedRowData[];
   /** Open-show counts for the market pills (stable across filter state) */
   marketOpenCounts: { broadway: number; broadwayPlus: number; offBroadway: number };
   /** Pre-computed award winner ID arrays (avoids client-side awards.json import) */
@@ -194,6 +192,32 @@ function LazySection({ children, fallbackHeight = '200px' }: { children: React.R
   return <div ref={ref} style={{ minHeight: fallbackHeight }} />;
 }
 
+// Shelves and Off-Broadway/West End search entries ship as a static file
+// (src/app/homepage-extra.json) instead of inline flight data (BRO-6278).
+const NO_SHOWS: HomepageShow[] = [];
+let extraPromise: Promise<HomepageExtra | null> | null = null;
+function loadHomepageExtra(): Promise<HomepageExtra | null> {
+  if (!extraPromise) {
+    extraPromise = fetch('/homepage-extra.json')
+      .then(r => {
+        if (!r.ok) throw new Error(`homepage-extra.json HTTP ${r.status}`);
+        return r.json() as Promise<HomepageExtra>;
+      })
+      .catch((e) => {
+        console.error('Failed to load homepage-extra.json:', e);
+        extraPromise = null; // allow retry on the next trigger
+        return null;
+      });
+  }
+  return extraPromise;
+}
+
+// Rendered inside LazySection: fires once the section scrolls into view.
+function OnVisible({ onVisible }: { onVisible: () => void }) {
+  useEffect(() => { onVisible(); }, [onVisible]);
+  return null;
+}
+
 // Featured row with horizontal scroll
 function FeaturedRow({ title, shows, viewAllHref, minCount = 4 }: { title: string; shows: HomepageShow[]; viewAllHref?: string; minCount?: number }) {
   if (shows.length < minCount) return null;
@@ -252,7 +276,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
 }
 
 // Inner component that uses searchParams
-function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [], westEndShows = [], totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, featuredRows = [], marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, tonyPromoSeason, btcPromoActive, renderedAt }: HomePageClientProps) {
+function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalReviews, totalCritics = 0, totalOutlets = 0, skipHero, skipFirstMusicals, marketOpenCounts, awardWinnerSets, tonyTrackRecord, tonyPromoActive, tonyPromoSeason, btcPromoActive, renderedAt }: HomePageClientProps) {
   const nowMs = useHydrationSafeNow(renderedAt);
 
   // Local state for instant updates (no full-page reload)
@@ -310,6 +334,24 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     if (weData) setWestEndArchiveShows(weData);
     if (data) setArchiveShows(data);
   }, [archiveHash]);
+
+  // Shelves + Off-Broadway/West End search entries (BRO-6278). Served as a
+  // static file instead of inlined flight data; see src/lib/homepage-extra.ts.
+  const [extraData, setExtraData] = useState<HomepageExtra | null>(null);
+  // extraTries counts requests, so a failed fetch can be retried by the next
+  // trigger (scroll into view or a search keystroke) instead of staying empty.
+  const [extraTries, setExtraTries] = useState(0);
+  const wantExtra = useCallback(() => setExtraTries(n => (n === 0 ? 1 : n)), []);
+  const retryExtra = useCallback(() => setExtraTries(n => n + 1), []);
+  useEffect(() => {
+    if (!extraTries || extraData) return;
+    let cancelled = false;
+    loadHomepageExtra().then(data => { if (!cancelled && data) setExtraData(data); });
+    return () => { cancelled = true; };
+  }, [extraTries, extraData]);
+  const offBroadwayShows = extraData?.offBroadwayShows ?? NO_SHOWS;
+  const westEndShows = extraData?.westEndShows ?? NO_SHOWS;
+  const featuredRows = extraData?.featuredRows ?? [];
 
   const allShows = useMemo(() => {
     if (archiveShows) {
@@ -405,9 +447,9 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     const base = archiveShows ? [...shows, ...archiveShows] : shows;
     const ids = new Set(base.map(s => s.id));
     const seen = new Set<string>();
-    const extra = [...offBroadwayShows, ...westEndShows, ...(westEndArchiveShows ?? [])]
+    const more = [...offBroadwayShows, ...westEndShows, ...(westEndArchiveShows ?? [])]
       .filter(s => !ids.has(s.id) && !seen.has(s.id) && seen.add(s.id));
-    return extra.length > 0 ? [...base, ...extra] : base;
+    return more.length > 0 ? [...base, ...more] : base;
   }, [shows, offBroadwayShows, westEndShows, westEndArchiveShows, archiveShows]);
 
   // Trigger archive fetch when user needs closed shows or searches
@@ -415,7 +457,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     if (statusFilter === 'all' || statusFilter === 'closed' || searchQuery) {
       fetchArchive();
     }
-  }, [statusFilter, searchQuery, fetchArchive]);
+    if (searchQuery) retryExtra();
+  }, [statusFilter, searchQuery, fetchArchive, retryExtra]);
 
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
   const fuseRef = useRef<Fuse<HomepageShow> | null>(null);
@@ -424,10 +467,10 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
 
   // Invalidate Fuse index when either archive loads so search includes all shows
   useEffect(() => {
-    if (archiveShows || westEndArchiveShows) {
+    if (archiveShows || westEndArchiveShows || extraData) {
       fuseRef.current = null;
     }
-  }, [archiveShows, westEndArchiveShows]);
+  }, [archiveShows, westEndArchiveShows, extraData]);
 
   const getFuse = useCallback(async () => {
     if (fuseRef.current) return fuseRef.current;
@@ -471,7 +514,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
     // it, this effect's single initial run can search a Fuse index built
     // before the archive merged in, and nothing re-triggers it since fuseRef
     // invalidation alone doesn't change this effect's inputs.
-  }, [searchQuery, getFuse, archiveShows, westEndArchiveShows]);
+  }, [searchQuery, getFuse, archiveShows, westEndArchiveShows, extraData]);
 
   // Featured rows are pre-computed server-side — no client-side filtering/sorting needed
   // bestRecentShows is still needed for the inline shelf when skipFirstMusicals is false
@@ -953,7 +996,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
 
       {/* Featured Rows — data pre-computed server-side, lazy-rendered on scroll */}
       <LazySection fallbackHeight="800px">
-        <div className="mt-8 pt-8 border-t border-white/5">
+        <OnVisible onVisible={wantExtra} />
+        <div className="mt-8 pt-8 border-t border-white/5" style={extraData ? undefined : { minHeight: '800px' }}>
           {featuredRows.map((row) => (
             <div key={row.title}>
               <FeaturedRow
