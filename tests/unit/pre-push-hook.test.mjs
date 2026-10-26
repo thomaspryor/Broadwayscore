@@ -46,7 +46,7 @@ function makeRepo() {
 
 function fixtureDir(prefix = 'pre-push-hook-wt-') {
   const d = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
-  fs.rmSync(d, { recursive: true, force: true });
+  fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   return d;
 }
 
@@ -65,7 +65,7 @@ function isRegistered(repo, dir) {
 }
 
 function cleanup(...dirs) {
-  for (const d of dirs) fs.rmSync(d, { recursive: true, force: true });
+  for (const d of dirs) fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 }
 
 test('reproduces the leak: a locked "initializing" registration survives remove --force + rm + prune', () => {
@@ -76,7 +76,7 @@ test('reproduces the leak: a locked "initializing" registration survives remove 
     git(repo, ['worktree', 'lock', '--reason', 'initializing', wt]);
     const r = git(repo, ['worktree', 'remove', '--force', wt]);
     assert.notEqual(r.status, 0, 'git refused single-force remove of a locked worktree');
-    fs.rmSync(wt, { recursive: true, force: true });
+    fs.rmSync(wt, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     git(repo, ['worktree', 'prune']);
     assert.ok(isRegistered(repo, wt), 'old teardown leaves the locked registration behind');
     // The helper clears exactly this leftover state.
@@ -126,14 +126,14 @@ test('reapStaleTempWorktrees: reaps stale fixture debris, keeps fresh fixtures a
   const stale = fixtureDir('pre-push-hook-wt-');
   const staleGone = fixtureDir('merge-gate-hook-test-probe-wt-');
   const session = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2892-session-'));
-  fs.rmSync(session, { recursive: true, force: true });
+  fs.rmSync(session, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   try {
     addWorktree(repo, stale);
     addWorktree(repo, staleGone);
     addWorktree(repo, session);
     for (const d of [stale, staleGone, session]) git(repo, ['worktree', 'lock', '--reason', 'initializing', d]);
     fs.rmSync(path.join(stale, '.git'));
-    fs.rmSync(staleGone, { recursive: true, force: true });
+    fs.rmSync(staleGone, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 
     // Fresh: nothing is reaped (a parallel suite may be mid-add right now).
     assert.deepEqual(reapStaleTempWorktrees(repo), []);
