@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T14:33:27.302Z",
+  "timestamp": "2026-10-26T15:50:15.485Z",
   "stats": {
-    "totalReviews": 61961,
-    "alreadyFlagged": 21492,
+    "totalReviews": 62052,
+    "alreadyFlagged": 21504,
     "dateGuardCatches": 223,
     "directorMismatch": 2280,
     "tvFilmSignals": 1766,
-    "londonSignals": 2999,
-    "offBroadwaySignals": 549,
+    "londonSignals": 3000,
+    "offBroadwaySignals": 550,
     "yearMismatch": 206,
-    "noPublishDate": 5480
+    "noPublishDate": 5552
   },
   "findings": [
     {
@@ -80910,6 +80910,19 @@
     },
     {
       "showId": "martin-guerre-west-end-2026",
+      "file": "1883magazine--andrew-lawston.json",
+      "publishDate": "2026-10-24",
+      "url": "https://1883magazine.com/martin-guerre-old-vic-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 74,
       "publishDate": "2026-10-23",
@@ -96483,6 +96496,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
+      "file": "nytg--amelia-merrill.json",
+      "publishDate": "2025-05-13",
+      "url": "https://www.newyorktheatreguide.com/reviews/the-last-bimbo-of-the-apocalypse-off-broadway-review",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
