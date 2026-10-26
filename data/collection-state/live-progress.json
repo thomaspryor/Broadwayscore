@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-26T03:09:00.174Z",
-  "processed": 394,
-  "failed": 258,
-  "successRate": "60.4%",
+  "updatedAt": "2026-10-26T03:24:40.623Z",
+  "processed": 594,
+  "failed": 320,
+  "successRate": "65.0%",
   "tierBreakdown": {
-    "playwright": 185,
+    "playwright": 239,
     "amp": 0,
-    "browserbase": 4,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 32,
+    "scrapingdog": 34,
     "scrapingbee": 15,
-    "brightdata": 13,
+    "brightdata": 17,
     "archiveToday": 0,
-    "archive": 192
+    "archive": 249
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-26T02:49:19.926Z",
@@ -118,19 +118,18 @@
     {
       "t": "2026-10-26T03:06:00.297Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-26T03:07:50.745Z",
+      "t": "2026-10-26T03:06:58.011Z",
       "event": "bb-session",
-      "session": "1b74d01d",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+      "session": "ee0e5bcf",
+      "url": "https://www.wsj.com/articles/eureka-day-review-a-vaccination-conflagration-on-br"
     },
     {
-      "t": "2026-10-26T03:08:01.013Z",
-      "event": "bb-session",
-      "session": "026a7194",
-      "url": "https://www.afridiziak.com/offers/access-10-ticket-offer-to-see-baby-in-previews"
+      "t": "2026-10-26T03:06:58.709Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
