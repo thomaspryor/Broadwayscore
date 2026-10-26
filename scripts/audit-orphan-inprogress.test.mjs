@@ -19,7 +19,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findOrphans, run } = require('./audit-orphan-inprogress.js');
+const { findOrphans, run, applyDecision } = require('./audit-orphan-inprogress.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 
 const inProgressTask = (id, subject = 'Some session S0: a step') => ({ id: String(id), subject, status: 'in_progress' });
@@ -142,5 +142,37 @@ test('run(["--fix", "--json"]): refusal is machine-readable too', () => {
       assert.ok(parsed.error);
       assert.equal(parsed.cmuxUnavailable, 'unavailable');
     });
+  });
+});
+
+// ── BRO-3003: snapshot race — a workspace that appears AFTER findOrphans()
+// listed must stop applyDecision() from mutating the task ───────────────────
+const finishedDecision = (id) => ({ id: String(id), bucket: 'FINISHED', action: 'complete', reason: 'test' });
+
+test('applyDecision: a workspace that appears after the snapshot blocks the mutation', () => {
+  withFixtureTasksDir([inProgressTask(7, 'Racy session S0: step')], (dir) => {
+    const before = fs.readFileSync(path.join(dir, '7.json'), 'utf8');
+    const r = applyDecision(finishedDecision(7), { dir, now: Date.now(), dryRun: false, listWorkspacesFn: () => [{ ref: 'workspace:1', title: 'Racy session S0: step' }] });
+    assert.equal(r.done, false);
+    assert.match(r.why, /live workspace/);
+    assert.equal(fs.readFileSync(path.join(dir, '7.json'), 'utf8'), before, 'task file must be untouched');
+  });
+});
+
+test('applyDecision: a failing live recheck fails closed (no mutation)', () => {
+  withFixtureTasksDir([inProgressTask(8, 'Racy session S0: step')], (dir) => {
+    const before = fs.readFileSync(path.join(dir, '8.json'), 'utf8');
+    const r = applyDecision(finishedDecision(8), { dir, now: Date.now(), dryRun: false, listWorkspacesFn: () => { throw new Error('cmux socket busy'); } });
+    assert.equal(r.done, false);
+    assert.match(r.why, /live recheck failed/);
+    assert.equal(fs.readFileSync(path.join(dir, '8.json'), 'utf8'), before);
+  });
+});
+
+test('applyDecision: with no matching live workspace the mutation still applies', () => {
+  withFixtureTasksDir([inProgressTask(9, 'Racy session S0: step')], (dir) => {
+    const r = applyDecision(finishedDecision(9), { dir, now: Date.now(), dryRun: false, listWorkspacesFn: () => [{ ref: 'workspace:2', title: 'Unrelated' }] });
+    assert.equal(r.done, true);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(dir, '9.json'), 'utf8')).status, 'completed');
   });
 });

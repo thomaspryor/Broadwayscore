@@ -210,12 +210,26 @@ function writeVerified(destPath, body) {
   return fs.readFileSync(destPath, 'utf8') === body;
 }
 
-function applyDecision(decision, { dir, now, dryRun, cardOfCache }) {
+function applyDecision(decision, { dir, now, dryRun, cardOfCache, listWorkspacesFn = cmuxws.listWorkspaces }) {
   const id = decision.id;
   const file = path.join(dir, `${id}.json`);
   let task;
   try { task = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { return { id, done: false, why: 'task file vanished mid-run' }; }
   if (task.status !== 'in_progress') return { id, done: false, why: `no longer in_progress (now ${task.status})` };
+
+  // BRO-3003: findOrphans() listed workspaces once, long before this mutation
+  // (classification does git scans and Notion fetches). A session that started
+  // on the task since then must not have it flipped under it, so re-list right
+  // before writing, and fail closed if cmux cannot be asked.
+  if (!dryRun) {
+    let live;
+    try { live = listWorkspacesFn() || []; } catch (e) {
+      return { id, done: false, why: `live recheck failed (${classifyCmuxError(e)}) — left untouched` };
+    }
+    if (live.some((w) => ledger.titleMatchesSubject(w.title, task.subject))) {
+      return { id, done: false, why: 'a live workspace now matches this task — left untouched' };
+    }
+  }
 
   if (decision.bucket === 'NEEDS-REVIEW') {
     if (dryRun) return { id, done: true, action: 'left-in-progress' };
