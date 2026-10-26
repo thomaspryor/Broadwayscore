@@ -48,3 +48,10 @@ assert.deepStrictEqual(cands[0].signals, ['tr-az']);
 assert.strictEqual(cands[1].venue, "Wyndham's Theatre");
 assert.strictEqual(cands[1].decision.promotable, true, JSON.stringify(cands[1].decision));
 console.log('we-az-lookups ok');
+
+{
+  const { azTitleGenres } = require('../lib/we-review-led-candidates.js');
+  assert.deepStrictEqual(azTitleGenres('SUNSET BOULEVARD – ENO'), ['opera']);
+  assert.deepStrictEqual(azTitleGenres('SHOWSTOPPER! THE IMPROVISED MUSICAL'), ['children']);
+  assert.deepStrictEqual(azTitleGenres('KINKY BOOTS'), []);
+}

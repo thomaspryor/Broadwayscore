@@ -659,7 +659,7 @@ async function main() {
         }
         rows.push(row);
         // Checkpoint (local runs; CI commits only after the step ends, so the time budget is what protects CI).
-        if (p.season !== DATELESS_KEY && rows.length % 10 === 0) {
+        if (p.season !== DATELESS_KEY && rows.length % 10 === 0 && !prior.size && !old.size) { // a checkpoint of a resumed run would shrink the file it resumes from
           fs.writeFileSync(reviewLedPath(ROOT, p.season), JSON.stringify({ generatedAt: new Date().toISOString(), season: p.season, partial: true, lookups: rows, dropped: p.dropped }, null, 2) + '\n');
         }
         if (p.season === DATELESS_KEY && rows.length % 10 === 0) {

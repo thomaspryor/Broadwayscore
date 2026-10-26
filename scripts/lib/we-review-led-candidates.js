@@ -201,6 +201,14 @@ function dateSnippets(line) {
  * other text is kept: on a two-column PDF page any line can be review prose.
  * Venue and author are not needed (the venue comes from the search result).
  */
+/** Genres inferred from an A-Z title, so the non-theatre gate still fires for rows with no WOS genre. */
+function azTitleGenres(title) {
+  const t = String(title || '');
+  if (/\b(ENO|OPERA|OPERATTA|ROYAL BALLET|BALLET)\b/i.test(t)) return ['opera'];
+  if (/\b(IMPROVISED|IMPROV|PANTO|PANTOMIME|CONCERT|IN CONCERT|GRUFFALO|STAND-?UP)\b/i.test(t)) return ['children'];
+  return [];
+}
+
 function headerFacts(text) {
   const lines = String(text || '').split('\n').map(l => l.replace(/\s+/g, ' ').trim()).filter(Boolean);
   const keep = [];
@@ -315,7 +323,8 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
       // an A-Z row from the 2015 layout has no venue of its own: the TR production page supplies it (BRO-6298)
       venue: ntStageVenue(review.venue, row.tr?.venue) || review.venue
         || (review.source === 'tr-az' && row.tr ? trVenueName(row.tr.venue) : null),
-      genres: [],
+      // an A-Z row has no WOS genre; opera, kids' and improv titles are screened out by title instead
+      genres: review.source === 'tr-az' ? azTitleGenres(review.title) : [],
       season,
       // an A-Z row (BRO-6298) is a listing in Theatre Record's own A-Z of London productions, not a WOS review
       signals: [review.source === 'tr-az' ? 'tr-az' : 'wos-review'],
@@ -406,6 +415,7 @@ module.exports = {
   pickTrForReview,
   parseTrHeaderDates,
   headerFacts,
+  azTitleGenres,
   dateSnippets,
   findContinuingRun,
   buildReviewLedCandidates,
