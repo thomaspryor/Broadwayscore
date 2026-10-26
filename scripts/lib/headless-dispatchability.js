@@ -47,6 +47,8 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./no-dispatch-marker.js');
 const { hasAutofixFiledMarker } = require('./autofix-filed-marker.js');
+const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
+const { classifyStatus: visualApprovalStatus } = require('./visual-approval.js');
 const { AUTO_FILED_MARKER: ALERT_ROUTER_FILED_MARKER } = require('./linear-drain-parked.js');
 
 // Anchored to the leading `PARKED:` line, same reasoning and same shape as
@@ -369,6 +371,16 @@ function commentClearsOwnerGate(comments) {
   return false;
 }
 
+// BRO-6357: a card whose visual approval is still waiting on the owner (or approved and
+// waiting for the lander) is the owner's, whatever a later comment says. Comments here
+// are plain bodies, so the latest-ask filter in classifyStatus is not applied; markers
+// from an earlier ask can only make the card look answered, never the reverse.
+function visualAskOpen(notes, comments) {
+  if (!parseVisualApproval(notes)) return false;
+  const state = visualApprovalStatus(notes, (comments || []).map((body) => ({ body: String(body || '') })));
+  return state === 'waiting' || state === 'approved';
+}
+
 function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const subject = String(card.subject || '');
   const notes = String(card.notes != null ? card.notes : (card.description || ''));
@@ -423,7 +435,8 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const comments = Array.isArray(card.comments) ? card.comments : [];
   let ownerHit = firstMatch(OWNER_DECISION_RES, text);
   if (ownerHit && comments.length) {
-    if (commentClearsOwnerGate(comments)) ownerHit = null;
+    if (visualAskOpen(notes, comments)) { /* only the owner's tap answers a visual ask */ }
+    else if (commentClearsOwnerGate(comments)) ownerHit = null;
     else if (OWNER_JUDGMENT_RE.test(ownerHit)) {
       // A newer safe VERIFY supersedes the owner-judgment marker only (the
       // marker says "no command"); it never answers a DECISION NEEDED.
@@ -482,6 +495,7 @@ if (require.main === module) {
 
 module.exports = {
   commentClearsOwnerGate,
+  visualAskOpen,
   BLOCKERS,
   UI_PATH_RE,
   UI_CARD_CLASS_RE,

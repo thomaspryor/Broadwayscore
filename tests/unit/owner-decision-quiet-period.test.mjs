@@ -177,3 +177,40 @@ test('recorder arguments: card id, choice, own needs text, via is sanitised', ()
   assert.throws(() => parseArgs(['BRO-5', '--choice', 'own', '--inputs-from-event'], { readEvent: () => ({}) }), /needs --text/);
   assert.equal(dispatchArgs(['record-owner-answer.yml', '-f', 'issue=BRO-5', '-f', 'text=secret words']).match, 'record-owner-answer BRO-5 [');
 });
+
+// BRO-6357: dispatcher and watchdog receipts say a job started or ended, not that someone is working the card.
+const ld = require('../../scripts/lib/linear-dispatch.js');
+const her = require('../../scripts/lib/linear-session-reporting.js');
+const wd = require('../../scripts/lib/dispatch-watchdog-core.js');
+
+test('BRO-6357: dispatch, headless-ended and watchdog receipts do not hold the email', () => {
+  const receipts = [
+    ld.buildDispatchComment({ ref: 'linear:BRO-1-abc', ts: min(5), mode: 'headless', correlationId: '66746217' }),
+    ld.buildDispatchComment({ ref: 'linear:BRO-1-abc', ts: min(5), mode: 'cmux' }),
+    `${her.HEADLESS_END_MARKER} (killed-timeout).`,
+    `${wd.WATCHDOG_SAFETY_NET_PREFIX} headless job 12 ended THIS SESSION.`,
+  ];
+  for (const body of receipts) {
+    assert.match(body, qp.MACHINE_RECEIPT_RE, body);
+    assert.equal(hold(card({ comments: [[body, min(5)]] })), null, body);
+    assert.equal(qp.isQuiet(card({ comments: [[body, min(5)]] }), NOW), true);
+  }
+  // Receipts also cannot extend a streak of real activity.
+  const real = ['Session report: still working.', min(100)];
+  assert.equal(hold(card({ comments: [real, [receipts[0], min(10)]] })), null);
+});
+
+test('BRO-6357: a claim, a session report or a person still hold the email', () => {
+  const claim = her.buildClaimComment({ sessionRef: 'https://claude.ai/code/session_x', ts: min(10) });
+  assert.doesNotMatch(claim, qp.MACHINE_RECEIPT_RE);
+  assert.equal(hold(card({ comments: [[claim, min(10)]] })).reason, 'recent-activity');
+  assert.equal(hold(card({ comments: [['**Session report (done)**\n\nFinished the work.', min(10)]] })).reason, 'recent-activity');
+  // A receipt newer than the real activity does not hide it.
+  const rcpt = ld.buildDispatchComment({ ref: 'r', ts: min(2), mode: 'headless' });
+  assert.equal(hold(card({ comments: [['Session report: still working.', min(20)], [rcpt, min(2)]] })).reason, 'recent-activity');
+});
+
+test('BRO-6357: markdown-escaped receipts are still recognised', () => {
+  const escaped = ld.buildDispatchComment({ ref: 'linear:BRO-1-x_y', ts: min(5), mode: 'headless' }).replace(/_/g, '\\_');
+  assert.equal(hold(card({ comments: [[escaped, min(5)]] })), null);
+});
