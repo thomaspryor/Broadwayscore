@@ -98,6 +98,17 @@ test('same-morning posts are spaced 90 min apart and only the first is created n
   assert.ok(t[1] - t[0] >= 90 * 6e4 && t[2] - t[1] >= 90 * 6e4);
 });
 
+test('a late post waits only until 90 min after the previous post, not 90 min after now', () => {
+  // 2026-10-26: The Imaginary Invalid (due now+10 min) sat behind a 15:29:53 post and was
+  // pushed to now+100 min on every run, outside the 70-min creation lead.
+  const now = Date.parse('2026-10-26T16:21:40Z');
+  const ledger = { posts: [{ type: 'score', showId: 'm', dueAt: '2026-10-26T15:29:53.000Z' }] };
+  const evs = [{ type: 'score', show: show({ id: 'late' }), dueAt: new Date('2026-10-26T16:31:40Z') }];
+  const ready = sel.scheduleEvents(evs, ledger, now);
+  assert.deepEqual(ready.map(e => e.show.id), ['late']);
+  assert.equal(ready[0].dueAt.toISOString(), '2026-10-26T16:59:53.000Z');
+});
+
 test('first live run skips shows that opened more than 3 days ago', () => {
   const now = Date.parse('2026-11-10T15:00:00Z');
   const old = { type: 'score', show: show({ id: 'old', openingDate: '2026-11-01' }) };

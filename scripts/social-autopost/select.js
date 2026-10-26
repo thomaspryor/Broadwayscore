@@ -124,7 +124,10 @@ function scheduleEvents(events, ledger, now) {
     const tz = C.MARKETS[ev.show.category].tz;
     let t = ev.dueAt.getTime();
     for (let guard = 0; guard < 50 && (!inWindow(t, tz) || taken.some(x => Math.abs(x - t) < gap)); guard++) {
-      t = inWindow(t, tz) ? t + gap : nextWindowSlot(t, tz);
+      // Move past the post it clashes with (not t + gap): a late post due now+10min would
+      // otherwise land a full gap after now on every run and never come within the lead.
+      const clash = taken.filter(x => Math.abs(x - t) < gap);
+      t = !inWindow(t, tz) ? nextWindowSlot(t, tz) : Math.max(...clash) + gap;
     }
     taken.push(t);
     ev.dueAt = new Date(t);
