@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T22:11:16.935Z",
+  "generatedAt": "2026-10-26T11:56:24.144Z",
   "shows": {
     "860": {
       "capitalization": null,
@@ -3686,7 +3686,7 @@
     },
     "the-iceman-cometh-2018": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No reliable public source verified capitalization for this production.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -3694,25 +3694,35 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Verified public box-office data exist ($13.48M total gross; $1.12M peak week), but I found no public capitalization, weekly nut, or recoupment announcement for this 2018 Broadway revival.",
+      "notes": "Public sources confirm the run dates, total gross, and top weekly gross, but I could not verify capitalization, weekly nut, or a recoupment report. ([ibdb.com](https://www.ibdb.com/broadway-production/the-iceman-cometh-515678))",
       "confidence": "low",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/THE-ICEMAN-COMETH",
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/the-iceman-cometh-515678",
           "date": null
         },
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/complete-cast-announced-iceman-cometh/",
-          "date": "2018-01-25"
+          "url": "https://www.playbill.com/production/the-iceman-cometh-bernard-b-jacobs-theatre-2017-2018",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://www.imdb.com/news/ni62117889/",
+          "date": "2018-07-02"
+        },
+        {
+          "type": "trade",
+          "url": "https://v.playbill.com/article/the-iceman-cometh-starring-denzel-washington-concludes-broadway-run-july-1",
+          "date": "2018-07-01"
         }
       ],
       "title": "The Iceman Cometh",
       "slug": "the-iceman-cometh-2018",
       "openingDate": "2018-04-26",
       "status": "closed",
-      "researchedAt": "2026-10-22T03:40:18.606Z",
+      "researchedAt": "2026-10-26T10:59:24.525Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -3759,39 +3769,44 @@
       "researchTrigger": "manual"
     },
     "children-of-a-lesser-god-2018": {
-      "capitalization": null,
-      "capitalizationSource": "Not publicly disclosed in the verified sources reviewed.",
+      "capitalization": 3000000,
+      "capitalizationSource": "Samuel French / Breaking Character article announcing the planned Broadway revival and stating the production would cost an estimated $3 million to mount.",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "No public recoupment announcement located; closing coverage reported struggling grosses and the production ended after 54 regular performances.",
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Public sources verified the run dates and cumulative gross, but not capitalization, weekly operating cost, or recoupment.",
+      "designation": "Did Not Recoup",
+      "notes": "I found a public $3 million estimated production cost, but no verified weekly nut. The revival ran at Studio 54 from April 11, 2018 to May 27, 2018 (23 previews, 54 performances); closure coverage described struggling grosses, and I could not verify a recoupment filing.",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/equity-audition/THE-CHILREN-OF-A-LESSER-GOD-Studio-54-2017-16488",
-          "date": "2017-09-12"
+          "url": "https://medium.com/breaking-character/tony-award-winning-kenny-leon-to-direct-children-of-a-lesser-god-broadway-revival-ed10cb45cc0",
+          "date": "2014-09-30"
         },
         {
-          "type": "trade",
-          "url": "https://playbill.com/production/children-of-a-lesser-god-studio-54-2017-2018",
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/children-of-a-lesser-god-515596",
           "date": null
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/article/children-of-a-lesser-god-revival-ends-broadway-run-2",
-          "date": "2018-05-27"
+          "url": "https://www.broadwaynews.com/children-lesser-god-close-may-27/",
+          "date": "2018-05-08"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/production/children-of-a-lesser-god-studio-54-2017-2018",
+          "date": null
         }
       ],
       "title": "Children of a Lesser God",
       "slug": "children-of-a-lesser-god-2018",
       "openingDate": "2018-04-11",
       "status": "closed",
-      "researchedAt": "2026-10-22T03:47:38.602Z",
+      "researchedAt": "2026-10-26T11:02:04.906Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -3805,39 +3820,49 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Public grosses are available, but I could not verify a capitalization, weekly running cost, or recoupment announcement. BroadwayWorld lists total gross at $13,906,153 over 132 performances, and BroadwayNews notes the limited run ended June 24, 2018. ([broadwayworld.com](https://www.broadwayworld.com/grossescumulative.php?orderby=desc&sortby=revenue.showname))",
+      "notes": "IBDB confirms the Broadway run at John Golden Theatre from 2018-03-29 to 2018-06-24. Theatrical Index reports total gross of $13,906,152 and average weekly gross of $818,009; Broadway.com and NYTIX reported late-run weekly grosses of $994,258.32 and then $1,077,919. I found no verified public capitalization, weekly running cost, or official recoupment announcement. ([ibdb.com](https://www.ibdb.com/broadway-show/three-tall-women-511334))",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/three-tall-women-to-add-one-more-performance-before-end-of-run/",
-          "date": "2018-06-01"
+          "url": "https://www.ibdb.com/broadway-show/three-tall-women-511334",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://theatricalindex.com/show/three-tall-women/three-tall-women-away-18",
+          "date": null
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/grossescumulative.php?orderby=desc&sortby=revenue.showname",
-          "date": null
+          "url": "https://www.broadway.com/buzz/192520/broadway-grosses-in-advance-of-dual-tony-triumph-three-tall-women-breaks-house-record-for-third-time/",
+          "date": "2018-06-11"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.nytix.com/news/acclaimed-revival-of-three-tall-women-closes",
+          "date": "2018-06-23"
         }
       ],
       "title": "Three Tall Women",
       "slug": "three-tall-women-2018",
       "openingDate": "2018-03-29",
       "status": "closed",
-      "researchedAt": "2026-10-22T03:50:46.822Z",
+      "researchedAt": "2026-10-26T11:04:53.256Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "angels-in-america": {
-      "capitalization": null,
-      "capitalizationSource": "Trade press reported a combined price tag of $7 million to $8 million for the two-part production, but I could not verify an exact capitalization figure.",
+      "capitalization": 7500000,
+      "capitalizationSource": "Trade press described the production as two big-budget plays with a combined price tag of $7 million to $8 million, so I used a $7.5 million midpoint estimate. ([yahoo.com](https://www.yahoo.com/entertainment/angels-america-inside-broadway-big-140035747.html?utm_source=openai))",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Broadway News stated that, apart from Nicholas Nickleby, none of the two-part Broadway plays—including Angels in America—recouped during their commercial runs.",
+      "recoupedSource": "Broadway News said that, apart from Nicholas Nickleby, none of the comparable two-part Broadway plays had recouped during their commercial runs. ([broadwaynews.com](https://www.broadwaynews.com/the-risks-and-rewards-of-two-part-plays-on-broadway/))",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Limited 18-week Neil Simon Theatre revival; Playbill records $18,692,971 in gross across 113 performances with 91.76% average capacity. Exact capitalization and weekly nut were not publicly confirmed.",
+      "notes": "Limited Broadway revival at the Neil Simon Theatre (opened 2018-03-25, closed 2018-07-15). Budget appears to have been roughly $7M-$8M by trade reporting, but no public weekly nut or exact recoupment percentage was found. ([playbill.com](https://playbill.com/article/angels-in-america-starring-andrew-garfield-and-nathan-lane-closes-on-broadway-july-15?utm_source=openai))",
       "confidence": "medium",
       "sources": [
         {
@@ -3847,17 +3872,17 @@
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/production/angels-in-america-a-gay-fantasia-on-national-themes-neil-simon-theatre-2017-2018",
-          "date": null
-        },
-        {
-          "type": "trade",
           "url": "https://www.broadwaynews.com/the-risks-and-rewards-of-two-part-plays-on-broadway/",
           "date": "2019-12-19"
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/ANGELS-IN-AMERICA",
+          "url": "https://playbill.com/article/angels-in-america-starring-andrew-garfield-and-nathan-lane-closes-on-broadway-july-15",
+          "date": "2018-07-15"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/angels-in-america-a-gay-fantasia-on-national-themes-neil-simon-theatre-2017-2018",
           "date": null
         }
       ],
@@ -3865,79 +3890,64 @@
       "slug": "angels-in-america",
       "openingDate": "2018-03-25",
       "status": "closed",
-      "researchedAt": "2026-10-22T03:53:07.605Z",
+      "researchedAt": "2026-10-26T11:07:23.342Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "the-parisian-woman-2017": {
-      "capitalization": null,
-      "capitalizationSource": "No verified public capitalization found; Playbill reported in April 2017 that the budget was still in development. citeturn21search3turn2view2",
+      "capitalization": 4200000,
+      "capitalizationSource": "SEC Form D/A for Parisian Woman Broadway Ltd Liability Co (totalAmountSold $4.2M; used as the best public proxy for capitalization)",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": null,
+      "recoupedSource": "NYTix closing-day article (March 11, 2018) said the play would not have made any profits",
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Verified run/gross data only: the show opened November 30, 2017, closed March 11, 2018, played 116 performances, and grossed about $9.77 million. Public sources checked did not reveal a capitalization, weekly nut, or recoupment announcement. citeturn12view0turn15search4turn21search3",
-      "confidence": "low",
+      "designation": "Did Not Recoup",
+      "notes": "Capitalization is based on the SEC filing total offering/sold amount, not a separately published budget. I could not verify a public weekly nut. No exact recoupment percentage was publicly confirmed.",
+      "confidence": "medium",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-09"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/the-parisian-woman-515423",
-          "date": null
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1707718/000170771817000002/primary_doc.xml",
+          "date": "2017-12-28"
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/grosses/THE-PARISIAN-WOMAN",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/the-parisian-woman-starring-uma-thurman-in-her-broadway-debut-ends-run-march-11",
+          "url": "https://www.nytix.com/news/uma-thurman-concludes-in-the-parisian-woman",
           "date": "2018-03-11"
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/article/uma-thurman-may-make-broadway-debut-in-play-by-house-of-cards-writer-beau-willimon",
-          "date": "2017-04-19"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/grosses-analysis-sara-bareilles-final-week-gives-waitress-a-boost-as-frozen-continues-to-keep-broadway-warm",
-          "date": "2018-03-12"
+          "url": "https://playbill.com/production/parisianwomanopening",
+          "date": "2018-03-11"
         }
       ],
       "title": "The Parisian Woman",
       "slug": "the-parisian-woman-2017",
       "openingDate": "2017-11-30",
       "status": "closed",
-      "researchedAt": "2026-10-22T03:57:31.246Z",
+      "researchedAt": "2026-10-26T11:09:22.186Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "meteor-shower-2017": {
       "capitalization": null,
-      "capitalizationSource": "No public capitalization figure found in the targeted sources; trade press reported a record Booth Theatre advance of more than $7.5 million, not a production budget.",
-      "weeklyRunningCost": 300000,
-      "costMethodology": "trade-reported",
+      "capitalizationSource": "No public capitalization located in the searched tax-credit, trade-press, Reddit, BroadwayWorld, or SEC sources.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "NYTIX said that by the closing announcement on 2018-01-20, formal recoupment had not yet been announced.",
+      "recoupedSource": "NYTix reported on 2018-01-20 that formal recoupment had not yet been announced.",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Public reporting surfaced a record advance and weekly running costs just under $300k, but no public capitalization figure. I infer the production did not recoup because no recoupment announcement was publicly reported by closing.",
+      "notes": "Verified public data are limited to the run dates, the roughly $7.5M advance, and the $10.9M total gross. I could not verify a public capitalization or weekly running cost, and I found no public recoupment announcement.",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.forbes.com/sites/leeseymour/2017/11/13/amy-schumer-is-an-investors-dream-in-strong-week-for-women-on-broadway/",
-          "date": "2017-11-13"
+          "url": "https://www.playbill.com/article/steve-martins-meteor-shower-starring-amy-schumer-and-laura-benanti-ends-broadway-run-january-21",
+          "date": null
         },
         {
           "type": "trade",
@@ -3946,21 +3956,21 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/meteor-shower-brings-in-record-advance-at-booth-theatre/",
-          "date": "2017-11-01"
+          "url": "https://www.playbill.com/production/meteorshoweropening",
+          "date": null
         }
       ],
       "title": "Meteor Shower",
       "slug": "meteor-shower-2017",
       "openingDate": "2017-11-29",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:01:15.135Z",
+      "researchedAt": "2026-10-26T11:12:27.029Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "m-butterfly-2017": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No public capitalization verified in the sources checked.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -3968,44 +3978,44 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Verified the production's Broadway run and producing team, but I could not confirm any public capitalization, weekly nut, tax-credit amount, or recoupment status from the sources checked.",
+      "notes": "BroadwayWorld and Theatrical Index confirm this revival’s 2017 run dates and limited-run status, and BroadwayWorld’s grosses page reports a total gross of $5,248,147; I could not verify a public capitalization, weekly nut, or recoupment report. ([broadwayworld.com](https://www.broadwayworld.com/shows/Review-Roundup-Critics-Weigh-In-on-the-Broadway-Revival-of-M.-BUTTERFLY-All-the-Reviews%21-331818.html))",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://shubert.nyc/press/m-butterfly-to-open-at-broadways-cort-theatre/",
-          "date": "2017-06-19"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayworld.com/shows/M.-Butterfly-331818.html",
+          "url": "https://www.broadwayworld.com/shows/Review-Roundup-Critics-Weigh-In-on-the-Broadway-Revival-of-M.-BUTTERFLY-All-the-Reviews!-331818.html",
           "date": null
         },
         {
           "type": "trade",
-          "url": "https://backstagepasswithliachang.wordpress.com/2017/09/23/broadways-m-butterfly-adds-performance-for-students-featuring-prime-seats-on-october-14/",
-          "date": "2017-09-23"
+          "url": "https://www.broadwayworld.com/grosses/MBUTTERFLY",
+          "date": null
+        },
+        {
+          "type": "trade",
+          "url": "https://theatricalindex.com/show/m-butterfly/m-butterfly-17",
+          "date": null
         }
       ],
       "title": "M. Butterfly",
       "slug": "m-butterfly-2017",
       "openingDate": "2017-10-26",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:04:04.090Z",
+      "researchedAt": "2026-10-26T11:15:05.266Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "the-terms-of-my-surrender-2017": {
       "capitalization": null,
-      "capitalizationSource": "No public capitalization found in the searched sources.",
+      "capitalizationSource": "No verified public capitalization located in the sources checked.",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Public Broadway data show an Aug. 10, 2017–Oct. 22, 2017 Belasco run with 83 performances and $4,209,550 in gross receipts; trade coverage said the show grossed just under half of potential and characterized the results as tepid/lackluster, but I could not verify a public capitalization, weekly nut, or explicit recoupment statement. ([ibdb.com](https://www.ibdb.com/broadway-production/the-terms-of-my-surrender-514772?utm_source=openai))",
+      "designation": "Did Not Recoup",
+      "notes": "Opened Aug. 10, 2017 and closed Oct. 22, 2017 at the Belasco. Public gross data shows $4,209,550 over 13 weeks and 74,484 attendance, with Washington Post summarizing the run as roughly 49% of potential gross. No public capitalization, weekly nut, or recoupment announcement was verified, so recoupment is treated as not confirmed. ([broadwayworld.com](https://www.broadwayworld.com/grosses/THE-TERMS-OF-MY-SURRENDER))",
       "confidence": "low",
       "sources": [
         {
@@ -4015,25 +4025,25 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwayworld.com/shows/creative.php?showid=514772",
+          "url": "https://www.broadwayworld.com/grosses/THE-TERMS-OF-MY-SURRENDER",
           "date": null
         },
         {
           "type": "trade",
-          "url": "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2017/10/29/im-your-latest-distraction-michael-moore-fires-back-after-trump-disses-his-broadway-show/",
-          "date": "2017-10-29"
+          "url": "https://www.washingtonpost.com/news/reliable-source/wp/2017/10/24/despite-lackluster-ticket-sales-michael-moore-might-take-his-anti-trump-show-on-the-road/",
+          "date": "2017-10-24"
         },
         {
           "type": "trade",
-          "url": "https://www.forbes.com/sites/russespinoza/2017/10/24/michael-moores-one-man-broadway-debut-closes-with-tepid-results/",
-          "date": "2017-10-24"
+          "url": "https://playbill.com/article/michael-moores-the-terms-of-my-surrender-concludes-broadway-run-october-22",
+          "date": "2017-10-22"
         }
       ],
       "title": "The Terms of My Surrender",
       "slug": "the-terms-of-my-surrender-2017",
       "openingDate": "2017-08-10",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:06:19.418Z",
+      "researchedAt": "2026-10-26T11:17:34.142Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -4071,22 +4081,17 @@
     },
     "1984-2017": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "No verified public capitalization found.",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": null,
+      "recouped": false,
       "recoupedDate": null,
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Public sources I checked confirm the 2017 Broadway production ran at the Hudson Theatre from June 22 to October 8, 2017, but I could not verify capitalization, weekly running cost, or recoupment.",
+      "designation": "Did Not Recoup",
+      "notes": "I could verify the production’s run dates and total Broadway grosses, but I found no public capitalization, weekly nut, or verified recoupment announcement. The Did Not Recoup designation is an inference from the available public data, so confidence is low.",
       "confidence": "low",
       "sources": [
-        {
-          "type": "manual",
-          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
-          "date": "2025-08-10"
-        },
         {
           "type": "manual",
           "url": "https://www.ibdb.com/broadway-production/1984-513416",
@@ -4094,83 +4099,68 @@
         },
         {
           "type": "manual",
-          "url": "https://www.playbill.com/article/broadways-1984-plays-final-performance-october-8",
-          "date": "2017-10-08"
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
+          "url": "https://www.broadwayworld.com/grossestheater/HUDSON?orderby=asc&sortby=showname",
+          "date": null
         }
       ],
       "title": "1984",
       "slug": "1984-2017",
       "openingDate": "2017-06-22",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:13:57.660Z",
+      "researchedAt": "2026-10-26T11:20:29.281Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "a-dolls-house-part-2-2017": {
-      "capitalization": null,
-      "capitalizationSource": "Not verified from public sources searched; no verifiable capitalization filing found.",
+      "capitalization": 3645000,
+      "capitalizationSource": "SEC Form D/A for ADH2 Ltd Liability Co (offering capitalized at $3,645,000)",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Broadway Journal reported the production was operating at a loss.",
+      "recoupedSource": "Forbes, 'The State Of Play(s) On Broadway' (described the show as closing at a financial loss)",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "I could not verify a public capitalization or weekly nut. Trade coverage indicated the Broadway production was operating at a loss, and it closed on 2017-09-24 after its limited run/extension.",
+      "notes": "Public filings show a $3.645M capitalization, but I couldn't verify a show-specific weekly nut. Forbes reported the production closed at a financial loss, so it appears not to have recouped.",
       "confidence": "medium",
       "sources": [
         {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/play-grosses-go-wrong-sales-tumble-for-second-season",
-          "date": null
+          "type": "sec",
+          "url": "https://www.sec.gov/Archives/edgar/data/1691332/000169133217000001/primary_doc.xml",
+          "date": "2017-06-20"
         },
         {
           "type": "trade",
-          "url": "https://www.broadway.com/buzz/188418/lucas-hnaths-a-dolls-house-part-2-will-close-on-broadway/",
-          "date": "2017-09-06"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/grosses-analysis-two-tony-nominated-plays-earn-high-marks-prior-to-broadways-biggest-night",
-          "date": "2017-05-15"
-        },
-        {
-          "type": "manual",
-          "url": "https://www.nytix.com/news/a-dolls-house-part-2-closes-several-months-early",
-          "date": "2017-09-27"
+          "url": "https://www.forbes.com/sites/leeseymour/2017/10/23/the-state-of-plays-on-broadway/",
+          "date": "2017-10-23"
         }
       ],
       "title": "A Doll's House, Part 2",
       "slug": "a-dolls-house-part-2-2017",
       "openingDate": "2017-04-27",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:16:52.951Z",
+      "researchedAt": "2026-10-26T11:22:32.082Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "bandstand-2017": {
       "capitalization": 13000000,
-      "capitalizationSource": "Reddit /r/Broadway discussion quoting Bandstand at $13 million capitalization (not independently verified)",
+      "capitalizationSource": "Reddit r/Broadway discussion summarizing reported 2017 Broadway capitalizations, listing Bandstand at $13 million",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Inference from public gross totals and closing date; no public recoupment announcement found",
+      "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Public production pages show about $13.49 million gross over 166 performances / 25 weeks. I could not verify a weekly running cost, and I found no public recoupment announcement. The capitalization figure is low-confidence because it came from a public Reddit discussion rather than an official filing.",
+      "notes": "Best public capitalization figure found was $13 million. I could not verify a weekly running cost. The run ended after 166 performances, and I found no public recoupment announcement.",
       "confidence": "low",
       "sources": [
-        {
-          "type": "manual",
-          "url": "https://theatrical.cnydevzone6.com/show/bandstand/bandstand-bway",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/production/bandstand-bernard-b-jacobs-theatre-2016-2017",
-          "date": null
-        },
         {
           "type": "reddit",
           "url": "https://www.reddit.com/r/Broadway/comments/1v8nbrh/10_pm_thoughts_on_the_staggering_cost_of_these/",
@@ -4178,7 +4168,12 @@
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/article/bandstand-closes-on-broadway-september-17",
+          "url": "https://www.playbill.com/production/bandstand-bernard-b-jacobs-theatre-2016-2017",
+          "date": "2017-09-17"
+        },
+        {
+          "type": "trade",
+          "url": "https://www.playbill.com/article/bandstand-closes-on-broadway-september-17",
           "date": "2017-09-17"
         }
       ],
@@ -4186,100 +4181,107 @@
       "slug": "bandstand-2017",
       "openingDate": "2017-04-26",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:20:36.975Z",
+      "researchedAt": "2026-10-26T11:25:03.491Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "six-degrees-of-separation-2017": {
       "capitalization": null,
-      "capitalizationSource": "No verified public source found.",
+      "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "No public recoupment announcement found; NYTIX reported the show never reached 40% of gross potential in any week and closed early on 2017-06-18.",
+      "recoupedSource": "No public recoupment announcement found; box-office coverage indicates the revival closed early and never reached 40% of gross potential. ([nytix.com](https://www.nytix.com/news/post-tonys-six-degrees-of-separation-closes-early?utm_source=openai))",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "No verified capitalization or weekly nut was found. The revival ran from 2017-04-25 to 2017-06-18, with 21 previews and 63 performances, and NYTIX reported it never reached 40% of gross potential in any week; the final week gross was $316,539 (33.97% of gross potential).",
+      "notes": "Public sources verified the run dates and box-office performance, but not a capitalization figure or weekly nut. The revival ran April 25-June 18, 2017 at the Ethel Barrymore, and its final week gross was $316,539.30 with 53.40% capacity; trade coverage says it never got above 40% of gross potential, so it appears to have closed without recouping. ([broadway.com](https://www.broadway.com/buzz/188408/six-degrees-of-separation-with-corey-hawkins-allison-janney-john-benjamin-hickey-to-close-early/?utm_source=openai))",
       "confidence": "low",
       "sources": [
         {
-          "type": "manual",
-          "url": "https://www.ibdb.com/broadway-production/six-degrees-of-separation-511243",
+          "type": "trade",
+          "url": "https://www.broadway.com/buzz/188408/six-degrees-of-separation-with-corey-hawkins-allison-janney-john-benjamin-hickey-to-close-early/",
+          "date": "2017-06-13"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/production/six-degrees-of-separation-ethel-barrymore-theatre-2016-2017",
           "date": null
         },
         {
           "type": "trade",
           "url": "https://www.nytix.com/news/post-tonys-six-degrees-of-separation-closes-early",
-          "date": "2017-06-18"
+          "date": "2017-06-13"
+        },
+        {
+          "type": "manual",
+          "url": "https://sixdegreesbroadway.com/",
+          "date": null
         }
       ],
       "title": "Six Degrees of Separation",
       "slug": "six-degrees-of-separation-2017",
       "openingDate": "2017-04-25",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:23:25.403Z",
+      "researchedAt": "2026-10-26T11:28:16.134Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "anastasia-2017": {
       "capitalization": 15000000,
-      "capitalizationSource": "Broadway News report citing SEC filing",
-      "weeklyRunningCost": null,
-      "costMethodology": null,
-      "recouped": null,
-      "recoupedDate": null,
-      "recoupedSource": null,
+      "capitalizationSource": "Broadway News, 'Anastasia' posts closing notice for March 31 (reported Broadway capitalization up to $15 million)",
+      "weeklyRunningCost": 700000,
+      "costMethodology": "trade-reported",
+      "recouped": true,
+      "recoupedDate": "2022-04",
+      "recoupedSource": "BroadwayWorld forum post relaying an April 5, 2022 briefing/press-rep report that Anastasia had recouped its production costs",
       "estimatedRecoupmentPct": null,
-      "designation": "TBD",
-      "notes": "Broadway capitalization was reported at up to $15 million. I could not verify a public weekly running cost. Recoupment reports conflict, so I left recoupment unresolved. ([shubert.nyc](https://shubert.nyc/press/anastasia-the-new-musical-to-open-at-the-broadhurst-theatre-on-broadway/?utm_source=openai))",
-      "confidence": "low",
+      "designation": "Windfall",
+      "notes": "The show had not recouped by its 2019 closing notice, but a 2022 report said it later recouped after Broadway, the U.S. tour, and international productions. Weekly running costs were publicly described only approximately, at just over $700,000 and possibly closer to $800,000.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.shubert.nyc/press/anastasia-the-new-musical-to-open-at-the-broadhurst-theatre-on-broadway/",
-          "date": "2016-06-28"
+          "url": "https://www.broadwaynews.com/anastasia-posts-closing-notice-for-march-31/",
+          "date": "2019-02-05"
         },
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/anastasia-posts-closing-notice-for-march-31/",
-          "date": null
+          "url": "https://www.forbes.com/sites/leeseymour/2017/09/11/broadway-box-office-plummets-after-spectacular-summer/",
+          "date": "2017-09-11"
         },
         {
-          "type": "manual",
-          "url": "https://forum.broadwayworld.com/thread/ANASTASIA-Sets-March-31st-Closing-Date/2",
-          "date": "2019-02-06"
-        },
-        {
-          "type": "manual",
+          "type": "trade",
           "url": "https://forum.broadwayworld.com/readmessage.php?thread=1152513",
           "date": "2022-04-05"
         }
       ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
       "title": "Anastasia",
       "slug": "anastasia-2017",
       "openingDate": "2017-04-24",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:26:57.190Z",
+      "researchedAt": "2026-10-26T11:30:56.975Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "charlie-and-the-chocolate-factory-2017": {
       "capitalization": 15000000,
-      "capitalizationSource": "Forbes trade article reporting the Broadway production was estimated to cost at least $15 million.",
+      "capitalizationSource": "Forbes reported the Broadway production was estimated to cost at least $15 million.",
       "weeklyRunningCost": 850000,
       "costMethodology": "trade-reported",
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Forbes reported the show did not recoup its initial investment.",
+      "recoupedSource": "Forbes (2019-03-28) said the show did not recoup its initial investment.",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Trade reporting put the Broadway production at at least $15 million to mount and about $850,000 per week to operate; Forbes said it did not recoup before closing.",
+      "notes": "Public trade reporting only gave a floor for capitalization, not an exact figure. Forbes also reported roughly $850,000 weekly operating costs and that the production closed without recouping.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://tollbit.forbes.com/sites/marchershberg/2019/03/28/as-beetlejuice-begins-to-haunt-broadway-warner-bros-faces-intense-scrutiny/",
+          "url": "https://www.forbes.com/sites/marchershberg/2019/03/28/as-beetlejuice-begins-to-haunt-broadway-warner-bros-faces-intense-scrutiny/",
           "date": "2019-03-28"
         },
         {
@@ -4292,7 +4294,7 @@
       "slug": "charlie-and-the-chocolate-factory-2017",
       "openingDate": "2017-04-23",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:28:09.841Z",
+      "researchedAt": "2026-10-26T11:32:30.678Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -4337,33 +4339,40 @@
     },
     "indecent-2017": {
       "capitalization": 3800000,
-      "capitalizationSource": "Broadway Journal report citing an SEC filing",
+      "capitalizationSource": "Broadway Journal reporting an SEC filing said Indecent was capitalized at $3.8 million",
       "weeklyRunningCost": null,
       "costMethodology": null,
-      "recouped": false,
-      "recoupedDate": null,
-      "recoupedSource": "NYTIX said the Broadway production certainly didn't break even",
+      "recouped": true,
+      "recoupedDate": "2017-08",
+      "recoupedSource": "American Theatre interview with Daryl Roth saying the extension sold out and the production ended up breaking even",
       "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "Public sources verify a $3.8 million capitalization and indicate the Broadway run did not break even; I could not confirm a weekly running cost.",
+      "designation": "Easy Winner",
+      "notes": "[PLAUSIBILITY WARNING: Capitalization > 60% of all-time gross for recouped show] Public sources verified a $3.8M capitalization and a break-even outcome, but I could not confirm a show-specific weekly nut.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
           "url": "https://www.broadwayjournal.com/p/from-oslo-to-come-from-away-tonys-provide-bounce",
-          "date": "2017-06-19"
+          "date": "2017-06-26"
         },
         {
           "type": "trade",
-          "url": "https://www.nytix.com/news/indecent-finally-concludes-after-second-wind",
-          "date": "2017-08-04"
+          "url": "https://www.americantheatre.org/2019/03/06/daryl-roth-producing-with-a-purpose/",
+          "date": "2019-03-06"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/indecent-closes-on-broadway-august-6",
+          "date": "2017-08-06"
         }
       ],
+      "_recoupedClaim": true,
+      "_recoupedNote": "AI claimed recouped — requires human verification with citation before applying",
       "title": "Indecent",
       "slug": "indecent-2017",
       "openingDate": "2017-04-18",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:31:41.783Z",
+      "researchedAt": "2026-10-26T11:35:32.583Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
@@ -4448,67 +4457,67 @@
     },
     "present-laughter-2017": {
       "capitalization": null,
-      "capitalizationSource": "No verified public capitalization found in the sources checked.",
+      "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
       "recoupedDate": null,
-      "recoupedSource": "No verified public recoupment announcement found in the sources checked; available trade coverage did not identify Present Laughter among the 2016-17 dramas that had paid back investors by late June 2017. ([broadwayjournal.com](https://www.broadwayjournal.com/p/play-grosses-go-wrong-sales-tumble-for-second-season?utm_source=openai))",
+      "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "IBDB confirms the St. James run opened 2017-04-05, closed 2017-07-02, and played 101 performances; Playbill described it as a limited engagement ending, and Broadway Journal reported a $855,000 gross for the week ending 2017-06-25. I found no verified public capitalization, weekly nut, or recoupment notice. ([ibdb.com](https://www.ibdb.com/broadway-production/present-laughter-510583))",
+      "notes": "Insufficient verified public financial data was found for this closed 2017 revival.",
       "confidence": "low",
       "sources": [
         {
           "type": "manual",
+          "url": "https://www.investmentbroadway.com/post/so-who-received-the-new-york-city-musical-and-theatrical-production-tax-credit",
+          "date": "2025-08-09"
+        },
+        {
+          "type": "manual",
           "url": "https://www.ibdb.com/broadway-production/present-laughter-510583",
           "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/play-grosses-go-wrong-sales-tumble-for-second-season",
-          "date": null
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/present-laughter-starring-tony-winner-kevin-kline-will-be-captured-for-broadwayhd-june-23",
-          "date": "2017-06-23"
         }
       ],
       "title": "Present Laughter",
       "slug": "present-laughter-2017",
       "openingDate": "2017-04-05",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:40:20.469Z",
+      "researchedAt": "2026-10-26T11:37:56.327Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "amelie-a-new-musical-2017": {
       "capitalization": 12000000,
-      "capitalizationSource": "NYTIX article reporting the Broadway production was capitalized at $12 million",
+      "capitalizationSource": "Puremédias report (2017-05-05) stating the show 'would have cost 12 million dollars to put together.'",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "NYTIX article said the Broadway production closed at a loss; no recoupment announcement was found",
+      "recoupedSource": "No public recoupment announcement found; an academic study grouped Amelie among shows that either closed before recouping or recouped after the study cutoff.",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Reported capitalization was $12 million. I could not verify a public weekly running cost. The Broadway production closed May 21, 2017 and was described as closing at a loss, with no verified recoupment date or percentage found.",
+      "notes": "Reported Broadway cost was about $12M; total Broadway gross was about $5.31M. I could not verify a show-specific weekly running cost from a public source.",
       "confidence": "medium",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.nytix.com/news/amelie-snubbed-at-tony-awards-closes-early",
-          "date": "2017-06-10"
+          "url": "https://www.ozap.com/actu/-amelie-poulain-la-comedie-musicale-s-arrete-deja-a-broadway/525894",
+          "date": "2017-05-05"
         },
         {
-          "type": "manual",
-          "url": "https://www.theatricalindex.com/show/amelie-musical/amelie-musical-bway",
-          "date": null
+          "type": "trade",
+          "url": "https://playbill.com/article/amelie-starring-phillipa-soo-sets-broadway-closing-date",
+          "date": "2017-05-04"
         },
         {
           "type": "trade",
           "url": "https://playbill.com/production/amelie-a-new-musicalwalter-kerr-theatre-2016-2017",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://ir-api.ua.edu/api/core/bitstreams/9d4a7ea6-7001-46f4-a201-fde61b49557e/content",
           "date": null
         }
       ],
@@ -4516,23 +4525,33 @@
       "slug": "amelie-a-new-musical-2017",
       "openingDate": "2017-04-03",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:42:27.289Z",
+      "researchedAt": "2026-10-26T11:40:48.056Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "sweat-2017": {
       "capitalization": null,
-      "capitalizationSource": null,
+      "capitalizationSource": "Not publicly verified from the sources checked.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Broadway Journal reported Sweat was operating at a loss by May 23, 2017, and later trade coverage described it as having closed at a loss.",
+      "recoupedSource": "Broadway Journal reported that Sweat was operating at a loss in May 2017 and that only The Front Page and Oh Hello on Broadway had paid back investors at that point; I found no later recoupment announcement after the June 25, 2017 closing. ([broadwayjournal.com](https://www.broadwayjournal.com/p/play-grosses-go-wrong-sales-tumble-for-second-season))",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Public sources I checked did not expose a verified capitalization or weekly nut for this 2017 Studio 54 production. Trade coverage indicates the show was running at a loss and closed without recouping.",
-      "confidence": "medium",
+      "notes": "Closed at Studio 54 on June 25, 2017 after 24 previews and 105 regular performances. Broadway Journal also reported the closing-week gross at $412,000. No verified public capitalization or weekly nut surfaced. ([playbill.com](https://playbill.com/article/broadways-sweat-announces-closing?utm_source=openai))",
+      "confidence": "low",
       "sources": [
+        {
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/sweat-512126",
+          "date": "2017-03-26"
+        },
+        {
+          "type": "trade",
+          "url": "https://playbill.com/article/broadways-sweat-announces-closing",
+          "date": "2017-06-13"
+        },
         {
           "type": "trade",
           "url": "https://www.broadwayjournal.com/p/play-grosses-go-wrong-sales-tumble-for-second-season",
@@ -4542,52 +4561,42 @@
           "type": "trade",
           "url": "https://www.broadwayjournal.com/p/indecent-sweat-surge-on-closing-notices",
           "date": "2017-06-26"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.playbill.com/article/broadways-sweat-announces-closing",
-          "date": "2017-06-13"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.yahoo.com/entertainment/torch-song-second-stage-64-120055120.html",
-          "date": "2017-10-11"
         }
       ],
       "title": "Sweat",
       "slug": "sweat-2017",
       "openingDate": "2017-03-26",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:44:46.403Z",
+      "researchedAt": "2026-10-26T11:43:41.511Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "miss-saigon-2017": {
       "capitalization": null,
-      "capitalizationSource": "No public, verifiable capitalization figure found in the sources I checked; trade coverage only reported weekly running costs. ([forbes.com](https://www.forbes.com/sites/leeseymour/2017/09/11/broadway-box-office-plummets-after-spectacular-summer/?utm_source=openai))",
-      "weeklyRunningCost": 700000,
-      "costMethodology": "trade-reported",
-      "recouped": false,
+      "capitalizationSource": "Washington Post interview with Cameron Mackintosh; only an under-$10 million estimate was public, not an exact capitalization.",
+      "weeklyRunningCost": null,
+      "costMethodology": null,
+      "recouped": null,
       "recoupedDate": null,
-      "recoupedSource": "Forbes reported the revival was still struggling and cited investment documents putting weekly running costs just north of $700,000; later coverage said grosses reportedly failed to cover weekly running costs. ([forbes.com](https://www.forbes.com/sites/leeseymour/2017/09/11/broadway-box-office-plummets-after-spectacular-summer/?utm_source=openai))",
+      "recoupedSource": null,
       "estimatedRecoupmentPct": null,
-      "designation": "Did Not Recoup",
-      "notes": "The 2017 Broadway revival ran March 1, 2017 to January 14, 2018. I could verify weekly running costs just north of $700,000, but not a public capitalization figure; I also found no verified recoupment date. ([playbill.com](https://playbill.com/production/miss-saigon-broadway-theatre-2016-2017?utm_source=openai))",
+      "designation": "TBD",
+      "notes": "The only public budget clue I could verify is Mackintosh’s statement that the new version could be produced for under $10 million; I could not verify an exact capitalization or weekly nut. The Broadway revival ran from March 23, 2017 to January 14, 2018, and I found no public recoupment announcement. ([washingtonpost.com](https://www.washingtonpost.com/entertainment/theater_dance/not-your-grannys-phantom-of-the-opera-at-the-kennedy-center/2016/07/08/4c67e35a-3e47-11e6-a66f-aa6c1883b6b1_story.html))",
       "confidence": "low",
       "sources": [
         {
           "type": "trade",
-          "url": "https://www.forbes.com/sites/leeseymour/2017/09/11/broadway-box-office-plummets-after-spectacular-summer/",
-          "date": "2017-09-11"
+          "url": "https://www.washingtonpost.com/entertainment/theater_dance/not-your-grannys-phantom-of-the-opera-at-the-kennedy-center/2016/07/08/4c67e35a-3e47-11e6-a66f-aa6c1883b6b1_story.html",
+          "date": "2016-07-09"
         },
         {
           "type": "trade",
-          "url": "https://www.amny.com/entertainment/theater/cats-phantom-and-les-miz-musicals-in-new-york/",
-          "date": null
+          "url": "https://playbill.com/article/miss-saigon-revival-opens-on-broadway-march-23",
+          "date": "2017-03-23"
         },
         {
           "type": "trade",
-          "url": "https://playbill.com/production/miss-saigon-broadway-theatre-2016-2017",
+          "url": "https://playbill.com/article/miss-saigon-revival-ends-broadway-run-january-14",
           "date": "2018-01-14"
         }
       ],
@@ -4595,21 +4604,21 @@
       "slug": "miss-saigon-2017",
       "openingDate": "2017-03-23",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:49:11.693Z",
+      "researchedAt": "2026-10-26T11:46:39.062Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "the-glass-menagerie-2017": {
-      "capitalization": 3350000,
-      "capitalizationSource": "Broadway Journal reported, citing the production's offering documents, that the revival was capitalized at $3.35 million; a March 24, 2017 SEC Form D/A showed $3.225 million sold at that point. ([broadwayjournal.com](https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit))",
+      "capitalization": 3225000,
+      "capitalizationSource": "SEC Form D/A for Laurette Broadway Ltd Liability Co states the offering was capitalized at 3,225,000 dollars; Broadway Journal later reported offering documents at 3.35 million. ([sec.gov](https://www.sec.gov/Archives/edgar/data/1685283/000168528317000001/xslFormDX01/primary_doc.xml))",
       "weeklyRunningCost": 437500,
       "costMethodology": "trade-reported",
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "Broadway Journal said the production appeared to lose money every week and closed six weeks earlier than planned; Playbill confirms the final performance was May 21, 2017. ([broadwayjournal.com](https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit))",
+      "recoupedSource": "Broadway Journal reported projected running costs of 437,500 dollars per week and said the production appeared to lose money every week. ([broadwayjournal.com](https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit?utm_source=openai))",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Reported capital was $3.35M and weekly running cost was $437.5K. No recoupment percentage was publicly verified; the short run and reported weekly losses support a Did Not Recoup classification. ([broadwayjournal.com](https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit))",
+      "notes": "Best-verified data is the SEC capitalization figure plus a trade report giving the weekly nut. The recoupment call is an inference from the reported weekly losses and early closure, not an explicit recoupment announcement. ([sec.gov](https://www.sec.gov/Archives/edgar/data/1685283/000168528317000001/xslFormDX01/primary_doc.xml))",
       "confidence": "medium",
       "sources": [
         {
@@ -4621,33 +4630,28 @@
           "type": "trade",
           "url": "https://www.broadwayjournal.com/p/rudin-tennessee-williams-estate-tentatively-settle-glass-menagerie-lawsuit",
           "date": "2018-02-08"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/article/the-glass-menagerie-starring-sally-field-and-joe-mantello-ends-broadway-run-may-21",
-          "date": null
         }
       ],
       "title": "The Glass Menagerie",
       "slug": "the-glass-menagerie-2017",
       "openingDate": "2017-03-09",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:50:50.966Z",
+      "researchedAt": "2026-10-26T11:48:08.190Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "significant-other-2017": {
       "capitalization": 3400000,
-      "capitalizationSource": "NYTIX article reporting initial capitalization of $3.4 million",
+      "capitalizationSource": "NYTix reported the production's initial capitalization at $3.4 million.",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": false,
       "recoupedDate": null,
-      "recoupedSource": "NYTIX article said the production did not make a dent in returns on its initial capitalization; no recoupment announcement found",
+      "recoupedSource": "NYTix (2017-05-22) said the production 'did not make a dent in making any returns on its initial capitalization of $3.4 million, plus weekly running costs.'",
       "estimatedRecoupmentPct": null,
       "designation": "Did Not Recoup",
-      "notes": "Public reporting shows a $3.4M capitalization and $1,707,469 total gross over 10 weeks; no verified weekly nut or recoupment announcement surfaced.",
-      "confidence": "low",
+      "notes": "Broadway limited run at the Booth Theatre (opened 2017-03-02, closed 2017-04-23). Public reporting gives a $3.4M capitalization and $1,707,469 total gross; no show-specific weekly nut or exact recoupment percentage was publicly verified.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "manual",
@@ -4658,24 +4662,19 @@
           "type": "trade",
           "url": "https://www.nytix.com/news/significant-other-closes-due-to-poor-box-office",
           "date": "2017-05-22"
-        },
-        {
-          "type": "trade",
-          "url": "https://www.broadwayjournal.com/p/brantley-double-play-hobbles-competition-for-oslo-box-office",
-          "date": "2017-03-27"
         }
       ],
       "title": "Significant Other",
       "slug": "significant-other-2017",
       "openingDate": "2017-03-02",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:52:36.911Z",
+      "researchedAt": "2026-10-26T11:50:29.024Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "the-present-2017": {
       "capitalization": null,
-      "capitalizationSource": "No public show-specific capitalization found; STC/ABC only discuss company-level 2017 costs, not a Broadway capitalization.",
+      "capitalizationSource": null,
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -4683,27 +4682,22 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Public sources confirm the Broadway run and grosses, but not a show-specific capitalization, weekly nut, or recoupment statement.",
+      "notes": "Public sources confirm the Broadway run and box office, but I could not verify a production capitalization, weekly nut, or recoupment status.",
       "confidence": "low",
       "sources": [
         {
           "type": "manual",
-          "url": "https://www.sydneytheatre.com.au/-/media/project/sydney-theatre-company/sydney-theatre-company/about/annual-reports/ar_2016_webversion.pdf?hash=C900098E9FBACDCA44D6FC24190402C4&rev=33c8d893a48c4fe2a658e31ebcfe3542",
-          "date": null
-        },
-        {
-          "type": "manual",
-          "url": "https://www.abc.net.au/news/2018-05-31/sydney-theatre-company-announces-244.2m-budget-blowout/9822056",
-          "date": "2018-05-31"
-        },
-        {
-          "type": "trade",
-          "url": "https://playbill.com/production/the-present-ethel-barrymore-theatre-2016-2017",
+          "url": "https://www.ibdb.com/broadway-production/the-present-508170",
           "date": null
         },
         {
           "type": "trade",
           "url": "https://www.broadwayworld.com/grosses/THE-PRESENT",
+          "date": null
+        },
+        {
+          "type": "manual",
+          "url": "https://www.sydneytheatre.com.au/-/media/project/sydney-theatre-company/sydney-theatre-company/about/annual-reports/ar_2016_webversion.pdf?hash=C900098E9FBACDCA44D6FC24190402C4&rev=33c8d893a48c4fe2a658e31ebcfe3542",
           "date": null
         }
       ],
@@ -4711,13 +4705,13 @@
       "slug": "the-present-2017",
       "openingDate": "2017-01-08",
       "status": "closed",
-      "researchedAt": "2026-10-22T04:58:45.147Z",
+      "researchedAt": "2026-10-26T11:52:58.388Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
     "a-bronx-tale-the-musical-2016": {
       "capitalization": 10000000,
-      "capitalizationSource": "Observer trade article listing A Bronx Tale at $10 million",
+      "capitalizationSource": "Observer trade press article (lists A Bronx Tale at $10 million capitalization)",
       "weeklyRunningCost": null,
       "costMethodology": null,
       "recouped": null,
@@ -4725,8 +4719,8 @@
       "recoupedSource": null,
       "estimatedRecoupmentPct": null,
       "designation": "TBD",
-      "notes": "Trade press listed a $10M capitalization, and Playbill/Broadway News reported the musical closed Aug. 5, 2018 after 700 regular performances with $68.7M grossed. I could not verify a formal public recoupment announcement or weekly operating cost; secondary sources only suggest it was close to recouping.",
-      "confidence": "low",
+      "notes": "Verified public sources confirm a $10 million capitalization and the Broadway run dates/length, but I could not confirm a public weekly running cost or an official recoupment announcement.",
+      "confidence": "medium",
       "sources": [
         {
           "type": "trade",
@@ -4735,17 +4729,12 @@
         },
         {
           "type": "trade",
-          "url": "https://www.broadwaynews.com/a-bronx-tale-closing-on-broadway-on-aug-5/",
-          "date": "2018-06-27"
+          "url": "https://playbill.com/article/a-bronx-tale-closes-on-broadway-august-5",
+          "date": "2018-08-06"
         },
         {
-          "type": "reddit",
-          "url": "https://forum.broadwayworld.com/thread/Clue-at-the-Paper-Mill",
-          "date": "2022-01-30"
-        },
-        {
-          "type": "trade",
-          "url": "https://academic.oup.com/jrssig/article/22/4/6/8151666",
+          "type": "manual",
+          "url": "https://www.ibdb.com/broadway-production/a-bronx-tale-the-musical-508538",
           "date": null
         }
       ],
@@ -4753,7 +4742,7 @@
       "slug": "a-bronx-tale-the-musical-2016",
       "openingDate": "2016-12-01",
       "status": "closed",
-      "researchedAt": "2026-10-22T05:05:36.721Z",
+      "researchedAt": "2026-10-26T11:56:24.143Z",
       "model": "gpt-5.4-mini",
       "researchTrigger": "manual"
     },
