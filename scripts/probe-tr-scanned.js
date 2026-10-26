@@ -86,7 +86,9 @@ function tesseractStats(imgPath) {
         const id = hitPath.replace('/archive/issue/', '');
         const pages = sh('pdftotext', ['-layout', pdf2, '-']).split('\f');
         const markerRe = /A\s*[-\u2013]\s*Z of (?:current )?(?:London )?productions/i;
-        const first = pages.findIndex((t, i) => i >= pages.length * 0.4 && markerRe.test(t.replace(/\s+/g, ' ')));
+        let first = pages.findIndex((t, i) => i >= pages.length * 0.4 && markerRe.test(t.replace(/\s+/g, ' ')));
+        // BRO-6343: issue 160 prints no "A-Z of productions" heading text; its A-Z page carries this footnote
+        if (first < 0) first = pages.findIndex((t, i) => i >= pages.length * 0.4 && /Page numbers in \(brackets\) refer to London-listed/i.test(t.replace(/\s+/g, ' ')));
         console.log(`AZRAW ${id} pages=${pages.length} markerPage=${first}`);
         if (first < 0) {
           pages.forEach((t, i) => t.split('\n').forEach(l => { if (/\bA-Z\b|productions|running in/i.test(l)) console.log(`AZHINT|${id}|p${i + 1}|${l.replace(/\s+/g, ' ').slice(0, 120)}`); }));
