@@ -1764,7 +1764,7 @@ resolve_conflicts() {
         # night can each append a retry entry around the same time. Unlike
         # the per-run-independent audit/ logs below, a whole-file keep-local
         # here would silently drop one show's queued retry — same class as
-        # feedback-request-ledger.json above and social-post-history.json.
+        # feedback-request-ledger.json above.
         echo "  Auto-resolving (express-retry-queue merge): $file"
         if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
           git add "$file" 2>/dev/null && resolved=true
@@ -1865,24 +1865,6 @@ resolve_conflicts() {
           git add "$file" 2>/dev/null && resolved=true
         else
           echo "  ::warning::awards merge failed for $file; falling back to keep-local"
-          git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
-        fi
-        ;;
-      data/social-post-history.json)
-        # Array-of-posts merge. social-post.yml uses a PER-RUN concurrency group
-        # (not static — update-show-status.yml dispatches it per-show in a tight
-        # loop, and a static group risks GitHub's 1-pending-queue limit dropping a
-        # show's post), so concurrent pushes for different shows are expected and
-        # need a real merge here rather than serialization. The generic "accept
-        # remote" case below would silently drop one run's new post entry,
-        # defeating generate-social-post.js's duplicate-post check on the next
-        # run. mergeSocialPostHistory unions both sides by tweetId; ours wins on
-        # shared keys. Card 3a5637c5-416f-812a.
-        echo "  Auto-resolving (social-post-history merge): $file"
-        if node "$SCRIPT_DIR/merge-commercial-conflict.js" "$file" "$keep_local" "$keep_remote" 2>&1; then
-          git add "$file" 2>/dev/null && resolved=true
-        else
-          echo "  ::warning::social-post-history merge failed for $file; falling back to keep-local"
           git checkout $keep_local "$file" 2>/dev/null && git add "$file" 2>/dev/null && resolved=true
         fi
         ;;
@@ -3148,7 +3130,7 @@ if [ "$pushed" != "true" ] && [ "$_PUSH_API_FALLBACK_ELIGIBLE" = "true" ]; then
     _api_fallback_ok=false
   else
     # Union-merge-MANAGED files (commercial*.json, diary-shows.json,
-    # social-post-history.json, bww-roundup-miss-ledger.jsonl) need a
+    # bww-roundup-miss-ledger.jsonl) need a
     # per-slug/per-line merge (reconcile-merged-json.js) — this fallback's
     # coarse "our version wins outright" would silently discard a concurrent
     # writer's entry for exactly these files, the #574/#692 class those
