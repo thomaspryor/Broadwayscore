@@ -82,30 +82,44 @@ function newReviewCountFor(show, shows, showReviews) {
 }
 
 /**
+ * Why one show's score post is or is not due now. {due: true, slot, gate} or
+ * {due: false, why, slot, gate?}; why is one of ineligible, done, not-yet,
+ * too-old, no-score, not-confident, too-few-reviews. The checks run in this
+ * order, and findScoreEvents posts exactly the shows this calls due.
+ * ignoreAge skips the too-old check, so the weekly email can say what was
+ * still missing when a show aged out (scripts/lib/social-report.js).
+ */
+function scoreDecision(show, { done, now, reviewsByShow, slim, getOutletTier, shows }, { ignoreAge = false } = {}) {
+  if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
+  if (done.has(`score:${show.id}`)) return { due: false, why: 'done' };
+  const slot = morningAfter(show);
+  if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', slot };
+  if (!ignoreAge && now - slot > C.SCORE_LOOKBACK_DAYS * DAY_MS) return { due: false, why: 'too-old', slot };
+  const pub = slim[show.id];
+  if (!pub || !Number.isFinite(pub.cs) || !pub.rc) return { due: false, why: 'no-score', slot };
+  const showReviews = reviewsByShow[show.id] || [];
+  const gate = evaluateScoreConfidence({
+    showReviews, category: show.category, getOutletTier,
+    newReviewCount: newReviewCountFor(show, shows, showReviews),
+    floors: C.SCORE_FLOORS[show.category] || null,
+  });
+  if (!gate.ok) return { due: false, why: 'not-confident', slot, gate };
+  if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) return { due: false, why: 'too-few-reviews', slot, gate };
+  return { due: true, slot, gate };
+}
+
+/**
  * Score posts whose slot is reached (or within the creation lead) and whose score is settled.
  * slim: { [showId]: { cs, rc } } from public/data/shows/{id}.json (the site's own numbers).
  */
 function findScoreEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTier }) {
-  const done = doneKeys(ledger);
+  const ctx = { done: doneKeys(ledger), now, reviewsByShow, slim, getOutletTier, shows };
   const out = [];
   for (const show of shows) {
-    if (!isEligibleShow(show)) continue;
-    if (done.has(`score:${show.id}`)) continue;
-    const slot = morningAfter(show);
-    if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) continue; // not yet
-    if (now - slot > C.SCORE_LOOKBACK_DAYS * DAY_MS) continue; // too old
-    const pub = slim[show.id];
-    if (!pub || !Number.isFinite(pub.cs) || !pub.rc) continue;
-    const showReviews = reviewsByShow[show.id] || [];
-    const gate = evaluateScoreConfidence({
-      showReviews, category: show.category, getOutletTier,
-      newReviewCount: newReviewCountFor(show, shows, showReviews),
-      floors: C.SCORE_FLOORS[show.category] || null,
-    });
-    if (!gate.ok) continue;
-    if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) continue;
+    const d = scoreDecision(show, ctx);
+    if (!d.due) continue;
     const tz = C.MARKETS[show.category].tz;
-    out.push({ type: 'score', show, gate, dueAt: new Date(nextWindowSlot(Math.max(slot, now + 10 * MIN_MS), tz)) });
+    out.push({ type: 'score', show, gate: d.gate, dueAt: new Date(nextWindowSlot(Math.max(d.slot, now + 10 * MIN_MS), tz)) });
   }
   return out;
 }
@@ -149,4 +163,4 @@ function splitBacklog(events, ledger, now) {
   return { post, skip };
 }
 
-module.exports = { findScoreEvents, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, zonedTime, localParts, isEligibleShow, newReviewCountFor };

@@ -9,6 +9,11 @@ const ENDPOINT = process.env.BUFFER_API_URL || 'https://api.buffer.com'; // over
 // Buffer `service` values this system posts to, mapped to our caption keys.
 const SERVICE_TO_NETWORK = { twitter: 'twitter', bluesky: 'bluesky', threads: 'threads', instagram: 'instagram', facebook: 'facebook' };
 
+// Buffer's quota (250 calls a day per key) is shared by every caller; the last
+// response's x-ratelimit-* headers say how much is left.
+let lastRateLimit = { remaining: null, reset: null };
+const rateLimit = () => lastRateLimit;
+
 async function gql(query, variables = {}) {
   const key = process.env.BUFFER_API_KEY;
   if (!key) throw new Error('BUFFER_API_KEY not set');
@@ -18,6 +23,8 @@ async function gql(query, variables = {}) {
     body: JSON.stringify({ query, variables }),
     signal: AbortSignal.timeout(30000),
   });
+  const rem = res.headers.get('x-ratelimit-remaining');
+  if (rem != null) lastRateLimit = { remaining: Number(rem), reset: res.headers.get('x-ratelimit-reset') };
   if (res.status === 429) throw new Error('Buffer rate limit reached (HTTP 429)');
   if (!res.ok) throw new Error(`Buffer HTTP ${res.status}: ${(await res.text()).slice(0, 300)}`);
   const body = await res.json();
@@ -133,4 +140,4 @@ async function validateChannels(channels, { imageUrl, altText }) {
   return problems;
 }
 
-module.exports = { gql, listChannels, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };
+module.exports = { gql, rateLimit, listChannels, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };

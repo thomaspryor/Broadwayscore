@@ -233,6 +233,20 @@ function socialHtml(social) {
     const by = (w.bio.bySource || []).filter((s) => s.source !== 'none').map((s) => `${networkName(s.source)} ${s.views}`).join(', ');
     html += `<p style="margin:8px 0;">The link-in-bio page had ${w.bio.views === 1 ? '1 visit' : `${w.bio.views} visits`}${by ? ` (${escapeHtml(by)})` : ''}.</p>`;
   }
+  const list = (items, cap, more) => {
+    const shown = items.slice(0, cap).map((x) => `<li style="margin:4px 0;">${a(x.link, x.title)}: ${escapeHtml(x.line || x.reason)}</li>`);
+    if (items.length > cap) shown.push(`<li style="margin:4px 0;color:#6b7280;">and ${items.length - cap} more ${more}</li>`);
+    return `<ul style="margin:0 0 8px;padding-left:20px;">${shown.join('')}</ul>`;
+  };
+  if (w.upcoming && w.upcoming.length) html += `${H3}Coming up this week</h3>${list(w.upcoming, 8, 'later in the week')}`;
+  const skipped = (w.skipped || []).filter((x) => x.final);
+  const waiting = (w.skipped || []).filter((x) => !x.final);
+  if (skipped.length || waiting.length) {
+    html += `${H3}Skipped and why</h3>`;
+    if (skipped.length) html += list(skipped, 6, 'skipped');
+    if (waiting.length) html += `<p style="margin:0 0 4px;">Opened recently but not posted yet (each can still post once its score is ready):</p>${list(waiting, 5, 'still waiting')}`;
+  }
+  if (w.timing && w.timing.length) html += `<p style="margin:8px 0;"><strong>Posting times:</strong> ${w.timing.map(escapeHtml).join(' ')}</p>`;
   if (social.monthly && social.monthly.lines && social.monthly.lines.length) {
     html += `${H3}This month: what to keep or drop</h3><ul style="margin:0;padding-left:20px;">${social.monthly.lines.map((l) => `<li style="margin:4px 0;">${escapeHtml(l)}</li>`).join('')}</ul>`;
   }

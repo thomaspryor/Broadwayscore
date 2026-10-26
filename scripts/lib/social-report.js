@@ -11,10 +11,18 @@
  * or before the visit day. Instagram captions carry no link ("link in bio"),
  * so its visits are clicks on /links (the bio page) through to a show page.
  *
+ * Coming up / skipped: scheduled posts from Buffer, plus score posts the
+ * autopost will make this week (it creates each in Buffer only about an hour
+ * ahead, so most are not in Buffer yet), and for shows that did not post, the
+ * reason from the autopost's own rules (select.js scoreDecision).
+ *
  * Ranking is by site visits first (the reason we post), then interactions,
  * then views: networks report different metrics (Bluesky has no views, X and
  * Facebook have clicks, Instagram has reach), but every network can send a visit.
  */
+
+const { scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../social-autopost/select');
+const C = require('../social-autopost/config');
 
 const NETWORK_NAMES = { twitter: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
 const LANE_NAMES = { score: 'review score posts', video: 'videos', other: 'other posts' };
@@ -226,14 +234,204 @@ function monthlySuggestion(rows) {
   return lines;
 }
 
+const TZ_LABELS = { 'America/New_York': 'ET', 'Europe/London': 'UK time' };
+/** "Tue Oct 27, 10:00 AM ET" */
+function localTime(ms, tz = 'America/New_York') {
+  const s = new Intl.DateTimeFormat('en-US', { timeZone: tz, weekday: 'short', month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' }).format(new Date(ms));
+  return `${s} ${TZ_LABELS[tz] || tz}`;
+}
+
+const showName = (show) => {
+  const m = C.MARKETS[show.category];
+  return m && show.category !== 'broadway' ? `${show.title} (${m.label})` : show.title;
+};
+const showLink = (show) => `https://${(C.MARKETS[show.category] || C.MARKETS.broadway).domain}/show/${show.slug || show.id}`;
+
+/** "T1:1/2" style confidence-gate reasons → what the show still lacks, in words. */
+function gateWords(gate) {
+  const words = [];
+  for (const r of (gate && gate.reasons) || []) {
+    const m = /(\d+)\/(\d+)/.exec(r);
+    if (!m) continue;
+    const [have, need] = [m[1], m[2]];
+    if (/total/.test(r)) words.push(`${have} of the ${need} reviews it needs`);
+    else if (/^T1/.test(r)) words.push(`${have} of ${need} reviews from the top outlets`);
+    else if (/^T2/.test(r)) words.push(`${have} of ${need} reviews from the next tier of outlets`);
+    else if (/^hi-conf/.test(r)) words.push(`${have} of ${need} reviews with a clear rating`);
+    else if (/^this-run/.test(r)) words.push(`${have} of ${need} reviews of this new run`);
+  }
+  return words.slice(0, 2).join(', ');
+}
+
+function plainReason(d) {
+  if (d.why === 'no-score') return 'no score on the site yet';
+  if (d.why === 'too-few-reviews') return 'not enough reviews yet';
+  if (d.why === 'not-confident') {
+    const w = gateWords(d.gate);
+    return `score not confident yet${w ? ` (has ${w})` : ''}`;
+  }
+  return 'not ready to post yet'; // never show an internal code to the owner
+}
+
+/**
+ * Shows that reached their post time in the last week but did not post, and why.
+ * ctx: {shows, reviewsByShow, slim, getOutletTier} as social-autopost/run.js loadContext().
+ * Shows still inside the lookback window are "still waiting" (they can post
+ * later); ones that aged out this week are final. A show that aged out before
+ * the autopost's first run (its first ledger entry) never had a chance, so it
+ * is left out. Sorted final first, then Broadway, West End, Off-Broadway,
+ * Off-West End.
+ */
+const CATEGORY_ORDER = ['broadway', 'west-end', 'off-broadway', 'off-west-end'];
+// Shows the autopost stopped retrying (run.js skips them once rendering or
+// posting failed MAX_SHOW_ATTEMPTS runs in a row).
+function gaveUpIds(ledger) {
+  const { MAX_SHOW_ATTEMPTS } = require('../social-autopost/run.js');
+  const failures = (ledger && ledger._meta && ledger._meta.failures) || {};
+  return new Set(Object.keys(failures).filter((id) => failures[id] && failures[id].count >= MAX_SHOW_ATTEMPTS));
+}
+function skippedShows({ ctx, ledger, now }) {
+  if (!ctx) return [];
+  const posts = (ledger && ledger.posts) || [];
+  const goLive = Math.min(...posts.map((p) => Date.parse(p.dueAt || `${p.date}T00:00:00Z`)).filter(Number.isFinite));
+  if (!Number.isFinite(goLive)) return [];
+  const showsById = new Map(ctx.shows.map((s) => [s.id, s]));
+  const dctx = { ...ctx, done: doneKeys(ledger), now };
+  const lookbackMs = C.SCORE_LOOKBACK_DAYS * DAY_MS;
+  const gaveUp = gaveUpIds(ledger);
+  const out = [];
+  for (const show of ctx.shows) {
+    if (!isEligibleShow(show)) continue;
+    const slot = morningAfter(show);
+    if (slot > now || now - slot > lookbackMs + 7 * DAY_MS || slot + lookbackMs < goLive) continue;
+    const d = scoreDecision(show, dctx);
+    if (d.why === 'done' || d.why === 'not-yet') continue;
+    if (gaveUp.has(show.id)) {
+      out.push({ title: showName(show), link: showLink(show), reason: 'posting failed 3 times in a row, so it stopped trying (needs a look)', final: true, category: show.category });
+      continue;
+    }
+    if (d.due) continue;
+    let reason; let final = false;
+    if (d.why === 'too-old') {
+      const u = scoreDecision(show, dctx, { ignoreAge: true });
+      reason = u.due
+        ? `has a score now, but it was not ready within ${C.SCORE_LOOKBACK_DAYS} days of opening`
+        : `gave up ${C.SCORE_LOOKBACK_DAYS} days after opening: ${plainReason(u)}`;
+      final = true;
+    } else {
+      reason = plainReason(d);
+    }
+    out.push({ title: showName(show), link: showLink(show), reason, final, category: show.category });
+  }
+  for (const p of posts) {
+    if (!p.skipped || !p.date || now - Date.parse(`${p.date}T12:00:00Z`) > 7 * DAY_MS) continue;
+    const show = showsById.get(p.showId);
+    const reason = p.skipped === 'backlog at go-live' ? 'opened before automatic posting was switched on' : p.skipped;
+    out.push({ title: show ? showName(show) : p.showId, link: show ? showLink(show) : null, reason, final: true, category: show && show.category });
+  }
+  const rank = (c) => (CATEGORY_ORDER.includes(c) ? CATEGORY_ORDER.indexOf(c) : CATEGORY_ORDER.length);
+  return out.sort((a, b) => b.final - a.final || rank(a.category) - rank(b.category) || a.title.localeCompare(b.title))
+    .map(({ category, ...rest }) => rest);
+}
+
+/**
+ * Posts going out in the next 7 days: what is already scheduled in Buffer
+ * (both lanes), then score posts the autopost will make this week if the score
+ * is ready by then. scheduled: [{id, service, dueAt, text}] from Buffer.
+ */
+function upcomingPosts({ scheduled = [], ctx, ledger, now }) {
+  const end = now + 7 * DAY_MS;
+  const byPostId = indexLedger(ledger);
+  const showsBySlug = new Map(((ctx && ctx.shows) || []).map((s) => [s.slug || s.id, s]));
+  const groups = new Map();
+  const stuck = [];
+  for (const p of scheduled) {
+    const due = Date.parse(p.dueAt || '');
+    // Past due but still unsent: a paused queue or a post waiting for approval.
+    if (due <= now && now - due <= 7 * DAY_MS) { stuck.push(p); continue; }
+    if (!(due > now && due <= end)) continue;
+    const hit = byPostId.get(p.id);
+    const slug = (hit && hit.entry.slug) || slugFromText(p.text);
+    const show = slug && showsBySlug.get(slug);
+    const firstLine = String(p.text || '').split('\n')[0].trim();
+    const title = show ? showName(show) : (hit && hit.entry.title) || (firstLine.length > 60 ? `${firstLine.slice(0, 57)}...` : firstLine) || 'Untitled post';
+    const tz = show && C.MARKETS[show.category] ? C.MARKETS[show.category].tz : 'America/New_York';
+    const key = `${slug || title}|${Math.floor(due / 3600000)}`;
+    const g = groups.get(key) || { title, due, when: localTime(due, tz), networks: [], slug };
+    g.networks.push(networkName(p.service));
+    groups.set(key, g);
+  }
+  const out = [...groups.values()].map((g) => ({ ...g, line: `${g.when} on ${g.networks.join(', ')}` }));
+  const inBuffer = new Set(out.map((g) => g.slug).filter(Boolean));
+  if (ctx) {
+    const done = doneKeys(ledger);
+    const gaveUp = gaveUpIds(ledger);
+    for (const show of ctx.shows) {
+      if (!isEligibleShow(show) || done.has(`score:${show.id}`) || gaveUp.has(show.id) || inBuffer.has(show.slug || show.id)) continue;
+      const slot = morningAfter(show);
+      if (slot <= now || slot > end) continue;
+      out.push({ title: showName(show), due: slot, line: `${localTime(slot, C.MARKETS[show.category].tz)}, score post on every network if the score is ready by then` });
+    }
+  }
+  const sorted = out.sort((a, b) => a.due - b.due).map(({ title, line }) => ({ title, line }));
+  if (stuck.length) {
+    sorted.unshift({ title: 'Stuck in Buffer', line: `${plural(stuck.length, 'post')} passed ${stuck.length === 1 ? 'its' : 'their'} time without going out; check the Buffer queue` });
+  }
+  return sorted;
+}
+
+const TIME_BLOCKS = [['morning', 'before noon', 12], ['afternoon', '12 to 5pm', 17], ['evening', 'after 5pm', 24]];
+function timeBlock(ms) {
+  const h = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hourCycle: 'h23', hour: '2-digit' }).format(new Date(ms)));
+  return TIME_BLOCKS.find(([, , end]) => h < end)[0];
+}
+
+/**
+ * Posting-time advice once there are 4 weeks of posts: per network, compare
+ * time-of-day blocks (Eastern) by visits and likes per post, and suggest a move
+ * only when another block clearly beats the one most posts go out in.
+ */
+// Score posts always go out at the autopost's fixed local hour, so only the
+// other lanes (videos, hand posts) say anything about posting time.
+const MIN_POSTS_PER_TIME_BLOCK = 5;
+function postingTimeAdvice(allRows, now) {
+  const rows = allRows.filter((r) => r.lane !== 'score');
+  if (!rows.length) return ['Posting-time advice starts once there are 4 weeks of posts.'];
+  const first = Math.min(...rows.map((r) => Date.parse(r.sentAt)));
+  const days = Math.floor((now - first) / DAY_MS);
+  if (days < 28) return [`Posting-time advice starts once there are 4 weeks of posts (${plural(days, 'day')} so far).`];
+  const lines = [];
+  for (const [service, list] of Object.entries(groupBy(rows, (r) => r.service))) {
+    const blocks = Object.entries(groupStats(list, (r) => timeBlock(Date.parse(r.sentAt))))
+      .filter(([, g]) => g.posts >= MIN_POSTS_PER_TIME_BLOCK)
+      .map(([k, g]) => ({ key: k, ...g, perPost: (g.visits * 3 + g.interactions) / g.posts }));
+    if (blocks.length < 2) continue;
+    const habit = blocks.reduce((a, b) => (b.posts > a.posts ? b : a));
+    const best = blocks.reduce((a, b) => (b.perPost > a.perPost ? b : a));
+    if (best === habit || best.perPost <= 0 || best.perPost < 1.5 * habit.perPost) continue;
+    const label = (k) => { const b = TIME_BLOCKS.find(([n]) => n === k); return `${b[0]} (${b[1]} ET)`; };
+    const ratio = habit.perPost > 0 ? `${(best.perPost / habit.perPost).toFixed(1)} times as well as` : 'better than';
+    lines.push(`${networkName(service)}: ${label(best.key)} posts did ${ratio} ${label(habit.key)} posts (${best.posts} against ${habit.posts} posts). Try moving ${networkName(service)} posts to the ${best.key}.`);
+  }
+  return lines.length ? lines.slice(0, 3) : ['No posting time clearly does better yet, so keep the current times.'];
+}
+
+function groupBy(rows, keyFn) {
+  const out = {};
+  for (const r of rows) (out[keyFn(r)] = out[keyFn(r)] || []).push(r);
+  return out;
+}
+
 /**
  * @param o.bufferPosts  sent posts from Buffer (see buildPostRows)
  * @param o.ledger       data/social-autopost-ledger.json
  * @param o.utmRows/bioRows  PostHog visit rows (see attributeVisits)
  * @param o.bioPageViews [{source, views}] /links pageviews in the last 7 days by utm_source
+ * @param o.scheduled    Buffer posts not yet sent [{id, service, dueAt, text}] (see upcomingPosts)
+ * @param o.ctx          autopost context {shows, reviewsByShow, slim, getOutletTier}; null leaves out upcoming score posts and skips
  * @param o.now          ms; the monthly block appears when it is day 1-7 of the month (UTC)
  */
-function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews = [], now = Date.now() }) {
+function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews = [], scheduled = [], ctx = null, now = Date.now() }) {
   const rows = buildPostRows(bufferPosts, ledger);
   const unmatchedVisits = attributeVisits(rows, { utmRows, bioRows });
   const weekRows = rows.filter((r) => now - Date.parse(r.sentAt) <= 7 * DAY_MS).sort(compareRank);
@@ -255,6 +453,9 @@ function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews
       comments: weekRows.filter((r) => r.comments > 0).map((r) => ({ title: r.title, network: networkName(r.service), comments: r.comments, link: r.link, suggestedReply: suggestedReply(r) })),
       bio: { views: bioPageViews.reduce((s, r) => s + r.views, 0), bySource: bioPageViews },
       unmatchedVisits,
+      upcoming: upcomingPosts({ scheduled, ctx, ledger, now }),
+      skipped: skippedShows({ ctx, ledger, now }),
+      timing: postingTimeAdvice(rows.filter((r) => now - Date.parse(r.sentAt) <= 35 * DAY_MS), now),
     },
     monthly: null,
   };
@@ -265,4 +466,4 @@ function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews
   return report;
 }
 
-module.exports = { buildSocialReport, buildPostRows, showLines, attributeVisits, normalizeMetrics, weeklyTakeaway, monthlySuggestion, suggestedReply, networkName, slugFromText };
+module.exports = { buildSocialReport, buildPostRows, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, localTime, showLines, attributeVisits, normalizeMetrics, weeklyTakeaway, monthlySuggestion, suggestedReply, networkName, slugFromText };

@@ -464,4 +464,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger };
+module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext };

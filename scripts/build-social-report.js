@@ -4,9 +4,11 @@
  *
  * Usage: node scripts/build-social-report.js [--out=traffic-analysis/social-report.json] [--days=35]
  *
- * Reads Buffer's sent posts with their metrics (one paged GraphQL query per
+ * Reads Buffer's posts with their metrics (one paged GraphQL query per
  * organization; covers the image autopost lane and hand-posted videos alike),
- * the autopost ledger, and PostHog visits that came from a post, then writes
+ * posts still waiting to go out, the autopost ledger and show data (for the
+ * score posts due this week and why others did not post), and PostHog visits
+ * that came from a post, then writes
  * the report from scripts/lib/social-report.js.
  *
  * Never fails the workflow: on any error it writes {generatedAt, error} and
@@ -18,41 +20,63 @@ require('./lib/cli-help').exitOnHelp(module);
 const fs = require('fs');
 const path = require('path');
 require('./lib/load-env').loadEnv();
-const { gql } = require('./social-autopost/buffer');
+const { gql, rateLimit } = require('./social-autopost/buffer');
 const { phQuery, REAL_USERS_WHERE } = require('./lib/posthog-query');
 const { buildSocialReport } = require('./lib/social-report');
+const { loadContext } = require('./social-autopost/run');
 
-const MAX_PAGES = 10; // 500 posts; the account sends ~25 a day at most
+const PAGE_SIZE = 100;
+const MAX_PAGES = 15; // 1500 posts; the account sends ~25 a day at most
 
-async function fetchSentPosts(sinceIso) {
+async function fetchOrgIds() {
   const data = await gql('query { account { organizations { id } } }');
-  const posts = [];
-  for (const org of data.account.organizations) {
+  return data.account.organizations.map((o) => o.id);
+}
+
+// Not yet sent: scheduled, queued or awaiting approval. Filtered by what it is
+// not, because sent, error and draft are the only statuses checked live.
+const NOT_PENDING = new Set(['sent', 'error', 'draft']);
+
+/**
+ * Every post created since sinceIso, in one paged query per organization, split
+ * into sent (with metrics) and still to go out. One query for both keeps the
+ * report to ~20 calls of the 250-a-day Buffer allowance the autopost shares.
+ */
+async function fetchPosts(orgIds, sinceIso) {
+  const sent = [];
+  const pending = [];
+  for (const orgId of orgIds) {
     let after = null;
     for (let page = 0; page < MAX_PAGES; page++) {
-      const d = await gql(`query Sent($input: PostsInput!, $after: String) {
-        posts(input: $input, first: 50, after: $after) {
+      const d = await gql(`query Posts($input: PostsInput!, $after: String) {
+        posts(input: $input, first: 100, after: $after) {
           pageInfo { hasNextPage endCursor }
-          edges { node { id text sentAt externalLink channel { service } assets { __typename } metrics { type value } } }
+          edges { node { id text status sentAt dueAt externalLink channel { service } assets { __typename } metrics { type value } } }
         }
-      }`, { input: { organizationId: org.id, filter: { status: ['sent'], createdAt: { start: sinceIso } } }, after });
+      }`, { input: { organizationId: orgId, filter: { createdAt: { start: sinceIso } } }, after });
       for (const { node } of d.posts.edges) {
-        posts.push({
-          id: node.id,
-          text: node.text,
-          sentAt: node.sentAt,
-          externalLink: node.externalLink,
-          service: node.channel && node.channel.service,
-          isVideo: (node.assets || []).some((a) => a.__typename === 'VideoAsset'),
-          metrics: node.metrics || [],
-        });
+        const status = String(node.status || '').toLowerCase();
+        const service = node.channel && node.channel.service;
+        if (status === 'sent' && node.sentAt) {
+          sent.push({
+            id: node.id,
+            text: node.text,
+            sentAt: node.sentAt,
+            externalLink: node.externalLink,
+            service,
+            isVideo: (node.assets || []).some((x) => x.__typename === 'VideoAsset'),
+            metrics: node.metrics || [],
+          });
+        } else if (!NOT_PENDING.has(status)) {
+          pending.push({ id: node.id, text: node.text, dueAt: node.dueAt, service });
+        }
       }
       if (!d.posts.pageInfo.hasNextPage) break;
-      if (page === MAX_PAGES - 1) console.log(`::warning::Buffer has more than ${MAX_PAGES * 50} sent posts in the window; the report counts the first ${MAX_PAGES * 50} only`);
+      if (page === MAX_PAGES - 1) console.log(`::warning::Buffer has more than ${MAX_PAGES * PAGE_SIZE} posts in the window; the report counts the first ${MAX_PAGES * PAGE_SIZE} only`);
       after = d.posts.pageInfo.endCursor;
     }
   }
-  return posts;
+  return { sent, pending };
 }
 
 async function fetchVisits(days) {
@@ -90,15 +114,25 @@ async function main() {
   let report;
   try {
     const ledger = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'social-autopost-ledger.json'), 'utf8'));
-    const bufferPosts = await fetchSentPosts(new Date(now - days * 86400000).toISOString());
+    const orgIds = await fetchOrgIds();
+    const { sent: bufferPosts, pending: scheduled } = await fetchPosts(orgIds, new Date(now - days * 86400000).toISOString());
     const visits = await fetchVisits(days);
-    report = buildSocialReport({ bufferPosts, ledger, ...visits, now });
-    console.log(`[social] ${bufferPosts.length} sent posts in ${days} days, ${report.weekly.posts.length} this week; ${report.weekly.takeaway}`);
+    // Shows, reviews and the site's scores, for the score posts due this week
+    // and the reasons others did not post. Without core data those two lists
+    // are left out and the rest of the section still goes out.
+    let ctx = null;
+    try { ctx = loadContext(); } catch (e) { console.log(`::warning::social report: no show data (${e.message}); leaving out upcoming score posts and skips`); }
+    report = buildSocialReport({ bufferPosts, ledger, ...visits, scheduled, ctx, now });
+    const w = report.weekly;
+    console.log(`[social] ${bufferPosts.length} sent posts in ${days} days, ${w.posts.length} this week; ${w.takeaway}`);
+    console.log(`[social] ${scheduled.length} not yet sent in Buffer; ${w.upcoming.length} coming up, ${w.skipped.length} skipped or waiting; timing: ${w.timing[0]}`);
   } catch (e) {
     console.log(`::warning::social report unavailable: ${e.message}`);
     report = { generatedAt: new Date(now).toISOString(), error: e.message.slice(0, 300) };
   }
   fs.writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
+  const q = rateLimit();
+  if (q.remaining != null) console.log(`[social] Buffer quota left: ${q.remaining} calls (shared with the autopost job)`);
   console.log(`[social] wrote ${out}`);
 }
 
