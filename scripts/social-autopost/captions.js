@@ -143,8 +143,10 @@ function strayNumbers(text, allowed) {
 }
 
 /** "London 2024", "Off-Broadway 2026": the city for London, the market for New York. */
+const openingYear = show => String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
+
 function productionLabel(show) {
-  const year = String(show.openingDate || show.previewsStartDate || '').slice(0, 4);
+  const year = openingYear(show);
   const where = CITY[show.category] === 'London' ? 'London' : MARKETS[show.category].label;
   return year ? `${where} ${year}` : where;
 }
@@ -165,6 +167,30 @@ function compareMarkers(newerShow, olderLabel) {
  * @param {object} p { newer, older, hook } where newer/older = { show, score, reviewCount, soFar }
  * @returns {{twitter, bluesky, threads, instagram, facebook, altText}}
  */
+const NUMBER_WORDS = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten',
+  'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen', 'twenty'];
+
+/**
+ * The line that warns two productions' scores are not like for like, when they opened
+ * in different years or markets ("Two years apart, in different cities, with different
+ * critics, ..."). In words, never digits, so it cannot pass for a number from the data.
+ * Null when both opened the same year in the same market.
+ */
+function compareCaveat(newerShow, olderShow, { short = false } = {}) {
+  const [a, b] = [openingYear(newerShow), openingYear(olderShow)].map(Number);
+  const years = a && b ? Math.abs(a - b) : 0;
+  const when = years === 0 ? null : years === 1 ? 'a year apart'
+    : years < NUMBER_WORDS.length ? `${NUMBER_WORDS[years]} years apart` : 'decades apart';
+  const where = CITY[newerShow.category] !== CITY[olderShow.category] ? 'cities'
+    : newerShow.category !== olderShow.category ? 'markets' : null;
+  if (!when && !where) return null;
+  const cap = t => `${t[0].toUpperCase()}${t.slice(1)}`;
+  // Short form for X and Bluesky: "Two years apart, different cities and critics."
+  if (short) return `${cap([when, where ? `different ${where} and critics` : 'different critics'].filter(Boolean).join(', '))}.`;
+  const s = [when, where && `in different ${where}`, 'with different critics'].filter(Boolean).join(', ');
+  return `${cap(s)}, so the scores aren't a like-for-like comparison.`;
+}
+
 function buildCompareCaptions(p) {
   const { newer, older } = p;
   const lead = title => `${title} was also reviewed in ${CITY[older.show.category]}.`;
@@ -173,29 +199,35 @@ function buildCompareCaptions(p) {
   const shortFact = d => `${productionLabel(d.show)}: ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}`;
   const hook = p.hook ? `${p.hook.trim()}\n\n` : '';
   const title = newer.show.title;
-  const long = `${hook}${lead(title)}\n\n${facts}`;
+  const caveat = compareCaveat(newer.show, older.show);
+  const shortCaveat = compareCaveat(newer.show, older.show, { short: true });
+  const long = `${hook}${lead(title)}\n\n${facts}${caveat ? `\n\n${caveat}` : ''}`;
   const links = network => `${productionLabel(newer.show)} reviews: ${showUrl(newer.show, network, 'brief')}\n${productionLabel(older.show)} reviews: ${showUrl(older.show, network, 'brief')}`;
 
   // X and Bluesky carry the newer show's link only, in a compact form: drop the hook,
-  // then shorten the title, never the numbers. X counts any link as 23 characters
+  // then the full caveat for the short one, then the caveat, then shorten the title,
+  // never the numbers or the link. X counts any link as 23 characters
   // (t.co); Bluesky counts it in full.
   const fitShort = network => {
     const url = showUrl(newer.show, network, 'brief');
     const linkCost = network === 'twitter' ? 23 : url.length;
     const budget = LIMITS[network] - 10 - linkCost - 1;
-    const body = (t, withHook) => `${withHook ? hook : ''}${lead(t)}\n${shortFact(newer)}\n${shortFact(older)}`;
+    const body = (t, withHook, line = caveat) => `${withHook ? hook : ''}${lead(t)}\n${shortFact(newer)}\n${shortFact(older)}${line ? `\n${line}` : ''}`;
     let t = body(title, true);
     if (t.length > budget) t = body(title, false);
+    if (t.length > budget) t = body(title, false, shortCaveat);
+    if (t.length > budget) t = body(title, false, null);
     if (t.length > budget) {
       const room = Math.max(12, title.length - (t.length - budget) - 1);
-      t = body(`${title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`, false);
+      t = body(`${title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`, false, null);
     }
     return `${t}\n${url}`;
   };
   // Threads allows 500 characters, links included: drop the hook, then the older show's link.
   const fitThreads = () => {
-    const tries = [`${long}\n\n${links('threads')}`, `${lead(title)}\n\n${facts}\n\n${links('threads')}`,
-      `${lead(title)}\n\n${facts}\n\n${showUrl(newer.show, 'threads', 'brief')}`];
+    const noHook = `${lead(title)}\n\n${facts}${caveat ? `\n\n${caveat}` : ''}`;
+    const tries = [`${long}\n\n${links('threads')}`, `${noHook}\n\n${links('threads')}`,
+      `${noHook}\n\n${showUrl(newer.show, 'threads', 'brief')}`, `${lead(title)}\n\n${facts}\n\n${showUrl(newer.show, 'threads', 'brief')}`];
     return tries.find(t => t.length <= LIMITS.threads) || tries[tries.length - 1];
   };
   const tags = [...new Set([...MARKETS[newer.show.category].hashtags, ...MARKETS[older.show.category].hashtags, 'Theatre'])].map(t => `#${t}`).join(' ');
@@ -214,5 +246,5 @@ function buildCompareCaptions(p) {
 
 module.exports = {
   buildCaptions, showUrl, postMarkers, LIMITS,
-  buildCompareCaptions, compareMarkers, validateHook, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
+  buildCompareCaptions, compareCaveat, compareMarkers, validateHook, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
 };

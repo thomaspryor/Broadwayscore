@@ -237,6 +237,8 @@ const NOW = Date.parse('2026-10-26T15:00:00Z');
 const london = show({ id: 'tc-west-end-2024', slug: 'tc-west-end-2024', title: 'The Curious Case', category: 'west-end', status: 'closed', openingDate: null, previewsStartDate: '2024-10-10' });
 const offb = show({ id: 'tc-off-broadway-2026', slug: 'tc-off-broadway', title: 'The Curious Case', category: 'off-broadway', openingDate: '2026-10-21' });
 const desc = (s, score, reviewCount) => ({ show: s, score, reviewCount, tierId: 'must-see' });
+// X counts any link as 23 characters (t.co); every other network counts it in full.
+const xLength = (net, text) => [...(net === 'twitter' ? text.replace(/https?:\/\/\S+/g, 'x'.repeat(23)) : text)].length;
 const compare = (hook = '') => briefs.buildCompare({ descA: desc(london, 85, 26), descB: desc(offb, 77, 24), hook, now: NOW });
 
 test('compare: orders by date, states only the facts, "so far" for a new opening, both links, every limit', () => {
@@ -247,7 +249,7 @@ test('compare: orders by date, states only the facts, "so far" for a new opening
   assert.equal(c.delta, 8);
   for (const [net, text] of Object.entries(c.captions)) {
     if (net === 'altText') continue;
-    assert.ok([...text].length <= LIMITS[net], `${net} over its limit`);
+    assert.ok(xLength(net, text) <= LIMITS[net], `${net} over its limit`);
     assert.ok(!/[—–]/.test(text), `${net} has a dash`);
     assert.ok(!/transfer/i.test(text), `${net} says transfer`);
     assert.match(text, /77 from 24 critics so far/);
@@ -264,6 +266,50 @@ test('compare: orders by date, states only the facts, "so far" for a new opening
   assert.ok(!cap.compareMarkers(offb).every(m => m.test(score.twitter)));
 });
 
+const SHORT_CAVEAT = 'Two years apart, different cities and critics.';
+const CAVEAT = "Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison.";
+
+test('compare caveat: on all five networks after the score lines, computed in words, no digits or dashes', () => {
+  const c = compare('A new cast takes it on');
+  for (const net of ['instagram', 'facebook', 'threads']) {
+    const text = c.captions[net];
+    assert.ok(text.includes(CAVEAT), `${net} misses the caveat`);
+    assert.ok(text.indexOf(CAVEAT) > text.search(/85 from 26 critics/), `${net} caveat before the scores`);
+  }
+  // X keeps the short form when the full one has no room; Bluesky (links counted in full) keeps it if it fits.
+  assert.ok(c.captions.twitter.includes(CAVEAT), 'X has room for the full caveat with a short title');
+  const real = 'The Curious Case of Benjamin Button';
+  const x = briefs.buildCompare({ descA: desc({ ...london, title: real }, 85, 26), descB: desc({ ...offb, title: real }, 77, 24), hook: '', now: NOW }).captions.twitter;
+  assert.ok(x.includes(SHORT_CAVEAT) && !x.includes(CAVEAT) && x.includes(real), 'X falls back to the short caveat before shortening the title');
+  assert.ok(x.indexOf(SHORT_CAVEAT) > x.search(/85 from 26 critics/));
+  assert.equal(cap.compareCaveat(offb, london, { short: true }), SHORT_CAVEAT);
+  assert.equal(cap.compareCaveat({ ...offb, openingDate: '2024-03-01' }, london, { short: true }), 'Different cities and critics.');
+  assert.equal(cap.compareCaveat({ ...offb, openingDate: '2021-01-01' }, offb, { short: true }), 'Five years apart, different critics.');
+  assert.equal(cap.compareCaveat(offb, offb, { short: true }), null);
+  assert.equal(cap.compareCaveat(offb, london), CAVEAT);
+  assert.equal(cap.compareCaveat({ ...offb, openingDate: '2025-03-01' }, london), "A year apart, in different cities, with different critics, so the scores aren't a like-for-like comparison.");
+  assert.equal(cap.compareCaveat({ ...offb, openingDate: '2024-03-01' }, london), "In different cities, with different critics, so the scores aren't a like-for-like comparison.");
+  assert.equal(cap.compareCaveat({ ...offb, category: 'broadway' }, offb), "In different markets, with different critics, so the scores aren't a like-for-like comparison.");
+  assert.equal(cap.compareCaveat({ ...offb, openingDate: '2021-01-01' }, offb), "Five years apart, with different critics, so the scores aren't a like-for-like comparison.");
+  assert.equal(cap.compareCaveat({ ...offb }, offb), null, 'same year, same market: no caveat');
+  for (const s of [cap.compareCaveat(offb, { ...london, previewsStartDate: '1990-01-01' })]) assert.ok(!/\d|[\u2013\u2014]/.test(s), s);
+});
+
+test('compare caveat: a short network drops it before any number, link or the title', () => {
+  const longTitle = 'The Extraordinarily Long Title Of A Musical About Many Things';
+  const a = { ...london, title: longTitle }, b = { ...offb, title: longTitle };
+  const c = briefs.buildCompare({ descA: desc(a, 85, 26), descB: desc(b, 77, 24), hook: '', now: NOW });
+  for (const net of ['twitter', 'bluesky']) {
+    const text = c.captions[net];
+    assert.ok(xLength(net, text) <= LIMITS[net], `${net} over its limit`);
+    assert.match(text, /77 from 24 critics so far/);
+    assert.match(text, /85 from 26 critics/);
+    assert.match(text, /\/show\/tc-off-broadway\?/);
+    if (!text.includes(SHORT_CAVEAT)) assert.ok(text.includes(longTitle), `${net} dropped the caveat but still shortened the title`);
+    assert.ok(!text.includes(CAVEAT) || !text.includes(SHORT_CAVEAT));
+  }
+});
+
 test('compare: refuses mismatched titles, same city, digits or links in the hook, stray numbers', () => {
   assert.throws(() => briefs.orderCompare(london, { ...offb, title: 'Other' }), /same title/);
   assert.throws(() => briefs.orderCompare(london, { ...offb, category: 'off-west-end' }), /one New York and one London/);
@@ -271,7 +317,10 @@ test('compare: refuses mismatched titles, same city, digits or links in the hook
   assert.throws(() => compare('See https://x.com'), /hook/);
   assert.throws(() => compare('It is better than London'), /hook/);
   assert.equal(cap.validateHook('Two cities, one strange story.'), null);
-  assert.ok(compare('Two cities, one strange story.').captions.twitter.startsWith('Two cities'));
+  // The hook rides where there is room; on X the caveat outranks it.
+  const hooked = compare('Two cities, one strange story.').captions;
+  assert.ok(hooked.instagram.startsWith('Two cities') && hooked.facebook.startsWith('Two cities'));
+  assert.ok(hooked.twitter.includes(CAVEAT) || hooked.twitter.includes(SHORT_CAVEAT));
   assert.deepEqual(cap.strayNumbers('Score 77 from 24, see broadwayscorecard.com/show/x-2026 #Theatre2026', [77, 24]), []);
   assert.deepEqual(cap.strayNumbers('Score 78 from 24', [77, 24]), ['78']);
 });
