@@ -129,12 +129,55 @@ const REASON_TEXT = {
   'rerun-refused': 'GitHub refused to re-run its last Land run (for example, older than the 30-day re-run limit)',
 };
 
+// GitHub writes who cancelled a run as an annotation on each cancelled job:
+// "The run was canceled by @login." Admit's own park (and every other
+// workflow-token cancel) reads @github-actions[bot]; a person's or a
+// session's token reads their login (BRO-6276: a session hand-cancelled
+// other workers' land runs on 2026-10-26 and nothing said so).
+const CANCELLED_BY_RE = /The run was cancell?ed by @([A-Za-z0-9-]+(?:\[bot\])?)/;
+
+function cancelledByFromAnnotations(annotations) {
+  for (const a of annotations || []) {
+    const m = CANCELLED_BY_RE.exec(String((a && a.message) || ''));
+    if (m) return m[1];
+  }
+  return null;
+}
+
+const isHandCancel = (login) => Boolean(login) && !/\[bot\]$/.test(login);
+
+/** The cancelled job whose annotation names the canceller: Land first, else Checks. */
+function cancelledJob(jobs) {
+  const pick = (n) => (jobs || []).find((j) => j.name === n && j.conclusion === 'cancelled');
+  return pick('Land') || pick('Checks') || null;
+}
+
+const FOLLOW_UP_TEXT = {
+  rerun: 'The stranded pass re-runs it in full this hour, so nothing is needed from this card unless that run fails too.',
+  none: 'The retry sweep resumes it on its own if it can; watch the land ref and re-push only if it is still on origin in an hour.',
+  wait: 'The stranded pass re-runs it on a later hourly pass.',
+};
+
+/** One note per hand-cancelled run attempt; the stranded marker keeps it to one post. */
+function buildHandCancelComment({ branch, tip, latestRun, cancelledBy, followUp }) {
+  return [
+    strandedMarker({ branch, tip, latestRun, reason: 'cancelled-by-hand' }),
+    '',
+    `Land run ${latestRun.html_url || latestRun.id} for \`${branch}\` (attempt ${latestRun.run_attempt || 1}) was cancelled by @${cancelledBy}, a person's or a session's token, not the landing queue.`,
+    FOLLOW_UP_TEXT[followUp] || 'Check the land ref; re-push it if it is still on origin.',
+    'Only the session that owns a land ref should cancel its runs.',
+    '',
+    'Posted by land-retry-cancelled.js --stranded (BRO-6276).',
+  ].join('\n');
+}
+
 /**
  * Comment for the card a stranded ref names. States the facts and the resume
  * steps; the marker line makes a second post for the same run a no-op.
  */
-function buildEscalationComment({ branch, tip, latestRun, reason }) {
-  const why = REASON_TEXT[reason] || `its latest Land run ended ${reason}`;
+function buildEscalationComment({ branch, tip, latestRun, reason, cancelledBy }) {
+  let why = REASON_TEXT[reason] || `its latest Land run ended ${reason}`;
+  if (isHandCancel(cancelledBy)) why += ` (cancelled by @${cancelledBy}, not by the landing queue)`;
   const runLine = latestRun && latestRun.html_url ? `Latest Land run: ${latestRun.html_url} (attempt ${latestRun.run_attempt || 1}).` : 'No Land run exists for this tip.';
   return [
     strandedMarker({ branch, tip, latestRun, reason }),
@@ -195,4 +238,5 @@ module.exports = {
   STRANDED_RETRY_MINUTES, STRANDED_MAX_ATTEMPT, NO_RUN_GRACE_MINUTES, MARKER_PREFIX, ABANDONED_AFTER_DAYS,
   REFUSAL_GRACE_MINUTES, CARD_IDLE_HOURS, HELD_CARD_DAYS,
   isAbandonedRun, decideStrandedRef, strandedMarker, buildEscalationComment, escalationAction, newestPerCard,
+  cancelledByFromAnnotations, isHandCancel, cancelledJob, buildHandCancelComment,
 };

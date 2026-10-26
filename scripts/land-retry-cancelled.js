@@ -181,6 +181,31 @@ function runSweep() {
   if (resumed) console.log(`resumed ${resumed} parked run(s) this sweep`);
 }
 
+// A hand cancel is news for the card even while its holder is active, so it
+// skips escalationAction's idle wait and never moves the card (BRO-6276).
+async function reportHandCancels(items) {
+  const { landRefCardNumber } = require('./lib/cloud-worker-pick.js');
+  const { strandedMarker, buildHandCancelComment } = require('./lib/land-stranded-refs.js');
+  for (const it of items) console.log(`::warning::land run ${it.latestRun.id} (${it.branch}) was cancelled by @${it.cancelledBy}, not by the landing queue`);
+  if (dry) { for (const it of items) console.log(`dry-run: would note on its card: ${strandedMarker({ ...it, reason: 'cancelled-by-hand' })}`); return; }
+  if (!process.env.LINEAR_API_KEY) return;
+  const linear = require('./lib/linear-client.js');
+  for (const it of items) {
+    const n = landRefCardNumber(it.branch);
+    if (n == null) continue;
+    try {
+      const { issue } = await linear.graphql(STRANDED_ISSUE_QUERY, { id: `BRO-${n}` }, { timeoutMs: 15000, maxAttempts: 2 });
+      if (!issue) continue;
+      const marker = strandedMarker({ ...it, reason: 'cancelled-by-hand' });
+      if (issue.comments.nodes.some((c) => String((c && c.body) || '').includes(marker))) continue;
+      await linear.createComment(issue.id, buildHandCancelComment(it));
+      console.log(`${it.branch}: hand cancel noted on BRO-${n}`);
+    } catch (err) {
+      console.log(`::warning::${it.branch}: could not note the hand cancel on BRO-${n} (${String(err.message).split('\n')[0]}); the next pass retries`);
+    }
+  }
+}
+
 // ---- --stranded (BRO-4802) ----
 const MAX_STRANDED_REFS = 250;
 // One per hourly pass: a full re-run is ~10-30 min of Checks, and a backlog
@@ -208,7 +233,7 @@ async function escalateStranded(items) {
   const { strandedMarker, buildEscalationComment, escalationAction, newestPerCard } = require('./lib/land-stranded-refs.js');
   for (const it of items) console.log(`::warning::land ref ${it.branch} is stranded (${it.reason}); its work is not on main`);
   items = newestPerCard(items, landRefCardNumber);
-  if (dry) { for (const it of items) console.log(`dry-run: would route to its card: ${strandedMarker(it)}`); return; }
+  if (dry) { for (const it of items) console.log(`dry-run: would route to its card: ${strandedMarker(it)}${it.cancelledBy ? ` (cancelled by @${it.cancelledBy})` : ''}`); return; }
   if (!process.env.LINEAR_API_KEY) { console.log('::warning::LINEAR_API_KEY not set: stranded landings are reported in this log only'); return; }
   const linear = require('./lib/linear-client.js');
   let todoId;
@@ -242,7 +267,8 @@ async function runStranded() {
   // Kill switch: set LAND_STRANDED_KILL_SWITCH=1 (repo variable) to stop all
   // re-runs and card routing without reverting code. The fast sweep is unaffected.
   if (/^(1|true)$/i.test(process.env.LAND_STRANDED_KILL_SWITCH || '')) { console.log('LAND_STRANDED_KILL_SWITCH set: stranded pass disabled'); return; }
-  const { decideStrandedRef, isAbandonedRun } = require('./lib/land-stranded-refs.js');
+  const { decideStrandedRef, isAbandonedRun, cancelledJob, cancelledByFromAnnotations, isHandCancel } = require('./lib/land-stranded-refs.js');
+  const handCancels = [];
   if (dispatchInFlight()) { console.log('a dispatched Land run is in flight (it lists under main, not its ref): skipping this pass'); return; }
   const now = Date.now();
   // Newest successful landing per card, from any ref. Land deletes a landed
@@ -271,6 +297,14 @@ async function runStranded() {
         try { tipCommittedAt = gh([`repos/${repo}/commits/${tip}`]).commit.committer.date; } catch (err) { console.log(`${branch}: tip date unreadable (${String(err.message).split('\n')[0]})`); }
       }
       const d = decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt: cardLandedAt.get(landRefCardNumber(branch)), now });
+      // BRO-6276: name a hand cancel (a person's or session's token, not Admit's park).
+      const cJob = latestRun && latestRun.conclusion === 'cancelled' ? cancelledJob(jobs) : null;
+      if (cJob) {
+        try {
+          d.cancelledBy = cancelledByFromAnnotations(gh([`repos/${repo}/check-runs/${cJob.id}/annotations`]));
+        } catch (err) { console.log(`${branch}: cancel annotation unreadable (${String(err.message).split('\n')[0]})`); }
+        if (isHandCancel(d.cancelledBy) && d.action !== 'escalate') handCancels.push({ branch, tip, latestRun, cancelledBy: d.cancelledBy, followUp: d.action });
+      }
       if (d.reason !== 'abandoned' && d.reason !== 'superseded') console.log(`${branch} @${tip.slice(0, 10)}: ${d.action} (${d.reason})${latestRun ? ` run ${latestRun.id} attempt ${latestRun.run_attempt}` : ''}`);
       decisions.push({ branch, tip, latestRun, ...d });
     } catch (err) {
@@ -293,6 +327,7 @@ async function runStranded() {
     }
   }
   if (escalate.length) await escalateStranded(escalate);
+  if (handCancels.length) await reportHandCancels(handCancels);
   const superseded = decisions.filter((d) => d.reason === 'superseded').map((d) => d.branch);
   if (superseded.length) console.log(`${superseded.length} leftover ref(s) whose card landed from another ref (safe to delete): ${superseded.join(' ')}`);
   const abandoned = decisions.filter((d) => d.reason === 'abandoned').map((d) => d.branch);
