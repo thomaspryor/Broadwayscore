@@ -79,6 +79,14 @@ function tesseractStats(imgPath) {
       const jar2 = path.join(tmp2, 'c.txt');
       fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
       try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
+      if (pg === 'az') {
+        // the issue's "A-Z of productions" listing: layout lines clipped to 60 chars (title/venue/date columns, no review prose)
+        const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
+        const at = all.findIndex(l => /A-Z of productions/i.test(l));
+        console.log('DUMP az marker line', at, 'of', all.length);
+        all.slice(Math.max(at - 3, 0), Math.max(at - 3, 0) + (parseInt(nl, 10) || 100)).forEach((l, i) => console.log('  Z' + i, JSON.stringify(l.slice(0, 60))));
+        continue;
+      }
       if (pg === 'heads') {
         // every ALL CAPS short line with the next 3 short lines (production headers carry title, venue, dates; no prose)
         const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
