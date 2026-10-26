@@ -178,7 +178,9 @@ function voicedFromPlan(n) {
   }
   if (fmt === 'reveal') {
     const d = data('reveal', x.id), cues = {};
-    at(`${N} critics`); cues.count = at(cue.count || 'one score'); cues.land = at(`${score}`); at(label);
+    // optional opening cards (the explainer): each lands when the voice says its phrase, and the reveal starts at the critic count
+    const intro = (V.plan.intro || []).map(c => ({ t: at(c.at), text: c.text }));
+    const start = at(`${N} critics`); if (intro.length) d.intro = { cards: intro, until: +(start - 0.35).toFixed(2) }; cues.count = at(cue.count || 'one score'); cues.land = at(`${score}`); at(label);
     cues.quotesIn = at(cue.quotesIn || 'what they said'); const quotes = planQuotes(V, rv); cues.q = quotes.map(q => q.t);
     cues.vs = at(`${cue.vs || 'critics give it'} ${score}`); cues.aud = at(cue.aud || 'audiences give it'); at(aud.grade);
     const gapLine = V.plan.gapLine || d.gapLine; cues.gap = at(gapLine.split(' ').slice(0, 2).join(' ')); cues.end = at('every review');

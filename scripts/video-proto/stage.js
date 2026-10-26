@@ -315,7 +315,12 @@ function voicedCut(base, capTop) {
   return {
     build(root, d) {
       const B = this.B = Object.create(COMPS[base]); B.build(root, d);
-      const P = [[0, 0]];
+      // an intro holds the base scene at its start under opening cards, then the reveal runs from the critic count
+      const I = d.intro, P = [[I ? I.until : 0, 0]];
+      if (I) { this.ov = $('abs', 'inset:0;z-index:6;background:#0f0f14;display:flex;flex-direction:column;align-items:center;padding:150px 28px 0;gap:22px;text-align:center');
+        this.ov.innerHTML = `<div>${logo(26)}</div>`;
+        this.cards = I.cards.map(c => { const e = $('', 'font-size:23px;font-weight:800;line-height:1.25;letter-spacing:-.01em;opacity:0', esc(c.text)); this.ov.append(e); return e; });
+        root.append(this.ov); }
       Object.keys(d.cues || {}).forEach(k => { const b = [].concat(B.beats[k]), c = [].concat(d.cues[k]);
         if (B.beats[k] == null || c.length > b.length) throw new Error(`${base}: no beat for cue ${k}`);
         c.forEach((ct, i) => P.push([ct, b[i]])); });
@@ -328,7 +333,10 @@ function voicedCut(base, capTop) {
     // piecewise-linear between pinned beats; after the last one the clock runs at normal speed
     map(t, from, to) { const P = this.P; let i = 0; while (i < P.length - 1 && t > P[i + 1][from]) i++;
       const a = P[i], b = P[i + 1]; return b ? a[to] + (t - a[from]) * (b[to] - a[to]) / (b[from] - a[from]) : a[to] + (t - a[from]); },
-    update(t) { this.B.update(this.map(t, 0, 1)); this.cap(t); },
+    update(t) { this.B.update(Math.max(0, this.map(t, 0, 1))); this.cap(t);
+      const I = this.B.d && this.B.d.intro; if (!I) return;
+      this.ov.style.opacity = 1 - seg(t, I.until, I.until + 0.35); this.ov.style.display = t > I.until + 0.4 ? 'none' : 'flex';
+      I.cards.forEach((c, i) => { const e = this.cards[i], k = seg(t, c.t - 0.1, c.t + 0.25); e.style.opacity = k; e.style.transform = `translateY(${(1 - k) * 10}px)`; }); },
   };
 }
 COMPS['reveal-voiced'] = voicedCut('reveal', 516);
