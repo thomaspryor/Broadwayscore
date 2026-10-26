@@ -1,7 +1,7 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-25T12:25:51.439Z",
+  "lastChecked": "2026-10-25T23:39:13.532Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -13,23 +13,23 @@
     },
     {
       "name": "Quality: star-vs-score mismatch",
-      "status": "pass",
-      "message": "No new star/score contradictions (32 known/baselined)"
+      "status": "warn",
+      "message": "4 NEW review(s) whose explicit rating contradicts the score (worst: the-picture-of-dorian-gray-west-end-2024 Express (UK) 1/5 stars→20 vs LLM 96, gap 76)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.4% scored (32705/33232)"
+      "message": "98.6% scored (32991/33470)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "23 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
+      "message": "25 audit(s) drifting, each reported on its own card or the digest FYI line (1h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "15778 messages, 0 auth failures (p=reject)"
+      "message": "15832 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1700 outlet(s), 61302 review(s)"
+      "message": "No broken-extractor signature in 1703 outlet(s), 61659 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1700 outlet(s), 61302 review(s)"
+      "message": "No broken-extractor signature in 1703 outlet(s), 61659 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",

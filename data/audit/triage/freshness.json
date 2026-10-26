@@ -1,7 +1,7 @@
 {
   "system": "freshness",
   "status": "warn",
-  "lastChecked": "2026-10-25T12:25:51.438Z",
+  "lastChecked": "2026-10-25T23:39:13.531Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -29,7 +29,7 @@
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "3h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
@@ -49,12 +49,12 @@
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "3h old"
+      "message": "14h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "13h old"
+      "message": "1d old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -84,17 +84,17 @@
     {
       "name": "Freshness: audit/imageless-scored-shows.json",
       "status": "pass",
-      "message": "4h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: audit/venue-date-mismatches.json",
       "status": "pass",
-      "message": "13h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: audit/alert-sender-inventory.json",
       "status": "pass",
-      "message": "19h old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: audit/ob-closing-candidates.json",
@@ -104,22 +104,22 @@
     {
       "name": "Freshness: audit/same-title-confusion.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "6h old"
     },
     {
       "name": "Freshness: audit/slug-misroute-audit.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "6h old"
     },
     {
       "name": "Freshness: audit/open-backlog-acceptance-sweep.json",
       "status": "pass",
-      "message": "4h old"
+      "message": "11h old"
     },
     {
       "name": "Freshness: audit/progress-watch-state.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "13h old"
     }
   ]
 }

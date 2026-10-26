@@ -1,49 +1,17 @@
 {
-  "generatedAt": "2026-10-25T13:06:22.271Z",
+  "generatedAt": "2026-10-26T00:15:44.854Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3944,
+  "scannedShows": 3956,
   "flaggedShows": 56,
-  "flaggedFiles": 194,
-  "readmissionRiskFiles": 5,
-  "readmissionRisks": [
-    {
-      "showId": "legally-blonde-west-end-2027",
-      "file": "artsdesk--marianka-swain.json",
-      "publishDate": "2022-05-25",
-      "outletId": "artsdesk"
-    },
-    {
-      "showId": "legally-blonde-west-end-2027",
-      "file": "independent--nicole-vassell.json",
-      "publishDate": "2022-05-25",
-      "outletId": "independent"
-    },
-    {
-      "showId": "legally-blonde-west-end-2027",
-      "file": "london-theatre--sophie-thomas.json",
-      "publishDate": "2022-05-24",
-      "outletId": "london-theatre"
-    },
-    {
-      "showId": "legally-blonde-west-end-2027",
-      "file": "standard--nick-curtis.json",
-      "publishDate": "2022-05-25",
-      "outletId": "standard"
-    },
-    {
-      "showId": "legally-blonde-west-end-2027",
-      "file": "whatsonstage--sarah-crompton.json",
-      "publishDate": "2022-05-25",
-      "outletId": "whatsonstage"
-    }
-  ],
+  "flaggedFiles": 195,
+  "readmissionRiskFiles": 0,
+  "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 30,
-    "needs-human-review": 25,
-    "likely-single-prior-run": 1
+    "likely-contamination": 31,
+    "needs-human-review": 25
   },
   "shows": [
     {
@@ -978,6 +946,133 @@
       ]
     },
     {
+      "showId": "legally-blonde-west-end-2027",
+      "title": "Legally Blonde",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "London Coliseum",
+      "previewsStartDate": "2027-03-22",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "8/8 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 8,
+        "distinctYears": [
+          2022
+        ],
+        "spanDays": 3,
+        "flaggedCount": 8,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "artsdesk--marianka-swain.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "artsdesk",
+          "criticName": "Marianka Swain",
+          "publishDate": "2022-05-25",
+          "url": "https://theartsdesk.com/theatre/legally-blonde-regents-park-open-air-theatre-review-joyous-gen-z-musical-makeover",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--arifa-akbar.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2022-05-25",
+          "url": "https://www.theguardian.com/stage/2022/may/25/legally-blonde-review-regents-park-open-air-theatre-musical",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--nicole-vassell.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Nicole Vassell",
+          "publishDate": "2022-05-25",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/legally-blonde-review-regents-park-b2087115.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-theatre--sophie-thomas.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-theatre",
+          "criticName": "Sophie Thomas",
+          "publishDate": "2022-05-24",
+          "url": "https://www.londontheatre.co.uk/reviews/legally-blonde-review-regents-park-open-air-theatre",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--nick-curtis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "publishDate": "2022-05-25",
+          "url": "https://www.standard.co.uk/culture/theatre/legally-blonde-musical-regents-park-open-air-theatre-review-b1002188.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--tim-bano.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Tim Bano",
+          "publishDate": "2022-05-25",
+          "url": "https://www.thestage.co.uk/reviews/legally-blonde-the-musical-review-regents-park-lucy-moss",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2022-05-27",
+          "url": "https://www.timeout.com/london/theatre/legally-blonde-the-musical-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "whatsonstage--sarah-crompton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "whatsonstage",
+          "criticName": "Sarah Crompton",
+          "publishDate": "2022-05-25",
+          "url": "https://www.whatsonstage.com/london-theatre/reviews/legally-blonde-at-regents-park-open-air_56581.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "billy-elliot-the-musical-west-end-2027",
       "title": "Billy Elliot the Musical",
       "market": "west-end",
@@ -1432,125 +1527,6 @@
           "publishDate": "2025-11-26",
           "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
           "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "legally-blonde-west-end-2027",
-      "title": "Legally Blonde",
-      "market": "west-end",
-      "status": "announced",
-      "venue": "London Coliseum",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "verdict": "likely-single-prior-run",
-      "reasoning": "7 premature-scored review(s) cluster within a 1-day window (single run pattern), 2 already flagged. none of the 7 review texts mention the show's own venue (\"London Coliseum\") — verify venue before declaring.",
-      "stats": {
-        "count": 7,
-        "distinctYears": [
-          2022
-        ],
-        "spanDays": 1,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": {
-        "venue": "London Coliseum",
-        "reviewDateRangeStart": "2022-05-24",
-        "reviewDateRangeEnd": "2022-05-25",
-        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
-      },
-      "reviews": [
-        {
-          "file": "artsdesk--marianka-swain.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
-          "outletId": "artsdesk",
-          "criticName": "Marianka Swain",
-          "publishDate": "2022-05-25",
-          "url": "https://theartsdesk.com/theatre/legally-blonde-regents-park-open-air-theatre-review-joyous-gen-z-musical-makeover",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2022-05-25",
-          "url": "https://www.theguardian.com/stage/2022/may/25/legally-blonde-review-regents-park-open-air-theatre-musical",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--nicole-vassell.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
-          "outletId": "independent",
-          "criticName": "Nicole Vassell",
-          "publishDate": "2022-05-25",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/legally-blonde-review-regents-park-b2087115.html",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-theatre--sophie-thomas.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
-          "outletId": "london-theatre",
-          "criticName": "Sophie Thomas",
-          "publishDate": "2022-05-24",
-          "url": "https://www.londontheatre.co.uk/reviews/legally-blonde-review-regents-park-open-air-theatre",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2022-05-25",
-          "url": "https://www.standard.co.uk/culture/theatre/legally-blonde-musical-regents-park-open-air-theatre-review-b1002188.html",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--tim-bano.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Tim Bano",
-          "publishDate": "2022-05-25",
-          "url": "https://www.thestage.co.uk/reviews/legally-blonde-the-musical-review-regents-park-lucy-moss",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2022-05-25",
-          "url": "https://www.whatsonstage.com/london-theatre/reviews/legally-blonde-at-regents-park-open-air_56581.html",
-          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -2746,9 +2722,9 @@
       "showId": "amadeus-west-end-2026",
       "title": "Amadeus",
       "market": "west-end",
-      "status": "announced",
+      "status": "upcoming",
       "venue": "Noël Coward Theatre",
-      "previewsStartDate": null,
+      "previewsStartDate": "2027-04-17",
       "openingDate": null,
       "verdict": "likely-contamination",
       "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
@@ -3642,9 +3618,9 @@
       "showId": "gentlemen-prefer-blondes-west-end-2027",
       "title": "Gentlemen Prefer Blondes",
       "market": "west-end",
-      "status": "announced",
+      "status": "upcoming",
       "venue": "London Palladium",
-      "previewsStartDate": null,
+      "previewsStartDate": "2027-03-26",
       "openingDate": null,
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"London Palladium\") — too little evidence to call this a prior run on its own; read the review before deciding.",
