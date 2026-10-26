@@ -47,3 +47,8 @@ test('core page budgets cover the homepage and a show page (BRO-6278)', () => {
   assert.strictEqual(evaluateBudget(home, 'x'.repeat(662_757)).violations.length, 1);
   assert.deepStrictEqual(evaluateBudget(home, 'x'.repeat(324_535)).violations, []);
 });
+
+test('/off-broadway budget stays tight after BRO-6325 (closed shows out of ItemList JSON-LD)', () => {
+  const ob = MARKET_PAGE_BUDGETS.find(b => b.route === '/off-broadway');
+  assert.ok(ob.maxBytes <= 700_000, `expected <=700000, got ${ob.maxBytes}`);
+});
