@@ -20,9 +20,10 @@ test('src/lib/images.ts variant widths and original caps mirror show-image-caps.
   assert.ok(tsSrc.includes(`/sm/`) && caps.VARIANT_DIR === 'sm');
 });
 
-test('variantPathFor maps canonical poster/thumbnail to sm/<role>.webp, ignores everything else', () => {
-  assert.equal(caps.variantPathFor('/x/show/poster.jpg'), path.join('/x/show', 'sm', 'poster.webp'));
-  assert.equal(caps.variantPathFor('/x/show/thumbnail.png'), path.join('/x/show', 'sm', 'thumbnail.webp'));
+test('variantPathFor maps canonical poster/thumbnail to sm/<file>.webp, ignores everything else', () => {
+  assert.equal(caps.variantPathFor('/x/show/poster.jpg'), path.join('/x/show', 'sm', 'poster.jpg.webp'));
+  assert.equal(caps.variantPathFor('/x/show/thumbnail.png'), path.join('/x/show', 'sm', 'thumbnail.png.webp'));
+  assert.equal(caps.variantPathFor('/x/show/poster.webp'), path.join('/x/show', 'sm', 'poster.webp.webp'));
   assert.equal(caps.variantPathFor('/x/show/hero.webp'), null);
   assert.equal(caps.variantPathFor('/x/show/thumbnail-v2.webp'), null);
 });
@@ -32,12 +33,12 @@ test('writeVariant shrinks to the role width, never enlarges, is idempotent', as
   const big = path.join(dir, 'thumbnail.webp');
   fs.writeFileSync(big, await sharp({ create: { width: 540, height: 540, channels: 3, background: '#39c' } }).webp().toBuffer());
   assert.equal(await caps.writeVariant(big), 'written');
-  assert.equal((await sharp(path.join(dir, 'sm', 'thumbnail.webp')).metadata()).width, caps.VARIANT_WIDTHS.thumbnail);
+  assert.equal((await sharp(path.join(dir, 'sm', 'thumbnail.webp.webp')).metadata()).width, caps.VARIANT_WIDTHS.thumbnail);
   assert.equal(await caps.writeVariant(big), 'skipped');
   const tiny = path.join(dir, 'poster.jpg');
   fs.writeFileSync(tiny, await sharp({ create: { width: 100, height: 150, channels: 3, background: '#c33' } }).jpeg().toBuffer());
   assert.equal(await caps.writeVariant(tiny), 'written');
-  assert.equal((await sharp(path.join(dir, 'sm', 'poster.webp')).metadata()).width, 100);
+  assert.equal((await sharp(path.join(dir, 'sm', 'poster.jpg.webp')).metadata()).width, 100);
 });
 
 test('every show-image URL the site uses has its variant on disk (advisory mirror of --check-variants)', () => {
@@ -46,9 +47,24 @@ test('every show-image URL the site uses has its variant on disk (advisory mirro
   const missing = [];
   for (const d of fs.readdirSync(root)) {
     for (const role of ['poster', 'thumbnail']) {
-      const has = ['webp', 'jpg', 'jpeg', 'png'].some(e => fs.existsSync(path.join(root, d, `${role}.${e}`)));
-      if (has && !fs.existsSync(path.join(root, d, 'sm', `${role}.webp`))) missing.push(`${d}/${role}`);
+      for (const e of ['webp', 'jpg', 'jpeg', 'png']) {
+        if (fs.existsSync(path.join(root, d, `${role}.${e}`)) && !fs.existsSync(path.join(root, d, 'sm', `${role}.${e}.webp`))) missing.push(`${d}/${role}.${e}`);
+      }
     }
   }
   if (missing.length) console.warn(`::warning::${missing.length} show images lack an sm/ variant, e.g. ${missing.slice(0, 3).join(', ')}`);
+});
+
+test('a jpg and a webp original in one dir get separate variants; a placeholder drops its variant', async () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'variants2-'));
+  const mk = (w, c) => sharp({ create: { width: w, height: w, channels: 3, background: c } });
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), await mk(300, '#c33').jpeg().toBuffer());
+  fs.writeFileSync(path.join(dir, 'thumbnail.webp'), await mk(540, '#39c').webp().toBuffer());
+  await caps.writeVariant(path.join(dir, 'thumbnail.jpg'));
+  await caps.writeVariant(path.join(dir, 'thumbnail.webp'));
+  assert.equal((await sharp(path.join(dir, 'sm', 'thumbnail.jpg.webp')).metadata()).width, 240);
+  assert.equal((await sharp(path.join(dir, 'sm', 'thumbnail.webp.webp')).metadata()).width, 240);
+  caps.removeVariant(path.join(dir, 'thumbnail.jpg'));
+  assert.ok(!fs.existsSync(path.join(dir, 'sm', 'thumbnail.jpg.webp')));
+  assert.ok(fs.existsSync(path.join(dir, 'sm', 'thumbnail.webp.webp')));
 });

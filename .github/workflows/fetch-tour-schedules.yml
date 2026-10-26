@@ -139,6 +139,8 @@ jobs:
           bash scripts/lib/stage-data-changes.sh data/ public/images/shows/
           # Drop an aspect violator instead of losing the whole batch.
           node scripts/check-image-aspect.js --staged --quarantine
+          # BRO-6277: list-size variants (sm/) for the art that survived quarantine, staged with it.
+          node scripts/resize-show-images.js --variants --staged || echo "::warning::sm/ variant generation failed; check-variants will flag it"
           # Nothing staged (quarantine dropped it all, or only shows.json
           # changed): skip the commit and push; this step still succeeds so
           # core data follows (any image it points at is already on main).

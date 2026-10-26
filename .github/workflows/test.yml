@@ -4959,6 +4959,13 @@ jobs:
         continue-on-error: true
         run: node scripts/resize-show-images.js --check
 
+      - name: Show image list variants (BRO-6277, advisory)
+        # Every poster/thumbnail original wider than its variant width needs
+        # public/images/shows/<id>/sm/<file>.webp (list/card srcset). Fix with
+        # `node scripts/resize-show-images.js --variants`. Advisory first (section 19).
+        continue-on-error: true
+        run: node scripts/resize-show-images.js --check-variants
+
       - name: Run scripts/lib tests (visual-qa transcript-scan etc.)
         # Tests colocated with the helpers they cover (scripts/lib/*.test.mjs)
         # per CLAUDE.md §15 test-extraction pattern. Covered helpers:
