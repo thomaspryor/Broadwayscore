@@ -51,7 +51,9 @@ function tesseractStats(imgPath) {
   await page.getByRole('textbox', { name: 'Password' }).fill(TR_PASSWORD);
   await page.getByRole('button', { name: 'Sign In', exact: true }).click();
   await page.waitForTimeout(3000);
-  console.log('logged in:', (await page.locator('text=Sign Out').count()) > 0);
+  const loggedIn = (await page.locator('text=Sign Out').count()) > 0;
+  console.log('logged in:', loggedIn);
+  if (!loggedIn) { console.error('login failed'); process.exit(1); }
 
   await page.goto('https://www.theatrerecord.com/search', { waitUntil: 'domcontentloaded', timeout: 30000 });
   const form = await page.evaluate(() => [...document.querySelectorAll('form')].map(f => ({
@@ -75,10 +77,10 @@ function tesseractStats(imgPath) {
       text: a.textContent.replace(/\s+/g, ' ').trim().slice(0, 160),
     })));
     console.log(`QUERY "${q}": ${hits.length} hits`);
-    for (const h of hits.slice(0, 8)) console.log('  HIT', JSON.stringify({ title: h.title, venue: h.venue, link: h.link.replace('https://www.theatrerecord.com', ''), label: h.text.slice(0, 120) }));
+    for (const h of hits.slice(0, 8)) console.log('  HIT', JSON.stringify({ title: h.title, venue: h.venue, link: h.link.replace('https://www.theatrerecord.com', ''), years: (h.text.match(/\b(19|20)\d\d\b/g) || []).slice(0, 3) }));
 
     if (ocrDone) continue;
-    const pdfHit = hits.find(h => /\/(volume|issue)\//.test(h.link) && /(201[0-5]|200\d)/.test(h.link + h.text));
+    const pdfHit = hits.find(h => /\/(volume|issue)\//.test(h.link));
     if (!pdfHit) continue;
     const cookies = await context.cookies();
     const sess = cookies.find(c => c.name === 'PHPSESSID');
@@ -87,7 +89,9 @@ function tesseractStats(imgPath) {
     const pdf = path.join(tmp, 'issue.pdf');
     let got = false;
     for (const u of pdfUrlVariants(pdfHit.link)) {
-      try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf, '-b', `PHPSESSID=${sess.value}`, u]); } catch { continue; }
+      const jar = path.join(tmp, 'cookies.txt');
+      fs.writeFileSync(jar, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess.value}\n`, { mode: 0o600 });
+      try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf, '-b', jar, u]); } catch (e) { console.log('  download failed, curl status', e.status); continue; }
       if (fs.readFileSync(pdf).subarray(0, 5).toString() === '%PDF-') { got = true; break; }
     }
     if (!got) { console.log('  not a PDF:', pdfHit.link); continue; }
@@ -103,6 +107,7 @@ function tesseractStats(imgPath) {
         const base = path.join(tmp, `p${p}-${dpi}`);
         sh('pdftoppm', ['-r', String(dpi), '-f', String(p), '-l', String(p), '-gray', '-png', pdf, base]);
         const img = fs.readdirSync(tmp).find(f => f.startsWith(`p${p}-${dpi}`) && f.endsWith('.png'));
+        if (!img) { console.log(`  OCR dpi=${dpi} page=${p}: no image rendered`); continue; }
         const st = tesseractStats(path.join(tmp, img));
         console.log(`  OCR dpi=${dpi} page=${p}: ${JSON.stringify(st)} ${((Date.now() - t0) / 1000).toFixed(1)}s`);
       }
@@ -110,4 +115,5 @@ function tesseractStats(imgPath) {
     ocrDone = true;
   }
   await browser.close();
-})().catch(e => { console.error('probe failed:', e); process.exit(1); });
+  if (!ocrDone) { console.error('no OCR performed'); process.exit(1); }
+})().catch(e => { console.error('probe failed:', String(e && e.message).split('\n')[0].slice(0, 200)); process.exit(1); });
