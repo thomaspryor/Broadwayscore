@@ -370,3 +370,82 @@ test('recordAnswer unparks an owner-call park line only when no decision stays o
   await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '' });
   assert.match(f.card.description, /^PARKED: owner must add the API key/, 'a real block stays parked');
 });
+
+// BRO-6401: BRO-5977 had its "Owner decision" comment but the card write after it was lost,
+// so the DECISION NEEDED line stayed and the roundup would have asked the owner again.
+const noSleep = async () => {};
+function failingUpdates(f, errors) {
+  const real = f.graphql;
+  const left = [...errors];
+  f.updateCalls = 0;
+  f.graphql = async (q, v) => {
+    if (/issueUpdate/.test(q)) { f.updateCalls++; if (left.length) throw left.shift(); }
+    return real(q, v);
+  };
+  return f;
+}
+
+test('recordAnswer: a lost issueUpdate leaves the card open, and a replay finishes it (then only reads)', async () => {
+  const park = "PARKED: needs the owner's call on the cap";
+  const f = failingUpdates(fakeLinear({ description: `${park}\n\n${TEMPLATE}` }), [new Error('connection reset')]);
+  await assert.rejects(link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '', sleep: noSleep }), /connection reset/);
+  assert.equal(f.card.comments.nodes.length, 1, 'the answer comment was written');
+  assert.equal(findOwnerDecisions([f.card]).length, 1, 'card still looks open');
+
+  const r = await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'a', text: '', sleep: noSleep });
+  assert.equal(r.status, 'answered');
+  assert.equal(r.repaired, true);
+  assert.equal(f.card.comments.nodes.length, 1, 'no second answer comment');
+  assert.equal(findOwnerDecisions([f.card]).length, 0);
+  assert.match(f.card.description, /ANSWERED by the owner/);
+  assert.match(f.card.description, /^UNPARKED \(owner-answered\)/);
+  assert.deepEqual(f.card.labels.nodes.map((l) => l.name), ['p1']);
+  assert.equal(f.card.state.name, 'Todo');
+
+  const writes = f.updateCalls;
+  const again = await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'a', text: '', sleep: noSleep });
+  assert.equal(again.repaired, undefined);
+  assert.equal(f.updateCalls, writes, 'a settled card is not written again');
+});
+
+test('recordAnswer: a rate-limited issueUpdate is retried, success:false is an error', async () => {
+  const limited = Object.assign(new Error('Linear API HTTP 429 rate-limited'), { status: 429 });
+  const f = failingUpdates(fakeLinear(), [limited, limited]);
+  const waits = [];
+  const r = await link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '', sleep: async (ms) => { waits.push(ms); } });
+  assert.equal(r.status, 'recorded');
+  assert.equal(f.updateCalls, 3);
+  assert.deepEqual(waits, [1000, 2000]);
+  assert.equal(findOwnerDecisions([f.card]).length, 0);
+
+  const g = fakeLinear();
+  const real = g.graphql;
+  const bad = async (q, v) => (/issueUpdate/.test(q) ? { issueUpdate: { success: false } } : real(q, v));
+  await assert.rejects(link.recordAnswer({ graphql: bad, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: 'b', text: '', sleep: noSleep }), /not applied/);
+});
+
+test('reconcileAnswered repairs answered-but-open cards only; dry run writes nothing; another open question keeps its label', async () => {
+  const answered = async (f, choice = 'b') => {
+    const ok = failingUpdates(f, [new Error('boom')]);
+    await assert.rejects(link.recordAnswer({ graphql: ok.graphql, id: 'BRO-12', hash: HASH, secret: SECRET, choiceKey: choice, text: '', sleep: noSleep }));
+    return ok;
+  };
+  const f = await answered(fakeLinear());
+  const untouched = fakeLinear(); // open, never answered
+  const second = 'DECISION NEEDED: Also rename the tile?\nOption A - Yes: clearer / churn\nOption B - No: stable / vague';
+  const g = await answered(fakeLinear({ description: `${TEMPLATE}\n\n${second}` }));
+
+  const dry = await link.reconcileAnswered({ graphql: f.graphql, issues: [f.card, untouched.card], secret: SECRET, dryRun: true });
+  assert.deepEqual(dry.map((d) => [d.identifier, d.status]), [['BRO-12', 'would-repair']]);
+  assert.equal(findOwnerDecisions([f.card]).length, 1, 'dry run changed nothing');
+
+  const out = await link.reconcileAnswered({ graphql: f.graphql, issues: [f.card, untouched.card], secret: SECRET, sleep: noSleep });
+  assert.deepEqual(out.map((d) => [d.status, d.repaired]), [['answered', true]]);
+  assert.equal(findOwnerDecisions([f.card]).length, 0);
+  assert.equal(findOwnerDecisions([untouched.card]).length, 1, 'unanswered card is left alone');
+
+  await link.reconcileAnswered({ graphql: g.graphql, issues: [g.card], secret: SECRET, sleep: noSleep });
+  assert.equal(findOwnerDecisions([g.card]).length, 1, 'the second question is still open');
+  assert.match(g.card.description, /DECISION NEEDED: Also rename the tile\?/);
+  assert.ok(g.card.labels.nodes.some((l) => l.name === 'awaiting-owner'), 'label stays while a question is open');
+});

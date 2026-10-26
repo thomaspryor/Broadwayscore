@@ -82,8 +82,17 @@ async function main(argv = process.argv.slice(2)) {
     return 2;
   }
 
+  let failures = 0;
   let issues;
   try { issues = await fetchOpenIssues(); } catch (err) { console.error(`[owner-decision-emails] could not read Linear: ${err.message}`); return 3; }
+  // BRO-6401: an answer whose card write was lost (comment exists, DECISION NEEDED line still
+  // there) is finished here, so it is neither listed as open nor asked about again.
+  const reconciled = await link.reconcileAnswered({ graphql: linear.graphql, issues, secret, dryRun: opts.dryRun });
+  for (const r of reconciled) console.log(`[reconcile] ${r.identifier}: ${r.status}${r.repaired ? ' (card repaired)' : ''}${r.error ? ` ${r.error}` : ''}`);
+  console.log(`[reconcile] ${reconciled.filter((r) => r.repaired || r.status === 'would-repair').length} answered card(s) ${opts.dryRun ? 'to repair' : 'repaired'}, ${reconciled.filter((r) => r.status === 'error').length} failed`);
+  const fixedIds = new Set(reconciled.filter((r) => r.repaired).map((r) => r.identifier));
+  if (fixedIds.size) issues = issues.filter((i) => !fixedIds.has(i.identifier));
+  failures += reconciled.filter((r) => r.status === 'error').length;
   const byId = new Map(issues.map((i) => [i.identifier, i]));
   let decisions = findOwnerDecisions(issues);
   if (opts.only) decisions = decisions.filter((d) => d.identifier === opts.only);
@@ -91,7 +100,6 @@ async function main(argv = process.argv.slice(2)) {
 
   const refOf = (d) => link.decisionRef(secret, d.identifier, link.questionHash(d.question || d.title));
   const swept = new Set();
-  let failures = 0;
 
   // 1. Answers typed into the card ("ANSWER: ..."). Same record path as the page.
   if (opts.sweep) {

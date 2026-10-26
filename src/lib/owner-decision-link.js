@@ -336,7 +336,7 @@ async function loadDecision({ graphql, id, hash, secret }) {
   const live = markerLines(issue.description).some((m) => questionHash(m.question) === hash)
     || (labels.includes(AWAITING_OWNER_LABEL) && questionHash(issue.title) === hash);
   const base = { issue, ref, choices: answerChoices(issue.description), block: parseDecisionBlock(issue.description) };
-  if (answered) return { ...base, status: 'answered', recorded: summarizeAnswerComment(answered.body) };
+  if (answered) return { ...base, status: 'answered', recorded: summarizeAnswerComment(answered.body), answeredBody: answered.body };
   if (!live) return { ...base, status: 'stale' };
   const q = markerLines(issue.description).find((m) => questionHash(m.question) === hash);
   return { ...base, status: 'open', question: q ? q.question : issue.title };
@@ -346,8 +346,11 @@ async function loadDecision({ graphql, id, hash, secret }) {
  * Record the owner's answer: comment first (the durable record), then the
  * fixed ANSWERED line, label, and state. Idempotent per decision ref.
  */
-async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, now = new Date() }) {
+async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, now = new Date(), sleep = defaultSleep }) {
   const loaded = await loadDecision({ graphql, id, hash, secret });
+  // BRO-6401: the comment is the durable record but the card write can fail after it
+  // (BRO-5977: answered 15:59Z, DECISION NEEDED line never rewritten). A replay finishes it.
+  if (loaded.status === 'answered') return repairAnswered({ graphql, loaded, hash, sleep });
   if (loaded.status !== 'open') return loaded;
   const choice = loaded.choices.find((c) => c.key === choiceKey) || (choiceKey === 'own' ? { key: 'own', label: 'Own words' } : null);
   if (!choice) return { ...loaded, status: 'bad-choice' };
@@ -379,28 +382,107 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
     if (!vc || !vc.commentCreate || !vc.commentCreate.success) throw new Error('visual approval comment was not created');
   }
 
+  const input = settlePatch({ issue, hash, approved, visual, replay: false });
+  const todoId = todoStateId(issue, approved, visual);
+  if (todoId) input.stateId = todoId;
+  if (Object.keys(input).length) await updateIssue(graphql, issue.id, input, sleep);
+  return { ...loaded, status: 'recorded', answer: { label: choice.label, text: cleanText }, moved: Boolean(input.stateId) };
+}
+
+// A rejected visual change goes back to the queue from any state (the worker reads the note).
+// An approved change stays where it is: the lander ships it, so no worker should pick the card up.
+function todoStateId(issue, approved, visual) {
+  const stateName = String((issue.state && issue.state.name) || '');
+  if (approved || !(/^(backlog|triage)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) return null;
+  const todo = commentNodes({ nodes: issue.team && issue.team.states && issue.team.states.nodes }).find((s) => /^todo$/i.test(s.name));
+  return todo ? todo.id : null;
+}
+
+const defaultSleep = (ms) => new Promise((r) => setTimeout(r, ms));
+const isRateLimited = (e) => Boolean(e) && (e.status === 429 || e.rateLimited === true || /\b429\b|rate.?limit/i.test(String(e.message || '')));
+
+/** issueUpdate that retries a rate limit and treats success:false as a failure. */
+async function updateIssue(graphql, id, input, sleep = defaultSleep, attempts = 4) {
+  for (let n = 1; ; n++) {
+    try {
+      const res = await graphql(ISSUE_UPDATE, { id, input });
+      if (res && res.issueUpdate && res.issueUpdate.success === false) throw new Error('issueUpdate was not applied');
+      return res;
+    } catch (e) {
+      if (n >= attempts || !isRateLimited(e)) throw e;
+      await sleep(1000 * 2 ** (n - 1));
+    }
+  }
+}
+
+const ANSWERED_LINE = 'ANSWERED by the owner (see the "Owner decision" comment on this card).';
+
+/**
+ * The description / label part of settling an answered decision (the state move stays
+ * with the caller). replay=true is the repair path: the label goes only when no
+ * decision line is left, since another open question may still be waiting.
+ */
+function settlePatch({ issue, hash, approved, visual, replay }) {
   const input = {};
-  const answeredLine = 'ANSWERED by the owner (see the "Owner decision" comment on this card).';
   const lines = String(issue.description || '').split('\n');
   const rewritten = lines.map((l) => {
     const m = MARKER_RE.exec(l.replace(/`[^`]*`/g, ''));
-    return m && questionHash(capQuestion(collapseSelfLinks(m[1]).replace(/\*+$/, '').trim())) === hash ? answeredLine : l;
+    return m && questionHash(capQuestion(collapseSelfLinks(m[1]).replace(/\*+$/, '').trim())) === hash ? ANSWERED_LINE : l;
   });
-  const settled = rewritten.join('\n') !== lines.join('\n')
-    && !rewritten.some((l) => MARKER_RE.test(l.replace(/`[^`]*`/g, '')));
+  const remaining = rewritten.some((l) => MARKER_RE.test(l.replace(/`[^`]*`/g, '')));
+  const settled = rewritten.join('\n') !== lines.join('\n') && !remaining;
   const fixed = settled && !approved ? unparkOwnerHolds(rewritten) : rewritten;
   if (fixed.join('\n') !== lines.join('\n')) input.description = fixed.join('\n');
   const labels = (issue.labels && issue.labels.nodes) || [];
-  if (labels.some((l) => l.name === AWAITING_OWNER_LABEL)) input.labelIds = labels.filter((l) => l.name !== AWAITING_OWNER_LABEL).map((l) => l.id);
-  const stateName = String((issue.state && issue.state.name) || '');
-  // A rejected visual change goes back to the queue from any state (the worker reads the note).
-  // An approved change stays where it is: the lander ships it, so no worker should pick the card up.
-  if (!approved && (/^(backlog|triage)$/i.test(stateName) || (visual && !/^(todo|done|canceled|cancelled)$/i.test(stateName)))) {
-    const todo = commentNodes({ nodes: issue.team && issue.team.states && issue.team.states.nodes }).find((s) => /^todo$/i.test(s.name));
-    if (todo) input.stateId = todo.id;
+  if ((!replay || !remaining) && labels.some((l) => l.name === AWAITING_OWNER_LABEL)) {
+    input.labelIds = labels.filter((l) => l.name !== AWAITING_OWNER_LABEL).map((l) => l.id);
   }
-  if (Object.keys(input).length) await graphql(ISSUE_UPDATE, { id: issue.id, input });
-  return { ...loaded, status: 'recorded', answer: { label: choice.label, text: cleanText }, moved: Boolean(input.stateId) };
+  return input;
+}
+
+/**
+ * Replay of an already-recorded answer: finish whatever the first attempt did not
+ * write (ANSWERED line, unpark, label, Backlog to Todo). A card with nothing left
+ * to settle is only read, never written.
+ */
+async function repairAnswered({ graphql, loaded, hash, sleep }) {
+  const { issue } = loaded;
+  const q = markerLines(issue.description).find((m) => questionHash(m.question) === hash);
+  const labelled = ((issue.labels && issue.labels.nodes) || []).some((l) => l.name === AWAITING_OWNER_LABEL);
+  if (!q && !(labelled && questionHash(issue.title) === hash)) return loaded;
+  const choiceLabel = ((/^\s*Chose:\s*(.+)$/m.exec(unescapeMarkdown(loaded.answeredBody || '')) || [])[1] || '').trim();
+  const visual = visualBindingFor(issue.description, q ? q.question : '');
+  const approved = Boolean(visual) && /^Option A: approve\b/i.test(choiceLabel)
+    && /^Does the change to .+ look right\? \(ref [0-9a-f]{32}\)$/.test(q ? q.question : '');
+  const input = settlePatch({ issue, hash, approved, visual, replay: true });
+  const todoId = todoStateId(issue, approved, visual);
+  if (todoId) input.stateId = todoId;
+  if (!Object.keys(input).length) return loaded;
+  await updateIssue(graphql, issue.id, input, sleep);
+  return { ...loaded, repaired: true, moved: Boolean(input.stateId) };
+}
+
+/**
+ * Open cards whose decision already has its "Owner decision" comment: finish the
+ * card write. `issues` need comments{nodes{id body createdAt}}. dryRun lists only.
+ * @returns {Promise<Array<{identifier, hash, status, repaired?, error?}>>}
+ */
+async function reconcileAnswered({ graphql, issues, secret, dryRun = false, sleep }) {
+  const out = [];
+  for (const issue of issues || []) {
+    if (!issue || !ID_RE.test(String(issue.identifier))) continue;
+    const hashes = new Set(markerLines(issue.description).map((m) => questionHash(m.question)));
+    if (((issue.labels && issue.labels.nodes) || []).some((l) => l && l.name === AWAITING_OWNER_LABEL)) hashes.add(questionHash(issue.title));
+    for (const hash of hashes) {
+      if (!markerComments(issue.comments, answerMarker(decisionRef(secret, issue.identifier, hash))).length) continue;
+      if (dryRun) { out.push({ identifier: issue.identifier, hash, status: 'would-repair' }); continue; }
+      try {
+        const r = await recordAnswer({ graphql, id: issue.identifier, hash, secret, choiceKey: 'own', sleep });
+        out.push({ identifier: issue.identifier, hash, status: r.status, repaired: Boolean(r.repaired) });
+      } catch (e) { out.push({ identifier: issue.identifier, hash, status: 'error', error: e.message }); }
+    }
+  }
+  return out;
 }
 
 // BRO-6330: a card parked for the owner's call kept its 'PARKED: needs the
@@ -525,5 +607,5 @@ module.exports = {
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
-  loadDecision, recordAnswer, markerComments, unparkOwnerHolds,
+  loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,
 };
