@@ -534,7 +534,8 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
   // In-process require (not a spawned child) — linear-session.js's cmdReport
   // is a plain async function with no CLI-only side effect for
   // --status=blocked (process.exit(5) only fires on the done-gate refusal
-  // path, gated on status==='done').
+  // path, gated on status==='done'). The hidden-owner-question guard exits 6,
+  // so this call passes skipOwnerQuestionGuard (BRO-6402).
   for (const item of plan.jobBlocked) {
     const linearMatch = /^linear:(.+)$/.exec(item.taskId);
     if (linearMatch) {

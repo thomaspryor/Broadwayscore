@@ -300,7 +300,7 @@ async function cmdReport(args, deps = {}) {
 
   // BRO-6402: refuse BEFORE the comment posts, so a retry with the block doesn't double-post.
   // deps.skipOwnerQuestionGuard: in-process machine callers (dispatch-watchdog safety net) must never exit here.
-  const hidden = (deps.skipOwnerQuestionGuard ? { hidden: false } : checkHiddenOwnerQuestion)({
+  const hidden = deps.skipOwnerQuestionGuard ? { hidden: false } : checkHiddenOwnerQuestion({
     status: args.status, summary: args.summary, verification: args.verification, description: issue.description,
   });
   if (hidden.hidden) {

@@ -80,3 +80,28 @@ test('fenced examples and denials do not trip the guard; watchdog path skips it'
   assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'There is no question for the owner here.' }).hidden, false);
   assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'Needs Thomas to decide the venue.' }).hidden, true);
 });
+
+test('denial in one sentence does not hide an ask in the next; "until Thomas decides" is caught', () => {
+  assert.equal(checkHiddenOwnerQuestion({ status: 'paused', summary: 'No owner decision needed yet. The owner must decide the venue next week.' }).hidden, true);
+  assert.equal(checkHiddenOwnerQuestion({ status: 'blocked', summary: 'Blocked until Thomas decides.' }).hidden, true);
+});
+
+test('cmdReport with skipOwnerQuestionGuard posts the comment instead of exiting (watchdog path)', async () => {
+  process.env.LINEAR_API_KEY = 'test-key';
+  const linear = require('../../scripts/lib/linear-client.js');
+  const calls = [];
+  const orig = { getIssue: linear.getIssue, createComment: linear.createComment, getTeam: linear.getTeam };
+  linear.getTeam = async () => ({ states: [] });
+  linear.getIssue = async () => ({ id: 'x', identifier: 'BRO-1', description: '', state: { name: 'In Progress' } });
+  linear.createComment = async () => { calls.push('comment'); return { id: 'c' }; };
+  const origExit = process.exit;
+  process.exit = (c) => { throw new Error(`exit:${c}`); };
+  const origLog = console.log; console.log = () => {};
+  try {
+    const { cmdReport } = require('../../scripts/linear-session.js');
+    await cmdReport({ issue: 'BRO-1', status: 'blocked', summary: 'Owner must decide.' }, { skipOwnerQuestionGuard: true });
+    assert.deepEqual(calls, ['comment']);
+  } finally {
+    process.exit = origExit; console.log = origLog; Object.assign(linear, orig);
+  }
+});

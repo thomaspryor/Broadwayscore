@@ -16,7 +16,7 @@ function hasRealBlock(text) {
 
 // Statuses where a report hands work back. A done report that mentions the owner is a finished job.
 // Phrases namesOwnerHold misses: its negation window reads "without an owner call" as a negation.
-const EXTRA_OWNER_ASK_RE = /\bquestions? for (?:the )?owner\b|\b(?:needs|must|should|to) (?:thomas|the owner) (?:to )?(?:decide|choose|pick|answer)\b|\bawaiting (?:the )?owner(?:'s)? (?:input|answer|reply)\b|\buntil the owner (?:decides|chooses|answers)\b|\bwithout an? owner (?:call|decision)\b|\bowner (?:must|should|has to|needs to) (?:decide|choose|pick|answer)\b/i;
+const EXTRA_OWNER_ASK_RE = /\bquestions? for (?:the )?owner\b|\b(?:needs|must|should|to) (?:thomas|the owner) (?:to )?(?:decide|choose|pick|answer)\b|\bawaiting (?:the )?owner(?:'s)? (?:input|answer|reply)\b|\buntil (?:the owner|thomas) (?:decides|chooses|answers)\b|\bwithout an? owner (?:call|decision)\b|\bowner (?:must|should|has to|needs to) (?:decide|choose|pick|answer)\b/i;
 
 const DENIAL_RE = /\b(?:no|(?:does not|doesn't|do not|don't|never) need|needs? no)\s+(?:an? |the |any )?(?:questions? for (?:the )?owner|owner (?:decision|call|approval|judg(?:e)?ment))\b/i;
 
@@ -33,7 +33,7 @@ function checkHiddenOwnerQuestion({ status, summary, verification, description }
   // Code spans and fenced examples are quotes of the rule, not a hand-off. A sentence that
   // denies an owner ask ("no question for the owner", "doesn't need an owner call") is not one.
   const reportText = stripCode([summary, verification].filter(Boolean).join('\n'))
-    .map((l) => l.replace(/`[^`]*`/g, ''))
+    .flatMap((l) => l.split(/(?<=[.!?;])\s+/))
     .filter((l) => !DENIAL_RE.test(l))
     .join('\n');
   if (!namesOwnerHold(reportText) && !EXTRA_OWNER_ASK_RE.test(reportText)) return { hidden: false };
