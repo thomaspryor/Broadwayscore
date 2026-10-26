@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T15:50:15.485Z",
+  "timestamp": "2026-10-26T16:17:52.015Z",
   "stats": {
-    "totalReviews": 62052,
-    "alreadyFlagged": 21504,
+    "totalReviews": 62091,
+    "alreadyFlagged": 21508,
     "dateGuardCatches": 223,
     "directorMismatch": 2280,
-    "tvFilmSignals": 1766,
+    "tvFilmSignals": 1767,
     "londonSignals": 3000,
     "offBroadwaySignals": 550,
     "yearMismatch": 206,
-    "noPublishDate": 5552
+    "noPublishDate": 5584
   },
   "findings": [
     {
@@ -26013,6 +26013,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"disney\""
+        }
+      ]
+    },
+    {
+      "showId": "kowalski-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": null,
+      "url": "https://newyorktheater.me/2025/01/27/kowalski-review-when-brando-first-met-tennessee-williams/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -80911,6 +80924,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "1883magazine--andrew-lawston.json",
+      "score": 90,
       "publishDate": "2026-10-24",
       "url": "https://1883magazine.com/martin-guerre-old-vic-review/",
       "findings": [
