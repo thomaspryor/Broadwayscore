@@ -27,6 +27,7 @@
  */
 const fs = require('fs');
 const { postJSON, escapeHtml, FONT } = require('./email-templates');
+const { networkName } = require('./social-report');
 
 const FROM_EMAIL = 'updates@broadwayscorecard.com';
 const FROM_NAME = 'BWSC Traffic';
@@ -157,8 +158,9 @@ function chartsHtml(images) {
  * @param opts.tiles / opts.images  the GA-style block, placed right under the title
  * @param opts.dashboardUrl         footer link to /admin/traffic
  * @param opts.accounts             { lines, url }: the Accounts section (BRO-4615)
+ * @param opts.social               scripts/lib/social-report.js output: the Social section (BRO-6377)
  */
-function buildHtml(md, { runUrl, tiles, images, dashboardUrl, accounts } = {}) {
+function buildHtml(md, { runUrl, tiles, images, dashboardUrl, accounts, social } = {}) {
   const { summary } = splitReport(md);
   // Title first, then the tiles and charts, then the rest of the summary.
   const firstBreak = summary.indexOf('\n');
@@ -167,7 +169,7 @@ function buildHtml(md, { runUrl, tiles, images, dashboardUrl, accounts } = {}) {
   const rest = hasTitle ? summary.slice(firstBreak + 1) : summary;
   const block = tilesHtml(tiles) + chartsHtml(images);
   const dash = dashboardUrl ? `<p style="margin:16px 0;font-size:14px;"><a href="${attr(dashboardUrl)}" style="color:#2563eb;font-weight:600;">See the dashboard</a> for the full charts, 52 weeks back.</p>` : '';
-  const acct = accountsHtml(accounts);
+  const acct = accountsHtml(accounts) + socialHtml(social);
   const safeUrl = runUrl ? attr(runUrl) : '';
   const link = runUrl ? `<p style="margin:16px 0;color:#9ca3af;font-size:11px;">Run log (for debugging only): <a href="${safeUrl}">${safeUrl}</a></p>` : '';
   return `<div style="font-family:${FONT};font-size:14px;line-height:1.5;color:#111827;max-width:720px;">${title ? markdownToHtml(title) : ''}${block}${markdownToHtml(rest)}${acct}${dash}${link}</div>`;
@@ -196,6 +198,56 @@ function loadAccountsSection(accountsPath, url, now = Date.now()) {
     return lines.length ? { lines, url } : null;
   } catch (e) {
     console.error(`[email] accounts summary at ${accountsPath} unreadable (${e.message}); sending without it`);
+    return null;
+  }
+}
+
+const H2 = '<h2 style="font-size:18px;margin:24px 0 8px;">';
+const H3 = '<h3 style="font-size:15px;margin:16px 0 6px;">';
+const LINK = 'color:#2563eb;';
+
+/**
+ * Social section of the Monday email (BRO-6377), from the social-report.json
+ * scripts/build-social-report.js writes. An {error} report renders one line,
+ * so a broken Buffer key is visible instead of the section just vanishing.
+ */
+function socialHtml(social) {
+  if (!social) return '';
+  if (social.error) return `${H2}Social</h2><p style="margin:0 0 16px;color:#6b7280;">Social numbers are unavailable this week (${escapeHtml(social.error)}).</p>`;
+  const w = social.weekly;
+  if (!w) return '';
+  const a = (href, text) => (href ? `<a href="${attr(href)}" style="${LINK}">${escapeHtml(text)}</a>` : escapeHtml(text));
+  let html = `${H2}Social</h2><p style="margin:0 0 8px;">${escapeHtml(w.takeaway)}</p>`;
+  const picks = [];
+  if (w.best) picks.push(`<li style="margin:4px 0;"><strong>Best:</strong> ${a(w.best.link, w.best.line)}</li>`);
+  if (w.worst) picks.push(`<li style="margin:4px 0;"><strong>Worst:</strong> ${a(w.worst.link, w.worst.line)}</li>`);
+  if (picks.length) html += `<ul style="margin:0 0 8px;padding-left:20px;">${picks.join('')}</ul>`;
+  if (w.shows && w.shows.length) {
+    html += `<ul style="margin:0 0 8px;padding-left:20px;">${w.shows.map((g) => `<li style="margin:6px 0;">${a(g.link, g.title)}: ${escapeHtml(g.line)}</li>`).join('')}</ul>`;
+    html += '<p style="margin:0 0 8px;color:#6b7280;font-size:12px;">Likes and shares include reposts and saves. Site visits are people who came to the site from a post. Bluesky reports no views.</p>';
+  }
+  if (w.comments && w.comments.length) {
+    html += `${H3}Comments to answer</h3><ul style="margin:0;padding-left:20px;">${w.comments.map((c) => `<li style="margin:6px 0;">${a(c.link, `${c.title} on ${c.network}`)}: ${c.comments === 1 ? '1 comment' : `${c.comments} comments`}. A reply you could adapt: <em>${escapeHtml(c.suggestedReply)}</em></li>`).join('')}</ul>`;
+  }
+  if (w.bio && w.bio.views) {
+    const by = (w.bio.bySource || []).filter((s) => s.source !== 'none').map((s) => `${networkName(s.source)} ${s.views}`).join(', ');
+    html += `<p style="margin:8px 0;">The link-in-bio page had ${w.bio.views === 1 ? '1 visit' : `${w.bio.views} visits`}${by ? ` (${escapeHtml(by)})` : ''}.</p>`;
+  }
+  if (social.monthly && social.monthly.lines && social.monthly.lines.length) {
+    html += `${H3}This month: what to keep or drop</h3><ul style="margin:0;padding-left:20px;">${social.monthly.lines.map((l) => `<li style="margin:4px 0;">${escapeHtml(l)}</li>`).join('')}</ul>`;
+  }
+  return html;
+}
+
+/** social-report.json → the report, or null when absent/unreadable/stale (older than 3 days, like Accounts). */
+function loadSocialSection(socialPath, now = Date.now()) {
+  if (!socialPath || !fs.existsSync(socialPath)) return null;
+  try {
+    const d = JSON.parse(fs.readFileSync(socialPath, 'utf8'));
+    if (!d.generatedAt || now - Date.parse(d.generatedAt) > 3 * 86400000) return null;
+    return d;
+  } catch (e) {
+    console.error(`[email] social report at ${socialPath} unreadable (${e.message}); sending without it`);
     return null;
   }
 }
@@ -249,7 +301,7 @@ async function renderCharts(charts, opts = {}) {
  *   when given it is the email body and the full report is only attached.
  *   Without it the top of the full report is used (older artifacts).
  */
-async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, dashboardUrl, accountsPath, accountsUrl, runUrl, dryRun = false, to } = {}) {
+async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, dashboardUrl, accountsPath, accountsUrl, socialPath, runUrl, dryRun = false, to } = {}) {
   const RESEND_API_KEY = process.env.RESEND_API_KEY;
   const OWNER_EMAIL = to || process.env.OWNER_EMAIL;
   if (!RESEND_API_KEY || !OWNER_EMAIL) return { sent: false, reason: 'RESEND_API_KEY or OWNER_EMAIL not set' };
@@ -280,7 +332,8 @@ async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, da
     } catch (e) { console.error(`[email] metrics at ${metricsPath} unreadable (${e.message}); sending without tiles`); }
   }
   const accounts = loadAccountsSection(accountsPath, accountsUrl);
-  const html = buildHtml(body, { runUrl, tiles, images: charts.images, dashboardUrl, accounts });
+  const social = loadSocialSection(socialPath);
+  const html = buildHtml(body, { runUrl, tiles, images: charts.images, dashboardUrl, accounts, social });
   if (dryRun) {
     console.log(`[email] DRY RUN — would send "${subject}" to ${OWNER_EMAIL} (${html.length} bytes HTML, ${tiles ? tiles.length : 0} tiles, ${charts.images.length} charts, ${md.length} bytes attachment)`);
     return { sent: false, reason: 'dry-run', subject, html, attachments: charts.attachments };
@@ -299,4 +352,4 @@ async function sendTrafficReportEmail({ reportPath, summaryPath, metricsPath, da
   }
 }
 
-module.exports = { sendTrafficReportEmail, accountsHtml, loadAccountsSection, markdownToHtml, splitReport, buildSubject, buildHumanSubject, buildHtml, tilesHtml, chartsHtml, renderChartPng, renderCharts };
+module.exports = { sendTrafficReportEmail, accountsHtml, loadAccountsSection, socialHtml, loadSocialSection, markdownToHtml, splitReport, buildSubject, buildHumanSubject, buildHtml, tilesHtml, chartsHtml, renderChartPng, renderCharts };

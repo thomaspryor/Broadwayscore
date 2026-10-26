@@ -67,6 +67,19 @@ jobs:
             echo "No report produced — see the query step log." >> "$GITHUB_STEP_SUMMARY"
           fi
 
+      # Social section of the email (BRO-6377): Buffer post metrics + PostHog
+      # visits from the posts. always(): the email step runs even when the
+      # query step failed, and the social numbers don't depend on it. The
+      # script never exits non-zero; on any error it writes {error} and the
+      # email says the numbers are unavailable.
+      - name: Build the social report
+        if: always()
+        continue-on-error: true
+        env:
+          BUFFER_API_KEY: ${{ secrets.BUFFER_API_KEY }}
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+        run: node scripts/build-social-report.js --out=traffic-analysis/social-report.json
+
       # The owner reads email, not GitHub — the report goes to their inbox even
       # when incomplete (the banner says what failed). Transactional to
       # OWNER_EMAIL only; never a broadcast.
@@ -77,7 +90,7 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --metrics=traffic-analysis/traffic-metrics.json --dashboard-url=https://broadwayscorecard.com/admin/traffic --accounts=/tmp/core-data-checkout/analytics/account-dashboard.json --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --metrics=traffic-analysis/traffic-metrics.json --dashboard-url=https://broadwayscorecard.com/admin/traffic --accounts=/tmp/core-data-checkout/analytics/account-dashboard.json --social=traffic-analysis/social-report.json --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       # The script writes traffic-history.json ONLY when every history query
       # succeeded, so a failed Monday never overwrites good history. The

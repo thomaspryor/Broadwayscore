@@ -133,4 +133,4 @@ async function validateChannels(channels, { imageUrl, altText }) {
   return problems;
 }
 
-module.exports = { listChannels, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };
+module.exports = { gql, listChannels, createImagePost, findExistingPost, getPost, deletePost, validateChannels, metadataFor, SERVICE_TO_NETWORK };

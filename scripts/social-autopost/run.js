@@ -54,10 +54,16 @@ function loadLedger() {
   return l;
 }
 
-function writeLedger(ledger) {
+// The ledger is a site data file (the /links bio page reads it, BRO-6377), so a
+// commit to it deploys the site. Only bump lastUpdated when something else
+// changed, or the hourly run would deploy every hour with nothing new.
+function writeLedger(ledger, file = LEDGER_FILE) {
   ledger.posts = ledger.posts.slice(-MAX_LEDGER);
+  const prev = readJson(file, null);
+  const strip = (l) => JSON.stringify({ ...l, _meta: { ...((l && l._meta) || {}), lastUpdated: undefined } });
+  if (prev && strip(prev) === strip(ledger)) return;
   ledger._meta = { ...(ledger._meta || {}), lastUpdated: new Date().toISOString() };
-  fs.writeFileSync(LEDGER_FILE, `${JSON.stringify(ledger, null, 2)}\n`);
+  fs.writeFileSync(file, `${JSON.stringify(ledger, null, 2)}\n`);
 }
 
 function loadContext() {
@@ -458,4 +464,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify };
+module.exports = { unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger };
