@@ -110,12 +110,13 @@ export function isOptimizableCDN(url: string | undefined): boolean {
 // (VARIANT_WIDTHS / IMAGE_WIDTH_CAPS), asserted equal in scripts/lib/show-image-variants.test.mjs.
 export const VARIANT_WIDTHS = { poster: 256, thumbnail: 240 } as const;
 const ORIGINAL_WIDTH_CAPS = { poster: 480, thumbnail: 540 } as const;
-const LOCAL_SHOW_IMAGE = /^(\/images\/shows\/[^/?#]+)\/(poster|thumbnail)\.(webp|jpe?g|png)$/i;
+// Optional ?v=<hash> (BRO-5734/6197 content versioning) is carried onto the variant so it busts caches exactly when the original does.
+const LOCAL_SHOW_IMAGE = /^(\/images\/shows\/[^/?#]+)\/(poster|thumbnail)\.(webp|jpe?g|png)(\?[^#]*)?$/i;
 
 /** `/images/shows/<id>/sm/<role>.<ext>.webp` for a canonical local poster/thumbnail URL, else ''. */
 export function getShowImageVariantUrl(url: string | undefined | null): string {
   const m = url ? LOCAL_SHOW_IMAGE.exec(url) : null;
-  return m ? `${m[1]}/sm/${m[2].toLowerCase()}.${m[3].toLowerCase()}.webp` : '';
+  return m ? `${m[1]}/sm/${m[2].toLowerCase()}.${m[3].toLowerCase()}.webp${m[4] ?? ''}` : '';
 }
 
 /**

@@ -15,3 +15,8 @@ export function versionedImagePath<T extends string | null | undefined>(imagePat
   return (typeof imagePath === 'string' && Object.prototype.hasOwnProperty.call(versions, imagePath)
     ? versions[imagePath] : imagePath) as T;
 }
+
+/** True when the file existed under public/images when the manifest was built. Lets server code check for a file without an fs path that makes Next trace public/ into serverless bundles. */
+export function siteImageExists(imagePath: string): boolean {
+  return Object.prototype.hasOwnProperty.call(versions, imagePath);
+}

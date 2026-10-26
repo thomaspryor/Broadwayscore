@@ -68,3 +68,19 @@ test('a jpg and a webp original in one dir get separate variants; a placeholder 
   assert.ok(!fs.existsSync(path.join(dir, 'sm', 'thumbnail.jpg.webp')));
   assert.ok(fs.existsSync(path.join(dir, 'sm', 'thumbnail.webp.webp')));
 });
+
+test('LOCAL_SHOW_IMAGE accepts the ?v=<hash> that BRO-6197 appends and carries it onto the variant', () => {
+  const m = /const LOCAL_SHOW_IMAGE = (\/.*\/i);/.exec(tsSrc);
+  const re = eval(m[1]);
+  const hit = re.exec('/images/shows/x-2024/poster.webp?v=9e8a06b8');
+  assert.ok(hit, 'versioned URL must still match, or the homepage silently loses srcset');
+  assert.equal(hit[4], '?v=9e8a06b8');
+  assert.ok(re.exec('/images/shows/x-2024/thumbnail.jpg'));
+  assert.equal(re.exec('/images/shows/x-2024/hero.webp?v=1'), null);
+});
+
+test('server srcset helper never builds an fs path from process.cwd() (traces public/ into serverless bundles, broke prod deploys)', () => {
+  const src = fs.readFileSync(new URL('../../src/lib/show-image-srcset.server.ts', import.meta.url), 'utf8')
+    .replace(/\/\*[\s\S]*?\*\//g, '');
+  assert.ok(!/process\.cwd\(\)|from 'fs'|from 'path'/.test(src));
+});
