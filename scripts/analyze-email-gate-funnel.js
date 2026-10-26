@@ -4,7 +4,12 @@
  *
  * Unlike the retired analyze-gate-ab.js (the mobile-gate-timing A/B — never launched, statistically
  * dead under the cold-start gate), this tracks the funnel end-to-end regardless of any
- * experiment: modal-only captures, impressions, dismissal.
+ * experiment: modal-only captures, impressions, dismissal, plus TOTAL list joins/week
+ * (modal + inline + account sign-in, BRO-6371), which is what the weekly monitor alerts on.
+ *
+ * Account sign-in joins the list via src/lib/auto-subscribe.ts (Formspree, source
+ * auth-auto) and never fires email_captured, so sign-ins are counted from
+ * sign_in_completed. totalJoins is DISTINCT people across all three channels.
  *
  * Modal-only filter (MANDATORY): email_captured fires from BOTH the gate modal (carries
  * a `trigger` property) AND inline header/footer forms (no `trigger` property).
@@ -19,7 +24,7 @@
  * (BRO-2952). The launch-time projection number below is kept for historical context only;
  * do not treat it as a live guardrail. Rate thresholds alone would declare victory while
  * list growth actually falls. Baseline: ~0.93 modal captures/day (P0, Jun 15 - Jul 12).
- * Full analysis: ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
+ * Gate history and decisions: docs/experiments/gate-cold-start.md
  *
  * Real-users lens: owner + SG/CN/VN excluded (memory: feedback_analytics_real_users_lens).
  *
@@ -70,7 +75,7 @@ function buildByCopyVersion(shownDismissedRows, capturedRows) {
 
 async function main() {
   const say = (...a) => { if (!JSON_OUT) console.log(...a); };
-  say(`Email gate funnel (overall) — last ${DAYS} days, real users, modal-only\n${'='.repeat(60)}`);
+  say(`Email gate funnel (overall) — last ${DAYS} days, real users\n${'='.repeat(60)}`);
 
   const funnel = await hogql(`
     SELECT event, count() AS n, count(DISTINCT person_id) AS people
@@ -93,6 +98,20 @@ async function main() {
       AND timestamp > now() - INTERVAL ${DAYS} DAY
       AND ${REAL_USERS}`);
   const [capturedN, capturedPeople] = capturedRows[0] || [0, 0];
+
+  // List joins by channel (BRO-6371). One query so totalJoins dedupes a person
+  // who, say, signed in and also used the inline form in the same window.
+  const joinsRows = await hogql(`
+    SELECT
+      count(DISTINCT if(event = 'email_captured' AND JSONExtractString(properties,'trigger') = '', person_id, NULL)) AS inline,
+      count(DISTINCT if(event = 'sign_in_completed', person_id, NULL)) AS signIns,
+      count(DISTINCT if(event = 'sign_in_completed' AND JSONExtractString(properties,'is_new_user') = 'true', person_id, NULL)) AS signInsNew,
+      count(DISTINCT person_id) AS total
+    FROM events
+    WHERE event IN ('email_captured', 'sign_in_completed')
+      AND timestamp > now() - INTERVAL ${DAYS} DAY
+      AND ${REAL_USERS}`);
+  const [inlinePeople, signInPeople, signInNewPeople, totalJoinPeople] = (joinsRows[0] || [0, 0, 0, 0]).map(Number);
 
   const byTriggerRows = await hogql(`
     SELECT JSONExtractString(properties,'trigger') AS trigger, count() AS n, count(DISTINCT person_id) AS people
@@ -154,6 +173,11 @@ async function main() {
     capturedEvents: Number(capturedN),
     convRatePct: pct(Number(capturedPeople), shown.people),
     capturesPerWeek: +((Number(capturedPeople) / DAYS) * 7).toFixed(2),
+    inlineCaptures: inlinePeople,
+    signIns: signInPeople,
+    signInsNew: signInNewPeople,
+    totalJoins: totalJoinPeople,
+    totalJoinsPerWeek: +((totalJoinPeople / DAYS) * 7).toFixed(2),
     mobileBouncePct: mobileVisitors > 0 ? +((bouncers / mobileVisitors) * 100).toFixed(2) : null,
     byTrigger: Object.fromEntries(byTriggerRows.map(([t, n, people]) => [t || '(none)', { n: Number(n), people: Number(people) }])),
     byCopyVersion: buildByCopyVersion(byCopyVersionShownDismissedRows, byCopyVersionCapturedRows),
@@ -164,6 +188,8 @@ async function main() {
   say(`Dismissed: ${summary.dismissed} (${summary.dismissRatePct}%)`);
   say(`Modal captures: ${summary.captured} people / ${summary.capturedEvents} events (${summary.convRatePct}% conv/impression)`);
   say(`Captures/week (extrapolated from ${DAYS}d): ${summary.capturesPerWeek} — baseline ~0.93/day (~6.5/wk pre-cold-start-gate)`);
+  say(`Inline captures: ${summary.inlineCaptures} people · account sign-ins: ${summary.signIns} people (${summary.signInsNew} new accounts)`);
+  say(`Total list joins: ${summary.totalJoins} people (${summary.totalJoinsPerWeek}/wk) — baseline ~35/wk since accounts launched 2026-10-02`);
   say(`Mobile bounce: ${bouncers}/${mobileVisitors} (${summary.mobileBouncePct}%)`);
   say(`By trigger: ${JSON.stringify(summary.byTrigger)}`);
   say(`By copy version: ${JSON.stringify(summary.byCopyVersion)}`);

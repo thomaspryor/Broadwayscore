@@ -4,16 +4,14 @@
  * email-gate conversion funnel (card #240 — previously only the dead
  * mobile-gate-timing A/B had a monitor; nothing watched the funnel itself).
  *
- * Runs analyze-email-gate-funnel.js --json (7d, real users, modal-only —
- * trigger != '' excludes inline header/footer email_captured events),
- * applies the pure decision rule (scripts/lib/email-gate-funnel-rules.js),
- * sends an actionable-only alert on absolute capture collapse, persists state.
+ * Runs analyze-email-gate-funnel.js --json (7d, real users), applies the
+ * pure decision rule (scripts/lib/email-gate-funnel-rules.js), sends an
+ * actionable-only alert when TOTAL list joins/week collapse, persists state.
  *
- * PRIMARY guardrail is ABSOLUTE captures/week, not conversion rate — the
- * cold-start gate (2+ pages/session, live 2026-07-20 16:37 UTC) cuts
- * impressions ~85-90% and lifts rate ~5-8x by selection; a rate-only
- * threshold would declare victory while list growth actually falls.
- * Full analysis: ~/Documents/claude-outputs/email-gate-analysis-2026-07-20.md
+ * PRIMARY guardrail is total joins/week (gate modal + inline forms + account
+ * sign-in, BRO-6371), not modal-only captures: signed-in users never see the
+ * modal, so modal captures run ~3/wk and hit zero on noise. Modal-only is a
+ * log line. Gate history: docs/experiments/gate-cold-start.md
  *
  * This monitor never touches gate config, cooldowns, or flag rollout —
  * alerts only, decisions stay with the owner.
