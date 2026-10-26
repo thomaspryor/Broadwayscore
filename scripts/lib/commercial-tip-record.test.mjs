@@ -8,7 +8,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { queueTipForReview } = require('./commercial-tip-record.js');
+const { queueTipForReview, readPendingFile, STALE_REVIEW_STAMPS } = require('./commercial-tip-record.js');
 const gate = require('./commercial-apply-gate.js');
 
 const tip = {
@@ -54,7 +54,7 @@ test('a tip without a cited source still queues, with no sources', () => {
   assert.equal(next.shows.hamilton.tipReasoning, null);
 });
 
-test('a tip is never auto-applyable as a trusted recouped claim', () => {
+test('github-tip is not a trusted detectedBy, so its recouped claim never auto-applies', () => {
   const row = queueTipForReview({ shows: {} }, tip).shows.hamilton;
   const show = { slug: 'hamilton', openingDate: '2015-08-06', previewDate: '2015-07-13', status: 'open' };
   assert.equal(gate.isAutoApplyableClaim(row, ['friday-grosses'], show), false);
@@ -80,4 +80,20 @@ test('a second tip for the same show keeps every issue number that touched the r
   const twice = queueTipForReview(once, { ...tip, issueNumber: 4300 });
   assert.deepEqual(twice.shows.hamilton.tipIssues, [4242, 4300]);
   assert.equal(twice.shows.hamilton.tipIssue, 4300);
+});
+
+test('merging drops the prior row\'s review stamps so the tip is digested and releasable afresh', () => {
+  const prior = { title: 'Hamilton', slug: 'hamilton', ownerDigestSentAt: '2026-09-02', autoApplyBlocked: 'old reason', autoApplyBlockedAt: '2026-09-02', truthReview: { verdict: 'reject' }, sourceVerifyAttempts: 3, requiresHumanReview: true };
+  const row = queueTipForReview({ shows: { hamilton: prior } }, tip).shows.hamilton;
+  for (const k of STALE_REVIEW_STAMPS) assert.equal(k in row, false, k);
+  assert.match(row.reason, /GitHub issue #4242/);
+});
+
+test('readPendingFile: a missing file is an empty queue, a malformed one throws instead of being replaced', () => {
+  const missing = { readFileSync() { const e = new Error('nope'); e.code = 'ENOENT'; throw e; } };
+  assert.deepEqual(readPendingFile(missing, '/x.json'), { generatedAt: null, shows: {} });
+  const malformed = { readFileSync() { return '{ not json'; } };
+  assert.throws(() => readPendingFile(malformed, '/x.json'), SyntaxError);
+  const ok = { readFileSync() { return JSON.stringify({ generatedAt: 't', shows: { a: {} } }); } };
+  assert.deepEqual(readPendingFile(ok, '/x.json'), { generatedAt: 't', shows: { a: {} } });
 });

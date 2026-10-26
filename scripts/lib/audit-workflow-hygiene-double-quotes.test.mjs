@@ -89,7 +89,7 @@ test('every real workflow passes, including bash comments and github-script bloc
 test('the existing audit CLI blocks a bad quote and accepts its escaped form', (t) => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4047-'));
   t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
-  const header = '# hygiene-notify-ok: isolated fixture\nname: test\non: workflow_dispatch\n';
+  const header = '# hygiene-notify-ok: isolated fixture\n# hygiene-permissions-ok: isolated fixture (BRO-6398 rule aa)\nname: test\non: workflow_dispatch\n';
   // The real CLI deliberately refuses a workflow corpus smaller than 50.
   for (let i = 0; i < 50; i++) fs.writeFileSync(path.join(dir, `inert-${i}.yml`), `${header}jobs: {}\n`);
   const file = path.join(dir, 'eval.yml');

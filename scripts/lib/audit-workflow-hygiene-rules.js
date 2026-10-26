@@ -1463,10 +1463,10 @@ function findMissingTopLevelPermissions(raw) {
  * composites (`./.github/actions/...`) have no `@ref` and are not actions
  * this rule sees. Dependabot's github-actions group keeps the SHAs current.
  */
-const EXTERNAL_USES_RE = /^\s*-?\s*uses:\s*([A-Za-z0-9_.-]+\/[A-Za-z0-9_./-]+)@([^\s#]+)/;
+const EXTERNAL_USES_RE = /^\s*-?\s*uses:\s*['"]?([A-Za-z0-9_.-]+\/[A-Za-z0-9_./-]+)@([^\s#'"]+)/;
 // A container step is the same exposure: `docker://image:tag` re-resolves on
 // every run; only `docker://image@sha256:<digest>` is a fixed artifact.
-const DOCKER_USES_RE = /^\s*-?\s*uses:\s*docker:\/\/([^\s#]+)/;
+const DOCKER_USES_RE = /^\s*-?\s*uses:\s*['"]?docker:\/\/([^\s#'"]+)/;
 function findUnpinnedActionUses(raw) {
   const hits = [];
   raw.split('\n').forEach((l, i) => {
@@ -1491,7 +1491,7 @@ function findEolNodeVersions(raw) {
   const hits = [];
   raw.split('\n').forEach((l, i) => {
     if (l.trim().startsWith('#')) return;
-    const m = /^\s*node-version:\s*['"]?(\d+)(?:\.\d+)*['"]?\s*(?:#.*)?$/.exec(l);
+    const m = /^\s*-?\s*node-version:\s*['"]?v?(\d+)(?:\.(?:\d+|x))*['"]?\s*(?:#.*)?$/.exec(l);
     if (m && Number(m[1]) < NODE_MIN_MAJOR) hits.push({ lineNum: i + 1, text: l.trim(), major: Number(m[1]) });
   });
   return hits;

@@ -17,9 +17,9 @@ const { findEolNodeVersions, NODE_MIN_MAJOR } = require('../../scripts/lib/audit
 const ROOT = path.resolve(import.meta.dirname, '../..');
 
 describe('findEolNodeVersions', () => {
-  test('flags 20 in every quoting style and 18', () => {
-    const raw = `  node-version: '20'\n  node-version: "20"\n  node-version: 20\n  node-version: 18.19.0\n`;
-    assert.deepEqual(findEolNodeVersions(raw).map((h) => h.major), [20, 20, 20, 18]);
+  test('flags 20 in every quoting style, 20.x, v20, a matrix list item and 18', () => {
+    const raw = `  node-version: '20'\n  node-version: "20"\n  node-version: 20\n  node-version: 20.x\n  node-version: v20\n  - node-version: '20.11'\n  node-version: 18.19.0\n`;
+    assert.deepEqual(findEolNodeVersions(raw).map((h) => h.major), [20, 20, 20, 20, 20, 20, 18]);
   });
   test(`accepts ${NODE_MIN_MAJOR} and newer, and node-version-file`, () => {
     assert.equal(findEolNodeVersions(`  node-version: '22'\n  node-version: 24\n  node-version-file: .nvmrc\n`).length, 0);

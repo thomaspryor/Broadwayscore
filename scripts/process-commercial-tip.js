@@ -19,7 +19,7 @@ const path = require('path');
 const https = require('https');
 const { CLAUDE_SONNET } = require('./lib/models');
 const { loadCommercial } = require('./lib/commercial-write-guard');
-const { buildTipRecord, queueTipForReview } = require('./lib/commercial-tip-record');
+const { buildTipRecord, queueTipForReview, readPendingFile } = require('./lib/commercial-tip-record');
 const { FIZZLE_MIN_RETURNED_PCT } = require('./lib/commercial-designations');
 
 const ANTHROPIC_KEY = process.env.ANTHROPIC_API_KEY;
@@ -298,19 +298,17 @@ Rules:
     if (wantsApply && built.record) {
       // BRO-6398: a reader tip is public, unauthenticated text judged by a
       // model, so it never writes commercial.json here. The cleaned changes
-      // join data/commercial-pending-review.json as a human-review row: the
-      // daily apply pass holds it until a person releases it
-      // (apply-commercial-pending.js --show=SLUG or --release-held=SLUG) and
-      // the Linear sync surfaces it to the owner.
-      let pending;
-      try {
-        pending = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8'));
-      } catch (e) {
-        pending = { generatedAt: null, shows: {} };
-      }
+      // join data/commercial-pending-review.json as a human-review row. The
+      // daily apply pass skips held rows; sync-pending-review-to-linear.js
+      // puts the row on the board and send-unverified-digest.js emails the
+      // owner, and a person then applies the change to commercial.json
+      // (apply-commercial-pending.js --release-held=SLUG for a figures-only
+      // tip on an undesignated record, otherwise by hand).
+      let pending = readPendingFile(fs, PENDING_PATH);
+      const matchedShow = (shows.shows || shows).find((s) => s && s.slug === slug);
       pending = queueTipForReview(pending, {
         slug,
-        title: tip.showName,
+        title: (matchedShow && matchedShow.title) || tip.showName,
         changes: built.changes,
         confidence: analysis.confidence,
         source: tip.source,
@@ -330,7 +328,7 @@ Rules:
 **Show:** ${tip.showName} (\`${slug}\`)
 **Confidence:** ${analysis.confidence}
 
-### Proposed Changes (not live until a person releases them)
+### Proposed Changes (queued for the owner's review; nothing is live yet)
 
 | Field | Current Value | Proposed Value |
 |-------|---------------|----------------|

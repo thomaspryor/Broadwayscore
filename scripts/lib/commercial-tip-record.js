@@ -81,6 +81,22 @@ function buildTipRecord(commercial, showList, slug, proposedChanges) {
  *           source?: string|null, issueNumber: string|number, reasoning?: string|null, now?: string }} tip
  * @returns {object} the next pending file contents
  */
+const STALE_REVIEW_STAMPS = ['ownerDigestSentAt', 'autoApplyBlocked', 'autoApplyBlockedAt', 'truthReview', 'sourceVerifyAttempts'];
+
+/**
+ * Reads commercial-pending-review.json. A missing file is an empty queue; any
+ * other failure (unreadable, malformed JSON) throws, because defaulting there
+ * would let the next write replace every queued row with an empty file.
+ */
+function readPendingFile(fs, filePath) {
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch (e) {
+    if (e && e.code === 'ENOENT') return { generatedAt: null, shows: {} };
+    throw e;
+  }
+}
+
 function queueTipForReview(pending, { slug, title, changes, confidence, source, issueNumber, reasoning, now }) {
   const at = now || new Date().toISOString();
   const proposed = Object.fromEntries((changes || []).map((c) => [c.field, c.newValue]));
@@ -88,6 +104,9 @@ function queueTipForReview(pending, { slug, title, changes, confidence, source, 
     title,
     slug,
     ...proposed,
+    // The Linear sync (sync-pending-review-to-linear.js coerceEntry) shows
+    // `reason` on the card, so the tip's provenance is visible to the owner.
+    reason: `Reader tip via GitHub issue #${issueNumber}${reasoning ? `: ${reasoning}` : ''}`,
     confidence,
     sources: source ? [{ type: 'tip', url: source, date: at.slice(0, 10) }] : [],
     detectedBy: 'github-tip',
@@ -104,7 +123,12 @@ function queueTipForReview(pending, { slug, title, changes, confidence, source, 
   const merged = prior
     ? { ...prior, ...entry, sources: [...(Array.isArray(prior.sources) ? prior.sources : []), ...entry.sources] }
     : entry;
+  // Stamps from the prior row's own review cycle must not carry over: a kept
+  // ownerDigestSentAt would stop unverified-digest.js from ever emailing this
+  // tip, and a stale truthReview / autoApplyBlocked verdict would block its
+  // release for reasons that predate the tip.
+  for (const k of STALE_REVIEW_STAMPS) delete merged[k];
   return { ...(pending || {}), generatedAt: at, shows: { ...((pending && pending.shows) || {}), [slug]: merged } };
 }
 
-module.exports = { buildTipRecord, queueTipForReview };
+module.exports = { buildTipRecord, queueTipForReview, readPendingFile, STALE_REVIEW_STAMPS };

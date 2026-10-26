@@ -35,6 +35,10 @@ describe('findUnpinnedActionUses', () => {
     assert.deepEqual(findUnpinnedActionUses(`  - uses: docker://alpine:3.20\n`).map((h) => [h.action, h.ref]), [['docker://alpine', '3.20']]);
     assert.equal(findUnpinnedActionUses(`  - uses: docker://alpine@sha256:${digest}\n`).length, 0);
   });
+  test('sees through YAML quotes around the reference', () => {
+    assert.equal(findUnpinnedActionUses(`  - uses: "actions/checkout@v4"\n`).length, 1);
+    assert.equal(findUnpinnedActionUses(`  - uses: 'actions/checkout@${SHA}' # v5\n`).length, 0);
+  });
   test('ignores local composites and commented-out lines', () => {
     assert.equal(findUnpinnedActionUses(`  - uses: ./.github/actions/setup-node\n  # - uses: actions/checkout@v4\n`).length, 0);
   });
