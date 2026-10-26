@@ -24,6 +24,8 @@
  * Usage:
  *   node scripts/build-we-olt-season.js --season=2015-2016 [--verbose] [--offline]
  *     --offline   skip CDX + page fetches; rebuild candidates from the cache
+ *   node scripts/cloud-run-script.js scripts/build-we-olt-season.js --season=2014-2015 --print-pages > out.txt
+ *   node scripts/build-we-olt-season.js --season=2014-2015 --pages-from=out.txt
  */
 
 'use strict';
@@ -46,6 +48,10 @@ Usage:
 Options:
   --offline     Rebuild candidates from the page cache; no network
   --verbose     Print every candidate, not just promotable ones
+  --print-pages Also print each page fetched as an OLTPAGE line (for run-script.yml,
+                which keeps stdout but discards written files)
+  --pages-from=<file>  Merge OLTPAGE lines from <file> into the cache and skip the
+                archive crawl (when this machine cannot reach web.archive.org)
   --help, -h    print this usage and exit
 `;
 
@@ -118,13 +124,28 @@ async function main() {
   const season = args.find(a => a.startsWith('--season='))?.split('=')[1];
   const verbose = args.includes('--verbose');
   const offline = args.includes('--offline');
+  const printPages = args.includes('--print-pages');
+  const pagesFrom = args.find(a => a.startsWith('--pages-from='))?.split('=').slice(1).join('=');
   if (!season) { console.error(USAGE); process.exit(2); }
   const check = validateSeason(season);
   if (!check.isValid) { console.error(`Invalid --season: ${check.reason}`); process.exit(2); }
   const { start, end } = getSeasonDates(season);
 
   const cache = readJson(PAGES_PATH, { note: 'Parsed archived Official London Theatre show pages (build-we-olt-season.js, BRO-6343).', pages: {} });
-  if (!offline) {
+  if (pagesFrom) {
+    let merged = 0;
+    for (const line of fs.readFileSync(pagesFrom, 'utf8').split('\n')) {
+      const m = /OLTPAGE (\{.*\})\s*$/.exec(line);
+      if (!m) continue;
+      const entry = JSON.parse(m[1]);
+      const prev = cache.pages[entry.item];
+      if (prev && prev.title && (!entry.title || prev.snapshot >= entry.snapshot)) continue;
+      cache.pages[entry.item] = entry;
+      merged++;
+    }
+    writeJson(PAGES_PATH, cache);
+    console.log(`Merged ${merged} page(s) from ${pagesFrom}; cache holds ${Object.keys(cache.pages).length}.`);
+  } else if (!offline) {
     // Captures from 3 months before the season to 12 months after it: a
     // production opening in the season is listed (and archived) in that span.
     const items = await enumerateItems(ymd(new Date(start.getTime() - 92 * DAY_MS)), ymd(new Date(end.getTime() + 365 * DAY_MS)));
@@ -147,6 +168,7 @@ async function main() {
           await sleep(FETCH_DELAY_MS);
         }
         cache.pages[it.item] = entry;
+        if (printPages) console.log(`OLTPAGE ${JSON.stringify(entry)}`);
         fetched++;
       } catch (e) {
         failed++;
@@ -160,7 +182,7 @@ async function main() {
   }
 
   const az = readJson(path.join(ROOT, 'data', 'audit', `we-historical-az-${season}.json`), null);
-  const azTitles = (az?.titles || []).filter(t => t.opened);
+  const azTitles = (az?.titles || []).filter(t => t.opened || t.seasonFrom);
   // Theatre Record production pages resolved by we-historical-tr-resolve.yml.
   const { reviewLedPath } = require('./lib/we-review-led-candidates');
   const trPages = (readJson(reviewLedPath(ROOT, season), null)?.lookups || []).filter(x => x.tr);

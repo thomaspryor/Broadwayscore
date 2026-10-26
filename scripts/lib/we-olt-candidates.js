@@ -65,13 +65,19 @@ function genreSlugs(genre) {
 
 const sameVenue = (a, b) => venuesMatch(a, b) || venueFamily(a) === venueFamily(b);
 
-/** TR A-Z title row ({title, venue, opened}) naming this OLT listing's production? */
+/**
+ * TR A-Z title row ({title, venue, opened, seasonFrom}) naming this OLT
+ * listing's production? A limited run in the 2015 A-Z layout carries
+ * "season dd.mm-dd.mm.yy" instead of an opened date; its first performance
+ * falls in the same previews-to-press-night window.
+ */
 function azMatchesListing(az, l) {
-  if (!az?.opened || !az.title || !titlesMatch(az.title, l.title)) return false;
+  const when = az?.opened || az?.seasonFrom;
+  if (!when || !az.title || !titlesMatch(az.title, l.title)) return false;
   if (az.venue && !sameVenue(az.venue, l.venue)) return false;
   const first = Date.parse(l.previewsStartDate || l.openingDate || '');
   const press = Date.parse(l.openingDate || l.previewsStartDate || '');
-  const d = Date.parse(az.opened);
+  const d = Date.parse(when);
   if ([first, press, d].some(Number.isNaN)) return false;
   return d >= first - AZ_EARLY_DAYS * DAY_MS && d <= press + AZ_LATE_DAYS * DAY_MS;
 }
@@ -180,7 +186,7 @@ function buildOltCandidates({ season, pages, azTitles = [], trPages = [], review
         ...(review ? { wosReview: review.url } : {}),
         ...(trPage ? { theatreRecord: trPage.tr.link } : {}),
       },
-      ...(az ? { trAz: { title: az.title, venue: az.venue || null, opened: az.opened } } : {}),
+      ...(az ? { trAz: { title: az.title, venue: az.venue || null, opened: az.opened || null, ...(az.seasonFrom ? { seasonFrom: az.seasonFrom } : {}) } } : {}),
       inShowsJson: existing ? (existing.id || existing.title) : (subtitleOf || null),
     };
     const trClosing = trPage && trStatedClosing(trPage.header);

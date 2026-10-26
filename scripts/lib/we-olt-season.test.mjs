@@ -48,6 +48,13 @@ assert.ok(c.sourceUrls.olt.startsWith('https://web.archive.org/web/2017010100000
 assert.strictEqual(c.decision.promotable, false);
 assert.match(c.decision.reason, /no review signal/);
 
+// A 2015-layout A-Z row dates a limited run by its season start, not an opened date.
+[c] = run([page()], { azTitles: [{ title: 'THE ENTERTAINER', venue: 'Garrick', opened: null, seasonFrom: '2016-08-20', seasonTo: '2016-11-12' }] });
+assert.strictEqual(c.decision.promotable, true, c.decision.reason);
+assert.strictEqual(c.trAz.seasonFrom, '2016-08-20');
+// ...a season starting months away from the OLT run is another production.
+assert.strictEqual(azMatchesListing({ title: 'THE ENTERTAINER', venue: 'Garrick', seasonFrom: '2016-03-01' }, page()), false);
+
 // A-Z entry for a different production of the same title (years apart) is not a signal.
 assert.strictEqual(azMatchesListing({ ...az, opened: '2007-03-01' }, page()), false);
 // ...nor one at another venue.

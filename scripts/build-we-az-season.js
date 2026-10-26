@@ -32,10 +32,12 @@ function mergeIssues(parsed) {
     for (const e of entries) {
       const key = normalizeTitle(e.title);
       if (!key) continue;
-      const r = rows.get(key) || { title: e.title, venue: null, opened: null, issues: [], firstAsAt: asAt, lastAsAt: asAt };
+      const r = rows.get(key) || { title: e.title, venue: null, opened: null, seasonFrom: null, seasonTo: null, issues: [], firstAsAt: asAt, lastAsAt: asAt };
       if (!r.issues.includes(issue)) r.issues.push(issue);
       if (e.venue && !r.venue) r.venue = e.venue;
       if (e.opened && !r.opened) r.opened = e.opened;
+      // 2015-layout limited runs give "season dd.mm-dd.mm.yy" instead of an opened date.
+      if (e.seasonFrom && !r.seasonFrom) { r.seasonFrom = e.seasonFrom; r.seasonTo = e.seasonTo || null; }
       if (asAt && (!r.firstAsAt || asAt < r.firstAsAt)) r.firstAsAt = asAt;
       if (asAt && (!r.lastAsAt || asAt > r.lastAsAt)) r.lastAsAt = asAt;
       rows.set(key, r);
@@ -44,9 +46,10 @@ function mergeIssues(parsed) {
   return [...rows.values()].sort((a, b) => a.title.localeCompare(b.title));
 }
 
-/** Keep a title unless the A-Z dates its opening outside [start, end]. */
+/** Keep a title unless the A-Z dates its opening (or season start) outside [start, end]. */
 function inSeason(row, start, end) {
-  return !row.opened || (row.opened >= start && row.opened <= end);
+  const d = row.opened || row.seasonFrom;
+  return !d || (d >= start && d <= end);
 }
 
 function main() {
