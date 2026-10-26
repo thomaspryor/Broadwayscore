@@ -263,13 +263,13 @@ test('junk, disposable and malformed addresses are refused; real ones pass (BRO-
   const refused = {
     'a@a1a.com': 'junk', 'x@mailinator.com': 'disposable', 'test@gmail.com': 'junk', 'asdf@gmail.com': 'junk',
     'aaaa@gmail.com': 'junk', 'Test+1@gmail.com': 'junk', 'a@b': 'format', 'foo@sub.mailinator.com': 'disposable',
-    'real.person@yopmail.com': 'disposable',
+    'real.person@yopmail.com': 'disposable', 'x@mailinator.com.': 'disposable',
   };
   for (const [e, why] of Object.entries(refused)) {
     assert.equal(me.moneyEmailProblem(e), why, e);
     assert.equal(gate.isValidMoneyEmail(e), false, e);
   }
-  for (const ok of ['jane@gmail.com', 'tom.p@att.net', 'x.y@mba.berkeley.edu', 'testa@gmail.com', 'ab@gmail.com', 'notmailinator@gmail.com', 'me@mailinator.com.au']) {
+  for (const ok of ['jane@gmail.com', 'tom.p@att.net', 'x.y@mba.berkeley.edu', 'testa@gmail.com', 'ab@gmail.com', 'notmailinator@gmail.com', 'me@mailinator.com.au', 'aa@family.org']) {
     assert.equal(gate.isValidMoneyEmail(ok), true, ok);
   }
 });
@@ -298,6 +298,7 @@ test('mail-server check refuses only on positive DNS evidence, fails open otherw
     'att.net/MX': mx('att.net'),
     'a1a.com/MX': { Status: 0 }, 'a1a.com/A': { Status: 0 },
     'noaddr.test/MX': { Status: 0 }, 'noaddr.test/A': { Status: 0 },
+    'v6.test/MX': { Status: 0 }, 'v6.test/A': { Status: 0 }, 'v6.test/AAAA': { Status: 0, Answer: [{ type: 28, data: '::1' }] },
     'implicit.test/MX': { Status: 0 }, 'implicit.test/A': { Status: 0, Answer: [{ type: 1, data: '1.2.3.4' }] },
     'gone.test/MX': { Status: 3 },
     'nullmx.test/MX': { Status: 0, Answer: [{ type: 15, data: '0 .' }] },
@@ -308,6 +309,7 @@ test('mail-server check refuses only on positive DNS evidence, fails open otherw
   const run = (e, ms) => me.checkMailServer(e, f, ms);
   assert.equal(await run('x@att.net'), 'ok');
   assert.equal(await run('x@noaddr.test'), 'no_mail_server');
+  assert.equal(await run('x@v6.test'), 'ok', 'AAAA-only host');
   assert.equal(await run('x@gone.test'), 'no_mail_server');
   assert.equal(await run('x@nullmx.test'), 'no_mail_server');
   assert.equal(await run('x@implicit.test'), 'ok', 'A record fallback');
@@ -353,7 +355,10 @@ test('the RPC mirrors the TypeScript disposable and junk rules (BRO-6339)', () =
   const arr = (name) => [...sql.match(new RegExp(`${name} TEXT\\[\\] := ARRAY\\[(.*?)\\];`))[1].matchAll(/'([^']+)'/g)].map((m) => m[1]);
   assert.deepEqual(arr('v_disposable'), [...me.DISPOSABLE_DOMAINS]);
   assert.deepEqual(arr('v_junk'), [...me.JUNK_LOCAL_PARTS]);
-  assert.match(sql, /v_local ~ '\^\(\.\)\\1\*\$'/, 'repeated-character rule');
+  assert.match(sql, /v_local ~ '\^\(\.\)\(\\1\\1\+\)\?\$'/, 'repeated-character rule');
+  assert.match(sql, /regexp_replace\(substring\(v_email from '@\(\[\^@\]\*\)\$'\), '\\\.\$', ''\)/, 'trailing dot stripped like the browser');
+  assert.match(read('vercel.json'), /connect-src[^"]*https:\/\/dns\.google/, 'CSP allows the MX lookup host');
+  assert.match(read('src/components/biz/MoneyGate.tsx'), /setKeepMine\(email\.trim\(\)\); \/\/ offered once/, 'suggestion is offered once');
   assert.match(sql, /split_part\(split_part\(v_email, '@', 1\), '\+', 1\)/, '+tag stripped like the browser');
   assert.match(sql, /v_domain = d OR v_domain LIKE '%\.' \|\| d/, 'subdomains of a disposable domain');
   assert.match(sql, /v_email !~ '\^\[\^@\\s\]\+@\[\^@\\s\]\+\\\.\[\^@\\s\]\+\$'/, 'format check kept');

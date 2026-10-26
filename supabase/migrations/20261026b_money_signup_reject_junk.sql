@@ -30,13 +30,13 @@ BEGIN
     RAISE EXCEPTION 'invalid email' USING ERRCODE = '22023';
   END IF;
   v_local := split_part(split_part(v_email, '@', 1), '+', 1);
-  v_domain := substring(v_email from '@([^@]*)$');
+  v_domain := regexp_replace(substring(v_email from '@([^@]*)$'), '\.$', '');
   -- Disposable domain (or a subdomain of one).
   IF EXISTS (SELECT 1 FROM unnest(v_disposable) d WHERE v_domain = d OR v_domain LIKE '%.' || d) THEN
     RAISE EXCEPTION 'invalid email' USING ERRCODE = '22023';
   END IF;
-  -- Junk local part: a listed placeholder, or one character repeated (a@, aaaa@).
-  IF v_local = ANY (v_junk) OR v_local ~ '^(.)\1*$' THEN
+  -- Junk local part: a listed placeholder, or one character repeated 3+ times (a@, aaa@).
+  IF v_local = ANY (v_junk) OR v_local ~ '^(.)(\1\1+)?$' THEN
     RAISE EXCEPTION 'invalid email' USING ERRCODE = '22023';
   END IF;
   IF v_role IS NOT NULL AND v_role NOT IN ('producer', 'investor', 'industry', 'press', 'fan') THEN

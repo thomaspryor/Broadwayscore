@@ -200,6 +200,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
   const [suggestion, setSuggestion] = useState<string | null>(null);
   const [keepMine, setKeepMine] = useState('');
   const id = useId();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
@@ -213,6 +214,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
     }
     const fix = email.trim() === keepMine ? null : suggestMoneyEmail(email);
     if (fix) {
+      setKeepMine(email.trim()); // offered once: pressing Unlock again goes ahead
       setSuggestion(fix);
       return;
     }
@@ -254,6 +256,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         <label htmlFor={`${id}-email`} className="sr-only">Email address</label>
         <div className="flex flex-col gap-2 sm:flex-row">
           <input
+            ref={inputRef}
             id={`${id}-email`}
             type="email"
             inputMode="email"
@@ -305,14 +308,14 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
             <span className="flex gap-2">
               <button
                 type="button"
-                onClick={() => { setEmail(suggestion); setSuggestion(null); }}
+                onClick={() => { setEmail(suggestion); setSuggestion(null); inputRef.current?.focus(); }}
                 className="min-h-[36px] rounded-full border border-brand bg-brand/10 px-3 font-medium text-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 Use it
               </button>
               <button
                 type="button"
-                onClick={() => { setKeepMine(email.trim()); setSuggestion(null); }}
+                onClick={() => { setKeepMine(email.trim()); setSuggestion(null); inputRef.current?.focus(); }}
                 className="min-h-[36px] rounded-full border border-white/10 bg-white/5 px-3 font-medium text-gray-300 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
               >
                 Keep mine

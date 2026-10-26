@@ -37,15 +37,16 @@ export const JUNK_LOCAL_PARTS = [
   '123', '1234', '12345', '123456',
 ] as const;
 
-/** One character, or one character repeated (a@, aaaa@): mirrored in SQL as '^(.)\1*$'. */
-const REPEATED_CHAR = /^(.)\1*$/;
+/** One character, or one character repeated 3+ times (a@, aaa@; not aa@): mirrored in SQL as '^(.)(\1\1+)?$'. */
+const REPEATED_CHAR = /^(.)(\1\1+)?$/;
 
 export type MoneyEmailProblem = 'format' | 'disposable' | 'junk';
 
 function splitEmail(email: string): { local: string; domain: string } {
   const e = email.trim().toLowerCase();
   const at = e.lastIndexOf('@');
-  return { local: e.slice(0, at), domain: e.slice(at + 1) };
+  // One trailing dot is the same domain (mailinator.com.).
+  return { local: e.slice(0, at), domain: e.slice(at + 1).replace(/\.$/, '') };
 }
 
 export function isDisposableDomain(domain: string): boolean {
@@ -105,13 +106,14 @@ export const DOH_TIMEOUT_MS = 3000;
 const DNS_NOERROR = 0;
 const DNS_NXDOMAIN = 3;
 const TYPE_A = 1;
+const TYPE_AAAA = 28;
 const TYPE_MX = 15;
 
 type FetchLike = (url: string, init?: { signal?: AbortSignal }) => Promise<{ ok: boolean; json(): Promise<unknown> }>;
 
 interface DohAnswer { Status?: number; Answer?: Array<{ type: number; data?: string }> }
 
-async function doh(fetchImpl: FetchLike, domain: string, type: 'MX' | 'A', timeoutMs: number): Promise<DohAnswer | null> {
+async function doh(fetchImpl: FetchLike, domain: string, type: 'MX' | 'A' | 'AAAA', timeoutMs: number): Promise<DohAnswer | null> {
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), timeoutMs);
   try {
@@ -158,5 +160,9 @@ export async function checkMailServer(
   if (!a) return 'ok';
   if (a.Status === DNS_NXDOMAIN) return 'no_mail_server';
   if (a.Status !== DNS_NOERROR) return 'ok';
-  return (a.Answer ?? []).some((r) => r.type === TYPE_A) ? 'ok' : 'no_mail_server';
+  if ((a.Answer ?? []).some((r) => r.type === TYPE_A)) return 'ok';
+  // IPv6-only hosts are still hosts: refuse only when AAAA is empty too.
+  const v6 = await doh(fetchImpl, domain, 'AAAA', timeoutMs);
+  if (!v6 || v6.Status !== DNS_NOERROR) return v6 && v6.Status === DNS_NXDOMAIN ? 'no_mail_server' : 'ok';
+  return (v6.Answer ?? []).some((r) => r.type === TYPE_AAAA) ? 'ok' : 'no_mail_server';
 }
