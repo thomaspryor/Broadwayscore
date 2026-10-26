@@ -306,3 +306,35 @@ test('lane-runner: a restarted lane skips what already reached scored (ledger) o
     assert.ok(keys.length >= 20);
   } finally { s.cleanup(); }
 });
+
+// BRO-6276: a fresh pass whose only change is `at` keeps the committed file, so the per-push rehearsal stops
+// committing to main.
+test('recordRehearsal skips a timestamp-only rewrite while the record is fresh', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'reh-quiet-'));
+  const file = path.join(dir, 'rec.json');
+  const pass = { pass: true, verdict: { checked: 3, failures: [] } };
+  const t0 = Date.parse('2026-10-26T00:00:00Z');
+  try {
+    rh.recordRehearsal(file, pass, { at: t0, laneHash: 'h1' });
+    const first = fs.readFileSync(file, 'utf8');
+    const kept = rh.recordRehearsal(file, pass, { at: t0 + 3600e3, laneHash: 'h1' });
+    assert.equal(fs.readFileSync(file, 'utf8'), first, 'unchanged pass under 24h leaves the file alone');
+    assert.equal(kept.at, new Date(t0).toISOString());
+    rh.recordRehearsal(file, pass, { at: t0 + 2 * 3600e3, laneHash: 'h2' });
+    assert.equal(rh.readRehearsalRecord(file).laneHash, 'h2', 'new lane code rewrites');
+    rh.recordRehearsal(file, { pass: false, verdict: { checked: 3, failures: ['x'] } }, { at: t0 + 3 * 3600e3, laneHash: 'h2' });
+    assert.equal(rh.readRehearsalRecord(file).pass, false, 'a failure after a pass rewrites');
+    rh.recordRehearsal(file, pass, { at: t0 + 4 * 3600e3, laneHash: 'h2' });
+    rh.recordRehearsal(file, pass, { at: t0 + 4 * 3600e3 + rh.REHEARSAL_REFRESH_MS, laneHash: 'h2' });
+    assert.equal(Date.parse(rh.readRehearsalRecord(file).at), t0 + 4 * 3600e3 + rh.REHEARSAL_REFRESH_MS, 'a day-old record refreshes');
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('shouldRewriteRehearsalRecord handles missing, unreadable and future records', () => {
+  const rec = { at: '2026-10-26T00:00:00.000Z', pass: true };
+  const now = Date.parse('2026-10-26T01:00:00Z');
+  assert.equal(rh.shouldRewriteRehearsalRecord(null, rec, { now }), true);
+  assert.equal(rh.shouldRewriteRehearsalRecord({ at: 'garbage', pass: true }, rec, { now }), true);
+  assert.equal(rh.shouldRewriteRehearsalRecord({ at: '2026-10-27T00:00:00Z', pass: true }, rec, { now }), true);
+  assert.equal(rh.shouldRewriteRehearsalRecord({ at: '2026-10-25T23:00:00Z', pass: true }, rec, { now }), false);
+});
