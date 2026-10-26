@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T19:20:26.995Z",
+  "generatedAt": "2026-10-26T21:05:15.737Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -138,10 +138,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "musical-theatre-review",
-      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -154,8 +150,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 679,
-  "matchedGaps": 2,
+  "itemsScanned": 689,
+  "matchedGaps": 3,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -174,6 +170,15 @@
       "outletId": "this-week-in-new-york",
       "url": "https://twi-ny.com/2026/10/26/phyl-cicely-hamilton-mint-theater/",
       "headline": "SICK OF THE PROPER ATTITUDE: THE MINT’S PHYL AT THEATRE ROW",
+      "publishDate": "2026-10-26"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "adventuresintheatreland",
+      "url": "https://www.adventuresintheatreland.com/post/the-pianist-park-theatre",
+      "headline": "The Pianist | Park Theatre",
       "publishDate": "2026-10-26"
     },
     {
