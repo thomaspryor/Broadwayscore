@@ -9,6 +9,7 @@
 import { gaEvent } from '@/lib/analytics/ga-event';
 import { captureEvent } from '@/lib/posthog-events';
 
+const SEND_WAIT_MS = 400;
 const USER = 'tom';
 const DOMAIN = ['broadwayscorecard', 'com'];
 
@@ -20,9 +21,19 @@ export default function EmailTomLink({ className, label = 'Email Tom' }: { class
       onClick={(e) => {
         e.preventDefault();
         const path = window.location.pathname;
-        gaEvent('email_tom_click', { page_path: path });
+        const href = `mailto:${USER}@${DOMAIN.join('.')}?subject=${encodeURIComponent('Broadway Scorecard')}`;
+        // Starting the mailto navigation cancels a hit still in flight (seen in
+        // GA realtime, BRO-6331): open the mail app once gtag confirms the
+        // send, or after SEND_WAIT_MS if it never does (GA blocked or unloaded).
+        let opened = false;
+        const open = () => {
+          if (opened) return;
+          opened = true;
+          window.location.href = href;
+        };
+        gaEvent('email_tom_click', { page_path: path, transport_type: 'beacon', event_callback: open, event_timeout: SEND_WAIT_MS });
         captureEvent('email_tom_click', { path });
-        window.location.href = `mailto:${USER}@${DOMAIN.join('.')}?subject=${encodeURIComponent('Broadway Scorecard')}`;
+        setTimeout(open, SEND_WAIT_MS);
       }}
     >
       {label}
