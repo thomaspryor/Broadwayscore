@@ -45,9 +45,13 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page.getByRole('button', { name: /CSV/i })).toHaveCount(0);
   });
 
-  test('back link returns to homepage', async ({ page }) => {
-    await page.click('text=All Shows');
-    await expect(page).toHaveURL('/');
+  // BRO-6286: the "All Shows" back link gave way to a stat strip; site nav covers home.
+  test('hero stat strip shows three non-zero numbers', async ({ page }) => {
+    const values = page.locator('[data-testid="biz-hero-stats"] dd');
+    await expect(values).toHaveCount(3);
+    for (const text of await values.allTextContents()) {
+      expect(text).toMatch(/^\$?[1-9][\d,.]*[MB]?$/);
+    }
   });
 
   // Skipped 2026-05-22: /biz dashboard was simplified — no designation legend

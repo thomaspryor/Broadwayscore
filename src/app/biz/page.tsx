@@ -24,6 +24,7 @@ import {
   getSeasonComparison,
   getSeasonProfiles,
   getRecoupFindings,
+  getCommercialHeadlineStats,
 } from '@/lib/data-commercial';
 import { getAllShows } from '@/lib/data-core';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
@@ -54,24 +55,32 @@ import ShareButton from '@/components/biz/ShareButton';
 import { getMarketDate } from '@/lib/date-utils';
 
 const OG_ALT = 'Broadway Money Scorecard: who made money on Broadway, and who lost it';
+const PAGE_TITLE = 'Broadway Money Scorecard: Who Recouped and Who Lost Money';
+
+// Headline numbers for the hero and the meta description (BRO-6286).
+function formatBillions(n: number): string {
+  return n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : `$${Math.round(n / 1e6)}M`;
+}
+
+const HERO = getCommercialHeadlineStats();
 const OG_DESCRIPTION =
-  'Who made money on Broadway, and who lost it. Every commercial show sorted from Miracle to Flop, with capitalization, weekly running costs and recoupment, estimated from SEC filings and trade press.';
+  `Which Broadway shows paid back their investors, and which didn't. Capitalization, weekly running costs and recoupment for ${HERO.productions} commercial productions, from SEC filings, trade press and weekly box office grosses.`;
 
 export const metadata: Metadata = {
-  title: { absolute: 'Broadway Money Scorecard' },
+  title: { absolute: PAGE_TITLE },
   description: OG_DESCRIPTION,
   alternates: {
     canonical: `${BASE_URL}/biz`,
   },
   openGraph: {
-    title: 'Broadway Money Scorecard',
+    title: PAGE_TITLE,
     description: OG_DESCRIPTION,
     url: `${BASE_URL}/biz`,
     images: [bizOgImage('home', OG_ALT)],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Broadway Money Scorecard',
+    title: PAGE_TITLE,
     description: OG_DESCRIPTION,
     images: [bizOgImage('home', OG_ALT)],
   },
@@ -235,60 +244,59 @@ export default function BizDashboard() {
           page-view wall; BRO-4623 P1-15) */}
       <BizPageTracker page="biz-dashboard" gate={false} />
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
-        {/* Back Link */}
-        <Link
-          href="/"
-          className="inline-flex items-center gap-1.5 text-brand hover:text-brand-hover text-sm font-medium mb-4"
-        >
-          <svg
-            className="w-4 h-4"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M15 19l-7-7 7-7"
-            />
-          </svg>
-          All Shows
-        </Link>
-
-        {/* Header */}
-        <div className="mb-8">
-          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-            <div>
-              <h1 className="text-3xl sm:text-4xl font-bold text-white">
-                Broadway Money Scorecard
-              </h1>
-              <p className="text-gray-400 mt-2">
-                Who made money on Broadway, and who lost it
-              </p>
-              <p className="text-sm text-gray-500 mt-1">
-                Capitalization and recoupment from SEC filings and trade press. Weekly
-                box office from The Broadway League, as published by Playbill and
-                BroadwayWorld. Recoupment estimates are our model.
-              </p>
-              {freshness.length > 0 && (
-                <p className="text-xs text-gray-500 mt-1" data-testid="biz-freshness">
-                  {freshness.join(' · ')}
-                </p>
-              )}
-              <p className="text-xs text-amber-500/70 mt-1">
-                {ESTIMATE_SOURCES_NOTE}{' '}
-                <Link href="/methodology#commercial" className="underline hover:text-amber-400">
-                  How we measure
-                </Link>
-              </p>
-            </div>
-            <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0 order-first self-end sm:order-none sm:self-start" />
+        {/* Header (BRO-6286): mirrors the /biz share card, eyebrow pill, the
+            tagline as the lead, then headline numbers and the fine print. */}
+        <header className="mb-10">
+          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
+            <span className="inline-flex items-center whitespace-nowrap rounded-full border border-brand/40 px-2.5 sm:px-3 py-1 text-xs font-semibold uppercase tracking-[0.08em] sm:tracking-[0.18em] text-brand">
+              The business of Broadway
+            </span>
+            <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0" />
             {/* JSON/CSV download buttons removed (owner decision, BRO-4721): they
                 only opened a waitlist and read as unfinished. GatedDownloadButtons
                 is kept for when downloads ship. */}
           </div>
-        </div>
+          <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
+            Broadway Money Scorecard
+          </h1>
+          <p className="text-xl sm:text-2xl text-gray-200 mt-3 font-medium">
+            Who made money on Broadway, and who lost it
+          </p>
+          <p className="text-base text-gray-400 mt-3 max-w-3xl">
+            Capitalization, weekly running costs and recoupment for every commercial Broadway
+            production we can document, built from SEC filings, trade press and The Broadway
+            League&apos;s weekly grosses.
+          </p>
+
+          <dl className="grid grid-cols-3 gap-3 sm:gap-4 mt-6 max-w-3xl" data-testid="biz-hero-stats">
+            {[
+              { value: HERO.productions.toLocaleString('en-US'), label: 'commercial productions tracked' },
+              { value: formatBillions(HERO.disclosedCapitalization), label: 'in disclosed capitalization' },
+              { value: HERO.recouped.toLocaleString('en-US'), label: 'recoupments on record' },
+            ].map((stat) => (
+              <div key={stat.label} className="card flex flex-col-reverse justify-end px-3 py-3 sm:px-5 sm:py-4">
+                <dt className="text-xs sm:text-sm text-gray-400 mt-0.5">{stat.label}</dt>
+                <dd className="text-2xl sm:text-3xl font-bold text-white tabular-nums">{stat.value}</dd>
+              </div>
+            ))}
+          </dl>
+
+          <div className="mt-5 space-y-1">
+            {freshness.length > 0 && (
+              <p className="text-xs text-gray-500" data-testid="biz-freshness">
+                {freshness.join(' · ')}
+              </p>
+            )}
+            <p className="text-xs text-gray-500">
+              League grosses as published by Playbill and BroadwayWorld. Recoupment estimates are
+              our model.{' '}
+              <Link href="/methodology#commercial" className="text-brand underline hover:text-brand-hover">
+                How we measure
+              </Link>
+            </p>
+            <p className="text-xs text-amber-500/70">{ESTIMATE_SOURCES_NOTE}</p>
+          </div>
+        </header>
 
         {/* This season vs last season and the 10-season average */}
         {currentComparison && (
