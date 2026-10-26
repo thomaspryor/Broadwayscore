@@ -9,6 +9,7 @@
  */
 
 const C = require('./config');
+const { foldDiacritics } = require('../lib/title-match');
 
 /** The set a show belongs to, or null for a category the system does not post. */
 function homeSet(show) {
@@ -25,13 +26,44 @@ function hasCrossMarketTransfer(show, shows) {
   return linked.some(o => homeSet(o) && homeSet(o) !== home);
 }
 
+/** Lower-case title without punctuation or a leading "The", to match one production across markets. */
+const titleKey = t => foldDiacritics(String(t || '')).toLowerCase().replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+const MAIN_STAGE = new Set(['broadway', 'west-end']);
+
+/** Names of a show's stage directors (creativeTeam roles like "Director", "Director & Choreographer"; not music or movement direction). */
+const directorsOf = show => new Set((show.creativeTeam || [])
+  .filter(c => /(^|[\s,&])(co-)?director\b/i.test(c.role || '') && !/music|movement|associate|assistant/i.test(c.role || ''))
+  .map(c => foldDiacritics(String(c.name || '')).toLowerCase().trim()).filter(Boolean));
+
 /**
- * High profile: a transfer to or from the other market, or HIGH_PROFILE.t1Reviews
- * tier-1 reviews. gate is the evaluateScoreConfidence result ({counts: {t1}}).
+ * True when a same-titled main-stage production in the other set opened within
+ * `years`. When both list directors and none is shared, they are rival productions
+ * of the same play (two Othellos), not one show crossing the Atlantic.
  */
-function isHighProfile(show, gate, shows, rule = C.HIGH_PROFILE) {
-  if (rule.transfer && hasCrossMarketTransfer(show, shows)) return true;
-  return !!(gate && gate.counts && gate.counts.t1 >= rule.t1Reviews);
+function hasCrossMarketTwin(show, shows, years) {
+  if (!MAIN_STAGE.has(show.category) || !show.openingDate || !Array.isArray(shows)) return false;
+  const at = Date.parse(show.openingDate);
+  const key = titleKey(show.title);
+  const mine = directorsOf(show);
+  return shows.some(o => {
+    if (o.id === show.id || !MAIN_STAGE.has(o.category) || homeSet(o) === homeSet(show) || !o.openingDate) return false;
+    if (titleKey(o.title) !== key || !(Math.abs(Date.parse(o.openingDate) - at) <= years * 365.25 * 864e5)) return false;
+    const theirs = directorsOf(o);
+    return !mine.size || !theirs.size || [...mine].some(n => theirs.has(n));
+  });
+}
+
+/**
+ * High profile in the other market (rule in config.js HIGH_PROFILE): reviewed by one
+ * of that market's critics, a same-titled production there, or a transfer link.
+ * showReviews: this show's reviews.json rows ({outletId}).
+ */
+function isHighProfile(show, showReviews, shows, rule = C.HIGH_PROFILE) {
+  const other = homeSet(show) === 'broadway' ? 'west-end' : 'broadway';
+  const press = new Set((rule.otherMarketPress || {})[other] || []);
+  if ((showReviews || []).some(r => press.has(r.outletId))) return true;
+  if (rule.sameTitleYears && hasCrossMarketTwin(show, shows, rule.sameTitleYears)) return true;
+  return !!(rule.transfer && hasCrossMarketTransfer(show, shows));
 }
 
 /**
@@ -42,13 +74,13 @@ function isHighProfile(show, gate, shows, rule = C.HIGH_PROFILE) {
  * A set counts as configured only when it has every network the Broadway set has, so
  * adding the accounts one at a time never moves shows onto fewer networks.
  */
-function targetSets(show, gate, sets = C.CHANNEL_SETS, shows = null) {
+function targetSets(show, showReviews, sets = C.CHANNEL_SETS, shows = null) {
   const home = homeSet(show);
   if (!home) return [];
   const configured = name => Object.keys(sets.broadway || {}).every(svc => (sets[name] || {})[svc]);
   if (!configured(home)) return ['broadway'];
   const other = home === 'broadway' ? 'west-end' : 'broadway';
-  return configured(other) && isHighProfile(show, gate, shows) ? [home, other] : [home];
+  return configured(other) && isHighProfile(show, showReviews, shows) ? [home, other] : [home];
 }
 
 /** Ledger/log key for a channel: the bare service for the Broadway set (history stays valid), service@set otherwise. */
@@ -73,4 +105,4 @@ function tagChannels(channels, sets = C.CHANNEL_SETS) {
   });
 }
 
-module.exports = { homeSet, isHighProfile, targetSets, channelKey, tagChannels, hasCrossMarketTransfer };
+module.exports = { homeSet, isHighProfile, targetSets, channelKey, tagChannels, hasCrossMarketTransfer, hasCrossMarketTwin, titleKey };

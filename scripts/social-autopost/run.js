@@ -555,7 +555,7 @@ async function main() {
         const card = await buildCard(desc, outDir, { requirePoster: live });
         console.log(`\n[autopost] ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
         console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
-        const route = targetSets(ev.show, ev.gate, CHANNEL_SETS, ctx.shows);
+        const route = targetSets(ev.show, ctx.reviewsByShow[ev.show.id], CHANNEL_SETS, ctx.shows);
         console.log(`  routing: ${ev.show.category} -> ${route.join(' + ')} channels${route.length > 1 ? ' (high profile, cross-posted)' : ''}`);
         if (!live) continue;
         const targets = channels.filter(c => route.includes(c.set));

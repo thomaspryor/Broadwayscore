@@ -42,11 +42,25 @@ const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers th
 const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
 
 // "High profile" rule for cross-posting to the OTHER market's accounts (BRO-6378;
-// proposal, the owner approves the numbers). Also the rule for the video lane (BRO-6250):
-// import isHighProfile from routing.js there. A show is high profile when it has a
-// transfer link to the other market (a Broadway show that came from / is going to
-// London, or the reverse), or its own run has this many tier-1 reviews.
-const HIGH_PROFILE = { t1Reviews: 8, transfer: true };
+// proposal, the owner approves it). Also the rule for the video lane (BRO-6250):
+// import isHighProfile from routing.js there. A show is high profile in the other
+// market when that market's own critics came to it (otherMarketPress, keyed by the
+// set it would cross-post TO), or the same show ran there on the main stage within
+// sameTitleYears, or it has a transfer link to a show in the other market.
+// Each market's own tier-1 count is no test: London's nationals review nearly every
+// West End opening (59 of 103 shows in the 16 months to 2026-10 had 8+ tier-1
+// reviews). Over the same months (shows with reviews) this rule picks 17 of 100 West
+// End, 2 of 208 Off-West End, 11 of 36 Broadway and 7 of 287 Off-Broadway shows
+// (mostly Met operas the UK papers covered, which SKIP_TYPES never posts), about 2 a
+// month. The UK lists include papers' New York critics: UK coverage is the signal.
+const HIGH_PROFILE = {
+  transfer: true,
+  otherMarketPress: {
+    broadway: ['nytimes', 'variety'],
+    'west-end': ['telegraph', 'times-uk', 'sunday-times', 'financialtimes', 'independent', 'thestage'],
+  },
+  sameTitleYears: 3,
+};
 
 // Score-post floors layered on the shared gate, which carries only the opening-night
 // email's Broadway and London floors. Off-Broadway: 3 tier-1 outlets marks a major
