@@ -209,3 +209,42 @@ test('Buffer metadata: Instagram and Facebook get the required post type', () =>
   assert.deepEqual(metadataFor('facebook'), { facebook: { type: 'post' } });
   assert.equal(metadataFor('bluesky'), undefined);
 });
+
+// ---- per-market channel routing (BRO-6378) ----
+const routing = require('./social-autopost/routing.js');
+const SETS_BOTH = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'w1' } };
+const gateT1 = t1 => ({ counts: { t1 } });
+
+test('routing: West End and Off-West End go to West End channels only, Broadway and Off-Broadway to Broadway only', () => {
+  for (const [category, want] of [['west-end', 'west-end'], ['off-west-end', 'west-end'], ['broadway', 'broadway'], ['off-broadway', 'broadway']]) {
+    assert.deepEqual(routing.targetSets(show({ category }), gateT1(3), SETS_BOTH, []), [want], category);
+  }
+});
+
+test('routing: a high-profile show (T1 count or cross-market transfer) also posts to the other market', () => {
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), gateT1(8), SETS_BOTH, []), ['west-end', 'broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'broadway' }), gateT1(7), SETS_BOTH, []), ['broadway']);
+  const lon = show({ id: 'lon', category: 'west-end' });
+  const nyc = show({ id: 'nyc', category: 'broadway', transferOf: 'lon' });
+  assert.deepEqual(routing.targetSets(nyc, gateT1(3), SETS_BOTH, [lon, nyc]), ['broadway', 'west-end']);
+  // a transfer within the same market (Off-Broadway -> Broadway) is not cross-market
+  const ob = show({ id: 'ob', category: 'off-broadway' });
+  assert.deepEqual(routing.targetSets(show({ id: 'bw', transferOf: 'ob' }), gateT1(3), SETS_BOTH, [ob]), ['broadway']);
+});
+
+test('routing: West End channels not configured yet -> unchanged behaviour (everything to Broadway)', () => {
+  const none = { broadway: { instagram: 'b1' }, 'west-end': {} };
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), gateT1(20), none, []), ['broadway']);
+  assert.deepEqual(routing.targetSets(show({ category: 'broadway' }), gateT1(20), none, []), ['broadway'], 'no cross-post to an unconfigured set');
+});
+
+test('routing: channels are tagged by set; the Broadway ledger key stays the bare service name', () => {
+  const tagged = routing.tagChannels([{ id: 'b1', service: 'instagram' }, { id: 'w1', service: 'instagram' }, { id: 'z', service: 'tiktok' }], SETS_BOTH);
+  assert.deepEqual(tagged.map(c => [c.set, c.key]), [['broadway', 'instagram'], ['west-end', 'instagram@west-end'], [null, null]]);
+});
+
+test('routing: the live config has Broadway channels and routes every eligible category somewhere', () => {
+  const C = require('./social-autopost/config.js');
+  assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
+  for (const cat of C.ELIGIBLE_CATEGORIES) assert.ok(routing.targetSets(show({ category: cat }), gateT1(0)).length >= 1, cat);
+});

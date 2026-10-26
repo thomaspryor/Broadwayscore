@@ -18,13 +18,35 @@ const MARKETS = {
 // The only Buffer channels this system posts to, by Buffer channel id (checked
 // 2026-10-25: all connected, Instagram is a Professional account). Anything else
 // the Buffer account can see, TikTok included, is left alone.
-const CHANNELS = {
-  instagram: '69adf7f67be9f8b171375290',
-  facebook: '69adfb857be9f8b171375c63',
-  twitter: '69adf9617be9f8b1713756d4',
-  threads: '69adf8167be9f8b1713752f6',
-  bluesky: '69adf8ac7be9f8b1713754bb',
+const CHANNEL_SETS = {
+  broadway: {
+    instagram: '69adf7f67be9f8b171375290',
+    facebook: '69adfb857be9f8b171375c63',
+    twitter: '69adf9617be9f8b1713756d4',
+    threads: '69adf8167be9f8b1713752f6',
+    bluesky: '69adf8ac7be9f8b1713754bb',
+  },
+  // West End Scorecard accounts (BRO-6378). Fill in the Buffer channel ids from
+  // `node scripts/social-autopost/run.js --list-channels` once the owner has
+  // connected them (guide: claude-outputs/west-end-social-accounts-guide.md).
+  // While this is empty, West End shows keep posting to the Broadway set
+  // (routing.js), so switching routing on is just adding ids here.
+  'west-end': {
+    // instagram: '', facebook: '', twitter: '', threads: '', bluesky: '',
+  },
 };
+const CHANNELS = CHANNEL_SETS.broadway; // the original set; kept for callers that predate per-market routing
+
+// Which channel set is a show's home. Broadway and Off-Broadway post to the Broadway
+// accounts, West End and Off-West End to the West End accounts.
+const MARKET_CHANNEL_SET = { broadway: 'broadway', 'off-broadway': 'broadway', 'west-end': 'west-end', 'off-west-end': 'west-end' };
+
+// "High profile" rule for cross-posting to the OTHER market's accounts (BRO-6378;
+// proposal, the owner approves the numbers). Also the rule for the video lane (BRO-6250):
+// import isHighProfile from routing.js there. A show is high profile when it has a
+// transfer link to the other market (a Broadway show that came from / is going to
+// London, or the reverse), or its own run has this many tier-1 reviews.
+const HIGH_PROFILE = { t1Reviews: 8, transfer: true };
 
 // Score-post floors layered on the shared gate, which carries only the opening-night
 // email's Broadway and London floors. Off-Broadway: 3 tier-1 outlets marks a major
@@ -46,7 +68,7 @@ const FIRST_RUN_FRESH_DAYS = 3; // first live run only: older shows are skipped 
 const STAGGER_MINUTES = 90; // gap between two posts
 
 module.exports = {
-  MARKETS, CHANNELS, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
+  MARKETS, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES,
 };

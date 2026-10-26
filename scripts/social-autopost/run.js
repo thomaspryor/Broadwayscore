@@ -27,7 +27,8 @@ const { findScoreEvents, scheduleEvents, splitBacklog } = require('./select');
 const { buildCaptions, postMarkers } = require('./captions');
 const { resolvePoster } = require('./art');
 const { renderCard, closeBrowser } = require('./render');
-const { CHANNELS } = require('./config');
+const { CHANNEL_SETS } = require('./config');
+const { targetSets, tagChannels, channelKey } = require('./routing');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const LEDGER_FILE = path.join(ROOT, 'data', 'social-autopost-ledger.json');
@@ -125,10 +126,10 @@ async function buildCard(desc, outDir) {
 }
 
 async function allowedChannels(buffer) {
-  const wanted = new Set(Object.values(CHANNELS));
-  const all = await buffer.listChannels();
-  const usable = all.filter(c => wanted.has(c.id) && c.network && !c.isQueuePaused && !c.isDisconnected && !c.isLocked);
-  const missing = Object.entries(CHANNELS).filter(([, id]) => !usable.some(c => c.id === id)).map(([svc]) => svc);
+  const all = tagChannels(await buffer.listChannels(), CHANNEL_SETS);
+  const usable = all.filter(c => c.set && c.network && !c.isQueuePaused && !c.isDisconnected && !c.isLocked);
+  const missing = Object.entries(CHANNEL_SETS).flatMap(([set, ids]) => Object.entries(ids)
+    .filter(([, id]) => !usable.some(c => c.id === id)).map(([svc]) => channelKey(set, svc)));
   return { usable, missing };
 }
 
@@ -184,12 +185,12 @@ async function retryFailedChannels(ledger, channels, buffer, now, summary) {
   let errors = 0;
   for (const entry of pendingRetries(ledger, now)) {
     const markers = postMarkers({ id: entry.showId, slug: entry.slug });
-    const tries = Object.keys(entry.pending).filter(service => channels.some(c => c.service === service));
+    const tries = Object.keys(entry.pending).filter(key => channels.some(c => c.key === key));
     if (!tries.length) continue; // the channel itself is down; allowedChannels() already reports it
     entry.attempts = (entry.attempts || 1) + 1;
-    for (const service of tries) {
+    for (const service of tries) { // `service` is the ledger key (routing.js channelKey)
       const text = entry.pending[service];
-      const ch = channels.find(c => c.service === service);
+      const ch = channels.find(c => c.key === service);
       try {
         const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso: new Date(now - 4 * 864e5).toISOString() });
         const post = existing || await buffer.createImagePost({ channel: ch, text, imageUrl: entry.imageUrl, altText: entry.altText || '', dueAt: new Date(Math.max(Date.parse(entry.dueAt), now + 10 * 60e3)) });
@@ -239,8 +240,7 @@ async function main() {
 
   if (flag('list-channels')) {
     const buffer = require('./buffer');
-    const wanted = new Set(Object.values(CHANNELS));
-    for (const ch of await buffer.listChannels()) console.log(`${ch.service.padEnd(10)} ${wanted.has(ch.id) ? 'will post' : 'ignored  '} ${ch.isDisconnected ? '(DISCONNECTED) ' : ''}${ch.isLocked ? '(LOCKED) ' : ''}${ch.isQueuePaused ? '(queue paused) ' : ''}${ch.displayName || ch.name}  [${ch.id}]`);
+    for (const ch of tagChannels(await buffer.listChannels(), CHANNEL_SETS)) console.log(`${ch.service.padEnd(10)} ${ch.set ? `will post (${ch.set})`.padEnd(22) : 'ignored'.padEnd(22)} ${ch.isDisconnected ? '(DISCONNECTED) ' : ''}${ch.isLocked ? '(LOCKED) ' : ''}${ch.isQueuePaused ? '(queue paused) ' : ''}${ch.displayName || ch.name}  [${ch.id}]`);
     return;
   }
   if (process.env.SOCIAL_AUTOPOST_DISABLED === 'true' && !flag('cancel-queued')) {
@@ -355,22 +355,26 @@ async function main() {
         const card = await buildCard(desc, outDir);
         console.log(`\n[autopost] ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
         console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
+        const route = targetSets(ev.show, ev.gate, CHANNEL_SETS, ctx.shows);
+        console.log(`  routing: ${ev.show.category} -> ${route.join(' + ')} channels${route.length > 1 ? ' (high profile, cross-posted)' : ''}`);
         if (!live) continue;
+        const targets = channels.filter(c => route.includes(c.set));
+        if (!targets.length) throw new Error(`no usable channel in set(s) ${route.join(', ')}`);
 
         let imageUrl;
         try { imageUrl = await hostCard(card.path, ev.show, now); } catch (e) { throw new Error(`image hosting failed: ${e.message}`); }
         const markers = postMarkers(ev.show);
         const sinceIso = new Date(now - 4 * 864e5).toISOString();
         const posted = {}, errors = {};
-        for (const ch of channels) {
+        for (const ch of targets) {
           try {
             const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso });
             const post = existing || await buffer.createImagePost({ channel: ch, text: captions[ch.network], imageUrl, altText: captions.altText, dueAt: ev.dueAt });
-            posted[ch.service] = { postId: post.id };
-            console.log(`  ${existing ? '=' : '✓'} ${ch.service} ${existing ? 'already in Buffer' : 'scheduled'} (${post.id})`);
+            posted[ch.key] = { postId: post.id };
+            console.log(`  ${existing ? '=' : '✓'} ${ch.key} ${existing ? 'already in Buffer' : 'scheduled'} (${post.id})`);
           } catch (e) {
-            errors[ch.service] = e.message.slice(0, 300);
-            console.log(`::error::${ev.show.id} on ${ch.service}: ${e.message}`);
+            errors[ch.key] = e.message.slice(0, 300);
+            console.log(`::error::${ev.show.id} on ${ch.key}: ${e.message}`);
           }
         }
         if (!Object.keys(posted).length) { failed++; if (!Object.values(errors).some(outage)) recordFailure(ev.show.id, Object.values(errors)[0]); continue; } // nothing went out: the next run tries again
@@ -383,7 +387,7 @@ async function main() {
           // Retried by retryFailedChannels() on later runs with these exact texts, so
           // every network carries the same numbers.
           entry.errors = errors;
-          entry.pending = Object.fromEntries(channels.filter(c => errors[c.service]).map(c => [c.service, captions[c.network]]));
+          entry.pending = Object.fromEntries(targets.filter(c => errors[c.key]).map(c => [c.key, captions[c.network]]));
           entry.altText = captions.altText;
           entry.attempts = 1;
           problems.push(`${ev.show.id}: failed on ${Object.keys(errors).join(', ')} (will retry)`);
