@@ -2874,6 +2874,8 @@ on:
       # in the lib-test glob; path-listed so a solo edit triggers CI
       # (feedback_test_yml_push_path_allowlist).
       - 'scripts/audit-dispatch-dead-rate.js'
+      - 'scripts/audit-lane-trouble-rate.js'
+      - 'scripts/audit-lane-trouble-rate.test.mjs'
       # Dispatch ownership watchdog (card #1102, owner escalation 2026-08-06):
       # the crowned 👑 OWNER tab that owns dispatched-work outcomes. Tests are
       # in scripts/tests/ (registered in tests/unit-test-manifest.txt — that
