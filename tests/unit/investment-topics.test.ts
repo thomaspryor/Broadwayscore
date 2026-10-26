@@ -61,7 +61,12 @@ test('musicalKind: jukebox tag is pop-catalog, a revival stays a revival', () =>
 
 test('outcomeOf: recouped, lost, running, unknown', () => {
   assert.equal(outcomeOf({ status: 'open', commercial: { recouped: true, designation: 'Windfall' } }), 'recouped');
-  for (const d of ['Flop', 'Fizzle', 'Did Not Recoup']) assert.equal(outcomeOf({ status: 'closed', commercial: { designation: d } }), 'lost');
+  for (const d of ['Flop', 'Fizzle', 'Did Not Recoup']) {
+    assert.equal(outcomeOf({ status: 'closed', commercial: { designation: d, recouped: false } }), 'lost');
+    assert.equal(outcomeOf({ status: 'closed', commercial: { designation: d, designationBasis: 'reported-loss' } }), 'lost');
+    // BRO-6354: a loss label resting only on our model is no verdict.
+    assert.equal(outcomeOf({ status: 'closed', commercial: { designation: d, designationBasis: 'model-estimate', recouped: null } }), 'unknown');
+  }
   assert.equal(outcomeOf({ status: 'open', commercial: { designation: 'TBD' } }), 'running');
   assert.equal(outcomeOf({ status: 'closed', commercial: { designation: 'TBD' } }), 'unknown');
 });

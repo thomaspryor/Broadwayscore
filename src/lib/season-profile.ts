@@ -7,7 +7,7 @@
 // commercial.json rows; tests/unit/season-profile.test.ts calls it with
 // fixtures.
 
-import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
+import { getSeason, hasKnownRecoupOutcome, isExcludedFromSeasonStats } from './commercial-metrics';
 import { ownReturnedRangePct } from '../../scripts/lib/commercial-designations';
 import { sourceOpensAsEstimate } from '../../scripts/lib/public-source-text';
 import { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization } from '../../scripts/lib/cap-comparables';
@@ -35,6 +35,8 @@ export interface SeasonShowInput {
     weeklyCost?: number | null;
     recouped?: boolean | null;
     designation?: string | null;
+    /** Why a loss label was given; 'model-estimate' alone is not a known outcome (hasKnownOutcome). */
+    designationBasis?: string | null;
     sources?: unknown[] | null;
     productionType?: string | null;
     /** Producing nonprofit (Roundabout, MTC, LCT...), also set on enhancement and converted runs. */
@@ -82,6 +84,12 @@ export interface SeasonProfile {
   nonprofit: number;
   /** Tracked productions with investors to repay: not a pure nonprofit run or tour stop (the recoupment and capital denominator). */
   commercial: number;
+  /**
+   * Commercial productions whose recoupment outcome is known (hasKnownOutcome):
+   * the recoupment rate's denominator. A closed show labelled only by our model
+   * is left out (BRO-6354).
+   */
+  outcomeKnown: number;
   recouped: number;
   capitalization: { all: MoneyAggregate; musical: MoneyAggregate; play: MoneyAggregate };
   /** Disclosed capitalizations plus an estimate for each commercial show with none (estimateCapitalization). */
@@ -89,7 +97,8 @@ export interface SeasonProfile {
   /**
    * The same per-show figures as estimatedCapital, split by outcome (owner,
    * 2026-10-26: the season page's only loss-side number was capital still at
-   * risk in running shows). Shows with no figure count in neither.
+   * risk in running shows). Shows with no figure, and closed shows with no
+   * known outcome (hasKnownOutcome), count in neither.
    */
   capitalByOutcome: { closedUnrecouped: number; closedUnrecoupedShows: number; running: number; runningShows: number };
   /** Our estimate of the money that has come back to investors (returnedCapitalShare), with a low-high band. */
@@ -166,7 +175,7 @@ function emptyProfile(season: string): SeasonProfile {
     musicalRevivals: 0, musicalRevivalKnown: 0,
     playRevivals: 0, playRevivalKnown: 0,
     openingDayOffsets: [],
-    tracked: 0, nonprofit: 0, commercial: 0, recouped: 0,
+    tracked: 0, nonprofit: 0, commercial: 0, outcomeKnown: 0, recouped: 0,
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
     estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
     capitalByOutcome: { closedUnrecouped: 0, closedUnrecoupedShows: 0, running: 0, runningShows: 0 },
@@ -239,6 +248,7 @@ export function returnedCapitalShare(
 
 interface RecordFacts {
   designation?: string | null;
+  designationBasis?: string | null;
   recouped?: boolean | null;
   capitalization?: number | null;
   sources?: unknown[] | null;
@@ -256,6 +266,16 @@ export function trackedRecord<C extends RecordFacts>(show: { status?: string | n
   const c = show.commercial;
   if (c && show.status === 'closed' && isResearchPlaceholder(c)) return null;
   return c;
+}
+
+/**
+ * The show counts in a recoupment rate's denominator: its outcome is on record
+ * (hasKnownRecoupOutcome), or it has not closed, so it has not recouped as of
+ * today. A closed show whose only label is our model's guess is an unknown
+ * outcome, not a failure to recoup (BRO-6354).
+ */
+export function hasKnownOutcome(show: { status?: string | null }, c: RecordFacts): boolean {
+  return show.status !== 'closed' || hasKnownRecoupOutcome(c);
 }
 
 function isResearchPlaceholder(c: RecordFacts): boolean {
@@ -317,6 +337,8 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     if (c.nonprofitOrg) p.nonprofit++;
     if (isExcludedFromSeasonStats(c)) continue;
     p.commercial++;
+    const known = hasKnownOutcome(show, c);
+    if (known) p.outcomeKnown++;
     if (c.recouped === true) p.recouped++;
     // Our own estimate of a show's budget is not a disclosed figure: it stays
     // out of the disclosed sums and averages, and fills the estimated total
@@ -344,7 +366,8 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
         p.estimatedCapital.estimated++;
       }
     }
-    if (showCap !== null && (c.recouped === true || show.status === 'closed' || show.status === 'open' || show.status === 'previews')) {
+    // A closed show with no known outcome stays out of the money back too, as it does the recoupment rate (BRO-6354).
+    if (showCap !== null && known && (c.recouped === true || show.status === 'closed' || show.status === 'open' || show.status === 'previews')) {
       p.returnedCapital.of++;
       const share = returnedCapitalShare(c, show.status);
       if (share) {
@@ -357,7 +380,7 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
       }
     }
     if (showCap !== null && c.recouped !== true) {
-      if (show.status === 'closed') {
+      if (show.status === 'closed' && known) {
         p.capitalByOutcome.closedUnrecouped += showCap;
         p.capitalByOutcome.closedUnrecoupedShows++;
       } else if (show.status === 'open' || show.status === 'previews') {
@@ -436,8 +459,8 @@ export interface HistoryAverage {
   playRevivals: number | null;
   /** Over averaged seasons we track well. */
   nonprofit: number | null;
-  /** Over settled seasons we track well (RECOUP_SETTLE_DAYS): mean recouped and commercial per season. */
-  recouped: { recouped: number; commercial: number; seasons: number } | null;
+  /** Over settled seasons we track well (RECOUP_SETTLE_DAYS): mean recouped and known-outcome shows per season. */
+  recouped: { recouped: number; outcomeKnown: number; seasons: number } | null;
   disclosedCapital: { avg: number | null; seasons: number };
   estimatedCapital: { avg: number | null; seasons: number };
 }
@@ -466,7 +489,7 @@ export function seasonHistoryAverage(profiles: SeasonProfile[], currentSeason: s
     recouped: settled.length
       ? {
         recouped: meanOf(settled.map((p) => p.recouped)) as number,
-        commercial: meanOf(settled.map((p) => p.commercial)) as number,
+        outcomeKnown: meanOf(settled.map((p) => p.outcomeKnown)) as number,
         seasons: settled.length,
       }
       : null,
@@ -554,6 +577,20 @@ function pctDetail(n: number, d: number): string | null {
   return d > 0 ? `${n} of ${d}` : null;
 }
 
+/** Some commercial shows closed with no known outcome and are left out of the recoupment rate. */
+export function hasUnknownOutcomes(p: SeasonProfile): boolean {
+  return p.outcomeKnown < p.commercial;
+}
+
+function withKnownNote(detail: string | null, unknown: boolean): string | null {
+  return detail && unknown ? `${detail} with a known outcome` : detail;
+}
+
+/** "8 of 26 with a known outcome" when closed shows with no known outcome are left out, else "8 of 26". */
+export function recoupDetail(p: SeasonProfile): string | null {
+  return withKnownNote(pctDetail(p.recouped, p.outcomeKnown), hasUnknownOutcomes(p));
+}
+
 /** "15.4 of 36.2": a pooled share's counts as per-season averages. */
 function avgCountDetail(ps: SeasonProfile[], num: (p: SeasonProfile) => number, den: (p: SeasonProfile) => number): string | null {
   if (!ps.length) return null;
@@ -583,6 +620,23 @@ export function seasonBaseline(profiles: SeasonProfile[], season: string): { bas
     last: withOpenings[0] ?? null,
     prev: withOpenings[1] ?? null,
   };
+}
+
+/**
+ * The Season by Season table's rows, newest first: the season under way and
+ * the seasons back to the oldest one in its BASELINE_SEASONS baseline, so the
+ * table shows every season the 10-season averages use. A fixed row count cut
+ * the oldest baseline season (2014-15) because pandemic seasons take rows
+ * without joining the baseline and 2020-21 has no row at all (BRO-6354).
+ */
+export function seasonHistoryRows(profiles: SeasonProfile[], currentSeason: string | null): SeasonProfile[] {
+  const sorted = [...profiles].sort((a, b) => b.season.localeCompare(a.season));
+  const visible = currentSeason ? sorted.filter((p) => p.season <= currentSeason) : sorted;
+  const top = visible[0];
+  if (!top) return [];
+  const { baseline } = seasonBaseline(visible, top.season);
+  const oldest = baseline[baseline.length - 1]?.season ?? top.season;
+  return visible.filter((p) => p.season >= oldest);
 }
 
 /**
@@ -736,11 +790,11 @@ export function compareSeason(profiles: SeasonProfile[], season: string, asOf: s
   rows.push({
     label: isSettled(cur) ? 'Commercial shows recouped' : 'Commercial shows recouped as of today',
     format: 'pct',
-    current: trackedOk || inProgress ? sampledShare(cur.recouped, cur.commercial) : null,
-    currentDetail: trackedOk || inProgress ? pctDetail(cur.recouped, cur.commercial) : null,
-    ...pair((q) => ({ v: q && hasTrackedCoverage(q) ? sampledShare(q.recouped, q.commercial) : null, d: q && hasTrackedCoverage(q) ? pctDetail(q.recouped, q.commercial) : null })),
-    avg: pooled(settled, (p) => p.recouped, (p) => p.commercial),
-    avgDetail: avgCountDetail(settled, (p) => p.recouped, (p) => p.commercial),
+    current: trackedOk || inProgress ? sampledShare(cur.recouped, cur.outcomeKnown) : null,
+    currentDetail: trackedOk || inProgress ? recoupDetail(cur) : null,
+    ...pair((q) => ({ v: q && hasTrackedCoverage(q) ? sampledShare(q.recouped, q.outcomeKnown) : null, d: q && hasTrackedCoverage(q) ? recoupDetail(q) : null })),
+    avg: pooled(settled, (p) => p.recouped, (p) => p.outcomeKnown),
+    avgDetail: withKnownNote(avgCountDetail(settled, (p) => p.recouped, (p) => p.outcomeKnown), settled.some(hasUnknownOutcomes)),
     avgSeasons: settled.length,
   });
 
@@ -893,7 +947,7 @@ export function buildRecoupFindings(shows: RecoupShowInput[], asOf: string): Rec
   for (const s of shows) {
     const season = getSeason(s.openingDate);
     const c = trackedRecord(s);
-    if (!season || !seasons.has(season) || !c || isExcludedFromSeasonStats(c)) continue;
+    if (!season || !seasons.has(season) || !c || isExcludedFromSeasonStats(c) || !hasKnownOutcome(s, c)) continue;
     const recouped = c.recouped === true;
     const b = buckets[`${s.type}|${s.isRevival === true}`];
     if (b && typeof s.isRevival === 'boolean') {

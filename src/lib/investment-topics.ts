@@ -9,7 +9,7 @@
 // many shows, so it sums only published figures): the only range shown is the analyst's, through
 // displaysAnalyst / analystRange (model-display-guard).
 
-import { calculateWeeksToRecoup, isExcludedFromSeasonStats } from './commercial-metrics';
+import { calculateWeeksToRecoup, hasKnownRecoupOutcome, isExcludedFromSeasonStats } from './commercial-metrics';
 import { isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { analystRange, displaysAnalyst } from '../../scripts/lib/model-display-guard';
 
@@ -22,6 +22,8 @@ export const BAND_LOW = 70;
 
 export interface TopicCommercial {
   designation?: string | null;
+  /** Why a loss label was given; 'model-estimate' alone is no verdict (outcomeOf). */
+  designationBasis?: string | null;
   productionType?: string | null;
   recouped?: boolean | null;
   /** YYYY-MM. */
@@ -100,11 +102,15 @@ export function musicalKind(s: Pick<TopicShowInput, 'isRevival' | 'tags'>): Musi
   return (s.tags ?? []).includes('jukebox') ? 'pop-catalog' : 'original';
 }
 
-/** Recouped, lost (Fizzle, Did Not Recoup, Flop), still running, or closed with no verdict. */
+/**
+ * Recouped, lost (Fizzle, Did Not Recoup, Flop), still running, or closed with
+ * no verdict. A loss label resting only on our model's estimate (recouped not
+ * set, no reported loss) is no verdict (BRO-6354).
+ */
 export function outcomeOf(s: Pick<TopicShowInput, 'status' | 'commercial'>): MusicalOutcome {
   const c = s.commercial;
   if (c?.recouped === true) return 'recouped';
-  if (c && isLossDesignation(c.designation)) return 'lost';
+  if (c && isLossDesignation(c.designation) && hasKnownRecoupOutcome(c)) return 'lost';
   return s.status === 'closed' ? 'unknown' : 'running';
 }
 

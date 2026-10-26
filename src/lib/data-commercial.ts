@@ -58,7 +58,7 @@ import {
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
-import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
+import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcome, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
@@ -339,6 +339,7 @@ export function getSeasonStats(season: string): SeasonStats {
   const allCaps: Array<number | null> = [];
   let recoupedCount = 0;
   let totalShows = 0;
+  let outcomeKnown = 0;
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find(s => s.slug === slug);
@@ -353,6 +354,8 @@ export function getSeasonStats(season: string): SeasonStats {
     if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
 
     totalShows++;
+    // A closed show labelled only by our model is an unknown outcome, out of the recoupment count (BRO-6354).
+    if (hasKnownOutcome(show, data)) outcomeKnown++;
     // Our own budget estimate counts as undisclosed here, as in getSeasonProfiles.
     const cap = isOwnEstimate(data) ? null : data.capitalization;
     allCaps.push(cap);
@@ -371,6 +374,7 @@ export function getSeasonStats(season: string): SeasonStats {
     totalCapital: summarizeCapital(allCaps),
     recoupedCount,
     totalShows,
+    outcomeKnown,
     recoupedShows: recoupedShowsList,
   };
 }

@@ -551,6 +551,8 @@ export interface SeasonStats {
   totalCapital: import('./commercial-metrics').CapitalSummary;
   recoupedCount: number;
   totalShows: number;
+  /** Commercial shows whose recoupment outcome is known (hasKnownOutcome): the recoupment count's denominator. */
+  outcomeKnown: number;
   recoupedShows: string[];
 }
 

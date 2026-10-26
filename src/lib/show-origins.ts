@@ -4,7 +4,7 @@
 // (written by scripts/classify-show-origins.js, whose lib holds the same codes).
 
 import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
-import { MIN_AVERAGE_SAMPLE, settledRecoupSeasons, trackedRecord, type RecoupShowInput } from './season-profile';
+import { MIN_AVERAGE_SAMPLE, hasKnownOutcome, settledRecoupSeasons, trackedRecord, type RecoupShowInput } from './season-profile';
 
 export type PathStage = 'regional-us' | 'off-broadway' | 'london' | 'international';
 export type SourceType = 'film' | 'tv' | 'book' | 'play' | 'music-catalog' | 'other' | 'original';
@@ -304,7 +304,8 @@ export function buildOriginFindings(
 
     const season = getSeason(s.openingDate);
     const c = trackedRecord(s);
-    if (!season || !settledSet.has(season) || !c || isExcludedFromSeasonStats(c)) continue;
+    // A closed show labelled only by our model has no known outcome (BRO-6354).
+    if (!season || !settledSet.has(season) || !c || isExcludedFromSeasonStats(c) || !hasKnownOutcome(s, c)) continue;
     const recouped = c.recouped === true;
     for (const row of [routeRecoup.find((r) => r.id === route)!, sourceRecoup.find((r) => r.id === src)!]) {
       for (const cell of [row.all, isMusical ? row.musicals : row.plays]) {
