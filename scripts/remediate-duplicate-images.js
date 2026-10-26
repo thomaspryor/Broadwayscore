@@ -35,6 +35,7 @@ const crypto = require('crypto');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { normalizeMezzTitle, buildMezzIndex } = require('./lib/image-source-match');
 
 const USAGE = `remediate-duplicate-images.js — Remediate duplicate cross-production images.
 
@@ -54,24 +55,6 @@ const ONE_SHOW = args.find(a => a.startsWith('--show='))?.split('=')[1] || null;
 
 // ---- Mezzanine matching (mirrors the fixed fetchFromMezzanine logic) ----
 
-function normalizeMezzTitle(s) {
-  return s.toLowerCase()
-    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
-    .replace(/\s+/g, ' ')
-    .replace(/^the\s+/, '')
-    .trim();
-}
-
-function buildMezzIndex(records) {
-  const byNormTitle = new Map();
-  for (const r of records) {
-    if (!r.name || !r.artUrl) continue;
-    const norm = normalizeMezzTitle(r.name);
-    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
-    byNormTitle.get(norm).push(r);
-  }
-  return byNormTitle;
-}
 
 function extractMezzYear(openedAt) {
   if (!openedAt) return 0;

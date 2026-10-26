@@ -38,7 +38,7 @@ const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
-const { pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
+const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, theatrEligible, isRejectedImage, thumbnailFallbackAction, ibdbEligible, venuesMatch, buildVenueCityIndex, keepExistingImage, fileSourceUrls, recordFileSources, recordedSourceFor, imagePathOwner } = require('./lib/image-source-match');
 const { isStrictGoogleShow, noArtOutcome, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 const { selectShowsToFetch, todaytixApiArtEligible } = require('./lib/image-fetch-selection');
 const { loadImageSources, saveImageSources } = require('./lib/image-sources-store');
@@ -487,24 +487,6 @@ const MEZZ_CACHE_MAX_AGE_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 let mezzanineCache = null; // Lazy-loaded: { byNormTitle: Map }
 
-function normalizeMezzTitle(s) {
-  return s.toLowerCase()
-    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
-    .replace(/\s+/g, ' ')
-    .replace(/^the\s+/, '')
-    .trim();
-}
-
-function buildMezzIndex(records) {
-  const byNormTitle = new Map();
-  for (const r of records) {
-    if (!r.name || !r.artUrl) continue;
-    const norm = normalizeMezzTitle(r.name);
-    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
-    byNormTitle.get(norm).push(r);
-  }
-  return byNormTitle;
-}
 
 async function loadMezzanineProductions() {
   if (mezzanineCache) return mezzanineCache;

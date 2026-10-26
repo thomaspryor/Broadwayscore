@@ -1,4 +1,6 @@
 name: Social Autopost
+# BRO-6368: a brief run is titled by its hash so scripts/cloud-dispatch.js finds it.
+run-name: ${{ inputs.brief && format('Social Autopost brief {0}', inputs.brief) || 'Social Autopost' }}
 
 # BRO-6242: the morning after a show's opening night (10:00 local), a Critic Score
 # card goes to Instagram, Facebook, X, Threads and Bluesky through Buffer
@@ -41,9 +43,19 @@ on:
         required: false
         type: boolean
         default: false
+      brief:
+        # BRO-6368: dispatched by scripts/social-autopost/brief.js --post after the owner
+        # approved the preview. Only the hash: run.js re-reads the stored manifest and
+        # re-checks every fact before posting.
+        description: 'Post an approved brief (its 12-character hash from brief.js)'
+        required: false
+        type: string
+        default: ''
 
 # One writer for data/social-autopost-ledger.json. Runs take a few minutes and the
-# cron is hourly, so a static group never queues more than one run.
+# cron is hourly. A brief run (BRO-6368) can queue next to an hourly one; GitHub
+# keeps one pending run per group, so a brief run also does the hourly work and
+# brief.js re-dispatches a brief run that was cancelled while pending.
 concurrency:
   group: social-autopost
   cancel-in-progress: false
@@ -89,8 +101,13 @@ jobs:
           INPUT_SELF_TEST: ${{ inputs.self_test }}
           INPUT_CANCEL: ${{ inputs.cancel_queued }}
           INPUT_REDISPATCHED: ${{ inputs.redispatched }}
+          INPUT_BRIEF: ${{ inputs.brief }}
         run: |
-          if [ -n "$INPUT_SHOW" ] || [ "$INPUT_SELF_TEST" = "true" ]; then
+          if [ -n "$INPUT_BRIEF" ]; then
+            [[ "$INPUT_BRIEF" =~ ^[0-9a-f]{12}$ ]] || { echo "::error::brief must be a 12-character hash"; exit 1; }
+            # A brief run also does the hourly work (it may have replaced a pending hourly run).
+            node scripts/social-autopost/run.js --check "--brief=$INPUT_BRIEF"
+          elif [ -n "$INPUT_SHOW" ] || [ "$INPUT_SELF_TEST" = "true" ]; then
             printf 'due=1\nrender=1\n' >> "$GITHUB_OUTPUT"
           elif [ "$INPUT_CANCEL" = "true" ]; then
             printf 'due=1\nrender=0\n' >> "$GITHUB_OUTPUT"
@@ -109,9 +126,11 @@ jobs:
           INPUT_DRY_RUN: ${{ inputs.dry_run }}
           INPUT_SELF_TEST: ${{ inputs.self_test }}
           INPUT_CANCEL: ${{ inputs.cancel_queued }}
+          INPUT_BRIEF: ${{ inputs.brief }}
         run: |
           ARGS=(--out=/tmp/social-autopost)
-          if [ "$INPUT_CANCEL" = "true" ]; then ARGS=(--cancel-queued)
+          if [ -n "$INPUT_BRIEF" ]; then ARGS+=("--brief=$INPUT_BRIEF")
+          elif [ "$INPUT_CANCEL" = "true" ]; then ARGS=(--cancel-queued)
           elif [ "$INPUT_SELF_TEST" = "true" ]; then ARGS+=(--self-test)
           elif [ -n "$INPUT_SHOW" ]; then ARGS+=(--dry-run "--show=$INPUT_SHOW")
           elif [ "$INPUT_DRY_RUN" = "true" ]; then ARGS+=(--dry-run)

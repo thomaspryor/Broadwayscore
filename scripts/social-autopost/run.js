@@ -11,24 +11,26 @@
  *   node scripts/social-autopost/run.js --list-channels  # which Buffer channels it would use
  *   node scripts/social-autopost/run.js --self-test      # draft post on every channel, then delete it
  *   node scripts/social-autopost/run.js --cancel-queued  # delete every not-yet-sent post it created
+ *   node scripts/social-autopost/run.js --brief=HASH     # post an approved brief (BRO-6368, from brief.js --post)
  *
  * Options: --now=ISO (pretend time), --out=DIR (where cards are written).
  * Env: BUFFER_API_KEY, NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, GEMINI_API_KEY
  *      (art check), SOCIAL_AUTOPOST_DISABLED=true (kill switch), SOCIAL_CHROMIUM_PATH.
  * State: data/social-autopost-ledger.json, written by this script only (one workflow,
- * one concurrency group), one entry per show.
+ * one concurrency group), one entry per show score post and one per brief post.
  */
 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('../lib/score-tiers');
-const { findScoreEvents, scheduleEvents, splitBacklog } = require('./select');
-const { buildCaptions, postMarkers } = require('./captions');
+const { findScoreEvents, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel } = require('./captions');
 const { resolvePoster } = require('./art');
 const { renderCard, closeBrowser } = require('./render');
-const { CHANNEL_SETS } = require('./config');
+const { CHANNEL_SETS, MARKETS, SCORE_LOOKBACK_DAYS } = require('./config');
 const { targetSets, tagChannels, channelKey } = require('./routing');
+const briefs = require('./briefs');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const LEDGER_FILE = path.join(ROOT, 'data', 'social-autopost-ledger.json');
@@ -38,6 +40,7 @@ const MAX_SHOW_ATTEMPTS = 3; // a show that fails on every network (or will not 
 const RETRY_WINDOW_MS = 12 * 36e5; // a failed network is retried until 12h after the post's slot
 const VERIFY_AFTER_MS = 30 * 60e3; // read a post's outcome back 30 min after it was due
 const VERIFY_WINDOW_MS = 3 * 864e5;
+const BRIEF_QUOTA_MARGIN = 10; // Buffer requests kept back for the hourly run and retries
 
 const args = process.argv.slice(2);
 const arg = name => { const a = args.find(x => x.startsWith(`--${name}=`)); return a ? a.slice(name.length + 3) : null; };
@@ -149,6 +152,23 @@ async function allowedChannels(buffer) {
   return { usable, missing };
 }
 
+/**
+ * The usable channels a brief posts to: the newer production's home set (routing.js;
+ * Broadway until that market's accounts are configured). Never cross-posted.
+ */
+function briefChannels(channels, newer) {
+  const route = targetSets(newer, null, CHANNEL_SETS);
+  return channels.filter(c => route.includes(c.set));
+}
+
+/** How a ledger entry is named in messages: the show id, or brief:<hash>. */
+const entryName = p => p.showId || p.id;
+
+/** Dedupe markers for a ledger entry's captions (captions.js). */
+function entryMarkers(p) {
+  return p.type === 'brief' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
+}
+
 /** Ledger entries with networks still owed a post (an earlier run's channel error). */
 function pendingRetries(ledger, now) {
   return (ledger.posts || []).filter(p => p.pending && Object.keys(p.pending).length
@@ -161,7 +181,7 @@ function abandonRetries(ledger, now) {
   const owed = new Set(pendingRetries(ledger, now));
   for (const p of ledger.posts || []) {
     if (!p.pending || !Object.keys(p.pending).length || owed.has(p)) continue;
-    problems.push(`${p.showId}: gave up on ${Object.keys(p.pending).join(', ')} after ${p.attempts || 1} attempt(s); post it by hand in Buffer if wanted`);
+    problems.push(`${entryName(p)}: gave up on ${Object.keys(p.pending).join(', ')} after ${p.attempts || 1} attempt(s); post it by hand in Buffer if wanted`);
     p.abandoned = Object.keys(p.pending);
     delete p.pending;
     delete p.altText;
@@ -186,12 +206,12 @@ async function verifySent(ledger, buffer, now) {
   for (const { entry, service, c } of postsToVerify(ledger, now)) {
     try {
       const post = await buffer.getPost(c.postId);
-      if (!post) { c.result = 'missing'; problems.push(`${entry.showId} on ${service}: post ${c.postId} no longer exists in Buffer`); continue; }
+      if (!post) { c.result = 'missing'; problems.push(`${entryName(entry)} on ${service}: post ${c.postId} no longer exists in Buffer`); continue; }
       if (post.status === 'sent') { c.result = 'sent'; c.link = post.externalLink || null; continue; }
-      if (post.status === 'error') { c.result = 'error'; problems.push(`${entry.showId} on ${service}: ${post.error && post.error.message || 'publishing failed'}`); continue; }
-      if (now - Date.parse(entry.dueAt) > 3 * 36e5) { c.result = post.status; problems.push(`${entry.showId} on ${service}: still '${post.status}' 3h after it was due`); }
+      if (post.status === 'error') { c.result = 'error'; problems.push(`${entryName(entry)} on ${service}: ${post.error && post.error.message || 'publishing failed'}`); continue; }
+      if (now - Date.parse(entry.dueAt) > 3 * 36e5) { c.result = post.status; problems.push(`${entryName(entry)} on ${service}: still '${post.status}' 3h after it was due`); }
     } catch (e) {
-      problems.push(`${entry.showId} on ${service}: could not read back (${e.message.slice(0, 120)})`);
+      problems.push(`${entryName(entry)} on ${service}: could not read back (${e.message.slice(0, 120)})`);
     }
   }
   return problems;
@@ -200,7 +220,7 @@ async function verifySent(ledger, buffer, now) {
 async function retryFailedChannels(ledger, channels, buffer, now, summary) {
   let errors = 0;
   for (const entry of pendingRetries(ledger, now)) {
-    const markers = postMarkers({ id: entry.showId, slug: entry.slug });
+    const markers = entryMarkers(entry);
     const tries = Object.keys(entry.pending).filter(key => channels.some(c => c.key === key));
     if (!tries.length) continue; // the channel itself is down; allowedChannels() already reports it
     entry.attempts = (entry.attempts || 1) + 1;
@@ -213,11 +233,11 @@ async function retryFailedChannels(ledger, channels, buffer, now, summary) {
         entry.channels[service] = { postId: post.id };
         delete entry.pending[service];
         delete entry.errors[service];
-        summary.push(`| ${entry.title || entry.showId} (retry) | ${entry.dueAt} | ${service} | - |`);
+        summary.push(`| ${entry.title || entryName(entry)} (retry) | ${entry.dueAt} | ${service} | - |`);
       } catch (e) {
         errors++;
         entry.errors[service] = e.message.slice(0, 300);
-        console.log(`::error::retry ${entry.showId} on ${service} (attempt ${entry.attempts}/${MAX_CHANNEL_ATTEMPTS}): ${e.message}`);
+        console.log(`::error::retry ${entryName(entry)} on ${service} (attempt ${entry.attempts}/${MAX_CHANNEL_ATTEMPTS}): ${e.message}`);
       }
     }
     if (!Object.keys(entry.pending).length) { delete entry.pending; delete entry.altText; }
@@ -234,6 +254,136 @@ async function hostCard(cardPath, show, now) {
   // Content-addressed: a re-render never replaces the image under a scheduled post.
   const hash = crypto.createHash('sha1').update(jpeg.buffer).digest('hex').slice(0, 10);
   return hostImage(jpeg.buffer, `${new Date(now).toISOString().slice(0, 7)}/${show.id}-${hash}.jpg`);
+}
+
+/**
+ * Create one post on every channel, or adopt the one an earlier run already made
+ * (matched by `markers`). One channel's failure does not stop the others.
+ * Returns {posted: {service: {postId}}, errors: {service: message}}.
+ */
+async function publishEvent({ channels, buffer, captions, imageUrl, markers, dueAt, label, now }) {
+  const sinceIso = new Date(now - 4 * 864e5).toISOString();
+  const posted = {}, errors = {};
+  for (const ch of channels) {
+    try {
+      const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso });
+      const post = existing || await buffer.createImagePost({ channel: ch, text: captions[ch.network], imageUrl, altText: captions.altText, dueAt });
+      posted[ch.key] = { postId: post.id };
+      console.log(`  ${existing ? '=' : '✓'} ${ch.key} ${existing ? 'already in Buffer' : 'scheduled'} (${post.id})`);
+    } catch (e) {
+      errors[ch.key] = e.message.slice(0, 300);
+      console.log(`::error::${label} on ${ch.key}: ${e.message}`);
+    }
+  }
+  return { posted, errors };
+}
+
+/**
+ * Local days on which each show of a brief already has a post (cross-lane rule,
+ * buffer.js): every post in Buffer that links the show, on any of the channels, plus
+ * the day its score post is still owed (score posts win). Fails closed on a
+ * listing that errors or misses posts the ledger knows about.
+ */
+async function briefBusyDays({ shows, channels, buffer, ledger, now }) {
+  const startIso = new Date(now - 2 * 864e5).toISOString();
+  const endIso = new Date(now + 16 * 864e5).toISOString();
+  const lists = [];
+  for (const ch of channels) {
+    const posts = await buffer.listChannelPosts({ channel: ch, startIso, endIso });
+    const expected = (ledger.posts || []).filter(p => p.channels && p.channels[ch.key] && p.channels[ch.key].postId
+      && !['cancelled', 'missing', 'error'].includes(p.channels[ch.key].result)
+      && Date.parse(p.dueAt) >= Date.parse(startIso) && Date.parse(p.dueAt) <= Date.parse(endIso)).map(p => p.channels[ch.key].postId);
+    const problem = buffer.listingProblem(posts, expected);
+    if (problem) throw new Error(`Buffer ${ch.key}: ${problem}; not posting the brief (fail closed)`);
+    lists.push(...posts);
+  }
+  const done = new Set((ledger.posts || []).filter(p => p.showId).map(p => `${p.type || 'score'}:${p.showId}`));
+  return shows.map(show => {
+    const tz = MARKETS[show.category].tz;
+    const busy = buffer.busyDays(lists, { marker: pathMarker(show), tz });
+    // The ledger's own posts count too, so a partial listing cannot free a taken day.
+    for (const p of ledger.posts || []) {
+      const live = Object.values(p.channels || {}).some(c => c.postId && !['cancelled', 'missing', 'error'].includes(c.result));
+      if (live && p.dueAt && (p.showId === show.id || (p.showIds || []).includes(show.id))) busy.add(buffer.localDay(Date.parse(p.dueAt), tz));
+    }
+    if (isEligibleShow(show) && !done.has(`score:${show.id}`)) {
+      const slot = morningAfter(show);
+      if (slot > now - SCORE_LOOKBACK_DAYS * 864e5) busy.add(buffer.localDay(slot, tz));
+    }
+    return { id: show.id, tz, busy };
+  });
+}
+
+/** Buffer requests a brief needs: one listing page per channel, then an adopt check, a create and a read-back per target, plus a margin. */
+const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_MARGIN;
+
+/**
+ * Post an approved brief (brief.js --post dispatches the workflow with its hash).
+ * Refuses unless the stored manifest still hashes to `hash`, the owner's approval is
+ * stored, every fact is unchanged, the hook and numbers pass, and neither this
+ * brief nor the same pair (30 days) was posted before.
+ */
+async function runBrief(hash, { ctx, buffer, channels, now, summary, problems }) {
+  if (!briefs.HASH_RE.test(hash)) throw new Error(`--brief=${hash}: not a brief hash (12 hex characters)`);
+  const { getBriefFile } = require('./host');
+  const manifest = await getBriefFile(hash, 'manifest.json');
+  if (!manifest) throw new Error(`brief ${hash}: no manifest stored; run brief.js --preview first`);
+  if (briefs.hashManifest(manifest) !== hash) throw new Error(`brief ${hash}: the stored manifest no longer matches its hash; refusing`);
+  const approval = await getBriefFile(hash, 'approval.json');
+  if (!approval || !String(approval.words || '').trim()) throw new Error(`brief ${hash}: no owner approval stored; run brief.js --post=${hash} --approved="..."`);
+
+  const pair = briefs.pairKey(manifest.ids);
+  const { sameHash, samePair } = briefs.briefConflicts(ctx.ledger, { hash, pair }, now);
+  if (sameHash) { console.log(`[autopost] brief ${hash} already posted (due ${sameHash.dueAt}); nothing to do`); return; }
+  if (samePair) throw new Error(`brief ${hash}: ${pair} was already posted on ${samePair.dueAt} (brief ${samePair.hash}); one post per pair in ${briefs.PAIR_DEDUPE_DAYS} days`);
+
+  const shows = manifest.ids.map(id => ctx.shows.find(s => s.id === id));
+  if (shows.some(s => !s)) throw new Error(`brief ${hash}: a show in it is no longer in shows.json`);
+  const changed = briefs.factChanges(manifest.facts, briefs.factsOf(shows.map(show => describe(show, ctx))));
+  if (changed.length) throw new Error(`brief ${hash}: facts changed since the preview (${changed.join('; ')}); make a new preview`);
+  const hookProblem = validateHook(manifest.hook);
+  if (hookProblem) throw new Error(`brief ${hash}: ${hookProblem}`);
+  const allowed = briefs.allowedNumbers(shows, manifest.facts, manifest.delta);
+  for (const [net, text] of Object.entries(manifest.captions)) {
+    const stray = strayNumbers(text, allowed);
+    if (stray.length) throw new Error(`brief ${hash}: ${net} caption carries number(s) that are not facts: ${stray.join(', ')}`);
+  }
+  const newer = shows.find(s => s.id === manifest.newer);
+  if (!newer) throw new Error(`brief ${hash}: manifest names no newer production`);
+  const olderLabel = productionLabel(shows.find(s => s !== newer));
+
+  const targets = briefChannels(channels, newer);
+  if (!targets.length) throw new Error(`brief ${hash}: no usable channel for ${newer.category}`);
+  const notValidated = unvalidated(ctx.ledger, targets);
+  if (notValidated.length) throw new Error(`brief ${hash}: ${notValidated.map(c => c.key).join(', ')} never passed the Buffer self-test; run the workflow with self_test first`);
+
+  const quota = buffer.quotaProblem(buffer.rateLimit(), briefQuotaNeed(channels.length, targets.length));
+  if (quota) throw new Error(`brief ${hash}: ${quota}`);
+  const busy = await briefBusyDays({ shows, channels, buffer, ledger: ctx.ledger, now });
+  const taken = (ctx.ledger.posts || []).map(p => Date.parse(p.dueAt || '')).filter(Number.isFinite);
+  const t = briefs.pickBriefSlot({ now, tz: MARKETS[newer.category].tz, shows: busy, taken, inWindow, nextWindowSlot, zonedTime, localDay: buffer.localDay });
+  if (t == null) throw new Error(`brief ${hash}: no free day in the next ${briefs.MAX_SLOT_DAYS} days for ${shows.map(s => s.id).join(' and ')}`);
+  const dueAt = new Date(t);
+  console.log(`[autopost] brief ${hash} (${manifest.template}: ${pair}) goes out ${dueAt.toISOString()}; approved: "${approval.words}"`);
+
+  const { posted, errors } = await publishEvent({ channels: targets, buffer, captions: manifest.captions, imageUrl: manifest.imageUrl, markers: compareMarkers(newer, olderLabel), dueAt, label: `brief:${hash}`, now });
+  if (!Object.keys(posted).length) throw new Error(`brief ${hash}: failed on every network (${Object.values(errors)[0]})`);
+  const entry = {
+    type: 'brief', id: `brief:${hash}`, hash, template: manifest.template, pair, showIds: manifest.ids,
+    date: new Date(now).toISOString().slice(0, 10), slug: newer.slug || newer.id, olderLabel, title: newer.title, dueAt: dueAt.toISOString(),
+    imageUrl: manifest.imageUrl, text: manifest.captions.twitter, channels: posted,
+    approved: String(approval.words).slice(0, 300), approvedAt: approval.at || null,
+  };
+  if (Object.keys(errors).length) {
+    entry.errors = errors;
+    entry.pending = Object.fromEntries(targets.filter(c => errors[c.key]).map(c => [c.key, manifest.captions[c.network]]));
+    entry.altText = manifest.captions.altText;
+    entry.attempts = 1;
+    problems.push(`brief ${hash}: failed on ${Object.keys(errors).join(', ')} (will retry)`);
+  }
+  ctx.ledger.posts.push(entry);
+  writeLedger(ctx.ledger);
+  summary.push(`| ${newer.title} (brief ${hash}) | ${entry.dueAt} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
 }
 
 /**
@@ -259,6 +409,12 @@ async function selfTest(buffer, channels, outDir, ctx, now) {
   console.log(`[autopost] Buffer self-test passed on ${channels.map(c => c.key).join(', ')} (drafts created and deleted)`);
 }
 
+function writeSummary(summary) {
+  if (!summary.length || !process.env.GITHUB_STEP_SUMMARY) return;
+  fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, ['## Scheduled in Buffer', '', '| Show | Goes out (UTC) | Networks | Failed |', '|---|---|---|---|', ...summary,
+    '', 'Undo: run this workflow with cancel_queued, or delete the post in Buffer. Stop all posting: set the repository variable SOCIAL_AUTOPOST_DISABLED=true.', ''].join('\n'));
+}
+
 async function main() {
   const dryRun = flag('dry-run');
   const now = arg('now') ? Date.parse(arg('now')) : Date.now();
@@ -272,6 +428,7 @@ async function main() {
   }
   if (process.env.SOCIAL_AUTOPOST_DISABLED === 'true' && !flag('cancel-queued')) {
     if (flag('self-test')) throw new Error('self-test refused: SOCIAL_AUTOPOST_DISABLED is true');
+    if (arg('brief')) throw new Error('brief refused: SOCIAL_AUTOPOST_DISABLED is true');
     console.log('[autopost] disabled by SOCIAL_AUTOPOST_DISABLED');
     return;
   }
@@ -284,7 +441,7 @@ async function main() {
     const buffer = require('./buffer');
     let n = 0;
     for (const p of ctx.ledger.posts) {
-      if (p.pending) { p.abandoned = Object.keys(p.pending); delete p.pending; delete p.altText; console.log(`  stopped retries for ${p.showId} on ${p.abandoned.join(', ')}`); }
+      if (p.pending) { p.abandoned = Object.keys(p.pending); delete p.pending; delete p.altText; console.log(`  stopped retries for ${entryName(p)} on ${p.abandoned.join(', ')}`); }
       if (!p.channels || now - Date.parse(p.dueAt) > VERIFY_WINDOW_MS) continue;
       for (const [service, c] of Object.entries(p.channels)) {
         if (c.result || !c.postId) continue;
@@ -293,13 +450,18 @@ async function main() {
         if (post) await buffer.deletePost(c.postId);
         c.result = 'cancelled';
         n++;
-        console.log(`  cancelled ${p.showId} on ${service} (${c.postId})`);
+        console.log(`  cancelled ${entryName(p)} on ${service} (${c.postId})`);
       }
     }
     writeLedger(ctx.ledger);
     console.log(`[autopost] cancelled ${n} queued post(s)`);
     return;
   }
+
+  // A brief run also does the hourly work below: a brief queued in the concurrency
+  // group can replace a pending hourly run (GitHub keeps one pending run per group).
+  const brief = arg('brief');
+  if (brief && (dryRun || !configured || arg('show'))) throw new Error('--brief posts for real: it needs BUFFER_API_KEY, no --dry-run and no --show');
 
   let events;
   let backlogSkipped = [];
@@ -325,7 +487,7 @@ async function main() {
     // A cron-redispatch run stands in for a dropped scheduled run, so it is not manual.
     const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch' && process.env.INPUT_REDISPATCHED !== 'true';
     if (!configured) console.log('::notice::BUFFER_API_KEY not set: nothing will be posted');
-    const due = configured ? events.length + owed + toVerify + backlogSkipped.length : manual ? events.length : 0;
+    const due = configured ? events.length + owed + toVerify + backlogSkipped.length + (brief ? 1 : 0) : manual ? events.length : 0;
     if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${due ? events.length : 0}\n`);
     for (const ev of events) console.log(`  ${ev.show.id} due ${ev.dueAt.toISOString()}`);
     return;
@@ -352,6 +514,14 @@ async function main() {
     problems.push(...abandonRetries(ctx.ledger, now));
     writeLedger(ctx.ledger);
     if (await retryFailedChannels(ctx.ledger, channels, buffer, now, summary)) problems.push('a retried network failed again (see the log above)');
+    // A refused brief fails the run (the CLI reads that) but never holds up the score posts below.
+    if (brief) {
+      try {
+        await runBrief(brief, { ctx, buffer, channels, now, summary, problems });
+      } catch (e) {
+        problems.push(`brief ${brief} refused: ${e.message}`);
+      }
+    }
   }
 
   if (flag('self-test')) {
@@ -393,20 +563,7 @@ async function main() {
 
         let imageUrl;
         try { imageUrl = await hostCard(card.path, ev.show, now); } catch (e) { throw new Error(`image hosting failed: ${e.message}`); }
-        const markers = postMarkers(ev.show);
-        const sinceIso = new Date(now - 4 * 864e5).toISOString();
-        const posted = {}, errors = {};
-        for (const ch of targets) {
-          try {
-            const existing = await buffer.findExistingPost({ channel: ch, markers, sinceIso });
-            const post = existing || await buffer.createImagePost({ channel: ch, text: captions[ch.network], imageUrl, altText: captions.altText, dueAt: ev.dueAt });
-            posted[ch.key] = { postId: post.id };
-            console.log(`  ${existing ? '=' : '✓'} ${ch.key} ${existing ? 'already in Buffer' : 'scheduled'} (${post.id})`);
-          } catch (e) {
-            errors[ch.key] = e.message.slice(0, 300);
-            console.log(`::error::${ev.show.id} on ${ch.key}: ${e.message}`);
-          }
-        }
+        const { posted, errors } = await publishEvent({ channels: targets, buffer, captions, imageUrl, markers: postMarkers(ev.show), dueAt: ev.dueAt, label: ev.show.id, now });
         if (!Object.keys(posted).length) { failed++; if (!Object.values(errors).some(outage)) recordFailure(ev.show.id, Object.values(errors)[0]); continue; } // nothing went out: the next run tries again
         delete failures[ev.show.id];
         const entry = {
@@ -447,10 +604,7 @@ async function main() {
     await closeBrowser();
   }
 
-  if (summary.length && process.env.GITHUB_STEP_SUMMARY) {
-    fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, ['## Scheduled in Buffer', '', '| Show | Goes out (UTC) | Networks | Failed |', '|---|---|---|---|', ...summary,
-      '', 'Undo: run this workflow with cancel_queued, or delete the post in Buffer. Stop all posting: set the repository variable SOCIAL_AUTOPOST_DISABLED=true.', ''].join('\n'));
-  }
+  writeSummary(summary);
   // Every problem fails the job so notify-failure reaches the owner's digest; the
   // ledger already holds what did go out, so nothing is re-posted.
   if (failed) problems.push(`${failed} show(s) failed on every network`);
@@ -464,4 +618,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext };
+module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, LEDGER_FILE };

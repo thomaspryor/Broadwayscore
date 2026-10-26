@@ -225,6 +225,166 @@ test('Buffer metadata: Instagram and Facebook get the required post type', () =>
   assert.equal(metadataFor('bluesky'), undefined);
 });
 
+// ---------------------------------------------------------------------------
+// Brief posts (BRO-6368): compare template, approval hash, cross-lane rule.
+const briefs = require('./social-autopost/briefs.js');
+const cap = require('./social-autopost/captions.js');
+const bufferLib = require('./social-autopost/buffer.js');
+const { buildCompareHtml } = require('./social-autopost/render.js');
+const { publishEvent, entryMarkers } = require('./social-autopost/run.js');
+
+const NOW = Date.parse('2026-10-26T15:00:00Z');
+const london = show({ id: 'tc-west-end-2024', slug: 'tc-west-end-2024', title: 'The Curious Case', category: 'west-end', status: 'closed', openingDate: null, previewsStartDate: '2024-10-10' });
+const offb = show({ id: 'tc-off-broadway-2026', slug: 'tc-off-broadway', title: 'The Curious Case', category: 'off-broadway', openingDate: '2026-10-21' });
+const desc = (s, score, reviewCount) => ({ show: s, score, reviewCount, tierId: 'must-see' });
+const compare = (hook = '') => briefs.buildCompare({ descA: desc(london, 85, 26), descB: desc(offb, 77, 24), hook, now: NOW });
+
+test('compare: orders by date, states only the facts, "so far" for a new opening, both links, every limit', () => {
+  const c = compare();
+  assert.equal(c.older.show.id, london.id);
+  assert.equal(c.newer.show.id, offb.id);
+  assert.deepEqual(c.facts, { [london.id]: { score: 85, reviewCount: 26 }, [offb.id]: { score: 77, reviewCount: 24 } });
+  assert.equal(c.delta, 8);
+  for (const [net, text] of Object.entries(c.captions)) {
+    if (net === 'altText') continue;
+    assert.ok([...text].length <= LIMITS[net], `${net} over its limit`);
+    assert.ok(!/[—–]/.test(text), `${net} has a dash`);
+    assert.ok(!/transfer/i.test(text), `${net} says transfer`);
+    assert.match(text, /77 from 24 critics so far/);
+    assert.match(text, /85 from 26 critics(?! so far)/);
+    assert.ok(cap.compareMarkers(offb).every(m => m.test(text)), `${net} misses a compare marker`);
+    assert.ok(!cap.SCORE_SENTENCE.test(text), `${net} reuses the score-post sentence`);
+    assert.deepEqual(cap.strayNumbers(text, [85, 26, 77, 24, 8, 2024, 2026]), []);
+  }
+  assert.match(c.captions.facebook, /broadwayscorecard\.com\/show\/tc-off-broadway\?/);
+  assert.match(c.captions.facebook, /westendscorecard\.com\/show\/tc-west-end-2024\?/);
+  assert.match(c.captions.instagram, /was also reviewed in London/);
+  // A score post never matches a compare post's markers, and the reverse.
+  const score = buildCaptions({ show: offb, score: 77, reviewCount: 24, breakdown: { rave: 5, positive: 10, mixed: 5, negative: 4 } });
+  assert.ok(!cap.compareMarkers(offb).every(m => m.test(score.twitter)));
+});
+
+test('compare: refuses mismatched titles, same city, digits or links in the hook, stray numbers', () => {
+  assert.throws(() => briefs.orderCompare(london, { ...offb, title: 'Other' }), /same title/);
+  assert.throws(() => briefs.orderCompare(london, { ...offb, category: 'off-west-end' }), /one New York and one London/);
+  assert.throws(() => compare('Now 10 points higher'), /hook/);
+  assert.throws(() => compare('See https://x.com'), /hook/);
+  assert.throws(() => compare('It is better than London'), /hook/);
+  assert.equal(cap.validateHook('Two cities, one strange story.'), null);
+  assert.ok(compare('Two cities, one strange story.').captions.twitter.startsWith('Two cities'));
+  assert.deepEqual(cap.strayNumbers('Score 77 from 24, see broadwayscorecard.com/show/x-2026 #Theatre2026', [77, 24]), []);
+  assert.deepEqual(cap.strayNumbers('Score 78 from 24', [77, 24]), ['78']);
+});
+
+test('brief hash: stable across key order, changes with any fact; facts-changed lines', () => {
+  const m = { a: 1, b: { c: [1, 2], d: 'x' } };
+  assert.equal(briefs.hashManifest(m), briefs.hashManifest({ b: { d: 'x', c: [1, 2] }, a: 1 }));
+  assert.notEqual(briefs.hashManifest(m), briefs.hashManifest({ ...m, a: 2 }));
+  assert.match(briefs.hashManifest(m), briefs.HASH_RE);
+  const was = { a: { score: 77, reviewCount: 24 } };
+  assert.deepEqual(briefs.factChanges(was, { a: { score: 77, reviewCount: 24 } }), []);
+  assert.deepEqual(briefs.factChanges(was, { a: { score: 77, reviewCount: 25 } }), ['a: reviewCount was 24, is now 25']);
+  assert.equal(briefs.factChanges(was, {}).length, 1);
+});
+
+test('brief dedupe: same hash ever, same pair within 30 days', () => {
+  const pair = briefs.pairKey([offb.id, london.id]);
+  assert.equal(pair, briefs.pairKey([london.id, offb.id]));
+  const ledger = { posts: [{ type: 'brief', hash: 'aaaaaaaaaaaa', pair, dueAt: '2026-10-10T14:00:00Z' }] };
+  assert.ok(briefs.briefConflicts(ledger, { hash: 'aaaaaaaaaaaa', pair }, NOW).sameHash);
+  assert.ok(briefs.briefConflicts(ledger, { hash: 'bbbbbbbbbbbb', pair }, NOW).samePair);
+  assert.equal(briefs.briefConflicts(ledger, { hash: 'bbbbbbbbbbbb', pair }, NOW + 30 * 864e5).samePair, null);
+  assert.equal(briefs.briefConflicts(ledger, { hash: 'bbbbbbbbbbbb', pair: 'x+y' }, NOW).samePair, null);
+});
+
+test('cross-lane rule: busy days per show, failed posts ignored, an empty-but-expected listing fails closed', () => {
+  const tz = 'America/New_York';
+  const posts = [
+    { id: '1', text: 'x https://broadwayscorecard.com/show/tc-off-broadway?utm_source=x', status: 'sent', sentAt: '2026-10-26T14:00:00Z' },
+    { id: '2', text: 'x https://broadwayscorecard.com/show/tc-off-broadway?utm_source=x', status: 'error', dueAt: '2026-10-27T14:00:00Z' },
+    { id: '3', text: 'x https://broadwayscorecard.com/show/tc-off-broadway-2?utm_source=x', status: 'scheduled', dueAt: '2026-10-28T14:00:00Z' },
+  ];
+  assert.deepEqual([...bufferLib.busyDays(posts, { marker: cap.pathMarker(offb), tz })], ['2026-10-26']);
+  assert.equal(bufferLib.listingProblem([], []), null);
+  assert.equal(bufferLib.listingProblem(posts, ['3']), null);
+  assert.match(bufferLib.listingProblem([], ['9']), /none of the 1/);
+});
+
+test('brief busy days: a ledger post the listing missed still blocks its day; a cancelled one does not', async () => {
+  const run = require('./social-autopost/run.js');
+  const ch = { service: 'bluesky', key: 'bluesky' };
+  const listed = { id: 'a', text: 'x', status: 'scheduled', dueAt: '2026-10-27T14:00:00Z' };
+  const fake = { ...bufferLib, listChannelPosts: async () => [listed] };
+  const entry = (id, showId, dueAt, result) => ({ showId, dueAt, channels: { bluesky: { postId: id, ...(result ? { result } : {}) } } });
+  const ledger = { posts: [entry('a', 'other', '2026-10-27T14:00:00Z'), entry('b', offb.id, '2026-10-29T14:00:00Z'), entry('c', offb.id, '2026-10-30T14:00:00Z', 'cancelled')] };
+  const [r] = await run.briefBusyDays({ shows: [offb], channels: [ch], buffer: fake, ledger, now: NOW });
+  assert.ok(r.busy.has('2026-10-29'));
+  assert.ok(!r.busy.has('2026-10-30'));
+});
+
+test('brief channels: the newer production\'s home set only, never cross-posted', () => {
+  const run = require('./social-autopost/run.js');
+  const C = require('./social-autopost/config.js');
+  const all = require('./social-autopost/routing.js').tagChannels([...Object.entries(C.CHANNEL_SETS.broadway).map(([service, id]) => ({ service, id })), { service: 'tiktok', id: 'not-ours' }], C.CHANNEL_SETS);
+  assert.deepEqual(run.briefChannels(all, offb).map(c => c.key).sort(), Object.keys(C.CHANNEL_SETS.broadway).sort());
+  // West End accounts not configured yet: a London-newer brief keeps to Broadway, like score posts.
+  assert.deepEqual(run.briefChannels(all, london).map(c => c.set), Object.keys(C.CHANNEL_SETS.broadway).map(() => 'broadway'));
+  assert.ok(run.briefChannels(all, offb).every(c => c.set === 'broadway'));
+});
+
+test('compare: digits in the title are allowed, an over-limit or em-dash caption is refused', () => {
+  const ny = show({ id: 's39-bway', slug: 's39-bway', title: 'The 39 Steps', category: 'broadway', openingDate: '2008-01-15' });
+  const ld = show({ id: 's39-we', slug: 's39-we', title: 'The 39 Steps', category: 'west-end', openingDate: '2024-06-01' });
+  const built = briefs.buildCompare({ descA: desc(ny, 70, 20), descB: desc(ld, 60, 15), now: NOW });
+  assert.match(built.captions.twitter, /39 Steps/);
+  assert.ok(briefs.allowedNumbers([ny, ld], built.facts, built.delta).includes('39'));
+  const dashed = show({ id: 'd-we', slug: 'd-we', title: 'A \u2014 B', category: 'west-end', openingDate: '2024-06-01' });
+  const dashedNy = show({ id: 'd-ny', slug: 'd-ny', title: 'A \u2014 B', category: 'broadway', openingDate: '2020-06-01' });
+  assert.throws(() => briefs.buildCompare({ descA: desc(dashedNy, 70, 20), descB: desc(dashed, 60, 15), now: NOW }), /em dash/);
+});
+
+test('brief slot: skips a busy local day for either show, keeps 90 min from other posts, null past MAX_SLOT_DAYS', () => {
+  const tz = 'America/New_York';
+  const args = { now: NOW, tz, inWindow: sel.inWindow, nextWindowSlot: sel.nextWindowSlot, zonedTime: sel.zonedTime, localDay: bufferLib.localDay };
+  const free = briefs.pickBriefSlot({ ...args, shows: [], taken: [] });
+  assert.ok(free >= NOW + 10 * 60e3 && sel.inWindow(free, tz));
+  const busy = briefs.pickBriefSlot({ ...args, shows: [{ tz: 'Europe/London', busy: new Set([bufferLib.localDay(free, 'Europe/London')]) }], taken: [] });
+  assert.notEqual(bufferLib.localDay(busy, 'Europe/London'), bufferLib.localDay(free, 'Europe/London'));
+  const spaced = briefs.pickBriefSlot({ ...args, shows: [], taken: [free] });
+  assert.ok(spaced - free >= 90 * 60e3);
+  const allBusy = new Set(Array.from({ length: briefs.MAX_SLOT_DAYS + 2 }, (_, i) => bufferLib.localDay(NOW + i * 864e5, tz)));
+  assert.equal(briefs.pickBriefSlot({ ...args, shows: [{ tz, busy: allBusy }], taken: [] }), null);
+});
+
+test('publishEvent: adopts an existing post, creates the rest, one failure does not stop the others', async () => {
+  const made = [];
+  const buffer = {
+    findExistingPost: async ({ channel }) => (channel.service === 'twitter' ? { id: 'old' } : null),
+    createImagePost: async ({ channel, text }) => { if (channel.service === 'bluesky') throw new Error('boom'); made.push([channel.service, text]); return { id: `new-${channel.service}` }; },
+  };
+  const channels = ['twitter', 'threads', 'bluesky'].map(s => ({ service: s, key: s, network: s }));
+  const captions = { twitter: 't', threads: 'th', bluesky: 'b', altText: 'a' };
+  const { posted, errors } = await publishEvent({ channels, buffer, captions, imageUrl: 'u', markers: [], dueAt: new Date(NOW), label: 'brief:x', now: NOW });
+  assert.deepEqual(posted, { twitter: { postId: 'old' }, threads: { postId: 'new-threads' } });
+  assert.deepEqual(Object.keys(errors), ['bluesky']);
+  assert.deepEqual(made, [['threads', 'th']]);
+  // Retries use the brief's own markers, not the score post's.
+  assert.ok(entryMarkers({ type: 'brief', slug: 'tc-off-broadway', category: 'off-broadway' }).length >= 1);
+});
+
+test('compare card HTML: both sides, crown only on gold, "so far", delta, escaped title', () => {
+  const html = buildCompareHtml({ title: 'A & B', market: 'off-broadway', delta: 8, sides: [
+    { market: 'west-end', label: 'London 2024', score: 85, tierId: 'must-see', reviewCount: 26, soFar: false, poster: null },
+    { market: 'off-broadway', label: 'Off-Broadway 2026', score: 77, tierId: 'recommended', reviewCount: 24, soFar: true, poster: null },
+  ] });
+  assert.match(html, /A &amp; B/);
+  assert.match(html, /London 2024/);
+  assert.match(html, /24 critics so far/);
+  assert.match(html, /26 critics</);
+  assert.match(html, /8 points apart/);
+  assert.equal((html.match(/fill="#FFD700"/g) || []).length, 1);
+});
+
 // ---- per-market channel routing (BRO-6378) ----
 const routing = require('./social-autopost/routing.js');
 const SETS_BOTH = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'w1' } };
@@ -285,4 +445,71 @@ test('self-test: channels added after go-live (West End) are unvalidated; legacy
   assert.deepEqual(unvalidated({ _meta: { bufferValidatedAt: 'x' } }, [...b, { id: 'w1' }]).map(c => c.id), ['w1']);
   assert.equal(unvalidated({ _meta: {} }, b).length, b.length);
   assert.equal(unvalidated({ _meta: { bufferValidatedAt: 'x', bufferValidatedChannels: ['w1'] } }, [{ id: 'w1' }]).length, 0);
+});
+
+// ---- brief follow-ups: quota guard, poster sources, URL escaping (BRO-6368) ----
+test('quota: reads the tightest Buffer rate limit and refuses a brief it cannot afford', () => {
+  const h = { ratelimit: '"100-in-15min"; r=99; t=900, "250-in-1day"; r=0; t=408', 'x-ratelimit-remaining': '0', 'x-ratelimit-reset': '1793051582' };
+  const rate = bufferLib.parseRateHeaders(k => h[k], NOW);
+  assert.equal(rate.remaining, 0);
+  assert.equal(rate.resetAt, NOW + 408e3);
+  const need = require('./social-autopost/run.js').briefQuotaNeed(5, 5);
+  assert.equal(need, 30);
+  assert.match(bufferLib.quotaProblem(rate, need), /0 request\(s\) left under its rate limit and this needs 30; .* retry after/);
+  assert.equal(bufferLib.quotaProblem({ remaining: 30, resetAt: null }, need), null);
+  assert.match(bufferLib.quotaProblem(null, need), /unknown/);
+  assert.deepEqual(bufferLib.parseRateHeaders(() => null), null);
+});
+
+test('quota: every Buffer answer updates the remaining quota (fake server via BUFFER_API_URL)', async () => {
+  const http = require('http');
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'application/json', 'X-Ratelimit-Remaining': '42', 'X-Ratelimit-Reset': '1793051582' });
+    res.end(JSON.stringify({ data: { account: { organizations: [] } } }));
+  });
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  const saved = { url: process.env.BUFFER_API_URL, key: process.env.BUFFER_API_KEY };
+  process.env.BUFFER_API_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.BUFFER_API_KEY = 'fake';
+  try {
+    await bufferLib.listChannels();
+    assert.deepEqual(bufferLib.rateLimit(), { remaining: 42, resetAt: 1793051582e3 });
+  } finally {
+    for (const [k, v] of [['BUFFER_API_URL', saved.url], ['BUFFER_API_KEY', saved.key]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+    await new Promise(r => server.close(r));
+  }
+});
+
+test('poster: the compare card accepts a narrower original (10% stretch at most); Mezzanine art is a candidate', () => {
+  const art = require('./social-autopost/art.js');
+  const { COMPARE_POSTER_PX } = require('./social-autopost/render.js');
+  assert.equal(art.minPosterWidth(COMPARE_POSTER_PX), 346);
+  assert.ok(art.minPosterWidth(COMPARE_POSTER_PX) * 1.1 >= COMPARE_POSTER_PX);
+  assert.ok(art.isUsablePoster({ width: 400, height: 631 }, art.minPosterWidth(COMPARE_POSTER_PX)));
+  assert.ok(!art.isUsablePoster({ width: 400, height: 631 }), 'the score card still needs 440');
+  assert.ok(!art.isUsablePoster({ width: 189, height: 267 }, art.minPosterWidth(COMPARE_POSTER_PX)));
+  const shows = require('../data/shows.json');
+  const all = shows.shows || shows;
+  const bb = all.find(s => s.id === 'the-curious-case-of-benjamin-button-west-end-2024');
+  if (bb) {
+    const urls = art.candidatesFor(bb, {}, all, { mezzanine: true }).map(c => c.url).filter(Boolean);
+    assert.ok(urls.some(u => /ambassadors/i.test(u)), `the Ambassadors Theatre art is a candidate: ${urls}`);
+    const rejected = { ...bb, rejectedImageUrls: urls };
+    assert.ok(!art.candidatesFor(bb, {}, all).some(c => c.url && /ambassadors/i.test(c.url)), 'score cards never use Mezzanine art');
+    assert.ok(!art.candidatesFor(rejected, {}, all, { mezzanine: true }).some(c => c.url && /ambassadors/i.test(c.url)), 'a rejected image is never a candidate');
+  }
+});
+
+test('compare: caption links carry raw ampersands, never HTML-escaped ones', () => {
+  for (const text of Object.values(compare().captions)) assert.ok(!/&amp;/.test(text));
+  assert.match(compare().captions.facebook, /\?utm_source=facebook&utm_medium=social&utm_campaign=brief/);
+});
+
+test('compare dedupe: a second pair with the same newer production never adopts the first pair\'s post', () => {
+  const cap = require('./social-autopost/captions.js');
+  const text = compare().captions.twitter;
+  const newer = offb;
+  assert.ok(cap.compareMarkers(newer, cap.productionLabel(london)).every(m => m.test(text)));
+  assert.ok(!cap.compareMarkers(newer, 'Broadway 2019').every(m => m.test(text)), 'another older production must not match');
+  assert.ok(cap.compareMarkers(newer).every(m => m.test(text)), 'ledger entries from before olderLabel still match');
 });

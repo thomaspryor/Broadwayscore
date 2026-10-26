@@ -22,6 +22,8 @@ const KNOWN_MATCH = {
   'execute-approved-fix.yml': (inputs) => inputs.issue_number && `execute-approved-fix ${inputs.issue_number} [${inputs.mode ? `${inputs.mode}]` : ''}`,
   // BRO-6266: the answer text stays out of the run title (the Actions page is readable).
   'record-owner-answer.yml': (inputs) => inputs.issue && `record-owner-answer ${inputs.issue} [`,
+  // BRO-6368: a brief post run is titled by its hash (fixed length, so no prefix clash).
+  'social-autopost.yml': (inputs) => inputs.brief && `Social Autopost brief ${inputs.brief}`,
 };
 
 function parseArgs(argv) {

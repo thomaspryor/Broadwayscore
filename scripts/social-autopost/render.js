@@ -21,6 +21,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const W = 1080;
 const H = 1350;
 const ZOOM = 2.5;
+const COMPARE_POSTER_W = 152; // CSS px before ZOOM; the poster's output width is COMPARE_POSTER_W * ZOOM
 
 // The site's badge classes, verbatim from src/app/globals.css (rule bodies only;
 // the gold shimmer animation is left out because a post is a still image).
@@ -141,13 +142,13 @@ const FIT_SCRIPT = `(() => {
     else if (lineCount() > lines) bad.push({ text: el.textContent.trim().slice(0, 60), reason: 'lines', size });
   }
   const frame = document.querySelector('[data-frame]');
-  // A two-line title needs ~30px more: shrink the poster (keeping 2:3), not the type.
-  const poster = document.querySelector('[data-poster]');
-  let pw = 184;
-  while (frame.scrollHeight > frame.clientHeight + 1 && pw > 148) {
+  // A two-line title needs ~30px more: shrink the poster(s) (keeping 2:3), not the type.
+  const posters = [...document.querySelectorAll('[data-poster]')];
+  const start = posters.length ? +(posters[0].dataset.w || 184) : 0;
+  let pw = start;
+  while (posters.length && frame.scrollHeight > frame.clientHeight + 1 && pw > start - 36) {
     pw -= 4;
-    poster.style.width = pw + 'px';
-    poster.style.height = Math.round(pw * 1.5) + 'px';
+    for (const poster of posters) { poster.style.width = pw + 'px'; poster.style.height = Math.round(pw * 1.5) + 'px'; }
   }
   if (frame.scrollHeight > frame.clientHeight + 1) bad.push({ reason: 'frame overflow', scrollHeight: frame.scrollHeight, clientHeight: frame.clientHeight });
   return bad;
@@ -163,12 +164,12 @@ async function closeBrowser() {
   if (browserPromise) { const b = await browserPromise; browserPromise = null; await b.close(); }
 }
 
-/** Render a card to a 1080x1350 PNG. Throws if any text still overflows after fitting. */
-async function renderCard(card, outPath) {
+/** Render card HTML to a 1080x1350 PNG. Throws if any text still overflows after fitting. */
+async function renderHtml(html, outPath) {
   const browser = await getBrowser();
   const page = await browser.newPage({ viewport: { width: W, height: H }, deviceScaleFactor: 1 });
   try {
-    await page.setContent(buildCardHtml(card), { waitUntil: 'load' });
+    await page.setContent(html, { waitUntil: 'load' });
     await page.evaluate(() => document.fonts.ready);
     const fontOk = await page.evaluate(() => document.fonts.check("800 40px 'InterCard'"));
     if (!fontOk) throw new Error('Inter did not load in the card page');
@@ -182,4 +183,66 @@ async function renderCard(card, outPath) {
   }
 }
 
-module.exports = { buildCardHtml, renderCard, closeBrowser, SITE_CSS, TIER, W, H };
+/** Render a score card (design D4). */
+async function renderCard(card, outPath) {
+  return renderHtml(buildCardHtml(card), outPath);
+}
+
+/**
+ * Compare card (BRO-6368): one title, two productions side by side, oldest on the
+ * left, each with its poster, the site's badge for its own market, its label
+ * ("London 2024") and review count. Same frame, fonts, badge classes and fitting
+ * as the score card.
+ * card: { title, market (wordmark: the newer production's market), delta,
+ *         sides: [{ market, label, score, tierId, reviewCount, soFar, poster: {dataUri} | null }, ...] }
+ */
+function buildCompareHtml(card) {
+  const m = MARKETS[card.market] || MARKETS.broadway;
+  const logo = dataUriFor(`public/brand-kit/logos/${m.logo}`, 'image/png');
+  const side = s => {
+    const sm = MARKETS[s.market] || MARKETS.broadway;
+    const tier = TIER[s.tierId] || TIER['worth-seeing'];
+    const crown = tier.crown
+      ? '<svg style="position:absolute;left:50%;transform:translateX(-50%);top:-7px;z-index:10" width="17" height="8" viewBox="0 0 24 14" aria-hidden="true"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg>'
+      : '';
+    const poster = s.poster && s.poster.dataUri
+      ? `<img src="${s.poster.dataUri}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`
+      : `<div style="width:100%;height:100%;box-sizing:border-box;padding:16px 12px 40px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;text-align:center;background:#1a1a24">
+           <span data-fit data-max="22" data-min="12" data-lines="6" style="font-weight:800;letter-spacing:-.025em;line-height:1.1;color:#ffffff;width:100%">${esc(card.title)}</span>
+         </div>`;
+    return `<div style="width:156px;display:flex;flex-direction:column;align-items:center">
+      <div data-poster data-w="${COMPARE_POSTER_W}" style="width:${COMPARE_POSTER_W}px;height:${COMPARE_POSTER_W * 1.5}px;flex-shrink:0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 25px 50px -12px rgba(0,0,0,.25)">${poster}</div>
+      <div style="margin-top:-34px;position:relative;z-index:2">${crown}
+        <div class="${tier.cls}" style="width:64px;height:64px;box-sizing:border-box;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:26px;line-height:32px;font-weight:700">${esc(s.score)}</div>
+      </div>
+      <span data-fit data-max="13" data-min="10" data-lines="1" style="margin-top:9px;width:100%;text-align:center;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:${sm.brand}">${esc(s.label)}</span>
+      <span style="margin-top:3px;font-size:12px;color:#9ca3af;white-space:nowrap">${esc(s.reviewCount)} critics${s.soFar ? ' so far' : ''}</span>
+    </div>`;
+  };
+  const delta = Number.isFinite(card.delta)
+    ? (card.delta === 0 ? 'The same score in both cities' : `${card.delta} point${card.delta === 1 ? '' : 's'} apart`)
+    : '';
+
+  return `<!doctype html><html><head><meta charset="utf-8"><style>
+${interFontCss()}
+*{margin:0;padding:0}
+html,body{width:${W}px;height:${H}px;background:#0f0f14;overflow:hidden}
+body{font-family:'InterCard',sans-serif;color:#ffffff;-webkit-font-smoothing:antialiased}
+${Object.entries(SITE_CSS).map(([k, v]) => `.${k}{${v}}`).join('\n')}
+</style></head><body>
+<div data-frame style="zoom:${ZOOM};width:432px;height:540px;box-sizing:border-box;padding:22px 24px;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden">
+  <img src="${logo}" alt="${esc(m.label)} Scorecard" style="height:21px;width:auto;display:block">
+  <span style="margin-top:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:${m.brand}">Reviewed in two cities</span>
+  <h1 data-fit data-max="24" data-min="16" data-lines="2" style="margin-top:8px;width:100%;line-height:1.25;font-weight:800;letter-spacing:-.025em;text-align:center">${esc(card.title)}</h1>
+  <div style="margin-top:14px;display:flex;gap:28px;justify-content:center">${card.sides.map(side).join('')}</div>
+  ${delta ? `<span style="margin-top:12px;font-size:13px;font-weight:600;color:#d1d5db">${esc(delta)}</span>` : ''}
+</div>
+</body></html>`;
+}
+
+/** Render a compare card to a 1080x1350 PNG. */
+async function renderCompareCard(card, outPath) {
+  return renderHtml(buildCompareHtml(card), outPath);
+}
+
+module.exports = { buildCardHtml, buildCompareHtml, renderCard, renderCompareCard, closeBrowser, SITE_CSS, TIER, W, H, COMPARE_POSTER_PX: COMPARE_POSTER_W * ZOOM };

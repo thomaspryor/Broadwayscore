@@ -300,7 +300,30 @@ function ibdbEligible(show) {
   return todaytixMarket(show) !== 'london';
 }
 
+/** Title key Mezzanine rows are matched on (one rule for every Mezzanine reader). */
+function normalizeMezzTitle(s) {
+  return s.toLowerCase()
+    .replace(/['\u2018\u2019\u201C\u201D!:,.;\-\u2013\u2014&+()]/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/^the\s+/, '')
+    .trim();
+}
+
+/** Mezzanine records with art, grouped by normalizeMezzTitle(name). */
+function buildMezzIndex(records) {
+  const byNormTitle = new Map();
+  for (const r of records) {
+    if (!r.name || !r.artUrl) continue;
+    const norm = normalizeMezzTitle(r.name);
+    if (!byNormTitle.has(norm)) byNormTitle.set(norm, []);
+    byNormTitle.get(norm).push(r);
+  }
+  return byNormTitle;
+}
+
 module.exports = {
+  normalizeMezzTitle,
+  buildMezzIndex,
   sourceBase,
   buildVenueCityIndex,
   normalizeVenueName,

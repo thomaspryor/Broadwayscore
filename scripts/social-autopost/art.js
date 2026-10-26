@@ -6,7 +6,10 @@
  * Contentful transform params stripped), measures it, and accepts it only when it
  * is a portrait poster at least MIN_POSTER_WIDTH wide (the card shows it 480 px wide).
  * When that file has none, TodayTix's own 480x720 poster for the show's todaytixId is
- * tried before the site's copy (many London and recent shows only have a small one).
+ * tried, then the Mezzanine art the site's image pipeline matches to this production
+ * (scripts/lib/image-source-match.js), then the site's copy (most London and older
+ * shows only have a small one). The minimum width follows how wide the layout shows
+ * the poster (minPosterWidth): never more than a 10% stretch.
  * A Gemini vision check (the site's own scripts/lib/verify-image.js) must also
  * confirm it belongs to this production. Otherwise the card uses a typographic poster.
  */
@@ -15,9 +18,14 @@ const fs = require('fs');
 const path = require('path');
 const { loadImageSources } = require('../lib/image-sources-store');
 const { foldDiacritics } = require('../lib/title-match');
+const { normalizeMezzTitle, buildMezzIndex, pickMezzanineCandidate, buildVenueCityIndex, normalizeVenueName, venuesMatch, isRejectedImage } = require('../lib/image-source-match');
 
 const ROOT = path.resolve(__dirname, '..', '..');
-const MIN_POSTER_WIDTH = 440; // shown at 480 px: at most a 9% stretch, invisible
+const MIN_POSTER_WIDTH = 440; // score card: shown at 480 px, at most a 9% stretch, invisible
+const MAX_STRETCH = 1.1;
+/** Narrowest original that a poster shown `displayPx` wide may use (no more than a 10% stretch). */
+const minPosterWidth = displayPx => Math.ceil(displayPx / MAX_STRETCH);
+const MEZZ_CACHE = path.join(ROOT, 'data', 'mezzanine-image-cache.json');
 const POSTER_RATIO = { min: 0.6, max: 0.72 }; // width / height; 2:3 is 0.667
 const FETCH_TIMEOUT_MS = 20000;
 
@@ -31,12 +39,34 @@ function originalUrl(url) {
   } catch { return null; }
 }
 
-/** Poster candidates, best first: the original source file, TodayTix, then the site's own copy. */
-function candidatesFor(show, sources) {
+let mezz = null;
+/** Mezzanine art for this production, chosen exactly as the site's image pipeline chooses it, or null. */
+function mezzanineArt(show, shows) {
+  if (!mezz) {
+    let records = [];
+    try { records = JSON.parse(fs.readFileSync(MEZZ_CACHE, 'utf8')).records || []; } catch { /* no cache: no candidate */ }
+    mezz = { byTitle: buildMezzIndex(records), venueCity: buildVenueCityIndex(shows || []) };
+  }
+  const { candidate } = pickMezzanineCandidate(show, mezz.byTitle.get(normalizeMezzTitle(show.title || '')), mezz.venueCity);
+  if (!candidate || isRejectedImage({ poster: candidate.artUrl }, show)) return null;
+  // A compare card sets both cities' art side by side and the two posters often look alike,
+  // so the art must come from this show's own theatre or a theatre known to be in its city.
+  const city = /west-end/.test(show.category) ? 'london' : 'nyc';
+  if (!venuesMatch(candidate.theater, show.venue) && mezz.venueCity.get(normalizeVenueName(candidate.theater)) !== city) return null;
+  return candidate.artUrl;
+}
+
+/**
+ * Poster candidates, best first: the original source file, TodayTix, Mezzanine (only when
+ * asked: brief cards, whose smaller poster slot its art fits), then the site's own copy.
+ */
+function candidatesFor(show, sources, shows, { mezzanine = false } = {}) {
   const src = sources[show.id] || {};
   const out = [];
   if (src.poster) out.push({ url: originalUrl(src.poster) });
   if (show.todaytixId) out.push({ todaytixId: show.todaytixId, title: show.title });
+  const art = mezzanine ? mezzanineArt(show, shows) : null;
+  if (art && !out.some(c => c.url === art)) out.push({ url: art });
   const local = show.images && show.images.poster;
   if (local && local.startsWith('/')) out.push({ file: path.join(ROOT, 'public', local) });
   return out;
@@ -77,10 +107,10 @@ async function loadBuffer(c) {
 }
 
 /** Pure: is a measured image usable as the card's poster? Exported for tests. */
-function isUsablePoster({ width, height }) {
+function isUsablePoster({ width, height }, minWidth = MIN_POSTER_WIDTH) {
   if (!width || !height) return false;
   const r = width / height;
-  return width >= MIN_POSTER_WIDTH && r >= POSTER_RATIO.min && r <= POSTER_RATIO.max;
+  return width >= minWidth && r >= POSTER_RATIO.min && r <= POSTER_RATIO.max;
 }
 
 /** Pure: verifyImage result -> {ok, reason}. Only a positive match passes. Exported for tests. */
@@ -106,16 +136,16 @@ async function checkArt(show, buf) {
  * {poster: false, reason}. The image is re-encoded as PNG at native size so the
  * renderer needs no network.
  */
-async function resolvePoster(show, { sources = loadImageSources(), check = checkArt } = {}) {
+async function resolvePoster(show, { sources = loadImageSources(), check = checkArt, minWidth = MIN_POSTER_WIDTH, shows = loadShows(), mezzanine = false } = {}) {
   const sharp = require('sharp');
   const reasons = [];
-  for (const c of candidatesFor(show, sources)) {
+  for (const c of candidatesFor(show, sources, shows, { mezzanine })) {
     const buf = await loadBuffer(c);
     const where = c.url || (c.file ? path.relative(ROOT, c.file) : `todaytix show ${c.todaytixId}`);
     if (!buf) { reasons.push(`${where}: not fetched`); continue; }
     let meta;
     try { meta = await sharp(buf).metadata(); } catch { reasons.push(`${where}: not an image`); continue; }
-    if (!isUsablePoster(meta)) { reasons.push(`${where}: ${meta.width}x${meta.height} too small or not a poster`); continue; }
+    if (!isUsablePoster(meta, minWidth)) { reasons.push(`${where}: ${meta.width}x${meta.height} too small or not a poster`); continue; }
     const png = await sharp(buf).rotate().png().toBuffer();
     const verdict = await check(show, png);
     if (!verdict.ok) { reasons.push(`${where}: art not confirmed (${verdict.reason})`); continue; }
@@ -124,4 +154,12 @@ async function resolvePoster(show, { sources = loadImageSources(), check = check
   return { poster: false, reason: reasons.join(' | ') || 'no poster on file' };
 }
 
-module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle, MIN_POSTER_WIDTH };
+let showsCache = null;
+function loadShows() {
+  if (!showsCache) {
+    try { const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8')); showsCache = raw.shows || raw; } catch { showsCache = []; }
+  }
+  return showsCache;
+}
+
+module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle, minPosterWidth, MIN_POSTER_WIDTH };

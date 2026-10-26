@@ -163,4 +163,4 @@ function splitBacklog(events, ledger, now) {
   return { post, skip };
 }
 
-module.exports = { findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

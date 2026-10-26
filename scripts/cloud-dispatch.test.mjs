@@ -16,6 +16,9 @@ test('cloud-dispatch: -f inputs, known run-name match, exit codes', () => {
   assert.deepEqual(o.inputs, { issue_number: 'bro-3-b', mode: 'apply' });
   assert.throws(() => parseArgs(['w.yml', '-f', 'novalue']));
   assert.equal(parseArgs(['w.yml']).match, null);
+  // BRO-6368: a brief run is found by its run-name; the plain hourly run has no match.
+  assert.equal(parseArgs(['social-autopost.yml', '-f', 'brief=0123456789ab', '--wait']).match, 'Social Autopost brief 0123456789ab');
+  assert.equal(parseArgs(['social-autopost.yml']).match, null);
 
   const log = console.log; const err = console.error; console.log = () => {}; console.error = () => {};
   try {

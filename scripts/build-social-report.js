@@ -132,7 +132,7 @@ async function main() {
   }
   fs.writeFileSync(out, `${JSON.stringify(report, null, 2)}\n`);
   const q = rateLimit();
-  if (q.remaining != null) console.log(`[social] Buffer quota left: ${q.remaining} calls (shared with the autopost job)`);
+  if (q && q.remaining != null) console.log(`[social] Buffer quota left: ${q.remaining} calls (shared with the autopost job)`);
   console.log(`[social] wrote ${out}`);
 }
 
