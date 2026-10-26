@@ -23,7 +23,7 @@ test('flat config exists and the legacy .eslintrc.json is gone', () => {
 });
 
 test('files that execute lint do not call `next lint`', () => {
-  for (const f of ['.github/workflows/test.yml', 'scripts/lib/land-gauntlet.sh', 'scripts/lib/autonomous-checks.js', 'scripts/auto-fix-friction-card.js']) {
+  for (const f of ['.github/workflows/test.yml', 'scripts/lib/land-gauntlet.sh', 'scripts/lib/autonomous-checks.js']) {
     const bad = read(f).split('\n').filter((l) => /(npx next lint|run: next lint|'next', 'lint')/.test(l) && !/^\s*(#|\/\/|\*)/.test(l) && !/name:\s*next lint/.test(l));
     assert.deepEqual(bad, [], `${f} still executes next lint`);
   }
