@@ -83,7 +83,9 @@ test('BRO-6111/6112: a plain comment that reads like an answer holds the email',
     'There are some things that only can be done on the mac. So we should keep it for cards/work that needs it, but default to the cloud']) {
     const h = hold(card({ comments: [[body, min(600)]] }));
     assert.equal(h && h.reason, 'maybe-answered', body);
-    assert.match(h.detail, /may already answer it/);
+    assert.match(h.detail, /may already answer it$/);
+    // The emailer's run log is public: the comment's words never go in the detail.
+    assert.ok(!h.detail.includes(body.slice(0, 12)) || body.length < 3, body);
   }
 });
 
@@ -94,7 +96,9 @@ test('session-style comments are not mistaken for an answer', () => {
     'ship-check: pass after fixes. 0 P0; 1 P1 fixed (syndication shield ignored primaries)', 'Raised to P2: 120 plans are pending or partial, not 4.',
     'Unparked: a worker can do this (retune or fix the outlier inputs); no owner call needed.', 'OWNER CORRECTION, 24 October: Tom says the Resend item is an error. Ignore it.',
     'Claimed then released unworked: the Claude lane hit its 4-card cap this firing.', 'Landed 2d219a8b783: codex-runner.yml scheduled runs now default to lane=gha',
-    'Codex runner was stopped at the 2-hour background limit before this card finished (no landing). Returned to Todo for the next run.']) {
+    'Codex runner was stopped at the 2-hour background limit before this card finished (no landing). Returned to Todo for the next run.',
+    // Sessions address the owner; that is not the owner's voice.
+    'Waiting on you to pick one of the options above.', 'Unblocked once you decide.', 'Can you look at this tomorrow?', 'Yes, the build is green now.']) {
     assert.equal(hold(card({ comments: [[body, min(600)]] })), null, body);
   }
 });
@@ -148,6 +152,9 @@ test('the recorder maps the choice to the card\'s own options and refuses the wr
   assert.match(resolveDecision(plain, 'a').error, /approve, reject, own/);
   assert.equal(resolveDecision(plain, 'approve').choiceKey, 'approve');
   assert.match(resolveDecision(card({ description: 'Nothing to decide.' }), 'a').error, /no open DECISION NEEDED/);
+  // Two open questions: a letter could belong to either, so the recorder refuses.
+  const two = card({ description: `${DESC}\n\nDECISION NEEDED: Also turn on the crawler?\nOption A — Yes: x / y\nOption B — No: x / y` });
+  assert.match(resolveDecision(two, 'a').error, /2 DECISION NEEDED questions/);
 });
 
 test('the recorder refuses visual-approval cards (approving one ships the change)', () => {
@@ -163,5 +170,10 @@ test('recorder arguments: card id, choice, own needs text, via is sanitised', ()
   assert.equal(o.choice, 'a');
   assert.doesNotMatch(o.via, /DECISION NEEDED|\n/);
   // Parallel recordings are told apart by card id, and the answer text stays out of the title.
+  // In CI the owner's words come from the event payload, never argv or env (public log).
+  const ev = parseArgs(['BRO-5', '--choice', 'own', '--inputs-from-event', '--execute'], { readEvent: () => ({ text: 'Do it next week', via: 'chat' }) });
+  assert.equal(ev.text, 'Do it next week');
+  assert.equal(ev.via, 'chat');
+  assert.throws(() => parseArgs(['BRO-5', '--choice', 'own', '--inputs-from-event'], { readEvent: () => ({}) }), /needs --text/);
   assert.equal(dispatchArgs(['record-owner-answer.yml', '-f', 'issue=BRO-5', '-f', 'text=secret words']).match, 'record-owner-answer BRO-5 [');
 });

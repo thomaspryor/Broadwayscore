@@ -57,12 +57,12 @@ jobs:
           APPROVAL_HMAC_SECRET: ${{ secrets.APPROVAL_HMAC_SECRET }}
           ISSUE: ${{ inputs.issue }}
           CHOICE: ${{ inputs.choice }}
-          TEXT: ${{ inputs.text }}
-          VIA: ${{ inputs.via }}
+          # The answer text and via are read from the event payload by the script,
+          # never put in step env: this repo is public and step env is printed in the log.
         run: |
           if ! printf '%s' "$ISSUE" | grep -Eq '^BRO-[0-9]+$'; then echo "bad card id"; exit 1; fi
           if ! printf '%s' "$CHOICE" | grep -Eq '^[A-Za-z]{1,10}$'; then echo "bad choice"; exit 1; fi
-          node scripts/record-owner-answer.js "$ISSUE" --choice "$CHOICE" --text "$TEXT" --via "$VIA" --execute
+          node scripts/record-owner-answer.js "$ISSUE" --choice "$CHOICE" --inputs-from-event --execute
 
       - name: Notify on failure
         if: failure()

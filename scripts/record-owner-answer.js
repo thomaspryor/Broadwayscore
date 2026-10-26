@@ -29,7 +29,14 @@ const MAX_VIA = 80;
 const ISSUE_QUERY = `query($id: String!) { issue(id: $id) {
   identifier title description url createdAt labels { nodes { name } } } }`;
 
-function parseArgs(argv) {
+// In CI the answer text comes from the dispatch payload, not argv or env, so it
+// never appears in the public run log.
+function eventInputs(file = process.env.GITHUB_EVENT_PATH) {
+  if (!file) throw new Error('--inputs-from-event needs GITHUB_EVENT_PATH');
+  return (JSON.parse(require('fs').readFileSync(file, 'utf8')).inputs) || {};
+}
+
+function parseArgs(argv, { readEvent = eventInputs } = {}) {
   const opts = { id: null, choice: null, text: '', via: 'a chat with Claude', execute: false, check: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
@@ -38,6 +45,7 @@ function parseArgs(argv) {
     else if (a === '--via') opts.via = argv[++i] || '';
     else if (a === '--execute') opts.execute = true;
     else if (a === '--check') opts.check = true;
+    else if (a === '--inputs-from-event') { const ev = readEvent(); opts.text = String(ev.text || ''); opts.via = String(ev.via || ''); }
     else if (!a.startsWith('-') && !opts.id) opts.id = a.toUpperCase();
     else throw new Error(`Unknown argument: ${a}`);
   }
@@ -60,6 +68,10 @@ function resolveDecision(issue, choice) {
   }
   const decision = link.listOpenDecisions([issue])[0];
   if (!decision) return { error: 'the card has no open DECISION NEEDED question (already answered, or never asked)' };
+  // The record and the choices always belong to the card's first question, so
+  // a letter meant for a later question would be saved against the wrong one.
+  const questions = link.markerLines(issue.description).filter((m) => !link.isPlaceholderQuestion(m.question));
+  if (questions.length > 1) return { error: `the card has ${questions.length} DECISION NEEDED questions; answer it from the email so the answer is recorded against the right one`, decision };
   const keys = decision.choices.map((c) => c.key);
   if (choice !== 'own' && !keys.includes(choice)) {
     return { error: `"${choice}" is not one of this card's choices: ${[...keys, 'own'].join(', ')}`, decision };
@@ -83,12 +95,13 @@ async function execute(opts) {
   const linear = require('./lib/linear-client');
   const r = resolveDecision(await fetchIssue(opts.id), opts.choice);
   if (r.error) { console.error(`[record-owner-answer] refused: ${r.error}`); return 1; }
-  console.log(`[record-owner-answer] ${describe(r.decision)}`);
+  // Public log: card id and choice key only, never the question or the owner's words.
+  console.log(`[record-owner-answer] ${opts.id}: recording choice ${r.choiceKey}`);
   // The run that wrote it, so a chat answer can always be traced to its dispatch.
   const run = process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null;
   const via = run ? `${opts.via} (recorded by ${run}${process.env.GITHUB_ACTOR ? `, dispatched by ${process.env.GITHUB_ACTOR}` : ''})` : opts.via;
   const out = await link.recordAnswer({ graphql: linear.graphql, id: opts.id, hash: r.decision.hash, secret, choiceKey: r.choiceKey, text: opts.text, via });
-  console.log(`[record-owner-answer] ${opts.id}: ${out.status}${out.recorded ? ` (earlier answer: ${String(out.recorded).slice(0, 120)})` : ''}`);
+  console.log(`[record-owner-answer] ${opts.id}: ${out.status}`);
   return out.status === 'recorded' || out.status === 'answered' ? 0 : 1;
 }
 

@@ -40,7 +40,7 @@ const MAYBE_WINDOW_MS = 14 * 24 * 60 * 60 * 1000;
 // Comments this pipeline writes itself (told markers, recorded answers, visual approvals).
 const OWN_MARKER_RE = /Decision (?:email )?ref\s*OD[AE]|Visual approval (?:ref|landed)\s*VQ[AL]|^\s*\**Owner decision\**/im;
 // A bare choice, or words that say the decision was already made.
-const CHOICE_RE = /^\s*(?:option\s+)?[A-E][.!)]?\s*$|^\s*(?:option\s+)?[A-E]\b\s*[,.:!-]|^\s*(?:let'?s\s+)?(?:go\s+with|pick|choose|i\s+(?:pick|choose|want|prefer))\s+(?:option\s+)?[A-E]\b|^\s*(?:yes|no|approved?|go ahead|do it|ship it)\b/i;
+const CHOICE_RE = /^\s*(?:option\s+)?[A-E][.!)]?\s*$|^\s*(?:option\s+)?[A-E]\b\s*[,.:!-]|^\s*(?:let'?s\s+)?(?:go\s+with|pick|choose|i\s+(?:pick|choose|want|prefer))\s+(?:option\s+)?[A-E]\b|^\s*(?:yes|no|approved?|go ahead|do it|ship it)\b[\s,.!]*(?:(?:please|approved?|do it|go ahead|ship it|it)\b[\s,.!]*)*$/i;
 const ALREADY_RE = /\balready (?:answered|decided|approved|said|replied|told|chose|picked|did)\b|\bdid(?:n['’]?t| not)? i (?:already|do this|answer)\b|\banswered (?:this|that|it)\b|\basked (?:this|me) (?:again|before)\b|\btold you\b/i;
 // "ANSWER:" typed before any email went out (the sweep only reads replies to an email).
 const ANSWER_PREFIX_RE = /^\s*\**ANSWER\**\s*:/i;
@@ -51,7 +51,8 @@ const ANSWER_PREFIX_RE = /^\s*\**ANSWER\**\s*:/i;
 const SESSION_RE = /```|`[^`]+`|^\s*#{1,6}\s|\*\*|^\s*[-*]\s|https?:\/\/|\bBRO-\d+|\b\d{4}-\d{2}-\d{2}\b|\b[\w-]+\/[\w./-]+\.\w{1,5}\b|\b(?:VERIFY|PR-EVIDENCE|RECHECK-AFTER|DONE-GATE|DECISION NEEDED|Claimed by|Session report|Outcome|My recommendation|Why this is your call)\b/im;
 const LABEL_START_RE = /^\s*[\w '()-]{1,40}:\s/;
 const SESSION_START_RE = /^\s*(?:Landed|Claimed|Raised|Unparked|Parked|Session|Codex|Gmail|Keep-green|closer-sweep|Listed|Emailed|Recorded|Owner chose|Plan reviewed|Progress|Updated|Dispatched|Returned|Reopened|Closing|Closed|Done)\b/i;
-const VOICE_RE = /\b(?:I|I'm|I’m|I've|I’ve|me|my|we|us|our|you|your)\b|\?/i;
+// First person only: sessions address the owner ("waiting on you", "can you ...?").
+const VOICE_RE = /\b(?:I|I'm|I’m|I've|I’ve|me|my|we|us|our)\b/i;
 function ownerVoice(body) {
   return !SESSION_RE.test(body) && !LABEL_START_RE.test(body) && !SESSION_START_RE.test(body) && VOICE_RE.test(body);
 }
@@ -130,8 +131,8 @@ function holdReason(issue, decision, { secret, now = Date.now(), env = process.e
   const maybe = maybeAnswerComments(issue, now);
   if (maybe.length) {
     const c = maybe[maybe.length - 1];
-    const quote = bodyOf(c).trim().replace(/\s+/g, ' ').slice(0, 80);
-    return { reason: 'maybe-answered', detail: `a comment on ${String(c.createdAt).slice(0, 16)}Z may already answer it: "${quote}"` };
+    // No quote: the emailer's log is public and card comments are private.
+    return { reason: 'maybe-answered', detail: `a comment on ${String(c.createdAt).slice(0, 16)}Z may already answer it` };
   }
   const last = lastActivityAt(issue);
   if (last != null && now - last < QUIET_MS && now - activityStreakStart(issue) < MAX_QUIET_HOLD_MS) {

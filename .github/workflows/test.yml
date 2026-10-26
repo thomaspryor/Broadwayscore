@@ -778,6 +778,8 @@ on:
       - 'scripts/cloud-dispatch.js'
       - 'scripts/cloud-doctor.js'
       - 'scripts/new-fix-plan.js'
+      # BRO-6266: chat-answer recorder (tested by owner-decision-quiet-period.test.mjs).
+      - 'scripts/record-owner-answer.js'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).

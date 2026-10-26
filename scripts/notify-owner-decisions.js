@@ -61,8 +61,11 @@ const COMMENTS_QUERY = 'query($id: String!) { issue(id: $id) { comments(first: 1
 async function attachDecisionComments(issues) {
   const ids = new Set(findOwnerDecisions(issues).map((d) => d.identifier));
   await Promise.all((issues || []).filter((i) => ids.has(i.identifier)).map(async (i) => {
-    const data = await linear.graphql(COMMENTS_QUERY, { id: i.identifier });
-    i.comments = (data && data.issue && data.issue.comments) || { nodes: [] };
+    // One failed fetch must not blank the digest section: that card just gets no hold check.
+    try {
+      const data = await linear.graphql(COMMENTS_QUERY, { id: i.identifier });
+      i.comments = (data && data.issue && data.issue.comments) || { nodes: [] };
+    } catch (e) { console.warn(`[owner-decisions] comments for ${i.identifier} unavailable: ${e.message}`); }
   }));
   return issues;
 }
