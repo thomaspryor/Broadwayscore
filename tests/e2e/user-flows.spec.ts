@@ -104,7 +104,7 @@ test.describe('Sign-In Modal', () => {
     }
     // Scoped to the dialog: the homepage explainer pill also carries
     // .backdrop-blur-sm, so a bare class selector trips strict mode.
-    await signInDialog(page).locator('.backdrop-blur-sm').click({ position: { x: 10, y: 10 } });
+    await signInDialog(page).getByTestId('modal-backdrop').click({ position: { x: 10, y: 10 } });
     await expect(signInDialog(page)).toBeHidden({ timeout: 3000 });
   });
 });
@@ -251,25 +251,26 @@ test.describe('Diary Search & Production Picker', () => {
 });
 
 test.describe('My Shows Page Layout', () => {
-  test('tab bar and sort controls are on the same line', async ({ page }) => {
+  test('sort and view controls share a row', async ({ page }) => {
     await page.goto('/my-shows');
     await page.waitForLoadState('networkidle');
 
-    // If authenticated, verify the sort dropdown is inline with tabs
-    const tabBar = page.locator('.border-b.border-white\\/10').first();
-    if ((await tabBar.count()) === 0) {
-      test.skip(true, 'Tab bar not visible (not authenticated or feature off)');
+    const controls = page.getByTestId('my-shows-controls');
+    if ((await controls.count()) === 0) {
+      test.skip(true, 'My Shows controls not visible (not authenticated or feature off)');
       return;
     }
 
-    // The sort select should be inside the same flex container as tabs
-    const sortSelect = tabBar.locator('select');
-    if ((await sortSelect.count()) > 0) {
-      // Verify they're on the same line by checking the parent is flex
-      const parentClasses = await tabBar.getAttribute('class');
-      expect(parentClasses).toContain('flex');
-      expect(parentClasses).toContain('items-center');
-    }
+    // The current design has a dedicated row for sort and grid/list controls.
+    const sort = controls.getByRole('combobox', { name: 'Sort diary' });
+    const grid = controls.getByRole('button', { name: 'Grid view' });
+    await expect(sort).toBeVisible();
+    await expect(grid).toBeVisible();
+    const sortBox = await sort.boundingBox();
+    const gridBox = await grid.boundingBox();
+    expect(sortBox).toBeTruthy();
+    expect(gridBox).toBeTruthy();
+    expect(Math.abs((sortBox!.y + sortBox!.height / 2) - (gridBox!.y + gridBox!.height / 2))).toBeLessThanOrEqual(2);
   });
 });
 

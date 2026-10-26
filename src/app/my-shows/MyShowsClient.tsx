@@ -643,7 +643,7 @@ export default function MyShowsClient() {
             <p className="text-sm text-gray-400 mb-3">
               These are only in this browser. Sign in below to keep them on every device.
             </p>
-            <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+            <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {deviceSavedShows.map(({ show, closed }) => (
                 <PosterGridCard
                   key={show.id}
@@ -880,7 +880,7 @@ export default function MyShowsClient() {
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
       {(activeTab === 'diary' || activeTab === 'watchlist') && (
-        <div className="flex items-center justify-end gap-2 py-1.5 mb-2">
+        <div data-testid="my-shows-controls" className="flex items-center justify-end gap-2 py-1.5 mb-2">
           {activeTab === 'diary' && canSharePlans && (
             <button
               type="button"
@@ -993,7 +993,7 @@ export default function MyShowsClient() {
                       ))}
                     </div>
                   ) : (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {upcomingWatchlistEntries.map(entry => {
                         const entryShow = showMap[entry.show_id];
                         const entrySlug = entryShow?.slug || entry.show_id;
@@ -1035,7 +1035,7 @@ export default function MyShowsClient() {
                           }} />
                         </div>
                       ) : (
-                        <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                        <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                           {pastReviews.map(review => (
                             <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} showYear />
                           ))}
@@ -1098,7 +1098,7 @@ export default function MyShowsClient() {
                             )}
                           </div>
                         ) : (
-                          <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                          <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {reviewsByYear[year].map(review => (
                               <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} />
                             ))}
@@ -1136,7 +1136,7 @@ export default function MyShowsClient() {
           ) : watchlistSort === 'alphabetical' ? (
             /* Flat alphabetical list — no booked/unbooked split */
             watchlistView === 'grid' ? (
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+              <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                 {sortedWatchlist.map(entry => (
                   <WatchlistCard
                     key={entry.id}
@@ -1176,7 +1176,7 @@ export default function MyShowsClient() {
                 <section>
                   <SectionBand title="Upcoming" count={upcomingBookedWatchlist.length} />
                   {watchlistView === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {upcomingBookedWatchlist.map(entry => (
                         <WatchlistCard
                           key={entry.id}
@@ -1222,7 +1222,7 @@ export default function MyShowsClient() {
                     <SectionBand title="Not yet booked" count={unbookedWatchlist.length} />
                   )}
                   {watchlistView === 'grid' ? (
-                    <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+                    <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {unbookedWatchlist.map(entry => (
                         <WatchlistCard
                           key={entry.id}
@@ -1425,7 +1425,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
   );
 
   return (
-    <div className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
+    <div data-testid="diary-card" className="group/diary relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
       {/* Link overlay for the whole card — getShowHref always returns a URL
           (diary-only shows link to /diary-show/[id]); the `href &&` guard is
           defensive only. */}
@@ -1439,7 +1439,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
       {/* Info — date above review text, consistent font sizes */}
       <div className="relative z-[1] pointer-events-none flex-1 min-w-0">
         <h4 className="font-bold text-white text-base group-hover/diary:text-brand transition-colors truncate">{title}</h4>
-        {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
+        {show?.venue && <p data-testid="diary-venue" className="text-sm text-gray-500 truncate">{show.venue}</p>}
         {review.date_seen && (
           <p className="text-xs text-amber-400 mt-0.5">
             {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', {
@@ -1465,7 +1465,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
           2026-07-13). Mobile keeps icons IN-FLOW on the right:
           the absolute corner collided with row content at 390px. */}
       <div className="relative z-[1] pointer-events-none flex-shrink-0 flex items-center gap-1.5">
-        <span className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
+        <span data-testid="diary-desktop-rating" className="hidden md:inline-flex"><StarRating rating={review.rating} onRatingChange={() => {}} size="md" readOnly hideLabel /></span>
         <div className="flex md:hidden items-center gap-0.5 pointer-events-auto">{actionIcons}</div>
       </div>
       {/* Desktop edit + delete — top-right corner, revealed on hover */}
@@ -1498,7 +1498,7 @@ function DiaryGridCard({ review, show, showYear = false }: { review: UserReview;
       // No corner buttons: the show page edits or deletes the rating
       // (owner, 2026-10-03).
       meta={
-        <div className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]">
+        <div data-testid="diary-rating" data-rating={review.rating} className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]">
           {review.rating > 0 && <MiniStars rating={review.rating} size="md" filledOnly />}
         </div>
       }
@@ -1919,7 +1919,7 @@ function ToBeRatedSection({ entries, showMap, idPrefix }: {
         <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-amber-500" />
         <span className="text-xs font-semibold text-amber-500">{entries.length}</span>
       </div>
-      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+      <div data-testid="my-shows-grid" className="grid grid-cols-3 sm:grid-cols-4 gap-2">
         {entries.map(entry => {
           const show = showMap[entry.show_id];
           const title = show?.title || entry.show_id;

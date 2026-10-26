@@ -199,6 +199,7 @@ export default function Modal({
     >
       {/* Backdrop */}
       <div
+        data-testid="modal-backdrop"
         className="absolute inset-0 bg-black/70 backdrop-blur-sm"
         onClick={closeOnBackdrop ? onClose : undefined}
         aria-hidden="true"

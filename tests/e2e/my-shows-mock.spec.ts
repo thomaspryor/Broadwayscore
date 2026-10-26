@@ -207,7 +207,7 @@ test.describe('My Shows — Diary Sections', () => {
     await goToMock(page);
     await switchToListView(page); // diary default is grid (2026-07-17); venues show in list rows
     // Diary list view should show venue names instead of badges
-    const venues = page.locator('.text-gray-500').filter({ hasText: /Theatre|Theater/ });
+    const venues = page.getByTestId('diary-venue').filter({ hasText: /Theatre|Theater/ });
     expect(await venues.count()).toBeGreaterThan(0);
   });
 
@@ -236,10 +236,11 @@ test.describe('My Shows — Sorting', () => {
   test('diary "Top Rated" sort orders correctly', async ({ page }) => {
     await goToMock(page);
     await page.getByRole('combobox', { name: 'Sort diary' }).selectOption('rating-desc');
-    // Past Shows should now start with 5.0 ratings
-    const ratings = await page.locator('[class*="text-amber-400"][class*="font-bold"]').allTextContents();
-    // Filter to just numeric ratings (exclude "to rate" badge)
-    const numericRatings = ratings.filter(r => /^\d/.test(r)).map(r => parseFloat(r));
+    // Read the ratings on the rendered cards, independent of star styling.
+    const ratings = page.getByTestId('diary-rating');
+    await expect(ratings).toHaveCount(9);
+    const numericRatings = await ratings.evaluateAll(elements => elements.map(el => Number(el.getAttribute('data-rating'))));
+    expect(numericRatings.every(rating => Number.isFinite(rating) && rating > 0 && rating <= 5)).toBe(true);
     // Should be descending
     for (let i = 1; i < numericRatings.length; i++) {
       expect(numericRatings[i]).toBeLessThanOrEqual(numericRatings[i - 1]);
@@ -293,7 +294,7 @@ test.describe('My Shows — Tabs', () => {
     await expect(page).toHaveURL(/tab=watchlist/);
     // Watchlist defaults to grid — poster cards for upcoming/undated entries;
     // past-dated ones render as To Be Rated rows since 2026-07-20.
-    const posters = page.locator('.aspect-\\[2\\/3\\]');
+    const posters = page.getByRole('tabpanel').getByTestId('poster-grid-image');
     expect(await posters.count()).toBeGreaterThanOrEqual(4);
     // Switch to list view and verify titles
     await page.getByRole('button', { name: 'List view' }).click();
@@ -323,7 +324,7 @@ test.describe('My Shows — View Toggle', () => {
     // Default is list view for diary; switch to grid
     await page.getByRole('button', { name: 'Grid view' }).click();
     // Grid cards have aspect-[2/3] poster areas
-    const posters = page.locator('.aspect-\\[2\\/3\\]');
+    const posters = page.getByRole('tabpanel').getByTestId('poster-grid-image');
     expect(await posters.count()).toBeGreaterThan(0);
   });
 
@@ -341,7 +342,7 @@ test.describe('My Shows — View Toggle', () => {
     for (const tab of ['diary', 'watchlist'] as const) {
       await goToMock(page, tab);
       await page.getByRole('button', { name: 'Grid view' }).click();
-      const cards = page.locator('[role="tabpanel"] .group\\/grid');
+      const cards = page.getByRole('tabpanel').getByTestId('poster-grid-card');
       expect(await cards.count(), `${tab}: no grid cards`).toBeGreaterThan(0);
       await expect(cards.locator('button'), `${tab}: buttons on a poster card`).toHaveCount(0);
     }
@@ -411,7 +412,7 @@ test.describe('My Shows — Watchlist', () => {
     // Rated poster band (BRO-4558, always a grid as in the app); the other 4
     // are poster cards in grid view and titled rows in list view. Welcome
     // picks with no date (seen_unrated) are diary-only, not watchlist rows.
-    const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
+    const posters = page.getByRole('tabpanel').getByTestId('poster-grid-image');
     expect(await posters.count()).toBeGreaterThanOrEqual(6);
     const band = page.getByTestId('to-be-rated');
     await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
@@ -522,17 +523,23 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
   test('diary grid uses 4 columns on desktop', async ({ page }) => {
     await goToMock(page);
     await page.getByRole('button', { name: 'Grid view' }).click();
-    // Grid container should have grid-cols-3 sm:grid-cols-4 (resolves to 4 at 1440px)
-    const grid = page.locator('.grid.grid-cols-3.sm\\:grid-cols-4');
-    await expect(grid.first()).toBeVisible();
+    const grids = page.getByRole('tabpanel').getByTestId('my-shows-grid');
+    await expect(grids.first()).toBeVisible();
+    for (const grid of await grids.all()) {
+      const columns = await grid.evaluate(el => getComputedStyle(el).gridTemplateColumns.split(' ').length);
+      expect(columns).toBe(4);
+    }
   });
 
   test('diary list shows full star ratings on desktop', async ({ page }) => {
     await goToMock(page);
     await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
-    // Desktop shows full 5-star display (hidden md:inline-flex)
-    const starRatings = page.locator('.hidden.md\\:inline-flex');
-    expect(await starRatings.count()).toBeGreaterThan(0);
+    const starRatings = page.getByTestId('diary-desktop-rating');
+    await expect(starRatings).toHaveCount(9);
+    for (const rating of await starRatings.all()) {
+      await expect(rating).toBeVisible();
+      await expect(rating.getByRole('img', { name: /out of 5 stars/ })).toBeVisible();
+    }
   });
 });
 
