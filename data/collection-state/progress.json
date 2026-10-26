@@ -665,7 +665,8 @@
     "hamnet-west-end-2023/independent--alice-saville.json",
     "hamnet-west-end-2023/standard--liz-hoggard.json",
     "blue-mist-west-end-2023/guardian--arifa-akbar.json",
-    "blue-mist-west-end-2023/broadwayworld--cindy-marcolina.json"
+    "blue-mist-west-end-2023/broadwayworld--cindy-marcolina.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
@@ -709,7 +710,6 @@
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
     "two-girls-off-broadway-2026/exeunt-magazine--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
@@ -1025,7 +1025,14 @@
     "infinite-life-west-end-2023/times-uk--clive-davis.json",
     "the-witches-west-end-2023/i-paper--fiona-mountford.json",
     "stereophonic-off-broadway-2023/thestage--lane-williamson.json",
-    "sunset-boulevard-west-end-2023/times-uk--clive-davis.json"
+    "sunset-boulevard-west-end-2023/times-uk--clive-davis.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1294,7 +1301,8 @@
     "amp": [],
     "browserbase": [
       "data/review-texts/eureka-day-2024/wsj--unknown.json",
-      "eureka-day-2024/wsj--unknown.json"
+      "eureka-day-2024/wsj--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1672,7 +1680,7 @@
     ]
   },
   "startTime": "2026-10-25T23:10:36.264Z",
-  "lastProcessed": "blue-mist-west-end-2023/broadwayworld--cindy-marcolina.json",
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
   "log": [
     {
       "t": "2026-10-25T23:26:28.677Z",
@@ -1774,6 +1782,72 @@
       "t": "2026-10-26T03:06:58.709Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-26T03:56:51.947Z",
+      "event": "bb-session",
+      "session": "770cf49d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-26T03:56:52.355Z",
+      "event": "bb-session",
+      "session": "59eb0934",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T03:56:52.643Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-26T03:57:49.707Z",
+      "event": "bb-session",
+      "session": "75f6bd54",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T03:57:57.778Z",
+      "event": "bb-session",
+      "session": "071d19a3",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T03:58:52.282Z",
+      "event": "bb-session",
+      "session": "26289ff2",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T03:59:01.399Z",
+      "event": "bb-session",
+      "session": "bb50ad7c",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T03:59:49.350Z",
+      "event": "bb-session",
+      "session": "69f1f6b6",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-26T03:59:49.794Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T03:59:58.257Z",
+      "event": "bb-session",
+      "session": "2561a3b7",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-26T03:59:58.686Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ]
 }
