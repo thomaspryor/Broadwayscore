@@ -24,6 +24,7 @@ const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 const { findOwnerDecisions, planNotification } = require('./lib/owner-decision-notify.js');
 const link = require('../src/lib/owner-decision-link.js');
 const { buildDecisionEmail, buildRoundupEmail, buildBacklogEmail } = require('./lib/owner-decision-email.js');
+const { holdReason, sendMode } = require('./lib/owner-decision-quiet-period.js');
 
 const USAGE = 'Usage: node scripts/send-owner-decision-emails.js [--dry-run] [--only=BRO-N] [--roundup] [--no-sweep] [--max=8]';
 const LEGACY_KEY = 'owner-decisions:new';
@@ -122,7 +123,9 @@ async function main(argv = process.argv.slice(2)) {
   // 2. Roundup reminder: decisions emailed more than 3 days ago and still open.
   if (opts.roundup) {
     const stale = decisions.filter((d) => {
-      if (hasComment(d, link.answerMarker(refOf(d)))) return false;
+      // BRO-6266: the same already-answered test as the per-card email and the digest.
+      const hold = holdReason(byId.get(d.identifier), d, { secret });
+      if (hold && hold.reason !== 'recent-activity') { console.log(`[roundup] skip ${d.identifier}: ${hold.detail}`); return false; }
       const c = ((byId.get(d.identifier).comments || {}).nodes || []).find((x) => link.bodyHasMarker(x.body, link.emailMarker(refOf(d))));
       return c && Date.now() - new Date(c.createdAt).getTime() > ROUNDUP_AFTER_MS;
     }).slice(0, 20);
@@ -139,9 +142,17 @@ async function main(argv = process.argv.slice(2)) {
   // 3. One email per decision that has never been announced.
   const legacy = planNotification(decisions, legacyNotified());
   const legacyFresh = new Set(legacy.fresh.map((d) => d.identifier));
-  const fresh = decisions.filter((d) => opts.only || legacyFresh.has(d.identifier))
-    .filter((d) => !swept.has(d.identifier) && !hasComment(d, link.emailMarker(refOf(d))) && !hasComment(d, link.answerMarker(refOf(d))));
-  console.log(`[owner-decision-emails] ${fresh.length} not yet emailed (cap ${opts.max} per run)`);
+  const untold = decisions.filter((d) => opts.only || legacyFresh.has(d.identifier))
+    .filter((d) => !swept.has(d.identifier) && !hasComment(d, link.emailMarker(refOf(d))));
+  // BRO-6266: hold a decision already answered, one a session is working on
+  // right now (a comment in the last 90 min), or one with a plain comment that
+  // may already answer it. Held cards stay on the digest and the list page.
+  const fresh = untold.filter((d) => {
+    const hold = holdReason(byId.get(d.identifier), d, { secret });
+    if (hold) console.log(`[hold] ${d.identifier} (${hold.reason}): ${hold.detail}`);
+    return !hold;
+  });
+  console.log(`[owner-decision-emails] ${fresh.length} not yet emailed, ${untold.length - fresh.length} held (cap ${opts.max} per run)`);
   const { sendEmailAlert } = require('./lib/discord-notify.js');
   const markTold = async (d, text) => {
     try {
@@ -155,7 +166,7 @@ async function main(argv = process.argv.slice(2)) {
   // 3a. A pile of untold decisions: one email with the list link, then the
   // same told marker the per-decision path writes (the ANSWER: sweep and the
   // roundup both key on it).
-  if (fresh.length >= BACKLOG_MIN) {
+  if (sendMode(fresh, { backlogMin: BACKLOG_MIN }) === 'backlog') {
     const email = buildBacklogEmail({ decisions: fresh, secret });
     if (opts.dryRun) { console.log(`[dry-run] would send ONE backlog email "${email.subject}" covering ${fresh.map((d) => d.identifier).join(', ')}`); return 0; }
     // Keyed on the exact set of cards, so a partly failed marker write cannot re-send the same list inside Resend's 24h dedupe window.

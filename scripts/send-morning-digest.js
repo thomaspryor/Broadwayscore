@@ -1143,9 +1143,12 @@ async function main() {
   // for you"). Started now, awaited after the awaiting-owner fetch below so
   // the two Linear round trips overlap; fail-soft and time-boxed like it.
   const linearDecisionsPromise = (async () => {
-    const { fetchOpenIssues } = require('./notify-owner-decisions.js');
+    const { fetchOpenIssues, attachDecisionComments } = require('./notify-owner-decisions.js');
     const { buildDecisionsSection } = require('./lib/owner-decision-notify.js');
-    return buildDecisionsSection(await withTimeout(fetchOpenIssues(), 15_000, { message: 'timed out after 15000ms' }));
+    // BRO-6266: comments for the decision cards only, so the digest applies the
+    // same already-answered test as the decision email.
+    const issues = await withTimeout(fetchOpenIssues().then(attachDecisionComments), 15_000, { message: 'timed out after 15000ms' });
+    return buildDecisionsSection(issues);
   })();
   linearDecisionsPromise.catch(() => {}); // handled where awaited
 
