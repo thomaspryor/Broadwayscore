@@ -150,7 +150,8 @@ function buildVenueSpellings(shows) {
 // that says musical > a same-titled musical already in shows.json > 'play',
 // flagged as guessed so the dry run lists it for the hand check.
 function inferShowType(candidate, musicalTitles = new Set()) {
-  if (candidate.type === 'musical' || candidate.type === 'play') return { type: candidate.type, guessed: false };
+  // 'special' (magic, variety) only ever comes from a hand override.
+  if (['musical', 'play', 'special'].includes(candidate.type)) return { type: candidate.type, guessed: false };
   const genres = candidate.genres || [];
   if (genres.includes('musical') || titleSaysMusical(candidate.title)) return { type: 'musical', guessed: false };
   // Only when WOS gave no genre: an explicit 'play' wins. The 2019 Lyttelton
