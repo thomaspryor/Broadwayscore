@@ -379,7 +379,7 @@ function recentlyStagedOutletIds(stagingDoc, nowMs, graceDays = STAGED_GRACE_DAY
   const out = new Set();
   for (const e of (stagingDoc && stagingDoc.staged) || []) {
     const seen = e && e.firstSeenAt ? Date.parse(e.firstSeenAt) : NaN;
-    if (e && e.outletId && Number.isFinite(seen) && nowMs - seen <= graceDays * 86400000) out.add(e.outletId);
+    if (e && e.outletId && Number.isFinite(seen) && nowMs >= seen && nowMs - seen <= graceDays * 86400000) out.add(e.outletId);
   }
   return out;
 }

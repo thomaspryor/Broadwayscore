@@ -11,6 +11,7 @@ test('staged ids inside the grace window are pending, older ones are not', () =>
     { outletId: 'fresh', firstSeenAt: '2026-10-25T00:00:00Z' },
     { outletId: 'old', firstSeenAt: '2026-10-01T00:00:00Z' },
     { outletId: 'nodate' },
+    { outletId: 'future', firstSeenAt: '2027-01-01T00:00:00Z' },
   ] };
   assert.deepEqual([...recentlyStagedOutletIds(doc, NOW)], ['fresh']);
   assert.equal(recentlyStagedOutletIds(null, NOW).size, 0);

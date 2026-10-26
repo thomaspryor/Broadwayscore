@@ -99,7 +99,7 @@ if (fs.existsSync(textsDir)) {
       // score (non-review, blocked host, wrong production, unscored) needs no registry entry.
       // isJunkOutlet ids are parse garbage (a quote fragment or 'unknown' in the outlet slot), never
       // registered by design; audit-outlet-registry.js reports them under 'skipped as junk'.
-      if (d.outletId && !canonical(d.outletId) && !isJunkOutlet(d.outletId) && outletRegistryAuditExclusionBranch(d) === 0) {
+      if (d.outletId && !canonical(d.outletId) && !pendingStaged.has(d.outletId) && !isJunkOutlet(d.outletId) && outletRegistryAuditExclusionBranch(d) === 0) {
         (corpusUnregistered[d.outletId] = corpusUnregistered[d.outletId] || []).push(`${show}/${f}`);
       }
     }
