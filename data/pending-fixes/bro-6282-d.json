@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6282-d",
   "planId": "9812c460-d6e7-42d1-9cce-b1fb58882c1c",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T05:39:35.263Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "description": "commercial.json: the-lightning-thief-2019.designation"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T06:29:17.211Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-lightning-thief-2019"
+    }
+  ],
+  "executedIn": "ci"
 }
