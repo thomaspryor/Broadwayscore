@@ -15,8 +15,8 @@
  "cue": {
   "end": "Broadway Scorecard"
  },
- "prompt": "[excited] Two big Broadway shows. Critics loved one and shrugged at the other. Can you guess which? Okay, here's how they scored. Maybe Happy Ending: eighty-six, Critical Gold. The Great Gatsby: fifty-seven, Mixed. Did you guess right? That's Broadway Scorecard. We read all the reviews for you, so you see the great shows and skip the duds. Follow for new scores every week.",
- "caption": "One of these got raves from the critics and the other got a shrug. Maybe Happy Ending scores 86, Critical Gold. The Great Gatsby scores 57, Mixed. Broadway Scorecard reads all the reviews for every Broadway and off-Broadway show and sums them up in one score, so you see the great shows and skip the duds. See every review at broadwayscorecard.com\n\nDid you guess right?\n\n#Broadway #OffBroadway #MaybeHappyEnding #TheGreatGatsby #Theater #NYC",
+ "prompt": "[excited] Two big Broadway shows. Critics loved one and shrugged at the other. Can you guess which? Okay, here's how they scored. Maybe Happy Ending: eighty-six, Critical Gold. The Great Gatsby: fifty-seven, Mixed. Did you guess right? That's Broadway Scorecard. We read all the reviews for you, so you can find your next great show. Follow for new scores every week.",
+ "caption": "One of these got raves from the critics and the other got a shrug. Maybe Happy Ending scores 86, Critical Gold. The Great Gatsby scores 57, Mixed. At Broadway Scorecard we read every review, so you can find your next great show. See every review at broadwayscorecard.com\n\nDid you guess right?\n\n#Broadway #OffBroadway #MaybeHappyEnding #TheGreatGatsby #Theater #NYC",
  "keep": {
   "prompt": [
    "Maybe Happy Ending",
@@ -37,14 +37,16 @@
  "review": {
   "pass": true,
   "notes": [
-   "gemini: The phrase 'sums them up in one score' in the caption sounds a bit stiff and less natural."
+   "gpt: \"Two big Broadway shows. Critics loved one and shrugged at the other. Can you guess which?\" sounds a little scripted and generic for a warm theater-fan voice.",
+   "gpt: \"Okay, here's how they scored.\" is a bit stiff/announcement-like.",
+   "gpt: \"Did you guess right?\" feels slightly repetitive after the earlier question and reads a little ad-like."
   ],
-  "of": "dc78c0ea4ca3",
+  "of": "b20d3e81105f",
   "rounds": 1,
   "by": [
    "gpt",
    "gemini"
   ],
-  "at": "2026-10-26T03:18:04.328Z"
+  "at": "2026-10-26T04:28:06.243Z"
  }
 }
