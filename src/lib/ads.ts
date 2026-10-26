@@ -2,17 +2,21 @@
  * Google AdSense: slot config, script loader and the pure render decision
  * (BRO-5893, sprint-plan-adsense.md B-T2/B-T9).
  *
- * Ships dark: ADSENSE_CLIENT and every slot id are '' until the owner's
- * AdSense account is approved, and the PostHog `ads` flag sits at 0% `ads`.
- * With either empty, decideAdRender() is false for everyone, so no visitor
- * sees a box or loads the Google script.
+ * Ships dark: every slot id is '' until the owner's AdSense account is
+ * approved and the unit exists, and the PostHog `ads` flag sits at 0% `ads`.
+ * With an empty slot id, decideAdRender() is false for everyone, so no
+ * visitor sees a box or loads the Google script. ADSENSE_CLIENT is set so
+ * ads.txt and the verification meta tag can serve during Google's review.
  *
  * Kept free of React and `@/` imports: src/middleware.ts (edge) and the
  * unit tests import it directly.
  */
 
-/** Publisher id (`ca-pub-…`). Public, not a secret. '' until approval. */
-export const ADSENSE_CLIENT = '';
+/** Publisher id (`ca-pub-…`). Public, not a secret. */
+export const ADSENSE_CLIENT = 'ca-pub-5443308376628971';
+
+/** The `ads.txt` record authorizing Google to sell this publisher's inventory. */
+export const ADS_TXT_LINE = `google.com, ${ADSENSE_CLIENT.replace(/^ca-/, '')}, DIRECT, f08c47fec0942fa0`;
 
 /** PostHog multivariate flag: `ads` / `no-ads`. Unresolved = no ads. */
 export const ADS_FLAG = 'ads';
@@ -131,7 +135,7 @@ export function decideAdRender({
   client = ADSENSE_CLIENT,
   slotId,
 }: AdRenderInput): boolean {
-  // TODO(BRO-5893): remove once IDs are committed
+  // TODO(BRO-5893): remove once the slot id is committed
   if (!client || !slotId) return false;
   return (
     variant === 'ads' &&
