@@ -198,6 +198,8 @@ jobs:
           # pre-commit gate abort the ENTIRE commit (2026-07-14: one landscape
           # thumbnail discarded every fetched image, twice in one day).
           node scripts/check-image-aspect.js --staged --quarantine
+          # BRO-6277: list-size variants (sm/) for the art that survived quarantine, staged with it.
+          node scripts/resize-show-images.js --variants --staged || echo "::warning::sm/ variant generation failed; check-variants will flag it"
 
           git commit -m "chore: Auto-fetch and archive show images
 
