@@ -30,7 +30,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates, dateSnippets, trVenueName } = require('./lib/we-review-led-candidates');
-const { isLondonVenue } = require('./lib/tr-london-venue');
+const { isLondonVenue, NON_LONDON_CITIES } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { venueFamily } = require('./lib/we-historical-corroboration');
 const { azLookups } = require('./lib/we-az-lookups');
@@ -212,6 +212,27 @@ function pdfRunHeadFor(text, title, venue) {
   return r && r.header ? r.header : null;
 }
 
+// London stage/house qualifiers TR prints beside the house in a run head ("NATIONAL, OLIVIER", "ROYAL COURT, DOWNSTAIRS").
+const RUN_HEAD_QUALIFIER = /^(?:NATIONAL|OLIVIER|LYTTELTON|DORFMAN|COTTESLOE|TEMPORARY|THE SHED|DOWNSTAIRS|UPSTAIRS|THEATRE UPSTAIRS|STUDIO|MAIN HOUSE|CENTRAL ST MARTINS|LONDON)$/;
+const LONDON_POSTCODE = /\s+(?:NW|SE|SW|EC|WC|[NEW])\d{1,2}[A-Z]?$/;
+
+/**
+ * Does a run-head venue caps line name the wanted house? The whole line, or one comma part, must reduce to the wanted
+ * family; every other part must be a London qualifier, and no part may be a non-London city
+ * ("ROYAL COURT, LIVERPOOL" reduces to the London house's family). A trailing London postcode ("UNION SE1") is dropped.
+ */
+function runHeadVenueMatches(venueLine, wantedVenue) {
+  const line = venueLine.replace(LONDON_POSTCODE, '');
+  const fam = v => venueFamily(trVenueName(v));
+  const lower = line.toLowerCase();
+  if (NON_LONDON_CITIES.some(city => lower.includes(city))) return false;
+  if (!line.includes(',')) return fam(line) === wantedVenue;
+  const parts = line.split(',').map(p => p.trim().replace(LONDON_POSTCODE, '')).filter(Boolean);
+  const okOther = p => RUN_HEAD_QUALIFIER.test(p) || isLondonVenue(p, { pdfEra: true });
+  if (fam(line) === wantedVenue && parts.slice(1).every(okOther)) return true;
+  return parts.some((p, k) => fam(p) === wantedVenue && parts.every((o, j) => j === k || okOther(o)));
+}
+
 /** pdfRunHeadFor's scan: {header}, {failed: reason} (ambiguous or unreadable: no other path may guess), or null (no run head). */
 function runHeadScan(text, title, venue) {
   const want = pdfTitleKey(title);
@@ -230,9 +251,7 @@ function runHeadScan(text, title, venue) {
       if (line !== line.toUpperCase() || !keys.has(capsKey(line))) continue;
       const venueLine = lines[i - 2];
       if (venueLine !== venueLine.toUpperCase() || !/[A-Z]{3}/.test(venueLine)) continue;
-      if (venueFamily(trVenueName(venueLine)) !== wantedVenue) continue;
-      // "ROYAL COURT, LIVERPOOL" reduces to the same family as the London house: a city suffix must still be London.
-      if (venueLine.includes(',') && !isLondonVenue(venueLine, { pdfEra: true })) continue;
+      if (!runHeadVenueMatches(venueLine, wantedVenue)) continue;
       const run = lines[i - 1].replace(/([A-Za-z])(\d{4})\b/g, '$1 $2');
       let start;
       let close = null;
