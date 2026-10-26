@@ -908,7 +908,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-26T15:33:55.602Z"
+    "queuedAt": "2026-10-26T16:01:10.675Z"
   },
   {
     "conditionKey": "t1-gaps:needs-manual-recovery",
@@ -922,7 +922,7 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-26T15:34:02.904Z"
+    "queuedAt": "2026-10-26T16:01:14.813Z"
   },
   {
     "conditionKey": "land:land/bro-6302-tr-lift-honored-3",
@@ -968,20 +968,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T15:40:45.091Z"
-  },
-  {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-26.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-26T15:40:45.149Z"
   },
   {
     "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",

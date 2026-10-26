@@ -1,13 +1,55 @@
 {
-  "generatedAt": "2026-10-26T15:37:17.436Z",
+  "generatedAt": "2026-10-26T16:04:02.624Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 248,
-  "clean": 248,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 246,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2,
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "beauty-and-the-beast-tour-2025",
+      "title": "Beauty and the Beast",
+      "openingDate": "2025-06-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: kidsoutandabout"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.15 vs local 84.24 (Δ0.09)"
+        }
+      ],
+      "missingFromProd": [
+        "kidsoutandabout"
+      ],
+      "localCount": 38,
+      "deployedCount": 38,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    },
+    {
+      "showId": "billy-crystal-860-2026",
+      "title": "Billy Crystal 860",
+      "openingDate": "2026-10-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 82.88 vs local 83.02 (Δ0.14)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 24,
+      "deployedCount": 24,
+      "firstDefectAt": "2026-10-26T12:12:02.165Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
