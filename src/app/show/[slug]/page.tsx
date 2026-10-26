@@ -336,12 +336,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
     ? getShowRanks(show.id, { format: show.type })
     : null;
-  // The commercial scorecard is unreleased (owner, 2026-10-04). Load its data
-  // only when the flag is on: ShowPageBelowFold is a client component, so
-  // anything passed to it lands in the page's RSC payload even when its
-  // section is hidden. Gating the render alone leaked capitalization and
-  // recoupment figures into every Broadway show page's source.
-  // Even with the flag on, only the allowlisted, publishable part of the
+  // The Money Scorecard was released 2026-10-26 (BRO-6192); to pull it, set the
+  // commercial getter back to has('commercial') and rebuild. ShowPageBelowFold
+  // is a client component, so anything passed to it lands in the page's RSC
+  // payload even when its section is hidden.
+  // Only the allowlisted, publishable part of the
   // record is sent (toPublicShowCommercial): raw research notes would
   // otherwise sit in the page source though the card never prints them.
   const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;

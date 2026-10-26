@@ -1142,8 +1142,16 @@ function touchesSite(files, sitePaths) {
   return (files || []).some((f) => (sitePaths || []).some((p) => (p.endsWith('/') ? f.startsWith(p) : f === p)));
 }
 
-function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs }) {
-  return verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed ? runEndMs : Math.min(cardDeadlineMs, runEndMs);
+/**
+ * The deadline of a fix round: the card budget, or the rest of the run for the first SHIP-WITH-FIXES round
+ * (BRO-5384) and for a REJECT round (BRO-6260: a REJECT gets one fix round, MAX_ATTEMPTS = 2, and capping it at the
+ * 60-min card budget banned 58% of bounced cards for 14 days on their first try, before that round ever ran).
+ * rejectRunEnd false (CODEX_REJECT_RUN_END=0) restores the card budget for REJECT.
+ */
+function fixRoundDeadline({ verdict, swfRoundUsed, cardDeadlineMs, runEndMs, rejectRunEnd = true }) {
+  if (verdict === 'SHIP-WITH-FIXES' && !swfRoundUsed) return runEndMs;
+  if (verdict === 'REJECT' && rejectRunEnd) return runEndMs;
+  return Math.min(cardDeadlineMs, runEndMs);
 }
 
 /**

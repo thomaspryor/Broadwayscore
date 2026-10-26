@@ -1,4 +1,5 @@
 import { test, expect, AD_NETWORK_URL_RE } from './helpers/test';
+import { skipOnPrUntilLive } from './helpers/feature-flags';
 
 // AdSense script and ad-serving hosts (subset of AD_NETWORK_URL_RE).
 const ADSENSE_HOST_RE = /googlesyndication\.com|adtrafficquality\.google/i;
@@ -192,31 +193,23 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).not.toContain('NaN');
   });
 
-  // The commercial scorecard is unreleased (owner, 2026-10-04), so /biz must
-  // 404. This used to assert the page rendered an h1 and 500+ characters,
-  // which the 404 page also does, so it passed while checking nothing.
-  // Fails if someone turns the `commercial` flag on in the prod env.
-  test('commercial scorecard stays unreleased', async ({ request, baseURL }) => {
-    test.skip(/demo\./.test(baseURL ?? ''), 'demo turns every flag on');
-
+  // The Money Scorecard was released 2026-10-26 (BRO-6192). Before that this
+  // asserted /biz was a 404; now it checks the hub, a browse page built on the
+  // data and the discovery surfaces (llms.txt, sitemap) all serve it, and that
+  // /biz is indexable. A 404 page also has an h1, so check the status code.
+  test('Money Scorecard is live', async ({ request }) => {
+    await skipOnPrUntilLive(request, '/biz');
     for (const p of ['/biz', '/browse/biggest-broadway-flops']) {
       const res = await request.get(p, { maxRedirects: 0 });
-      expect(res.status(), `${p} should be a 404 while commercial is unreleased`).toBe(404);
+      expect(res.status(), `${p} should be live since the Money Scorecard launch`).toBe(200);
     }
+    const biz = await (await request.get('/biz')).text();
+    expect(biz).toContain('Money Scorecard');
+    expect(biz).not.toMatch(/<meta[^>]+name="robots"[^>]+noindex/);
 
-    // The show page once shipped capitalization and recoupment figures in its
-    // RSC payload while the section itself was hidden. Object keys only
-    // ("key": in the payload), so a review that says "capitalization" does
-    // not trip it; recoupmentTrend is always passed, as "unknown" when off.
-    const showHtml = await (await request.get('/show/wicked')).text();
-    expect(showHtml).not.toMatch(/\\?"(capitalization|weeklyRunningCost|recoupedDate)\\?":|\\?"recoupmentTrend\\?":\\?"(?!unknown)/);
-
-    expect(await (await request.get('/llms.txt')).text()).not.toContain('Money Scorecard');
-    expect(await (await request.get('/llms.txt')).text()).not.toContain('/biz)');
-    expect(await (await request.get('/sitemap/0.xml')).text()).not.toMatch(/\/biz</);
-    // Related-page links to the flops list go with it.
-    expect(await (await request.get('/browse/longest-running-broadway-shows')).text())
-      .not.toContain('/browse/biggest-broadway-flops');
+    expect(await (await request.get('/llms.txt')).text()).toContain('Money Scorecard');
+    expect(await (await request.get('/llms.txt')).text()).toContain('/biz)');
+    expect(await (await request.get('/sitemap/0.xml')).text()).toMatch(/\/biz</);
   });
 
   test('audience buzz page renders scores', async ({ page }) => {

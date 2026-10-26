@@ -27,7 +27,7 @@ const {
 } = require('./lib/email-templates');
 const { applyUtm } = require('./lib/email-utm');
 const { isLondonMarket } = require('./lib/venue-classification');
-const { getGoldThreshold } = require('./lib/score-tiers');
+const { getBreakdownTierId } = require('./lib/score-tiers');
 
 // Wrap the HTML builder so every send/draft path picks up GA4/PostHog UTM
 // attribution (idempotent — see scripts/lib/email-utm.js). Campaign is the
@@ -233,12 +233,9 @@ function findRecentlyOpenedShows(shows, lookbackDays) {
 /**
  * Count scored reviews and compute rave/positive/mixed/negative for a show.
  * 4-tier breakdown matching the live site's ScoreBreakdownBar.getBreakdownTier:
- *   - Rounds score before comparing (a 69.6 displays as 70, so it's Positive)
- *   - Rave: >= getGoldThreshold(market) (score-tiers.js: 83 Broadway, 85 West End)
- *   - Positive: >=70
- *   - Mixed: >=55
- *   - Negative: <55
- * Keep in sync with src/components/show-cards/ScoreBreakdownBar.tsx.
+ * Cutoffs come from getBreakdownTierId in score-tiers.js (rounded score; Rave =
+ * Critical Gold, Positive = 65 to gold-1, Mixed = 55-64, Negative < 55), the
+ * same function ScoreBreakdownBar uses.
  */
 function getReviewStats(reviews, showId, market, show, shows) {
   const showReviews = (reviews || []).filter(r => r.showId === showId && Number.isFinite(r.assignedScore));
@@ -246,14 +243,13 @@ function getReviewStats(reviews, showId, market, show, shows) {
   // ones written about THIS run so the email can say how many are new.
   const runs = show && Array.isArray(show.priorRuns) && show.priorRuns.length ? priorRunClassifier(show, shows) : null;
   const newReviewCount = runs && runs.windows.length ? showReviews.filter(runs.isCurrent).length : null;
-  const goldThreshold = getGoldThreshold(market);
   let rave = 0, positive = 0, mixed = 0, negative = 0;
 
   for (const r of showReviews) {
-    const rounded = Math.round(r.assignedScore);
-    if (rounded >= goldThreshold) rave++;
-    else if (rounded >= 70) positive++;
-    else if (rounded >= 55) mixed++;
+    const tier = getBreakdownTierId(r.assignedScore, market);
+    if (tier === 'rave') rave++;
+    else if (tier === 'positive') positive++;
+    else if (tier === 'mixed') mixed++;
     else negative++;
   }
 

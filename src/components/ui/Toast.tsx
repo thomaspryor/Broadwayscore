@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback, createContext, useContext, type ReactNode } from 'react';
+import { ACCOUNT_GONE_EVENT, ACCOUNT_GONE_MESSAGE } from '@/lib/supabase-rest';
 
 type ToastType = 'success' | 'error' | 'info';
 
@@ -29,6 +30,12 @@ export function ToastProvider({ children }: { children: ReactNode }) {
   const removeToast = useCallback((id: number) => {
     setToasts(prev => prev.filter(t => t.id !== id));
   }, []);
+
+  useEffect(() => {
+    const onAccountGone = () => showToast(ACCOUNT_GONE_MESSAGE, 'error');
+    window.addEventListener(ACCOUNT_GONE_EVENT, onAccountGone);
+    return () => window.removeEventListener(ACCOUNT_GONE_EVENT, onAccountGone);
+  }, [showToast]);
 
   return (
     <ToastContext.Provider value={{ showToast }}>

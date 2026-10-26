@@ -1,9 +1,9 @@
 /**
  * Unit tests for getBreakdownTier — the classifier used by ScoreBreakdownBar
- * on the show page header card. Thresholds deliberately diverge from the
- * ScoreBadge/score-buckets 5-tier taxonomy: the bar uses 4 sentiment-oriented
- * tiers with a 70 floor for "Positive" (a soft recommend) and a market-aware
- * gold threshold for "Rave".
+ * on the show page header card. The bar uses 4 sentiment tiers over the same
+ * score bands as the ScoreBadge colors: Positive starts at the Worth Seeing
+ * floor (65), so a blue badge never reads as Mixed, and Rave uses the
+ * market-aware gold threshold.
  *
  * Run with: npx tsx --test tests/unit/score-breakdown-tier.test.ts
  */
@@ -24,26 +24,26 @@ describe('getBreakdownTier — Broadway (gold threshold 83)', () => {
     assert.strictEqual(getBreakdownTier(82, 'broadway'), 'positive');
   });
 
-  test('70 → positive (boundary)', () => {
-    assert.strictEqual(getBreakdownTier(70, 'broadway'), 'positive');
+  test('65 → positive (boundary, Worth Seeing floor)', () => {
+    assert.strictEqual(getBreakdownTier(65, 'broadway'), 'positive');
   });
 
-  test('70–82 all positive — including the former Worth Seeing territory', () => {
-    for (const s of [70, 71, 72, 74, 75, 78, 82]) {
+  test('65–82 all positive, including every blue and green badge', () => {
+    for (const s of [65, 69, 70, 72, 74, 75, 78, 82]) {
       assert.strictEqual(getBreakdownTier(s, 'broadway'), 'positive', `score ${s}`);
     }
   });
 
-  test('69 → mixed (just below positive)', () => {
-    assert.strictEqual(getBreakdownTier(69, 'broadway'), 'mixed');
+  test('64 → mixed (just below positive)', () => {
+    assert.strictEqual(getBreakdownTier(64, 'broadway'), 'mixed');
   });
 
   test('55 → mixed (boundary)', () => {
     assert.strictEqual(getBreakdownTier(55, 'broadway'), 'mixed');
   });
 
-  test('55–69 all mixed', () => {
-    for (const s of [55, 60, 64, 65, 68, 69]) {
+  test('55–64 all mixed', () => {
+    for (const s of [55, 58, 60, 62, 64]) {
       assert.strictEqual(getBreakdownTier(s, 'broadway'), 'mixed', `score ${s}`);
     }
   });
@@ -86,8 +86,8 @@ describe('getBreakdownTier — rounding', () => {
     assert.strictEqual(getBreakdownTier(82.4, 'broadway'), 'positive');
     // 82.5 → 83 → rave
     assert.strictEqual(getBreakdownTier(82.5, 'broadway'), 'rave');
-    // 69.9 → 70 → positive (boundary)
-    assert.strictEqual(getBreakdownTier(69.9, 'broadway'), 'positive');
+    // 64.6 → 65 → positive (boundary)
+    assert.strictEqual(getBreakdownTier(64.6, 'broadway'), 'positive');
     // 54.4 → 54 → negative
     assert.strictEqual(getBreakdownTier(54.4, 'broadway'), 'negative');
   });
@@ -142,11 +142,8 @@ describe('ScoreBreakdownBar — allocation invariants on all 1,470+ public shows
   // the bar without importing JSX. Must stay in sync with ScoreBreakdownBar.tsx.
   type Tier = 'rave' | 'positive' | 'mixed' | 'negative';
   function classify(score: number, gold: number): Tier {
-    const r = Math.round(score);
-    if (r >= gold) return 'rave';
-    if (r >= 70) return 'positive';
-    if (r >= 55) return 'mixed';
-    return 'negative';
+    // Real function, not a copy of the cutoffs (CLAUDE.md §15). gold 85 = West End.
+    return getBreakdownTier(score, gold === 85 ? 'west-end' : 'broadway') as Tier;
   }
   function allocate(counts: Record<Tier, number>, total: number): Record<Tier, number> {
     const tiers: Tier[] = ['rave', 'positive', 'mixed', 'negative'];

@@ -736,20 +736,6 @@
     "queuedAt": "2026-10-25T21:46:42.780Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-25.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T22:15:55.400Z"
-  },
-  {
     "conditionKey": "land:land/bro6112-cloud-keys",
     "title": "Landing blocked: unit-tests-node red on land/bro6112-cloud-keys",
     "description": "land.yml did not land land/bro6112-cloud-keys: the unit-tests-node gate went red at 5df3558107. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40236595439",
@@ -990,20 +976,6 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-25T23:51:22.707Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-25.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-25T23:51:26.784Z"
   },
   {
     "conditionKey": "land:land/bro-6219-web-alerts",
@@ -1263,5 +1235,151 @@
       }
     ],
     "queuedAt": "2026-10-26T01:36:08.671Z"
+  },
+  {
+    "conditionKey": "corpus-drift:duplicate-shows",
+    "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff) — escalated after 24 notifications",
+    "description": "Filed BRO-6280 for owner triage after 24 repeats with no tracker.\n\ncheck-corpus-drift.js audit \"duplicate-shows\" (node scripts/audit-duplicate-shows.js --strict) has been drifting. Latest output:\n\nFound 3 duplicate-show cluster(s), 3 pair(s) (baselined: 0, new: 3):\n\n  [title-fragment] title-fragment@secret cinema greenwich peninsula\n    secret-cinema-presents-disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027  (Secret Cinema, Greenwich Peninsula, 0 review files)\n    disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027  (Secret Cinema, Greenwich Peninsula, 0 review files)\n  [shared-ticket-identity] ticket-identity@todaytix:38749\n    the-great-gatsby-2024  (Broadway Theatre, 76 review files)\n    the-great-gatsby-tour-2026  (North American Tour, 58 review files)\n  [shared-ticket-identity] ticket-identity@todaytix:46996\n    jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026  (Theatre Royal Drury Lane, 8 review files)\n    jesus-christ-superstar-off-west-end-2026  (Drury Lane, Theatre Royal, 16 review files)\n\nDetail written to data/audit/duplicate-shows.json\n\n⚠️  NEW duplicate pair(s) not in the baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/duplicate-shows-baseline.json):\n  [title-fragment] title-fragment@secret cinema greenwich peninsula: secret-cinema-presents-disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027 <-> disneys-pirates-of-the-caribbean-the-immersive-adventure-off-west-end-2027\n  [shared-ticket-identity] ticket-identity@todaytix:38749: the-great-gatsby-2024 <-> the-great-gatsby-tour-2026\n  [shared-ticket-identity] ticket-identity@todaytix:46996: jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026 <-> jesus-christ-superstar-off-west-end-2026\n\nIf this is deliberate progress (an intentional carve-out for a genuinely distinct\nproduction), refresh the baseline: node scripts/audit-duplicate-shows.js --update-baseline",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-6280",
+    "fields": [],
+    "queuedAt": "2026-10-26T02:09:46.912Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-26.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:09:47.049Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:baby-off-west-end-2026",
+    "title": "6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--36e041bc.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tyler-cameron-fiancee-tate-madden-baby-dwts-dedication-night-routine/6561611/\n- nbcny--3e3bac2.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/news/national-international/top-baby-names-trends-odyssey-yellowstone-heated-rivalry/6561184/\n- nbcny--5f72cba5.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/alex-cooper-welcomes-baby-boy-husband-matt-kaplan/6561122/\n- nbcny--581da98c.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-pregnancy-age-52-addresses-backlash/6560204/\n- nbcny--1daa444e.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/hilary-swank-announces-pregnant-baby-no-3/6559878/\n- nbcny--77bcfc31.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/kaley-cuoco-tom-pelphrey-welcome-2nd-baby/6559563/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T01:58:02.433Z"
+  },
+  {
+    "conditionKey": "land:land/owner-decision-quiet",
+    "title": "Landing blocked: unit-tests-node red on land/owner-decision-quiet",
+    "description": "land.yml did not land land/owner-decision-quiet: the unit-tests-node gate went red at 29d79265cb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40254715277",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/owner-decision-quiet"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "29d79265cb30673366641ad7d34863a2c705c8ab"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40254715277"
+      }
+    ],
+    "queuedAt": "2026-10-26T01:52:51.515Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5215-eslint-cli",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5215-eslint-cli",
+    "description": "land.yml did not land land/bro-5215-eslint-cli: the unit-tests-node gate went red at 1e86c3f5af. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40254879732",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5215-eslint-cli"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1e86c3f5afd6b95f95ce1691b134a83e7621b294"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40254879732"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:01:36.719Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 8.65 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:13:50.834Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/tour-runtime-coverage.test.mjs::every national tour has a synopsis, or is a documented gap",
+    "title": "Live-data test failing: every national tour has a synopsis, or is a documented gap (tests/unit/tour-runtime-coverage.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"every national tour has a synopsis, or is a documented gap\" in tests/unit/tour-runtime-coverage.test.mjs is red against the live corpus.\n\ntours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-musical-tour-2026, the-bodyguard-tour-2026\n+ actual - expected\n\n+ [\n+   'the-unauthorized-hallmark-ish-parody-musical-tour-2026',\n+   'the-bodyguard-tour-2026'\n+ ]\n- []",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:13:50.863Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked candidate sub-venue slugs found (same class as the West End National Theatre bug): {\n\"theatre-row\": [\n{\n\"slug\": \"theatre-five-theatre-row\",\n\"rawStrings\": [\n\"Theatre Five @ Theatre Row\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'theatre-row': [\n+     {\n+       rawStrings: [\n+         'Theatre Five @ Theatre Row'\n+       ],\n+       showCount: 1,\n+       slug: 'theatre-five-theatre-row'\n+     }\n+   ]\n+ }\n- {}",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:13:50.876Z"
   }
 ]
