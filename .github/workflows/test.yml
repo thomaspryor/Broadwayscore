@@ -197,6 +197,8 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # BRO-6241: cron lander, required by scripts/lib/visual-approval.test.mjs
+      - 'scripts/visual-approval-land.js'
       # tests/unit/serp-review-acceptance.test.mjs requires scan-serp-adoptions.js (BRO-4546)
       - 'scripts/scan-serp-adoptions.js'
       # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs
@@ -1631,6 +1633,10 @@ on:
       # *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed so a
       # solo edit triggers CI.
       - 'scripts/audit-contradicted-flag-basis.js'
+      # BRO-5805 report-only sweep for excluded files whose text names the show's
+      # own cast. Sibling *.test.mjs is globbed (scripts/*.test.mjs); path-listed so
+      # a solo edit triggers CI.
+      - 'scripts/audit-excluded-with-own-show-evidence.js'
       # duplicateOf + stale _duplicateOfCleared contradiction sweep (#1655).
       # Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob; path-listed
       # so a solo edit to the CLI wrapper itself triggers CI.

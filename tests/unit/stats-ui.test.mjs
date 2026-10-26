@@ -241,7 +241,7 @@ test('format helpers', () => {
   assert.equal(shortMonth('2025-01'), 'Jan');
   assert.equal(formatDateSeen('2025-10-04'), 'Oct 4, 2025');
   assert.equal(formatDateSeen(null), 'No date');
-  assert.equal(houseShortName('Harold and Miriam Steinberg Center for Theatre'), 'Steinberg');
+  assert.equal(houseShortName('Circle in the Square Theatre'), 'Circle in the Sq.', 'explicit table beats the suffix regex');
   assert.equal(houseShortName('Booth Theatre'), 'Booth', 'falls back to stripping the suffix');
   assert.equal(houseShortName('Lincoln Center Theater - Mitzi E. Newhouse'), 'Mitzi E. Newhouse');
   assert.equal(initials('Jesse Green'), 'JG');

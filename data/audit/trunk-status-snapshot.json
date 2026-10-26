@@ -1,30 +1,56 @@
 {
-  "generatedAt": "2026-10-25T13:08:43.412Z",
+  "generatedAt": "2026-10-26T00:18:06.469Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "8aaead6e44f1d0d26aa5eb710ebc94fe69eb8b7c",
-  "state": "GREEN",
-  "consecutiveFailures": 0,
-  "consecutiveSuccesses": 6,
-  "greenSince": "2026-10-25T12:16:46Z",
-  "greenForHours": 0.8659477777777778,
+  "latestRunHeadSha": "c9319831ccf9cc4ab6fb5eb538bdde32f5f46351",
+  "state": "RED",
+  "consecutiveFailures": 21,
+  "consecutiveSuccesses": 0,
+  "greenSince": null,
+  "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": null,
-  "redForHours": null,
+  "redSince": "2026-10-25T19:56:32Z",
+  "redForHours": 4.359574722222222,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-25T12:37:11Z",
-  "latestFailedRunId": null,
-  "latestFailedRunUrl": null,
-  "decidedRuns": 98,
+  "lastSuccessAt": "2026-10-25T19:39:41Z",
+  "latestFailedRunId": "40246292531",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40246292531",
+  "decidedRuns": 99,
   "verdictLag": {
-    "verdictSha": "8aaead6e44f1d0d26aa5eb710ebc94fe69eb8b7c",
-    "verdictAt": "2026-10-25T12:37:11Z",
-    "verdictAgeHours": 0.52567,
-    "newerHeads": 0,
-    "runsInFlight": 0,
+    "verdictSha": "c9319831ccf9cc4ab6fb5eb538bdde32f5f46351",
+    "verdictAt": "2026-10-25T23:46:52Z",
+    "verdictAgeHours": 0.5206858333333333,
+    "newerHeads": 1,
+    "runsInFlight": 1,
     "lagging": false
   },
-  "failingJobs": [],
-  "failingPaths": [],
-  "topFailingJob": null
+  "failingJobs": [
+    {
+      "name": "Unit Tests",
+      "steps": [
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
+      ]
+    },
+    {
+      "name": "Data Validation",
+      "steps": [
+        "Audit outlet-registry gaps"
+      ]
+    },
+    {
+      "name": "Test Summary",
+      "steps": [
+        "Check results"
+      ]
+    }
+  ],
+  "failingPaths": [
+    {
+      "path": "scripts/lib/musical-model-backtest.test.mjs",
+      "job": "Unit Tests",
+      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "evidence": "not ok 7431 - reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside"
+    }
+  ],
+  "topFailingJob": "Unit Tests"
 }

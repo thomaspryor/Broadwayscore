@@ -29,6 +29,7 @@ async function main() {
   const rows = (await res.json()).results || [];
   const paths = rows.map(r => r[0]).filter(p => /^\/(show|cast|critics)\//.test(p || ''))
     .map(p => p.replace(/\/+$/, '')).sort();
+  if (paths.length === 0) { console.error('no search-landing paths returned; keeping existing snapshot'); process.exit(1); }
   const out = { generated: new Date().toISOString().slice(0, 10), windowDays: 90, paths: [...new Set(paths)] };
   fs.writeFileSync(OUT, JSON.stringify(out, null, 1) + '\n');
   console.log(`wrote ${out.paths.length} paths to ${path.relative(process.cwd(), OUT)}`);

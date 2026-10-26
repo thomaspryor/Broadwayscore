@@ -154,6 +154,8 @@ function mapIssueToCard(issue) {
     // exactly like a Notion non-Done status would, and is only ever picked
     // up via an explicit RECHECK-AFTER stamp — never swept in by mistake.
     status: stateType === 'completed' ? 'Done' : stateName,
+    // BRO-6240: the auto-close decision keys on the state TYPE, never the name.
+    stateType: stateType || null,
     notes: issue.description || '',
     // Oldest-first (sortedCommentBodies' own contract) — recheck-stamp.js
     // scans this newest-to-oldest for RECHECK-AFTER, and verify-gate.js's

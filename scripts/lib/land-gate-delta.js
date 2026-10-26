@@ -151,7 +151,12 @@ function parseTscFailures(text) {
     // src/lib/x.ts(12,5): error TS2304: Cannot find name 'y'.
     const m = /^(.+?)\((\d+),(\d+)\): error (TS\d+): (.*)$/.exec(line.trimEnd());
     if (!m) continue;
-    addWithMultiplicity(out, m[1].trim(), `${m[4]} ${m[5].trim()}`);
+    // A symlinked node_modules resolves outside the tree, so tsc prints it relative to wherever
+    // the run happened (../../../node_modules vs ../../../home/x/node_modules): key it by the part
+    // that is the same on both sides (BRO-6252, base gates now run in a separate worktree).
+    const file = m[1].trim();
+    const nm = file.indexOf('node_modules/');
+    addWithMultiplicity(out, nm > 0 && /^(\.\.\/)+/.test(file) ? file.slice(nm) : file, `${m[4]} ${m[5].trim()}`);
   }
   return out;
 }

@@ -99,7 +99,7 @@ const PARKED_SENTINEL_RE = /^\s*PARKED\s*:/im;
 // literal '/'. The test asserts the two stay in sync by parsing the hook —
 // if the gate widens to a new extension and this doesn't, headless sessions
 // silently start picking cards they can't land again.
-const UI_PATH_RE = /^(src\/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src\/app\/.*\.(tsx|jsx|ts|js)$)/;
+const UI_PATH_RE = /^(src\/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.)/;
 
 // Path-ish tokens in free card text: `src/components/Foo.tsx`,
 // "scripts/lib/bar.js", src/**/*.{tsx,css}, tailwind.config.ts.
@@ -251,7 +251,7 @@ function isDrainableSessionParked(notes) {
 // owner can supply: money, a login or account, a product/taste call, an
 // irreversible bulk change, their calendar, or their Mac. Used only to keep the
 // advisory quiet; it never widens what drains.
-const OWNER_ONLY_PARK_RE = /\bmac\b|launchd|simulator|money|spend|subscription|credits|\bpaid\b|payment|price|login|log[- ]in|sign[- ]?in|oauth|cookie|password|account|calendar|schedul|taste|visual-qa approval|owner-review|product (?:call|decision)|irreversib|bulk|quota|budget|iphone|device|different repo|other repo|legal|thomas|duplicate of/i;
+const OWNER_ONLY_PARK_RE = /\bmac\b|launchd|simulator|money|spend|subscription|credits|\bpaid\b|payment|price|login|log[- ]in|sign[- ]?in|oauth|cookie|password|account|calendar|schedul|taste|owner-review|product (?:call|decision)|irreversib|bulk|quota|budget|iphone|device|different repo|other repo|legal|thomas|duplicate of/i;
 
 // BRO-5626: what a session park can name that a worker really cannot get past:
 // a key or credential, a date or event to wait for, a card that is a log and
@@ -408,23 +408,9 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
     });
   }
 
-  const uiPaths = uiPathsIn(text);
-  if (uiPaths.length) {
-    blockers.push({
-      code: BLOCKERS.VISUAL_QA_GATE,
-      detail: `touches UI path(s) ${uiPaths.slice(0, 3).join(', ')} — pre-push-visual-gate.sh blocks the push until the owner approves`,
-    });
-  } else if (UI_CARD_CLASS_RE.test(subject)) {
-    blockers.push({
-      code: BLOCKERS.VISUAL_QA_GATE,
-      detail: 'rage-click / UX-audit card class — the fix is a UI change by construction, so the push needs owner visual-qa approval',
-    });
-  } else if (VISUAL_QA_MENTION_RE.test(text)) {
-    blockers.push({
-      code: BLOCKERS.VISUAL_QA_GATE,
-      detail: 'card calls for the visual-qa ritual, which ends in an owner approval an unattended session cannot get',
-    });
-  }
+  // BRO-6241: UI cards are dispatchable. The worker runs visual QA itself and
+  // asks the owner through the decision list (scripts/visual-approval.js), so
+  // the old VISUAL_QA_GATE blocker (which parked every UI card) is gone.
 
   const asyncHit = firstMatch(ASYNC_WAIT_RES, text);
   if (asyncHit) {

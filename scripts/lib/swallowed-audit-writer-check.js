@@ -35,6 +35,44 @@
  * workflow-scoped).
  */
 
+// BRO-267: "writes data/audit/" now means the source both names the directory
+// and calls a write primitive. A script that only reads or mentions
+// data/audit/ in a comment cannot lose an audit write when its step is
+// swallowed, so flagging it was noise that buried the real writers.
+const WRITE_CALL_RE = /\b(writeFileSync|writeFile|appendFileSync|appendFile|renameSync|createWriteStream|writeAuditArtifact|writeJson\w*|atomicWrite\w*|appendJsonl\w*|writeAtomic\w*)\b/;
+// The directory may be named as 'data/audit/' or built with path.join('data', 'audit').
+// Also path.join(DATA_DIR, 'audit', ...) and '../data/audit' with no trailing slash.
+const AUDIT_DIR_RE = /data\/audit\b|\b(?:data|DATA_DIR|DATA)\w*['"]?\s*,\s*['"]audit['"]/;
+function isAuditWriterSource(text) {
+  return AUDIT_DIR_RE.test(text) && WRITE_CALL_RE.test(text);
+}
+
+/**
+ * File-level predicate that also follows ONE level of relative requires, since
+ * many scripts write through a shared helper (autonomous-ledger.js,
+ * weekly-monitor-runner.js): the script names the audit path, the helper makes
+ * the write call. `root` is the repo root; `script` is repo-relative.
+ */
+function isAuditWriterFile(root, script) {
+  const fs = require('fs');
+  const path = require('path');
+  let text;
+  try { text = fs.readFileSync(path.join(root, script), 'utf8'); } catch { return false; }
+  if (isAuditWriterSource(text)) return true;
+  if (!AUDIT_DIR_RE.test(text)) return false;
+  const re = /require\(\s*['"](\.{1,2}\/[^'"]+)['"]\s*\)/g;
+  let m;
+  while ((m = re.exec(text))) {
+    for (const cand of [m[1], m[1] + '.js']) {
+      try {
+        const f = path.resolve(path.dirname(path.join(root, script)), cand);
+        if (WRITE_CALL_RE.test(fs.readFileSync(f, 'utf8'))) return true;
+      } catch { /* not a file */ }
+    }
+  }
+  return false;
+}
+
 const STEP_START_RE = /^\s*-\s+name:/;
 const CONTINUE_ON_ERROR_RE = /^\s*continue-on-error:\s*true\s*$/;
 const OR_TRUE_RE = /\|\|\s*true\b/;
@@ -84,8 +122,9 @@ function splitSteps(workflowYamlText) {
  * Returns one human-readable violation string per (step, script) pair found.
  * Empty array = clean (or no matching steps).
  */
-function findSwallowedAuditWriters(workflowYamlText, isAuditWriterScript) {
+function findSwallowedAuditWriters(workflowYamlText, isAuditWriterScript, opts = {}) {
   const violations = [];
+  const matched = opts.matched || null; // Set of allowlist keys that suppressed a violation
   const steps = splitSteps(workflowYamlText);
 
   for (const stepLines of steps) {
@@ -117,6 +156,8 @@ function findSwallowedAuditWriters(workflowYamlText, isAuditWriterScript) {
 
     for (const script of scripts) {
       if (!isAuditWriterScript(script)) continue;
+      const hit = opts.allowlist && opts.workflow && matchAllowlist(opts.allowlist, opts.workflow, stepName, script);
+      if (hit) { if (matched) matched.add(hit.key); continue; }
       violations.push(
         `step '${stepName}' runs ${script} (writes data/audit/) with ${swallowKind} — failures are silently swallowed`
       );
@@ -126,4 +167,41 @@ function findSwallowedAuditWriters(workflowYamlText, isAuditWriterScript) {
   return violations;
 }
 
-module.exports = { findSwallowedAuditWriters, splitSteps };
+/**
+ * Central, reasoned exemptions (BRO-267). Same contract as the inline
+ * `# lint-allow-swallow:` comment, kept in
+ * scripts/lib/swallowed-audit-writer-allowlist.json so triage does not need an
+ * edit to a workflow file. An entry is {workflow, step?, script?, reason}:
+ * `step` omitted covers every step of that workflow running `script`;
+ * `workflow: "*"` covers the script in every workflow. `reason` is required.
+ */
+function allowlistKey(e) { return `${e.workflow}|${e.step || '*'}|${e.script || '*'}`; }
+
+function validateAllowlist(entries) {
+  const problems = [];
+  const seen = new Set();
+  entries.forEach((e, i) => {
+    if (!e || typeof e.workflow !== 'string' || !e.workflow) problems.push(`entry ${i}: missing workflow`);
+    else if (!e.script && !e.step) problems.push(`entry ${i} (${e.workflow}): needs step or script`);
+    if (!e || typeof e.reason !== 'string' || e.reason.trim().length < 20) problems.push(`entry ${i}: reason must be a real sentence (>=20 chars)`);
+    if (e && seen.has(allowlistKey(e))) problems.push(`entry ${i}: duplicate ${allowlistKey(e)}`);
+    if (e) seen.add(allowlistKey(e));
+  });
+  return problems;
+}
+
+function matchAllowlist(entries, workflow, step, script) {
+  let best = null;
+  let bestScore = -1;
+  for (const e of entries) {
+    if (e.workflow !== '*' && e.workflow !== workflow) continue;
+    if (e.step && e.step !== step) continue;
+    if (e.script && e.script !== script) continue;
+    // Most specific entry wins so a narrow entry is never reported stale behind a wildcard.
+    const score = (e.workflow !== '*' ? 1 : 0) + (e.step ? 1 : 0) + (e.script ? 1 : 0);
+    if (score > bestScore) { best = e; bestScore = score; }
+  }
+  return best ? { ...best, key: allowlistKey(best) } : null;
+}
+
+module.exports = { findSwallowedAuditWriters, splitSteps, isAuditWriterSource, isAuditWriterFile, validateAllowlist, matchAllowlist, allowlistKey };

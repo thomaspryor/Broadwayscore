@@ -433,7 +433,6 @@ const THEATER_VALID_ENTRANCE_STREETS = {
   "Eugene O'Neill Theatre":                         ["49"],
   "Gerald Schoenfeld Theatre":                      ["45"],
   "Gershwin Theatre":                               ["51"],
-  "Harold and Miriam Steinberg Center for Theatre": ["46"],
   "Helen Hayes Theater":                            ["44"],
   "Hudson Theatre":                                 ["44"],
   "Imperial Theatre":                               ["45"],

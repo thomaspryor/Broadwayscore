@@ -37,11 +37,10 @@ export function formatDateSeen(dateSeen: string | null): string {
 
 /**
  * Short display name for a house chip ("Gerald Schoenfeld Theatre" →
- * "Schoenfeld"). An explicit table beats regexes: the Steinberg house fell
+ * "Schoenfeld"). An explicit table beats regexes: a long house name once fell
  * through a suffix-stripping regex on iOS and rendered truncated.
  */
 const HOUSE_SHORT_NAMES: Record<string, string> = {
-  'Harold and Miriam Steinberg Center for Theatre': 'Steinberg',
   'Circle in the Square Theatre': 'Circle in the Sq.',
   'Vivian Beaumont Theater': 'Beaumont',
   'Lunt-Fontanne Theatre': 'Lunt-Fontanne',

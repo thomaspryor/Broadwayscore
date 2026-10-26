@@ -1,18 +1,24 @@
 {
-  "generatedAt": "2026-10-25T12:48:38.091Z",
+  "generatedAt": "2026-10-26T00:04:39.926Z",
   "shadow": true,
-  "checkoutSha": "fc459a351c0ef9adb9e2c4742dde78aaaa9ea3b7",
-  "totalCandidates": 514,
-  "eligibleCandidates": 81,
-  "checked": 14,
+  "checkoutSha": "fdb8ea471224762cd2c35f180c85fd3b76cd02c6",
+  "totalCandidates": 483,
+  "eligibleCandidates": 78,
+  "checked": 22,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 8,
-    "fail": 0,
-    "unverifiable": 6
+    "pass": 16,
+    "fail": 1,
+    "unverifiable": 5
   },
   "alreadyDone": [
+    {
+      "id": "BRO-6233",
+      "name": "Hand-review long review bodies still parked in wrongFullText by head-of-article CV verdicts (BRO-6225 follow-up)",
+      "verifyCmd": "node --test scripts/lib/content-verifier.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-6197",
       "name": "Version site-page image refs (src/) so replaced art busts caches",
@@ -26,15 +32,21 @@
       "detail": null
     },
     {
-      "id": "BRO-6165",
-      "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
-      "verifyCmd": "test -f scripts/backtest-recoupment-bucknell.js",
+      "id": "BRO-6180",
+      "name": "Owner's yes/no on an awaiting-owner approval card is not picked up either (extend the BRO-6168 reply drain)",
+      "verifyCmd": "node --test tests/unit/decision-reply.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6131",
-      "name": "Redesign morning digest decision cards: clickable, plain-English, one-tap actions",
-      "verifyCmd": "node --test scripts/lib/decision-card-parse.test.mjs",
+      "id": "BRO-6159",
+      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
+      "verifyCmd": "node --test scripts/audit-biz-og-coverage.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6140",
+      "name": "BRO-6137 leftovers: model false negatives, Bucknell cap conflicts, 88 missing Bucknell musicals, live-data check",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
@@ -50,6 +62,12 @@
       "detail": null
     },
     {
+      "id": "BRO-6095",
+      "name": "Video reviews: match UK creators' reviews and London runs (465 undated YouTube reviews never re-matched)",
+      "verifyCmd": "node --test tests/unit/youtube-captions.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-6082",
       "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
       "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 UXVhbGl0eTogY29ycHVzIGRyaWZ0",
@@ -60,33 +78,64 @@
       "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
       "verifyCmd": "node --test tests/unit/audit-script-wiring.test.mjs",
       "detail": null
-    }
-  ],
-  "failing": [],
-  "unverifiable": [
-    {
-      "id": "BRO-6191",
-      "name": "Recoupment backtest: add a loss-side gate; stop deep research re-adding an uncited weekly cost to a record whose cost was cleared",
-      "verifyCmd": "node --test scripts/lib/deep-research-cleared-cost.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/deep-research-cleared-cost.test.mjs"
     },
     {
-      "id": "BRO-6159",
-      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
-      "verifyCmd": "node --test scripts/audit-biz-og-coverage.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-biz-og-coverage.test.mjs"
+      "id": "BRO-6035",
+      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
+      "verifyCmd": "test -f scripts/generate-workflow-dependencies.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "verifyCmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6031",
+      "name": "Land queue holds ~285 land/* refs; runs park and cancel for hours (BRO-5528 and BRO-3552 needed 6 and 2 re-runs)",
+      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6029",
+      "name": "Bound the 21 inline git fetch/pull calls in workflows with git_net (BRO-5972 cousin)",
+      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6027",
+      "name": "Five more TheaterMania reviews credited to David Rooney (BRO-4889 cousin): verify true bylines and fix",
+      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
+      "detail": null
+    }
+  ],
+  "failing": [
+    {
+      "id": "BRO-6251",
+      "name": "Homepage lab Total Blocking Time rose to 542ms (simulated score 91 -> 79); find the new main-thread work",
+      "verifyCmd": "node --test scripts/verify-seo-health-clean.test.mjs",
+      "detail": "not ok: seo-health.json is fresh and reports no anomalies (card \\#4… | first failure: health-check.js fires the \"SEO: health\" digest condition on any non-empty anomal"
+    }
+  ],
+  "unverifiable": [
+    {
+      "id": "BRO-6176",
+      "name": "iOS design round: ideas from the inspiration app (stats strip, feature cards, numbered Top 10, quick-log +)",
+      "verifyCmd": "node --test tests/unit/inspiration-ideas-variants.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/inspiration-ideas-variants.test.mjs"
     },
     {
       "id": "BRO-6128",
       "name": "Fix: Tour candidate: Liberation national tour",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 ZGlnZXN0LW5lZWRzLXlvdTpUb3VyIGNhbmRpZGF0ZTogTGliZXJhdGlvbiBuYXRpb25hbCB0b3Vy",
-      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-koULgZ/main/data/audit/alert-ledger.json) — never"
+      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-YkAMvW/main/data/audit/alert-ledger.json) — never"
     },
     {
       "id": "BRO-6102",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"silentGapBacklogResults: real audit report shape\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 131554ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 121727ms (timeout — no verdict)"
     },
     {
       "id": "BRO-6098",
@@ -95,26 +144,19 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-aggregator-health.test.mjs"
     },
     {
-      "id": "BRO-6044",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"Kenrex: both DD 2026 person-name wins routed off-Broadway (no Tony fallback)\"",
+      "id": "BRO-6014",
+      "name": "Cloud dev loop: npm run build dirties ~17 tracked data files (swept into commits); land-local-check keeps no per-gate failure output",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 65438ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 34478ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6165",
-      "name": "Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills",
-      "branch": "land/codex-bro-6165",
-      "sha": "2cea37952976c2db252f963258be74be8f396cbd",
-      "landedAt": "2026-10-25T11:40:01.792Z"
-    },
-    {
-      "id": "BRO-6131",
-      "name": "Redesign morning digest decision cards: clickable, plain-English, one-tap actions",
-      "branch": "land/bro-6131-link-hardening",
-      "sha": "b39813e2bc53707789c9a329658b4237384a7585",
-      "landedAt": "2026-10-24T16:58:14.848Z"
+      "id": "BRO-6159",
+      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
+      "branch": "land/codex-bro-6159",
+      "sha": "d207d7124afc90651c839e6de06497cd3bbf260f",
+      "landedAt": "2026-10-25T18:20:35.231Z"
     },
     {
       "id": "BRO-6099",
@@ -131,6 +173,13 @@
       "landedAt": "2026-10-24T06:47:03.918Z"
     },
     {
+      "id": "BRO-6095",
+      "name": "Video reviews: match UK creators' reviews and London runs (465 undated YouTube reviews never re-matched)",
+      "branch": "land/bro-6095-reuse-score-bucket",
+      "sha": "086140abe39e6e940fb478c93c2935464db73b53",
+      "landedAt": "2026-10-24T19:24:27.392Z"
+    },
+    {
       "id": "BRO-6082",
       "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
       "branch": "land/bro-6082-digest-parked-selfheal",
@@ -143,6 +192,20 @@
       "branch": "land/codex-bro-6038",
       "sha": "cdca40aa73b4913b62a02f53fbc099f1c5b18f0d",
       "landedAt": "2026-10-23T11:37:31.712Z"
+    },
+    {
+      "id": "BRO-6033",
+      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
+      "branch": "land/bro-6033-poller-first-wave",
+      "sha": "979fa74f85bc25c76d7f23d2b2771df211a14ae5",
+      "landedAt": "2026-10-23T05:02:28.175Z"
+    },
+    {
+      "id": "BRO-6029",
+      "name": "Bound the 21 inline git fetch/pull calls in workflows with git_net (BRO-5972 cousin)",
+      "branch": "land/bro-6029-git-net-fetch",
+      "sha": "945fdb54c9b098aede309cceb976b1bc5a87b258",
+      "landedAt": "2026-10-24T02:36:30.314Z"
     }
   ]
 }

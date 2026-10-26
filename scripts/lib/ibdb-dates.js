@@ -306,7 +306,7 @@ function extractCreativeTeamFromText(text) {
     // made other people this production's director (BRO-5080: 15 of 19
     // sampled two-director rows were wrong).
     // ("Entire production directed by", "Staged and directed by" still count.)
-    [/(?<!(?:originally|original production|original|movement|fight|musical numbers)\s)Directed by\s+([^;:\n]+)/gi, 'Director'],
+    [/(?<!(?:originally|original production|original|movement|fight|musical numbers|music|musical|video|projection|puppetry|associate|assistant|resident|film sequences|film segments|film footage|vocal|dance)\s)Directed by\s+([^;:\n]+)/gi, 'Director'],
     [/Choreograph(?:ed|y) by\s+([^;:\n]+)/gi, 'Choreographer'],
     [/Book by\s+([^;:\n]+)/gi, 'Book'],
     [/Scenic Design by\s+([^;:\n]+)/gi, 'Scenic Design'],

@@ -27,7 +27,7 @@ const {
 
 const codes = (r) => r.blockers.map(b => b.code);
 
-describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => {
+describe('(a) BRO-6241: UI cards are dispatchable now (the worker asks the owner through the decision list)', () => {
   test('explicit .tsx path in the notes blocks on the visual-qa gate', () => {
     const r = classifyHeadlessDispatchability({
       subject: 'Sort labels: add click affordance',
@@ -37,9 +37,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
         '`node --test tests/unit/audience-label-affordance.test.mjs`',
       ].join('\n'),
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE), `expected VISUAL_QA_GATE, got ${codes(r).join(',')}`);
-    assert.match(r.reason, /ToggleBar\.tsx/);
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE), `UI cards no longer block, got ${codes(r).join(',')}`);
   });
 
   test('a glob written as src/**/*.{tsx,jsx,css} blocks too', () => {
@@ -47,8 +45,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: 'Homepage polish',
       notes: 'Any UI change under src/**/*.{tsx,jsx,css} needs the gate.\n`node --test tests/unit/x.test.mjs`',
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
   test('task #30 — the real rage-click card the drain should never have picked', () => {
@@ -58,8 +55,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: "Rage clicks on 'AUDIENCE ↑' homepage label (new variant)",
       notes: 'PostHog recorded repeated clicks on the AUDIENCE sort label.\n## Acceptance criteria\n`node --test tests/unit/audience-label-affordance.test.mjs`',
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
   test('task #63 — the rage-click phrase is not always the title prefix', () => {
@@ -68,8 +64,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: 'Homepage rage clicks persist beyond known labeled issues',
       notes: '## Acceptance criteria\n`node --test tests/unit/x.test.mjs`',
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
   test('the card-class match is SUBJECT-scoped — a backend card citing a rage-click card stays dispatchable', () => {
@@ -85,7 +80,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: "UX audit: Dead end on 'desktop__lists_tab'. No obvious next action.",
       notes: '`node --test tests/unit/x.test.mjs`',
     });
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 });
 

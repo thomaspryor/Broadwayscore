@@ -12,6 +12,7 @@ metadata:
 2. **Read every element crop the runner prints at FULL resolution** — not the full-page thumbnails. Reading thumbnails is the documented silent-PASS root cause.
 3. Paste the manifest (screenshots + overflow report + LLM verdicts + verdictHash) into your reply to the user.
 4. Wait for explicit `APPROVED: <verdictHash>` (hash-bound, single-use) before any `git push` / `gh pr merge` / wrapped push script.
+5. Cloud worker with no owner present (BRO-6241): `node scripts/visual-approval.js request --issue=BRO-N --what="..."` instead of waiting; the owner taps Approve/Reject on the decision list, and `visual-approval-land.yml` lands an approved change.
 
 **Why (FeaturedSpot incident, 2026-05-24):** A session was given two reference designs for a Tony Predictions card, ran for 8 minutes, declared "Live on production. ...gold split-card on desktop/tablet, compact stacked layout on mobile" — but the shipped version had:
 - "ACCURACY" instead of the design's "HISTORICAL ACCURACY" (clipped to "HISTORICAL ACCURA" at narrow widths)

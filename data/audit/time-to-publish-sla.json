@@ -1,30 +1,30 @@
 {
-  "generatedAt": "2026-10-25T13:08:45.812Z",
-  "scope": "2 opening window(s): cirque-berserk-west-end-2026 (2026-10-23), garry-starr-classic-penguins-off-west-end-2026 (2026-10-23)",
+  "generatedAt": "2026-10-26T00:18:16.280Z",
+  "scope": "2 opening window(s): hospital-hour-off-broadway-2026 (2026-10-26), aftermath-art-new-york-off-broadway-2026 (2026-10-24)",
   "degraded": null,
   "windows": [
     {
-      "showId": "cirque-berserk-west-end-2026",
-      "openingDate": "2026-10-23",
-      "from": "2026-10-22T00:00:00.000Z",
-      "to": "2026-10-27T23:59:59.999Z"
+      "showId": "hospital-hour-off-broadway-2026",
+      "openingDate": "2026-10-26",
+      "from": "2026-10-25T00:00:00.000Z",
+      "to": "2026-10-30T23:59:59.999Z"
     },
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "openingDate": "2026-10-23",
-      "from": "2026-10-22T00:00:00.000Z",
-      "to": "2026-10-27T23:59:59.999Z"
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "openingDate": "2026-10-24",
+      "from": "2026-10-23T00:00:00.000Z",
+      "to": "2026-10-28T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 244965,
-  "logOldestEntryAt": "2026-10-22T16:05:50.790Z",
+  "logEntryCount": 159092,
+  "logOldestEntryAt": "2026-10-24T10:38:53.848Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
     "evaluated": 0,
-    "inFlight": 3,
+    "inFlight": 5,
     "compliant": 0,
     "compliancePct": null,
     "p50Ms": null,
@@ -37,33 +37,55 @@
   },
   "records": [
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "outletId": "london-theatre",
-      "reviewKey": "london-theatre:emily-godwin:https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "outletId": "nytimes",
+      "reviewKey": "nytimes:ben-brantley:",
       "basis": null,
-      "firstSeenAt": "2026-10-24T13:18:00.495Z",
+      "firstSeenAt": "2026-10-25T14:53:04.229Z",
       "liveAt": null,
       "pipelineMinutes": null,
       "publishedToLiveMinutes": null,
       "stuckAtStage": "rebuilt"
     },
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "outletId": "theatreandtonic",
-      "reviewKey": "theatreandtonic:penny-walshe:https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "outletId": "theatermania",
+      "reviewKey": "theatermania:dan-bacalzo:http://www.theatermania.com/off-broadway/news/09-2009/aftermath_21177.html",
       "basis": null,
-      "firstSeenAt": "2026-10-24T13:18:00.849Z",
+      "firstSeenAt": "2026-10-25T14:53:07.748Z",
       "liveAt": null,
       "pipelineMinutes": null,
       "publishedToLiveMinutes": null,
       "stuckAtStage": "rebuilt"
     },
     {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "outletId": "west-end-best-friend",
-      "reviewKey": "west-end-best-friend:james-springthorpe:https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "outletId": "variety",
+      "reviewKey": "variety:marilyn-stasio:",
       "basis": null,
-      "firstSeenAt": "2026-10-24T13:18:01.273Z",
+      "firstSeenAt": "2026-10-25T14:53:08.015Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "rebuilt"
+    },
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "outletId": "backstage",
+      "reviewKey": "backstage:erik-haagensen:",
+      "basis": null,
+      "firstSeenAt": "2026-10-25T14:53:08.317Z",
+      "liveAt": null,
+      "pipelineMinutes": null,
+      "publishedToLiveMinutes": null,
+      "stuckAtStage": "rebuilt"
+    },
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "outletId": "timeout",
+      "reviewKey": "timeout:time-out-new-york:http://newyork.timeout.com/articles/theater/77985/jessica-blank-and-erik-jensen-aftermath-at-new-york-theatre-workshop-interview",
+      "basis": null,
+      "firstSeenAt": "2026-10-25T14:53:08.630Z",
       "liveAt": null,
       "pipelineMinutes": null,
       "publishedToLiveMinutes": null,

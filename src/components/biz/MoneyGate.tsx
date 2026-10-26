@@ -7,13 +7,17 @@
  * (search engines read it; the paywall JSON-LD below says it is gated, so it
  * is not cloaking). While locked, CSS clips it to a blurred preview and the
  * sign-up card sits over the fade. One sign-up unlocks every gate on every
- * money page in this browser (src/lib/money-gate.ts).
+ * money page in this browser (src/lib/money-gate.ts). Signed-in readers and
+ * newsletter / opening-night subscribers skip it (BRO-6248).
  */
 
 import { useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { useAuth } from '@/contexts/AuthContext';
+import { featureFlags } from '@/config/feature-flags';
 import {
+  MONEY_EMAIL_USE,
   MONEY_GATE_BOOT_SCRIPT,
   MONEY_ROLES,
   MONEY_UNLOCKED_EVENT,
@@ -22,6 +26,7 @@ import {
   markMoneyUnlocked,
   moneyGatePaywallSchema,
   submitMoneySignup,
+  unlockForExistingReader,
   type MoneyRole,
 } from '@/lib/money-gate';
 
@@ -48,15 +53,30 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
   const lockRef = useRef<HTMLDivElement>(null);
   const contentRef = useRef<HTMLDivElement>(null);
   const statusRef = useRef<HTMLParagraphElement>(null);
+  const { isAuthenticated } = useAuth();
 
   useIsoLayoutEffect(() => {
     const unlockedNow = isMoneyUnlocked();
+    // A bypass unlock is page-only: after sign-out and a client navigation the
+    // attribute would outlive it and leave the content shown but inert.
     if (unlockedNow) document.documentElement.setAttribute('data-money-unlocked', '');
+    else document.documentElement.removeAttribute('data-money-unlocked');
     setUnlocked(unlockedNow);
     const onUnlock = () => setUnlocked(true);
+    // Joining the main list elsewhere on the page (footer, header) counts too.
+    const onSubscribed = () => { if (isMoneyUnlocked()) unlockForExistingReader(); };
     window.addEventListener(MONEY_UNLOCKED_EVENT, onUnlock);
-    return () => window.removeEventListener(MONEY_UNLOCKED_EVENT, onUnlock);
+    window.addEventListener('bsc_subscribed', onSubscribed);
+    return () => {
+      window.removeEventListener(MONEY_UNLOCKED_EVENT, onUnlock);
+      window.removeEventListener('bsc_subscribed', onSubscribed);
+    };
   }, []);
+
+  // Signed in (on load or mid-visit): unlock without asking for an email.
+  useEffect(() => {
+    if (isAuthenticated) unlockForExistingReader();
+  }, [isAuthenticated]);
 
   // Locked content is blurred: keep keyboard focus and screen readers out of
   // it. Set once mounted (never in the server HTML, which stays readable).
@@ -69,6 +89,8 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
     if (unlocked !== false || !lockRef.current) return;
     const el = lockRef.current;
     const io = new IntersectionObserver((entries) => {
+      // An OAuth return can unlock the page just before this fires.
+      if (document.documentElement.hasAttribute('data-money-unlocked')) { io.disconnect(); return; }
       if (entries.some((e) => e.isIntersecting)) {
         track('money_gate_shown', { page });
         captureEvent('money_gate_shown', { page, path: window.location.pathname });
@@ -117,6 +139,7 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
 }
 
 function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => void }) {
+  const { showSignIn } = useAuth();
   const [email, setEmail] = useState('');
   const [role, setRole] = useState<MoneyRole | ''>('');
   const [submitting, setSubmitting] = useState(false);
@@ -155,10 +178,10 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         </span>
         <span className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Money Scorecard</span>
       </div>
-      <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Free with your email</h3>
+      <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Unlock the Money Scorecard</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-300">
-        The Money Scorecard is for people who follow the business of Broadway. Show-by-show
-        capitalization, recoupment and box office, on every page, with one sign-up.
+        Show-by-show capitalization, recoupment and box office for every Broadway show.
+        One sign&#8209;up unlocks every page.
       </p>
 
       <form onSubmit={handleSubmit} className="mt-5" noValidate>
@@ -213,10 +236,22 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
         {error && (
           <p id={`${id}-error`} role="alert" className="mt-3 text-xs text-score-skip">{error}</p>
         )}
-        <p className="mt-4 text-xs text-gray-400">
-          One step, no password. Its own list, separate from our newsletter.{' '}
+        <p className="mt-4 text-xs leading-relaxed text-gray-400">
+          {MONEY_EMAIL_USE}{' '}
           <a href="/privacy" className="underline underline-offset-2 hover:text-white">Privacy</a>
         </p>
+        {featureFlags.userAccounts && (
+          <p className="mt-2 text-xs text-gray-400">
+            Already have an account?{' '}
+            <button
+              type="button"
+              onClick={() => showSignIn('generic', `money_gate:${page}`)}
+              className="font-medium text-brand underline underline-offset-2 hover:text-brand-hover"
+            >
+              Sign in
+            </button>
+          </p>
+        )}
       </form>
     </div>
   );

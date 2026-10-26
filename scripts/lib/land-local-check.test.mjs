@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 import fs, { mkdtempSync, writeFileSync, existsSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { spawnSync } from 'node:child_process';
+import { spawnSync, execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const { parseArgs, newFailureFiles, DEFAULT_GATES, LOCAL_SKIPPED_GATES } = require('./land-local-check.js');
@@ -43,7 +43,7 @@ test('newFailureFiles: a tsx-gate failure is not re-run under plain node', () =>
 
 test('withFileMutex: a throwing onWait gives up without taking or deleting the held lock', (t) => {
   const dir = mkdtempSync(join(tmpdir(), 'llc-'));
-  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  t.after(() => rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const p = join(dir, 'm.lock');
   writeFileSync(p, String(process.ppid)); // a live holder that is not us
   let ran = false;
@@ -110,54 +110,113 @@ test('generated manifests missing: main exits 3 with build commands before fetch
   assert.match(message, /node scripts\/build-actor-slugs-manifest\.js/);
 });
 
-for (const branch of ['codex/test-branch', '']) {
-  test(`base comparison copies the helper and restores ${branch ? 'the starting branch' : 'a detached HEAD'}`, (t) => {
-    const head = 'a'.repeat(40);
-    const base = 'b'.repeat(40);
-    const checkouts = [];
-    const messages = [];
-    let compared = false;
-    t.mock.method(console, 'log', (message) => messages.push(message));
-    t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
-    const exists = fs.existsSync;
-    t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$/.test(String(p)) || exists(p));
-    const checker = checkerWithRunner(t, (cmd, args) => {
-      const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
-      if (cmd === 'git') {
-        switch (args[0]) {
-          case 'status': case 'fetch': return result();
-          case 'rev-parse': return result(head);
-          case 'symbolic-ref': return { ...result(branch), status: branch ? 0 : 1 };
-          case 'merge-base': return result(base);
-          case 'rev-list': return result('0');
-          case 'checkout': checkouts.push(args); return result();
-        }
+test('base comparison runs the staged gauntlet in a throwaway worktree, never checking out this tree', (t) => {
+  const head = 'a'.repeat(40);
+  const base = 'b'.repeat(40);
+  const gitCalls = [];
+  const messages = [];
+  let compared = false;
+  t.mock.method(console, 'log', (message) => messages.push(message));
+  t.mock.method(R, 'withFileMutex', (_lock, fn) => fn());
+  const exists = fs.existsSync;
+  t.mock.method(fs, 'existsSync', (p) => /data\/(shows|reviews|cast-manifest|actor-slugs)\.json$/.test(String(p)) || exists(p));
+  const checker = checkerWithRunner(t, (cmd, args, opts) => {
+    const result = (stdout = '') => ({ status: 0, stdout, stderr: '' });
+    if (cmd === 'git') {
+      gitCalls.push(args);
+      switch (args[0]) {
+        case 'status': case 'fetch': case 'ls-files': case 'worktree': return result();
+        case 'rev-parse': return result(head);
+        case 'merge-base': return result(base);
+        case 'rev-list': return result('0');
       }
-      if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh') {
-        fs.mkdirSync(args[1], { recursive: true });
-        fs.writeFileSync(join(args[1], 'meta.json'), '{}');
-        t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true }));
-        return result();
+    }
+    if (cmd === 'bash' && args[0] === 'scripts/lib/land-gauntlet.sh') {
+      fs.mkdirSync(args[1], { recursive: true });
+      fs.writeFileSync(join(args[1], 'meta.json'), '{}');
+      t.after(() => rmSync(join(args[1], '..'), { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+      return result();
+    }
+    if (cmd === 'bash') {
+      compared = true;
+      assert.equal(args.length, 2, 'no --checkout/--return-to: the tree under test is already the base');
+      assert.match(opts.cwd, /basewt$/, 'the base gates run inside the throwaway worktree');
+      for (const name of ['land-gauntlet.sh', 'tsc-node-options.sh']) {
+        assert.equal(fs.readFileSync(join(args[0], '..', name), 'utf8'),
+          fs.readFileSync(new URL(`./${name}`, import.meta.url), 'utf8'));
       }
-      if (cmd === 'bash') {
-        compared = true;
-        assert.deepEqual(args.slice(2), ['--checkout', base, '--return-to', head]);
-        for (const name of ['land-gauntlet.sh', 'tsc-node-options.sh']) {
-          assert.equal(fs.readFileSync(join(args[0], '..', name), 'utf8'),
-            fs.readFileSync(new URL(`./${name}`, import.meta.url), 'utf8'));
-        }
-        return result();
-      }
-      if (cmd === 'node' && args[1] === '--red-gates') return result('tsc');
-      if (cmd === 'node' && args[1] === '--base-dir') return result('no new failures');
-      assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
-    });
-    assert.equal(checker.main(['--gates', 'tsc']), 0);
-    assert.ok(compared, 'the red gate was compared against the base');
-    assert.deepEqual(checkouts, branch ? [['checkout', '-q', branch]] : []);
-    assert.ok(messages.some((message) => message.includes('CLEAN, no new failures')));
+      return result();
+    }
+    if (cmd === 'node' && args[1] === '--red-gates') return result('tsc');
+    if (cmd === 'node' && args[1] === '--base-dir') return result('no new failures');
+    assert.fail(`unexpected command: ${cmd} ${args.join(' ')}`);
   });
-}
+  assert.equal(checker.main(['--gates', 'tsc']), 0);
+  assert.ok(compared, 'the red gate was compared against the base');
+  assert.equal(gitCalls.filter((a) => a[0] === 'checkout').length, 0, 'this checkout is never switched');
+  const add = gitCalls.find((a) => a[0] === 'worktree' && a[1] === 'add');
+  assert.deepEqual([add[2], add[add.length - 1]], ['--detach', base]);
+  assert.ok(gitCalls.some((a) => a[0] === 'worktree' && a[1] === 'remove'), 'the worktree is removed afterwards');
+  assert.ok(messages.some((message) => message.includes('CLEAN, no new failures')));
+});
+
+// BRO-6252: the caller keeps committing while the ~20 min base run is in flight. Real git, no mocks.
+test('withBaseWorktree leaves the caller branch and HEAD alone when a commit lands mid-run', () => {
+  const { withBaseWorktree } = require('./land-local-check.js');
+  const sh = (cwd, ...args) => execFileSync('git', args, { cwd, encoding: 'utf8' }).trim();
+  const root = fs.realpathSync(mkdtempSync(join(tmpdir(), 'wt-caller-')));
+  const scratch = mkdtempSync(join(tmpdir(), 'wt-scratch-'));
+  try {
+    sh(root, 'init', '-q', '-b', 'work');
+    sh(root, 'config', 'user.email', 't@example.com'); sh(root, 'config', 'user.name', 't');
+    writeFileSync(join(root, '.gitignore'), 'node_modules\ndata/secret.json\n.next/\n.claude/\n*.lock\ndata/my "odd" é.json\n');
+    fs.mkdirSync(join(root, 'data'));
+    writeFileSync(join(root, 'data/tracked.json'), '1');
+    writeFileSync(join(root, 'f.txt'), 'base\n');
+    sh(root, 'add', '-A'); sh(root, 'commit', '-qm', 'base');
+    const base = sh(root, 'rev-parse', 'HEAD');
+    writeFileSync(join(root, 'f.txt'), 'head\n');
+    sh(root, 'commit', '-qam', 'head');
+    fs.mkdirSync(join(root, 'node_modules/pkg'), { recursive: true });
+    writeFileSync(join(root, 'node_modules/pkg/i.js'), 'x');
+    writeFileSync(join(root, 'data/secret.json'), 'private');
+    fs.mkdirSync(join(root, '.next')); writeFileSync(join(root, '.next/b'), 'build');
+    fs.mkdirSync(join(root, '.claude')); writeFileSync(join(root, '.claude/state.jsonl'), 's');
+    fs.mkdirSync(join(root, 'data/job.lock')); writeFileSync(join(root, 'data/odd.lock'), 'l');
+    writeFileSync(join(root, 'data/my "odd" é.json'), 'odd');
+    const dir = join(scratch, 'basewt');
+    let seen;
+    const result = withBaseWorktree(root, base, dir, (wt) => {
+      seen = {
+        file: fs.readFileSync(join(wt, 'f.txt'), 'utf8'),
+        secret: fs.readFileSync(join(wt, 'data/secret.json'), 'utf8'),
+        nm: fs.existsSync(join(wt, 'node_modules/pkg/i.js')),
+        next: fs.existsSync(join(wt, '.next')),
+        live: [fs.existsSync(join(wt, '.claude')), fs.existsSync(join(wt, 'data/job.lock')), fs.existsSync(join(wt, 'data/odd.lock'))],
+        odd: fs.readFileSync(join(wt, 'data/my "odd" é.json'), 'utf8'),
+      };
+      // the session commits and edits meanwhile
+      writeFileSync(join(root, 'g.txt'), 'new\n');
+      sh(root, 'add', 'g.txt'); sh(root, 'commit', '-qm', 'mid-run commit');
+      writeFileSync(join(root, 'g.txt'), 'edited after\n');
+      return 'ok';
+    });
+    assert.equal(result, 'ok');
+    assert.deepEqual(seen, { file: 'base\n', secret: 'private', nm: true, next: false, live: [false, false, false], odd: 'odd' });
+    assert.equal(sh(root, 'symbolic-ref', '--short', 'HEAD'), 'work', 'still on the branch, not detached');
+    assert.equal(sh(root, 'log', '-1', '--format=%s'), 'mid-run commit', 'HEAD is the commit made mid-run');
+    assert.equal(fs.readFileSync(join(root, 'g.txt'), 'utf8'), 'edited after\n', 'edits made mid-run survive');
+    assert.equal(fs.readFileSync(join(root, 'f.txt'), 'utf8'), 'head\n');
+    assert.ok(fs.existsSync(join(root, 'node_modules/pkg/i.js')), 'removal did not follow the symlink into the caller data');
+    assert.equal(fs.readFileSync(join(root, 'data/secret.json'), 'utf8'), 'private');
+    assert.ok(!fs.existsSync(dir), 'worktree directory removed');
+    assert.equal(sh(root, 'worktree', 'list').split('\n').length, 1, 'worktree entry pruned');
+    // the worktree is also removed when fn throws
+    assert.throws(() => withBaseWorktree(root, base, dir, () => { throw new Error('boom'); }), /boom/);
+    assert.ok(!fs.existsSync(dir));
+    assert.equal(sh(root, 'worktree', 'list').split('\n').length, 1);
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
 
 test('main exits 3 (not ready) when core data is missing, before any gate runs', () => {
   const src = require('fs').readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
@@ -194,7 +253,7 @@ test('stageGauntletHarness copies the gauntlet and its siblings; a helper absent
     try {
       stageGauntletHarness(root, private700);
       assert.equal(fs.statSync(private700).mode & 0o755, 0o755, 'harness dir readable and searchable by others, not writable');
-    } finally { rmSync(private700, { recursive: true, force: true }); }
+    } finally { rmSync(private700, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
     const old = join(dir, 'old');
     fs.mkdirSync(join(old, 'scripts/lib'), { recursive: true });
     writeFileSync(join(old, 'scripts/lib/land-gauntlet.sh'), '# old\n');
@@ -202,7 +261,7 @@ test('stageGauntletHarness copies the gauntlet and its siblings; a helper absent
     assert.ok(existsSync(join(dir, 'h2/land-gauntlet.sh')));
     assert.ok(!existsSync(join(dir, 'h2/tsc-node-options.sh')));
     assert.throws(() => stageGauntletHarness(join(dir, 'nowhere'), join(dir, 'h3')), /ENOENT/, 'a missing gauntlet is an error');
-  } finally { rmSync(dir, { recursive: true, force: true }); }
+  } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('gauntlet copied alone resolves tsc NODE_OPTIONS quietly to the floor', () => {
@@ -219,5 +278,5 @@ test('gauntlet copied alone resolves tsc NODE_OPTIONS quietly to the floor', () 
       assert.equal(r.stderr, '', `${name}: no stderr (BRO-6152 saw "No such file or directory")`);
       assert.match(r.stdout, /--max-old-space-size=6144/, name);
     }
-  } finally { rmSync(dir, { recursive: true, force: true }); }
+  } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });

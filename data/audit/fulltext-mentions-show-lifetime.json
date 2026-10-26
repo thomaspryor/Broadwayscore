@@ -1,10 +1,22 @@
 {
-  "updatedAt": "2026-10-25T13:06:26.986Z",
-  "scanned": 2806,
-  "showsWithViolations": 378,
-  "totalViolations": 584,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-26T00:15:49.534Z",
+  "scanned": 2819,
+  "showsWithViolations": 383,
+  "totalViolations": 595,
+  "newSinceLastRun": 11,
+  "newViolationKeys": [
+    "the-price-2017::chicagotribune--chris-jones.json",
+    "fun-home-2015::chicagotribune--chris-jones.json",
+    "betrayal-2013::ap--mark-kennedy.json",
+    "betrayal-2013::ew--thom-geier.json",
+    "betrayal-2013::nydailynews--joe-dziemianowicz.json",
+    "les-miserables-tour-2022::picksinsix--ed-tracy.json",
+    "exit-the-king-west-end-2018::independent--david-lister.json",
+    "gruesome-playground-injuries-off-broadway-2025::thewrap--robert-hofler.json",
+    "44-off-broadway-2025::nysr--david-finkle.json",
+    "44-off-broadway-2025::nytg--kyle-turner.json",
+    "44-off-broadway-2025::theater-scene--victor-gluck.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -79,6 +91,7 @@
     "amelie-a-new-musical-2017::nytimes--ben-brantley.json",
     "amelie-a-new-musical-2017::timeout--adam-feldman.json",
     "amelie-a-new-musical-2017::vulture--jesse-green.json",
+    "the-price-2017::chicagotribune--chris-jones.json",
     "the-price-2017::washpost--peter-marks.json",
     "in-transit-2016::act-three-the-reviews--doug-marino.json",
     "dear-evan-hansen-2016::talkinbroadway--matthew-murray.json",
@@ -97,6 +110,7 @@
     "sylvia-2015::talkinbroadway--matthew-murray.json",
     "old-times-2015::ap--mark-kennedy.json",
     "spring-awakening-2015::financialtimes--brendan-lemon.json",
+    "fun-home-2015::chicagotribune--chris-jones.json",
     "wolf-hall-parts-one-and-two-2015::nypost--elisabeth-vincentelli.json",
     "wolf-hall-parts-one-and-two-2015::nytimes--ben-brantley.json",
     "wolf-hall-parts-one-and-two-2015::variety--marilyn-stasio.json",
@@ -129,6 +143,9 @@
     "a-gentlemans-guide-to-love-and-murder-2013::ap--jennifer-farrar.json",
     "a-gentlemans-guide-to-love-and-murder-2013::bobs-theater-blog--robert-sholiton.json",
     "twelfth-night-2013::bloomberg--jeremy-gerard.json",
+    "betrayal-2013::ap--mark-kennedy.json",
+    "betrayal-2013::ew--thom-geier.json",
+    "betrayal-2013::nydailynews--joe-dziemianowicz.json",
     "a-time-to-kill-2013::northjerseycom--robert-feldberg.json",
     "the-winslow-boy-2013::amny--matt-windman.json",
     "big-fish-2013::ap--mark-kennedy.json",
@@ -568,11 +585,13 @@
     "les-miserables-tour-2022::equality365--eric-andrews-katz.json",
     "les-miserables-tour-2022::minneapolis-star-tribune--star-tribune-staff.json",
     "les-miserables-tour-2022::new-city-stage--dennis-polkow.json",
+    "les-miserables-tour-2022::picksinsix--ed-tracy.json",
     "les-miserables-tour-2022::rachelsreviewstheatre--unknown.json",
     "killer-joe-west-end-2018::times-uk--dominic-maxwell.json",
     "translations-west-end-2018::guardian--michael-billington.json",
     "translations-west-end-2018::independent--paul-taylor.json",
     "home-im-darling-west-end-2018::financialtimes--sarah-hemming.json",
+    "exit-the-king-west-end-2018::independent--david-lister.json",
     "pity-west-end-2018::guardian--michael-billington.json",
     "the-great-wave-west-end-2018::guardian--michael-billington.json",
     "cat-on-a-hot-tin-roof-west-end-2017::nytimes--ben-brantley.json",
@@ -589,7 +608,11 @@
     "death-of-england-closing-time-west-end-2024::london-box-office--stuart-king.json",
     "ballet-shoes-west-end-2024::guardian--arifa-akbar.json",
     "ghosts-off-broadway-2025::thewrap--robert-hofler.json",
-    "messy-white-gays-off-broadway-2025::thewrap--robert-hofler.json"
+    "messy-white-gays-off-broadway-2025::thewrap--robert-hofler.json",
+    "gruesome-playground-injuries-off-broadway-2025::thewrap--robert-hofler.json",
+    "44-off-broadway-2025::nysr--david-finkle.json",
+    "44-off-broadway-2025::nytg--kyle-turner.json",
+    "44-off-broadway-2025::theater-scene--victor-gluck.json"
   ],
   "hits": [
     {
@@ -2108,8 +2131,24 @@
       "showId": "the-price-2017",
       "title": "The Price",
       "openingDate": "2017-03-16",
-      "message": "washpost/Peter Marks (washpost--peter-marks.json) SHIPPED but fullText never mentions 'The Price' (199 chars): https://www.washingtonpost.com/pb/news/arts-and-entertainment/wp/2017/03/16/on-broadway-a-great-play-leveled-and-a-lesser-one-elevated/?outputType=accessibility&nid=menu_nav_accessibilityforscreenreader\n⚠️  chicagotribune/Chris Jones (chicagotribune--chris-jones.json) also too short to assess (0 chars): https://www.chicagotribune.com/g00/entertainment/theater/broadway/sc-price-broadway-review-ent-0316-20170316-column.html?i10c.referrer=https%3A%2F%2Fwww.google.com%2F",
+      "message": "chicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'The Price' (500 chars): http://www.chicagotribune.com/entertainment/theater/broadway/sc-price-broadway-review-ent-0316-20170316-column.html\nwashpost/Peter Marks (washpost--peter-marks.json) SHIPPED but fullText never mentions 'The Price' (199 chars): https://www.washingtonpost.com/pb/news/arts-and-entertainment/wp/2017/03/16/on-broadway-a-great-play-leveled-and-a-lesser-one-elevated/?outputType=accessibility&nid=menu_nav_accessibilityforscreenreader",
       "violations": [
+        {
+          "filename": "chicagotribune--chris-jones.json",
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-price-broadway-review-ent-0316-20170316-column.html",
+          "outletId": "chicagotribune",
+          "criticName": "Chris Jones",
+          "haystackLength": 500,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
         {
           "filename": "washpost--peter-marks.json",
           "url": "https://www.washingtonpost.com/pb/news/arts-and-entertainment/wp/2017/03/16/on-broadway-a-great-play-leveled-and-a-lesser-one-elevated/?outputType=accessibility&nid=menu_nav_accessibilityforscreenreader",
@@ -2523,6 +2562,30 @@
               "no-conclusive-triage-metadata"
             ],
             "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "fun-home-2015",
+      "title": "Fun Home",
+      "openingDate": "2015-04-19",
+      "message": "chicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Fun Home' (409 chars): http://www.chicagotribune.com/entertainment/theater/ct-fun-home-broadway-review-20150419-column.html\n⚠️  newsday/Linda Winer (newsday--linda-winer.json) also too short to assess (0 chars): http://www.newsday.com/entertainment/theater/fun-home-review-disturbing-touching-musical-1.10287479",
+      "violations": [
+        {
+          "filename": "chicagotribune--chris-jones.json",
+          "url": "http://www.chicagotribune.com/entertainment/theater/ct-fun-home-broadway-review-20150419-column.html",
+          "outletId": "chicagotribune",
+          "criticName": "Chris Jones",
+          "haystackLength": 409,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
           }
         }
@@ -3181,6 +3244,62 @@
           "criticName": "Jeremy Gerard",
           "haystackLength": 303,
           "textIssuesFlag": true,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "betrayal-2013",
+      "title": "Betrayal",
+      "openingDate": "2013-10-27",
+      "message": "ap/Mark Kennedy (ap--mark-kennedy.json) SHIPPED but fullText never mentions 'Betrayal' (303 chars): http://abcnews.go.com/Entertainment/wireStory/review-revival-pinters-betrayal-stunning-20698907\new/Thom Geier (ew--thom-geier.json) SHIPPED but fullText never mentions 'Betrayal' (500 chars): http://www.ew.com/ew/article/0,,20364394_20749744,00.html\nnydailynews/Joe Dziemianowicz (nydailynews--joe-dziemianowicz.json) SHIPPED but fullText never mentions 'Betrayal' (303 chars): http://www.nydailynews.com/entertainment/music-arts/betrayal-theater-review-article-1.1496753",
+      "violations": [
+        {
+          "filename": "ap--mark-kennedy.json",
+          "url": "http://abcnews.go.com/Entertainment/wireStory/review-revival-pinters-betrayal-stunning-20698907",
+          "outletId": "ap",
+          "criticName": "Mark Kennedy",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "ew--thom-geier.json",
+          "url": "http://www.ew.com/ew/article/0,,20364394_20749744,00.html",
+          "outletId": "ew",
+          "criticName": "Thom Geier",
+          "haystackLength": 500,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nydailynews--joe-dziemianowicz.json",
+          "url": "http://www.nydailynews.com/entertainment/music-arts/betrayal-theater-review-article-1.1496753",
+          "outletId": "nydailynews",
+          "criticName": "Joe Dziemianowicz",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
           "triage": {
             "bucket": "excerpt",
             "evidence": [
@@ -10093,7 +10212,7 @@
       "showId": "boys-from-the-blackstuff-west-end-2024",
       "title": "Boys from the Blackstuff",
       "openingDate": "2024-05-29",
-      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Boys from the Blackstuff' (3142 chars): https://www.thestage.co.uk/reviews/boys-from-the-blackstuff-review-olivier-theatre-national-theatre-london-alan-bleasdale-james-graham",
+      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Boys from the Blackstuff' (3142 chars): https://www.thestage.co.uk/reviews/boys-from-the-blackstuff-review-olivier-theatre-national-theatre-london-alan-bleasdale-james-graham\n⚠️  telegraph/Mark Brown (telegraph--mark-brown.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/boys-from-the-black-stuff-royal-court-liverpool-review/?n=@",
       "violations": [
         {
           "filename": "thestage--sam-marlowe.json",
@@ -10165,7 +10284,7 @@
       "showId": "next-to-normal-west-end-2024",
       "title": "Next to Normal",
       "openingDate": "2024-06-26",
-      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Next to Normal' (303 chars): https://www.thestage.co.uk/reviews/next-to-normal-review-wyndhams-theatre-london-caissie-levy-and-jamie-parker-michael-longhurst",
+      "message": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED but fullText never mentions 'Next to Normal' (303 chars): https://www.thestage.co.uk/reviews/next-to-normal-review-wyndhams-theatre-london-caissie-levy-and-jamie-parker-michael-longhurst\n⚠️  telegraph/Kirsten Grant (telegraph--kirsten-grant.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/next-to-normal-donmar-warehouse-review-musical-bipolar/\n⚠️  thestage/Dave Fargnoli (thestage--dave-fargnoli.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/next-to-normal-review-donmar-warehouse-london-caissie-levy-michael-longhurst-tom-kitt-brian-yorkey-jamie-parker",
       "violations": [
         {
           "filename": "thestage--sam-marlowe.json",
@@ -12181,7 +12300,7 @@
       "showId": "the-end-of-history-west-end-2019",
       "title": "The End of History…",
       "openingDate": "2019-06-27",
-      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The End of History…' (3203 chars): https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court",
+      "message": "guardian/Michael Billington (guardian--michael-billington.json) SHIPPED but fullText never mentions 'The End of History…' (3203 chars): https://www.theguardian.com/stage/2019/jul/04/the-end-of-history-review-jack-thorne-john-tiffany-royal-court\n⚠️  telegraph/Dominic Cavendish (telegraph--dominic-cavendish.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/end-history-royal-court-review-lesley-sharp-brilliant-political/",
       "violations": [
         {
           "filename": "guardian--michael-billington.json",
@@ -12373,7 +12492,7 @@
       "showId": "les-miserables-tour-2022",
       "title": "Les Misérables",
       "openingDate": "2022-10-07",
-      "message": "calgary-herald/Louis B. Hobson (calgary-herald--louis-b-hobson.json) SHIPPED but fullText never mentions 'Les Misérables' (6513 chars): https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables\nchasingsupermom/Bekki (chasingsupermom--bekki.json) SHIPPED but fullText never mentions 'Les Misérables' (6657 chars): https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/\nequality365/Eric Andrews-Katz (equality365--eric-andrews-katz.json) SHIPPED but fullText never mentions 'Les Misérables' (10114 chars): https://equality365.com/review-les-miserables-is-wonderful-theatre/\nminneapolis-star-tribune/Star Tribune staff (minneapolis-star-tribune--star-tribune-staff.json) SHIPPED but fullText never mentions 'Les Misérables' (10651 chars): https://www.startribune.com/brandi-carlile-conan-gray-esperanza-spalding-carter-faith-les-miserables/601563414\nnew-city-stage/Dennis Polkow (new-city-stage--dennis-polkow.json) SHIPPED but fullText never mentions 'Les Misérables' (2670 chars): https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/\nrachelsreviewstheatre/Unknown (rachelsreviewstheatre--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4473 chars): https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/",
+      "message": "calgary-herald/Louis B. Hobson (calgary-herald--louis-b-hobson.json) SHIPPED but fullText never mentions 'Les Misérables' (6513 chars): https://calgaryherald.com/entertainment/theatre/review-masterful-performances-give-rise-to-an-extraordinary-retelling-of-les-miserables\nchasingsupermom/Bekki (chasingsupermom--bekki.json) SHIPPED but fullText never mentions 'Les Misérables' (6657 chars): https://chasingsupermom.com/2026/04/01/les-miserables-in-portland-now-through-april-5th-full-show-review/\nequality365/Eric Andrews-Katz (equality365--eric-andrews-katz.json) SHIPPED but fullText never mentions 'Les Misérables' (10114 chars): https://equality365.com/review-les-miserables-is-wonderful-theatre/\nminneapolis-star-tribune/Star Tribune staff (minneapolis-star-tribune--star-tribune-staff.json) SHIPPED but fullText never mentions 'Les Misérables' (10651 chars): https://www.startribune.com/brandi-carlile-conan-gray-esperanza-spalding-carter-faith-les-miserables/601563414\nnew-city-stage/Dennis Polkow (new-city-stage--dennis-polkow.json) SHIPPED but fullText never mentions 'Les Misérables' (2670 chars): https://www.newcitystage.com/2026/05/19/a-last-less-elaborate-look-at-a-reimagined-les-miserables/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Les Misérables' (4998 chars): https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend\nrachelsreviewstheatre/Unknown (rachelsreviewstheatre--unknown.json) SHIPPED but fullText never mentions 'Les Misérables' (4473 chars): https://rachelsreviewstheatre.com/2026/07/02/les-miserables-at-tuacahn-is-a-triumph-review/",
       "violations": [
         {
           "filename": "calgary-herald--louis-b-hobson.json",
@@ -12445,6 +12564,22 @@
           "outletId": "new-city-stage",
           "criticName": "Dennis Polkow",
           "haystackLength": 2670,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "picksinsix--ed-tracy.json",
+          "url": "https://www.conversationswithedtracy.com/picksinsix/2025/8/6/picksinsix-review-les-miserables-broadway-in-south-bend",
+          "outletId": "picksinsix",
+          "criticName": "Ed Tracy",
+          "haystackLength": 4998,
           "textIssuesFlag": false,
           "triage": {
             "bucket": "unresolved",
@@ -12554,6 +12689,30 @@
             "bucket": "truncated",
             "evidence": [
               "contentTier=truncated"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "exit-the-king-west-end-2018",
+      "title": "Exit the King",
+      "openingDate": "2018-07-25",
+      "message": "independent/David Lister (independent--david-lister.json) SHIPPED but fullText never mentions 'Exit the King' (303 chars): https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html\n⚠️  thestage/Natasha Tripney (thestage--natasha-tripney.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/exit-the-king-review-at-national-theatre-london--rhys-ifans-compelling-performance\n⚠️  timeout-london/Holly Williams (timeout-london--holly-williams.json) also too short to assess (0 chars): https://www.timeout.com/london/theatre/exit-the-king-review\n⚠️  times-uk/Ann Treneman (times-uk--ann-treneman.json) also too short to assess (0 chars): https://www.thetimes.co.uk/article/theatre-review-exit-the-king-at-the-olivier-theatre-b5pz5rd9n",
+      "violations": [
+        {
+          "filename": "independent--david-lister.json",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/exit-the-king-review-rhys-ifans-national-theatre-patrick-marber-ionesco-indira-varma-a8464351.html",
+          "outletId": "independent",
+          "criticName": "David Lister",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
             "requiresArticleReview": true
@@ -12869,7 +13028,7 @@
       "showId": "death-of-england-closing-time-west-end-2024",
       "title": "Death of England: Closing Time",
       "openingDate": "2024-08-22",
-      "message": "london-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED but fullText never mentions 'Death of England: Closing Time' (2626 chars): https://www.londonboxoffice.co.uk/news/post/death-of-england-closing-time-review\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/death-of-england-closing-time-review-sohoplace-london-erin-doherty-and-sharon-duncan-brewster-clint-dyer-roy-williams",
+      "message": "london-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED but fullText never mentions 'Death of England: Closing Time' (2626 chars): https://www.londonboxoffice.co.uk/news/post/death-of-england-closing-time-review\n⚠️  telegraph/Dzifa Benson (telegraph--dzifa-benson.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-soho-place-review/\n⚠️  telegraph/Marianka Swain (telegraph--marianka-swain.json) also too short to assess (0 chars): https://www.telegraph.co.uk/theatre/what-to-see/death-of-england-closing-time-national-theatre-review/\n⚠️  thestage/Unknown (thestage--unknown.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/death-of-england-closing-time-review-sohoplace-london-erin-doherty-and-sharon-duncan-brewster-clint-dyer-roy-williams",
       "violations": [
         {
           "filename": "london-box-office--stuart-king.json",
@@ -12960,14 +13119,94 @@
           }
         }
       ]
+    },
+    {
+      "showId": "gruesome-playground-injuries-off-broadway-2025",
+      "title": "Gruesome Playground Injuries",
+      "openingDate": "2025-11-23",
+      "message": "thewrap/Robert Hofler (thewrap--robert-hofler.json) SHIPPED but fullText never mentions 'Gruesome Playground Injuries' (303 chars): https://www.thewrap.com/gruesome-playground-injuries-off-broadway-review-nicholas-braun-and-kara-young-hurt-until-it-feels-good/",
+      "violations": [
+        {
+          "filename": "thewrap--robert-hofler.json",
+          "url": "https://www.thewrap.com/gruesome-playground-injuries-off-broadway-review-nicholas-braun-and-kara-young-hurt-until-it-feels-good/",
+          "outletId": "thewrap",
+          "criticName": "Robert Hofler",
+          "haystackLength": 303,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        }
+      ]
+    },
+    {
+      "showId": "44-off-broadway-2025",
+      "title": "44",
+      "openingDate": "2025-11-06",
+      "message": "nysr/David Finkle (nysr--david-finkle.json) SHIPPED but fullText never mentions '44' (5180 chars): https://nystagereview.com/2025/11/06/44-the-musical-the-obama-years-satirized-with-four-letter-words/\nnytg/Kyle Turner (nytg--kyle-turner.json) SHIPPED but fullText never mentions '44' (6022 chars): https://www.newyorktheatreguide.com/reviews/44-the-musical-off-broadway-review\ntheater-scene/Victor Gluck (theater-scene--victor-gluck.json) SHIPPED but fullText never mentions '44' (6458 chars): http://www.theaterscene.net/musicals/offbway/44-the-musical/victor-gluck/",
+      "violations": [
+        {
+          "filename": "nysr--david-finkle.json",
+          "url": "https://nystagereview.com/2025/11/06/44-the-musical-the-obama-years-satirized-with-four-letter-words/",
+          "outletId": "nysr",
+          "criticName": "David Finkle",
+          "haystackLength": 5180,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "nytg--kyle-turner.json",
+          "url": "https://www.newyorktheatreguide.com/reviews/44-the-musical-off-broadway-review",
+          "outletId": "nytg",
+          "criticName": "Kyle Turner",
+          "haystackLength": 6022,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        },
+        {
+          "filename": "theater-scene--victor-gluck.json",
+          "url": "http://www.theaterscene.net/musicals/offbway/44-the-musical/victor-gluck/",
+          "outletId": "theater-scene",
+          "criticName": "Victor Gluck",
+          "haystackLength": 6458,
+          "textIssuesFlag": false,
+          "triage": {
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        }
+      ]
     }
   ],
   "triage": {
-    "total": 584,
+    "total": 595,
     "counts": {
-      "excerpt": 158,
+      "excerpt": 165,
       "wrong-production": 12,
-      "unresolved": 335,
+      "unresolved": 339,
       "truncated": 79
     },
     "outletPlans": [
@@ -13107,10 +13346,10 @@
       },
       {
         "outletId": "ap",
-        "total": 27,
+        "total": 28,
         "counts": {
           "unresolved": 4,
-          "excerpt": 23
+          "excerpt": 24
         },
         "requiresArticleReview": true,
         "candidates": [
@@ -13197,6 +13436,15 @@
           },
           {
             "file": "annie-2012/ap--jennifer-farrar.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "betrayal-2013/ap--mark-kennedy.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -13837,13 +14085,31 @@
       },
       {
         "outletId": "chicagotribune",
-        "total": 2,
+        "total": 4,
         "counts": {
           "unresolved": 1,
-          "excerpt": 1
+          "excerpt": 3
         },
         "requiresArticleReview": true,
         "candidates": [
+          {
+            "file": "fun-home-2015/chicagotribune--chris-jones.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "the-price-2017/chicagotribune--chris-jones.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
           {
             "file": "titanique-2026/chicagotribune--chris-jones.json",
             "bucket": "unresolved",
@@ -14130,15 +14396,24 @@
       },
       {
         "outletId": "ew",
-        "total": 9,
+        "total": 10,
         "counts": {
-          "excerpt": 8,
+          "excerpt": 9,
           "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "a-delicate-balance-2014/ew--marc-snetiker.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "betrayal-2013/ew--thom-geier.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -15517,12 +15792,22 @@
       },
       {
         "outletId": "independent",
-        "total": 1,
+        "total": 2,
         "counts": {
-          "unresolved": 1
+          "unresolved": 1,
+          "excerpt": 1
         },
         "requiresArticleReview": true,
         "candidates": [
+          {
+            "file": "exit-the-king-west-end-2018/independent--david-lister.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
           {
             "file": "translations-west-end-2018/independent--paul-taylor.json",
             "bucket": "unresolved",
@@ -16252,15 +16537,24 @@
       },
       {
         "outletId": "nydailynews",
-        "total": 5,
+        "total": 6,
         "counts": {
-          "excerpt": 4,
+          "excerpt": 5,
           "unresolved": 1
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "baby-its-you-2011/nydailynews--joe-dziemianowicz.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "betrayal-2013/nydailynews--joe-dziemianowicz.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"
@@ -16336,13 +16630,22 @@
       },
       {
         "outletId": "nysr",
-        "total": 4,
+        "total": 5,
         "counts": {
           "wrong-production": 1,
-          "unresolved": 3
+          "unresolved": 4
         },
         "requiresArticleReview": true,
         "candidates": [
+          {
+            "file": "44-off-broadway-2025/nysr--david-finkle.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          },
           {
             "file": "almost-famous-2022/nysr--sandy-macdonald.json",
             "bucket": "unresolved",
@@ -16396,6 +16699,25 @@
               "contentTier=excerpt"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "nytg",
+        "total": 1,
+        "counts": {
+          "unresolved": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "44-off-broadway-2025/nytg--kyle-turner.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         ]
@@ -16611,6 +16933,25 @@
               "contentTier=excerpt"
             ],
             "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
+        "outletId": "picksinsix",
+        "total": 1,
+        "counts": {
+          "unresolved": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "les-miserables-tour-2022/picksinsix--ed-tracy.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
             "requiresArticleReview": true
           }
         ]
@@ -17584,6 +17925,25 @@
         ]
       },
       {
+        "outletId": "theater-scene",
+        "total": 1,
+        "counts": {
+          "unresolved": 1
+        },
+        "requiresArticleReview": true,
+        "candidates": [
+          {
+            "file": "44-off-broadway-2025/theater-scene--victor-gluck.json",
+            "bucket": "unresolved",
+            "evidence": [
+              "no-conclusive-triage-metadata"
+            ],
+            "nextStep": "read-article-and-verify-title-and-production",
+            "requiresArticleReview": true
+          }
+        ]
+      },
+      {
         "outletId": "theatermania",
         "total": 2,
         "counts": {
@@ -18490,16 +18850,25 @@
       },
       {
         "outletId": "thewrap",
-        "total": 4,
+        "total": 5,
         "counts": {
           "unresolved": 1,
           "wrong-production": 1,
-          "excerpt": 2
+          "excerpt": 3
         },
         "requiresArticleReview": true,
         "candidates": [
           {
             "file": "ghosts-off-broadway-2025/thewrap--robert-hofler.json",
+            "bucket": "excerpt",
+            "evidence": [
+              "contentTier=excerpt"
+            ],
+            "nextStep": "recover-full-article-and-verify-attribution",
+            "requiresArticleReview": true
+          },
+          {
+            "file": "gruesome-playground-injuries-off-broadway-2025/thewrap--robert-hofler.json",
             "bucket": "excerpt",
             "evidence": [
               "contentTier=excerpt"

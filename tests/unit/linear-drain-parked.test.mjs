@@ -1044,9 +1044,9 @@ describe('session-parked eligibility (BRO-4535)', () => {
     const d = SESSION_BODY.replace('needs a rule-18 second-opinion before the edit', 'needs owner approval');
     assert.strictEqual(isDrainEligible(sessionIssue({ description: d })), false);
   });
-  test('a card that also needs visual QA stays parked (only the PARKED blocker is waived downstream)', () => {
+  test('a card that also needs visual QA is eligible (BRO-6241: the worker asks the owner through the decision list)', () => {
     const d = SESSION_BODY.replace('X.', 'Edit src/components/show-cards/ScoreBadge.tsx.');
-    assert.strictEqual(isDrainEligible(sessionIssue({ description: d })), false);
+    assert.strictEqual(isDrainEligible(sessionIssue({ description: d })), true);
   });
   test('no safe check, or an in-progress state, is not eligible', () => {
     assert.strictEqual(isDrainEligible(sessionIssue({ description: 'PARKED: needs a worktree\n\nno check here' })), false);

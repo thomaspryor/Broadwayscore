@@ -13,16 +13,22 @@ import vm from 'node:vm';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 const gate = await import('../../src/lib/money-gate.ts');
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
+const hooks = await import('../../src/hooks/useFormspreeSubscribed.ts');
+const supa = await import('../../src/lib/supabase.ts');
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 
-function runBoot({ stored = null, cookie = '', storageThrows = false } = {}) {
+function runBoot({ stored = null, items = {}, cookie = '', storageThrows = false } = {}) {
   const attrs = new Set();
   const documentElement = {
     hasAttribute: (a) => attrs.has(a),
     setAttribute: (a) => attrs.add(a),
   };
   const localStorage = {
-    getItem: () => { if (storageThrows) throw new Error('blocked'); return stored; },
+    getItem: (k) => {
+      if (storageThrows) throw new Error('blocked');
+      if (k === gate.MONEY_UNLOCK_KEY) return stored;
+      return Object.hasOwn(items, k) ? items[k] : null;
+    },
   };
   vm.runInNewContext(gate.MONEY_GATE_BOOT_SCRIPT, { document: { documentElement, cookie }, localStorage });
   return attrs.has(gate.MONEY_UNLOCK_ATTR);
@@ -37,6 +43,48 @@ test('boot script unlocks from localStorage, from the cookie fallback, and never
   assert.equal(runBoot({ cookie: `x${gate.MONEY_UNLOCK_COOKIE}=1` }), false, 'cookie name is anchored');
 });
 
+test('existing subscribers and signed-in readers bypass the gate (BRO-6248)', () => {
+  const { SUBSCRIBED_KEY, SUBSCRIBED_KEY_PREFIX } = hooks;
+  for (const k of [SUBSCRIBED_KEY, `${SUBSCRIBED_KEY_PREFIX}broadway`, `${SUBSCRIBED_KEY_PREFIX}west-end`]) {
+    assert.equal(runBoot({ items: { [k]: 'true' } }), true, `boot: ${k}`);
+    assert.equal(runBoot({ items: { [k]: 'false' } }), false, `boot: ${k}=false stays locked`);
+    assert.equal(gate.hasExistingAccess((x) => (x === k ? 'true' : null)), true, k);
+  }
+  assert.equal(runBoot({ items: { [supa.SUPABASE_STORAGE_KEY]: '{"access_token":"x"}' } }), true, 'boot: stored session');
+  assert.equal(gate.hasExistingAccess((x) => (x === supa.SUPABASE_STORAGE_KEY ? '{}' : null)), true);
+  assert.equal(gate.hasExistingAccess(() => null), false);
+  assert.equal(gate.hasExistingAccess(() => { throw new Error('blocked'); }), false, 'blocked storage fails closed');
+  // Unrelated captures do not count: the pop-up's local copy and the money key's lookalikes.
+  assert.equal(runBoot({ items: { bsc_user_data: '{"email":"a@b.co"}', bsc_email_recaptured: 'true' } }), false);
+
+  const tsx = read('src/components/biz/MoneyGate.tsx');
+  assert.match(tsx, /if \(isAuthenticated\) unlockForExistingReader\(\);/, 'signing in mid-visit unlocks');
+  assert.match(tsx, /addEventListener\('bsc_subscribed', onSubscribed\)/, 'subscribing mid-visit unlocks');
+  assert.match(tsx, /else document\.documentElement\.removeAttribute\('data-money-unlocked'\);/, 'a stale page-only unlock is cleared on navigation');
+  // The bypass never persists the money unlock or joins the money list.
+  const fn = read('src/lib/money-gate.ts').match(/export function unlockForExistingReader[\s\S]*?\n}/)[0];
+  assert.doesNotMatch(fn, /localStorage|cookie|submitMoneySignup/);
+});
+
+test('gate copy: benefit-led, discloses email use, offers sign-in, no em dashes', () => {
+  const tsx = read('src/components/biz/MoneyGate.tsx');
+  assert.match(tsx, />Unlock the Money Scorecard</);
+  assert.match(tsx, /One sign&#8209;up unlocks every page\./, 'non-breaking hyphen keeps "sign-up" on one line at 390');
+  assert.match(tsx, /\{MONEY_EMAIL_USE\}/);
+  assert.match(gate.MONEY_EMAIL_USE, /Unsubscribe anytime\./);
+  assert.match(tsx, /Already have an account\?/);
+  assert.match(tsx, /showSignIn\('generic', `money_gate:\$\{page\}`\)/);
+  assert.match(tsx, /MONEY_ROLES\.map/, 'optional role chips kept');
+  for (const t of [tsx, gate.MONEY_EMAIL_USE]) assert.doesNotMatch(t, /\u2014/, 'no em dashes');
+});
+
+test('header opening-night CTA is hidden on /biz and while a locked gate is on the page', () => {
+  const btn = read('src/components/HeaderSubscribeButton.tsx');
+  assert.match(btn, /if \(!isOpen && onBizPage\) return null;/);
+  assert.match(btn, /className="header-subscribe-cta /);
+  assert.match(read('src/app/globals.css'), /html:not\(\[data-money-unlocked\]\):has\(\.money-gate\) \.header-subscribe-cta \{\s*display: none;/);
+});
+
 test('email validation matches the database function', () => {
   for (const ok of ['a@b.co', ' Name.Last+tag@Example.org ']) assert.equal(gate.isValidMoneyEmail(ok), true, ok);
   for (const bad of ['', 'a@b', 'a b@c.d', '@b.co', 'a@@b.co', `${'x'.repeat(250)}@b.co`]) assert.equal(gate.isValidMoneyEmail(bad), false, bad);
@@ -49,7 +97,8 @@ test('sign-ups go to their own store, never the main list or accounts', () => {
   const stripComments = (t) => t.replace(/\/\*[\s\S]*?\*\//g, '').replace(/^\s*\/\/.*$/gm, '');
   const src = stripComments(read('src/lib/money-gate.ts') + read('src/components/biz/MoneyGate.tsx'));
   assert.match(src, /rest\/v1\/rpc\/money_scorecard_signup/);
-  assert.doesNotMatch(src, /formspree|resend|useFormspreeCapture|SUBSCRIBED_KEY_PREFIX|bsc_subscribed/i);
+  assert.doesNotMatch(src, /formspree\.io|resend|useFormspreeCapture|new Event\('bsc_subscribed'\)|setItem\(SUBSCRIBED|setItem\(`\$\{SUBSCRIBED/i);
+  assert.doesNotMatch(src, /setItem\((EXISTING_|SUPABASE_STORAGE_KEY)/, 'main-list and session flags are read, never written');
   const sql = read('supabase/migrations/20261025_money_scorecard_signups.sql');
   assert.match(sql, /REVOKE ALL ON public\.money_scorecard_signups FROM anon, authenticated/);
   assert.match(sql, /SECURITY DEFINER/);

@@ -4,6 +4,9 @@ const isThinCritic = (c) => _thinCritic(c, true);
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { isThinClosedShow: _thinShow, isThinCritic: _thinCritic, hasSearchLanding, thinRulesEnabled } = require('../../scripts/lib/seo-indexability.js');
@@ -83,4 +86,64 @@ test('sitemap count delta warns only past a 3% drop', () => {
   assert.equal(sitemapCountDelta(1000, 1100).ok, true);
   assert.equal(sitemapCountDelta(0, 5).ok, true);
   assert.equal(countLocs('<urlset><url><loc>a</loc></url><url><loc>b</loc></url></urlset>'), 2);
+});
+
+// BRO-5992: GSC impressions input + frozen 10% cohort.
+const gscLib = require('../../scripts/lib/gsc-impressions.js');
+const seo = require('../../scripts/lib/seo-indexability.js');
+
+test('closed show with GSC impressions stays indexable even with 0 landings', () => {
+  assert.equal(seo.isThinClosedShow({ status: 'closed', reviewCount: 0, hasGscImpressions: true }, true), false);
+  assert.equal(seo.isThinClosedShow({ status: 'closed', reviewCount: 0, hasGscImpressions: false }, true), true);
+});
+
+test('hasGscImpressions fails open without a snapshot and reads counts otherwise', () => {
+  assert.equal(seo.hasGscImpressions('/show/x', null), true);
+  assert.equal(seo.hasGscImpressions('/show/x', { '/show/y': 3 }), false);
+  assert.equal(seo.hasGscImpressions('/show/y/', { '/show/y': 3 }), true);
+  assert.equal(seo.loadGscImpressions('/nonexistent/file.json'), null);
+});
+
+test('GSC rows normalise host, slash and query and sum duplicates', () => {
+  const agg = gscLib.aggregateRows([
+    { keys: ['https://broadwayscorecard.com/show/hamilton'], impressions: 5 },
+    { keys: ['https://www.broadwayscorecard.com/show/hamilton/'], impressions: 2 },
+    { keys: ['https://broadwayscorecard.com/browse/best-musicals'], impressions: 9 },
+  ]);
+  assert.deepEqual(agg, { '/show/hamilton': 7 });
+});
+
+test('cohort hash is deterministic and about 10%', () => {
+  assert.equal(seo.inCohortHash('a-slug'), seo.inCohortHash('a-slug'));
+  const n = 5000;
+  let hits = 0;
+  for (let i = 0; i < n; i++) if (seo.inCohortHash(`slug-${i}`)) hits++;
+  assert.ok(hits / n > 0.08 && hits / n < 0.12, `got ${hits / n}`);
+});
+
+test('rollout: only a frozen-cohort candidate is thin; kill switch and missing cohort fail open', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'cohort-'));
+  const file = path.join(dir, 'c.json');
+  fs.writeFileSync(file, JSON.stringify({ cohortSlugs: ['in-cohort'] }));
+  const cohort = seo.loadCohort(file);
+  const thin = { status: 'closed', reviewCount: 0, hasSearchLanding: false, hasGscImpressions: false };
+  assert.equal(seo.inFrozenCohort('in-cohort', {}, cohort), true);
+  assert.equal(seo.inFrozenCohort('other', {}, cohort), false);
+  assert.equal(seo.inFrozenCohort('in-cohort', { SEO_THIN_COHORT_OFF: '1' }, cohort), false);
+  assert.equal(seo.inFrozenCohort('in-cohort', {}, null), false);
+  assert.equal(seo.loadCohort('/nonexistent.json'), null);
+  // a cohort page that gained impressions or a landing is released
+  assert.equal(seo.isThinClosedShow({ ...thin, hasGscImpressions: true }, true), false);
+  assert.equal(seo.isThinClosedShow({ ...thin, status: 'upcoming' }, true), false);
+});
+
+test('committed cohort file: ~10% of candidates, disjoint control of equal size, all hash-derived', () => {
+  const f = new URL('../../data/audit/seo-thin-cohort.json', import.meta.url);
+  if (!fs.existsSync(f)) return; // not frozen yet
+  const c = JSON.parse(fs.readFileSync(f, 'utf8'));
+  if (c.cohortSlugs.length === 0) return; // placeholder, not frozen yet
+  assert.equal(c.controlSlugs.length, c.cohortSlugs.length);
+  assert.ok(c.cohortSlugs.every(s => seo.inCohortHash(s)));
+  const cohortSet = new Set(c.cohortSlugs);
+  assert.ok(c.controlSlugs.every(s => !cohortSet.has(s)));
 });

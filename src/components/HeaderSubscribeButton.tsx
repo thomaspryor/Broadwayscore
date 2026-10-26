@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useCallback, useEffect } from 'react';
+import { usePathname } from 'next/navigation';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import CreateAccountNudge from '@/components/CreateAccountNudge';
@@ -15,11 +16,17 @@ import { useAuth } from '@/contexts/AuthContext';
  * in. A joined-state badge here sat next to "Sign in" and read as "you have
  * an account" (BRO-4893). Header only: the footer link row promotes the
  * account instead (BRO-4946).
+ *
+ * Never competes with the Money Scorecard sign-up (BRO-6248): hidden on every
+ * /biz page, and hidden by CSS (globals.css `.header-subscribe-cta`) on any
+ * page while a locked money gate is in it, i.e. show pages.
  */
 export default function HeaderSubscribeButton() {
   const [isOpen, setIsOpen] = useState(false);
   const [email, setEmail] = useState('');
   const { loading: authLoading, isAuthenticated } = useAuth();
+  const pathname = usePathname();
+  const onBizPage = pathname === '/biz' || pathname?.startsWith('/biz/');
   const { status, errorMessage, submit, isSubscribed, market } = useFormspreeCapture({
     userGroup: 'main-site-subscriber',
     source: 'header',
@@ -44,12 +51,13 @@ export default function HeaderSubscribeButton() {
 
   // Signed-in visitors are already on the list (auto-subscribe on sign-in).
   if (!isOpen && (isSubscribed || isAuthenticated || (featureFlags.userAccounts && authLoading))) return null;
+  if (!isOpen && onBizPage) return null;
 
   return (
     <>
       <button
         onClick={() => setIsOpen(true)}
-        className="ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors whitespace-nowrap"
+        className="header-subscribe-cta ml-1 px-3 py-1.5 text-sm font-semibold text-white bg-brand hover:bg-brand-hover rounded-lg transition-colors whitespace-nowrap"
       >
         {EMAIL_LIST_COPY.cta}
       </button>

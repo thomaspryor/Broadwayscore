@@ -1,7 +1,7 @@
 import { NextRequest } from 'next/server';
 import { CONFIRM_FIELD_HTML, readConfirmedForm } from '@/lib/confirm-post';
 import * as linkModule from '@/lib/owner-decision-link';
-import { esc, page, notice, linearGraphql, rateLimited } from '@/lib/owner-decision-page';
+import { esc, page, notice, linearGraphql, rateLimited, evidenceHtml } from '@/lib/owner-decision-page';
 
 // The shared module is plain CJS JavaScript (scripts require it too), so its
 // return shapes are typed here instead of inferred from every branch.
@@ -73,7 +73,7 @@ export async function GET(req: NextRequest) {
   const open = l as Extract<Loaded, { status: 'open' }>;
   const choice = req.nextUrl.searchParams.get('o') || '';
   const form = (inner: string) => `<form method="POST" action="/api/owner-decision"><input type="hidden" name="t" value="${esc(g.token)}">${CONFIRM_FIELD_HTML}${inner}</form>`;
-  const head = `<h1>Your decision</h1><p class="q">${esc(open.question)}</p><p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>`;
+  const head = `<h1>Your decision</h1><p class="q">${esc(open.question)}</p><p class="small">Card: ${esc(open.issue.identifier)} ${esc(open.issue.title)}</p>${evidenceHtml((open.block as { evidence?: { label: string; url: string }[] }).evidence)}`;
 
   if (choice === 'own') {
     return page('Your decision', `${head}${form(`<input type="hidden" name="choice" value="own"><textarea name="text" maxlength="${MAX_ANSWER_CHARS}" required placeholder="Type your answer here" aria-label="Your answer"></textarea><button type="submit">Send my answer</button>`)}`);

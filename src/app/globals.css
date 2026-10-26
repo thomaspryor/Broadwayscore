@@ -615,6 +615,11 @@
   html[data-money-unlocked] .money-gate-lock {
     display: none;
   }
+  /* The header's opening-night CTA stays out of the way while a locked gate
+     is on the page (BRO-6248; /biz hides it in HeaderSubscribeButton). */
+  html:not([data-money-unlocked]):has(.money-gate) .header-subscribe-cta {
+    display: none;
+  }
 }
 
 @layer utilities {

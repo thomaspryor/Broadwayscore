@@ -23,7 +23,7 @@ import { join } from 'node:path';
 import { resolveBase, scopedChangedFiles } from '../../scripts/lib/review-gate.mjs';
 
 // Same UI_PATTERN pre-push-visual-gate.sh uses.
-const UI_PATTERN = /^(src\/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.|src\/app\/.*\.(tsx|jsx|ts|js)$)/;
+const UI_PATTERN = /^(src\/.*\.(tsx|jsx|css|scss|module\.css)$|tailwind\.config\.|postcss\.config\.)/;
 
 function git(repo, ...args) {
   return execFileSync('git', ['-C', repo, ...args], { encoding: 'utf8' });

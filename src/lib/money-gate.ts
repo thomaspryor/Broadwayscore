@@ -12,12 +12,46 @@
  * a `data-money-unlocked` attribute on <html> that CSS reads (globals.css
  * `.money-gate`). The attribute is set by MONEY_GATE_BOOT_SCRIPT before the
  * gated markup paints, so a returning reader never sees the lock flash.
+ *
+ * Existing readers skip the gate (BRO-6248): a browser holding a signed-in
+ * session, or one already on the newsletter / opening-night list, is unlocked
+ * on sight. That unlock is derived on every load and never written to the
+ * money list or the unlock key: they did not sign up for Money emails.
  */
+
+import { SUBSCRIBED_KEY, SUBSCRIBED_KEY_PREFIX } from '../hooks/useFormspreeSubscribed';
+import { SUPABASE_STORAGE_KEY } from './supabase';
 
 export const MONEY_UNLOCK_KEY = 'bsc_money_unlocked';
 export const MONEY_UNLOCK_COOKIE = 'bsc_money';
 export const MONEY_UNLOCKED_EVENT = 'bsc_money_unlocked';
 export const MONEY_UNLOCK_ATTR = 'data-money-unlocked';
+
+/** What the gate tells readers their email is used for. Owner-editable. */
+export const MONEY_EMAIL_USE =
+  'Occasional Money Scorecard emails: new recoupments, closings and big estimate changes. Unsubscribe anytime. Separate from our newsletter.';
+
+/**
+ * localStorage keys that mark an existing reader: the main list's subscribed
+ * flags (useFormspreeSubscribed.ts) and the stored Supabase session.
+ * Subscribed flags count only as 'true'; the session counts when present.
+ */
+export const EXISTING_SUBSCRIBER_KEYS = [
+  SUBSCRIBED_KEY,
+  `${SUBSCRIBED_KEY_PREFIX}broadway`,
+  `${SUBSCRIBED_KEY_PREFIX}west-end`,
+] as const;
+export const EXISTING_SESSION_KEY = SUPABASE_STORAGE_KEY;
+
+/** True when this browser already belongs to a subscriber or account holder. */
+export function hasExistingAccess(getItem: (key: string) => string | null): boolean {
+  try {
+    if (getItem(EXISTING_SESSION_KEY) !== null) return true;
+    return EXISTING_SUBSCRIBER_KEYS.some((k) => getItem(k) === 'true');
+  } catch {
+    return false;
+  }
+}
 
 export const MONEY_ROLES = [
   { value: 'producer', label: 'Producer' },
@@ -32,7 +66,9 @@ export type MoneyRole = (typeof MONEY_ROLES)[number]['value'];
 /** Inline, runs during HTML parse. Must stay dependency-free and never throw. */
 export const MONEY_GATE_BOOT_SCRIPT =
   `try{var d=document.documentElement;if(!d.hasAttribute('${MONEY_UNLOCK_ATTR}')){var u=false;` +
-  `try{u=localStorage.getItem('${MONEY_UNLOCK_KEY}')==='1'}catch(e){}` +
+  `try{var g=function(k){return localStorage.getItem(k)};u=g('${MONEY_UNLOCK_KEY}')==='1'||g('${SUPABASE_STORAGE_KEY}')!==null` +
+  EXISTING_SUBSCRIBER_KEYS.map((k) => `||g('${k}')==='true'`).join('') +
+  `}catch(e){}` +
   `if(!u){u=/(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)/.test(document.cookie)}` +
   `if(u)d.setAttribute('${MONEY_UNLOCK_ATTR}','')}}catch(e){}`;
 
@@ -45,12 +81,25 @@ export function isMoneyUnlocked(): boolean {
   if (typeof window === 'undefined') return false;
   try {
     if (localStorage.getItem(MONEY_UNLOCK_KEY) === '1') return true;
+    if (hasExistingAccess((k) => localStorage.getItem(k))) return true;
   } catch { /* storage blocked: fall through to the cookie */ }
   try {
     return new RegExp(`(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)`).test(document.cookie);
   } catch {
     return false;
   }
+}
+
+/**
+ * Unlocks the gates on the current page only, for an existing reader
+ * (sign-in or subscription mid-visit). Persists nothing: the next load
+ * re-derives it from the same flags.
+ */
+export function unlockForExistingReader(): void {
+  if (typeof window === 'undefined') return;
+  if (document.documentElement.hasAttribute(MONEY_UNLOCK_ATTR)) return;
+  document.documentElement.setAttribute(MONEY_UNLOCK_ATTR, '');
+  window.dispatchEvent(new Event(MONEY_UNLOCKED_EVENT));
 }
 
 /** Unlocks every money gate in this browser and on the current page. */

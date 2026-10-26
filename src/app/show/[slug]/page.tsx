@@ -54,6 +54,8 @@ import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import { getComparisonsForShow } from '@/config/comparisons';
 import { serializeShowForClient } from '@/lib/serialize-show';
+import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
+import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import ShowTrustLines from '@/components/show-page/ShowTrustLines';
@@ -377,15 +379,27 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // RSC flight payload. On /show/hamilton that was 645KB of the 781KB document,
   // 643 review objects, none of which any card renders (the cards read only
   // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
-  const relatedShowsOpen = getRelatedShowsOpen(show).map(s => serializeShowForClient(s));
+  const relatedShowsOpenRaw = getRelatedShowsOpen(show);
+  const relatedShowsOpen = relatedShowsOpenRaw.map(s => serializeShowForClient(s));
   // A show already in "Open Shows You Might Like" (e.g. Oh, Mary! playing Off-Broadway)
   // must not reappear in "Closed" for its Broadway run, so drop closed recs whose title matches.
   const openRecTitles = new Set(relatedShowsOpen.map(s => s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()));
-  const relatedShowsClosed = (show.category !== 'west-end' && show.category !== 'off-west-end')
+  const relatedShowsClosedRaw = (show.category !== 'west-end' && show.category !== 'off-west-end')
     ? getRelatedShowsClosed(show, 12)
         .filter(s => !openRecTitles.has(s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()))
         .slice(0, 6)
-        .map(s => serializeShowForClient(s))
+    : [];
+  const relatedShowsClosed = relatedShowsClosedRaw.map(s => serializeShowForClient(s));
+  // related-shows-position A/B (BRO-5989): reuses the page's own open/closed rec lists
+  // (West End exclusion and open/closed title dedupe included), then keeps only pages
+  // the sitemap would list so the test row never links a noindex page. Pages with no
+  // reviews yet get no row (it sits after the reviews card). Open recs first.
+  const compactRelated = (show.criticScore?.reviews?.length ?? 0) > 0
+    ? pickCompactRelated(
+        [...relatedShowsOpenRaw, ...relatedShowsClosedRaw],
+        show.id,
+        (s: (typeof relatedShowsOpenRaw)[number]) => isShowIndexable(s, s.slug),
+      ).map(s => serializeShowForClient(s))
     : [];
   const otherProductions = getOtherProductions(show).map(s => serializeShowForClient(s));
   const comparisons = getComparisonsForShow(show.slug);
@@ -1019,6 +1033,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
             </p>
           </section>
         )}
+
+        <RelatedShowsCompactAB shows={compactRelated} sourceShowId={show.id} />
 
         {/* One fixed 300x250 AdSense unit (BRO-5893). Renders nothing unless the
             PostHog `ads` flag, auth, region and automation checks all pass and

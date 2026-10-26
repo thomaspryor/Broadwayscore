@@ -1203,7 +1203,7 @@ export function generateHomepageFAQSchema(stats: { totalShows: number; totalRevi
   const faqs = [
     {
       question: 'What is Broadway Scorecard?',
-      answer: `Broadway Scorecard aggregates critic reviews from over 400 outlets to create a single CriticScore (0-100) for every Broadway show. We currently track ${stats.totalShows.toLocaleString()} shows and ${stats.totalReviews.toLocaleString()} reviews.`,
+      answer: `Broadway Scorecard aggregates critic reviews from over 400 outlets to create a single CriticScore (0-100) for every Broadway show. We currently track ${stats.totalShows.toLocaleString()} scored shows and ${stats.totalReviews.toLocaleString()} reviews across Broadway, Off-Broadway, the West End and more.`,
     },
     {
       question: 'How are Broadway show scores calculated?',

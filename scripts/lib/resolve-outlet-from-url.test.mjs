@@ -62,3 +62,10 @@ test('resolveCanonicalOutletId keeps operator outlet for AP wire URL on wsj.com 
   assert.equal(resolveCanonicalOutletId({ outletArg: 'ap', url: ap }).outletId, 'ap');
   assert.equal(resolveCanonicalOutletId({ outletArg: 'wsj', url: 'https://www.wsj.com/articles/foo-11111' }).outletId, 'wsj');
 });
+
+test('validateUrlDomain accepts an AP wire page for outlet ap but not for another outlet or a plain wsj url', () => {
+  const { validateUrlDomain } = require('./url-discovery.js');
+  assert.equal(validateUrlDomain(`https://online.wsj.com/article/${AP_ID}.html`, 'ap').valid, true);
+  assert.equal(validateUrlDomain('https://www.wsj.com/articles/hamilton-review-1438821601', 'ap').valid, false);
+  assert.equal(validateUrlDomain(`https://online.wsj.com/article/${AP_ID}.html`, 'nytimes').valid, false);
+});

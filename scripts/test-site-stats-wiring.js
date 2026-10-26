@@ -24,6 +24,13 @@ const fn = core.slice(core.indexOf('export function getSiteStats'));
 assert.match(fn.slice(0, 600), /displaysCriticScore/, 'scored shows must use the badge gate (displaysCriticScore)');
 assert.match(fn.slice(0, 600), /regionalSlugAllowed/, 'must cover every enabled market, not only Broadway');
 
+assert.match(fn.slice(0, 900), /HIDDEN_LONDON_IDS/, 'must skip shows the market pages hide (ABBA Voyage)');
+assert.match(fn.slice(0, 900), /isTourListed/, 'tours count only when listed');
+
+// Every page-wide review count (footer, FAQ schema) must agree with the headline.
+assert.match(read('src/app/layout.tsx'), /totalReviews \} = getSiteStats\(\)/, 'footer review count must be site-wide');
+assert.match(page, /generateHomepageFAQSchema\(\{ totalShows: siteStats\.scoredShows, totalReviews: siteStats\.totalReviews \}\)/, 'FAQ schema must use the site-wide counts');
+
 const route = read('src/app/data/site-stats.json/route.ts');
 assert.match(route, /getSiteStats\(\)/, 'site-stats.json must publish getSiteStats');
 assert.match(route, /force-static/, 'site-stats.json must be statically exported');

@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-25T12:48:50.822Z",
-  "bannerText": "92/148 Done(14d) verified on main · 4 FAILED · 1 vacuous · 23 stuck-but-done — PARTIAL RUN: 57 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-26T00:04:52.296Z",
+  "bannerText": "64/214 Done(14d) verified on main · 3 FAILED · 0 vacuous · 14 stuck-but-done — PARTIAL RUN: 152 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-6108 — BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/we-historical-tr-coverage.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through"
-    },
-    {
-      "title": "FAILED BRO-6075 — Write grounded synopses for the 62 West End historical shows left empty (from collected review texts)",
-      "detail": "FAIL 1506: show missing FAIL 1507: show missing FAIL 1508: show missing FAIL 1509: show missing FAIL 1510: show missing FAIL 1511: show missing FAIL 1512: show missing FAIL 1513: …",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6075/write-grounded-synopses-for-the-62-west-end-historical-shows-left"
-    },
-    {
-      "title": "FAILED BRO-5993 — Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-lane-parallel-publish.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is"
-    },
-    {
       "title": "FAILED BRO-4776 — P3: 8 tour runtimes copied from the Broadway parent disagree with the tour's own page by 5 to 10 minutes",
-      "detail": "not ok: the-sound-of-music-1998 has a synopsis of at least 40 chara… | first failure: the-sound-of-music-1998: missing synopsis (run the verified Wikipedia enricher,",
+      "detail": "not ok: every national tour has a synopsis, or is a documented gap | first failure: tours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-music",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4776/p3-8-tour-runtimes-copied-from-the-broadway-parent-disagree-with-the"
     },
     {
-      "title": "STUCK BRO-6105 — BSC Daily: Sync: baseline drift",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6105/bsc-daily-sync-baseline-drift"
+      "title": "FAILED BRO-6188 — Recoupment model: pre-2020 musicals with a known small capitalization read far too negative (Next to Normal -218% vs recouped); eraIndex for musicals trade-off",
+      "detail": "not ok: reported-truth backtest: musicals hold MAE <= 4.2 and >= 73… | first failure: musical reported-truth MAE 4.6 (7.3 before BRO-6188)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6188/recoupment-model-pre-2020-musicals-with-a-known-small-capitalization"
     },
     {
-      "title": "STUCK BRO-6089 — Wrong-production round-up archives: quarantine TR orphans and apply date-window matching to LBO/Stage round-up scrapers",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6089/wrong-production-round-up-archives-quarantine-tr-orphans-and-apply"
+      "title": "FAILED BRO-6184 — Land gate: merged-tree-tests killed run blocks without consulting baseline; musicals reported-truth backtest red on main (MAE 7.4 vs 4.2)",
+      "detail": "not ok: reported-truth backtest: musicals hold MAE <= 4.2 and >= 73… | first failure: musical reported-truth MAE 4.6 (7.3 before BRO-6188)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6184/land-gate-merged-tree-tests-killed-run-blocks-without-consulting"
     },
     {
-      "title": "STUCK BRO-6088 — Flag create_session from a plan-only session (BRO-6083 follow-up)",
+      "title": "STUCK BRO-5289 — Recover AP's own verdict for 3 shows whose AP review was filed under WSJ (resolveOutletFromUrl: AP wire ids)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6088/flag-create-session-from-a-plan-only-session-bro-6083-follow-up"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5289/recover-aps-own-verdict-for-3-shows-whose-ap-review-was-filed-under"
     },
     {
-      "title": "STUCK BRO-6087 — Claude board worker runs at about half its ceiling (20-33 claims/day vs 48) while 194 cards are eligible",
+      "title": "STUCK BRO-5249 — BSC Daily: Quality: corpus drift",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6087/claude-board-worker-runs-at-about-half-its-ceiling-20-33-claimsday-vs"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5249/bsc-daily-quality-corpus-drift"
+    },
+    {
+      "title": "STUCK BRO-5088 — Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5088/fact-check-1-follow-up-unsourced-director-rows-steinberg-as-broadway"
+    },
+    {
+      "title": "STUCK BRO-5076 — T1/T2 silent gap on near-opening show: Good Time Charlie — talkinbroadway",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5076/t1t2-silent-gap-on-near-opening-show-good-time-charlie-talkinbroadway"
+    },
+    {
+      "title": "STUCK BRO-4695 — BSC Daily: Data quality: cross-outlet attribution drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4695/bsc-daily-data-quality-cross-outlet-attribution-drift"
     }
   ],
-  "moreCount": 20
+  "moreCount": 9
 }
