@@ -14,6 +14,7 @@ import assert from 'node:assert/strict';
 import {
   buildRecoupFindings,
   buildSeasonProfiles,
+  hasKnownOutcome,
   compareSeason,
   formatRowValue,
   hasReturnedCoverage,
@@ -236,7 +237,7 @@ test('a season under way: averages state what is disclosed, counted against the 
 test('shares of fewer than 3 shows are not stated; a disrupted last season still fills its column', () => {
   const shows = [
     show({ openingDate: '2021-10-01', commercial: com({ recouped: true }) }),
-    show({ openingDate: '2021-10-02', commercial: com({}) }),
+    show({ openingDate: '2021-10-02', commercial: com({ recouped: false }) }),
     ...season(2019, 5, { tracked: true }),
   ];
   const cmp = compareSeason(buildSeasonProfiles(shows), '2021-2022', '2026-10-20')!;
@@ -486,4 +487,24 @@ test('returned capital: sums capital x share per show with a low-high band, skip
   // Below 60% of the capital-bearing shows: not stated.
   const thin = buildSeasonProfiles([shows[0], shows[3], shows[3], shows[3]].map((s, i) => ({ ...s, openingDate: `2025-10-0${i + 1}` })));
   assert.equal(hasReturnedCoverage(thin[0]), false);
+});
+
+test('closed shows with only a model-estimate label stay out of the recoup rate (BRO-6354)', () => {
+  const shows = [
+    show({ openingDate: '2016-01-10', status: 'closed', commercial: com({ designation: 'Easy Winner', recouped: true }) }),
+    show({ openingDate: '2016-02-10', status: 'closed', commercial: com({ designation: 'Flop', recouped: false }) }),
+    show({ openingDate: '2016-03-10', status: 'closed', commercial: com({ designation: 'Flop', recouped: null }) }),
+    show({ openingDate: '2016-04-10', status: 'closed', commercial: com({ designation: 'Fizzle' }) }),
+    show({ openingDate: '2016-05-10', status: 'open', commercial: com({ recouped: null }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2015-2016')!;
+  assert.deepEqual([p.recouped, p.outcomeKnown, p.commercial], [1, 3, 5]);
+  assert.equal(hasKnownOutcome('closed', { recouped: null }), false);
+  assert.equal(hasKnownOutcome('closed', { recouped: false }), true);
+  assert.equal(hasKnownOutcome('open', { recouped: null }), true);
+  assert.equal(hasKnownOutcome('upcoming', { recouped: null }), false);
+  assert.equal(hasKnownOutcome(undefined, { recouped: undefined }), false);
+  // The average row pools known outcomes only.
+  const avg = seasonHistoryAverage([p], null, '2026-10-26');
+  assert.deepEqual([avg.recouped?.recouped, avg.recouped?.commercial], [1, 3]);
 });

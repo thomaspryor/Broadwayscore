@@ -550,6 +550,7 @@ export interface SeasonStats {
   /** Every commercial show in the season (nonprofits and tour stops excluded). */
   totalCapital: import('./commercial-metrics').CapitalSummary;
   recoupedCount: number;
+  /** Commercial shows with a known outcome: the denominator of recoupedCount (BRO-6354). */
   totalShows: number;
   recoupedShows: string[];
 }

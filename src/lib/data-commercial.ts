@@ -58,7 +58,7 @@ import {
 } from './commercial-display';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
-import { buildSeasonProfiles, buildRecoupFindings, compareSeason, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
+import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcome, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
 import fs from 'fs';
 import path from 'path';
 import { getMarketDate } from './date-utils';
@@ -352,7 +352,8 @@ export function getSeasonStats(season: string): SeasonStats {
     // A closed show with only a research placeholder is untracked and left out too (trackedRecord).
     if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
 
-    totalShows++;
+    // The recoup denominator: known outcomes only, as in buildSeasonProfiles (BRO-6354).
+    if (hasKnownOutcome(show.status, data)) totalShows++;
     // Our own budget estimate counts as undisclosed here, as in getSeasonProfiles.
     const cap = isOwnEstimate(data) ? null : data.capitalization;
     allCaps.push(cap);

@@ -93,7 +93,10 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                   </td>
                   <td className="py-2.5 px-3 text-center text-white font-semibold">{p.productions}</td>
                   <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                    {tracked || current ? `${p.recouped} of ${p.commercial}` : '—'}
+                    {(tracked || current) && p.outcomeKnown > 0 ? `${p.recouped} of ${p.outcomeKnown}` : '—'}
+                    {(tracked || current) && p.commercial > p.outcomeKnown && (
+                      <span className="block text-xs text-gray-500">{p.commercial - p.outcomeKnown} unconfirmed left out</span>
+                    )}
                   </td>
                   {showCapital && (
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
@@ -176,7 +179,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
       </div>
       <p className="px-4 py-3 text-xs text-gray-500">
         New Broadway productions by opening date (July 1 to June 30); 2020-21 had none and 2019-20 stopped in March 2020. Recouped counts commercial
-        productions (nonprofit runs and tour stops have no investors to repay). &ldquo;—&rdquo; means we track too few of
+        productions with a known outcome (nonprofit runs and tour stops have no investors to repay; closed shows with no confirmed recoupment status, only our own estimate, are left out of the count and noted in the cell). &ldquo;—&rdquo; means we track too few of
         that season&apos;s productions to say{showCapital && '; a disclosed capital sum shows only where at least 80% of budgets are disclosed'}. Recent seasons&apos;
         recoupment counts can still rise.
         {showCapital && ' Est. total capital adds, for each tracked commercial production with no public figure, our own estimate of its budget where we have one (never counted as disclosed), else the median disclosed capitalization of similar shows (same type and original or revival, opening within two seasons, else four, else the same type within four); left out are nonprofit-presented runs with no public figure and productions we do not track (the cell counts them). Disclosed figures include SEC filing maximums, so both capital columns can run high. Est. money back so far is our estimate of how much of the capital in those shows has come back to investors (recouped shows at their reported return, otherwise an estimate: our model from weekly grosses and costs, or an outside estimate, never above 99% for a show not yet recouped), with the range below it; it counts only shows we can estimate and rises as running shows pay back.'}
