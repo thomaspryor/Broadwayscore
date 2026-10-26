@@ -1117,5 +1117,36 @@
       }
     ],
     "queuedAt": "2026-10-26T15:57:01.760Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6350-mvpelerm",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6350-mvpelerm",
+    "description": "land.yml did not land land/job/linear-BRO-6350-mvpelerm: the rebase gate went red at 5c0d3c52e2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6350-mvpelerm @ 5c0d3c52e2 (origin/land/job/linear-BRO-6350-mvpelerm) → origin/main @ 236ed6811e REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 236ed6811e: Rebasing (1/1) error: could not apply 5c0d3c52e26... test(BRO-6350): recoupment guards track new truth rows (musical MAE bound 5; two-part no-cap play exempt from star-play loss-side guard) hint:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40350749406",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6350-mvpelerm"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5c0d3c52e266f429bef7b3208078d918e4d472bf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40350749406"
+      }
+    ],
+    "queuedAt": "2026-10-26T16:00:24.255Z"
   }
 ]
