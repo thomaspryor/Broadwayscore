@@ -245,10 +245,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T12:25:32.462Z",
-      "lastSeen": "2026-10-26T12:54:46.313Z",
-      "lastNotifiedAt": "2026-10-26T12:25:32.462Z",
-      "lastSurfacedAt": "2026-10-26T12:25:32.462Z",
+      "incidentOpenedAt": "2026-10-26T12:41:54.556Z",
+      "lastSeen": "2026-10-26T13:11:25.477Z",
+      "lastNotifiedAt": "2026-10-26T12:41:54.556Z",
+      "lastSurfacedAt": "2026-10-26T12:41:54.556Z",
       "notifyCount": 174,
       "cardId": null,
       "linearIdentifier": null,
@@ -27433,7 +27433,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6307",
-      "silentRefires": 3
+      "silentRefires": 2,
+      "absentRunIds": [
+        "40325513527"
+      ]
     },
     "land:land/bro-6298-az-lookups": {
       "status": "open",
@@ -27565,6 +27568,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:78db5ec3": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"findReviewsToProcess (real function) queues an aged closed-show stub inside the cut\"",
+      "firstSeen": "2026-10-26T13:09:22.656Z",
+      "incidentOpenedAt": "2026-10-26T13:09:22.656Z",
+      "lastSeen": "2026-10-26T13:09:22.656Z",
+      "lastNotifiedAt": "2026-10-26T13:09:22.656Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6328",
+      "dispatch": {
+        "requestedAt": "2026-10-26T13:09:22.656Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40325513527",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40325513527"
+      }
     },
     "land:land/bro-6298-az-v2": {
       "status": "open",
