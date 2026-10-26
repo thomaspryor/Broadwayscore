@@ -1,6 +1,6 @@
 /**
  * SeasonComparisonTable - one season's mix, capital and recoupment next to
- * last season and the 10-season average (compareSeason in season-profile.ts).
+ * the two seasons before it and the 10-season average (compareSeason in season-profile.ts).
  */
 
 import { formatRowValue, type SeasonComparison } from '@/lib/season-profile';
@@ -10,7 +10,7 @@ function shortSeason(season: string): string {
 }
 
 export default function SeasonComparisonTable({ comparison }: { comparison: SeasonComparison }) {
-  const { season, lastSeason, baselineRange, baselineSeasons, inProgress, lastDisrupted, recoupUnsettled, rows } = comparison;
+  const { season, lastSeason, prevSeason, baselineRange, baselineSeasons, inProgress, lastDisrupted, recoupUnsettled, rows } = comparison;
   const avgLabel = baselineRange ? `${shortSeason(baselineRange[0])} to ${shortSeason(baselineRange[1])}` : null;
   const partialAvg = rows.some((r) => r.avg != null && r.avgSeasons < baselineSeasons);
   const hasMoney = rows.some((r) => r.format === 'money');
@@ -28,6 +28,11 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
               <th className="py-3 px-2 sm:px-4 font-medium text-center sm:whitespace-nowrap bg-white/[0.03]">
                 {lastSeason ? shortSeason(lastSeason) : 'Last season'}
               </th>
+              {prevSeason && (
+                <th className="py-3 px-2 sm:px-4 font-medium text-center sm:whitespace-nowrap bg-white/[0.03]">
+                  {shortSeason(prevSeason)}
+                </th>
+              )}
               <th className="py-3 px-2 sm:px-4 font-medium text-center sm:whitespace-nowrap bg-white/[0.03]">Prior seasons avg</th>
             </tr>
           </thead>
@@ -45,6 +50,12 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
                     {formatRowValue(row.format, row.last)}
                     {row.lastDetail && <span className="block text-xs text-gray-500">{row.lastDetail}</span>}
                   </td>
+                  {prevSeason && (
+                    <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
+                      {formatRowValue(row.format, row.prev)}
+                      {row.prevDetail && <span className="block text-xs text-gray-500">{row.prevDetail}</span>}
+                    </td>
+                  )}
                   <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
                     {formatRowValue(row.format, row.avg)}{partial && '*'}
                     {row.avgDetail && <span className="block text-xs text-gray-500">{row.avgDetail}</span>}

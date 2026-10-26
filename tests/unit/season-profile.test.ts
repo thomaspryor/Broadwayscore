@@ -98,6 +98,11 @@ test('baseline skips pandemic seasons; money rows need their own coverage', () =
   assert.equal(row('Musicals').current, 0.5);
   assert.equal(row('Musicals').currentDetail, '5 of 10');
   assert.equal(row('Musicals').last, 0.2);
+  // The third column is the season before last (owner, 2026-10-26).
+  assert.equal(cmp.prevSeason, '2023-2024');
+  assert.equal(row('Musicals').prev, 0.2);
+  assert.equal(row('Musicals').prevDetail, '2 of 10');
+  assert.equal(row('Disclosed capitalization (sum)').prev, 60e6);
   assert.equal(row('Musicals').avg, 6 / 30); // pooled 2+2+2 of 30; 2019-20's 9 musicals excluded
 
   // 2025-26 ended Jul 2026: still settling, so labelled "so far". All three
@@ -238,6 +243,8 @@ test('shares of fewer than 3 shows are not stated; a disrupted last season still
   assert.equal(recoup.currentDetail, '1 of 2');
   assert.equal(cmp.lastSeason, '2019-2020');
   assert.equal(cmp.lastDisrupted, true);
+  assert.equal(cmp.prevSeason, null); // nothing opened before 2019-20 in this fixture
+  assert.equal(recoup.prev, null);
   assert.equal(cmp.baselineSeasons, 0);
   assert.equal(recoup.last, 0.2);
 });

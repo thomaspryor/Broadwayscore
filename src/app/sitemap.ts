@@ -45,7 +45,7 @@ export function generateSitemaps() {
 }
 
 // Money Scorecard topic pages under src/app/biz (stunt-casting is listed on its own).
-const BIZ_TOPIC_PATHS = ['musicals-since-reopening', 'reviews-and-money', 'fastest-recoups', 'biggest-flops', 'tony-winners'];
+const BIZ_TOPIC_PATHS = ['musicals-since-reopening', 'reviews-and-money', 'fastest-recoups', 'biggest-flops', 'tony-winners', 'developments'];
 
 type DateContext = { showsDate: Date; reviewsDate: Date; latestDate: Date; currentYear: number };
 

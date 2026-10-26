@@ -9,8 +9,6 @@ import { notFound } from 'next/navigation';
 
 import { featureFlags } from '@/config/feature-flags';
 import {
-  getSeasonsWithCommercialData,
-  getSeasonStats,
   getShowsApproachingRecoupment,
   getShowsAtRisk,
   getRecentRecoupments,
@@ -31,7 +29,6 @@ import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 
-import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
 import MixCard from '@/components/biz/MixCard';
@@ -39,7 +36,8 @@ import TopicCard from '@/components/biz/TopicCard';
 import { formatMillions, TONY_NOMS_HIGH } from '@/lib/investment-topics';
 import { getMusicalsSinceReopening, getWhatPredictsTheMoney, getFlopsAndRecoups, getTonyWinners } from '@/lib/data-topic-pages';
 import WhoRecoupsCard from '@/components/biz/WhoRecoupsCard';
-import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
+import RecentDevelopmentsList from '@/components/biz/RecentDevelopmentsList';
+import { buildDevelopments } from '@/lib/biz-developments';
 import ApproachingRecoupmentCard from '@/components/biz/ApproachingRecoupmentCard';
 import AtRiskCard from '@/components/biz/AtRiskCard';
 import RecoupmentTable from '@/components/biz/RecoupmentTable';
@@ -77,84 +75,10 @@ export const metadata: Metadata = {
   },
 };
 
-// Generate recent developments from actual data
-function generateRecentDevelopments(): DevelopmentItem[] {
-  // Past events (recoupments, closings) carry their ISO date so they can be
-  // interleaved newest first; upcoming closings and at-risk rows follow.
-  const past: Array<{ isoDate: string; item: DevelopmentItem }> = [];
-
-  // Add recent recoupments (last 12 months)
-  const recentRecoupments = getRecentRecoupments(12);
-  for (const show of recentRecoupments.slice(0, 4)) {
-    past.push({
-      isoDate: show.recoupDate,
-      item: {
-        date: formatDevelopmentDate(show.recoupDate),
-        type: 'recouped',
-        showTitle: show.title,
-        showSlug: show.slug,
-        // No week count for a year-only recoupment date or one reported after closing (calculateWeeksToRecoup → null).
-        description: show.weeksToRecoup === null || show.weeksIsEstimate
-          ? (show.reportedAfterClosing ? 'recouped, reported after closing' : 'recouped')
-          : `recouped about ${show.weeksToRecoup} weeks after ${show.fromCommercialRun ? 'its commercial run began' : 'opening'}`,
-      },
-    });
-  }
-
-  // Add recent closings that didn't recoup (last 3 months)
-  const recentClosings = getRecentClosings(3);
-  for (const show of recentClosings.slice(0, 3)) {
-    const desc = lossOutcomePhrase({ designation: show.designation, designationBasis: show.designationBasis ?? undefined }, 'closing');
-    past.push({
-      isoDate: show.closingDate,
-      item: {
-        date: formatDevelopmentDate(show.closingDate),
-        type: 'closing',
-        showTitle: show.title,
-        showSlug: show.slug,
-        description: desc,
-      },
-    });
-  }
-
-  const items: DevelopmentItem[] = sortNewestFirst(past, (p) => p.isoDate).map((p) => p.item);
-
-  // Add upcoming closings (announced)
-  const upcomingClosings = getUpcomingClosings();
-  for (const show of upcomingClosings.slice(0, 2)) {
-    items.push({
-      date: formatDevelopmentDate(show.closingDate),
-      type: 'closing-announced',
-      showTitle: show.title,
-      showSlug: show.slug,
-      description: 'closing announced',
-    });
-  }
-
-  // Add shows at risk (if any pass strict criteria)
-  const atRiskShows = getShowsAtRisk();
-  for (const show of atRiskShows.slice(0, 2)) {
-    items.push({
-      date: 'Now',
-      type: 'at-risk',
-      showTitle: show.title,
-      showSlug: show.slug,
-      description: '4-week average gross below estimated break-even',
-    });
-  }
-
-  return items.slice(0, 8);
-}
-
 export default function BizDashboard() {
   if (!featureFlags.commercial) notFound();
 
   // Get data for all sections
-  // Dynamically get seasons with commercial data (most recent first)
-  const allSeasons = getSeasonsWithCommercialData();
-  // Show up to 4 most recent seasons
-  const displaySeasons = allSeasons.slice(0, 4);
-  const seasonStats = displaySeasons.map(season => getSeasonStats(season));
 
   // Season profile: this season vs last season and the 10-season average, and
   // the last 11 seasons side by side (season-profile.ts).
@@ -183,7 +107,7 @@ export default function BizDashboard() {
   const recentRecoupments = getRecentRecoupments(24);
   const allOpenShows = getAllOpenShowsWithCommercial();
 
-  const recentDevelopments = generateRecentDevelopments();
+  const recentDevelopments = buildDevelopments('short');
 
   // Freshness: three clocks, stated separately so nobody reads a research
   // date as the box office date (BRO-4623 P1-1).
@@ -290,6 +214,101 @@ export default function BizDashboard() {
           </div>
         </div>
 
+        {/* Season by season */}
+        {seasonHistory.length > 0 && (
+          <section className="mb-8">
+            <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
+            <p className="text-sm text-gray-400 -mt-2 mb-3">How many commercial shows paid back their investors, and how much money went in. Tap a season for every show.</p>
+            <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} asOf={today} />
+          </section>
+        )}
+
+        <section className="mb-8">
+          <h2 className="text-xl font-bold text-white mb-3">Who Recoups</h2>
+          <WhoRecoupsCard findings={recoupFindings} />
+          <Link href="/biz/stunt-casting" className="inline-block mt-3 text-sm text-brand hover:text-brand-hover">
+            Does star casting pay? Stunt casting since 2004 →
+          </Link>
+        </section>
+
+        {/* Show-level detail: free with an email (BRO-6210). The season
+            table and findings above and the analysis below stay free. */}
+        <MoneyGate page="biz-dashboard">
+        {/* Recent Developments */}
+        {recentDevelopments.length > 0 && (
+          <section className="mb-8">
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 mb-3">
+              <h2 className="text-lg font-bold text-white">Recent Developments</h2>
+              <Link href="/biz/developments" className="text-sm text-brand hover:text-brand-hover whitespace-nowrap">
+                See all →
+              </Link>
+            </div>
+            <RecentDevelopmentsList items={recentDevelopments} />
+          </section>
+        )}
+
+        {/* At Risk Shows */}
+        {atRiskShows.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Struggling / At Risk
+            </h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Running shows whose 4-week average gross is below estimated break-even
+              and whose model estimate is under 30% recouped even in the high case.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {atRiskShows.slice(0, 6).map((show) => (
+                <AtRiskCard key={show.slug} {...show} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Approaching Recoupment */}
+        {approachingRecoupment.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Approaching Recoupment
+            </h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Running shows whose model estimate is at least 50% recouped even in the
+              low case. Estimates, not announcements.
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {approachingRecoupment.slice(0, 6).map((show) => (
+                <ApproachingRecoupmentCard key={show.slug} {...show} />
+              ))}
+            </div>
+          </section>
+        )}
+
+        {/* Recent Recoupments Table */}
+        {recentRecoupments.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xl font-bold text-white mb-4">
+              Recent Recoupments
+            </h2>
+            <p className="text-gray-400 text-sm mb-4">
+              Shows reported to have recouped in the last 2 years.
+            </p>
+            <RecoupmentTable shows={recentRecoupments} />
+          </section>
+        )}
+
+        {/* All Open Shows Table */}
+        <section className="mb-10">
+          <h2 className="text-xl font-bold text-white mb-4">
+            All Currently Running Shows
+          </h2>
+          <p className="text-gray-400 text-sm mb-4">
+            Commercial data for every open Broadway production we track.
+          </p>
+          <AllShowsTable shows={allOpenShows} initialLimit={10} />
+        </section>
+
+        </MoneyGate>
+
         {/* This season vs last season and the 10-season average */}
         {currentComparison && (
           <section className="mb-8">
@@ -358,117 +377,8 @@ export default function BizDashboard() {
           </div>
         </section>
 
-        <section className="mb-8">
-          <h2 className="text-xl font-bold text-white mb-3">Who Recoups</h2>
-          <WhoRecoupsCard findings={recoupFindings} />
-          <Link href="/biz/stunt-casting" className="inline-block mt-3 text-sm text-brand hover:text-brand-hover">
-            Does star casting pay? Stunt casting since 2004 →
-          </Link>
-        </section>
-
-        {/* Season Stats Row */}
-        <section className="mb-8">
-          <h2 className="text-sm font-semibold text-gray-400 uppercase tracking-wide mb-3">
-            By Season
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {seasonStats.map((stats) => (
-              <SeasonStatsCard
-                key={stats.season}
-                season={stats.season}
-                capitalAtRisk={stats.capitalAtRisk}
-                recoupedCount={stats.recoupedCount}
-                totalShows={stats.totalShows}
-                recoupedShows={stats.recoupedShows}
-              />
-            ))}
-          </div>
-        </section>
-
-        {/* Season by season */}
-        {seasonHistory.length > 0 && (
-          <section className="mb-8">
-            <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
-            <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} asOf={today} />
-          </section>
-        )}
-
         {costCoverage && <CostCoverageCard counts={costCoverage.counts} shares={costCoverage.shares} />}
 
-        {/* Show-level detail: free with an email (BRO-6210). Everything
-            above is the free landing; the tier guide below stays free too. */}
-        <MoneyGate page="biz-dashboard">
-        {/* Recent Developments */}
-        {recentDevelopments.length > 0 && (
-          <section className="mb-8">
-            <h2 className="text-lg font-bold text-white mb-3">
-              Recent Developments
-            </h2>
-            <RecentDevelopmentsList items={recentDevelopments} />
-          </section>
-        )}
-
-        {/* Approaching Recoupment */}
-        {approachingRecoupment.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-xl font-bold text-white mb-4">
-              Approaching Recoupment
-            </h2>
-            <p className="text-gray-400 text-sm mb-4">
-              Running shows whose model estimate is at least 50% recouped even in the
-              low case. Estimates, not announcements.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {approachingRecoupment.slice(0, 6).map((show) => (
-                <ApproachingRecoupmentCard key={show.slug} {...show} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* At Risk Shows */}
-        {atRiskShows.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-xl font-bold text-white mb-4">
-              Struggling / At Risk
-            </h2>
-            <p className="text-gray-400 text-sm mb-4">
-              Running shows whose 4-week average gross is below estimated break-even
-              and whose model estimate is under 30% recouped even in the high case.
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {atRiskShows.slice(0, 6).map((show) => (
-                <AtRiskCard key={show.slug} {...show} />
-              ))}
-            </div>
-          </section>
-        )}
-
-        {/* Recent Recoupments Table */}
-        {recentRecoupments.length > 0 && (
-          <section className="mb-10">
-            <h2 className="text-xl font-bold text-white mb-4">
-              Recent Recoupments
-            </h2>
-            <p className="text-gray-400 text-sm mb-4">
-              Shows reported to have recouped in the last 2 years.
-            </p>
-            <RecoupmentTable shows={recentRecoupments} />
-          </section>
-        )}
-
-        {/* All Open Shows Table */}
-        <section className="mb-10">
-          <h2 className="text-xl font-bold text-white mb-4">
-            All Currently Running Shows
-          </h2>
-          <p className="text-gray-400 text-sm mb-4">
-            Commercial data for every open Broadway production we track.
-          </p>
-          <AllShowsTable shows={allOpenShows} initialLimit={10} />
-        </section>
-
-        </MoneyGate>
 
         {/* Designation Legend */}
         <section className="mb-10">

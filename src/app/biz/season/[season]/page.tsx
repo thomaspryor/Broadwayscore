@@ -165,8 +165,9 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
               className="text-xs text-gray-500"
               title="Capitalization of shows still running that have not recouped. Nonprofit productions and tour stops are excluded."
             >
-              Capital at Risk
+              Still at Risk
             </div>
+            <div className="text-xs text-gray-500">in running shows not yet recouped</div>
             {capitalAtRisk.note && <div className="text-xs text-gray-500">{capitalAtRisk.note}</div>}
           </div>
         </div>
