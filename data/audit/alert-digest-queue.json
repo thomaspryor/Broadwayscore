@@ -1027,5 +1027,33 @@
       }
     ],
     "queuedAt": "2026-10-26T15:43:56.696Z"
+  },
+  {
+    "conditionKey": "traffic:ga4-engaged-sessions",
+    "title": "Traffic (7d): 5,354 engaged sessions; 9.0x raw-session inflation (48,399 raw sessions). Weekly update 2026-10-26.",
+    "description": "GA4 engaged sessions across all channels for the seven completed days ending yesterday. Inflation is raw sessions divided by engaged sessions.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T15:51:11.522Z"
+  },
+  {
+    "conditionKey": "geo-bots:Mexico",
+    "title": "New bot country detected: Mexico",
+    "description": "Weekly geo audit found Mexico matching the bot signature in GA4. GA4: 74 sessions • 6.8% engagement • 3.2s • 1.07 pages/session (thresholds: ≥25 sessions, <15% engagement, <15s avg session, <1.1 pages/session) Add to data/audit/known-bot-geos.json + memory/analytics-real-users-segment.md + REAL_USERS_WHERE in scripts/lib/posthog-query.js (by ISO code) + the 3 PostHog Real Users insights + the GA4 Real Users comparison.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T15:51:12.599Z"
   }
 ]
