@@ -148,12 +148,37 @@ export function isMoneyGateInView(): boolean {
 export type MoneySignupResult = 'stored' | 'store_unavailable' | 'invalid';
 
 /**
- * Stores the sign-up. Anything but a bad address resolves (the reader is
- * unlocked either way: a store outage must never lock out someone who gave
- * their email); the caller reports 'store_unavailable' to analytics.
+ * Sign-ups whose save failed, kept in this browser and retried on later page
+ * views until stored (BRO-6289). The reader is unlocked either way, so
+ * without this a store outage lost the address silently.
  */
-export async function submitMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
-  if (!isValidMoneyEmail(email)) return 'invalid';
+export const MONEY_PENDING_KEY = 'bsc_money_pending';
+const MAX_PENDING = 5;
+
+interface PendingSignup {
+  email: string;
+  role: MoneyRole | '';
+  page: string;
+}
+
+function readPending(): PendingSignup[] {
+  try {
+    const v = JSON.parse(localStorage.getItem(MONEY_PENDING_KEY) || '[]');
+    return Array.isArray(v) ? v.filter((x) => x && typeof x.email === 'string') : [];
+  } catch {
+    return [];
+  }
+}
+
+function writePending(list: PendingSignup[]): void {
+  try {
+    if (list.length) localStorage.setItem(MONEY_PENDING_KEY, JSON.stringify(list.slice(-MAX_PENDING)));
+    else localStorage.removeItem(MONEY_PENDING_KEY);
+  } catch { /* storage blocked: nothing to keep it in */ }
+}
+
+/** One save attempt against the sign-up function. */
+async function storeMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
   const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
   if (!url || !key) return 'store_unavailable';
@@ -173,6 +198,50 @@ export async function submitMoneySignup(email: string, role: MoneyRole | '', pag
   } catch {
     return 'store_unavailable';
   }
+}
+
+/**
+ * Stores the sign-up. Anything but a bad address resolves (the reader is
+ * unlocked either way: a store outage must never lock out someone who gave
+ * their email); the caller reports 'store_unavailable' to analytics, and the
+ * address waits in the outbox for retryPendingMoneySignups.
+ */
+export async function submitMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
+  if (!isValidMoneyEmail(email)) return 'invalid';
+  const result = await storeMoneySignup(email, role, page);
+  if (result === 'store_unavailable') {
+    const normalized = email.trim().toLowerCase();
+    writePending([...readPending().filter((p) => p.email !== normalized), { email: normalized, role, page }]);
+  }
+  return result;
+}
+
+let retryStarted = false;
+
+/**
+ * Retries the outbox once per page load (every gated page calls it). An
+ * address leaves the outbox when stored or refused as invalid; one that still
+ * fails stays for the next page view.
+ */
+export async function retryPendingMoneySignups(): Promise<{ stored: number; remaining: number }> {
+  if (retryStarted || typeof window === 'undefined') return { stored: 0, remaining: 0 };
+  retryStarted = true;
+  const pending = readPending();
+  if (!pending.length) return { stored: 0, remaining: 0 };
+  const left: PendingSignup[] = [];
+  let stored = 0;
+  for (const p of pending) {
+    const r = await storeMoneySignup(p.email, p.role, p.page);
+    if (r === 'stored') stored += 1;
+    else if (r === 'store_unavailable') left.push(p);
+  }
+  writePending(left);
+  return { stored, remaining: left.length };
+}
+
+/** Test hook: lets a test run the once-per-page retry again. */
+export function resetMoneyRetryForTests(): void {
+  retryStarted = false;
 }
 
 /** schema.org paywall markup: gated content stays in the HTML (not cloaking). */

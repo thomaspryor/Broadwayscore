@@ -179,3 +179,56 @@ test('every show-level money surface is gated', () => {
   assert.equal(gated.length, 8);
   for (const p of gated) assert.match(read(p), /<MoneyGate page="/, `${p} renders a MoneyGate`);
 });
+
+test('a failed save waits in the outbox and is retried until stored (BRO-6289)', async () => {
+  const store = {};
+  const saved = { window: globalThis.window, localStorage: globalThis.localStorage, fetch: globalThis.fetch };
+  const env = { url: process.env.NEXT_PUBLIC_SUPABASE_URL, key: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY };
+  process.env.NEXT_PUBLIC_SUPABASE_URL = 'https://db.example';
+  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = 'anon';
+  globalThis.window = {};
+  globalThis.localStorage = {
+    getItem: (k) => store[k] ?? null,
+    setItem: (k, v) => { store[k] = String(v); },
+    removeItem: (k) => { delete store[k]; },
+  };
+  const calls = [];
+  let up = false;
+  globalThis.fetch = async (_url, init) => {
+    calls.push(JSON.parse(init.body).p_email);
+    if (!up) throw new Error('network down');
+    return { ok: true, status: 200, text: async () => '' };
+  };
+  try {
+    // The save fails: the reader is still let in, the address is kept.
+    assert.equal(await gate.submitMoneySignup(' Reader@Example.com ', 'investor', 'biz-dashboard:/biz'), 'store_unavailable');
+    assert.deepEqual(JSON.parse(store[gate.MONEY_PENDING_KEY]), [{ email: 'reader@example.com', role: 'investor', page: 'biz-dashboard:/biz' }]);
+
+    // Next page view, still down: it stays queued.
+    gate.resetMoneyRetryForTests();
+    assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 0, remaining: 1 });
+    // Only once per page load.
+    assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 0, remaining: 0 });
+
+    // Store back up: the retry saves it and empties the outbox.
+    up = true;
+    gate.resetMoneyRetryForTests();
+    assert.deepEqual(await gate.retryPendingMoneySignups(), { stored: 1, remaining: 0 });
+    assert.equal(store[gate.MONEY_PENDING_KEY], undefined);
+    assert.deepEqual(calls, ['reader@example.com', 'reader@example.com', 'reader@example.com']);
+
+    // A save that works never touches the outbox.
+    assert.equal(await gate.submitMoneySignup('second@example.com', '', 'show-page:/show/x'), 'stored');
+    assert.equal(store[gate.MONEY_PENDING_KEY], undefined);
+  } finally {
+    Object.assign(globalThis, saved);
+    process.env.NEXT_PUBLIC_SUPABASE_URL = env.url;
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY = env.key;
+    gate.resetMoneyRetryForTests();
+  }
+});
+
+test('every gate retries the outbox on mount', () => {
+  const tsx = read('src/components/biz/MoneyGate.tsx');
+  assert.match(tsx, /retryPendingMoneySignups\(\)/);
+});

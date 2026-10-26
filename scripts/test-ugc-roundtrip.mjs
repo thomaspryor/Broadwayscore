@@ -27,6 +27,7 @@
 import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
 import { runDiarySharesChecks } from './lib/diary-shares-roundtrip.mjs';
 import { runFantasyEntryChecks } from './lib/fantasy-entries-roundtrip.mjs';
+import { runMoneySignupChecks } from './lib/money-signup-roundtrip.mjs';
 import { checkRedirect } from './lib/auth-redirect-allowlist.mjs';
 import { NOT_URGENT, summarizeFailures, githubOutputLines } from './lib/ugc-roundtrip-urgency.mjs';
 import { appendFileSync } from 'node:fs';
@@ -152,7 +153,10 @@ async function rest(method, path, token, body, prefer = 'return=representation')
     signal: AbortSignal.timeout(60000),
     method,
     headers: {
-      apikey: ANON,
+      // The service key must travel as its own apikey: the gateway refuses the
+      // public apikey paired with the service key (HTTP 401), which silently
+      // broke every service-key read and cleanup in the checks (BRO-6289).
+      apikey: token === SERVICE ? SERVICE : ANON,
       Authorization: `Bearer ${token}`,
       'Content-Type': 'application/json',
       ...(prefer ? { Prefer: prefer } : {}),
@@ -372,6 +376,7 @@ async function main() {
 
     // ── FANTASY LEAGUE DRAFT (anon insert path, BRO-5424) ──
     await runFantasyEntryChecks({ rest, check, anonKey: ANON, serviceKey: SERVICE, notUrgent: NOT_URGENT });
+    await runMoneySignupChecks({ rest, check, anonKey: ANON, serviceKey: SERVICE });
 
     // ── LISTS ──
     const lIns = await rest('POST', 'lists', tokenA, { user_id: userA.id, name: 'Round-trip list' });
