@@ -55,6 +55,12 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: node scripts/classify-show-origins.js --resolve --batch=1 --effort=medium --max-usd=3
 
+      - name: Label original stories (true story vs invented)
+        if: ${{ !cancelled() }}
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        run: node scripts/classify-original-kind.js --max-usd=2
+
       - name: Commit and push changes
         if: always()
         env:
