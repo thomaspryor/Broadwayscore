@@ -146,3 +146,45 @@ test('a ref whose card later landed from another ref is a leftover, not stranded
   assert.equal(decideStrandedRef({ tip: TIP, latestRun: run({ status: 'in_progress', conclusion: null, updated_at: ago(300) }), cardLandedAt: ago(60), now: NOW }).action, 'none');
   assert.equal(decideStrandedRef({ tip: TIP, latestRun: run({ status: 'in_progress', conclusion: null, updated_at: ago(300) }), cardLandedAt: ago(60), now: NOW }).reason, 'in-flight');
 });
+
+// ---- BRO-6276: name hand cancels ----
+const {
+  cancelledByFromAnnotations, isHandCancel, cancelledJob, buildHandCancelComment,
+} = require('./land-stranded-refs.js');
+
+test('canceller is read from the GitHub annotation, bot and person alike', () => {
+  const ann = (m) => [{ message: 'The operation was canceled.' }, { message: m }];
+  assert.equal(cancelledByFromAnnotations(ann('The run was canceled by @thomaspryor.')), 'thomaspryor');
+  assert.equal(cancelledByFromAnnotations(ann('The run was canceled by @github-actions[bot].')), 'github-actions[bot]');
+  assert.equal(cancelledByFromAnnotations([{ message: 'The operation was canceled.' }]), null);
+  assert.equal(cancelledByFromAnnotations(null), null);
+});
+
+test('only a non-bot login counts as a hand cancel (Admit parks with the workflow token)', () => {
+  assert.equal(isHandCancel('thomaspryor'), true);
+  assert.equal(isHandCancel('github-actions[bot]'), false);
+  assert.equal(isHandCancel(null), false);
+});
+
+test('the cancelled Land job is preferred, else a cancelled Checks job', () => {
+  const land = { ...queuedLand, id: 1 };
+  const checks = { ...job('Checks', 'cancelled'), id: 2 };
+  assert.equal(cancelledJob([checksOk, land]).id, 1);
+  assert.equal(cancelledJob([checks, job('Land', 'skipped')]).id, 2);
+  assert.equal(cancelledJob([checksOk, job('Land', 'success')]), null);
+});
+
+test('hand-cancel note names the run and canceller and dedupes per attempt', () => {
+  const body = buildHandCancelComment({ branch: 'land/bro-1-x', tip: TIP, latestRun: run(), cancelledBy: 'thomaspryor', followUp: 'rerun' });
+  assert.match(body, /^LAND-STRANDED: land\/bro-1-x@37359729207#2 cancelled-by-hand/);
+  assert.match(body, /cancelled by @thomaspryor/);
+  assert.match(body, /https:\/\/example\/run/);
+  assert.match(body, /re-runs it in full/);
+});
+
+test('an escalation comment says who cancelled when it was a hand cancel only', () => {
+  const base = { branch: 'land/bro-1-x', tip: TIP, latestRun: run(), reason: 'land-cancelled-mid-flight' };
+  assert.match(buildEscalationComment({ ...base, cancelledBy: 'thomaspryor' }), /cancelled by @thomaspryor, not by the landing queue/);
+  assert.doesNotMatch(buildEscalationComment({ ...base, cancelledBy: 'github-actions[bot]' }), /cancelled by @/);
+  assert.doesNotMatch(buildEscalationComment(base), /cancelled by @/);
+});
