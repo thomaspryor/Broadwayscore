@@ -10,8 +10,8 @@
  * a no-op everywhere else (Mac, GitHub Actions), and when https-proxy-agent
  * is not installed.
  *
- * Covers https.get/https.request callers. axios already honors HTTPS_PROXY
- * on its own, so it needs no patch.
+ * Covers https.get/https.request callers and global fetch. axios already
+ * honors HTTPS_PROXY on its own, so it needs no patch.
  */
 const https = require('https');
 
@@ -68,6 +68,27 @@ function install() {
   request.__bro6258 = true;
   https.request = request;
   https.get = get;
+  installFetch();
+}
+
+/** Global fetch (provider-billing.js) also ignores HTTPS_PROXY: add a dispatcher for ScrapingBee. */
+function installFetch(env = process.env) {
+  if (typeof globalThis.fetch !== 'function' || globalThis.fetch.__bro6258) return;
+  let dispatcher;
+  try {
+    const { ProxyAgent } = require('undici');
+    dispatcher = new ProxyAgent(env.HTTPS_PROXY || env.https_proxy);
+  } catch { return; }
+  const origFetch = globalThis.fetch;
+  const wrapped = function (input, init) {
+    const url = typeof input === 'string' ? input : (input && input.url) || String(input);
+    let host = '';
+    try { host = new URL(url).hostname; } catch { /* leave unproxied */ }
+    if (shouldProxy(host, env) && !(init && init.dispatcher)) init = { ...init, dispatcher };
+    return origFetch.call(this, input, init);
+  };
+  wrapped.__bro6258 = true;
+  globalThis.fetch = wrapped;
 }
 
 if (process.env.CLAUDE_CODE_REMOTE === 'true') install();
