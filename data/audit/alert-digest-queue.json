@@ -1569,6 +1569,37 @@
     "queuedAt": "2026-10-26T03:20:19.096Z"
   },
   {
+    "conditionKey": "land:land/codex-bro-4291",
+    "title": "Landing blocked: tsc red on land/codex-bro-4291",
+    "description": "land.yml did not land land/codex-bro-4291: the tsc gate went red at a86a496781. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/codex-bro-4291 @ a86a496781 (origin/land/codex-bro-4291) → origin/main @ cafd849766 [land] train: + land/bro-6244-hardening @ c69510fcc8 (3 commit(s)) [land] train: land/bro-6260-person-test not taken — would not rebase onto the train: Rebasing (3/7) error: could not apply 50ecff43491... feat(codex): retry note gives a bounced card one more Codex try; unclaimed bounces return after 7 d Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40255249215",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/codex-bro-4291"
+      },
+      {
+        "name": "gate",
+        "value": "tsc"
+      },
+      {
+        "name": "tip",
+        "value": "a86a4967813b8edd0df54d466bfa33303c1e317e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40255249215"
+      }
+    ],
+    "queuedAt": "2026-10-26T04:18:42.049Z"
+  },
+  {
     "conditionKey": "pending-unrecoverable:the-ask-off-broadway-2026",
     "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--24124b82.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/paul-mccartney-upcoming-beatles-biopics/6560611/",
