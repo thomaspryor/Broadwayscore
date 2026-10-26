@@ -113,12 +113,14 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         uses: actions/checkout@v5
         with:
-          sparse-checkout: scripts/lib/land-dispatch-guard.js
+          # The guard reuses the sweep's decideLandRetry, so it needs scripts/lib.
+          sparse-checkout: scripts/lib/
           sparse-checkout-cone-mode: false
       - name: Refuse a dispatch that would compete with a live push run
         if: github.event_name == 'workflow_dispatch'
         env:
           GH_TOKEN: ${{ github.token }}
+          GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           REPO: ${{ github.repository }}
           LAND_DISPATCH_GUARD_DISABLED: ${{ vars.LAND_DISPATCH_GUARD_DISABLED }}
         run: node scripts/lib/land-dispatch-guard.js
