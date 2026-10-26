@@ -146,10 +146,10 @@ const isSectionEnd = l => /^future london schedule\b/i.test(l.text);
 /** Split a page's lines into A-Z pages (from the marker up to the future schedule). */
 function azPages(lines) {
   const out = new Map();
-  let ended = false;
+  // the section ends at the heading's position, not where it falls in text order (rows below it are the schedule)
+  const end = lines.find(l => isSectionEnd(l) && l.y < 200);
   for (const l of lines) {
-    if (ended) break;
-    if (isSectionEnd(l) && l.y < 200) { ended = true; break; }
+    if (end && (l.page > end.page || (l.page === end.page && l.y >= end.y))) continue;
     if (!out.has(l.page)) out.set(l.page, []);
     out.get(l.page).push(l);
   }
@@ -208,7 +208,8 @@ function titleFromFragments(frags) {
   let rest = [];
   for (const f of frags.slice(0, 5)) {
     let toks = f.text.split(/\s+/).filter(Boolean);
-    if (toks.length && hasLower(toks[0]) && toks.length > 1 && !hasLower(toks[1])) toks = toks.slice(1);
+    // ...but not when only digits follow ("Circusfest 2016 – Incl. ..." is no title "2016")
+    if (toks.length && hasLower(toks[0]) && toks.length > 1 && !hasLower(toks[1]) && /[A-Z]/.test(toks[1])) toks = toks.slice(1);
     const sc = splitCaps(toks.join(' '));
     if (!sc.caps.length || !plausibleCaps(sc.caps) && !/^\d/.test(sc.caps[0])) continue;
     caps = caps.concat(sc.caps);
@@ -258,13 +259,54 @@ function parse2016(pages) {
  * Positioned A-Z lines (one issue) -> { format, asAt, entries }.
  * @param {Array<{issue:string,page:number,x:number,y:number,x2:number,text:string}>} lines
  */
+const AZ_MARKER = /^A\s*[-–]\s*Z of productions running in\b/i;
+const MARKER_X = 34; // the marker's x on a standard A-Z page (fixtures 170, 929)
+const MARKER_Y = 40; // ...and its y on a 2015 page (2016 pages print it higher, at 17)
+
+/**
+ * Some issues print the A-Z shifted right (159: every column +125) or as the
+ * right half of a two-page spread (163: x from 632, the regional future
+ * schedule on the left half); 159 also sits 175pt lower. Shift each page so its columns sit where the
+ * layout parsers expect them, and drop the other half of a spread. The shift
+ * comes from the marker line and carries over to the pages that follow it.
+ * Standard pages (marker within 60pt of x=34) are left untouched (BRO-6343).
+ */
+function alignAzColumns(lines) {
+  const byPage = new Map();
+  for (const l of lines) { if (!byPage.has(l.page)) byPage.set(l.page, []); byPage.get(l.page).push(l); }
+  const out = [];
+  let shift = 0;
+  let down = 0;
+  for (const page of [...byPage.keys()].sort((a, b) => a - b)) {
+    const pl = byPage.get(page);
+    const marker = pl.find(l => AZ_MARKER.test(l.text));
+    if (marker) {
+      shift = marker.x - MARKER_X > 60 ? marker.x - MARKER_X : 0;
+      down = marker.y - MARKER_Y > 60 ? marker.y - MARKER_Y : 0;
+    }
+    if (!shift && !down) { out.push(...pl); continue; }
+    const leftEdge = shift ? MARKER_X + shift - 15 : -Infinity;
+    // the section-end heading is kept wherever it sits (163 prints it on the dropped left half of the next spread)
+    for (const l of pl) if (l.x >= leftEdge || isSectionEnd(l)) out.push({ ...l, x: l.x - shift, x2: l.x2 - shift, y: l.y - down });
+  }
+  return out;
+}
+
 function parseAzLines(lines) {
-  const pages = azPages(lines);
+  const pages = azPages(alignAzColumns(lines));
   const flat = pages.flat();
   const asAt = asAtDate(flat);
   const is2016 = flat.some(l => /^OPENED VOL\/pp/i.test(l.text));
   const entries = is2016 ? parse2016(pages) : parse2015(pages, asAt);
-  return { format: is2016 ? 2016 : 2015, asAt, entries: entries.filter(e => e.title && e.title.length >= 3) };
+  // a wrapped dd.mm.yy date is no title ("23.09.07"; "1984" and "946" are); a page printed twice (163) lists each row twice
+  const seen = new Set();
+  const kept = entries.filter(e => e.title && e.title.length >= 3 && !/^\d{1,2}\.\d{2}\.\d{2}$/.test(e.title)).filter(e => {
+    const k = JSON.stringify(e);
+    if (seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+  return { format: is2016 ? 2016 : 2015, asAt, entries: kept };
 }
 
-module.exports = { parseAzLine, parseAzText, parseAzLines, bodyDates, dmy, dMonY, splitCaps, typeOf, cleanTitle };
+module.exports = { alignAzColumns, parseAzLine, parseAzText, parseAzLines, bodyDates, dmy, dMonY, splitCaps, typeOf, cleanTitle };
