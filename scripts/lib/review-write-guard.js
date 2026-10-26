@@ -1038,7 +1038,7 @@ const CLEAR_BREADCRUMBS = {
   // for the section-aware one and lifted the ensemble wrong_show rejection,
   // stamping fullTextTrimmed (BRO-6154). Without these entries the merge-mode
   // restore pass copied the rejection straight back from disk.
-  ...Object.fromEntries(['wrongShow', 'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
+  ...Object.fromEntries(['rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
     'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction'].map((k) => [k, _trWrongProductionTextReplaced])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
