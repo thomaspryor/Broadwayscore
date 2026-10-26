@@ -45,6 +45,8 @@ jobs:
             "opening-night-broadcast.yml|36|Opening Night Broadcast"
             "monitor-gate-ab.yml|184|Weekly A/B Monitors"
             "check-flag-parity.yml|184|Check Flag Parity"
+            # BRO-6336: drains commercial pending-review entries daily; if it stops, the queue piles up again.
+            "commercial-pending-daily.yml|54|Commercial Pending Review"
             # BRO-4373: the dead-Mac detector. If IT silently stops, the next Mac outage is invisible again.
             "check-morning-digest-sent.yml|36|Check Morning Digest Sent"
             # Sunday 06:00 UTC weekly offsite backup. CRITICAL, not digest-only: this is
