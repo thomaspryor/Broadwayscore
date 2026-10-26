@@ -83,10 +83,11 @@ function newTicketCommit() {
 
 function fetchRun(runId) {
   if (env.LAND_MUTEX_NO_API === '1') return null;
+  const { runGhWithFallback, isRefNotFound } = require('./lib/land-retry-on-cancel');
   try {
-    const { runGhWithFallback } = require('./lib/land-retry-on-cancel');
     return JSON.parse(runGhWithFallback([`repos/${repo}/actions/runs/${runId}`], { exec: execFileSync, fallbackToken: env.GH_FALLBACK_TOKEN }));
   } catch (err) {
+    if (isRefNotFound(err)) return { status: 'missing' };
     log(`run ${runId} lookup failed (${String(err.message).split('\n')[0]}); age rule only`);
     return null;
   }
