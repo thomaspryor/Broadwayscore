@@ -220,6 +220,17 @@ async function hostCard(cardPath, show, now) {
   return hostImage(jpeg.buffer, `${new Date(now).toISOString().slice(0, 7)}/${show.id}-${hash}.jpg`);
 }
 
+/**
+ * Usable channels that never passed the draft self-test. Ledgers from before per-market
+ * routing hold only bufferValidatedAt, which validated the Broadway set; channels added
+ * later (the West End accounts) get their own self-test before the first real post.
+ */
+function unvalidated(ledger, channels) {
+  const meta = ledger._meta || {};
+  const done = new Set(meta.bufferValidatedChannels || (meta.bufferValidatedAt ? Object.values(CHANNEL_SETS.broadway) : []));
+  return channels.filter(c => !done.has(c.id));
+}
+
 async function selfTest(buffer, channels, outDir, ctx, now) {
   const show = ctx.shows.find(s => s.id === 'billy-crystal-860-2026') || ctx.shows.find(s => ctx.slim[s.id] && Number.isFinite(ctx.slim[s.id].cs));
   const desc = describe(show, ctx);
@@ -227,9 +238,9 @@ async function selfTest(buffer, channels, outDir, ctx, now) {
   const imageUrl = await hostCard(card.path, show, now);
   const problems = await buffer.validateChannels(channels, { imageUrl, altText: buildCaptions(desc).altText });
   if (problems.length) throw new Error(`Buffer self-test failed, nothing posted: ${problems.join(' | ')}`);
-  ctx.ledger._meta = { ...(ctx.ledger._meta || {}), bufferValidatedAt: new Date().toISOString() };
+  ctx.ledger._meta = { ...(ctx.ledger._meta || {}), bufferValidatedAt: new Date().toISOString(), bufferValidatedChannels: channels.map(c => c.id) };
   writeLedger(ctx.ledger);
-  console.log(`[autopost] Buffer self-test passed on ${channels.map(c => c.service).join(', ')} (drafts created and deleted)`);
+  console.log(`[autopost] Buffer self-test passed on ${channels.map(c => c.key).join(', ')} (drafts created and deleted)`);
 }
 
 async function main() {
@@ -315,7 +326,7 @@ async function main() {
     const { usable, missing } = await allowedChannels(buffer);
     channels = usable;
     if (missing.length) problems.push(`Buffer channel(s) not usable (disconnected, locked, paused or removed): ${missing.join(', ')}`);
-    if (!channels.length) throw new Error('none of the Buffer channels in config.js CHANNELS is usable');
+    if (!channels.length) throw new Error('none of the Buffer channels in config.js CHANNEL_SETS is usable');
     if (backlogSkipped.length) {
       const ymd = new Date(now).toISOString().slice(0, 10);
       for (const ev of backlogSkipped) ctx.ledger.posts.push({ type: 'score', date: ymd, showId: ev.show.id, skipped: 'backlog at go-live' });
@@ -337,7 +348,7 @@ async function main() {
   // Counted per show across runs so one broken show alerts MAX_SHOW_ATTEMPTS times, not hourly for weeks.
   const failures = ctx.ledger._meta.failures = ctx.ledger._meta.failures || {};
   // Outages (hosting, Buffer down, network) are not the show's fault and do not use up its tries.
-  const outage = m => /image hosting failed|Buffer HTTP 5\d\d|fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|rate limit/i.test(String(m));
+  const outage = m => /no usable channel|image hosting failed|Buffer HTTP 5\d\d|fetch failed|ECONNRESET|ETIMEDOUT|ENOTFOUND|rate limit/i.test(String(m));
   const recordFailure = (id, msg) => {
     if (!live || outage(msg)) return;
     const f = failures[id] = { count: ((failures[id] && failures[id].count) || 0) + 1, lastError: String(msg).slice(0, 300), at: new Date(now).toISOString() };
@@ -345,7 +356,7 @@ async function main() {
     writeLedger(ctx.ledger);
   };
   try {
-    if (live && events.length && !ctx.ledger._meta.bufferValidatedAt) await selfTest(buffer, channels, outDir, ctx, now);
+    if (live && events.length && unvalidated(ctx.ledger, channels).length) await selfTest(buffer, channels, outDir, ctx, now);
     for (const ev of events) {
       // One show's failure must not lose the record of shows already scheduled:
       // each is written to the ledger as soon as Buffer accepts it.
@@ -423,4 +434,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify };
+module.exports = { unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify };

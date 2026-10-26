@@ -248,3 +248,26 @@ test('routing: the live config has Broadway channels and routes every eligible c
   assert.ok(Object.keys(C.CHANNEL_SETS.broadway).length >= 5);
   for (const cat of C.ELIGIBLE_CATEGORIES) assert.ok(routing.targetSets(show({ category: cat }), gateT1(0)).length >= 1, cat);
 });
+
+test('routing: a partly filled West End set is not active; duplicate ids across sets are rejected', () => {
+  const part = { broadway: { instagram: 'b1', facebook: 'b2' }, 'west-end': { instagram: 'w1' } };
+  assert.deepEqual(routing.targetSets(show({ category: 'west-end' }), gateT1(20), part, []), ['broadway']);
+  const dup = { broadway: { instagram: 'b1' }, 'west-end': { instagram: 'b1' } };
+  assert.throws(() => routing.tagChannels([{ id: 'b1', service: 'instagram' }], dup), /both 'broadway' and 'west-end'/);
+});
+
+test('routing: a transfer link on either end makes both shows high profile', () => {
+  const lon = show({ id: 'lon', category: 'west-end' });
+  const nyc = show({ id: 'nyc', category: 'broadway', transferOf: 'lon' });
+  assert.deepEqual(routing.targetSets(lon, gateT1(3), SETS_BOTH, [lon, nyc]), ['west-end', 'broadway']);
+});
+
+test('self-test: channels added after go-live (West End) are unvalidated; legacy ledgers cover the Broadway set', () => {
+  const { unvalidated } = require('./social-autopost/run.js');
+  const C = require('./social-autopost/config.js');
+  const b = Object.values(C.CHANNEL_SETS.broadway).map(id => ({ id }));
+  assert.equal(unvalidated({ _meta: { bufferValidatedAt: 'x' } }, b).length, 0);
+  assert.deepEqual(unvalidated({ _meta: { bufferValidatedAt: 'x' } }, [...b, { id: 'w1' }]).map(c => c.id), ['w1']);
+  assert.equal(unvalidated({ _meta: {} }, b).length, b.length);
+  assert.equal(unvalidated({ _meta: { bufferValidatedAt: 'x', bufferValidatedChannels: ['w1'] } }, [{ id: 'w1' }]).length, 0);
+});

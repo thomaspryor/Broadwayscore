@@ -120,14 +120,14 @@ async function validateChannels(channels, { imageUrl, altText }) {
       try {
         await deletePost(post.id);
       } catch (e) {
-        problems.push(`${ch.service}: self-test post ${post.id} (status ${post.status}) could not be deleted, remove it in Buffer: ${e.message}`);
+        problems.push(`${ch.key || ch.service}: self-test post ${post.id} (status ${post.status}) could not be deleted, remove it in Buffer: ${e.message}`);
         continue;
       }
       // A draft is never published. If Buffer scheduled it instead, say so: the
       // real posts would behave the same way.
-      if (post.status && post.status !== 'draft') problems.push(`${ch.service}: self-test came back as '${post.status}', not a draft (deleted)`);
+      if (post.status && post.status !== 'draft') problems.push(`${ch.key || ch.service}: self-test came back as '${post.status}', not a draft (deleted)`);
     } catch (e) {
-      problems.push(`${ch.service}: ${e.message}`);
+      problems.push(`${ch.key || ch.service}: ${e.message}`);
     }
   }
   return problems;

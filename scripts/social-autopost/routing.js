@@ -18,12 +18,11 @@ function homeSet(show) {
 /** True when the show has a transfer link to a show in the other channel set. */
 function hasCrossMarketTransfer(show, shows) {
   const home = homeSet(show);
-  const ids = [show.transferOf, show.transferredTo].flat().filter(Boolean);
-  if (!ids.length || !Array.isArray(shows)) return false;
-  return ids.some(id => {
-    const other = shows.find(s => s.id === id);
-    return other && homeSet(other) && homeSet(other) !== home;
-  });
+  if (!Array.isArray(shows)) return false;
+  // Links count from either end: the London show may not name its Broadway transfer, nor the reverse.
+  const linked = shows.filter(o => o.id !== show.id && ([show.transferOf, show.transferredTo].flat().includes(o.id)
+    || [o.transferOf, o.transferredTo].flat().includes(show.id)));
+  return linked.some(o => homeSet(o) && homeSet(o) !== home);
 }
 
 /**
@@ -40,11 +39,13 @@ function isHighProfile(show, gate, shows, rule = C.HIGH_PROFILE) {
  * sets: config CHANNEL_SETS. A set with no channel ids is not configured yet; a show
  * whose home set is unconfigured keeps posting to 'broadway' (the behavior before
  * per-market accounts existed), and cross-posting to an unconfigured set is skipped.
+ * A set counts as configured only when it has every network the Broadway set has, so
+ * adding the accounts one at a time never moves shows onto fewer networks.
  */
 function targetSets(show, gate, sets = C.CHANNEL_SETS, shows = null) {
   const home = homeSet(show);
   if (!home) return [];
-  const configured = name => Object.keys(sets[name] || {}).length > 0;
+  const configured = name => Object.keys(sets.broadway || {}).every(svc => (sets[name] || {})[svc]);
   if (!configured(home)) return ['broadway'];
   const other = home === 'broadway' ? 'west-end' : 'broadway';
   return configured(other) && isHighProfile(show, gate, shows) ? [home, other] : [home];
@@ -57,6 +58,13 @@ function channelKey(set, service) {
 
 /** Buffer channels annotated with {set, key} when their id is in one of the sets (set null otherwise). */
 function tagChannels(channels, sets = C.CHANNEL_SETS) {
+  const seen = new Map();
+  for (const [set, ids] of Object.entries(sets)) {
+    for (const id of Object.values(ids)) {
+      if (seen.has(id)) throw new Error(`Buffer channel ${id} is listed in both '${seen.get(id)}' and '${set}' channel sets (config.js CHANNEL_SETS)`);
+      seen.set(id, set);
+    }
+  }
   return channels.map(ch => {
     for (const [set, ids] of Object.entries(sets)) {
       if (Object.values(ids).includes(ch.id)) return { ...ch, set, key: channelKey(set, ch.service) };
