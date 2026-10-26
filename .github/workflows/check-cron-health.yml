@@ -250,6 +250,11 @@ jobs:
             # missing run after 0.75h (input + redispatch-after-hours in the workflow). 13h = 1/3h gap
             # cushion + 12h; a run with no cards exits 0, so a success always means the lander ran.
             "visual-approval-land.yml|13|Visual Approval Land"
+            # BRO-6351: one email per owner decision (cron 7,27,47). GitHub ran it 4 times in 17h on
+            # 2026-10-26 and 5 decisions waited hours; cron-redispatch replaces a missing run after 0.75h
+            # (input + redispatch-after-hours in the workflow; a redispatch is the tick, never the roundup).
+            # 13h = 1/3h gap + 12h cushion; no TIGHT_BY_DESIGN entry needed.
+            "owner-decision-emails.yml|13|Owner Decision Emails"
             # Same-night Express retry dispatcher (card #1889); scheduled hourly at :50.
             # A dead cron here means a queued
             # same-night retry never dispatches — the exact silent-miss this

@@ -169,3 +169,17 @@ test('the two reverify scripts are on a weekly schedule with --limit (BRO-4282 A
   assert.match(yaml, /reverify-nulled-cv-promoted\.js[^\n]*--limit=\$LIMIT/);
   assert.match(yaml, /LIMIT: \$\{\{ inputs\.limit \|\| '\d+' \}\}/, 'scheduled runs need a numeric default limit');
 });
+
+test('BRO-6351: owner-facing frequent crons are opted in at 0.75h and a redispatch never sends the roundup', () => {
+  const dir = path.join(ROOT, '.github/workflows');
+  const byWf = Object.fromEntries(parseCriticalCronEntries(fs.readFileSync(path.join(dir, 'check-cron-health.yml'), 'utf8')).map((e) => [e.workflow, e]));
+  for (const wf of ['owner-decision-emails.yml', 'visual-approval-land.yml']) {
+    const text = fs.readFileSync(path.join(dir, wf), 'utf8');
+    assert.ok(byWf[wf], `${wf} must be in CRITICAL_CRONS`);
+    assert.ok(acceptsRedispatch(text), `${wf} must accept redispatch`);
+    assert.equal(redispatchBandHours(text, byWf[wf].maxHours), 0.75, wf);
+  }
+  const live = fs.readFileSync(path.join(dir, 'owner-decision-emails.yml'), 'utf8').replace(/^\s*#.*$/gm, '');
+  assert.match(live, /REDISPATCHED: \$\{\{ inputs\.redispatched \}\}/);
+  assert.match(live, /\[ "\$ROUNDUP" = "true" \] \|\| \{ \[ "\$REDISPATCHED" != "true" \] && \[ "\$SCHEDULE" = "17 15 \*\/3 \* \*" \]; \}/, 'the schedule-string roundup must be gated on REDISPATCHED != true');
+});
