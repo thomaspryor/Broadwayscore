@@ -988,6 +988,11 @@ const _manualClearFallbackCleared = (field) => (d, committed) => {
   return JSON.stringify(committed[field]) === JSON.stringify(prior[field]);
 };
 
+// BRO-6154/6302 breadcrumb: the Theatre Record merge replaced a wrong-production text.
+function _trWrongProductionTextReplaced(d) {
+  return !!(d && d.fullTextTrimmed && /BRO-6154/.test(String(d.fullTextTrimmed.reason || '')));
+}
+
 const CLEAR_BREADCRUMBS = {
   duplicateOf: (d) => !_isEmptyValue(d.duplicateClearReason),
   // duplicateTextOf (task #1624, found by ship-check codebase review): the
@@ -1029,6 +1034,12 @@ const CLEAR_BREADCRUMBS = {
   wrongProductionAutoClearedAt: _clearBreadcrumbRetracted('wrongProductionAutoClearedAt'),
   wrongShowAutoCleared: _clearBreadcrumbRetracted('wrongShowAutoCleared'),
   wrongShowAutoClearedAt: _clearBreadcrumbRetracted('wrongShowAutoClearedAt'),
+  // BRO-6302: mergeTheatreRecordIntoExisting swapped a wrong-production TR text
+  // for the section-aware one and lifted the ensemble wrong_show rejection,
+  // stamping fullTextTrimmed (BRO-6154). Without these entries the merge-mode
+  // restore pass copied the rejection straight back from disk.
+  ...Object.fromEntries(['wrongShow', 'rejectedAt', 'rejectedBy', 'rejectionReason', 'rejectionReasoning', 'rejectionAgreeCount',
+    'incompleteReason', 'incompleteDetail', 'llmPullQuote', 'wordCount', 'trNoRecordForProduction'].map((k) => [k, _trWrongProductionTextReplaced])),
   crossOutletVerified: _clearBreadcrumbRetracted('crossOutletVerified'),
   // crossOutletVerifiedNote (task #1624, found by ship-check codebase review):
   // shares the SAME field-scope key as crossOutletVerified above — every
@@ -1076,7 +1087,7 @@ const CLEAR_BREADCRUMBS = {
   // alongside the flag/note, but the original plan only gated wrongShow/
   // wrongShowNote, which would have left a stale wrongShowReason resurrectable
   // by the restore even while wrongShow itself stayed freshness-protected cleared.
-  wrongShow: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
+  wrongShow: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d) || _trWrongProductionTextReplaced(d),
   wrongShowReason: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
   wrongShowNote: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
   wrongFullText: _wrongArticleCleared,
