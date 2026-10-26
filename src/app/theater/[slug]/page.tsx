@@ -6,6 +6,7 @@ import { getAudienceBuzz, getAudienceGrade, hasEnoughAudienceReviews } from '@/l
 import { generateBreadcrumbSchema, generateTheaterSchema, BASE_URL } from '@/lib/seo';
 import { ScoreBadge, FormatPill, ProductionPill, StatusBadge, getScoreTier } from '@/components/show-cards';
 import { getOptimizedImageUrl } from '@/lib/images';
+import { versionedImagePath } from '@/lib/versioned-image-path';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import TheaterDetailClient from './TheaterDetailClient';
 import TheaterTipsCard from '@/components/TheaterTipsCard';
@@ -54,7 +55,7 @@ function getGoogleMapsUrl(address: string): string {
 
 /** Local theater image path (Wikimedia hotlinking deprecated April 2026) */
 function getTheaterImageUrl(slug: string): string {
-  return `/images/theaters/${slug}.jpg`;
+  return versionedImagePath(`/images/theaters/${slug}.jpg`);
 }
 
 export default async function TheaterPage(props: { params: Promise<{ slug: string }> }) {

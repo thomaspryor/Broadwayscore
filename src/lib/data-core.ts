@@ -3,6 +3,7 @@
 // Also imports getShowGrosses from data-grosses for browse page performance sort
 
 import path from 'path';
+import { versionedImagePath } from './versioned-image-path';
 import {
   computeShowData,
   ComputedShow,
@@ -113,6 +114,14 @@ export function getAllShows(): ComputedShow[] {
     .filter((show: any) => !show._devOnly)
     .map(show => {
       const computed = computeShowData(show, reviewsByShowId.get(show.id) || [], audience, buzz);
+      if (computed.images) {
+        computed.images = {
+          ...computed.images,
+          thumbnail: versionedImagePath(computed.images.thumbnail),
+          poster: versionedImagePath(computed.images.poster),
+          hero: versionedImagePath(computed.images.hero),
+        };
+      }
       const cov = coverageFloorInputs.covByShowId.get(show.id);
       if (cov) computed.cov = cov;
       // A stamp from before the show opened is dropped there (stale wrong-production blip).

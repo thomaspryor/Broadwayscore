@@ -1,6 +1,10 @@
 /** @type {import('next').NextConfig} */
 const isGitHubPages = process.env.GITHUB_PAGES === 'true';
 
+// BRO-6197: prepare versions before next dev/build compiles any site data.
+// The manifest also ships to ISR functions, where public/ is not on disk.
+require('./scripts/lib/site-image-versions').writeSiteImageVersions();
+
 // BRO-5007: inlined as a literal, so `process.env.HELD_BOX_OFFICE_BUILD === 'true'`
 // folds at build time and a flag-off build never emits the held sections'
 // chunks (a dynamic() import still emits its chunk even when nothing renders it).
@@ -64,7 +68,7 @@ const nextConfig = {
   // a held show's score appears. Checked post-build by
   // scripts/lib/check-coverage-floor-trace.js.
   outputFileTracingIncludes: {
-    '**/*': ['data/coverage-floor-snapshot.json'],
+    '**/*': ['data/coverage-floor-snapshot.json', 'data/site-image-versions.json'],
   },
   outputFileTracingExcludes: {
     '**/*': [
