@@ -554,6 +554,7 @@ test('continuation rule is exact: "discontinued" and mid at the 99 cap (BRO-6360
   assert.equal(continuesEarlierRun(b, [a, b]), false);
   assert.equal(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [90, 99, 120] }), 'closed'), null);
   assert.ok(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [50, 98, 120] }), 'closed'));
+});
 
 test('Season by Season lists every season back to the oldest with tracked coverage (BRO-6362)', () => {
   // 14 seasons 2012-13 .. 2025-26: only 2014-15 onward are tracked; 2012-13/2013-14 are not.
