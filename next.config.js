@@ -74,6 +74,10 @@ const nextConfig = {
     '**/*': [
       'data/audit/**',
       'data/review-texts/**',
+      // BRO-6277: show art (7k+ files, ~570MB with sm/ variants) is static
+      // output only. A server module building an fs path from process.cwd()
+      // once traced all of it into functions and broke every prod deploy.
+      'public/images/**',
       // ~2400 cast files (~300MB total). Tony pages now consume cast data
       // via data/actor-slugs.json (generated at prebuild). If any code path
       // re-introduces a dynamic data/cast/${showId}.json read, NFT will try

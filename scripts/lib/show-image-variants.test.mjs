@@ -85,3 +85,15 @@ test('server srcset helper never builds an fs path from process.cwd() (traces pu
     .replace(/\/\*[\s\S]*?\*\//g, '');
   assert.ok(!/process\.cwd\(\)|from 'fs'|from 'path'/.test(src));
 });
+
+test('trace guard flags a function that traces public/images', () => {
+  const { checkNft } = require('./check-coverage-floor-trace.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'nft-'));
+  fs.mkdirSync(path.join(dir, '.next'));
+  const nft = path.join(dir, '.next', 'x.js.nft.json');
+  fs.writeFileSync(nft, JSON.stringify({ version: 1, files: ['../data/coverage-floor-snapshot.json', '../public/images/shows/a/sm/poster.webp.webp'] }));
+  const bad = checkNft(nft, dir);
+  assert.ok(bad.problems.some(p => p.includes('public/images')));
+  fs.writeFileSync(nft, JSON.stringify({ version: 1, files: ['../data/coverage-floor-snapshot.json'] }));
+  assert.ok(!checkNft(nft, dir).problems.some(p => p.includes('public/images')));
+});
