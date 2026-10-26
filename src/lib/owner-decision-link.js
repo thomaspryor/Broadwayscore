@@ -382,10 +382,10 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   const input = {};
   const answeredLine = 'ANSWERED by the owner (see the "Owner decision" comment on this card).';
   const lines = String(issue.description || '').split('\n');
-  const fixed = lines.map((l) => {
+  const fixed = unparkOwnerHolds(lines.map((l) => {
     const m = MARKER_RE.exec(l.replace(/`[^`]*`/g, ''));
     return m && questionHash(capQuestion(collapseSelfLinks(m[1]).replace(/\*+$/, '').trim())) === hash ? answeredLine : l;
-  });
+  }));
   if (fixed.join('\n') !== lines.join('\n')) input.description = fixed.join('\n');
   const labels = (issue.labels && issue.labels.nodes) || [];
   if (labels.some((l) => l.name === AWAITING_OWNER_LABEL)) input.labelIds = labels.filter((l) => l.name !== AWAITING_OWNER_LABEL).map((l) => l.id);
@@ -398,6 +398,15 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   }
   if (Object.keys(input).length) await graphql(ISSUE_UPDATE, { id: issue.id, input });
   return { ...loaded, status: 'recorded', answer: { label: choice.label, text: cleanText }, moved: Boolean(input.stateId) };
+}
+
+// BRO-6330: a card parked for the owner's call kept its 'PARKED: needs the
+// owner's call' line after the answer, so the picker skipped it forever
+// (BRO-5605, BRO-5406). The answer settles that hold, so its park line goes.
+// Parks for any other reason (keys, spend, a Mac step) stay.
+const OWNER_PARK_RE = /^\s*PARKED\s*:.*\b(?:owner|product call|decision|approv)/i;
+function unparkOwnerHolds(lines) {
+  return lines.filter((l) => !OWNER_PARK_RE.test(l));
 }
 
 // ── the list page (BRO-6235) ────────────────────────────────────────────────
@@ -507,5 +516,5 @@ module.exports = {
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
-  loadDecision, recordAnswer, markerComments,
+  loadDecision, recordAnswer, markerComments, unparkOwnerHolds,
 };
