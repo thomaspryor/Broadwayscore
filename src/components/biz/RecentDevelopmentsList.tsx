@@ -7,6 +7,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
 
 export interface DevelopmentItem {
   date: string; // Format: "MMM YYYY" e.g., "Jan 2025" or "MMM DD" for current year
@@ -71,9 +72,9 @@ export default function RecentDevelopmentsList({
                 {item.showSlug ? (
                   <Link
                     href={`/show/${item.showSlug}`}
-                    className="font-semibold text-white hover:text-brand transition-colors"
+                    className="group font-semibold text-white hover:text-brand transition-colors"
                   >
-                    {item.showTitle}
+                    <RowLinkArrow label={item.showTitle} />
                   </Link>
                 ) : (
                   <strong className="text-white">{item.showTitle}</strong>

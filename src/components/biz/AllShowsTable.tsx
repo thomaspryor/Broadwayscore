@@ -11,7 +11,10 @@
  */
 
 import { useState, useMemo } from 'react';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import { openRowLink } from '@/lib/row-click';
 import {
   getDesignationSortOrder,
   getTrendColor,
@@ -175,6 +178,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
 }
 
 export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTableProps) {
+  const router = useRouter();
   const [sortColumn, setSortColumn] = useState<SortColumn>('designation');
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc');
   const [expanded, setExpanded] = useState(false);
@@ -325,14 +329,15 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
               return (
                 <tr
                   key={show.slug}
-                  className="border-b border-white/5 hover:bg-white/5 transition-colors"
+                  className="group border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer"
+                  onClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
                 >
                   <td className="py-3 px-4">
                     <Link
                       href={`/show/${show.slug}`}
-                      className="font-medium text-white hover:text-brand transition-colors"
+                      className="font-medium text-white group-hover:text-brand transition-colors"
                     >
-                      {show.title}
+                      <RowLinkArrow label={show.title} />
                     </Link>
                   </td>
                   <td className="py-3 px-4">
