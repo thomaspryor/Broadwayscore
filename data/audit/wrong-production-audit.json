@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T19:18:46.071Z",
+  "timestamp": "2026-10-26T19:45:43.060Z",
   "stats": {
-    "totalReviews": 62234,
+    "totalReviews": 62291,
     "alreadyFlagged": 21530,
     "dateGuardCatches": 223,
     "directorMismatch": 2292,
     "tvFilmSignals": 1771,
     "londonSignals": 3004,
-    "offBroadwaySignals": 551,
+    "offBroadwaySignals": 553,
     "yearMismatch": 210,
-    "noPublishDate": 5524
+    "noPublishDate": 5536
   },
   "findings": [
     {
@@ -92745,6 +92745,19 @@
       ]
     },
     {
+      "showId": "the-blood-quilt-off-broadway-2024",
+      "file": "theater-scene--victor-gluck.json",
+      "publishDate": "2024-12-02",
+      "url": "https://www.theaterscene.net/plays/offbway-plays/the-blood-quilt/victor-gluck/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "the-bodyguard-tour-2026",
       "file": "motif--bob-abelman.json",
       "publishDate": "2026-10-14",
@@ -98467,6 +98480,7 @@
     {
       "showId": "the-pianist-off-west-end-2026",
       "file": "inspiringtravelexperiences--the-travel-tipster.json",
+      "score": 83,
       "publishDate": "2026-10-24",
       "url": "https://inspiringtravelexperiences.com/reviews/entertainment/the-pianist-park-theatre-review/",
       "findings": [
@@ -98480,6 +98494,7 @@
     {
       "showId": "the-pianist-off-west-end-2026",
       "file": "jolienstheatrediary--jolien.json",
+      "score": 88,
       "publishDate": "2026-10-25",
       "url": "https://www.jolienstheatrediary.com/reviews/review-the-pianist-the-park-theatre-london",
       "findings": [
@@ -98493,7 +98508,7 @@
     {
       "showId": "the-pianist-off-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 55,
+      "score": 58,
       "publishDate": "2026-10-23",
       "url": "https://www.standard.co.uk/culture/theatre/the-pianist-at-park-theatre-review-b1302039.html",
       "findings": [
@@ -103573,6 +103588,19 @@
       "score": 71,
       "publishDate": "2024-10-27",
       "url": "https://newyorktheater.me/2024/10/27/we-live-in-cairo-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "we-live-in-cairo-off-broadway-2024",
+      "file": "vulture--jackson-mchenry.json",
+      "publishDate": "2024-10-28",
+      "url": "https://www.vulture.com/article/theater-review-we-live-in-cairo-bad-kreyol.html",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
