@@ -17,7 +17,7 @@ describe('land-retry-cancelled schedules (BRO-5673)', () => {
     assert.deepEqual(crons, ['*/20 * * * *', '23 * * * *']);
   });
   it('every schedule string a job keys on is a real cron', () => {
-    assert.equal(keyed.length, 3, 'sweep, stranded and reclaim each key on the hourly string');
+    assert.equal(keyed.length, 4, 'sweep, stranded, reclaim and lock-watch each key on a schedule string (BRO-6276)');
     for (const s of keyed) assert.ok(crons.includes(s), `job keys on '${s}', which no cron fires`);
   });
 });
