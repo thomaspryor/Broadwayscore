@@ -138,6 +138,12 @@ function commercialRecordErrors(showId, show, ctx = {}) {
     if (show.recouped === true) {
       out.push(`commercial.json: "${showId}" is recouped but carries ourEstimateRangePct (remove it)`);
     }
+    if (show.estimatedRecoupmentPct != null) {
+      out.push(`commercial.json: "${showId}" carries both estimatedRecoupmentPct and ourEstimateRangePct (label sizing and the displayed range would read different numbers; remove one)`);
+    }
+    if (show.analystRecoupPct != null) {
+      out.push(`commercial.json: "${showId}" carries both analystRecoupPct and ourEstimateRangePct (the analyst's figure wins, so ours is dead weight; remove it)`);
+    }
   }
 
   // A nonprofit run that switched to a commercial run (BRO-5508,

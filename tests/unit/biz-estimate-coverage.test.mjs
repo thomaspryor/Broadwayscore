@@ -32,7 +32,7 @@ test('every /biz row says something in % Recouped', { skip: !hasData && 'core da
     if (cell.kind === 'reason' || cell.kind === 'loss') assert.ok(cell.text && cell.text.trim() && cell.text !== '—', `${row.slug}: empty ${cell.kind} text`);
     if (cell.kind === 'analyst') {
       assert.ok(cell.range[0] >= 0 && cell.range[0] <= cell.range[1], `${row.slug}: bad analyst range ${cell.range}`);
-      assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(cell.asOf ?? ''), `${row.slug}: analyst figure without a date`);
+      if (!cell.ours) assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(cell.asOf ?? ''), `${row.slug}: analyst figure without a date`);
     }
     if (cell.kind === 'model') {
       assert.ok(cell.pct.every((v) => v >= 0), `${row.slug}: negative model figure reached the page`);
@@ -47,7 +47,7 @@ test('every /biz row says something in % Recouped', { skip: !hasData && 'core da
     // The analyst's figure shows unless something outranks or contradicts it.
     // Closed: an undisclosed outcome (TBD) or an enhancement deal's "Nonprofit" never blocks it; a reported return outranks it.
     const openLabel = row.status !== 'closed' || row.designation === 'TBD' || row.designation === 'Nonprofit';
-    if (row.analystRecoupPct && !row.recouped && !hasNoInvestorsToRepay(row) && openLabel && !row.reportedReturn) {
+    if ((row.analystRecoupPct || row.ourEstimateRangePct) && !row.recouped && !hasNoInvestorsToRepay(row) && openLabel && !row.reportedReturn) {
       assert.equal(cell.kind, 'analyst', `${row.slug}: holds the analyst figure but shows ${cell.kind}`);
     }
   }

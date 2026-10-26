@@ -508,6 +508,8 @@ test('ourEstimateRangePct: shape, rounding to 5 and no use on a recouped show (B
   assert.equal(e({ ourEstimateRangePct: [10] }), 1);
   assert.equal(e({ ourEstimateRangePct: [30, 10] }), 1);
   assert.equal(e({ ourEstimateRangePct: [12, 30] }), 1);
+  assert.equal(e({ ourEstimateRangePct: [10, 30], analystRecoupPct: [10, 20] }), 1);
+  assert.equal(e({ ourEstimateRangePct: [10, 30], estimatedRecoupmentPct: [10, 20] }), 1);
   assert.equal(e({ designation: 'Windfall', recouped: true, recoupedDate: '2024-01', ourEstimateRangePct: [100, 120] }), 1);
 });
 
