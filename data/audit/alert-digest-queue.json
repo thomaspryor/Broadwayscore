@@ -1674,5 +1674,36 @@
       }
     ],
     "queuedAt": "2026-10-26T04:36:56.137Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6286-biz-hero",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6286-biz-hero",
+    "description": "land.yml did not land land/bro-6286-biz-hero: the unit-tests-node gate went red at de46cd60cc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40269147153",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6286-biz-hero"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "de46cd60cc2b0889ad9d88a4ed9d49bd236e9fe3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40269147153"
+      }
+    ],
+    "queuedAt": "2026-10-26T04:45:49.636Z"
   }
 ]
