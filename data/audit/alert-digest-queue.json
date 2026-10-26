@@ -1534,5 +1534,36 @@
       }
     ],
     "queuedAt": "2026-10-26T21:35:02.262Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6393-mvprbm85",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6393-mvprbm85",
+    "description": "land.yml did not land land/job/linear-BRO-6393-mvprbm85: the rebase gate went red at 5489cf235a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6393-mvprbm85 @ 5489cf235a (origin/land/job/linear-BRO-6393-mvprbm85) → origin/main @ e4a32c9218 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e4a32c9218: Rebasing (1/1) error: could not apply 5489cf235ae... BRO-6393: full-size posters for recent shows; poster hold resolves before scheduling hint: Resolve all conflicts manually, mark them as resolve Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40408126166",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6393-mvprbm85"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "5489cf235ae74db41e81bfd2737c05379f5d0cfd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40408126166"
+      }
+    ],
+    "queuedAt": "2026-10-26T22:09:51.555Z"
   }
 ]
