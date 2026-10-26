@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T17:49:33.282Z",
+  "timestamp": "2026-10-26T18:37:10.623Z",
   "stats": {
-    "totalReviews": 62210,
-    "alreadyFlagged": 21528,
-    "dateGuardCatches": 223,
-    "directorMismatch": 2292,
+    "totalReviews": 62250,
+    "alreadyFlagged": 21548,
+    "dateGuardCatches": 224,
+    "directorMismatch": 2293,
     "tvFilmSignals": 1771,
     "londonSignals": 3003,
     "offBroadwaySignals": 551,
-    "yearMismatch": 206,
-    "noPublishDate": 5542
+    "yearMismatch": 210,
+    "noPublishDate": 5526
   },
   "findings": [
     {
@@ -6572,6 +6572,20 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
+      "file": "observer--david-cote.json",
+      "score": 78,
+      "publishDate": "2023-12-19",
+      "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "observer--httpsobservercomauthordavid-cote.json",
       "score": 78,
       "publishDate": "2023-12-19",
@@ -7216,6 +7230,20 @@
     {
       "showId": "carmen-off-broadway-2025",
       "file": "broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
+      "score": 66,
+      "publishDate": "2024-01-06",
+      "url": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 661d before show (2024-01-06 vs 2025-10-28)"
+        }
+      ]
+    },
+    {
+      "showId": "carmen-off-broadway-2025",
+      "file": "broadwayworld--richard-sasanow.json",
       "score": 66,
       "publishDate": "2024-01-06",
       "url": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
@@ -18332,6 +18360,25 @@
       ]
     },
     {
+      "showId": "groundhog-day-west-end-2023",
+      "file": "all-that-dazzles-uk--all-that-dazzles.json",
+      "score": 100,
+      "publishDate": "June 8th, 2023",
+      "url": "https://www.allthatdazzles.co.uk/post/review-groundhog-day-old-vic-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (3x) more than 2023 (0x). 2016 matches production: groundhog-day-west-end-2016"
+        }
+      ]
+    },
+    {
       "showId": "gruesome-playground-injuries-off-broadway-2025",
       "file": "theatermania--kenji-fujishima.json",
       "score": 88,
@@ -19616,6 +19663,48 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-2022",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": 89,
+      "publishDate": null,
+      "url": "https://theaterpizzazz.com/hangmen-2/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2022 (0x). 2015 matches production: hangmen-west-end-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-2022",
+      "file": "theatermania--david-gordon.json",
+      "score": 77,
+      "publishDate": "April 21, 2022",
+      "url": "https://www.theatermania.com/broadway/news/review-martin-mcdonaghs-hangmen-is-a-fun-broadway_93664.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2022 (1x). 2015 matches production: hangmen-west-end-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-2022",
+      "file": "theatermania--jesse-green.json",
+      "score": 77,
+      "publishDate": "April 21, 2022",
+      "url": "https://www.theatermania.com/news/review-martin-mcdonaghs-hangmen-is-a-fun-broadway-thriller-but-without-the-menace_93664/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2022 (1x). 2015 matches production: hangmen-west-end-2015"
         }
       ]
     },
@@ -54293,7 +54382,7 @@
       "file": "daily-mail--patrick-marmion.json",
       "score": 86,
       "publishDate": "2017-02-17",
-      "url": null,
+      "url": "https://www.dailymail.com/tvshowbiz/article-4233296/Review-Tom-Stoppard-s-Travesties-Apollo-Theatre.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -72038,6 +72127,7 @@
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "thestage--paul-vale.json",
+      "score": 87,
       "publishDate": "2026-10-26",
       "url": "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
       "findings": [
@@ -73286,20 +73376,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
-      "showId": "groundhog-day-west-end-2023",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 100,
-      "publishDate": "June 8th, 2023",
-      "url": "https://www.allthatdazzles.co.uk/post/review-groundhog-day-old-vic-theatre",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },

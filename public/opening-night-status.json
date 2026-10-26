@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T17:49:49.596Z",
+  "generatedAt": "2026-10-26T18:37:23.435Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -951,25 +951,25 @@
       "status": "open",
       "slug": "garry-starr-classic-penguins-off-west-end",
       "thumbnail": "/images/shows/garry-starr-classic-penguins-off-west-end-2026/thumbnail.webp",
-      "siteScore": 87.55,
+      "siteScore": 87.5,
       "liveScore": 88,
-      "scoreDrift": 0.45000000000000284,
+      "scoreDrift": 0.5,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
-      "t1": 1,
+      "total": 14,
+      "t1": 2,
       "t2": 3,
-      "t3": 8,
-      "positive": 11,
+      "t3": 9,
+      "positive": 13,
       "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "T1:1/3"
+          "T1:2/3"
         ],
-        "highConfidence": 8,
+        "highConfidence": 10,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1250,6 +1250,18 @@
           "t2": 3,
           "t3": 8,
           "p": 11,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T18:37:23.435Z",
+          "rc": 14,
+          "s": 87.5,
+          "t1": 2,
+          "t2": 3,
+          "t3": 9,
+          "p": 13,
           "m": 1,
           "n": 0,
           "bc": "waiting"
