@@ -466,8 +466,8 @@ CURRENT_REPO_NAME=""
 CURRENT_BUILD_ARTIFACT_DIRS=()
 stale_unmerged=()
 
-# Parse `git worktree list --porcelain` into (path, branch, lock-state)
-# triples. Reads $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS,
+# Process shared-parser records containing path, branch and lock state.
+# Reads $REPO / $CURRENT_REPO_NAME / $CURRENT_BUILD_ARTIFACT_DIRS,
 # which gc_one_repo() sets before invoking this per repo.
 # Detached temp checkouts leaked by a killed caller (BRO-5364).
 # makeFreshCheckout (acceptance-check-core.js) creates <tmpdir>/<prefix>XXXXXX/main
@@ -894,15 +894,14 @@ gc_one_repo() {
   fi
 
   path="" branch="" is_locked=0 locked_reason=""
-  while IFS= read -r line; do
-    case "$line" in
-      "worktree "*) flush; path="${line#worktree }"; branch=""; is_locked=0; locked_reason="" ;;
-      "branch refs/heads/"*) branch="${line#branch refs/heads/}" ;;
-      "detached") branch="" ;;
-      "locked"*) is_locked=1; locked_reason="${line#locked}"; locked_reason="${locked_reason# }" ;;
-    esac
-  done < <(git worktree list --porcelain)
-  flush
+  # Same parser as check-worktree-collision.js. NUL fields preserve empty
+  # branches/reasons and spaces without a second porcelain parser in bash.
+  while IFS= read -r -d '' path &&
+        IFS= read -r -d '' branch &&
+        IFS= read -r -d '' is_locked &&
+        IFS= read -r -d '' locked_reason; do
+    flush
+  done < <(git worktree list --porcelain | node "$SCRIPT_DIR/lib/worktree-lock-parse.js")
 
   git worktree prune 2>/dev/null
 
