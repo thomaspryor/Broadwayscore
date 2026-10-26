@@ -984,3 +984,10 @@ test('makeVerifiedBaseChecks hands the scope to the checks seam; a failed diff m
   run((args) => { if (args[0] === 'diff') diffArgs.push(...args); return args[0] === 'merge-base' ? '' : 'x.md'; });
   assert.ok(diffArgs.includes('--no-renames'), 'a rename on main shows both names to the overlap test');
 });
+
+test('checkTimings reports safe-checks and each extra check duration (BRO-6276)', async () => {
+  const { createRequire } = await import('node:module');
+  const { checkTimings } = createRequire(import.meta.url)('./land-branch.js');
+  assert.equal(checkTimings({ safeMs: 252000, extra: [{ name: 'merged-tree-tests', ms: 543000 }, { name: 'bash -n x', ms: 40 }, { name: 'no-ms' }] }),
+    'safe-checks 4m12s, merged-tree-tests 9m3s, bash -n x 0s');
+});

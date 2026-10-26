@@ -860,14 +860,20 @@ jobs:
           TRAIN_ARGS=()
           if [ "$TRAIN_LANDED" = "true" ]; then TRAIN_ARGS+=(--train-landed-only)
           elif [ -s /tmp/land-riders.json ]; then TRAIN_ARGS+=(--riders-file /tmp/land-riders.json); fi
-          node scripts/land.js --branch "$BRANCH" --source origin \
+          # BRO-6276: bound the in-lock work. A step-level timeout-minutes would
+          # mark the step cancelled and skip the refusal alert, so the cap is a
+          # shell `timeout` (exit 124): no result file → the branch below
+          # reports failed_check=timeout and every later step still runs, the
+          # mutex release included. Cap = LAND_STEP_TIMEOUT_MIN in
+          # scripts/lib/land-mutex.js (pinned by land-mutex.test.mjs).
+          timeout 70m node scripts/land.js --branch "$BRANCH" --source origin \
             --expect-tip "$TIP" --verified-base "$BASE" "${TRAIN_ARGS[@]}" \
             --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
           rc=${PIPESTATUS[0]}
           set -e
           if [ ! -f /tmp/land-result.json ]; then
             echo "landed=false" >> "$GITHUB_OUTPUT"
-            echo "failed_check=fatal" >> "$GITHUB_OUTPUT"
+            if [ "$rc" = "124" ]; then echo "failed_check=timeout" >> "$GITHUB_OUTPUT"; else echo "failed_check=fatal" >> "$GITHUB_OUTPUT"; fi
             echo "::error::land.js exited $rc without a result — see the log above"
             exit 0
           fi

@@ -41,7 +41,7 @@ on:
         required: false
         default: 'sweep'
         type: choice
-        options: [sweep, stranded, reclaim]
+        options: [sweep, stranded, reclaim, lock-watch]
 
 permissions:
   actions: write
@@ -157,4 +157,33 @@ jobs:
         with:
           title: 'Abandoned-card reclaim failed'
           description: 'hourly pass could not read Linear or land refs, or failed to move abandoned In Progress cards (BRO-5100)'
+          severity: 'warning'
+
+  lock-watch:
+    # BRO-6276: deadman for a landing mutex holder that is alive but not
+    # finishing (the queue's whole throughput hangs on one lock). Alert only.
+    name: Landing lock hold deadman
+    if: github.event.schedule == '*/20 * * * *' || (github.event_name == 'workflow_dispatch' && inputs.mode == 'lock-watch')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          sparse-checkout: |
+            scripts
+            .github/actions
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+      - name: Check how long the lock holder has held the lock
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: node scripts/land-lock-watch.js
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Landing lock held too long'
+          description: 'the landing mutex holder has held refs/land-mutex/lock past the hold alert (BRO-6276); see the run log for the holder run id'
           severity: 'warning'

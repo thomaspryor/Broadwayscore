@@ -240,6 +240,42 @@ function isParkedLandJob(land) {
   return steps.every((x) => x === admit || bookkeeping(x) || (x.conclusion !== 'success' && x.conclusion !== 'failure'));
 }
 
+// BRO-6276: deadman for a holder that is alive but not finishing. The Land
+// step is capped at LAND_STEP_TIMEOUT_MIN (land.yml wraps land.js in
+// `timeout`), so a hold past LOCK_HOLD_ALERT_MS means that cap did not fire
+// or the run is wedged elsewhere. Healthy holds measured 2026-10-25: 15-33 min
+// (one merged-tree re-check 14 min, a train of 4 landed in 16 min).
+const LAND_STEP_TIMEOUT_MIN = 70;
+const LOCK_HOLD_ALERT_MS = 60 * 60 * 1000;
+const WAIT_STEP_NAME = 'Wait for the landing mutex';
+
+/**
+ * How long the current lock holder has held the lock.
+ * state: parseLsRemote(); jobs: the holder run's Actions jobs
+ * ({name, steps:[{name, conclusion, completed_at}]}) or null when unreadable.
+ * The hold starts when the holder's "Wait for the landing mutex" step
+ * completes (both land.yml and autonomous-merge.yml have it).
+ * @returns {{status:'free'|'unknown'|'ok'|'stuck', holdMs?:number, runId?:string, reason:string}}
+ */
+function assessLockHold({ state, jobs, now = Date.now(), alertMs = LOCK_HOLD_ALERT_MS } = {}) {
+  const lock = state && state.lock;
+  if (!lock) return { status: 'free', reason: 'no lock held' };
+  const holder = ((state && state.tickets) || []).find((t) => t.sha === lock.sha);
+  if (!holder) return { status: 'unknown', reason: 'lock has no ticket (orphaned; waiters break it after the grace)' };
+  if (!Array.isArray(jobs)) return { status: 'unknown', runId: holder.runId, reason: 'holder run jobs unreadable' };
+  const done = [];
+  for (const j of jobs) for (const s of (j && j.steps) || []) {
+    if (s && s.name === WAIT_STEP_NAME && s.conclusion === 'success' && s.completed_at) done.push(Date.parse(s.completed_at));
+  }
+  const started = Math.max(...done.filter(Number.isFinite), -Infinity);
+  if (!Number.isFinite(started)) return { status: 'unknown', runId: holder.runId, reason: 'holder has not finished its mutex wait step yet' };
+  const holdMs = Math.max(0, now - started);
+  const min = Math.round(holdMs / 60000);
+  return holdMs > alertMs
+    ? { status: 'stuck', holdMs, runId: holder.runId, reason: `run ${holder.runId} has held the landing lock ${min} min (alert at ${Math.round(alertMs / 60000)})` }
+    : { status: 'ok', holdMs, runId: holder.runId, reason: `run ${holder.runId} has held the lock ${min} min` };
+}
+
 /** Our tickets in a state (release deletes every one, any attempt name drift aside). */
 function ownTickets(state, self) {
   return ((state && state.tickets) || []).filter((t) => isSelf(t, self));
@@ -247,5 +283,6 @@ function ownTickets(state, self) {
 
 module.exports = {
   QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, PARK_TICKET_MAX_AGE_MS, RESUME_HEADROOM, parkDepth, resumeHeadroom, resumeSlots, liveTicketCount, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
+  LAND_STEP_TIMEOUT_MIN, LOCK_HOLD_ALERT_MS, WAIT_STEP_NAME, assessLockHold,
   ticketName, parseTicket, parseLsRemote, ticketLiveness, decideStep, blockerRef, nextPollMs, ownTickets,
 };

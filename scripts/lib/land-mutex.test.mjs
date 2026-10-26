@@ -315,3 +315,24 @@ test('the client-side cancel budget covers a parked run (no false REFUSED while 
   const d = lb.decideCancelledLandRetry({ landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a', tip: 'a', retriesUsed: m.PARKED_MAX_ATTEMPTS - 2 });
   assert.equal(d.retry, true);
 });
+
+// BRO-6276: lock-hold deadman
+test('assessLockHold: free, unknown and ok/stuck by hold time', () => {
+  const t = T('11');
+  const waitStep = (iso, conclusion = 'success') => [{ name: 'Land', steps: [{ name: m.WAIT_STEP_NAME, conclusion, completed_at: iso }] }];
+  const at = (minAgo) => new Date(NOW - minAgo * 60000).toISOString();
+  assert.equal(m.assessLockHold({ state: state([t]), jobs: [], now: NOW }).status, 'free');
+  assert.equal(m.assessLockHold({ state: state([t], 'other'), jobs: [], now: NOW }).status, 'unknown');
+  assert.equal(m.assessLockHold({ state: state([t], t.sha), jobs: null, now: NOW }).status, 'unknown');
+  assert.equal(m.assessLockHold({ state: state([t], t.sha), jobs: waitStep(at(5), 'skipped'), now: NOW }).status, 'unknown');
+  assert.equal(m.assessLockHold({ state: state([t], t.sha), jobs: waitStep(at(33)), now: NOW }).status, 'ok');
+  const stuck = m.assessLockHold({ state: state([t], t.sha), jobs: waitStep(at(61)), now: NOW });
+  assert.equal(stuck.status, 'stuck');
+  assert.equal(stuck.runId, '11');
+});
+
+test('land.yml bounds the in-lock Land step below the job timeout and the deadman fires after it', () => {
+  const yml = readFileSync(path.join(path.dirname(CLI), '..', '.github', 'workflows', 'land.yml'), 'utf8');
+  assert.match(yml, new RegExp(`timeout ${m.LAND_STEP_TIMEOUT_MIN}m node scripts/land\\.js`));
+  assert.ok(m.LOCK_HOLD_ALERT_MS < m.LAND_STEP_TIMEOUT_MIN * 60000);
+});
