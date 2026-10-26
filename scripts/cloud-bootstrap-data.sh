@@ -118,11 +118,25 @@ cloud_core_copies() {
 }
 refresh_core_data
 cloud_core_copies
-if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -z "$(ls -A data/review-texts 2>/dev/null)" ] \
-   && RT_SRC="$(attached_review_texts)"; then
-  log "copying review texts from the session-attached clone $RT_SRC (about a minute)"
-  REVIEW_TEXTS_SOURCE="$RT_SRC" run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" --all 2>&1 \
-    | grep -E 'ERROR|FATAL|Review texts|files copied|Setup complete' | sed 's/^/[setup-local-data] /' || true
+# BRO-5400: copy when data/review-texts is empty, AND re-copy at startup/resume when
+# its .review-texts-sha stamp is behind the clone (a copy baked into an earlier
+# session or snapshot was never replaced). Decision: scripts/lib/review-texts-refresh.js.
+# setup-local-data.sh builds the fresh copy beside the old one and swaps, so a failed
+# or timed-out copy leaves the old tree in place; the check below then says STALE.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && RT_SRC="$(attached_review_texts)"; then
+  RT_DECISION="copy data/review-texts is missing or empty"
+  if [ -n "$(ls -A data/review-texts 2>/dev/null)" ]; then
+    RT_DECISION="$(node "$SCRIPT_DIR/lib/review-texts-refresh.js" decide data/review-texts "$RT_SRC" "${BSC_SESSION_EVENT:-startup}" 2>/dev/null)" \
+      || RT_DECISION="keep refresh check failed"
+  fi
+  case "$RT_DECISION" in
+    copy*)
+      log "copying review texts from the session-attached clone $RT_SRC (about a minute; ${RT_DECISION#copy })"
+      REVIEW_TEXTS_SOURCE="$RT_SRC" run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" --all 2>&1 \
+        | grep -E 'ERROR|FATAL|Review texts|files copied|Setup complete' | sed 's/^/[setup-local-data] /' || true
+      ;;
+  esac
+  node "$SCRIPT_DIR/lib/review-texts-refresh.js" check data/review-texts "$RT_SRC" 2>/dev/null | sed 's/^/[cloud-bootstrap] /' || true
 fi
 
 # 1. Real data already resolvable (symlink or file with content)? Nothing to do.
