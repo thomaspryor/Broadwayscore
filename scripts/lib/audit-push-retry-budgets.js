@@ -26,14 +26,12 @@
 //      shape. Flagged when backoffSum < RETRY_DEADLINE_RATIO_THRESHOLD *
 //      deadlineSec.
 //
-//   2. marginRatio: the existing job-timeout-headroom hard gate. Its legacy
-//      stepBudgetSec = max(deadlineSec, backoffSum) omits work that can finish
-//      AFTER the deadline. Kept unchanged during the BRO-5312 advisory rollout.
-//      "Other named step budgets" = the sum of every OTHER step in the same
-//      job that declares its own explicit `timeout-minutes:` (undeclared
-//      steps aren't counted — there's no static bound to sum). Flagged when
-//      the job timeout leaves under MARGIN_THRESHOLD (15%) of headroom past
-//      stepBudgetSec + those other steps' budgets.
+//   2. marginRatio includes sibling push calls, explicit timeouts, script
+//      --time-budget-min budgets and estimated Checkout cost (BRO-2714).
+//      stepBudgetSec = max(deadlineSec, backoffSum) still omits post-deadline
+//      work, which the BRO-5312 residual model reports separately. New
+//      estimates are advisory first (CLAUDE.md section 19): blockingMarginRatio
+//      preserves the existing hard gate's explicit-timeout/push-only model.
 //
 //   3. fundableAttempts — BRO-2373 (2026-09-02). Flags 1 and 2 both model an
 //      attempt as costing only its backoff SLEEP. Real CI logs say an attempt
@@ -57,6 +55,12 @@
 const DEFAULT_MAX_RETRIES = 7; // push-with-retry.sh: MAX_RETRIES=${1:-7}
 const DEFAULT_DEADLINE_SEC = 240; // push-with-retry.sh: PUSH_DEADLINE_SEC=${PUSH_DEADLINE_SEC:-240}
 const DEFAULT_JOB_TIMEOUT_MIN = 360; // GitHub Actions' own default when a job omits timeout-minutes
+
+// BRO-2714: Checkout took 569s at fetch-depth 300 on run 33410708893
+// (2026-08-31), also used by tests/unit/data-validation-job-budget.test.mjs.
+// Use that conservative estimate for each actions/checkout without an explicit
+// timeout. It is a sizing estimate, not a guaranteed bound for every checkout.
+const CHECKOUT_ESTIMATE_SEC = 569;
 
 const MARGIN_THRESHOLD = 0.15; // job-timeout headroom flag (#1891 follow-up precedent)
 const RETRY_DEADLINE_RATIO_THRESHOLD = 0.5; // retries-vs-deadline undersizing flag
@@ -368,9 +372,22 @@ function parseIntOrNull(s) {
   return Number.isFinite(n) ? n : null;
 }
 
+function budgetMinutesFrom(runText, envText = runText) {
+  // Same literal and scheduled env-default forms as the BRO-2706 ratchet.
+  const code = stripCommentLines(runText);
+  const literal = code.match(/--time-budget-min=(\d+(?:\.\d+)?)\b/);
+  if (literal) return parseFloat(literal[1]);
+  const viaVar = code.match(/--time-budget-min=\$\{?([A-Z_][A-Z0-9_]*)\}?/);
+  if (!viaVar) return null;
+  const envDefault = stripCommentLines(envText).match(
+    new RegExp(`${viaVar[1]}\\s*:\\s*\\$\\{\\{[^}]*?\\|\\|\\s*'(\\d+(?:\\.\\d+)?)'`),
+  );
+  return envDefault ? parseFloat(envDefault[1]) : null;
+}
+
 /**
  * Parse a workflow YAML file's text into { jobs: [{ key, timeoutMinutes,
- * steps: [{ name, runText, envDeadlineSec, timeoutMinutes }] }] }.
+ * steps: [{ name, runText, envDeadlineSec, timeoutMinutes, timeBudgetMinutes, checkoutEstimateSec }] }] }.
  * Returns { jobs: [] } (never throws) on unrecognized structure — callers
  * should treat that as "nothing to audit here", not an error; this is an
  * advisory tool, not a strict validator.
@@ -432,6 +449,7 @@ function parseWorkflow(text) {
 
         const nameField = findChildKey(kids, 'name');
         const runField = findChildKey(kids, 'run');
+        const usesField = findChildKey(kids, 'uses');
         const envField = findChildKey(kids, 'env');
         const stepTimeoutField = findChildKey(kids, 'timeout-minutes');
         const continueOnErrorField = findChildKey(kids, 'continue-on-error');
@@ -461,6 +479,10 @@ function parseWorkflow(text) {
 
         step.name = nameField ? nameField.inline.replace(/^['"]|['"]$/g, '') : null;
         step.runText = runText;
+        step.timeBudgetMinutes = budgetMinutesFrom(runText, envField
+          ? lines.slice(envField.idx, blockEnd(lines, envField.idx)).join('\n') : '');
+        step.checkoutEstimateSec = usesField && /^['"]?actions\/checkout@/.test(usesField.inline)
+          ? CHECKOUT_ESTIMATE_SEC : 0;
         step.envDeadlineSec = envDeadlineSec;
         step.envFallbackAfterAttempts = envFallbackAfterAttempts;
         step.envFallbackDisabled = envFallbackDisabled;
@@ -771,6 +793,7 @@ function estimateCronIntervalMinutes(text) {
  */
 function evaluateStep({
   maxRetries, deadlineSec, jobTimeoutMinutes, otherStepsBudgetSec = 0,
+  blockingOtherStepsBudgetSec = otherStepsBudgetSec,
   fallbackAfterAttemptsOverride = null, fallbackDisabled = false,
   gitNetTimeoutSec = GIT_NET_TIMEOUT_SEC, opMinTimeoutSec = PUSH_OP_MIN_TIMEOUT_SEC,
   otherStepsBudgetWithResidualSec = otherStepsBudgetSec,
@@ -781,12 +804,17 @@ function evaluateStep({
   const stepBudgetSec = Math.max(deadlineSec, backoffSum);
   const marginSec = jobTimeoutSec - (stepBudgetSec + otherStepsBudgetSec);
   const marginRatio = jobTimeoutSec > 0 ? marginSec / jobTimeoutSec : -Infinity;
+  const blockingMarginRatio = jobTimeoutSec > 0
+    ? (jobTimeoutSec - stepBudgetSec - blockingOtherStepsBudgetSec) / jobTimeoutSec : -Infinity;
   const residualPastDeadlineSec = computeResidualPastDeadlineSec({ gitNetTimeoutSec, opMinTimeoutSec });
   const stepBudgetWithResidualSec = stepBudgetSec + residualPastDeadlineSec;
   const marginWithResidualSec = jobTimeoutSec - (stepBudgetWithResidualSec + otherStepsBudgetWithResidualSec);
   const marginRatioWithResidual = jobTimeoutSec > 0 ? marginWithResidualSec / jobTimeoutSec : -Infinity;
   const advisoryFlags = marginRatioWithResidual < MARGIN_THRESHOLD
     ? ['job-timeout-margin-with-residual-undersized'] : [];
+  if (marginRatio < MARGIN_THRESHOLD && blockingMarginRatio >= MARGIN_THRESHOLD) {
+    advisoryFlags.push('job-timeout-margin-estimated-undersized');
+  }
 
   const fundableAttempts = computeFundableAttempts(maxRetries, deadlineSec);
   const fallbackAfterAttempts = computeEffectiveFallbackAfter(maxRetries, fallbackAfterAttemptsOverride);
@@ -796,7 +824,7 @@ function evaluateStep({
   if (retryDeadlineRatio < RETRY_DEADLINE_RATIO_THRESHOLD) {
     flags.push('retries-undersized-vs-deadline');
   }
-  if (marginRatio < MARGIN_THRESHOLD) {
+  if (blockingMarginRatio < MARGIN_THRESHOLD) {
     flags.push('job-timeout-margin-undersized');
   }
   // BRO-2373: only a real undersizing when the deadline funds fewer attempts
@@ -834,6 +862,7 @@ function evaluateStep({
   return {
     maxRetries, deadlineSec, backoffSum, retryDeadlineRatio,
     jobTimeoutSec, stepBudgetSec, otherStepsBudgetSec, marginSec, marginRatio,
+    blockingOtherStepsBudgetSec, blockingMarginRatio,
     residualPastDeadlineSec, stepBudgetWithResidualSec, otherStepsBudgetWithResidualSec,
     marginWithResidualSec, marginRatioWithResidual, advisoryFlags,
     fundableAttempts, fallbackAfterAttempts, fallbackEarlyTriggerReachable,
@@ -845,17 +874,24 @@ function evaluateStep({
  * Sum of every OTHER step's worst-case budget in a job, for one push call
  * `pc` (see the BRO-2370 note inside auditWorkflowText for the dedupe rule).
  * Extracted (BRO-2801) so the remediation proposer reuses it instead of a copy.
- * @param {object[]} explicitTimeoutSteps steps with their own timeout-minutes
+ * @param {object[]} steps all steps, including script budgets and Checkout
  * @param {{step: object, stepBudgetSec: number}[]} pushCalls every push call in the job
  * @param {{step: object}} pc the call being evaluated (an element of pushCalls)
  * @param {string} budgetKey legacy or residual-inclusive budget field
+ * @param {boolean} includeEstimates false only for the pre-existing hard gate
  */
-function computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc, budgetKey = 'stepBudgetSec') {
+function computeOtherStepsBudgetSec(steps, pushCalls, pc, budgetKey = 'stepBudgetSec', includeEstimates = true) {
   const { step } = pc;
   const otherStepInfo = new Map(); // step -> { capped, sec }
-  for (const s of explicitTimeoutSteps) {
-    if (s === step) continue;
-    otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
+  for (const s of steps) {
+    if (s !== step && s.timeoutMinutes != null) {
+      otherStepInfo.set(s, { capped: true, sec: s.timeoutMinutes * 60 });
+    } else if (includeEstimates) {
+      // Script budgets cover the script, so a following push adds its own
+      // budget. An explicit Actions timeout caps the entire sibling step.
+      const sec = (s.timeBudgetMinutes || 0) * 60 + (s.checkoutEstimateSec || 0);
+      if (sec) otherStepInfo.set(s, { capped: false, sec });
+    }
   }
   for (const other of pushCalls) {
     if (other === pc) continue;
@@ -881,8 +917,6 @@ function auditWorkflowText(text, filePath) {
   const results = [];
 
   for (const job of parsed.jobs) {
-    const explicitTimeoutSteps = job.steps.filter((s) => s.timeoutMinutes != null);
-
     // First pass: every push-with-retry call in this job, with its own
     // stepBudgetSec, BEFORE computing any step's margin against its
     // siblings (a step's own budget doesn't depend on other steps, so this
@@ -909,7 +943,7 @@ function auditWorkflowText(text, filePath) {
       const { step, call, deadlineSec, stagedPaths } = pc;
       // BRO-2370 second-opinion finding: a sibling step that BOTH declares its
       // own explicit timeout-minutes AND calls push-with-retry.sh used to be
-      // counted TWICE — once via explicitTimeoutSteps (its declared cap) and
+      // counted TWICE: once via its declared cap and
       // again via pushCalls (its own computed stepBudgetSec) — inflating
       // otherStepsBudgetSec and producing false job-timeout-margin-undersized
       // flags. A step's real worst-case contribution is bounded by whichever
@@ -919,9 +953,12 @@ function auditWorkflowText(text, filePath) {
       // stepBudgetSec only when it has no explicit cap. Key each OTHER step
       // ONCE, by identity, so a capped+push-calling sibling is counted only
       // via its cap.
-      const otherStepsBudgetSec = computeOtherStepsBudgetSec(explicitTimeoutSteps, pushCalls, pc);
+      const otherStepsBudgetSec = computeOtherStepsBudgetSec(job.steps, pushCalls, pc);
+      const blockingOtherStepsBudgetSec = computeOtherStepsBudgetSec(
+        job.steps, pushCalls, pc, 'stepBudgetSec', false,
+      );
       const otherStepsBudgetWithResidualSec = computeOtherStepsBudgetSec(
-        explicitTimeoutSteps, pushCalls, pc, 'stepBudgetWithResidualSec',
+        job.steps, pushCalls, pc, 'stepBudgetWithResidualSec',
       );
 
       const evaluation = evaluateStep({
@@ -929,6 +966,7 @@ function auditWorkflowText(text, filePath) {
         deadlineSec,
         jobTimeoutMinutes: job.timeoutMinutes,
         otherStepsBudgetSec,
+        blockingOtherStepsBudgetSec,
         otherStepsBudgetWithResidualSec,
         gitNetTimeoutSec: step.envGitNetTimeoutSec,
         opMinTimeoutSec: step.envOpMinTimeoutSec,
@@ -1055,6 +1093,8 @@ function buildMixedBundleAnnotations(report) {
 }
 
 module.exports = {
+  budgetMinutesFrom,
+  CHECKOUT_ESTIMATE_SEC,
   buildMixedBundleAnnotations,
   computeOtherStepsBudgetSec,
   DEFAULT_MAX_RETRIES,
