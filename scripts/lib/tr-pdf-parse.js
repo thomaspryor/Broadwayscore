@@ -220,7 +220,7 @@ function parsePdfReviews(text, showTitle, stats) {
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
         if (stats) stats.headers++;
-        const captionForeign = captionOwnedBy(lines, i, showTitle) === false;
+        const foreignCaption = captionOwnedBy(lines, i, showTitle) === false;
         i += 3;
 
         // Skip blank line after critic name
@@ -244,8 +244,8 @@ function parsePdfReviews(text, showTitle, stats) {
         let fullText = stripTrailingCaption(cutAtProductionHeader(textLines)).map(l => l.trim()).filter(l => l).join('\n');
         // Clean PDF artifacts
         fullText = fullText.replace(/\nIndex$/m, '').replace(/\nReviews$/m, '').replace(/\n\d+$/m, '').trim();
-        if (stats && !captionForeign && fullText.length <= 50) stats.shortDropped++;
-        if (captionForeign) {
+        if (stats && !foreignCaption && fullText.length <= 50) stats.shortDropped++;
+        if (foreignCaption) {
           if (stats) stats.captionDropped = (stats.captionDropped || 0) + 1;
         } else if (fullText.length > 50) {
           // Convert outlet name to Title Case
@@ -289,7 +289,7 @@ function parseRawPdfReviews(text, showTitle, venue) {
         const outlet = line;
         const date = nextLine;
         const critic = (lines[i + 2] || '').trim();
-        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionOwnedBy(lines, i, showTitle, { inherit: true }) === false ? false : null;
+        const owned = sectionOwnedBy(runs, i, showTitle, lines) === false || venueOwnedBy(lines, i, venue, showTitle) === false || captionForeign(lines, i, showTitle, sectionOwnedBy(runs, i, showTitle, lines), venueOwnedBy(lines, i, venue, showTitle)) ? false : null;
         i += 3;
         while (i < lines.length && lines[i].trim() === '') i++;
 
@@ -503,7 +503,7 @@ function parseDefaultPdfReviews(text, showTitle, venue) {
       .filter(({ l, abs }) => l && abs !== m.dateIdx && abs !== criticIdx && !/^(Index|Reviews|\d+)$/.test(l))
       .map(({ l }) => l);
     const fullText = stripTrailingCaption(cutAtProductionHeader(body)).join('\n').trim();
-    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && captionOwnedBy(lines, m.start, showTitle, { inherit: true }) !== false) {
+    if (fullText.length > 200 && fullText.length < DEFAULT_MAX_CHARS && sectionOwnedBy(runs, m.start, showTitle, lines) !== false && venueOwnedBy(lines, m.start, venue, showTitle) !== false && !captionForeign(lines, m.start, showTitle, sectionOwnedBy(runs, m.start, showTitle, lines), venueOwnedBy(lines, m.start, venue, showTitle))) {
       all.push({ outlet: lines[m.start], date: lines[m.dateIdx], critic, fullText });
     }
   });
@@ -653,18 +653,61 @@ function captionOwnedBy(lines, outletIdx, showTitle, { inherit = false } = {}, d
   return false;
 }
 
-// Ownership of a caption-less review: that of the previous outlet+date header,
-// unless our own title shows up as a caps line in between.
+// Ownership of a caption-less review: that of the previous outlet+date header.
+// The walk gives up (unknown) at anything that could start a different block
+// the guards can read better: a run-dates line, a production info line, or a
+// caps line that is, wraps into, or shares a word with our title.
 function inheritedCaptionOwner(lines, outletIdx, showTitle, depth) {
   if (depth >= CAPTION_CHAIN_MAX) return null;
+  const memo = inheritMemo(lines, showTitle);
+  if (memo.has(outletIdx)) return memo.get(outletIdx);
+  const ours = new Set(foldDiacritics(String(showTitle)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w)));
+  const nearOurs = (t) => trTitleMatches(t, showTitle)
+    || foldDiacritics(t).toLowerCase().split(/[^a-z0-9]+/).some(w => ours.has(w));
+  let result = null;
   for (let k = outletIdx - 1; k >= 0 && outletIdx - k <= CAPTION_LOOKBACK; k--) {
     const t = String(lines[k]).trim();
-    if (isCapsTitle(t) && trTitleMatches(t, showTitle)) return null;
-    if (t === t.toUpperCase() && t.length > 3 && /^[A-Z]/.test(t) && isDateLine(String(lines[k + 1] || '').trim())) {
-      return captionOwnedBy(lines, k, showTitle, { inherit: true }, depth + 1);
+    if (RUN_DATES_LINE.test(t) || PRODUCTION_INFO_LINE.test(t)) break;
+    if (isCapsTitle(t)) {
+      const wrapped = [t, `${t} ${String(lines[k + 1]).trim()}`, `${t} ${String(lines[k + 1]).trim()} ${String(lines[k + 2]).trim()}`];
+      if (wrapped.some(w => /^[^a-z]+$/.test(w) && nearOurs(w))) break;
+    }
+    if (isReviewHeaderLine(lines, k)) {
+      result = captionOwnedBy(lines, k, showTitle, { inherit: true }, depth + 1);
+      break;
     }
   }
-  return null;
+  memo.set(outletIdx, result);
+  return result;
+}
+
+// An outlet line with its date on the next line, or (default mode) a listed
+// outlet with the date up to DEFAULT_DATE_WINDOW lines below.
+function isReviewHeaderLine(lines, k) {
+  const t = String(lines[k]).trim();
+  if (t === t.toUpperCase() && t.length > 3 && /^[A-Z]/.test(t) && isDateLine(String(lines[k + 1] || '').trim())) return true;
+  if (!isKnownOutletLine(t)) return false;
+  for (let j = k + 1; j <= Math.min(k + DEFAULT_DATE_WINDOW, lines.length - 1); j++) {
+    const u = String(lines[j]).trim();
+    if (isKnownOutletLine(u)) return false;
+    if (isDateLine(u)) return true;
+  }
+  return false;
+}
+
+const inheritMemos = new WeakMap();
+function inheritMemo(lines, showTitle) {
+  let byTitle = inheritMemos.get(lines);
+  if (!byTitle) { byTitle = new Map(); inheritMemos.set(lines, byTitle); }
+  if (!byTitle.has(showTitle)) byTitle.set(showTitle, new Map());
+  return byTitle.get(showTitle);
+}
+
+// A caption verdict from inheritance is a guess about the block above; a
+// positive section or venue match for the review outranks it.
+function captionForeign(lines, idx, showTitle, sec, ven) {
+  if (sec === true || ven === true) return false;
+  return captionOwnedBy(lines, idx, showTitle, { inherit: true }) === false;
 }
 
 // 2019+ issues have no run-dates lines; each production page opens with a

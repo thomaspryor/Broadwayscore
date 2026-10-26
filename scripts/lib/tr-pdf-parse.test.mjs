@@ -516,3 +516,27 @@ test('raw parser: form-feed captions and caption inheritance drop another show\'
   // our own caption between a foreign block and the review restores ownership
   assert.equal(captionOwnedBy(lines, lines.indexOf('THE GUARDIAN'), 'Be More Chill', { inherit: true }), true);
 });
+
+// BRO-6287 ship-check: inheritance must not outrank a positive run-line match,
+// must stop at a run-dates line, and must work in default mode too.
+test('caption inheritance: run line and wrapped titles stop it; default mode inherits', () => {
+  const body = 'Be More Chill: the staging is lively and the songs land well, with a cast that sells every beat of the show. '.repeat(4);
+  const foreign = 'A Winter\'s Tale with a spare, fast staging and a company that handles the verse with ease and speed. '.repeat(4);
+  const lines = [
+    'THE WINTER’S TALE', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign,
+    '01 Jun 2021 – 30 Sep 2021', 'BE MORE CHILL', 'THE GUARDIAN', '14 July 2021', 'Critic', body,
+  ];
+  // our run line sits between the foreign review and ours: inheritance gives up
+  assert.equal(captionOwnedBy(lines, lines.indexOf('THE GUARDIAN'), 'Be More Chill', { inherit: true }), true);
+  const noCaption = ['THE WINTER’S TALE', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign, '01 Jun 2021 – 30 Sep 2021', 'BE MORE CHILL', 'x', 'THE GUARDIAN', '14 July 2021'];
+  assert.equal(captionOwnedBy(noCaption, 8, 'Be More Chill', { inherit: true }), null);
+  // a wrapped title of ours between the blocks stops the walk
+  const wrapped = ['SOUTH PACIFIC', 'THE STAGE', '12 July 2021', 'A', foreign, 'THE CURIOUS INCIDENT OF THE DOG', 'IN THE NIGHT-TIME', 'text', 'THE GUARDIAN', '14 July 2021'];
+  assert.equal(captionOwnedBy(wrapped, 8, 'The Curious Incident of the Dog in the Night-Time', { inherit: true }), null);
+  // default mode: foreign block's caption-less second review is dropped
+  const def = ['SOUTH PACIFIC', 'THE STAGE', '12 July 2021', 'Olivia Rook', foreign + ' Be More Chill.', 'FINANCIAL TIMES', '16 July 2021', 'Sarah Hemming', foreign + ' Be More Chill.',
+    'BE MORE CHILL', 'THE GUARDIAN', '14 July 2021', 'Third Critic', body, 'THE TIMES', '15 July 2021', 'Fourth Critic', body].join('\n');
+  const got = parseDefaultPdfReviews(def, 'Be More Chill', null).map(r => r.date).join(',');
+  assert.ok(!got.includes('16 July 2021') && !got.includes('12 July 2021'), got);
+  assert.ok(got.includes('14 July 2021') && got.includes('15 July 2021'), got);
+});
