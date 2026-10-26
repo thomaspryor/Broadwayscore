@@ -1,6 +1,7 @@
 // BRO-6359: a card filed with --child (a create_session child is starting on it now) is In Progress and
 // claimed, so no worker picks it. Requires the real functions; nothing is copied here.
-import { test } from 'node:test';
+import { test, afterEach } from 'node:test';
+import { guardProcessExit } from '../../tests/helpers/process-exit-guard.mjs';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
@@ -10,6 +11,9 @@ const { pickCloudCard } = require('./cloud-worker-pick.js');
 const { freshClaimGuard } = require('./fresh-claim-guard.js');
 const { buildClaimComment } = require('./linear-session-reporting.js');
 const { pickStateForMode } = require('./linear-issue-create.js');
+
+guardProcessExit();
+afterEach(() => { process.exitCode = 0; });
 
 const NOW = Date.parse('2026-10-26T14:00:00Z');
 const states = [
