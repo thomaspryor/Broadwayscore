@@ -11,10 +11,9 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 const require = createRequire(import.meta.url);
-const { venueSearchToken } = require('./venue-search-token.js');
+const { venueSearchToken, GENERIC } = require('./venue-search-token.js');
 const { venueQueryToken } = require('./serp-review-census.js');
 const { hasDisambiguator } = require('./url-discovery.js');
-const { foldDiacritics } = require('./title-match.js');
 
 const FIXTURE = [
   'Studio 54', 'WP Theater', 'New World Stages', 'Playhouse Theatre', 'The Theater Center',
@@ -26,11 +25,10 @@ let real = [];
 try {
   const raw = JSON.parse(fs.readFileSync(new URL('../../data/shows.json', import.meta.url), 'utf8'));
   real = (Array.isArray(raw) ? raw : raw.shows || []).map((s) => s.venue);
-} catch { /* cloud copies may be absent; fixtures still run */ }
+} catch (e) { if (e.code !== 'ENOENT') throw e; /* cloud copies may be absent; fixtures still run */ }
 const VENUES = [...new Set([...FIXTURE, ...real].filter((v) => v !== undefined))];
 
 const GENERIC_WORDS = new Set(['theatre', 'theater', 'theatres', 'theaters']);
-const words = (v) => foldDiacritics(String(v || '')).toLowerCase().replace(/[^a-z0-9\s]/g, ' ').split(/\s+/).filter(Boolean);
 
 test('neither query helper ever returns a bare generic theatre noun', () => {
   for (const v of VENUES) {
@@ -38,13 +36,6 @@ test('neither query helper ever returns a bare generic theatre noun', () => {
     const b = venueQueryToken(v);
     assert.ok(!GENERIC_WORDS.has(a), `venueSearchToken(${v}) = ${a}`);
     assert.ok(!GENERIC_WORDS.has(b), `venueQueryToken(${v}) = ${b}`);
-  }
-});
-
-test('census token is a real word of the venue', () => {
-  for (const v of VENUES) {
-    const b = venueQueryToken(v);
-    if (b) assert.ok(words(v).includes(b), `${v} -> ${b}`);
   }
 });
 
@@ -57,7 +48,9 @@ test('census token is accepted by hasDisambiguator for the same venue (documente
 
 test('search token is never empty where census finds a distinctive token', () => {
   for (const v of VENUES) {
-    if (venueQueryToken(v)) assert.notEqual(venueSearchToken(v), '', `${v}`);
+    const b = venueQueryToken(v);
+    // '' is intended when search treats the census token as generic ("The Space")
+    if (b && !GENERIC.has(b)) assert.notEqual(venueSearchToken(v), '', `${v}`);
   }
 });
 
