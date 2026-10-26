@@ -645,7 +645,11 @@ function locateReviews(text, reviews, showTitle) {
     let run = null;
     for (const x of runs) { if (x.line <= line) run = x; else break; }
     const tail = String(r.fullText || '').split('\n').filter(Boolean).slice(-2).map(mk);
-    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle, lines) };
+    // BRO-6287: the masked 14 lines above the review's first text line (outlet,
+    // date, critic, caption), so a layout whose
+    // production boundaries the guards miss can be read without any prose.
+    const before = line < 0 ? [] : trimmed.slice(Math.max(0, line - 14), line).map(mk);
+    return { outlet: r.outlet, date: r.date, line, section, runTitle: run ? run.title : null, tail, before, owned: line < 0 ? null : sectionOwnedBy(runs, line, showTitle, lines) };
   });
 }
 
