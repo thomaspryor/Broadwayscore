@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T01:38:57.683Z",
+  "timestamp": "2026-10-26T02:22:31.697Z",
   "stats": {
-    "totalReviews": 61734,
-    "alreadyFlagged": 21491,
+    "totalReviews": 61718,
+    "alreadyFlagged": 21469,
     "dateGuardCatches": 223,
-    "directorMismatch": 2266,
+    "directorMismatch": 2263,
     "tvFilmSignals": 1754,
-    "londonSignals": 2986,
+    "londonSignals": 2987,
     "offBroadwaySignals": 544,
     "yearMismatch": 204,
-    "noPublishDate": 5475
+    "noPublishDate": 5476
   },
   "findings": [
     {
@@ -6961,20 +6961,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 507d before show (2024-11-04 vs 2026-03-26)"
-        }
-      ]
-    },
-    {
-      "showId": "butley-2006",
-      "file": "variety--marilyn-stasio.json",
-      "score": 45,
-      "publishDate": "2006-10-26",
-      "url": "https://variety.com/2006/legit/reviews/butley-3-1200512392/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold pinter\" from butley-1972"
         }
       ]
     },
@@ -16289,20 +16275,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 3\""
-        }
-      ]
-    },
-    {
-      "showId": "funny-girl-2022",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 80,
-      "publishDate": "April 24, 2022",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/funny-girl-beanie-feldstein-broadway-theater-review-1235134524/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"garson kanin\" from funny-girl-2002"
         }
       ]
     },
@@ -30839,20 +30811,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "my-fair-lady-2018",
-      "file": "nysr--david-finkle.json",
-      "score": 78,
-      "publishDate": "2018-04-19T21:44:15",
-      "url": "https://nystagereview.com/2018/04/19/my-fair-lady-shaw-goes-ibsen-in-shers-appealing-revival/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"moss hart\" from my-fair-lady-1993"
         }
       ]
     },
@@ -80528,6 +80486,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "musicaltheatremusings--sarah-mcpartlan.json",
+      "publishDate": "2026-10-24",
+      "url": "https://musicaltheatremusings.co.uk/martin-guerre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
