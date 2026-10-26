@@ -22,6 +22,8 @@ const { isLookalikeContentFarmUrl, findLookalikeHost, hostLabel, LOOKALIKE_CONTE
 const { normalizeOutlet, isJunkOutlet } = require('./lib/review-normalization');
 const { outletRegistryAuditExclusionBranch } = require('./lib/outlet-registry-audit-exclusions');
 
+const { recentlyStagedOutletIds, STAGING_RELATIVE_PATH } = require('./lib/outlet-auto-register');
+
 const ROOT = path.join(__dirname, '..');
 const args = process.argv.slice(2);
 const strict = args.includes('--strict');
@@ -64,12 +66,21 @@ const lookalikeAliases = [];
   }
 }
 
+let pendingStaged = new Set();
+try {
+  pendingStaged = recentlyStagedOutletIds(JSON.parse(fs.readFileSync(path.join(ROOT, STAGING_RELATIVE_PATH), 'utf8')), Date.now());
+} catch { /* no staging file: nothing is pending */ }
+
 const liveHost = [];
 const liveUnregistered = {};
+const livePendingStaged = {};
 for (const r of reviews) {
   const p = hostProblem(r.outletId, r.url);
   if (p) liveHost.push({ showId: r.showId, outletId: r.outletId, url: r.url, problem: p });
-  if (!canonical(r.outletId)) liveUnregistered[r.outletId] = (liveUnregistered[r.outletId] || 0) + 1;
+  if (!canonical(r.outletId)) {
+    const bucket = pendingStaged.has(r.outletId) ? livePendingStaged : liveUnregistered;
+    bucket[r.outletId] = (bucket[r.outletId] || 0) + 1;
+  }
 }
 
 const corpusUnregistered = {};
@@ -100,6 +111,7 @@ const report = {
   liveOnBadHost: liveHost,
   lookalikeAliasesInRegistry: lookalikeAliases,
   liveUnregisteredOutlets: liveUnregistered,
+  livePendingStagedOutlets: livePendingStaged,
   corpusScanned,
   corpusFiles,
   corpusUnregisteredOutlets: Object.fromEntries(Object.entries(corpusUnregistered).map(([k, v]) => [k, v.length])),
@@ -114,6 +126,7 @@ if (asJson) {
   for (const x of liveHost.slice(0, 20)) console.log(`  ${x.showId} ${x.outletId} ${x.url} [${x.problem}]`);
   console.log(`registry aliases naming a look-alike host: ${lookalikeAliases.length}${lookalikeAliases.length ? ' ' + lookalikeAliases.join(', ') : ''}`);
   console.log(`live reviews with unregistered outlet: ${Object.keys(liveUnregistered).length} outlet(s)`);
+  if (Object.keys(livePendingStaged).length) console.log(`  (+${Object.keys(livePendingStaged).length} staged by the rebuild within the grace window, not failed: ${Object.keys(livePendingStaged).join(', ')})`);
   if (corpusScanned) {
     console.log(`corpus files scanned: ${corpusFiles}; provisional outlets without a decision: ${Object.keys(corpusUnregistered).length}`);
     for (const [k, v] of Object.entries(corpusUnregistered).slice(0, 20)) console.log(`  ${k} (${v.length}) e.g. ${v[0]}`);

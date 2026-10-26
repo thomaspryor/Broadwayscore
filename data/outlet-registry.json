@@ -3,7 +3,7 @@
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
     "lastUpdated": "2026-10-25T21:55:33.958Z",
     "version": "2.1.0",
-    "lastChange": "BRO-6122: standingCoverage promote talkinbroadway (audit-standing-coverage lists talkinbroadway under promote (unflagged, clears the bar))"
+    "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
   },
   "outlets": {
     "westendtheatre": {
@@ -214,7 +214,8 @@
         "wapo",
         "washingtonpost",
         "wash post",
-        "washingtion-post"
+        "washingtion-post",
+        "the-washington-post"
       ],
       "domain": "washingtonpost.com",
       "accessModel": "paywalled",
@@ -1282,7 +1283,8 @@
         "theatres-leiter-side",
         "theatre's leiter side",
         "theatres leiter side",
-        "leiter side"
+        "leiter side",
+        "theatre-s-leiter-side"
       ],
       "domain": "slleiter.blogspot.com",
       "accessModel": "free",
@@ -13599,6 +13601,29 @@
         "twiny"
       ],
       "domain": "twiny.substack.com"
+    },
+    "themetroland": {
+      "displayName": "The Metroland",
+      "tier": 3,
+      "aliases": [
+        "themetroland",
+        "the metroland",
+        "metroland"
+      ],
+      "domain": "themetroland.com",
+      "accessModel": "free",
+      "displayNameReviewed": true
+    },
+    "kidsoutandabout": {
+      "displayName": "Kids Out and About",
+      "tier": 4,
+      "aliases": [
+        "kidsoutandabout",
+        "kids out and about"
+      ],
+      "domain": "kidsoutandabout.com",
+      "accessModel": "free",
+      "displayNameReviewed": true
     }
   },
   "_aliasIndex": {
@@ -14288,7 +14313,14 @@
     "the-sunday-times": "sunday-times",
     "thesundaytimes": "sunday-times",
     "the sunday times (uk)": "sunday-times",
-    "sunday times (uk)": "sunday-times"
+    "sunday times (uk)": "sunday-times",
+    "the-washington-post": "washpost",
+    "theatre-s-leiter-side": "theatres-leiter-side",
+    "themetroland": "themetroland",
+    "the metroland": "themetroland",
+    "metroland": "themetroland",
+    "kidsoutandabout": "kidsoutandabout",
+    "kids out and about": "kidsoutandabout"
   },
   "lastUpdated": "2026-10-24T09:00:22.000Z",
   "lastChange": "BRO-6056: multiAuthor on 25 defaultCritic outlets whose files show several other named critics; multiAuthor:false on 3 reviewed single-author outlets"
