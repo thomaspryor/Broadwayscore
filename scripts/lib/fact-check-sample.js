@@ -148,7 +148,7 @@ function cohortRows(shows, key) {
 function drawSample(shows, cohortName, n, seed) {
   const { base, season } = parseCohortKey(cohortName);
   const cohort = COHORTS[base];
-  const label = season && base === 'we-historical' ? `West End historical backfill ${season} (we-historical:wos + we-historical:tr)` : cohort.label;
+  const label = season && base === 'we-historical' ? `West End historical backfill ${season} (we-historical:wos + we-historical:tr + we-historical:olt)` : cohort.label;
   const rows = cohortRows(shows, cohortName);
   const sample = stratifiedSample(rows, cohort.stratum, n, seed);
   const strata = {};
