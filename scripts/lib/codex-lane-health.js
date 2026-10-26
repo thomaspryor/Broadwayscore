@@ -40,6 +40,9 @@ const FLOORS = Object.freeze({
 });
 
 // "Stopped early" reasons that mean the lane cannot work (lock, disk, Done gate, REJECT streak, crash, limit).
+// A stop for lack of disk (R.stopReason, R.isDiskFailure): reported by its own class on the first
+// occurrence, because a full disk repeats until someone frees it (BRO-6304).
+const DISK_STOP = /GB of disk left|No space left on device|\bENOSPC\b/i;
 const BLOCKING_STOP = /\block\b|disk|Done gate refused|REJECTs? in a row|Codex exited|usage limit|limit reached|login|did not start/i;
 // Stand-down classes that are not a fault: another run is working (lock-held) or the lane steps
 // aside on purpose while the login may refresh (login-refresh). Every other class blocks the lane.
@@ -129,6 +132,11 @@ function codexLaneHealth({ nowMs, landed = null, summaries = null, ghRuns = null
         breach('cloud', 'stopped', `${blocked.length} of the last ${recent.length} cloud summaries stopped early: ${blocked[0].f.stop.slice(0, 90)}`);
       }
     }
+    // Judged on the parsed stop reason, never the summary body: bodies quote card titles and check output.
+    const diskStops = cloud.filter((r) => nowMs - r.ms <= 12 * HOUR && DISK_STOP.test(r.f.stop || ''));
+    if (diskStops.length && cloud.length && DISK_STOP.test(cloud[0].f.stop || '')) {
+      breach('cloud', 'disk-low', `${diskStops.length} cloud summary(ies) in 12h stopped on disk: ${diskStops[0].f.stop.slice(0, 90)}`);
+    }
     const win = cloud.filter((r) => nowMs - r.ms <= floors.cloudLandWindowH * HOUR);
     const worked = win.reduce((a, r) => a + r.worked, 0);
     if (cloud.length && win.length >= 2 && worked >= floors.cloudLandMinWorked && win.every((r) => r.f.landed === 0)) {
@@ -196,4 +204,4 @@ function confirmedBreaches(inputs, { consecutive = 2 } = {}) {
   return { now, prev, confirmed };
 }
 
-module.exports = { FLOORS, BLOCKING_STOP, BENIGN_STAND_DOWN, codexLandedEvents, codexLaneHealth, confirmedBreaches };
+module.exports = { DISK_STOP, FLOORS, BLOCKING_STOP, BENIGN_STAND_DOWN, codexLandedEvents, codexLaneHealth, confirmedBreaches };
