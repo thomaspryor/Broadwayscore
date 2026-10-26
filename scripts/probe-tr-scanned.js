@@ -69,6 +69,15 @@ function tesseractStats(imgPath) {
 
   let ocrDone = false;
   for (const q of QUERIES) {
+    if (q.startsWith('@')) {
+      // browse mode: print the link structure of an archive page (no prose)
+      await page.goto('https://www.theatrerecord.com' + q.slice(1), { waitUntil: 'domcontentloaded', timeout: 30000 });
+      await page.waitForTimeout(1500);
+      const links = await page.evaluate(() => [...document.querySelectorAll('a')].map(a => ({ h: a.getAttribute('href') || '', t: (a.textContent || '').replace(/\s+/g, ' ').trim().slice(0, 50) })).filter(l => l.h.includes('/archive/')));
+      console.log(`BROWSE ${q}: ${links.length} archive links`);
+      for (const l of links.slice(0, 40)) console.log('  LINK', JSON.stringify(l));
+      continue;
+    }
     const url = `https://www.theatrerecord.com/search?query=${encodeURIComponent('"' + q + '"')}&title=on&order=oldest`;
     await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
     await page.waitForTimeout(1500);
