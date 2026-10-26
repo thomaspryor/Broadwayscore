@@ -219,9 +219,9 @@ function applyDecision(decision, { dir, now, dryRun, cardOfCache, listWorkspaces
   // on the task since then must not have it flipped under it, so re-list right
   // before writing, and fail closed if cmux cannot be asked.
   if (!dryRun) {
-    let live;
-    try { live = listWorkspacesFn() || []; } catch (e) {
-      return { id, done: false, why: `live recheck failed (${classifyCmuxError(e)}) — left untouched` };
+    const { workspaces: live, unavailable } = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
+    if (unavailable) {
+      return { id, done: false, why: `live recheck failed (${unavailable}) — left untouched` };
     }
     if (live.some((w) => ledger.titleMatchesSubject(w.title, task.subject))) {
       return { id, done: false, why: 'a live workspace now matches this task — left untouched' };
