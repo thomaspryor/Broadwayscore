@@ -113,6 +113,24 @@ function tesseractStats(imgPath) {
         all.slice(Math.max(at - 3, 0), Math.max(at - 3, 0) + (parseInt(nl, 10) || 100)).forEach((l, i) => console.log('  Z' + i, JSON.stringify(l.slice(0, 60))));
         continue;
       }
+      if (pg.startsWith('title=')) {
+        // BRO-6343: @dump:<hit path>:title=<TITLE+WORDS>:<lines> prints the lines after each line holding the title
+        // in capitals, in -layout and -raw, with every lowercase word masked to "x" (structure, names, dates; no prose).
+        const want = pg.slice(6).replace(/\+/g, ' ').toUpperCase();
+        const mask = l => l.replace(/\s{3,}/g, '  |  ').trim().replace(/\b[a-z][a-z'’-]*\b/g, 'x').replace(/(?:x[\s,.;]+){3,}/g, 'x… ').slice(0, 120);
+        for (const mode of ['-layout', '-raw']) {
+          const all = sh('pdftotext', [mode, pdf2, '-']).split('\n');
+          let shown = 0;
+          all.forEach((l, i) => {
+            if (shown >= 6 || !l.toUpperCase().includes(want) || !l.includes(want)) return;
+            shown++;
+            console.log(`  T${mode} @${i}/${all.length}`);
+            all.slice(Math.max(0, i - 2), i + (parseInt(nl, 10) || 20)).forEach((x, k) => console.log(`    ${k - 2}`, JSON.stringify(mask(x))));
+          });
+          if (!shown) console.log(`  T${mode} no caps line holding ${want}`);
+        }
+        continue;
+      }
       if (pg === 'heads') {
         // every ALL CAPS short line with the next 3 short lines (production headers carry title, venue, dates; no prose)
         const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
