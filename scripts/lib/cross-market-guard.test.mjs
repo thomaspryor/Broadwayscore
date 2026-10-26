@@ -5,7 +5,6 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   classifyReverseCrossMarket,
-  classifyUsOnWeCrossMarket,
   classifyCrossMarketContamination,
   isUkVenueString,
   isUsVenueString,
