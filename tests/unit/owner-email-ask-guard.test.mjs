@@ -18,7 +18,9 @@ const DIGEST_BODY = [
   'Broadway Scorecard morning digest',
   'Opening tonight: 2 shows. Reviews collected overnight: 41 (3 new T1).',
   'CI: all green. Deploy: live. ScrapingBee credits: 412k remaining.',
-  'Open cards waiting for an answer are listed on the board.',
+  'Decisions waiting on you',
+  'Why this is your call: the spend is not reversible.',
+  'One decision is waiting on you. Please reply to this email if the link fails.',
 ].join('\n');
 
 test('the email from this card is blocked', () => {
@@ -37,7 +39,7 @@ test('a body with no question passes', () => {
 });
 
 test('each ask phrase blocks', () => {
-  for (const body of ['reply yes', 'Reply to Claude', 'a decision for you', 'one decision', 'tell Claude to go', 'waiting on you', "it's your call"]) {
+  for (const body of ['reply yes', 'Reply to Claude', 'a decision for you', 'tell Claude to go', "Reply 'yes' to Claude or Codex"]) {
     assert.equal(checkOwnerEmail({ to: [OWNER], subject: 's', body }, env).blocked, true, body);
   }
 });
@@ -77,4 +79,19 @@ test('hook script denies the blocked email and passes the digest', () => {
 test('html-only ask and plus-addressed owner are caught', () => {
   assert.equal(checkOwnerEmail({ to: [OWNER], htmlBody: '<p>Please re<b>ply</b> <i>yes</i></p><p>Reply <b>yes</b> to Claude</p>' }, env).blocked, true);
   assert.equal(checkOwnerEmail({ to: ['thomas.pryor+bot@gmail.com'], body: 'reply yes' }, env).blocked, true);
+});
+
+test('[PREVIEW] and test subjects are exempt; dotted/googlemail owner forms are not', () => {
+  assert.equal(checkOwnerEmail({ to: [OWNER], subject: '[PREVIEW] Think you know this Tony season', body: 'reply yes' }, env).blocked, false);
+  assert.equal(checkOwnerEmail({ to: ['thomaspryor@googlemail.com'], body: 'reply yes' }, env).blocked, true);
+  assert.equal(checkOwnerEmail({ to: ['Thomas.Pryor@gmail.com'], body: 'tell Claude' }, env).blocked, true);
+});
+
+test('create_gmail_draft and Gmail tool names are matched by the registered matcher', async () => {
+  const fs = await import('node:fs');
+  const s = JSON.parse(fs.readFileSync(new URL('../../.claude/settings.json', import.meta.url), 'utf8'));
+  const e = s.hooks.PreToolUse.find((x) => x.hooks.some((h) => h.command.includes('owner-email-ask-guard.sh')));
+  const re = new RegExp(`^(?:${e.matcher})$`);
+  for (const n of ['send_message', 'create_draft', 'create_gmail_draft', 'update_draft', 'reply', 'forward']) assert.ok(re.test(`mcp__claude_ai_Gmail__${n}`), n);
+  assert.ok(!re.test('mcp__claude_ai_Gmail__search_threads'));
 });

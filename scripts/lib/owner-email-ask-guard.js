@@ -6,23 +6,30 @@
 
 const DEFAULT_OWNER = 'thomas.pryor@gmail.com';
 
-// Phrases that ask the owner for a reply or a decision. Kept narrow: digests
-// and previews say "your call" rarely, but "reply yes" / "tell claude" never.
+// Phrases that ask the owner to reply to a session. Kept narrow on purpose:
+// the real digest ("Decisions waiting on you"), decision email ("Why this is
+// your call") and welcome email ("reply to this email") use broader wording.
 const ASK_PATTERNS = [
-  /\breply\s+(?:with\s+)?['"“‘]?(?:yes|no|ok|go|approve|approved|a|b)\b/i,
-  /\breply\s+to\s+(?:claude|codex|me|this\s+(?:email|session))\b/i,
+  /\breply\s+(?:with\s+)?['"“‘]?(?:yes|no|ok|approve|approved)\b/i,
+  /\breply\s+to\s+(?:claude|codex)\b/i,
   /\breply\s+['"“‘]?\w+['"”’]?\s+to\s+(?:claude|codex)\b/i,
   /\b(?:decision|question)\s+for\s+you\b/i,
-  /\bone\s+decision\b/i,
   /\btell\s+(?:claude|codex)\b/i,
-  /\bwaiting\s+(?:on|for)\s+(?:you|your\s+(?:reply|answer|call|decision))\b/i,
-  /\byour\s+call\b/i,
 ];
+
+// Previews and test sends of real templates (digest, decision email, welcome)
+// legitimately contain "waiting on you", "your call", "reply to this email".
+const PREVIEW_SUBJECT = /^\s*(?:\[|\()\s*(?:preview|test)\b/i;
 
 const BYPASS = /(?:^|\n)[ \t]*NO-OWNER-EMAIL-CHECK:[ \t]*\S/;
 
+// Gmail ignores dots and +tags and treats googlemail.com as gmail.com.
+function normalizeAddress(s) {
+  return String(s).trim().toLowerCase().replace(/\+[^@]*@/, '@').replace(/@googlemail\.com$/, '@gmail.com').replace(/^([^@]+)@gmail\.com$/, (_, u) => `${u.replace(/\./g, '')}@gmail.com`);
+}
+
 function ownerAddress(env = process.env) {
-  return String((env && env.OWNER_EMAIL) || DEFAULT_OWNER).trim().toLowerCase().replace(/\+[^@]*@/, '@');
+  return normalizeAddress((env && env.OWNER_EMAIL) || DEFAULT_OWNER);
 }
 
 function addresses(v) {
@@ -32,7 +39,7 @@ function addresses(v) {
     const s = typeof item === 'string' ? item : item && (item.email || item.address) ? String(item.email || item.address) : '';
     for (const part of s.split(/[,;]/)) {
       const m = part.match(/<([^>]+)>/);
-      const a = (m ? m[1] : part).trim().toLowerCase().replace(/\+[^@]*@/, '@');
+      const a = normalizeAddress(m ? m[1] : part);
       if (a) out.push(a);
     }
   }
@@ -52,6 +59,7 @@ function checkOwnerEmail(toolInput, env = process.env) {
   const subject = typeof input.subject === 'string' ? input.subject : '';
   const stripHtml = (s) => s.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ');
   const body = [input.body, input.htmlBody].filter((s) => typeof s === 'string').map(stripHtml).join('\n');
+  if (PREVIEW_SUBJECT.test(subject)) return { blocked: false, matched: [], preview: true };
   if (BYPASS.test(body) || BYPASS.test(subject)) return { blocked: false, matched: [], bypassed: true };
   const text = `${subject}\n${body}`;
   const matched = ASK_PATTERNS.filter((re) => re.test(text)).map((re) => text.match(re)[0]);
