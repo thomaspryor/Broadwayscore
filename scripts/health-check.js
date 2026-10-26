@@ -257,6 +257,10 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'Audience scores are out of date.' },
   { match: /^Audience coverage: open-show gaps$/, urgency: 'this-week',
     humanAction: 'A currently-running show has audience ratings on a source that never linked — usually a title/venue mismatch. The check message names the source(s) and the correct override knob (MEZZANINE_OVERRIDES in scrape-mezzanine-audience.js, or THEATR_OVERRIDES in scrape-theatr-audience.js — they are separate). Open Claude Code and say: "Add the override for the flagged show and re-run that source’s scraper." Details in data/audit/mezzanine-coverage.json / theatr-coverage.json.' },
+  // BRO-6336: 180 deep-research results sat unreviewed for four months. The verified auto-apply pass
+  // (commercial-pending-daily.yml) should keep the queue near empty; this fires when it does not.
+  { match: /^Commercial pending-review queue$/, urgency: 'fix-now', workflow: 'commercial-pending-daily.yml',
+    humanAction: 'Money Scorecard research results are piling up unreviewed. The daily automatic check applies what a source page confirms and emails the rest; open the latest "Commercial Pending Review" run to see why entries are stuck.' },
   { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
   // BRO-6159: advisory only; persistent gaps use the existing alert router.
@@ -2064,6 +2068,24 @@ function checkOutletHealth() {
 // missing/unreadable history file is also a warn (informational monitor,
 // not a ship-blocker) since a first-ever week or a not-yet-run cron
 // legitimately has no file yet.
+// BRO-6336: the pending-review queue must stay small and young. Pure thresholds live in lib/pending-health.js.
+function checkCommercialPendingQueue({ pendingFile = path.join(DATA_DIR, 'commercial-pending-review.json'), now = Date.now() } = {}) {
+  return [
+    runCheck('Commercial pending-review queue', () => {
+      const name = 'Commercial pending-review queue';
+      const { pendingQueueHealth } = require('./lib/pending-health');
+      if (!fs.existsSync(pendingFile)) return { name, status: 'pass', message: 'No pending file: nothing waits.' };
+      let pending;
+      try { pending = readJSON(pendingFile); } catch (err) { return { name, status: 'error', message: `Failed to parse commercial-pending-review.json: ${err.message}` }; }
+      const { ok, problems, stats } = pendingQueueHealth(pending, now);
+      const { formatBacklogLine } = require('./lib/pending-review-backlog');
+      return ok
+        ? { name, status: 'pass', message: formatBacklogLine(stats) }
+        : { name, status: 'error', message: `${formatBacklogLine(stats)} Over the limit: ${problems.join('; ')}.`, hint: 'Run the Commercial Pending Review workflow; entries it cannot verify are emailed to the owner.' };
+    }),
+  ];
+}
+
 function checkCommercialModelDrift() {
   return [
     runCheck('Commercial model drift', () => {
@@ -6136,6 +6158,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCloudMemoryDrift(),
     ...checkTourAutomation(),
     ...checkOutletHealth(),
+    ...checkCommercialPendingQueue(),
     ...checkCommercialModelDrift(),
     checkBizOgCoverage(),
     ...checkCookieExpiration(),
@@ -6379,4 +6402,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift , checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
