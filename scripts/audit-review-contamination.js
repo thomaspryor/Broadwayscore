@@ -105,6 +105,7 @@ const {
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { countStrictHits, shouldBlockContaminationGate, isAlreadyExcludedFromScoring } = require('./lib/contamination-gate');
 const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check');
+const { buildWpLiveIndex, isLiveScored } = require('./lib/wp-live-scored-check');
 const { olderProductionLiveReason } = require('./lib/older-production-live-guard');
 const { urlNamesOtherShow } = require('./lib/url-names-other-show');
 
@@ -156,6 +157,22 @@ if (shouldRunClass('C2')) {
     }
   } catch (e) {
     console.warn(`[audit-review-contamination] could not read ${REVIEWS_JSON_PATH} (${e.message}) — C2 ground-truth check disabled for this run, all C2 hits suppressed`);
+  }
+}
+
+// BRO-2614: same ground-truth idea for class B. A wrongProduction file that
+// reviews.json still scores is not excluded, so B has nothing to report. If
+// reviews.json is unreadable the index stays null and B falls back to the old
+// static-field behaviour (warned, never silently suppressed).
+let wpLiveIndex = null;
+if (shouldRunClass('B')) {
+  try {
+    const reviewsData = require(REVIEWS_JSON_PATH);
+    const reviews = reviewsData && reviewsData.reviews ? Object.values(reviewsData.reviews) : null;
+    if (reviews) wpLiveIndex = buildWpLiveIndex(reviews, { normalizeOutlet, normalizeUrl, normalizeCritic });
+    else console.warn(`[audit-review-contamination] ${REVIEWS_JSON_PATH} has no "reviews" key — B ground-truth check disabled for this run`);
+  } catch (e) {
+    console.warn(`[audit-review-contamination] could not read ${REVIEWS_JSON_PATH} (${e.message}) — B ground-truth check disabled for this run`);
   }
 }
 
@@ -587,7 +604,10 @@ for (const showId of showDirs) {
       const pubDate = parseDate(d.publishDate);
       if (pubDate && showOpening) {
         const daysFromOpening = Math.round((pubDate - showOpening) / 86400000);
-        if (Math.abs(daysFromOpening) <= 30) {
+        const liveScored = wpLiveIndex && isLiveScored(wpLiveIndex,
+          { showId, outletId: d.outletId || d.outlet, url: d.url, criticName: d.criticName },
+          { normalizeOutlet, normalizeUrl, normalizeCritic });
+        if (Math.abs(daysFromOpening) <= 30 && !liveScored) {
           hits.B_false_positive_wp.push({
             showId, file: f, daysFromOpening,
             wrongProductionNote: (d.wrongProductionNote || '').substring(0, 60),
