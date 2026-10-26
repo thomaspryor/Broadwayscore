@@ -526,5 +526,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T12:11:44.539Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6312-mvp6nw07",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6312-mvp6nw07",
+    "description": "land.yml did not land land/job/linear-BRO-6312-mvp6nw07: the rebase gate went red at cdfe6f2307. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6312-mvp6nw07 @ cdfe6f2307 (origin/land/job/linear-BRO-6312-mvp6nw07) → origin/main @ 4bfb0e1e1b REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 6bf80a0a6e: Rebasing (1/1) error: could not apply cdfe6f23078... fix(BRO-6312): stop tracing all of public/ into off-broadway function; guard dynamic cwd joins hint: Resolve all conflicts manually, mark them  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40318855255",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6312-mvp6nw07"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cdfe6f23078e73ef1ad9321d8e52abc72723fbfb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40318855255"
+      }
+    ],
+    "queuedAt": "2026-10-26T12:18:55.300Z"
   }
 ]
