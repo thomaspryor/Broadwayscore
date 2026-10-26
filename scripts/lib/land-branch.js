@@ -457,8 +457,8 @@ function mergedTreeGateInput(changedFiles, interveningTests) {
   return [...new Set([...(changedFiles || []), ...(interveningTests || [])].map(String))];
 }
 
-// recheckScope (selectRecheckScope) comes only from makeVerifiedBaseChecks;
-// every other caller (plain land, the merge train) passes none and gets the
+// recheckScope comes from makeVerifiedBaseChecks (selectRecheckScope) or the
+// merge train (selectTrainRecheckScope); a plain land passes none and gets the
 // full re-check, and the holder-alone retry after a red train forces full.
 // A small re-check whose floor selects no test passes: the branch already ran
 // the full gauntlet upstream (land.yml Checks), which is the proof tier 3's

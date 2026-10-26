@@ -225,6 +225,10 @@ test('BRO-6276 train scope: verified, disjoint members get the small re-check; a
     assert.match(scopes[1].reason, /land\/a has no verified base/);
     run([{ branch: 'land/a', tip: tipA, base }], null);
     assert.match(scopes[2].reason, /land\/h has no verified base/);
+    process.env.LAND_TRAIN_SMALL_RECHECK_DISABLED = 'true';
+    try { run([{ branch: 'land/a', tip: tipA, base }, { branch: 'land/b', tip: tipB, base }]); } finally { delete process.env.LAND_TRAIN_SMALL_RECHECK_DISABLED; }
+    assert.equal(scopes[3].mode, 'full');
+    assert.match(scopes[3].reason, /disabled/);
   } finally { w.cleanup(); }
 });
 

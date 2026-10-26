@@ -841,6 +841,8 @@ jobs:
           # build only when both sides changed build code) unless a file
           # changed on both sides; true restores the full re-check.
           LAND_SMALL_RECHECK_DISABLED: ${{ vars.LAND_SMALL_RECHECK_DISABLED }}
+          # BRO-6276: true sends merge trains back to the full re-check only.
+          LAND_TRAIN_SMALL_RECHECK_DISABLED: ${{ vars.LAND_TRAIN_SMALL_RECHECK_DISABLED }}
           # BRO-5783: job-local stamp so the pre-push tsc (66-80s, run under the
           # mutex) is skipped on a retry push of an identical code tree. Kill
           # switch: repo variable LAND_TSC_STAMP_DISABLED=1. See scripts/lib/tsc-stamp.js.
