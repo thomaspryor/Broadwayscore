@@ -12,12 +12,14 @@
  * only the cancelled Land job and keeps the verified Checks result).
  *
  * Retry ONLY when: the run is cancelled, Checks succeeded, Land was cancelled
- * before doing any work (no step ran to completion past queueing — a Land job
- * cancelled mid-flight by a human must not be replayed), the land/** ref still
+ * before "Land the branch" ran (landWorkStarted; a job cancelled while landing
+ * must not be replayed). BRO-6291: a cancel during setup or the landing-mutex
+ * wait is retried too, nothing reached main; delete the land/** ref to stop a
+ * landing for good. Also required: the land/** ref still
  * exists (it is deleted once landed) at the same tip the run verified, and the attempt budget is not spent.
  */
 
-const { PARKED_MAX_ATTEMPTS, isParkedLandJob } = require('./land-mutex');
+const { PARKED_MAX_ATTEMPTS, isParkedLandJob, landWorkStarted } = require('./land-mutex');
 
 const MAX_ATTEMPTS = 6;
 
@@ -36,15 +38,15 @@ function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX
   // admit step cancelled the run before any work) is resumed like an eviction,
   // on its own, larger budget: it burns an attempt only when the queue is full again.
   const parked = isParkedLandJob(land);
-  const started = !parked && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
-  if (started) return no('land-started-work');
+  if (!parked && landWorkStarted(land)) return no('land-started-work');
+  const setupRan = !parked && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
   if (!branchExists) return no('branch-gone');
   if (branchTip && run.head_sha && branchTip !== run.head_sha) return no('superseded-tip');
   const attempt = run.run_attempt || 1;
   if (attempt >= (parked ? Math.max(maxAttempts, PARKED_MAX_ATTEMPTS) : maxAttempts)) return no('attempts-exhausted');
   return parked
     ? { retry: true, reason: 'land-parked-behind-deep-queue', attempt, parked: true }
-    : { retry: true, reason: 'land-cancelled-while-queued', attempt };
+    : { retry: true, reason: setupRan ? 'land-cancelled-before-landing' : 'land-cancelled-while-queued', attempt };
 }
 
 // BRO-4651: GITHUB_TOKEN's per-repo quota is shared by every workflow and ran

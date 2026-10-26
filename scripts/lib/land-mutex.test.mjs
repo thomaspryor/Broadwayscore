@@ -315,3 +315,61 @@ test('the client-side cancel budget covers a parked run (no false REFUSED while 
   const d = lb.decideCancelledLandRetry({ landConclusion: 'cancelled', checksConclusion: 'success', remoteTip: 'a', tip: 'a', retriesUsed: m.PARKED_MAX_ATTEMPTS - 2 });
   assert.equal(d.retry, true);
 });
+
+// ---- BRO-6291: cancelled during the landing-mutex wait ----
+// Steps of job 121404859310 (run 40258680877 attempt 2, 2026-10-26), as the
+// jobs API returned them: setup and the always() cleanup steps succeeded,
+// "Wait for the landing mutex" was cancelled, "Land the branch" never ran.
+const mutexCancelledLand = (landConclusion = 'skipped') => ({
+  name: 'Land',
+  conclusion: 'cancelled',
+  steps: [
+    ['Set up job', 'success'], [m.PARK_STEP_NAME, 'success'], ['Checkout main', 'success'], ['Configure git', 'success'],
+    ['Setup Node.js', 'success'], ['Install dependencies', 'success'], ['Checkout core data', 'success'],
+    ['Generate gitignored manifests', 'success'], ['Wait for the landing mutex', landConclusion === 'skipped' ? 'cancelled' : 'success'],
+    ['Form the merge train', landConclusion === 'skipped' ? 'skipped' : 'success'], ['Seed the tsc stamp from the checks job', 'skipped'],
+    [m.LAND_STEP_NAME, landConclusion], ["Mark the train's riders landed", 'skipped'], ['Verify ancestry, then delete the land/** ref', 'skipped'],
+    ['Alert — landing refused', 'skipped'], ['Commit alert-router ledger changes', 'success'], ['Release the landing mutex', 'success'],
+    ['Request a production deploy', 'skipped'], ['Fail the job on a refused landing', 'skipped'], ['Notify on failure', 'skipped'],
+    ['Post Setup Node.js', 'skipped'], ['Post Checkout main', 'success'], ['Complete job', 'success'],
+  ].map(([name, conclusion], i) => step(name, i + 1, conclusion)),
+});
+
+test('landWorkStarted: anchored on the Land the branch step', () => {
+  assert.equal(m.landWorkStarted(mutexCancelledLand()), false);
+  // cancelled while land.js ran: it may have pushed, so it counts as started
+  assert.equal(m.landWorkStarted(mutexCancelledLand('cancelled')), true);
+  assert.equal(m.landWorkStarted(mutexCancelledLand('success')), true);
+  assert.equal(m.landWorkStarted(mutexCancelledLand('failure')), true);
+  assert.equal(m.landWorkStarted({ steps: [step(m.LAND_STEP_NAME, 12, null)].map((s) => ({ ...s, status: 'in_progress' })) }), true);
+  // unknown job shape (no Land the branch step): the old any-step rule stays
+  assert.equal(m.landWorkStarted({ steps: [step('Set up job', 1, 'success'), step('x', 2, 'cancelled')] }), true);
+  assert.equal(m.landWorkStarted({ steps: [step('x', 1, 'cancelled')] }), false);
+  assert.equal(m.landWorkStarted(evictedLand()), false);
+  assert.equal(m.landWorkStarted(null), false);
+});
+
+test('decideLandRetry: a Land job cancelled at the mutex wait, Land the branch skipped, is RETRY', () => {
+  const d = decideLandRetry({ run: runOf({ run_attempt: 2 }), jobs: [checksOk, mutexCancelledLand()], branchExists: true, branchTip: 'abc' });
+  assert.equal(d.retry, true);
+  assert.equal(d.reason, 'land-cancelled-before-landing');
+  assert.equal(d.parked, undefined);
+  // the same run cancelled while Land the branch ran is never replayed
+  assert.equal(decideLandRetry({ run: runOf({ run_attempt: 2 }), jobs: [checksOk, mutexCancelledLand('cancelled')], branchExists: true, branchTip: 'abc' }).reason, 'land-started-work');
+  // eviction budget, not the parked one
+  assert.equal(decideLandRetry({ run: runOf({ run_attempt: 6 }), jobs: [checksOk, mutexCancelledLand()], branchExists: true, branchTip: 'abc' }).reason, 'attempts-exhausted');
+  // a plain queue eviction keeps its reason
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, evictedLand()], branchExists: true, branchTip: 'abc' }).reason, 'land-cancelled-while-queued');
+});
+
+test('decideStrandedRef: a mutex-wait cancel is not escalated as mid-flight; a cancel inside Land the branch is', () => {
+  const base = { tip: 'abc', latestRun: runOf({ run_attempt: 2 }), now: NOW };
+  assert.notEqual(decideStrandedRef({ ...base, jobs: [checksOk, mutexCancelledLand()] }).reason, 'land-cancelled-mid-flight');
+  assert.deepEqual(decideStrandedRef({ ...base, jobs: [checksOk, mutexCancelledLand('cancelled')] }), { action: 'escalate', reason: 'land-cancelled-mid-flight' });
+});
+
+test('LAND_STEP_NAME is the land.js step in land.yml (a rename must break this test, not the anchor)', () => {
+  const land = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const re = new RegExp(`- name: ${m.LAND_STEP_NAME}\\n(?:[^\\n]*\\n){0,60}?[^\\n]*node scripts/land\\.js`);
+  assert.match(land, re);
+});

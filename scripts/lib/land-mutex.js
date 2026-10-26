@@ -57,6 +57,8 @@ const DEADLINE_MINUTES = 75;
 // eviction; land.yml's step must carry exactly this name.
 const PARK_DEPTH = 4;
 const PARK_STEP_NAME = 'Admit to the landing queue';
+// The only Land step that pushes to main (land.js). Pinned to land.yml by land-mutex.test.mjs.
+const LAND_STEP_NAME = 'Land the branch';
 // BRO-6015: a resumed run (run_attempt > 1) parks only at PARK_DEPTH +
 // RESUME_HEADROOM. With one threshold for both, fresh pushes (arriving every
 // few minutes after their Checks job) took each freed slot before a resumed
@@ -240,12 +242,29 @@ function isParkedLandJob(land) {
   return steps.every((x) => x === admit || bookkeeping(x) || (x.conclusion !== 'success' && x.conclusion !== 'failure'));
 }
 
+/**
+ * Did this Land job start landing (BRO-6291)? Setup steps and the mutex wait
+ * succeed or get cancelled without touching main, and the always() cleanup
+ * steps succeed after any cancel, so none of them count. Started = the
+ * "Land the branch" step got any conclusion but skipped (cancelled counts:
+ * land.js may have pushed half a train) or is still running. A job without
+ * that step (unknown shape) keeps the old rule: any step that succeeded or
+ * failed means started.
+ */
+function landWorkStarted(land) {
+  const steps = (land && land.steps) || [];
+  const landStep = steps.find((x) => x.name === LAND_STEP_NAME);
+  if (!landStep) return steps.some((x) => x.conclusion === 'success' || x.conclusion === 'failure');
+  if (landStep.conclusion) return landStep.conclusion !== 'skipped';
+  return landStep.status === 'in_progress' || landStep.status === 'completed';
+}
+
 /** Our tickets in a state (release deletes every one, any attempt name drift aside). */
 function ownTickets(state, self) {
   return ((state && state.tickets) || []).filter((t) => isSelf(t, self));
 }
 
 module.exports = {
-  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, PARKED_MAX_ATTEMPTS, PARK_TICKET_MAX_AGE_MS, RESUME_HEADROOM, parkDepth, resumeHeadroom, resumeSlots, liveTicketCount, isParkedLandJob, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
+  QUEUE_PREFIX, LOCK_REF, PARK_DEPTH, PARK_STEP_NAME, LAND_STEP_NAME, PARKED_MAX_ATTEMPTS, PARK_TICKET_MAX_AGE_MS, RESUME_HEADROOM, parkDepth, resumeHeadroom, resumeSlots, liveTicketCount, isParkedLandJob, landWorkStarted, GRACE_MS, STALE_AGE_MS, LIVENESS_TTL_MS, POLL_MIN_MS, POLL_MAX_MS, DEADLINE_MINUTES,
   ticketName, parseTicket, parseLsRemote, ticketLiveness, decideStep, blockerRef, nextPollMs, ownTickets,
 };
