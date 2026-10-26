@@ -25,6 +25,7 @@ const profiles = buildSeasonProfiles(
     // Intentionally NOT isBroadwayCategory: the same strict filter as getSeasonProfiles (src/lib/data-commercial.ts), so the history matches what /biz prints.
     .filter((s) => s.category === 'broadway' && !!s.openingDate)
     .map((s) => ({
+      id: s.slug,
       type: s.type,
       isRevival: s.isRevival,
       openingDate: s.openingDate,

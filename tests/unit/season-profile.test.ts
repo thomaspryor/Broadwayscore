@@ -20,6 +20,7 @@ import {
   hasReturnedCoverage,
   returnedCapitalShare,
   isOwnEstimate,
+  continuesEarlierRun,
   mix,
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
@@ -463,8 +464,9 @@ test('returned capital share: recouped, closed estimate, model and unopened case
   assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPctV2: [-20, 30, 160] }), 'closed'), { low: 0, mid: 0.3, high: 0.99 });
   // Running: the model, never the closed-show estimate.
   assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [90, 95], modelRecoupmentPct: [10, 20, 30] }), 'open'), { low: 0.1, mid: 0.2, high: 0.3 });
-  // A hot model on an unrecouped show never counts as fully repaid; an uncited multiple is ignored.
-  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [80, 140, 200] }), 'closed'), { low: 0.8, mid: 0.99, high: 0.99 });
+  // A hot model on a running unrecouped show never counts as fully repaid (a closed one gets no share, BRO-6360).
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [80, 140, 200] }), 'open'), { low: 0.8, mid: 0.99, high: 0.99 });
+  assert.equal(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [80, 140, 200] }), 'closed'), null);
   assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 3, sources: [{ note: 'no url' }] }), 'open'), { low: 1, mid: 1, high: 1 });
   // No basis, or not open yet: nothing.
   assert.equal(returnedCapitalShare(com({ recouped: false }), 'closed'), null);
@@ -507,4 +509,48 @@ test('closed shows with only a model-estimate label stay out of the recoup rate 
   // The average row pools known outcomes only.
   const avg = seasonHistoryAverage([p], null, '2026-10-26');
   assert.deepEqual([avg.recouped?.recouped, avg.recouped?.commercial], [1, 3]);
+});
+
+test('closed, not recouped, no own estimate: a model at or above 100% gets no share (BRO-6360)', () => {
+  const hot = com({ recouped: false, modelReturnedExCreditPct: [167, 195, 221] });
+  assert.equal(returnedCapitalShare(hot, 'closed'), null);
+  // A model below 100% still counts, capped under full repayment.
+  const warm = returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [65, 98.2, 131] }), 'closed');
+  assert.ok(warm && warm.mid < 1 && warm.high < 1);
+  // Our own estimate still wins over a hot model.
+  const own = returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [60, 80], modelReturnedExCreditPct: [167, 195, 221] }), 'closed');
+  assert.deepEqual(own && { low: own.low, high: own.high }, { low: 0.6, high: 0.8 });
+});
+
+test('a continuation run does not count the same raise twice (BRO-6360)', () => {
+  const cap = 21_000_000;
+  const first = show({ id: 'beetlejuice-2019', type: 'musical', openingDate: '2019-04-25', status: 'closed', commercial: com({ capitalization: cap, recouped: false, capitalizationSource: 'SEC filing' }) });
+  const second = show({ id: 'beetlejuice-2022', type: 'musical', openingDate: '2022-04-08', status: 'closed', commercial: com({ capitalization: cap, recouped: false, capitalizationSource: 'The 2022 Marquis run continued that production.' }) });
+  assert.equal(continuesEarlierRun(second, [first, second]), true);
+  assert.equal(continuesEarlierRun(first, [first, second]), false);
+  const p = buildSeasonProfiles([first, second]).find((x) => x.season === '2021-2022')!;
+  assert.equal(p.estimatedCapital.total, 0);
+  assert.equal(p.commercial, 0);
+  assert.equal(p.capitalization.all.of, 0);
+  assert.equal(p.returnedCapital.of, 0);
+  // Same figure without a continuation source still counts (coincidence).
+  const other = show({ id: 'beetlejuice-2022', type: 'musical', openingDate: '2022-04-08', status: 'closed', commercial: com({ capitalization: cap, recouped: false, capitalizationSource: 'New raise' }) });
+  assert.equal(continuesEarlierRun(other, [first, other]), false);
+});
+
+test('every buildSeasonProfiles caller passes the show id (continuesEarlierRun needs it, BRO-6360)', async () => {
+  const fs = await import('node:fs');
+  for (const f of ['src/lib/data-commercial.ts', 'scripts/append-season-payback-history.ts']) {
+    const src = fs.readFileSync(f, 'utf8');
+    const i = src.indexOf('buildSeasonProfiles(');
+    assert.ok(i > 0 && /id: s\.slug,/.test(src.slice(i, i + 700)), `${f} must map id: s.slug into buildSeasonProfiles`);
+  }
+});
+
+test('continuation rule is exact: "discontinued" and mid at the 99 cap (BRO-6360)', () => {
+  const a = show({ id: 'x-2019', openingDate: '2019-04-25', commercial: com({ capitalization: 5e6 }) });
+  const b = show({ id: 'x-2022', openingDate: '2022-04-08', commercial: com({ capitalization: 5e6, capitalizationSource: 'The earlier plan was discontinued.' }) });
+  assert.equal(continuesEarlierRun(b, [a, b]), false);
+  assert.equal(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [90, 99, 120] }), 'closed'), null);
+  assert.ok(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [50, 98, 120] }), 'closed'));
 });

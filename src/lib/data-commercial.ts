@@ -56,6 +56,7 @@ import {
   hasNoInvestorsToRepay,
   publicHeldRange,
 } from './commercial-display';
+import { continuationIds } from '../../scripts/lib/cap-comparables';
 import { reportedReturn } from '../../scripts/lib/reported-return';
 import type { TopicShowInput } from './investment-topics';
 import { buildSeasonProfiles, buildRecoupFindings, compareSeason, hasKnownOutcome, isOwnEstimate, trackedRecord, type SeasonProfile, type SeasonComparison, type RecoupFindings } from './season-profile';
@@ -306,17 +307,25 @@ export function isIndexedCommercialSeason(season: string): boolean {
  * Form D offering ceilings ("up to $X") left out of the disclosed sum, and
  * recoupments that carry recouped === true.
  */
+/** Slugs of runs that continue an earlier production's capital (BRO-6360); their raise is counted once, with the earlier run. */
+function continuationSlugs(): Set<string> {
+  return continuationIds(rawShows.filter((s) => s.category === 'broadway' && commercial.shows[s.slug]).map((s) => ({
+    id: s.slug, openingDate: s.openingDate, capitalization: commercial.shows[s.slug].capitalization, capitalizationSource: commercial.shows[s.slug].capitalizationSource,
+  })));
+}
+
 export function getCommercialHeadlineStats(): { productions: number; disclosedCapitalization: number; disclosedCount: number; recouped: number } {
   let productions = 0;
   let disclosedCapitalization = 0;
   let disclosedCount = 0;
   let recouped = 0;
+  const continuations = continuationSlugs();
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find(s => s.slug === slug);
     if (!show) continue;
     if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
     productions++;
-    if (typeof data.capitalization === 'number' && data.capitalization > 0 && !isOwnEstimate(data) && !isMaximumCapitalization(data)) {
+    if (!continuations.has(slug) && typeof data.capitalization === 'number' && data.capitalization > 0 && !isOwnEstimate(data) && !isMaximumCapitalization(data)) {
       disclosedCapitalization += data.capitalization;
       disclosedCount++;
     }
@@ -339,6 +348,7 @@ export function getSeasonStats(season: string): SeasonStats {
   const allCaps: Array<number | null> = [];
   let recoupedCount = 0;
   let totalShows = 0;
+  const continuations = continuationSlugs();
 
   for (const [slug, data] of Object.entries(commercial.shows)) {
     const show = rawShows.find(s => s.slug === slug);
@@ -352,6 +362,8 @@ export function getSeasonStats(season: string): SeasonStats {
     // A closed show with only a research placeholder is untracked and left out too (trackedRecord).
     if (isExcludedFromSeasonStats(data) || !trackedRecord({ status: show.status, commercial: data })) continue;
 
+    // A continuation run is left out, as in getSeasonProfiles (its raise is counted with the earlier run).
+    if (continuations.has(slug)) continue;
     // The recoup denominator: known outcomes only, as in buildSeasonProfiles (BRO-6354).
     if (hasKnownOutcome(show.status, data)) totalShows++;
     // Our own budget estimate counts as undisclosed here, as in getSeasonProfiles.
@@ -445,6 +457,7 @@ export function getSeasonProfiles(): SeasonProfile[] {
       rawShows
         .filter((s) => s.category === 'broadway' && !!s.openingDate)
         .map((s) => ({
+          id: s.slug,
           type: s.type,
           isRevival: s.isRevival,
           openingDate: s.openingDate,

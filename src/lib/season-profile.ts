@@ -10,12 +10,14 @@
 import { getSeason, isExcludedFromSeasonStats } from './commercial-metrics';
 import { ownReturnedRangePct } from '../../scripts/lib/commercial-designations';
 import { sourceOpensAsEstimate } from '../../scripts/lib/public-source-text';
-import { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization } from '../../scripts/lib/cap-comparables';
+import { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization, continuationIds } from '../../scripts/lib/cap-comparables';
 
 // One definition with the recoupment model's fallback (BRO-5849).
 export { MIN_AVERAGE_SAMPLE, CAP_ESTIMATE_WINDOWS, estimateCapitalization };
 
 export interface SeasonShowInput {
+  /** commercial.json key (the show slug); lets a later run of the same title be recognised as a continuation (continuesEarlierRun). */
+  id?: string;
   type: string | null | undefined;
   isRevival: boolean | null | undefined;
   openingDate: string;
@@ -204,6 +206,13 @@ export function isOwnEstimate(c: Pick<NonNullable<SeasonShowInput['commercial']>
     && (c.isEstimate?.capitalization === true || sourceOpensAsEstimate(c.capitalizationSource));
 }
 
+/** True when a show runs on capital already counted for an earlier production of the same title (continuationIds). */
+export function continuesEarlierRun(show: SeasonShowInput, all: SeasonShowInput[]): boolean {
+  return !!show.id && continuationIds(all.map((o) => ({
+    id: o.id, openingDate: o.openingDate, capitalization: o.commercial?.capitalization, capitalizationSource: o.commercial?.capitalizationSource,
+  }))).has(show.id);
+}
+
 const clampPct = (v: number) => Math.min(100, Math.max(0, v));
 
 function triple(v: unknown): [number, number, number] | null {
@@ -237,6 +246,11 @@ export function returnedCapitalShare(
   if (!pct && (status === 'closed' || status === 'open' || status === 'previews')) {
     pct = triple(c.modelReturnedExCreditPct) ?? triple(c.modelRecoupmentPctV2) ?? triple(c.modelRecoupmentPct);
   }
+  // A closed show on the record as not recouped, with no estimate of our own,
+  // whose model reads at or above the 99% cap contradicts that record: the model
+  // cannot size the shortfall, so the show gets no share instead of a clamped
+  // ~99% (BRO-6360: Music Man, Frozen, Death of a Salesman).
+  if (pct && status === 'closed' && !ownReturnedRangePct(c) && pct[1] >= 99) return null;
   if (!pct) return null;
   // Not recouped means under 100%: a model reading above it (a Fizzle or Did
   // Not Recoup record whose model runs hot) must not count as fully repaid.
@@ -283,11 +297,15 @@ export function hasKnownOutcome(status: string | null | undefined, c: { recouped
 
 /** One profile per season (July 1 - June 30), newest first. */
 export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
+  const continuations = continuationIds(shows.map((o) => ({
+    id: o.id, openingDate: o.openingDate, capitalization: o.commercial?.capitalization, capitalizationSource: o.commercial?.capitalizationSource,
+  })));
+  const continues = (show: SeasonShowInput) => !!show.id && continuations.has(show.id);
   const disclosed: DisclosedCap[] = [];
   for (const show of shows) {
     const season = getSeason(show.openingDate);
     const c = trackedRecord(show);
-    if (!season || !c || isExcludedFromSeasonStats(c) || c.nonprofitOrg) continue;
+    if (!season || !c || isExcludedFromSeasonStats(c) || c.nonprofitOrg || continues(show)) continue;
     if (typeof c.capitalization === 'number' && c.capitalization > 0 && !isOwnEstimate(c)) {
       disclosed.push({
         year: parseInt(season.slice(0, 4), 10),
@@ -333,6 +351,8 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     p.tracked++;
     if (c.nonprofitOrg) p.nonprofit++;
     if (isExcludedFromSeasonStats(c)) continue;
+    // A continuation run's raise is already counted with the earlier run: out of the capital counts and denominators (BRO-6360).
+    if (continues(show)) continue;
     p.commercial++;
     if (c.recouped === true) p.recouped++;
     if (hasKnownOutcome(show.status, c)) p.outcomeKnown++;
