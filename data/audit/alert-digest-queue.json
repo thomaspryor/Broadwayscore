@@ -1813,5 +1813,36 @@
       }
     ],
     "queuedAt": "2026-10-26T06:03:47.771Z"
+  },
+  {
+    "conditionKey": "land:land/bro-2710-safe-write-3",
+    "title": "Landing blocked: unit-tests-node red on land/bro-2710-safe-write-3",
+    "description": "land.yml did not land land/bro-2710-safe-write-3: the unit-tests-node gate went red at 2d5476cc8a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40276526325",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-2710-safe-write-3"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2d5476cc8ad611389d2aabf53bcf910b1600cf54"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40276526325"
+      }
+    ],
+    "queuedAt": "2026-10-26T06:12:56.592Z"
   }
 ]
