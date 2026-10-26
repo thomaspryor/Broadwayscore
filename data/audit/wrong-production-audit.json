@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T07:18:10.528Z",
+  "timestamp": "2026-10-26T08:45:00.545Z",
   "stats": {
-    "totalReviews": 61757,
-    "alreadyFlagged": 21474,
+    "totalReviews": 61846,
+    "alreadyFlagged": 21477,
     "dateGuardCatches": 223,
     "directorMismatch": 2275,
-    "tvFilmSignals": 1760,
+    "tvFilmSignals": 1762,
     "londonSignals": 2998,
     "offBroadwaySignals": 545,
     "yearMismatch": 206,
-    "noPublishDate": 5443
+    "noPublishDate": 5500
   },
   "findings": [
     {
@@ -41223,6 +41223,20 @@
       ]
     },
     {
+      "showId": "strategic-love-play-off-broadway-2024",
+      "file": "talkinbroadway--james-wilson.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/page/ob/11_10_24.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
       "showId": "stuffed-off-west-end-2026",
       "file": "redbuslondinium--red-bus-londinium.json",
       "publishDate": "2026-10-07",
@@ -44725,6 +44739,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "the-counter-off-broadway-2024",
+      "file": "nytimes--jesse-green.json",
+      "publishDate": "2024-10-09",
+      "url": "https://www.nytimes.com/2024/10/09/theater/the-counter-review-edward-flood.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -75716,7 +75743,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "all-that-dazzles-uk--seth-wilby.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2026-10-22",
       "url": "https://www.allthatdazzles.co.uk/post/review-ilford-boy-donmar-warehouse",
       "findings": [
@@ -75856,7 +75883,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-10-22",
       "url": "https://playsinternational.org.uk/ilford-boy-donmar-warehouse/",
       "findings": [
@@ -75870,7 +75897,7 @@
     {
       "showId": "ilford-boy-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-10-22",
       "url": "https://playsinternational.org.uk/ilford-boy-donmar-warehouse/",
       "findings": [
