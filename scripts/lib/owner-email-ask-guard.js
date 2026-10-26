@@ -22,7 +22,7 @@ const ASK_PATTERNS = [
 const BYPASS = /(?:^|\n)[ \t]*NO-OWNER-EMAIL-CHECK:[ \t]*\S/;
 
 function ownerAddress(env = process.env) {
-  return String((env && env.OWNER_EMAIL) || DEFAULT_OWNER).trim().toLowerCase();
+  return String((env && env.OWNER_EMAIL) || DEFAULT_OWNER).trim().toLowerCase().replace(/\+[^@]*@/, '@');
 }
 
 function addresses(v) {
@@ -32,7 +32,7 @@ function addresses(v) {
     const s = typeof item === 'string' ? item : item && (item.email || item.address) ? String(item.email || item.address) : '';
     for (const part of s.split(/[,;]/)) {
       const m = part.match(/<([^>]+)>/);
-      const a = (m ? m[1] : part).trim().toLowerCase();
+      const a = (m ? m[1] : part).trim().toLowerCase().replace(/\+[^@]*@/, '@');
       if (a) out.push(a);
     }
   }
@@ -50,7 +50,8 @@ function checkOwnerEmail(toolInput, env = process.env) {
   const owner = ownerAddress(env);
   if (!toOwner(input, owner)) return { blocked: false, matched: [] };
   const subject = typeof input.subject === 'string' ? input.subject : '';
-  const body = typeof input.body === 'string' ? input.body : typeof input.htmlBody === 'string' ? input.htmlBody : '';
+  const stripHtml = (s) => s.replace(/<[^>]*>/g, ' ').replace(/&nbsp;/g, ' ');
+  const body = [input.body, input.htmlBody].filter((s) => typeof s === 'string').map(stripHtml).join('\n');
   if (BYPASS.test(body) || BYPASS.test(subject)) return { blocked: false, matched: [], bypassed: true };
   const text = `${subject}\n${body}`;
   const matched = ASK_PATTERNS.filter((re) => re.test(text)).map((re) => text.match(re)[0]);

@@ -73,3 +73,8 @@ test('hook script denies the blocked email and passes the digest', () => {
   assert.equal(ok.status, 0);
   assert.equal(ok.stdout.trim(), '');
 });
+
+test('html-only ask and plus-addressed owner are caught', () => {
+  assert.equal(checkOwnerEmail({ to: [OWNER], htmlBody: '<p>Please re<b>ply</b> <i>yes</i></p><p>Reply <b>yes</b> to Claude</p>' }, env).blocked, true);
+  assert.equal(checkOwnerEmail({ to: ['thomas.pryor+bot@gmail.com'], body: 'reply yes' }, env).blocked, true);
+});
