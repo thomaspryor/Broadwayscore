@@ -34,14 +34,26 @@ function landRanToDeadline(land) {
   return Number.isFinite(ms) && ms >= TIMEOUT_SUSPECT_MINUTES * 60000;
 }
 
+// BRO-6326: `jobs?filter=latest` can list every attempt's job of the same name
+// (run 40307546415: attempt-1 Land cancelled + attempt-2 Land success). find()
+// took the stale first one, so a landed run looked retryable. Newest attempt
+// wins; started_at breaks ties (a job cancelled while queued may lack it).
+function latestJobByName(jobs, name) {
+  const key = (j) => [Number(j.run_attempt) || 0, Date.parse(j.started_at) || 0];
+  return (jobs || []).filter((j) => j.name === name).reduce((best, j) => {
+    if (!best) return j;
+    const [a, at] = key(j); const [b, bt] = key(best);
+    return a > b || (a === b && at > bt) ? j : best;
+  }, null) || undefined;
+}
+
 function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX_ATTEMPTS } = {}) {
   const no = (reason) => ({ retry: false, reason });
   if (!run) return no('no-run');
   if (run.conclusion !== 'cancelled') return no(`run-conclusion-${run.conclusion || 'none'}`);
   if (!/^land\//.test(run.head_branch || '')) return no('not-a-land-branch');
-  const byName = (n) => (jobs || []).find((j) => j.name === n);
-  const checks = byName('Checks');
-  const land = byName('Land');
+  const checks = latestJobByName(jobs, 'Checks');
+  const land = latestJobByName(jobs, 'Land');
   if (!checks || checks.conclusion !== 'success') return no('checks-not-success');
   if (!land) return no('no-land-job');
   if (land.conclusion !== 'cancelled') return no(`land-${land.conclusion || 'none'}`);
@@ -111,6 +123,14 @@ function isRefNotFound(err) {
   return /\bHTTP 404\b/.test(errorText(err));
 }
 
+// BRO-6326: GitHub refuses rerun-failed-jobs with "HTTP 403 This workflow run
+// cannot be retried" for a run in an unretriable state. Matched on both the
+// status and the text so a permissions 403 still fails loudly.
+function isRerunRefused(err) {
+  const t = errorText(err);
+  return /\bHTTP 403\b/.test(t) && /cannot be retried/i.test(t);
+}
+
 /**
  * Pure: after a retry-eligible cancel, has the run been re-triggered?
  * 'resume' once the run is live again or its attempt number moved past the
@@ -129,4 +149,4 @@ function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
   return 'wait';
 }
 
-module.exports = { ghApiArgs, decideLandRetry, MAX_ATTEMPTS, LAND_JOB_TIMEOUT_MINUTES, runGhWithFallback, isRefNotFound, decideCancelledWait };
+module.exports = { latestJobByName, isRerunRefused, ghApiArgs, decideLandRetry, MAX_ATTEMPTS, LAND_JOB_TIMEOUT_MINUTES, runGhWithFallback, isRefNotFound, decideCancelledWait };

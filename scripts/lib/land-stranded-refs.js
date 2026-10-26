@@ -22,7 +22,7 @@
  *              routes it to the card the ref names.
  */
 
-const { MAX_ATTEMPTS } = require('./land-retry-on-cancel');
+const { MAX_ATTEMPTS, latestJobByName } = require('./land-retry-on-cancel');
 const { PARKED_MAX_ATTEMPTS, isParkedLandJob, landWorkStarted } = require('./land-mutex');
 const { MAX_AGE_HOURS } = require('./land-queue-backoff');
 
@@ -87,9 +87,8 @@ function decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt,
   if (latestRun.conclusion === 'success') return out('none', 'landed');
   if (isAbandonedRun(latestRun, now)) return out('none', 'abandoned');
 
-  const byName = (n) => (jobs || []).find((j) => j.name === n);
-  const checks = byName('Checks');
-  const land = byName('Land');
+  const checks = latestJobByName(jobs, 'Checks');
+  const land = latestJobByName(jobs, 'Land');
   const attempt = latestRun.run_attempt || 1;
 
   if (latestRun.conclusion === 'cancelled' || RERUNNABLE_CONCLUSIONS.has(latestRun.conclusion)) {

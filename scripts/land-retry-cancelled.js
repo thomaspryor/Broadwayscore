@@ -28,7 +28,7 @@
 
 const { execFileSync, spawnSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { decideLandRetry, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
+const { decideLandRetry, isRerunRefused, runGhWithFallback, isRefNotFound, decideCancelledWait } = require('./lib/land-retry-on-cancel');
 const { supersededByNewerRun, decideSweep, sweepStep, listedRunRefusal, MAX_AGE_HOURS } = require('./lib/land-queue-backoff');
 const { resolveLandRun, readLatestLandRun } = require('./lib/land-run-identity');
 
@@ -65,18 +65,28 @@ const jobsOf = (id) => {
   return jobsCache.get(String(id));
 };
 
+/**
+ * Re-run one run's failed jobs. Returns 'requested', 'moved-on' (already going
+ * again) or 'refused' (BRO-6326: GitHub says the run cannot be retried; a
+ * refusal must not abort the sweep or consume a slot). Other errors throw.
+ */
 function rerun(id, seenAttempt) {
-  if (dry) { console.log(`dry-run: would re-run ${id}`); return; }
+  if (dry) { console.log(`dry-run: would re-run ${id}`); return 'requested'; }
   try {
     process.stdout.write(ghRaw(['-X', 'POST', `repos/${repo}/actions/runs/${id}/rerun-failed-jobs`]));
   } catch (err) {
     let after = null;
     try { after = gh([`repos/${repo}/actions/runs/${id}`]); } catch { /* read-back failed: surface the POST error, not this one */ }
-    if (!after || decideCancelledWait({ status: after.status, attempt: after.run_attempt, attemptBefore: seenAttempt }) !== 'resume') throw err;
-    console.log(`run ${id} already moved on (attempt ${after.run_attempt}, ${after.status}), likely re-run by the sweep; nothing to do`);
-    return;
+    if (after && decideCancelledWait({ status: after.status, attempt: after.run_attempt, attemptBefore: seenAttempt }) === 'resume') {
+      console.log(`run ${id} already moved on (attempt ${after.run_attempt}, ${after.status}), likely re-run by the sweep; nothing to do`);
+      return 'moved-on';
+    }
+    if (!isRerunRefused(err)) throw err;
+    console.log(`::warning::run ${id} cannot be retried (${String(err.message).split('\n')[0]}); skipped, not counted`);
+    return 'refused';
   }
   console.log(`re-run requested for ${id} (Land job only; Checks result kept)`);
+  return 'requested';
 }
 
 function runTargeted() {
@@ -175,7 +185,13 @@ function runSweep() {
     const step = sweepStep({ parked: Boolean(r.parked), slots, resumed, evictionRerun });
     if (step === 'stop') break;
     if (step === 'skip') { if (r.parked) console.log(`run ${run.id} ${run.head_branch}: parked, no resume room left this sweep; not resumed yet`); continue; }
-    rerun(run.id, fresh.run_attempt);
+    let outcome;
+    try { outcome = rerun(run.id, fresh.run_attempt); } catch (err) {
+      console.log(`::error::run ${run.id} ${run.head_branch}: re-run failed (${String(err.message).split('\n')[0]}); continuing the sweep`);
+      process.exitCode = 1;
+      continue;
+    }
+    if (outcome === 'refused') continue;
     if (step === 'resume') resumed += 1; else evictionRerun = true;
   }
   if (resumed) console.log(`resumed ${resumed} parked run(s) this sweep`);
