@@ -531,27 +531,14 @@
     "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
     "the-rocky-horror-show-2026/sfgate--lily-janiak.json",
     "titanique-west-end-2024/sunday-times--unknown.json",
-    "mj-2022/chicago-sun-times--miriam-di-nunzio.json",
-    "mj-2022/latimes--charles-mcnulty.json",
-    "ivanov-west-end-2026/times-uk--unknown.json",
-    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
-    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
-    "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-    "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
-    "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
-    "othello-off-broadway-2026/thestage--fergus-morgan.json",
-    "to-kill-a-mockingbird-west-end-2026/hollywood-reporter--abbey-white.json",
-    "to-kill-a-mockingbird-west-end-2026/chicagotribune--chris-jones.json",
-    "to-kill-a-mockingbird-west-end-2026/latimes--jordan-riefe.json",
-    "cyrano-de-bergerac-west-end-2026/metro-uk--claire-allfree.json",
-    "cyrano-de-bergerac-west-end-2026/northjerseycom--robert-feldberg.json",
-    "pride-west-end-2026/artsdesk--unknown.json",
-    "cyrano-de-bergerac-west-end-2026/newsday--linda-winer.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/i-paper--sarah-carson.json",
-    "the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--louise-griffin.json",
-    "sting-west-end-2026/ew--unknown.json",
-    "sting-west-end-2026/guardian--anya-ryan.json"
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -902,7 +889,7 @@
     ]
   },
   "startTime": "2026-10-26T15:50:52.371Z",
-  "lastProcessed": "sting-west-end-2026/guardian--anya-ryan.json",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
   "log": [
     {
       "t": "2026-10-26T18:11:00.149Z",
@@ -936,6 +923,66 @@
       "t": "2026-10-26T17:33:29.748Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T18:32:31.315Z",
+      "event": "bb-session",
+      "session": "9b8aecc8",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T18:33:53.317Z",
+      "event": "bb-session",
+      "session": "56965229",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T18:34:04.636Z",
+      "event": "bb-session",
+      "session": "bcbefc90",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T18:37:51.148Z",
+      "event": "bb-session",
+      "session": "472407a3",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T18:38:01.576Z",
+      "event": "bb-session",
+      "session": "0da26f5a",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T19:33:52.060Z",
+      "event": "bb-session",
+      "session": "d6f2d751",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T19:35:10.490Z",
+      "event": "bb-session",
+      "session": "a5572d93",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T19:35:21.121Z",
+      "event": "bb-session",
+      "session": "02714eb6",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T19:39:17.512Z",
+      "event": "bb-session",
+      "session": "cf80cd8f",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-26T19:39:28.051Z",
+      "event": "bb-session",
+      "session": "363d9f20",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
     }
   ],
   "recoveredAfterFailure": [
