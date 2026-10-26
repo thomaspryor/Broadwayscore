@@ -23,7 +23,6 @@ import {
   MONEY_ROLES,
   MONEY_UNLOCKED_EVENT,
   isMoneyUnlocked,
-  isValidMoneyEmail,
   markMoneyUnlocked,
   moneyGatePaywallSchema,
   moneyUnlockReason,
@@ -33,6 +32,7 @@ import {
   type MoneyBypassReason,
   type MoneyRole,
 } from '@/lib/money-gate';
+import { MONEY_EMAIL_PROBLEM_MESSAGES, moneyEmailProblem, suggestMoneyEmail } from '@/lib/money-email';
 
 interface MoneyGateProps {
   children: ReactNode;
@@ -196,20 +196,33 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
   const [role, setRole] = useState<MoneyRole | ''>('');
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
+  // A likely typo (gmial.com): offered once, never forced. 'Keep mine' skips it.
+  const [suggestion, setSuggestion] = useState<string | null>(null);
+  const [keepMine, setKeepMine] = useState('');
   const id = useId();
 
   const handleSubmit = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
-    if (!isValidMoneyEmail(email)) {
-      setError('Please enter a valid email address.');
+    setSuggestion(null);
+    const problem = moneyEmailProblem(email);
+    if (problem) {
+      setError(MONEY_EMAIL_PROBLEM_MESSAGES[problem]);
+      captureEvent('money_gate_email_refused', { page, reason: problem });
+      return;
+    }
+    const fix = email.trim() === keepMine ? null : suggestMoneyEmail(email);
+    if (fix) {
+      setSuggestion(fix);
       return;
     }
     setSubmitting(true);
     const result = await submitMoneySignup(email, role, `${page}:${window.location.pathname}`);
     setSubmitting(false);
-    if (result === 'invalid') {
-      setError('Please enter a valid email address.');
+    if (result === 'invalid' || result === 'no_mail_server') {
+      const reason = result === 'invalid' ? 'format' : result;
+      setError(MONEY_EMAIL_PROBLEM_MESSAGES[reason]);
+      captureEvent('money_gate_email_refused', { page, reason });
       return;
     }
     const props = { page, role: role || 'none', stored: result === 'stored' };
@@ -218,7 +231,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
     captureEvent('money_gate_unlocked', { ...props, path: window.location.pathname });
     markMoneyUnlocked();
     onUnlocked();
-  }, [email, role, page, onUnlocked]);
+  }, [email, role, page, onUnlocked, keepMine]);
 
   return (
     <div className="money-gate-card card-premium mx-auto w-full max-w-lg rounded-2xl border border-brand/25 bg-surface-elevated p-5 shadow-2xl sm:p-7">
@@ -246,7 +259,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
             inputMode="email"
             autoComplete="email"
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => { setEmail(e.target.value); setSuggestion(null); setError(''); }}
             placeholder="you@example.com"
             required
             aria-invalid={error ? true : undefined}
@@ -286,6 +299,27 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
           </div>
         </fieldset>
 
+        {suggestion && (
+          <div role="status" className="money-gate-suggestion mt-3 flex flex-wrap items-center gap-x-3 gap-y-2 rounded-lg border border-score-tepid/30 bg-score-tepid/10 px-3 py-2 text-xs text-gray-200">
+            <span className="min-w-0 break-all">Did you mean <strong className="text-white">{suggestion}</strong>?</span>
+            <span className="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setEmail(suggestion); setSuggestion(null); }}
+                className="min-h-[36px] rounded-full border border-brand bg-brand/10 px-3 font-medium text-brand focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                Use it
+              </button>
+              <button
+                type="button"
+                onClick={() => { setKeepMine(email.trim()); setSuggestion(null); }}
+                className="min-h-[36px] rounded-full border border-white/10 bg-white/5 px-3 font-medium text-gray-300 hover:text-white focus:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+              >
+                Keep mine
+              </button>
+            </span>
+          </div>
+        )}
         {error && (
           <p id={`${id}-error`} role="alert" className="mt-3 text-xs text-score-skip">{error}</p>
         )}

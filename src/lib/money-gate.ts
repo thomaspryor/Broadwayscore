@@ -21,6 +21,7 @@
 
 import { SUBSCRIBED_KEY, SUBSCRIBED_KEY_PREFIX } from '../hooks/useFormspreeSubscribed';
 import { SUPABASE_STORAGE_KEY } from './supabase';
+import { checkMailServer, moneyEmailProblem } from './money-email';
 
 export const MONEY_UNLOCK_KEY = 'bsc_money_unlocked';
 export const MONEY_UNLOCK_COOKIE = 'bsc_money';
@@ -80,9 +81,9 @@ export const MONEY_GATE_BOOT_SCRIPT =
   `if(!u){u=/(?:^|;\\s*)${MONEY_UNLOCK_COOKIE}=1(?:;|$)/.test(document.cookie)}` +
   `if(u)d.setAttribute('${MONEY_UNLOCK_ATTR}','')}}catch(e){}`;
 
+/** Sync rules: format, disposable domain, junk local part (BRO-6339). The mail-server check is async, in submitMoneySignup. */
 export function isValidMoneyEmail(email: string): boolean {
-  const e = email.trim();
-  return e.length <= 254 && /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(e);
+  return moneyEmailProblem(email) === null;
 }
 
 /**
@@ -145,7 +146,7 @@ export function isMoneyGateInView(): boolean {
   });
 }
 
-export type MoneySignupResult = 'stored' | 'store_unavailable' | 'invalid';
+export type MoneySignupResult = 'stored' | 'store_unavailable' | 'invalid' | 'no_mail_server';
 
 /**
  * Sign-ups whose save failed, kept in this browser and retried on later page
@@ -208,6 +209,7 @@ async function storeMoneySignup(email: string, role: MoneyRole | '', page: strin
  */
 export async function submitMoneySignup(email: string, role: MoneyRole | '', page: string): Promise<MoneySignupResult> {
   if (!isValidMoneyEmail(email)) return 'invalid';
+  if ((await checkMailServer(email)) === 'no_mail_server') return 'no_mail_server';
   const result = await storeMoneySignup(email, role, page);
   if (result === 'store_unavailable') {
     const normalized = email.trim().toLowerCase();
