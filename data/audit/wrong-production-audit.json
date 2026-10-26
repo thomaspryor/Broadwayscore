@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T09:45:03.938Z",
+  "timestamp": "2026-10-26T10:10:53.075Z",
   "stats": {
-    "totalReviews": 61845,
-    "alreadyFlagged": 21477,
+    "totalReviews": 61847,
+    "alreadyFlagged": 21478,
     "dateGuardCatches": 223,
     "directorMismatch": 2275,
-    "tvFilmSignals": 1762,
+    "tvFilmSignals": 1763,
     "londonSignals": 2998,
     "offBroadwaySignals": 546,
     "yearMismatch": 206,
-    "noPublishDate": 5451
+    "noPublishDate": 5450
   },
   "findings": [
     {
@@ -4380,6 +4380,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "babe-off-broadway-2024",
+      "file": "nytg--amelia-merrill.json",
+      "publishDate": "2024-11-20",
+      "url": "https://www.newyorktheatreguide.com/reviews/babe-off-broadway-review-marisa-tomei",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
