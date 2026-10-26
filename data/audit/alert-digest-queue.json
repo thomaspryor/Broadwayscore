@@ -1596,5 +1596,36 @@
       }
     ],
     "queuedAt": "2026-10-26T22:09:51.555Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6393-full-size-posters",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6393-full-size-posters",
+    "description": "land.yml did not land land/bro-6393-full-size-posters: the unit-tests-node gate went red at 71c93f9ae5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40412472832",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6393-full-size-posters"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "71c93f9ae5c7900cfe0e95c01e7942536fecc8d0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40412472832"
+      }
+    ],
+    "queuedAt": "2026-10-26T22:48:18.599Z"
   }
 ]
