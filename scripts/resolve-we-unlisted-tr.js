@@ -30,7 +30,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { selectLookups, pickTrForReview, reviewLedPath, headerFacts, parseTrHeaderDates, dateSnippets, trVenueName } = require('./lib/we-review-led-candidates');
-const { isLondonVenue, NON_LONDON_CITIES } = require('./lib/tr-london-venue');
+const { isLondonVenue } = require('./lib/tr-london-venue');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { venueFamily } = require('./lib/we-historical-corroboration');
 const { azLookups } = require('./lib/we-az-lookups');
@@ -212,25 +212,29 @@ function pdfRunHeadFor(text, title, venue) {
   return r && r.header ? r.header : null;
 }
 
-// London stage/house qualifiers TR prints beside the house in a run head ("NATIONAL, OLIVIER", "ROYAL COURT, DOWNSTAIRS").
-const RUN_HEAD_QUALIFIER = /^(?:NATIONAL|OLIVIER|LYTTELTON|DORFMAN|COTTESLOE|TEMPORARY|THE SHED|DOWNSTAIRS|UPSTAIRS|THEATRE UPSTAIRS|STUDIO|MAIN HOUSE|CENTRAL ST MARTINS|LONDON)$/;
+// TR's run head names a London stage after its house ("NATIONAL, OLIVIER", "ROYAL COURT, DOWNSTAIRS"). Each stage is tied
+// to its own house: a bare "STUDIO" or a second house name after the comma is another production.
+const RUN_HEAD_STAGES = [
+  [/^NATIONAL$/, /^(?:OLIVIER|LYTTELTON|DORFMAN|COTTESLOE|TEMPORARY|(?:THE )?SHED)$/],
+  [/^ROYAL COURT$/, /^(?:DOWNSTAIRS|UPSTAIRS|THEATRE UPSTAIRS)$/],
+  [/^CENTRAL ST MARTINS$/, /^FOUND 111$/],
+];
 const LONDON_POSTCODE = /\s+(?:NW|SE|SW|EC|WC|[NEW])\d{1,2}[A-Z]?$/;
 
 /**
- * Does a run-head venue caps line name the wanted house? The whole line, or one comma part, must reduce to the wanted
- * family; every other part must be a London qualifier, and no part may be a non-London city
- * ("ROYAL COURT, LIVERPOOL" reduces to the London house's family). A trailing London postcode ("UNION SE1") is dropped.
+ * Does a run-head venue caps line name the wanted house? A trailing London postcode ("UNION SE1") is dropped. A comma
+ * line is a known house + stage pair, or the house followed only by "LONDON" / "WEST END".
  */
 function runHeadVenueMatches(venueLine, wantedVenue) {
-  const line = venueLine.replace(LONDON_POSTCODE, '');
   const fam = v => venueFamily(trVenueName(v));
-  const lower = line.toLowerCase();
-  if (NON_LONDON_CITIES.some(city => lower.includes(city))) return false;
+  const line = venueLine.replace(LONDON_POSTCODE, '');
   if (!line.includes(',')) return fam(line) === wantedVenue;
-  const parts = line.split(',').map(p => p.trim().replace(LONDON_POSTCODE, '')).filter(Boolean);
-  const okOther = p => RUN_HEAD_QUALIFIER.test(p) || isLondonVenue(p, { pdfEra: true });
-  if (fam(line) === wantedVenue && parts.slice(1).every(okOther)) return true;
-  return parts.some((p, k) => fam(p) === wantedVenue && parts.every((o, j) => j === k || okOther(o)));
+  const parts = line.split(',').map(p => p.trim());
+  if (parts.length === 2 && RUN_HEAD_STAGES.some(([house, stage]) => house.test(parts[0]) && stage.test(parts[1]))) {
+    return fam(parts[0]) === wantedVenue || fam(parts[1]) === wantedVenue;
+  }
+  // Any other suffix is a city or another house ("ROYAL COURT, LIVERPOOL", "OLIVIER, BRADFORD ALHAMBRA").
+  return fam(parts[0]) === wantedVenue && parts.slice(1).every(p => /^(?:LONDON|WEST END)$/.test(p));
 }
 
 /** pdfRunHeadFor's scan: {header}, {failed: reason} (ambiguous or unreadable: no other path may guess), or null (no run head). */

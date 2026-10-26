@@ -405,6 +405,11 @@ test('run head reads National stages, Royal Court Downstairs, Found 111 and a po
 test('run head comma venue still rejects other houses and non-London cities (BRO-6343)', () => {
   const head = venueLine => pdfRunHeadFor(runHead(venueLine, '30 March – 02 June 2016', 'LES BLANCS'), 'Les Blancs', 'Olivier');
   assert.match(head('NATIONAL, OLIVIER'), /^Press night 30 Mar 2016$/m);
-  for (const v of ['OLIVIER, LIVERPOOL', 'ROYAL EXCHANGE, OLIVIER STUDIO', 'GARRICK', 'OLIVIER, BRADFORD ALHAMBRA']) assert.equal(head(v), null, v);
+  for (const v of ['OLIVIER, LIVERPOOL', 'ROYAL EXCHANGE, OLIVIER STUDIO', 'GARRICK', 'OLIVIER, BRADFORD ALHAMBRA', 'NATIONAL, DUNDEE']) assert.equal(head(v), null, v);
+  // A regional city, a second house or a bare studio after the comma is another production.
+  const at = (venueLine, venue) => pdfRunHeadFor(runHead(venueLine, '30 March – 02 June 2016', 'LES BLANCS'), 'Les Blancs', venue);
+  for (const [v, want] of [['ARTS, CAMBRIDGE', 'Arts'], ['CAMBRIDGE, ARTS', 'Cambridge'], ['SAVOY, GARRICK', 'Garrick'], ['LYRIC, STUDIO', 'Lyric'], ['ROYAL COURT, STUDIO', 'Royal Court'], ['ROYAL COURT, DOWNSTAIRS, LIVERPOOL', 'Royal Court']]) {
+    assert.equal(at(v, want), null, v);
+  }
   assert.equal(pdfRunHeadFor(runHead('ROYAL COURT, DOWNSTAIRS', '1 September – 30 November 2016', 'PIGS AND DOGS'), 'Pigs and Dogs', 'Almeida'), null);
 });
