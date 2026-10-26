@@ -79,6 +79,20 @@ function tesseractStats(imgPath) {
       const jar2 = path.join(tmp2, 'c.txt');
       fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
       try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
+      if (pg === 'heads') {
+        // every ALL CAPS short line with the next 3 short lines (production headers carry title, venue, dates; no prose)
+        const all = sh('pdftotext', ['-layout', pdf2, '-']).split('\n').map(l => l.replace(/\s{3,}/g, '  |  ').trim());
+        let shown = 0;
+        all.forEach((l, i) => {
+          const t = l.replace(/\s*\|\s*Index$/, '');
+          if (shown < (parseInt(nl, 10) || 80) && t.length >= 3 && t.length <= 60 && t === t.toUpperCase() && /[A-Z]{3}/.test(t)) {
+            shown++;
+            console.log('  H' + i, JSON.stringify([l, ...all.slice(i + 1, i + 4)].map(x => x.length > 90 ? '<prose>' : x)));
+          }
+        });
+        console.log('DUMP heads total lines', all.length);
+        continue;
+      }
       const txt = sh('pdftotext', ['-f', pg, '-l', pg, '-layout', pdf2, '-']).split('\n');
       console.log(`DUMP ${hitPath} pdfpage ${pg}: ${txt.length} lines`);
       txt.slice(0, parseInt(nl, 10) || 40).forEach((l, i) => console.log('  L' + i, l.trim().length > 70 ? `<prose ${l.trim().length}>` : JSON.stringify(l.replace(/\s{3,}/g, '  |  '))));
