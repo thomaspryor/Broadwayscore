@@ -31,7 +31,7 @@ function data(n) {
       audienceGrade, gapLine: gap == null ? null : gap > 3 ? 'Audiences love it even more.' : gap < -3 ? 'Critics like it more than audiences do.' : 'Critics and audiences agree.' };
   }
   if (n === 'every') {
-    const x = showInfo('school-girls-or-the-african-mean-girls-play-2026');
+    const x = showInfo(process.env.EVERY_ID || 'school-girls-or-the-african-mean-girls-play-2026');
     // reviews land in score order (ORDER=desc, the default, or asc) so the breakdown bar fills one segment at a time
     const order = process.env.ORDER === 'asc' ? 'asc' : 'desc', dir = order === 'asc' ? 1 : -1;
     const rv = x.p.rv.filter(r => Number.isFinite(r.s)).sort((a, b) => dir * (a.s - b.s) || a.t - b.t);

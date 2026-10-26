@@ -17,7 +17,10 @@ const tierLabel = s => window.TIERS.label[tierId(s)];
 const tierColor = s => TIER_COLOR[tierId(s)];
 const CROWN = '<svg width="15" height="7" viewBox="0 0 24 14"><path d="M2,13 L5,5 L9,8 L12,1 L15,8 L19,5 L22,13 Z" fill="#FFD700" opacity="0.85"/></svg>';
 const logo = (size = 17) => `<span class="lockup" style="font-size:${size}px"><span style="color:#fafafa">Broadway</span> <span class="text-gradient">Scorecard</span></span>`;
-const pills = (show, isNew) => `${isNew ? '<span class="pill pill-new">New on Broadway</span>' : '<span class="pill pill-open">Now playing</span>'}<span class="pill pill-${show.type === 'musical' ? 'musical' : 'play'}">${show.type === 'musical' ? 'Musical' : 'Play'}</span>`;
+// the "new" pill names the show's own market; an unknown market stops the render instead of defaulting to Broadway
+const NEW_LABEL = { broadway: 'New on Broadway', 'off-broadway': 'New Off-Broadway', 'west-end': 'New in the West End', 'off-west-end': 'New Off-West End' };
+const newLabel = cat => { if (!NEW_LABEL[cat]) throw new Error('no "new" label for market ' + cat); return NEW_LABEL[cat]; };
+const pills = (show, isNew, cat) => `${isNew ? `<span class="pill pill-new">${newLabel(cat)}</span>` : '<span class="pill pill-open">Now playing</span>'}<span class="pill pill-${show.type === 'musical' ? 'musical' : 'play'}">${show.type === 'musical' ? 'Musical' : 'Play'}</span>`;
 
 // Badge (ScoreBadge): value 0..score shown rounded; class follows the live value (gold only once it reaches 83).
 function setBadge(wrap, v, { crown = true, size = 'lg' } = {}) {
@@ -65,7 +68,7 @@ COMPS.reveal = {
     g1.append($('abs card', 'left:105px;top:66px;width:150px;height:150px;padding:0;overflow:hidden;border-radius:1rem', artImg(d.art, 150, 'border-radius:0')));
     this.art = g1.firstChild;
     g1.append($('abs', 'left:0;right:0;top:226px;text-align:center;font-weight:800;font-size:22px;letter-spacing:-.02em', esc(s.title)));
-    g1.append($('abs', 'left:0;right:0;top:258px;display:flex;gap:6px;justify-content:center', pills(s, d.isNew)));
+    g1.append($('abs', 'left:0;right:0;top:258px;display:flex;gap:6px;justify-content:center', pills(s, d.isNew, d.category)));
     this.cap1 = $('abs cap', 'left:20px;right:20px;top:286px;font-size:14px;color:#d4d4d8', `${d.count} critics weighed in. One score.`);
     g1.append(this.cap1);
     this.bw = badgeEl('lg', 'position:absolute;left:140px;top:326px;transform-origin:50% 50%'); g1.append(this.bw);
@@ -135,7 +138,7 @@ COMPS.every = {
     this.times = d.reviews.map((_, i) => this.t0 + (i < 5 ? i * 0.95 : 4.75 + (i - 5) * 0.55));
     this.tEnd = this.times[this.times.length - 1] + 1.3;
     const head = $('abs card', 'left:16px;right:16px;top:62px;height:76px;padding:10px;display:flex;gap:12px;align-items:center');
-    head.innerHTML = `<div style="width:56px;height:56px;border-radius:.75rem;overflow:hidden;flex-shrink:0">${artImg(d.art, 56, 'border-radius:0')}</div><div style="min-width:0"><div style="font-weight:800;font-size:16px;line-height:1.15;letter-spacing:-.01em">${esc(s.title)}</div><div style="display:flex;gap:6px;margin-top:6px">${pills(s, d.isNew)}</div></div>`;
+    head.innerHTML = `<div style="width:56px;height:56px;border-radius:.75rem;overflow:hidden;flex-shrink:0">${artImg(d.art, 56, 'border-radius:0')}</div><div style="min-width:0"><div style="font-weight:800;font-size:16px;line-height:1.15;letter-spacing:-.01em">${esc(s.title)}</div><div style="display:flex;gap:6px;margin-top:6px">${pills(s, d.isNew, d.category)}</div></div>`;
     this.cnt = $('abs', 'left:0;right:0;top:148px;text-align:center;font-size:13px;font-weight:600;color:#9ca3af');
     this.list = $('abs', 'left:16px;right:16px;top:176px;height:262px;overflow:hidden');
     this.rows = d.reviews.map(r => { const e = $('card', 'position:absolute;left:0;right:0;height:46px;padding:0 10px;display:flex;align-items:center;gap:10px',
@@ -250,7 +253,7 @@ function voicedBuild(self, root, d, kicker) {
   g1.append($('abs card', 'left:100px;top:96px;width:160px;height:160px;padding:0;overflow:hidden;border-radius:1rem', artImg(d.art, 160, 'border-radius:0')));
   self.art = g1.firstChild;
   g1.append($('abs', 'left:12px;right:12px;top:268px;text-align:center;font-weight:800;font-size:24px;line-height:1.15;letter-spacing:-.02em', esc(d.show.title)));
-  g1.append($('abs', 'left:0;right:0;top:330px;display:flex;gap:6px;justify-content:center', pills(d.show, d.isNew)));
+  g1.append($('abs', 'left:0;right:0;top:330px;display:flex;gap:6px;justify-content:center', pills(d.show, d.isNew, d.category)));
   self.cnt = $('abs cap', 'left:20px;right:20px;top:362px;font-size:15px;color:#d4d4d8', `${d.count} reviews in`); g1.append(self.cnt);
   // quotes
   const h = d.quotes.length === 3 ? 118 : 124, gap = d.quotes.length === 3 ? 8 : 10, q0 = d.quotes.length === 3 ? 88 : 92;
