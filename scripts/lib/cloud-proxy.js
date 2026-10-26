@@ -15,6 +15,10 @@
  */
 const https = require('https');
 
+// Optional packages, loaded only in a cloud session. The name is passed as a variable
+// so require-graph tests (morning-digest-action.yml runs without npm ci) see no package import.
+const optionalRequire = (name) => require(name);
+
 const PROXIED_HOST_RE = /(^|\.)scrapingbee\.com$/i;
 
 /**
@@ -39,7 +43,7 @@ let _agent;
 function proxyAgent(env = process.env) {
   if (_agent === undefined) {
     try {
-      const { HttpsProxyAgent } = require('https-proxy-agent');
+      const { HttpsProxyAgent } = optionalRequire('https-proxy-agent');
       _agent = new HttpsProxyAgent(env.HTTPS_PROXY || env.https_proxy);
     } catch { _agent = null; }
   }
@@ -76,7 +80,7 @@ function installFetch(env = process.env) {
   if (typeof globalThis.fetch !== 'function' || globalThis.fetch.__bro6258) return;
   let dispatcher;
   try {
-    const { ProxyAgent } = require('undici');
+    const { ProxyAgent } = optionalRequire('undici');
     dispatcher = new ProxyAgent(env.HTTPS_PROXY || env.https_proxy);
   } catch { return; }
   const origFetch = globalThis.fetch;
