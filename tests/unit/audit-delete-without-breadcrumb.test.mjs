@@ -28,6 +28,9 @@ const {
   main,
 } = require(path.join(repoRoot, 'scripts/audit-delete-without-breadcrumb.js'));
 const { CLEAR_BREADCRUMBS } = require(path.join(repoRoot, 'scripts/lib/review-write-guard.js'));
+// The pre-fix fixture predates the BRO-6302 breadcrumb entries for the rejection fields;
+// model that state by leaving them out of the registered set.
+const PRE_FIX_REGISTERED = new Set(Object.keys(CLEAR_BREADCRUMBS).filter((k) => !['rejectedAt', 'rejectedBy', 'rejectionReasoning'].includes(k)));
 
 function mkTmpDir(prefix) {
   return fs.mkdtempSync(path.join(os.tmpdir(), prefix));
@@ -55,7 +58,7 @@ function main() {
 `;
 
 test('checkFile: flags the pre-fix flag-combined-reviews.js pattern (delete + no force + no breadcrumb)', () => {
-  const findings = checkFile(PRE_FIX_PATTERN, new Set(Object.keys(CLEAR_BREADCRUMBS)));
+  const findings = checkFile(PRE_FIX_PATTERN, PRE_FIX_REGISTERED);
   const fields = findings.map((f) => f.field).sort();
   assert.deepEqual(fields, ['rejectedAt', 'rejectedBy', 'rejectionReasoning', 'rescoreCompletedAt']);
 });
@@ -254,7 +257,7 @@ function run(fp, data) {
 test('auditRepo: scans a directory and flags the pre-fix pattern', () => {
   const scriptsDir = mkTmpDir('bcdel-scripts-');
   fs.writeFileSync(path.join(scriptsDir, 'fake-clear.js'), PRE_FIX_PATTERN);
-  const { findings, scanned } = auditRepo({ scriptsDir, breadcrumbKeys: new Set(Object.keys(CLEAR_BREADCRUMBS)) });
+  const { findings, scanned } = auditRepo({ scriptsDir, breadcrumbKeys: PRE_FIX_REGISTERED });
   assert.equal(scanned.files, 1);
   assert.equal(scanned.filesWithSafeWrite, 1);
   assert.equal(findings.length, 4);
