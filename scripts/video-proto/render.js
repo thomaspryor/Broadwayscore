@@ -36,7 +36,7 @@ function data(n, key) {
     return { title: L.title, sub: L.sub, endLine: L.endLine, shows: shows.map(s => ({ title: s.title, type: s.type, score: s.score, rc: s.rc, art: s.art })) };
   }
   if (n === 'versus') return voiced(n);
-  if (n === 'verdict' || n.endsWith('-voiced')) return voicedFromPlan(n);
+  if (n === 'verdict' || n === 'duo' || n.endsWith('-voiced')) return voicedFromPlan(n);
   throw new Error('unknown composition ' + n);
 }
 
@@ -148,6 +148,16 @@ function voicedFromPlan(n) {
     d.shows.slice().reverse().forEach((s, i) => { cues.n.push(at(`number ${5 - i}`)); at(`${Math.round(s.score)}`); });
     cues.end = at(d.endLine.split(' ').slice(0, 2).join(' '));
     return { ...d, ...base, cues };
+  }
+  if (fmt === 'duo') {
+    // two shows side by side (the explainer): each badge counts up from when the voice names the show to when it says the score.
+    // mode 'guess' shows both posters from the start; 'seq' brings each one in as it is named
+    const mode = V.plan.mode === 'guess' ? 'guess' : 'seq';
+    const shows = V.plan.shows.map(s => { const x = showInfo(s.id), rv = x.p.rv.filter(r => Number.isFinite(r.s)), score = Math.round(x.score);
+      const say = at(s.say), count = s.count ? at(`${rv.length} critics`) : null, land = at(`${score}`); at(SCORE_TIER_LABELS[getScoreTierId(score, x.category)]);
+      const quote = s.quote ? planQuotes({ ...V, plan: { quotes: [s.quote] } }, rv)[0] : null;
+      return { title: x.title, type: x.type, art: x.art, isNew: x.isNew, category: x.category, score, count: rv.length, showCount: !!s.count, quote, say, land, on: 0.2 }; });
+    return { kind: 'duo', mode, shows, end: at(V.plan.cue && V.plan.cue.end || 'every review'), ...base };
   }
   const x = showInfo(V.plan.key), rv = x.p.rv.filter(r => Number.isFinite(r.s)), c = breakdown(rv, x.category);
   const aud = audienceGradeOf(x.p); if (!aud) throw new Error(x.id + ': no audience grade');

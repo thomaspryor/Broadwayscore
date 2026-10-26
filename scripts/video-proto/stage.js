@@ -339,6 +339,44 @@ function voicedCut(base, capTop) {
       I.cards.forEach((c, i) => { const e = this.cards[i], k = seg(t, c.t - 0.1, c.t + 0.25); e.style.opacity = k; e.style.transform = `translateY(${(1 - k) * 10}px)`; }); },
   };
 }
+/* ---------- Duo (explainer): two shows side by side, voiced; times come straight from the voiceover ---------- */
+COMPS.duo = {
+  build(root, d) {
+    this.d = d; this.dur = d.dur;
+    root.append($('abs', 'left:0;right:0;top:34px;text-align:center;z-index:5', logo(14)));
+    this.g = $('abs', 'inset:0'); root.append(this.g);
+    this.cols = d.shows.map((s, i) => {
+      const col = $('abs', `left:${i ? 188 : 12}px;top:72px;width:160px;display:flex;flex-direction:column;align-items:center;text-align:center`);
+      col.innerHTML = artImg(s.art, 150) + `<div style="margin-top:10px;font-weight:800;font-size:16px;line-height:1.15;min-height:38px;display:flex;align-items:center">${esc(s.title)}</div>`
+        + `<div style="font-size:12px;color:#9ca3af;margin-top:2px">${s.count} critics</div>`;
+      const bw = badgeEl('lg', 'margin-top:16px'); col.append(bw);
+      const tl = $('', 'margin-top:10px;font-weight:800;font-size:15px;opacity:0', `<span style="color:${tierColor(s.score)}">${tierLabel(s.score)}</span>`); col.append(tl);
+      const qc = s.quote ? $('card', 'margin-top:12px;padding:8px 10px;text-align:left;width:100%;box-sizing:border-box;opacity:0',
+        `<div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">${esc(s.quote.o)}</div><div style="font-size:12px;line-height:1.3;color:#e4e4e7;margin-top:4px;font-style:italic">&ldquo;${esc(s.quote.q)}&rdquo;</div>`) : null;
+      if (qc) col.append(qc);
+      this.g.append(col); return { col, bw, tl, qc };
+    });
+    this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center',
+      `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+    root.append(this.end);
+    this.events = d.shows.flatMap(s => [...Array(10)].map((_, i) => ({ t: s.say + (s.land - s.say) * i / 10, k: 'tick', p: i / 10 })).concat({ t: s.land, k: s.score >= GOLD ? 'chime' : 'pop' }));
+    this.cap = captions(root, d.words, 516);
+  },
+  update(t) {
+    const d = this.d, out = 1 - seg(t, d.end - 0.5, d.end - 0.1);
+    this.g.style.opacity = out; this.g.style.display = out <= 0 ? 'none' : 'block';
+    this.end.style.opacity = seg(t, d.end - 0.1, d.end + 0.4); this.end.style.display = t < d.end - 0.15 ? 'none' : 'flex';
+    d.shows.forEach((s, i) => { const c = this.cols[i], a = seg(t, s.on, s.on + 0.5);
+      c.col.style.opacity = a; c.col.style.transform = `scale(${lerp(0.9, 1, eob(a))})`;
+      const k = seg(t, s.say, s.land); setBadge(c.bw, s.score * eo(k));
+      if (k === 0) { const b = c.bw.querySelector('.score-badge'); b.textContent = '?'; }
+      const pop = t > s.land ? 1 + 0.22 * Math.sin(Math.PI * seg(t, s.land, s.land + 0.5)) : (k === 0 ? 1 + 0.05 * Math.sin(t * 5) : 1);
+      c.bw.style.transform = `scale(${1.15 * pop})`;
+      fade(c.tl, seg(t, s.land + 0.1, s.land + 0.5), (1 - seg(t, s.land + 0.1, s.land + 0.5)) * 6);
+      if (c.qc) fade(c.qc, seg(t, s.quote.t - 0.1, s.quote.t + 0.35), (1 - seg(t, s.quote.t - 0.1, s.quote.t + 0.35)) * 10); });
+    this.cap(t);
+  },
+};
 COMPS['reveal-voiced'] = voicedCut('reveal', 516);
 COMPS['every-voiced'] = voicedCut('every', 516);
 COMPS['top5-voiced'] = voicedCut('top5', 516);
