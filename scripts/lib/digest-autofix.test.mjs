@@ -1727,3 +1727,29 @@ test('check-health-row-absent.js: a count change in the row title is not "fixed"
     fs.unlinkSync(tmpSnap);
   }
 });
+
+// ── BRO-6338: per-show "stuck in _pending" rows fold to ONE card ──
+test('BRO-6338: N "<n> review(s) for <show> stuck in _pending..." rows produce 1 plan row, count-free title, one conditionKey check per show', () => {
+  const shows = ['murder-cathedral-off-west-end-2026', 'dog-mom-off-west-end-2026', 'baby-off-west-end-2026'];
+  const queued = shows.map((s, i) => ({
+    title: `BSC Daily: ${i + 1} review(s) for ${s} stuck in _pending with no text and no byline`,
+    description: 'd', conditionKey: `pending-unrecoverable:${s}`,
+  }));
+  const plan = planAutofix({ health: {}, tasks: [], queued });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].title, 'BSC Daily: Reviews stuck in _pending with no text and no byline');
+  assert.equal(plan[0].affected.length, shows.length);
+  const notes = buildCardNotes(plan[0]);
+  assert.equal((notes.match(/check-alert-condition-absent\.js --key-b64/g) || []).length, shows.length);
+  assert.ok(!/check-health-row-absent/.test(notes));
+  // A different count on a later day keeps the same card identity.
+  const day2 = planAutofix({ health: {}, tasks: [], queued: [{ ...queued[0], title: queued[0].title.replace(/^BSC Daily: 1/, 'BSC Daily: 9') }] });
+  assert.equal(day2[0].title, plan[0].title);
+});
+
+test('BRO-6338: the _pending fold pattern still matches the REAL producer title template (drift guard)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../replay-pending-bylines.js', import.meta.url), 'utf8');
+  assert.ok(src.includes('title: `${entries.length} review(s) for ${showId} stuck in _pending with no text and no byline`'), 'producer title changed; update PER_SHOW_KIND_PATTERNS');
+  assert.ok(splitOnShowSuffix('6 review(s) for baby-off-west-end-2026 stuck in _pending with no text and no byline'));
+});

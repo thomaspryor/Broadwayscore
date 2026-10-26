@@ -265,6 +265,10 @@ async function defaultRouteAlert(opts) {
   return require('./lib/owner-alert-router').routeAlert(opts);
 }
 
+function defaultResolveCondition(key, opts) {
+  return require('./lib/owner-alert-router').resolveCondition(key, opts);
+}
+
 /**
  * Pure: should this show's unrecoverable stubs page/digest the owner? Only in
  * the first post-opening week (when a missing T1/T2 review costs the most and
@@ -345,9 +349,16 @@ async function processShow(showId, deps = {}) {
     console.log(`  [${file}] UNRECOVERABLE: no text, no byline (${reason}) — kept in _pending, reported below`);
     unrecoverable.push({ file, filepath, data, reason, outletId: data.outletId || null, url: data.url || null });
   };
-  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, ...reportUnrecoverable(), ...extra });
-  const reportUnrecoverable = () => {
-    if (unrecoverable.length === 0) return { unrecoverable: 0 };
+  const finish = (extra = {}) => ({ promoted, kept, rejected, droppedRedundant, refetched, ...reportUnrecoverable(!extra.budgetExceeded), ...extra });
+  const reportUnrecoverable = (scanComplete = false) => {
+    if (unrecoverable.length === 0) {
+      // BRO-6338: a full scan with nothing unrecoverable closes the show's alert
+      // condition, so the folded digest card's check-alert-condition-absent can pass.
+      if (scanComplete && !dry) {
+        try { (deps.resolve || defaultResolveCondition)(`${PENDING_UNRECOVERABLE_STAGE}:${showId}`, { reason: 'no unrecoverable _pending stubs on a complete scan' }); } catch (e) { console.log(`  resolve failed: ${e.message}`); }
+      }
+      return { unrecoverable: 0 };
+    }
     const alertable = shouldAlertUnrecoverable(show, { explicitScope, nowMs: now().getTime() });
     console.log(`  ⚠ [${showId}] ${unrecoverable.length} pending-unrecoverable stub(s)${alertable ? '' : ' (outside post-opening week — logged, not alerted)'}`);
     if (!alertable) return { unrecoverable: unrecoverable.length, alerted: false };

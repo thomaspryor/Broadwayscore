@@ -208,6 +208,8 @@ const ON_SHOW_SUFFIX_RE = /^(.+?) on (.+)$/;
 const PER_SHOW_KIND_PATTERNS = [
   { re: /^Review gap — "(.+)" missing \d+ cited review\(s\)$/, condition: 'Review gaps (cited reviews not yet collected)' },
   { re: /^([a-z0-9][a-z0-9-]*): \d+ review\(s\) need a decision\b/, condition: 'Reviews need a decision (rejected real review or score outside rating)' },
+  // BRO-6338: replay-pending-bylines.js files one card per show (conditionKey pending-unrecoverable:<show>); 4 of 23 digest cards in 72h.
+  { re: /^\d+ review\(s\) for ([a-z0-9][a-z0-9-]*) stuck in _pending with no text and no byline$/, condition: 'Reviews stuck in _pending with no text and no byline' },
 ];
 
 function splitOnShowSuffix(name) {
