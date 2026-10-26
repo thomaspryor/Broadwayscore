@@ -61,6 +61,14 @@ const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
 // verified weekly/Friday pass. Used by the hourly RSS poll, which only auto-applies recoupment claims: it must
 // neither fetch pages every hour nor apply unverified figures as estimates ahead of the verified pass.
 const NO_SOURCE_VERIFY = flags['no-source-verify'] === true;
+// BRO-6336: apply any entry (whatever its confidence) whose figures a fetched trusted page confirms. An entry the
+// pages do not confirm moves to the archive with the reason; one a person must settle is stamped autoApplyBlocked
+// so the owner digest reports it once. Needs --all and page verification.
+const VERIFIED_ONLY = flags['verified-only'] === true;
+if (VERIFIED_ONLY && (!APPLY_ALL || NO_SOURCE_VERIFY || SINGLE_SHOW || RELEASE_HELD)) {
+  console.log('❌ --verified-only needs --all and cannot be combined with --no-source-verify, --show or --release-held');
+  process.exit(1);
+}
 // Comma-separated list of detectedBy sources whose recouped-claim entries may
 // auto-apply without --show=SLUG, IF confidence === 'high' AND sourceHost is in
 // the trusted-recoupment-domains list. Used by the Friday scraper pipeline.
@@ -163,6 +171,12 @@ async function main() {
   // commercial entries and were being deleted unreviewed (ship-check P0,
   // Sprint 2 2026-07-13).
   const appliedIds = new Set();
+  // --verified-only: entries moved to the archive this run ({key, slug, reason}), and entries only a person can settle.
+  const rejectedIds = new Map();
+  const noteBlocked = (showId, reason) => {
+    if (!VERIFIED_ONLY || DRY_RUN || !pending.shows[showId]) return;
+    if (pending.shows[showId].autoApplyBlocked !== reason) { pending.shows[showId].autoApplyBlocked = reason; pending.shows[showId].autoApplyBlockedAt = new Date().toISOString(); pendingDirty = true; }
+  };
 
   // Scope lookup — pending keys can be show IDs while entries carry slugs.
   let showsBySlug = {};
@@ -180,6 +194,7 @@ async function main() {
   }
 
   const { createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS } = require('./lib/commercial-source-verify');
+  const { verifiedOutcome, UNVERIFIED_REASON, OUT_OF_SCOPE_REASON } = require('./lib/pending-verify-policy');
   // Page verification can be slow (provider fallbacks run tens of seconds per page). The jobs that run this script
   // have a 30 minute timeout shared with the commit and push that follow, so stop starting new verifications after
   // 12 minutes and leave the rest pending for the next run (scripts/audit-run-budget-coverage.js).
@@ -195,6 +210,7 @@ async function main() {
     const scopeShow = resolveScopeShow(showsBySlug, showId, entry);
     if (scopeShow && !isCommercialScope(scopeShow)) {
       console.log(`  ⛔ "${showId}" — out of commercial scope (${scopeShow.category}), skipping`);
+      if (VERIFIED_ONLY && !DRY_RUN) rejectedIds.set(showId, { reason: `out of commercial scope (${scopeShow.category})`, archivedReason: OUT_OF_SCOPE_REASON, prefix: 'out-of-scope' });
       skipped++;
       continue;
     }
@@ -202,12 +218,14 @@ async function main() {
     // Review holds are never appliable — see gate.isReviewHold rationale.
     if (gate.isReviewHold(entry)) {
       console.log(`  🛑 "${showId}" — review hold, never appliable. See entry.notes; edit commercial.json directly.`);
+      noteBlocked(showId, 'held for review: needs a person to edit commercial.json');
       skipped++;
       continue;
     }
 
     if (gate.requiresHumanReview(entry) && !RELEASE_HELD) {
       console.log(`  👀 "${showId}" — backfill research, needs human review (release with --release-held=${showId})`);
+      noteBlocked(showId, 'backfill research row: needs a person to release it');
       skipped++;
       continue;
     }
@@ -218,13 +236,27 @@ async function main() {
     }
     // What gets applied: a released held row loses any "recouped" claim. `entry` stays the stored pending row
     // (its verify-attempt counter is written back below).
-    const row = RELEASE_HELD ? gate.withoutRecoupmentClaim(entry) : entry;
+    let row = RELEASE_HELD ? gate.withoutRecoupmentClaim(entry) : entry;
 
     // Confidence filter
-    if (!meetsConfidenceThreshold(row)) {
+    if (!VERIFIED_ONLY && !meetsConfidenceThreshold(row)) {
       console.log(`  ⏭️  "${showId}" — confidence ${entry.confidence || 'unknown'} below threshold ${MIN_CONFIDENCE}`);
       skipped++;
       continue;
+    }
+
+    // Verified-only mode drops the confidence filter, but only the figures get checked against a page. A row below
+    // the confidence bar therefore publishes its figures alone: its label, recoupment and notes were never confirmed.
+    if (VERIFIED_ONLY && !meetsConfidenceThreshold(row) && !hasRecoupedClaim(row)) {
+      if (row.capitalization == null && row.weeklyRunningCost == null) {
+        const reason = `research confidence ${entry.confidence || 'unknown'} and no capitalization or weekly cost a page could confirm`;
+        console.log(`  🚫 "${showId}" — ${reason}; moving to the rejected log`);
+        if (!DRY_RUN) rejectedIds.set(showId, { reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified', digest: true });
+        skipped++;
+        continue;
+      }
+      row = { ...row };
+      for (const f of ['designation', 'recouped', 'recoupedDate', 'recoupedSource', 'estimatedRecoupmentPct', 'notes']) delete row[f];
     }
 
     // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys)
@@ -248,6 +280,7 @@ async function main() {
     // Keep the row pending until it resolves, or an operator names it.
     if (!resolved && !SINGLE_SHOW && !RELEASE_HELD) {
       console.log(`  Skipping "${showId}": no show resolves in shows.json; left pending for manual review`);
+      noteBlocked(showId, 'no show in shows.json matches this entry');
       skipped++;
       continue;
     }
@@ -261,6 +294,7 @@ async function main() {
     const claimAutoApplyable = hasRecoupedClaim(row) && isAutoApplyableClaim(row, keyShow);
     if (hasRecoupedClaim(row) && !SINGLE_SHOW && !claimAutoApplyable) {
       console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (${RELEASE_HELD ? 'settle it on the review page' : `use --show=${showId}`})`);
+      noteBlocked(showId, 'recoupment claim: a person must confirm it against the cited source');
       skipped++;
       continue;
     }
@@ -294,6 +328,7 @@ async function main() {
     // --show onto an existing record keeps its research-replaces-record meaning.
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
+      noteBlocked(showId, 'the record carries a human-reviewed designation: a person must decide');
       skipped++;
       continue;
     }
@@ -302,6 +337,7 @@ async function main() {
     // any other Fizzle/Flop stays for a human (BRO-4623 item 5).
     if (isClaimAutoApply && gate.recoupClaimDesignationAction(existing) === 'block') {
       console.log(`  🔒 "${showId}" — recoupment claim contradicts "${existing.designation}" (not a label inferred from silence), requires manual review`);
+      noteBlocked(showId, 'the claim contradicts the record designation: a person must decide');
       skipped++;
       continue;
     }
@@ -318,6 +354,8 @@ async function main() {
     // shows it's designed to catch. Ship-check P0 finding.
     if (existing && existing.designation && existing.designation !== 'TBD' && !SINGLE_SHOW && !isClaimAutoApply) {
       console.log(`  "${showId}" already has designation "${existing.designation}" — skipping`);
+      // A research row never overwrites a labelled record, so it can only sit here: archive it quietly.
+      if (VERIFIED_ONLY && !DRY_RUN) rejectedIds.set(showId, { reason: `the record already carries the designation "${existing.designation}"; a research row does not overwrite it`, archivedReason: 'record-already-designated', prefix: 'superseded' });
       skipped++;
       continue;
     }
@@ -337,6 +375,7 @@ async function main() {
     const heldBeforeFetch = sanitizeForPublicRecord(gate.buildCommercialEntry(row, existing, { isClaimAutoApply, mergeExisting, normalizeSources }), keyShowRecord, publicRecordOptions).holdReason;
     if (heldBeforeFetch) {
       console.log(`  🛑 "${showId}" — left pending for review: ${heldBeforeFetch}`);
+      noteBlocked(showId, `held before checking: ${heldBeforeFetch}`);
       skipped++;
       continue;
     }
@@ -355,6 +394,26 @@ async function main() {
       console.log(`  ⏳ "${showId}" — cited pages not checked (per-run fetch cap reached); left pending for the next run`);
       skipped++;
       continue;
+    }
+    if (VERIFIED_ONLY && !isClaimAutoApply) {
+      const outcome = verifiedOutcome(entry, figureEvidence);
+      if (outcome.action === 'defer') {
+        console.log(`  ⏳ "${showId}" — page-check cap reached; left pending for the next run`);
+        skipped++;
+        continue;
+      }
+      if (outcome.action === 'retry') {
+        console.log(`  ⏳ "${showId}" — a cited page could not be fetched (attempt ${outcome.attempts} of ${SOURCE_VERIFY_MAX_ATTEMPTS}); left pending`);
+        if (!DRY_RUN) { entry.sourceVerifyAttempts = outcome.attempts; pendingDirty = true; }
+        skipped++;
+        continue;
+      }
+      if (outcome.action === 'reject') {
+        console.log(`  🚫 "${showId}" — not confirmed by a cited page (${outcome.reason}); moving to the rejected log`);
+        if (!DRY_RUN) rejectedIds.set(showId, { reason: outcome.reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified', digest: true });
+        skipped++;
+        continue;
+      }
     }
     // A cited page that could not be FETCHED (network, credentials, 4xx/5xx) is not "the page does not confirm
     // the figure": leave the entry pending for a few runs instead of downgrading a figure nobody checked.
@@ -375,6 +434,7 @@ async function main() {
     );
     if (holdReason) {
       console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
+      noteBlocked(showId, `held after checking: ${holdReason}`);
       skipped++;
       continue;
     }
@@ -416,6 +476,38 @@ async function main() {
     }
     appliedIds.add(showId);
     applied++;
+  }
+
+  // --verified-only: entries no cited page confirms leave the queue for the archive (written first: a crash between
+  // the two writes leaves the entry in both files, and the next run repeats the move).
+  if (VERIFIED_ONLY && !DRY_RUN && rejectedIds.size) {
+    const { writeArchiveRecord } = require('./lib/commercial-claim-triage');
+    const ARCHIVE_PATH = path.join(DATA_DIR, 'commercial-pending-archive.json');
+    let archive = { shows: {} };
+    try { archive = JSON.parse(fs.readFileSync(ARCHIVE_PATH, 'utf8')); } catch { /* first record */ }
+    const nowIso = new Date().toISOString();
+    const sameFindingStamp = (prior, next) => (prior && prior.ownerDigestSentAt
+      && prior.capitalization === next.capitalization && prior.weeklyRunningCost === next.weeklyRunningCost
+      ? prior.ownerDigestSentAt : null);
+    for (const [showId, info] of rejectedIds) {
+      writeArchiveRecord(archive, `${info.prefix}:${showId}`, {
+        ...pending.shows[showId],
+        pendingKey: showId,
+        archivedAt: nowIso,
+        archivedReason: info.archivedReason,
+        archivedDetail: info.reason,
+        // The owner digest emails each unverified item once, then stamps this.
+        // A re-filed identical finding (same figures) keeps its earlier stamp so it is not emailed twice.
+        ...(info.digest ? { ownerDigestSentAt: sameFindingStamp(archive.shows && archive.shows[`${info.prefix}:${showId}`], pending.shows[showId]) } : {}),
+      });
+      delete pending.shows[showId];
+    }
+    archive.lastUpdated = nowIso;
+    fs.writeFileSync(ARCHIVE_PATH + '.tmp', JSON.stringify(archive, null, 2) + '\n');
+    fs.renameSync(ARCHIVE_PATH + '.tmp', ARCHIVE_PATH);
+    pending.lastUpdated = nowIso;
+    pendingDirty = true;
+    console.log(`📦 Moved ${rejectedIds.size} unconfirmed entr${rejectedIds.size === 1 ? 'y' : 'ies'} to the rejected log`);
   }
 
   if (!DRY_RUN && applied > 0) {
