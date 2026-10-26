@@ -36,8 +36,14 @@ on:
         required: false
         default: false
         type: boolean
+      full_size_posters_only:
+        description: 'Only search full-size posters for the social cards (BRO-6393); show_id narrows it'
+        required: false
+        default: false
+        type: boolean
   schedule:
     - cron: '0 6 * * 1,4'  # Twice weekly on Monday and Thursday at 6 AM UTC
+    - cron: '40 7 * * *'   # Daily: full-size posters for the social cards only (BRO-6393)
 
 permissions:
   contents: write
@@ -46,7 +52,14 @@ jobs:
   fetch-images:
     runs-on: ubuntu-latest
     timeout-minutes: 180
+    env:
+      # BRO-6393: the daily 07:40 run (or a full_size_posters_only dispatch) only
+      # searches full-size social-card posters; it writes data/full-size-posters.json
+      # and never touches site images or shows.json.
+      POSTERS_ONLY: ${{ (inputs.full_size_posters_only == true || github.event.schedule == '40 7 * * *') && 'true' || 'false' }}
     concurrency:
+      # Posters-only runs share the group, so they queue behind a running fetch
+      # and never write data/ at the same time (BRO-6393).
       # shows-json-writer-exempt: 180-min runs Mon+Thu 06:00 would hold the group across update-show-status 08:00 and evict pending siblings. Images are 3-way merged by push-core-data (NESTED_3WAY_FIELDS) (BRO-5803)
       group: fetch-images
       cancel-in-progress: false
@@ -80,6 +93,7 @@ jobs:
 
       - name: Fetch show images (auto-discovery)
         id: fetch
+        if: env.POSTERS_ONLY != 'true'
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
@@ -121,8 +135,40 @@ jobs:
           fi
           node scripts/fetch-show-images-auto.js $ARGS $INCLUDE_CLOSED --concurrency=$CONCURRENCY $VERIFY_FLAG --max-runtime=150
 
+      # BRO-6393: social cards need a >=440px portrait poster; many recent shows only
+      # have a small site file. Searches TodayTix, the official site, the venue page
+      # and Mezzanine, Gemini-checks the art, records it in data/full-size-posters.json.
+      # Advisory: a failure here never fails the image run. Posters-only runs
+      # only: one writer for data/full-size-posters.json (no race with the
+      # Mon/Thu fetch, which also keeps that run inside its 180-minute budget).
+      - name: Full-size posters for social cards
+        # lint-allow-swallow: advisory; the pass saves after each show, so a failure loses at most one show's search, and the commit step below still runs and pushes what was saved
+        if: always() && env.POSTERS_ONLY == 'true'
+        continue-on-error: true
+        timeout-minutes: 50
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          MEZZANINE_APP_ID: ${{ secrets.MEZZANINE_APP_ID }}
+          MEZZANINE_SESSION_TOKEN: ${{ secrets.MEZZANINE_SESSION_TOKEN }}
+          INPUT_SHOW_ID: ${{ inputs.show_id }}
+        run: |
+          # blanket-sweep-audit-ok: data/audit/suspect-duplicate-images.json the --full-size-posters pass does not run the normal fetch that writes it, and the commit step sets PUSH_API_FALLBACK_DISABLE=1, so no Git Data API fallback is lost (BRO-6393)
+          # blanket-sweep-audit-ok: data/audit/existing-image-audit.json the --full-size-posters pass does not run the normal fetch that writes it, and the commit step sets PUSH_API_FALLBACK_DISABLE=1, so no Git Data API fallback is lost (BRO-6393)
+          # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json the --full-size-posters pass does not run the normal fetch that writes it, and the commit step sets PUSH_API_FALLBACK_DISABLE=1, so no Git Data API fallback is lost (BRO-6393)
+          # blanket-sweep-audit-ok: data/audit/image-search-attempts.json the --full-size-posters pass does not run the normal fetch that writes it, and the commit step sets PUSH_API_FALLBACK_DISABLE=1, so no Git Data API fallback is lost (BRO-6393)
+          ARGS=""
+          if [ "${POSTERS_ONLY}" == "true" ] && [ -n "${INPUT_SHOW_ID}" ]; then
+            ARGS="--show=${INPUT_SHOW_ID}"
+          fi
+          node scripts/fetch-show-images-auto.js --full-size-posters $ARGS --limit=80 --max-runtime=40
+
       - name: Archive images locally
-        if: always()
+        if: always() && env.POSTERS_ONLY != 'true'
         run: |
           echo "Downloading CDN images to local storage..."
           ARCHIVE_ARGS=""
@@ -135,7 +181,7 @@ jobs:
       # replaced; the fetch --verify gate trusts TodayTix API art, so a wrong
       # poster (Fish, BRO-5326) used to ship unchecked. Never fails the job.
       - name: Audit new poster art (advisory)
-        if: always()
+        if: always() && env.POSTERS_ONLY != 'true'
         continue-on-error: true
         timeout-minutes: 20
         env:
@@ -152,7 +198,7 @@ jobs:
         if: always()
         id: changes
         run: |
-          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard public/images/shows/)" ]; then
+          if git diff --quiet data/ && [ -z "$(git ls-files --others --exclude-standard public/images/shows/ data/full-size-posters.json)" ]; then
             echo "changed=false" >> $GITHUB_OUTPUT
           else
             echo "changed=true" >> $GITHUB_OUTPUT
@@ -225,7 +271,7 @@ jobs:
       # the web push failed publishes dangling paths (steve-burns-alive /
       # the-pass / father-time incident, 2026-07-14 run).
       - name: Push core data to private repo
-        if: always() && steps.webpush.outcome != 'failure'
+        if: always() && steps.webpush.outcome != 'failure' && env.POSTERS_ONLY != 'true'
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

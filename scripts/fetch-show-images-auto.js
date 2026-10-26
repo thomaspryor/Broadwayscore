@@ -70,6 +70,9 @@ Usage:
     --force-google  ignore the per-show search backoff (Google Images, TodayTix/IBDB SERP, Playbill search;
                     data/audit/image-search-attempts.json)
     --retry-no-art  also search rows marked noReliableArt (skipped by every mode otherwise; BRO-5022)
+  node scripts/fetch-show-images-auto.js --full-size-posters [--show=id,...] [--limit=N] [--max-runtime=MIN] [--dry-run]
+    find a >=440px portrait original for recent shows whose poster is too small for the social cards
+    and record it in data/full-size-posters.json (BRO-6393; site files are not changed)
   node scripts/fetch-show-images-auto.js --help, -h   print this usage and exit — no fetches/writes
 `;
 
@@ -2879,6 +2882,149 @@ ${showCards}
   console.log(`Comparison page: ${htmlPath}`);
 }
 
+// ---------------------------------------------------------------------------
+// --full-size-posters (BRO-6393): social cards need a portrait poster at least
+// 440 px wide, and many recent shows only have a 160-200 px site file. For each
+// show the social ledger holds, then each opening in the next 14 days, then each
+// that opened in the last 90 days, whose current poster candidates are all too
+// small, try in order: TodayTix (id, else title search in the show's city), the
+// official site's own page, the show's page on the venue site, Mezzanine. The
+// first image that is big enough (never upscaled) AND passes the Gemini art
+// check is recorded in data/full-size-posters.json, which only
+// scripts/social-autopost/art.js reads. Site files and shows.json are untouched.
+// ---------------------------------------------------------------------------
+const MAX_ART_CHECKS_PER_SHOW = 6;
+
+async function fullSizePosterUrls(show, apiLookup, todayTixIds) {
+  const fsp = require('./lib/full-size-poster');
+  const { pageImageUrls } = require('./lib/tour-art');
+  const out = [];
+  const add = (url, source) => { const u = fsp.originalUrl(url); if (u && !out.some(o => o.url === u)) out.push({ url: u, source }); };
+
+  // 1. TodayTix: the show's id, else a title match in the show's own city.
+  let tt = null;
+  const ttId = show.todaytixId || todayTixIds.shows?.[show.id]?.id;
+  if (ttId && apiLookup._byId?.[ttId]) tt = apiLookup._byId[ttId];
+  else if (!ttId) tt = matchTodayTixShow(show.title, apiLookup, null, todaytixMarket(show), show);
+  if (tt && tt.poster) add(tt.poster, `todaytix:${tt.id}`);
+  else if (ttId) { const u = await fsp.todaytixPosterUrl(ttId, show.title); if (u) add(u, `todaytix:${ttId}`); }
+
+  // 2-3. Official site page, then the show's page on the venue site.
+  const pages = [];
+  const roots = [];
+  if (show.officialUrl) (fsp.isSiteRoot(show.officialUrl) ? roots : pages).push(show.officialUrl);
+  const reader = venueReaderUrl(show.venue);
+  if (reader) roots.push(reader);
+  for (const p of pages) {
+    try { for (const u of pageImageUrls(await fetchPageWithFallback(p), p)) add(u, 'official site'); } catch (e) { console.log(`   ⚠ official site: ${e.message.slice(0, 60)}`); }
+  }
+  for (const r of roots) {
+    try {
+      const link = fsp.findShowLink(await fetchPageWithFallback(r), r, show.title);
+      if (!link) continue;
+      for (const u of pageImageUrls(await fetchPageWithFallback(link), link)) add(u, `venue page ${link}`);
+      break;
+    } catch (e) { console.log(`   ⚠ venue page: ${e.message.slice(0, 60)}`); }
+  }
+
+  // 4. Mezzanine originals (the same production pick the main fetch uses).
+  try {
+    const { byNormTitle } = await loadMezzanineProductions();
+    const cands = byNormTitle.get(normalizeMezzTitle(show.title)) || [];
+    if (cands.length) {
+      if (!mezzVenueCity) mezzVenueCity = buildVenueCityIndex(allShowsData ? allShowsData.shows : []);
+      const { candidate } = pickMezzanineCandidate(show, cands, mezzVenueCity);
+      if (candidate) add(candidate.artUrl, 'mezzanine');
+    }
+  } catch (e) { console.log(`   ⚠ Mezzanine: ${e.message.slice(0, 60)}`); }
+  return out;
+}
+
+let venueReaderIndex = null;
+/** The what's-on page of the venue reader (scripts/lib/venue-listing-discover.js) covering this venue, or null. */
+function venueReaderUrl(venue) {
+  const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+  const { readerKeys, findReaderFor } = require('./lib/ob-venue-reader-coverage');
+  const configs = [...OB_VENUE_CONFIGS, ...OWE_VENUE_CONFIGS];
+  if (!venueReaderIndex) venueReaderIndex = readerKeys(configs, { otherReaders: [] });
+  const name = venue ? findReaderFor(venue, venueReaderIndex) : null;
+  const cfg = name && configs.find(c => c.name === name);
+  return cfg && /^https?:/.test(cfg.url || '') ? cfg.url : null;
+}
+
+async function runFullSizePosterPass(allShows, apiLookup, todayTixIds, { showFilterIds, limit, dryRun, deadlineMs }) {
+  const fsp = require('./lib/full-size-poster');
+  const sharp = require('sharp');
+  const { createRateLimiter } = require('./lib/verify-image');
+  const rateLimiter = createRateLimiter(15);
+  const today = new Date().toISOString().slice(0, 10);
+  const sources = loadImageSources();
+  const fullSize = fsp.loadFullSizePosters();
+  fullSize._tried = fullSize._tried || {};
+  let ledger = {};
+  try { ledger = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'social-autopost-ledger.json'), 'utf8')); } catch { /* no ledger */ }
+  const ordered = showFilterIds
+    ? allShows.filter(s => showFilterIds.has(s.id) || showFilterIds.has(s.slug))
+    : fsp.orderShowsForPosterSearch(allShows, { today, waiting: fsp.waitingForPosterIds(ledger) });
+  const ttIds = todayTixIds.shows || {};
+  const usedUrls = new Map(Object.entries(fullSize).filter(([k, v]) => k !== '_tried' && v && v.url).map(([k, v]) => [v.url, k]));
+  const stats = { checked: 0, alreadyOk: 0, found: 0, notFound: 0, skippedRecent: 0 };
+  const notFound = [];
+
+  for (const show of ordered) {
+    if (stats.checked >= limit) break;
+    if (deadlineMs && Date.now() > deadlineMs) { console.log('⏱ max runtime reached, stopping'); break; }
+    if (!showFilterIds && fsp.recentlyTried(show.id, fullSize, today)) { stats.skippedRecent++; continue; }
+
+    // Does a current candidate already pass the size rule? (art.js still vision-checks it at post time.)
+    let ok = false;
+    for (const c of fsp.posterCandidates(show, { sources, fullSize, todaytixIds: ttIds })) {
+      const buf = await fsp.loadPosterBuffer(c);
+      if (!buf) continue;
+      try { if (fsp.isUsablePoster(await sharp(buf).metadata())) { ok = true; break; } } catch { /* not an image */ }
+    }
+    if (ok) { stats.alreadyOk++; continue; }
+
+    stats.checked++;
+    console.log(`\n🖼  ${show.id} — searching for a full-size poster`);
+    let hit = null;
+    let artChecks = 0;
+    for (const cand of await fullSizePosterUrls(show, apiLookup, todayTixIds)) {
+      if (isRejectedImage({ poster: cand.url }, show)) { console.log(`   ✗ rejected for this show: ${cand.url.slice(0, 90)}`); continue; }
+      const owner = usedUrls.get(cand.url);
+      if (owner && owner !== show.id) { console.log(`   ✗ already ${owner}'s poster: ${cand.url.slice(0, 90)}`); continue; }
+      let buf;
+      try { buf = await downloadImageDirect(cand.url); } catch (e) { console.log(`   ⚠ ${cand.source}: ${e.message}`); continue; }
+      let meta;
+      try { meta = await sharp(buf).metadata(); } catch { console.log(`   ⚠ ${cand.source}: not an image`); continue; }
+      if (!fsp.isUsablePoster(meta)) { console.log(`   ✗ ${cand.source}: ${meta.width}x${meta.height} too small or not portrait`); continue; }
+      if (artChecks >= MAX_ART_CHECKS_PER_SHOW) break;
+      artChecks++;
+      const verdict = await fsp.verifyPosterArt(show, await sharp(buf).rotate().png().toBuffer(), { rateLimiter });
+      if (!verdict.ok) { console.log(`   ✗ ${cand.source}: art not confirmed (${verdict.reason})`); continue; }
+      hit = { url: cand.url, source: cand.source, width: meta.width, height: meta.height, verifiedAt: today };
+      break;
+    }
+    if (hit) {
+      console.log(`   ✓ ${hit.width}x${hit.height} from ${hit.source}: ${hit.url.slice(0, 100)}`);
+      fullSize[show.id] = hit;
+      delete fullSize._tried[show.id];
+      usedUrls.set(hit.url, show.id);
+      stats.found++;
+    } else {
+      console.log('   ✗ no full-size poster found');
+      fullSize._tried[show.id] = today;
+      notFound.push(show.id);
+      stats.notFound++;
+    }
+    if (!dryRun) fsp.saveFullSizePosters(fullSize); // checkpoint per show
+  }
+
+  console.log('\n' + '='.repeat(60));
+  console.log(`FULL-SIZE POSTERS: searched ${stats.checked}, found ${stats.found}, not found ${stats.notFound}, already big enough ${stats.alreadyOk}, skipped (tried < 3 days ago) ${stats.skippedRecent}${dryRun ? ' [dry-run, nothing written]' : ''}`);
+  if (notFound.length) console.log(`Still without a full-size poster: ${notFound.join(' ')}`);
+}
+
 async function main() {
   const args = process.argv.slice(2);
   // --help/-h checked BEFORE loadShows/any fetch/any write (cousin of
@@ -3050,6 +3196,16 @@ async function main() {
   } catch (err) {
     console.log(`TodayTix API unavailable: ${err.message}`);
     console.log('  Falling back to page-scrape method for all shows.\n');
+  }
+
+  if (args.includes('--full-size-posters')) {
+    const limit = parseInt(args.find(a => a.startsWith('--limit='))?.split('=')[1] || '80', 10);
+    await runFullSizePosterPass(showsData.shows, apiLookup, todayTixIds, {
+      showFilterIds, limit, dryRun: isDryRun,
+      deadlineMs: maxRuntimeMin > 0 ? Date.now() + maxRuntimeMin * 60000 : 0,
+    });
+    try { await Promise.race([scraper.cleanup(), new Promise((resolve) => setTimeout(resolve, 15000).unref())]); } catch { /* courtesy close */ }
+    process.exit(0);
   }
 
   // Filter shows - include all statuses when fetching missing, bad-images, or specific shows
