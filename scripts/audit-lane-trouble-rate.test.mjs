@@ -33,6 +33,17 @@ test('trouble is counted per lane, never across lanes', () => {
   assert.deepEqual(lanes.workspace.events, { dead: 1 });
 });
 
+test('a dead row written just BEFORE its launch row (failedLaunchEntries order) counts; launch-failed without a ref counts', () => {
+  const rows = [
+    { ts: new Date(NOW - 86400000).toISOString(), event: 'dead', taskId: '11', workspaceRef: 'workspace:11' },
+    { ts: new Date(NOW - 86400000 + 1).toISOString(), event: 'launch', taskId: '11', workspaceRef: 'workspace:11' },
+    { ts: new Date(NOW - 3600000).toISOString(), event: 'launch', taskId: '12', workspaceRef: 'workspace:12' },
+    { ts: new Date(NOW - 3500000).toISOString(), event: 'launch-failed', taskId: '12' },
+  ];
+  const { lanes } = computeLaneTroubleRate(rows, { nowMs: NOW });
+  assert.equal(lanes.workspace.troubledTasks, 2);
+});
+
 test('job-failed counts for headless; successful end state does not hide earlier trouble', () => {
   const rows = [launch(0, 'headless:9', '9'), ev(1, JOB_EVENTS.FAILED, '9'), ev(2, JOB_EVENTS.DONE, '9')];
   const { lanes } = computeLaneTroubleRate(rows, { nowMs: NOW });
