@@ -301,7 +301,8 @@
     "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
     "the-enormous-crocodile-west-end-2026/guardian--chris-wiegand.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-car-man-west-end-2026/balletcoforum--unknown.json"
+    "the-car-man-west-end-2026/balletcoforum--unknown.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
@@ -345,7 +346,6 @@
     "the-heart-off-broadway-2026/frontmezzjunkies--unknown.json",
     "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
     "two-girls-off-broadway-2026/exeunt-magazine--unknown.json",
     "some-woman-west-end-2026/thestage--sam-marlowe.json",
@@ -485,7 +485,12 @@
     "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
     "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
     "tao-of-glass-west-end-2026/click-liverpool--unknown.json",
-    "the-car-man-west-end-2026/thestage--dave-fargnoli.json"
+    "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -647,7 +652,9 @@
       "the-car-man-west-end-2026/balletcoforum--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
@@ -795,7 +802,7 @@
     ]
   },
   "startTime": "2026-10-25T23:10:36.264Z",
-  "lastProcessed": "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
   "log": [
     {
       "t": "2026-10-25T23:26:28.677Z",
@@ -853,6 +860,38 @@
       "t": "2026-10-26T00:53:49.152Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T01:53:15.484Z",
+      "event": "bb-session",
+      "session": "5c6b8d41",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-26T01:53:16.112Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-26T01:56:59.998Z",
+      "event": "bb-session",
+      "session": "35d720b6",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-26T01:57:57.046Z",
+      "event": "bb-session",
+      "session": "05b166ab",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-26T01:58:05.579Z",
+      "event": "bb-session",
+      "session": "3888b486",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
     }
+  ],
+  "recoveredAfterFailure": [
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ]
 }
