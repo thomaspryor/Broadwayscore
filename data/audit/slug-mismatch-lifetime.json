@@ -1,11 +1,12 @@
 {
-  "updatedAt": "2026-10-25T13:08:19.392Z",
-  "scanned": 2806,
-  "showsWithViolations": 144,
-  "totalViolations": 182,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-10-26T00:17:41.132Z",
+  "scanned": 2819,
+  "showsWithViolations": 145,
+  "totalViolations": 184,
+  "newSinceLastRun": 2,
   "newViolationKeys": [
-    "oh-happy-day-off-broadway-2025::https://www.talkinbroadway.com/page/ob/10_20_25.html"
+    "9-to-5-the-musical-west-end-2019::https://www.allthatdazzles.co.uk/post/review-your-lie-in-april-the-musical-in-concert-theatre-royal-drury-lane",
+    "not-ready-for-prime-time-off-broadway-2025::https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html"
   ],
   "violationKeys": [
     "sunset-boulevard-2024::https://www.interestedbystander.com/2024/11/theater-reviews-capsule-reviews-of-drag.html",
@@ -182,6 +183,7 @@
     "the-mirror-and-the-light-west-end-2021::https://www.dailymail.co.uk/tvshowbiz/article-10071075/PATRICK-MARMION-REVIEWS-Chop-chop-Henrys-not-moment-soon.html",
     "anna-x-west-end-2021::https://www.dailymail.co.uk/tvshowbiz/article-9800721/Emmas-Di-dazzling-play-inside-PATRICK-MARMIONs-night-review.html",
     "the-girl-who-fell-west-end-2019::https://www.thestage.co.uk/reviews/thegirlwhofell-review-trafalgar-studios-london--well-acted-and-sensitively-written",
+    "9-to-5-the-musical-west-end-2019::https://www.allthatdazzles.co.uk/post/review-your-lie-in-april-the-musical-in-concert-theatre-royal-drury-lane",
     "9-to-5-the-musical-west-end-2019::https://www.telegraph.co.uk/theatre/what-to-see/9-5-musical-review-bonnie-langford-employee-month-feelgood-flimsy/",
     "rutherford-and-son-west-end-2019::https://www.thetimes.co.uk/article/heavy-price-to-be-paid-for-speaking-truth-to-papa-2q9brhkwg",
     "a-very-expensive-poison-west-end-2019::https://www.dailymail.co.uk/tvshowbiz/article-7433705/PATRICK-MARMION-reviews-Hansard-study-divided-political-couple.html",
@@ -189,6 +191,7 @@
     "love-love-love-off-broadway-2016::https://www.ibj.com/articles/61118-lous-views-new-york-theater-beyond-broadway",
     "love-love-love-off-broadway-2016::https://www.wolfentertainmentguide.com/viewpage.aspx?cat=theater&record=6949",
     "bat-out-of-hell-west-end-2017::http://www.telegraph.co.uk/theatre/what-to-see/care-banishing-blast-wild-child-zaniness-bat-musical-review/",
+    "not-ready-for-prime-time-off-broadway-2025::https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html",
     "oh-happy-day-off-broadway-2025::https://www.talkinbroadway.com/page/ob/10_20_25.html"
   ],
   "hits": [
@@ -2344,8 +2347,14 @@
       "showId": "9-to-5-the-musical-west-end-2019",
       "title": "9 to 5: the Musical",
       "openingDate": "2019-02-17",
-      "message": "Review URL for telegraph/Dominic Cavendish does not mention show slug (checked: 9-to-5-the-musical-west-end-2019, 9-to-5-the-musical, 9-to-5, 9-to-5-the-musical-west-end): https://www.telegraph.co.uk/theatre/what-to-see/9-5-musical-review-bonnie-langford-employee-month-feelgood-flimsy/",
+      "message": "Review URL for all-that-dazzles-uk/null does not mention show slug (checked: 9-to-5-the-musical-west-end-2019, 9-to-5-the-musical, 9-to-5, 9-to-5-the-musical-west-end): https://www.allthatdazzles.co.uk/post/review-your-lie-in-april-the-musical-in-concert-theatre-royal-drury-lane\nReview URL for telegraph/Dominic Cavendish does not mention show slug (checked: 9-to-5-the-musical-west-end-2019, 9-to-5-the-musical, 9-to-5, 9-to-5-the-musical-west-end): https://www.telegraph.co.uk/theatre/what-to-see/9-5-musical-review-bonnie-langford-employee-month-feelgood-flimsy/",
       "violations": [
+        {
+          "outletId": "all-that-dazzles-uk",
+          "criticName": null,
+          "url": "https://www.allthatdazzles.co.uk/post/review-your-lie-in-april-the-musical-in-concert-theatre-royal-drury-lane",
+          "urlSlug": "post review-your-lie-in-april-the-musical-in-concert-theatre-royal-drury-lane"
+        },
         {
           "outletId": "telegraph",
           "criticName": "Dominic Cavendish",
@@ -2419,6 +2428,20 @@
           "criticName": "Dominic Cavendish",
           "url": "http://www.telegraph.co.uk/theatre/what-to-see/care-banishing-blast-wild-child-zaniness-bat-musical-review/",
           "urlSlug": "theatre what-to-see care-banishing-blast-wild-child-zaniness-bat-musical-review"
+        }
+      ]
+    },
+    {
+      "showId": "not-ready-for-prime-time-off-broadway-2025",
+      "title": "Not Ready for Prime Time",
+      "openingDate": "2025-10-20",
+      "message": "Review URL for the-interested-bystander/Cary Wong does not mention show slug (checked: not-ready-for-prime-time-off-broadway-2025, not-ready-for-prime-time, not-ready-for-prime-time-off-broadway, ready, prime, time, readyprimetime): https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html",
+      "violations": [
+        {
+          "outletId": "the-interested-bystander",
+          "criticName": "Cary Wong",
+          "url": "https://www.interestedbystander.com/2025/10/theater-reviews-liberation-moves-to.html",
+          "urlSlug": "2025 10 theater-reviews-liberation-moves-to"
         }
       ]
     },

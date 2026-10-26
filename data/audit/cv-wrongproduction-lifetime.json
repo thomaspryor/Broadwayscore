@@ -1,11 +1,11 @@
 {
-  "updatedAt": "2026-10-25T13:05:57.118Z",
-  "scanned": 2806,
-  "showsWithViolations": 116,
-  "totalViolations": 146,
+  "updatedAt": "2026-10-26T00:15:19.661Z",
+  "scanned": 2819,
+  "showsWithViolations": 117,
+  "totalViolations": 147,
   "newSinceLastRun": 1,
   "handled": {
-    "temporal-override-low-confidence": 801,
+    "temporal-override-low-confidence": 804,
     "not-shipped": 55,
     "duplicate-not-shipped": 56,
     "rebuild-skip-audit": 31,
@@ -13,7 +13,7 @@
     "prior-run-or-tour-leg": 45
   },
   "newViolationKeys": [
-    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json"
+    "romeo-and-juliet-west-end-2026::plays-international--jeremy-malies.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -52,6 +52,7 @@
     "mj-the-musical-west-end-2024::timeout-london--andrzej-lukowski.json",
     "oliver-west-end-2024::sunday-telegraph--dominic-cavendish.json",
     "grace-pervades-west-end-2026::whatsonstage--kris-hallett.json",
+    "romeo-and-juliet-west-end-2026::plays-international--jeremy-malies.json",
     "all-my-sons-west-end-2025::guardian--arifa-akbar.json",
     "sinatra-the-musical-west-end-2026::musical-theatre-review--unknown.json",
     "cyrano-de-bergerac-west-end-2026::artsdesk--unknown.json",
@@ -859,6 +860,27 @@
           "cvReasoning": "The review explicitly states the production is at 'Theatre Royal Bath', which is a regional UK theatre, not a West End v",
           "cvIssues": [
             "wrong production"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "title": "Romeo and Juliet",
+      "openingDate": "2026-03-31",
+      "message": "plays-international/Jeremy Malies (plays-international--jeremy-malies.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] This is a legitimate theater review with critical ass — https://playsinternational.org.uk/romeo-and-juliet-harold-pinter-theatre/",
+      "violations": [
+        {
+          "filename": "plays-international--jeremy-malies.json",
+          "url": "https://playsinternational.org.uk/romeo-and-juliet-harold-pinter-theatre/",
+          "outletId": "plays-international",
+          "criticName": "Jeremy Malies",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 2d of opening, likely correct production] This is a legitimate theater review with critical ass",
+          "cvIssues": [
+            "Scraped content does not match expected show: review is for a production directed by Robert Icke, not the expected West End Romeo and Juliet production",
+            "Cast names do not match: Sadie Sink and Noah Jupe are named, but these do not correspond to typical West End casting"
           ]
         }
       ]
