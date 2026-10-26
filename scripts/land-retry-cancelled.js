@@ -267,7 +267,7 @@ async function runStranded() {
   // Kill switch: set LAND_STRANDED_KILL_SWITCH=1 (repo variable) to stop all
   // re-runs and card routing without reverting code. The fast sweep is unaffected.
   if (/^(1|true)$/i.test(process.env.LAND_STRANDED_KILL_SWITCH || '')) { console.log('LAND_STRANDED_KILL_SWITCH set: stranded pass disabled'); return; }
-  const { decideStrandedRef, isAbandonedRun, cancelledJob, cancelledByFromAnnotations, isHandCancel } = require('./lib/land-stranded-refs.js');
+  const { decideStrandedRef, isAbandonedRun, cancelledJobs, cancelledByFromAnnotations, isHandCancel } = require('./lib/land-stranded-refs.js');
   const handCancels = [];
   if (dispatchInFlight()) { console.log('a dispatched Land run is in flight (it lists under main, not its ref): skipping this pass'); return; }
   const now = Date.now();
@@ -298,13 +298,15 @@ async function runStranded() {
       }
       const d = decideStrandedRef({ tip, latestRun, jobs, tipCommittedAt, cardLandedAt: cardLandedAt.get(landRefCardNumber(branch)), now });
       // BRO-6276: name a hand cancel (a person's or session's token, not Admit's park).
-      const cJob = latestRun && latestRun.conclusion === 'cancelled' ? cancelledJob(jobs) : null;
-      if (cJob) {
+      // Either job's annotation may carry the canceller; a superseded ref is not owed a comment.
+      const cJobs = latestRun && latestRun.conclusion === 'cancelled' && d.reason !== 'superseded' ? cancelledJobs(jobs) : [];
+      for (const cJob of cJobs) {
         try {
           d.cancelledBy = cancelledByFromAnnotations(gh([`repos/${repo}/check-runs/${cJob.id}/annotations`]));
         } catch (err) { console.log(`${branch}: cancel annotation unreadable (${String(err.message).split('\n')[0]})`); }
-        if (isHandCancel(d.cancelledBy) && d.action !== 'escalate') handCancels.push({ branch, tip, latestRun, cancelledBy: d.cancelledBy, followUp: d.action });
+        if (d.cancelledBy) break;
       }
+      if (isHandCancel(d.cancelledBy) && d.action !== 'escalate') handCancels.push({ branch, tip, latestRun, cancelledBy: d.cancelledBy, followUp: d.action });
       if (d.reason !== 'abandoned' && d.reason !== 'superseded') console.log(`${branch} @${tip.slice(0, 10)}: ${d.action} (${d.reason})${latestRun ? ` run ${latestRun.id} attempt ${latestRun.run_attempt}` : ''}`);
       decisions.push({ branch, tip, latestRun, ...d });
     } catch (err) {
