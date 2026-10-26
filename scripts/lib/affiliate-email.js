@@ -13,7 +13,7 @@ function esc(str) {
   if (str == null) return '';
   return String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
 }
-function htmlMoney(n) { return typeof n === 'number' ? `$${n.toFixed(2)}` : '\u2014'; }
+function htmlMoney(n) { return typeof n === 'number' ? `$${n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}` : '\u2014'; }
 function htmlInt(n) { return typeof n === 'number' ? n.toLocaleString() : '\u2014'; }
 function htmlPct(n) { return typeof n === 'number' ? `${(n * 100).toFixed(1)}%` : '\u2014'; }
 

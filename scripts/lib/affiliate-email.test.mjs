@@ -32,3 +32,9 @@ test('platform card: no header-only table when every seller is unpaid', () => {
   assert.doesNotMatch(html, /<th[^>]*>Platform<\/th>/);
   assert.doesNotMatch(html, /EPC = earnings per click/);
 });
+
+test('money over $1,000 gets a thousands separator', () => {
+  const html = buildAffiliateReportHtml({ ...base, totals: { commission: 1234.5, conversions: 2, revenue: 4557.79 } });
+  assert.match(html, /\$1,234\.50/);
+  assert.match(html, /\$4,557\.79 attributed sales/);
+});
