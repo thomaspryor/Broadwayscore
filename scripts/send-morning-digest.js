@@ -85,14 +85,12 @@ const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.j
 const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
 const { codexLineFromStatus } = require('./lib/codex-status-line.js');
 
-// Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
-// NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
-// — health-check.js runs only in GitHub Actions (data-health-check.yml),
-// where data/audit/digest-autofix-ledger.jsonl is a per-machine file that
-// doesn't exist in the checkout, so that check always returns status:'warn'
-// there, never 'error'. This sender runs LOCALLY (launchd, the same machine
-// that writes the ledger) — read it directly here instead of trusting the
-// CI-produced health.errors to ever carry the dead-loop signal.
+// Task #1220/BRO-230: health-check.js in GitHub Actions (data-health-check.yml)
+// reads data/audit/digest-autofix-ledger.jsonl from its git-tracked snapshot.
+// That snapshot can lag the dispatch host, so health.errors can carry a
+// dead-loop signal based on older outcomes. This sender runs locally
+// (launchd, the same machine that writes the ledger); read it directly here
+// so the digest judges current host activity rather than only CI's snapshot.
 const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
 const BACKLOG_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'backlog-drain-ledger.jsonl');
 // BRO-5168: `pipelineIssues` is fetchPipelineIssues()'s result (null when
@@ -123,10 +121,10 @@ function localLoopDeadMessage({ pendingIssues = 0, pipelineIssues = null } = {})
   // that hole would have traded a noisy wrong alarm for a quiet missing one.
   //
   // assessThroughputRow already detects it (ZERO_DISPATCH_ERROR_DAYS), but it
-  // is only wired into health-check.js, which runs in GitHub Actions where
-  // BOTH of these ledgers are per-machine and absent — so there it can only
-  // ever say 'warn'. Same reasoning as the block above: this sender runs on
-  // the machine that WRITES them, so it is the only place the row can be real.
+  // is also wired into health-check.js, where the throughput check is skipped
+  // in CI: the digest ledger's committed snapshot can be stale, and the
+  // backlog-drain ledger is gitignored/Mac-local. This sender reads both on
+  // the dispatch host so the zero-dispatch alarm uses current activity.
   //
   // Scoped to the zero-DISPATCH arm deliberately. The zero-PASS arm is the
   // same question assessAutofixEffectiveness already answers above, and

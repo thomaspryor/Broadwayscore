@@ -2945,20 +2945,18 @@ function checkAutofixEffectiveness() {
     raw = fs.readFileSync(file, 'utf-8');
   } catch (err) {
     if (err.code === 'ENOENT') {
-      // WARN, never ERROR. The ledger is untracked, so in CI it is always absent:
-      // erroring here would paint the digest red every single morning forever —
-      // including after the loop is fully healthy — and burn one of the three
-      // daily auto-dispatch slots on a card no CI session can fix. That is the
-      // failure this row exists to prevent, so it must not commit it. Warn keeps
-      // the blind spot visible without escalating; tracking the ledger is the
-      // real fix (card "health digest is blind in CI — 6 untracked ledgers").
+      // WARN, never ERROR: missing input cannot establish loop failure.
+      // This ledger is git-tracked and normally present in CI. ENOENT means
+      // this checkout is missing it; restore the file or read the dispatch host.
+      // A committed snapshot can lag live host activity, but that is distinct
+      // from absence and follows the normal assessment path below.
       return [{
         name,
         status: 'warn',
         unmeasurable: true,
         message: 'Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. '
-          + 'It is untracked, so CI never sees it — this row cannot judge the loop from this environment.',
-        hint: 'Track the ledger (or run this check on the dispatch host) so auto-fix success rate becomes visible where the digest is generated.',
+          + 'The ledger is git-tracked and normally available in CI; this checkout cannot judge the loop without it.',
+        hint: 'Restore the tracked ledger in this checkout, or run this check on the dispatch host for current outcomes. Committed snapshots can lag live activity.',
       }];
     }
     // Fail loud: a check that cannot read its input must not report healthy —
@@ -3007,10 +3005,11 @@ function checkAutofixEffectiveness() {
 // dispatch anything AT ALL today" — the exact question that would have caught
 // the 8/5-8/9 starvation (task #1184) on day 2 instead of day 5. These two
 // rows close that gap: a live end-to-end canary (scripts/lib/autofix-canary.js)
-// and a daily throughput rollup with an explicit zero-activity alarm. Both
-// ledgers are gitignored/per-machine (same as digest-autofix-ledger.jsonl
-// above) — ENOENT reads as `null` (never `[]`) so the pure functions can tell
-// "absent here" from "present and empty", and both follow the same
+// and a daily throughput rollup with an explicit zero-activity alarm. The
+// canary and backlog-drain ledgers are gitignored/Mac-local; the digest
+// ledger is git-tracked, but CI sees a potentially stale committed snapshot.
+// ENOENT reads as `null` (never `[]`) so the pure functions can tell
+// "absent here" from "present and empty", and both checks follow the same
 // warn-never-error-never-silent-pass rule task #1221 exists to enforce.
 function readJsonlLedgerOrNull(absPath) {
   if (!fs.existsSync(absPath)) return null;
