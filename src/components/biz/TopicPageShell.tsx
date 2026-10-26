@@ -7,6 +7,7 @@
 import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
+import EmailTomLink from '@/components/EmailTomLink';
 import ShareButton from '@/components/biz/ShareButton';
 
 export default function TopicPageShell({ title, subtitle, sharePath, children }: { title: string; subtitle: string; sharePath: string; children: ReactNode }) {
@@ -28,6 +29,7 @@ export default function TopicPageShell({ title, subtitle, sharePath, children }:
               {ESTIMATE_SOURCES_NOTE}{' '}
               <Link href="/methodology#commercial" className="underline hover:text-amber-400">How we measure</Link>
             </p>
+            <p className="text-xs text-amber-500/70 mt-1">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
           </div>
           <ShareButton path={sharePath} title={title} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
         </div>

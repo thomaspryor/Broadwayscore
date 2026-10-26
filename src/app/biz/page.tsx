@@ -29,6 +29,7 @@ import { mixSection, withoutMixRows } from '@/lib/season-findings';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
+import EmailTomLink from '@/components/EmailTomLink';
 
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
@@ -219,6 +220,7 @@ export default function BizDashboard() {
               </Link>
             </p>
             <p className="text-xs text-amber-500/70">{ESTIMATE_SOURCES_NOTE}</p>
+            <p className="text-xs text-amber-500/70">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
           </div>
         </header>
 

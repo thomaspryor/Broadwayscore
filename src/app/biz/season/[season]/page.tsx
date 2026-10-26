@@ -27,6 +27,7 @@ import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
 import { formatRowValue } from '@/lib/season-profile';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
+import EmailTomLink from '@/components/EmailTomLink';
 
 // Dynamically generate params from actual data - auto-updates when shows are added
 export function generateStaticParams() {
@@ -136,6 +137,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
               How we measure
             </Link>
           </p>
+          <p className="text-xs text-amber-500/70 mt-1">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
          </div>
           <ShareButton path={`/biz/season/${season}`} title={`${season} Broadway Season | Money Scorecard`} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
         </div>
