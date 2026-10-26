@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-10-26T22:25:47.488Z",
-  "processed": 17,
-  "failed": 1,
-  "successRate": "94.4%",
+  "updatedAt": "2026-10-26T22:52:20.270Z",
+  "processed": 46,
+  "failed": 6,
+  "successRate": "88.5%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 21,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 3,
+    "scrapingbee": 2,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 21
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-26T22:39:34.692Z",
+      "event": "bb-session",
+      "session": "806d74e8",
+      "url": "https://www.wsj.com/articles/all-the-beauty-in-the-world-review-seeking-solace-a"
+    },
+    {
+      "t": "2026-10-26T22:39:35.404Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-26T22:41:45.579Z",
+      "event": "bb-session",
+      "session": "72a353cd",
+      "url": "https://www.nytimes.com/2025/02/21/theater/safe-house-review-enda-walsh.html"
+    },
+    {
+      "t": "2026-10-26T22:41:46.174Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T22:43:12.993Z",
+      "event": "bb-session",
+      "session": "d89bffac",
+      "url": "https://www.wsj.com/articles/beckett-briefs-review-irish-reps-spellbinding-short"
+    },
+    {
+      "t": "2026-10-26T22:43:13.609Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-26T22:49:36.423Z",
+      "event": "bb-session",
+      "session": "adef7e3d",
+      "url": "https://www.nytimes.com/2024/09/30/theater/fatherland-blood-of-the-lamb-off-broa"
+    },
+    {
+      "t": "2026-10-26T22:49:37.062Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
