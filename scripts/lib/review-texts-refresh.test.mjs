@@ -127,8 +127,13 @@ test('bootstrap replaces a stale non-empty review-texts copy at startup, not on 
   assert.equal(fs.readFileSync(file, 'utf8'), '{"v":1}', 'compact keeps the session copy');
   assert.match(out, /STALE review texts/, `compact still says the copy is stale:\n${out}`);
 
+  // Leftover from a copy an earlier start's timeout killed mid-way.
+  const leftover = path.join(fx.data, '.review-texts.new.99999');
+  fs.mkdirSync(path.join(leftover, 'show-x'), { recursive: true });
+
   out = bootstrap(fx, 'startup');
   assert.equal(fs.readFileSync(file, 'utf8'), '{"v":2}', `startup re-copies:\n${out}`);
+  assert.equal(fs.existsSync(leftover), false, 'a killed copy\'s half-built tree is removed');
   assert.equal(fs.existsSync(path.join(fx.data, 'review-texts', 'show-1')), false, 'files the clone moved are gone');
   assert.equal(copyFacts(path.join(fx.data, 'review-texts')).copySha, v2);
   assert.doesNotMatch(out, /STALE review texts/);

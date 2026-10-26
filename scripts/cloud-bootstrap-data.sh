@@ -131,6 +131,9 @@ if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && RT_SRC="$(attached_review_texts)"; 
   fi
   case "$RT_DECISION" in
     copy*)
+      # A copy killed by the timeout below leaves its half-built tree (hundreds of MB)
+      # under a PID-named path that no later run would remove.
+      rm -rf data/.review-texts.new.* data/.review-texts.old.* 2>/dev/null || true
       log "copying review texts from the session-attached clone $RT_SRC (about a minute; ${RT_DECISION#copy })"
       REVIEW_TEXTS_SOURCE="$RT_SRC" run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" --all 2>&1 \
         | grep -E 'ERROR|FATAL|Review texts|files copied|Setup complete' | sed 's/^/[setup-local-data] /' || true
