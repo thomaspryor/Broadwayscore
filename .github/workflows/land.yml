@@ -23,6 +23,11 @@ name: Land
 #             lost because the older tip is never landed — the `land` job
 #             refuses a tip that is not the one its checks verified via
 #             --expect-tip). Runs in parallel across branches.
+#             The group carries event_name (BRO-6276): a hand dispatch for
+#             land/X can no longer cancel the live push run's checks, and the
+#             dispatch-guard job refuses a dispatch while a push run for the
+#             branch is live or parked, so it cannot evict that run's pending
+#             Land job either.
 #   land    — PER BRANCH too (`landing-<branch>`, cancel-in-progress
 #             false), and the fast-forward is serialized by a FIFO git-ref
 #             mutex (scripts/land-mutex.js, BRO-5112) shared with
@@ -94,14 +99,40 @@ env:
   BRANCH: ${{ github.event.inputs.branch || github.ref_name }}
 
 jobs:
+  # BRO-6276: a hand dispatch while a push run for the same branch is live or
+  # parked would compete with it for the one pending slot in landing-<branch>.
+  # Refuse it here (fails closed; kill switch: repo variable
+  # LAND_DISPATCH_GUARD_DISABLED=true). Push runs pass straight through. A
+  # refusal leaves Checks skipped, so neither land nor alert-red runs.
+  dispatch-guard:
+    name: Dispatch guard
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout the guard
+        if: github.event_name == 'workflow_dispatch'
+        uses: actions/checkout@v5
+        with:
+          sparse-checkout: scripts/lib/land-dispatch-guard.js
+          sparse-checkout-cone-mode: false
+      - name: Refuse a dispatch that would compete with a live push run
+        if: github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          LAND_DISPATCH_GUARD_DISABLED: ${{ vars.LAND_DISPATCH_GUARD_DISABLED }}
+        run: node scripts/lib/land-dispatch-guard.js
+
   checks:
     name: Checks
+    needs: dispatch-guard
     runs-on: ubuntu-latest
-    # Per-branch: a newer push to the same land/** branch cancels the older
-    # tip's checks. Safe: the older tip is never landed (the land job pins the
-    # tip it verified with --expect-tip), so a cancelled run here loses nothing.
+    # Per-branch AND per-event: a newer push to the same land/** branch cancels
+    # the older tip's checks. Safe: the older tip is never landed (the land job
+    # pins the tip it verified with --expect-tip), so a cancelled run here loses
+    # nothing. event_name keeps a hand dispatch out of the push run's group.
     concurrency:
-      group: land-checks-${{ github.event.inputs.branch || github.ref_name }}
+      group: land-checks-${{ github.event_name }}-${{ github.event.inputs.branch || github.ref_name }}
       # concurrency-cancel-ok: per-branch group on land/** pushes only (never
       # main); a superseded tip is never landed, so cancelling its checks is
       # latest-wins by design, not a lost validation. Read by
