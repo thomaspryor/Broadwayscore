@@ -98,10 +98,12 @@ const key = s => { const l = String(s).toLowerCase().replace(/[’']/g, '').repl
   const w = l.replace(/[^a-z0-9-]/g, ''), [a, b] = w.split('-');
   if (b && NUMW[a] >= 20 && NUMW[b] < 10) return String(NUMW[a] + NUMW[b]);
   return a in NUMW ? String(NUMW[a]) : w.replace(/-/g, ''); };
+const { reviewHash } = require('./copyreview.js');
 function loadVoice(n) {
   const VO = process.env.VO_DIR, base = process.env.VO_NAME || n;
   if (!VO) throw new Error(`set VO_DIR (and VO_NAME) to the folder with ${base}.plan.json, .mp3 and .words.json`);
   const plan = JSON.parse(fs.readFileSync(path.join(VO, base + '.plan.json'), 'utf8'));
+  if (!plan.review || !plan.review.pass || plan.review.of !== reviewHash(plan)) throw new Error(`${base}: copy has not passed the two-model review (node copyreview.js ${base}.plan.json)`);
   const wj = JSON.parse(fs.readFileSync(path.join(VO, base + '.words.json'), 'utf8'));
   const words = wj.words.map(w => ({ w: w.word, a: +(w.start + VO_OFF).toFixed(3), b: +(w.end + VO_OFF).toFixed(3) }));
   const marks = [...wj.text.matchAll(/\b([A-F])([+-])(?![\w])/g)];
@@ -137,7 +139,7 @@ function planQuotes(V, rv) {
 }
 const TALLY = [['rave', 'raves', 'rave'], ['positive', 'positive', 'positive'], ['mixed', 'mixed', 'mixed'], ['negative', 'negative', 'negative']];
 function voicedFromPlan(n) {
-  const V = loadVoice(n), at = V.at, fmt = n.replace(/-voiced$/, '');
+  const V = loadVoice(n), at = V.at, fmt = n.replace(/-voiced$/, ''), cue = V.plan.cue || {};
   if (V.plan.fmt !== fmt) throw new Error(`${n} needs a ${fmt} plan, got ${V.plan.fmt}`);
   const dur = +(V.last + 2.2).toFixed(2), base = { words: V.words, vo: V.vo, dur };
   if (fmt === 'top5') {
@@ -154,8 +156,8 @@ function voicedFromPlan(n) {
   if (fmt === 'every') {
     const d = data('every', x.id); at(`${N} critics`);
     // rows of each kind land while the voice names that kind, never faster than ROW_MIN apart
-    const ROW_MIN = 0.18, kinds = TALLY.filter(([k]) => c[k] > 0).map(([k, many, one]) => ({ k, t: at(k === 'rave' ? 'raves' : k) }));
-    const scoreCue = at('the critic score'), land = at(`${score}`); at(label);
+    const ROW_MIN = 0.18, kinds = TALLY.filter(([k]) => c[k] > 0).map(([k, many, one]) => ({ k, t: at(k === 'rave' ? (c.rave === 1 ? 'rave' : 'raves') : k) }));
+    const scoreCue = at(cue.score || 'the critic score'), land = at(`${score}`); at(label);
     const times = []; let tPrev = -1;
     kinds.forEach((g, gi) => { const rows = d.reviews.filter(r => bucket(r.s, x.category) === g.k);
       const span = (kinds[gi + 1] ? kinds[gi + 1].t : scoreCue - 0.4) - g.t, step = Math.max(ROW_MIN, span / rows.length);
@@ -169,18 +171,18 @@ function voicedFromPlan(n) {
   if (fmt === 'verdict') {
     at(`${N} critics`);
     const quotes = planQuotes(V, rv), bar = tally()[0];
-    const A = { bar, count: at('the critic score'), land: at(`${score}`), label: at(label), aud: at('audiences'), grade: at(aud.grade), end: at('every review') };
+    const A = { bar, count: at(cue.score || 'the critic score'), land: at(`${score}`), label: at(label), aud: at(cue.aud || 'audiences'), grade: at(aud.grade), end: at('every review') };
     const kicker = x.category === 'broadway' ? 'Opening night verdict' : x.category === 'west-end' ? 'Press night verdict' : 'The reviews are in';
     return { kind: 'verdict', kicker, show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score: x.score, count: N, scores: rv.map(r => r.s),
       counts: c, label, audienceGrade: aud, quotes, A, ...base, dur: +(Math.max(V.last, A.end) + 2.4).toFixed(2) };
   }
   if (fmt === 'reveal') {
     const d = data('reveal', x.id), cues = {};
-    at(`${N} critics`); cues.count = at('one score'); cues.land = at(`${score}`); at(label);
-    cues.quotesIn = at('what they said'); const quotes = planQuotes(V, rv); cues.q = quotes.map(q => q.t);
-    cues.vs = at(`critics give it ${score}`); cues.aud = at(`audiences give it`); at(aud.grade);
-    cues.gap = at(d.gapLine.split(' ').slice(0, 2).join(' ')); cues.end = at('every review');
-    return { ...d, ...base, quotes, cues };
+    at(`${N} critics`); cues.count = at(cue.count || 'one score'); cues.land = at(`${score}`); at(label);
+    cues.quotesIn = at(cue.quotesIn || 'what they said'); const quotes = planQuotes(V, rv); cues.q = quotes.map(q => q.t);
+    cues.vs = at(`${cue.vs || 'critics give it'} ${score}`); cues.aud = at(cue.aud || 'audiences give it'); at(aud.grade);
+    const gapLine = V.plan.gapLine || d.gapLine; cues.gap = at(gapLine.split(' ').slice(0, 2).join(' ')); cues.end = at('every review');
+    return { ...d, ...base, gapLine, quotes, cues };
   }
   throw new Error('no voiced cut for ' + fmt);
 }
