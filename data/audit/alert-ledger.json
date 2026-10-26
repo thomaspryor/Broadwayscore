@@ -245,10 +245,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T07:11:52.509Z",
-      "lastSeen": "2026-10-26T10:23:14.300Z",
-      "lastNotifiedAt": "2026-10-26T07:11:52.509Z",
-      "lastSurfacedAt": "2026-10-26T07:11:52.509Z",
+      "incidentOpenedAt": "2026-10-26T07:34:11.818Z",
+      "lastSeen": "2026-10-26T10:47:53.520Z",
+      "lastNotifiedAt": "2026-10-26T07:34:11.818Z",
+      "lastSurfacedAt": "2026-10-26T07:34:11.818Z",
       "notifyCount": 172,
       "cardId": null,
       "linearIdentifier": null,
@@ -26254,8 +26254,10 @@
         "runId": "40132155159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
-      "absentRunIds": [],
-      "silentRefires": 22
+      "absentRunIds": [
+        "40306299833"
+      ],
+      "silentRefires": 21
     },
     "land:land/bro-6158-plans": {
       "status": "resolved",
@@ -27407,6 +27409,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:e41dfd34": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"hook file and line budget does not regrow\"",
+      "firstSeen": "2026-10-26T10:47:50.861Z",
+      "incidentOpenedAt": "2026-10-26T10:47:50.861Z",
+      "lastSeen": "2026-10-26T10:47:50.861Z",
+      "lastNotifiedAt": "2026-10-26T10:47:50.861Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6307",
+      "dispatch": {
+        "requestedAt": "2026-10-26T10:47:50.861Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40306299833",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40306299833"
+      }
     },
     "land:land/bro-6298-az-lookups": {
       "status": "open",
