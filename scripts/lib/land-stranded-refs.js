@@ -144,12 +144,14 @@ function cancelledByFromAnnotations(annotations) {
   return null;
 }
 
-const isHandCancel = (login) => Boolean(login) && !/\[bot\]$/.test(login);
+// Admit parks with the workflow token (github-actions[bot]); any other login,
+// including another app's bot, is a hand cancel.
+const isHandCancel = (login) => Boolean(login) && login !== 'github-actions[bot]';
 
-/** The cancelled job whose annotation names the canceller: Land first, else Checks. */
-function cancelledJob(jobs) {
+/** The cancelled jobs whose annotations may name the canceller, Land first then Checks. */
+function cancelledJobs(jobs) {
   const pick = (n) => (jobs || []).find((j) => j.name === n && j.conclusion === 'cancelled');
-  return pick('Land') || pick('Checks') || null;
+  return [pick('Land'), pick('Checks')].filter(Boolean);
 }
 
 const FOLLOW_UP_TEXT = {
@@ -238,5 +240,5 @@ module.exports = {
   STRANDED_RETRY_MINUTES, STRANDED_MAX_ATTEMPT, NO_RUN_GRACE_MINUTES, MARKER_PREFIX, ABANDONED_AFTER_DAYS,
   REFUSAL_GRACE_MINUTES, CARD_IDLE_HOURS, HELD_CARD_DAYS,
   isAbandonedRun, decideStrandedRef, strandedMarker, buildEscalationComment, escalationAction, newestPerCard,
-  cancelledByFromAnnotations, isHandCancel, cancelledJob, buildHandCancelComment,
+  cancelledByFromAnnotations, isHandCancel, cancelledJobs, buildHandCancelComment,
 };
