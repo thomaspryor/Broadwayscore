@@ -3,14 +3,14 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-24T12:21:32.838Z"
+    "at": "2026-10-25T12:53:42.511Z"
   },
   "venueReaders": {
-    "at": "2026-10-24T12:21:32.838Z",
+    "at": "2026-10-25T12:53:42.511Z",
     "readers": 54,
-    "active": 171,
-    "activeCovered": 102,
-    "activeDated": 78,
+    "active": 172,
+    "activeCovered": 103,
+    "activeDated": 79,
     "uncovered": {
       "la mama experimental theatre club": {
         "firstSeen": "2026-10-03T12:53:57.507Z",
@@ -44,13 +44,18 @@
     "explained": [
       {
         "venue": "AMT Theater",
-        "recentShows": 5,
+        "recentShows": 6,
         "reason": "sells through Ludus behind a Cloudflare JS challenge; the Wix site lists shows as free text"
       },
       {
         "venue": "The Shed",
-        "recentShows": 5,
+        "recentShows": 6,
         "reason": "queue-it bot wall on theshed.org/program; needs a real browser"
+      },
+      {
+        "venue": "Theater 555",
+        "recentShows": 4,
+        "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
       },
       {
         "venue": "the cell",
@@ -66,11 +71,6 @@
         "venue": "St. Luke's Theatre",
         "recentShows": 3,
         "reason": "stlukestheatre.com says the venue closed in January 2021"
-      },
-      {
-        "venue": "Theater 555",
-        "recentShows": 3,
-        "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
       },
       {
         "venue": "Theaterlab",
@@ -95,7 +95,7 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-24T12:21:32.838Z",
+    "at": "2026-10-25T12:53:42.511Z",
     "readers": 23,
     "active": 96,
     "activeCovered": 32,

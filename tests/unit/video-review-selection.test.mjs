@@ -9,7 +9,7 @@ const require = createRequire(import.meta.url);
 const {
   inProductionWindow, indexShowsByTitle, rematchCandidates, isDeadEnd, selectionCandidates,
   candidateSetKey, deterministicPick, transcriptExcerpt, parsePickerReply, parseRematchReply,
-  planSelection, fallbackPick, isPublishable, nextSelectedRecord, publishedRecord,
+  planSelection, fallbackPick, isPublishable, nextSelectedRecord, publishedRecord, titleMatches,
 } = require('../../scripts/lib/video-review-selection.js');
 const { parseRating, ratingBand, anchorScore, mentionsRating, videoBucketForScore } = require('../../scripts/lib/video-review-rating.js');
 
@@ -235,4 +235,43 @@ test('build: publishes the new pick only once scored and verified, else the prev
   assert.equal(publishedRecord(published('a')).record.videoId, 'a');
   assert.equal(publishedRecord(vid('a')).record, null);
   assert.equal(isPublishable({ ...published('a'), wrongProduction: true }), false);
+});
+
+// BRO-6172: near-miss titles. Broadway Ben's "John Proctor as the Villain" and
+// the classifier's "The Wild Party" for City Center's "Encores! The Wild Party".
+const jpv = { id: 'john-proctor-is-the-villain-2025', title: 'John Proctor Is the Villain', category: 'broadway', previewsStartDate: '2025-03-14', openingDate: '2025-04-24', closingDate: '2025-08-24' };
+const wild = { id: 'encores-the-wild-party-off-broadway-2026', title: 'Encores! The Wild Party', category: 'off-broadway', previewsStartDate: '2026-03-11', openingDate: '2026-03-18', closingDate: '2026-03-29' };
+const elevenToMidnight = { id: '11-to-midnight-off-broadway-2026', title: '11 to Midnight', category: 'off-broadway', previewsStartDate: '2026-02-20', openingDate: '2026-03-05', closingDate: '2026-04-12' };
+
+test('re-match: a close title is a candidate when no exact title matches', () => {
+  const idx = indexShowsByTitle([jpv, wild, elevenToMidnight]);
+  assert.deepEqual(rematchCandidates({ showTitle: 'John Proctor as the Villain', date: '20250719' }, idx).map(s => s.id), ['john-proctor-is-the-villain-2025']);
+  assert.deepEqual(rematchCandidates({ showTitle: 'The Wild Party', date: '20260320' }, idx).map(s => s.id), ['encores-the-wild-party-off-broadway-2026']);
+});
+
+test('re-match: close titles still need the run dates, and unrelated titles never match', () => {
+  const idx = indexShowsByTitle([jpv, wild, elevenToMidnight]);
+  assert.deepEqual(rematchCandidates({ showTitle: 'John Proctor as the Villain', date: '20240101' }, idx), []);
+  assert.deepEqual(rematchCandidates({ showTitle: 'Some Fringe Show', date: '20260320' }, idx), []);
+  // a wrong close title (a Todrick Hall "Midnight" workshop) is only a candidate:
+  // the model confirm in classify-reviews.js is what refuses it
+  assert.deepEqual(rematchCandidates({ showTitle: 'Midnight (Todrick Hall workshop)', date: '20260308' }, idx).map(s => s.id), ['11-to-midnight-off-broadway-2026']);
+});
+
+test('titleMatches: exact first, otherwise close titles', () => {
+  const idx = indexShowsByTitle([jpv, wild]);
+  assert.deepEqual(titleMatches('Encores! The Wild Party', idx).map(s => s.id), ['encores-the-wild-party-off-broadway-2026']);
+  assert.deepEqual(titleMatches('The Wild Party', idx).map(s => s.id), ['encores-the-wild-party-off-broadway-2026']);
+  assert.deepEqual(titleMatches('Hamlet', idx), []);
+  assert.deepEqual(titleMatches('', idx), []);
+});
+
+test('re-match: an exact title whose run does not fit the date falls back to close titles', () => {
+  // real data: "The Wild Party" is an exact title (the 2000 Broadway run), which
+  // used to hide City Center's 2026 Encores! run from the re-match
+  const wild2000 = { id: 'the-wild-party-2000', title: 'The Wild Party', category: 'broadway', previewsStartDate: '2000-03-21', openingDate: '2000-04-13', closingDate: '2000-06-11' };
+  const idx = indexShowsByTitle([wild2000, wild, jpv]);
+  assert.deepEqual(rematchCandidates({ showTitle: 'The Wild Party', date: '20260320' }, idx).map(s => s.id), ['encores-the-wild-party-off-broadway-2026']);
+  // and the exact run still wins when it fits
+  assert.deepEqual(rematchCandidates({ showTitle: 'The Wild Party', date: '20000420' }, idx).map(s => s.id), ['the-wild-party-2000']);
 });

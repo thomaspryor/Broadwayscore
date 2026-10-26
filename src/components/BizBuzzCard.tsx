@@ -33,6 +33,7 @@ import { formatCapitalization } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
+import MoneyGate from './biz/MoneyGate';
 import dynamic from 'next/dynamic';
 import type { BoxOfficeV2Card } from '@/lib/box-office-v2-display';
 
@@ -252,6 +253,10 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
         </Link>
       </p>
 
+      {/* Everything below the heading is free with an email (BRO-6210). */}
+      {/* No paywall JSON-LD here: it would mark the whole show page not free
+          for one small section (BRO-6210 review). /biz pages carry it. */}
+      <MoneyGate page="show-page" preview="short" schema={false}>
       {/* Status chips: recoupment, trend, break-even position */}
       <div className="flex flex-wrap gap-1.5 mb-4 empty:hidden">
         {/* Pure nonprofits raise no investor capital: "Not reported" / "Not Recouped" would read as a gap or a failure.
@@ -556,6 +561,8 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           </div>
         )}
       </div>
+
+      </MoneyGate>
 
       {/* Footer link to the cross-show commercial leaderboard */}
       <div className="mt-1.5 -mb-1 sm:-mb-2">

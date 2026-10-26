@@ -42,6 +42,14 @@ test('a payment counts as received only from its payout date; before it, as an a
   assert.deepEqual(glengarry('2026-06-02'), { amount: 2_700_000, basis: 'received', received: true });
 });
 
+test('a payout with its earlier allocation (BRO-6218): the allocation before the payout date, the payout from it', () => {
+  const at = (slug, iso) => nyTaxCredit({ ...formulaArgs, slug, now: Date.parse(iso) });
+  assert.deepEqual(at('tammy-faye-2024', '2025-09-01'), { amount: 3_000_000, basis: 'allocated', received: false });
+  assert.deepEqual(at('tammy-faye-2024', '2026-03-19'), { amount: 2_500_000, basis: 'received', received: true });
+  assert.deepEqual(at('lempicka', '2025-09-01'), { amount: 3_000_000, basis: 'allocated', received: false });
+  assert.deepEqual(at('lempicka', '2026-10-25'), { amount: 2_600_000, basis: 'received', received: true });
+});
+
 test('the refit formula: 13% of the cap plus qualifying running costs, capped at $3M', () => {
   assert.equal(formulaCredit(4_000_000, 6_000_000), 1_300_000);
   assert.equal(formulaCredit(20_000_000, 30_000_000), 3_000_000);
@@ -63,9 +71,11 @@ test('notes conflicts: an amount next to "tax credit" more than 10% off the awar
   assert.deepEqual(c('glengarry-glen-ross-2025', 'a $2 tax credit'), [['', 2_000_000, 2_700_000]]);
   // One amount written twice reports once.
   assert.deepEqual(c('glengarry-glen-ross-2025', 'Expected ~$1.9MM tax credit; tax credit of $1.9 mil.'), [['', 1_900_000, 2_700_000]]);
-  // Bounds against a $3M allocation (Tammy Faye; Romeo + Juliet).
+  // Bounds against a $3M allocation (Dead Outlaw; Romeo + Juliet) and a payout (Tammy Faye, $2.5M).
+  assert.deepEqual(c('dead-outlaw-2025', 'Paid more than $2 million in NY tax credit by Jun 2026.'), []);
+  assert.deepEqual(c('dead-outlaw-2025', 'Paid more than $3.5M NY tax credit.'), [['more than', 3_500_000, 3_000_000]]);
   assert.deepEqual(c('tammy-faye-2024', 'Paid more than $2 million in NY tax credit by Jun 2026.'), []);
-  assert.deepEqual(c('tammy-faye-2024', 'Paid more than $3.5M NY tax credit.'), [['more than', 3_500_000, 3_000_000]]);
+  assert.deepEqual(c('tammy-faye-2024', 'Expected a $3M tax credit.'), [['', 3_000_000, 2_500_000]]);
   assert.deepEqual(c('romeo-juliet-2024', 'Eligible for up to $1.75M tax credit.'), [['up to', 1_750_000, 3_000_000]]);
   assert.deepEqual(c('romeo-juliet-2024', 'Eligible for up to $3M tax credit.'), []);
   // An amount that is not the credit; a show with no award; no notes.
@@ -78,8 +88,9 @@ test('notes conflicts: an amount next to "tax credit" more than 10% off the awar
 
 test('award tables: whole dollars up to the $3M cap, dated payouts, no show on both lists', () => {
   const today = new Date().toISOString().slice(0, 10);
-  for (const [slug, [amt, paid]] of Object.entries(RECEIVED)) {
+  for (const [slug, [amt, paid, allocated]] of Object.entries(RECEIVED)) {
     assert.ok(Number.isInteger(amt) && amt > 0 && amt <= TAX_CREDIT_MAX, `${slug}: ${amt}`);
+    assert.ok(allocated === undefined || (Number.isInteger(allocated) && allocated > 0 && allocated <= TAX_CREDIT_MAX), `${slug}: allocated ${allocated}`);
     // ESD's first payout was Aug 4 2022; a payment cannot be dated after today.
     assert.ok(/^\d{4}-\d{2}-\d{2}$/.test(paid) && paid >= '2022-08-04' && paid <= today, `${slug}: ${paid}`);
   }

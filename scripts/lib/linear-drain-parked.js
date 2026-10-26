@@ -106,7 +106,7 @@ function isSessionParkedDrainable(issue, { priorities = SESSION_PARKED_PRIORITIE
   const hd = require('./headless-dispatchability.js');
   if (!hd.isDrainableSessionParked(issue.description || '')) return false;
   const { blockers } = hd.classifyHeadlessDispatchability(
-    { subject: issue.title, notes: issue.description || '' }, { verifyCmd: verifyCommand(issue) });
+    { subject: issue.title, notes: issue.description || '', comments: require('./linear-dispatch.js').sortedCommentBodies(issue) }, { verifyCmd: verifyCommand(issue) });
   return blockers.every((b) => b.code === hd.BLOCKERS.PARKED_SENTINEL);
 }
 
@@ -134,7 +134,7 @@ function isMacOnlyDrainable(issue) {
   if (!cmd) return false;
   const hd = require('./headless-dispatchability.js');
   const { blockers } = hd.classifyHeadlessDispatchability(
-    { subject: issue.title, notes: issue.description || '' }, { verifyCmd: cmd });
+    { subject: issue.title, notes: issue.description || '', comments: require('./linear-dispatch.js').sortedCommentBodies(issue) }, { verifyCmd: cmd });
   return blockers.length === 0;
 }
 

@@ -39,7 +39,6 @@ const UI_PATH_PATTERNS = [
   /\/src\/.*\.(tsx|jsx|css|scss|module\.css)$/,
   /\/tailwind\.config\.(js|ts|cjs|mjs)$/,
   /\/postcss\.config\.(js|ts|cjs|mjs)$/,
-  /\/src\/app\/.*\.(tsx|jsx|ts|js)$/,
 ];
 
 // Push-ingress: every entrypoint that can land changes on origin/main.

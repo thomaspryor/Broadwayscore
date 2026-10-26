@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-24T13:41:54.189Z",
+    "lastUpdated": "2026-10-25T21:55:33.958Z",
     "version": "2.1.0",
     "lastChange": "BRO-6122: standingCoverage promote talkinbroadway (audit-standing-coverage lists talkinbroadway under promote (unflagged, clears the bar))"
   },
@@ -5413,7 +5413,7 @@
       "domain": "peconicpublicbroadcasting.org"
     },
     "realmericanmedia": {
-      "displayName": "Realmericanmedia",
+      "displayName": "RealMericanMedia.com",
       "tier": 3,
       "aliases": [
         "realmericanmedia"
@@ -9025,7 +9025,7 @@
       "domain": "celebrityradio.biz"
     },
     "mydreamcametrue": {
-      "displayName": "Mydreamcametrue",
+      "displayName": "My Dream Came True",
       "tier": 3,
       "aliases": [
         "mydreamcametrue"
@@ -9033,7 +9033,7 @@
       "domain": "mydreamcametrue.com"
     },
     "broadwayspotted": {
-      "displayName": "Broadwayspotted",
+      "displayName": "Broadway Spotted",
       "tier": 3,
       "aliases": [
         "broadwayspotted"
@@ -9041,7 +9041,7 @@
       "domain": "broadwayspotted.com"
     },
     "donshewey": {
-      "displayName": "Donshewey",
+      "displayName": "Don Shewey",
       "tier": 3,
       "aliases": [
         "donshewey"
@@ -9863,7 +9863,7 @@
       "displayNameReviewed": true
     },
     "shinylife": {
-      "displayName": "Shinylife",
+      "displayName": "A Shiny Life For Me!",
       "tier": 3,
       "aliases": [
         "shinylife"
@@ -11324,14 +11324,6 @@
       ],
       "accessModel": "defunct"
     },
-    "americanpsychothemusicalcomlottery": {
-      "displayName": "Americanpsychothemusicalcomlottery",
-      "tier": 3,
-      "aliases": [
-        "americanpsychothemusicalcomlottery"
-      ],
-      "accessModel": "defunct"
-    },
     "nycitycenterorg": {
       "displayName": "New York City Center",
       "tier": 3,
@@ -11354,14 +11346,6 @@
       "tier": 3,
       "aliases": [
         "seattlereporg"
-      ],
-      "accessModel": "defunct"
-    },
-    "laughteronbroadwaycomlottery": {
-      "displayName": "Laughteronbroadwaycomlottery",
-      "tier": 3,
-      "aliases": [
-        "laughteronbroadwaycomlottery"
       ],
       "accessModel": "defunct"
     },
@@ -13179,12 +13163,11 @@
       "regionInferredAt": "2026-10-18T08:20:07.486Z"
     },
     "ticketswitch": {
-      "displayName": "Ticketswitch",
+      "displayName": "theatre.london",
       "tier": 3,
       "aliases": [
         "ticketswitch"
       ],
-      "displayNameInferred": true,
       "domain": "theatrelondon.ticketswitch.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
@@ -13220,24 +13203,22 @@
       "regionInferredAt": "2026-10-18T18:08:00.770Z"
     },
     "thepegreview": {
-      "displayName": "Thepegreview",
+      "displayName": "THE PEG",
       "tier": 3,
       "aliases": [
         "thepegreview"
       ],
-      "displayNameInferred": true,
       "domain": "thepegreview.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-18T23:01:22.291Z"
     },
     "travelbeginsat40": {
-      "displayName": "Travelbeginsat40",
+      "displayName": "Travel Begins at 40",
       "tier": 3,
       "aliases": [
         "travelbeginsat40"
       ],
-      "displayNameInferred": true,
       "domain": "travelbeginsat40.com",
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
@@ -13554,6 +13535,70 @@
         "jala-news"
       ],
       "domain": "jalanews.com"
+    },
+    "the-wesleyan-argus": {
+      "displayName": "The Wesleyan Argus",
+      "tier": 3,
+      "aliases": [
+        "the-wesleyan-argus"
+      ],
+      "domain": "wesleyanargus.com"
+    },
+    "bestofthislife": {
+      "displayName": "Best of This Life",
+      "tier": 3,
+      "aliases": [
+        "bestofthislife"
+      ],
+      "domain": "bestofthislife.com"
+    },
+    "fairlyspiritual": {
+      "displayName": "Fairly Spiritual",
+      "tier": 3,
+      "aliases": [
+        "fairlyspiritual"
+      ],
+      "domain": "fairlyspiritual.org"
+    },
+    "showsiveseen": {
+      "displayName": "Shows I've Seen",
+      "tier": 3,
+      "aliases": [
+        "showsiveseen"
+      ],
+      "domain": "showsiveseen.com"
+    },
+    "thesoundonstage": {
+      "displayName": "The Sound on Stage",
+      "tier": 3,
+      "aliases": [
+        "thesoundonstage"
+      ],
+      "domain": "thesoundonstage.org"
+    },
+    "broadwaywithaj": {
+      "displayName": "Broadway with AJ",
+      "tier": 3,
+      "aliases": [
+        "broadwaywithaj"
+      ],
+      "domain": "broadwaywithaj.com"
+    },
+    "magnetmagazine": {
+      "displayName": "Magnet Magazine",
+      "tier": 3,
+      "aliases": [
+        "magnetmagazine"
+      ],
+      "domain": "magnetmagazine.com"
+    },
+    "twiny": {
+      "displayName": "Twiny",
+      "tier": 4,
+      "aliases": [
+        "twiny"
+      ],
+      "domain": "twiny.substack.com"
     }
   },
   "_aliasIndex": {

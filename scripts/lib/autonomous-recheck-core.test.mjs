@@ -736,11 +736,11 @@ test('BRO-3551: an autofix-filed card is excluded by TITLE convention alone, eve
   assert.deepEqual(out, []);
 });
 
-test('BRO-3551: a card touching a UI path is excluded — the visual-qa gate needs an owner an unattended sweep does not have', () => {
+test('BRO-6241: a card touching a UI path is a candidate — a worker asks the owner through the decision list instead of needing the owner in the session', () => {
   const out = selectOpenBacklogSweepCandidates({
     issues: [openIssue({ notes: '## Acceptance criteria\nFix `src/components/Foo.tsx`\n`node --test scripts/lib/some.test.mjs`' })],
   });
-  assert.deepEqual(out, []);
+  assert.equal(out.length, 1);
 });
 
 test('BRO-3551: a card carrying an async-wait deferral (RECHECK-AFTER) is excluded — nothing resumes it headlessly', () => {

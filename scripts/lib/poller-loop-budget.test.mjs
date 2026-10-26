@@ -206,8 +206,9 @@ test('CLI first-wave reads only tracked files of the show; missing show prints 0
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fw-'));
   const rt = path.join(dir, 'rt');
   fs.mkdirSync(path.join(rt, 'show-a'), { recursive: true });
-  // opened yesterday, so its press-night window is open now
-  const od = new Date(Date.now() - 20 * 3600 * 1000).toISOString().slice(0, 10);
+  // opened 36h ago, so its press-night window has started whatever the time of day
+  // (20h ago landed on today's UTC date in the evening, before tonight's window opens)
+  const od = new Date(Date.now() - 36 * 3600 * 1000).toISOString().slice(0, 10);
   fs.writeFileSync(path.join(dir, 'shows.json'), JSON.stringify({ shows: [{ id: 'show-a', category: 'broadway', openingDate: od }] }));
   const now = new Date().toISOString();
   const git = (...a) => execFileSync('git', ['-C', rt, ...a], { encoding: 'utf8' });

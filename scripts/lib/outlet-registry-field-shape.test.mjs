@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { outletFieldShapeErrors } = require('./outlet-registry-field-shape.js');
-const { findRunTogetherSlugDisplayNames } = require('./outlet-auto-register.js');
+const { findRunTogetherSlugDisplayNames, isRunTogetherSlugDisplayName } = require('./outlet-auto-register.js');
 
 // BRO-5246: verified one-word mastheads must survive the homepage backfill.
 // The first four are explicitly verified in the card. Operationlivetheatre's
@@ -26,6 +26,41 @@ for (const [id, displayName] of Object.entries(VERIFIED_SINGLE_WORD_DISPLAY_NAME
       `${id} needs displayNameReviewed:true so the homepage backfill preserves its verified spelling`);
   });
 }
+
+test('the whole registry has no unreviewed run-together display names', () => {
+  const { outlets } = require('../../data/outlet-registry.json');
+  assert.deepEqual(findRunTogetherSlugDisplayNames(outlets), []);
+  // A reviewed stamp alone must not hide a compound name from this check.
+  const singleWords = Object.keys(outlets).filter(id =>
+    isRunTogetherSlugDisplayName(id, outlets[id]?.displayName));
+  assert.deepEqual(singleWords.sort(), Object.keys(VERIFIED_SINGLE_WORD_DISPLAY_NAMES).sort());
+});
+
+test('the remaining BRO-5246 names keep their individually checked spelling', () => {
+  const { outlets } = require('../../data/outlet-registry.json');
+  for (const [id, name] of Object.entries({
+    // Dead homepages, checked against historical references rather than split from ids:
+    // Contributor's own spelling: https://medium.com/@johnentrada/the-american-film-you-might-never-see-c4d9d84a253e
+    realmericanmedia: 'RealMericanMedia.com',
+    // Cited article title: https://bestref.net/wikipedia/fr/The_Ellen_DeGeneres_Show
+    mydreamcametrue: 'My Dream Came True',
+    // First-person interview account: https://newmusicaltheatre.com/blogs/green-room/kindness-within-the-community
+    broadwayspotted: 'Broadway Spotted',
+    // Homepage title / og:site_name, fetched via resolveMastheadName on 2026-10-25.
+    // These three mastheads differ from their ids and needed manual review.
+    thepegreview: 'THE PEG',
+    ticketswitch: 'theatre.london',
+    shinylife: 'A Shiny Life For Me!',
+    donshewey: 'Don Shewey',
+    travelbeginsat40: 'Travel Begins at 40',
+  })) assert.equal(outlets[id]?.displayName, name);
+});
+
+test('the two defunct lottery pages are not registered as review outlets', () => {
+  const { outlets } = require('../../data/outlet-registry.json');
+  assert.equal(outlets.americanpsychothemusicalcomlottery, undefined);
+  assert.equal(outlets.laughteronbroadwaycomlottery, undefined);
+});
 
 test('an omitted starScale is how "no star scale" is spelled — no error', () => {
   const entry = { displayName: 'The Arbuturian', tier: 3, domain: 'arbuturian.com' };

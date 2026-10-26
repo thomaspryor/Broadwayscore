@@ -198,14 +198,31 @@ function legacySourceType(record) {
 }
 
 /**
- * The record's tier for each stored migrated anchor that still copies its
- * weeklyRunningCost (a later edit to the figure leaves the old copy as stored),
- * so a source added or found missing later moves the copy with the record.
+ * The anchor kind today's weeklyRunningCost stands for (BRO-6217 M03): a
+ * figure typed `breakeven` is the gross that covers the week, never a running
+ * cost. An `all-in` figure stays a running-cost anchor tagged basis 'all-in'
+ * (total expenses at a stated gross; cost-for-week.js takes the fixed nut out).
+ */
+function legacyKind(record) {
+  return record?.weeklyRunningCostBasis === 'breakeven' ? 'break-even' : 'running-cost';
+}
+
+/**
+ * The record's tier and type for each stored migrated anchor that still copies
+ * its weeklyRunningCost (a later edit to the figure leaves the old copy as
+ * stored), so a source added or found missing later, or a basis typed later,
+ * moves the copy with the record (Water for Elephants' $960K break-even was
+ * migrated as a running cost beside its own break-even anchor).
  */
 function withCurrentLegacyTier(history, record) {
   const amount = record?.weeklyRunningCost;
-  return history.map((a) => (a.dateBasis === 'migrated' && Number.isFinite(amount) && Math.round(amount) === a.amount
-    ? { ...a, sourceType: legacySourceType(record) } : a));
+  return history.map((a) => {
+    if (!(a.dateBasis === 'migrated' && Number.isFinite(amount) && Math.round(amount) === a.amount)) return a;
+    const out = { ...a, sourceType: legacySourceType(record), kind: legacyKind(record) };
+    if (record.weeklyRunningCostBasis === 'all-in') out.basis = 'all-in';
+    else delete out.basis;
+    return out;
+  });
 }
 
 /**
@@ -263,13 +280,14 @@ function legacyCostAnchor(record, show) {
   const anchor = {
     asOf,
     amount: Math.round(amount),
-    kind: 'running-cost',
+    kind: legacyKind(record),
     sourceType,
     sourceUrl,
     note: `migrated from weeklyRunningCost (${record.costMethodology || 'no method'})`,
     dateBasis: 'migrated',
     dateFrom: dateBasis,
   };
+  if (record.weeklyRunningCostBasis === 'all-in') anchor.basis = 'all-in';
   return anchor;
 }
 
@@ -291,6 +309,7 @@ module.exports = {
   isRealDate,
   REPORTED_SOURCE_TYPES,
   legacySourceType,
+  legacyKind,
   withCurrentLegacyTier,
   legacyCostAnchor,
   seedRepeatsLegacy,

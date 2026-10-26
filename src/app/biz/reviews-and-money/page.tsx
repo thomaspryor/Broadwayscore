@@ -14,6 +14,7 @@ import { getWhatPredictsTheMoney } from '@/lib/data-topic-pages';
 import { SCORE_BAND_LABELS, BAND_LOW, TONY_NOMS_HIGH, MIN_RATE_SAMPLE, type BandCount, type MoneyCallout } from '@/lib/investment-topics';
 import { ScoreBadge } from '@/components/show-cards';
 import TopicPageShell from '@/components/biz/TopicPageShell';
+import MoneyGate from '@/components/biz/MoneyGate';
 
 const TITLE = 'What Predicts the Money?';
 const DESCRIPTION = 'Critic scores, audience scores and Tony results against recoupment for Broadway shows since the reopening, with new musicals, musical revivals, new plays and play revivals counted separately.';
@@ -96,6 +97,7 @@ export default function ReviewsAndMoneyPage() {
         </p>
       </section>
 
+      <MoneyGate page="biz-reviews-and-money">
       <section className="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <h2 className="text-xl font-bold text-white mb-1">Low Scores, Still Recouped</h2>
@@ -108,6 +110,7 @@ export default function ReviewsAndMoneyPage() {
           <Callouts items={data.acclaimedLosers} testId="acclaimed-losers" />
         </div>
       </section>
+      </MoneyGate>
     </TopicPageShell>
   );
 }

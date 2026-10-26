@@ -6,7 +6,7 @@ name: Commercial Stale Closures Classifier
 # Writes DIRECTLY to commercial.json; doesn't route through pending-review.
 #
 # Carve-outs (in classify-stale-closure.js):
-#   - tour-stop / return-engagement / international-transfer productionTypes
+#   - tour-stop / international-transfer productionTypes (return engagements are labelled, BRO-6218)
 #   - Nonprofit designation (unless enhancement)
 #   - Enhancement deals → human-review escalation, never auto-Fizzle
 #   - humanReviewedDesignation:true → never auto-classify
@@ -35,10 +35,10 @@ on:
         required: false
         type: string
       grace_days:
-        description: 'Days closed before classification (default 30)'
+        description: 'Days closed before classification (default 7)'
         required: false
         type: number
-        default: 30
+        default: 7
       max_shows:
         description: 'Max shows to classify per run (default 50)'
         required: false
@@ -72,7 +72,7 @@ jobs:
         env:
           INPUT_SHOW: ${{ inputs.show }}
         run: |
-          ARGS="--grace-days=${{ inputs.grace_days || '30' }}"
+          ARGS="--grace-days=${{ inputs.grace_days || '7' }}"
           ARGS="$ARGS --max-shows=${{ inputs.max_shows || '50' }}"
           if [ -n "${INPUT_SHOW}" ]; then
             ARGS="$ARGS --show=${INPUT_SHOW}"

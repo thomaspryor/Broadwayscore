@@ -2,9 +2,15 @@
 /**
  * autonomous-acceptance-recheck.js — independently re-verify cards that were
  * marked Done (Sprint 3, S3-T2). SHADOW MODE: it reports, it never reopens.
+ * BRO-6240 (owner decision 2026-10-25): with --autoclose (or the repo variable
+ * RECHECK_AUTOCLOSE=true) it also CLOSES an open stamped card whose real test
+ * passed on fresh origin/main, with an evidence comment (command, commit, run
+ * URL). Failures are still only reported. Rules: decideAutoClose in
+ * scripts/lib/autonomous-recheck-core.js.
  *
  *   node scripts/autonomous-acceptance-recheck.js            # normal nightly run
  *   node scripts/autonomous-acceptance-recheck.js --dry-run  # plan only, no ledger write
+ *   node scripts/autonomous-acceptance-recheck.js --autoclose [--backlog]
  *   node scripts/autonomous-acceptance-recheck.js --help
  *
  * "Done" on a card is a claim by whoever closed it — nothing has ever checked
@@ -16,7 +22,8 @@
  *
  * Safety properties, in the order they matter:
  *   - SHADOW: no Notion writes, ever. Results land in the autonomous ledger and
- *     the morning email. Enforcement (auto-reopening a failed card) stays off
+ *     the morning email. The only Linear write is the BRO-6240 auto-close above.
+ *     Enforcement (auto-reopening a failed card) stays off
  *     until the shadow record clears an objective bar — see
  *     scripts/lib/autonomous-recheck-core.js shouldExitShadow.
  *   - The command is UNTRUSTED text from a card: it is re-validated against
@@ -47,9 +54,10 @@ const { CHECK_TIMEOUT_MS } = require('./lib/autonomous-checks.js');
 // ONE implementation of "check out origin/main and run the card's command",
 // shared with notion-brain.js's close-time verify (task #1003, CLAUDE.md §15).
 const { makeFreshCheckout: freshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
-const { selectRecheckTargets, summarize, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS } = require('./lib/autonomous-recheck-core.js');
+const { selectRecheckTargets, summarize, decideAutoClose, describeResult, shouldExitShadow, SHADOW_EXIT, DEFAULT_WINDOW_HOURS } = require('./lib/autonomous-recheck-core.js');
 // Linear candidate source (BRO-3373), the only source since BRO-3488 removed
 // the frozen Notion mirror's leg (mirror froze 2026-08-20, CLAUDE.md §6).
+const { closeCardAfterPass } = require('./lib/recheck-autoclose.js');
 const { fetchLinearRecheckCandidates, fetchRecentlyCompletedLinearCandidates } = require('./lib/linear-recheck-source.js');
 
 const REPO = path.join(__dirname, '..');
@@ -66,6 +74,8 @@ const CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json');
 // exclusively CI-owned and un-gitignored for exactly that reason.
 const RECHECK_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
 const MAX_CARDS = 10; // bounded work: this runs every night, not a backfill
+// --backlog (BRO-6240): a manual one-off to clear the due backlog; the nightly run never sets it.
+const MAX_CARDS_BACKLOG = 80;
 // Below this much budget left, starting another check is worse than deferring
 // it: the check would be SIGTERMed mid-flight and reported 'unverifiable',
 // which the morning digest renders as "no way to check this automatically" —
@@ -85,6 +95,8 @@ const USAGE = `autonomous-acceptance-recheck.js — re-verify recently-Done card
 Usage:
   node scripts/autonomous-acceptance-recheck.js [--window-hours 24] [--limit 10] [--time-budget-min 20]
   node scripts/autonomous-acceptance-recheck.js --dry-run   plan only — no checks run, no ledger write
+  node scripts/autonomous-acceptance-recheck.js --autoclose close open stamped cards whose real test passed (also RECHECK_AUTOCLOSE=true; RECHECK_AUTOCLOSE_DISABLED=true turns it off)
+  node scripts/autonomous-acceptance-recheck.js --backlog   raise the card cap to ${MAX_CARDS_BACKLOG} for a one-off sweep (use a larger --time-budget-min)
   node scripts/autonomous-acceptance-recheck.js --help
 
 --time-budget-min caps this run's own wall clock (default 20). Set it below
@@ -93,7 +105,8 @@ script's own deadline check cannot protect a job-level timeout-minutes that
 fires first and kills every step, not just this one.
 
 Re-runs each card's own acceptance-criteria command (captured at dispatch) against a
-fresh detached checkout of origin/main. Reports only: no card is ever reopened.`;
+fresh detached checkout of origin/main. No card is ever reopened; with --autoclose a
+passed, stamped, still-open card with a real test is closed with an evidence comment.`;
 
 function parseArgs(argv) {
   const a = {};
@@ -181,7 +194,11 @@ async function main(argv = process.argv.slice(2)) {
   const args = parseArgs(argv);
   const dryRun = !!args['dry-run'];
   const windowHours = Number(args['window-hours']) || DEFAULT_WINDOW_HOURS;
-  const limit = Math.min(Number(args.limit) || MAX_CARDS, MAX_CARDS);
+  // RECHECK_AUTOCLOSE_DISABLED (repo variable) is the off switch, like ACCEPTANCE_RECHECK_KILL_SWITCH:
+  // no code change needed to stop closing cards.
+  const autoclose = (!!args.autoclose || process.env.RECHECK_AUTOCLOSE === 'true') && process.env.RECHECK_AUTOCLOSE_DISABLED !== 'true';
+  const maxCards = args.backlog ? MAX_CARDS_BACKLOG : MAX_CARDS;
+  const limit = Math.min(Number(args.limit) || maxCards, maxCards);
   const runId = `recheck-${new Date().toISOString().replace(/[:.]/g, '-')}`;
   // Validated up front (ship-check finding): an unparseable/negative value
   // must fail loudly, not silently become NaN — a NaN deadline makes every
@@ -260,6 +277,7 @@ async function main(argv = process.argv.slice(2)) {
   if (enforcement.requested && !enforcement.enforcing) console.error(`[recheck] ${enforcement.reason}`);
   if (enforcement.enforcing) console.error('[recheck] enforcement is ON — failures will still only be REPORTED until the reopen path ships (carry-forward)');
 
+  const cardsById = new Map([...pausedCards, ...doneCards].map(c => [c.id, c]));
   const taskState = loadSharedTaskState();
   // Starvation guard (ship-check finding): a permanently-due RECHECK-AFTER
   // card must not win the same slot every night forever once other cards
@@ -353,6 +371,11 @@ async function main(argv = process.argv.slice(2)) {
   }
 
   const results = [];
+  const closed = [];
+  const keptOpen = [];
+  const runUrl = process.env.GITHUB_RUN_ID && process.env.GITHUB_REPOSITORY
+    ? `${process.env.GITHUB_SERVER_URL || 'https://github.com'}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}`
+    : null;
   try {
     for (const t of targets) {
       let r;
@@ -404,14 +427,30 @@ async function main(argv = process.argv.slice(2)) {
         shadow: true,
       }, RECHECK_LEDGER_PATH);
       console.error(`[recheck] ${describeResult(r)}`);
+
+      // BRO-6240: close a card whose real test just passed. Decision is pure
+      // (decideAutoClose); the close goes through linear-brain's Done gate.
+      if (autoclose && !r.skip && r.status === 'pass' && deadline - Date.now() >= MIN_REMAINING_MS_TO_START) {
+        const verdict = decideAutoClose({ card: cardsById.get(t.cardId), target: t, result: r });
+        if (!verdict.close) {
+          keptOpen.push({ cardId: t.cardId, reason: verdict.reason });
+          console.error(`[recheck] ${t.cardId} stays open: ${verdict.reason}`);
+        } else {
+          const out = await closeCardAfterPass({ identifier: t.cardId, expectStateType: (cardsById.get(t.cardId) || {}).stateType, cmd: t.verifyCmd, sha: checkout && checkout.sha, runUrl });
+          if (out.closed) closed.push(t.cardId); else keptOpen.push({ cardId: t.cardId, reason: out.error });
+          ledger.appendEntry({ event: 'recheck-autoclose', runId, cardId: t.cardId, name: t.name, closed: out.closed, verifyCmd: t.verifyCmd, sha: (checkout && checkout.sha) || null, runUrl, note: out.closed ? 'closed on a passing real test' : `close refused: ${out.error}` }, RECHECK_LEDGER_PATH);
+          console.error(`[recheck] ${t.cardId} ${out.closed ? 'CLOSED' : `close refused (${out.error})`}`);
+        }
+      }
     }
   } finally {
     if (checkout) removeCheckout(checkout);
   }
 
   const counts = summarize(results, { noCriteria: dropped.length });
-  ledger.appendEntry({ event: 'recheck-summary', runId, counts, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check` }, RECHECK_LEDGER_PATH);
-  console.error(`[recheck] done: ${JSON.stringify(counts)}`);
+  const closeNote = autoclose ? `; auto-close: ${closed.length} closed, ${keptOpen.length} passed but stayed open` : '';
+  ledger.appendEntry({ event: 'recheck-summary', runId, counts, autoclose: autoclose ? { closed, keptOpen } : null, note: `${counts.pass} still work, ${counts.fail} do not, ${counts.unverifiable} not machine-verifiable, ${counts.skipped} skipped, ${counts.noCriteria} had no criteria to check${closeNote}` }, RECHECK_LEDGER_PATH);
+  console.error(`[recheck] done: ${JSON.stringify(counts)}${autoclose ? ` autoclose=${JSON.stringify({ closed, keptOpen })}` : ''}`);
 }
 
 if (require.main === module) main().catch((err) => { console.error(err); process.exitCode = 1; });

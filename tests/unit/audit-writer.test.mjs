@@ -83,3 +83,40 @@ test('actual workflow shell accepts designed outcomes and fails on audit-write e
     fs.rmSync(root, { recursive: true, force: true });
   }
 });
+
+// BRO-267 ratchet. Wiring the swallowed-audit-writers lint into test.yml is
+// blocked on the remaining triage (and on BRO-5290's workflow-gate work), so
+// this unit test is the CI-visible guard meanwhile: the count of unexempted
+// swallowed audit writers may only go down. Going below the baseline only
+// warns (a session fixing workflows must not be tripped by this file); lower
+// the number when you can. Reaching 0 means the lint can be wired into test.yml.
+const REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE = 85;
+
+test('swallowed audit-writer violations never exceed the triage baseline', () => {
+  const { isAuditWriterFile, validateAllowlist, allowlistKey } = require('../../scripts/lib/swallowed-audit-writer-check.js');
+  const allowlist = JSON.parse(fs.readFileSync(path.join(repo, 'scripts/lib/swallowed-audit-writer-allowlist.json'), 'utf8'));
+  assert.deepEqual(validateAllowlist(allowlist), []);
+  const cache = new Map();
+  const isWriter = script => {
+    if (!cache.has(script)) cache.set(script, isAuditWriterFile(repo, script));
+    return cache.get(script);
+  };
+  const matched = new Set();
+  let violations = 0;
+  for (const [name, text] of Object.entries(workflows)) {
+    violations += findSwallowedAuditWriters(text, isWriter, { allowlist, workflow: name, matched }).length;
+  }
+  assert.ok(violations <= REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE,
+    `${violations} swallowed audit writers, baseline ${REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE}: fix the step or add a reasoned exemption`);
+  if (violations < REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE) {
+    console.warn(`BRO-267: ${violations} < baseline ${REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE}; lower REMAINING_SWALLOWED_AUDIT_WRITER_BASELINE`);
+  }
+  for (const e of allowlist) if (!matched.has(allowlistKey(e))) console.warn(`BRO-267: stale allowlist entry ${allowlistKey(e)} (the lint itself fails on it)`);
+});
+
+test('helper-routed audit writes are detected (script names the path, a ./lib helper writes)', () => {
+  const { isAuditWriterFile } = require('../../scripts/lib/swallowed-audit-writer-check.js');
+  assert.equal(isAuditWriterFile(repo, 'scripts/autonomous-acceptance-recheck.js'), true);
+  assert.equal(isAuditWriterFile(repo, 'scripts/check-progress-stalls.js'), true);
+  assert.equal(isAuditWriterFile(repo, 'scripts/audit-direct-github-api.js'), false); // read-only mention
+});

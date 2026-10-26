@@ -123,7 +123,7 @@ const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConse
 const { preCleanForStorage, storedTextForm } = require('./lib/stored-text-form');
 
 // LLM-based content verification
-const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash, isCvVerdictFromTruncatedFetch } = require('./lib/content-verifier');
+const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash, isCvVerdictFromTruncatedFetch, isCvVerdictFromPartialWindow } = require('./lib/content-verifier');
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
@@ -5583,6 +5583,11 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         // said so itself: a truncated review, not a non-review (BRO-4563).
         // Keep the text; classifyContentTier below sets its tier.
         console.log(`    ⚠ LLM: "not a review" (${artType}, ${artConf}) judged on a cut-off fetch of a review URL — kept as truncated, not invalidated`);
+      } else if (isCvVerdictFromPartialWindow(data.contentVerification, data.fullText, data)) {
+        // BRO-6225: a preview/feature/news call on the head of a longer article
+        // is advisory (BRO-4429); rebuild will not promote it, so parking the
+        // body here only left a full review with no text to score.
+        console.log(`    ⚠ LLM: "not a review" (${artType}, ${artConf}) judged on the head of a longer article — advisory, text kept`);
       } else if (artConf === 'high' && data.fullText && !laneHeld(data, 'nonReview')) {
         if (alreadyScored) {
           // Don't destroy an already-scored review — flag for human review instead

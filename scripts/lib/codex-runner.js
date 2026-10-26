@@ -17,6 +17,7 @@
  */
 
 const crypto = require('crypto');
+const { dataFixesEnabled, canDispatchWorkflows } = require('./codex-data-fixes.js');
 
 const AUTH_MARKER = '<!-- codex-auth-v1 -->';
 // Opens every comment the runner posts when Codex could not finish a card, so
@@ -624,7 +625,7 @@ const CODEX_PENALTIES = [
 const CODEX_HARD_SKIPS = [
   ['workflow-edit', /\b(?:edit|change|modify|patch|add|update|wire|move|bump)\b[^.\n]{0,80}\.github\/workflows\/|\.github\/workflows\/[\w.-]+\.ya?ml\b[^.\n]{0,40}\b(?:step|job|cron|schedule|inputs?|env)\b|\bworkflow(?:'s)?\s+(?:\w+\s+)?(?:step|job)s?\b|\b(?:edit|change|modify|patch)\b[^.\n]{0,30}\b[\w-]+\.ya?ml\b|\bworkflow_dispatch\b[^.\n]{0,20}\binputs?\b/i],
   ['land-ref', /\bland\/\*|\b(?:stranded|refused|evicted)\s+land(?:ing)?s?\b|\bland(?:ing)?\s+refs?\b|\brebas\w*\b[^.\n]{0,40}\bland\b/i],
-  ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i],
+  ['private-repo-write', /\bbroadway-(?:review-texts|scorecard-data)\b|\bpending-fixes\b|\bexecute-approved-fix\b|\bapproved-fix\s+plan\b|\bdata repair\b/i, 'data-route'],
   // BRO-6129: 6 of the 69 "not landed" bounces were "nothing needed landing, items still open": work that waits on a date,
   // a scheduled run or the owner. One Codex attempt cannot finish it, so it never starts.
   ['waits-on-later-event', /^\s*RECHECK-AFTER:?\s*\d{4}-\d\d-\d\d|\bconfirm the next scheduled [\w.-]+ run\b|\bowner (?:presses|(?:must|needs to) (?:decide|approve|press|answer|settle)|settles (?:the|this|which))\b/im],
@@ -636,24 +637,40 @@ const CODEX_HARD_SKIPS = [
 // board work, or a sweep over many call sites, which one Codex attempt leaves half done.
 const CODEX_TITLE_SKIPS = [
   // Auto-filed health/incident cards (12 of 98): the fix is a private-data repair or a Linear change.
-  ['auto-filed-alert', /^\W*(?:P\d:\s*)?BSC (?:Daily|Rebuild):/i],
+  ['auto-filed-alert', /^\W*(?:P\d:\s*)?BSC (?:Daily|Rebuild):/i, 'data-route'],
   // One show's data: research a venue/date/author or recover a review (needs web research + private data).
   ['show-data-research', /^(?:P\d:\s*)?(?:Verify|Recover|Backfill|Find sources?)\b[^\n]{0,60}(?:\b\d[\d,]*\s+(?:\w+\s+){0,3}(?:shows?|reviews?|flags?|pairs?|deals?)\b|\btrue author\b|\bprovenance\b|\bverdict\b)|^[a-z0-9]+(?:-[a-z0-9]+)+-(?:19|20)\d\d\b[^:\n]{0,40}:|\(\d{4} id\)/i],
   // A sweep over a counted or "remaining" set of call sites: Codex migrates some and stops.
   ['multi-site-sweep', /^(?:P\d:\s*)?(?:Migrate|Wire|Version|Extend|Generalize|Consolidate|Audit)\b[^\n]{0,50}\b(?:remaining \d+|remaining (?:\w+ ){0,2}(?:generators|callers|paths|ledgers|sites|scripts)|the \d+)\b|\brepo-wide\b|\bAudit\b[^\n]{0,40}\bcall sites\b|\bsame\b[^\n]{0,60}\b(?:in|at|across) \d+\b/i],
 ];
+// The route's own vocabulary (.claude/CLOUD.md "Fixing private data from cloud") and a direct private-repo edit.
+const CODEX_DATA_ROUTE_RE = /\b(?:pending-fixes|new-fix-plan|execute-approved-fix|approved-fix\s+plan|data-edit|review-field-edit)\b/i;
+const CODEX_DIRECT_PRIVATE_RE = /\bbroadway-(?:review-texts|scorecard-data)\b/i;
 // A `CODEX-OK` line (description or a comment) sends a card to Codex despite the hard skips.
 const CODEX_OK_RE = /^[\s>*_#-]*CODEX-OK\b/m;
-function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now() } = {}) {
+function codexCardFit({ title = '', description = '', verify = '', comments = [], nowMs = Date.now(), canDispatch = canDispatchWorkflows() } = {}) {
   const text = `${title}\n${description}`;
   if (CODEX_MAC_RE.test(text)) return { skip: 'mac-only', score: -Infinity, why: ['mac-only'] };
   const ok = CODEX_OK_RE.test(String(description)) || (Array.isArray(comments) ? comments : []).some((c) => c && CODEX_OK_RE.test(String(c.body || '')));
-  for (const [name, re] of ok ? [] : CODEX_HARD_SKIPS) {
+  // BRO-6175: a card that names the reviewed pending-fixes route can be done by the Codex lane, which writes
+  // the plan and the runner applies it after the landing (codex-data-fixes.js). 'data-route' skips then fire
+  // only for a direct private-repo edit with no plan route named; CODEX_DATA_FIXES_DISABLED restores them all.
+  const viaRoute = dataFixesEnabled() && CODEX_DATA_ROUTE_RE.test(text);
+  // BRO-6194: the route's apply step is a workflow dispatch, which only the GHA lane is known to be able to make.
+  // A runner that cannot dispatch never picks a route card (CODEX-OK does not lift this: it is a capability, not a judgment).
+  if (viaRoute && !canDispatch) return { skip: 'data-route-gha-only', score: -Infinity, why: ['data-route-gha-only: the data-fix route needs a runner that can dispatch workflows'] };
+  for (const [name, re, flag] of ok ? [] : CODEX_HARD_SKIPS) {
+    if (flag === 'data-route' && dataFixesEnabled()) {
+      const direct = CODEX_DIRECT_PRIVATE_RE.exec(text);
+      if (!direct || viaRoute) continue;
+      return { skip: name, score: -Infinity, why: [`${name}: ${direct[0].slice(0, 60)}`] };
+    }
     const m = re.exec(text);
     if (m) return { skip: name, score: -Infinity, why: [`${name}: ${m[0].slice(0, 60)}`] };
   }
   if (!ok) {
-    for (const [name, re] of CODEX_TITLE_SKIPS) {
+    for (const [name, re, flag] of CODEX_TITLE_SKIPS) {
+      if (flag === 'data-route' && viaRoute) continue;
       const m = re.exec(String(title));
       if (m) return { skip: name, score: -Infinity, why: [`${name}: ${m[0].slice(0, 60)}`] };
     }
@@ -960,6 +977,8 @@ function leaveToCodex(issue, { nowMs, verify = '', startNow = false } = {}) {
   if (!issue || Number(issue.priority) === 1 || startNow) return false;
   const comments = (issue.comments && issue.comments.nodes) || [];
   if (codexBouncedRecently(comments, nowMs)) return false;
+  // Default canDispatch: the Claude worker is not a dispatch-capable Codex runner, so it keeps data-route cards
+  // itself rather than leaving them to a Codex lane that may be only the cloud one (BRO-6194).
   return !codexCardFit({ title: issue.title, description: issue.description, verify, comments, nowMs }).skip;
 }
 
@@ -1217,6 +1236,107 @@ function lockStartedMs(body) {
   return Date.parse((String(body || '').match(/^Started: (\S+)\s*$/m) || [])[1] || '');
 }
 
+// BRO-6236: pinned Codex model and the high vs xhigh effort A/B. All default-off: with none of
+// CODEX_MODEL / CODEX_EFFORT / CODEX_EFFORT_AB set, codexSettings returns today's exec settings.
+const CODEX_EFFORTS = ['low', 'medium', 'high', 'xhigh', 'max'];
+const CODEX_DEFAULT_EFFORT = 'high';
+/** "a, b" -> ['a', 'b'] (a model preference list, strongest first). */
+function parseModelCandidates(raw) {
+  return String(raw || '').split(',').map((x) => x.trim()).filter((x) => /^[A-Za-z0-9._:-]+$/.test(x));
+}
+/** Stable 0..n-1 bucket for a card id, so a card lands in the same A/B arm on every attempt. */
+function abBucket(cardId, n) {
+  let h = 0;
+  for (const ch of String(cardId || '')) h = (h * 31 + ch.charCodeAt(0)) >>> 0;
+  return n > 0 ? h % n : 0;
+}
+/**
+ * Exec settings for one card -> { models, effort, arm }. models is the preference list ([] = the
+ * CLI default, today's behaviour). effort comes from CODEX_EFFORT_AB (e.g. "high,xhigh": the arm
+ * is chosen by card id, not slot, so both arms draw from the same cards and the same firings),
+ * else CODEX_EFFORT, else high. An unknown effort name falls back to high.
+ */
+function codexSettings(env, cardId) {
+  const valid = (e) => CODEX_EFFORTS.includes(e);
+  const ab = String((env || {}).CODEX_EFFORT_AB || '').split(',').map((x) => x.trim()).filter(valid);
+  const single = String((env || {}).CODEX_EFFORT || '').trim();
+  let effort = valid(single) ? single : CODEX_DEFAULT_EFFORT;
+  let arm = null;
+  if (ab.length > 1) { effort = ab[abBucket(cardId, ab.length)]; arm = effort; }
+  return { models: parseModelCandidates((env || {}).CODEX_MODEL), effort, arm };
+}
+/**
+ * True when Codex's own ERROR lines (the last 40 lines, like codexExitTransient) say the model name is
+ * not available to this login. Tool output inside a long exec ("unknown model" in code Codex read)
+ * must not move the runner down the model list.
+ */
+function isUnknownModelError(out) {
+  const re = /(?:model\b(?![_\w])[^\n]{0,80}(?:not found|does not exist|not supported|unsupported|not available|isn't available)|(?:unknown|unsupported|invalid) model\b(?![_\w])|not have access to (?:the )?model)/i;
+  return String(out || '').split('\n').slice(-40).some((l) => /^\s*(?:ERROR|error):/.test(l) && re.test(l));
+}
+/** The summary line that records which model and effort each card ran at (the A/B report reads it). */
+function codexSettingsLine(used) {
+  const byEffort = {};
+  for (const [id, u] of Object.entries(used.cards || {})) (byEffort[u.effort] = byEffort[u.effort] || []).push(id);
+  const parts = Object.keys(byEffort).sort().map((e) => `${e}: ${byEffort[e].join(' ')}`);
+  return `- Codex settings: model ${used.model || 'CLI default (not pinned)'}; effort ${parts.join('; ') || 'none run'}`;
+}
+/** -> { model, byEffort: { effort: [ids] } } from a run summary, or null when it has no settings line. */
+function parseCodexSettingsLine(body) {
+  const m = String(body || '').match(/^- Codex settings: model (.+?); effort (.*)$/m);
+  if (!m) return null;
+  const byEffort = {};
+  if (m[2].trim() !== 'none run') for (const part of m[2].split(';')) {
+    const [e, ids] = part.split(':');
+    if (e && ids) byEffort[e.trim()] = ids.trim().split(/\s+/).filter(Boolean);
+  }
+  return { model: m[1].trim(), byEffort };
+}
+
+const AB_OUTCOMES = [
+  ['landed', 'Landed and Done'],
+  ['partial', 'Landed part, back to Todo with what is left'],
+  ['alreadyFixed', 'Already fixed, closed'],
+  ['rejected', 'Did not pass the Claude check, back to Todo'],
+  ['error', 'Runner error mid-card \\(back to Todo\\)'],
+];
+/**
+ * BRO-6236: per-effort outcome table from run-summary bodies. Only summaries with a "Codex settings"
+ * line count (older ones carry no effort). Minutes are the run's, shared out by card count.
+ * -> { effort: { cards, landed, partial, alreadyFixed, rejected, error, other, mins } }
+ */
+function abReport(bodies, { sinceMs = 0, createdAtMs = [], lane = null } = {}) {
+  const out = {};
+  const seen = new Set(); // a carried card is listed in more than one summary: count it once
+  bodies.forEach((body, i) => {
+    if (sinceMs && !(createdAtMs[i] >= sinceMs)) return;
+    const settings = parseCodexSettingsLine(body);
+    const head = parseSummaryHeading(body);
+    if (!settings || !head) return;
+    if (lane && (head.lane || laneOfSummary(body, createdAtMs[i] || 0)) !== lane) return;
+    const total = Object.values(settings.byEffort).reduce((n, ids) => n + ids.length, 0) || 1;
+    const listOf = (label) => {
+      const v = (String(body).match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
+      return v.trim() === 'none' ? [] : v.split(',').map((x) => x.trim()).filter(Boolean);
+    };
+    for (const [effort, allIds] of Object.entries(settings.byEffort)) {
+      const ids = allIds.filter((id) => !seen.has(id));
+      ids.forEach((id) => seen.add(id));
+      if (!ids.length) continue;
+      const row = out[effort] = out[effort] || { cards: 0, landed: 0, partial: 0, alreadyFixed: 0, rejected: 0, error: 0, other: 0, mins: 0 };
+      row.cards += ids.length;
+      row.mins += head.mins * ids.length / total;
+      let counted = 0;
+      for (const [key, label] of AB_OUTCOMES) {
+        const n = listOf(label).filter((id) => ids.includes(id)).length;
+        row[key] += n; counted += n;
+      }
+      row.other += ids.length - counted;
+    }
+  });
+  return out;
+}
+
 function runnerSummaryFacts(body) {
   const list = (label) => {
     const v = (String(body || '').match(new RegExp(`^- ${label}: (.*)$`, 'm')) || [])[1] || 'none';
@@ -1424,6 +1544,7 @@ module.exports = {
   landWaitMinutes,
   firingThroughput,
   summaryHeading, parseSummaryHeading, laneOfSummary,
+  parseModelCandidates, codexSettings, isUnknownModelError, codexSettingsLine, parseCodexSettingsLine, abReport, CODEX_EFFORTS,
   authAccessExpires, parseAuthMeta,
   STAND_DOWN_CLASSES, standDownNote, parseStandDownNote, lockStartedMs,
   runnerSummaryFacts,

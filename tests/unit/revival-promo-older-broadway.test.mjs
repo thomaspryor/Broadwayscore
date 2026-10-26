@@ -32,7 +32,7 @@ const SHOWS = path.join(ROOT, 'data', 'shows.json');
 const PLAN_D = path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-d.json');
 const PLAN_E = path.join(ROOT, 'data', 'pending-fixes', 'bro-4889-e.json');
 const PLAN_REHOME = path.join(ROOT, 'data', 'pending-fixes', 'bro-5839.json');
-const NATIONAL = 'august-osage-county-national-theatre-2008';
+const NATIONAL = 'august-osage-county-national-theatre-west-end-2008';
 
 const { explainExclusion, getWrongProductionReasonFromUrl } = require('../../scripts/lib/review-guards.js');
 const { applyReviewFieldEdit } = require('../../scripts/lib/review-field-edit.js');
@@ -117,6 +117,21 @@ test('other productions\' reviews and junk rows stay out of older pages', { skip
     }
     assert.ok(verdict(rel), `${rel} would be counted`);
   }
+});
+
+// Keep the plan's identity check active even when private data is absent in CI.
+test('BRO-5839 uses one valid West End identity for the show and every move', () => {
+  const { marketSuffixMismatch } = require('../../scripts/lib/show-id-market-suffix.js');
+  const plan = JSON.parse(fs.readFileSync(PLAN_REHOME, 'utf8'));
+  const added = plan.plan.actions.find(a => a.type === 'add-show').show;
+  assert.equal(added.id, NATIONAL);
+  assert.equal(added.slug, NATIONAL);
+  assert.equal(added.category, 'west-end');
+  assert.equal(added.market, 'west-end');
+  assert.equal(marketSuffixMismatch(added), null);
+  const moves = plan.plan.actions.filter(a => a.type === 'review-file-op');
+  assert.equal(moves.length, 5);
+  for (const move of moves) assert.equal(path.dirname(move.destPath), added.id);
 });
 
 test('BRO-5839 rehomes exactly five National Theatre reviews through the real writers', { skip: SKIP }, () => {

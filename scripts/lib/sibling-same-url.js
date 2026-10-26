@@ -16,6 +16,7 @@
  */
 const { sameUrlKey } = require('./review-url-collision');
 const { shouldBlockCrossShowCreate } = require('./url-ownership');
+const { foldDiacritics } = require('./title-match');
 
 /**
  * @param {Map<string, {siblings: Array<{id: string}>}>} siblingIndex  buildSiblingIndex() output
@@ -59,6 +60,37 @@ function findSiblingSameUrlPairs(siblingIndex, loadFiles, isCounted, skipPair = 
     }
   }
   return pairs;
+}
+
+const _norm = (t) => foldDiacritics(String(t || '')).toLowerCase().replace(/<[^>]*>/g, ' ').replace(/&#?\w+;/g, ' ').replace(/[^a-z0-9]+/g, ' ').trim();
+const MIN_WORDS = 50;
+const SHINGLE = 8;
+const SHARED_RATIO = 0.1;
+
+const _shingles = (words) => {
+  const out = new Set();
+  for (let i = 0; i + SHINGLE <= words.length; i++) out.add(words.slice(i, i + SHINGLE).join(' '));
+  return out;
+};
+
+/**
+ * True when both copies hold substantive text and the texts are different
+ * articles (BRO-6113). Timeout London and London Box Office reuse one url slug
+ * for every revival of a show, so a 2018 and a 2024 Hadestown review share a
+ * url yet each file holds its own production's text: no article is counted
+ * twice. Compared by shared 8-word runs (fewer than 10% of the smaller copy's),
+ * so a newsletter/photo-credit header on one copy, HTML markup or a truncated
+ * copy of the same article still counts as the same article. Identical or
+ * overlapping text, or a copy with no real text, stays reported.
+ */
+function haveDistinctTexts(left, right) {
+  const a = _norm(left && left.fullText).split(' ').filter(Boolean);
+  const b = _norm(right && right.fullText).split(' ').filter(Boolean);
+  if (a.length < MIN_WORDS || b.length < MIN_WORDS) return false;
+  const [small, large] = a.length <= b.length ? [_shingles(a), _shingles(b)] : [_shingles(b), _shingles(a)];
+  let shared = 0;
+  for (const g of small) if (large.has(g)) shared++;
+  return shared < SHARED_RATIO * small.size;
 }
 
 const _venueKey = (v) => String(v || '').trim().toLowerCase();
@@ -126,4 +158,4 @@ function siblingUrlHolder({ showId, owners, siblingIndex, visited = null, target
   return verdict.block ? verdict.owner : null;
 }
 
-module.exports = { findSiblingSameUrlPairs, siblingUrlHolder, isDeclaredPriorRunPair };
+module.exports = { findSiblingSameUrlPairs, haveDistinctTexts, siblingUrlHolder, isDeclaredPriorRunPair };

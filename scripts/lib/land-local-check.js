@@ -8,7 +8,8 @@
  * It is the land.yml sequence, run on HEAD in this checkout with the same CLIs:
  *   1. land-gauntlet.sh on HEAD (GAUNTLET_GATES = the chosen gates)
  *   2. land-gate-delta.js --red-gates: which gates are red on HEAD
- *   3. land-gauntlet.sh --checkout <merge-base with origin/main> --return-to HEAD, those gates only
+ *   3. land-gauntlet.sh on the merge-base with origin/main, those gates only, in a throwaway
+ *      detached worktree (BRO-6252: never in this checkout, which keeps committing meanwhile)
  *   4. land-gate-delta.js --base-dir --branch-dir: a failure counts only when main passes it
  * so a later change to land.yml's judging (land-gate-delta.js) applies here too.
  *
@@ -52,7 +53,9 @@ const ROOT = path.resolve(__dirname, '..', '..');
 // checks them out; without them both the base and the branch run fail data-dependent tests in
 // slightly different sets, which reads as "new failures" (BRO-6037 session, 2026-10-23: 24 min
 // spent to report 13 false failures in show-identity / show-venue / review-file-writer tests).
-const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json'];
+// The generated cast manifests are also static imports in src/: tsc fails without them,
+// even when setup-local-data.sh found the private core data in a cloud checkout.
+const CORE_DATA_FILES = ['data/shows.json', 'data/reviews.json', 'data/cast-manifest.json', 'data/actor-slugs.json'];
 
 /** -> list of CORE_DATA_FILES missing under root */
 function missingCoreData(root, exists = fs.existsSync) {
@@ -117,6 +120,78 @@ function newFailureFiles(deltaText) {
   return [...files];
 }
 
+// The base run checks out an older tree, so the gauntlet runs from a copy outside it. That copy
+// needs every sibling the gauntlet calls via $(dirname "${BASH_SOURCE[0]}")/... (BRO-6152: a lone
+// copy lost tsc-node-options.sh). land.yml's "Stage the branch's gauntlet harness" step mirrors
+// this list; land-local-check.test.mjs fails if either drifts from the gauntlet's references.
+const HARNESS_FILES = ['land-gauntlet.sh', 'tsc-node-options.sh'];
+
+/** Copy the harness from <fromRoot>/scripts/lib into <dir>; returns the gauntlet copy's path.
+ * A helper missing from the source tree is skipped (the gauntlet has a fallback); the gauntlet is not. */
+function stageGauntletHarness(fromRoot, dir) {
+  fs.mkdirSync(dir, { recursive: true });
+  // mkdtemp dirs are 0700; the codex runner runs the copy as the sandbox user, which must be able to read it.
+  // 0755, not 0777: the sandbox must not be able to rewrite the harness.
+  fs.chmodSync(dir, 0o755);
+  for (const name of HARNESS_FILES) {
+    const src = path.join(fromRoot, 'scripts/lib', name);
+    if (name === 'land-gauntlet.sh' || fs.existsSync(src)) fs.copyFileSync(src, path.join(dir, name));
+  }
+  return path.join(dir, 'land-gauntlet.sh');
+}
+
+// Paths git ignores that the base tree needs but a fresh `git worktree add` lacks: node_modules,
+// core data, generated manifests. The old in-place base run saw every one of them; linking only
+// a few would let the base fail data-dependent tests the branch passes, which the delta forgives
+// as pre-existing (a false CLEAN). Build output and nested worktrees stay out.
+// .claude/ and lock dirs are live session state the caller keeps writing while the base run goes.
+const LINK_SKIP = [/^\.next\//, /^\.claude\//, /\.lock\/?$/, /\.tsbuildinfo$/, /^\.git\//];
+
+/** -> ignored paths (dirs end with "/") present under root */
+function ignoredPaths(root) {
+  const r = run('git', ['ls-files', '-z', '-oi', '--exclude-standard', '--directory'], { cwd: root });
+  return r.stdout.split('\0').filter((p) => p && !LINK_SKIP.some((re) => re.test(p)));
+}
+
+/** Symlink every ignored path of <root> that <dir> lacks into <dir>; -> the symlinks created (also pushed into <made> as they appear, so a throw midway still leaves a cleanup list) */
+function linkIgnored(root, dir, made = []) {
+  for (const rel of ignoredPaths(root)) {
+    const name = rel.replace(/\/$/, '');
+    const dest = path.join(dir, name);
+    if (fs.existsSync(dest)) continue;
+    fs.mkdirSync(path.dirname(dest), { recursive: true });
+    fs.symlinkSync(path.join(root, name), dest);
+    made.push(dest);
+  }
+  return made;
+}
+
+/**
+ * Run fn(worktreeDir) on <sha> checked out in a throwaway detached worktree at <dir>, then remove
+ * it. The caller's checkout (HEAD, branch, index) is never touched, so it can keep committing
+ * while the base gates run. Never pass --deps-changed to a gauntlet run here: `npm ci` would wipe
+ * the caller's node_modules through the symlink.
+ */
+function withBaseWorktree(root, sha, dir, fn) {
+  const g = (...args) => run('git', args, { cwd: root });
+  g('worktree', 'prune'); // a run killed by SIGKILL leaves its entry behind
+  const add = g('worktree', 'add', '--detach', '-f', dir, sha);
+  if (add.code !== 0) throw new Error(`git worktree add failed: ${add.stderr}`);
+  const links = [];
+  try {
+    linkIgnored(root, dir, links);
+    return fn(dir);
+  } finally {
+    // Unlink exactly what was linked, first: remove --force must not follow them into the caller's data.
+    for (const p of links) {
+      try { if (fs.lstatSync(p).isSymbolicLink()) fs.unlinkSync(p); } catch { /* absent */ }
+    }
+    g('worktree', 'remove', '--force', dir);
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    g('worktree', 'prune');
+  }
+}
+
 function main(argv = process.argv.slice(2)) {
   const opts = parseArgs(argv);
   if (opts.help) {
@@ -126,22 +201,21 @@ function main(argv = process.argv.slice(2)) {
   }
   if (opts.error) { console.error(`land-local-check: ${opts.error}`); return 2; }
 
-  // The base run checks out origin/main in this tree and returns to HEAD: tracked changes would be lost.
+  // The branch run judges the working tree as committed; uncommitted tracked edits would make it
+  // judge something no push carries. (The base run no longer touches this tree: BRO-6252.)
   const dirty = git('status', '--porcelain', '--untracked-files=no');
   if (dirty.stdout) { console.error('land-local-check: commit or discard tracked changes first:\n' + dirty.stdout); return 3; }
   const missing = missingCoreData(ROOT);
   if (missing.length) {
     console.error(`land-local-check: ${missing.join(', ')} missing in this checkout (a worktree has no local data). `
       + 'Data-dependent tests would fail on both sides and report false new failures. '
-      + 'Run ./scripts/setup-local-data.sh --link-only in this checkout (installs only the gitignored data set).');
+      + 'Run ./scripts/setup-local-data.sh --link-only for core data. With data/cast/ available, generate the manifests with '
+      + 'node scripts/build-actor-slugs-manifest.js && node scripts/build-cast-manifest.js.');
     return 3;
   }
   const fetch = git('fetch', '-q', 'origin', 'main');
   if (fetch.code !== 0) console.error(`land-local-check: git fetch failed, judging against the local origin/main (${fetch.stderr.split('\n').pop()})`);
   const head = git('rev-parse', 'HEAD').stdout;
-  // land-gauntlet.sh returns to a detached sha; put a branch checkout back on its branch, or
-  // fix commits made after an exit 1 would not advance it.
-  const branch = git('symbolic-ref', '-q', '--short', 'HEAD').stdout;
   // Judge against the main commit HEAD sits on: main moves every few minutes, so demanding the
   // newest one would refuse nearly every run. Rebase conflicts are land-preflight.mjs's job.
   const base = git('merge-base', head, 'origin/main').stdout;
@@ -164,12 +238,17 @@ function main(argv = process.argv.slice(2)) {
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
       if (red) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
-        const copy = path.join(out, 'land-gauntlet.sh');
-        fs.copyFileSync(path.join(ROOT, 'scripts/lib/land-gauntlet.sh'), copy);
+        const copy = stageGauntletHarness(ROOT, out);
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
-        run('bash', [copy, baseDir, '--checkout', base, '--return-to', head], { env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
-        if (git('rev-parse', 'HEAD').stdout !== head) console.error(`land-local-check: WARNING: HEAD is not back at ${head.slice(0, 10)}; run git checkout ${branch || head}`);
-        else if (branch && git('checkout', '-q', branch).code !== 0) console.error(`land-local-check: WARNING: could not return to branch ${branch}; run git checkout ${branch}`);
+        // A separate worktree on the merge-base: this checkout may commit while the base runs.
+        try {
+          withBaseWorktree(ROOT, base, path.join(out, 'basewt'), (wt) => {
+            run('bash', [copy, baseDir], { cwd: wt, env: { ...env, GAUNTLET_GATES: red }, stdio: ['ignore', 'ignore', 'inherit'] });
+          });
+        } catch (e) {
+          // No base result: land-gate-delta fails safe on the missing base meta instead of this crashing.
+          console.error(`land-local-check: base run failed (${e.message}); the verdict below has no base to compare against`);
+        }
       }
       const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
       console.log(d.stdout);
@@ -200,6 +279,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { parseArgs, newFailureFiles, missingCoreData, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { main, withBaseWorktree, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());

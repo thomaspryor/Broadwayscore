@@ -93,3 +93,12 @@ test('tilesFor: a stuck count cut off by the page cap reads as a minimum', () =>
   assert.equal(tilesFor(model({ stuckCards: 24, stuckCardsFloor: true }))[2][1], '24+ cards');
   assert.equal(tilesFor(model({ stuckCards: 1, stuckCardsFloor: false }))[2][1], '1 card');
 });
+
+test('renderBoardSummaryHtml: fills use background-color; Gmail drops the background shorthand (BRO-6164)', () => {
+  const daily = dayKeys(NOW).map((day, i) => ({ day, added: i, closed: 7 - i }));
+  for (const [name, d] of [['with chart', daily], ['without chart', null]]) {
+    const html = renderBoardSummaryHtml(model(), d, (s) => String(s), { now: NOW });
+    assert.doesNotMatch(html, /background:/, `${name}: no background shorthand`);
+    assert.match(html, /background-color:#/, `${name}: fills are present, so the check is not vacuous`);
+  }
+});

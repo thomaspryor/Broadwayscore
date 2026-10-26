@@ -192,7 +192,7 @@ async function main(argv, { checkCloud = process.env.LINEAR_API_KEY ? liveCloudC
   }
   if (!verdict.ok) {
     console.log('::warning::linear-drain-parked.js is not dispatching: ' + verdict.reason);
-    console.log('Investigate: tail -40 /tmp/linear-drain-parked-launchd.log; launchctl print gui/$(id -u)/com.broadwayscore.linear-drain-parked');
+    console.log('Investigate: the Mac drain is retired (config/mac-retired.json, BRO-6216); check .github/workflows/linear-unpark-drain.yml runs and scripts/cloud-worker-pick.js skipped counts');
     return 1;
   }
   return 0;

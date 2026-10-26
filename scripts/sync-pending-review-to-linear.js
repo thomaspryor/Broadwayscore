@@ -55,6 +55,9 @@ const DEFAULT_FILE = path.join(__dirname, '..', 'data', 'commercial-pending-revi
 const TITLE = 'Commercial data: pending review'; // stable — no count in the title, so find() by marker stays a single-hit lookup across runs
 const MARKER = '[commercial-pending-review]'; // embedded in the body, this run's find() anchor
 const ENTRY_REASON_CAP = 300;
+// Linear rejects comment/description bodies over ~65k chars ("Argument Validation
+// Error"; BRO-6209: 180 entries = 123k chars failed the daily sync for days).
+const DIGEST_CHAR_CAP = 45000;
 
 // ── Args ────────────────────────────────────────────────────────────────
 
@@ -221,26 +224,42 @@ function buildDigest(entries) {
   lines.push('VERIFY: owner-judgment — each entry needs a human to supply a citation, confirm demote, or leave it held; no command can decide that.');
   lines.push('');
 
+  const footer = ['---', '', `_Synced: ${new Date().toISOString()}_`];
+  let used = lines.join('\n').length + footer.join('\n').length + 400; // 400 = omitted-notice headroom
+  let shown = 0;
   for (const e of entries) {
-    lines.push('---');
-    lines.push('');
-    lines.push(`### ${e.slug}${e.title ? ` (${e.title})` : ''}`);
-    lines.push(`- Held since: ${e.heldSince}`);
-    lines.push(`- Reason: ${truncate(e.reason, ENTRY_REASON_CAP)}`);
+    const block = [];
+    block.push('---');
+    block.push('');
+    block.push(`### ${e.slug}${e.title ? ` (${e.title})` : ''}`);
+    block.push(`- Held since: ${e.heldSince}`);
+    block.push(`- Reason: ${truncate(e.reason, ENTRY_REASON_CAP)}`);
     if (e.attemptedQueries.length) {
-      lines.push('- Attempted queries:');
+      block.push('- Attempted queries:');
       for (const q of e.attemptedQueries) {
-        lines.push(`  - ${truncate(q, 200)}`);
+        block.push(`  - ${truncate(q, 200)}`);
       }
     } else {
-      lines.push('- Attempted queries: (none logged)');
+      block.push('- Attempted queries: (none logged)');
     }
+    block.push('');
+    const text = block.join('\n');
+    if (used + text.length + 1 > DIGEST_CHAR_CAP) break;
+    used += text.length + 1;
+    shown++;
+    lines.push(...block);
+  }
+  if (shown < entries.length) {
+    lines.push('---');
+    lines.push('');
+    lines.push(
+      `_${entries.length - shown} more pending entries omitted (Linear body size limit). ` +
+      'See `data/commercial-pending-review.json` for the full list._'
+    );
     lines.push('');
   }
 
-  lines.push('---');
-  lines.push('');
-  lines.push(`_Synced: ${new Date().toISOString()}_`);
+  lines.push(...footer);
 
   return lines.join('\n');
 }
@@ -364,4 +383,5 @@ function main() {
   process.exit(0);
 }
 
-main();
+if (require.main === module) main();
+module.exports = { buildDigest, DIGEST_CHAR_CAP };

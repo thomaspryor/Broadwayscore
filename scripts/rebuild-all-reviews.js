@@ -71,7 +71,7 @@ const { buildMultiProdDirectorGuard, inheritPriorRunReviews, findPriorRunSibling
 const { inheritUrlFromDuplicateLosers } = require('./lib/duplicate-fold-url');
 const { siblingRatingForClamp } = require('./lib/sibling-rating-inherit');
 const { detectBandFromReviewFile } = require('./lib/star-reliability');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, hasIncludableSyndicationPrimary, isRejectedByReasonExclusion, isFullTextWrongAuthorActive, isRejectedAtExclusion, isRegistrationWallStubExclusion, duplicateOfInheritedFlag, duplicateOfRefIsCopy, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, isCancelledBeforeOpeningShow, isUnverifiableWebSearchRow, isPreviewFirstLookPiece, isCombinedReviewOfOtherMemberOnly, isBodylessAggregatorScoreUncorroborated, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared, wrongShowExplicitlyCleared, evaluateLateDateGuard, evaluateUrlYearGuard, evaluateDirectorGuard } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isSoft404Body } = require('./lib/soft-404-body');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -83,7 +83,7 @@ const { normalizeCriticName } = require('./lib/byline-normalization');
 const { recoverDisplayBylinesForShow, resolveCriticName } = require('./lib/byline-recovery');
 const { displayCriticName, isPlaceholderCritic } = require('./lib/critic-display-name');
 const { mergeManualEntries } = require('./lib/manual-entry-merge');
-const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
+const { isStaleScoreInput, markRescoreNeeded, needsRescoreForCvPartialWindow } = require('./lib/rescore-flagging');
 const { isLondonMarket, isUkOutletUrl, isBroadwayCategory } = require('./lib/venue-classification');
 const { isValidBroadwayCopy, shouldClearStaleObTransfer } = require('./lib/ob-transfer-guard');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
@@ -132,6 +132,7 @@ const { writeShowExclusionsFile, writeDailyExclusionTotals } = require('./lib/re
 const { isRebuildPaused, readRebuildPause, REBUILD_PAUSE_PATH } = require('./lib/rebuild-pause');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { duplicateOfExclusion, duplicateTextOfDecision } = require('./lib/duplicate-of-exclusion');
+const { isJointCombinedCopy } = require('./lib/joint-combined-copy');
 const { cycleTiebreakFor } = require('./lib/duplicate-cycle');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { evaluateReviewCountRegression, isRunningInCI, WARN_THRESHOLD_PCT, LOCAL_HARD_BLOCK_PCT } = require('./lib/regression-guard');
@@ -2461,6 +2462,12 @@ const crossShowFingerprints = new Map();
         // BRO-4429: verdict formed from the 2500-char head of a longer article is advisory.
         const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText, d);
         if (cvPartialWindow && cv.wrongArticle === true) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
+        // BRO-6225: an advisory verdict newer than the score holds the file out until the ensemble re-reads it.
+        if (cvPartialWindow && needsRescoreForCvPartialWindow(d, showById[sid], path.join(sDir, f))) {
+          markRescoreNeeded(d, 'CV not-a-review verdict from the head of a longer article is newer than the score (BRO-6225)');
+          stats.cvPartialWindowRescoreQueued = (stats.cvPartialWindowRescoreQueued || 0) + 1;
+          try { safeWriteReview(path.join(sDir, f), d); } catch {}
+        }
         if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !cvNonReviewHumanCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket && !laneHolds(d, 'nonReview')) {
           // CV outlet-style override (S3-T5): defer for known long-biographical
           // outlets when the text is substantive + opinionated. The CV pass false-positives
@@ -4632,6 +4639,13 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // BRO-6190: body is a registration-wall stub (Telegraph sign-up form), not a review.
+      if (isRegistrationWallStubExclusion(data)) {
+        logExclusion("skippedRegistrationWallStub", showId, file, data);
+        stats.skippedRegistrationWallStub = (stats.skippedRegistrationWallStub || 0) + 1;
+        return;
+      }
+
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
       // Guard: If we already have a humanReviewScore OR a numeric llmScore.score, the LLM did NOT
       // refuse to score — so the regex below is inappropriate. It was originally added to catch
@@ -4786,7 +4800,8 @@ showDirs.forEach(showId => {
         if (cleanedForFp.length > 200) {
           const fp = crypto.createHash('sha256').update(cleanedForFp).digest('hex').substring(0, 16);
           const existing = crossShowFingerprints.get(fp);
-          if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)) {
+          if (existing && existing.showId !== showId && !skipCrossShowDupeIds.has(existing.showId)
+            && !isJointCombinedCopy(data, showId, existing.copies || [existing], showById[showId])) { // BRO-4305: joint multi-show article copies all count
             logExclusion("skippedCrossShowDupe", showId, file, data);
             stats.skippedCrossShowDupe = (stats.skippedCrossShowDupe || 0) + 1;
             if (!stats.crossShowDupeDetails) stats.crossShowDupeDetails = [];
@@ -4818,7 +4833,11 @@ showDirs.forEach(showId => {
             return;
           }
           if (!existing) {
-            crossShowFingerprints.set(fp, { showId, file });
+            crossShowFingerprints.set(fp, { showId, file, url: data.url, isCombinedReview: data.isCombinedReview, combinedWith: data.combinedWith });
+          } else if (existing.showId !== showId && data.isCombinedReview === true) {
+            // Kept joint sibling: later copies compare against every sibling, not just the first (BRO-4305).
+            if (!existing.copies) existing.copies = [{ showId: existing.showId, file: existing.file, url: existing.url, isCombinedReview: existing.isCombinedReview, combinedWith: existing.combinedWith }];
+            existing.copies.push({ showId, file, url: data.url, isCombinedReview: true, combinedWith: data.combinedWith });
           }
         }
       }

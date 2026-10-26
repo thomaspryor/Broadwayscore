@@ -35,6 +35,7 @@ const { isCommercialScope, DESIGNATION_CRITERIA } = require('./lib/commercial-sc
 const { filterUncoveredClosedShows, COMMERCIAL_RESEARCH_FLOOR, staleClosuresNeedingResearch } = require('./lib/commercial-queue');
 const { holdForBackfill, carryHumanReviewHold, withoutRecoupmentClaim } = require('./lib/commercial-apply-gate');
 const { rejectedClaimSource: rejectedClaimSourceIn } = require('./lib/commercial-claim-triage');
+const { refuseClearedField } = require('./lib/cleared-field-guard');
 const { loadCommercial, saveCommercial } = require('./lib/commercial-write-guard');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
@@ -554,8 +555,8 @@ async function main() {
   const showKeyIndex = buildShowKeyIndex(allShows);
   const toSlug = (t) => resolveCommercialSlug(t, null, showKeyIndex).slug;
   const queuedTriggers = {};
-  // BRO-4990 backfill: closed shows (opened since the 2020 floor, ran 8+
-  // weeks) with no commercial.json record. However they get targeted (weekly
+  // BRO-4990 backfill: closed shows (opened since the 2020 floor, any run
+  // length) with no commercial.json record. However they get targeted (weekly
   // sweep, --shows dispatch), their research goes to pending review ONLY,
   // flagged requiresHumanReview: no TBD stub in commercial.json and no bulk
   // auto-apply (owner plan 2026-10-10: no commercial.json writes alongside
@@ -616,7 +617,7 @@ async function main() {
     // for a human instead of being re-researched every Saturday.
     const uncoveredClosedSlugs = [...backfillSlugSet].filter(slug => !pendingAtStart[slug]);
     if (uncoveredClosedSlugs.length > 0) {
-      console.log(`Uncovered closed shows (since ${COMMERCIAL_RESEARCH_FLOOR}, 8+ weeks): ${uncoveredClosedSlugs.length}`);
+      console.log(`Uncovered closed shows (since ${COMMERCIAL_RESEARCH_FLOOR}, all runs): ${uncoveredClosedSlugs.length}`);
     }
     const uncoveredSlugs = [...new Set([...uncoveredOpenSlugs, ...uncoveredClosedSlugs])];
 
@@ -940,6 +941,14 @@ async function main() {
         if (existingShow) {
           const fieldsToCheck = ['capitalization', 'weeklyRunningCost', 'recouped', 'designation'];
           for (const field of fieldsToCheck) {
+            // BRO-6191: a figure a person cleared stays cleared unless the answer cites it.
+            if (refuseClearedField(existingShow, analysis, field)) {
+              // Held, not deleted: a cited figure may refill it, and only the apply gate
+              // has figureEvidence to decide (commercial-apply-gate.js).
+              console.log(`    Guardian: ${field} is cleared on record (BRO-6191); answer's figure held, applies only with verified evidence`);
+              analysis._clearedFieldProposed = [...(analysis._clearedFieldProposed || []), field];
+              continue;
+            }
             if (analysis[field] != null && existingShow[field] != null) {
               const conflict = guardian.detectConflict(
                 { slug, field, newValue: analysis[field], oldValue: existingShow[field], source: 'deep-research-openai' },

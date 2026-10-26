@@ -466,7 +466,7 @@ export interface ShowCommercial {
   /** Owner-reviewed editorial keep (Q3 policy) — survives CI merges. */
   humanReviewedDesignation?: boolean;
   /** What a loss label rests on (owner policy B, BRO-5020). Anything but 'reported-loss' prints a caveat (lossBasisCaveat). */
-  designationBasis?: 'reported-loss' | 'no-recoupment-announced' | 'notes-stated';
+  designationBasis?: 'reported-loss' | 'no-recoupment-announced' | 'notes-stated' | 'model-estimate';
   /** likelyOutcomeLine() of the full record, set at load ("Likely: Flop"); never stored in commercial.json. */
   likelyOutcome?: string | null;
   /** What likelyOutcome rests on (likelyOutcomeBasis()): an outside estimate or our model. */

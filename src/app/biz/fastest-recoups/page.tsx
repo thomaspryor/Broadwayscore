@@ -11,6 +11,7 @@ import { bizOgImage } from '@/lib/biz-og';
 import { getFlopsAndRecoups } from '@/lib/data-topic-pages';
 import { formatMillions } from '@/lib/investment-topics';
 import TopicPageShell from '@/components/biz/TopicPageShell';
+import MoneyGate from '@/components/biz/MoneyGate';
 
 const TITLE = "Broadway's Fastest Recoupments";
 const DESCRIPTION = "Commercial Broadway shows opened since September 2021 that paid back their investors fastest, ranked by weeks from opening to recoupment.";
@@ -28,6 +29,7 @@ export default function Page() {
 
   return (
     <TopicPageShell title={TITLE} sharePath="/biz/fastest-recoups" subtitle="Weeks from opening to recoupment, fastest first.">
+      <MoneyGate page="biz-fastest-recoups">
       <ul className="space-y-2" data-testid="recoup-list">
         {data.recoups.map((r) => (
           <li key={r.slug} className="card rounded-xl px-4 py-3 flex items-center gap-3">
@@ -42,6 +44,7 @@ export default function Page() {
           </li>
         ))}
       </ul>
+      </MoneyGate>
       <p className="text-xs text-gray-500 mt-3">
         Weeks run from opening night to the month the recoupment was reported, so they are approximate.
         {data.recoupsWithoutDate > 0 && ` ${data.recoupsWithoutDate} recouped shows without a usable recoup date (none reported, or reported after closing) are not ranked.`}

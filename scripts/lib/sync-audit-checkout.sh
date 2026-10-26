@@ -243,9 +243,10 @@ ledger_backup_path() { printf '%s/%s.%s.bak' "$LEDGER_BACKUP_DIR" "$(printf '%s'
 union_restore_ledger() {
   # $1 = ledger path (repo-relative), $2 = backup file
   local target="$1" backup="$2"
-  TARGET="$target" BACKUP="$backup" TAG="$TAG" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
+  TARGET="$target" BACKUP="$backup" TAG="$TAG" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e '
     const fs = require("fs");
     const { unionLedgerLines, stripTornTrailingLine, unionIsSafe } = require(process.env.DECISION_LIB);
+    const { smartMergeEntryFor, smartMergeLines } = require(process.env.SMART_LIB);
     const readLines = (p) => {
       let raw; try { raw = fs.readFileSync(p, "utf8"); } catch { return null; }
       const lines = raw.split("\n");
@@ -258,6 +259,30 @@ union_restore_ledger() {
     if (saved === null) { console.error(`::error::[${tag}] backup missing for ${target}`); process.exit(1); }
     const { lines: extra, dropped } = stripTornTrailingLine(saved);
     if (dropped !== null) console.log(`[${tag}]   dropped a torn trailing line from the saved copy of ${target}`);
+    // BRO-2498: a ledger with a registered merge function (same-date-replace
+    // trends, keyed ledgers) is reconciled by that function, the one the CI
+    // push pass uses, not by the dumb line union below, which would leave two
+    // rows for one key. Its replaced rows are not "lost", so it gets its own
+    // guard: nothing invented (every merged row existed on a side) and nothing
+    // emptied. A parse failure refuses; it never falls back to the dumb union.
+    if (smartMergeEntryFor(target)) {
+      let smart;
+      try { smart = smartMergeLines(target, base, extra); } catch (e) {
+        console.error(`::error::[${tag}] smart merge of ${target} failed (${e.message}) — refusing`);
+        process.exit(1);
+      }
+      const seen = new Set([...base, ...extra].filter((l) => l !== "").map((l) => { try { return JSON.stringify(JSON.parse(l)); } catch { return l; } }));
+      const invented = smart.merged.some((l) => !seen.has(l));
+      if (invented || (seen.size > 0 && smart.merged.length === 0)) {
+        console.error(`::error::[${tag}] smart merge of ${target} ${invented ? "produced a row neither side had" : "emptied the ledger"} — refusing`);
+        process.exit(1);
+      }
+      const tmpS = `${target}.sync-tmp.${process.pid}`;
+      fs.writeFileSync(tmpS, smart.merged.length ? smart.merged.join("\n") + "\n" : "");
+      fs.renameSync(tmpS, target);
+      console.log(`[${tag}]   ${target}: smart merge, ${smart.stats.base} line(s) from origin + ${smart.stats.added} local-only = ${smart.stats.total}`);
+      process.exit(0);
+    }
     const { merged, stats } = unionLedgerLines(base, extra);
     // Independent of unionLedgerLines: distinct saved rows counted here (BRO-3917:
     // raw saved line count false-tripped on duplicate rows), plus a true
@@ -678,10 +703,35 @@ EOF
   return 0
 }
 
+# BRO-2498: ledgers a git merge/rebase would double (GIT_MERGE_UNSAFE_LEDGERS)
+# that BOTH our unpushed commits and origin/main changed, with different
+# content at the two tips. Any rebase or merge of a diverged checkout replays
+# those commits through git's line-union driver, not the registered merge.
+# Fails closed: if the merge base or diff cannot be read while ahead, every
+# unsafe ledger is reported.
+SMART_BOTH=""
+if [ "${AHEAD_COUNT:-0}" -gt 0 ]; then
+  MB=$(git merge-base HEAD origin/main 2>/dev/null || true)
+  if [ -n "$MB" ]; then
+    OURS_CHANGED=$(git diff --name-only "$MB" HEAD 2>/dev/null) || OURS_CHANGED="__unreadable__"
+    THEIRS_CHANGED=$(git diff --name-only "$MB" origin/main 2>/dev/null) || THEIRS_CHANGED="__unreadable__"
+  else
+    OURS_CHANGED="__unreadable__"; THEIRS_CHANGED="__unreadable__"
+  fi
+  for UL in $(SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e 'process.stdout.write(require(process.env.SMART_LIB).GIT_MERGE_UNSAFE_LEDGERS.join(" "))' 2>/dev/null); do
+    if [ "$OURS_CHANGED" = "__unreadable__" ] || [ "$THEIRS_CHANGED" = "__unreadable__" ] \
+       || { grep -qxF "$UL" <<<"$OURS_CHANGED" && grep -qxF "$UL" <<<"$THEIRS_CHANGED" \
+            && [ "$(git rev-parse "HEAD:$UL" 2>/dev/null)" != "$(git rev-parse "origin/main:$UL" 2>/dev/null)" ]; }; then
+      SMART_BOTH="${SMART_BOTH}${UL}
+"
+    fi
+  done
+fi
+
 # One node call returns the whole decision; the logic lives in
 # scripts/lib/sync-audit-decision.js so it is unit-testable (CLAUDE.md r15).
-DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION_FACTS="$UNION_FACTS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" node -e '
-  const { ffBlockingPaths, classifyBlock, unionLedgerCandidates } = require(process.env.DECISION_LIB);
+DECISION=$(SMART_BOTH="$SMART_BOTH" DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUNT" BEHIND="$BEHIND_COUNT" UNION_FACTS="$UNION_FACTS" DECISION_LIB="$SCRIPT_DIR/sync-audit-decision.js" SMART_LIB="$SCRIPT_DIR/smart-ledger-merge.js" node -e '
+    const { ffBlockingPaths, classifyBlock, unionLedgerCandidates } = require(process.env.DECISION_LIB);
   const split = (v) => (v || "").split("\n").map((s) => s.trim()).filter(Boolean);
   const blockingPaths = ffBlockingPaths({
     dirtyPaths: split(process.env.DIRTY),
@@ -689,6 +739,7 @@ DECISION=$(DIRTY="$REMAINING_DIRTY" CHANGED="$ORIGIN_CHANGED" AHEAD="$AHEAD_COUN
   });
   const d = classifyBlock({
     blockingPaths,
+    gitMergeUnsafePaths: (process.env.SMART_BOTH || "").split("\n").map((x) => x.trim()).filter(Boolean),
     aheadCount: Number(process.env.AHEAD || 0),
     behindCount: Number(process.env.BEHIND || 0),
     unionMergePaths: unionLedgerCandidates((process.env.UNION_FACTS || "").split("\n").filter(Boolean).map((l) => {

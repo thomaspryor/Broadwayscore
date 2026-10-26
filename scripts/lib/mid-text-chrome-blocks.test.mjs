@@ -74,3 +74,33 @@ test('negatives: Independent popover as the whole text (paywall stub) stays garb
   const t = `Review ${INDEP}`;
   assert.equal(isGarbageContent(t).isGarbage, true);
 });
+
+// BRO-6212: Daily Express Reach plc email signup inlined mid-article (Benjamin Button West End review).
+const EXPRESS = 'Get the latest news and gossip from the Royal Family plus selected offers and competitions I would like to receive emails from the Daily Express featuring our latest products, services, offers, and promotions from across the Reach Plc family . Subscribe Invalid email You agree you are 18 or over. We use your sign-up to provide content in ways you\'ve consented to and to improve our understanding of you. This may include adverts from us and third parties based on our knowledge of you. You can unsubscribe at any time. More Info .';
+
+test('Express Reach newsletter signup mid-article is not garbage', () => {
+  const t = `Benjamin Button musical review 5 / 5 stars ${PROSE} ${EXPRESS} ${PROSE}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/Royal Family/i.test(stripMidTextChromeBlocks(t)));
+  const r = classifyContentTier({ fullText: t, url: 'https://www.express.co.uk/entertainment/theatre/1975202/x-review' });
+  assert.equal(r.contentTier, 'complete', r.tierReason);
+});
+
+test('negatives: Express signup as the whole text stays garbage', () => {
+  assert.equal(isGarbageContent(`Review ${EXPRESS}`).isGarbage, true);
+});
+
+// Older Express template: same block, ends "Read our Privacy Policy" (im-not-being-funny, romeo-and-juliet 2026).
+const EXPRESS_OLD = 'Get the latest news and gossip from the Royal Family plus selected offers and competitions Subscribe Invalid email You agree you are 18 or over. We use your sign-up to provide content in ways you\'ve consented to and to improve our understanding of you. This may include adverts from us and third parties based on our knowledge of you. You can unsubscribe at any time. Read our Privacy Policy';
+
+test('Express older signup wording (Read our Privacy Policy) mid-article is not garbage', () => {
+  const t = `Romeo and Juliet review ${PROSE} ${EXPRESS_OLD} ${PROSE}`;
+  assert.equal(isGarbageContent(t).isGarbage, false);
+  assert.ok(!/Royal Family/i.test(stripMidTextChromeBlocks(t)));
+  const r = classifyContentTier({ fullText: t, url: 'https://www.express.co.uk/entertainment/theatre/1/x-review' });
+  assert.equal(r.contentTier, 'complete', r.tierReason);
+});
+
+test('negatives: Express older signup as the whole text stays garbage', () => {
+  assert.equal(isGarbageContent(`Review ${EXPRESS_OLD}`).isGarbage, true);
+});

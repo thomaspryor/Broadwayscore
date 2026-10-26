@@ -8,13 +8,14 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { isSoft404Body, findDuplicateBodies } = require('./lib/soft-404-body');
 
 const ROOT = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 const showArg = (process.argv.find((a) => a.startsWith('--show=')) || '').slice(7);
 const asJson = process.argv.includes('--json');
 
-const shows = showArg ? [showArg] : fs.readdirSync(ROOT).filter((d) => fs.statSync(path.join(ROOT, d)).isDirectory());
+const shows = showArg ? [showArg] : listShowDirs(ROOT, { silent: true });
 const findings = [];
 for (const show of shows) {
   const dir = path.join(ROOT, show);

@@ -319,7 +319,9 @@ const SYNC_REFUSED_READ_FAILED = Object.freeze({
   moreCount: 0,
 });
 
-function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
+// ignoreTags: tags of retired launchd jobs (config/mac-retired.json). A retired
+// job never runs again, so nothing would ever clear its last snapshot.
+function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8, ignoreTags = [] } = {}) {
   let names;
   try { names = fs.readdirSync(auditDir); }
   catch (err) { return err && err.code === 'ENOENT' ? null : SYNC_REFUSED_READ_FAILED; }
@@ -327,7 +329,7 @@ function readSyncRefused({ auditDir = DEFAULT_AUDIT_DIR, maxItems = 8 } = {}) {
   const unreadableTags = [];
   for (const name of names) {
     const nameMatch = SYNC_REFUSED_NAME_RE.exec(name);
-    if (!nameMatch) continue;
+    if (!nameMatch || ignoreTags.includes(nameMatch[1])) continue;
     let snap;
     try { snap = JSON.parse(fs.readFileSync(path.join(auditDir, name), 'utf8')); }
     catch { unreadableTags.push(nameMatch[1]); continue; }

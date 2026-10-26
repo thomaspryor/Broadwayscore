@@ -31,6 +31,13 @@ on:
         required: false
         default: 'false'
         type: string
+      recheck_backlog:
+        # BRO-6240: one-off sweep of the whole due RECHECK-AFTER backlog (up to 80 cards,
+        # 90 min budget) instead of the nightly 10 cards / 5 min. Leave 'false' for the cron.
+        description: 'Acceptance recheck: sweep the whole due backlog (BRO-6240)'
+        required: false
+        default: 'false'
+        type: string
 
 # Ship-check finding (card #374): a manual workflow_dispatch overlapping the
 # 02:15 cron would let two runs read-modify-write data/audit/alert-router-attempts.jsonl
@@ -437,20 +444,8 @@ jobs:
         timeout-minutes: 1
         run: node scripts/audit-early-unmarked-publish-dates.js --counts=data/audit/early-publish-dates.json
 
-      # BRO-4719: email the owner when a card newly carries a "DECISION
-      # NEEDED:" line or the awaiting-owner label. Runs here, not on the Mac
-      # (owner 2026-10-05: "don't rely on the Mac Studio"). Each card is
-      # announced once; the told-set rides alert-ledger.json, committed by the
-      # ledger step below.
-      - name: Email owner about new decisions
-        # lint-allow-swallow: advisory email; a Linear/Resend outage only delays the email to the next daily run and must not block the health snapshot commit below
-        if: always()
-        continue-on-error: true
-        env:
-          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/notify-owner-decisions.js
+      # BRO-6147: the daily batched decision email moved to owner-decision-emails.yml
+      # (one email per decision, tap-to-answer buttons, every 20 minutes).
 
       # BRO-4487: cancel auto-filed alert cards whose condition has cleared in
       # the ledger (untouched backlog cards filed for exactly that condition
@@ -578,7 +573,10 @@ jobs:
       # scripts/autonomous-acceptance-recheck.js was the Mac-local
       # autonomous-nightly launchd job, retired 2026-07-27 — it currently
       # NEVER RUNS, so nothing has re-verified a Done card's own acceptance
-      # command since then. SHADOW MODE ONLY: it reports to
+      # command since then. BRO-6240 (owner, 2026-10-25): it now also CLOSES an open
+      # RECHECK-AFTER-stamped card whose real test passed (decideAutoClose), via
+      # linear-brain's Done gate; failures are still only reported. Otherwise
+      # SHADOW MODE: it reports to
       # data/audit/autonomous-recheck-ledger.jsonl (committed below, a path
       # dedicated to this CI job — never the Mac-local
       # data/audit/autonomous-ledger.jsonl the shadow-run launchd job still
@@ -606,8 +604,15 @@ jobs:
         # script's own internal deadline) drops mid-run with no ledger write
         # at all, silently losing that night's coverage instead of reporting
         # it truncated.
-        timeout-minutes: 8
+        # BRO-6240: a manual recheck_backlog dispatch gets a 95min step cap for its 90min budget.
+        timeout-minutes: ${{ inputs.recheck_backlog == 'true' && 95 || 8 }}
         env:
+          # BRO-6240: owner-approved 2026-10-25. The script closes an open, RECHECK-AFTER-stamped
+          # card only when its real test passed on fresh origin/main (decideAutoClose). Turn it
+          # off without a code change: `gh variable set RECHECK_AUTOCLOSE_DISABLED --body true`.
+          RECHECK_AUTOCLOSE: 'true'
+          RECHECK_BACKLOG: ${{ inputs.recheck_backlog }}
+          RECHECK_AUTOCLOSE_DISABLED: ${{ vars.RECHECK_AUTOCLOSE_DISABLED }}
           # BRO-3373: without this, fetchLinearRecheckCandidates's every call
           # fails auth (linear-client.js's getApiKey() throws with no key set)
           # — a ship-check review caught this BEFORE it shipped: the step
@@ -631,7 +636,12 @@ jobs:
         # so the non-verify overhead is ~2min, and 2 + 5 = 7 < 8. The script's
         # own deadline is the soft bound that keeps it there; the step timeout
         # stays the hard backstop it was.
-        run: node scripts/autonomous-acceptance-recheck.js --time-budget-min 5
+        run: |
+          if [ "${RECHECK_BACKLOG}" = "true" ]; then
+            node scripts/autonomous-acceptance-recheck.js --backlog --time-budget-min 90
+          else
+            node scripts/autonomous-acceptance-recheck.js --time-budget-min 5
+          fi
 
       # Ledger artifact backup (BRO-386): uploaded BEFORE the isolated commit
       # below, so this run's recheck verdicts are recoverable from the Actions

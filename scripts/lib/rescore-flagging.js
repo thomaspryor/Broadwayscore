@@ -180,6 +180,26 @@ function isStaleScoreInput(data, show, filePath) {
   return isScoreable(data, show, filePath);
 }
 
+/**
+ * BRO-6225: a scored file whose newer CV verdict says "not a review" from the
+ * head of a longer article. That verdict is advisory and keeps the file out
+ * only until the ensemble has read the current text (review-guards.js
+ * isCvPartialWindowAdvisory), so queue that read. Loop guard: a rescore that
+ * completed after the verdict settles it, whatever the score's confidence.
+ */
+function needsRescoreForCvPartialWindow(data, show, filePath) {
+  if (!data || data.needsRescore === true) return false;
+  if (!data.llmScore || !Number.isFinite(data.llmScore.score)) return false; // unscored files reach the scorer anyway
+  const guards = require('./review-guards');
+  if (guards.ensembleScoredSinceCv(data)) return false;
+  const verified = Date.parse((data.contentVerification && data.contentVerification.verifiedAt) || '');
+  const completed = Date.parse(data.rescoreCompletedAt || '');
+  if (!Number.isFinite(verified)) return false; // no verdict date: a rescore could never settle it
+  if (Number.isFinite(completed) && completed >= verified) return false;
+  if (!guards.isCvPartialWindowAdvisory(data, { forScoring: true })) return false;
+  return isScoreable(data, show, filePath);
+}
+
 // scoreSource values written by the LLM scorers (llm-scoring/*, anchored-v6
 // WE path). Anything else (explicit-rating, guardian-api, *-star-rating,
 // human-review, …) is an extracted or human score.
@@ -211,4 +231,4 @@ function markRescoreNeeded(fileData, reason, flaggedAt, { requeue = false } = {}
   return fileData;
 }
 
-module.exports = { isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded };
+module.exports = { isFalseTruncationScore, isBotStubContaminatedScore, BOT_STUB_FIX_AT, BOT_STUB_TIGHTENED_AT, BOT_STUB_RESCORE_REASON, isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded, needsRescoreForCvPartialWindow };

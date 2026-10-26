@@ -13,7 +13,6 @@
 //   ^(?:src/.*\.(?:tsx|jsx|css|scss)$
 //      |tailwind\.config\.(?:js|ts|cjs|mjs)$
 //      |postcss\.config\.(?:js|ts|cjs|mjs)$
-//      |src/app/.*\.(?:tsx|jsx|ts|js)$
 //      |styles/.*\.(?:css|scss)$)
 
 // JS regex matches paths with OR without a leading slash so callers using
@@ -23,7 +22,6 @@ export const UI_PATH_RE = new RegExp(
     'src/.*\\.(?:tsx|jsx|css|scss)$' +
     '|tailwind\\.config\\.(?:js|ts|cjs|mjs)$' +
     '|postcss\\.config\\.(?:js|ts|cjs|mjs)$' +
-    '|src/app/.*\\.(?:tsx|jsx|ts|js)$' +
     '|styles/.*\\.(?:css|scss)$' +
   ')'
 );

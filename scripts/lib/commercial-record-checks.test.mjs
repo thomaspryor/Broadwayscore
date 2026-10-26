@@ -353,26 +353,40 @@ test('the size check counts only when the write changed the label or the estimat
   assert.equal(sized({ ...fizzle, modelDataQuality: 'low' }, fizzle), 1, 'a write that drops the estimate is checked');
 });
 
-test('a silence-basis loss label on a show closed under LOSS_LABEL_MIN_DAYS waits as TBD + needsLossEvidence (BRO-5020)', () => {
+test('a loss label on silence or an estimate is published as is, however recently the show closed (BRO-6158)', () => {
   const days = (n) => new Date(Date.now() - n * 86400000).toISOString().slice(0, 10);
-  const row = { designation: 'Flop', designationBasis: 'no-recoupment-announced', recouped: false };
-  const young = sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(140) });
-  assert.equal(young.entry.designation, 'TBD');
-  assert.equal(young.entry.designationBasis, undefined);
-  assert.equal(young.entry.needsLossEvidence, true);
-  assert.equal(young.entry.recouped, null);
-  assert.ok(young.changed.includes('designation'));
-  // Aged in: the label stands.
-  assert.equal(sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(200) }).entry.designation, 'Flop');
-  // A reported loss is published straight away, however recent the closing.
-  const reported = { ...row, designationBasis: 'reported-loss' };
-  assert.equal(sanitizeForPublicRecord(reported, { status: 'closed', closingDate: days(10) }).entry.designation, 'Flop');
-  // An owner-locked label is left alone, as the classifier leaves it.
-  assert.equal(sanitizeForPublicRecord({ ...row, humanReviewedDesignation: true }, { status: 'closed', closingDate: days(10) }).entry.designation, 'Flop');
-  // An unknown closing date never counts as premature.
-  assert.equal(sanitizeForPublicRecord(row, { status: 'closed' }).entry.designation, 'Flop');
-  // A bare status string skipped this rule silently, so it is refused.
-  assert.throws(() => sanitizeForPublicRecord(row, 'closed'), /shows.json record/);
+  for (const designationBasis of ['no-recoupment-announced', 'model-estimate', 'reported-loss']) {
+    const row = { designation: 'Flop', designationBasis, recouped: false };
+    for (const age of [10, 140, 400]) {
+      const r = sanitizeForPublicRecord(row, { status: 'closed', closingDate: days(age) });
+      assert.equal(r.entry.designation, 'Flop', `${designationBasis} ${age}d`);
+      assert.equal(r.entry.designationBasis, designationBasis);
+      assert.equal(r.entry.needsLossEvidence, undefined);
+      assert.ok(!r.changed.includes('designation'));
+    }
+  }
+  // A loss label on a show that is not closed still becomes TBD.
+  assert.equal(sanitizeForPublicRecord({ designation: 'Flop', designationBasis: 'model-estimate' }, { status: 'open' }).entry.designation, 'TBD');
+  // A bare status string is refused.
+  assert.throws(() => sanitizeForPublicRecord({ designation: 'Flop' }, 'closed'), /shows.json record/);
+});
+
+test('a model-estimate designation is our estimate: no recouped flag needed, sized by the model at any quality (BRO-6158)', () => {
+  const model = (pct) => ({ modelDataQuality: 'low', modelReturnedExCreditPct: [pct - 5, pct, pct + 5] });
+  const rec = (designation, pct, extra = {}) => ({ designation, designationBasis: 'model-estimate', recouped: null, ...model(pct), ...extra });
+  const errs = (r) => commercialRecordErrors('x', r);
+  const warns = (r) => commercialRecordWarnings('x', r, { showRecord: { status: 'closed' } });
+  const bad = (list) => list.filter((m) => /recouped=|designationBasis|returned/.test(m));
+  for (const [d, pct] of [['Flop', 10], ['Fizzle', 60], ['Trickle', 110], ['Windfall', 190]]) {
+    assert.deepEqual(bad(errs(rec(d, pct))), [], `${d} errors`);
+    assert.deepEqual(bad(warns(rec(d, pct))), [], `${d} warnings`);
+  }
+  // The same rows without the basis keep the old rules.
+  assert.ok(errs({ ...rec('Windfall', 190), designationBasis: undefined }).some((m) => /recouped=null/.test(m)));
+  assert.ok(errs({ ...rec('Flop', 10), designationBasis: undefined }).some((m) => /recouped=null/.test(m)));
+  // An estimate that disagrees with its own figure is still caught, and the basis stays off other tiers.
+  assert.ok(warns(rec('Fizzle', 10)).some((m) => /returned/.test(m)));
+  assert.ok(warns(rec('Miracle', 190)).some((m) => /non-loss designation/.test(m)));
 });
 
 test('a homepage source URL warns; an article or filing URL does not (BRO-5264)', () => {

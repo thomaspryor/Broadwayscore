@@ -1,46 +1,40 @@
 {
-  "generatedAt": "2026-10-24T07:40:51.217Z",
+  "generatedAt": "2026-10-26T00:18:06.469Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
+  "latestRunHeadSha": "c9319831ccf9cc4ab6fb5eb538bdde32f5f46351",
   "state": "RED",
-  "consecutiveFailures": 19,
+  "consecutiveFailures": 21,
   "consecutiveSuccesses": 0,
   "greenSince": null,
   "greenForHours": null,
   "greenDurationIsFloor": false,
-  "redSince": "2026-10-24T00:59:00Z",
-  "redForHours": 6.697560277777778,
+  "redSince": "2026-10-25T19:56:32Z",
+  "redForHours": 4.359574722222222,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-10-24T00:29:58Z",
-  "latestFailedRunId": "40071566180",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40071566180",
-  "decidedRuns": 100,
+  "lastSuccessAt": "2026-10-25T19:39:41Z",
+  "latestFailedRunId": "40246292531",
+  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40246292531",
+  "decidedRuns": 99,
   "verdictLag": {
-    "verdictSha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
-    "verdictAt": "2026-10-24T06:47:04Z",
-    "verdictAgeHours": 0.8964491666666666,
-    "newerHeads": 0,
-    "runsInFlight": 0,
+    "verdictSha": "c9319831ccf9cc4ab6fb5eb538bdde32f5f46351",
+    "verdictAt": "2026-10-25T23:46:52Z",
+    "verdictAgeHours": 0.5206858333333333,
+    "newerHeads": 1,
+    "runsInFlight": 1,
     "lagging": false
   },
   "failingJobs": [
     {
-      "name": "Data Validation",
-      "steps": [
-        "Audit non-review content (weather/sports/junk pages)"
-      ]
-    },
-    {
       "name": "Unit Tests",
       "steps": [
-        "Run unit tests (no-data-dependency)"
+        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
       ]
     },
     {
-      "name": "E2E Tests",
+      "name": "Data Validation",
       "steps": [
-        "Run unit tests"
+        "Audit outlet-registry gaps"
       ]
     },
     {
@@ -52,16 +46,10 @@
   ],
   "failingPaths": [
     {
-      "path": "tests/unit/show-id-market-suffix.test.mjs",
+      "path": "scripts/lib/musical-model-backtest.test.mjs",
       "job": "Unit Tests",
-      "step": "Run unit tests (no-data-dependency)",
-      "evidence": "not ok 12874 - every shows.json id suffix matches its category"
-    },
-    {
-      "path": "tests/unit/biz-data-functions.test.mjs",
-      "job": "E2E Tests",
-      "step": "Run unit tests",
-      "evidence": "not ok 2 - should have valid designation values"
+      "step": "Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "evidence": "not ok 7431 - reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside"
     }
   ],
   "topFailingJob": "Unit Tests"

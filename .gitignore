@@ -94,12 +94,15 @@ data/pending-fixes/*
 !data/pending-fixes/bro-5839.json
 !data/pending-fixes/bro-5919.json
 !data/pending-fixes/bro-6045.json
+!data/pending-fixes/bro-4937.json
 !data/pending-fixes/[0-9]*.json
 !data/pending-fixes/bro-3964.json
 !data/pending-fixes/bro-3986.json
 !data/pending-fixes/bro-4233.json
+!data/pending-fixes/bro-4504.json
 !data/pending-fixes/bro-4734.json
 !data/pending-fixes/bro-5345.json
+!data/pending-fixes/bro-5263.json
 !data/pending-fixes/bro-5436.json
 !data/pending-fixes/bro-5706.json
 !data/pending-fixes/bro-5755.json
@@ -177,6 +180,9 @@ data/archives/
 
 # Generated show lookup for My Shows page (regenerated at build time)
 public/data/show-lookup.json
+# Web Stats catalog, projected from mobile-shows.json by scripts/prebuild.sh
+# (scripts/generate-stats-shows.js)
+public/data/stats-shows.json
 
 # Commercial scorecard export (scripts/generate-commercial-export.js). The
 # scorecard is unreleased on prod (owner, 2026-10-04); anything under public/
@@ -236,6 +242,7 @@ data/diary-import-checkpoint.json
 
 # Generated diary data (regenerated at build time)
 public/data/diary-search.json
+public/data/lottery-rush.json
 public/data/related-shows-mobile.json
 public/data/diary-lookup.json
 
@@ -318,7 +325,10 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/bro-2880-core-data-ci-cadence.md
 !/docs/bro-4623-commercial-readiness.md
 !/docs/bro-6045-review-recovery.md
+!/docs/bro-6165-bucknell-backtest.md
 !/docs/triage-audit-scripts.md
+# BRO-2613: audit-skip review note; tests/unit/duplicate-text-of-audit-skips.test.mjs asserts the call sites point at it.
+!/docs/duplicate-text-of-exclusion.md
 # Feature specs are cross-session deliverables (Notion cards + PRs point at
 # them) — durable-path rule, same rationale as /docs/experiments/ below.
 !/docs/specs/
@@ -649,3 +659,6 @@ scripts/lib/.ab-old-verify-image-*.js
 data/playbill-urls.json.lock
 data/playbill-urls.json.lock.steal-gate
 data/audit/skipped-show-rows.json
+
+# BRO-6230: --dry-run output (can hold signed dispatch links); was committed by accident 2026-10-17.
+data/audit/morning-digest-preview.html

@@ -199,6 +199,8 @@ const FLAG_FIELDS = new Set([
   'scoreSource', 'humanReviewScore', 'firstSeenAt', 'outletHeadline', 'outletStandfirst',
   // BRO-5238: decideInclusion's rejectionReason / rejectedBy branches.
   'rejectionReason', 'rejectedBy',
+  // BRO-6193: rejected manual tiers and cleared markup stars affect body-stub inclusion.
+  'manualContentTier', 'originalScoreCleared',
   // BRO-3963: cycle edges/evidence, inherited-flag override, and syndication.
   'duplicateTextOf', 'duplicateOfFlagInheritanceCleared', 'fullText',
   'isSyndicatedDuplicate', 'crossOutletDuplicate', 'crossOutletPrimaryFile',
@@ -681,8 +683,10 @@ function loadBaselineGuards() {
   delete require.cache[require.resolve(cmPath)];
   const prsPath = path.join(baselineLibDir, 'prior-run-sibling.js');
   delete require.cache[require.resolve(prsPath)];
+  const cvPath = path.join(baselineLibDir, 'content-verifier.js');
   return {
     ...guards,
+    __contentVerifier: fs.existsSync(cvPath) ? require(cvPath) : {},
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
@@ -705,6 +709,7 @@ function loadWorkingTreeGuards() {
   delete require.cache[require.resolve(prsPath)];
   return {
     ...guards,
+    __contentVerifier: require(path.resolve(REPO_ROOT, 'scripts/lib/content-verifier.js')),
     __dateGuard: require(dgPath),
     __priorRunLib: require(prPath),
     __crossMarketLib: require(cmPath),
@@ -1279,6 +1284,13 @@ function decideInclusion(review, show, guards, filePath) {
       return { included: false, reason: 'rejectedAt' };
     }
   }
+  // BRO-6193: use each replay side's canonical guard, including older baselines.
+  // It reads fullText, manualContentTier and originalScoreCleared as well as
+  // the score provenance fields already tracked by FLAG_FIELDS.
+  const bodyStubReason = typeof guards.getBodyStubExclusionReason === 'function'
+    ? guards.getBodyStubExclusionReason(review)
+    : guards.isRegistrationWallStubExclusion?.(review) ? 'registrationWallStub' : null;
+  if (bodyStubReason) return { included: false, reason: bodyStubReason };
   // duplicateTextOf is a cycle edge, not a flat exclusion. fullText + url
   // confirm matching copies; duplicateOfFlagInheritanceCleared lifts a twin's
   // wrong-content flag. Delegate the exact gate the rebuild runs.
@@ -1800,6 +1812,13 @@ function main() {
         // it calls" gap as isWithinTourLeg above (Codex adversarial review,
         // BRO-3862).
         && (baseline.hasHighConfidenceLlmScore?.toString() || '') === (working.hasHighConfidenceLlmScore?.toString() || '')
+        // BRO-6225: the head-of-article CV advisory lifts nonReview,
+        // cvWrongArticleHighConfidence and rejectionReason; it lives partly in
+        // content-verifier.js, which no other comparison here loads.
+        && (baseline.isCvPartialWindowAdvisory?.toString() || '') === (working.isCvPartialWindowAdvisory?.toString() || '')
+        && (baseline.ensembleScoredSinceCv?.toString() || '') === (working.ensembleScoredSinceCv?.toString() || '')
+        && (baseline.__contentVerifier?.isCvVerdictFromPartialWindow?.toString() || '') === (working.__contentVerifier?.isCvVerdictFromPartialWindow?.toString() || '')
+        && (baseline.__contentVerifier?.isCvVerdictFromTruncatedFetch?.toString() || '') === (working.__contentVerifier?.isCvVerdictFromTruncatedFetch?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
@@ -1828,6 +1847,8 @@ function main() {
         // BRO-5238: rejection helpers decideInclusion / explainExclusion delegate to.
         && (baseline.isRejectedByReasonExclusion?.toString() || '') === (working.isRejectedByReasonExclusion?.toString() || '')
         && (baseline.isRejectedAtExclusion?.toString() || '') === (working.isRejectedAtExclusion?.toString() || '')
+        && (baseline.isRegistrationWallStubExclusion?.toString() || '') === (working.isRegistrationWallStubExclusion?.toString() || '')
+        && (baseline.getBodyStubExclusionReason?.toString() || '') === (working.getBodyStubExclusionReason?.toString() || '')
         && (baseline.rejectedAtHumanCleared?.toString() || '') === (working.rejectedAtHumanCleared?.toString() || '')
         // Threshold constants are free variables of the pre-opening gate — a
         // constant-only edit leaves the function source identical (same trap

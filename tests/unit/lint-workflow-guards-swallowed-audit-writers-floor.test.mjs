@@ -46,6 +46,8 @@ function runGuard({ workflowCount = MIN_WORKFLOWS } = {}) {
     copyFileSync(SCANNER, path.join(dir, 'scripts/lib/scan-alert-ledger-gaps.js'));
     copyFileSync(GLOB_GUARD, path.join(dir, 'scripts/lib/workflow-glob-guard.js'));
     copyFileSync(CHECKER, path.join(dir, 'scripts/lib/swallowed-audit-writer-check.js'));
+    // BRO-267: the check loads a central allowlist; an empty one keeps this fixture tree clean.
+    writeFileSync(path.join(dir, 'scripts/lib/swallowed-audit-writer-allowlist.json'), '[]\n');
     for (let i = 0; i < workflowCount; i++) {
       writeFileSync(path.join(dir, '.github/workflows', `pad-${String(i).padStart(3, '0')}.yml`), CLEAN_WORKFLOW);
     }

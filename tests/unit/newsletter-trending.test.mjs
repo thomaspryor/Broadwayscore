@@ -143,3 +143,15 @@ test('fetcher rejects a truncated report instead of ranking missing baselines', 
   assert.equal(await fetchTrendingShowPages({ repo: process.cwd() }), null);
   assert.match(messages.join(''), /incomplete show-page channel report/);
 });
+
+test('directShareOfShowViews reports the Direct share of this week\'s show-page views only (BRO-2503)', () => {
+  const { directShareOfShowViews } = require('../../scripts/lib/newsletter-trending.js');
+  const r = directShareOfShowViews([
+    row('/show/hamilton', 'Direct', 'thisWeek', 75),
+    row('/show/hamilton', 'Organic Search', 'thisWeek', 25),
+    row('/show/hamilton', 'Direct', 'priorWeek', 999),
+    row('/about', 'Direct', 'thisWeek', 500),
+  ]);
+  assert.deepEqual(r, { total: 100, direct: 75, share: 0.75 });
+  assert.equal(directShareOfShowViews([]).share, null);
+});

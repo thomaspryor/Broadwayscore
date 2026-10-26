@@ -237,6 +237,10 @@ async function printCoordinatorReminder(fn, text, exclude) {
   }
 }
 
+function printBoardCardId(identifier) {
+  console.error(`__BOARD_CARD_ID__=${identifier}`);
+}
+
 async function main(argv = process.argv.slice(2), deps = {}) {
   // Injectable I/O seams — real Linear client by default, same convention
   // scripts/linear-next.js's main() uses (deps default to the live module,
@@ -791,21 +795,22 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     notes = pressNight.text;
     console.error(`PRESS-NIGHT: ${pressNight.notPassing.length} record(s) not PASS for this audit night (${pressNight.notPassing.map((r) => `${r.showId} ${r.verdict}`).join(', ')}); the card now says so.`);
   }
-  // BRO-6130: a dated routine log is a record, not work. It goes to the ledger file, not the board.
+  // BRO-6130/BRO-6151: dated logs go to the local ledger and its durable parent-card comments.
   // LINEAR_ROUTINE_LOG_DIVERT=0 files it as a card again.
   const rlog = require('./lib/routine-log-ledger');
   // An audit with a not-PASS press-night record is a warning the owner must see: it stays a card.
   if (rlog.isRoutineLogTitle(title) && !pressNight.changed && process.env.LINEAR_ROUTINE_LOG_DIVERT !== '0') {
-    let file = null;
+    let record = null;
     try {
-      ({ file } = rlog.appendRoutineLog({ title, notes, source: typeof args.source === 'string' ? args.source : undefined }));
+      record = await rlog.recordRoutineLog({ title, notes, source: typeof args.source === 'string' ? args.source : undefined }, { getIssue: getIssueFn, createComment: createCommentFn });
     } catch (e) {
-      // A failed ledger write must not lose the record: fall through and file the card.
+      // A failed local or durable write must not lose the record: file the card.
       console.error(`ROUTINE-LOG: ledger write failed (${e.message}); filing the card instead.`);
     }
-    if (file) {
-      console.error(`ROUTINE-LOG: "${title}" recorded in ${require('path').relative(require('path').join(__dirname, '..'), file)}; no Linear card filed (dated logs are records, BRO-6130).`);
-      console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL, notes }));
+    if (record) {
+      console.error(`ROUTINE-LOG: "${title}" recorded in ${rlog.LEDGER_REL} and as a comment on ${record.identifier}; no new Linear card filed (dated logs are records).`);
+      console.log(JSON.stringify({ routineLog: true, title, ledger: rlog.LEDGER_REL, identifier: record.identifier, notes }));
+      printBoardCardId(record.identifier);
       process.exit(0);
     }
   }
@@ -836,7 +841,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // commit gate. Carries the human identifier (BRO-123) rather than the UUID
     // because that is what every Linear-side reader — linear-brain find,
     // linear-client getIssue, the issue URL — already keys on.
-    console.error(`__BOARD_CARD_ID__=${result.issue.identifier}`);
+    printBoardCardId(result.issue.identifier);
     if (result.mode === 'reused' && result.nearDuplicate) {
       console.error(`ISSUE-REUSED: ${result.issue.identifier} ("${result.issue.title}") is already open and this title repeats it (score ${result.nearDuplicate.score.toFixed(2)}); the notes were added there as a comment (state=${result.stateName}). If it is really different work, re-run with --new-anyway "<reason>".`);
     } else if (result.mode === 'reused') {

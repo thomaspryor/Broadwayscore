@@ -34,10 +34,7 @@ test('bounded, archival, message and exempt lines pass', () => {
     'git_net 120 -c "http.x.extraheader=$h" clone -q https://x/y d',
     'timeout 300 git clone https://x/y.git d',
     'FOO=1 timeout 90 git clone https://x/y.git d',
-    'sudo timeout 90 git fetch origin main',
     'while ! timeout 60 git clone https://x/y.git d; do sleep 1; done',
-    'until timeout 60 git push origin HEAD; do sleep 1; done',
-    'env X=1 timeout 60 git pull origin main',
     'git clone --mirror https://x/y.git repo.git',
     'git clone --bare https://x/y.git /tmp/r',
     'echo "re-running git clone after a stale checkout"',
@@ -98,6 +95,36 @@ test('network rule skips bounded commands, comments, messages and clone-only arc
     'git clone --bare https://x/y.git repo.git',
     'git fetch origin main # hygiene-unbounded-clone-ok: temporary exception',
     '# hygiene-unbounded-clone-ok: temporary exception\ngit push origin main',
+  ]) {
+    assert.deepEqual(findUnboundedGitNetworkCommands(wf(body)), [], body);
+  }
+});
+
+test('network rule checks sudo, until and env commands with and without a timeout', () => {
+  for (const [bounded, unbounded] of [
+    ['sudo timeout 90 git fetch origin main', 'sudo git fetch origin main'],
+    ['until timeout 60 git push origin HEAD; do sleep 1; done', 'until git push origin HEAD; do sleep 1; done'],
+    ['env X=1 timeout 60 git pull origin main', 'env X=1 git pull origin main'],
+  ]) {
+    assert.deepEqual(findUnboundedGitNetworkCommands(wf(bounded)), [], bounded);
+    assert.equal(findUnboundedGitNetworkCommands(wf(unbounded)).length, 1, unbounded);
+  }
+});
+
+test('quoted values cannot supply a timeout for a git network command', () => {
+  for (const body of [
+    'env NOTE="timeout 60" git fetch origin main',
+    "env NOTE='timeout 60' git push origin main",
+    'env NOTE="gtimeout 60" git pull origin main',
+    'env NOTE="escaped \\"quote\\" timeout 60" git clone https://x/y.git d',
+  ]) {
+    assert.equal(findUnboundedGitNetworkCommands(wf(body)).length, 1, body);
+  }
+  for (const body of [
+    'env NOTE="timeout 60" timeout "$CAP" git fetch origin main',
+    "env NOTE='timeout 60' timeout 90 git push origin main",
+    'env NOTE="gtimeout 60" gtimeout 90 git pull origin main',
+    'timeout "$CAP" git -c "http.extraheader=$h" clone https://x/y.git d',
   ]) {
     assert.deepEqual(findUnboundedGitNetworkCommands(wf(body)), [], body);
   }

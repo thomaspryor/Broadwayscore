@@ -76,4 +76,15 @@ async function fetchOwnerEmailsSince({ apiKey, ownerEmail, sinceMs, strict = fal
   return rows;
 }
 
-module.exports = { fetchOwnerEmailsSince, MAX_PAGES };
+// One sent email with its body (GET /emails/{id}). Read-only; throws on a
+// non-200 so the caller decides what a missing body means (BRO-6230).
+async function fetchEmailById({ apiKey, id, fetchImpl = fetch }) {
+  const r = await fetchImpl(`https://api.resend.com/emails/${encodeURIComponent(id)}`, {
+    headers: { Authorization: `Bearer ${apiKey}` },
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+
+module.exports = { fetchOwnerEmailsSince, fetchEmailById, MAX_PAGES };

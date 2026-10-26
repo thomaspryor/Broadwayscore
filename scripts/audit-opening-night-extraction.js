@@ -317,9 +317,11 @@ function auditCriticCollisions(show) {
     if (!outletId || !name || name === 'unknown') continue;
     // Skip files that have already been marked as duplicates — the
     // collect-review-texts rename path sets data.duplicateOf on conflict so
-    // the stale-slug source doesn't trip this audit. Same gate as
-    // validate-review-texts.js line 185 + rebuild-all-reviews. Aligned with
+    // the stale-slug source doesn't trip this audit. Mirrors
+    // validate-review-texts.js line 185 (for duplicateOf; duplicateTextOf is conditional in
+    // rebuild-all-reviews, see docs/duplicate-text-of-exclusion.md). Aligned with
     // the topology-rename redesign (Notion 34f637c5-416f-81a1).
+    // BRO-2613: advisory skip, see docs/duplicate-text-of-exclusion.md
     if (f.data?.duplicateOf || f.data?.duplicateTextOf) continue;
     if (f.data?.wrongShow || f.data?.wrongProduction || f.data?.wrongAttribution) continue;
     const key = `${outletId}|${name}`;

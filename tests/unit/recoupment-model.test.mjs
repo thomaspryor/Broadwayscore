@@ -61,6 +61,52 @@ describe('eraDeflator', () => {
   });
 });
 
+describe('capitalization-scaled musical cost estimates (BRO-6188)', () => {
+  const show = { type: 'musical', openingDate: '2009-04-15', venue: 'Booth Theatre' };
+  const comm = { capitalization: 4_000_000 };
+  const on = { capScaledMusicals: true };
+
+  it('constrains an older small musical without a cost anchor; remains optional', () => {
+    assert.strictEqual(estimateWeeklyNut(show, comm, on), 250_000);
+    assert.ok(estimateWeeklyNut(show, comm) > 250_000);
+    assert.strictEqual(estimateWeeklyNut(show, comm, { capScaledMusicals: false }), estimateWeeklyNut(show, comm));
+    assert.strictEqual(estimateWeeklyNut(show, { ...comm, costHistory: [] }, on), 250_000);
+  });
+
+  it('does not raise an estimate that is already within the capital budget', () => {
+    const big = { capitalization: 20_000_000 };
+    assert.strictEqual(estimateWeeklyNut(show, big, on), estimateWeeklyNut(show, big));
+  });
+
+  it('preserves any recorded cost and avoids inferred caps and offering ceilings', () => {
+    for (const extra of [
+      { weeklyRunningCost: 400_000 },
+      { costHistory: [{ amount: 400_000, asOf: '2009-04-15', kind: 'running-cost', sourceType: 'trade-reported' }] },
+      { capitalizationBasis: 'comparables' },
+      { capitalizationBasis: 'maximum' },
+      { capitalization: null },
+    ]) {
+      const record = { ...comm, ...extra };
+      assert.strictEqual(estimateWeeklyNut(show, record, on), estimateWeeklyNut(show, record));
+    }
+  });
+
+  it('leaves modern productions, other categories and lifetime fallback costs alone', () => {
+    for (const extra of [
+      { openingDate: '2020-01-01' },
+      { openingDate: '2025-04-15' },
+      { openingDate: null },
+      { openingDate: 'not-a-date' },
+      { type: 'play' },
+      { type: 'special' },
+    ]) {
+      const production = { ...show, ...extra };
+      assert.strictEqual(estimateWeeklyNut(production, comm, on), estimateWeeklyNut(production, comm));
+    }
+    assert.strictEqual(estimateWeeklyNut(show, comm, { ...on, eraAdjust: false }), estimateWeeklyNut(show, comm, { eraAdjust: false }));
+  });
+});
+
 describe('venueSizeFactor', () => {
   it('scales a play at the Hayes down (clamped at 0.65)', () => {
     assert.strictEqual(venueSizeFactor({ venue: 'Helen Hayes Theater' }, 'play'), 0.65);

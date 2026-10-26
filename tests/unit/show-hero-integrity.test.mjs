@@ -58,6 +58,10 @@ function related(a, b) {
   return RELATED_GROUPS.some((g) => g.includes(a) && g.includes(b));
 }
 
+// Public image refs carry a `?v=<hash>` cache-buster; strip it before touching disk
+// (BRO-6198: without this every hero looked missing and the guard hashed 0 files).
+const publicFile = (ref) => path.join(PUBLIC, ref.split('?')[0]);
+
 function publicShows() {
   return fs.readdirSync(SHOWS_DIR)
     .filter((f) => f.endsWith('.json'))
@@ -81,7 +85,7 @@ test('no two unrelated shows serve byte-identical hero images', () => {
   let checked = 0;
   for (const show of publicShows()) {
     if (!show.hi || typeof show.hi !== 'string' || !show.hi.startsWith('/images/')) continue;
-    const file = path.join(PUBLIC, show.hi);
+    const file = publicFile(show.hi);
     if (!fs.existsSync(file)) continue; // dangling refs are nulled by pre-deploy-check
     const h = md5(file);
     if (!byHash.has(h)) byHash.set(h, []);
@@ -103,7 +107,7 @@ test('no two unrelated shows serve byte-identical hero images', () => {
 test('the BRO-4251 shows no longer share a hero', () => {
   const heroOf = (id) => {
     const show = JSON.parse(fs.readFileSync(path.join(SHOWS_DIR, `${id}.json`), 'utf8'));
-    const file = show.hi && path.join(PUBLIC, show.hi);
+    const file = show.hi && publicFile(show.hi);
     return file && fs.existsSync(file) ? md5(file) : null;
   };
   const groups = [

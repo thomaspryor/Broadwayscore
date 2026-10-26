@@ -44,3 +44,34 @@ test('landed rescues are on main', () => {
     assert.ok(fs.existsSync(path.join(ROOT, f)), f);
   }
 });
+
+// BRO-6216: the retire list's safety net was never enforced. validateEntry only checks that the
+// watchers array is non-empty, so a watcher could name a file that does not contain its condition.
+test('every watcher file exists and contains its conditionKey', () => {
+  for (const e of retired.entries) {
+    for (const w of e.watchers) {
+      assert.ok(w.conditionKey && w.file, `${e.label}: watcher needs conditionKey and file`);
+      const f = path.join(ROOT, w.file);
+      assert.ok(fs.existsSync(f), `${e.label}: watcher file ${w.file} is missing`);
+      assert.ok(fs.readFileSync(f, 'utf8').includes(w.conditionKey), `${e.label}: ${w.file} does not contain conditionKey "${w.conditionKey}"`);
+    }
+  }
+});
+
+// replacedBy must be checkable: "nothing: <reason>", or text naming a workflow / routine doc that exists.
+test('every replacedBy item is "nothing: <reason>" or names an existing workflow or routine doc', () => {
+  for (const e of retired.entries) {
+    for (const r of e.replacedBy) {
+      if (/^nothing: \S/.test(r)) continue;
+      const paths = r.match(/(?:\.github\/workflows|docs\/cloud-routines)\/[\w.-]+\.(?:ya?ml|md)/g) || [];
+      assert.ok(paths.length, `${e.label}: replacedBy "${r}" names no workflow or routine doc path`);
+      for (const p of paths) assert.ok(fs.existsSync(path.join(ROOT, p)), `${e.label}: replacedBy path ${p} does not exist`);
+    }
+  }
+});
+
+test('linear-delegation-check and linear-drain-parked are retired (BRO-6216)', () => {
+  for (const l of ['com.broadwayscore.linear-delegation-check', 'com.broadwayscore.linear-drain-parked']) {
+    assert.ok(labels.includes(l), `${l} retired`);
+  }
+});

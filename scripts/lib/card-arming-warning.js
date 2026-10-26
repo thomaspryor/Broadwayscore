@@ -107,7 +107,7 @@ const SAFE_FORM_EXAMPLES =
 // So this delegates to resolveCheckPaths() rather than re-implementing the
 // rule — the "must match X" comment IS the bug, per
 // memory/feedback_includability_predicates_must_be_canonical.md. It warns only
-// on what that function already fails closed: a path whose PARENT DIRECTORY
+// on what that function already fails closed: a path whose PARENT DIRECTORY (or, under src/scripts/docs/memory, whose grandparent: BRO-2625 forgives one missing level)
 // does not exist (a fabricated location), or one naming a real DIRECTORY
 // rather than a file. A missing file in a real directory comes back in
 // `newPaths` and is deliberately silent.
@@ -178,7 +178,7 @@ function armingWarning(notesStr, deps = {}) {
       'nothing to do with the work. A card that never verifies is as useless as one that never\n' +
       'passes.\n\n' +
       'Naming a test file this card WILL CREATE is correct and does NOT trigger this warning —\n' +
-      'the parent directory just has to exist. This fires only when the directory itself is\n' +
+      'the parent directory just has to exist (under src/, scripts/, docs/, memory/ one missing level is also fine). This fires only when the directory itself is\n' +
       'fabricated, or when the path names a directory rather than a file.\n\n' +
       'The card was still saved.'
     );

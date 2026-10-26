@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-24T19:33:22.776Z",
+  "generatedAt": "2026-10-24T22:33:37.326Z",
   "date": "2026-10-24",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 177673,
+  "entryCount": 187493,
   "shows": [
     {
       "showId": "mrs-doubtfire-tour-2025",
@@ -222,7 +222,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 595244,
-        "scored-to-rebuilt": 297026,
+        "scored-to-rebuilt": 286516,
         "rebuilt-to-deployed": 61741526
       },
       "reviews_over_15min": 0,
@@ -930,13 +930,13 @@
     },
     {
       "showId": "derren-brown-only-human-west-end-2026",
-      "reviewCount": 22,
+      "reviewCount": 23,
       "median_e2e_ms": 121614898,
       "p90_e2e_ms": 138443315,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 684883,
-        "scored-to-rebuilt": 346776,
+        "scored-to-rebuilt": 349163,
         "rebuilt-to-deployed": 89745102
       },
       "reviews_over_15min": 9,
@@ -3543,7 +3543,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 4404886,
-        "scored-to-rebuilt": 332209,
+        "scored-to-rebuilt": 299628,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -7314,13 +7314,13 @@
     },
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "reviewCount": 6,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": 627171,
-        "scored-to-rebuilt": 171899,
+        "scored-to-rebuilt": 152250,
         "rebuilt-to-deployed": 8234953
       },
       "reviews_over_15min": 0,
@@ -9972,6 +9972,36 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 1381958,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hold-on-to-me-darling-off-broadway-2024",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "sumo-off-broadway-2025",
+      "reviewCount": 2,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,

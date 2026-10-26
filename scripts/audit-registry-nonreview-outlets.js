@@ -21,6 +21,7 @@
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const nonReview = require('./lib/non-review-url-patterns');
 const { inferOutletDomainHint } = require('./lib/outlet-domain-hint');
@@ -86,9 +87,8 @@ function findNonReviewRegistryOutlets(registry, urlsByOutlet) {
 
 function collectUrlsByOutlet(reviewTextsDir) {
   const byOutlet = new Map();
-  for (const show of fs.readdirSync(reviewTextsDir)) {
+  for (const show of listShowDirs(reviewTextsDir, { silent: true, skipHolding: true })) {
     const dir = path.join(reviewTextsDir, show);
-    if (show.startsWith('.') || show.startsWith('_') || !fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) {
       if (!isReviewTextFile(f)) continue;
       let r;

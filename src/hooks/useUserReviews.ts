@@ -76,6 +76,13 @@ export function useUserReviews(userId: string | null) {
       const { error: err } = await supabaseRestDelete('reviews', `id=eq.${reviewId}&user_id=eq.${userId}`);
       if (err) throw new Error(err.message);
 
+      // The delete cascades the entry's user_review_photos rows but not their
+      // storage objects: sweep the entry's photo folder. Best effort, never
+      // blocks the delete (BRO-6170; the app does the same).
+      import('@/lib/review-photos')
+        .then(m => m.removeReviewPhotoFolder(reviewId))
+        .catch(() => {});
+
       // Remove from local state so UI updates immediately
       setReviews(prev => prev.filter(r => r.id !== reviewId));
     } catch (e) {

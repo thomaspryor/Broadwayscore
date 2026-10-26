@@ -163,6 +163,7 @@ if (APPLY) {
       try {
         const filePath = path.join(showDir, contaminatedFile);
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+        // BRO-2613: no-overwrite guard in --fix, see docs/duplicate-text-of-exclusion.md
         if (data.duplicateOf || data.duplicateTextOf) continue; // already resolved since the scan
         data.duplicateTextOf = group.canonical;
         data.duplicateClearReason = `audit-url-collisions.js (BRO-62): identical fullText to ${group.canonical} under outlet '${group.outletId}', this file's criticName was unresolved`;

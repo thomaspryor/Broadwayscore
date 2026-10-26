@@ -116,15 +116,29 @@ const DECISION_KINDS = Object.freeze({
  *
  * Returns the folded job record, or null when no spawn was ever observed.
  */
-function findMyJob(dispatchLedgerEntries, taskId, sinceTs) {
+function pickSpawn(dispatchLedgerEntries, taskId, sinceTs, excludeJobIds) {
   const sinceMs = new Date(sinceTs).getTime() - SPAWN_LOOKBACK_MS;
   const spawns = (dispatchLedgerEntries || [])
     .filter((e) => e && e.event === dispatchLedger.JOB_EVENTS.SPAWNED
       && String(e.taskId) === String(taskId)
+      && !(excludeJobIds && excludeJobIds.has(e.jobId))
       && new Date(e.ts).getTime() >= sinceMs)
     .sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
-  if (!spawns.length) return null;
-  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawns[0].jobId);
+  return spawns[0] || null;
+}
+
+/**
+ * `excludeJobIds` (BRO-2514): spawns already attributed to another dispatch of
+ * the same task. The 5s lookback is slack for clock skew, but it also lets a
+ * dispatch B made 4s after dispatch A reach back and claim A's spawn (earliest
+ * wins), leaving B's own spawn unclaimed. classifyDispatches walks dispatches
+ * in ts order and passes the spawns taken so far, so each spawn belongs to at
+ * most one dispatch.
+ */
+function findMyJob(dispatchLedgerEntries, taskId, sinceTs, excludeJobIds) {
+  const spawn = pickSpawn(dispatchLedgerEntries, taskId, sinceTs, excludeJobIds);
+  if (!spawn) return null;
+  return dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawn.jobId);
 }
 
 /**
@@ -223,6 +237,22 @@ function classifyDispatches({
   const dispatches = (ledgerEntries || []).filter((e) =>
     e && isDispatchRow(e) && Number.isFinite(new Date(e.ts).getTime()));
 
+  // Spawn attribution (BRO-2514): walk ALL dispatches, resolved ones included
+  // (they caused spawns too), in ts order, so each job-spawned row goes to at
+  // most one dispatch. Without this a dispatch made within the 5s lookback of
+  // an earlier same-task dispatch takes the earlier one's spawn and its own is
+  // never claimed.
+  const spawnedBy = new Map();
+  const takenSpawnIds = new Set();
+  const ordered = [...dispatches].sort((a, b) => new Date(a.ts).getTime() - new Date(b.ts).getTime());
+  ordered.forEach((dispatch) => {
+    const taskId = taskIdOf(dispatch);
+    const spawn = pickSpawn(dispatchLedgerEntries, taskId, dispatch.ts, takenSpawnIds);
+    if (!spawn) return;
+    takenSpawnIds.add(spawn.jobId);
+    spawnedBy.set(dispatch, dispatchLedger.followRetryChain(dispatchLedgerEntries, taskId, spawn.jobId));
+  });
+
   // Jobs already resolved into an outcome THIS pass (postmortem 3).
   const claimedJobIds = new Set();
   const decisions = [];
@@ -231,7 +261,11 @@ function classifyDispatches({
     const cardId = cardIdOf(dispatch);
     if (isDispatchResolved(ledgerEntries, cardId, dispatch.ts, resolvingEvents)) continue;
 
-    const job = findMyJob(dispatchLedgerEntries, taskIdOf(dispatch), dispatch.ts);
+    // No unassigned spawn left: fall back to the plain lookup, which lands on a job another
+    // row already owns and is dropped by claimedJobIds below (one spawn, two close dispatch
+    // rows earns ONE outcome, never a spurious orphan for the second).
+    const job = spawnedBy.get(dispatch)
+      || findMyJob(dispatchLedgerEntries, taskIdOf(dispatch), dispatch.ts);
 
     if (!job) {
       const ageH = (nowMs - new Date(dispatch.ts).getTime()) / 3600e3;

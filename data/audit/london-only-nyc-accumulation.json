@@ -3,6 +3,18 @@
   "description": "London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.",
   "outlets": [
     {
+      "outletId": "britishtheatrecom",
+      "displayName": "BritishTheatre.com",
+      "tier": 2,
+      "broadwayCount": 1,
+      "offBroadwayCount": 0,
+      "broadwayShows": [
+        "therese-raquin-2015"
+      ],
+      "offBroadwayShows": [],
+      "disposition": "error"
+    },
+    {
       "outletId": "artsdesk",
       "displayName": "The Arts Desk",
       "tier": 2,
@@ -331,18 +343,6 @@
       "broadwayShows": [],
       "offBroadwayShows": [
         "all-male-as-you-like-it-regional-2026"
-      ],
-      "disposition": "tolerated-off-broadway"
-    },
-    {
-      "outletId": "standard",
-      "displayName": "Evening Standard",
-      "tier": 1,
-      "broadwayCount": 0,
-      "offBroadwayCount": 1,
-      "broadwayShows": [],
-      "offBroadwayShows": [
-        "the-score-regional-2026"
       ],
       "disposition": "tolerated-off-broadway"
     },

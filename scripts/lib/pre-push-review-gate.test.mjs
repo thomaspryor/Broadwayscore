@@ -40,6 +40,112 @@ function repo(name, origin) {
 }
 const bwsRepo = repo('bws', 'https://github.com/thomaspryor/Broadwayscore.git');
 const otherRepo = repo('other', 'git@github.com:thomaspryor/BroadwayScorecard-app.git');
+execFileSync('git', ['-C', otherRepo, '-c', 'user.name=Test', '-c', 'user.email=test@example.com',
+  '-c', 'commit.gpgsign=false', 'commit', '-q', '--allow-empty', '-m', 'fixture']);
+const otherClone = path.join(scratch, 'tech-scorecard');
+execFileSync('git', ['clone', '-q', '--no-hardlinks', otherRepo, otherClone]);
+execFileSync('git', ['-C', otherClone, 'remote', 'set-url', 'origin', 'https://github.com/thomaspryor/tech-scorecard.git']);
+
+// Real git directories and the real gate libraries. Only the command text is
+// inspected: none of these probes executes a push or a generated script.
+fs.symlinkSync(path.join(REPO_ROOT, 'scripts'), path.join(bwsRepo, 'scripts'), 'dir');
+execFileSync('git', ['-C', bwsRepo, '-c', 'user.name=Test', '-c', 'user.email=test@example.com',
+  '-c', 'commit.gpgsign=false', 'commit', '-q', '--allow-empty', '-m', 'fixture']);
+execFileSync('git', ['-C', bwsRepo, 'update-ref', 'refs/remotes/origin/main', 'HEAD']);
+execFileSync('git', ['-C', bwsRepo, 'branch', 'main', 'HEAD']);
+execFileSync('git', ['-C', bwsRepo, 'checkout', '-q', '-b', 'merge-candidate']);
+fs.mkdirSync(path.join(bwsRepo, 'src'));
+fs.writeFileSync(path.join(bwsRepo, 'src', 'probe.tsx'), Array.from({ length: 80 }, (_, i) => `export const value${i} = ${i};`).join('\n'));
+execFileSync('git', ['-C', bwsRepo, 'add', 'src/probe.tsx']);
+execFileSync('git', ['-C', bwsRepo, '-c', 'user.name=Test', '-c', 'user.email=test@example.com',
+  '-c', 'commit.gpgsign=false', 'commit', '-q', '-m', 'gated candidate']);
+execFileSync('git', ['-C', bwsRepo, 'checkout', '-q', 'feature']);
+const ownWorktree = path.join(scratch, 'own-worktree');
+execFileSync('git', ['-C', bwsRepo, 'worktree', 'add', '-q', '-b', 'own-worktree', ownWorktree]);
+const nonRepo = path.join(scratch, 'scratchpad');
+fs.mkdirSync(nonRepo);
+const transcript = path.join(scratch, 'transcript.jsonl');
+fs.writeFileSync(transcript, `${JSON.stringify({ type: 'user', message: { role: 'user', content: 'Check the gate' } })}\n`);
+
+function pushGate(command, hook = REVIEW_GATE, cwd = bwsRepo) {
+  return spawnSyncStdinFile('bash', [hook], {
+    cwd,
+    input: JSON.stringify({ tool_input: { command }, transcript_path: transcript, session_id: 'bro-6136-test' }),
+    encoding: 'utf8',
+    env: { ...process.env, HOME: fakeHome, REVIEW_GATE_DISABLE: '', LAND_ENFORCE_OFF: '', VISUAL_QA_DISABLE: '' },
+    timeout: 20000,
+  });
+}
+
+function scriptPush(target, ref = 'HEAD:main') {
+  return `cd ${nonRepo}\ncat > ts-commit-push.sh <<'SH'\ncd ${target}\ngit add .; git commit -m fixture; git push origin ${ref}\nSH\nbash ts-commit-push.sh`;
+}
+
+test('BRO-6136: scratchpad then another repo in a generated push script is out of scope', () => {
+  const r = pushGate(scriptPush(otherClone));
+  assert.equal(r.status, 0, r.stderr);
+});
+
+test('BRO-6136: scratchpad then our own worktree still refuses a direct main push', () => {
+  const r = pushGate(scriptPush(ownWorktree, 'main'));
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /sessions never push main directly/);
+});
+
+test('BRO-6136: successive cds already work in the PR-write parser', () => {
+  assert.equal(run(`cd ${nonRepo}; cd ${otherRepo}; gh pr create --fill`).status, 0);
+  assert.ok(blockedByPr(run(`cd ${nonRepo}; cd ${ownWorktree}; gh pr create --fill`)));
+});
+
+test('BRO-6136: relative cd is resolved from the actual subdirectory, not the repo root', () => {
+  const subdir = path.join(bwsRepo, 'nested');
+  fs.mkdirSync(subdir);
+  fs.mkdirSync(path.join(bwsRepo, 'tech-scorecard'));
+  const r = pushGate('cd ../tech-scorecard; git push origin main', REVIEW_GATE, subdir);
+  assert.equal(r.status, 2, r.stderr);
+  assert.match(r.stderr, /sessions never push main directly/);
+});
+
+for (const [name, command, expected] of [
+  ['plain successive cds', `cd ${nonRepo}; cd ${otherClone}; git push origin HEAD:main`, 0],
+  ['relative second cd', `cd ${scratch}; cd tech-scorecard; git push origin HEAD:main`, 0],
+  ['external push piped with stderr redirected', `cd ${otherClone} && git push origin main 2>&1 | tail -3`, 0],
+  ['external push with a simple retry', `cd ${otherClone} && git push origin main || git push origin main`, 0],
+  ['external push with a grouped rebase retry', `cd ${otherClone} && git push origin main || (git pull --rebase && git push origin main)`, 0],
+  ['unrelated pipeline before an external push', `true | cat; cd ${otherClone}; git push origin main`, 0],
+  ['external background push after a completed cd', `cd ${otherClone}; git push origin main &`, 0],
+  ['uncertain later cd cannot redirect an external push to the session root', `cd ${otherClone}; git push origin main; true || cd ${ownWorktree}`, 0],
+  ['own push piped with stderr redirected', `cd ${ownWorktree} && git push origin main 2>&1 | tail -3`, 2],
+  ['own push with a retry', `cd ${ownWorktree} && git push origin main || git push origin main`, 2],
+  ['conditional cd cannot hide an own push', `false && cd ${otherClone}; git push origin main`, 2],
+  ['pipelined cd cannot hide an own push', `cd ${otherClone} | cat; git push origin main`, 2],
+  ['cd after OR cannot hide an own push', `true || cd ${otherClone}; git push origin main`, 2],
+  ['cd after push cannot change its target', `cd ${nonRepo}; cd ${ownWorktree}; git push origin main\ncd ${otherClone}`, 2],
+  ['subshell cd cannot change an outer push', `cd ${nonRepo}; (cd ${otherClone} && true); git push origin main`, 2],
+  ['a later quoted own worktree stays in scope', `cd ${nonRepo}; cd ${otherClone}; cd "${ownWorktree}"; git push origin main`, 2],
+  ['a push inside the other repo subshell is out of scope', `cd ${nonRepo}; (cd ${otherClone} && git push origin HEAD:main)`, 0],
+  ['another repo push cannot hide our later push', `cd ${otherClone}; git push origin HEAD:main; cd ${ownWorktree}; git push origin main`, 2],
+]) {
+  test(`BRO-6136: ${name}`, () => {
+    const r = pushGate(command);
+    assert.equal(r.status, expected, r.stderr);
+    if (expected === 2) assert.match(r.stderr, /sessions never push main directly/);
+  });
+}
+
+for (const [hook, operation, blockMessage] of [
+  ['pre-merge-review-gate.sh', 'git checkout main && git merge merge-candidate', /BLOCKED/],
+  ['pre-push-visual-gate.sh', 'git push origin merge-candidate', /BLOCKED/],
+]) {
+  test(`BRO-6136: ${hook} exempts other repos and keeps our worktree guarded`, () => {
+    const hookPath = path.join(REPO_ROOT, '.claude', 'hooks', hook);
+    const external = pushGate(`cd ${nonRepo}; cd ${otherClone}; ${operation}`, hookPath);
+    assert.equal(external.status, 0, external.stderr);
+    const own = pushGate(`cd ${nonRepo}; cd ${ownWorktree}; ${operation}`, hookPath);
+    assert.equal(own.status, 2, own.stderr);
+    assert.match(own.stderr, blockMessage);
+  });
+}
 
 const blockedByPr = (r) => r.status === 2 && /never open, ready or merge Broadwayscore PRs \(BRO-5915/.test(r.stderr);
 

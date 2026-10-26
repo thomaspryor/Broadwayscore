@@ -293,7 +293,8 @@ function main() {
   // (the no-args sweep below) — so naming a file here reconciles it even if
   // its registry entry is optInReconcile:false. Today's only caller is
   // push-with-retry.sh's targeted call (alert-digest-queue, feedback-request-ledger,
-  // alert-ledger, guard-escalation-state); any
+  // alert-ledger, guard-escalation-state, the router/breaker logs and, since
+  // BRO-5955, the two Express hand-off files); any
   // FUTURE explicit-arg caller gets the same "any active registry entry,
   // regardless of optInReconcile" behavior — deliberate, not scoped to one
   // filename, since a caller that names a specific file is making its own

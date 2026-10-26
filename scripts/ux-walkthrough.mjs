@@ -1302,7 +1302,7 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
         '--notes', notes,
         // Filing is not dispatching: there is no cmux/bsc-next on this
         // runner, so say why it is parked rather than leaving it ambiguous.
-        '--park', 'Auto-filed by the nightly UX walkthrough. UX-audit card: needs owner visual-QA approval before any push, so the headless lane refuses it (headless-dispatchability.js UI_CARD_CLASS_RE). Filed at normal priority for a deliberate owner sweep (BRO-340).',
+        '--park', 'Auto-filed by the nightly UX walkthrough. UX-audit card: whether the finding is worth fixing is an owner taste call (BRO-340), so it waits for a deliberate owner sweep. Filed at normal priority for a deliberate owner sweep (BRO-340).',
       ], { encoding: 'utf8' });
       filed.push(title);
       console.error(`[ux-walkthrough] filed: ${title}`);

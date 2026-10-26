@@ -123,6 +123,10 @@ const TESTS_UNIT_QUARANTINE = new Map([
     'BRO-4750 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts every national tour in data/shows.json carries a runtime and synopsis (unless a documented gap). shows.json is rewritten daily and new tours appear, so in the unit batch it would redden main with no code change.',
   ],
   [
+    'tests/unit/sound-of-music-synopsis.test.mjs',
+    'BRO-4763: live-data synopsis backfill assertion, imported by tour-runtime-coverage.test.mjs in check-corpus-drift.yml (data-health). Keep daily shows.json state out of the code-only batch.',
+  ],
+  [
     'tests/unit/tour-runtime-source-agreement.test.mjs',
     'BRO-4776 acceptance shim: imports tour-runtime-coverage.test.mjs, which runs in check-corpus-drift.yml (data-health). Keep live source reads out of the unit batch. EXEMPT_NEVER_CI in audit-orphan-tests.js.',
   ],

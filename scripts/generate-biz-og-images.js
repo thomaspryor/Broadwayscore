@@ -12,8 +12,7 @@ const fs = require('fs');
 const path = require('path');
 const { pathToFileURL } = require('url');
 const { exitOnHelp } = require('./lib/cli-help');
-const { getSeasonForDate } = require('./lib/broadway-seasons');
-const { TOPIC_CARDS, HOME_CARD, SEASON_FALLBACK_CARD, seasonCard } = require('./lib/biz-og-cards');
+const { TOPIC_CARDS, HOME_CARD, SEASON_FALLBACK_CARD, seasonCard, seasonsWithData } = require('./lib/biz-og-cards');
 
 exitOnHelp(module);
 
@@ -21,24 +20,11 @@ const ROOT = path.join(__dirname, '..');
 const TEMPLATE = path.join(ROOT, 'public', 'og', 'biz.html');
 const OUT = path.join(ROOT, 'public', 'og', 'biz');
 
-// Seasons of every show with a commercial entry. Covers every season the pages
-// list via getSeasonsWithCommercialData() (that one also filters untracked records), so a
-// season page always has its card; the odd extra file is harmless.
-function seasonsWithData() {
-  const commercial = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'commercial.json'), 'utf8'));
-  const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
-  const shows = Array.isArray(raw) ? raw : raw.shows;
-  const out = new Set();
-  for (const s of shows) {
-    if (!s.openingDate || !commercial.shows[s.slug]) continue;
-    out.add(getSeasonForDate(s.openingDate));
-  }
-  return [...out].sort();
-}
-
 async function main() {
   const only = (process.argv.find((a) => a.startsWith('--only=')) || '').slice(7);
-  const seasons = seasonsWithData();
+  const commercial = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'commercial.json'), 'utf8'));
+  const shows = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
+  const seasons = seasonsWithData(shows, commercial);
   const cards = [HOME_CARD, SEASON_FALLBACK_CARD, ...TOPIC_CARDS, ...seasons.map(seasonCard)].filter((c) => !only || c.slug === only);
   fs.mkdirSync(OUT, { recursive: true });
   let playwright;

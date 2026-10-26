@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-24T07:27:56.228Z",
-  "bannerText": "142/221 Done(14d) verified on main · 13 FAILED · 1 vacuous · 36 stuck-but-done — PARTIAL RUN: 43 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-26T00:04:52.296Z",
+  "bannerText": "64/214 Done(14d) verified on main · 3 FAILED · 0 vacuous · 14 stuck-but-done — PARTIAL RUN: 152 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-5779 — Show-page recoupment headline prints the report month as 'Recouped, <month>' (Kimberly Akimbo: April 2026 is the Playbill report date)",
-      "detail": "not ok: <checkout>/tests/unit/commercial-displa… | first failure: TypeError [ERR_UNKNOWN_FILE_EXTENSION]: Unknown file extension \".ts\" for /tmp/do",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5779/show-page-recoupment-headline-prints-the-report-month-as-recouped"
+      "title": "FAILED BRO-4776 — P3: 8 tour runtimes copied from the Broadway parent disagree with the tour's own page by 5 to 10 minutes",
+      "detail": "not ok: every national tour has a synopsis, or is a documented gap | first failure: tours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-music",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4776/p3-8-tour-runtimes-copied-from-the-broadway-parent-disagree-with-the"
     },
     {
-      "title": "FAILED BRO-5695 — BSC Daily: Bright Data daily breaker TRIPPED: web_unlocker2 (2174/1750 reqs)",
-      "detail": "[check-health-row-absent] FAIL: \"Bright Data daily breaker TRIPPED: web_unlocker2 (2174/1750 reqs)\" still listed in the 2026-10-24T07:20:32.685Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5695/bsc-daily-bright-data-daily-breaker-tripped-web-unlocker2-21741750"
+      "title": "FAILED BRO-6188 — Recoupment model: pre-2020 musicals with a known small capitalization read far too negative (Next to Normal -218% vs recouped); eraIndex for musicals trade-off",
+      "detail": "not ok: reported-truth backtest: musicals hold MAE <= 4.2 and >= 73… | first failure: musical reported-truth MAE 4.6 (7.3 before BRO-6188)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6188/recoupment-model-pre-2020-musicals-with-a-known-small-capitalization"
     },
     {
-      "title": "FAILED BRO-5663 — Methodology: explain NY Post / Daily News T2 outlet vs T1 top critics",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/methodology-outlet-tiers.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5663/methodology-explain-ny-post-daily-news-t2-outlet-vs-t1-top-critics"
+      "title": "FAILED BRO-6184 — Land gate: merged-tree-tests killed run blocks without consulting baseline; musicals reported-truth backtest red on main (MAE 7.4 vs 4.2)",
+      "detail": "not ok: reported-truth backtest: musicals hold MAE <= 4.2 and >= 73… | first failure: musical reported-truth MAE 4.6 (7.3 before BRO-6188)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6184/land-gate-merged-tree-tests-killed-run-blocks-without-consulting"
     },
     {
-      "title": "FAILED BRO-5300 — iOS app re-derives the score display gate from the bare market minimum (disagrees with site on T3-only and curated shows)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/mobile-score-display-parity.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5300/ios-app-re-derives-the-score-display-gate-from-the-bare-market-minimum"
+      "title": "STUCK BRO-5289 — Recover AP's own verdict for 3 shows whose AP review was filed under WSJ (resolveOutletFromUrl: AP wire ids)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5289/recover-aps-own-verdict-for-3-shows-whose-ap-review-was-filed-under"
     },
     {
-      "title": "FAILED BRO-4490 — Cleared and LLM-misread star ratings still steer some shipped scores (31 tier-1.5-cleared llm-v6 files; FT multi-review star runs)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/late-star-anchor.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4490/cleared-and-llm-misread-star-ratings-still-steer-some-shipped-scores"
+      "title": "STUCK BRO-5249 — BSC Daily: Quality: corpus drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5249/bsc-daily-quality-corpus-drift"
     },
     {
-      "title": "FAILED BRO-3156 — Audit script: flag execFileSync('git', ['show'...]) calls missing maxBuffer",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/audit-git-show-maxbuffer.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3156/audit-script-flag-execfilesyncgit-show-calls-missing-maxbuffer"
+      "title": "STUCK BRO-5088 — Fact-check 1 follow-up: unsourced director rows, Steinberg-as-Broadway site tables, findTheater substring matching, Covid closings",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5088/fact-check-1-follow-up-unsourced-director-rows-steinberg-as-broadway"
     },
     {
-      "title": "FAILED BRO-2496 — iOS Maestro E2E nightly has failed every run for 2+ weeks on 3-4 unrelated flows",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: docs/maestro-e2e-failure-diagnosis.md",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2496/ios-maestro-e2e-nightly-has-failed-every-run-for-2-weeks-on-3-4"
+      "title": "STUCK BRO-5076 — T1/T2 silent gap on near-opening show: Good Time Charlie — talkinbroadway",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5076/t1t2-silent-gap-on-near-opening-show-good-time-charlie-talkinbroadway"
     },
     {
-      "title": "FAILED BRO-5993 — Opening-night lane: score candidates in parallel and publish as each is scored, not after the whole pass",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/opening-night-lane-parallel-publish.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5993/opening-night-lane-score-candidates-in-parallel-and-publish-as-each-is"
+      "title": "STUCK BRO-4695 — BSC Daily: Data quality: cross-outlet attribution drift",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4695/bsc-daily-data-quality-cross-outlet-attribution-drift"
     }
   ],
-  "moreCount": 42
+  "moreCount": 9
 }

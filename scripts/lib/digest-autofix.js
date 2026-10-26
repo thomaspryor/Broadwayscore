@@ -275,6 +275,25 @@ function persistenceKey(row) {
  * row instead of filing, so holding it just mislabelled it 'watching'.
  * Visitor-facing errors a worker can fix (isVisitorFacingRow) are exempt too.
  */
+/**
+ * Report-only autofix (BRO-6230, digest built off the Mac with --no-autofix):
+ * no cards filed, no sessions dispatched. A 'needs-card' row whose card is
+ * already open (same exact or number-free title match as the persistence
+ * gate and fileCard's reattach) reads 'tracked'; everything else keeps its
+ * plan state, so the email never claims a fix nobody started. Mutates and
+ * returns `plan`. Pure apart from that.
+ */
+function markTrackedReportOnly(plan, openTitles) {
+  if (!Array.isArray(plan)) return [];
+  if (!openTitles || !openTitles.size) return plan;
+  const free = new Set([...openTitles].map((t) => numberFreeTitle(t)));
+  for (const row of plan) {
+    if (row.state !== 'needs-card') continue;
+    if (openTitles.has(row.title) || free.has(numberFreeTitle(row.title))) row.state = 'tracked';
+  }
+  return plan;
+}
+
 function computePersistenceGate(plan, seen, nowMs, { openTitles = null } = {}) {
   const next = {};
   for (const [k, v] of Object.entries(seen || {})) {
@@ -1542,7 +1561,7 @@ module.exports = {
   keepDecisionQueued, localRollupIssues, ROLLUP_ROW_NAMES,
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
-  persistenceKey, computePersistenceGate, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
+  persistenceKey, computePersistenceGate, markTrackedReportOnly, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, reattachedLiveState, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

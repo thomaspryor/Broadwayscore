@@ -3,7 +3,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -489,14 +490,15 @@ test('comment reads keep the newest page: shared query uses first:, nothing quer
 // ---- BRO-5384: parallel slots, routing, fix rounds, check noise ----
 
 test('codexCardFit: the four kinds of card the sandbox cannot finish are skipped (real rejected cards)', () => {
-  const fit = (title, description) => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs' });
+  const fit = (title, description) => r.codexCardFit({ title, description, verify: 'node --test tests/unit/x.test.mjs', canDispatch: true });
   // BRO-3475 (needed a workflow step), BRO-4299 (land/ pushes), BRO-4427 + BRO-4855 (hundreds of
   // shipped rows), BRO-5223 (a data repair): all rejected by the Claude check on 2026-10-14/15.
   assert.equal(fit('drift-state lastAlertTs is stamped before routing', 'stamps state before the workflow\'s alert step ever runs.').skip, 'workflow-edit');
   assert.equal(fit('Cut Actions minutes', 'Land gauntlet runs base+branch per land/** push (~10 min each).').skip, 'land-ref');
   assert.equal(fit('Temporal wrongProduction override', '464 with unhandled violations, 1003 shipped reviews in 464 shows').skip, 'corpus-wide-data');
   assert.equal(fit('Rebuild guard: drop a dateless review', 'reviews.json: 293 rows with no url AND no publishDate.').skip, 'corpus-wide-data');
-  assert.equal(fit('unicode-stars-fallthrough extractor', 'Data repair through an approved-fix plan.').skip, 'private-repo-write');
+  // BRO-6175: a data repair through the reviewed plan route is Codex work now (see codex-data-fixes.test.mjs).
+  assert.equal(fit('unicode-stars-fallthrough extractor', 'Data repair through an approved-fix plan.').skip, null);
   assert.equal(fit('Edit flow', 'Then edit .github/workflows/land.yml.').skip, 'workflow-edit');
   assert.equal(fit('x', 'write to broadway-review-texts').skip, 'private-repo-write');
 });
@@ -1173,4 +1175,70 @@ test('structural bounce: the Claude worker\'s own reports and an old CODEX-OK do
   const paused = { body: buildOutcomeCommentBody ? buildOutcomeCommentBody({ status: 'paused', summary: 'waiting on owner' }) : '**Session report (paused)**\nwaiting', createdAt: '2026-11-02T00:00:00Z' };
   assert.equal(r.codexBouncedRecently([note, paused], now), true);
   assert.equal(r.codexBouncedRecently([{ body: 'CODEX-OK', createdAt: '2026-10-01T00:00:00Z' }, note], now), true);
+});
+
+// BRO-5694: a land-check mutex wait must give up before the hard stop, not outlive it (two runs
+// were killed in "land-checks" past their hard stop on 2026-10-24/25, then reported as crashes).
+test('land-check mutex wait: giving up via onWait leaves the held lock alone; the card is handed back as out of time', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'bro5694-'));
+  const p = join(dir, 'held.lock');
+  writeFileSync(p, String(process.pid));
+  class Timeout extends Error {}
+  assert.throws(() => r.withFileMutex(p, () => {}, { pollMs: 10, onWait: () => { throw new Timeout('x'); } }), Timeout);
+  assert.equal(readFileSync(p, 'utf8'), String(process.pid));
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /fitsBeforeHardStop\(landChecksMs\)\) throw new LandWaitTimeout/);
+  assert.equal((src.match(/instanceof LandWaitTimeout\) \{ outOfTime = 'the land checks'; break; \}/g) || []).length, 2);
+});
+
+// BRO-6236: pinned model + high/xhigh effort A/B (default-off).
+test('codexSettings: unset env is today\'s exec (CLI default model, high)', () => {
+  assert.deepEqual(r.codexSettings({}, 'BRO-1'), { models: [], effort: 'high', arm: null });
+});
+test('codexSettings: CODEX_MODEL is a strongest-first list, bad names dropped', () => {
+  assert.deepEqual(r.codexSettings({ CODEX_MODEL: 'gpt-6-astra, gpt-6.1-sol;rm' }, 'BRO-1').models, ['gpt-6-astra']);
+  assert.deepEqual(r.parseModelCandidates('a, b ,,c'), ['a', 'b', 'c']);
+});
+test('codexSettings: the A/B arm follows the card id, is stable and uses both arms', () => {
+  const env = { CODEX_EFFORT_AB: 'high,xhigh' };
+  const arms = new Set();
+  for (let n = 6000; n < 6040; n++) {
+    const a = r.codexSettings(env, `BRO-${n}`);
+    assert.equal(a.effort, r.codexSettings(env, `BRO-${n}`).effort, 'same card, same arm');
+    assert.equal(a.arm, a.effort);
+    arms.add(a.effort);
+  }
+  assert.deepEqual([...arms].sort(), ['high', 'xhigh']);
+});
+test('codexSettings: CODEX_EFFORT sets one effort; unknown efforts fall back to high', () => {
+  assert.equal(r.codexSettings({ CODEX_EFFORT: 'xhigh' }, 'BRO-1').effort, 'xhigh');
+  assert.equal(r.codexSettings({ CODEX_EFFORT: 'turbo' }, 'BRO-1').effort, 'high');
+  assert.equal(r.codexSettings({ CODEX_EFFORT_AB: 'turbo,nope' }, 'BRO-1').arm, null);
+});
+test('isUnknownModelError: model refusals yes, transient, plain and tool-output mentions no', () => {
+  assert.ok(r.isUnknownModelError('ERROR: The model `gpt-6-astra` does not exist or you do not have access to it'));
+  assert.ok(r.isUnknownModelError('working\nERROR: unsupported model: gpt-x'));
+  assert.ok(!r.isUnknownModelError('unsupported model: gpt-x'), 'not an ERROR line: tool output');
+  assert.ok(!r.isUnknownModelError('ERROR: unknown model_reasoning_effort value xhigh'));
+  assert.ok(!r.isUnknownModelError('const model = x; // throws if unknown'));
+  assert.ok(!r.isUnknownModelError('Selected model is at capacity'));
+  assert.ok(!r.isUnknownModelError('tests failed'));
+});
+test('settings line round-trips and abReport splits outcomes by effort', () => {
+  const line = r.codexSettingsLine({ model: 'gpt-6-astra', cards: { 'BRO-1': { effort: 'high' }, 'BRO-2': { effort: 'xhigh' }, 'BRO-3': { effort: 'xhigh' } } });
+  assert.deepEqual(r.parseCodexSettingsLine(line), { model: 'gpt-6-astra', byEffort: { high: ['BRO-1'], xhigh: ['BRO-2', 'BRO-3'] } });
+  assert.equal(r.parseCodexSettingsLine('- nothing'), null);
+  const body = `${r.summaryHeading({ date: '2026-10-26', worked: 3, mins: 90, slot: 3, lane: 'gha' })}\n- Landed and Done: BRO-2\n- Landed part, back to Todo with what is left: none\n- Already fixed, closed: BRO-1\n- Did not pass the Claude check, back to Todo: BRO-3\n${line}`;
+  const rep = r.abReport([body, '## Codex runner 2026-10-20: 1 card(s) worked in 10 min\n- Landed and Done: BRO-9']);
+  assert.equal(rep.high.alreadyFixed, 1);
+  assert.equal(rep.xhigh.landed, 1);
+  assert.equal(rep.xhigh.rejected, 1);
+  assert.equal(rep.xhigh.cards, 2);
+  assert.equal(rep.xhigh.mins, 60);
+});
+test('abReport: lane filter and a carried card is counted once', () => {
+  const line = r.codexSettingsLine({ model: 'm', cards: { 'BRO-1': { effort: 'high' } } });
+  const mk = (lane) => `${r.summaryHeading({ date: '2026-10-26', worked: 1, mins: 10, slot: 3, lane })}\n- Landed and Done: BRO-1\n${line}`;
+  assert.deepEqual(Object.keys(r.abReport([mk('cloud')], { lane: 'gha' })), []);
+  assert.equal(r.abReport([mk('gha'), mk('gha')], { lane: 'gha' }).high.cards, 1);
 });

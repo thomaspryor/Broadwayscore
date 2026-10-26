@@ -1,7 +1,114 @@
 # Off-Broadway historical backfill, plan v2 (BRO-6146)
 
-Status: v2, revised after a six-reviewer /plan-review (2026-10-24). Plan only. No code, data or workflow changes in this card.
+Status: v3 (gap-first, TheaterMania universe, press screen), after a six-reviewer /plan-review of v2 and the first season run (2026-10-24). Plan only. No code, data or workflow changes in this card.
 Where the "v2 changes" section below conflicts with the v1 text under it, v2 wins.
+
+## v3 changes (2026-10-24, owner feedback after the first season run; supersedes conflicting text below)
+
+Owner feedback: 16 shows is too few, and the June 2025 to February 2026 gap (before OB coverage began) should come first.
+
+**Measured gap.** shows.json has 0 to 4 OB openings a month for 2025-06 to 2025-12 (14 total), then 13, 25, 43 for 2026-01..03 and 20 to 45 a month after. At the 2026 rate (163 shows with 3+ reviews in 8 months, about 20 a month) the gap window should hold roughly 140 scoreable shows.
+
+**Universe source found: TheaterMania's public WP JSON** (`theatermania.com/wp-json/wp/v2/shows?market=98`, already used by `scripts/lib/theatermania-ob.js` for current shows). It lists 7,922 OB shows across 80 pages of 100, with ACF `opening_date`, `preview_date`, `closing_date` (YYYYMMDD) and a venue id. It is free (no scraper credits, reachable from a cloud session), paged and dated. Counts by opening month run 7 to 39, about 200 to 300 a year back to 2022. Title plus opening date within 120 days against shows.json:
+
+| Window | TM listings | Not in shows.json |
+|---|---|---|
+| 2025-06 to 2026-02 (the gap) | 204 | 168 |
+| 2024-06 to 2025-05 | 257 | 247 |
+| 2023-06 to 2024-05 | 265 | 250 |
+| 2022-01 to 2023-05 | 298 | 293 |
+
+This replaces Phase 0's three-source spike: TM is the dated listing (the WOS role in the WE backfill). It is the loose universe, so it needs a notability filter.
+
+**Notability becomes a measured press screen, not awards.** Phase H showed an award does not guarantee reviews (Sumo: Lortel nominee, 2 reviews), and the award-only 2024-25 pass found just 16 promotable shows. New rule: a TM-listed, dated production is promotable when a pre-screen finds critic reviews from at least 3 distinct outlets in the outlet registry, or 2 when one is T1/T2. The screen runs one or two SERP queries per show (`"<title>" review` plus venue) and counts distinct registry outlet domains in the results. Cost is about $0.0005 per query, so screening all 168 gap candidates is under $0.20. It runs as a committed script through `cloud-run-script.js` (cloud has no scraper keys), prints JSON, writes nothing. Awards and flagship venue stay as tie-breakers for shows at the threshold.
+
+**Order changes.** Gap first (2025-06 to 2026-02), then the rest of 2024-25 (the 16 award shows already added and gathering are its first slice), then 2023-24, then 2022-23. Each still passes the cohort audit before the next.
+
+**Expected size.** If 60 to 80 percent of the 168 gap candidates fail the press screen (small showcases, festivals, readings), the gap yields about 35 to 70 shows. That is below the 140 estimate, which assumed the 2026 catalog's live-tracking yield. The screen gives the real number before anything is promoted.
+
+**Cost.** Scraping measured $0.04 to $0.055 per show (Phase H). Screening adds about $0.001 per candidate. LLM scoring still dominates and is measured on the 16-show run.
+
+**Exclusions on TM rows.** Drop rows with no opening or preview date, runs under 14 days, titles matching festival or reading or benefit or concert or cabaret patterns, and venues outside OB (TM market 98 includes some off-off spaces). Dedup against shows.json by normalized title and opening date within 120 days, and refuse an id that exists (the add-show action already does).
+
+## Status after BRO-6153 (2026-10-25)
+
+- **Added: 80 OB productions, 62 (78 percent) with 3+ reviews, 650 reviews.** By source: 2 hand (34 reviews), 16 award 2024-25 (all 16 scored, 130 reviews), 62 from TheaterMania via Playbill (44 scored, 486 reviews). Rows are marked `discoverySource: ob-historical:hand|award|tm`.
+- **Catalog OB openings 2025-06 to 2026-02: 125** (Jun 10, Jul 7, Aug 4, Sep 14, Oct 23, Nov 19, Dec 5, Jan 17, Feb 26). Before: 14 for Jun to Dec 2025.
+- **Repeatable tool landed:** `node scripts/plan-ob-historical-cohort.js --from=YYYY-MM-DD --to=YYYY-MM-DD` (read-only, run via `cloud-run-script.js --timeout=55` for the keys). It prints add-show actions; plans are built with `buildPlans` from `new-fix-plan.js` (10 actions each). Its second pass on the gap window found 11 more (revivals and "&" titles the hand pass missed).
+- **Per cohort, in order:** plan script, then plans land and apply, then `gather-reviews.yml` (`max_tier=3`, `spend_purpose=historical-backfill`, 12 shows a run), then `collect-review-texts.yml` with `show_filter`, then `llm-ensemble-score.yml` with `show_id`, then `rebuild-fast.yml`. Waiting for the scheduled text and score crons instead adds up to a day.
+- **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
+- **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each.
+
+## Gap cohort results (2026-10-25, BRO-6153): June 2025 to February 2026
+
+Process (all existing tools, no new code): TheaterMania WP JSON listings for the window, minus shows already in the catalog, minus festival/reading/benefit titles, closed 90+ days, run 14+ days, giving 125 candidates. `validate-show-venue.js --candidates-file` via `cloud-run-script.js` gave 55 Playbill matches, 22 mismatches (mostly classics where Playbill points at another production) and 48 with no Playbill page. Playbill pages were fetched directly (curl, free) and parsed with `parseFactDates` / `parseTitleVenueYear`. `findTmSameTitleShow` + `checkForDuplicate` dropped 4 already-catalogued runs. 48 add-show actions in five 10-action plans (`buildPlans` from `new-fix-plan.js`), applied, gathered in 4 groups of 12, then `collect-review-texts.yml` and a show-scoped `llm-ensemble-score.yml` per group, then `rebuild-fast.yml`.
+
+| | Shows | 3+ reviews | Reviews |
+|---|---|---|---|
+| Gap cohort | 48 | 35 (73 percent) | 388 |
+| Calibration (2 hand, 16 award 2024-25, 3 random gap) | 21 | 21 (100 percent) | 184 |
+| **Total added** | **69** | **56 (81 percent)** | **572** |
+
+- Cost: gap scraping $4.02, LLM about $5.40 (388 reviews at $0.014, 10 ensemble runs measured since 00:00). About $0.20 a show all in.
+- Wall-clock: about 9 hours for the gap cohort, nearly all pipeline wait. Gather about 1.5 to 2 hours per 12 shows. One group gather was cancelled by the queue and re-run.
+- Scoring is the bottleneck: text is fetched hours before the scheduled ensemble run scores it. A show-scoped `llm-ensemble-score.yml` dispatch after each text collection cut that to under 30 minutes.
+- Gaps left in this window: 6 Playbill matches whose titles contain "&" or a subtitle (title-slug pairing missed them, e.g. Gene & Gilda, Duke & Roya), and 18 mismatches to hand-check. Both are small follow-ups for the cohort script.
+- The catalog now has about 80 OB openings for 2025-06 to 2026-02, against 14 before.
+
+## Calibration results (2026-10-25, BRO-6153): measured, supersede earlier estimates
+
+21 shows went through add, gather (`max_tier=3`), text collection, scoring and rebuild: 2 hand shows, 16 award-signal 2024-25 shows, 3 random gap-window shows that had a Playbill page.
+
+- **17 of 21 (81 percent) reached 3 or more reviews.** 146 reviews in total, about 7 a show. Range: Hold On to Me Darling 23, The Antiquities 13, Archduke 11, Sumo 10, the 3 random gap shows 8 to 11. Of the 4 below 3, three (Good Bones, Becoming Eve, Garside's Career) were deferred by the gather time budget and re-dispatched, and were still collecting text when measured.
+- **Cost: about $0.18 a show.** Scraping $1.41 for 21 shows ($0.067 a show, ledger rows priced with `provider-pricing.json`). LLM scoring $0.0154 a review (8 ensemble runs, 466 reviews, $7.17, `llm-scoring-runs.json`), so about $0.11 a show. The $0.80 planning figure was 4 times too high.
+- **Measuring too early misleads.** A review counts in `reviews.json` only after text collection (cron 04:30, 10:30, 18:30 UTC) and scoring. Right after gather, most files are `incompleteReason: not_attempted` URL stubs. The first count (Sumo 2, most award shows 0) was pipeline lag. Measure after text collection, scoring and rebuild, or dispatch `collect-review-texts.yml` with `show_filter` to skip the wait.
+- **A Playbill production page is the notability filter.** Of 10 random TheaterMania gap listings, 3 had a Playbill page with matching dates, 1 had dates a year off (a different run), and 6 had none. The 3 with pages scored 8 to 11 reviews each. So "has a Playbill production page with matching dates" passes the shows worth scoring and drops most tiny runs, for about $0.001 a show. The SERP press screen from v3/v3.1 is not needed. If later cohorts show many Playbill-page shows under 3 reviews, revisit.
+- **TheaterMania dates drift.** Lowcountry: TM 2025-06-25, Playbill opening 2025-06-10. Dates always come from Playbill.
+
+Revised projection:
+| Cohort | TM listings not in catalog | Expected with Playbill page (about 35 to 40 percent) | Cost at $0.18 |
+|---|---|---|---|
+| Gap 2025-06 to 2026-02 | up to 168 | about 55 to 65 | about $12 |
+| 2024-06 to 2025-05 | up to 247 (16 done) | about 85 to 95 | about $17 |
+| 2023-06 to 2024-05 | up to 250 | about 85 to 100 | about $18 |
+| 2022-01 to 2023-05 | up to 293 | about 100 to 115 | about $20 |
+| **Total** | | **about 330 to 375** | **about $65 to $70** |
+
+Time is set by the pipeline, not money: about 1 to 1.5 hours of gather per 16 shows, plus text collection and scoring. Roughly 2 to 3 cohorts a week at the current queue.
+
+## v3.1: plan-review outcome on v3 (2026-10-24, Opus reviewers + GPT-5.4-mini + Gemini Flash; supersedes v3 where they conflict)
+
+**Ramp change (adopted).** The first gap run is **10 shows picked at random from the 168, unscreened**: Playbill-validate, add, gather, rebuild. Their real review counts calibrate the press screen before it gates the other ~158. Cost: about $0.50 scraping plus LLM. [structure reviewer, GPT, Phase 0]
+
+**The v3 screen as written gates nothing (P0, design + structure + pre-mortem).** `"<title>" review` returns TheaterMania's own show page, a Playbill production page and a BWW listing for almost every show. Those are T1/T2 registry domains (`data/outlet-registry.json`), so "3 outlets, or 2 with a T1/T2" passes without one review. It also picks up same-title West End or film coverage (the registry holds 272 London outlets) and generic titles. Rebuilt on the existing census instead of new counting:
+- Queries from `buildCensusPlan` (`scripts/lib/serp-review-census.js`), results filtered by `acceptSerpCensusResult` (`scripts/audit-show-review-gap.js:685`; wrong-work, stale-year, other-production, own-venue guards), outlets from `getKnownDomainMap()`.
+- Listing and ticketing pages never count. Only review-shaped URLs or titles that name the show. Outlets filtered to NYC/US region. Generic titles go through `isGenericShowTitle` / `canDisambiguateGenericTitle` (`scripts/lib/url-discovery.js:139-184`) and need a venue or creative in the result.
+- A pure `decideObPressScreen({acceptedUrls, knownDomainMap, tierOf})` returns `{pass, outlets, reason}` with evidence URLs, unit-tested. Its threshold is set from the 10-show calibration.
+- The script calls `serpCensusPreflight` first (a missing key otherwise reads as "0 outlets" for every show) and sets `SCRAPER_SPEND_PURPOSE=historical-backfill` (run-script.yml sets none, so rows would count against the 5K/day probe).
+
+**Playbill dates are still required (P1, pre-mortem + structure).** TM often puts the first performance in `opening_date` and leaves stale open-ended rows (`scripts/lib/theatermania-ob.js:39-42, 91-108`). Every candidate is checked with `validate-show-venue.js --candidates-file` (about 6 Scrapingdog credits each) and needs a Playbill opening and closing date, closed 90 or more days ago, with a run of 14 days or more. TM is the list of what to check. Playbill supplies the dates.
+
+**TM reader: parameter, not fork (P0/P1, design + structure).** `fetchTmOffBroadway` keeps only `isCurrentTmRow` rows and stops at the first page with none (`theatermania-ob.js:379-391`), and `discover-new-shows.js:716` uses it daily. It gains `{rowFilter = isCurrentTmRow, maxPages, stopWhenPageEmpty = true, orderby = 'modified'}`. The historical caller passes a window predicate, 80 pages, no early stop and `orderby=id` (modified-order paging skips and repeats rows mid-scan). Rows still go through `parseTmOffBroadwayRow` and the existing `isNonTheaterContent` / `isOneNightShow` gates, and the historical path overrides `discoverySource` to `ob-historical:tm` and clears `provisional`. Fixture tests go in `theatermania-ob.test.mjs`. Default callers' behavior is unchanged and tested.
+
+**One dedup rule (P1).** Use `findTmSameTitleShow` and `checkForDuplicate`, not a new title-plus-120-days rule. The 168 figure is therefore an upper bound (187 OB stubs have no opening date).
+
+**Coupling with current discovery (P1, structure).** A closed 2025 row would make `findTmSameTitleShow` (366-day window) treat a 2026 transfer or return run of the same title as a duplicate (`discover-new-shows.js:2830-2844`), and `reconcileMatchedShow` could write current-run data onto the closed row. A historical closed row is excluded from that match. The fix ships before the first gap promotion, with a test.
+
+**Plans go through `new-fix-plan.js --actions=` (design).** No hand-built JSON and no second splitter. Plans hold at most about 10 actions, and after each apply the cohort ledger is reconciled against the plan's `results[]` (an action can fail while the rest apply). [pre-mortem]
+
+**Gather dispatch etiquette.** Off-peak only, never when an opening-night run is queued or an opening falls within 48 hours. About 4 shows per job.
+
+**User-facing (user-impact reviewer):**
+- Thin-page noindex is off by default and covers only zero-review closed shows (`scripts/lib/seo-indexability.js:43,69`). So every added show is indexable from the moment it lands, including while it sits at 0 reviews mid-gather. Before the first gap promotion, extend noindex to closed shows below the display threshold whose `discoverySource` starts with `ob-historical:`, and turn it on for that class only. A show retired later gets a redirect, not a 404.
+- The iOS feed includes a closed show once it has one scored review (`scripts/generate-mobile-data.js:156-158`), so an unscored card can appear. Accepted for now, since the score is hidden below the bar, and checked in the cohort audit.
+- The `/off-broadway` "Closed" view sorts by recent, so gap shows will sit at its top. That is correct behavior. `getRecentShowSlugs` treats shows closed within 180 days as recent (`src/lib/data-core.ts:521`), which the 90-days-closed rule mostly keeps clear of.
+- Homepage shelves, OB browse lists, RSS, newsletter and broadcasts all require open or previews status, so they are unaffected (checked).
+
+**Wording fixes (Gemini).** LLM scoring cost is **not yet measured**. The 16-show 2024-25 run will measure it. The v1 notability list (press 5+, award, transfer, flagship as equals) is replaced by v3.1's calibrated press screen, with award and flagship as tie-breakers only. The outlet registry is `data/outlet-registry.json`.
+
+**Considered and not adopted.** "Add all 168, gather, retire the thin ones" (GPT). It saves building the screen, but pages are indexed while thin and retirement is a multi-repo revert per show. The 10-show unscreened run takes the useful part of that idea.
+
+**Revised effort.** The TM reader parameterization, discovery coupling fix, census-based screen and noindex extension add about 1.5 to 2 days of build before the main gap promotion. The 10-show run can go first, because it uses only Playbill validation and fix plans, which already work.
 
 ## v2 changes from plan review (supersedes conflicting text below)
 
@@ -244,3 +351,18 @@ last gather. Fail any check and the next cohort does not start:
 - First-time deep-gather scraping cost is an assumption until the 5-show pilot runs.
 - The loose definition of "Off-Broadway": the rule above is the proposal, and the flagship
   venue list is the part most likely to need owner edits.
+
+## Phase H results (2026-10-24, BRO-6153)
+
+Two award-nominated 2024-25 shows were added by hand through an `add-show` fix plan and gathered with `max_tier=3`, `spend_purpose=historical-backfill` (run 40123511753).
+
+| Show | Venue | Reviews after rebuild | Scraping cost (ledger, priced) |
+|---|---|---|---|
+| Hold On to Me Darling (Lortel, OBA) | Lucille Lortel Theatre, Oct 2024 | 11 scored (NYT, Guardian, EW, Deadline, Vogue, TheWrap, Time Out, The Stage, NYSR, NYTG, nyt-theater) | $0.040 |
+| Sumo (Lortel Outstanding Play) | Public Theater, Feb to Mar 2025 | 2 (Culture Sauce, Time Out) | $0.055 |
+
+What it changed:
+- **Scraping is a small cost.** $0.04 to $0.055 per show at `max_tier=3`, against the $0.20 to $0.45 assumed. About 70 to 110 Scrapingdog SERP calls per show carry nearly all of it, and Bright Data was touched 1 to 2 times (one capped). The per-show estimate is now dominated by LLM scoring, which this run did not measure (`llm-scoring-runs.json` keeps only the last 100 runs).
+- **An award does not guarantee reviews.** A Lortel Outstanding Play nominee yielded 2 reviews, below the OB display bar of 3. So the Award signal alone cannot promote a show. Promote when press coverage is also found, or accept that some award shows stay unscored. The audit's 70 percent target needs a measured denominator from the full season.
+- **Title matching is too loose.** A title lookup against shows.json "found" Ghosts, Vanya, Orlando and Home, which are different productions. Dedup in the promotion step compares venue and year, as the plan says.
+- **Mechanics.** The cloud session has no scraper keys, so Playbill validation runs through `cloud-run-script.js` against a candidates file that must be on main. Core data changes go in as `add-show` fix plans, which refuse existing ids and placeholder venues. So `promote-historical-ob.js` becomes a generator that writes those plans (and `retire-show` plans for revert). A land takes 20 to 35 minutes when the queue is busy, so each cohort is batched into few lands. Never `git reset --soft` onto a moved `origin/main` in a worktree: it silently reverts other sessions' commits (it clobbered `we-historical-tr-probe.json` once, since restored).

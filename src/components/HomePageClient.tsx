@@ -674,7 +674,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, offBroadwayShows = [
             Every show. Every review. One score.
           </p>
           <p className="text-gray-500 text-sm sm:text-base mt-1">
-            {totalShows.toLocaleString()} shows. {totalReviews.toLocaleString()} critic reviews. And counting.
+            {totalShows.toLocaleString()} scored shows. {totalReviews.toLocaleString()} critic reviews. <span className="whitespace-nowrap">And counting.</span>
           </p>
         </div>
       )}

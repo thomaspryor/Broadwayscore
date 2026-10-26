@@ -168,7 +168,7 @@ const bw = (o) => ({ category: 'broadway', status: 'closed', ...o });
 describe('filterUncoveredClosedShows (BRO-4990 sweep)', () => {
   const TODAY = '2026-10-10';
 
-  it('selects a closed 2021 show with no record that ran 8+ weeks', () => {
+  it('selects a closed 2021 show with no record', () => {
     const shows = [bw({ slug: 'company-2021', id: 'company-2021', openingDate: '2021-12-09', closingDate: '2022-07-31' })];
     assert.deepEqual(filterUncoveredClosedShows(shows, { shows: {} }, TODAY), ['company-2021']);
   });
@@ -179,9 +179,14 @@ describe('filterUncoveredClosedShows (BRO-4990 sweep)', () => {
     assert.deepEqual(filterUncoveredClosedShows(shows, { shows: {} }, TODAY), []);
   });
 
-  it('skips runs under 8 weeks, shows with any record (slug or id key), non-Broadway, and running shows', () => {
+  it('selects a short run too, and only an 8-week floor when a caller asks for one (BRO-6218)', () => {
+    const shows = [bw({ slug: 'pass-over-2021', openingDate: '2021-08-22', closingDate: '2021-10-10' })];
+    assert.deepEqual(filterUncoveredClosedShows(shows, { shows: {} }, TODAY), ['pass-over-2021']);
+    assert.deepEqual(filterUncoveredClosedShows(shows, { shows: {} }, TODAY, { minWeeks: 8 }), []);
+  });
+
+  it('skips shows with any record (slug or id key), non-Broadway, and running shows', () => {
     const shows = [
-      bw({ slug: 'short', openingDate: '2022-01-01', closingDate: '2022-02-01' }),
       bw({ slug: 'has-slug', openingDate: '2022-01-01', closingDate: '2022-12-01' }),
       bw({ slug: 'slug-x', id: 'has-id-2022', openingDate: '2022-01-01', closingDate: '2022-12-01' }),
       bw({ slug: 'ob', category: 'off-broadway', openingDate: '2022-01-01', closingDate: '2022-12-01' }),
@@ -206,13 +211,13 @@ describe('computeCoverageBySeason (BRO-4990 weekly health)', () => {
       bw({ slug: 'a', openingDate: '2021-10-01', closingDate: '2022-06-01' }), // 2021-2022, uncovered
       bw({ slug: 'b', openingDate: '2021-11-01', closingDate: '2022-06-01' }), // covered, TBD
       bw({ slug: 'c', openingDate: '2022-08-01', closingDate: '2023-06-01' }), // 2022-2023, resolved
-      bw({ slug: 'd', openingDate: '2022-08-01', closingDate: '2022-08-20' }), // too short: in scope, not eligible
+      bw({ slug: 'd', openingDate: '2022-08-01', closingDate: '2022-08-20' }), // a 3-week run is eligible too (BRO-6218)
     ];
     const commercial = { shows: { b: { designation: 'TBD' }, c: { designation: 'Flop' } } };
     const rows = computeCoverageBySeason(shows, commercial, '2026-10-10');
     assert.deepEqual(rows.map(r => [r.season, r.inScope, r.eligible, r.covered, r.resolved, r.uncovered]), [
       ['2021-2022', 2, 2, 1, 0, ['a']],
-      ['2022-2023', 2, 1, 1, 1, []],
+      ['2022-2023', 2, 2, 1, 1, ['d']],
     ]);
   });
 

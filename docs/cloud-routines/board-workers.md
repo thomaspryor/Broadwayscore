@@ -82,6 +82,10 @@ For each card:
    START-NOW cards, and everything once Codex stops). Cards Codex would skip
    for their pause history stay in this lane's queue (BRO-5407). A null pick then means
    nothing is left for this lane: that is the saving, not a problem.
+   A null pick with `breakerReason` means the spend breaker stopped the lane
+   (BRO-6229: daily or per-card claim cap, P0 exempt; advisory unless
+   CLOUD_WORKER_BREAKER_ENFORCE=true): stop this lane. A daily-cap trip has
+   already filed the owner's card; a per-card skip is quiet by design.
 2. Claim: `node scripts/linear-session.js claim --issue=<pick.identifier> --worker-model=<pick.model>`. A
    `"action": "noop"` or a failure means the Codex lane or another worker has
    it: pick again once, then stop this lane.
@@ -110,6 +114,10 @@ For each card:
    Data changes go through approved-fix plans (`data/pending-fixes/`, see
    .claude/CLOUD.md); cloud `data/*.json` are disposable copies, so an edit
    to them is lost, and never write into the core-data clone (BRO-5217).
+   The Codex slots in this routine do not take data-fix route cards: applying a
+   plan dispatches execute-approved-fix.yml, and only the GHA Codex lane
+   (codex-runner.yml, `actions: write`) is known to be able to (BRO-6194;
+   `CODEX_CAN_DISPATCH=1` opts a runner in once one is proven).
    A card that genuinely needs an owner decision: write the one-sentence
    question on the card and pause it; do not build it.
 5. Land: a commit holding ONLY your files on a branch from current origin/main

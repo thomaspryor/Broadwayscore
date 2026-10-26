@@ -67,8 +67,8 @@ function splitCosts(commercial, category, weeklyNut, baseVarRate, theaterPct) {
 //   running     fixed weekly expenses, royalties and percentage rent extra
 //               (Hamilton, Matilda). The model's own reading; unchanged.
 //   breakeven   the gross the show needs to break even (Six, Gutenberg).
-//               The fixed nut is what the model's breakeven formula inverts
-//               to: B x (1 - variable - theater pct) / (1 - rent share).
+//               The fixed nut is B / breakEvenRatio (the model's own
+//               zero-profit week, BRO-6217).
 //   all-in      an average weekly operating expense, royalties and
 //               percentage rent included (Outsiders, AG statements). The
 //               gross-linked part at the period's average gross comes off;
@@ -95,6 +95,22 @@ function periodGross(source, weekly) {
 }
 
 /**
+ * Break-even gross as a multiple of the fixed nut: the zero of the model's
+ * steady-state week, G - varRate x G - max(0, pct x G - rent share x nut) - nut
+ * (BRO-6217 M04). Below the theater breakpoint the rent is already in the nut,
+ * so G = nut / (1 - varRate); only above it does the percentage branch apply.
+ * The old closed form always took the percentage branch: a $500K nut at 11%
+ * read $536,585, where the model's own week breaks even at $561,798.
+ * @param {number} varRate
+ * @param {{ pctOfGross: number, rentPctOfNut: number }} theater - THEATER_DEAL
+ */
+function breakEvenRatio(varRate, theater) {
+  const belowBreakpoint = 1 / (1 - varRate);
+  if (theater.pctOfGross * belowBreakpoint <= theater.rentPctOfNut) return belowBreakpoint;
+  return (1 - theater.rentPctOfNut) / (1 - varRate - theater.pctOfGross);
+}
+
+/**
  * The fixed weekly nut behind a tagged cost figure.
  * @param {object} commercial
  * @param {number} weeklyNut - the figure the model would use
@@ -106,7 +122,7 @@ function periodGross(source, weekly) {
 function fixedNutFromBasis(commercial, weeklyNut, varRate, theater, weekly) {
   const basis = commercial && commercial.weeklyRunningCost && BASES.includes(commercial.weeklyRunningCostBasis) ? commercial.weeklyRunningCostBasis : 'running';
   const keep = 1 - theater.rentPctOfNut;
-  if (basis === 'breakeven') return { nut: weeklyNut * (1 - varRate - theater.pctOfGross) / keep, basis };
+  if (basis === 'breakeven') return { nut: weeklyNut / breakEvenRatio(varRate, theater), basis };
   if (basis !== 'all-in') return { nut: weeklyNut, basis };
   const period = periodGross(commercial.weeklyRunningCostSource, weekly);
   const gross = period || weeklyNut;
@@ -116,4 +132,4 @@ function fixedNutFromBasis(commercial, weeklyNut, varRate, theater, weekly) {
   return nut > 0 ? { nut, basis, gross, fromPeriod: !!period } : { nut: weeklyNut, basis: 'running', rejected: 'all-in' };
 }
 
-module.exports = { splitCosts, costBasis, fixedNutFromBasis, periodGross, EXTRA_VARIABLE, COST_BASES: BASES, BASIS_CUE_TEXT };
+module.exports = { splitCosts, costBasis, fixedNutFromBasis, breakEvenRatio, periodGross, EXTRA_VARIABLE, COST_BASES: BASES, BASIS_CUE_TEXT };

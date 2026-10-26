@@ -1,4 +1,15 @@
-import { defineConfig, devices } from '@playwright/test';
+import { chromium, defineConfig, devices } from '@playwright/test';
+import { existsSync } from 'fs';
+
+// Cloud containers ship one preinstalled Chromium build, often not the one
+// this @playwright/test version pins, so every test died with "Executable
+// doesn't exist" (BRO-6170). Same fallback as scripts/visual-qa.mjs: use the
+// pinned build when present, else the preinstalled one.
+const PREINSTALLED_CHROMIUM = process.env.PW_CHROMIUM_EXECUTABLE || '/opt/pw-browsers/chromium';
+const pinnedChromium = (() => { try { return chromium.executablePath(); } catch { return ''; } })();
+const chromiumLaunch = !existsSync(pinnedChromium) && existsSync(PREINSTALLED_CHROMIUM)
+  ? { launchOptions: { executablePath: PREINSTALLED_CHROMIUM } }
+  : {};
 
 /**
  * Playwright E2E Test Configuration
@@ -83,7 +94,7 @@ export default defineConfig({
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'] },
+      use: { ...devices['Desktop Chrome'], ...chromiumLaunch },
     },
     {
       name: 'mobile',

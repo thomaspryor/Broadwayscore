@@ -20,8 +20,10 @@ const crypto = require('crypto');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { computeSlimCriticScore } = require('./lib/slim-critic-score');
+const { consensusDisplayCount } = require('./lib/consensus-display-count');
 const { isHiddenFromAppFeed } = require('./lib/markets');
 const { mayServeDiskImage } = require('./lib/image-source-match');
+const { versionedImagePath } = require('./lib/versioned-image-path');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -136,6 +138,20 @@ function computePerShowHash(show, globalHash, ctx) {
     hash.update(fs.readFileSync(castFile));
   } else {
     hash.update('cast=absent');
+  }
+  // Hero bytes (BRO-5736): detail.hi carries ?v=<md5 of the file>, so replaced
+  // art must change this show's hash or the skip gate keeps the stale suffix.
+  // Hash every candidate file: the recorded path and the on-disk fallbacks.
+  const heroDir = path.join(__dirname, '..', 'public', 'images', 'shows', String(show.id));
+  const heroFiles = new Set(['webp', 'jpg', 'png'].map(ext => path.join(heroDir, `hero.${ext}`)));
+  if (typeof show.images?.hero === 'string' && show.images.hero.startsWith('/images/') && !show.images.hero.includes('..')) {
+    heroFiles.add(path.join(__dirname, '..', 'public', show.images.hero));
+  }
+  for (const hf of [...heroFiles].sort()) {
+    if (fs.existsSync(hf)) {
+      hash.update(`hero=${path.basename(hf)}`);
+      hash.update(fs.readFileSync(hf));
+    }
   }
   return hash.digest('hex');
 }
@@ -521,7 +537,7 @@ for (const show of visibleShows) {
   // Dedup, hide rules, scoring and the display gate: scripts/lib/slim-critic-score.js
   // (shared with the site-parity test, BRO-4312). Critic-level dedup keeps
   // distinct critics from the same outlet (NYSR, NYT, etc.).
-  const { showReviews, cs: slimCs, rc: slimRc } = computeSlimCriticScore(show, allShowReviews, outletRegistry);
+  const { showReviews, scoreResult: criticScoreResult, cs: slimCs, rc: slimRc } = computeSlimCriticScore(show, allShowReviews, outletRegistry);
   const buzz = audienceBuzz[show.id];
 
   // Score breakdown — Positive = Recommended+ (75+), Mixed = Worth Seeing/Skippable (55-74), Negative = Critical Miss (<55)
@@ -697,7 +713,7 @@ for (const show of visibleShows) {
   // Critics' Take consensus paragraph
   const consensus = criticConsensus[show.id];
   if (consensus && consensus.text) {
-    detail.cn = { t: consensus.text, rc: consensus.reviewCount || 0 };
+    detail.cn = { t: consensus.text, rc: consensusDisplayCount(criticScoreResult, consensus.reviewCount) };
   }
 
   // Showtimes weekly grid (most-recent week only — keeps payload small)
@@ -763,7 +779,7 @@ for (const show of visibleShows) {
     }
   }
   if (heroPath) {
-    detail.hi = heroPath;
+    detail.hi = versionedImagePath(heroPath);
   }
 
   // Theater address

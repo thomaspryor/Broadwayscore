@@ -567,6 +567,59 @@
   .animate-up {
     @apply animate-slide-up;
   }
+
+  /* Money Scorecard email gate (BRO-6210, src/components/biz/MoneyGate.tsx).
+     Locked unless <html data-money-unlocked>, which the gate's inline boot
+     script sets before paint for a browser that already signed up. The
+     gated content stays in the DOM; locked, it is clipped to a blurred,
+     fading preview with the sign-up card pulled up over the fade. */
+  .money-gate {
+    @apply relative;
+  }
+  html:not([data-money-unlocked]) .money-gate-content {
+    max-height: 26rem;
+    overflow: hidden;
+    filter: blur(1px);
+    user-select: none;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    mask-image: linear-gradient(to bottom, #000 0%, rgba(0, 0, 0, 0.55) 45%, transparent 100%);
+    /* At least the card's pull-up (-mt-48), so short content never lets the
+       card cover the heading above the gate. */
+    min-height: 12rem;
+  }
+  /* Figures must not be legible through the preview: every glyph is hidden
+     and only a wide glow of its own color remains. Show names (the links to
+     /show/) keep a tight glow, faintly readable as a teaser. */
+  html:not([data-money-unlocked]) .money-gate-content * {
+    -webkit-text-fill-color: transparent;
+    text-shadow: 0 0 11px currentColor;
+  }
+  html:not([data-money-unlocked]) .money-gate-content a[href^='/show/'],
+  html:not([data-money-unlocked]) .money-gate-content a[href^='/show/'] * {
+    text-shadow: 0 0 3px currentColor;
+  }
+  html:not([data-money-unlocked]) .money-gate-content svg text {
+    fill-opacity: 0;
+  }
+  html:not([data-money-unlocked]) .money-gate[data-preview='short'] .money-gate-content {
+    max-height: 12rem;
+    min-height: 7rem;
+  }
+  .money-gate-lock {
+    @apply relative z-10 -mt-48 mb-8 px-0;
+  }
+  .money-gate[data-preview='short'] .money-gate-lock {
+    @apply -mt-28 mb-2;
+  }
+  html[data-money-unlocked] .money-gate-lock {
+    display: none;
+  }
+  /* The header's opening-night CTA stays out of the way while a locked gate
+     is on the page (BRO-6248; /biz hides it in HeaderSubscribeButton). */
+  html:not([data-money-unlocked]):has(.money-gate) .header-subscribe-cta {
+    display: none;
+  }
 }
 
 @layer utilities {

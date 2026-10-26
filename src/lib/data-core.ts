@@ -686,6 +686,26 @@ export function getDataStats() {
 }
 
 /**
+ * Site-wide headline counts for "N shows. N critic reviews." (every market the
+ * site lists, not just Broadway). A show counts as scored when its Critic Score
+ * is displayed (displaysCriticScore, the same gate as the score badges), so the
+ * iOS home line, which counts the same way over the mobile feed, agrees.
+ */
+export function getSiteStats() {
+  // Same listing rules as the market pages: flag-enabled category, not a hidden
+  // London id (ABBA Voyage), and tours only when listed.
+  const listed = getAllShows().filter(show =>
+    regionalSlugAllowed(show) &&
+    !HIDDEN_LONDON_IDS.has(show.id) &&
+    (show.category !== 'tour' || isTourListed(show))
+  );
+  return {
+    scoredShows: listed.filter(displaysCriticScore).length,
+    totalReviews: listed.reduce((sum, show) => sum + (show.criticScore?.reviewCount || 0), 0),
+  };
+}
+
+/**
  * Get the most recent data update timestamp for a show
  * Returns ISO string of the most recent update across core data sources
  */

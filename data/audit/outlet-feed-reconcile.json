@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-24T18:58:10.937Z",
+  "generatedAt": "2026-10-25T23:51:42.053Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -39,11 +39,6 @@
       "openingDate": "2026-10-22"
     },
     {
-      "id": "other-desert-cities-2026",
-      "title": "Other Desert Cities",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "billy-crystal-860-2026",
       "title": "Billy Crystal 860",
       "openingDate": "2026-10-21"
@@ -74,14 +69,14 @@
       "openingDate": "2026-10-22"
     },
     {
+      "id": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "openingDate": "2026-10-24"
+    },
+    {
       "id": "copperfield-the-new-musical-off-broadway-2026",
       "title": "Copperfield! The New Musical",
       "openingDate": "2026-10-19"
-    },
-    {
-      "id": "school-pictures-off-broadway-2026",
-      "title": "School Pictures",
-      "openingDate": "2026-10-18"
     },
     {
       "id": "garry-starr-classic-penguins-off-west-end-2026",
@@ -99,11 +94,6 @@
       "openingDate": "2026-10-20"
     },
     {
-      "id": "two-girls-off-broadway-2026",
-      "title": "Two Girls",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
       "title": "Queeney Todd: The Demon Bottom of Fleet Street",
       "openingDate": "2026-10-22"
@@ -114,11 +104,6 @@
       "openingDate": "2026-10-23"
     },
     {
-      "id": "the-dog-show-come-sit-stay-off-broadway-2026",
-      "title": "The Dog Show: Come. Sit. Stay.",
-      "openingDate": "2026-10-18"
-    },
-    {
       "id": "women-who-eat-off-broadway-2026",
       "title": "Women Who Eat",
       "openingDate": "2026-10-22"
@@ -127,19 +112,19 @@
       "id": "the-nicest-body-ever-seen-around-these-parts-off-broadway-2026",
       "title": "The Nicest Body Ever Seen Around These Parts",
       "openingDate": "2026-10-19"
-    },
-    {
-      "id": "dance-is-not-for-us-off-west-end-2026",
-      "title": "Dance Is Not for Us",
-      "openingDate": "2026-10-18"
     }
   ],
-  "skipped": [],
+  "skipped": [
+    {
+      "showId": "hospital-hour-off-broadway-2026",
+      "reason": "no data/review-texts directory for this show"
+    }
+  ],
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "thereviewshub",
+      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
     },
     {
       "outletId": "front-row-center",
@@ -166,19 +151,10 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 779,
-  "matchedGaps": 4,
+  "itemsScanned": 684,
+  "matchedGaps": 3,
   "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "derren-brown-only-human-west-end-2026",
-      "title": "Derren Brown: Only Human",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
-      "headline": "Derren Brown: Only Human | Apollo Theatre",
-      "publishDate": "2026-10-24"
-    },
     {
       "showId": "machine-learning-off-broadway-2026",
       "title": "Machine Learning",
@@ -189,22 +165,31 @@
       "publishDate": "2026-10-23"
     },
     {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
+      "showId": "phyl-off-broadway-2026",
+      "title": "Phyl",
       "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/10/24/review-of-the-pianist-2026-park-theatre-stage-adaptation-hits-all-the-right-notes-despite-lacking-a-few-fortes/",
-      "headline": "Review of &#8216;The Pianist&#8217; (2026, Park Theatre): &#8220;Stage adaptation hits all the right notes despite lacking a few fortes&#8221;",
-      "publishDate": "2026-10-24"
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/10/23/phyl-mint-theater-review/",
+      "headline": "Off-Broadway Review: PHYL (Mint Theater Company at Theatre Row)",
+      "publishDate": "2026-10-23"
     },
     {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
+      "showId": "phyl-off-broadway-2026",
+      "title": "Phyl",
       "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/the-pianist-park-theatre-london/",
-      "headline": "The Pianist – Park Theatre, London",
-      "publishDate": "2026-10-24"
+      "outletId": "off-off-online",
+      "url": "https://www.offoffonline.com/offoffonline/2026/10/19/phyl",
+      "headline": "Phyl",
+      "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "copperfield-the-new-musical-off-broadway-2026",
+      "title": "Copperfield! The New Musical",
+      "level": "possible",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/the-curious-case-of-benjamin-button/",
+      "headline": "The Curious Case of Benjamin Button *****",
+      "publishDate": "2026-10-21"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
@@ -214,15 +199,6 @@
       "url": "https://timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
       "headline": "16.&nbsp;Harry Potter and the Cursed Child",
       "publishDate": null
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/lambeth-fringe-2026-happy-heart-the-songs-of-andy-williams-toulouse-lautrec-jazz-club-london/",
-      "headline": "Lambeth Fringe 2026: Happy Heart: The Songs of Andy Williams – Toulouse Lautrec Jazz Club, London",
-      "publishDate": "2026-10-19"
     }
   ]
 }

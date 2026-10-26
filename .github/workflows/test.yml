@@ -31,6 +31,7 @@ on:
       # impossible and removes the merge-conflict-magnet property of a single
       # shared list every parallel worktree session had to edit.
       - 'scripts/lib/**'
+      - 'scripts/read-theater-newsletters.js'
       # scripts/tests/** — same glob fix for scripts/tests/ (BRO-5309). A new
       # scripts/tests/*.test.mjs with no literal entry below failed
       # scripts/lib/test-yml-manifest-paths.test.mjs at land time (land run
@@ -70,6 +71,8 @@ on:
       - 'scripts/check-grosses-integrity.js'
       # BRO-5626: daily unpark drain, tested by scripts/linear-unpark-drain.test.mjs.
       - 'scripts/linear-unpark-drain.js'
+      # BRO-6168: owner-reply drain, tested by tests/unit/decision-reply.test.mjs.
+      - 'scripts/linear-decision-reply-drain.js'
       # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
       - 'scripts/codex-lane-alarm.js'
       # BRO-6139: its replay() is the change-safety gate, tests/unit/codex-lane-backtest-replay.test.mjs.
@@ -194,6 +197,8 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # BRO-6241: cron lander, required by scripts/lib/visual-approval.test.mjs
+      - 'scripts/visual-approval-land.js'
       # tests/unit/serp-review-acceptance.test.mjs requires scan-serp-adoptions.js (BRO-4546)
       - 'scripts/scan-serp-adoptions.js'
       # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs
@@ -512,6 +517,8 @@ on:
       - 'scripts/audit-errexit-unguarded-substitution.js'
       - 'scripts/check-cross-outlet-attribution-drift.js'
       - 'scripts/audit-toplevel-script-test-yml-coverage.js'
+      # BRO-2484: advisory guard call-site audit (test: tests/unit/audit-guard-call-sites.test.mjs).
+      - 'scripts/audit-guard-call-sites.js'
       - 'scripts/audit-coverage-slot-drops.js'
       # BRO-5261 (BRO-3087 retro-review): top-level scripts a collected test
       # names by path (a 'scripts/x.js' literal or path.join(here, '..', 'x.js'))
@@ -1144,6 +1151,10 @@ on:
       - 'scripts/verify-feedback-requests-live.js'
       # BRO-4719: owner decision email; its test (tests/unit/owner-decision-notify.test.mjs) is manifest-registered.
       - 'scripts/notify-owner-decisions.js'
+      - 'scripts/send-owner-decision-emails.js'
+      - 'scripts/lib/owner-decision-email.js'
+      - 'src/lib/owner-decision-link.js'
+      - 'src/app/api/owner-decision/route.ts'
       # What the owner actually reads. Added 2026-08-05 after a shipped report
       # linked /shows/{slug} — a route that does not exist — and nothing failed:
       # both report builders were exported but had no test at all. This file
@@ -2257,6 +2268,9 @@ on:
       # single scheduled owner email; colocated test runs in the
       # scripts/lib/*.test.mjs glob step, path-listed so a solo edit triggers CI.
       - 'scripts/send-morning-digest.js'
+      # BRO-6230 cutover tooling (dry-run compare); tested by
+      # tests/unit/morning-digest-action.test.mjs. Delete with the dry-run job.
+      - 'scripts/morning-digest-compare.js'
       # Close-time acceptance verify + trunk status (task #1003) — the decision
       # lib, the shared checkout/runner it leans on, the gh producer, and the
       # tests. Not covered by any broader glob (scripts/tests/ is not

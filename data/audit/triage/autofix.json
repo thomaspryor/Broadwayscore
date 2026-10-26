@@ -1,7 +1,7 @@
 {
   "system": "autofix",
   "status": "warn",
-  "lastChecked": "2026-10-24T07:20:17.599Z",
+  "lastChecked": "2026-10-25T23:39:13.537Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Autofix: jobs actually succeeding",
       "status": "warn",
-      "message": "Auto-fix loop fails more than it fixes: 4/12 succeeded (33%) in the last 7d — issues will re-report tomorrow"
+      "message": "Auto-fix loop fails more than it fixes: 1/6 succeeded (17%) in the last 7d — issues will re-report tomorrow"
     },
     {
       "name": "Autofix: persistent visitor rows with no open card",
-      "status": "pass",
-      "message": "Every visitor-facing row red for 96h+ has an open card"
+      "status": "warn",
+      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Data quality: revival-unverified lifetime sweep (13d, BRO-5439 closed)"
     }
   ]
 }

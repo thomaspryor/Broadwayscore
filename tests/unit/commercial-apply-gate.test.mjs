@@ -811,6 +811,26 @@ describe('bare capitalizationSource (BRO-5815)', () => {
     assert.equal(good.ok, true);
     assert.equal(c.shows.x.capitalizationBasis, 'maximum');
   });
+
+  it('applyCommercialFieldEdit writes a valid costHistory and refuses a malformed anchor (BRO-6218)', () => {
+    const old = [{ asOf: '2025-09-07', amount: 1500000, kind: 'running-cost', sourceType: 'trade', sourceUrl: 'https://example.com/a', note: 'n' }];
+    const mk = () => ({ shows: { x: { costHistory: old } } });
+    const redated = [{ ...old[0], asOf: '2024-05-15', periodStart: '2024-04-21', periodEnd: '2024-06-08', reportedAt: '2025-09-25', dateBasis: 'period-midpoint' }];
+    const c = mk();
+    assert.equal(applyCommercialFieldEdit(c, 'x', 'costHistory', old, redated).ok, true);
+    assert.equal(c.shows.x.costHistory[0].asOf, '2024-05-15');
+    const noUrl = applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, [{ ...redated[0], sourceUrl: null }]);
+    assert.equal(noUrl.ok, false);
+    assert.match(noUrl.reason, /costHistory\[0\].*sourceUrl/);
+    assert.equal(applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, { asOf: '2024-05-15' }).ok, false);
+    const outside = applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, [{ ...redated[0], asOf: '2024-07-01' }]);
+    assert.match(outside.reason, /asOf is after periodEnd/);
+    const early = applyCommercialFieldEdit(mk(), 'x', 'costHistory', old, [{ ...redated[0], reportedAt: '2024-05-01' }]);
+    assert.match(early.reason, /later than reportedAt/);
+    // Compare-and-set on the whole array: a plan built on a stale copy is refused.
+    const stale = applyCommercialFieldEdit(mk(), 'x', 'costHistory', [{ ...old[0], amount: 1 }], redated);
+    assert.equal(stale.ok, false);
+  });
 });
 
 describe('buildCommercialEntry: a brand-new record always has a designation (BRO-5824)', () => {
@@ -822,5 +842,24 @@ describe('buildCommercialEntry: a brand-new record always has a designation (BRO
   it('keeps a canonical label from the entry or the existing record', () => {
     assert.equal(gate.buildCommercialEntry({ designation: 'Nonprofit' }, undefined, {}).designation, 'Nonprofit');
     assert.equal(gate.buildCommercialEntry({ recouped: true }, { designation: 'Windfall', recouped: true, recoupedDate: '2020-01' }, { isClaimAutoApply: true }).designation, 'Windfall');
+  });
+});
+
+describe('model-estimate designations give way to a verified recoupment (BRO-6158)', () => {
+  const est = (designation) => ({ designation, recouped: null, designationBasis: 'model-estimate' });
+  it('resets an estimate on loss and recouped-side tiers, but not a locked one', () => {
+    for (const d of ['Flop', 'Fizzle', 'Trickle', 'Windfall']) {
+      assert.equal(gate.recoupClaimDesignationAction(est(d)), 'reset', d);
+    }
+    assert.equal(gate.recoupClaimDesignationAction({ ...est('Windfall'), humanReviewedDesignation: true }), 'keep');
+    assert.equal(gate.recoupClaimDesignationAction({ designation: 'Windfall', recouped: true }), 'keep', 'a reported Windfall is untouched');
+  });
+  it('stampDesignationBasis keeps the estimate basis on Trickle/Windfall and drops it once recouped is true', () => {
+    const a = { designation: 'Windfall', recouped: null };
+    gate.stampDesignationBasis(a, { designationBasis: 'model-estimate' }, undefined);
+    assert.equal(a.designationBasis, 'model-estimate');
+    const b = { designation: 'Windfall', recouped: true };
+    gate.stampDesignationBasis(b, { designationBasis: 'model-estimate' }, undefined);
+    assert.equal('designationBasis' in b, false);
   });
 });

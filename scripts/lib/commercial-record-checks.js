@@ -73,7 +73,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const { NP_VENUES, venueMatches } = require('./nonprofit-venues');
-const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, LOSS_LABEL_MIN_DAYS, isPrematureSilenceLabel, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 const { CAPITALIZATION_BASES } = require('./public-source-text');
@@ -206,10 +206,12 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   // Loss labels (Fizzle, Flop, Did Not Recoup) imply it did not — require recouped=false (null means we don't know).
   // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
   const WIN_DESIGNATIONS = ['Easy Winner', 'Windfall', 'Miracle'];
-  if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true) {
+  const modelEstimated = show.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE;
+  // A model-estimate tier is our estimate, not a reported recoupment (owner 2026-10-24, BRO-6158).
+  if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true && !modelEstimated) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: win-designations require recouped=true with hard citation, see memory/feedback_enhancement_deal_designation_policy.md)`);
   }
-  if (isLossDesignation(show.designation) && show.recouped !== false) {
+  if (isLossDesignation(show.designation) && show.recouped !== false && !(modelEstimated && show.recouped == null)) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
   }
   // capitalizationBasis (BRO-5660): what the figure is, on a capitalization.
@@ -368,10 +370,9 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   if (isLossDesignation(show.designation) && runStatus && runStatus !== 'closed') {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
   }
-  // Owner policy B (BRO-5020): every loss label says what it rests on, and a
-  // label resting on silence waits ~6 months after closing. Advisory (§19).
+  // Every loss label says what it rests on (owner policy B, BRO-5020). Advisory (§19).
   if (isLossDesignation(show.designation) && show.designationBasis == null) {
-    out.push(`commercial.json: "${showId}" has designation "${show.designation}" with no designationBasis (reported-loss, no-recoupment-announced or notes-stated)`);
+    out.push(`commercial.json: "${showId}" has designation "${show.designation}" with no designationBasis (reported-loss, no-recoupment-announced, notes-stated or model-estimate)`);
   }
   // Fizzle is an estimated 30% or more returned, Flop under it, so a loss
   // label must agree with its estimate: the record's own, else our model's
@@ -381,9 +382,9 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
   // Advisory (§19). A writer passing ctx.priorRecord counts it only when the
   // write changed the label or the estimate: a model figure that drifted
   // since must not block an unrelated edit to the record.
-  const returnedPct = returnedEstimatePct(show);
+  const returnedPct = labelSizingPct(show);
   const prior = ctx.priorRecord;
-  const sizeInputsChanged = !prior || prior.designation !== show.designation || returnedEstimatePct(prior) !== returnedPct;
+  const sizeInputsChanged = !prior || prior.designation !== show.designation || labelSizingPct(prior) !== returnedPct;
   if (sizeInputsChanged && isLossDesignation(show.designation) && lossDesignationFor(returnedPct) !== show.designation) {
     if (returnedPct == null) {
       out.push(`commercial.json: "${showId}" is "${show.designation}" but has no estimate of how much came back (use "Did Not Recoup" until a source or a decent model gives one)`);
@@ -392,7 +393,10 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
       out.push(`commercial.json: "${showId}" is "${show.designation}" but ${whose} puts ${returnedPct}% returned (Fizzle is ${FIZZLE_MIN_RETURNED_PCT}% or more, Flop under)`);
     }
   }
-  if (show.designationBasis != null && !isLossDesignation(show.designation)) {
+  const modelEstimated = show.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE;
+  const estimateTiers = ['Trickle', 'Windfall'];
+  if (show.designationBasis != null && !isLossDesignation(show.designation)
+    && !(modelEstimated && estimateTiers.includes(show.designation))) {
     out.push(`commercial.json: "${showId}" has designationBasis "${show.designationBasis}" on a non-loss designation "${show.designation || 'missing'}" (remove it)`);
   }
   // A dated "% returned" range below 100 on a show that later recouped
@@ -510,9 +514,6 @@ function commercialRecordWarnings(showId, show, ctx = {}) {
     } else if (changed && flagged && !says) {
       out.push(`commercial.json: "${showId}" isEstimate.recoupedDate prints "~" but recoupedSource does not say the date is our estimate (if the date is reported, drop the flag)`);
     }
-  }
-  if (isPrematureSilenceLabel(show, ctx.showRecord)) {
-    out.push(`commercial.json: "${showId}" is "${show.designation}" on no recoupment announced but closed under ${LOSS_LABEL_MIN_DAYS} days ago (keep TBD + needsLossEvidence until it ages in)`);
   }
   // The card prints these as written, so a title quoted inside a quote takes
   // single marks. Advisory (§19); a writer passes ctx.priorRecord so only text
@@ -643,24 +644,6 @@ function sanitizeForPublicRecord(entry, show, { ownerApproved = false, now = Dat
   if (isLossDesignation(out.designation) && showStatus && showStatus !== 'closed') {
     out.designation = 'TBD';
     delete out.designationBasis;
-    changed.push('designation');
-  }
-  // Policy B (BRO-5020): a loss label resting on silence waits
-  // LOSS_LABEL_MIN_DAYS after closing. Every new-record writer passes through
-  // here with the show record, so a researched or released row cannot publish
-  // one early (beaches, 2026-10-11). An owner-locked label is left alone, as
-  // the classifier leaves it (the record checks still warn on it).
-  if (out.humanReviewedDesignation !== true && isPrematureSilenceLabel(out, showRecord, now)) {
-    // BRO-5113: the public timing rule must not discard an owner's verdict.
-    // Only the explicitly approved held-row release sets this option.
-    if (ownerApproved === true && showStatus === 'closed') {
-      out.ownerDesignationAfterWindow = out.designation;
-      out.ownerDesignationReviewedAt = new Date(now).toISOString();
-    }
-    out.designation = 'TBD';
-    delete out.designationBasis;
-    if (out.recouped === false) out.recouped = null;
-    out.needsLossEvidence = true;
     changed.push('designation');
   }
   if (ownerApproved === true && showStatus === 'closed' && isLossDesignation(out.designation)) {

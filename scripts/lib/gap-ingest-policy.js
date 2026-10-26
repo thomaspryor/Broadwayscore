@@ -243,6 +243,27 @@ function pendingPriorRunUrls(pending, show) {
 }
 
 /**
+ * BRO-5421: the ingest child exits 1 when the write guard quarantines a review to
+ * _pending/ (date_implausible). When the quarantined file's date predates this run
+ * (same verdict pendingPriorRunUrls reaches on the NEXT audit run), the refusal is a
+ * correct, permanent prior-production exclusion, not a failed ingest. Sea Wall 2026:
+ * a 2023 Edinburgh review counted failed=1 and alarmed roundup-gap until the next run.
+ * @param {string} output child stdout+stderr
+ * @param {object} show shows.json record
+ * @returns {string|null} the quarantined review's publishDate when it is a prior-run review, else null
+ */
+function quarantinedPriorRunDate(output, show) {
+  const text = String(output || '');
+  if (!/\(date_implausible\)/.test(text)) return null;
+  const m = /quarantined to:\s*(\S+\.json)/.exec(text);
+  if (!m) return null;
+  let d;
+  try { d = JSON.parse(require('fs').readFileSync(m[1], 'utf8')); } catch { return null; }
+  if (!d || !d.url || !d.publishDate) return null;
+  return pendingPriorRunUrls([{ url: d.url, publishDate: d.publishDate }], show).get(d.url) || null;
+}
+
+/**
  * A flagged-out gap row whose stored review file(s) are flagged wrongProduction /
  * wrongShow AND dated before this run is a prior production's review: the
  * validator's content verdict and the date agree, so the exclusion is permanent
@@ -301,4 +322,4 @@ function isRoundupSelfCitation(row) {
   return SELF_VERDICT_ROUNDUPS.has(src) && normalizeOutlet(row.outletId || row.outletName || '') === src;
 }
 
-module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, flaggedFilePriorRunDate, isRoundupSelfCitation };
+module.exports = { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow, showScoreUrlBlockReason, partitionShowScoreReviews, isPublishDateBeforeRun, pendingPriorRunUrls, quarantinedPriorRunDate, flaggedFilePriorRunDate, isRoundupSelfCitation };

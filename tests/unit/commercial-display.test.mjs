@@ -492,6 +492,8 @@ test('P1-3: one break-even everywhere: model when it clears the floor, else week
   // BRO-4985: a model break-even below the running cost is stale (the cost
   // changed after the model ran); the cost is shown, never the lower figure.
   assert.equal(getBreakEven({ ...withModel, modelBreakeven: 536_585, weeklyRunningCost: 560_000 }), 560_000);
+  // BRO-6217: an all-in cost holds royalties and rent, so a lower break-even is real.
+  assert.equal(getBreakEven({ ...withModel, modelBreakeven: 937_545, weeklyRunningCost: 963_000, weeklyRunningCostBasis: 'all-in' }), 937_545);
 });
 
 test('BRO-4721: a Nonprofit production never shows a modeled % recouped (no investors to repay)', () => {

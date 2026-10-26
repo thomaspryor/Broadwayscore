@@ -162,3 +162,20 @@ test('no live-scoring review-text file has a reverted wrongAttribution clear', (
     `live-scoring files with a reverted wrongAttribution clear remain: ${JSON.stringify(contradictions, null, 2)}`
   );
 });
+
+// BRO-4695: a critic filed under a registry ALIAS of their own home outlet
+// (Robert Sholiton @ gotham-playgoer, alias of bobs-theater-blog) is not a
+// cross-outlet suspect. The audit compares canonical outletIds, resolved by
+// EXACT registry alias lookup (never fuzzy normalizeOutlet, which would clear
+// real suspects like operawire-independent-review -> operawire).
+test('makeOutletCanonicalizer resolves exact registry aliases only', async () => {
+  const { createRequire } = await import('node:module');
+  const { makeOutletCanonicalizer } = createRequire(import.meta.url)('./lib/cross-outlet-triage.js');
+  const canon = makeOutletCanonicalizer({ _aliasIndex: { 'gotham-playgoer': 'bobs-theater-blog', operawire: 'operawire' } });
+  assert.strictEqual(canon('gotham-playgoer'), 'bobs-theater-blog');
+  assert.strictEqual(canon('Gotham-Playgoer'), 'bobs-theater-blog');
+  assert.strictEqual(canon('bobs-theater-blog'), 'bobs-theater-blog');
+  assert.strictEqual(canon('operawire-independent-review'), 'operawire-independent-review', 'no fuzzy matching');
+  assert.strictEqual(canon(undefined), undefined);
+  assert.strictEqual(makeOutletCanonicalizer(null)('x'), 'x');
+});

@@ -9,100 +9,102 @@ import path from 'node:path';
 const require = createRequire(import.meta.url);
 const { buildCommercialEntry } = require('./commercial-apply-gate');
 const { sanitizeForPublicRecord } = require('./commercial-record-checks');
-const { classifyStaleClosure, buildClassifiedClosureEntry, closedTbdLossAction } = require('./classify-stale-closure');
+const { classifyStaleClosure, buildClassifiedClosureEntry, closedTbdLossAction, undoAutoFizzleOnRunningShow } = require('./classify-stale-closure');
 
 const now = Date.parse('2026-10-15T12:00:00Z');
 const show = { status: 'closed', closingDate: '2026-07-01' };
-const afterWindow = Date.parse('2027-01-01T12:00:00Z');
+const later = Date.parse('2027-01-01T12:00:00Z');
+const day = 86400000;
 const pending = { designation: 'Flop', recouped: false, ownerApproved: true };
 const release = (row = pending) => sanitizeForPublicRecord(
   buildCommercialEntry(row, { designation: 'TBD', researchAttempts: 0 }, { mergeExisting: true }),
   show, { ownerApproved: row.ownerApproved === true, now },
 ).entry;
 
-test('an owner Flop survives release as TBD, then is written as human-reviewed Flop', () => {
-  const entry = release();
-  assert.equal(entry.designation, 'TBD');
-  assert.equal(entry.recouped, null);
-  assert.equal(entry.ownerDesignationAfterWindow, 'Flop');
-  assert.equal(entry.ownerDesignationReviewedAt, new Date(now).toISOString());
-  assert.notEqual(entry.humanReviewedDesignation, true);
-  const result = classifyStaleClosure({ show, entry, now: afterWindow });
-  assert.equal(result.action, 'classify-fizzle');
-  assert.equal(result.designation, 'Flop');
-  assert.equal(result.humanReviewedDesignation, true);
-  const written = buildClassifiedClosureEntry(entry, show, result, afterWindow);
-  assert.equal(written.designation, 'Flop');
-  assert.equal(written.recouped, false);
-  assert.equal(written.humanReviewedDesignation, true);
-  assert.equal(written.designationBasis, 'no-recoupment-announced');
-  assert.equal(written.needsLossEvidence, undefined);
-  assert.equal(classifyStaleClosure({ show, entry: written, now: afterWindow }).action, 'no-change');
-});
+const estimate = (pct, extra = {}) => ({ designation: 'TBD', modelDataQuality: 'low', modelReturnedExCreditPct: [pct - 10, pct, pct + 10], ...extra });
 
-test('Fizzle verdicts are preserved too, and research-only labels are never marked reviewed', () => {
-  const entry = release({ ...pending, designation: 'Fizzle' });
-  assert.equal(classifyStaleClosure({ show, entry, now: afterWindow }).designation, 'Fizzle');
+test('an owner-approved verdict is written at once as a human-reviewed label, with no wait', () => {
+  const entry = release();
+  assert.equal(entry.designation, 'Flop');
+  assert.equal(entry.humanReviewedDesignation, true);
+  assert.equal(entry.ownerDesignationAfterWindow, undefined);
+  assert.equal(entry.ownerDesignationReviewedAt, undefined);
   const automated = release({ ...pending, ownerApproved: false });
-  assert.equal(automated.ownerDesignationAfterWindow, undefined);
-  assert.equal(automated.ownerDesignationReviewedAt, undefined);
-  // A label needs an estimate behind it (BRO-5623): with none the row is only flagged.
-  assert.equal(classifyStaleClosure({ show, entry: { ...automated, researchAttempts: 1 }, now: afterWindow }).action, 'flag-needs-loss-evidence');
-  const withEstimate = { ...automated, researchAttempts: 1, modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] };
-  const result = classifyStaleClosure({ show, entry: withEstimate, now: afterWindow });
-  assert.equal(result.designation, 'Fizzle');
-  assert.notEqual(buildClassifiedClosureEntry(automated, show, result, afterWindow).humanReviewedDesignation, true);
+  // Research alone is sized by its estimate (none here: Did Not Recoup) and never marked reviewed.
+  assert.equal(automated.designation, 'Did Not Recoup');
+  assert.notEqual(automated.humanReviewedDesignation, true);
 });
 
-test('the closure window and loss-evidence kill switch still apply to owner verdicts', () => {
-  const entry = release();
-  const at = (days, thresholds) => classifyStaleClosure({ show, entry,
-    now: Date.parse(show.closingDate) + days * 86400000, thresholds });
-  assert.equal(at(10).action, 'wait');
-  assert.equal(at(182).action, 'flag-needs-loss-evidence');
-  assert.equal(at(183).designation, 'Flop');
-  assert.equal(at(200, { requireLossEvidence: true }).action, 'flag-needs-loss-evidence');
-  assert.equal(at(400).designation, 'Flop');
+test('a closed show is labelled from our estimate right after the grace days, at any data quality (BRO-6158)', () => {
+  const closed = Date.parse(show.closingDate);
+  const at = (days, entry, thresholds) => classifyStaleClosure({ show, entry, now: closed + days * day, thresholds });
+  assert.equal(at(3, estimate(10)).action, 'wait');
+  for (const [pct, label] of [[10, 'Flop'], [29, 'Flop'], [30, 'Fizzle'], [70, 'Fizzle'], [100, 'Trickle'], [149, 'Trickle'], [150, 'Windfall'], [-40, 'Flop']]) {
+    const r = at(20, estimate(pct, { researchAttempts: 0 }));
+    assert.equal(r.action, 'classify-fizzle', `${pct}%`);
+    assert.equal(r.designation, label, `${pct}%`);
+    assert.equal(r.designationBasis, 'model-estimate');
+  }
+  // An analyst's range outranks the model.
+  assert.equal(at(20, estimate(90, { analystRecoupPct: [5, 15] })).designation, 'Flop');
+  // No figure at all, or the kill switch: stays TBD and flagged.
+  assert.equal(at(20, { designation: 'TBD', researchAttempts: 1 }).action, 'flag-needs-loss-evidence');
+  assert.equal(at(200, estimate(10), { requireLossEvidence: true }).action, 'flag-needs-loss-evidence');
 });
 
-test('recoupment, running shows, carve-outs and review locks still protect deferred verdicts', () => {
-  const entry = release();
-  const classify = (overrides) => classifyStaleClosure({ show, entry, now: afterWindow, ...overrides });
+test('an estimate never asserts Not Recouped, and an owner verdict still does', () => {
+  const r = classifyStaleClosure({ show, entry: estimate(20), now: later });
+  const written = buildClassifiedClosureEntry(estimate(20), show, r, later);
+  assert.equal(written.designation, 'Flop');
+  assert.equal(written.designationBasis, 'model-estimate');
+  assert.equal(written.recouped ?? null, null);
+  assert.equal(written.recoupedSource ?? null, null);
+  assert.equal(classifyStaleClosure({ show, entry: written, now: later }).action, 'no-change');
+  const owner = classifyStaleClosure({ show, entry: { designation: 'TBD', ownerDesignationAfterWindow: 'Fizzle' }, now: later });
+  assert.equal(owner.designation, 'Fizzle');
+  assert.equal(owner.humanReviewedDesignation, true);
+  assert.equal(buildClassifiedClosureEntry({}, show, owner, later).recouped, false);
+});
+
+test('recoupment, running shows, carve-outs and review locks still protect a closed row', () => {
+  const entry = estimate(20);
+  const classify = (overrides) => classifyStaleClosure({ show, entry, now: later, ...overrides });
   assert.equal(classify({ show: { ...show, status: 'open' } }).action, 'no-change');
   assert.equal(classify({ show: { ...show, closingDate: 'invalid' } }).action, 'no-change');
   assert.equal(classify({ entry: { ...entry, recouped: true } }).action, 'no-change');
   assert.equal(classify({ entry: { ...entry, humanReviewedDesignation: true } }).action, 'no-change');
   assert.equal(classify({ entry: { ...entry, productionType: 'tour-stop' } }).action, 'skip-carve-out');
-  assert.equal(classify({ pending: { recouped: true, researchedAt: new Date(afterWindow).toISOString() } }).action, 'human-review');
+  const returnRun = classify({ entry: { ...entry, productionType: 'return-engagement' } });
+  assert.equal(returnRun.action, 'classify-fizzle');
+  assert.equal(returnRun.designation, 'Flop');
+  assert.equal(classify({ pending: { recouped: true, researchedAt: new Date(later).toISOString() } }).action, 'human-review');
 });
 
-test('automated refreshes retain deferred verdicts; cleanup leaves them to the classifier', () => {
-  const entry = release();
-  const refreshed = buildCommercialEntry({ designation: 'Fizzle', recouped: false }, entry);
-  assert.equal(refreshed.ownerDesignationAfterWindow, 'Flop');
-  assert.equal(refreshed.ownerDesignationReviewedAt, entry.ownerDesignationReviewedAt);
-  assert.equal(refreshed.designation, 'TBD');
-  assert.equal(closedTbdLossAction(entry, show, { now: afterWindow }), null);
-  assert.equal(classifyStaleClosure({ show, entry: refreshed, now: afterWindow }).designation, 'Flop');
-  const recouped = buildCommercialEntry({ recouped: true, recoupedDate: '2026-12' }, entry, { isClaimAutoApply: true });
-  assert.equal(recouped.ownerDesignationAfterWindow, undefined);
-  assert.equal(recouped.ownerDesignationReviewedAt, undefined);
-  assert.equal(classifyStaleClosure({ show, entry: recouped, now: afterWindow }).action, 'no-change');
+test('cleanup labels a closed TBD row from its estimate with no age wait, and flags one with no figure', () => {
+  const act = closedTbdLossAction(estimate(55), show, { now });
+  assert.deepEqual(act, { action: 'label', designation: 'Fizzle', designationBasis: 'model-estimate' });
+  assert.deepEqual(closedTbdLossAction({ designation: 'TBD' }, show, { now }), { action: 'flag' });
+  assert.equal(closedTbdLossAction(estimate(55), { ...show, status: 'open' }, { now }), null);
+  assert.equal(closedTbdLossAction(estimate(55, { humanReviewedDesignation: true }), show, { now }), null);
+  assert.equal(closedTbdLossAction(estimate(55, { recouped: true }), show, { now }), null);
+  // A closed return engagement is labelled like any run; tours and transfers stay carved out (BRO-6218).
+  assert.deepEqual(closedTbdLossAction(estimate(55, { productionType: 'return-engagement' }), show, { now }),
+    { action: 'label', designation: 'Fizzle', designationBasis: 'model-estimate' });
+  assert.equal(closedTbdLossAction(estimate(55, { productionType: 'international-transfer' }), show, { now }), null);
+  assert.equal(closedTbdLossAction(estimate(55, { productionType: 'tour-stop' }), show, { now }), null);
+  assert.equal(closedTbdLossAction(estimate(55, { productionType: 'International Transfer' }), show, { now }), null);
+  assert.deepEqual(closedTbdLossAction({ designation: 'TBD', productionType: 'return-engagement' }, show, { now }), { action: 'flag' });
 });
 
-test('invalid deferred labels are ignored and an approved mature loss is locked immediately', () => {
-  const entry = { designation: 'TBD', researchAttempts: 1, ownerDesignationAfterWindow: 'Miracle' };
-  assert.equal(classifyStaleClosure({ show, entry, now: afterWindow }).action, 'flag-needs-loss-evidence'); // no estimate: no label (BRO-5623)
-  const result = classifyStaleClosure({ show, entry: { ...entry, modelDataQuality: 'medium', modelReturnedExCreditPct: [20, 40, 60] }, now: afterWindow });
-  assert.equal(result.designation, 'Fizzle');
-  assert.notEqual(result.humanReviewedDesignation, true);
-  const mature = sanitizeForPublicRecord(buildCommercialEntry(pending),
-    { ...show, closingDate: '2025-01-01' }, { ownerApproved: true, now }).entry;
-  assert.equal(mature.designation, 'Flop');
-  assert.equal(mature.humanReviewedDesignation, true);
+test('a recoupment announced later resets an estimate, and a reopened show undoes it', () => {
+  const labelled = { designation: 'Flop', designationBasis: 'model-estimate', modelReturnedExCreditPct: [0, 10, 20] };
+  const claim = buildCommercialEntry({ recouped: true, recoupedDate: '2026-12' }, labelled, { isClaimAutoApply: true });
+  assert.equal(claim.designation, 'TBD');
+  assert.equal(claim.recouped, true);
+  assert.equal(undoAutoFizzleOnRunningShow(labelled, { status: 'open' }).designation, 'TBD');
 });
 
-test('the held-release CLI passes explicit owner approval to the sanitizer', () => {
+test('the held-release CLI writes an owner-approved verdict straight away (BRO-6158)', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-5113-'));
   try {
     const write = (file, data) => fs.writeFileSync(path.join(dir, file), JSON.stringify(data));
@@ -120,9 +122,9 @@ test('the held-release CLI passes explicit owner approval to the sanitizer', () 
       '--release-held=approved,research', `--pending-file=${dir}/pending.json`,
       `--commercial-file=${dir}/commercial.json`, `--shows-file=${dir}/shows.json`,
     ], { encoding: 'utf8' });
-    assert.match(out, /Would apply "approved"[^\n]*"ownerDesignationAfterWindow":"Flop"/);
-    assert.match(out, /Would apply "approved"[^\n]*"ownerDesignationReviewedAt":/);
-    assert.doesNotMatch(out, /Would apply "research"[^\n]*ownerDesignation/);
+    assert.match(out, /Would apply "approved"[^\n]*"designation":"Flop"/);
+    assert.match(out, /Would apply "approved"[^\n]*"humanReviewedDesignation":true/);
+    assert.doesNotMatch(out, /ownerDesignationAfterWindow/);
     assert.match(out, /would apply 2, skip 0/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });

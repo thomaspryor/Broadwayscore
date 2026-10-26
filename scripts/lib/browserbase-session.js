@@ -118,7 +118,7 @@ let _dayCapCache = { key: null, count: null, ts: 0 };
 async function getCachedLiveSessionsToday(apiKey, projectId) {
   const key = `${apiKey}:${projectId}`;
   const now = Date.now();
-  if (_dayCapCache.key === key && now - _dayCapCache.ts < DAY_CAP_CACHE_TTL_MS) {
+  if (_dayCapCache.key === key && _dayCapCache.ts <= now && now - _dayCapCache.ts < DAY_CAP_CACHE_TTL_MS) {
     return _dayCapCache.count;
   }
   const count = await browserbaseLiveUsage.fetchLiveBrowserbaseSessionsToday(apiKey, projectId);
@@ -136,7 +136,7 @@ let _openingWindowCache = { count: null, ts: 0 };
 
 function getCachedOpeningWindowShows() {
   const now = Date.now();
-  if (_openingWindowCache.count !== null && now - _openingWindowCache.ts < OPENING_WINDOW_CACHE_TTL_MS) {
+  if (_openingWindowCache.count !== null && _openingWindowCache.ts <= now && now - _openingWindowCache.ts < OPENING_WINDOW_CACHE_TTL_MS) {
     return _openingWindowCache.count;
   }
   const count = openingNightSelection.countShowsInOpeningWindow(SHOWS_PATH, OPENING_WINDOW_RESERVE_OPTS);

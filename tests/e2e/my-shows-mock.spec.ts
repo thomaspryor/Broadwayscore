@@ -1,6 +1,6 @@
 import { type Page } from '@playwright/test';
 import { test, expect, MOCK_TODAY } from './helpers/ugc-test';
-import { switchToListView } from './helpers/mock-helpers';
+import { switchToListView, unstickSiteHeader } from './helpers/mock-helpers';
 import { filterNonCriticalErrors } from './helpers/console-errors';
 
 
@@ -30,7 +30,7 @@ const MOCK_URL = '/my-shows?mock=1';
 
 // Helper: wait for mock data to load
 async function waitForMockData(page: Page) {
-  await page.waitForSelector('#tab-watchlist span', { timeout: 10000 });
+  await page.waitForSelector('[data-testid="my-shows-content"][data-ready="true"]', { timeout: 10000 });
 }
 
 // Helper: navigate to mock page and wait for data
@@ -45,17 +45,34 @@ test.describe('My Shows — Page Structure', () => {
   test('loads with correct title and header', async ({ page }) => {
     await goToMock(page);
     await expect(page).toHaveTitle(/My Shows/);
-    await expect(page.getByRole('heading', { name: 'My Shows', level: 1 })).toBeVisible();
+    // The h1 is screen-reader only: the section names are the visible title (BRO-6170).
+    await expect(page.getByRole('heading', { name: 'My Shows', level: 1 })).toBeAttached();
   });
 
-  test('stats bar shows correct counts', async ({ page }) => {
+  test('header is Diary / Watchlist / Lists with the List / Feed / Stats switch', async ({ page }) => {
     await goToMock(page);
-    // Counts live in the tab badges only — the "N to rate" stats line was
-    // removed entirely (owner, 2026-07-17: pushed content down, redundant
-    // with the To Be Rated section header).
-    await expect(page.locator('#tab-diary span').first()).toHaveText('9');
-    await expect(page.locator('#tab-watchlist span').first()).toHaveText('6');
+    const sections = page.getByRole('tablist', { name: 'My Shows sections' });
+    await expect(sections.getByRole('tab')).toHaveText(['Diary', 'Watchlist', 'Lists']);
+    const views = page.getByRole('tablist', { name: 'Diary views' });
+    await expect(views.getByRole('tab')).toHaveText(['List', 'Feed', 'Stats']);
+    await expect(views.getByRole('tab', { name: 'List' })).toHaveAttribute('aria-selected', 'true');
+    // No count badges and no "N to rate" line (owner, 2026-07-17 / 2026-10-25).
     await expect(page.getByText(/^\d+ to rate$/)).toHaveCount(0);
+  });
+
+  test('Feed and Stats open from the Diary switch and keep Diary selected', async ({ page }) => {
+    await goToMock(page);
+    const views = page.getByRole('tablist', { name: 'Diary views' });
+    await views.getByRole('tab', { name: 'Stats' }).click();
+    await expect(page.locator('#panel-stats')).toBeVisible();
+    await expect(page).toHaveURL(/tab=stats/);
+    await expect(page.getByRole('tab', { name: 'Diary' })).toHaveAttribute('aria-selected', 'true');
+    await views.getByRole('tab', { name: 'Feed' }).click();
+    await expect(page.locator('#panel-feed')).toBeVisible();
+    await expect(page).toHaveURL(/tab=feed/);
+    // Watchlist hides the Diary switch.
+    await page.getByRole('tab', { name: 'Watchlist' }).click();
+    await expect(page.getByRole('tablist', { name: 'Diary views' })).toHaveCount(0);
   });
 
   test('no console errors on page load', async ({ page }) => {
@@ -67,8 +84,10 @@ test.describe('My Shows — Page Structure', () => {
     page.on('response', response => {
       if (response.status() === 404) {
         const url = response.url();
-        // Ignore expected 404s: favicon, analytics, external services
-        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('supabase') && !url.includes('_vercel')) {
+        // Ignore expected 404s: favicon, analytics, external services.
+        // /ingest/* is the PostHog proxy, a vercel.json rewrite that doesn't
+        // exist under `next start` in test-ugc.yml, so it always 404s there.
+        if (!url.includes('favicon') && !url.includes('analytics') && !url.includes('/ingest/') && !url.includes('supabase') && !url.includes('_vercel')) {
           notFoundUrls.push(`404: ${url}`);
         }
       }
@@ -88,7 +107,7 @@ test.describe('My Shows — Accessibility', () => {
   test('tab bar uses proper ARIA roles', async ({ page }) => {
     await goToMock(page);
     // tablist container
-    await expect(page.getByRole('tablist')).toBeVisible();
+    await expect(page.getByRole('tablist', { name: 'My Shows sections' })).toBeVisible();
     // Diary tab with selected state
     const diaryTab = page.getByRole('tab', { name: 'Diary' });
     await expect(diaryTab).toBeVisible();
@@ -488,7 +507,7 @@ test.describe('My Shows — Mobile Layout (390px)', () => {
 
   test('tab bar does not overflow on mobile', async ({ page }) => {
     await goToMock(page);
-    const tablist = page.getByRole('tablist');
+    const tablist = page.getByRole('tablist', { name: 'My Shows sections' });
     const box = await tablist.boundingBox();
     expect(box).toBeTruthy();
     if (box) {
@@ -527,6 +546,7 @@ test.describe('My Shows — Desktop Layout (1440px)', () => {
 // real change inside [data-testid="my-shows-content"] moves these baselines.
 test.describe('My Shows — Visual Regression', () => {
   const content = (page: Page) => page.getByTestId('my-shows-content');
+  test.beforeEach(async ({ page }) => { await unstickSiteHeader(page); });
 
   test('diary list view at 390px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });

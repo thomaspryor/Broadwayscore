@@ -15,8 +15,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates, candidateParentId, candidateKey } = require('./lib/tour-roundup-candidate');
-const { routeAlert } = require('./lib/owner-alert-router');
+const { openTourCandidates, candidateParentId, candidateKey, resolveRetiredTourCandidates, tourCandidateTitle } = require('./lib/tour-roundup-candidate');
+const { routeAlert, resolveCondition, removeDigestLines } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `route-tour-candidates.js — route national-tour roundup candidates to the owner digest.
@@ -36,6 +36,7 @@ async function main() {
   const rows = JSON.parse(fs.readFileSync(FILE, 'utf8'));
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const shows = Array.isArray(raw) ? raw : raw.shows;
+  if (!dryRun) resolveRetiredTourCandidates(rows, shows, { resolveCondition, removeDigestLines });
   const open = openTourCandidates(rows, shows);
   // Each candidate is suggested ONCE (notifiedAt); the owner answers it or
   // ignores it, and a later landing run doesn't ask again. A failed send
@@ -57,7 +58,7 @@ async function main() {
     try {
       await routeAlert({
         conditionKey: `tour-candidate:${key}`,
-        title: `Tour candidate: ${c.title} national tour${c.ended ? ` (${c.segmentStart})` : ''}`,
+        title: tourCandidateTitle(c),
         severity: 'info',
         disposition: 'digest',
         decision: true,
@@ -87,7 +88,7 @@ async function main() {
   const keep = rows.filter(r => (!r.broadwayShowId && !r.key) || String(r.key || '').startsWith('roundup:') || open.includes(r));
   if (!dryRun && (sent > 0 || keep.length !== rows.length)) {
     fs.writeFileSync(FILE, JSON.stringify(keep, null, 2) + '\n');
-    if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) whose show now has a tour entry.`);
+    if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) with tracked or retired tours, or no longer eligible.`);
   }
   console.log(`${open.length} open tour candidate(s).`);
 }

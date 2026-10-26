@@ -27,12 +27,18 @@ const { withinOneEdit, QUERY_NOISE_WORDS } = require('./show-search-match');
 // (scripts/poll-trade-press-rss.js) reads. Only set on feeds whose host is also
 // in TRUSTED_RECOUPMENT_HOSTS — see scripts/lib/trusted-recoupment-domains.js —
 // since the apply-commercial-pending auto-apply gate cross-checks sourceHost.
-// Playbill RSS is defunct (no entry here); BroadwayWorld has no RSS feed
-// registered; Broadway News Reviews is a reviews-tag feed (no recoupment news).
+// Exception (BRO-6167): untrustedClaimsToReview: true feeds (Broadway Journal) sit in
+// BROADWAY_BUSINESS_FEEDS, never ALL_FEEDS; the poller routes their claims to a human
+// instead of pending (hostGate in commercial-feed-health.js).
+// Playbill's news feed (/rss/news) and Broadway News's main feed live in
+// BROADWAY_BUSINESS_FEEDS below (BRO-6211); the old playbill.com/feed URL is the dead one.
+// BroadwayWorld, TheaterMania and Forbes have no working feed (see
+// scripts/lib/commercial-source-coverage.js EXEMPT_HOSTS); Broadway News Reviews is a
+// reviews-tag feed (no recoupment news).
 const THEATER_FEEDS = [
   { url: 'https://variety.com/v/legit/feed/', outletId: 'variety', name: 'Variety Legit', openingWindow: true, market: 'broadway', trackRecoupment: true },
-  // Playbill RSS is defunct (404 as of March 2026) — kept for future reference
-  // { url: 'https://playbill.com/feed', outletId: 'playbill', name: 'Playbill' },
+  // playbill.com/feed is defunct (404 as of March 2026). The live news feed is in
+  // BROADWAY_BUSINESS_FEEDS (BRO-6211), recoupment poller only.
   { url: 'https://rss.nytimes.com/services/xml/rss/nyt/Theater.xml', outletId: 'nytimes', name: 'NYT Theater', openingWindow: true, market: 'broadway' },
   // Guardian Stage removed: covers all performing arts globally, too broad for date-window filtering.
   // Use Guardian Open Platform API in site-search-discovery.js instead.
@@ -90,20 +96,33 @@ const ENTERTAINMENT_FEEDS = [
   { url: 'https://www.rollingstone.com/tv-movies/feed/', outletId: 'rollingstone', name: 'Rolling Stone', needsFilter: true },
 ];
 
+// Broadway-business outlets that are NOT review outlets (BRO-6167). Only the
+// recoupment poller reads these; review discovery (checkRSSFeeds) iterates ALL_FEEDS.
+// Broadway Journal moved to Substack (posts at /p/<slug>); it quotes NY AG filings.
+// BRO-6211: Playbill (trusted host) and Broadway News (not trusted, claims go to a human).
+// Keep Broadway Journal first (tests read index 0). broadwaynews.com/feed/ 301s to /rss/.
+const BROADWAY_BUSINESS_FEEDS = [
+  { url: 'https://www.broadwayjournal.com/feed', outletId: 'broadway-journal', name: 'Broadway Journal', market: 'broadway', trackRecoupment: true, untrustedClaimsToReview: true },
+  { url: 'https://playbill.com/rss/news', outletId: 'playbill', name: 'Playbill News', market: 'broadway', trackRecoupment: true },
+  { url: 'https://www.broadwaynews.com/rss/', outletId: 'broadway-news', name: 'Broadway News', market: 'broadway', trackRecoupment: true, untrustedClaimsToReview: true },
+];
+
 const ALL_FEEDS = [...THEATER_FEEDS, ...WE_THEATER_FEEDS, ...SUBSTACK_CRITIC_FEEDS, ...ENTERTAINMENT_FEEDS];
 
 // Subset consumed by scripts/poll-trade-press-rss.js (hourly recoupment poll).
-const TRACK_RECOUPMENT_FEEDS = ALL_FEEDS.filter(f => f.trackRecoupment === true);
+const TRACK_RECOUPMENT_FEEDS = [...ALL_FEEDS, ...BROADWAY_BUSINESS_FEEDS].filter(f => f.trackRecoupment === true);
 
 /**
  * Fetch a URL and return the body text
  */
-function fetchUrl(url, timeoutMs = 10000) {
+function fetchUrl(url, timeoutMs = 10000, redirectsLeft = 5) {
   return new Promise((resolve, reject) => {
     const proto = url.startsWith('https') ? https : http;
     const req = proto.get(url, { headers: { 'User-Agent': 'BroadwayScorecard/1.0' } }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return fetchUrl(res.headers.location, timeoutMs).then(resolve).catch(reject);
+        // Location may be relative (broadwaynews.com/feed/ -> /rss/).
+        if (redirectsLeft <= 0) return reject(new Error(`Too many redirects for ${url}`));
+        return fetchUrl(new URL(res.headers.location, url).href, timeoutMs, redirectsLeft - 1).then(resolve).catch(reject);
       }
       if (res.statusCode !== 200) {
         return reject(new Error(`HTTP ${res.statusCode} for ${url}`));
@@ -130,7 +149,8 @@ function parseRSSItems(xml) {
     const itemXml = match[1];
     const title = (itemXml.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/) || [])[1] || '';
     const link = (itemXml.match(/<link[^>]*>([\s\S]*?)<\/link>/) || [])[1] || '';
-    const pubDate = (itemXml.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || [])[1] || '';
+    // Playbill's feed has no <pubDate>, only <dc:date> (BRO-6211).
+    const pubDate = (itemXml.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/) || itemXml.match(/<dc:date[^>]*>([\s\S]*?)<\/dc:date>/) || [])[1] || '';
     // <guid> may be a permalink or an opaque id; either works as a dedup key.
     // Falls back to link below.
     const guid = (itemXml.match(/<guid[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/guid>/) || [])[1] || '';
@@ -515,4 +535,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { checkRSSFeeds, ALL_FEEDS, BROADWAY_BUSINESS_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

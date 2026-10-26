@@ -237,6 +237,19 @@ test('an EARLIER dispatch row that correlates onto the same job claims it, suppr
   assert.equal(out[0].dispatch.ts, '2026-08-30T09:59:00Z');
 });
 
+test('BRO-2514: one spawn, two close dispatch rows, reconciled 3h+ later → ONE terminal outcome, no spurious orphan', () => {
+  const ledger = [
+    { ts: '2026-08-30T09:59:00Z', event: 'auto-dispatch', taskId: '7' },
+    { ts: '2026-08-30T10:00:00Z', event: 'auto-dispatch', taskId: '7' },
+  ];
+  const dispatched = [
+    { ts: '2026-08-30T10:00:01Z', event: E.SPAWNED, taskId: '7', jobId: 'j1' },
+    { ts: '2026-08-30T10:20:00Z', event: E.DONE, taskId: '7', jobId: 'j1' },
+  ];
+  const out = classify(ledger, dispatched, '2026-08-30T15:00:00Z');
+  assert.deepEqual(out.map(d => [d.kind, d.job && d.job.jobId]), [['terminal', 'j1']]);
+});
+
 // ── classifyDispatches: resolution is read from the pre-pass ledger only ────
 
 test('an already-resolved dispatch is skipped, but a LATER dispatch of the same card is not', () => {

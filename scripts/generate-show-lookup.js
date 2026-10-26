@@ -16,6 +16,7 @@ const path = require('path');
 // tests/unit/parse-runtime-parity.test.ts. See that file before editing either.
 const { parseRuntimeMinutes } = require('./lib/parse-runtime');
 const { isPublishedShowFile } = require('./lib/markets');
+const { versionedImagePath } = require('./lib/versioned-image-path');
 const { effectiveShowStatus } = require('./lib/effective-status');
 
 const dataDir = path.join(__dirname, '../data');
@@ -58,8 +59,8 @@ const lookup = relevantShows.map(show => {
   // start date + a tickets-on-sale bit for not-yet-open shows with links.
   if (show.previewsStartDate) entry.pd = show.previewsStartDate;
   if ((status === 'upcoming' || status === 'announced') && show.ticketLinks?.length) entry.tx = 1;
-  if (show.images?.poster) entry.p = show.images.poster;
-  else if (show.images?.thumbnail) entry.p = show.images.thumbnail;
+  if (show.images?.poster) entry.p = versionedImagePath(show.images.poster);
+  else if (show.images?.thumbnail) entry.p = versionedImagePath(show.images.thumbnail);
   // Calendar export (Phase 0): a diary card only ever had `venue`, so an .ics
   // built from this lookup had no street address to put in LOCATION and no
   // runtime to size the event. Both are emitted only when present — address

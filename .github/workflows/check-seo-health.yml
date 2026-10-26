@@ -18,7 +18,7 @@ jobs:
     # sample URLs) with some run-to-run variance — a little slack beyond the original
     # 25 covers that without over-provisioning for the push step (which is non-blocking
     # and uses the default retry budget; see "Push audit data" below, task #353).
-    timeout-minutes: 30
+    timeout-minutes: 45
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -42,13 +42,32 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/check-seo-health.js
 
+      # Thin-page noindex inputs (BRO-5992). Advisory: a failed pull keeps the last
+      # snapshot and the indexability loaders fail open once it is >35 days old.
+      - name: Refresh PostHog search landings
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        timeout-minutes: 5
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_PROJECT_ID: ${{ secrets.POSTHOG_PROJECT_ID }}
+        run: node scripts/seo-search-landings.js
+
+      - name: Refresh Search Console impressions
+        if: ${{ !cancelled() }}
+        continue-on-error: true
+        timeout-minutes: 8
+        env:
+          GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
+        run: node scripts/seo-gsc-impressions.js
+
       - name: Commit audit data
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           # Only add specific SEO audit files — never git add -A
-          bash scripts/lib/git-add-existing.sh --force data/audit/seo-health.json data/audit/seo-performance-history.json data/audit/indexing-api-usage.json
+          bash scripts/lib/git-add-existing.sh --force data/audit/seo-health.json data/audit/seo-performance-history.json data/audit/indexing-api-usage.json data/seo-gsc-impressions.json data/seo-search-landings.json
           if git diff --cached --quiet; then
             echo "No audit data changes to commit"
           else

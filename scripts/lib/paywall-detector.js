@@ -113,7 +113,34 @@ function extractDomain(urlOrDomain) {
   return urlOrDomain.replace(/^www\./, '');
 }
 
+/**
+ * A registration wall rendered INTO the extracted body (Telegraph sign-up form
+ * text after a byline and one standfirst paragraph). The start-of-text check
+ * misses it because the wall sits at the end of a ~1.5k-char stub, and the
+ * scorer then rates the stub (a Cinderella stub scored 86, BRO-6183).
+ */
+const REGISTRATION_WALL_TAIL = /A minimum of 8 characters\s+At least 1 letter\s+At least 1 number/i;
+function hasRegistrationWallTail(text) {
+  return typeof text === 'string' && REGISTRATION_WALL_TAIL.test(text);
+}
+
+/**
+ * A page that is a registration-wall STUB: the sign-up form text sits behind
+ * only a byline/standfirst/bio (under REGISTRATION_WALL_STUB_MAX_PRE chars of
+ * real text). The same form text trailing a full article (page footer) is not
+ * a stub: those carry the review ahead of it. BRO-6190: Telegraph stubs
+ * (avenue-q 82, cinderella 86) were classed complete/truncated and scored.
+ */
+const REGISTRATION_WALL_STUB_MAX_PRE = 2500;
+function isRegistrationWallStub(text) {
+  if (typeof text !== 'string') return false;
+  const m = REGISTRATION_WALL_TAIL.exec(text);
+  return !!m && m.index < REGISTRATION_WALL_STUB_MAX_PRE;
+}
+
 module.exports = {
+  hasRegistrationWallTail,
+  isRegistrationWallStub,
   detectHardPaywall,
   PAYWALL_START_MARKERS,
   OUTLET_HARD_MARKERS,

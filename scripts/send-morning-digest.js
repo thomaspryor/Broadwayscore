@@ -26,6 +26,9 @@
  *   node scripts/send-morning-digest.js --send-to-owner             send to OWNER_EMAIL from .env
  *   node scripts/send-morning-digest.js --dry-run                   write HTML preview, send nothing
  *
+ * Off the Mac (BRO-6230, .github/workflows/morning-digest-action.yml) add
+ * --no-autofix --skip-mac-local --resend-sent-guard; see USAGE below.
+ *
  * Scheduled by scripts/launchd/com.broadwayscore.morning-digest.plist
  * (07:30 ET). Delivery is watched by monitor-scheduled-email-count.js's
  * zero-send floor (CI, 15:00 UTC) — if this job silently dies, that check
@@ -155,7 +158,31 @@ const CYRUS_STATUS_PATH = path.join(
   process.env.CYRUS_HOME || path.join(os.homedir(), '.cyrus'),
   'webhook-drain-status.json'
 );
+// BRO-6110: the owner retired Cyrus. A retired Mac job stops writing its status file, which the
+// two readers below would report as "has not checked in" every morning, so they stay silent for
+// a label listed in config/mac-retired.json (the entry names these readers as its watchers).
+function macLabelRetired(label, file = path.join(REPO, 'config', 'mac-retired.json')) {
+  try {
+    const entries = JSON.parse(fs.readFileSync(file, 'utf8')).entries;
+    return Array.isArray(entries) && entries.some((e) => e && e.label === label);
+  } catch {
+    return false; // unreadable list: keep alerting rather than hide a real outage
+  }
+}
+
+// BRO-6216: sync-refusal snapshot tags (SYNC_TAG = the label's last segment) of retired jobs.
+// Only the owning job clears its snapshot, so a retired job's last one would show every morning.
+function retiredSyncTags(file = path.join(REPO, 'config', 'mac-retired.json')) {
+  try {
+    const entries = JSON.parse(fs.readFileSync(file, 'utf8')).entries;
+    return Array.isArray(entries) ? entries.filter((e) => e && typeof e.label === 'string').map((e) => e.label.split('.').pop()) : [];
+  } catch {
+    return [];
+  }
+}
+
 function localCyrusRelayMessage() {
+  if (macLabelRetired('com.broadwayscore.cyrus-webhook-drain')) return null;
   let status;
   try {
     status = JSON.parse(fs.readFileSync(CYRUS_STATUS_PATH, 'utf8'));
@@ -174,6 +201,7 @@ const LINEAR_DELEGATION_STATUS_PATH = path.join(
   'linear-delegation-status.json'
 );
 function localCodexConnectionLine() {
+  if (macLabelRetired('com.broadwayscore.linear-delegation-check')) return null;
   try {
     return codexLineFromStatus(JSON.parse(fs.readFileSync(LINEAR_DELEGATION_STATUS_PATH, 'utf8')));
   } catch {
@@ -181,6 +209,7 @@ function localCodexConnectionLine() {
   }
 }
 function localLinearDelegationMessage() {
+  if (macLabelRetired('com.broadwayscore.linear-delegation-check')) return null;
   let raw;
   try {
     raw = fs.readFileSync(LINEAR_DELEGATION_STATUS_PATH, 'utf8');
@@ -270,6 +299,7 @@ function localDispatchWatchdogLeakMessage() {
 }
 
 function localRunnerHealthMessage() {
+  if (macLabelRetired('com.broadwayscore.cyrus-runner')) return null;
   let state;
   try {
     state = JSON.parse(fs.readFileSync(RUNNER_STATUS_PATH, 'utf8'));
@@ -300,6 +330,37 @@ const DISPATCH_CONFIG_PATH = path.join(REPO, '.claude', 'autonomous-config.json'
 // expiry, which is a different lifecycle.
 const DISPATCH_LINK_EXPIRY_H = 44;
 
+// BRO-6230: what --skip-mac-local leaves out, plus the Mac heartbeat. Pure.
+const MAC_LOCAL_SECTIONS = 'dispatch watchdog, dispatch and canary ledgers, board targeting, auto-fix sessions, cmux tabs, shared-checkout depth';
+function macLocalSkippedLine(alive) {
+  const mac = alive.state === 'alive' ? `Mac: ${alive.reason}.`
+    : alive.state === 'dead' ? `Mac: ${alive.reason}. It is probably off or logged out, or its code sync is stuck.`
+      : `Mac: could not tell (${alive.reason}).`;
+  return { text: `Sent from GitHub, not the Mac. Not in this email (Mac-only): ${MAC_LOCAL_SECTIONS}. ${mac}`, alarm: alive.state !== 'alive' };
+}
+
+// BRO-6230: Resend-backed sent-today check. 'send' | 'already-sent' | 'cannot-tell'.
+// Fails closed: anything short of a complete read is 'cannot-tell', never 'send'.
+async function resendSentToday({ apiKey, recipient, now = new Date(), fetchEmails = null }) {
+  if (!apiKey || !recipient) return { verdict: 'cannot-tell', reason: 'RESEND_API_KEY and a recipient are both required' };
+  const { dayKeyET } = require('./lib/scheduled-email-count-rules');
+  const { decideMorningDigest } = require('./lib/morning-digest-liveness.js');
+  const dateET = dayKeyET(now.toISOString());
+  const sinceMs = new Date(`${dateET}T00:00:00Z`).getTime() - 24 * 3600 * 1000;
+  let emails = null;
+  let apiError = null;
+  try {
+    const fetcher = fetchEmails || require('./lib/resend-owner-emails.js').fetchOwnerEmailsSince;
+    emails = await fetcher({ apiKey, ownerEmail: recipient, sinceMs, strict: true });
+  } catch (err) {
+    apiError = String(err.message).slice(0, 160);
+  }
+  const d = decideMorningDigest({ emails, ownerEmail: recipient, dateET, apiError });
+  if (d.action === 'ok') return { verdict: 'already-sent', reason: d.reason };
+  if (d.action === 'page') return { verdict: 'send', reason: `no digest to the recipient yet on ${dateET} (ET)` };
+  return { verdict: 'cannot-tell', reason: d.reason };
+}
+
 const USAGE = `send-morning-digest.js — the owner's single scheduled morning email.
 
 Usage:
@@ -307,6 +368,13 @@ Usage:
   node scripts/send-morning-digest.js --send-to-owner       send to OWNER_EMAIL (from .env)
   node scripts/send-morning-digest.js --dry-run             write HTML preview, no send
   --force      bypass the send-once-per-ET-day guard (deliberate re-send only)
+  --no-autofix          skip auto-fix planning, dispatch and the canary (no dispatch fleet here)
+  --skip-mac-local      skip the readers of Mac-only state (cmux, dispatch ledgers, the shared
+                        checkout) and print one line naming them plus the Mac's heartbeat age
+                        (needs GH_TOKEN)
+  --resend-sent-guard   also refuse a send when Resend already shows today's digest to the
+                        recipient (needs a full-access RESEND_API_KEY; unreadable = refuse).
+                        With --dry-run it reports what the guard would do.
   --help, -h   show this message, do nothing else`;
 
 function parseArgs(argv) {
@@ -438,6 +506,18 @@ function mergeNeedsYouSections(cmux, linear) {
 // "⛔ site health: 69 known/managed, 14 new/regressing" suffix counted the
 // automation's own machinery (CI, dispatch, cmux ...) the owner can neither
 // see nor act on; those counts now live in the email's Technical details.
+// BRO-6235: one signed link to the private list page of every open decision
+// (answer buttons live there). Omitted without a signing secret.
+function decisionsListLinkHtml(needsYou, secret = process.env.APPROVAL_HMAC_SECRET) {
+  // A dry run writes a tracked preview file, so it must never embed a live token.
+  if (process.env.DIGEST_NO_LIST_TOKEN || !secret || !needsYou || !Array.isArray(needsYou.items) || !needsYou.items.length) return '';
+  try {
+    const { listUrl } = require('./lib/owner-decision-email.js');
+    const href = listUrl(secret).replace(/&/g, '&amp;').replace(/"/g, '&quot;');
+    return `<p style="margin:8px 0 14px;"><a href="${href}" style="font-weight:700;">See and answer every decision in one place</a></p>`;
+  } catch { return ''; }
+}
+
 const SUBJECT_NAME_MAX = 42;
 const SUBJECT_LIMIT = 120; // digest-content-invariants.js: subject must be < 120 chars
 function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, loopDead = false, now = new Date() } = {}) {
@@ -522,7 +602,7 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -590,6 +670,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     renderNeedsAttentionBlock(view.decisionQueued),
     // "Needs You" tab triage (card #870) — the owner's own pending decisions.
     sections.needsYou ? renderNamedDigestBlock('Decisions waiting on you', sections.needsYou, { actionCards: true }) : '',
+    decisionsListLinkHtml(sections.needsYou),
     // Waiting on your approval (BRO-282) — Linear issues carrying the
     // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
     // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
@@ -625,6 +706,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   }
   if (loopDeadMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
+  } else if (fixing && reportOnly) {
+    // BRO-6230: --no-autofix builds a report-only plan; nothing was queued, so say so.
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected. This digest only reports them; it did not start any automatic fix. Details below.</p>`);
   } else if (fixing) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${fixing} issue${fixing === 1 ? '' : 's'} detected — ${working ? `${working} being fixed by automated sessions right now, the rest queued` : 'all queued for automated fix sessions'}. Details below.</p>`);
   }
@@ -662,6 +746,11 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     if (boardGate.alert) {
       parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(boardGate.alert)}</p>`);
     }
+  }
+  // BRO-6230: --skip-mac-local names what this email leaves out, so nothing vanishes silently.
+  if (sections.macLocalSkipped) {
+    const ms = sections.macLocalSkipped;
+    parts.push(`<p style="font-size:12px;color:${ms.alarm ? '#b91c1c' : '#666'};margin:0 0 12px;">${ms.alarm ? '⚠️ ' : ''}${esc(ms.text)}</p>`);
   }
   // Dead cmux tab triage (BRO-3050): rendered only when main() collected it.
   // The line itself (incl. "no verdict" for degraded/unavailable runs) is
@@ -801,7 +890,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, reportOnly = false, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -835,7 +924,7 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, loopDeadMsg, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, loopDeadMsg, reportOnly, now });
   return { subject, html };
 }
 
@@ -846,6 +935,10 @@ async function main() {
 
   const args = parseArgs(process.argv.slice(2));
   const dryRun = !!args['dry-run'];
+  if (dryRun) process.env.DIGEST_NO_LIST_TOKEN = '1';
+  const noAutofix = !!args['no-autofix'];
+  const skipMacLocal = !!args['skip-mac-local'];
+  const resendSentGuard = !!args['resend-sent-guard'];
   let sendTo = args['send-to'] && args['send-to'] !== true ? String(args['send-to']) : null;
   if (!sendTo && args['send-to-owner']) {
     sendTo = process.env.OWNER_EMAIL || null;
@@ -884,7 +977,7 @@ async function main() {
   // read straight into sections.health.errors here, the one place every
   // downstream consumer (subject line, top verdict, autofix planning)
   // already reads from — instead of trusting the CI snapshot to ever carry it.
-  try {
+  if (!skipMacLocal) try {
     const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
     const ledgerPath = path.join(REPO, 'data', 'audit', 'digest-invariant-fail-ledger.jsonl');
     let entries = null;
@@ -916,7 +1009,7 @@ async function main() {
   // permanently-uninformative warn, so this local, live-data fold is what
   // keeps a REAL canary failure from going silent — same as task #1648 did
   // for the invariant-fail row just above.
-  try {
+  if (!skipMacLocal) try {
     const { assessCanaryRow } = require('./lib/autofix-canary.js');
     const dispatchLedger = require('./lib/dispatch-ledger.js');
     const canaryLedgerPath = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
@@ -945,7 +1038,7 @@ async function main() {
   // "(unmeasurable here)" warn and the real 'error' (dead-launch or headless
   // success rate past its floor) can never reach the owner. This sender runs
   // on the machine that writes the ledger, so evaluate it here.
-  try {
+  if (!skipMacLocal) try {
     const dispatchLedger = require('./lib/dispatch-ledger.js');
     const { computeDispatchHealthDigest, computeHeadlessDispatchDigest } = require('./lib/dispatch-health.js');
     const dispatchEntries = dispatchLedger.readEntries();
@@ -968,7 +1061,7 @@ async function main() {
   // did-it-land proof for ~3 weeks. health-check.js cannot measure it (GitHub Actions only, and CI checkouts
   // are shallow by design), so this sender, which runs on the Mac that owns ~/Broadwayscore, evaluates it.
   // A warn is pushed into health.errors so the verdict line NAMES it instead of counting it as a routine warn.
-  try {
+  if (!skipMacLocal) try {
     const { shallowDigestRow } = require('./lib/shared-checkout-shallow.js');
     const shallowRow = shallowDigestRow({ fromDir: REPO });
     if (shallowRow.status === 'warn') {
@@ -983,7 +1076,7 @@ async function main() {
   // BRO-3050: cmux-triage.js (is the work behind each dead cmux tab done?)
   // had no caller. Shell its real CLI; collectCmuxTriage never throws and
   // reports cmux-absent / degraded runs as "no verdict", never as zeros.
-  try {
+  if (!skipMacLocal) try {
     sections.cmuxTriage = collectCmuxTriage({ cwd: REPO });
     console.log(`[digest] ${renderCmuxTriageLine(sections.cmuxTriage).text}`);
   } catch (err) {
@@ -1019,7 +1112,7 @@ async function main() {
   // to `problems` — that banner is for a producer that's supposed to run
   // and didn't; this is its own named block instead, same as backlogDrain.
   try {
-    sections.syncRefused = readSyncRefused();
+    sections.syncRefused = readSyncRefused({ ignoreTags: retiredSyncTags().filter((t) => t !== DIGEST_SYNC_TAG) });
   } catch (err) {
     // Fail CLOSED (ship-check finding, BRO-3393). This catch used to leave
     // sections.syncRefused undefined, which autofixShouldDryRun reads as
@@ -1037,7 +1130,7 @@ async function main() {
   // decision (❓-prefixed by ~/.claude/hooks/lib/workspace-mark-done.js).
   // Computed live, not read from a snapshot file — no producer cron exists
   // or is needed; fail-soft like every other section here.
-  try {
+  if (!skipMacLocal) try {
     const { buildNeedsYouSnapshot } = require('./lib/needs-you-snapshot.js');
     const snap = buildNeedsYouSnapshot();
     if (snap && snap.items.length) sections.needsYou = snap;
@@ -1158,8 +1251,9 @@ async function main() {
   // Fail-soft like every other section — but note that "could not read the
   // ledger" comes back as status 'error' (blind), NOT as a pass. A check that
   // reports healthy because it cannot see its evidence is the exact failure
-  // this card is about.
-  try {
+  // this card is about. --skip-mac-local: the ledgers are Mac-only, so off the
+  // Mac this would always be 'blind' (BRO-6230); the footer line names it instead.
+  if (!skipMacLocal) try {
     const { readDispatchLedgers, fetchLiveBoardArmed } = require('./lib/board-targeting-sources.js');
     const { auditWriterBoards, auditLiveBoardCoverage, summarizeBoardTargeting } = require('./lib/board-targeting-audit.js');
     // `Date.now()` inline, NOT the `now` binding — that const is declared ~100
@@ -1343,7 +1437,21 @@ async function main() {
   // or stuck signals only this machine can see), never as a duplicate.
   // Fail-soft: any error here degrades to un-annotated rows, never blocks the send.
   let autofixRows = null;
-  try {
+  // --no-autofix (BRO-6230, the Action): plan only, no card filing or
+  // dispatch, and no Mac task dir. Rows with an open Linear card read
+  // 'tracked' so the email matches the Mac's "already has a fix ticket".
+  if (noAutofix) try {
+    const { planAutofix, markTrackedReportOnly, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
+    const openTitles = Array.isArray(openIssues) ? new Set(openIssues.map((i) => i && i.title).filter(Boolean)) : null;
+    const queued = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
+    autofixRows = markTrackedReportOnly(planAutofix({ health: sections.health, extraIssues: localRollupIssues({ health: sections.health, freshnessCount: sections.freshness?.count || 0, freshnessItems: sections.freshness?.items, stuckCount }), tasks: [], queued }), openTitles);
+    if (sections.health && Array.isArray(sections.health.queued)) sections.health.queued = keepDecisionQueued(sections.health.queued, autofixRows);
+    const tracked = autofixRows.filter((r) => r.state === 'tracked').length;
+    console.log(`[digest] --no-autofix: report only, nothing filed or dispatched; ${tracked} of ${autofixRows.length} row(s) already have an open card${openTitles ? '' : ' (Linear unreadable)'}`);
+  } catch (err) {
+    console.error(`[digest] WARN report-only autofix failed (email still sends): ${String(err.message).slice(0, 160)}`);
+  }
+  else try {
     const { planAutofix, runAutofix, keepDecisionQueued, localRollupIssues } = require('./lib/digest-autofix.js');
     let tasks = [];
     // loadTasks REQUIRES the shared task directory — a bare call silently
@@ -1427,7 +1535,7 @@ async function main() {
   // filing -> notion-tasks-sync -> bsc-next --headless -> verify gate ->
   // completion). Tomorrow's health-check reads the ledger this writes.
   // Fail-soft: never blocks the digest send.
-  try {
+  if (!noAutofix) try {
     const { runAutofixCanary } = require('./lib/autofix-canary.js');
     runAutofixCanary({ dryRun: autofixDryRun, log: (m) => console.log(m) });
   } catch (err) {
@@ -1462,7 +1570,12 @@ async function main() {
   } catch (err) {
     console.error(`[digest] WARN board numbers failed: ${String(err.message).slice(0, 120)}`);
   }
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, now });
+  if (skipMacLocal) {
+    const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
+    sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
+    console.log(`[digest] ${sections.macLocalSkipped.text}`);
+  }
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, reportOnly: noAutofix, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
@@ -1495,6 +1608,15 @@ async function main() {
     }
   } catch (err) {
     console.error(`[digest] WARN content invariant check failed to run: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // BRO-6230: the ~/.broadwayscore-state guard below lives on one machine. A
+  // second sender (the GitHub Action) cannot see it, so it asks Resend instead.
+  let resendGuard = null;
+  if (resendSentGuard) {
+    const recipient = sendTo || process.env.OWNER_EMAIL || null;
+    resendGuard = await resendSentToday({ apiKey: process.env.RESEND_API_KEY, recipient });
+    console.log(`[digest] Resend sent-today guard: ${resendGuard.verdict} — ${resendGuard.reason}`);
   }
 
   if (dryRun) {
@@ -1541,6 +1663,11 @@ async function main() {
     }
   }
 
+  if (resendGuard && !args.force && resendGuard.verdict !== 'send') {
+    console.error(`[digest] refusing to send: Resend guard says ${resendGuard.verdict} (${resendGuard.reason}).`);
+    process.exit(resendGuard.verdict === 'already-sent' ? 1 : 2);
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) { console.error('[digest] RESEND_API_KEY not set'); process.exit(1); }
   const res = await httpsJson('POST', 'https://api.resend.com/emails', { Authorization: `Bearer ${apiKey}` }, {
@@ -1571,4 +1698,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday };

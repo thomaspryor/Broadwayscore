@@ -677,11 +677,9 @@ async function main() {
   // BRO-4990 launch freeze: a closed 2020+ show with no commercial.json record
   // is backfill. Its research is held for human review (apply --show=SLUG),
   // whichever script found it, so the weekly bulk apply cannot publish it.
-  const backfillIds = new Set();
-  for (const s of filterUncoveredClosedShows(shows, commercial, new Date().toISOString().slice(0, 10))) {
-    if (s.id) backfillIds.add(s.id);
-    if (s.slug) backfillIds.add(s.slug);
-  }
+  // filterUncoveredClosedShows returns slugs (or ids), not show objects; reading
+  // s.id/s.slug off each string left this set empty, so nothing was held (BRO-6218).
+  const backfillIds = new Set(filterUncoveredClosedShows(shows, commercial, new Date().toISOString().slice(0, 10)));
   let sharedPendingAtStart = {};
   try { sharedPendingAtStart = JSON.parse(fs.readFileSync(PENDING_PATH, 'utf8')).shows || {}; } catch { /* none yet */ }
   if (SHOW_LIST) console.log(`  Shows: ${SHOW_LIST.join(', ')}`);

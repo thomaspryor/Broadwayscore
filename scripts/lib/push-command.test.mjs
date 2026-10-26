@@ -8,6 +8,17 @@ import { parsePushCommand, splitShellCommands, landPushTargets } from './push-co
 const G = 'git push origin HEAD:refs/heads/land/a';
 const pushed = (cmd) => parsePushCommand(cmd).map((p) => p.refspecs.map((r) => r.dst).join(','));
 
+test('redirection ampersands do not split a command into background elements', () => {
+  for (const redirect of ['2>&1', '1>&2', '<&0', '&>out', '&>>out']) {
+    const commands = splitShellCommands(`git push origin main ${redirect} | tail -3`);
+    assert.deepEqual(commands, [
+      { words: ['git', 'push', 'origin', 'main', redirect], sep: '|' },
+      { words: ['tail', '-3'], sep: '' },
+    ]);
+  }
+  assert.equal(splitShellCommands('git push origin main & tail -3')[0].sep, '&');
+});
+
 for (const cmd of [
   `bash <<EOF\n${G}\nEOF`,
   `bash <<'EOF'\n${G}\nEOF`,

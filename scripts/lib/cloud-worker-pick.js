@@ -10,7 +10,9 @@
  * headless blockers).
  *
  * NOT applied here: the Mac's dispatch-ledger guards (attempt memory, spend
- * breaker, per-card retry limits). The ledger lives on the Mac. What keeps a
+ * breaker, per-card retry limits). The ledger lives on the Mac. The cloud's own
+ * spend breaker (daily and per-card claim caps read from Linear, BRO-6229) is
+ * scripts/lib/cloud-worker-breaker.js, applied by the CLI. What keeps a
  * cloud worker from looping on one card is the routine prompt: the worker
  * claims the card first (linear-session.js claim), which moves it to a started
  * state, so the next firing's state filter skips it. A card that fails ends
@@ -220,6 +222,35 @@ function hasPersonParkHold(notes) {
     .some((m, i) => !(i === 0 && MACHINE_PARK_LINE_RE.test(m[1])) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
 }
 
+const FILER_RECOMMENT_SLACK_MS = 5000;
+// The comment a filer posts to refresh a card's notes starts with its own marker
+// ("Auto-filed by the morning digest ..." from digest-autofix's notes builder, or
+// the park-line forms). Anchored: a person quoting the phrase mid-comment is not the filer.
+const FILER_RECOMMENT_RE = /^\s*Auto-filed by (?:the morning digest|digest-autofix|owner-alert-router)\b/;
+
+/**
+ * BRO-6234: when the issue was last touched by a person or a real event. A
+ * filer's daily re-comment (digest-autofix refreshing its notes) bumps
+ * updatedAt and reset the 3-day quiet timer, so 31 machine-filed cards never
+ * aged out. Only trailing filer re-comments whose time matches updatedAt are
+ * skipped (a description edit or state move after them keeps updatedAt); dispatch
+ * and claim receipts still count as activity. Without comments: updatedAt.
+ */
+function effectiveTouchMs(issue) {
+  const updatedMs = Date.parse(issue && issue.updatedAt);
+  const nodes = (issue && issue.comments && Array.isArray(issue.comments.nodes)) ? issue.comments.nodes : [];
+  if (!Number.isFinite(updatedMs) || !nodes.length) return updatedMs;
+  const dated = nodes.filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+    .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
+  let end = dated.length;
+  while (end > 0 && FILER_RECOMMENT_RE.test(String(dated[end - 1].body || ''))) end--;
+  if (end === dated.length) return updatedMs;
+  const lastFilerMs = Date.parse(dated[dated.length - 1].createdAt);
+  if (Math.abs(updatedMs - lastFilerMs) > FILER_RECOMMENT_SLACK_MS) return updatedMs;
+  const before = end > 0 ? Date.parse(dated[end - 1].createdAt) : Date.parse(issue.createdAt);
+  return Number.isFinite(before) ? Math.min(before, updatedMs) : updatedMs;
+}
+
 /** A machine-filed parked card (any triaged priority) nobody has touched for AUTOMATION_PARK_STALE_MS. */
 function isStaleAutomationParked(issue, nowMs) {
   const hd = require('./headless-dispatchability.js');
@@ -232,8 +263,8 @@ function isStaleAutomationParked(issue, nowMs) {
   // isAutomationParked reads only the leading machine line; a hold a person
   // added on a later PARKED line still keeps the card parked.
   if (hasPersonParkHold(notes)) return false;
-  const updatedMs = Date.parse(issue.updatedAt);
-  return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
+  const touchMs = effectiveTouchMs(issue);
+  return Number.isFinite(touchMs) && nowMs - touchMs >= AUTOMATION_PARK_STALE_MS;
 }
 
 /** True when the description or a comment carries the VERIFY: owner-judgment marker. */
@@ -263,7 +294,8 @@ function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(cmd).trim())) {
     return 'verify-not-cloud-runnable';
   }
-  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' }, { verifyCmd: cmd });
+  const { sortedCommentBodies } = require('./linear-dispatch.js');
+  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '', comments: sortedCommentBodies(issue) }, { verifyCmd: cmd });
   const blocking = blockers.filter((b) => !(allowParkedSentinel && b.code === hd.BLOCKERS.PARKED_SENTINEL));
   return blocking.length ? `blocker-${blocking[0].code}` : null;
 }
@@ -321,7 +353,7 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   if (type !== 'unstarted' && !parkedDrainable && !isPausedBacklog(issue)) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
   if (unfit) return unfit;
-  const updatedMs = Date.parse(issue.updatedAt);
+  const updatedMs = effectiveTouchMs(issue);
   if (!Number.isFinite(updatedMs)) return 'no-updatedAt';
   // For the Codex runner only (codex: true): a fix round it carried to its next run (BRO-5384) is
   // its own hand-back note, not someone working the card. The Claude lane keeps the 6 h wait, so
@@ -744,7 +776,7 @@ module.exports = {
   leaveCodexCards,
   isMachineComment,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
-  AUTOMATION_PARK_STALE_MS, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,
   findResumeCandidates, findResumeCard, headlessUnfitReason, AWAITING_OWNER_RE, FALLBACK_PARK_DENY_RE,
 };

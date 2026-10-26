@@ -29,7 +29,7 @@ const { planStatusAction } = require('./plan-status');
 const { resolveReviewTextsDir, isReviewTextsCheckout } = require('./review-texts-dir');
 const { runScriptArgs } = require('./run-script-args');
 const { applyDataEdit, dataEditAllowProblem } = require('./data-edit-action');
-const { applyAddCommercialEntry } = require('./commercial-entry-action');
+const { applyAddCommercialEntry, ALLOWED_ENTRY_FIELDS } = require('./commercial-entry-action');
 const { touchedRecordProblems } = require('./commercial-record-checks');
 const htmlHandoff = require('./html-handoff');
 const { handoffPlanProblems } = require('./pending-fix-plan-checks');
@@ -173,6 +173,9 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
           touchedCommercial.add(a.slug);
           if (res.ok) { ok++; continue; }
           const label = `${id} add-commercial-entry ${a.slug}: ${res.reason}`;
+          // The field allowlist needs no core data, so an unreplayed add-show must not hide it (BRO-6182: humanReviewedDesignation got through as a WARN and CI refused the entry).
+          const badField = Object.keys(a.entry || {}).find((k) => !ALLOWED_ENTRY_FIELDS.has(k));
+          if (badField) { failed++; log(`  FAIL ${id} add-commercial-entry ${a.slug}: field "${badField}" not allowed`); continue; }
           if (stale.has('commercial.json') || stale.has('shows.json')) log(`  WARN ${label} (an earlier unreplayed action changes the core data; re-check after it applies)`);
           else { failed++; log(`  FAIL ${label}`); }
           continue;

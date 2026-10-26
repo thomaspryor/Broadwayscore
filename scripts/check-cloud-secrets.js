@@ -50,8 +50,8 @@ const TIER_1 = [
   'GH_TOKEN',
   'BRIGHTDATA_TOKEN',
   'BRIGHTDATA_ZONE',
-  'BRIGHTDATA_CUSTOMER',
   'SCRAPINGBEE_API_KEY',
+  'SCRAPINGDOG_API_KEY',
   'BROWSERBASE_API_KEY',
   'BROWSERBASE_PROJECT_ID',
   'OPENAI_API_KEY',
@@ -59,22 +59,15 @@ const TIER_1 = [
   'RESEND_API_KEY',
 ];
 
-// Keys cloud sessions are deliberately NOT given: they bill per call or can
-// reach real people (Resend), so the owner keeps them out of the sandbox
-// (BRO-4622, BRO-5008, .claude/CLOUD.md). A session that needs one runs the
-// script through scripts/cloud-run-script.js instead. In cloud (and only
-// there) the check treats these as expected-absent, not as a failure, so a
-// red "8 missing" every session does not bury a real gap such as LINEAR_API_KEY.
-// Still Tier 1 everywhere else: a Mac or CI run that lacks them still fails.
+// Keys cloud sessions are deliberately NOT given. Only ANTHROPIC_API_KEY now:
+// Claude API work runs through GitHub Actions / scripts/cloud-run-script.js.
+// The scraper and Resend keys were withheld until the owner added them to the
+// Default environment (BRO-6112). In cloud (and only there) the check treats
+// these as expected-absent, not as a failure. Still Tier 1 everywhere else.
+// BRIGHTDATA_CUSTOMER is not required: its readers (evaluate-brightdata-serp.js,
+// lib/url-discovery.js) fall back to a hardcoded default.
 const CLOUD_WITHHELD = [
   'ANTHROPIC_API_KEY',
-  'BRIGHTDATA_TOKEN',
-  'BRIGHTDATA_ZONE',
-  'BRIGHTDATA_CUSTOMER',
-  'SCRAPINGBEE_API_KEY',
-  'BROWSERBASE_API_KEY',
-  'BROWSERBASE_PROJECT_ID',
-  'RESEND_API_KEY',
 ];
 
 // Tier 2: useful when doing specific work. Reported but doesn't fail the check.
@@ -83,8 +76,21 @@ const TIER_2 = [
   'RESEND_BROADWAY_AUDIENCE_ID',
   'RESEND_WE_AUDIENCE_ID',
   'RESEND_FANTASY_AUDIENCE_ID',
+  // APPROVAL_HMAC_SECRET stays OUT of cloud on purpose: a session holding it
+  // could sign its own owner approvals. Listed so a stray copy is visible.
   'APPROVAL_HMAC_SECRET',
+  'IMPACT_ACCOUNT_SID',
   'IMPACT_AUTH_TOKEN',
+  'BING_WEBMASTER_API_KEY',
+  'FORMSPREE_TOKEN',
+  'FORMSPREE_SUBSCRIBER_API_KEY',
+  'FORMSPREE_SUBSCRIBER_FORM_ID',
+  'FORMSPREE_WESTEND_SUBSCRIBER_API_KEY',
+  'FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID',
+  'FORMSPREE_FOLLOW_API_KEY',
+  'FORMSPREE_FOLLOW_FORM_ID',
+  'PAGESPEED_API_KEY',
+  'GA4_PROPERTY_ID',
   'MEZZANINE_SESSION_TOKEN',
   'POSTHOG_PERSONAL_API_KEY',
   'POSTHOG_PROJECT_ID',
@@ -112,7 +118,7 @@ const TIER_2 = [
 ];
 
 // Shortest value we will show a 3-char prefix for. A 40-char token loses
-// nothing to 3 characters; BRIGHTDATA_ZONE / BRIGHTDATA_CUSTOMER are short
+// nothing to 3 characters; BRIGHTDATA_ZONE is short
 // enough that a prefix is a meaningful fraction of the secret, and this script
 // now reads values off disk that it previously never touched, so the exposure
 // is wider than it was. Below the floor we print the length only.

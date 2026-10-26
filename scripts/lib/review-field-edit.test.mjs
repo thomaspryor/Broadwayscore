@@ -799,3 +799,37 @@ test('scoreProvenance: an access-failure incompleteReason (paywall, scraper_time
     assert.equal(res.ok, true, incompleteReason);
   }
 });
+
+test('outletId relabels an AP wire page to ap through the real writer (BRO-5289)', async (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ap-relabel-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  fs.mkdirSync(path.join(root, 'show'));
+  const file = 'show/wsj--mark-kennedy.json';
+  const url = 'https://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html';
+  fs.writeFileSync(path.join(root, file), JSON.stringify({ showId: 'show', outletId: 'wsj', outlet: 'The Wall Street Journal', criticName: 'Mark Kennedy', url, fullText: 'NEW YORK — a review.' }));
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const res = executeReviewFieldEditIn(root, { file, field: 'outletId', oldValue: 'wsj', newValue: 'ap' }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(after.outletId, 'ap');
+  assert.equal(after.outlet, 'Associated Press');
+  assert.equal(after.outletIdCorrectedFrom, 'wsj');
+  assert.equal(after.url, url);
+});
+
+test('outletId relabel is refused for any other outlet, a non-AP url, or a stale oldValue', () => {
+  const wire = { outletId: 'wsj', url: 'https://online.wsj.com/article/AP216f8806ddad4b8b9837a6702e4b81cb.html' };
+  const act = { field: 'outletId', oldValue: 'wsj', newValue: 'ap' };
+  assert.equal(applyReviewFieldEdit(wire, act, stamp).ok, true);
+  assert.equal(applyReviewFieldEdit(wire, { ...act, newValue: 'nytimes' }, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ outletId: 'wsj', url: 'https://www.wsj.com/articles/hamilton-review-1438821601' }, act, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ ...wire, outletId: 'nypost' }, act, stamp).ok, false);
+  assert.equal(applyReviewFieldEdit({ ...wire, _locked: true }, act, stamp).ok, false);
+});
+
+test('outletId relabel tests the url path, not a query string (BRO-5289)', () => {
+  const rec = { outletId: 'nytimes', url: 'https://www.nytimes.com/2013/x.html?ref=/article/AP216f8806ddad4b8b9837a6702e4b81cb' };
+  assert.equal(applyReviewFieldEdit(rec, { field: 'outletId', oldValue: 'nytimes', newValue: 'ap' }, stamp).ok, false);
+});

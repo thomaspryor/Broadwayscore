@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback, useMemo } from 'react';
 import { useFormspreeCapture } from '@/hooks/useFormspreeCapture';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
 import { emailCaptureConfig } from '@/config/email-capture';
+import { isMoneyGateInView } from '@/lib/money-gate';
 import { SHOW_EMAIL_COPY } from '@/config/email-list-copy';
 
 const DISMISSED_PREFIX = 'bsc_show_follow_dismissed_';
@@ -18,6 +19,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
   const bannerEnabled = emailCaptureConfig.showFollowBanner.enabled;
 
   const [visible, setVisible] = useState(false);
+  const [moneyGateInView, setMoneyGateInView] = useState(false);
   const [dismissed, setDismissed] = useState(true);
   const [alreadyFollowing, setAlreadyFollowing] = useState(false);
   const [email, setEmail] = useState('');
@@ -55,7 +57,11 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (scrollHeight > 0) {
         const pct = window.scrollY / scrollHeight;
-        if (pct >= emailCaptureConfig.showFollowBanner.scrollThreshold) {
+        // Held, and hidden if already up, while the Money Scorecard's own
+        // sign-up is on screen (BRO-6210).
+        const gateInView = isMoneyGateInView();
+        setMoneyGateInView(gateInView);
+        if (pct >= emailCaptureConfig.showFollowBanner.scrollThreshold && !gateInView) {
           setVisible(true);
         }
       }
@@ -94,7 +100,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
   // Show "Following" pill if already following this show
   if (alreadyFollowing) return null;
 
-  if (dismissed || isSubscribed || !visible) return null;
+  if (dismissed || isSubscribed || !visible || moneyGateInView) return null;
 
   // Success state
   if (status === 'success' || status === 'already_subscribed') {

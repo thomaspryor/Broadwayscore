@@ -1,0 +1,106 @@
+{
+  "issueNumber": "bro-6218-returns",
+  "planId": "5ab340a5-43a1-441e-a0dd-42d639d8d21d",
+  "status": "applied",
+  "createdAt": "2026-10-25T20:36:30.507Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Closed return engagements get our estimate label (BRO-6158 no-TBD rule): live model figure for each engagement, GFTNC -4.8% and Slave Play -68.9% Flop, Waitress 35.9% Fizzle",
+    "steps": [
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit",
+      "data-edit"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "girl-from-the-north-country-2022",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "girl-from-the-north-country-2022",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "slave-play-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "slave-play-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Flop"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2021",
+        "field": "designationBasis",
+        "oldValue": null,
+        "newValue": "model-estimate"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "waitress-2021",
+        "field": "designation",
+        "oldValue": "TBD",
+        "newValue": "Fizzle"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T20:44:50.196Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for girl-from-the-north-country-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for slave-play-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designationBasis updated for waitress-2021"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for waitress-2021"
+    }
+  ],
+  "executedIn": "ci"
+}

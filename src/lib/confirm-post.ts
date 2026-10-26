@@ -5,13 +5,20 @@
 // always posts from the same origin.
 export const CONFIRM_FIELD_HTML = '<input type="hidden" name="confirm" value="1">';
 
-export async function isConfirmedPost(req: Request): Promise<boolean> {
+// A request body can be read once. Routes that need other form fields (the
+// owner-decision free-text answer, BRO-6147) take the parsed form from here
+// instead of calling isConfirmedPost and then formData() again.
+export async function readConfirmedForm(req: Request): Promise<FormData | null> {
   const site = req.headers.get('sec-fetch-site');
-  if (site && site !== 'same-origin') return false;
+  if (site && site !== 'same-origin') return null;
   try {
     const form = await req.formData();
-    return form.get('confirm') === '1';
+    return form.get('confirm') === '1' ? form : null;
   } catch {
-    return false;
+    return null;
   }
+}
+
+export async function isConfirmedPost(req: Request): Promise<boolean> {
+  return (await readConfirmedForm(req)) !== null;
 }

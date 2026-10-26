@@ -6,6 +6,20 @@
  *
  * Titles mirror the page's own TITLE so a shared link and the page agree.
  */
+const { getSeasonForDate } = require('./broadway-seasons');
+
+// Shared by the renderer and coverage audit. Include every commercial entry,
+// a superset of the tracked records listed by getSeasonsWithCommercialData().
+function seasonsWithData(rawShows, commercial) {
+  const shows = Array.isArray(rawShows) ? rawShows : rawShows.shows;
+  const seasons = new Set();
+  for (const show of shows) {
+    if (!show.openingDate || !commercial.shows[show.slug]) continue;
+    seasons.add(getSeasonForDate(show.openingDate));
+  }
+  return [...seasons].sort();
+}
+
 const TOPIC_CARDS = [
   { slug: 'musicals-since-reopening', title: 'Broadway Musicals Since the Reopening', sub: 'Which recouped, which finished in the red, and which are still running.' },
   { slug: 'reviews-and-money', title: 'What Predicts the Money?', sub: 'Critic scores, audience scores and Tony results against recoupment.' },
@@ -43,4 +57,4 @@ function seasonCard(season) {
   };
 }
 
-module.exports = { TOPIC_CARDS, HOME_CARD, SEASON_FALLBACK_CARD, seasonCard, seasonLabel };
+module.exports = { TOPIC_CARDS, HOME_CARD, SEASON_FALLBACK_CARD, seasonCard, seasonLabel, seasonsWithData };

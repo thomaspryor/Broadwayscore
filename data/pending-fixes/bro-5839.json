@@ -10,7 +10,7 @@
   "plan": {
     "summary": "BRO-5839: create the 2008 National Theatre August: Osage County page and rehome its five reviews.",
     "steps": [
-      "Add the separate Lyttelton show, confirmed by the National Theatre catalogue and Playbill.",
+      "Add the separate Lyttelton show, confirmed by the National Theatre catalogue and Playbill. Use the required West End ID suffix before this new page is published.",
       "For each named review, clear the verdict about its old folder, then immediately move it through the review-file writer. Do not rebuild between these actions.",
       "Rebuild reviews only after every action succeeds, then verify review recovery on the new show."
     ],
@@ -23,9 +23,9 @@
           "august-osage-county-west-end-2026"
         ],
         "show": {
-          "id": "august-osage-county-national-theatre-2008",
+          "id": "august-osage-county-national-theatre-west-end-2008",
           "title": "August: Osage County",
-          "slug": "august-osage-county-national-theatre-2008",
+          "slug": "august-osage-county-national-theatre-west-end-2008",
           "venue": "Lyttelton Theatre",
           "status": "closed",
           "type": "play",
@@ -76,7 +76,7 @@
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/financialtimes--sarah-hemming.json",
-        "destPath": "august-osage-county-national-theatre-2008/financialtimes--sarah-hemming.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/financialtimes--sarah-hemming.json",
         "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
       },
       {
@@ -99,7 +99,7 @@
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/independent--michaelcoveney.json",
-        "destPath": "august-osage-county-national-theatre-2008/independent--michaelcoveney.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/independent--michaelcoveney.json",
         "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
       },
       {
@@ -122,7 +122,7 @@
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/express-uk--markshenton.json",
-        "destPath": "august-osage-county-national-theatre-2008/express-uk--markshenton.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/express-uk--markshenton.json",
         "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
       },
       {
@@ -145,7 +145,7 @@
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/sunday-telegraph--timauld.json",
-        "destPath": "august-osage-county-national-theatre-2008/sunday-telegraph--timauld.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/sunday-telegraph--timauld.json",
         "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
       },
       {
@@ -168,7 +168,7 @@
         "type": "review-file-op",
         "operation": "move",
         "sourcePath": "august-osage-county-2007/observer--susannah-clapp.json",
-        "destPath": "august-osage-county-national-theatre-2008/observer--susannah-clapp.json",
+        "destPath": "august-osage-county-national-theatre-west-end-2008/observer--susannah-clapp.json",
         "description": "Rehome the 2008 National Theatre review, preserve its text and score, and restamp showId through moveReviewFile."
       }
     ]

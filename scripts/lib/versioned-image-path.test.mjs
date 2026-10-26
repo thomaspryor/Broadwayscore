@@ -42,7 +42,8 @@ test('every mobile feed generator versions the paths it emits (BRO-5734)', () =>
   for (const [file, needle] of [
     ['generate-mobile-data.js', /img\.th = versionedImagePath\(/],
     ['generate-mobile-data.js', /img\.po = versionedImagePath\(/],
-    ['generate-stats-canon.js', /entry\.img = versionedImagePath\(show\.images\.poster\)/],
+    // BRO-6170: pickWinnerImage versions whichever existing file it picks.
+    ['generate-stats-canon.js', /return versionedImagePath\(p, publicDir\)/],
   ]) {
     assert.match(fs.readFileSync(path.join(root, file), 'utf8'), needle, `${file} no longer versions its image paths`);
   }
@@ -51,4 +52,16 @@ test('every mobile feed generator versions the paths it emits (BRO-5734)', () =>
 test('cloud stub strips the ?v= suffix back to plain file paths (BRO-5734)', () => {
   const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
   assert.match(fs.readFileSync(path.join(root, 'cloud-stub-data.js'), 'utf8'), /s\.img\.th\.split\('\?'\)\[0\]/);
+});
+
+// BRO-5736: every generator that emits an /images/ path to a feed must version it,
+// and the mobile detail hash must cover the hero bytes (else a replaced hero keeps a stale ?v=).
+test('feed generators version their image paths', () => {
+  const read = (f) => fs.readFileSync(new URL(`../${f}`, import.meta.url), 'utf8');
+  assert.match(read('generate-search-shows.js'), /thumbnail: versionedImagePath\(show\.images\.thumbnail\)/);
+  assert.match(read('generate-show-lookup.js'), /entry\.p = versionedImagePath\(show\.images\.poster\)/);
+  assert.match(read('generate-show-lookup.js'), /entry\.p = versionedImagePath\(show\.images\.thumbnail\)/);
+  const details = read('generate-mobile-show-details.js');
+  assert.match(details, /detail\.hi = versionedImagePath\(heroPath\)/);
+  assert.match(details, /hash\.update\(`hero=\$\{path\.basename\(hf\)\}`\)/);
 });

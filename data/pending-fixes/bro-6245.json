@@ -1,0 +1,172 @@
+{
+  "issueNumber": "bro-6245",
+  "planId": "14124cb9-ca2d-4ed2-be4b-e62e9a85056f",
+  "status": "validation-failed",
+  "createdAt": "2026-10-25T21:37:11.551Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Closed model-estimate labels re-sized from updated estimate inputs; basis stays model-estimate. Locked so the daily model resize keeps them.",
+    "steps": [
+      "commercial.json: a-dolls-house-2023.designation",
+      "commercial.json: a-dolls-house-2023.humanReviewedDesignation",
+      "commercial.json: peter-pan-goes-wrong-2023.designation",
+      "commercial.json: peter-pan-goes-wrong-2023.humanReviewedDesignation",
+      "commercial.json: the-sign-in-sidney-brusteins-window-2023.designation",
+      "commercial.json: the-sign-in-sidney-brusteins-window-2023.humanReviewedDesignation",
+      "commercial.json: fat-ham-2023.designation",
+      "commercial.json: fat-ham-2023.humanReviewedDesignation",
+      "commercial.json: a-strange-loop-2022.designation",
+      "commercial.json: a-strange-loop-2022.humanReviewedDesignation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Trickle",
+        "description": "commercial.json: a-dolls-house-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-dolls-house-2023",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: a-dolls-house-2023.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: peter-pan-goes-wrong-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "peter-pan-goes-wrong-2023",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: peter-pan-goes-wrong-2023.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: the-sign-in-sidney-brusteins-window-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-sign-in-sidney-brusteins-window-2023",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: the-sign-in-sidney-brusteins-window-2023.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "designation",
+        "oldValue": "Flop",
+        "newValue": "Fizzle",
+        "description": "commercial.json: fat-ham-2023.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "fat-ham-2023",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: fat-ham-2023.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "designation",
+        "oldValue": "Fizzle",
+        "newValue": "Flop",
+        "description": "commercial.json: a-strange-loop-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "a-strange-loop-2022",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: a-strange-loop-2022.humanReviewedDesignation"
+      }
+    ]
+  },
+  "executedAt": "2026-10-25T22:53:39.051Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for a-dolls-house-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for peter-pan-goes-wrong-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-sign-in-sidney-brusteins-window-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for fat-ham-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for a-strange-loop-2022"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for a-strange-loop-2022"
+    }
+  ],
+  "executedIn": "ci"
+}

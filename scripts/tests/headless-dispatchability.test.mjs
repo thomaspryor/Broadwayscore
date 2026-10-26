@@ -27,7 +27,7 @@ const {
 
 const codes = (r) => r.blockers.map(b => b.code);
 
-describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => {
+describe('(a) BRO-6241: UI cards are dispatchable now (the worker asks the owner through the decision list)', () => {
   test('explicit .tsx path in the notes blocks on the visual-qa gate', () => {
     const r = classifyHeadlessDispatchability({
       subject: 'Sort labels: add click affordance',
@@ -37,9 +37,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
         '`node --test tests/unit/audience-label-affordance.test.mjs`',
       ].join('\n'),
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE), `expected VISUAL_QA_GATE, got ${codes(r).join(',')}`);
-    assert.match(r.reason, /ToggleBar\.tsx/);
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE), `UI cards no longer block, got ${codes(r).join(',')}`);
   });
 
   test('a glob written as src/**/*.{tsx,jsx,css} blocks too', () => {
@@ -47,8 +45,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: 'Homepage polish',
       notes: 'Any UI change under src/**/*.{tsx,jsx,css} needs the gate.\n`node --test tests/unit/x.test.mjs`',
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
   test('task #30 — the real rage-click card the drain should never have picked', () => {
@@ -58,8 +55,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: "Rage clicks on 'AUDIENCE ↑' homepage label (new variant)",
       notes: 'PostHog recorded repeated clicks on the AUDIENCE sort label.\n## Acceptance criteria\n`node --test tests/unit/audience-label-affordance.test.mjs`',
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
   test('task #63 — the rage-click phrase is not always the title prefix', () => {
@@ -68,8 +64,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: 'Homepage rage clicks persist beyond known labeled issues',
       notes: '## Acceptance criteria\n`node --test tests/unit/x.test.mjs`',
     });
-    assert.strictEqual(r.dispatchable, false);
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 
   test('the card-class match is SUBJECT-scoped — a backend card citing a rage-click card stays dispatchable', () => {
@@ -85,7 +80,7 @@ describe('(a) a card touching src/**/*.tsx is NOT headless-dispatchable', () => 
       subject: "UX audit: Dead end on 'desktop__lists_tab'. No obvious next action.",
       notes: '`node --test tests/unit/x.test.mjs`',
     });
-    assert.ok(codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
+    assert.ok(!codes(r).includes(BLOCKERS.VISUAL_QA_GATE));
   });
 });
 
@@ -162,6 +157,59 @@ describe('the other two gates that stranded real sessions', () => {
       notes: 'DECISION NEEDED: pick Option A or B.\n`node --test scripts/tests/tm-gap-links.test.mjs`',
     });
     assert.ok(codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+  });
+});
+
+describe('BRO-6234 owner gate: comment overrides and quoted phrase', () => {
+  const cmd = '`node --test scripts/tests/tm-gap-links.test.mjs`';
+  const base = { subject: 'Fix thing', notes: `DECISION NEEDED: pick A or B.\n${cmd}` };
+  const { commentClearsOwnerGate } = require(path.join(REPO, 'scripts', 'lib', 'headless-dispatchability.js'));
+
+  test('a quoted or inline DECISION NEEDED is not a gate', () => {
+    for (const notes of [
+      `Do not file a DECISION NEEDED block for this.\n${cmd}`,
+      `> DECISION NEEDED: quoted from another card\n${cmd}`,
+      `The \`DECISION NEEDED\` phrase is parsed by the gate.\n${cmd}`,
+    ]) {
+      assert.ok(!codes(classifyHeadlessDispatchability({ subject: 'x', notes })).includes(BLOCKERS.OWNER_DECISION_GATE), notes);
+    }
+  });
+
+  test('a bold or bulleted line-start block still gates', () => {
+    for (const notes of [`**DECISION NEEDED:** pick\n${cmd}`, `- DECISION NEEDED: pick\n${cmd}`]) {
+      assert.ok(codes(classifyHeadlessDispatchability({ subject: 'x', notes })).includes(BLOCKERS.OWNER_DECISION_GATE), notes);
+    }
+  });
+
+  test('a later "not an owner decision" line clears the gate (comments oldest-first)', () => {
+    const r = classifyHeadlessDispatchability({ ...base, comments: ['triage note', 'Not an owner decision: pick A, it matches the spec.'] });
+    assert.ok(!codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+  });
+
+  test('the phrase mid-sentence in a paused report does not clear it', () => {
+    const r = classifyHeadlessDispatchability({ ...base, comments: ['This is not an owner decision, it is blocked on BRO-1.'] });
+    assert.ok(codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+  });
+
+  test('a newer DECISION NEEDED comment re-gates after a clear', () => {
+    const r = classifyHeadlessDispatchability({ ...base, comments: ['OWNER-CLEARED: go', 'DECISION NEEDED: actually pick A or B'] });
+    assert.ok(codes(r).includes(BLOCKERS.OWNER_DECISION_GATE));
+    assert.strictEqual(commentClearsOwnerGate(['DECISION NEEDED: x', 'OWNER-CLEARED: go']), true);
+    assert.strictEqual(commentClearsOwnerGate([]), false);
+  });
+
+  test('a clear and a block in one comment stays gated; any newer owner phrase re-gates; a quoted clear does not clear', () => {
+    assert.strictEqual(commentClearsOwnerGate(['Not an owner decision yet.\n\nDECISION NEEDED: pick A or B']), false);
+    assert.strictEqual(commentClearsOwnerGate(['OWNER-CLEARED: go', 'needs owner approval after all']), false);
+    assert.strictEqual(commentClearsOwnerGate(['> Not an owner decision, said the bot']), false);
+    assert.strictEqual(commentClearsOwnerGate(['OWNER-CLEARED: go']), true);
+  });
+
+  test('a safe VERIFY comment supersedes VERIFY: owner-judgment but never a DECISION NEEDED', () => {
+    const judged = { subject: 'Fix thing', notes: 'VERIFY: owner-judgment', comments: [`VERIFY: node --test scripts/tests/tm-gap-links.test.mjs`] };
+    assert.ok(!codes(classifyHeadlessDispatchability(judged)).includes(BLOCKERS.OWNER_DECISION_GATE));
+    const decide = { ...base, comments: [`VERIFY: node --test scripts/tests/tm-gap-links.test.mjs`] };
+    assert.ok(codes(classifyHeadlessDispatchability(decide)).includes(BLOCKERS.OWNER_DECISION_GATE));
   });
 });
 
@@ -380,5 +428,33 @@ describe('isDrainableSessionParked (BRO-4535)', () => {
     const autoParked = 'PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage. needs a worktree';
     assert.strictEqual(isAutomationParked(autoParked), true);
     assert.strictEqual(isDrainableSessionParked(autoParked), false);
+  });
+});
+
+// BRO-6238: work-reason parks ("own session", "research batch", "profiling pass")
+// must not be held by incidental words, while real holds stay held.
+describe('BRO-6238 worker-takeable work-reason parks', () => {
+  const { isWorkerTakeableParkReason } = require('../lib/headless-dispatchability.js');
+  test('work reasons with incidental hold words are takeable', () => {
+    for (const r of [
+      'Not urgent since BRO-5426 raised the poller step budget to 15 min; needs a profiling pass, no owner input',
+      'Research batch of 2-3 hours (EDGAR search plus entity matching per show); BRO-5527 covered only the 41 tax-credit shows',
+      'needs its own session',
+    ]) assert.strictEqual(isWorkerTakeableParkReason(r), true, r);
+  });
+  test('real holds stay held', () => {
+    for (const r of [
+      'Pick up after BRO-6000 merged',
+      'Pick up after BRO-6000 added the endpoint',
+      'Do after BRO-6000 fixed the parser',
+      'raise timeout budget on the GHA bill and tax credits spend',
+      'Resume after BRO-6000 landed and verified',
+      'waits for time budget',
+      'needs its own session and an A/B on the weekly run',
+      'hook change needs its own session',
+      'needs its own session and the owner\'s Mac',
+      'research batch needs scraper spend',
+      'needs a profiling pass over review-texts',
+    ]) assert.strictEqual(isWorkerTakeableParkReason(r), false, r);
   });
 });

@@ -11,6 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { classifyWrongArticle } = require('./lib/wrong-article-parity');
 
 function arg(name, dflt) {
@@ -22,9 +23,8 @@ function scan(root, maxExamples) {
   const tally = {};
   const examples = {};
   let files = 0;
-  for (const show of fs.readdirSync(root)) {
+  for (const show of listShowDirs(root, { silent: true })) {
     const dir = path.join(root, show);
-    if (!fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) {
       if (!f.endsWith('.json')) continue;
       files++;

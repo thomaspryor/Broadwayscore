@@ -80,6 +80,12 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           SCRAPER_USE_SCRAPINGDOG: '1'
+          # routeAlert (dead-feed + untrusted-claim alerts, BRO-6167) files Linear
+          # cards; without LINEAR_API_KEY the router fails open and sends nothing.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          CI: 'true'
           INPUT_FEED: ${{ inputs.feed }}
         run: |
           # blanket-sweep-audit-ok: data/audit/url-mismatch-suspects.json multi-writer diagnostic file, so it cannot be registered apiFallbackSafe; this step accepts losing only the last-resort Git Data API push fallback for its commit (BRO-4751)

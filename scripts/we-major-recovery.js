@@ -5,11 +5,13 @@
  *
  *   report                       per-season averages + missing slots (reads data/)
  *   wos --out=FILE               free WhatsOnStage WP-API match for missing WoS slots
+ *   guardian --out=FILE          Guardian Content API match for missing guardian slots (needs GUARDIAN_API_KEY)
  *   run  [flags]                 recover slots (CI: needs scraper keys + review-texts)
  *
  * run flags:
- *   --candidates=FILE            wos output; those URLs are ingested with no search
+ *   --candidates=FILE            wos/guardian output; those URLs are ingested with no search
  *   --serp                       search the remaining slots (site: scoped SERP)
+ *   --debug                      log every SERP query/verdict and skip the Google date filter
  *   --max-usd=N                  hard cap on scraper + projected scoring dollars (default 45)
  *   --reserve-usd=N              held back for scoring of files already written by earlier runs
  *   --seasons=2016..2020         start years
@@ -67,6 +69,37 @@ async function cmdWos() {
   const missing = rows.filter(r => r.missing.includes('whatsonstage')).length;
   console.log(`WOS review posts ${posts.length}; shows missing WOS ${missing}; with a matching post ${hits.length}`);
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(hits, null, 1));
+}
+
+
+// Guardian Content API (key in CI only): one search per missing guardian slot over the
+// show's opening window. Output has the same shape as `wos`, so `run --candidates` ingests
+// through the same date-window and wrong-show guards. API calls are free (no scraper spend).
+async function cmdGuardian() {
+  const key = process.env.GUARDIAN_API_KEY;
+  if (!key) { console.error('GUARDIAN_API_KEY not set'); process.exit(2); }
+  const rows = loadRows().filter(r => r.missing.includes('guardian'));
+  const shows = new Map(rd('data/shows.json').shows.map(s => [s.id, s]));
+  const out = [];
+  let asked = 0, failed = 0;
+  for (const r of rows) {
+    const s = shows.get(r.id);
+    if (!s || !s.openingDate) continue;
+    const q = new URLSearchParams({ section: 'stage', 'from-date': lib.addDays(s.openingDate, -14), 'to-date': lib.addDays(s.openingDate, 60),
+      q: `"${s.title}"`, 'show-fields': 'headline,publication,bodyText', 'show-tags': 'tone', type: 'article', 'page-size': '50', 'api-key': key });
+    asked++;
+    try {
+      const res = await fetch(`https://content.guardianapis.com/search?${q}`, { signal: AbortSignal.timeout(20000) });
+      if (!res.ok) { failed++; console.log(`${r.id}: HTTP ${res.status}`); continue; }
+      const results = (await res.json()).response?.results || [];
+      const posts = lib.matchGuardianResults(s, results);
+      if (posts.length) out.push({ showId: r.id, slot: 'guardian', posts });
+    } catch (e) { failed++; console.log(`${r.id}: ${e.message}`); }
+    await sleep(150);
+  }
+  console.log(`GUARDIAN shows missing ${rows.length}; searched ${asked}; failed ${failed}; with candidates ${out.length}`);
+  if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify(out, null, 1));
+  if (asked && failed === asked) { console.error('GUARDIAN: every API call failed (bad key or rate limit)'); process.exit(1); }
 }
 
 // ---- run -------------------------------------------------------------------
@@ -150,6 +183,7 @@ async function cmdRun() {
   const maxCalls = numArg('max-calls', Infinity);
   const dry = flag('dry-run');
   const serp = flag('serp');
+  const debug = flag('debug'); // print every SERP query and verdict; also skips Google's date filter (unreliable for 2016-2020 articles)
   const startIso = new Date().toISOString();
   const results = [];
   let calls = 0;
@@ -177,7 +211,7 @@ async function cmdRun() {
       const { looksLikeReview } = require('./collect-outlet-reviews.js');
       try {
         const res = await discoverCorrectUrl({ showId: q.showId, outletId: m.outletId, outlet: m.slot, criticName: null, url: null },
-          process.env.SCRAPINGBEE_API_KEY || '', { brightDataKey: process.env.BRIGHTDATA_TOKEN || '', dateRange: null, domainOverride: m.domain, returnMetadata: true, log: () => {} });
+          process.env.SCRAPINGBEE_API_KEY || '', { brightDataKey: process.env.BRIGHTDATA_TOKEN || '', dateRange: null, forceHistorical: debug, domainOverride: m.domain, returnMetadata: true, log: debug ? console.log : () => {} });
         if (res === '__SERP_UNAVAILABLE__') { stopped = 'serp-unavailable'; results.push({ ...rec, outcome: 'serp-unavailable' }); break; }
         if (!res || typeof res !== 'object') { results.push({ ...rec, outcome: 'no-serp-hit' }); refresh(); await sleep(800); continue; }
         const host = new URL(res.url).hostname.replace(/^www\./, '');
@@ -213,8 +247,8 @@ async function cmdRun() {
 }
 
 const cmd = process.argv[2];
-const table = { report: cmdReport, wos: cmdWos, run: cmdRun };
+const table = { report: cmdReport, wos: cmdWos, guardian: cmdGuardian, run: cmdRun };
 if (require.main === module) {
-  if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|run> [flags] (see header)'); process.exit(2); }
+  if (!table[cmd]) { console.error('Usage: node scripts/we-major-recovery.js <report|wos|guardian|run> [flags] (see header)'); process.exit(2); }
   table[cmd]().catch(e => { console.error(e); process.exit(1); });
 }

@@ -1,51 +1,64 @@
 {
-  "updatedAt": "2026-10-24T18:54:22.261Z",
-  "processed": 442,
-  "failed": 288,
-  "successRate": "60.5%",
+  "updatedAt": "2026-10-26T00:43:52.000Z",
+  "processed": 152,
+  "failed": 92,
+  "successRate": "62.3%",
   "tierBreakdown": {
-    "playwright": 215,
+    "playwright": 83,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 28,
-    "scrapingbee": 22,
-    "brightdata": 11,
+    "scrapingdog": 10,
+    "scrapingbee": 7,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 134
+    "archive": 43
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-24T14:52:00.191Z",
+      "t": "2026-10-25T23:26:28.677Z",
       "event": "bb-session",
-      "session": "f3b41a9a",
+      "session": "a65c2519",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
+    },
+    {
+      "t": "2026-10-25T23:33:32.249Z",
+      "event": "bb-session",
+      "session": "5b3c07b6",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-25T23:33:39.834Z",
+      "event": "bb-session",
+      "session": "7953afc7",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-25T23:34:37.069Z",
+      "event": "bb-session",
+      "session": "3d6e6924",
+      "url": "https://soundsandstage.com/show/dirty-dancing"
+    },
+    {
+      "t": "2026-10-26T00:22:12.000Z",
+      "event": "bb-session",
+      "session": "8ad1e296",
       "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-24T14:52:00.561Z",
+      "t": "2026-10-26T00:22:12.684Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-24T14:54:41.165Z",
+      "t": "2026-10-26T00:23:57.518Z",
       "event": "bb-session",
-      "session": "a42febcb",
+      "session": "6c1ae047",
       "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-10-24T14:54:41.459Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-24T15:21:20.505Z",
-      "event": "bb-session",
-      "session": "358f45a1",
-      "url": "https://www.nytimes.com/2019/03/21/theater/matt-walker-play-that-goes-wrong.html"
-    },
-    {
-      "t": "2026-10-24T15:21:20.830Z",
+      "t": "2026-10-26T00:23:58.236Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }

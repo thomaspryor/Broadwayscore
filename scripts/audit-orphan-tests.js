@@ -74,6 +74,9 @@ const ROOT = path.resolve(__dirname, '..');
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-4763: runs indirectly, imported by tour-runtime-coverage.test.mjs in
+  // check-corpus-drift.yml. The path-based audit does not trace ESM imports.
+  'tests/unit/sound-of-music-synopsis.test.mjs': 'BRO-4763',
   // BRO-4776 acceptance shim; imports the live-data suite run by check-corpus-drift.yml.
   'tests/unit/tour-runtime-source-agreement.test.mjs': 'BRO-4776',
   // BRO-6134 RECHECK-AFTER probe: reads live git/Linear/GitHub signals, red while a Codex lane is down.

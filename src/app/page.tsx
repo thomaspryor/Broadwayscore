@@ -5,7 +5,7 @@ import { Suspense } from 'react';
 import type { Metadata } from 'next';
 import { featureFlags } from '@/config/feature-flags';
 import { pickRegionalShelf } from '@/lib/regional-shelf';
-import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats, getTourShows } from '@/lib/data-core';
+import { getBroadwayShows, getOffBroadwayShows, getNotableOffBroadwayShows, getWestEndShows, getOperaShows, getRegionalShows, getDataStats, getSiteStats, getUpcomingShows, getNYTCriticsPickShowIds, getMarketStats, getTourShows } from '@/lib/data-core';
 import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
 import { shortCity } from '@/lib/tour-schedule';
 import { getAwardWinnerSets } from '@/lib/data-awards';
@@ -61,6 +61,7 @@ export default function HomePage() {
   }
   const allShows = getBroadwayShows();
   const stats = getDataStats();
+  const siteStats = getSiteStats();
   const upcomingShows = getUpcomingShows();
   // Live headline accuracy — same number rendered on the season-specific
   // predictions page. Lives here so the homepage promo never drifts.
@@ -355,7 +356,7 @@ export default function HomePage() {
       ))}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema(stats)) }}
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(generateHomepageFAQSchema({ totalShows: siteStats.scoredShows, totalReviews: siteStats.totalReviews })) }}
       />
       {/* Server-rendered hero + featured row — LCP image appears in initial HTML, no JS needed */}
       <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-5 sm:pt-12">
@@ -367,7 +368,7 @@ export default function HomePage() {
             Every show. Every review. One score.
           </p>
           <p className="text-gray-500 text-sm sm:text-base mt-1">
-            {stats.totalShows.toLocaleString('en-US')} shows. {stats.totalReviews.toLocaleString('en-US')} critic reviews. And counting.
+            {siteStats.scoredShows.toLocaleString('en-US')} scored shows. {siteStats.totalReviews.toLocaleString('en-US')} critic reviews. <span className="whitespace-nowrap">And counting.</span>
           </p>
         </div>
         {/* Above-fold slim promo. Order: the Fantasy League while its draft is
@@ -413,8 +414,8 @@ export default function HomePage() {
           upcomingShows={upcomingShows.map(serializeShow)}
           offBroadwayShows={obShows.map(serializeShow)}
           westEndShows={weShows.map(serializeShow)}
-          totalShows={stats.totalShows}
-          totalReviews={stats.totalReviews}
+          totalShows={siteStats.scoredShows}
+          totalReviews={siteStats.totalReviews}
           totalCritics={stats.totalCritics}
           totalOutlets={stats.totalOutlets}
           skipHero

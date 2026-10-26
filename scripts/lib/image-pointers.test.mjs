@@ -53,18 +53,28 @@ test('only hero/poster are validated and input records are unchanged', () => {
   assert.equal(JSON.stringify(shows), before);
 });
 
-test('an existing missing Ford Hill hero warns, but a new broken pointer errors', () => {
+test('an existing missing historical poster warns, but a new broken pointer errors', () => {
+  const id = 'the-violet-hour-2003';
+  const poster = `/images/shows/${id}/poster.jpg`;
+  const [known] = findImagePointerProblems([{ id, images: { poster } }], options);
+  assert.equal(imagePointerSeverity(known), 'warn');
+  const [newShow] = findImagePointerProblems([{ id: 'new-show', images: { poster } }], options);
+  assert.equal(imagePointerSeverity(newShow), 'error');
+  const [changedPointer] = findImagePointerProblems([{ id, images: { poster: `${poster}.jpg` } }], options);
+  assert.equal(imagePointerSeverity(changedPointer), 'error');
+  const [newHero] = findImagePointerProblems([{ id, images: { hero: poster } }], options);
+  assert.equal(imagePointerSeverity(newHero), 'error');
+  assert.equal(imagePointerSeverity({ ...known, reason: 'invalid or unreadable image pointer' }), 'error');
+});
+
+test('the repaired Ford Hill hero exists and no longer has a baseline exception', () => {
   const id = 'the-ford-hill-project-off-broadway-2026';
   const hero = `/images/shows/${id}/hero.webp`;
-  const [known] = findImagePointerProblems([{ id, images: { hero } }], options);
-  assert.equal(imagePointerSeverity(known), 'warn');
-  const [newShow] = findImagePointerProblems([{ id: 'new-show', images: { hero } }], options);
-  assert.equal(imagePointerSeverity(newShow), 'error');
-  const [changedPointer] = findImagePointerProblems([{ id, images: { hero: `${hero}.jpg` } }], options);
-  assert.equal(imagePointerSeverity(changedPointer), 'error');
-  const [newPoster] = findImagePointerProblems([{ id, images: { poster: hero } }], options);
-  assert.equal(imagePointerSeverity(newPoster), 'error');
-  assert.equal(imagePointerSeverity({ ...known, reason: 'invalid or unreadable image pointer' }), 'error');
+  assert.deepEqual(findImagePointerProblems([{ id, images: { hero } }], {
+    publicDir: path.resolve(import.meta.dirname, '../../public'),
+  }), []);
+  assert.equal(imagePointerSeverity({ id, key: 'hero', value: hero,
+    reason: 'local image file does not exist' }), 'error');
 });
 
 test('a repaired baseline pointer stops producing warnings', () => {

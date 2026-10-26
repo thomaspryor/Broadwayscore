@@ -127,6 +127,18 @@ function isCurrentTmRow(row, todayIso) {
   return first >= addDaysIso(todayIso, -OPEN_ENDED_LOOKBACK_DAYS);
 }
 
+/**
+ * BRO-6153: does this row's run start inside [fromIso, toIso]? The earliest of
+ * preview_date and opening_date is the start, since TM often stores the first
+ * performance in opening_date alone. Used by the historical backfill scan.
+ */
+function isTmRowInWindow(row, { fromIso, toIso }) {
+  const acf = (row && row.acf) || {};
+  const first = [parseTmDate(acf.preview_date), parseTmDate(acf.opening_date)].filter(Boolean).sort()[0];
+  if (!first) return false;
+  return first >= fromIso && first <= toIso;
+}
+
 /** TodayTix-style category from TM genre names, or null when unknown. */
 function categoryFromGenres(genreNames) {
   const names = (genreNames || []).map(n => cleanText(n).toLowerCase()).filter(Boolean);
@@ -370,18 +382,39 @@ async function fetchTaxonomyById(kind, ids) {
  * Fetch the current Off-Broadway rows plus the venue/genre lookups they need.
  * @returns {Promise<{ rows: object[], venuesById: Map, genresById: Map, pagesFetched: number, rawCount: number }>}
  */
-async function fetchTmOffBroadway({ todayIso = new Date().toISOString().slice(0, 10), maxPages = TM_MAX_PAGES } = {}) {
+async function fetchTmOffBroadway({
+  todayIso = new Date().toISOString().slice(0, 10),
+  maxPages = TM_MAX_PAGES,
+  // BRO-6153: the historical backfill reuses this reader for a past window.
+  // Defaults keep the current-show behavior discovery and the coverage guard
+  // rely on. A historical scan passes its own rowFilter, keeps paging past
+  // pages with no kept row, and orders by id so a row edited mid-scan cannot
+  // shift the pages under it (modified order skips or repeats rows).
+  rowFilter = r => isCurrentTmRow(r, todayIso),
+  stopWhenPageEmpty = true,
+  orderby = 'modified',
+} = {}) {
   const rows = [];
   let pagesFetched = 0;
   let rawCount = 0;
   for (let page = 1; page <= maxPages; page++) {
-    const batch = await fetchTmJson(`/shows?market=${TM_OB_MARKET_ID}&per_page=${TM_PAGE_SIZE}&orderby=modified&order=desc&page=${page}&_fields=${TM_FIELDS}`);
+    let batch;
+    try {
+      batch = await fetchTmJson(`/shows?market=${TM_OB_MARKET_ID}&per_page=${TM_PAGE_SIZE}&orderby=${orderby}&order=desc&page=${page}&_fields=${TM_FIELDS}`);
+    } catch (e) {
+      // WordPress answers a page past the last one with HTTP 400
+      // (rest_post_invalid_page_number), not an empty array. Only a full scan
+      // (stopWhenPageEmpty false) reaches it. The default current-show scan
+      // keeps failing loudly on any error, as before.
+      if (!stopWhenPageEmpty && page > 1 && /HTTP 400\b/.test(e.message)) break;
+      throw e;
+    }
     pagesFetched++;
     if (!Array.isArray(batch) || batch.length === 0) break;
     rawCount += batch.length;
-    const current = batch.filter(r => isCurrentTmRow(r, todayIso));
-    rows.push(...current);
-    if (current.length === 0) break;
+    const kept = batch.filter(rowFilter);
+    rows.push(...kept);
+    if (stopWhenPageEmpty && kept.length === 0) break;
   }
   const venuesById = await fetchTaxonomyById('venue', rows.flatMap(r => (r.acf && r.acf.the_venue) || []));
   const genresById = await fetchTaxonomyById('genre', rows.flatMap(r => r.genre || []));
@@ -394,6 +427,7 @@ module.exports = {
   parseTmDate,
   mapTmDates,
   isCurrentTmRow,
+  isTmRowInWindow,
   categoryFromGenres,
   resolveTmVenue,
   parseTmOffBroadwayRow,

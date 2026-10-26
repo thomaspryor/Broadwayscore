@@ -54,8 +54,12 @@ node scripts/generate-blog-reviews-for-scoring.js
 # when rebuild workflows commit stale public JSONs between deploys. (~30s)
 node scripts/generate-mobile-show-details.js
 
+# Web Stats catalog (gitignored): a slim projection of mobile-shows.json, so it
+# runs on BOTH paths — here from the committed mobile-shows.json, and at the end
+# of the full path from the freshly regenerated one.
 if [ "$SKIP_HEAVY_PREBUILD" = "true" ]; then
   echo "Skipping heavy prebuild (code-only change — committed data files are current)"
+  node scripts/generate-stats-shows.js
   exit 0
 fi
 
@@ -64,6 +68,8 @@ node scripts/generate-search-shows.js
 node scripts/compute-gold-lists.js
 node scripts/generate-review-og-images.js
 node scripts/generate-mobile-data.js
+# After generate-mobile-data.js: projects its output (see the fast path above).
+node scripts/generate-stats-shows.js
 node scripts/generate-homepage-archive.js
 node scripts/generate-off-broadway-archive.js
 node scripts/generate-off-west-end-archive.js
