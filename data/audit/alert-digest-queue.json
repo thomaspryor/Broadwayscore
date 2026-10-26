@@ -182,6 +182,37 @@
     "queuedAt": "2026-10-26T08:10:23.263Z"
   },
   {
+    "conditionKey": "land:land/bro-6219-web-alerts-r2",
+    "title": "Landing blocked: rebase red on land/bro-6219-web-alerts-r2",
+    "description": "land.yml did not land land/bro-6219-web-alerts-r2: the rebase gate went red at 54b738f5a9. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6219-web-alerts-r2 @ 54b738f5a9 (origin/land/bro-6219-web-alerts-r2) → origin/main @ 613d44eeae REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 613d44eeae: Rebasing (1/1) error: could not apply 54b738f5a92... feat(alerts): closing-date events, reviews-in push dispatch (id+slug, West End, marker after success) (BRO-6219) hint: Resolve all conflicts manually, mark Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40277719149",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6219-web-alerts-r2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "54b738f5a92a0c7690cae033e1393baf4c11ba04"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40277719149"
+      }
+    ],
+    "queuedAt": "2026-10-26T09:12:04.033Z"
+  },
+  {
     "conditionKey": "land:land/bro-6276-dispatch-guard",
     "title": "Landing blocked: unit-tests-node red on land/bro-6276-dispatch-guard",
     "description": "land.yml did not land land/bro-6276-dispatch-guard: the unit-tests-node gate went red at 2c1e58e7b3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40294286798",
