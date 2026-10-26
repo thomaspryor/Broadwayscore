@@ -388,6 +388,38 @@ export default function BizDashboard() {
           <DesignationLegend />
         </section>
 
+        {/* Why this exists, in the owner's words (owner, 2026-10-26). Free,
+            outside the gate. */}
+        <section className="mb-10" data-testid="biz-about">
+          <h2 className="text-lg font-bold text-white mb-3">Why I Built This</h2>
+          <div className="card rounded-xl p-5 space-y-3 text-sm leading-relaxed text-gray-300">
+            <p>
+              I&apos;m a theatergoer and an investor, and I wanted to know which Broadway shows were succeeding, which
+              were struggling, and which weren&apos;t long for this world. Box office alone tells you very little. A
+              show can gross a fortune every week and still be losing money.
+            </p>
+            <p>
+              Every week, hundreds of people pick apart the grosses on Reddit, mostly guessing. The real numbers are
+              scattered across SEC filings, tax credit applications and trade press, so I pulled them into one place
+              and built a model to fill the gaps. Where you see an estimate, it&apos;s ours, and it&apos;s marked.
+            </p>
+            <p>
+              The industry is drawing the wrong lesson from its losses. Money is flowing to what looks safe: star
+              revivals, familiar titles, &ldquo;proven&rdquo; creative teams. The data says that isn&apos;t paying off,
+              and the hits often come out of nowhere. If investors can see what actually pays back, maybe more of them
+              will back ambitious new work.
+            </p>
+            <p>
+              Producer friends told me to charge for this. It&apos;s always free, because it does more good in public.
+            </p>
+            <p>
+              Spot an error, or have numbers you can share?{' '}
+              <Link href="/feedback" className="text-brand hover:text-brand-hover">Tell me</Link>.
+            </p>
+            <p className="text-white font-medium">Tom Pryor</p>
+          </div>
+        </section>
+
         {/* Footer */}
         <footer className="text-sm text-gray-500 border-t border-white/5 pt-6">
           <p className="mb-2">

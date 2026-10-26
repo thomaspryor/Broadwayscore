@@ -221,7 +221,7 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
       </div>
       <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Unlock the Money Scorecard</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-300">
-        Free. Show-by-show capitalization, recoupment and box office for every Broadway show.
+        Always free. Show-by-show capitalization, recoupment and box office for every Broadway show.
         One sign&#8209;up unlocks every page.
       </p>
 
