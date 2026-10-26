@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-25T21:55:33.958Z",
+    "lastUpdated": "2026-10-26T23:22:06.627Z",
     "version": "2.1.0",
     "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
   },
@@ -13624,6 +13624,17 @@
       "domain": "kidsoutandabout.com",
       "accessModel": "free",
       "displayNameReviewed": true
+    },
+    "inspiringtravelexperiences": {
+      "displayName": "Inspiring Travel Experiences",
+      "tier": 3,
+      "aliases": [
+        "inspiringtravelexperiences"
+      ],
+      "domain": "inspiringtravelexperiences.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-26T23:22:06.627Z"
     }
   },
   "_aliasIndex": {
