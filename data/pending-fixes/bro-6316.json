@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6316",
   "planId": "47361a12-98fb-404b-a00c-8af56cdd5ada",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-26T12:18:15.332Z",
   "submitter": {
     "name": null,
@@ -28,5 +28,19 @@
         "description": "The Notebook tour: Variety news item about the West End run at the Judi Dench Theatre, not a review of the tour; never-fetched stub (BRO-6316)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T12:50:50.264Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-notebook-tour-2025/musical-theatre-review--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "Source not found: the-notebook-tour-2025/variety--unknown.json"
+    }
+  ],
+  "executedIn": "ci"
 }
