@@ -1,19 +1,64 @@
 {
-  "updatedAt": "2026-10-26T16:23:33.718Z",
-  "processed": 76,
-  "failed": 44,
-  "successRate": "63.3%",
+  "updatedAt": "2026-10-26T16:25:40.840Z",
+  "processed": 68,
+  "failed": 5,
+  "successRate": "93.2%",
   "tierBreakdown": {
-    "playwright": 49,
+    "playwright": 42,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 5,
-    "scrapingbee": 1,
-    "brightdata": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 5,
+    "brightdata": 7,
     "archiveToday": 0,
-    "archive": 12
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-26T16:05:39.317Z",
+      "event": "bb-session",
+      "session": "6e25053d",
+      "url": "https://www.nytimes.com/2025/05/14/theater/last-bimbo-of-the-apocalypse-review.h"
+    },
+    {
+      "t": "2026-10-26T16:05:40.038Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T16:06:19.421Z",
+      "event": "bb-session",
+      "session": "002761d3",
+      "url": "https://www.nytimes.com/2025/05/14/theater/last-bimbo-of-the-apocalypse-review.h"
+    },
+    {
+      "t": "2026-10-26T16:06:20.090Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T16:17:38.431Z",
+      "event": "bb-session",
+      "session": "356c1676",
+      "url": "https://www.nytimes.com/2025/02/12/theater/henry-iv-review.html"
+    },
+    {
+      "t": "2026-10-26T16:17:39.093Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T16:18:23.582Z",
+      "event": "bb-session",
+      "session": "be9b5d69",
+      "url": "https://www.wsj.com/arts-culture/books/creator-of-nightmares-review-henry-fuseli"
+    },
+    {
+      "t": "2026-10-26T16:18:24.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
