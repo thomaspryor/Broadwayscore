@@ -166,12 +166,14 @@ function resizedLossLabel(entry) {
 /** More loss labels than this moving in one model run is a model change, not drift. */
 const MODEL_LOSS_RESIZE_LIMIT = 3;
 /**
- * The loss-label moves the model writer makes after a run. It is the daily
+ * The designation moves the model writer makes after a run. It is the daily
  * catch-all for label sizes as for model figures, so a label follows its
  * estimate whichever writer moved it: a model change that carries a closed
  * show across the 30% line (BRO-5643: jagged-little-pill stayed a Fizzle at
  * 27%), or an analyst post that does (scrape-boring-waltz-costs.js writes the
- * estimate, never the label). Above `limit` moves none is applied and all are
+ * estimate, never the label). Model-estimate tiers also follow drift across
+ * the 100% and 150% lines (BRO-6187), unless a reported outcome or human lock
+ * takes precedence. Above `limit` moves none is applied and all are
  * held for review, like update-commercial-data.js's designation circuit breaker.
  * @param {Array<[string, object]>} entries [key, record] pairs the run covered
  * @returns {{ moves: Array<{ key: string, from: string, to: string }>, held: boolean }}
@@ -179,7 +181,17 @@ const MODEL_LOSS_RESIZE_LIMIT = 3;
 function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
   const moves = [];
   for (const [key, entry] of entries) {
-    const to = resizedLossLabel(entry);
+    let to = resizedLossLabel(entry);
+    if (entry?.designationBasis === 'model-estimate' && entry.humanReviewedDesignation !== true
+      && (isLossDesignation(entry.designation) || entry.designation === 'Trickle' || entry.designation === 'Windfall')) {
+      // A verified recoupment is settled by its source, not model drift.
+      if (entry.recouped === true) continue;
+      const estimated = estimatedDesignationForClosed(entry);
+      // A source saying it did not recoup still wins over an optimistic model.
+      if (estimated && (isLossDesignation(estimated) || entry.recouped !== false)) {
+        to = estimated === entry.designation ? null : estimated;
+      }
+    }
     if (to) moves.push({ key, from: entry.designation, to });
   }
   return { moves, held: moves.length > limit };

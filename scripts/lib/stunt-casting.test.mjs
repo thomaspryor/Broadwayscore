@@ -24,8 +24,9 @@ test('selectStudyShows: Broadway plays/musicals with a cast that have opened, fr
     show({ id: 'special', type: 'special' }),
     show({ id: 'nocast', cast: [] }),
     show({ id: 'future', openingDate: '2027-03-01' }),
+    show({ id: 'closed', status: 'closed', closingDate: '2010-10-02' }),
   ], { today: '2026-10-21' });
-  assert.deepEqual(rows.map(r => r.id), ['first', 'x-2010']);
+  assert.deepEqual(rows.map(r => r.id), ['first', 'closed', 'x-2010']);
   assert.equal(rows[0].studySeason, '2004-2005');
 });
 
