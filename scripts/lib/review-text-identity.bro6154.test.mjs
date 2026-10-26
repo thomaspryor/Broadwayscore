@@ -26,3 +26,18 @@ test('BRO-6154 same text re-extracted keeps the rejection; non-rejected files ar
   assert.equal(mergeTheatreRecordIntoExisting(ok, fresh('Different. '.repeat(30))).fullText, ok.fullText);
   assert.equal(isWrongShowRejection({ rejectedBy: 'other', rejectionReason: 'wrong_show' }), false);
 });
+
+// BRO-6302: the merge lifted the rejection, but safeWriteReview's restore pass copied it back from disk.
+test('BRO-6302 safeWriteReview honors the BRO-6154 lift (rejection is not resurrected from disk)', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const { safeWriteReview } = createRequire(import.meta.url)('./review-write-guard.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'bro6302-')), 'x'); fs.mkdirSync(dir); const p = path.join(dir, 'standard--henry-hitchings.json');
+  const old = { ...rejected(), showId: 'x', outletId: 'standard', criticName: 'Henry Hitchings', source: 'theatre-record', rejectedAt: '2026-10-22T00:00:00Z', fullText: 'The King and I is a musical about Siam. '.repeat(40) };
+  fs.writeFileSync(p, JSON.stringify(old));
+  const merged = mergeTheatreRecordIntoExisting(old, fresh('King Lear divides his kingdom and rages on the heath. '.repeat(40)));
+  safeWriteReview(p, merged);
+  const out = JSON.parse(fs.readFileSync(p, 'utf8'));
+  for (const k of ['wrongShow', 'rejectedBy', 'rejectionReason', 'rejectedAt']) assert.equal(out[k], undefined, k);
+  assert.match(out.fullText, /^King Lear/);
+  assert.equal(out.needsRescore, true);
+});
