@@ -553,13 +553,16 @@ test('main: tick lock releases on empty tasks and errors; help never acquires it
     assert.equal(busy.error, null, busy.stderr);
     assert.match(busy.stdout, /tick lock busy/);
     assert.equal(fs.existsSync(lock), true, 'busy tick must not release another holder');
-    const old = new Date(Date.now() - 60 * 60_000);
-    fs.utimesSync(lock, old, old);
+    // Backdate from the lock's own (real filesystem) mtime, not Date.now(): the
+    // tick runs in a child with the real clock, and the time-bomb audit shifts
+    // only this process's Date.now(), which would put the mtime in the future.
+    const backdate = () => { const t = new Date(fs.statSync(lock).mtimeMs - 60 * 60_000); fs.utimesSync(lock, t, t); };
+    backdate();
     const live = await runTickProcess(dir, { fail: true });
     assert.equal(live.error, null, live.stderr);
     assert.match(live.stdout, /tick lock busy/, 'an old live holder must not be stolen');
     fs.writeFileSync(lock, '999999 abandoned\n');
-    fs.utimesSync(lock, old, old);
+    backdate();
     const recovered = await runTickProcess(dir, { empty: true });
     assert.equal(recovered.error, null, recovered.stderr);
     assert.match(recovered.stderr, /shared task list is empty/, 'dead stale holder must be recovered');
