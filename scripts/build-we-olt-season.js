@@ -79,12 +79,18 @@ async function get(url, { timeoutMs = 60000, retries = 3 } = {}) {
  * interactive-map view of the same item); only items captured inside [from, to].
  */
 async function enumerateItems(from, to) {
-  const q = 'https://web.archive.org/cdx/search/cdx?url=officiallondontheatre.co.uk/london-shows/show/item*'
-    + `&from=${from.slice(0, 6)}&to=201912&fl=timestamp,original&filter=statuscode:200`;
-  const body = await get(q, { timeoutMs: 600000 });
+  // One query per year: a single from..2019 query is large enough that the
+  // archive resets the connection for some seasons.
+  let body = '';
+  for (let y = Number(from.slice(0, 4)); y <= 2019; y++) {
+    const q = 'https://web.archive.org/cdx/search/cdx?url=officiallondontheatre.co.uk/london-shows/show/item*'
+      + `&from=${y === Number(from.slice(0, 4)) ? from.slice(0, 6) : `${y}01`}&to=${y}12&fl=timestamp,original&filter=statuscode:200`;
+    body += (await get(q, { timeoutMs: 600000 })) || '';
+    body += '\n';
+  }
   const captures = new Map();
   const inWindow = new Set();
-  for (const line of String(body || '').split('\n')) {
+  for (const line of body.split('\n')) {
     const [ts, url] = line.trim().split(/\s+/);
     const item = oltItemId(url);
     if (!item || !/^\d{14}$/.test(ts)) continue;
