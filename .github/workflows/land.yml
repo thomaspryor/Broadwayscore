@@ -872,9 +872,12 @@ jobs:
           case "$started" in ''|*[!0-9]*) echo "::warning::LAND_JOB_STARTED_AT missing, sizing the deadman from now (the 125 min job timeout still caps it)"; started=$(date +%s) ;; esac
           backstop=$(( 110 - ($(date +%s) - started) / 60 ))
           [ "$backstop" -lt 10 ] && backstop=10
-          deadline=$(( backstop - 50 )); [ "$deadline" -gt 55 ] && deadline=55; [ "$deadline" -lt 5 ] && deadline=5
+          # Under 50 min of backstop left means no room for a retry: deadline 0
+          # refuses attempt 2 outright instead of starting one the kill cuts off.
+          deadline=$(( backstop - 50 )); [ "$deadline" -gt 55 ] && deadline=55; [ "$deadline" -lt 0 ] && deadline=0
           echo "deadman: ${backstop} min backstop, no new attempt after ${deadline} min"
-          LAND_DEADLINE_MIN="$deadline" timeout --kill-after=60s "${backstop}m" \
+          rm -f /tmp/land-pushed-sha
+          LAND_PUSH_MARKER=/tmp/land-pushed-sha LAND_DEADLINE_MIN="$deadline" timeout --kill-after=60s "${backstop}m" \
             node scripts/land.js --branch "$BRANCH" --source origin \
             --expect-tip "$TIP" --verified-base "$BASE" "${TRAIN_ARGS[@]}" \
             --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
@@ -886,6 +889,18 @@ jobs:
             pkill -x git || true
           fi
           if [ ! -f /tmp/land-result.json ]; then
+            # Killed after the push went through but before land.js wrote its
+            # result: the marker holds the sha it pushed. On main = landed (the
+            # next step re-verifies ancestry before deleting the ref); riders
+            # stay unmarked and finish on their own run as already on main.
+            pushed="$(cat /tmp/land-pushed-sha 2>/dev/null || true)"
+            if { [ "$rc" = "124" ] || [ "$rc" = "137" ]; } && [ -n "$pushed" ] \
+              && git fetch -q origin main && git merge-base --is-ancestor "$pushed" origin/main; then
+              { echo "landed=true"; echo "sha=$pushed"; echo "attempts="; echo "failed_check="
+                echo "reason=land.js was killed by the ${backstop} min deadman after its push; ${pushed:0:10} is on main"; } >> "$GITHUB_OUTPUT"
+              echo "::warning::land.js killed by the ${backstop} min deadman after pushing ${pushed:0:10}, which is on main: reporting landed"
+              exit 0
+            fi
             echo "landed=false" >> "$GITHUB_OUTPUT"
             if [ "$rc" = "124" ] || [ "$rc" = "137" ]; then
               # A push may have gone through before the kill. The ref is kept
@@ -936,7 +951,7 @@ jobs:
         env:
           LAND_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
         run: |
-          if [ -f scripts/land-train.js ]; then node scripts/land-train.js mark --result-file /tmp/land-result.json; fi
+          if [ -f scripts/land-train.js ] && [ -f /tmp/land-result.json ]; then node scripts/land-train.js mark --result-file /tmp/land-result.json; fi
 
       - name: Verify ancestry, then delete the land/** ref
         if: steps.land.outputs.landed == 'true'

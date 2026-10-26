@@ -183,7 +183,8 @@ function classifyPushFailure({ baseSha, nowBase }) {
 function landDeadlineMs(env = process.env) {
   const raw = env.LAND_DEADLINE_MIN;
   const min = /^\d+$/.test(String(raw ?? '').trim()) ? Number(raw) : NaN;
-  return min >= 5 && min <= 120 ? min * 60 * 1000 : DEFAULT_LAND_DEADLINE_MS;
+  // 0 = no retries (land.yml's deadman has under one attempt of time left).
+  return min >= 0 && min <= 120 ? min * 60 * 1000 : DEFAULT_LAND_DEADLINE_MS;
 }
 
 /** Why attempt N must not start (null = go). Attempt 1 always runs: the deadline only stops retries. Pure. */
@@ -585,7 +586,7 @@ function landBranch(o) {
     branch, repoDir = REPO_ROOT, checks = defaultChecks, pushMain = defaultPushMain,
     beforePush = null, log = () => {}, maxAttempts = MAX_ATTEMPTS, maxChurnSkips = MAX_CHURN_SKIPS,
     remote = 'origin', target = 'main', source = 'auto', dryRun = false, expectSha = null,
-    riders = [], trainBases = [], trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now,
+    riders = [], trainBases = [], trainChecks = defaultChecks, deadlineMs = landDeadlineMs(), now = Date.now, pushMarkerFile = process.env.LAND_PUSH_MARKER || null,
   } = o || {};
   const t0 = now();
   const trainDropped = []; // BRO-5282: riders not landed by this run, and why
@@ -897,6 +898,9 @@ function landBranch(o) {
       if (beforePush) beforePush({ cwd: workdir, baseSha: landBase, verifiedBase: baseSha, git: (args) => git(args, workdir) });
       head = git(['rev-parse', 'HEAD'], workdir);
 
+      // BRO-6276: land.yml's deadman can kill us between this push and the
+      // result file; the marker lets it tell "landed" from "refused".
+      if (pushMarkerFile) { try { fs.writeFileSync(pushMarkerFile, `${head}\n`); } catch (_) { /* advisory */ } }
       try {
         pushMain({ cwd: workdir, sha: head, log });
       } catch (err) {

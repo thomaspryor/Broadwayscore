@@ -1030,5 +1030,23 @@ test('BRO-6276 deadlineRefusal / landDeadlineMs: attempt 1 always runs; bad env 
   assert.match(deadlineRefusal({ attempt: 3, elapsedMs: 100, deadlineMs: 100 }), /attempt 3/);
   assert.equal(landDeadlineMs({}), DEFAULT_LAND_DEADLINE_MS);
   assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '40' }), 40 * 60 * 1000);
-  for (const bad of ['0', '4', '121', 'abc', '30.5', '-10', '']) assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: bad }), DEFAULT_LAND_DEADLINE_MS, bad);
+  assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '0' }), 0, '0 = no retries');
+  assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: '4' }), 4 * 60 * 1000);
+  for (const bad of ['121', 'abc', '30.5', '-10', '']) assert.equal(landDeadlineMs({ LAND_DEADLINE_MIN: bad }), DEFAULT_LAND_DEADLINE_MS, bad);
+  assert.match(deadlineRefusal({ attempt: 2, elapsedMs: 0, deadlineMs: 0 }), /not starting attempt 2/);
+});
+
+test('BRO-6276 push marker: the sha about to be pushed is written before each push', () => {
+  const w = makeWorld();
+  const marker = path.join(w.repoDir, '..', `marker-${process.pid}`);
+  try {
+    w.makeBranch('feat-marker');
+    const seen = [];
+    const r = landBranch({
+      branch: 'feat-marker', repoDir: w.repoDir, checks: greenChecks, pushMarkerFile: marker,
+      pushMain: (o) => { seen.push([o.sha, fs.readFileSync(marker, 'utf8').trim()]); plainPush(o); },
+    });
+    assert.equal(r.landed, true, JSON.stringify(r));
+    assert.deepEqual(seen, [[r.sha, r.sha]]);
+  } finally { fs.rmSync(marker, { force: true }); w.cleanup(); }
 });
