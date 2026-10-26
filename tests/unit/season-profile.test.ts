@@ -459,9 +459,12 @@ test('returned capital share: recouped, closed estimate, model and unopened case
   // Closed, unrecouped: own estimate range first, then the model.
   assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [20, 40], modelReturnedExCreditPct: [0, 5, 10] }), 'closed'), { low: 0.2, mid: 0.3, high: 0.4 });
   assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelReturnedExCreditPct: [10, 30, 50] }), 'closed'), { low: 0.1, mid: 0.3, high: 0.5 });
-  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPctV2: [-20, 30, 160] }), 'closed'), { low: 0, mid: 0.3, high: 1 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPctV2: [-20, 30, 160] }), 'closed'), { low: 0, mid: 0.3, high: 0.99 });
   // Running: the model, never the closed-show estimate.
   assert.deepEqual(returnedCapitalShare(com({ recouped: false, ourEstimateRangePct: [90, 95], modelRecoupmentPct: [10, 20, 30] }), 'open'), { low: 0.1, mid: 0.2, high: 0.3 });
+  // A hot model on an unrecouped show never counts as fully repaid; an uncited multiple is ignored.
+  assert.deepEqual(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [80, 140, 200] }), 'closed'), { low: 0.8, mid: 0.99, high: 0.99 });
+  assert.deepEqual(returnedCapitalShare(com({ recouped: true, investorMultiple: 3, sources: [{ note: 'no url' }] }), 'open'), { low: 1, mid: 1, high: 1 });
   // No basis, or not open yet: nothing.
   assert.equal(returnedCapitalShare(com({ recouped: false }), 'closed'), null);
   assert.equal(returnedCapitalShare(com({ recouped: false, modelRecoupmentPct: [10, 20, 30] }), 'announced'), null);
@@ -476,8 +479,10 @@ test('returned capital: sums capital x share per show with a low-high band, skip
     show({ openingDate: '2025-10-04', status: 'open', commercial: com({ capitalization: 5e6, recouped: false }) }),
   ];
   const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
-  assert.deepEqual(p.returnedCapital, { capital: 20e6, low: 2e6 + 6e6, mid: 3e6 + 6e6 + 2e6, high: 4e6 + 6e6 + 4e6, shows: 3, of: 4 });
+  assert.deepEqual(p.returnedCapital, { capital: 20e6, low: 2e6 + 6e6, mid: 3e6 + 6e6 + 2e6, high: 4e6 + 6e6 + 4e6 * 0.99, shows: 3, of: 4 });
   assert.equal(hasReturnedCoverage(p), true);
+  // Fewer than MIN_RETURNED_SHOWS: not stated.
+  assert.equal(hasReturnedCoverage(buildSeasonProfiles(shows.slice(0, 2)).find((x) => x.season === '2025-2026')!), false);
   // Below 60% of the capital-bearing shows: not stated.
   const thin = buildSeasonProfiles([shows[0], shows[3], shows[3], shows[3]].map((s, i) => ({ ...s, openingDate: `2025-10-0${i + 1}` })));
   assert.equal(hasReturnedCoverage(thin[0]), false);

@@ -217,7 +217,8 @@ export function returnedCapitalShare(
 ): { low: number; mid: number; high: number } | null {
   if (c.recouped === true) {
     const m = c.investorMultiple;
-    const reported = typeof m === 'number' && Number.isFinite(m) && m > 0 && Array.isArray(c.sources) && c.sources.length > 0;
+    const cited = Array.isArray(c.sources) && c.sources.some((x) => typeof (x as { url?: unknown })?.url === 'string' && /^https?:\/\//.test((x as { url: string }).url));
+    const reported = typeof m === 'number' && Number.isFinite(m) && m > 0 && cited;
     const v = reported ? m : 1;
     return { low: v, mid: v, high: v };
   }
@@ -230,7 +231,9 @@ export function returnedCapitalShare(
     pct = triple(c.modelReturnedExCreditPct) ?? triple(c.modelRecoupmentPctV2) ?? triple(c.modelRecoupmentPct);
   }
   if (!pct) return null;
-  const [lo, mid, hi] = pct.map(clampPct).sort((a, b) => a - b);
+  // Not recouped means under 100%: a model reading above it (a Fizzle or Did
+  // Not Recoup record whose model runs hot) must not count as fully repaid.
+  const [lo, mid, hi] = pct.map((v) => Math.min(99, clampPct(v))).sort((a, b) => a - b);
   return { low: lo / 100, mid: mid / 100, high: hi / 100 };
 }
 
@@ -397,11 +400,13 @@ export function hasEstimatedCapital(p: SeasonProfile): boolean {
 
 /** Share of opened commercial shows (with a capital figure) that have a returned estimate before the dollars back are stated. */
 export const MIN_RETURNED_COVERAGE = 0.6;
+/** Fewest shows with a returned estimate before a season's dollars back are stated. */
+export const MIN_RETURNED_SHOWS = 3;
 
 /** Enough tracked shows with a returned estimate that "about $X back of $Y in" can be stated. */
 export function hasReturnedCoverage(p: SeasonProfile): boolean {
   const r = p.returnedCapital;
-  return hasEstimatedCapital(p) && r.of > 0 && r.capital > 0 && r.shows / r.of >= MIN_RETURNED_COVERAGE;
+  return hasEstimatedCapital(p) && r.of > 0 && r.capital > 0 && r.shows >= MIN_RETURNED_SHOWS && r.shows / r.of >= MIN_RETURNED_COVERAGE;
 }
 
 /**

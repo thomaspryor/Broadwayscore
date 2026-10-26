@@ -216,15 +216,15 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             <div className="text-xl sm:text-2xl font-bold text-emerald-400">{back.headline}</div>
             <div
               className="text-xs text-gray-500 mt-1"
-              title="Our estimate. Recouped shows count at their reported return, else all of their capital; other shows at our estimate of what has come back, from weekly grosses and costs. Only shows we can estimate are counted."
+              title="An estimate. Recouped shows count at their reported return, else all of their capital; other shows at an estimate of what has come back (our model from weekly grosses and costs, or an outside estimate). Only shows we can estimate are counted."
             >
-              Estimate, {back.range} ({back.share} of the capital in {profile.returnedCapital.shows} shows). It rises as running shows pay back.
+              Estimate, {back.range} ({back.share} of the capital in {profile.returnedCapital.shows} shows).{outcome && outcome.runningShows > 0 ? ' It rises as running shows pay back.' : ''}
             </div>
             {backHistory.length > 1 && (
               <div className="text-xs text-gray-500 mt-1">
-                {backHistory[0].date}: about {formatRowValue('money', backHistory[0].returnedMid)} back
+                Estimate on {backHistory[0].date}: about {formatRowValue('money', backHistory[0].returnedMid)} back
                 {' · '}
-                {backHistory[backHistory.length - 1].date}: about {formatRowValue('money', backHistory[backHistory.length - 1].returnedMid)} back
+                on {backHistory[backHistory.length - 1].date}: about {formatRowValue('money', backHistory[backHistory.length - 1].returnedMid)} back
               </div>
             )}
           </div>

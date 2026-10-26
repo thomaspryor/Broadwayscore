@@ -42,4 +42,9 @@ const history = fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) 
 const next = appendRows(history, rows);
 console.log(`${date}: ${rows.length} season rows (history ${history.length} -> ${next.length})`);
 for (const r of rows.slice(0, 4)) console.log(`  ${r.season} capital ${r.capital} back ${r.returnedLow}/${r.returnedMid}/${r.returnedHigh} (${r.shows}/${r.of})`);
-if (!dryRun) fs.writeFileSync(file, JSON.stringify(next, null, 1) + '\n');
+if (!dryRun) {
+  // Write beside, then rename: an interrupted write never leaves a torn history.
+  const tmp = `${file}.tmp`;
+  fs.writeFileSync(tmp, JSON.stringify(next, null, 1) + '\n');
+  fs.renameSync(tmp, file);
+}
