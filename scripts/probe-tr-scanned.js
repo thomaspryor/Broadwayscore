@@ -74,12 +74,12 @@ function tesseractStats(imgPath) {
     await page.waitForTimeout(1500);
     const hits = await page.evaluate(() => [...document.querySelectorAll('article')].map(a => ({
       title: a.querySelector('h2')?.textContent?.trim(),
-      venue: a.querySelector('h3')?.textContent?.trim(),
+      hall: a.querySelector('h3')?.textContent?.trim(),
       link: [...a.querySelectorAll('a')].map(l => l.href).find(h => h.includes('/archive/')) || '',
       text: a.textContent.replace(/\s+/g, ' ').trim().slice(0, 160),
     })));
     console.log(`QUERY "${q}": ${hits.length} hits`);
-    for (const h of hits.slice(0, 8)) console.log('  HIT', JSON.stringify({ title: h.title, venue: h.venue, link: h.link.replace('https://www.theatrerecord.com', ''), years: (h.text.match(/\b(19|20)\d\d\b/g) || []).slice(0, 3) }));
+    for (const h of hits.slice(0, 8)) console.log('  HIT', JSON.stringify({ title: h.title, hall: h.hall, link: h.link.replace('https://www.theatrerecord.com', ''), years: (h.text.match(/\b(19|20)\d\d\b/g) || []).slice(0, 3) }));
 
     if (ocrDone) continue;
     const pdfHit = hits.find(h => /\/(volume|issue)\//.test(h.link));
