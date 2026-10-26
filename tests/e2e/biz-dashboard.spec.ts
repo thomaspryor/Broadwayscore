@@ -50,6 +50,21 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     expect(box!.x + box!.width).toBeLessThanOrEqual(320 - 16);
   });
 
+  // BRO-6405: the verdict chips from the share card sit in the header, above the fold.
+  test('designation chips sit in the header and link to the guide', async ({ page }) => {
+    const chips = page.getByTestId('biz-designation-chips');
+    await expect(chips).toBeVisible();
+    for (const name of ['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Fizzle', 'Flop']) {
+      await expect(chips.getByText(name, { exact: true })).toBeVisible();
+    }
+    const stats = await page.getByTestId('biz-hero-stats').boundingBox();
+    const row = await chips.boundingBox();
+    expect(row!.y).toBeGreaterThan(stats!.y);
+    expect(row!.y).toBeLessThan(900);
+    await chips.getByText('Miracle', { exact: true }).click();
+    await expect(page).toHaveURL(/#designation-guide$/);
+  });
+
   // BRO-6283: the four season cards are gone; the Season by Season table leads the page.
   test('season by season table renders first', async ({ page }) => {
     await expect(page.getByRole('heading', { name: 'Season by Season', exact: true })).toBeVisible();

@@ -47,6 +47,7 @@ import RecoupmentTable from '@/components/biz/RecoupmentTable';
 import AllShowsTable from '@/components/biz/AllShowsTable';
 import MoneyGate from '@/components/biz/MoneyGate';
 import DesignationLegend from '@/components/biz/DesignationLegend';
+import DesignationChips, { DESIGNATION_GUIDE_ID } from '@/components/biz/DesignationChips';
 import BizPageTracker from '@/components/biz/BizPageTracker';
 import CostCoverageCard from '@/components/box-office/CostCoverageCard';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
@@ -205,6 +206,8 @@ export default function BizDashboard() {
               </div>
             ))}
           </dl>
+
+          <DesignationChips />
 
           <div className="mt-5 space-y-1">
             {freshness.length > 0 && (
@@ -391,7 +394,7 @@ export default function BizDashboard() {
 
 
         {/* Designation Legend */}
-        <section className="mb-10">
+        <section id={DESIGNATION_GUIDE_ID} className="mb-10 scroll-mt-20">
           <h2 className="text-lg font-bold text-white mb-3">
             Designation Guide
           </h2>
