@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6306",
   "planId": "edd2394f-af43-4fbb-b863-18f2b4763b7b",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-26T11:11:21.932Z",
   "submitter": {
     "name": null,
@@ -156,7 +156,7 @@
           "recouped": false,
           "capitalization": 12000000,
           "capitalizationBasis": "reported",
-          "capitalizationSource": "Forbes (May 8, 2017): Amélie \"will close May 21st, losing its $12 million capitalization.\" https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/",
+          "capitalizationSource": "Forbes (May 8, 2017): Am\u00e9lie \"will close May 21st, losing its $12 million capitalization.\" https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/",
           "recoupedSource": "Forbes (May 8, 2017): \"will close May 21st, losing its $12 million capitalization.\" https://www.forbes.com/sites/leeseymour/2017/05/08/amelie-is-first-to-close-after-tony-nominations-shake-broadway-box-office/",
           "notes": "Musical adaptation of the 2001 film at the Walter Kerr (opened Apr 3, 2017, closed May 21, 2017). Received no Tony nominations and closed weeks later.",
           "sources": [
@@ -169,5 +169,7 @@
         }
       }
     ]
-  }
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332)."
 }
