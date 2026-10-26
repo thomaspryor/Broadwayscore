@@ -14,6 +14,10 @@
  */
 
 const fs = require('fs');
+const { exitOnHelp } = require('./lib/cli-help.js');
+
+// --help/-h before any work: --fix writes review files (BRO-1711 help-flag guard).
+exitOnHelp(module);
 const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
