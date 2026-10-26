@@ -41,6 +41,8 @@ function seasonsNote(n: number, of: number): string | null {
 
 interface SeasonHistoryTableProps {
   profiles: SeasonProfile[];
+  /** Seasons the average row rests on (selectSeasonAverageBase); default: all rows. */
+  averageProfiles?: SeasonProfile[];
   currentSeason: string | null;
   /** Market date (YYYY-MM-DD): which seasons' recoupment has settled for the average row. */
   asOf: string;
@@ -50,8 +52,8 @@ interface SeasonHistoryTableProps {
   linkSeasons?: boolean;
 }
 
-export default function SeasonHistoryTable({ profiles, currentSeason, asOf, showCapital = true, linkSeasons = true }: SeasonHistoryTableProps) {
-  const avg = seasonHistoryAverage(profiles, currentSeason, asOf);
+export default function SeasonHistoryTable({ profiles, averageProfiles, currentSeason, asOf, showCapital = true, linkSeasons = true }: SeasonHistoryTableProps) {
+  const avg = seasonHistoryAverage(averageProfiles ?? profiles, currentSeason, asOf);
   const cellNote = (note: string | null) => note && <span className="block text-xs text-gray-500">{note}</span>;
   return (
     <div className="card rounded-xl overflow-hidden" data-testid="season-history">

@@ -415,6 +415,14 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
 }
 
 /**
+ * Seasons the average row rests on: the season under way plus the ten before it,
+ * whatever rows the table lists, so listing older seasons does not move it (BRO-6362).
+ */
+export function selectSeasonAverageBase(profiles: SeasonProfile[], currentSeason: string | null): SeasonProfile[] {
+  return profiles.filter((p) => !currentSeason || p.season <= currentSeason).slice(0, BASELINE_SEASONS + 1);
+}
+
+/**
  * Rows for the Season by Season table (BRO-6362): newest first, from the
  * current season back through the oldest season that clears hasTrackedCoverage,
  * so a backfilled season appears without a code change. No fixed row cap.

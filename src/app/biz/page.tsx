@@ -26,7 +26,7 @@ import {
 } from '@/lib/data-commercial';
 import { getAllShows } from '@/lib/data-core';
 import { mixSection, withoutMixRows } from '@/lib/season-findings';
-import { selectSeasonHistory } from '@/lib/season-profile';
+import { selectSeasonAverageBase, selectSeasonHistory } from '@/lib/season-profile';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
 import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 import { lossOutcomePhrase, ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
@@ -228,7 +228,7 @@ export default function BizDashboard() {
           <section className="mb-8">
             <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
             <p className="text-sm text-gray-400 -mt-2 mb-3">How many commercial shows paid back their investors, how much money went in and our estimate of how much has come back. Tap a season for every show.</p>
-            <SeasonHistoryTable profiles={seasonHistory} currentSeason={currentSeason} asOf={today} />
+            <SeasonHistoryTable profiles={seasonHistory} averageProfiles={selectSeasonAverageBase(profiles, currentSeason)} currentSeason={currentSeason} asOf={today} />
           </section>
         )}
 

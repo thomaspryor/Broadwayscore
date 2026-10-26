@@ -15,7 +15,7 @@ import { getSeason, getSeasonComparison, getSeasonProfiles, getSeasonShowList, g
 import { getMarketDate } from '@/lib/date-utils';
 import { formatDataDate } from '@/lib/biz-format';
 import { BASE_URL, SITE_OG_IMAGE, generateBreadcrumbSchema } from '@/lib/seo';
-import { MIX_ROW_LABELS, MIX_ROW_LABELS_HIDDEN, SHOW_GROUPS, mix, seasonBaseline, selectSeasonHistory, showGroup, type RecoupFindings, type SeasonComparison, type SeasonProfile } from '@/lib/season-profile';
+import { MIX_ROW_LABELS, MIX_ROW_LABELS_HIDDEN, SHOW_GROUPS, mix, seasonBaseline, selectSeasonAverageBase, selectSeasonHistory, showGroup, type RecoupFindings, type SeasonComparison, type SeasonProfile } from '@/lib/season-profile';
 
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import SeasonHistoryTable from '@/components/biz/SeasonHistoryTable';
@@ -278,7 +278,7 @@ export default function SeasonReportPage() {
           {history.length > 0 && (
             <section id="season-by-season" className="mb-8 scroll-mt-20">
               <h2 className="text-xl font-bold text-white mb-3">Season by Season</h2>
-              <SeasonHistoryTable profiles={history} currentSeason={currentSeason} asOf={today} showCapital={false} linkSeasons={false} />
+              <SeasonHistoryTable profiles={history} averageProfiles={selectSeasonAverageBase(profiles, currentSeason)} currentSeason={currentSeason} asOf={today} showCapital={false} linkSeasons={false} />
             </section>
           )}
 

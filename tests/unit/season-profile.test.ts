@@ -25,6 +25,7 @@ import {
   MIX_ROW_LABELS_HIDDEN,
   seasonBaseline,
   seasonHistoryAverage,
+  selectSeasonAverageBase,
   selectSeasonHistory,
   showGroup,
   trackedRecord,
@@ -583,4 +584,14 @@ test('selectSeasonHistory keeps uncovered gaps between covered seasons, drops fu
   assert.deepEqual(selectSeasonHistory(profiles, '2014-2015').map((p) => p.season), ['2014-2015', '2013-2014', '2012-2013', '2011-2012', '2010-2011']);
   // No current season given: every covered season is listed (no cap).
   assert.equal(selectSeasonHistory(profiles, null).length, 6);
+});
+
+test('the average base stays the latest 11 seasons however many rows the table lists', () => {
+  const shows: SeasonShowInput[] = [];
+  for (let y = 2011; y <= 2025; y++) shows.push(...season(y, 10, { tracked: true }));
+  const profiles = buildSeasonProfiles(shows);
+  assert.equal(selectSeasonHistory(profiles, '2025-2026').length, 15);
+  const base = selectSeasonAverageBase(profiles, '2025-2026');
+  assert.equal(base.length, 11);
+  assert.equal(base[10].season, '2015-2016');
 });
