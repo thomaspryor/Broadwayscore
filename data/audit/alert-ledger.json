@@ -245,11 +245,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T06:00:39.839Z",
-      "lastSeen": "2026-10-26T06:00:39.839Z",
-      "lastNotifiedAt": "2026-10-26T06:00:39.839Z",
-      "lastSurfacedAt": "2026-10-26T06:00:39.839Z",
-      "notifyCount": 171,
+      "incidentOpenedAt": "2026-10-26T06:27:53.808Z",
+      "lastSeen": "2026-10-26T06:27:53.808Z",
+      "lastNotifiedAt": "2026-10-26T06:27:53.808Z",
+      "lastSurfacedAt": "2026-10-26T06:27:53.808Z",
+      "notifyCount": 172,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
@@ -6760,15 +6760,15 @@
       "resolveReason": "absent"
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "incidentOpenedAt": "2026-10-26T05:03:49.078Z",
-      "lastSeen": "2026-10-26T05:31:03.592Z",
-      "lastNotifiedAt": "2026-10-26T05:03:49.078Z",
+      "incidentOpenedAt": "2026-10-26T06:27:53.263Z",
+      "lastSeen": "2026-10-26T06:27:53.263Z",
+      "lastNotifiedAt": "2026-10-26T06:27:53.263Z",
       "lastSurfacedAt": null,
-      "notifyCount": 13,
+      "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": "BRO-6281",
       "dispatch": {
@@ -6777,10 +6777,7 @@
         "runId": "40256915379",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
       },
-      "absentRunIds": [],
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-26T06:00:36.110Z",
-      "resolveReason": "job-green"
+      "absentRunIds": []
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -26233,7 +26230,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
       "firstSeen": "2026-10-24T21:18:01.551Z",
       "incidentOpenedAt": "2026-10-25T20:34:41.904Z",
-      "lastSeen": "2026-10-26T05:42:51.767Z",
+      "lastSeen": "2026-10-26T06:27:53.252Z",
       "lastNotifiedAt": "2026-10-25T20:34:41.904Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
@@ -26245,10 +26242,8 @@
         "runId": "40132155159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
-      "absentRunIds": [
-        "40275669346"
-      ],
-      "silentRefires": 15
+      "absentRunIds": [],
+      "silentRefires": 16
     },
     "land:land/bro-6158-plans": {
       "status": "resolved",
@@ -27254,7 +27249,10 @@
         "mode": "dispatch-at-filing",
         "runId": "40275669346",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346"
-      }
+      },
+      "absentRunIds": [
+        "40277912927"
+      ]
     },
     "land:land/bro-2710-safe-write-3": {
       "status": "open",

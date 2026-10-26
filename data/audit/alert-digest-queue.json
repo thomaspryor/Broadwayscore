@@ -1662,37 +1662,6 @@
     "queuedAt": "2026-10-26T04:45:49.636Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40273978358)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-26T06:00:39.840Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:dance-is-not-for-us-off-west-end-2026",
     "title": "Review gap — \"Dance Is Not for Us\" missing 1 cited review(s)",
     "description": "Dance Is Not for Us (dance-is-not-for-us-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=dance-is-not-for-us-off-west-end-2026 --checkpoint --ingest-missing",
@@ -1813,6 +1782,37 @@
       }
     ],
     "queuedAt": "2026-10-26T06:03:47.771Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40277912927",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40277912927)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests, E2E Tests"
+      }
+    ],
+    "queuedAt": "2026-10-26T06:27:53.809Z"
   },
   {
     "conditionKey": "land:land/bro-2710-safe-write-3",
