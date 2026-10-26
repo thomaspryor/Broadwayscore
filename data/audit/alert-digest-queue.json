@@ -664,5 +664,19 @@
       }
     ],
     "queuedAt": "2026-10-26T13:07:39.328Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-revlon-girl-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-revlon-girl-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-revlon-girl-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T13:15:02.939Z"
   }
 ]
