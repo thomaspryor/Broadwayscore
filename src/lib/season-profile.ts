@@ -75,6 +75,12 @@ export interface SeasonProfile {
   capitalization: { all: MoneyAggregate; musical: MoneyAggregate; play: MoneyAggregate };
   /** Disclosed capitalizations plus an estimate for each commercial show with none (estimateCapitalization). */
   estimatedCapital: CapitalEstimate;
+  /**
+   * The same per-show figures as estimatedCapital, split by outcome (owner,
+   * 2026-10-26: the season page's only loss-side number was capital still at
+   * risk in running shows). Shows with no figure count in neither.
+   */
+  capitalByOutcome: { closedUnrecouped: number; closedUnrecoupedShows: number; running: number; runningShows: number };
   runningCost: { musical: MoneyAggregate; play: MoneyAggregate };
 }
 
@@ -138,6 +144,7 @@ function emptyProfile(season: string): SeasonProfile {
     tracked: 0, nonprofit: 0, commercial: 0, recouped: 0,
     capitalization: { all: emptyMoney(), musical: emptyMoney(), play: emptyMoney() },
     estimatedCapital: { total: 0, estimated: 0, missing: 0, nonprofitOut: 0 },
+    capitalByOutcome: { closedUnrecouped: 0, closedUnrecoupedShows: 0, running: 0, runningShows: 0 },
     runningCost: { musical: emptyMoney(), play: emptyMoney() },
   };
 }
@@ -250,9 +257,12 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
     // ahead of the comparables median.
     const disclosedCap = isOwnEstimate(c) ? null : c.capitalization;
     addMoney(p.capitalization.all, disclosedCap);
+    let showCap: number | null = null;
     if (typeof disclosedCap === 'number' && disclosedCap > 0) {
+      showCap = disclosedCap;
       p.estimatedCapital.total += disclosedCap;
     } else if (typeof c.capitalization === 'number' && c.capitalization > 0) {
+      showCap = c.capitalization;
       p.estimatedCapital.total += c.capitalization;
       p.estimatedCapital.estimated++;
     } else if (c.nonprofitOrg) {
@@ -263,8 +273,18 @@ export function buildSeasonProfiles(shows: SeasonShowInput[]): SeasonProfile[] {
       );
       if (est === null) p.estimatedCapital.missing++;
       else {
+        showCap = est;
         p.estimatedCapital.total += est;
         p.estimatedCapital.estimated++;
+      }
+    }
+    if (showCap !== null && c.recouped !== true) {
+      if (show.status === 'closed') {
+        p.capitalByOutcome.closedUnrecouped += showCap;
+        p.capitalByOutcome.closedUnrecoupedShows++;
+      } else if (show.status === 'open' || show.status === 'previews') {
+        p.capitalByOutcome.running += showCap;
+        p.capitalByOutcome.runningShows++;
       }
     }
     if (isMusical) {
