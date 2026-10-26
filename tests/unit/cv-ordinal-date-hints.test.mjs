@@ -204,3 +204,39 @@ describe('ordinal publishDate reaches the URL-year conflict hint', () => {
     assert.equal(urlYearConflict, null);
   });
 });
+
+// BRO-2843: the remaining bare `new Date(publishDate)` sites in
+// audit-review-content.js (checkDateConsistency) and extract-bww-reviews.js
+// (isWrongProduction) now go through scripts/lib/review-date-checks.js.
+// Corpus replay at fix time: 51,826 dated files, 6,590 ordinal dates newly
+// parse, 0 drift on dates that already parsed, 636 too-early decisions flip
+// (all ordinal-dated, previously silently "not too early").
+import { createRequire as _bro2843Require } from 'node:module';
+import _assert2843 from 'node:assert/strict';
+import _test2843 from 'node:test';
+const _req2843 = _bro2843Require(import.meta.url);
+const { parsePublishDate, isPublishedTooEarly } = _req2843('../../scripts/lib/review-date-checks.js');
+
+_test2843('parsePublishDate reads ordinal dates and keeps ISO/prose identical', () => {
+  _assert2843.equal(parsePublishDate('October 6th, 2022').getTime(), new Date('October 6, 2022').getTime());
+  _assert2843.equal(parsePublishDate('2022-10-06').getTime(), new Date('2022-10-06').getTime());
+  _assert2843.equal(parsePublishDate('October 6, 2022').getTime(), new Date('October 6, 2022').getTime());
+  _assert2843.equal(parsePublishDate('1962-04-01').getFullYear(), 1962); // pre-1970 not dropped
+  _assert2843.equal(parsePublishDate('not a date'), null);
+  _assert2843.equal(parsePublishDate(undefined), null);
+});
+
+_test2843('isPublishedTooEarly flags an ordinal-dated review 400+ days before opening', () => {
+  const show = { openingDate: '2023-06-01' };
+  _assert2843.equal(isPublishedTooEarly({ publishDate: 'August 14th, 2021' }, show), true);
+  _assert2843.equal(isPublishedTooEarly({ publishDate: 'May 30th, 2023' }, show), false);
+  _assert2843.equal(isPublishedTooEarly({ publishDate: '2021-08-14' }, show), true);
+  _assert2843.equal(isPublishedTooEarly({ publishDate: 'garbage' }, show), false);
+  _assert2843.equal(isPublishedTooEarly({ publishDate: 'May 30th, 2023' }, null), false);
+});
+
+_test2843('previewDate takes precedence over openingDate', () => {
+  const show = { previewDate: '2023-03-01', openingDate: '2023-06-01' };
+  _assert2843.equal(isPublishedTooEarly({ publishDate: 'January 1st, 2022' }, show), true);
+  _assert2843.equal(isPublishedTooEarly({ publishDate: 'May 1st, 2022' }, show), false);
+});

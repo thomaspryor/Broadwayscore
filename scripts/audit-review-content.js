@@ -16,6 +16,7 @@
  */
 
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
+const { parsePublishDate } = require('./lib/review-date-checks');
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -307,15 +308,8 @@ function checkDateConsistency(review, showData) {
   // Parse publish date
   let publishDate = null;
   if (review.publishDate) {
-    // Handle various date formats
-    const dateStr = review.publishDate;
-    // Try ISO format first
-    if (/^\d{4}-\d{2}-\d{2}/.test(dateStr)) {
-      publishDate = new Date(dateStr);
-    } else {
-      // Try natural language format
-      publishDate = new Date(dateStr);
-    }
+    // Ordinal-safe ("October 6th, 2022"); bare new Date() is Invalid there (BRO-2843)
+    publishDate = parsePublishDate(review.publishDate);
   }
 
   if (!publishDate || isNaN(publishDate.getTime())) {

@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isPublishedTooEarly } = require('./lib/review-date-checks');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { roundupEntryDateFields } = require('./lib/publish-date-provenance');
@@ -193,13 +194,7 @@ function extractReviewsFromFile(filePath, showId) {
  * (generous to account for early preview coverage).
  */
 function isWrongProduction(review, show) {
-  if (!show || !review.publishDate) return false;
-  const earliestDate = show.previewDate || show.openingDate;
-  if (!earliestDate) return false;
-  const pub = new Date(review.publishDate);
-  const earliest = new Date(earliestDate);
-  const daysBefore = (earliest - pub) / (1000 * 60 * 60 * 24);
-  return daysBefore > 400;
+  return isPublishedTooEarly(review, show);
 }
 
 /**
