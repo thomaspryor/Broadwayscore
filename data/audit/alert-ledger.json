@@ -245,16 +245,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T05:42:51.780Z",
-      "lastSeen": "2026-10-26T05:42:51.780Z",
-      "lastNotifiedAt": "2026-10-26T05:42:51.780Z",
-      "lastSurfacedAt": "2026-10-26T05:42:51.780Z",
+      "incidentOpenedAt": "2026-10-26T06:00:39.839Z",
+      "lastSeen": "2026-10-26T06:00:39.839Z",
+      "lastNotifiedAt": "2026-10-26T06:00:39.839Z",
+      "lastSurfacedAt": "2026-10-26T06:00:39.839Z",
       "notifyCount": 171,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "silentRefires": 1
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6779,7 +6778,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
       },
       "absentRunIds": [],
-      "resolvedAt": "2026-10-26T05:42:51.748Z",
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-26T06:00:36.110Z",
       "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
@@ -26245,7 +26245,9 @@
         "runId": "40132155159",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40132155159"
       },
-      "absentRunIds": [],
+      "absentRunIds": [
+        "40275669346"
+      ],
       "silentRefires": 15
     },
     "land:land/bro-6158-plans": {
@@ -27234,6 +27236,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:422359c5": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every weekly cost in commercial.json\"",
+      "firstSeen": "2026-10-26T06:00:36.141Z",
+      "incidentOpenedAt": "2026-10-26T06:00:36.141Z",
+      "lastSeen": "2026-10-26T06:00:36.141Z",
+      "lastNotifiedAt": "2026-10-26T06:00:36.141Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6297",
+      "dispatch": {
+        "requestedAt": "2026-10-26T06:00:36.141Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40275669346",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346"
+      }
     }
   }
 }
