@@ -64,6 +64,7 @@ function buildAffiliateReportHtml(stats) {
     <p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,0.45);font-family:${FONT};line-height:1.6;">
       <span style="display:inline-block;margin-right:14px;">Commission ${wowChip(wowDelta.commissionPct)}</span>
       <span style="display:inline-block;margin-right:14px;">Conversions ${wowChip(wowDelta.conversionsPct)}</span>
+      <span style="display:inline-block;margin-right:14px;">New customers ${wowChip(wowDelta.newCustomersPct)}</span>
       <span style="display:inline-block;">Sales ${wowChip(wowDelta.revenuePct)}</span>
       <br><span style="font-size:11px;color:rgba(255,255,255,0.3);">vs prior ${win.days}d (${esc(wowDelta.priorStartDate)} \u2013 ${esc(wowDelta.priorEndDate)}) \u00b7 Impact only</span>
     </p>` : '';
@@ -80,9 +81,12 @@ function buildAffiliateReportHtml(stats) {
   }
   const partialBanner = context && context.partial ? `
     <p style="margin:10px 0 0;font-size:11px;font-weight:700;color:#f87171;font-family:${FONT};">PARTIAL DATA \u2014 baseline/outlier context unavailable this week; treat deltas with caution.</p>` : '';
+  // New TodayTix customers pay 5% vs 1% for existing ones: most of the money.
+  const mix = impact && !impact.skipped ? impact.todaytixMix : null;
+  const newCustomersNote = mix ? ` (${esc(htmlInt(mix.newCount))} new to TodayTix)` : '';
   const commissionHtml = card(`Our earnings \u2014 last ${win.days} days`, `
     <p style="margin:0;font-size:42px;font-weight:800;color:#ffffff;font-family:${FONT};line-height:1;">${esc(htmlMoney(stats.totals.commission))}</p>
-    <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${esc(htmlInt(stats.totals.conversions))} conversion${stats.totals.conversions !== 1 ? 's' : ''} &middot; ${esc(htmlMoney(stats.totals.revenue))} attributed sales</p>
+    <p style="margin:8px 0 0;font-size:13px;color:rgba(255,255,255,0.5);font-family:${FONT};">${esc(htmlInt(stats.totals.conversions))} conversion${stats.totals.conversions !== 1 ? 's' : ''}${newCustomersNote} &middot; ${esc(htmlMoney(stats.totals.revenue))} attributed sales</p>
     ${wowLine}
     ${baselineLine}
     ${partialBanner}
@@ -143,13 +147,18 @@ function buildAffiliateReportHtml(stats) {
   // Per-platform table
   let platformHtml = '';
   if (perPlatform && perPlatform.length > 0) {
-    const hs = 'font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.35);font-weight:600;padding:0 8px 8px;font-family:' + FONT;
-    const cs = 'font-size:14px;color:rgba(255,255,255,0.85);padding:10px 8px;font-family:' + FONT + ';border-top:1px solid rgba(255,255,255,0.06)';
+    // Tight padding + breakable platform names: six columns at 8px padding
+    // pushed the whole email to ~556px on a 390px phone.
+    const hs = 'font-size:10px;text-transform:uppercase;letter-spacing:0.3px;color:rgba(255,255,255,0.35);font-weight:600;padding:0 4px 8px;font-family:' + FONT;
+    const cs = 'font-size:13px;color:rgba(255,255,255,0.85);padding:10px 4px;font-family:' + FONT + ';border-top:1px solid rgba(255,255,255,0.06)';
     const dash = '<span style="color:rgba(255,255,255,0.25)">\u2014</span>';
-    const rows = perPlatform.map(r => {
-      const dot = r.affiliate ? '' : '<span style="color:rgba(255,255,255,0.25);"> \u00B7</span>';
+    // Unmonetized platforms are all dashes past the clicks column, so they
+    // go in one line under the table instead of a row each.
+    const unpaid = perPlatform.filter(r => !r.affiliate);
+    const unpaidClicks = unpaid.reduce((n, r) => n + (r.clicks || 0), 0);
+    const rows = perPlatform.filter(r => r.affiliate).map(r => {
       return `<tr>
-        <td style="${cs};font-weight:600;color:#ffffff;">${esc(r.platform)}${dot}</td>
+        <td style="${cs};font-weight:600;color:#ffffff;">${esc(r.platform)}</td>
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${htmlInt(r.clicks)}</td>
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${r.conversions != null ? htmlInt(r.conversions) : dash}</td>
         <td align="right" style="${cs};font-variant-numeric:tabular-nums;">${r.conversionRate != null ? htmlPct(r.conversionRate) : dash}</td>
@@ -169,7 +178,8 @@ function buildAffiliateReportHtml(stats) {
         </tr>
         ${rows}
       </table>
-      <p style="margin:12px 0 0;font-size:11px;color:rgba(255,255,255,0.25);font-family:${FONT};">\u00B7 = no affiliate program. CR = conversion rate. EPC = earnings per click.</p>
+      ${unpaid.length ? `<p style="margin:12px 0 0;font-size:12px;color:rgba(255,255,255,0.5);font-family:${FONT};line-height:1.5;">${htmlInt(unpaidClicks)} clicks went to sellers with no affiliate program: ${unpaid.map(r => `${esc(r.platform)} ${htmlInt(r.clicks)}`).join(', ')}.</p>` : ''}
+      <p style="margin:8px 0 0;font-size:11px;color:rgba(255,255,255,0.25);font-family:${FONT};">CR = conversion rate. EPC = earnings per click.</p>
     `);
   }
 

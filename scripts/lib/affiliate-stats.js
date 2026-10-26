@@ -15,6 +15,10 @@
 
 const PROVIDER_TIMEOUT_MS = 8000; // Each provider must return within 8s (Vercel 10s route cap)
 const IMPACT_MAX_DAYS = 45;       // Impact API rejects date ranges > 45 days
+// Rolling windows ask Impact for a day past "now" (late-landing actions), so a
+// lookback of IMPACT_MAX_DAYS would request 46 days and always 400.
+const MAX_LOOKBACK_DAYS = IMPACT_MAX_DAYS - 1;
+const DAY_MS = 24 * 60 * 60 * 1000;
 const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z'); // TodayTix 2% -> 5% cutover
 
 // Platforms we have an affiliate program for — used to flag rows in the
@@ -38,6 +42,37 @@ function fmtISO(d) {
 
 function fmtDate(d) {
   return d.toISOString().split('T')[0];
+}
+
+// Impact's account clock is Pacific: Action EventDates carry -07:00/-08:00 and
+// partner_performance_by_day buckets by Pacific day.
+const PACIFIC_PARTS = new Intl.DateTimeFormat('en-US', {
+  timeZone: 'America/Los_Angeles',
+  year: 'numeric', month: '2-digit', day: '2-digit',
+  hour: '2-digit', minute: '2-digit', second: '2-digit', hourCycle: 'h23',
+});
+
+function pacificWall(d) {
+  const p = Object.fromEntries(PACIFIC_PARTS.formatToParts(d).map((x) => [x.type, x.value]));
+  return { y: +p.year, m: +p.month, d: +p.day, ms: Date.UTC(+p.year, +p.month - 1, +p.day, +p.hour, +p.minute, +p.second) };
+}
+
+/** YYYY-MM-DD of `d` on the Pacific calendar. */
+function fmtPacificDate(d) {
+  const w = pacificWall(d);
+  return `${w.y}-${String(w.m).padStart(2, '0')}-${String(w.d).padStart(2, '0')}`;
+}
+
+/** The latest Pacific midnight at or before `d` (DST-safe). */
+function pacificMidnight(d) {
+  const w = pacificWall(d);
+  const midnightWallMs = Date.UTC(w.y, w.m - 1, w.d);
+  // Offset at `d`, then re-read it at the candidate: on DST-change days
+  // midnight sits on the other side of the 2am switch.
+  let guess = midnightWallMs - (w.ms - Math.floor(d.getTime() / 1000) * 1000);
+  const off = pacificWall(new Date(guess)).ms - guess;
+  guess = midnightWallMs - off;
+  return new Date(guess);
 }
 
 async function fetchWithTimeout(url, options = {}, timeoutMs = PROVIDER_TIMEOUT_MS) {
@@ -161,9 +196,9 @@ async function fetchImpactActionsWindow(days, opts = {}) {
     throw new Error('Impact credentials missing (IMPACT_ACCOUNT_SID / IMPACT_AUTH_TOKEN)');
   }
   const now = opts.now || new Date();
-  const clamped = Math.min(Math.max(1, Math.floor(days)), IMPACT_MAX_DAYS);
-  const start = new Date(now.getTime() - clamped * 24 * 60 * 60 * 1000);
-  const end = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+  const clamped = Math.min(Math.max(1, Math.floor(days)), MAX_LOOKBACK_DAYS);
+  const start = new Date(now.getTime() - clamped * DAY_MS);
+  const end = new Date(now.getTime() + DAY_MS);
   const result = await fetchImpact(start, end, opts);
   if (result.skipped) throw new Error(`Impact actions fetch skipped: ${result.reason}`);
   return result.actions;
@@ -417,14 +452,31 @@ async function fetchPosthog(startDate, endDate) {
 function clampDays(days) {
   const n = Number(days);
   if (!Number.isFinite(n) || n < 1) return 7;
-  return Math.min(Math.floor(n), IMPACT_MAX_DAYS);
+  return Math.min(Math.floor(n), MAX_LOOKBACK_DAYS);
 }
 
-function buildWindow(days) {
-  const end = new Date();
-  const endBuffered = new Date(end.getTime() + 24 * 60 * 60 * 1000);
-  const start = new Date(end.getTime() - days * 24 * 60 * 60 * 1000);
-  return { start, end, endBuffered };
+/**
+ * Rolling (default): the `days` x 24h before now, Impact end buffered a day.
+ * completeDays: the last `days` whole Pacific days, ending at the latest
+ * Pacific midnight. The weekly email uses this so its totals, WoW and the
+ * trailing baseline (whole Pacific days from partner_performance_by_day) all
+ * describe the same week; rolling windows cut a send-time slice off both ends.
+ */
+function buildWindow(days, { completeDays = false, now = new Date() } = {}) {
+  if (completeDays) {
+    const end = pacificMidnight(now);
+    // +12h keeps a DST hour from landing on the wrong calendar day.
+    const start = pacificMidnight(new Date(end.getTime() - days * DAY_MS + 12 * 60 * 60 * 1000));
+    return {
+      start, end, endBuffered: end,
+      startDate: fmtPacificDate(start),
+      endDate: fmtPacificDate(new Date(end.getTime() - 12 * 60 * 60 * 1000)), // last whole day, inclusive
+    };
+  }
+  const end = now;
+  const endBuffered = new Date(end.getTime() + DAY_MS);
+  const start = new Date(end.getTime() - days * DAY_MS);
+  return { start, end, endBuffered, startDate: fmtDate(start), endDate: fmtDate(end) };
 }
 
 /**
@@ -434,11 +486,13 @@ function buildWindow(days) {
  * @param {object} opts
  * @param {number} opts.days - Lookback window (clamped 1-45)
  * @param {boolean} [opts.includeWoW=false] - Fetch prior equivalent window for delta
+ * @param {boolean} [opts.completeDays=false] - Whole Pacific days ending yesterday (see buildWindow)
+ * @param {Date} [opts.now] - Injectable clock
  * @returns {Promise<object>} stats
  */
-async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
+async function getAffiliateStats({ days = 7, includeWoW = false, completeDays = false, now } = {}) {
   const clampedDays = clampDays(days);
-  const window = buildWindow(clampedDays);
+  const window = buildWindow(clampedDays, { completeDays, now });
 
   const results = await Promise.allSettled([
     fetchImpact(window.start, window.endBuffered),
@@ -575,7 +629,8 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
   let wowDelta = null;
   if (includeWoW && clampedDays * 2 <= IMPACT_MAX_DAYS) {
     const priorEnd = new Date(window.start);
-    const priorStart = new Date(priorEnd.getTime() - clampedDays * 24 * 60 * 60 * 1000);
+    const priorWin = completeDays ? buildWindow(clampedDays, { completeDays, now: priorEnd }) : null;
+    const priorStart = priorWin ? priorWin.start : new Date(priorEnd.getTime() - clampedDays * DAY_MS);
     try {
       const prior = await fetchImpact(priorStart, priorEnd);
       if (!prior.skipped) {
@@ -591,6 +646,10 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
         const curCommission = impact && !impact.skipped ? impact.totalPayout : 0;
         const curRevenue = impact && !impact.skipped ? impact.totalRevenue : 0;
         const curConversions = impact && !impact.skipped ? impact.conversions : 0;
+        // New TodayTix customers earn 5x an existing one (5% vs 1%), so their
+        // count moves commission far more than the raw conversion count does.
+        const curNew = impact && !impact.skipped && impact.todaytixMix ? impact.todaytixMix.newCount : 0;
+        const priorNew = priorSummary.todaytixMix ? priorSummary.todaytixMix.newCount : 0;
         wowDelta = {
           commissionPct: priorCommission > 0
             ? ((curCommission - priorCommission) / priorCommission) * 100
@@ -601,11 +660,13 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
           conversionsPct: priorConversions > 0
             ? ((curConversions - priorConversions) / priorConversions) * 100
             : null,
+          newCustomersPct: priorNew > 0 ? ((curNew - priorNew) / priorNew) * 100 : null,
           priorCommission,
           priorRevenue,
           priorConversions,
-          priorStartDate: fmtDate(priorStart),
-          priorEndDate: fmtDate(priorEnd),
+          priorNewCustomers: priorNew,
+          priorStartDate: priorWin ? priorWin.startDate : fmtDate(priorStart),
+          priorEndDate: priorWin ? priorWin.endDate : fmtDate(priorEnd),
         };
       }
     } catch (err) {
@@ -647,10 +708,10 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
         baselineDays: baselineSpan - clampedDays,
       });
       // Bot-divergence note: Impact-recorded clicks vs real PostHog clicks
-      // over the window (Jul 31–Aug 2 2026 saw 2-3x bot inflation).
-      const impactWindowClicks = dailyPerf
-        .filter((d) => d.date > fmtDate(window.start) && d.date <= asOf)
-        .reduce((s, d) => s + d.clicks, 0);
+      // over the window (Jul 31–Aug 2 2026 saw 2-3x bot inflation). Reuse the
+      // baseline's window bucket: a hand-rolled `date > start` filter here
+      // counted 6 days of Impact clicks against 7 days of PostHog clicks.
+      const impactWindowClicks = context.baseline.window.clicks;
       if (posthog && !posthog.skipped && posthog.totalClicks > 0) {
         context.impactClicks = impactWindowClicks;
         context.clickDivergenceRatio = impactWindowClicks / posthog.totalClicks;
@@ -664,8 +725,9 @@ async function getAffiliateStats({ days = 7, includeWoW = false } = {}) {
   return {
     window: {
       days: clampedDays,
-      startDate: fmtDate(window.start),
-      endDate: fmtDate(window.end),
+      completeDays,
+      startDate: window.startDate,
+      endDate: window.endDate,
     },
     totals: {
       commission: totalCommission,
@@ -695,6 +757,8 @@ module.exports = {
   analyzeTodaytixMix,
   summarizeImpact,
   clampDays,
+  buildWindow,
+  pacificMidnight,
   AFFILIATE_PLATFORMS,
   AFFILIATE_PLATFORM_CONFIG,
   IMPACT_MAX_DAYS,

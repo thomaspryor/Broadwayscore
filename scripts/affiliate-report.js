@@ -31,7 +31,9 @@ const JSON_MODE = args.includes('--json');
 const HTML_MODE = args.includes('--html');
 
 async function main() {
-  const stats = await getAffiliateStats({ days: DAYS, includeWoW: true });
+  // Whole Pacific days so the totals, WoW and trailing baseline cover the
+  // same week no matter when the cron fires (BRO-6379).
+  const stats = await getAffiliateStats({ days: DAYS, includeWoW: true, completeDays: true });
 
   if (JSON_MODE) {
     console.log(JSON.stringify(stats, null, 2));
@@ -54,6 +56,7 @@ async function main() {
     console.log(`\n── Week over Week (vs ${wowDelta.priorStartDate} to ${wowDelta.priorEndDate}, Impact only) ──`);
     console.log(`  Commission   : ${arrow(wowDelta.commissionPct) || 'n/a'}    (prior $${wowDelta.priorCommission.toFixed(2)})`);
     console.log(`  Conversions  : ${arrow(wowDelta.conversionsPct) || 'n/a'}    (prior ${wowDelta.priorConversions})`);
+    console.log(`  New TT custs : ${arrow(wowDelta.newCustomersPct) || 'n/a'}    (prior ${wowDelta.priorNewCustomers})`);
     console.log(`  Attrib sales : ${arrow(wowDelta.revenuePct) || 'n/a'}    (prior $${wowDelta.priorRevenue.toFixed(2)})`);
   }
 
