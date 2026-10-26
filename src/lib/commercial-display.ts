@@ -738,7 +738,8 @@ export function likelyOutcomeLine(c: Parameters<typeof likelyOutcomeDesignation>
 export type LikelyOutcomeBasis = 'estimate' | 'model';
 export function likelyOutcomeBasis(c: Parameters<typeof likelyOutcomeDesignation>[0]): LikelyOutcomeBasis | null {
   if (!likelyOutcomeDesignation(c)) return null;
-  return ownReturnedEstimatePct(c) !== null ? 'estimate' : 'model';
+  // Our own range (ourEstimateRangePct) is our estimate, not an outside one.
+  return ownReturnedEstimatePct({ ...c, ourEstimateRangePct: undefined }) !== null ? 'estimate' : 'model';
 }
 
 /** The basis in words: the card prints LIKELY_OUTCOME_BASIS, the /biz cell's tooltip says LIKELY_OUTCOME_NOTE in full. */

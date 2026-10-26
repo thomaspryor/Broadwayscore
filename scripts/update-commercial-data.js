@@ -1807,7 +1807,7 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     }
 
     // A new estimate can size a loss label already on the row (BRO-5636).
-    if ((field === 'estimatedRecoupmentPct' || field === 'analystRecoupPct') && isLossDesignation(commercial.shows[slug].designation)) toSize.add(slug);
+    if ((field === 'estimatedRecoupmentPct' || field === 'analystRecoupPct' || field === 'ourEstimateRangePct') && isLossDesignation(commercial.shows[slug].designation)) toSize.add(slug);
 
     // For estimatedRecoupmentPct, add source + date
     if (field === 'estimatedRecoupmentPct') {

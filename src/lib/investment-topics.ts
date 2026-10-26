@@ -126,6 +126,8 @@ export interface MusicalRow {
   monthsToRecoup: number | null;
   /** The analyst's [low, high] % returned, running shows only, when the site displays it. */
   analystRange: [number, number] | null;
+  /** The range is our own estimate (ourEstimateRangePct), not an analyst's. */
+  rangeIsOurs?: boolean;
 }
 
 export interface KindSummary {
@@ -182,6 +184,7 @@ export function buildMusicalsSinceReopening(shows: TopicShowInput[], asOf: strin
         designation: s.commercial?.designation ?? null,
         monthsToRecoup: outcome === 'recouped' ? monthsBetween(s.openingDate, s.commercial?.recoupedDate, s.closingDate, asOf) : null,
         analystRange: range,
+        ...(range && !s.commercial?.analystRecoupPct ? { rangeIsOurs: true } : {}),
       };
     })
     .sort((a, b) => b.openingDate.localeCompare(a.openingDate) || a.title.localeCompare(b.title));

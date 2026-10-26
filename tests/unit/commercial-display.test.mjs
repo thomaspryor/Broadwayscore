@@ -34,6 +34,7 @@ const {
   getDisplayableEstimateRange,
   toPublicShowCommercial,
   getRecoupedCellSummary,
+  likelyOutcomeBasis,
 } = await import('../../src/lib/commercial-display.ts');
 
 const base = {
@@ -594,4 +595,9 @@ test('BRO-6245: ourEstimateRangePct stands in for the analyst range and is credi
   assert.deepEqual(both.range, [10, 20]);
   // Never on a recouped show.
   assert.equal(getRecoupmentDisplayMode({ ...closedFlop, recouped: true, designation: 'Trickle' }), 'announced');
+});
+
+test('BRO-6245: our own range never reads as an outside estimate in the Likely line', () => {
+  const rec = { ...base, status: 'closed', designation: 'Did Not Recoup', recouped: false, ourEstimateRangePct: [10, 30] };
+  assert.notEqual(likelyOutcomeBasis(rec), 'estimate');
 });
