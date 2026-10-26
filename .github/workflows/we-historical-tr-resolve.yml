@@ -59,7 +59,7 @@ jobs:
           RESUME: ${{ inputs.resume }}
         # --budget-min stops the lookups before the step timeout so the rows done so far are still committed
         run: |
-          ARGS=(--seasons="$SEASONS" --budget-min=36)
+          ARGS=(--seasons="$SEASONS" --budget-min=30)
           if [ "$RESUME" = "true" ]; then ARGS+=(--resume); fi
           node scripts/resolve-we-unlisted-tr.js "${ARGS[@]}"
 

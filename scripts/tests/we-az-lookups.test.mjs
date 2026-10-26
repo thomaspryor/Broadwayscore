@@ -1,8 +1,8 @@
 import { createRequire } from 'module';
 import assert from 'assert';
 const require = createRequire(import.meta.url);
-const { azLookups, azVenueName } = require('./we-az-lookups.js');
-const { pickTrForReview, buildReviewLedCandidates } = require('./we-review-led-candidates.js');
+const { azLookups, azVenueName } = require('../lib/we-az-lookups.js');
+const { pickTrForReview, buildReviewLedCandidates } = require('../lib/we-review-led-candidates.js');
 
 const az = { titles: [
   { title: 'ALADDIN', venue: 'Prince Edward', opened: '2016-06-15', firstAsAt: '2016-08-27' },
@@ -39,6 +39,12 @@ assert.strictEqual(pickTrForReview(results, { title: 'THE FATHER', venue: null, 
 // signal label on the candidate
 const cands = buildReviewLedCandidates({ season: '2015-2016', shows: [], today: '2026-10-26', lookups: [
   { review: { title: 'ALADDIN', venue: 'Prince Edward', date: '2016-06-15', source: 'tr-az' }, tr: null, header: null, error: null },
+  { review: { title: 'THE FATHER', venue: null, date: '2015-10-13', source: 'tr-az' },
+    tr: { title: 'The Father', venue: "Wyndham's Theatre, London", link: 'https://www.theatrerecord.com/archive/volume/35/dest/21_the_father' },
+    header: 'THE FATHER\nWyndham\'s Theatre\nPreviews 1 October 2015, Opened 13 October 2015, Closes 2 January 2016', error: null },
 ] });
 assert.deepStrictEqual(cands[0].signals, ['tr-az']);
+// a venueless A-Z row takes the venue from the TR page and reaches a promotable decision
+assert.strictEqual(cands[1].venue, "Wyndham's Theatre");
+assert.strictEqual(cands[1].decision.promotable, true, JSON.stringify(cands[1].decision));
 console.log('we-az-lookups ok');

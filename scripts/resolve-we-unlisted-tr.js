@@ -624,6 +624,13 @@ async function main() {
       const rows = [];
       // --resume keeps finished rows (no error) of an earlier partial run, so a time-boxed run can be dispatched again
       const prior = new Map();
+      // without --resume the old file is still the fallback for lookups a time-boxed run never reaches, so a partial run cannot shrink a complete file
+      const old = new Map();
+      if (budgetMin && p.season !== DATELESS_KEY && fs.existsSync(reviewLedPath(ROOT, p.season))) {
+        for (const r of JSON.parse(fs.readFileSync(reviewLedPath(ROOT, p.season), 'utf8')).lookups || []) {
+          old.set(`${normalizeTitle(r.review.title)}|${r.review.venue || ''}`, r);
+        }
+      }
       if (resume && p.season !== DATELESS_KEY && fs.existsSync(reviewLedPath(ROOT, p.season))) {
         for (const r of JSON.parse(fs.readFileSync(reviewLedPath(ROOT, p.season), 'utf8')).lookups || []) {
           if (!r.error) prior.set(`${normalizeTitle(r.review.title)}|${r.review.venue || ''}`, r);
@@ -633,7 +640,11 @@ async function main() {
       for (const review of p.lookups) {
         const done = prior.get(`${normalizeTitle(review.title)}|${review.venue || ''}`);
         if (done) { rows.push({ ...done, review }); continue; }
-        if (budgetMin && Date.now() - startedAt > budgetMin * 60000) { pending++; continue; }
+        if (budgetMin && Date.now() - startedAt > budgetMin * 60000) {
+          const kept = old.get(`${normalizeTitle(review.title)}|${review.venue || ''}`);
+          if (kept) rows.push({ ...kept, review }); else pending++;
+          continue;
+        }
         const row = { review, tr: null, trResults: [], header: null, error: null };
         try {
           const results = await search(review.title);
@@ -647,7 +658,7 @@ async function main() {
           console.log(`  ${review.title}: ERROR ${e.message}`);
         }
         rows.push(row);
-        // Checkpoint: a 97-row run can hit the workflow timeout, and the file is written only here.
+        // Checkpoint (local runs; CI commits only after the step ends, so the time budget is what protects CI).
         if (p.season !== DATELESS_KEY && rows.length % 10 === 0) {
           fs.writeFileSync(reviewLedPath(ROOT, p.season), JSON.stringify({ generatedAt: new Date().toISOString(), season: p.season, partial: true, lookups: rows, dropped: p.dropped }, null, 2) + '\n');
         }

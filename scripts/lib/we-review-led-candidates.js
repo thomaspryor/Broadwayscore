@@ -312,7 +312,9 @@ function buildReviewLedCandidates({ season, lookups, shows, today }) {
     const review = row.review || {};
     const base = {
       title: cleanReviewTitle(row.tr?.title && /[a-z]/.test(row.tr.title) ? row.tr.title : review.title),
-      venue: ntStageVenue(review.venue, row.tr?.venue) || review.venue,
+      // an A-Z row from the 2015 layout has no venue of its own: the TR production page supplies it (BRO-6298)
+      venue: ntStageVenue(review.venue, row.tr?.venue) || review.venue
+        || (review.source === 'tr-az' && row.tr ? trVenueName(row.tr.venue) : null),
       genres: [],
       season,
       // an A-Z row (BRO-6298) is a listing in Theatre Record's own A-Z of London productions, not a WOS review
