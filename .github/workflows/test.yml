@@ -3452,6 +3452,7 @@ on:
       # BRO-6088 plan-only create_session hook entry (tests/unit/plan-only-create-session.test.mjs).
       - 'scripts/plan-only-create-session-hook.js'
       - '.claude/hooks/block-prompting-remote-tools.sh'
+      - '.claude/hooks/owner-email-ask-guard.sh'
   pull_request:
     branches: [main]
   schedule:

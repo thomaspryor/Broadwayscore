@@ -73,6 +73,16 @@
         ]
       },
       {
+        "matcher": "mcp__claude_ai_Gmail__(send_message|create_draft|update_draft|reply|forward)",
+        "hooks": [
+          {
+            "type": "command",
+            "timeout": 20,
+            "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/owner-email-ask-guard.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+          }
+        ]
+      },
+      {
         "matcher": "mcp__github__(create_or_update_file|push_files|delete_file|merge_pull_request|enable_pr_auto_merge|create_pull_request)",
         "hooks": [
           {
