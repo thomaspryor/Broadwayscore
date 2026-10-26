@@ -799,5 +799,129 @@
       }
     ],
     "queuedAt": "2026-10-26T14:34:03.542Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6339-mvpcbpns",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6339-mvpcbpns",
+    "description": "land.yml did not land land/job/linear-BRO-6339-mvpcbpns: the rebase gate went red at 59f9b7d4dd. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6339-mvpcbpns @ 59f9b7d4dd (origin/land/job/linear-BRO-6339-mvpcbpns) → origin/main @ 4eee2ef2ef REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 4eee2ef2ef: Rebasing (1/2) error: could not apply c2a6fb68b69... VISUAL-OK-1440: BRO-6339 money gate rejects fake emails (MX check, disposable, junk, typo suggestion) + RPC mirror hint: Resolve all conflicts  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40339713434",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6339-mvpcbpns"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "59f9b7d4dd5ca13651cb7ad1a7dccd1b102f33dc"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40339713434"
+      }
+    ],
+    "queuedAt": "2026-10-26T14:53:57.748Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6331-mvpbn000",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6331-mvpbn000",
+    "description": "land.yml did not land land/job/linear-BRO-6331-mvpbn000: the rebase gate went red at fd2d76a3d4. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6331-mvpbn000 @ fd2d76a3d4 (origin/land/job/linear-BRO-6331-mvpbn000) → origin/main @ ae4e5f2a47 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9ddd1d85e2: Rebasing (1/3) error: could not apply 113bedaaf19... SKIP-VISUAL-CHECK: analytics calls only, no markup or style change (BRO-6331): money gate + Email Tom events to GA4, money report, fix PostHog  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40338633403",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6331-mvpbn000"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "fd2d76a3d4e646ceea444a032474a8be2e14d072"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40338633403"
+      }
+    ],
+    "queuedAt": "2026-10-26T14:50:19.589Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6302-tr-lift-honored-2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6302-tr-lift-honored-2",
+    "description": "land.yml did not land land/bro-6302-tr-lift-honored-2: the unit-tests-node gate went red at 2dbd581ed3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40340999170",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6302-tr-lift-honored-2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "2dbd581ed36700dff9f92ab20ee393b9f56a0ec2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40340999170"
+      }
+    ],
+    "queuedAt": "2026-10-26T14:57:02.571Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6335-mvpc108k",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6335-mvpc108k",
+    "description": "land.yml did not land land/job/linear-BRO-6335-mvpc108k: the unit-tests-node gate went red at efdcb2149b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40340965244",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6335-mvpc108k"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "efdcb2149b2a1a6b0c61a1281886765282a48831"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40340965244"
+      }
+    ],
+    "queuedAt": "2026-10-26T14:56:26.458Z"
   }
 ]

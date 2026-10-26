@@ -46,8 +46,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { randomUUID } from 'node:crypto';
+import { createRequire } from 'node:module';
 import { canonicalRoot } from '../lib/review-gate.mjs';
 import { spawnSyncStdinFile } from '../../tests/helpers/spawn-stdin-file.mjs';
+// BRO-2892: fixture worktrees on the real repo must be removable while still
+// locked 'initializing' (a SIGKILL'd add) and on interrupt, or they leak.
+const { removeTempWorktree, reapStaleTempWorktrees, registerExitCleanup } = createRequire(import.meta.url)('../lib/temp-worktree.js');
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
 const REAL_HOME = os.homedir();
@@ -248,7 +252,16 @@ function assertAllowed(result, message) {
   assert.equal(result.status, 0, `${message} — expected allowed (exit 0), got exit ${result.status}. stderr: ${result.stderr.slice(0, 300)}`);
 }
 
+// Paths registered (or attempted) as worktrees on CANONICAL_ROOT, cleaned on
+// every exit path: after(), process exit, SIGINT/SIGTERM/SIGHUP.
+const fixtureWorktrees = [];
+const cleanupFixtureWorktrees = registerExitCleanup(() => {
+  for (const dir of fixtureWorktrees) removeTempWorktree(CANONICAL_ROOT, dir);
+});
+
 before(() => {
+  // Clear fixture registrations a SIGKILL'd earlier run left behind.
+  reapStaleTempWorktrees(CANONICAL_ROOT);
   const tdir = makeTmpDir('fixtures');
   TRANSCRIPT_PATH = path.join(tdir, 'transcript.jsonl');
   fs.writeFileSync(
@@ -281,6 +294,7 @@ before(() => {
   git(CANONICAL_ROOT, ['branch', '-D', PROBE_BRANCH]);
   gitOk(CANONICAL_ROOT, ['branch', PROBE_BRANCH, BASE_REF]);
   probeWorktree = makeTmpDir('probe-wt');
+  fixtureWorktrees.push(probeWorktree);
   fs.rmSync(probeWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   // --no-checkout + read-tree: the fixture only commits one new file, and a
   // full checkout of this repo takes ~45s on a busy machine — longer than
@@ -327,6 +341,7 @@ before(() => {
   // the "current branch isn't main, so this doesn't target main" cases.
   git(CANONICAL_ROOT, ['branch', '-D', NONMAIN_BRANCH]);
   nonmainWorktree = makeTmpDir('nonmain-wt');
+  fixtureWorktrees.push(nonmainWorktree);
   fs.rmSync(nonmainWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   if (!gitOk(CANONICAL_ROOT, ['worktree', 'add', '-q', '--no-checkout', '-b', NONMAIN_BRANCH, nonmainWorktree, BASE_REF])) {  // cwd-only fixture: no files needed (see probe above)
     nonmainWorktree = null;
@@ -334,8 +349,10 @@ before(() => {
 });
 
 after(() => {
-  if (probeWorktree) { git(CANONICAL_ROOT, ['worktree', 'remove', '--force', probeWorktree]); fs.rmSync(probeWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
-  if (nonmainWorktree) { git(CANONICAL_ROOT, ['worktree', 'remove', '--force', nonmainWorktree]); fs.rmSync(nonmainWorktree, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+  // Every worktree path ever handed to `git worktree add`, including ones whose
+  // add failed and nulled probeWorktree/nonmainWorktree: a timed-out add leaves
+  // a locked 'initializing' registration that only removeTempWorktree clears.
+  cleanupFixtureWorktrees();
   if (unrelatedRepo) fs.rmSync(unrelatedRepo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   git(CANONICAL_ROOT, ['branch', '-D', PROBE_BRANCH]);
   git(CANONICAL_ROOT, ['branch', '-D', NONMAIN_BRANCH]);

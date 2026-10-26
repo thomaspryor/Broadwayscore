@@ -19,6 +19,7 @@
  *   node scripts/query-analytics.js top-pages          # Most viewed pages (last 30 days)
  *   node scripts/query-analytics.js traffic            # Daily sessions & users (last 30 days)
  *   node scripts/query-analytics.js sessions-engaged    # Headline KPI: engaged sessions by channel (drops Direct bots)
+ *   node scripts/query-analytics.js money              # Money Scorecard (/biz*): views, engaged sessions, referrers, gate funnel
  *   node scripts/query-analytics.js events             # All custom events summary
  *   node scripts/query-analytics.js search-terms       # What users search for on-site
  *   node scripts/query-analytics.js geo-audit          # Country breakdown — find bot geos
@@ -232,6 +233,77 @@ async function reportSearchTerms(client, dateRange) {
   ]));
 }
 
+// Money Scorecard funnel (BRO-6331). /biz* page views and engaged sessions,
+// where the readers came from, and the gate events (money_gate_shown /
+// _unlocked / _bypassed, email_tom_click). Counts only: signup emails live in
+// Supabase and are never printed here.
+const MONEY_EVENTS = ['money_gate_shown', 'money_gate_unlocked', 'money_gate_bypassed', 'email_tom_click'];
+
+async function reportMoney(client, dateRange) {
+  const property = `properties/${PROPERTY_ID}`;
+  // /biz and /biz/*, not /biz-buzz (a redirect page).
+  const bizFilter = { orGroup: { expressions: [
+    { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'EXACT', value: '/biz' } } },
+    { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/biz/' } } },
+  ] } };
+  const n = (r, i) => parseInt(r.metricValues[i]?.value || '0');
+  console.log('\nMoney Scorecard (/biz*)\n');
+
+  const [totals] = await client.runReport({
+    property, dateRanges: [dateRange], dimensionFilter: bizFilter,
+    metrics: [{ name: 'screenPageViews' }, { name: 'sessions' }, { name: 'engagedSessions' }, { name: 'totalUsers' }],
+  });
+  const t = totals.rows?.[0];
+  console.log(`  Views: ${t ? n(t, 0).toLocaleString() : 0}   Sessions: ${t ? n(t, 1).toLocaleString() : 0}   Engaged sessions: ${t ? n(t, 2).toLocaleString() : 0}   Users: ${t ? n(t, 3).toLocaleString() : 0}\n`);
+
+  const [pages] = await client.runReport({
+    property, dateRanges: [dateRange], dimensionFilter: bizFilter,
+    dimensions: [{ name: 'pagePath' }],
+    metrics: [{ name: 'screenPageViews' }, { name: 'engagedSessions' }],
+    orderBys: [{ metric: { metricName: 'screenPageViews' }, desc: true }], limit: 20,
+  });
+  formatTable(['Page', 'Views', 'Engaged sessions'], (pages.rows || []).map(r => [r.dimensionValues[0]?.value, n(r, 0).toLocaleString(), n(r, 1).toLocaleString()]));
+
+  console.log('\n  Referrers (sessions that viewed /biz*)\n');
+  const [refs] = await client.runReport({
+    property, dateRanges: [dateRange], dimensionFilter: bizFilter,
+    dimensions: [{ name: 'sessionSource' }, { name: 'sessionMedium' }],
+    metrics: [{ name: 'sessions' }, { name: 'engagedSessions' }],
+    orderBys: [{ metric: { metricName: 'sessions' }, desc: true }], limit: 15,
+  });
+  formatTable(['Source', 'Medium', 'Sessions', 'Engaged'], (refs.rows || []).map(r => [r.dimensionValues[0]?.value, r.dimensionValues[1]?.value, n(r, 0).toLocaleString(), n(r, 1).toLocaleString()]));
+
+  console.log('\n  Gate and contact events\n');
+  const [ev] = await client.runReport({
+    property, dateRanges: [dateRange],
+    dimensions: [{ name: 'eventName' }],
+    metrics: [{ name: 'eventCount' }, { name: 'totalUsers' }],
+    dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: MONEY_EVENTS } } },
+  });
+  const byName = Object.fromEntries((ev.rows || []).map(r => [r.dimensionValues[0]?.value, r]));
+  formatTable(['Event', 'Count', 'Users'], MONEY_EVENTS.map(name => [name, byName[name] ? n(byName[name], 0).toLocaleString() : '0', byName[name] ? n(byName[name], 1).toLocaleString() : '0']));
+  const shown = byName.money_gate_shown ? n(byName.money_gate_shown, 0) : 0;
+  const unlocked = byName.money_gate_unlocked ? n(byName.money_gate_unlocked, 0) : 0;
+  console.log(`\n  Unlock rate (unlocked / shown): ${shown ? ((unlocked / shown) * 100).toFixed(1) + '%' : 'n/a'}`);
+
+  // Per-gate split needs the "page" event parameter registered as a GA4 custom
+  // dimension (Admin > Custom definitions). Skipped quietly until it is.
+  try {
+    const [byPage] = await client.runReport({
+      property, dateRanges: [dateRange],
+      dimensions: [{ name: 'eventName' }, { name: 'customEvent:page' }],
+      metrics: [{ name: 'eventCount' }],
+      dimensionFilter: { filter: { fieldName: 'eventName', inListFilter: { values: MONEY_EVENTS.slice(0, 3) } } },
+      orderBys: [{ metric: { metricName: 'eventCount' }, desc: true }], limit: 20,
+    });
+    console.log('');
+    formatTable(['Event', 'Gate page', 'Count'], (byPage.rows || []).map(r => [r.dimensionValues[0]?.value, r.dimensionValues[1]?.value, n(r, 0).toLocaleString()]));
+  } catch (err) {
+    if (!/INVALID_ARGUMENT|not a valid dimension|customEvent/i.test(err.message || '')) throw err;
+    console.log('\n  (per-gate split unavailable: register the "page" event parameter as a GA4 custom dimension)');
+  }
+}
+
 async function main() {
   if (!PROPERTY_ID) {
     console.error('GA4_PROPERTY_ID not set in .env');
@@ -247,7 +319,7 @@ async function main() {
     'ticket-clicks': reportTicketClicks, 'top-pages': reportTopPages,
     'traffic': reportTraffic, 'sessions-engaged': reportSessionsEngaged,
     'events': reportEvents, 'search-terms': reportSearchTerms,
-    'geo-audit': reportGeoAudit,
+    'geo-audit': reportGeoAudit, 'money': reportMoney,
   };
   const fn = reports[opts.report];
   if (!fn) { console.error(`Unknown report: ${opts.report}\nAvailable: ${Object.keys(reports).join(', ')}`); process.exit(1); }

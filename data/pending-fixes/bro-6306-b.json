@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6306-b",
   "planId": "8c097b50-7125-46c1-ba78-75a75000f517",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-26T12:10:18.343Z",
   "submitter": {
     "name": null,
@@ -130,5 +130,7 @@
         "description": "commercial.json: the-glass-menagerie-2017.sources"
       }
     ]
-  }
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332; same applied-locally state as this plan's siblings)."
 }

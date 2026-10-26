@@ -232,3 +232,27 @@ test('every gate retries the outbox on mount', () => {
   const tsx = read('src/components/biz/MoneyGate.tsx');
   assert.match(tsx, /retryPendingMoneySignups\(\)/);
 });
+
+// BRO-6331: gate and Email Tom events must reach GA4 (the only analytics that works).
+test('gaEvent sends through window.gtag, or holds the event until gtag loads', async () => {
+  const { gaEvent } = await import('../../src/lib/analytics/ga-event.ts');
+  const calls = [];
+  globalThis.window = { gtag: (...a) => calls.push(a) };
+  gaEvent('money_gate_shown', { page: 'biz-dashboard' });
+  assert.deepEqual(calls, [['event', 'money_gate_shown', { page: 'biz-dashboard' }]]);
+  globalThis.window = {};
+  gaEvent('email_tom_click', { page_path: '/biz' });
+  assert.equal(window.dataLayer, undefined, 'must not queue ahead of gtag config');
+  window.gtag = (...a) => calls.push(a);
+  await new Promise((r) => setTimeout(r, 400));
+  assert.deepEqual(calls[1], ['event', 'email_tom_click', { page_path: '/biz' }]);
+  delete globalThis.window;
+});
+
+test('every money gate event and email_tom_click is wired to GA4', () => {
+  const gateSrc = read('src/components/biz/MoneyGate.tsx');
+  for (const ev of ['money_gate_shown', 'money_gate_unlocked', 'money_gate_bypassed']) {
+    assert.match(gateSrc, new RegExp(`gaEvent\\('${ev}'`), `${ev} missing gaEvent`);
+  }
+  assert.match(read('src/components/EmailTomLink.tsx'), /gaEvent\('email_tom_click'/);
+});

@@ -246,7 +246,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T14:30:51.898Z",
+      "lastSeen": "2026-10-26T14:57:22.280Z",
       "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
       "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
@@ -254,7 +254,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -27437,9 +27437,9 @@
       "absentRunIds": [
         "40327815067",
         "40333144748",
-        "40336990940"
+        "40338684609"
       ],
-      "resolvedAt": "2026-10-26T14:30:51.865Z",
+      "resolvedAt": "2026-10-26T14:43:48.750Z",
       "resolveReason": "stale-signature"
     },
     "land:land/bro-6298-az-lookups": {
@@ -27549,7 +27549,7 @@
       "resolvedAt": "2026-10-26T13:43:52.545Z"
     },
     "test-yml:red:Unit Tests:78db5ec3": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"findReviewsToProcess (real function) queues an aged closed-show stub inside the cut\"",
       "firstSeen": "2026-10-26T13:23:21.343Z",
@@ -27563,8 +27563,11 @@
       "silentRefires": 1,
       "absentRunIds": [
         "40333144748",
-        "40336990940"
-      ]
+        "40336990940",
+        "40340690095"
+      ],
+      "resolvedAt": "2026-10-26T14:57:21.913Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/job/linear-BRO-6307-mvp4vz58": {
       "status": "open",
@@ -27720,13 +27723,16 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every original record in data/show-origins.json says true story or invented (BRO-5871)\"",
       "firstSeen": "2026-10-26T14:03:16.640Z",
       "incidentOpenedAt": "2026-10-26T14:03:16.640Z",
-      "lastSeen": "2026-10-26T14:30:51.884Z",
+      "lastSeen": "2026-10-26T14:43:48.874Z",
       "lastNotifiedAt": "2026-10-26T14:03:16.640Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6334",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "absentRunIds": [
+        "40340690095"
+      ]
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
       "status": "open",
@@ -27743,7 +27749,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-2892-temp-worktree-cleanup": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-2892-temp-worktree-cleanup",
       "firstSeen": "2026-10-26T14:17:21.577Z",
@@ -27753,7 +27759,21 @@
       "lastSurfacedAt": "2026-10-26T14:17:21.577Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-26T14:53:10.090Z"
+    },
+    "test-yml:red:Unit Tests:fbc20ac4": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"a stored comparables figure never sits on a record that also has a capitalization\"",
+      "firstSeen": "2026-10-26T14:57:21.925Z",
+      "incidentOpenedAt": "2026-10-26T14:57:21.925Z",
+      "lastSeen": "2026-10-26T14:57:21.925Z",
+      "lastNotifiedAt": "2026-10-26T14:57:21.925Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6344"
     },
     "land:land/bro-6302-tr-lift-honored": {
       "status": "open",
@@ -27764,6 +27784,58 @@
       "lastSeen": "2026-10-26T14:34:03.541Z",
       "lastNotifiedAt": "2026-10-26T14:34:03.541Z",
       "lastSurfacedAt": "2026-10-26T14:34:03.541Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-6339-mvpcbpns": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-6339-mvpcbpns",
+      "firstSeen": "2026-10-26T14:53:57.747Z",
+      "incidentOpenedAt": "2026-10-26T14:53:57.747Z",
+      "lastSeen": "2026-10-26T14:53:57.747Z",
+      "lastNotifiedAt": "2026-10-26T14:53:57.747Z",
+      "lastSurfacedAt": "2026-10-26T14:53:57.747Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-6331-mvpbn000": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/job/linear-BRO-6331-mvpbn000",
+      "firstSeen": "2026-10-26T14:50:19.588Z",
+      "incidentOpenedAt": "2026-10-26T14:50:19.588Z",
+      "lastSeen": "2026-10-26T14:50:19.588Z",
+      "lastNotifiedAt": "2026-10-26T14:50:19.588Z",
+      "lastSurfacedAt": "2026-10-26T14:50:19.588Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-6302-tr-lift-honored-2": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-6302-tr-lift-honored-2",
+      "firstSeen": "2026-10-26T14:57:02.570Z",
+      "incidentOpenedAt": "2026-10-26T14:57:02.570Z",
+      "lastSeen": "2026-10-26T14:57:02.570Z",
+      "lastNotifiedAt": "2026-10-26T14:57:02.570Z",
+      "lastSurfacedAt": "2026-10-26T14:57:02.570Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/job/linear-BRO-6335-mvpc108k": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-6335-mvpc108k",
+      "firstSeen": "2026-10-26T14:56:26.458Z",
+      "incidentOpenedAt": "2026-10-26T14:56:26.458Z",
+      "lastSeen": "2026-10-26T14:56:26.458Z",
+      "lastNotifiedAt": "2026-10-26T14:56:26.458Z",
+      "lastSurfacedAt": "2026-10-26T14:56:26.458Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

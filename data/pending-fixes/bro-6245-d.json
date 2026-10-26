@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6245-d",
   "planId": "d92a7ce7-c344-4421-aa85-9d8a2f68a228",
-  "status": "pending",
+  "status": "superseded",
   "createdAt": "2026-10-26T11:51:30.169Z",
   "submitter": {
     "name": null,
@@ -285,5 +285,7 @@
         "description": "commercial.json: parade-2023.estimatedRecoupmentPct"
       }
     ]
-  }
+  },
+  "supersededAt": "2026-10-26T14:30:00.000Z",
+  "supersededReason": "Applied locally (executedIn: local) and pushed straight to broadway-scorecard-data on 2026-10-26 at the owner's request to skip the landing queue; the data-edit oldValues no longer match current commercial.json, so dispatching would change nothing or fail (BRO-6332; same applied-locally state as this plan's siblings)."
 }
