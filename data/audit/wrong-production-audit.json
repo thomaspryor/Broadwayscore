@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T20:05:16.138Z",
+  "timestamp": "2026-10-26T20:16:41.029Z",
   "stats": {
-    "totalReviews": 62291,
+    "totalReviews": 62326,
     "alreadyFlagged": 21529,
     "dateGuardCatches": 223,
-    "directorMismatch": 2292,
+    "directorMismatch": 2293,
     "tvFilmSignals": 1771,
     "londonSignals": 3004,
     "offBroadwaySignals": 553,
     "yearMismatch": 210,
-    "noPublishDate": 5536
+    "noPublishDate": 5568
   },
   "findings": [
     {
@@ -18431,6 +18431,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jonathan kent\" from gypsy-west-end-2015"
         }
       ]
     },
