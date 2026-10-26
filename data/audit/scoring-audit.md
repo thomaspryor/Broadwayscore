@@ -1,18 +1,18 @@
-# Scoring Audit Report — 2026-10-23
+# Scoring Audit Report — 2026-10-26
 
 ## Summary
 | Metric | Value |
 |--------|-------|
-| Total reviews | 59426 |
-| With score | 34281 (58%) |
-| With full text | 34426 (58%) |
-| Quality flags | 1633 (2.7%) |
-| High-delta reviews | 152 |
+| Total reviews | 61898 |
+| With score | 36024 (58%) |
+| With full text | 36239 (59%) |
+| Quality flags | 1788 (2.9%) |
+| High-delta reviews | 156 |
 
 ## Quality Flags
-- `showNotMentioned`: 238
-- `misattributed`: 309
-- `duplicateText`: 1086
+- `showNotMentioned`: 249
+- `misattributed`: 311
+- `duplicateText`: 1228
 
 ## Top High-Delta Reviews (LLM vs Thumb)
 - **gigi-2015**: Robert Kahn — LLM=19, thumb=80 (Up), Δ=61
@@ -27,5 +27,5 @@
 - **beetlejuice-tour-2022**: Dennis Polkow — LLM=18, thumb=60 (Meh), Δ=42
 
 ## Scoring Edge Cases
-- Single-excerpt with non-low confidence: 176
+- Single-excerpt with non-low confidence: 184
 - Meh thumb ignored: 0
