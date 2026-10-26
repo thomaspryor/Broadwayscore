@@ -242,10 +242,13 @@ function isParkedLandJob(land) {
 
 // BRO-6276: deadman for a holder that is alive but not finishing. The Land
 // step is capped at LAND_STEP_TIMEOUT_MIN (land.yml wraps land.js in
-// `timeout`), so a hold past LOCK_HOLD_ALERT_MS means that cap did not fire
-// or the run is wedged elsewhere. Healthy holds measured 2026-10-25: 15-33 min
+// `timeout`). The cap must fit the job's 125 min budget after a worst-case
+// DEADLINE_MINUTES (75) wait, so it is 45; the hold clock also covers the train
+// and tsc-seed steps before it and the ledger steps after it, so the alert sits
+// 15 min above the cap: a hold past it means the cap did not fire or the run
+// is wedged elsewhere. Healthy holds measured 2026-10-25: 15-33 min
 // (one merged-tree re-check 14 min, a train of 4 landed in 16 min).
-const LAND_STEP_TIMEOUT_MIN = 70;
+const LAND_STEP_TIMEOUT_MIN = 45;
 const LOCK_HOLD_ALERT_MS = 60 * 60 * 1000;
 const WAIT_STEP_NAME = 'Wait for the landing mutex';
 

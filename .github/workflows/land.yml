@@ -679,7 +679,7 @@ jobs:
     # then it fails open), so 15 + 75 + setup headroom. BRO-5282: +15 for a
     # merge train's combined re-check, which on a red train is followed by
     # the holder's own re-check (attempt 1 only).
-    timeout-minutes: 125
+    timeout-minutes: 140 # BRO-6276: 75 min mutex wait + 45 min land cap + setup/ledger/release (land-mutex.test.mjs pins it)
     permissions:
       contents: write
       # actions: write — the admit step cancels THIS run to park it (BRO-5196).
@@ -865,8 +865,11 @@ jobs:
           # shell `timeout` (exit 124): no result file → the branch below
           # reports failed_check=timeout and every later step still runs, the
           # mutex release included. Cap = LAND_STEP_TIMEOUT_MIN in
-          # scripts/lib/land-mutex.js (pinned by land-mutex.test.mjs).
-          timeout 70m node scripts/land.js --branch "$BRANCH" --source origin \
+          # scripts/lib/land-mutex.js (pinned by land-mutex.test.mjs); sized to
+          # fit the 140 min job after a 75 min mutex wait. A kill after the push
+          # but before the result file reads as a refusal; the stranded-ref
+          # pass reconciles the ref.
+          timeout -k 30s 45m node scripts/land.js --branch "$BRANCH" --source origin \
             --expect-tip "$TIP" --verified-base "$BASE" "${TRAIN_ARGS[@]}" \
             --result-file /tmp/land-result.json 2>&1 | tee /tmp/land.log
           rc=${PIPESTATUS[0]}

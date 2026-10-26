@@ -331,8 +331,10 @@ test('assessLockHold: free, unknown and ok/stuck by hold time', () => {
   assert.equal(stuck.runId, '11');
 });
 
-test('land.yml bounds the in-lock Land step below the job timeout and the deadman fires after it', () => {
+test('land.yml bounds the in-lock Land step inside the job budget and the deadman fires after it', () => {
   const yml = readFileSync(path.join(path.dirname(CLI), '..', '.github', 'workflows', 'land.yml'), 'utf8');
-  assert.match(yml, new RegExp(`timeout ${m.LAND_STEP_TIMEOUT_MIN}m node scripts/land\\.js`));
-  assert.ok(m.LOCK_HOLD_ALERT_MS < m.LAND_STEP_TIMEOUT_MIN * 60000);
+  assert.match(yml, new RegExp(`timeout -k 30s ${m.LAND_STEP_TIMEOUT_MIN}m node scripts/land\\.js`));
+  assert.ok(m.LOCK_HOLD_ALERT_MS > m.LAND_STEP_TIMEOUT_MIN * 60000, 'alert only after the cap should have fired');
+  const job = Number(/^  land:[\s\S]*?timeout-minutes: (\d+)/m.exec(yml)[1]);
+  assert.ok(m.DEADLINE_MINUTES + m.LAND_STEP_TIMEOUT_MIN + 15 <= job, `wait + cap + setup must fit the ${job} min Land job`);
 });
