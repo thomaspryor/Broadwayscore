@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const sel = require('./social-autopost/select.js');
 const { buildCaptions, postMarkers, showUrl, LIMITS } = require('./social-autopost/captions.js');
-const { isUsablePoster, artVerdict, originalUrl, candidatesFor } = require('./social-autopost/art.js');
+const { isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle } = require('./social-autopost/art.js');
 const { buildCardHtml, SITE_CSS } = require('./social-autopost/render.js');
 const { metadataFor } = require('./social-autopost/buffer.js');
 const { breakdownFor, pendingRetries, abandonRetries, postsToVerify } = require('./social-autopost/run.js');
@@ -107,6 +107,21 @@ test('a late post waits only until 90 min after the previous post, not 90 min af
   const ready = sel.scheduleEvents(evs, ledger, now);
   assert.deepEqual(ready.map(e => e.show.id), ['late']);
   assert.equal(ready[0].dueAt.toISOString(), '2026-10-26T16:59:53.000Z');
+});
+
+test('a post moved past a clash never lands less than 10 min from now', () => {
+  const now = Date.parse('2026-10-26T16:00:00Z');
+  const ledger = { posts: [{ type: 'score', showId: 'm', dueAt: new Date(now - 89 * 6e4).toISOString() }] };
+  const evs = [{ type: 'score', show: show({ id: 'late' }), dueAt: new Date(now + 10 * 6e4) }];
+  const ready = sel.scheduleEvents(evs, ledger, now);
+  assert.ok(ready[0].dueAt.getTime() >= now + 10 * 6e4, ready[0].dueAt.toISOString());
+});
+
+test('a TodayTix poster is used only when its show name matches the title', () => {
+  assert.equal(sameTitle('Derren Brown: Only Human', 'Derren Brown: Only Human'), true);
+  assert.equal(sameTitle('The Great Gatsby', 'Great Gatsby'), true);
+  assert.equal(sameTitle('Hadestown', 'The Imaginary Invalid'), false, 'recycled id');
+  assert.equal(sameTitle('', 'X'), false);
 });
 
 test('first live run skips shows that opened more than 3 days ago', () => {

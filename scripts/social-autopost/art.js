@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadImageSources } = require('../lib/image-sources-store');
+const { foldDiacritics } = require('../lib/title-match');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const MIN_POSTER_WIDTH = 440; // shown at 480 px: at most a 9% stretch, invisible
@@ -35,18 +36,27 @@ function candidatesFor(show, sources) {
   const src = sources[show.id] || {};
   const out = [];
   if (src.poster) out.push({ url: originalUrl(src.poster) });
-  if (show.todaytixId) out.push({ todaytixId: show.todaytixId });
+  if (show.todaytixId) out.push({ todaytixId: show.todaytixId, title: show.title });
   const local = show.images && show.images.poster;
   if (local && local.startsWith('/')) out.push({ file: path.join(ROOT, 'public', local) });
   return out;
 }
 
 /** TodayTix's poster URL for a show id (public API, the same one scripts/fetch-show-images-auto.js uses). */
-async function todaytixPosterUrl(id) {
+/** Loose title match, so a recycled TodayTix id cannot supply another show's poster. */
+function sameTitle(a, b) {
+  const norm = t => foldDiacritics(String(t || '')).toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, ' ').replace(/\b(the|a|an)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  const x = norm(a), y = norm(b);
+  return !!x && !!y && (x.includes(y) || y.includes(x));
+}
+
+async function todaytixPosterUrl(id, title) {
   try {
     const res = await fetch(`https://api.todaytix.com/api/v2/shows/${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
     if (!res.ok) return null;
-    const media = ((await res.json()).data || {}).posterMedia;
+    const data = (await res.json()).data || {};
+    if (!sameTitle(data.name || data.displayName, title)) return null;
+    const media = data.posterMedia;
     return media && media.imageUrl ? originalUrl(media.imageUrl) : null;
   } catch { return null; }
 }
@@ -54,7 +64,7 @@ async function todaytixPosterUrl(id) {
 async function loadBuffer(c) {
   if (c.file) return fs.existsSync(c.file) ? fs.readFileSync(c.file) : null;
   if (c.todaytixId) {
-    c.url = await todaytixPosterUrl(c.todaytixId);
+    c.url = await todaytixPosterUrl(c.todaytixId, c.title);
     if (!c.url) return null;
   }
   const ctl = new AbortController();
@@ -114,4 +124,4 @@ async function resolvePoster(show, { sources = loadImageSources(), check = check
   return { poster: false, reason: reasons.join(' | ') || 'no poster on file' };
 }
 
-module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, candidatesFor, MIN_POSTER_WIDTH };
+module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, candidatesFor, sameTitle, MIN_POSTER_WIDTH };

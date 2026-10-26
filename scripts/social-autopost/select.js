@@ -127,7 +127,7 @@ function scheduleEvents(events, ledger, now) {
       // Move past the post it clashes with (not t + gap): a late post due now+10min would
       // otherwise land a full gap after now on every run and never come within the lead.
       const clash = taken.filter(x => Math.abs(x - t) < gap);
-      t = !inWindow(t, tz) ? nextWindowSlot(t, tz) : Math.max(...clash) + gap;
+      t = !inWindow(t, tz) ? nextWindowSlot(t, tz) : Math.max(Math.max(...clash) + gap, now + 10 * MIN_MS);
     }
     taken.push(t);
     ev.dueAt = new Date(t);

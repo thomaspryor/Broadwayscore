@@ -112,9 +112,19 @@ function describe(show, ctx) {
 }
 
 // venue-write-guard-ok: show.venue is only read here (card text / vision-check context), never written back
-async function buildCard(desc, outDir) {
+/**
+ * Owner rule (2026-10-26): never post without the show's poster. A show with no usable
+ * poster throws NO_POSTER and waits. Only the self-test (drafts, deleted) and dry-run
+ * previews pass requirePoster: false to render the typographic card.
+ */
+async function buildCard(desc, outDir, { requirePoster = true } = {}) {
   const poster = await resolvePoster(desc.show);
-  if (!poster.poster) console.log(`  [art] ${desc.show.id}: typographic poster (${poster.reason})`);
+  if (!poster.poster && requirePoster) {
+    const err = new Error(`no usable poster (${poster.reason})`);
+    err.code = 'NO_POSTER';
+    throw err;
+  }
+  if (!poster.poster) console.log(`  [art] ${desc.show.id}: typographic poster (${poster.reason}); a live run would hold this post`);
   const card = {
     market: desc.show.category, title: desc.show.title, venue: desc.show.venue,
     score: desc.score, tierId: desc.tierId, tierLabel: desc.tierLabel, breakdown: desc.breakdown,
@@ -234,7 +244,7 @@ function unvalidated(ledger, channels) {
 async function selfTest(buffer, channels, outDir, ctx, now) {
   const show = ctx.shows.find(s => s.id === 'billy-crystal-860-2026') || ctx.shows.find(s => ctx.slim[s.id] && Number.isFinite(ctx.slim[s.id].cs));
   const desc = describe(show, ctx);
-  const card = await buildCard(desc, outDir);
+  const card = await buildCard(desc, outDir, { requirePoster: false });
   const imageUrl = await hostCard(card.path, show, now);
   const problems = await buffer.validateChannels(channels, { imageUrl, altText: buildCaptions(desc).altText });
   if (problems.length) throw new Error(`Buffer self-test failed, nothing posted: ${problems.join(' | ')}`);
@@ -345,6 +355,9 @@ async function main() {
   }
 
   let failed = 0;
+  // A held show that ages out of the lookback window stops being retried; drop its note.
+  const waitingNotes = ctx.ledger._meta.waitingForPoster || {};
+  for (const [id, w] of Object.entries(waitingNotes)) if (now - Date.parse(w.since) > 14 * 864e5) delete waitingNotes[id];
   // Counted per show across runs so one broken show alerts MAX_SHOW_ATTEMPTS times, not hourly for weeks.
   const failures = ctx.ledger._meta.failures = ctx.ledger._meta.failures || {};
   // Outages (hosting, Buffer down, network) are not the show's fault and do not use up its tries.
@@ -363,7 +376,7 @@ async function main() {
       try {
         const desc = describe(ev.show, ctx);
         const captions = buildCaptions(desc);
-        const card = await buildCard(desc, outDir);
+        const card = await buildCard(desc, outDir, { requirePoster: live });
         console.log(`\n[autopost] ${ev.show.id} due ${ev.dueAt.toISOString()} card=${card.path} poster=${card.poster}`);
         console.log(`  X/Bluesky: ${captions.twitter.replace(/\n/g, ' | ')}`);
         const route = targetSets(ev.show, ev.gate, CHANNEL_SETS, ctx.shows);
@@ -404,9 +417,20 @@ async function main() {
           problems.push(`${ev.show.id}: failed on ${Object.keys(errors).join(', ')} (will retry)`);
         }
         ctx.ledger.posts.push(entry);
+        if (ctx.ledger._meta.waitingForPoster) delete ctx.ledger._meta.waitingForPoster[ev.show.id];
         writeLedger(ctx.ledger);
         summary.push(`| ${ev.show.title} (${desc.score}) | ${entry.dueAt} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
       } catch (e) {
+        if (e.code === 'NO_POSTER') {
+          // Not a failure: the show waits (every run retries) until a usable poster exists
+          // or it ages out of SCORE_LOOKBACK_DAYS. Reported once so the digest shows it.
+          const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
+          if (!waiting[ev.show.id]) problems.push(`${ev.show.id}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
+          waiting[ev.show.id] = { since: (waiting[ev.show.id] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
+          console.log(`  [art] ${ev.show.id}: HELD, ${e.message}`);
+          writeLedger(ctx.ledger);
+          continue;
+        }
         failed++;
         console.log(`::error::${ev.show.id}: ${e.message}`);
         if (/self-test failed|BUFFER_API_KEY|HTTP 401|rate limit|image hosting failed/i.test(e.message)) break; // account-level: stop
