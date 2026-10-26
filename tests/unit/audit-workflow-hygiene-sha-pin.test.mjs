@@ -30,6 +30,11 @@ describe('findUnpinnedActionUses', () => {
     assert.equal(findUnpinnedActionUses(`  - uses: actions/checkout@${SHA.slice(0, 7)}\n`).length, 1);
     assert.equal(findUnpinnedActionUses(`  - uses: actions/checkout@${SHA.toUpperCase()}\n`).length, 1);
   });
+  test('flags a docker:// image by tag and accepts one pinned by digest', () => {
+    const digest = 'a'.repeat(64);
+    assert.deepEqual(findUnpinnedActionUses(`  - uses: docker://alpine:3.20\n`).map((h) => [h.action, h.ref]), [['docker://alpine', '3.20']]);
+    assert.equal(findUnpinnedActionUses(`  - uses: docker://alpine@sha256:${digest}\n`).length, 0);
+  });
   test('ignores local composites and commented-out lines', () => {
     assert.equal(findUnpinnedActionUses(`  - uses: ./.github/actions/setup-node\n  # - uses: actions/checkout@v4\n`).length, 0);
   });

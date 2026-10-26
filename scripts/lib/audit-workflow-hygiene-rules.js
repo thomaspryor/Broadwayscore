@@ -1464,12 +1464,17 @@ function findMissingTopLevelPermissions(raw) {
  * this rule sees. Dependabot's github-actions group keeps the SHAs current.
  */
 const EXTERNAL_USES_RE = /^\s*-?\s*uses:\s*([A-Za-z0-9_.-]+\/[A-Za-z0-9_./-]+)@([^\s#]+)/;
+// A container step is the same exposure: `docker://image:tag` re-resolves on
+// every run; only `docker://image@sha256:<digest>` is a fixed artifact.
+const DOCKER_USES_RE = /^\s*-?\s*uses:\s*docker:\/\/([^\s#]+)/;
 function findUnpinnedActionUses(raw) {
   const hits = [];
   raw.split('\n').forEach((l, i) => {
     if (l.trim().startsWith('#')) return;
     const m = EXTERNAL_USES_RE.exec(l);
     if (m && !/^[0-9a-f]{40}$/.test(m[2])) hits.push({ lineNum: i + 1, text: l.trim(), action: m[1], ref: m[2] });
+    const d = DOCKER_USES_RE.exec(l);
+    if (d && !/@sha256:[0-9a-f]{64}$/.test(d[1])) hits.push({ lineNum: i + 1, text: l.trim(), action: 'docker://' + d[1].split('@')[0].split(':')[0], ref: d[1].includes('@') ? d[1].split('@')[1] : d[1].split(':')[1] || 'latest' });
   });
   return hits;
 }

@@ -74,3 +74,10 @@ test('merges onto a research row already queued for the show instead of replacin
   assert.equal(row.sources.length, 2);
   assert.equal(row.sources[1].type, 'tip');
 });
+
+test('a second tip for the same show keeps every issue number that touched the row', () => {
+  const once = queueTipForReview({ shows: {} }, tip);
+  const twice = queueTipForReview(once, { ...tip, issueNumber: 4300 });
+  assert.deepEqual(twice.shows.hamilton.tipIssues, [4242, 4300]);
+  assert.equal(twice.shows.hamilton.tipIssue, 4300);
+});

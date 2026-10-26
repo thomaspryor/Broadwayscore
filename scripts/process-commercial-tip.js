@@ -288,8 +288,9 @@ Rules:
     console.log('Analysis:', JSON.stringify(analysis, null, 2));
 
     const wantsApply = analysis.isCredible && analysis.confidence !== 'low' && analysis.proposedChanges?.length > 0 && slug;
-    // This workflow commits without running validate-data, so the record is
-    // cleaned and checked against the commercial rules before it is written.
+    // buildTipRecord is the validation step: it cleans the proposal against
+    // the commercial rules and returns the field changes that survive. Only
+    // those changes are queued below; the full record it builds is not written.
     const built = wantsApply
       ? buildTipRecord(commercial, shows.shows || shows, slug, analysis.proposedChanges)
       : { record: null, changes: [], refusedReason: null };
