@@ -1747,5 +1747,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T05:31:23.558Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6291-season-tiles",
+    "title": "Landing blocked: unit-tests-tsx red on land/bro-6291-season-tiles",
+    "description": "land.yml did not land land/bro-6291-season-tiles: the unit-tests-tsx gate went red at e7bf19cbf8. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40273739569",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6291-season-tiles"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-tsx"
+      },
+      {
+        "name": "tip",
+        "value": "e7bf19cbf815b5b7d8f80b0361847b2ef6759ebe"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40273739569"
+      }
+    ],
+    "queuedAt": "2026-10-26T05:41:25.657Z"
   }
 ]
