@@ -175,7 +175,7 @@ test('handler: deletion still succeeds when Apple revoke errors', async () => {
   });
   const f = fullFetch(apple);
   const res = await handleDeleteAccount(deleteRequest({ appleAuthorizationCode: 'CODE' }), { env: (k) => ENV[k], fetch: f.fn });
-  assert.deepEqual(await res.json(), { ok: true, revoked: false });
+  assert.deepEqual(await res.json(), { ok: true, revoked: false, revokeReason: 'revoke_invalid_request' });
   assert.ok(f.supabaseCalls.includes(`DELETE /auth/v1/admin/users/${USER}`), 'auth user deleted');
   assert.ok(f.supabaseCalls.includes(`DELETE /rest/v1/profiles?id=eq.${USER}`), 'profile deleted');
 });
@@ -184,7 +184,7 @@ test('handler: deletion still succeeds when the revoke helper itself throws', as
   const f = fullFetch(appleFetch({}));
   const revoke = async () => { throw new Error('unexpected'); };
   const res = await handleDeleteAccount(deleteRequest({ appleAuthorizationCode: 'CODE' }), { env: (k) => ENV[k], fetch: f.fn, revoke });
-  assert.deepEqual(await res.json(), { ok: true, revoked: false });
+  assert.deepEqual(await res.json(), { ok: true, revoked: false, revokeReason: 'error' });
 });
 
 test('handler: no code (older app builds, non-Apple users) deletes without calling Apple', async () => {
@@ -208,7 +208,7 @@ test('handler: an account without an Apple identity is deleted and Apple is neve
   const apple = appleFetch({});
   const f = fullFetch(apple, [{ provider: 'google', identity_data: { sub: 'g-1' } }]);
   const res = await handleDeleteAccount(deleteRequest({ appleAuthorizationCode: 'CODE' }), { env: (k) => ENV[k], fetch: f.fn });
-  assert.deepEqual(await res.json(), { ok: true, revoked: false });
+  assert.deepEqual(await res.json(), { ok: true, revoked: false, revokeReason: 'no_apple_identity' });
   assert.equal(apple.calls.length, 0);
   assert.ok(f.supabaseCalls.includes(`DELETE /auth/v1/admin/users/${USER}`));
 });
@@ -220,4 +220,39 @@ test('handler: a failed deletion never revokes the Apple grant', async () => {
   const res = await handleDeleteAccount(deleteRequest({ appleAuthorizationCode: 'CODE' }), { env: (k) => ENV[k], fetch: failing });
   assert.deepEqual(await res.json(), { ok: false, error: 'internal' });
   assert.equal(apple.calls.length, 0);
+});
+
+test('a 5xx or dropped connection on revoke is retried once (the code cannot be replayed)', async () => {
+  let revokes = 0;
+  const flaky = appleFetch({
+    '/auth/token': () => jsonRes({ refresh_token: 'RT', id_token: idToken(APPLE_SUB) }),
+    '/auth/revoke': () => (++revokes === 1 ? new Response('', { status: 503 }) : new Response('', { status: 200 })),
+  });
+  assert.deepEqual(await revokeAppleAuthorization({ authorizationCode: 'C', appleUserIds: [APPLE_SUB], privateKeyPem: PEM, fetchImpl: flaky.fn }), { revoked: true });
+  assert.deepEqual(flaky.calls.map((c) => c.path), ['/auth/token', '/auth/revoke', '/auth/revoke']);
+
+  let drops = 0;
+  const dropping = appleFetch({
+    '/auth/token': () => jsonRes({ refresh_token: 'RT', id_token: idToken(APPLE_SUB) }),
+    '/auth/revoke': () => { if (++drops === 1) throw new TypeError('connection reset'); return new Response('', { status: 200 }); },
+  });
+  assert.deepEqual(await revokeAppleAuthorization({ authorizationCode: 'C', appleUserIds: [APPLE_SUB], privateKeyPem: PEM, fetchImpl: dropping.fn }), { revoked: true });
+
+  const badRequest = appleFetch({
+    '/auth/token': () => jsonRes({ refresh_token: 'RT', id_token: idToken(APPLE_SUB) }),
+    '/auth/revoke': () => jsonRes({ error: 'invalid_request' }, 400),
+  });
+  await revokeAppleAuthorization({ authorizationCode: 'C', appleUserIds: [APPLE_SUB], privateKeyPem: PEM, fetchImpl: badRequest.fn });
+  assert.equal(badRequest.calls.length, 2, 'a 4xx is final, not retried');
+});
+
+test('handler: a failed Apple identity lookup still deletes, reported as identity_lookup_failed', async () => {
+  const apple = appleFetch({});
+  const f = fullFetch(apple);
+  const lookupFails = async (url, init = {}) =>
+    (init.method || 'GET') === 'GET' && String(url).includes('/auth/v1/admin/users/') ? new Response('', { status: 503 }) : f.fn(url, init);
+  const res = await handleDeleteAccount(deleteRequest({ appleAuthorizationCode: 'CODE' }), { env: (k) => ENV[k], fetch: lookupFails });
+  assert.deepEqual(await res.json(), { ok: true, revoked: false, revokeReason: 'identity_lookup_failed' });
+  assert.equal(apple.calls.length, 0);
+  assert.ok(f.supabaseCalls.includes(`DELETE /auth/v1/admin/users/${USER}`));
 });

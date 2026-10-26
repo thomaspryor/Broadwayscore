@@ -14,6 +14,9 @@
 
 export const APPLE_ISSUER = 'https://appleid.apple.com';
 export const APPLE_TEAM_ID = '2837Q6TK6Y';
+// Must name the key in APPLE_PRIVATE_KEY (the GitHub secret supabase-functions.yml
+// copies into the function secrets). Rotating that key means changing this id
+// in the same commit; rotate-apple-secret.yml hardcodes it too.
 export const APPLE_KEY_ID = '3TBDNTHCD2';
 // The iOS bundle id: a native authorizationCode is issued to it, so the code
 // exchange must use it as client_id (the web services id would be rejected).
@@ -145,12 +148,18 @@ export async function revokeAppleAuthorization({
     const hint = tokens.refresh_token ? 'refresh_token' : 'access_token';
     if (!token) return { revoked: false, reason: 'token_missing' };
 
-    const revokeRes = await postForm(
-      fetchImpl,
-      `${APPLE_ISSUER}/auth/revoke`,
-      { client_id: clientId, client_secret: clientSecret, token, token_type_hint: hint },
-      ctrl.signal,
-    );
+    // The code is single use, so this token is the only chance to revoke:
+    // one retry when Apple answers 5xx or the connection drops.
+    const revokeParams = { client_id: clientId, client_secret: clientSecret, token, token_type_hint: hint };
+    let revokeRes;
+    try {
+      revokeRes = await postForm(fetchImpl, `${APPLE_ISSUER}/auth/revoke`, revokeParams, ctrl.signal);
+    } catch (e) {
+      if (ctrl.signal.aborted) throw e;
+    }
+    if (!revokeRes || revokeRes.status >= 500) {
+      revokeRes = await postForm(fetchImpl, `${APPLE_ISSUER}/auth/revoke`, revokeParams, ctrl.signal);
+    }
     if (!revokeRes.ok) return { revoked: false, reason: `revoke_${await appleError(revokeRes)}` };
     return { revoked: true };
   } catch (e) {
