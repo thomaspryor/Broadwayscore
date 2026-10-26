@@ -16,10 +16,17 @@ const live = [
 const idx = buildWpLiveIndex(live, norm);
 
 test('live by normalized URL', () => {
-  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'NYT', url: 'https://x.com/a', criticName: 'Other' }, norm), true);
+  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'NYT', url: 'https://x.com/a', criticName: 'Jane Doe' }, norm), true);
 });
-test('live by named critic when URL differs', () => {
-  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'vulture', url: 'https://v.com/z', criticName: 'sam roe' }, norm), true);
+test('shared URL, different critic: sibling live entry does not hide this file', () => {
+  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'nyt', url: 'https://x.com/a', criticName: 'Other Person' }, norm), false);
+});
+test('URL match with same critic is live', () => {
+  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'nyt', url: 'https://x.com/a', criticName: 'jane doe' }, norm), true);
+});
+test('critic-only fallback applies only to files without a URL', () => {
+  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'vulture', url: '', criticName: 'sam roe' }, norm), true);
+  assert.equal(isLiveScored(idx, { showId: 's1', outletId: 'vulture', url: 'https://v.com/z', criticName: 'sam roe' }, norm), false);
 });
 test('not live: different show or outlet', () => {
   assert.equal(isLiveScored(idx, { showId: 's2', outletId: 'nyt', url: 'https://x.com/a', criticName: 'Jane Doe' }, norm), false);

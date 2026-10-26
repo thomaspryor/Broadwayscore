@@ -13,32 +13,44 @@
  * c2-live-scored-check.js (BRO-74).
  *
  * A live entry matches the corpus file when, for the same show + canonical
- * outlet, either the normalized URL is equal, or both carry the same named
- * critic. An unnamed ("Unknown"/empty) critic never matches on name alone.
+ * outlet, the normalized URL is equal AND the critic agrees (see isLiveScored),
+ * or the file has no URL and the named critic matches. B is report-only, and
+ * reviews.json can lag one rebuild.
  * Normalizers are injected so the logic is testable with synthetic fixtures.
  */
 
 function buildWpLiveIndex(reviews, { normalizeOutlet, normalizeUrl, normalizeCritic }) {
-  const byUrl = new Set();
+  const byUrl = new Map(); // show|outlet|url -> Set of named critics ('unknown' never stored)
   const byCritic = new Set();
   for (const r of reviews || []) {
     if (!r || !r.showId) continue;
     const outlet = canon(() => normalizeOutlet(r.outletId || r.outlet), r.outletId || r.outlet);
-    if (r.url) byUrl.add(`${r.showId}|||${outlet}|||${canon(() => normalizeUrl(r.url), r.url)}`);
     const critic = canon(() => normalizeCritic(r.criticName), 'unknown');
+    if (r.url) {
+      const key = `${r.showId}|||${outlet}|||${canon(() => normalizeUrl(r.url), r.url)}`;
+      if (!byUrl.has(key)) byUrl.set(key, new Set());
+      if (critic !== 'unknown') byUrl.get(key).add(critic);
+    }
     if (critic !== 'unknown') byCritic.add(`${r.showId}|||${outlet}|||${critic}`);
   }
   return { byUrl, byCritic };
 }
 
 /**
- * @returns {boolean} true when reviews.json carries a live entry for this
- *   corpus file, i.e. the file is being scored despite wrongProduction=true.
+ * A URL match only counts when it is this file's own entry: the file's named
+ * critic must be among the live critics at that URL (corpus often has sibling
+ * files sharing a URL under other bylines, only one live). An unnamed file
+ * matches a URL only when no named critic is live there. The critic-only
+ * fallback applies solely to files without a URL.
  */
 function isLiveScored(index, { showId, outletId, url, criticName }, { normalizeOutlet, normalizeUrl, normalizeCritic }) {
   const outlet = canon(() => normalizeOutlet(outletId), outletId);
-  if (url && index.byUrl.has(`${showId}|||${outlet}|||${canon(() => normalizeUrl(url), url)}`)) return true;
   const critic = canon(() => normalizeCritic(criticName), 'unknown');
+  if (url) {
+    const critics = index.byUrl.get(`${showId}|||${outlet}|||${canon(() => normalizeUrl(url), url)}`);
+    if (!critics) return false;
+    return critic === 'unknown' ? critics.size === 0 : critics.has(critic);
+  }
   return critic !== 'unknown' && index.byCritic.has(`${showId}|||${outlet}|||${critic}`);
 }
 
