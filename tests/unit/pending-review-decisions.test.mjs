@@ -36,3 +36,21 @@ test('refuses unknown keys, bad outcomes and thin reasons before changing anythi
   assert.equal(Object.keys(pending.shows).length, 2);
   assert.deepEqual(archive.shows, {});
 });
+
+test('a rejected outcome keeps its source URLs skippable and a shared slug keeps the earlier review', () => {
+  const pending = { shows: {
+    'a-2024': { recoupedSource: 'see https://example.com/x?utm_source=q.' },
+    'a': { recoupedSource: null },
+  } };
+  const archive = { shows: {} };
+  const decisions = {
+    'a-2024': { outcome: 'rejected', reason: 'wrong production entirely' },
+    'a': { outcome: 'duplicate', reason: 'already on the record' },
+  };
+  applyDecisions({ pending, archive, decisions, slugFor: () => 'a-slug' });
+  const rec = archive.shows['a-slug'];
+  assert.deepEqual(rec.rejectedSources, ['https://example.com/x']);
+  assert.equal(rec.archivedReason, 'reviewed-duplicate');
+  assert.equal(rec.priorReviews.length, 1);
+  assert.equal(rec.priorReviews[0].archivedReason, 'reviewed-rejected');
+});

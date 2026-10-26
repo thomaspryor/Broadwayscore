@@ -8,7 +8,7 @@
  */
 'use strict';
 
-const { writeArchiveRecord } = require('./commercial-claim-triage');
+const { writeArchiveRecord, urlsIn } = require('./commercial-claim-triage');
 
 const OUTCOMES = ['applied', 'rejected', 'duplicate', 'unverifiable'];
 
@@ -36,8 +36,14 @@ function applyDecisions({ pending, archive, decisions, slugFor, now = new Date()
   for (const [key, d] of Object.entries(decisions)) {
     const entry = pending.shows[key];
     const slug = slugFor(key, entry) || key;
+    // A slug can hold one archive record; keep what a replaced record said so the earlier review is not lost.
+    const prior = archive.shows && archive.shows[slug];
+    const history = prior ? [...(prior.priorReviews || []), { pendingKey: prior.pendingKey || slug, archivedReason: prior.archivedReason, archivedDetail: prior.archivedDetail, archivedAt: prior.archivedAt }] : null;
     writeArchiveRecord(archive, slug, {
       ...entry,
+      ...(history ? { priorReviews: history } : {}),
+      // A rejected claim's source must stay skipped by the scrapers, which only read rejectedSources.
+      ...(d.outcome === 'rejected' ? { rejectedSources: urlsIn(entry.recoupedSource) } : {}),
       ...(slug !== key ? { pendingKey: key } : {}),
       archivedAt: now,
       archivedReason: `reviewed-${d.outcome}`,
