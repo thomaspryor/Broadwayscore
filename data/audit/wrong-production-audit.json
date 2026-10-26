@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T20:16:41.029Z",
+  "timestamp": "2026-10-26T21:20:39.552Z",
   "stats": {
-    "totalReviews": 62326,
-    "alreadyFlagged": 21529,
+    "totalReviews": 62628,
+    "alreadyFlagged": 21545,
     "dateGuardCatches": 223,
-    "directorMismatch": 2293,
-    "tvFilmSignals": 1771,
-    "londonSignals": 3004,
-    "offBroadwaySignals": 553,
-    "yearMismatch": 210,
-    "noPublishDate": 5568
+    "directorMismatch": 2305,
+    "tvFilmSignals": 1773,
+    "londonSignals": 3021,
+    "offBroadwaySignals": 554,
+    "yearMismatch": 211,
+    "noPublishDate": 5562
   },
   "findings": [
     {
@@ -2770,6 +2770,19 @@
       ]
     },
     {
+      "showId": "american-buffalo-west-end-2015",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2015-05-01",
+      "url": "https://www.express.co.uk/entertainment/theatre/574272/American-Buffalo-reviewy-moving-but-slow",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "american-idiot-2010",
       "file": "talkinbroadway--matthew-murray.json",
       "score": 75,
@@ -2780,6 +2793,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "american-idiot-west-end-2016",
+      "file": "times-uk--kate-bassett.json",
+      "publishDate": "2016-07-19",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from american-idiot-2010"
         }
       ]
     },
@@ -5310,6 +5336,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "bestofthislife--emily-smith.json",
+      "publishDate": "2025-05-28",
+      "url": "https://bestofthislife.com/beetlejuice-the-musical-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (3x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
         }
       ]
     },
@@ -9174,6 +9213,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "clarence-darrow-west-end-2015",
+      "file": "times-uk--kate-bassett.json",
+      "publishDate": "2015-03-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -16430,6 +16482,81 @@
       ]
     },
     {
+      "showId": "funny-girl-west-end-2016",
+      "file": "daily-mail--quentin-letts.json",
+      "publishDate": "2016-04-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from funny-girl-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-west-end-2016",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2016-04-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from funny-girl-2022"
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-west-end-2016",
+      "file": "thestage--mark-shenton.json",
+      "publishDate": "2016-04-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from funny-girl-2022"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-west-end-2016",
+      "file": "timeout-london--louise-schwartzkoff.json",
+      "publishDate": "2016-04-26",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from funny-girl-2022"
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-west-end-2016",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2016-04-21",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from funny-girl-2022"
+        }
+      ]
+    },
+    {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
       "file": "british-theatre--colin-davison.json",
       "score": 85,
@@ -16623,6 +16750,19 @@
       "score": 78,
       "publishDate": "2026-08-09",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/game-of-thrones-the-mad-king-rsc/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "theargus--unknown.json",
+      "publishDate": "2026-08-10",
+      "url": "https://www.theargus.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -19170,6 +19310,45 @@
       ]
     },
     {
+      "showId": "gypsy-west-end-2015",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2015-04-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2015-04-16",
+      "url": "https://www.standard.co.uk/goingout/theatre/gypsy-savoy-theatre-review-get-the-awards-ready-for-a-momma-rose-with-charisma-to-burn-10180983.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-west-end-2015",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2015-04-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
       "showId": "hadestown-2019",
       "file": "musical-theatre-review--angela-thomas.json",
       "publishDate": null,
@@ -19612,6 +19791,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 5\""
+        }
+      ]
+    },
+    {
+      "showId": "hand-to-god-west-end-2016",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2016-02-16",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"moritz von stuelpnagel\" from hand-to-god-2015"
         }
       ]
     },
@@ -51767,20 +51959,6 @@
     },
     {
       "showId": "the-prom-2018",
-      "file": "variety--frank-rizzo.json",
-      "score": 82,
-      "publishDate": "November 15, 2018",
-      "url": "https://variety.com/2020/film/reviews/the-prom-review-meryl-streep-james-corden-ryan-murphy-1234842681/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-prom-2018",
       "file": "vulture--sara-holdren.json",
       "score": 87,
       "publishDate": "November 15th, 2018",
@@ -56200,6 +56378,19 @@
     },
     {
       "showId": "waitress-tour-2026",
+      "file": "austin101magazine--jerristarbuck.json",
+      "publishDate": "2026-10-22",
+      "url": "https://austin101magazine.com/review-the-10th-anniversary-tour-of-waitress-serves-up-a-masterpiece-at-bass-concert-hall/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"diane paulus\" from waitress-2021"
+        }
+      ]
+    },
+    {
+      "showId": "waitress-tour-2026",
       "file": "nydailynews--joe-dziemianowicz.json",
       "score": 65,
       "publishDate": null,
@@ -57033,6 +57224,19 @@
       "score": 88,
       "publishDate": "2026-06-04",
       "url": "https://www.courant.com/2026/06/04/theater-review-a-gritty-and-moody-water-for-elephants-produces-magic-at-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
+      "file": "headtopics--sdut.json",
+      "publishDate": "2026-08-20",
+      "url": "https://us.headtopics.com/news/review-water-for-elephants-musical-delivers-on-spectacle-86844621",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -61675,6 +61879,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "american-buffalo-west-end-2015",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2015-04-28",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11561068/American-Buffalo-Wyndhams-Theatre-review-Damien-Lewis-has-bravura.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -66927,6 +67144,19 @@
       ]
     },
     {
+      "showId": "clarence-darrow-west-end-2015",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2015-03-10",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "cleansed-off-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 36,
@@ -69179,6 +69409,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "doctor-faustus-west-end-2016",
+      "file": "the-spectator-uk--lloyd-evans.json",
+      "publishDate": "2016-05-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -72410,6 +72653,19 @@
       ]
     },
     {
+      "showId": "girls-off-west-end-2026",
+      "file": "nytimes--helen-shaw.json",
+      "publishDate": "2026-10-20",
+      "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
+        }
+      ]
+    },
+    {
       "showId": "glass-kill-bluebeard-and-imp-west-end-2019",
       "file": "a-younger-theatre--unknown.json",
       "score": 91,
@@ -73339,6 +73595,45 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2016",
+      "file": "independent--paul-taylor.json",
+      "publishDate": "2016-08-17",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/groundhog-day-old-vic-theatre-review-such-a-tonic-that-it-s-a-pity-you-can-t-get-a-repeat-prescription-for-it-a7195351.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2016-08-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2016",
+      "file": "the-sun--unknown.json",
+      "publishDate": "2016-08-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -74370,6 +74665,45 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-west-end-2015",
+      "file": "daily-mail--quentin-letts.json",
+      "publishDate": "2015-12-08",
+      "url": "https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-west-end-2015",
+      "file": "times-uk--ann-treneman.json",
+      "publishDate": "2015-12-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-west-end-2015",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "publishDate": "2015-12-08",
+      "url": "https://www.whatsonstage.com/news/hangmen-wyndhams-theatre_39299/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -83254,6 +83588,19 @@
       ]
     },
     {
+      "showId": "my-night-with-reg-west-end-2015",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2015-01-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "londontheatredirect--london-theatre-direct-limited.json",
       "publishDate": null,
@@ -83360,6 +83707,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"ars nova\""
+        }
+      ]
+    },
+    {
+      "showId": "nell-gwynn-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2016-02-13",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/nell-gwynn-apollo-theatre-review-arterton-joins-actings-a-list/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -86184,6 +86544,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "thestage--natasha-tripney.json",
+      "publishDate": "2016-03-31",
+      "url": "https://www.thestage.co.uk/reviews/2016/people-places-and-things-review-at-wyndhams-theatre-london/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "people-places-and-things-west-end-2016",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2016-03-29",
+      "url": "http://www.timeout.com/london/theatre/people-places-and-things",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -93251,6 +93637,19 @@
       ]
     },
     {
+      "showId": "the-caretaker-west-end-2016",
+      "file": "express-uk--neil-norman.json",
+      "publishDate": "2016-04-15",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "artsdesk--matt-wolf.json",
       "score": 97,
@@ -97918,6 +98317,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-nether-west-end-2015",
+      "file": "financialtimes--sarah-hemming.json",
+      "publishDate": "2015-02-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

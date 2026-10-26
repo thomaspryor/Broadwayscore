@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-26T20:16:29.092Z",
-  "totalScanned": 62475,
-  "totalExcluded": 28319,
+  "generatedAt": "2026-10-26T21:20:23.794Z",
+  "totalScanned": 62779,
+  "totalExcluded": 28362,
   "ruleCounts": {
-    "wrongProduction": 18672,
-    "duplicateOf": 2187,
-    "wrongShow": 1802,
-    "rejectionReason": 1193,
+    "wrongProduction": 18689,
+    "duplicateOf": 2188,
+    "wrongShow": 1803,
+    "rejectionReason": 1192,
     "unverifiableWebSearchRow": 951,
-    "noTextOrScoreSignal": 697,
+    "noTextOrScoreSignal": 700,
     "nonReview": 621,
-    "wrongAttribution": 347,
+    "wrongAttribution": 348,
+    "bodylessAggregatorScoreUncorroborated": 222,
     "blockedReviewUrl": 221,
     "isRoundupArticle": 220,
-    "bodylessAggregatorScoreUncorroborated": 202,
     "crossOutletDuplicate": 182,
     "isSyndicatedDuplicate": 139,
     "knownSyndicationSecondary": 128,
@@ -39,17 +39,25 @@
     "previewFirstLookPiece": 2,
     "errorPage": 1,
     "personalRepost": 1,
-    "registrationWallStub": 1
+    "registrationWallStub": 1,
+    "suspectedMisattribution": 1
   },
   "ruleDeltas": {
-    "noTextOrScoreSignal": 10
+    "wrongProduction": 17,
+    "duplicateOf": 1,
+    "wrongShow": 1,
+    "rejectionReason": -1,
+    "noTextOrScoreSignal": 3,
+    "wrongAttribution": 1,
+    "bodylessAggregatorScoreUncorroborated": 20,
+    "suspectedMisattribution": 1
   },
-  "previousGeneratedAt": "2026-10-26T20:05:02.174Z",
+  "previousGeneratedAt": "2026-10-26T20:16:29.092Z",
   "mirror": {
-    "comparedShows": 2802,
-    "comparedFiles": 61854,
-    "agreeExcluded": 28209,
-    "agreeIncluded": 33268,
+    "comparedShows": 2845,
+    "comparedFiles": 62155,
+    "agreeExcluded": 28460,
+    "agreeIncluded": 33318,
     "mirrorOnly": 108,
     "rebuildOnly": 269,
     "disagreements": 377,
@@ -80,8 +88,8 @@
       "skippedWrongShow": 1
     },
     "rebuildEntriesUnscanned": 0,
-    "notComparedShows": 77,
-    "notComparedFiles": 621
+    "notComparedShows": 78,
+    "notComparedFiles": 624
   },
   "previousDisagreementRate": 0.0061
 }
