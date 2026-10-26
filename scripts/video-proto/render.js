@@ -41,7 +41,54 @@ function data(n) {
     for (let i = 1; i < shows.length; i++) if (shows[i].score > shows[i - 1].score) throw new Error('top5 not sorted by score');
     return { shows: shows.map(s => ({ title: s.title, type: s.type, score: s.score, rc: s.rc, art: s.art })) };
   }
+  if (n === 'verdict' || n === 'versus') return voiced(n);
   throw new Error('unknown composition ' + n);
+}
+
+// Voiced formats: timeline is driven by the voiceover's word timings (VO_DIR/<comp>.mp3 + <comp>.words.json from Whisper).
+// Every number the voice says is checked against the data, so a stale script cannot ship.
+const VO_OFF = 0.6;
+function voiced(n) {
+  const VO = process.env.VO_DIR; if (!VO) throw new Error('set VO_DIR to the folder with ' + n + '.mp3 and ' + n + '.words.json');
+  const wj = JSON.parse(fs.readFileSync(path.join(VO, n + '.words.json'), 'utf8'));
+  const words = wj.words.map(w => ({ w: w.word, a: +(w.start + VO_OFF).toFixed(3), b: +(w.end + VO_OFF).toFixed(3) }));
+  // Whisper's word list drops '+'/'-' from letter grades ("B+" comes back as "B"); restore them from the full transcript
+  const marks = [...wj.text.matchAll(/\b([A-F])([+-])(?![\w])/g)];
+  words.filter(w => /^[A-F]$/.test(w.w)).forEach((w, i) => { if (marks[i] && marks[i][1] === w.w) w.w += marks[i][2]; });
+  words.forEach((w, i) => { const nx = words[i + 1], pv = words[i - 1];
+    if (/^critics?$/i.test(w.w) && nx && /^score$/i.test(nx.w)) w.w = 'Critic';
+    if (/^score$/i.test(w.w) && pv && pv.w === 'Critic') w.w = 'Score';
+    if (/^seeing$/i.test(w.w) && pv && /^worth$/i.test(pv.w)) w.w = 'Seeing'; });
+  // mark sentence ends from the transcript's punctuation so a caption never runs across two sentences
+  { let pos = 0; const low = wj.text.toLowerCase();
+    wj.words.forEach((w, i) => { const j = low.indexOf(w.word.toLowerCase(), pos); if (j < 0) return; pos = j + w.word.length;
+      if (/^[+-]?[.!?]/.test(wj.text.slice(pos, pos + 2))) words[i].e = 1; }); }
+  const norm = s => String(s).toLowerCase().replace(/[^a-z0-9+]/g, '');
+  const at = phrase => { const tk = phrase.split(' ').map(norm);
+    for (let i = 0; i < words.length; i++) if (tk.every((t, k) => words[i + k] && norm(words[i + k].w) === t)) return words[i].a;
+    throw new Error(`${n}: the voiceover never says "${phrase}" (script and data disagree)`); };
+  const id = n === 'verdict' ? (process.env.VERDICT_ID || 'the-imaginary-invalid-2026') : (process.env.VERSUS_ID || 'other-desert-cities-2026');
+  const x = showInfo(id), rv = x.p.rv.filter(r => Number.isFinite(r.s));
+  const c = { rave: 0, positive: 0, mixed: 0, negative: 0 }; rv.forEach(r => c[r.s >= getGoldThreshold(x.category) ? 'rave' : r.s >= 70 ? 'positive' : r.s >= 55 ? 'mixed' : 'negative']++);
+  const aud = x.p.au && Number.isFinite(x.p.au.score) && totalAudienceReviews(x.p.au) >= MIN_AUDIENCE_REVIEWS ? getAudienceGrade(x.p.au.score) : null;
+  if (!aud) throw new Error(id + ': no audience grade');
+  const score = Math.round(x.score), label = SCORE_TIER_LABELS[getScoreTierId(score, x.category)];
+  // numbers and labels the voice says must match the data
+  at(`${score}`); at(label); at(aud.grade); at(`${rv.length}`) ;
+  if (n === 'verdict') { at(`${c.rave + c.positive} positive`); at(`${c.mixed} mixed`); at(`${c.negative} negative`); }
+  const Q = n === 'verdict'
+    ? [['The Wall Street Journal', 'the daffy splendidness of the Roundabout Theatre Company production', 'the wall street journal'], ['Deadline', null, 'deadline'], ['New York Post', null, 'the new york post']]
+    : [['Variety', 'An exquisite portrait of 21st-century Americana', 'variety'], ['The Hollywood Reporter', null, 'the hollywood reporter']];
+  const quotes = Q.map(([o, ex, say]) => { const r = rv.find(r => r.o === o); if (!r) throw new Error(id + ': no review from ' + o);
+    if (ex && !r.q.includes(ex)) throw new Error(`${o} excerpt is not in the quote`);
+    const q = ex ? (r.q.startsWith(ex) ? '' : '…') + ex + '…' : r.q; return { o, cn: r.cn, s: r.s, q, t: at(say) }; });
+  const A = n === 'verdict'
+    ? { bar: at(`${c.rave + c.positive} positive`), count: at('the critic score'), land: at(`${score}`), label: at(label), aud: at('and audiences'), grade: at(aud.grade), end: at('every review') }
+    : { count: at(`across ${rv.length} reviews`), land: at(`${score}`), label: at(label), aud: at('but audiences'), grade: at(aud.grade), who: at('so whos right') };
+  const last = words[words.length - 1].b;
+  if (!A.end) A.end = last + 0.3;
+  return { kind: n, show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score: x.score, count: rv.length, scores: rv.map(r => r.s),
+    counts: c, label, audienceGrade: aud, quotes, A, words, dur: +(Math.max(last, A.end) + 2.4).toFixed(2), vo: path.join(VO, n + '.mp3') };
 }
 
 const { synth } = require('./audio.js');
@@ -62,6 +109,12 @@ const AUDIO_STYLE = process.env.AUDIO_STYLE || 'groove';
   if (process.argv.includes('--audio-only')) { // re-sound an already rendered video: node render.js <comp> <dir> --audio-only
     const src = path.join(outDir, `${name}.mp4`), wav = path.join(outDir, `${name}-${AUDIO_STYLE}.wav`), dst = path.join(outDir, `${name}-${AUDIO_STYLE}.mp4`);
     synth(info.events, info.dur, wav, AUDIO_STYLE);
+  if (d.vo) { // music bed under the voice: bed at -16 dB, voice delayed by VO_OFF
+    const mix = path.join(outDir, `${name}-mix.wav`);
+    require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-i', d.vo, '-filter_complex',
+      `[0:a]volume=${process.env.BED_VOL || 0.16}[m];[1:a]adelay=${VO_OFF * 1000}|${VO_OFF * 1000},volume=1.0[v];[m][v]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.9[o]`, '-map', '[o]', '-ar', '44100', mix]);
+    fs.renameSync(mix, wav);
+  }
     require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', src, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', dst]);
     console.log('wrote ' + dst); await browser.close(); return;
   }

@@ -214,3 +214,89 @@ COMPS.top5 = {
     if (e > 0) this.cards.forEach(c => c.style.opacity = 1 - e);
   },
 };
+
+/* ---------- Voiced formats (verdict, versus): scenes cue off the voiceover's word times; captions are burned in ---------- */
+function captions(root, words) {
+  // phrases of up to 3 words, broken at pauses; the word being spoken is highlighted
+  const ph = []; let cur = [];
+  words.forEach((w, i) => { const pv = words[i - 1]; if (cur.length && (cur.length >= 3 || pv.e || w.a - pv.b > 0.28)) { ph.push(cur); cur = []; } cur.push(w); });
+  if (cur.length) ph.push(cur);
+  const el = $('abs', 'left:16px;right:16px;top:462px;text-align:center;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.85);z-index:20');
+  root.append(el);
+  return t => {
+    const p = ph.find((p, i) => t >= p[0].a - 0.05 && t < (ph[i + 1] ? ph[i + 1][0].a - 0.05 : p[p.length - 1].b + 0.5));
+    if (!p) { el.innerHTML = ''; return; }
+    el.innerHTML = p.map(w => { const on = t >= w.a && t < w.b + 0.08, seen = t >= w.a;
+      return `<span style="display:inline-block;margin:0 6px;color:${on ? '#e8c39e' : '#fff'};opacity:${seen ? 1 : 0};transform:scale(${on ? 1.04 : 1})">${esc(w.w)}</span>`; }).join('');
+  };
+}
+const quoteCard = (q, top, h) => $('abs card', `left:20px;right:20px;top:${top}px;padding:12px 14px;height:${h}px`,
+  `<div style="display:flex;align-items:center;gap:10px"><div style="flex:1;min-width:0"><div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574;white-space:nowrap">${esc(q.o)}</div><div style="font-size:12px;color:#9ca3af;margin-top:2px">${esc(q.cn)}</div></div><div class="score-badge bw-xs ${tierClass(q.s)}">${q.s}</div></div>
+   <div style="font-size:13px;line-height:1.35;color:#e4e4e7;margin-top:8px;font-style:italic">&ldquo;${esc(q.q)}&rdquo;</div>`);
+const gradeTile = g => `<div class="${g.grade === 'A+' ? 'audience-top-grade' : ''}" style="width:80px;height:80px;border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.05);${g.grade === 'A+' ? '' : `background:${g.color};color:${g.textColor}`}">${esc(g.grade)}</div>`;
+const sideCard = (x, label, sub) => $('abs card', `left:${x}px;width:150px;top:0;height:200px;display:flex;flex-direction:column;align-items:center;padding-top:16px`,
+  `<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">${label}</div><div class="slot" style="margin-top:28px;height:80px;display:flex;align-items:center;justify-content:center"></div><div class="sub" style="margin-top:18px;font-size:14px;font-weight:800;text-align:center">${sub}</div>`);
+// toggle via visibility so an element's own inline display (flex on the end card) survives
+const show = (el, o) => { el.style.opacity = o; el.style.visibility = o > 0 ? 'visible' : 'hidden'; };
+
+function voicedBuild(self, root, d, kicker) {
+  self.d = d; self.dur = d.dur; const A = d.A, r = Math.round(d.score);
+  self.head = $('abs', 'inset:0;z-index:5', `<div style="position:absolute;left:0;right:0;top:34px;text-align:center">${logo(14)}</div><div style="position:absolute;left:0;right:0;top:60px;text-align:center;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#d4a574">${kicker}</div>`);
+  root.append(self.head);
+  // intro
+  const g1 = self.g1 = $('abs', 'inset:0');
+  g1.append($('abs card', 'left:100px;top:96px;width:160px;height:160px;padding:0;overflow:hidden;border-radius:1rem', artImg(d.art, 160, 'border-radius:0')));
+  self.art = g1.firstChild;
+  g1.append($('abs', 'left:12px;right:12px;top:268px;text-align:center;font-weight:800;font-size:24px;line-height:1.15;letter-spacing:-.02em', esc(d.show.title)));
+  g1.append($('abs', 'left:0;right:0;top:330px;display:flex;gap:6px;justify-content:center', pills(d.show, d.isNew)));
+  self.cnt = $('abs cap', 'left:20px;right:20px;top:362px;font-size:15px;color:#d4d4d8', `${d.count} reviews in`); g1.append(self.cnt);
+  // quotes
+  const h = d.quotes.length === 3 ? 118 : 124, gap = d.quotes.length === 3 ? 8 : 10, q0 = d.quotes.length === 3 ? 88 : 92;
+  self.qc = d.quotes.map((q, i) => quoteCard(q, q0 + i * (h + gap), h));
+  self.g2 = $('abs', 'inset:0'); self.qc.forEach(c => self.g2.append(c));
+  // scores
+  const g3 = self.g3 = $('abs', 'inset:0');
+  self.bc = $('abs card', 'left:20px;right:20px;top:92px;padding:10px 14px 8px', barHtml([])); g3.append(self.bc);
+  self.pair = $('abs', 'left:0;right:0;top:170px;height:200px');
+  self.ca = sideCard(20, 'Critics', `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`); self.cbw = badgeEl('lg'); self.ca.querySelector('.slot').append(self.cbw);
+  self.cb = sideCard(190, 'Audience', 'Audience grade'); self.cb.querySelector('.slot').innerHTML = gradeTile(d.audienceGrade);
+  self.pair.append(self.ca, self.cb); g3.append(self.pair);
+  self.vs = $('abs', 'left:162px;top:248px;width:36px;height:36px;border-radius:9999px;background:#2a2a38;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#d4a574', 'VS');
+  g3.append(self.vs);
+  self.ask = $('abs cap', 'left:20px;right:20px;top:388px;font-size:15px;color:#d4d4d8', 'Who is right? Tell us in the comments.'); g3.append(self.ask);
+  // end
+  self.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+  root.append(g1, self.g2, g3, self.end);
+  self.cap = captions(root, d.words);
+  self.events = [];
+  d.quotes.forEach(q => self.events.push({ t: q.t, k: 'pop' }));
+  if (A.bar) self.events.push({ t: A.bar, k: 'pop' });
+  const n = 14; for (let i = 0; i < n; i++) self.events.push({ t: A.count + (A.land - A.count) * i / n, k: 'tick', p: i / n });
+  self.events.push({ t: A.land, k: r >= GOLD ? 'chime' : 'pop' }, { t: A.grade, k: 'pop' }, { t: A.end, k: 'pop' });
+}
+function voicedUpdate(self, t) {
+  const d = self.d, A = d.A, q0 = d.quotes[0].t, sc = A.bar || A.count;
+  const in1 = seg(t, 0.05, 0.5), out1 = 1 - seg(t, q0 - 0.35, q0 - 0.05);
+  show(self.g1, Math.min(in1, out1));
+  const a = eob(seg(t, 0.05, 0.8)); self.art.style.transform = `scale(${lerp(0.85, 1, a)})`;
+  fade(self.cnt, seg(t, 0.9, 1.4));
+  show(self.g2, Math.min(seg(t, q0 - 0.3, q0), 1 - seg(t, sc - 0.35, sc - 0.05)));
+  self.qc.forEach((c, i) => { const x = seg(t, d.quotes[i].t - 0.1, d.quotes[i].t + 0.3); fade(c, x, (1 - eo(x)) * 24); });
+  const end = seg(t, A.end - 0.1, A.end + 0.4);
+  show(self.g3, Math.min(seg(t, sc - 0.3, sc), 1 - end));
+  if (A.bar) { const k = Math.round(d.scores.length * eo(seg(t, A.bar, A.bar + 1.6))); self.bc.innerHTML = barHtml(d.scores.slice(0, k)); fade(self.bc, seg(t, A.bar - 0.2, A.bar + 0.2)); }
+  else { self.bc.innerHTML = barHtml(d.scores); fade(self.bc, seg(t, A.count, A.count + 0.4)); }
+  fade(self.ca, seg(t, A.count - 0.3, A.count + 0.1), (1 - seg(t, A.count - 0.3, A.count + 0.1)) * 12);
+  const bt = seg(t, A.count, A.land); setBadge(self.cbw, bt === 0 ? 0 : d.score * eo(bt));
+  const pop = t > A.land ? 1 + 0.2 * Math.sin(Math.PI * seg(t, A.land, A.land + 0.45)) : 1; self.cbw.style.transform = `scale(${pop})`;
+  fade(self.ca.querySelector('.sub'), seg(t, A.label - 0.1, A.label + 0.3));
+  fade(self.cb, seg(t, A.aud - 0.2, A.aud + 0.2), (1 - seg(t, A.aud - 0.2, A.aud + 0.2)) * 12);
+  const g = self.cb.querySelector('.slot').firstChild, gx = seg(t, A.grade - 0.1, A.grade + 0.25);
+  g.style.opacity = gx; g.style.transform = `scale(${lerp(0.6, 1, eob(gx))})`;
+  fade(self.vs, seg(t, A.aud, A.aud + 0.3));
+  if (A.who) fade(self.ask, seg(t, A.who, A.who + 0.4)); else self.ask.style.opacity = 0;
+  show(self.end, end); show(self.head, 1 - end);
+  self.cap(t);
+}
+COMPS.verdict = { build(root, d) { voicedBuild(this, root, d, 'Opening night verdict'); }, update(t) { voicedUpdate(this, t); } };
+COMPS.versus = { build(root, d) { voicedBuild(this, root, d, 'Critics vs. audience'); }, update(t) { voicedUpdate(this, t); } };
