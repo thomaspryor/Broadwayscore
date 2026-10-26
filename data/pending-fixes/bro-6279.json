@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6279",
   "planId": "6279a1b2-0c4d-4e5f-9a6b-7c8d9e0f1a2b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T18:45:00.000Z",
   "submitter": {
     "name": null,
@@ -24,5 +24,14 @@
         "showId": "whos-afraid-of-virginia-woolf-2020"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T19:24:00.416Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: ibdbUrl updated for whos-afraid-of-virginia-woolf-2020"
+    }
+  ],
+  "executedIn": "ci"
 }
