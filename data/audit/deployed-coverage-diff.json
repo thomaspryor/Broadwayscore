@@ -1,13 +1,34 @@
 {
-  "generatedAt": "2026-10-26T05:31:48.803Z",
+  "generatedAt": "2026-10-26T08:28:14.736Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 254,
-  "clean": 254,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "clean": 253,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "dance-is-not-for-us-off-west-end-2026",
+      "title": "Dance Is Not for Us",
+      "openingDate": "2026-10-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: soundbehindcurtain"
+        }
+      ],
+      "missingFromProd": [
+        "soundbehindcurtain"
+      ],
+      "localCount": 3,
+      "deployedCount": 2,
+      "firstDefectAt": "2026-10-26T08:28:10.954Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

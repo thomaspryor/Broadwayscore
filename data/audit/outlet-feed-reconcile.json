@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T05:31:49.168Z",
+  "generatedAt": "2026-10-26T08:28:15.111Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -64,6 +64,11 @@
       "openingDate": "2026-10-22"
     },
     {
+      "id": "i-became-we-off-broadway-2026",
+      "title": "I Became We",
+      "openingDate": "2026-10-27"
+    },
+    {
       "id": "aftermath-art-new-york-off-broadway-2026",
       "title": "Aftermath",
       "openingDate": "2026-10-24"
@@ -99,17 +104,17 @@
       "openingDate": "2026-10-23"
     },
     {
+      "id": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
+      "openingDate": "2026-10-22"
+    },
+    {
       "id": "women-who-eat-off-broadway-2026",
       "title": "Women Who Eat",
       "openingDate": "2026-10-22"
     }
   ],
-  "skipped": [
-    {
-      "showId": "i-became-we-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 73,
   "feedsFailed": [
     {
@@ -146,7 +151,7 @@
     }
   ],
   "itemsScanned": 675,
-  "matchedGaps": 4,
+  "matchedGaps": 6,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -175,6 +180,24 @@
       "url": "https://www.offoffonline.com/offoffonline/2026/10/19/phyl",
       "headline": "Phyl",
       "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
+      "level": "matched",
+      "outletId": "british-theatre",
+      "url": "https://www.britishtheatreguide.info/reviews/the-master-buil-arcola-theatre-26155",
+      "headline": "The Master Builder",
+      "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "liamodell",
+      "url": "https://liamodell.com/2026/10/26/the-pianist-review-park-theatre-finsbury-park-london-wladyslaw-szpilman-memoir-film/",
+      "headline": "&#8216;The Pianist&#8217; review &#8211; Thin stage adaptation of an Oscar-winning true story",
+      "publishDate": "2026-10-26"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
