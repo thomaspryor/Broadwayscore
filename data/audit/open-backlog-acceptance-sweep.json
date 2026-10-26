@@ -1,28 +1,40 @@
 {
-  "generatedAt": "2026-10-26T00:04:39.926Z",
+  "generatedAt": "2026-10-26T07:57:29.239Z",
   "shadow": true,
-  "checkoutSha": "fdb8ea471224762cd2c35f180c85fd3b76cd02c6",
-  "totalCandidates": 483,
-  "eligibleCandidates": 78,
-  "checked": 22,
+  "checkoutSha": "95c3235bb55ba55cc80c93cd402a5635ebe61fbf",
+  "totalCandidates": 486,
+  "eligibleCandidates": 79,
+  "checked": 23,
   "truncated": true,
   "fetchError": null,
   "counts": {
     "pass": 16,
     "fail": 1,
-    "unverifiable": 5
+    "unverifiable": 6
   },
   "alreadyDone": [
+    {
+      "id": "BRO-6294",
+      "name": "Land mutex: lock-watch second layer (release a lock whose holder run is dead)",
+      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6279",
+      "name": "Source per-show Covid-closing last-performance dates from IBDB (BRO-5088 item 4 leftover)",
+      "verifyCmd": "node scripts/validate-data.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6272",
+      "name": "Fix red test tests/unit/validate-data-push-refusal-sentinel.test.mjs on main",
+      "verifyCmd": "node --test tests/unit/validate-data-push-refusal-sentinel.test.mjs",
+      "detail": null
+    },
     {
       "id": "BRO-6233",
       "name": "Hand-review long review bodies still parked in wrongFullText by head-of-article CV verdicts (BRO-6225 follow-up)",
       "verifyCmd": "node --test scripts/lib/content-verifier.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6197",
-      "name": "Version site-page image refs (src/) so replaced art busts caches",
-      "verifyCmd": "node --test scripts/lib/versioned-image-path.test.mjs",
       "detail": null
     },
     {
@@ -35,12 +47,6 @@
       "id": "BRO-6180",
       "name": "Owner's yes/no on an awaiting-owner approval card is not picked up either (extend the BRO-6168 reply drain)",
       "verifyCmd": "node --test tests/unit/decision-reply.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6159",
-      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
-      "verifyCmd": "node --test scripts/audit-biz-og-coverage.test.mjs",
       "detail": null
     },
     {
@@ -92,12 +98,6 @@
       "detail": null
     },
     {
-      "id": "BRO-6031",
-      "name": "Land queue holds ~285 land/* refs; runs park and cancel for hours (BRO-5528 and BRO-3552 needed 6 and 2 re-runs)",
-      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
-      "detail": null
-    },
-    {
       "id": "BRO-6029",
       "name": "Bound the 21 inline git fetch/pull calls in workflows with git_net (BRO-5972 cousin)",
       "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
@@ -120,6 +120,12 @@
   ],
   "unverifiable": [
     {
+      "id": "BRO-6271",
+      "name": "Ship weekly result monitor for the related-shows-position A/B (README step f)",
+      "verifyCmd": "node --test scripts/lib/related-shows-ab-monitor-rules.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/related-shows-ab-monitor-rules.test.mjs"
+    },
+    {
       "id": "BRO-6176",
       "name": "iOS design round: ideas from the inspiration app (stats strip, feature cards, numbered Top 10, quick-log +)",
       "verifyCmd": "node --test tests/unit/inspiration-ideas-variants.test.mjs",
@@ -129,13 +135,7 @@
       "id": "BRO-6128",
       "name": "Fix: Tour candidate: Liberation national tour",
       "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 ZGlnZXN0LW5lZWRzLXlvdTpUb3VyIGNhbmRpZGF0ZTogTGliZXJhdGlvbiBuYXRpb25hbCB0b3Vy",
-      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-YkAMvW/main/data/audit/alert-ledger.json) — never"
-    },
-    {
-      "id": "BRO-6102",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"silentGapBacklogResults: real audit report shape\"",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 121727ms (timeout — no verdict)"
+      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-4vATF7/main/data/audit/alert-ledger.json) — never"
     },
     {
       "id": "BRO-6098",
@@ -147,16 +147,22 @@
       "id": "BRO-6014",
       "name": "Cloud dev loop: npm run build dirties ~17 tracked data files (swept into commits); land-local-check keeps no per-gate failure output",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 34478ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 77308ms (timeout — no verdict)"
+    },
+    {
+      "id": "BRO-6004",
+      "name": "Cloud pre-push tsc OOMs at default 2GB heap; raise max-old-space-size in scripts/hooks/pre-push",
+      "verifyCmd": "npx tsc --noEmit",
+      "detail": "check killed by SIGTERM after 38649ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
     {
-      "id": "BRO-6159",
-      "name": "Money Scorecard: auto-flag a season page that has no custom share card (2027-28 begins July 2027)",
-      "branch": "land/codex-bro-6159",
-      "sha": "d207d7124afc90651c839e6de06497cd3bbf260f",
-      "landedAt": "2026-10-25T18:20:35.231Z"
+      "id": "BRO-6187",
+      "name": "Commercial estimates: drift re-sizing pass, getRecentClosings, stunt-casting class, 2 over-100% DNR keepers, 39 locked entries",
+      "branch": "land/codex-bro-6187",
+      "sha": "59a8d2d68fa7a026e99bccb8922a60291942202c",
+      "landedAt": "2026-10-26T04:40:43.729Z"
     },
     {
       "id": "BRO-6099",
