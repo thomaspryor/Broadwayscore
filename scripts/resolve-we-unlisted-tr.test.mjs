@@ -392,3 +392,19 @@ test('outside volumes 35-36 explicit labels outrank a run-head shape', () => {
   // ...and the run head is still the last fallback there
   assert.equal(dates(runHead('GARRICK', '30 August – 12 November 2016', 'THE ENTERTAINER'), 'Entertainer (The)', 'Garrick').closingDate, '2016-11-12');
 });
+
+test('run head reads National stages, Royal Court Downstairs, Found 111 and a postcoded house (BRO-6343)', () => {
+  const open = (venueLine, run, heading, title, venue) => dates36(runHead(venueLine, run, heading), title, venue).openingDate;
+  assert.equal(open('NATIONAL, OLIVIER', '30 March – 02 June 2016', 'LES BLANCS', 'Les Blancs', 'Olivier'), '2016-03-30');
+  assert.equal(open('NATIONAL, TEMPORARY', '16 November 2015- 02 January 2016', 'THE WASP', 'Wasp (The)', 'Temporary - National Theatre'), '2015-11-16');
+  assert.equal(open('ROYAL COURT, DOWNSTAIRS', '01 December2015- 01 January 2016', 'LINDA', 'Linda', 'Royal Court'), '2015-12-01');
+  assert.equal(open('CENTRAL ST MARTINS, FOUND 111', '15 December 2015 - 30 January 2016', 'THE DAZZLE', 'Dazzle (The)', 'Found 111 (Central St Martins)'), '2015-12-15');
+  assert.equal(open('UNION SE1', '28 April- 23 May 2015', 'GREY GARDENS', 'Grey Gardens', 'Union - London SE1'), '2015-04-28');
+});
+
+test('run head comma venue still rejects other houses and non-London cities (BRO-6343)', () => {
+  const head = venueLine => pdfRunHeadFor(runHead(venueLine, '30 March – 02 June 2016', 'LES BLANCS'), 'Les Blancs', 'Olivier');
+  assert.match(head('NATIONAL, OLIVIER'), /^Press night 30 Mar 2016$/m);
+  for (const v of ['OLIVIER, LIVERPOOL', 'ROYAL EXCHANGE, OLIVIER STUDIO', 'GARRICK', 'OLIVIER, BRADFORD ALHAMBRA']) assert.equal(head(v), null, v);
+  assert.equal(pdfRunHeadFor(runHead('ROYAL COURT, DOWNSTAIRS', '1 September – 30 November 2016', 'PIGS AND DOGS'), 'Pigs and Dogs', 'Almeida'), null);
+});
