@@ -140,7 +140,12 @@
     "the-notebook-tour-2025/omahamagazine--natalie-veloso.json",
     "mrs-doubtfire-tour-2025/broadwayworld--brock-mills.json",
     "mrs-doubtfire-tour-2025/phenomnaltwincities--stephanie-kwong.json",
-    "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
+    "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+    "angels-bone-west-end-2026/sunday-times--rebecca-franks.json",
+    "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "failed": [
     "trouble-in-mind-west-end-2021/wsj--terry-teachout.json",
@@ -178,12 +183,9 @@
     "girls-off-west-end-2026/radio-times--molly-moss.json",
     "phyl-off-broadway-2026/phusionpassenger--unknown.json",
     "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
     "the-pianist-off-west-end-2026/soundsandstage--unknown.json",
     "billy-crystal-860-2026/phusionpassenger--unknown.json",
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
-    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
     "lincoln-in-the-bardo-off-broadway-2026/washpost--philip-kennicott.json",
     "murder-cathedral-off-west-end-2026/plays-to-see--tim-hochstrasser.json",
     "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
@@ -216,7 +218,17 @@
     "the-rocky-horror-show-2026/north-west-end--peter-kinnock.json",
     "black-is-the-color-of-my-voice-west-end-2026/telegraph--patrick-monahan.json",
     "the-notebook-tour-2025/variety--unknown.json",
-    "the-notebook-tour-2025/musical-theatre-review--unknown.json"
+    "the-notebook-tour-2025/musical-theatre-review--unknown.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
+    "dog-mom-off-west-end-2026/reviewsgate--william-russell.json",
+    "cadel-lungs-on-legs-west-end-2026/cityking--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/soundsandstage--unknown.json",
+    "dirty-dancing-the-classic-story-on-stage-west-end-2026/sportswhereiam--unknown.json",
+    "stories-the-tap-dance-sensation-west-end-2026/londonlivinglarge--unknown.json",
+    "some-woman-west-end-2026/guardian--unknown.json",
+    "double-bill-tell-me-straight-and-aggy-off-west-end-2026/soundsandstage--unknown.json",
+    "some-woman-west-end-2026/momentsapp--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -301,10 +313,17 @@
       "the-phantom-of-the-opera-tour-2025/reviewstl--matthew-kistner.json",
       "the-phantom-of-the-opera-tour-2025/theatreboard--unknown.json",
       "mrs-doubtfire-tour-2025/phenomnaltwincities--stephanie-kwong.json",
-      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+      "cadel-lungs-on-legs-west-end-2026/londonlivinglarge--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+      "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/some-woman-west-end-2026/momentsapp--unknown.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
@@ -368,11 +387,12 @@
       "the-notebook-tour-2025/broadwayworld--robert-bannon.json",
       "the-notebook-tour-2025/broadwayworld--steve-murray.json",
       "the-notebook-tour-2025/omahamagazine--natalie-veloso.json",
-      "mrs-doubtfire-tour-2025/broadwayworld--brock-mills.json"
+      "mrs-doubtfire-tour-2025/broadwayworld--brock-mills.json",
+      "angels-bone-west-end-2026/sunday-times--rebecca-franks.json"
     ]
   },
   "startTime": "2026-10-26T09:47:33.190Z",
-  "lastProcessed": "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+  "lastProcessed": "some-woman-west-end-2026/momentsapp--unknown.json",
   "log": [
     {
       "t": "2026-10-26T11:16:18.645Z",
@@ -395,6 +415,64 @@
       "t": "2026-10-26T11:18:30.919Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T11:28:08.657Z",
+      "event": "bb-session",
+      "session": "ade07582",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
+    },
+    {
+      "t": "2026-10-26T11:31:47.543Z",
+      "event": "bb-session",
+      "session": "82864055",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-r"
+    },
+    {
+      "t": "2026-10-26T11:31:47.863Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-26T11:33:00.502Z",
+      "event": "bb-session",
+      "session": "0c029219",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-26T11:33:07.551Z",
+      "event": "bb-session",
+      "session": "702e347f",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-26T11:34:05.779Z",
+      "event": "bb-session",
+      "session": "06c64832",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-26T11:34:18.966Z",
+      "event": "bb-session",
+      "session": "add8b146",
+      "url": "https://rabbitohs-uk.sportswhereiam.com/event/391534/london/capital-theatre/dirt"
+    },
+    {
+      "t": "2026-10-26T11:35:44.047Z",
+      "event": "bb-session",
+      "session": "a995c286",
+      "url": "https://www.londonlivinglarge.com/2024/10/stories-tap-dance-sensation-sadlers.ht"
+    },
+    {
+      "t": "2026-10-26T11:36:45.769Z",
+      "event": "bb-session",
+      "session": "39db8b1e",
+      "url": "https://momentsapp.no/serie/some-woman-5dbb94319d2461e366f4078cb82fb81d"
     }
+  ],
+  "recoveredAfterFailure": [
+    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
+    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
+    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json"
   ]
 }
