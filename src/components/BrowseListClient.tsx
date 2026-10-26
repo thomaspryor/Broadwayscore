@@ -238,7 +238,11 @@ export default function BrowseListClient({
                     ? (sortToggle.normalizeSort(sort) !== s
                         ? `Click to sort by ${sortLabels[s]}`
                         : `Sorted ${sort === s ? SORT_DIRECTION_LABEL[s]!.base : SORT_DIRECTION_LABEL[s]!.toggled}, click to reverse`)
-                    : undefined,
+                    : s === 'custom'
+                      // Default is the curated order, not reversible: say so
+                      // instead of leaving the active button a silent no-op.
+                      ? (sort === 'custom' ? 'Showing the default order' : 'Click to restore the default order')
+                      : undefined,
                 }))}
                 value={sortToggle.normalizeSort(sort) as SortOption}
                 onChange={(s) => setSort(sortToggle.getNextSort(s, sort) as SortState)}
