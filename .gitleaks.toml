@@ -9,6 +9,8 @@ description = "Known false positives and historically rotated leaks"
 paths = [
   # Slug-redirect files contain hex-like slug strings that trip generic-api-key
   '''(^|/)data/slug-redirects.*\.json$''',
+  # Pending-review archive: "pendingKey": "<show-slug>" trips generic-api-key on slugs like hamilton-2015 (BRO-6367)
+  '''(^|/)data/commercial-pending-archive\.json$''',
   # Public per-show JSONs contain expired WaPo gift-link JWTs inside archived review URLs (third party, expired 2023)
   '''(^|/)public/data/shows/.*\.json$''',
   # Scraped third-party HTML archives — Firebase web SDK config, Google Tag Manager IDs, etc. Not our credentials.
