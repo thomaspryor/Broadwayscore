@@ -35,9 +35,12 @@ on:
 # cancel-in-progress — a shared group could silently drop a distinct show-set
 # request (not idempotent/interchangeable with another). Keying by `shows`
 # means different show sets never collide; the rare cron (no inputs) falls
-# back to a stable 'scheduled' key.
+# back to a stable 'scheduled' key. A comma-separated list gets a per-run key:
+# the orchestrator's 15+ show list made the group name ~1600 chars and every
+# such run failed in 3s with zero jobs (30/31, BRO-6340; same as BRO-5851).
+# Guarded by tests/unit/concurrency-group-length.test.mjs.
 concurrency:
-  group: fetch-guardian-reviews-${{ inputs.shows || 'scheduled' }}
+  group: fetch-guardian-reviews-${{ inputs.shows && (contains(inputs.shows, ',') && github.run_id || inputs.shows) || 'scheduled' }}
   cancel-in-progress: false
 
 jobs:

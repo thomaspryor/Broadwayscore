@@ -62,6 +62,8 @@ const {
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,
+  looksLikeFeed,
+  looksLikeSitemap,
   parseWpApiPosts,
   parseSitemapXml,
   extractListingUrls,
@@ -118,8 +120,9 @@ const OUTLET_STRATEGY_CONFIG = {
   theatermania:        { strategy: 'listing-html', url: 'https://www.theatermania.com/news/?categories=reviews', urlFilter: /\/news\/review-/, usePlainFetch: true },
   // Variety theater-specific RSS — /v/theater/ path is review-only, no filter needed
   variety:             { strategy: 'rss', url: 'https://variety.com/v/theater/feed/' },
-  // TheWrap theater tag RSS; urlFilter keeps only slugs ending in -review (drops news/obituaries)
-  thewrap:             { strategy: 'rss', url: 'https://www.thewrap.com/tag/theater/feed/', urlFilter: /-review\/$/ },
+  // TheWrap theater section RSS (the old /tag/theater/feed/ froze in June 2026, BRO-6340).
+  // urlFilter keeps "-review/" and "-broadway-review-<names>/" slugs, drops news, ticket and roundup pieces.
+  thewrap:             { strategy: 'rss', url: 'https://www.thewrap.com/creative-content/theater/feed/', urlFilter: /-review(?:\/|-(?!roundup|bomb))/ },
   // TheReviewsHub: 100-item RSS covering all UK theater; no urlFilter needed — findMatchingShows guards FPs
   thereviewshub:       { strategy: 'rss', url: 'https://www.thereviewshub.com/feed/' },
   // Theater Scene: /plays/ and /musicals/ paths are reviews; /features/ /columns/ /multimedia/ are not
@@ -134,8 +137,10 @@ const OUTLET_STRATEGY_CONFIG = {
   'front-row-center':  { strategy: 'rss', url: 'https://thefrontrowcenter.com/feed' },
   // NY Post theater-specific RSS; urlFilter keeps only slugs with "review" (drops news/awards coverage)
   nypost:              { strategy: 'rss', url: 'https://nypost.com/theater/feed/', urlFilter: /review/ },
-  // Observer theater RSS; reviews use /review- or /theater-review- slug prefixes
-  observer:            { strategy: 'rss', url: 'https://observer.com/theater/feed/', urlFilter: /\/(theater-review|review-)/ },
+  // Observer: observer.com/theater/feed/ stopped in June 2026 and the outlet's reviews now
+  // come from observer.co.uk, which has no feed; its sitemap carries every theatre article
+  // with a lastmod (BRO-6340). Year-independent URL, so fetchViaSitemap fetches it once.
+  observer:            { strategy: 'sitemap', urlTemplate: () => 'https://observer.co.uk/sitemap.xml', urlFilter: /\/culture\/theatre\/article\// },
   // amNewYork theater category RSS; reviews use /review- slug prefix
   amny:                { strategy: 'rss', url: 'https://www.amny.com/category/entertainment/theater/feed/', urlFilter: /\/review-/ },
   // TheatreCat: UK theater review aggregator; pure review content, no filter needed
@@ -479,10 +484,32 @@ function createStub(showId, outletId, outletDisplayName, url, headline, publishD
 // Per-outlet fetch strategies
 // ---------------------------------------------------------------------------
 
-async function fetchViaRss(outletId, config, cutoff) {
+/**
+ * Fetch a feed or sitemap directly; if the outlet blocks the CI runner (Substack,
+ * Slant, Front Row Center 403'd for 30+ days; Observer's sitemap 403s, BRO-6340),
+ * retry once through the shared provider chain. The proxied body is accepted only
+ * when `isExpected` recognises its XML root, so a block page still throws and the
+ * caller falls back to SERP instead of reading "no new reviews".
+ */
+async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = true, timeoutMs } = {}) {
+  try {
+    return await fetchSimple(url, timeoutMs);
+  } catch (err) {
+    if (!proxyRetry) throw err;
+    console.log(`  [${label}] direct fetch failed (${err.message}); retrying via fetchPage`);
+    const result = await fetchPage(url, { renderJs: false });
+    if (!isExpected(result && result.content)) {
+      throw new Error(`fetchPage returned an unexpected page for ${url}`);
+    }
+    console.log(`  [${label}] via fetchPage (${result.source || 'unknown'})`);
+    return result.content;
+  }
+}
+
+async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true } = {}) {
   const url = config.url;
   console.log(`  [rss] Fetching ${url}`);
-  const xml = await fetchSimple(url);
+  const xml = await fetchXmlWithProxyRetry(url, 'rss', looksLikeFeed, { proxyRetry });
   let items = parseRssFeed(xml, cutoff);
   if (config.urlFilter) items = items.filter(i => config.urlFilter.test(i.url));
   if (config.titleFilter) items = items.filter(i => config.titleFilter.test(i.headline));
@@ -502,14 +529,17 @@ async function fetchViaWpApi(outletId, config, cutoff) {
   return items;
 }
 
-async function fetchViaSitemap(outletId, config, cutoff) {
+async function fetchViaSitemap(outletId, config, cutoff, { proxyRetry = true } = {}) {
   const thisYear = new Date().getFullYear();
   // Try current year first; if no matching entries, check prior year (reviews near year boundary)
+  const tried = new Set();
   for (const year of [thisYear, thisYear - 1]) {
     const url = config.urlTemplate(year);
+    if (tried.has(url)) continue; // year-independent sitemap (observer): fetch once
+    tried.add(url);
     console.log(`  [sitemap] Fetching ${url}`);
     try {
-      const xml = await fetchSimple(url, 30000);
+      const xml = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry, timeoutMs: 30000 });
       const items = parseSitemapXml(xml, cutoff, config.urlFilter);
       console.log(`  [sitemap] ${items.length} items in window (${year})`);
       if (items.length > 0) return items;

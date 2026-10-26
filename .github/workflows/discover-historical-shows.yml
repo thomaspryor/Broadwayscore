@@ -31,7 +31,8 @@ permissions:
 # Allow parallel runs — each uses retry-push with rebase
 concurrency:
   # shows-json-writer-exempt: manual, partitioned per seasons input so batches queue independently; a shared static group would evict queued season batches (BRO-5803)
-  group: discover-historical-${{ github.event.inputs.seasons }}
+  # A comma-separated seasons list gets a per-run key so a long list can't overflow the group name (BRO-6340).
+  group: discover-historical-${{ contains(github.event.inputs.seasons, ',') && github.run_id || github.event.inputs.seasons }}
   cancel-in-progress: false
 
 jobs:

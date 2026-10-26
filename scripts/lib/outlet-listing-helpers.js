@@ -383,6 +383,31 @@ function feedText(body, tags) {
   return '';
 }
 
+/**
+ * True when the text is an XML document whose root element is one of `roots`
+ * (the first tag after BOM, declaration, stylesheet PIs, comments and doctype).
+ * A proxied fetch can return a 200 block or interstitial page that a parser
+ * would read as an empty feed ("no new reviews") instead of a failure, and an
+ * HTML page that merely mentions <rss somewhere must not pass (BRO-6340).
+ */
+function hasXmlRoot(text, roots) {
+  const body = String(text || '')
+    .replace(/^\uFEFF/, '')
+    .replace(/^(?:\s+|<\?[\s\S]*?\?>|<!--[\s\S]*?-->|<!DOCTYPE[^>]*>)*/i, '');
+  const m = body.match(/^<([A-Za-z][\w:.-]*)/);
+  return !!m && roots.some(r => r.toLowerCase() === m[1].toLowerCase());
+}
+
+/** RSS 2.0, Atom or RSS 1.0 (RDF) feed. */
+function looksLikeFeed(text) {
+  return hasXmlRoot(text, ['rss', 'feed', 'rdf:RDF']);
+}
+
+/** XML sitemap or sitemap index. */
+function looksLikeSitemap(text) {
+  return hasXmlRoot(text, ['urlset', 'sitemapindex']);
+}
+
 function parseRssFeed(xml, cutoff) {
   const items = [];
 
@@ -553,6 +578,8 @@ module.exports = {
   deriveQualifyingOutlets,
   mergeAlwaysOnOutlets,
   parseRssFeed,
+  looksLikeFeed,
+  looksLikeSitemap,
   namesShowCredit,
   parseWpApiPosts,
   parseSitemapXml,

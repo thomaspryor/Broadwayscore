@@ -11,6 +11,8 @@ const require = createRequire(import.meta.url);
 const {
   findMatchingShows,
   parseRssFeed,
+  looksLikeFeed,
+  looksLikeSitemap,
   parseWpApiPosts,
   parseSitemapXml,
   extractListingUrls,
@@ -411,5 +413,35 @@ describe('findMatchingShows — whole-word matching (ship-check on #940)', () =>
     assert.deepEqual(ids('', '/reviews/hamilton-review-victoria-palace'), ['hamilton-2015']);
     assert.deepEqual(ids('', '/2026/09/lean-to/'), ['lean-to-off-broadway-2026']);
     assert.deepEqual(ids('', '/page/world/TheBalusters.html'), ['the-balusters-2026']);
+  });
+});
+
+// BRO-6340: a proxied retry can return a 200 block/interstitial page. It must be
+// rejected (so the poller falls back to SERP) instead of parsing as an empty feed.
+describe('looksLikeFeed', () => {
+  test('accepts RSS 2.0, Atom and RSS 1.0 documents', () => {
+    assert.equal(looksLikeFeed('<?xml version="1.0"?><rss version="2.0"><channel></channel></rss>'), true);
+    assert.equal(looksLikeFeed('<?xml version="1.0" encoding="utf-8"?>\n<feed xmlns="http://www.w3.org/2005/Atom"></feed>'), true);
+    assert.equal(looksLikeFeed('<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"></rdf:RDF>'), true);
+  });
+  test('rejects HTML pages, empty and missing content', () => {
+    assert.equal(looksLikeFeed('<!DOCTYPE html><html><head><title>Just a moment...</title></head><body>Access denied</body></html>'), false);
+    assert.equal(looksLikeFeed('<html><body><a href="/feed">RSS feed</a></body></html>'), false);
+    assert.equal(looksLikeFeed(''), false);
+    assert.equal(looksLikeFeed(undefined), false);
+    assert.equal(looksLikeFeed('<html><body><pre>&lt;rss&gt;</pre><rss version="2.0"></rss></body></html>'), false);
+  });
+  test('accepts a feed behind a BOM, stylesheet PI and comment', () => {
+    assert.equal(looksLikeFeed('\uFEFF<?xml version="1.0"?>\n<?xml-stylesheet href="/feed.xsl"?>\n<!-- generator -->\n<rss version="2.0"></rss>'), true);
+  });
+});
+
+describe('looksLikeSitemap', () => {
+  test('accepts urlset and sitemapindex, rejects feeds and HTML', () => {
+    assert.equal(looksLikeSitemap('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>https://observer.co.uk/</loc></url></urlset>'), true);
+    assert.equal(looksLikeSitemap('<?xml version="1.0"?><sitemapindex></sitemapindex>'), true);
+    assert.equal(looksLikeSitemap('<rss version="2.0"></rss>'), false);
+    assert.equal(looksLikeSitemap('<!DOCTYPE html><html><body>403 Forbidden</body></html>'), false);
+    assert.equal(looksLikeFeed('<urlset></urlset>'), false);
   });
 });
