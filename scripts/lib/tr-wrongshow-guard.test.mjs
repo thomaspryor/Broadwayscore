@@ -185,4 +185,7 @@ test('isCorroboratedByRoundup: parent-labelled TR review corroborated by its spl
   assert.equal(isCorroboratedByRoundup('Daily Mail', 'Robert Gore-Langton', rows), true);
   assert.equal(isCorroboratedByRoundup('Daily Mail', 'Quentin Crisp', rows), false);
   assert.equal(isCorroboratedByRoundup('Guardian', 'Robert Gore-Langton', rows), false);
+  const unk = [{ outlet: 'Mail on Sunday', critic: 'Unknown' }];
+  assert.equal(isCorroboratedByRoundup('Daily Mail', 'Patrick Marmion', unk), false);
+  assert.equal(isCorroboratedByRoundup('Mail on Sunday', 'Patrick Marmion', unk), true);
 });

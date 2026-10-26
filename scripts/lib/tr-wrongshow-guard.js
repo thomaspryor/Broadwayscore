@@ -119,11 +119,16 @@ function isCorroboratedByRoundup(outlet, critic, roundupRows) {
   // BRO-6287: Theatre Record labels the parent ("Daily Mail") for a split
   // child's byline while a roundup lists the child ("Mail on Sunday"); compare
   // edition families, the critic check below still pins the individual.
-  const outletKey = editionGroupKey(normalizeOutlet(outlet));
+  const outletId = normalizeOutlet(outlet);
+  const familyKey = editionGroupKey(outletId);
   return roundupRows.some(row => {
-    if (editionGroupKey(normalizeOutlet(row.outlet)) !== outletKey) return false;
+    const rowOutletId = normalizeOutlet(row.outlet);
+    if (editionGroupKey(rowOutletId) !== familyKey) return false;
     const rowCriticId = normalizeCritic(row.critic);
-    return rowCriticId === 'unknown' || rowCriticId === criticId;
+    if (rowCriticId === criticId) return true;
+    // An unattributed roundup row only vouches for the exact outlet; across
+    // sibling editions it would clear any byline.
+    return rowCriticId === 'unknown' && rowOutletId === outletId;
   });
 }
 

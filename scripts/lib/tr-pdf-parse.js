@@ -91,7 +91,8 @@ const KNOWN_OUTLET_KEYS = new Set([...KNOWN_OUTLETS_UPPER].map(outletKey));
 // keep their exact "THE X" form.
 const AMBIGUOUS_BARE_KEYS = new Set(['I', 'SUN', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD']);
 const isKnownOutletLine = (t) => KNOWN_OUTLETS_UPPER.has(t)
-  || (KNOWN_OUTLET_KEYS.has(outletKey(t)) && !AMBIGUOUS_BARE_KEYS.has(outletKey(t)));
+  || (KNOWN_OUTLET_KEYS.has(outletKey(t))
+    && (!AMBIGUOUS_BARE_KEYS.has(outletKey(t)) || /^THE\s|\([^)]*\)\s*$/.test(t)));
 
 // `stats` (optional) is filled for the BRO-6097 coverage probe: whether the
 // production's Reviews section was found, how many outlet+date headers it

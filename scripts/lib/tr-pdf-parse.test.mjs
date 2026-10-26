@@ -431,7 +431,7 @@ test('BRO-6154 venueOwnedBy tolerates renames, possessives and the title in the 
 // title into an outlet marker, while the printed forms still match.
 const { isKnownOutletLine } = require('./tr-pdf-parse.js');
 test('isKnownOutletLine: printed mastheads match, ambiguous bare keys do not', () => {
-  for (const ok of ['THE GUARDIAN', 'GUARDIAN', 'INDEPENDENT', 'METRO (LONDON)', 'THE SUN', 'THE I', 'THE LIST', 'METRO'])
+  for (const ok of ['THE GUARDIAN', 'GUARDIAN', 'INDEPENDENT', 'METRO (LONDON)', 'THE SUN', 'THE I', 'THE LIST', 'METRO', 'THE TIMES (LONDON)', 'SUN (LONDON)'])
     assert.equal(isKnownOutletLine(ok), true, ok);
   for (const no of ['SUN', 'I', 'LIST', 'STAGE', 'TIMES', 'MIRROR', 'EXPRESS', 'STANDARD', 'AFTER LIFE'])
     assert.equal(isKnownOutletLine(no), false, no);
