@@ -123,7 +123,7 @@ function strandedMarker({ branch, tip, latestRun, reason }) {
 const REASON_TEXT = {
   'land-refused': 'the Land job refused it (most often the branch no longer rebases cleanly onto main, or a check that only runs at land time failed)',
   'checks-red': 'its Checks failed against main',
-  'evicted-budget-exhausted': `it was evicted from the landing queue ${STRANDED_MAX_ATTEMPT}+ times`,
+  'evicted-budget-exhausted': `its Land run was cancelled before landing (queue eviction or a manual cancel) ${STRANDED_MAX_ATTEMPT}+ times`,
   'land-cancelled-mid-flight': 'its Land job was cancelled after it had started landing',
   'no-run-for-tip': 'no Land run ever started for the current tip of the branch',
   'rerun-refused': 'GitHub refused to re-run its last Land run (for example, older than the 30-day re-run limit)',

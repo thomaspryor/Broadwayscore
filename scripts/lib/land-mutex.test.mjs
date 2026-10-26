@@ -370,6 +370,18 @@ test('decideStrandedRef: a mutex-wait cancel is not escalated as mid-flight; a c
 
 test('LAND_STEP_NAME is the land.js step in land.yml (a rename must break this test, not the anchor)', () => {
   const land = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
-  const re = new RegExp(`- name: ${m.LAND_STEP_NAME}\\n(?:[^\\n]*\\n){0,60}?[^\\n]*node scripts/land\\.js`);
+  // Exact name to end of line, and land.js inside this step (no later `- name:` in between).
+  const re = new RegExp(`\\n\\s*- name: ${m.LAND_STEP_NAME}\\n(?:(?!\\s*- name:)[^\\n]*\\n){0,60}?[^\\n]*node scripts/land\\.js`);
   assert.match(land, re);
+});
+
+test('a Land job that ran to its deadline is not auto-retried (GitHub reports a timeout as cancelled)', () => {
+  const land = readFileSync(new URL('../../.github/workflows/land.yml', import.meta.url), 'utf8');
+  const { LAND_JOB_TIMEOUT_MINUTES } = require('./land-retry-on-cancel.js');
+  assert.match(land, new RegExp(`\\n  land:\\n(?:(?!\\n  \\w)[\\s\\S])*?timeout-minutes: ${LAND_JOB_TIMEOUT_MINUTES}\\n`));
+  const runOf = (o = {}) => ({ conclusion: 'cancelled', head_branch: 'land/x', head_sha: 'abc', run_attempt: 1, ...o });
+  const checksOk = { name: 'Checks', conclusion: 'success' };
+  const timed = (min) => ({ ...mutexCancelledLand(), started_at: '2026-10-26T03:00:00Z', completed_at: new Date(Date.parse('2026-10-26T03:00:00Z') + min * 60000).toISOString() });
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, timed(124)], branchExists: true, branchTip: 'abc' }).reason, 'land-timed-out');
+  assert.equal(decideLandRetry({ run: runOf(), jobs: [checksOk, timed(40)], branchExists: true, branchTip: 'abc' }).reason, 'land-cancelled-before-landing');
 });

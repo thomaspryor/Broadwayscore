@@ -22,6 +22,17 @@
 const { PARKED_MAX_ATTEMPTS, isParkedLandJob, landWorkStarted } = require('./land-mutex');
 
 const MAX_ATTEMPTS = 6;
+// land.yml's Land job timeout-minutes (pinned by land-mutex.test.mjs). GitHub
+// reports a job deadline as "cancelled"; a Land job that ran this close to it
+// most likely timed out (hung mutex, checkout or install), and replaying it
+// would burn up to MAX_ATTEMPTS more two-hour runs. Leave it to a person.
+const LAND_JOB_TIMEOUT_MINUTES = 125;
+const TIMEOUT_SUSPECT_MINUTES = LAND_JOB_TIMEOUT_MINUTES - 5;
+
+function landRanToDeadline(land) {
+  const ms = Date.parse(land.completed_at) - Date.parse(land.started_at);
+  return Number.isFinite(ms) && ms >= TIMEOUT_SUSPECT_MINUTES * 60000;
+}
 
 function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX_ATTEMPTS } = {}) {
   const no = (reason) => ({ retry: false, reason });
@@ -39,6 +50,7 @@ function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX
   // on its own, larger budget: it burns an attempt only when the queue is full again.
   const parked = isParkedLandJob(land);
   if (!parked && landWorkStarted(land)) return no('land-started-work');
+  if (!parked && landRanToDeadline(land)) return no('land-timed-out');
   const setupRan = !parked && (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
   if (!branchExists) return no('branch-gone');
   if (branchTip && run.head_sha && branchTip !== run.head_sha) return no('superseded-tip');
@@ -117,4 +129,4 @@ function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
   return 'wait';
 }
 
-module.exports = { ghApiArgs, decideLandRetry, MAX_ATTEMPTS, runGhWithFallback, isRefNotFound, decideCancelledWait };
+module.exports = { ghApiArgs, decideLandRetry, MAX_ATTEMPTS, LAND_JOB_TIMEOUT_MINUTES, runGhWithFallback, isRefNotFound, decideCancelledWait };
