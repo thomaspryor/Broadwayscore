@@ -275,3 +275,31 @@ test('"&" titles, byline dates and short forms in headlines (BRO-5647 review)', 
   const page = `<html><head><title>Beaches at 35</title></head><body>${'Filler about films. '.repeat(40)} The film cost $14 million to produce in 2026.</body></html>`;
   assert.equal(verifyFigure(14e6, page, { titles: showTitleForms('Beaches, A New Musical'), year: '2026', field: 'capitalization' }).found, false);
 });
+
+// BRO-6392: a cited page that refuses every fetcher is read from its web.archive.org snapshot.
+test('blocked live page verifies through its Wayback snapshot and records verifiedVia', async () => {
+  const { waybackSnapshotUrl } = require('../../scripts/lib/commercial-source-verify');
+  const fetched = [];
+  const fetchPage = async (url) => {
+    fetched.push(url);
+    return url.startsWith('https://web.archive.org/') ? { content: `<h1>Example closes</h1> Example's 2025 capitalization was $12.5 million. ${'x '.repeat(10)}` } : null;
+  };
+  const waybackLookup = async () => ({ archived_snapshots: { closest: { available: true, url: 'http://web.archive.org/web/20251027000000/https://variety.com/example' } } });
+  const evidence = await createSourceVerifier({ fetchPage, waybackLookup })(entry, show);
+  assert.equal(evidence.capitalization.found, true);
+  assert.equal(evidence.capitalization.verifiedVia, 'wayback');
+  assert.equal(evidence.fetchFailed, undefined);
+  assert.equal(fetched[1], 'https://web.archive.org/web/20251027000000id_/https://variety.com/example');
+  assert.equal(buildCommercialEntry(entry, null, { figureEvidence: evidence }).figureVerifiedVia.capitalization, 'wayback');
+  // Homepage-sized answer (url_mismatch shape) also falls back; no snapshot leaves the live result standing.
+  assert.deepEqual(await createSourceVerifier({ fetchPage: async () => ({ content: 'Home' }), waybackLookup: async () => ({ archived_snapshots: {} }) })(entry, show), {});
+  assert.deepEqual(await createSourceVerifier({ fetchPage: async () => null, waybackLookup: async () => { throw Error('down'); } })(entry, show), { fetchFailed: true });
+  // Non-archive snapshot hosts are refused.
+  assert.equal(await waybackSnapshotUrl('https://x.com/a', async () => ({ archived_snapshots: { closest: { available: true, url: 'https://evil.com/web/1/x' } } })), null);
+});
+test('a full live page that states the figure never touches the archive', async () => {
+  const content = `Example's 2025 capitalization was $12.5 million. ${'filler '.repeat(300)}`;
+  const evidence = await createSourceVerifier({ fetchPage: async () => ({ content }), waybackLookup: async () => { throw Error('should not be called'); } })(entry, show);
+  assert.equal(evidence.capitalization.verifiedVia, undefined);
+  assert.equal(evidence.capitalization.found, true);
+});

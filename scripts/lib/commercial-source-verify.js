@@ -101,8 +101,43 @@ function verifyFigure(figure, page, context = {}) {
   return { found: false, quote: null };
 }
 
-function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fetchPage(...args), maxFetches = 60 } = {}, budget = null) {
+// A page shorter than this is a block page or a redirect to the homepage, not the article (BRO-6392).
+const SHORT_PAGE_CHARS = 1500;
+
+async function defaultWaybackLookup(url) {
+  const res = await fetch(`https://archive.org/wayback/available?url=${encodeURIComponent(url)}`, { signal: AbortSignal.timeout(20000) });
+  if (!res.ok) return null;
+  return res.json();
+}
+
+/** The raw (toolbar-free) web.archive.org snapshot URL closest to `url`, or null when none is archived. */
+async function waybackSnapshotUrl(url, lookup = defaultWaybackLookup) {
+  const closest = (await lookup(url))?.archived_snapshots?.closest;
+  if (!closest?.available || !closest.url) return null;
+  let snap;
+  try { snap = new URL(closest.url); } catch { return null; }
+  if (snap.hostname !== 'web.archive.org') return null;
+  snap.protocol = 'https:';
+  return snap.href.replace(/^(https:\/\/web\.archive\.org\/web\/\d+)\//, '$1id_/');
+}
+
+function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fetchPage(...args), waybackLookup, maxFetches = 60 } = {}, budget = null) {
   const cache = new Map();
+  // Cited pages that refuse every fetch provider (or answer with a homepage / stub) are read from web.archive.org.
+  const readPage = async (url) => {
+    const live = await Promise.resolve().then(() => fetchPage(url)).then(
+      (r) => ({ content: r?.content || '', failed: !r || !r.content }),
+      () => ({ content: '', failed: true }),
+    );
+    if (!live.failed && live.content.length >= SHORT_PAGE_CHARS) return live;
+    try {
+      const snapshot = await waybackSnapshotUrl(url, waybackLookup);
+      if (!snapshot) return live;
+      const r = await fetchPage(snapshot);
+      if (r?.content) return { content: r.content, failed: false, via: 'wayback', archiveUrl: snapshot, live };
+    } catch { /* the archive is a fallback: its failure leaves the live result standing */ }
+    return live;
+  };
   return async function verifyEntry(entry, show) {
     const evidence = {};
     // Set when a cited page was not read because the per-run fetch cap was reached: the caller
@@ -130,14 +165,14 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
           // A fetch that THROWS (network, 403, 429, missing credentials) is not the same as a page that loaded
           // and does not state the figure: record it so the caller can leave the entry pending instead of
           // downgrading a figure nobody actually checked.
-          cache.set(source.url, Promise.resolve().then(() => fetchPage(source.url)).then(
-            (r) => ({ content: r?.content || '', failed: !r || !r.content }),
-            () => ({ content: '', failed: true }),
-          ));
+          cache.set(source.url, readPage(source.url));
         }
         const page = await cache.get(source.url);
-        const result = verifyFigure(entry[field], page.content, { titles: showTitleForms(show.title), year, field });
-        if (result.found) { evidence[field] = { ...result, source }; fieldCapped = false; sawFetchFailure = false; break; }
+        let result = verifyFigure(entry[field], page.content, { titles: showTitleForms(show.title), year, field });
+        let via = page.via;
+        // A short live page that did load may still hold the figure; only an archive copy that lacks it falls back to it.
+        if (!result.found && page.live && page.live.content) { result = verifyFigure(entry[field], page.live.content, { titles: showTitleForms(show.title), year, field }); via = undefined; }
+        if (result.found) { evidence[field] = { ...result, source, ...(via ? { verifiedVia: via, archiveUrl: page.archiveUrl } : {}) }; fieldCapped = false; sawFetchFailure = false; break; }
         if (page.failed) sawFetchFailure = true;
       }
       if (fieldCapped) capped = true;
@@ -160,4 +195,4 @@ function nextVerifyAttempt(entry, max = SOURCE_VERIFY_MAX_ATTEMPTS) {
   return { attempts, leavePending: attempts < max };
 }
 
-module.exports = { pageText, verifyFigure, showTitleForms, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS };
+module.exports = { waybackSnapshotUrl, SHORT_PAGE_CHARS, pageText, verifyFigure, showTitleForms, createSourceVerifier, nextVerifyAttempt, SOURCE_VERIFY_MAX_ATTEMPTS };

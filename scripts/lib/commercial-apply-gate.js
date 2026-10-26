@@ -218,6 +218,8 @@ function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null
       result[sourceField] = `${host}: "${evidence.quote}"`;
       result.sources = [evidence.source, ...(result.sources || []).filter(s => s.url !== evidence.source.url)];
       if (field === 'weeklyRunningCost') result.costMethodology = 'trade-reported';
+      // BRO-6392: the figure was read from an archive copy because the live page blocks every fetcher.
+      if (evidence.verifiedVia) result.figureVerifiedVia = { ...result.figureVerifiedVia, [field]: evidence.verifiedVia };
     } else {
       delete result[sourceField];
       if (field === 'weeklyRunningCost') result.costMethodology = 'deep-research';
