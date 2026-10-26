@@ -23,7 +23,8 @@ function fixture(files) {
 }
 
 function workflow(steps, secondJob = '') {
-  return `jobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n${steps}\n${secondJob}`;
+  // hygiene-permissions-ok: fixtures are not real workflows (rule (aa), BRO-6398)
+  return `# hygiene-permissions-ok: fixture\njobs:\n  check:\n    runs-on: ubuntu-latest\n    steps:\n${steps}\n${secondJob}`;
 }
 
 test('AST distinguishes eager, guarded and lazy requires without matching prose', () => {
@@ -184,7 +185,7 @@ test('existing hygiene caller emits missing-deps warnings without failing its ga
   // Exercise the advisory rule within a complete workflow inventory, as the
   // production caller now rejects small inventories before evaluating rules.
   for (let i = 1; i < MIN_EXPECTED_WORKFLOWS; i++) {
-    fs.writeFileSync(path.join(dir, 'workflows', `padding-${i}.yml`), 'jobs: {}\n');
+    fs.writeFileSync(path.join(dir, 'workflows', `padding-${i}.yml`), '# hygiene-permissions-ok: fixture\njobs: {}\n');
   }
   const result = spawnSync(process.execPath, [path.join(root, 'scripts/audit-workflow-hygiene.js')], {
     cwd: root,

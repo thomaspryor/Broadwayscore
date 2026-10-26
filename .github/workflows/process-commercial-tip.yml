@@ -59,6 +59,11 @@ jobs:
 
       - name: Commit and push (if changes made)
         if: always()
+        env:
+          # commercial-pending-review.json is a union-merged managed file
+          # (other workflows add rows concurrently), so a rebase conflict is
+          # reconciled instead of failing — see push-with-retry.sh.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           # BRO-6398: tips queue in the pending-review file (human-released);
           # commercial.json is never written here.
