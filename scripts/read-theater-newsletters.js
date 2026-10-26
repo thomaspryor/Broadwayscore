@@ -228,6 +228,8 @@ async function processPosts(source, posts, { extract, shows, commercial, items, 
   return issues;
 }
 
+const ABROADWAY_ARCHIVE = 'https://gordoncox.substack.com/api/v1/archive?sort=new&limit=10';
+
 const allowSourceUrl = (source) => (url) => {
   try { return nf.pickIssueUrl(source, [url]) !== null; } catch { return false; }
 };
@@ -237,14 +239,21 @@ async function readWebSource(source, { fetchImpl, args, state }) {
   const processed = (state.processed && state.processed[source.key]) || [];
   let listing = [];
   let listingEmpty = false;
+  let viaApi = false;
   if (source.key === 'chromolume') {
     const idx = await src.fetchPublicText(src.CHROMOLUME_INDEX, { fetchImpl, isAllowed: (u) => /^https:\/\/(?:www\.)?chromolume\.io\/blog\/?$/.test(u) });
     if (!idx.ok) console.error(`Chromolume index unreadable: ${idx.reason}`);
     else listing = src.parseChromolumeIndex(idx.body);
   } else {
     const feed = await src.fetchPublicText(src.ABROADWAY_FEED, { fetchImpl, isAllowed: (u) => /^https:\/\/gordoncox\.substack\.com\/feed\/?$/.test(u) });
-    if (!feed.ok) console.error(`Abroad/Way feed unreadable: ${feed.reason}`);
-    else listing = src.parseFeedItems(feed.body).filter((i) => allowSourceUrl(source)(i.url));
+    if (feed.ok) listing = src.parseFeedItems(feed.body).filter((i) => allowSourceUrl(source)(i.url));
+    else {
+      // GitHub runner IPs get 403 on /feed; the archive JSON API is a separate path on the same host.
+      console.error(`Abroad/Way feed unreadable: ${feed.reason}; trying the archive API`);
+      const arch = await src.fetchPublicText(ABROADWAY_ARCHIVE, { fetchImpl, types: /json|text/i, isAllowed: (u) => u === ABROADWAY_ARCHIVE });
+      if (!arch.ok) console.error(`Abroad/Way archive API unreadable: ${arch.reason}`);
+      else { viaApi = true; listing = src.parseArchiveJson(arch.body).filter((i) => allowSourceUrl(source)(i.url)); }
+    }
   }
   if (!listing.length) listingEmpty = true;
   const { toRead, unreadOlder } = src.pickPosts(listing, processed, { maxNew: args.maxNew, dryRun: args.dryRun });
@@ -254,6 +263,9 @@ async function readWebSource(source, { fetchImpl, args, state }) {
     if (source.key === 'chromolume') {
       const page = await src.fetchPublicText(p.url, { fetchImpl, isAllowed: allowSourceUrl(source) });
       posts.push(page.ok ? { ...p, title: p.url.split('/').pop(), text: src.articleText(page.body) } : { ...p, title: p.url.split('/').pop(), error: `post-${page.reason}` });
+    } else if (viaApi) {
+      const page = await src.fetchPublicText(`https://gordoncox.substack.com/api/v1/posts/${encodeURIComponent(p.slug)}`, { fetchImpl, types: /json|text/i, isAllowed: (u) => /^https:\/\/gordoncox\.substack\.com\/api\/v1\/posts\/[A-Za-z0-9_-]+$/.test(u) });
+      posts.push(page.ok ? { ...p, text: src.postBodyFromJson(page.body) } : { ...p, error: `post-${page.reason}` });
     } else {
       posts.push(p);
     }

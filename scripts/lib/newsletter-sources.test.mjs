@@ -138,3 +138,15 @@ test('fetchPublicText: checks every redirect hop before requesting it', async ()
   const ok = await src.fetchPublicText('https://ok.example/b', { fetchImpl: async (u) => (u.endsWith('/b') ? resp(301, { location: '/c' }, '', u) : resp(200, { 'content-type': 'text/html' }, 'done', u)), isAllowed: allow });
   assert.deepEqual(ok, { ok: true, body: 'done' });
 });
+
+test('parseArchiveJson: public posts only, newest first; postBodyFromJson reads body_html', () => {
+  const raw = JSON.stringify([
+    { slug: 'old', canonical_url: 'https://gordoncox.substack.com/p/old', title: 'Old', post_date: '2026-10-08T12:00:00.000Z', audience: 'everyone' },
+    { slug: 'paid', canonical_url: 'https://gordoncox.substack.com/p/paid', title: 'Paid', post_date: '2026-10-25T12:00:00.000Z', audience: 'only_paid' },
+    { slug: 'new', canonical_url: 'https://gordoncox.substack.com/p/new', title: 'New', post_date: '2026-10-21T12:00:00.000Z', audience: 'everyone' },
+  ]);
+  assert.deepEqual(src.parseArchiveJson(raw).map((p) => p.slug), ['new', 'old']);
+  assert.deepEqual(src.parseArchiveJson('not json'), []);
+  assert.equal(src.postBodyFromJson(JSON.stringify({ body_html: '<p>Hello &amp; welcome</p>' })), 'Hello & welcome');
+  assert.equal(src.postBodyFromJson('{}'), '');
+});

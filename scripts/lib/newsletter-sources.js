@@ -133,14 +133,14 @@ async function resolveBwayLink(raw, { fetchImpl = fetch, resolveOutlet }) {
  * URL after redirects. Reasons: fetch-blocked (401/402/403/429: paywall or bot wall),
  * http-<n>, body-too-short, not-html, fetch-failed.
  */
-async function fetchPublicText(url, { fetchImpl = fetch, isAllowed }) {
+async function fetchPublicText(url, { fetchImpl = fetch, isAllowed, types = /html|xml|text/i }) {
   if (!isAllowed(url)) return { ok: false, reason: 'host-not-allowed' };
   let res;
   let cur = url;
   try {
     // Follow redirects by hand so every hop is checked before it is requested.
     for (let hop = 0; hop < 4; hop++) {
-      res = await fetchImpl(cur, { redirect: 'manual', headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml,application/xml' }, signal: AbortSignal.timeout(20000) });
+      res = await fetchImpl(cur, { redirect: 'manual', headers: { 'User-Agent': UA, Accept: 'text/html,application/xhtml+xml,application/xml,application/json' }, signal: AbortSignal.timeout(20000) });
       const loc = res.status >= 300 && res.status < 400 && res.headers && res.headers.get('location');
       if (!loc) break;
       cur = new URL(loc, cur).toString();
@@ -152,9 +152,27 @@ async function fetchPublicText(url, { fetchImpl = fetch, isAllowed }) {
   if (res.url && !isAllowed(res.url)) return { ok: false, reason: 'redirected-off-allowlist' };
   if (!res.ok) return { ok: false, reason: [401, 402, 403, 429].includes(res.status) ? 'fetch-blocked' : `http-${res.status}` };
   const type = (res.headers && res.headers.get('content-type')) || '';
-  if (type && !/html|xml|text/i.test(type)) return { ok: false, reason: 'not-html' };
+  if (type && !types.test(type)) return { ok: false, reason: 'not-html' };
   const body = (await res.text()).slice(0, MAX_HTML_BYTES);
   return { ok: true, body };
+}
+
+/**
+ * Substack archive JSON (the /feed fallback, since GitHub runner IPs get 403 on /feed).
+ * Public posts only, newest first.
+ */
+function parseArchiveJson(raw) {
+  let arr;
+  try { arr = JSON.parse(raw); } catch { return []; }
+  if (!Array.isArray(arr)) return [];
+  return arr
+    .filter((p) => p && p.slug && p.canonical_url && (!p.audience || p.audience === 'everyone'))
+    .map((p) => ({ url: p.canonical_url, slug: p.slug, title: p.title || p.slug, date: String(p.post_date || '').slice(0, 10) }))
+    .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+}
+
+function postBodyFromJson(raw) {
+  try { const j = JSON.parse(raw); return j && j.body_html ? htmlToText(j.body_html) : ''; } catch { return ''; }
 }
 
 function articleText(html) {
@@ -225,6 +243,8 @@ module.exports = {
   stripTracking,
   resolveBwayLink,
   fetchPublicText,
+  parseArchiveJson,
+  postBodyFromJson,
   pickPosts,
   evaluateSkipHealth,
   BUSINESS_RE,
