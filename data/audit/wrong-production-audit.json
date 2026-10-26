@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-26T18:37:10.623Z",
+  "timestamp": "2026-10-26T19:03:15.793Z",
   "stats": {
-    "totalReviews": 62250,
-    "alreadyFlagged": 21548,
-    "dateGuardCatches": 224,
-    "directorMismatch": 2293,
+    "totalReviews": 62224,
+    "alreadyFlagged": 21528,
+    "dateGuardCatches": 223,
+    "directorMismatch": 2292,
     "tvFilmSignals": 1771,
-    "londonSignals": 3003,
+    "londonSignals": 3002,
     "offBroadwaySignals": 551,
     "yearMismatch": 210,
     "noPublishDate": 5526
@@ -6586,20 +6586,6 @@
     },
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
-      "file": "observer--httpsobservercomauthordavid-cote.json",
-      "score": 78,
-      "publishDate": "2023-12-19",
-      "url": "https://observer.com/2023/12/review-cubas-past-sings-out-in-buena-vista-social-club/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
-        }
-      ]
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 97,
       "publishDate": "2023-12-23T09:35:37",
@@ -7224,20 +7210,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "carmen-off-broadway-2025",
-      "file": "broadwayworld--httpswwwbroadwayworldcomauthorrichard-sasanow.json",
-      "score": 66,
-      "publishDate": "2024-01-06",
-      "url": "https://www.broadwayworld.com/bwwopera/article/Review-When-Akhmetshinas-On-Stage-Dont-Fence-The-Mets-New-CARMEN-In-20240106",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 661d before show (2024-01-06 vs 2025-10-28)"
         }
       ]
     },
@@ -72085,20 +72057,6 @@
     },
     {
       "showId": "garry-starr-classic-penguins-off-west-end-2026",
-      "file": "broadwayworld--franco-milazzo.json",
-      "score": 65,
-      "publishDate": "2026-10-26",
-      "url": "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-Arts-Theatre-20251104",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "garry-starr-classic-penguins-off-west-end-2026",
       "file": "sunday-times--donald-hutera.json",
       "publishDate": "2026-02-02",
       "url": "https://www.thetimes.com/culture/comedy/article/garry-starr-classic-penguins-review-garrick-theatre-london-87vh6kdjs",
@@ -77994,7 +77952,21 @@
       ]
     },
     {
-      "showId": "jesus-christ-superstar-off-west-end-2026",
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "bestoftheatre--ella-dunmore.json",
+      "score": null,
+      "publishDate": "2026-10-06",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/glenn-close-herod-jesus-christ-superstar-drury-lane",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "britishtheatrecom--british-theatre.json",
       "score": null,
       "publishDate": "2026-10-07",
@@ -78008,25 +77980,11 @@
       ]
     },
     {
-      "showId": "jesus-christ-superstar-off-west-end-2026",
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": "2026-10-07",
       "url": "https://www.britishtheatre.com/de/posts/jesus-christ-superstar-glenn-close-herod-drury-lane-2027",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "bestoftheatre--ella-dunmore.json",
-      "score": null,
-      "publishDate": "2026-10-06",
-      "url": "https://www.bestoftheatre.co.uk/blog/post/glenn-close-herod-jesus-christ-superstar-drury-lane",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
