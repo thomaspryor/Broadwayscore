@@ -522,6 +522,9 @@ test('a closed show labelled only by our model is an unknown outcome, not a fail
   assert.equal(p.recouped, 3);
   // The model-only shows leave the closed-without-recouping capital too.
   assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 15e6, closedUnrecoupedShows: 3, running: 0, runningShows: 0 });
+  // And the money-back estimate (BRO-6335): 6 known shows, not 8.
+  assert.equal(p.returnedCapital.of, 6);
+  assert.equal(p.returnedCapital.capital, 15e6); // the three recouped shows carry a share
 
   const row = compareSeason(buildSeasonProfiles(shows), '2016-2017', '2026-10-26')!.rows.find((r) => r.label === 'Commercial shows recouped')!;
   assert.equal(row.current, 0.5);

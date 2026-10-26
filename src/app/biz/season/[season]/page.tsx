@@ -222,7 +222,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
               className="text-xs text-gray-500 mt-1"
               title="An estimate. Recouped shows count at their reported return, else all of their capital; other shows at an estimate of what has come back (our model from weekly grosses and costs, or an outside estimate). Only shows we can estimate are counted."
             >
-              Estimate, {back.range} ({back.share} of the capital in {profile.returnedCapital.shows} shows).{outcome && outcome.runningShows > 0 ? ' It rises as running shows pay back.' : ''}
+              Estimate, {back.range} ({back.share} of the capital in {profile.returnedCapital.shows} shows).{outcome && outcome.runningShows > 0 ? ' It rises as running shows pay back.' : ''}{stats.closedUnknown > 0 ? ' Closed shows with no known outcome are left out.' : ''}
             </div>
             {backHistory.length > 1 && (
               <div className="text-xs text-gray-500 mt-1">
