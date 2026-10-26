@@ -611,12 +611,18 @@ async function main() {
       const existingVariant = findExistingReviewFile(showDir, outletId, review.critic);
       // The same review may still sit under the parent label (daily-mail for a
       // Mail on Sunday critic) until the outlet-mismatch heal moves it: held, not new.
-      if (parentOutletId !== outletId && findExistingReviewFile(showDir, parentOutletId, review.critic)) {
+      // BRO-6302: a review this section yields but the run skips because its file
+      // exists is still on the page; the NO-RECORD sweep below must not stamp it.
+      const seen = (p) => { if (p) touchedFiles.add(p); };
+      const parentFile = parentOutletId !== outletId ? findExistingReviewFile(showDir, parentOutletId, review.critic) : null;
+      if (parentFile) {
+        seen(parentFile.path);
         skippedCount++;
         heldCount++;
         continue;
       }
       if ((fileExists || existingVariant) && !noSkipExisting) {
+        seen(fileExists ? filepath : existingVariant.path);
         skippedCount++;
         heldCount++;
         continue;
@@ -772,6 +778,7 @@ async function main() {
       const target = resolveFreshTheatreRecordTarget(showDir, outletId, filepath, review);
       if (target.action === 'skip') {
         console.log(`    SKIP: ${filename} — ${target.reason} (${path.basename(target.path)})`);
+        seen(target.path);
         skippedCount++;
         heldCount++;
         continue;

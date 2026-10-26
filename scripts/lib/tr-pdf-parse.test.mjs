@@ -567,3 +567,12 @@ test('BRO-6302 sharesTitleWord: generic words ignored unless the title has nothi
   assert.equal(sharesTitleWord('COME FROM AWAY!', 'Come From Away'), true);
   assert.equal(sharesTitleWord('PIGEON ENGLISH', 'Pride and Prejudice'), false);
 });
+test('BRO-6302 review round: TR short forms and hyphen-wrapped captions stay ours', () => {
+  // Every caption word is in our title: TR's short form, not another show.
+  assert.equal(sharesTitleWord('ALL OUT', 'All Out: Comedy About Ambition'), true);
+  assert.equal(sharesTitleWord('THE CHRISTMAS PRINCE', 'The (Very Gay) Christmas Prince'), true);
+  // One shared generic word is still not enough (THE KING AND I under King Lear).
+  assert.equal(sharesTitleWord('THE KING AND I', 'King Lear'), false);
+  const lines = ['A MIDSUM-', 'MER NIGHT\u2019S DREAM', 'FINANCIAL TIMES', '16 July 2018', 'body'];
+  assert.notEqual(captionOwnedBy(lines, 2, "A Midsummer Night's Dream"), false);
+});
