@@ -245,16 +245,15 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T06:00:39.839Z",
-      "lastSeen": "2026-10-26T07:26:40.074Z",
-      "lastNotifiedAt": "2026-10-26T06:00:39.839Z",
-      "lastSurfacedAt": "2026-10-26T06:00:39.839Z",
-      "notifyCount": 171,
+      "incidentOpenedAt": "2026-10-26T07:30:39.099Z",
+      "lastSeen": "2026-10-26T07:30:39.099Z",
+      "lastNotifiedAt": "2026-10-26T07:30:39.099Z",
+      "lastSurfacedAt": "2026-10-26T07:30:39.099Z",
+      "notifyCount": 172,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024",
-      "silentRefires": 2
+      "sweptTracker": "BRO-6024"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6779,7 +6778,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "resolvedAt": "2026-10-26T07:30:38.908Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -26232,7 +26232,7 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"on-screen copy in src/app, src/components, src/config and src/lib follows the voice rules\"",
       "firstSeen": "2026-10-24T21:18:01.551Z",
       "incidentOpenedAt": "2026-10-25T20:34:41.904Z",
-      "lastSeen": "2026-10-26T07:26:40.019Z",
+      "lastSeen": "2026-10-26T07:30:39.023Z",
       "lastNotifiedAt": "2026-10-25T20:34:41.904Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
@@ -27254,7 +27254,7 @@
       },
       "absentRunIds": [
         "40279736293",
-        "40282636693"
+        "40283224860"
       ]
     },
     "land:land/bro-2710-safe-write-3": {
