@@ -561,6 +561,19 @@ const isCapsTitle = (l) => /[A-Z]/.test(l) && l === l.toUpperCase() && l.length 
 const { trTitleMatches } = require('./tr-production-pick');
 const { foldDiacritics } = require('./title-match');
 
+// BRO-6302: a block title sharing a word with ours stays "unknown" (TR spells
+// titles its own way), but common title words do not count: KING LEAR kept
+// EXIT THE KING's and THE KING AND I's reviews, LOVE LETTERS kept LOVE BITES'.
+// A title made only of such words keeps the full set.
+const GENERIC_TITLE_WORDS = new Set(['king', 'queen', 'prince', 'princess', 'lady', 'man', 'men', 'woman', 'women', 'girl', 'girls', 'boy', 'boys', 'love', 'night', 'nights', 'day', 'days', 'life', 'death', 'light', 'dark', 'great', 'little', 'old', 'new', 'one', 'two', 'three', 'last', 'first', 'play', 'show', 'story', 'house', 'home', 'world', 'time', 'christmas', 'that', 'this', 'into', 'what', 'when', 'who', 'all', 'not', 'are', 'was', 'you', 'your', 'our', 'his', 'her', 'broken', 'come', 'away', 'goes', 'over', 'out', 'way', 'wild', 'dream', 'heart', 'blood', 'city', 'street', 'road', 'big', 'good', 'bad', 'young', 'black', 'white', 'red', 'blue', 'green']);
+const titleWords = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
+function sharesTitleWord(blockTitle, showTitle) {
+  const all = titleWords(showTitle);
+  const distinctive = all.filter(w => !GENERIC_TITLE_WORDS.has(w));
+  const ours = new Set(distinctive.length ? distinctive : all);
+  return titleWords(blockTitle).some(w => ours.has(w));
+}
+
 function productionRuns(lines) {
   const runs = [];
   lines.forEach((l, i) => {
@@ -588,9 +601,7 @@ function sectionOwnedBy(runs, lineIdx, showTitle, lines) {
   if (trTitleMatches(run.title, showTitle)) return true;
   // TR spells titles its own way ("PRIDE AND PREJUDICE* (*SORT OF)"), so a block
   // that shares a real word with ours stays "unknown" instead of being dropped.
-  const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
-  const ours = new Set(words(showTitle));
-  if (words(run.title).some(w => ours.has(w))) return null;
+  if (sharesTitleWord(run.title, showTitle)) return null;
   // Our own run line may have been missed ("onwards", "01-28 February"): when our
   // title appears as a caps line after the other block's run line, we cannot tell.
   if (lines) {
@@ -647,9 +658,7 @@ function captionOwnedBy(lines, outletIdx, showTitle, { inherit = false } = {}, d
   if (parts.some(t => /\.(COM|CO\.UK|ORG|NET|UK)\b/.test(t))) return null;
   const caption = parts.join(' ');
   if (trTitleMatches(caption, showTitle)) return true;
-  const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
-  const ours = new Set(words(showTitle));
-  if (words(caption).some(w => ours.has(w))) return null;
+  if (sharesTitleWord(caption, showTitle)) return null;
   return false;
 }
 
@@ -661,9 +670,7 @@ function inheritedCaptionOwner(lines, outletIdx, showTitle, depth) {
   if (depth >= CAPTION_CHAIN_MAX) return null;
   const memo = inheritMemo(lines, showTitle);
   if (memo.has(outletIdx)) return memo.get(outletIdx);
-  const ours = new Set(foldDiacritics(String(showTitle)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w)));
-  const nearOurs = (t) => trTitleMatches(t, showTitle)
-    || foldDiacritics(t).toLowerCase().split(/[^a-z0-9]+/).some(w => ours.has(w));
+  const nearOurs = (t) => trTitleMatches(t, showTitle) || sharesTitleWord(t, showTitle);
   let result = null;
   for (let k = outletIdx - 1; k >= 0 && outletIdx - k <= CAPTION_LOOKBACK; k--) {
     const t = String(lines[k]).trim();
@@ -777,6 +784,7 @@ function locateReviews(text, reviews, showTitle) {
 
 module.exports = {
   productionRuns,
+  sharesTitleWord,
   captionOwnedBy,
   isKnownOutletLine,
   sectionOwnedBy,

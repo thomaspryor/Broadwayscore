@@ -540,3 +540,30 @@ test('caption inheritance: run line and wrapped titles stop it; default mode inh
   assert.ok(!got.includes('16 July 2021') && !got.includes('12 July 2021'), got);
   assert.ok(got.includes('14 July 2021') && got.includes('15 July 2021'), got);
 });
+
+// BRO-6302: a shared common word (KING, LOVE, NIGHT) no longer makes another
+// production's block "unknown". King Lear (2018) kept EXIT THE KING's and THE
+// KING AND I's reviews; Love Letters (2021) kept LOVE BITES'.
+const { sharesTitleWord } = require('./tr-pdf-parse.js');
+test('BRO-6302 sectionOwnedBy: a block sharing only a common title word is foreign', () => {
+  const runs = productionRuns(['X', '03 October - 02 December 2018', 'EXIT THE KING', 'a', 'b', '04 December - 02 January 2019', 'THE KING AND I', 'c']);
+  assert.equal(sectionOwnedBy(runs, 3, 'King Lear'), false);
+  assert.equal(sectionOwnedBy(runs, 7, 'King Lear'), false);
+  assert.equal(sectionOwnedBy(runs, 3, 'Exit the King'), true);
+  const r2 = productionRuns(['X', '01 May - 30 June 2021', 'LOVE BITES', 'a']);
+  assert.equal(sectionOwnedBy(r2, 3, 'Love Letters'), false);
+  // A distinctive shared word still reads as TR's own spelling of our title.
+  assert.equal(sectionOwnedBy(r2, 3, 'Love Bites Back'), null);
+});
+test('BRO-6302 captionOwnedBy: a caption sharing only a common word is foreign', () => {
+  const lines = ['LONG DAY’S JOURNEY', 'x', 'MY NIGHT WITH REG', 'FINANCIAL TIMES', '16 July 2018', 'body'];
+  assert.equal(captionOwnedBy(lines, 3, "Long Day's Journey into Night"), false);
+  assert.equal(captionOwnedBy(lines, 3, 'My Night with Reg'), true);
+});
+test('BRO-6302 sharesTitleWord: generic words ignored unless the title has nothing else', () => {
+  assert.equal(sharesTitleWord('THE SHARK IS BROKEN', 'Broken Lad'), false);
+  assert.equal(sharesTitleWord('THE LION KING', 'The Lion King (revival)'), true);
+  // All-generic title keeps its words so TR spelling variants stay unknown.
+  assert.equal(sharesTitleWord('COME FROM AWAY!', 'Come From Away'), true);
+  assert.equal(sharesTitleWord('PIGEON ENGLISH', 'Pride and Prejudice'), false);
+});
