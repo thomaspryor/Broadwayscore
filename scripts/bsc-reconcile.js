@@ -804,7 +804,9 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
     } catch { /* card correction is best-effort; local flip is authoritative */ }
   }
 
-  if (!dryRun) {
+  // BRO-2994: a sweep that ran blind (cmux listing failed) must not stamp the
+  // cadence gate, or the outage suppresses the retry for the full 6h interval.
+  if (!dryRun && !cmuxUnavailable) {
     try {
       fs.mkdirSync(path.dirname(statePath), { recursive: true });
       fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: new Date(nowFn()).toISOString(), flipped, skipped: skipped.length }, null, 2));

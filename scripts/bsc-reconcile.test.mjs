@@ -788,6 +788,17 @@ test('zombie sweep: a failed cmux listing flips ZERO tasks, even one otherwise e
   assert.ok(h.reports.some(rep => rep.kind === 'untracked-sweep-error' && /cmux socket busy/.test(rep.detail)));
 });
 
+test('zombie sweep (BRO-2994): a failed cmux listing does NOT stamp the cadence gate, so the next tick retries', () => {
+  const h = zombieHarness({ tasks: [zTask(9)] });
+  h.deps.listWorkspacesFn = () => { throw new Error('cmux socket busy'); };
+  sweepUntrackedInProgress({ deps: h.deps });
+  assert.ok(!fs.existsSync(h.statePath), 'a blind sweep must not suppress the retry for the full interval');
+  h.deps.listWorkspacesFn = () => [];
+  const r = sweepUntrackedInProgress({ deps: h.deps });
+  assert.equal(r.ran, true, 'next tick after recovery must run, not be gated');
+  assert.ok(fs.existsSync(h.statePath), 'a successful listing stamps the gate as before');
+});
+
 test('zombie sweep: a successful (even empty) cmux listing behaves exactly as before — a genuinely idle task still flips', () => {
   const nid = 'aaaa9aaa-1111-2222-3333-444444444444';
   const h = zombieHarness({ tasks: [zTask(9)], workspaces: [], cards: { [nid]: { status: 'In progress', lastEditedAt: tsAgo(72) } } });
