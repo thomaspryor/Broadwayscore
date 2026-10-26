@@ -261,7 +261,7 @@ async function main() {
   const runUrl = runUrlFor(opts.runId);
   for (const sig of currentSignatures) {
     const label = sig.testName ? `${sig.job} / ${sig.step} — "${sig.testName}"` : `${sig.job} / ${sig.step}`;
-    const verify = verifyForSignature({ job: sig.job, step: sig.step, testFile: testFileByJob.get(sig.job) }, testYmlText);
+    const verify = verifyForSignature({ job: sig.job, step: sig.step, testFile: sig.testName ? testFileByJob.get(sig.job) : undefined }, testYmlText);
     await routeAlert({
       conditionKey: sig.conditionKey,
       title: `main test.yml red: ${label}`,
