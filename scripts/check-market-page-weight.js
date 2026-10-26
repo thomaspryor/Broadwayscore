@@ -5,7 +5,8 @@
  * check-market-page-weight.js (BRO-5991)
  *
  * HTML size + <img> count budget for /west-end, /off-broadway, /off-west-end,
- * plus the big hub pages that must stay under Googlebot's 2MB read limit (BRO-5968).
+ * plus the big hub pages that must stay under Googlebot's 2MB read limit (BRO-5968),
+ * plus the homepage and a show page (BRO-6278).
  *
  * Usage:
  *   node scripts/check-market-page-weight.js                 # built HTML in .next/server/app
@@ -18,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, evaluateBudget } = require('./lib/page-weight.js');
+const { MARKET_PAGE_BUDGETS, HUB_PAGE_BUDGETS, CORE_PAGE_BUDGETS, evaluateBudget } = require('./lib/page-weight.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const args = process.argv.slice(2);
@@ -46,7 +47,7 @@ async function loadHtml(budget) {
 async function main() {
   const violations = [];
   let checked = 0;
-  for (const budget of [...MARKET_PAGE_BUDGETS, ...HUB_PAGE_BUDGETS]) {
+  for (const budget of [...MARKET_PAGE_BUDGETS, ...HUB_PAGE_BUDGETS, ...CORE_PAGE_BUDGETS]) {
     let html;
     try {
       html = await loadHtml(budget);

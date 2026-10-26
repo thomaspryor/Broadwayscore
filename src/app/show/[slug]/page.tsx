@@ -6,23 +6,27 @@ import { Metadata } from 'next';
 import { Suspense } from 'react';
 import { isCategoryEnabled } from '@/lib/markets';
 import { HIDDEN_LONDON_IDS } from '../../../../scripts/lib/page-name-sources';
-import { getRelatedShowLists } from '@/lib/show-below-fold-data';
-import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
+import { getShowBySlug, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getSharedTitleYear } from '@/lib/data-core';
 import { getTourReviewYears } from '@/lib/tour-display';
 import { isLiveTour } from '@/lib/tour-listing';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
+import { getShowAwards, getAwardsSummary } from '@/lib/data-awards';
+import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
 import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
 import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
-import { getScheduleCurrentMonday } from '@/lib/data-showtimes';
+import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend, getShowBoxOfficeV2, getBoxOfficeFacts } from '@/lib/data-commercial';
 import { toBoxOfficeV2Card, toFactsCard, showsBreakEven } from '@/lib/box-office-v2-display';
 import { toPublicShowCommercial, hasCommercialCard } from '@/lib/commercial-display';
+import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
+import { getActorSlugMap } from '@/lib/data-actors';
 import { getCreativeLink } from '@/lib/data-creative';
+import { getShowCastTonyMap } from '@/lib/data-tony-noms';
 import { getOutletSlugById, getCriticSlugByName } from '@/lib/data-reviews';
 import { getOutletBadge } from '@/config/outlet-logos';
 import { getBlogReviewByShowSlug } from '@/lib/data-reviews-blog';
@@ -35,9 +39,11 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import ShowImage from '@/components/ShowImage';
 import StickyScoreHeader from '@/components/StickyScoreHeader';
 import ReviewsList from '@/components/ReviewsList';
+import { getReviewListItems, REVIEWS_INLINE_COUNT } from '@/lib/show-review-items';
 import Breadcrumb from '@/components/Breadcrumb';
 import ShowFollowBanner from '@/components/ShowFollowBanner';
 import ShowPageBelowFoldLoader from '@/components/show-page/ShowPageBelowFoldLoader';
+import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS, TOP_CRITICS } from '@/config/scoring';
@@ -47,7 +53,8 @@ import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
 import { getTicketCtaNote } from '@/lib/ticket-cta-note';
-import { serializeShowForClient } from '@/lib/serialize-show';
+import { getComparisonsForShow } from '@/config/comparisons';
+import { createShowSerializer } from '@/lib/serialize-show';
 import RelatedShowsCompactAB from '@/components/RelatedShowsCompactAB';
 import { pickCompactRelated } from '../../../../scripts/lib/related-shows-ab';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -72,11 +79,6 @@ import { isShowIndexable } from '@/lib/seo-indexability';
 import { ShowPageWatchlistButton, ShowPageAddToListButton } from '@/components/user/ShowPageUserButtons';
 
 export const revalidate = 86400;
-
-/** Drops undefined and null keys; ReviewsList treats absent and null alike. url keeps its null (it is part of the list key). */
-function dropEmpty<T extends Record<string, unknown>>(o: T): T {
-  return Object.fromEntries(Object.entries(o).filter(([k, v]) => v !== undefined && (v !== null || k === 'url'))) as T;
-}
 
 // getBrowseSlug moved to src/lib/browse-slugs.ts so WhereItRanks + breadcrumb
 // share the same mapping (plays land on best-broadway-dramas, etc.). See that
@@ -318,9 +320,13 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // History-derived card extras (sparkline, rank, market share, attendance
   // deltas). Server-only import — keeps the 5.5 MB history out of the client.
   const boxOfficeHistory = grosses ? getBoxOfficeHistoryStats(params.slug) : null;
+  const awards = getShowAwards(show.id);
+  const awardsSummary = awards ? getAwardsSummary(show.id, show.openingDate, show.category) : null;
+  const tonyNamesByCategory = getTonyNamesByCategory(show.id);
   const audienceBuzz = getAudienceBuzz(show.id);
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
+  const showSchedule = getShowSchedule(show.id);
   // Cross-show ranks. Flag-gated for safe rollout — toggle in Vercel env
   // (NEXT_PUBLIC_FEATURES=showRanks). O(1) lookup after the module-scope
   // index is built on first call. 'all' format slice powers the hero rank
@@ -351,11 +357,44 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
   // plays now or next (BRO-4601).
   const ticketLinks = show.ticketLinks?.length || show.category !== 'tour' ? show.ticketLinks : getTourTicketLinks(show);
   const sortedTicketLinks = ticketLinks ? sortTicketLinks(ticketLinks) : [];
+  const castChangesData = getCastChanges(show.id);
+  const castFile = getShowCastFile(show.id);
+  // Pre-compute actor slug map for clickable cast names
+  const castActorSlugs: Record<string, string> = {};
+  if (featureFlags.castPages && castFile) {
+    const allPersonIds = [
+      ...(castFile.openingNightCast || []),
+      ...(castFile.currentCast || []),
+      ...(castFile.replacements || []),
+    ].map(m => m.ibdbPersonId).filter((id): id is string => !!id);
+    const slugMap = getActorSlugMap(allPersonIds);
+    for (const [id, slug] of Array.from(slugMap.entries())) {
+      castActorSlugs[id] = slug;
+    }
+  }
   const blogReview = await getBlogReviewByShowSlug(show.slug);
-  // The below-fold lists (related, other productions, cast, awards, ...) are
-  // fetched from /show/<slug>/below-fold.json (BRO-6278); only the compact
-  // related row sits above the fold, so the raw lists are built here for it.
-  const { openRaw: relatedShowsOpenRaw, closedRaw: relatedShowsClosedRaw } = getRelatedShowLists(show);
+  // Card-shape these before they cross the client boundary. getRelatedShows*/
+  // getOtherProductions return full ComputedShow objects, each carrying its own
+  // criticScore.reviews array — passing them raw to ShowPageBelowFoldLoader
+  // ('use client') serialized ~20 shows' entire review corpora into the inlined
+  // RSC flight payload. On /show/hamilton that was 645KB of the 781KB document,
+  // 643 review objects, none of which any card renders (the cards read only
+  // criticScore.{score,reviewCount,tier1Count,tier2Count}). Card #419.
+  // One memoized slim serializer for every card list: a show in both the compact
+  // row and a shelf is emitted once, and the cards never read creativeTeam/runtime (BRO-6278).
+  const serialize = createShowSerializer();
+  const serializeRelated = (s: Parameters<typeof serialize>[0]) => serialize(s, { slim: true });
+  const relatedShowsOpenRaw = getRelatedShowsOpen(show);
+  const relatedShowsOpen = relatedShowsOpenRaw.map(s => serializeRelated(s));
+  // A show already in "Open Shows You Might Like" (e.g. Oh, Mary! playing Off-Broadway)
+  // must not reappear in "Closed" for its Broadway run, so drop closed recs whose title matches.
+  const openRecTitles = new Set(relatedShowsOpen.map(s => s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()));
+  const relatedShowsClosedRaw = (show.category !== 'west-end' && show.category !== 'off-west-end')
+    ? getRelatedShowsClosed(show, 12)
+        .filter(s => !openRecTitles.has(s.title.toLowerCase().replace(/\s*\(\d{4}\)\s*$/, '').trim()))
+        .slice(0, 6)
+    : [];
+  const relatedShowsClosed = relatedShowsClosedRaw.map(s => serializeRelated(s));
   // related-shows-position A/B (BRO-5989): reuses the page's own open/closed rec lists
   // (West End exclusion and open/closed title dedupe included), then keeps only pages
   // the sitemap would list so the test row never links a noindex page. Pages with no
@@ -365,8 +404,11 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
         [...relatedShowsOpenRaw, ...relatedShowsClosedRaw],
         show.id,
         (s: (typeof relatedShowsOpenRaw)[number]) => isShowIndexable(s, s.slug),
-      ).map(s => serializeShowForClient(s, { slim: true }))
+      ).map(s => serializeRelated(s))
     : [];
+  const otherProductions = getOtherProductions(show).map(s => serializeRelated(s));
+  const comparisons = getComparisonsForShow(show.slug);
+  const videoReviews = getVideoReviews(show.id);
 
   // Narrow the show's OWN criticScore.reviews at each client boundary that doesn't
   // need the full review objects. ReviewsList (below) is the only consumer that
@@ -389,6 +431,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
     if (stop) tourReviewCounts[stopKey(stop)] = (tourReviewCounts[stopKey(stop)] ?? 0) + 1;
   }
 
+  const reviewItems = getReviewListItems(show);
   const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
     ...show,
     venue: tourVenue ?? show.venue,
@@ -412,6 +455,8 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
       .filter((entry): entry is [string, string] => entry[1] != null)
   ) : {};
   const currentMonday = getScheduleCurrentMonday();
+  const showtimeIds = getShowShowtimeIds(show.id);
+  const castTonyMap = featureFlags.castPages ? getShowCastTonyMap(show.id) : {};
   const recoupmentTrend = featureFlags.commercial ? getRecoupmentTrend(show.slug) : 'unknown';
   // A hidden London id (ABBA Arena) has no /west-end/theater page: render the venue as text, not a 404 link (BRO-5970).
   const londonVenueHidden = HIDDEN_LONDON_IDS.has(show.id);
@@ -930,26 +975,19 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
               </RedesignOn>
             )}
 
-            {/* Only what ReviewsList reads, and no empty keys: each key/null costs bytes in the RSC payload (BRO-6278). */}
-            <ReviewsList reviews={show.criticScore.reviews.map(r => dropEmpty({
-              outletId: r.outletId,
-              outlet: r.outlet,
-              outletSlug: getOutletSlugById(r.outletId) || undefined,
-              outletBadge: getOutletBadge(r.outletId, r.outlet),
-              criticName: r.criticName,
-              criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
-              url: r.url,
-              publishDate: r.publishDate,
-              tier: r.tier,
-              reviewScore: r.reviewScore,
-              designation: r.designation,
-              quote: r.quote,
-              summary: r.summary,
-              pullQuote: r.pullQuote,
-              priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
-              stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : undefined,
-              isTopCritic: !!(r.criticName && TOP_CRITICS.has(r.criticName)) || undefined,
-            }))} initialCount={5} category={show.category} showTiers={!isOpera} />
+            {/* Only the cards in the server markup go inline; the rest load from reviews.json (BRO-6278). */}
+            <ReviewsList
+              reviews={reviewItems.slice(0, REVIEWS_INLINE_COUNT)}
+              more={reviewItems.length > REVIEWS_INLINE_COUNT ? {
+                url: `/show/${show.slug}/reviews.json`,
+                totalCount: reviewItems.length,
+                hasTierChips: reviewItems.some(r => r.tier),
+                hasStops: reviewItems.some(r => r.stopLabel),
+              } : undefined}
+              initialCount={REVIEWS_INLINE_COUNT}
+              category={show.category}
+              showTiers={!isOpera}
+            />
 
             {/* Subtle in-card methodology link — explains how CriticScore is
                 computed without a verbose accordion. Links to the same
@@ -1043,9 +1081,13 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
 
         <ShowPageBelowFoldLoader
           show={showForBelowFold}
+          videoReviews={videoReviews}
           audienceBuzz={audienceBuzz}
           audienceShowScoreUrl={audienceShowScoreUrl}
           audiencePlatformUrls={audiencePlatformUrls}
+          awards={awards ?? null}
+          awardsSummary={awardsSummary}
+          tonyNamesByCategory={tonyNamesByCategory}
           grosses={grosses ?? null}
           weekEnding={weekEnding}
           boxOfficeHistory={boxOfficeHistory}
@@ -1055,10 +1097,28 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
           recoupmentTrend={recoupmentTrend}
           ranks={ranks}
           ranksByFormat={ranksByFormat}
+          showSchedule={showSchedule ?? null}
           currentMonday={currentMonday}
+          showtimeIds={showtimeIds}
           sortedTicketLinks={sortedTicketLinks}
+          theater={theater && {
+            name: theater.name,
+            slug: theater.slug,
+            venueScores: theater.venueScores,
+            accessibility: theater.accessibility,
+            externalLinks: theater.externalLinks,
+            structuredTips: theater.structuredTips,
+          }}
           lotteryRush={lotteryRush}
+          castChangesData={castChangesData}
+          castFile={castFile}
+          castActorSlugs={castActorSlugs}
+          castTonyMap={castTonyMap}
           creativePrincipals={creativePrincipals}
+          otherProductions={otherProductions}
+          relatedShowsOpen={relatedShowsOpen}
+          relatedShowsClosed={relatedShowsClosed}
+          comparisons={comparisons}
           venueSlug={londonVenueHidden ? null : venueSlug}
           offBroadwayVenueSlug={offBroadwayTheater?.slug ?? null}
           isWestEnd={isWestEnd}
