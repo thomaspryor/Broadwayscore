@@ -61,6 +61,7 @@ const plusDot = (x, y, txt) => $('abs', `left:${x}px;top:${y}px;width:36px;heigh
 /* ---------- A: score reveal ---------- */
 COMPS.reveal = {
   dur: 22,
+  beats: { count: 1.9, land: 4.55, quotesIn: 8.2, q: [8.5, 10.4, 12.3], vs: 15.0, aud: 16.3, gap: 18.1, end: 20 },
   build(root, d) {
     const s = d.show, sc = d.score, r = Math.round(sc);
     this.d = d;
@@ -135,8 +136,8 @@ COMPS.every = {
   build(root, d) {
     this.d = d; const s = d.show;
     this.t0 = 1.6;
-    this.times = d.reviews.map((_, i) => this.t0 + (i < 5 ? i * 0.95 : 4.75 + (i - 5) * 0.55));
-    this.tEnd = this.times[this.times.length - 1] + 1.3;
+    this.times = d.times || d.reviews.map((_, i) => this.t0 + (i < 5 ? i * 0.95 : 4.75 + (i - 5) * 0.55));
+    this.tEnd = d.tEnd != null ? d.tEnd : this.times[this.times.length - 1] + 1.3;
     const head = $('abs card', 'left:16px;right:16px;top:62px;height:76px;padding:10px;display:flex;gap:12px;align-items:center');
     head.innerHTML = `<div style="width:56px;height:56px;border-radius:.75rem;overflow:hidden;flex-shrink:0">${artImg(d.art, 56, 'border-radius:0')}</div><div style="min-width:0"><div style="font-weight:800;font-size:16px;line-height:1.15;letter-spacing:-.01em">${esc(s.title)}</div><div style="display:flex;gap:6px;margin-top:6px">${pills(s, d.isNew, d.category)}</div></div>`;
     this.cnt = $('abs', 'left:0;right:0;top:148px;text-align:center;font-size:13px;font-weight:600;color:#9ca3af');
@@ -151,7 +152,8 @@ COMPS.every = {
     this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
     const tag = $('abs cap', 'left:0;right:0;top:34px;font-size:13px;color:#9ca3af;letter-spacing:.08em;text-transform:uppercase;font-weight:700', `${logo(14)}`);
     root.append(tag, head, this.cnt, this.list, this.bc, this.res, this.end);
-    this.events = this.times.map(t => ({ t, k: 'pop' })); this.events.push({ t: this.tEnd + 0.7, k: d.score >= GOLD ? 'chime' : 'pop' });
+    this.events = this.times.map(t => ({ t, k: 'pop' })); this.cd = d.countDur || 2.2; // how long the result badge counts up
+    this.events.push({ t: this.tEnd + 0.4 + this.cd, k: d.score >= GOLD ? 'chime' : 'pop' });
   },
   update(t) {
     const d = this.d, n = d.reviews.length;
@@ -176,10 +178,10 @@ COMPS.every = {
     this.bc.style.opacity = seg(t, 1.2, 1.8);
     const rv = seg(t, this.tEnd + 0.3, this.tEnd + 0.9);
     this.res.style.opacity = rv; this.res.style.display = rv > 0 ? 'flex' : 'none';
-    const bt = seg(t, this.tEnd + 0.4, this.tEnd + 2.6); setBadge(this.rb, d.score * eo(bt));
-    const r = Math.round(d.score); this.rt.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; this.rt.style.opacity = seg(t, this.tEnd + 2.6, this.tEnd + 3.1);
+    const L = this.tEnd + 0.4 + this.cd, bt = seg(t, this.tEnd + 0.4, L); setBadge(this.rb, d.score * eo(bt));
+    const r = Math.round(d.score); this.rt.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; this.rt.style.opacity = seg(t, L, L + 0.5);
     this.rs.textContent = `Critic Score from ${n} reviews`; this.rs.style.opacity = this.rt.style.opacity;
-    const e = seg(t, this.tEnd + 5.2, this.tEnd + 5.8); this.end.style.opacity = e; this.end.style.display = e > 0 ? 'flex' : 'none';
+    const e = seg(t, L + 2.6, L + 3.2); this.end.style.opacity = e; this.end.style.display = e > 0 ? 'flex' : 'none';
     if (e > 0) { this.res.style.opacity = 1 - e; this.bc.style.opacity = 1 - e; }
   },
 };
@@ -187,6 +189,7 @@ COMPS.every = {
 /* ---------- C: weekly top 5 ---------- */
 COMPS.top5 = {
   dur: 25,
+  beats: { n: [1.6, 5.0, 8.4, 11.8, 15.2], end: 21.0 },
   build(root, d) {
     this.d = d;
     root.append($('abs', 'left:0;right:0;top:34px;text-align:center', logo(14)));
@@ -221,12 +224,12 @@ COMPS.top5 = {
 };
 
 /* ---------- Voiced formats (verdict, versus): scenes cue off the voiceover's word times; captions are burned in ---------- */
-function captions(root, words) {
+function captions(root, words, top = 462) {
   // phrases of up to 3 words, broken at pauses; the word being spoken is highlighted
   const ph = []; let cur = [];
   words.forEach((w, i) => { const pv = words[i - 1]; if (cur.length && (cur.length >= 3 || pv.e || w.a - pv.b > 0.28)) { ph.push(cur); cur = []; } cur.push(w); });
   if (cur.length) ph.push(cur);
-  const el = $('abs', 'left:16px;right:16px;top:462px;text-align:center;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.85);z-index:20');
+  const el = $('abs', `left:16px;right:16px;top:${top}px;text-align:center;font-size:25px;line-height:1.2;font-weight:800;letter-spacing:-.01em;text-shadow:0 2px 10px rgba(0,0,0,.85);z-index:20`);
   root.append(el);
   return t => {
     const p = ph.find((p, i) => t >= p[0].a - 0.05 && t < (ph[i + 1] ? ph[i + 1][0].a - 0.05 : p[p.length - 1].b + 0.5));
@@ -303,5 +306,31 @@ function voicedUpdate(self, t) {
   show(self.end, end); show(self.head, 1 - end);
   self.cap(t);
 }
-COMPS.verdict = { build(root, d) { voicedBuild(this, root, d, 'Opening night verdict'); }, update(t) { voicedUpdate(this, t); } };
+COMPS.verdict = { build(root, d) { voicedBuild(this, root, d, d.kicker || 'Opening night verdict'); }, update(t) { voicedUpdate(this, t); } };
 COMPS.versus = { build(root, d) { voicedBuild(this, root, d, 'Critics vs. audience'); }, update(t) { voicedUpdate(this, t); } };
+
+// Voiced cuts of the silent formats: the base scene plays on a clock bent so each of its beats lands on the word
+// the voice is saying (d.cues, real seconds, matched by name to the base's beats); captions run on real time.
+function voicedCut(base, capTop) {
+  return {
+    build(root, d) {
+      const B = this.B = Object.create(COMPS[base]); B.build(root, d);
+      const P = [[0, 0]];
+      Object.keys(d.cues || {}).forEach(k => { const b = [].concat(B.beats[k]), c = [].concat(d.cues[k]);
+        if (B.beats[k] == null || c.length > b.length) throw new Error(`${base}: no beat for cue ${k}`);
+        c.forEach((ct, i) => P.push([ct, b[i]])); });
+      P.sort((a, b) => a[0] - b[0]);
+      for (let i = 1; i < P.length; i++) if (P[i][1] <= P[i - 1][1] || P[i][0] <= P[i - 1][0]) throw new Error(`${base}: voice cues out of order at ${P[i][0].toFixed(2)}s`);
+      this.P = P; this.dur = d.dur;
+      this.events = (B.events || []).map(e => ({ ...e, t: this.map(e.t, 1, 0) })).filter(e => e.t < d.dur);
+      this.cap = captions(root, d.words, capTop);
+    },
+    // piecewise-linear between pinned beats; after the last one the clock runs at normal speed
+    map(t, from, to) { const P = this.P; let i = 0; while (i < P.length - 1 && t > P[i + 1][from]) i++;
+      const a = P[i], b = P[i + 1]; return b ? a[to] + (t - a[from]) * (b[to] - a[to]) / (b[from] - a[from]) : a[to] + (t - a[from]); },
+    update(t) { this.B.update(this.map(t, 0, 1)); this.cap(t); },
+  };
+}
+COMPS['reveal-voiced'] = voicedCut('reveal', 516);
+COMPS['every-voiced'] = voicedCut('every', 516);
+COMPS['top5-voiced'] = voicedCut('top5', 516);
