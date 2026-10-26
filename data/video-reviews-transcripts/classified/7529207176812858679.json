@@ -10,7 +10,7 @@
   "wordCount": 315,
   "collectedAt": "2026-04-13T03:02:47.772Z",
   "fileName": "7529207176812858679.json",
-  "showId": null,
+  "showId": "the-weir-off-broadway-2025",
   "showTitle": "The Weir",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is reviewing 'The Weir' by Conor McPherson at Irish Rep, not 'Classified' by Joe Weinberg as indicated in the prompt. This appears to be a mislabeling issue.",
-  "scoredAt": "2026-04-13T13:27:03.935Z"
+  "scoredAt": "2026-04-13T13:27:03.935Z",
+  "rematch": {
+    "candidates": [
+      "the-weir-off-broadway-2025"
+    ],
+    "result": "the-weir-off-broadway-2025",
+    "reason": "The transcript explicitly mentions Irish Rep and New York, matching the listed Off-Broadway production of 'The Weir' at Irish Repertory Theatre.",
+    "checkedAt": "2026-10-26T10:23:17.014Z"
+  },
+  "showIdSource": "rematch"
 }

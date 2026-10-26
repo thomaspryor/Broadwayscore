@@ -10,7 +10,7 @@
   "wordCount": 257,
   "collectedAt": "2026-04-13T02:51:09.512Z",
   "fileName": "7551238292096748855.json",
-  "showId": null,
+  "showId": "weather-girl-off-broadway-2025",
   "showTitle": "Weather Girl",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show title",
   "reasoning": "The transcript is reviewing 'Weather Girl' by Brian Watkins at St Ann's Warehouse, not 'Classified' as specified in the prompt.",
-  "scoredAt": "2026-04-13T13:32:33.289Z"
+  "scoredAt": "2026-04-13T13:32:33.289Z",
+  "rematch": {
+    "candidates": [
+      "weather-girl-off-broadway-2025"
+    ],
+    "result": "weather-girl-off-broadway-2025",
+    "reason": "The transcript explicitly mentions St. Ann's Warehouse in Brooklyn, matches the play 'Weather Girl' by Brian Watkins, and the post date of 2025-09-18 falls within the preview period listed.",
+    "checkedAt": "2026-10-26T10:23:32.000Z"
+  },
+  "showIdSource": "rematch"
 }

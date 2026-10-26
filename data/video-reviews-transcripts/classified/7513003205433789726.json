@@ -10,7 +10,7 @@
   "wordCount": 179,
   "collectedAt": "2026-04-13T03:17:14.244Z",
   "fileName": "7513003205433789726.json",
-  "showId": null,
+  "showId": "angry-alan-off-broadway-2025",
   "showTitle": "Angry Alan",
   "reviewType": "review",
   "classificationConfidence": "high",
@@ -19,5 +19,14 @@
   "scoreable": false,
   "rejection": "Wrong show",
   "reasoning": "The transcript is reviewing 'Angry Alan' starring John Krasinski, not 'Classified' as specified in the prompt.",
-  "scoredAt": "2026-04-13T13:25:26.712Z"
+  "scoredAt": "2026-04-13T13:25:26.712Z",
+  "rematch": {
+    "candidates": [
+      "angry-alan-off-broadway-2025"
+    ],
+    "result": "angry-alan-off-broadway-2025",
+    "reason": "The transcript explicitly mentions John Krasinski in Angry Alan at Studio Seaview in Midtown, matching the listed Off-Broadway production's venue and run dates.",
+    "checkedAt": "2026-10-26T10:23:07.002Z"
+  },
+  "showIdSource": "rematch"
 }
