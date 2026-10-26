@@ -50,6 +50,13 @@ test('BRO-6250: a session comment in the last 90 minutes holds the email until t
   assert.equal(hold(card({ comments: [['Session report: still working.', min(91)]] })), null);
   assert.equal(qp.isQuiet(working, NOW), false);
   assert.equal(qp.QUIET_MS, 90 * 60000);
+  // A card that gets a comment every hour does not hold the email forever: after 12 hours of unbroken activity it goes out.
+  const hourly = (n) => Array.from({ length: n }, (_, i) => ['Session report: still working.', min(10 + i * 60)]);
+  assert.equal(hold(card({ comments: hourly(13) })), null);
+  assert.equal(hold(card({ comments: hourly(11) })).reason, 'recent-activity');
+  // A gap of 90 minutes or more starts a new run.
+  const oldRun = Array.from({ length: 12 }, (_, i) => ['Session report: earlier work.', min(5 * 60 + i * 60)]);
+  assert.equal(hold(card({ comments: [...hourly(3), ...oldRun] })).reason, 'recent-activity');
 });
 
 test('our own marker comments never count as activity', () => {

@@ -13,7 +13,8 @@
  *   answered        the card carries this decision's "Owner decision" record
  *   recent-activity a human-or-session comment in the last 90 minutes (our own
  *                   marker comments do not count): someone is working the card,
- *                   the email waits until it has been quiet that long
+ *                   the email waits until it has been quiet that long, for at
+ *                   most 12 hours of unbroken activity
  *   maybe-answered  a short plain comment that reads like a choice ("A", "go
  *                   with B") or like "I already answered this", newer than the
  *                   decision: held and listed in the run log for a look
@@ -25,6 +26,10 @@
 const link = require('../../src/lib/owner-decision-link.js');
 
 const QUIET_MS = 90 * 60 * 1000;
+// A busy card (bot or session comments every hour) cannot hold its email
+// forever: once its run of activity (no 90-minute gap) has lasted this long,
+// the quiet period stops applying.
+const MAX_QUIET_HOLD_MS = 12 * 60 * 60 * 1000;
 const OLD_CARD_MS = 24 * 60 * 60 * 1000;
 // More untold decisions than this on old cards go out as the single backlog
 // email, never one email each (the first run of the emailer swept four at once).
@@ -67,6 +72,15 @@ function lastActivityAt(issue) {
     if (t != null && (best == null || t > best)) best = t;
   }
   return best;
+}
+
+// Oldest comment in the current run of activity: walking back from the newest,
+// stop at the first gap of QUIET_MS or more.
+function activityStreakStart(issue) {
+  const times = commentsOf(issue).filter((c) => !isOwnMarker(c)).map((c) => ms(c.createdAt)).filter((t) => t != null).sort((a, b) => b - a);
+  let start = times[0];
+  for (let i = 1; i < times.length && start - times[i] < QUIET_MS; i++) start = times[i];
+  return start;
 }
 
 function isQuiet(issue, now = Date.now()) {
@@ -120,7 +134,7 @@ function holdReason(issue, decision, { secret, now = Date.now(), env = process.e
     return { reason: 'maybe-answered', detail: `a comment on ${String(c.createdAt).slice(0, 16)}Z may already answer it: "${quote}"` };
   }
   const last = lastActivityAt(issue);
-  if (last != null && now - last < QUIET_MS) {
+  if (last != null && now - last < QUIET_MS && now - activityStreakStart(issue) < MAX_QUIET_HOLD_MS) {
     return { reason: 'recent-activity', detail: `the card had a comment ${Math.round((now - last) / 60000)} min ago; waits until it has been quiet ${QUIET_MS / 60000} min` };
   }
   return null;
@@ -140,6 +154,7 @@ function sendMode(fresh, { backlogMin, now = Date.now() } = {}) {
 
 module.exports = {
   QUIET_MS,
+  MAX_QUIET_HOLD_MS,
   MAX_OLD_INDIVIDUAL,
   holdReason,
   holdsDisabled,
