@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T12:04:30.205Z",
+  "timestamp": "2026-10-26T12:17:34.464Z",
   "stats": {
     "totalReviews": 61907,
-    "alreadyFlagged": 21489,
+    "alreadyFlagged": 21490,
     "dateGuardCatches": 223,
     "directorMismatch": 2280,
-    "tvFilmSignals": 1762,
+    "tvFilmSignals": 1765,
     "londonSignals": 2999,
-    "offBroadwaySignals": 546,
+    "offBroadwaySignals": 547,
     "yearMismatch": 206,
-    "noPublishDate": 5505
+    "noPublishDate": 5462
   },
   "findings": [
     {
@@ -31605,6 +31605,19 @@
       ]
     },
     {
+      "showId": "n-a-off-broadway-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "publishDate": "2024-06-27",
+      "url": "https://newyorktheater.me/2024/06/27/n-a-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 95,
@@ -43214,6 +43227,32 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "the-big-gay-jamboree-off-broadway-2024",
+      "file": "nysr--michael-sommers.json",
+      "publishDate": "2024-10-07",
+      "url": "https://nystagereview.com/2024/10/07/the-big-gay-jamboree-trapped-inside-a-vintage-musical/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
+        }
+      ]
+    },
+    {
+      "showId": "the-big-gay-jamboree-off-broadway-2024",
+      "file": "nytimes--elisabeth-vincentelli.json",
+      "publishDate": "2024-10-07",
+      "url": "https://www.nytimes.com/2024/10/07/theater/big-gay-jamboree-review-marla-mindelle.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -91439,6 +91478,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "teeth-off-broadway-2024",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "2024-10-31",
+      "url": "https://www.vulture.com/article/theater-review-jackson-jacobs-teeth-musical.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },

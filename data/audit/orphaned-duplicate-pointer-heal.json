@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-26T11:57:18.217Z",
+  "generated": "2026-10-26T12:08:52.437Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 37,
+  "count": 35,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -43,13 +43,6 @@
       "loserFile": "vulture--unknown.json",
       "targetFile": "vulture--bethy-squires.json",
       "reason": "orphaned-duplicate-heal: vulture--bethy-squires.json was flagged invalid after vulture--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "loserFile": "financialtimes--unknown.json",
-      "targetFile": "financialtimes--sarah-hemming.json",
-      "reason": "orphaned-duplicate-heal: financialtimes--sarah-hemming.json was flagged invalid after financialtimes--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -254,13 +247,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
-      "loserFile": "financialtimes--unknown.json",
-      "targetFile": "financialtimes--sarah-hemming.json",
-      "reason": "orphaned-duplicate-heal: financialtimes--sarah-hemming.json was flagged invalid after financialtimes--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
