@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-26T11:41:59.050Z",
+    "generatedAt": "2026-10-26T15:44:49.445Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 367,
+  "totalGaps": 369,
   "errorSeverity": 261,
-  "warningSeverity": 106,
+  "warningSeverity": 108,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -1898,6 +1898,15 @@
       "severity": "error"
     },
     {
+      "showId": "on-the-evolutionary-function-of-shame-off-broadway-2025",
+      "category": "off-broadway",
+      "expected": 10,
+      "extracted": 8,
+      "gap": 2,
+      "ratio": 0.8,
+      "severity": "warning"
+    },
+    {
       "showId": "on-the-town-2014",
       "category": "broadway",
       "expected": 19,
@@ -2715,6 +2724,15 @@
       "gap": 13,
       "ratio": 0.38,
       "severity": "error"
+    },
+    {
+      "showId": "the-last-bimbo-of-the-apocalypse-off-broadway-2025",
+      "category": "off-broadway",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "the-last-five-years-2025",
