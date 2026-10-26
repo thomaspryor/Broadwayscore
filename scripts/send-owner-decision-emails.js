@@ -87,7 +87,13 @@ async function main(argv = process.argv.slice(2)) {
   try { issues = await fetchOpenIssues(); } catch (err) { console.error(`[owner-decision-emails] could not read Linear: ${err.message}`); return 3; }
   // BRO-6401: an answer whose card write was lost (comment exists, DECISION NEEDED line still
   // there) is finished here, so it is neither listed as open nor asked about again.
-  const reconciled = await link.reconcileAnswered({ graphql: linear.graphql, issues, secret, dryRun: opts.dryRun });
+  // Kill switch: OWNER_DECISION_RECONCILE_DISABLED=true skips the repair pass (emails still go out).
+  let reconciled = [];
+  if (process.env.OWNER_DECISION_RECONCILE_DISABLED === 'true') console.log('[reconcile] disabled by OWNER_DECISION_RECONCILE_DISABLED');
+  else {
+    try { reconciled = await link.reconcileAnswered({ graphql: linear.graphql, issues, secret, dryRun: opts.dryRun }); }
+    catch (err) { console.error(`[reconcile] pass failed: ${err.message}`); failures++; }
+  }
   for (const r of reconciled) console.log(`[reconcile] ${r.identifier}: ${r.status}${r.repaired ? ' (card repaired)' : ''}${r.error ? ` ${r.error}` : ''}`);
   console.log(`[reconcile] ${reconciled.filter((r) => r.repaired || r.status === 'would-repair').length} answered card(s) ${opts.dryRun ? 'to repair' : 'repaired'}, ${reconciled.filter((r) => r.status === 'error').length} failed`);
   const fixedIds = new Set(reconciled.filter((r) => r.repaired).map((r) => r.identifier));

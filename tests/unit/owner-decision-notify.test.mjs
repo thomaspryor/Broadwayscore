@@ -448,4 +448,30 @@ test('reconcileAnswered repairs answered-but-open cards only; dry run writes not
   assert.equal(findOwnerDecisions([g.card]).length, 1, 'the second question is still open');
   assert.match(g.card.description, /DECISION NEEDED: Also rename the tile\?/);
   assert.ok(g.card.labels.nodes.some((l) => l.name === 'awaiting-owner'), 'label stays while a question is open');
+  assert.equal(g.card.state.name, 'Backlog', 'card does not move to Todo while a question is still open');
+});
+
+test('reconcileAnswered: a replayed visual approval writes the missing signed approval comment, once', async () => {
+  const require2 = createRequire(import.meta.url);
+  const va = require2('../../scripts/lib/visual-approval.js');
+  const description = va.buildBlock({ what: 'the home page header', patch: 'a'.repeat(40), verdict: 'b'.repeat(16), hold: 'visual-hold/bro-7', evidence: [], summary: 'no overflow found' });
+  const q = link.markerLines(description)[0].question;
+  const h = link.questionHash(q);
+  const f = fakeLinear({ description });
+  // First attempt: the answer comment lands, then the approval comment write is lost.
+  const real = f.graphql;
+  let created = 0;
+  f.graphql = async (query, v) => {
+    if (/commentCreate/.test(query) && ++created === 2) throw new Error('boom');
+    return real(query, v);
+  };
+  await assert.rejects(link.recordAnswer({ graphql: f.graphql, id: 'BRO-12', hash: h, secret: SECRET, choiceKey: 'a', text: '' }));
+  assert.equal(f.card.comments.nodes.length, 1);
+  assert.equal(link.hasVisualApproval({ comments: f.card.comments, secret: SECRET, id: 'BRO-12', patch: 'a'.repeat(40), verdict: 'b'.repeat(16) }), false);
+
+  await link.reconcileAnswered({ graphql: real, issues: [f.card], secret: SECRET, sleep: noSleep });
+  assert.equal(link.hasVisualApproval({ comments: f.card.comments, secret: SECRET, id: 'BRO-12', patch: 'a'.repeat(40), verdict: 'b'.repeat(16) }), true);
+  const count = f.card.comments.nodes.length;
+  await link.reconcileAnswered({ graphql: real, issues: [f.card], secret: SECRET, sleep: noSleep });
+  assert.equal(f.card.comments.nodes.length, count, 'a settled card is not given a second approval');
 });

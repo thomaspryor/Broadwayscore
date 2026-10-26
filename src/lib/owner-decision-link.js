@@ -350,7 +350,7 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   const loaded = await loadDecision({ graphql, id, hash, secret });
   // BRO-6401: the comment is the durable record but the card write can fail after it
   // (BRO-5977: answered 15:59Z, DECISION NEEDED line never rewritten). A replay finishes it.
-  if (loaded.status === 'answered') return repairAnswered({ graphql, loaded, hash, sleep });
+  if (loaded.status === 'answered') return repairAnswered({ graphql, loaded, hash, secret, id, sleep });
   if (loaded.status !== 'open') return loaded;
   const choice = loaded.choices.find((c) => c.key === choiceKey) || (choiceKey === 'own' ? { key: 'own', label: 'Own words' } : null);
   if (!choice) return { ...loaded, status: 'bad-choice' };
@@ -445,7 +445,7 @@ function settlePatch({ issue, hash, approved, visual, replay }) {
  * write (ANSWERED line, unpark, label, Backlog to Todo). A card with nothing left
  * to settle is only read, never written.
  */
-async function repairAnswered({ graphql, loaded, hash, sleep }) {
+async function repairAnswered({ graphql, loaded, hash, secret, id, sleep }) {
   const { issue } = loaded;
   const q = markerLines(issue.description).find((m) => questionHash(m.question) === hash);
   const labelled = ((issue.labels && issue.labels.nodes) || []).some((l) => l.name === AWAITING_OWNER_LABEL);
@@ -454,8 +454,17 @@ async function repairAnswered({ graphql, loaded, hash, sleep }) {
   const visual = visualBindingFor(issue.description, q ? q.question : '');
   const approved = Boolean(visual) && /^Option A: approve\b/i.test(choiceLabel)
     && /^Does the change to .+ look right\? \(ref [0-9a-f]{32}\)$/.test(q ? q.question : '');
+  // The first attempt can fail between the answer comment and the visual approval comment;
+  // an approval with no signed comment would leave the held change stuck behind a settled card.
+  if (approved && !hasVisualApproval({ comments: issue.comments, secret, id: id || issue.identifier, patch: visual.patch, verdict: visual.verdict })) {
+    const vbody = `Visual change approved by the owner. The lander will ship the held change (${visual.hold}).\n\n${visualMarker(visualMac(secret, id || issue.identifier, visual.patch, visual.verdict))}`;
+    const vc = await graphql(COMMENT_CREATE, { input: { issueId: issue.id, body: vbody } });
+    if (!vc || !vc.commentCreate || !vc.commentCreate.success) throw new Error('visual approval comment was not created');
+  }
   const input = settlePatch({ issue, hash, approved, visual, replay: true });
-  const todoId = todoStateId(issue, approved, visual);
+  // Another question still waiting on the owner: the card stays where it is.
+  const otherOpen = markerLines(issue.description).some((m) => questionHash(m.question) !== hash && !isPlaceholderQuestion(m.question));
+  const todoId = otherOpen ? null : todoStateId(issue, approved, visual);
   if (todoId) input.stateId = todoId;
   if (!Object.keys(input).length) return loaded;
   await updateIssue(graphql, issue.id, input, sleep);
