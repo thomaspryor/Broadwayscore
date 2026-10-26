@@ -132,6 +132,31 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Stale-closure Fizzle classifications and announced-show commercial stubs'
 
+      - name: Record season payback history
+        # BRO-6335: today's estimated money back per season, appended to the
+        # public data/season-payback-history.json (aggregates only). After the
+        # validated core-data step so a row only records shipped data;
+        # continue-on-error so history never blocks the deploy.
+        if: inputs.dry_run != true
+        continue-on-error: true
+        run: npx tsx scripts/record-season-payback.ts
+
+      - name: Commit season payback history
+        if: inputs.dry_run != true
+        continue-on-error: true
+        env:
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/season-payback-history.json
+          if git diff --staged --quiet; then
+            echo "No season payback change to commit"
+          else
+            git commit -m "data: season payback history [skip ci]" -- data/season-payback-history.json
+            bash scripts/lib/push-with-retry.sh 5 main
+          fi
+
       - name: Dispatch deploy
         if: inputs.dry_run != true
         uses: ./.github/actions/dispatch-deploy
