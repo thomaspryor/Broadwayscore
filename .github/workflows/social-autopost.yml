@@ -16,6 +16,7 @@ on:
     inputs:
       redispatched:
         # BRO-5152: set by scripts/cron-redispatch.js when GitHub dropped the scheduled run.
+        # redispatch-after-hours: 1  (a run must start within 70 min of a post's slot to book it on time)
         description: 'Internal: re-dispatch of a dropped scheduled run (behaves like the cron)'
         required: false
         default: 'false'
@@ -87,6 +88,7 @@ jobs:
           INPUT_SHOW: ${{ inputs.show }}
           INPUT_SELF_TEST: ${{ inputs.self_test }}
           INPUT_CANCEL: ${{ inputs.cancel_queued }}
+          INPUT_REDISPATCHED: ${{ inputs.redispatched }}
         run: |
           if [ -n "$INPUT_SHOW" ] || [ "$INPUT_SELF_TEST" = "true" ]; then
             printf 'due=1\nrender=1\n' >> "$GITHUB_OUTPUT"

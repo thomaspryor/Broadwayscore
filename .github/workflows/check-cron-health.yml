@@ -255,6 +255,12 @@ jobs:
             # (input + redispatch-after-hours in the workflow; a redispatch is the tick, never the roundup).
             # 13h = 1/3h gap + 12h cushion; no TIGHT_BY_DESIGN entry needed.
             "owner-decision-emails.yml|13|Owner Decision Emails"
+            # BRO-6242: posts Critic Score cards (cron :23). GitHub ran the hourly schedule twice in 14h on
+            # 2026-10-26 and a morning-after post slipped, so cron-redispatch replaces a missing run after 1h
+            # (input + redispatch-after-hours in the workflow). 13h = 1h gap + 12h cushion. A run with nothing
+            # due exits 0; a run fails on a Buffer-side problem (disconnected channel, unsent post), which its
+            # own notify-failure already reports, so staleness here means the job itself is not running.
+            "social-autopost.yml|13|Social Autopost"
             # Same-night Express retry dispatcher (card #1889); scheduled hourly at :50.
             # A dead cron here means a queued
             # same-night retry never dispatches — the exact silent-miss this

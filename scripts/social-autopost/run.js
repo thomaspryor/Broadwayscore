@@ -295,10 +295,11 @@ async function main() {
   if (flag('check')) {
     // Workflow gate: install the browser only when there is work. Without a key,
     // scheduled runs do nothing (a manual dispatch still renders as a check).
-    const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch';
+    // A cron-redispatch run stands in for a dropped scheduled run, so it is not manual.
+    const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch' && process.env.INPUT_REDISPATCHED !== 'true';
     if (!configured) console.log('::notice::BUFFER_API_KEY not set: nothing will be posted');
     const due = configured ? events.length + owed + toVerify + backlogSkipped.length : manual ? events.length : 0;
-    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${events.length}\n`);
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${due ? events.length : 0}\n`);
     for (const ev of events) console.log(`  ${ev.show.id} due ${ev.dueAt.toISOString()}`);
     return;
   }

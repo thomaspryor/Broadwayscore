@@ -33,7 +33,7 @@ test('parses the live CRITICAL_CRONS registry, including the two BRO-4282 crons'
 test('BRO-3867: widened opening-night bands keep the old re-dispatch window', () => {
   const yaml = fs.readFileSync(path.join(ROOT, '.github/workflows/check-cron-health.yml'), 'utf8');
   const byWf = Object.fromEntries(parseCriticalCronEntries(yaml).map((e) => [e.workflow, e]));
-  const want = { 'audit-aggregator-gap.yml': 3, 'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3 };
+  const want = { 'audit-aggregator-gap.yml': 3, 'check-opening-night-drift.yml': 2, 'opening-night-checklist.yml': 3, 'opening-night-express-retry-check.yml': 3, 'social-autopost.yml': 1 };
   for (const [wf, h] of Object.entries(want)) {
     const text = fs.readFileSync(path.join(ROOT, '.github/workflows', wf), 'utf8');
     assert.ok(acceptsRedispatch(text), `${wf} must accept redispatch`);
