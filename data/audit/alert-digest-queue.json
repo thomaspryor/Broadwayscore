@@ -557,5 +557,36 @@
       }
     ],
     "queuedAt": "2026-10-26T12:18:55.300Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6303-ladder-s3",
+    "title": "Landing blocked: rebase red on land/bro-6303-ladder-s3",
+    "description": "land.yml did not land land/bro-6303-ladder-s3: the rebase gate went red at ff3cecded5. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6303-ladder-s3 @ ff3cecded5 (origin/land/bro-6303-ladder-s3) → origin/main @ b4def3ce15 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b4def3ce15: Rebasing (1/1) error: could not apply ff3cecded59... fix(BRO-6303): wire the Codex runner to the trust ladder (shadow, no behavior change) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git a Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40308240312",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6303-ladder-s3"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "ff3cecded595bd8aa489699edc878df37bf2acbf"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40308240312"
+      }
+    ],
+    "queuedAt": "2026-10-26T12:48:28.044Z"
   }
 ]
