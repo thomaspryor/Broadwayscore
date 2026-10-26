@@ -208,9 +208,8 @@ function readLedgerCached() {
 // it). Map<ref,title> otherwise.
 function liveTitleMap() {
   if (!cmuxws.cmuxAvailable()) return null;
-  let list;
-  try { list = cmuxws.listWorkspaces(); } catch { return null; }
-  if (!Array.isArray(list) || list.length === 0) return null;
+  const { workspaces: list, unavailable } = cmuxws.resolveLiveWorkspaces(() => cmuxws.listWorkspaces());
+  if (unavailable || !Array.isArray(list) || list.length === 0) return null;
   const m = new Map();
   for (const w of list) m.set(w.ref, w.title);
   return m;

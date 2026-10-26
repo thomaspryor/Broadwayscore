@@ -44,7 +44,6 @@ const { taskBranchEvidence, notionMarkerOf } = require('./lib/task-reclaim.js');
 const { classifyOrphanInProgress } = require('./lib/orphan-inprogress-triage.js');
 const ledger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
-const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { foldDiacritics } = require('./lib/title-match');
 
 const USAGE = `audit-orphan-inprogress.js — classify in_progress tasks with no live cmux workspace (task #1705).
@@ -91,9 +90,7 @@ function loadLiveTasks(dir) {
  */
 function findOrphans({ loadTasksFn = loadLiveTasks, dir = tasksDir(), listWorkspacesFn = cmuxws.listWorkspaces } = {}) {
   const tasks = loadTasksFn(dir).filter((t) => t.status === 'in_progress');
-  let workspaces = [];
-  let cmuxUnavailable = null;
-  try { workspaces = listWorkspacesFn() || []; } catch (e) { cmuxUnavailable = classifyCmuxError(e); }
+  const { workspaces, unavailable: cmuxUnavailable } = cmuxws.resolveLiveWorkspaces(listWorkspacesFn);
   const orphans = tasks.filter((t) => !workspaces.some((w) => ledger.titleMatchesSubject(w.title, t.subject)));
   return { orphans, cmuxUnavailable };
 }
