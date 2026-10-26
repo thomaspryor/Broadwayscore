@@ -47,6 +47,7 @@ const linear = require('./lib/linear-client');
 const { parseArgs: parseCliArgs } = require('./lib/cli-args.js');
 const { createLinearIssue } = require('./lib/linear-issue-create');
 const lsr = require('./lib/linear-session-reporting');
+const { checkHiddenOwnerQuestion } = require('./lib/report-owner-question-guard');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
 const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
 const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
@@ -61,6 +62,9 @@ const USAGE = `Usage:
      claim that card instead, or pass --new-anyway with why this is different work)
   node scripts/linear-session.js report --issue=<id-or-identifier> --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."] [--force="<reason ≥10 chars>"] [--since=<ISO8601>]
   node scripts/linear-session.js ping
+
+  report --status=paused|blocked|in-review that says the owner must decide is REFUSED (exit 6, nothing posted)
+  unless the summary or the card carries a real "DECISION NEEDED:" block (BRO-6402).
 
   report --status=done is REFUSED (exit 5) unless the issue carries
   done-evidence: a "PR-EVIDENCE: merged deployed checked (<url>)" line, or a
@@ -292,6 +296,15 @@ async function cmdReport(args, deps = {}) {
     } catch (err) {
       console.error(`⚠️  --since=${args.since} could not be checked (${err.message}) — proceeding without the staleness check.`);
     }
+  }
+
+  // BRO-6402: refuse BEFORE the comment posts, so a retry with the block doesn't double-post.
+  const hidden = checkHiddenOwnerQuestion({
+    status: args.status, summary: args.summary, verification: args.verification, description: issue.description,
+  });
+  if (hidden.hidden) {
+    console.error(`\n❌ REFUSED (hidden-owner-question) — ${issue.identifier}: nothing was posted.\n\n${hidden.reason}\n`);
+    process.exit(6);
   }
 
   let body = lsr.buildOutcomeCommentBody({
