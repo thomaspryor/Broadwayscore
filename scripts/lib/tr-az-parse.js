@@ -19,6 +19,7 @@
  *
  * Output is titles, types, venues and date strings only, never prose.
  */
+// venue-write-guard-ok: reads Theatre Record A-Z text and builds audit lookups; nothing here writes shows.json
 'use strict';
 
 const MONTHS = { jan: 1, feb: 2, mar: 3, apr: 4, may: 5, jun: 6, jul: 7, aug: 8, sep: 9, oct: 10, nov: 11, dec: 12 };

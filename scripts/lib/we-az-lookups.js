@@ -12,6 +12,7 @@
  * resolver's issue-window match and "starts after the review" guard need.
  * Titles that are OCR debris (no letters, "THEATRE RECORD 131") are dropped.
  */
+// venue-write-guard-ok: reads Theatre Record A-Z text and builds audit lookups; nothing here writes shows.json
 'use strict';
 
 const { isWestEndVenue } = require('./venue-classification');

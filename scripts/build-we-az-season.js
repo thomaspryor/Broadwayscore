@@ -13,6 +13,7 @@
  * Usage:
  *   node scripts/build-we-az-season.js --season=2015-2016 --lines=<dump.txt>[,<more>]
  */
+// venue-write-guard-ok: reads Theatre Record A-Z text and builds audit lookups; nothing here writes shows.json
 'use strict';
 
 const fs = require('fs');
@@ -50,6 +51,7 @@ function inSeason(row, start, end) {
 
 function main() {
   const args = process.argv.slice(2);
+  if (args.includes('--help') || args.includes('-h')) { console.log('usage: node scripts/build-we-az-season.js --season=2015-2016 --lines=<dump.txt>[,<dump.txt>]'); process.exit(0); }
   const opt = n => (args.find(a => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
   const season = opt('season');
   const files = opt('lines').split(',').filter(Boolean);
