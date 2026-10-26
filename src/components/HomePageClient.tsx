@@ -338,14 +338,17 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
   // Shelves + Off-Broadway/West End search entries (BRO-6278). Served as a
   // static file instead of inlined flight data; see src/lib/homepage-extra.ts.
   const [extraData, setExtraData] = useState<HomepageExtra | null>(null);
-  const [extraWanted, setExtraWanted] = useState(false);
-  const wantExtra = useCallback(() => setExtraWanted(true), []);
+  // extraTries counts requests, so a failed fetch can be retried by the next
+  // trigger (scroll into view or a search keystroke) instead of staying empty.
+  const [extraTries, setExtraTries] = useState(0);
+  const wantExtra = useCallback(() => setExtraTries(n => (n === 0 ? 1 : n)), []);
+  const retryExtra = useCallback(() => setExtraTries(n => n + 1), []);
   useEffect(() => {
-    if (!extraWanted || extraData) return;
+    if (!extraTries || extraData) return;
     let cancelled = false;
     loadHomepageExtra().then(data => { if (!cancelled && data) setExtraData(data); });
     return () => { cancelled = true; };
-  }, [extraWanted, extraData]);
+  }, [extraTries, extraData]);
   const offBroadwayShows = extraData?.offBroadwayShows ?? NO_SHOWS;
   const westEndShows = extraData?.westEndShows ?? NO_SHOWS;
   const featuredRows = extraData?.featuredRows ?? [];
@@ -454,8 +457,8 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
     if (statusFilter === 'all' || statusFilter === 'closed' || searchQuery) {
       fetchArchive();
     }
-    if (searchQuery) wantExtra();
-  }, [statusFilter, searchQuery, fetchArchive, wantExtra]);
+    if (searchQuery) retryExtra();
+  }, [statusFilter, searchQuery, fetchArchive, retryExtra]);
 
   // Fuse.js — lazy-loaded on first search keystroke to reduce initial bundle
   const fuseRef = useRef<Fuse<HomepageShow> | null>(null);

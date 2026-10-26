@@ -468,7 +468,8 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
     };
   }, [moreUrl]);
   const ensureMore = () => { if (moreUrl && !rest) loadMore(moreUrl).then(d => { if (d) setRest(d); }); };
-  const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest] : inlineReviews), [inlineReviews, rest]);
+  const inlineKeys = useMemo(() => new Set(inlineReviews.map(getReviewKey)), [inlineReviews]);
+  const reviews = useMemo(() => (rest ? [...inlineReviews, ...rest.filter(r => !inlineKeys.has(getReviewKey(r)))] : inlineReviews), [inlineReviews, inlineKeys, rest]);
   const totalCount = more ? Math.max(more.totalCount, reviews.length) : reviews.length;
 
   const sortedReviews = useMemo(() => {
