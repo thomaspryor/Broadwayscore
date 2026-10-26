@@ -246,7 +246,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T16:25:10.750Z",
+      "lastSeen": "2026-10-26T16:52:57.640Z",
       "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
       "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
@@ -254,7 +254,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -27786,7 +27786,7 @@
       "resolvedAt": "2026-10-26T14:53:10.090Z"
     },
     "test-yml:red:Unit Tests:fbc20ac4": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"a stored comparables figure never sits on a record that also has a capitalization\"",
       "firstSeen": "2026-10-26T14:57:21.925Z",
@@ -27799,8 +27799,11 @@
       "linearIdentifier": "BRO-6344",
       "absentRunIds": [
         "40347574391",
-        "40354526811"
-      ]
+        "40354526811",
+        "40359450181"
+      ],
+      "resolvedAt": "2026-10-26T16:52:57.600Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-6302-tr-lift-honored": {
       "status": "open",
@@ -27835,7 +27838,8 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "40354526811"
+        "40354526811",
+        "40359450181"
       ]
     },
     "land:land/job/linear-BRO-6339-mvpcbpns": {
@@ -27884,7 +27888,8 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343846225"
       },
       "absentRunIds": [
-        "40354526811"
+        "40354526811",
+        "40359450181"
       ]
     },
     "land:land/bro-6302-tr-lift-honored-2": {
@@ -27934,12 +27939,13 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"no loss-labelled star play with a model run reads 90% or more\"",
       "firstSeen": "2026-10-26T16:25:10.363Z",
       "incidentOpenedAt": "2026-10-26T16:25:10.363Z",
-      "lastSeen": "2026-10-26T16:25:10.363Z",
+      "lastSeen": "2026-10-26T16:52:57.623Z",
       "lastNotifiedAt": "2026-10-26T16:25:10.363Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6353"
+      "linearIdentifier": "BRO-6353",
+      "silentRefires": 1
     },
     "land:land/bro-6340-outlet-feeds": {
       "status": "open",
