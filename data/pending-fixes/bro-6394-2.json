@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6394-2",
   "planId": "e7d4e6ad-dd79-41cc-93b4-2870020cc520",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T21:50:00.000Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,20 @@
         "description": "Retire the duplicate Bob Odenkirk Presents listing"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T21:54:26.346Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved bob-odenkirk-presents-hospital-hour-off-broadway-2026/theatermania--linda-buchwald.json → hospital-hour-off-broadway-2026/theatermania--linda-buchwald.json",
+      "cleared": []
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired bob-odenkirk-presents-hospital-hour-off-broadway-2026 (\"Bob Odenkirk Presents HOSPITAL HOUR\" @ The Night Egg at the Culture Club); dropped its audience-buzz.json key"
+    }
+  ],
+  "executedIn": "ci"
 }
