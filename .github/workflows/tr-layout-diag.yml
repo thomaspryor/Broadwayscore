@@ -1,4 +1,5 @@
 name: TR Layout Diagnostic
+# hygiene-notify-ok: manual one-shot diagnostic, dry run, writes nothing (BRO-6287)
 
 # BRO-6287: print the masked structure (no prose) around the reviews the
 # Theatre Record parsers pick for given shows, from the dispatched ref. Dry run,
@@ -51,8 +52,10 @@ jobs:
           TR_PASSWORD: ${{ secrets.TR_PASSWORD }}
           SHOWS: ${{ inputs.shows }}
         run: |
+          status=0
           node scripts/extract-theatre-record.js --dry-run --shows="$SHOWS" \
-            --probe-out=/tmp/tr-diag.json > /tmp/tr-diag.log 2>&1 || true
+            --probe-out=/tmp/tr-diag.json > /tmp/tr-diag.log 2>&1 || status=$?
+          echo "extract exit: $status"
           tail -5 /tmp/tr-diag.log
           echo "=== DIAG-JSON-BEGIN ==="
           node -e "
