@@ -1066,5 +1066,36 @@
       }
     ],
     "queuedAt": "2026-10-26T00:49:14.874Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6154-tr-repair",
+    "title": "Landing blocked: rebase red on land/bro-6154-tr-repair",
+    "description": "land.yml did not land land/bro-6154-tr-repair: the rebase gate went red at e1de300c62. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40251602957",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6154-tr-repair"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "e1de300c62bf3c493aa3ead0d61667bc5b6c6bb2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40251602957"
+      }
+    ],
+    "queuedAt": "2026-10-26T00:56:20.651Z"
   }
 ]
