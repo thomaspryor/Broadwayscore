@@ -456,6 +456,10 @@ test('captionOwnedBy: our caption true, foreign caption false, none null', () =>
   assert.equal(captionOwnedBy(lines, at('FINANCIAL TIMES', 1), 'Be More Chill'), false);
   assert.equal(captionOwnedBy(lines, at('THE GUARDIAN'), 'Be More Chill'), true);
   assert.equal(captionOwnedBy(['text', 'some prose line.', 'FINANCIAL TIMES'], 2, 'Be More Chill'), null);
+  // a wrapped masthead is not a caption (real King Lear 2018 skeleton: INTERNATIONAL / NEW YORK TIMES)
+  assert.equal(captionOwnedBy(['INTERNATIONAL', 'NEW YORK TIMES', '28.07.18'], 1, 'King Lear'), null);
+  // a long foreign title wrapping over two caps lines (After Life skeleton)
+  assert.equal(captionOwnedBy(['ADVENTURES WITH THE', 'PAINTED PEOPLE', 'DAILY MAIL'], 2, 'After Life'), false);
   // a title that shares a real word stays unknown rather than being dropped
   assert.equal(captionOwnedBy(['PRIDE AND PREJUDICE* (*SORT OF)', 'GUARDIAN'], 1, 'Pride and Prejudice (sort of)'), true);
 });

@@ -616,6 +616,8 @@ function captionOwnedBy(lines, outletIdx, showTitle) {
     parts.unshift(t);
   }
   if (!parts.length) return null;
+  // The first half of a wrapped masthead ("INTERNATIONAL" / "NEW YORK TIMES").
+  if (parts.length === 1 && /^(INTERNATIONAL|SUNDAY|DAILY|EVENING|THE)$/.test(parts[0])) return null;
   const caption = parts.join(' ');
   if (trTitleMatches(caption, showTitle)) return true;
   const words = (t) => foldDiacritics(String(t)).toLowerCase().split(/[^a-z0-9]+/).filter(w => w.length >= 3 && !TITLE_STOP.has(w));
