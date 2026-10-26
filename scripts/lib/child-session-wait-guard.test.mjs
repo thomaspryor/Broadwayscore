@@ -19,7 +19,7 @@ const bro6154 = {
   closing: BRO_6154_CLOSING,
   tools: [
     bash(3, 'node scripts/lib/wait-for-land.js land/x 60', { run_in_background: true }),
-    bash(9, 'gh workflow run we-historical-tr-probe.yml -f show=x'),
+    bash(9, 'gh workflow run we-historical-tr-probe.yml'),
   ],
 };
 
@@ -43,7 +43,7 @@ test('unrelated background command is not a wake', () => {
   assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, bash(10, 'sleep 5', { run_in_background: true })] }).block, true);
 });
 test('one background command that dispatches and polls passes', () => {
-  const t = { ...bro6154, tools: [bash(9, 'gh workflow run x.yml && gh run watch -i 60', { run_in_background: true })] };
+  const t = { ...bro6154, tools: [bash(9, 'gh workflow run we-historical-tr-probe.yml && gh run watch -i 60', { run_in_background: true })] };
   assert.equal(childWaitDecision(t).block, false);
 });
 test('gh run rerun / git -C push reset the baseline', () => {
