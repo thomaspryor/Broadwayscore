@@ -377,6 +377,68 @@ COMPS.duo = {
     this.cap(t);
   },
 };
+COMPS.how = {
+  build(root, d) {
+    this.d = d; this.dur = d.dur;
+    root.append($('abs', 'left:0;right:0;top:34px;text-align:center;z-index:5', logo(14)));
+    this.head = $('abs card', 'left:16px;right:16px;top:62px;height:76px;padding:10px;display:flex;gap:12px;align-items:center',
+      `<div style="width:56px;height:56px;border-radius:.75rem;overflow:hidden;flex-shrink:0">${artImg(d.art, 56, 'border-radius:0')}</div><div style="min-width:0"><div style="font-weight:800;font-size:16px;line-height:1.15;letter-spacing:-.01em">${esc(d.show.title)}</div><div style="display:flex;gap:6px;margin-top:6px">${pills(d.show, d.isNew, d.category)}</div></div>`);
+    this.cnt = $('abs', 'left:0;right:0;top:148px;text-align:center;font-size:13px;font-weight:600;color:#9ca3af');
+    this.list = $('abs', 'left:16px;right:16px;top:172px;height:300px;overflow:hidden');
+    this.rows = d.reviews.map(r => { const e = $('card', 'position:absolute;left:0;right:0;top:0;height:46px;padding:0 10px;display:flex;align-items:center;gap:10px;opacity:0',
+      `<div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.o)}</div><div style="font-size:11px;color:#9ca3af;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.cn || '')}</div></div>`
+      + (r.top ? `<div style="font-size:9px;font-weight:800;letter-spacing:.08em;color:#d4a574;border:1px solid #d4a574;border-radius:6px;padding:2px 5px">TOP CRITIC</div>` : '')
+      + `<div class="score-badge bw-xs ${tierClass(r.s)}" style="width:34px;height:34px;font-size:14px">${r.s}</div>`); this.list.append(e); return e; });
+    // how much each review counts, one bar per outlet group
+    this.wp = $('abs', 'left:20px;right:20px;top:170px;display:none');
+    this.wp.innerHTML = `<div style="font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#9ca3af;text-align:center">How much each review counts</div>`;
+    this.gs = d.groups.map((g, i) => { const e = $('card', 'margin-top:14px;padding:12px 14px;opacity:0',
+      `<div style="display:flex;justify-content:space-between;align-items:baseline"><div style="font-weight:800;font-size:16px">${esc(g.name)}</div><div style="font-size:12px;color:#9ca3af">${g.n} reviews</div></div>`
+      + (g.eg.length ? `<div style="font-size:11px;color:#9ca3af;margin-top:3px">${esc(g.eg.join(', '))}</div>` : '')
+      + `<div style="margin-top:9px;height:10px;border-radius:5px;background:#27272a;overflow:hidden"><div class="wbar" style="height:100%;width:0;border-radius:5px;background:${i ? '#a1a1aa' : '#d4a574'}"></div></div>`);
+      this.wp.append(e); return { e, bar: e.querySelector('.wbar'), w: g.w }; });
+    this.res = $('abs', 'left:0;right:0;top:176px;display:none;flex-direction:column;align-items:center');
+    this.rb = badgeEl('lg', 'transform:scale(1.5);transform-origin:50% 0');
+    this.rt = $('', 'margin-top:96px;font-size:20px;font-weight:800', `<span style="color:${tierColor(d.score)}">${tierLabel(d.score)}</span>`);
+    this.rs = $('', 'margin-top:6px;font-size:14px;color:#d4d4d8', `Critic Score from ${d.n} reviews`);
+    this.res.append(this.rb, this.rt, this.rs);
+    if (d.vs) { this.vc = $('card', 'margin-top:26px;width:300px;box-sizing:border-box;padding:10px;display:flex;align-items:center;gap:12px;opacity:0',
+      `<div style="width:48px;height:48px;border-radius:.6rem;overflow:hidden;flex-shrink:0">${artImg(d.vs.art, 48, 'border-radius:0')}</div><div style="flex:1;min-width:0"><div style="font-weight:800;font-size:15px">${esc(d.vs.title)}</div><div class="vl" style="font-size:13px;font-weight:800;margin-top:3px;opacity:0"><span style="color:${tierColor(d.vs.score)}">${tierLabel(d.vs.score)}</span></div></div>`);
+      this.vb = badgeEl('sm'); this.vc.append(this.vb); this.res.append(this.vc); }
+    this.end = $('abs', 'inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center',
+      `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+    root.append(this.head, this.cnt, this.list, this.wp, this.res, this.end);
+    this.events = d.reviews.filter((_, i) => i % 2 === 0).map((r, i, a) => ({ t: r.t, k: 'tick', p: i / a.length }))
+      .concat({ t: d.land, k: d.score >= GOLD ? 'chime' : 'pop' }, d.vs ? [{ t: d.vs.land, k: d.vs.score >= GOLD ? 'chime' : 'pop' }] : []);
+    this.cap = captions(root, d.words, 516);
+  },
+  update(t) {
+    const d = this.d, R = d.reviews, n = R.length, rowH = 50, bottom = 300 - 46;
+    const shown = R.filter(r => t >= r.t).length, step = n > 1 ? R[1].t - R[0].t : 0.3;
+    // the list scrolls continuously: f is how many rows have landed, as a fraction
+    const f = shown ? shown - 1 + clamp((t - R[shown - 1].t) / Math.max(step, 0.15)) : 0;
+    const listOut = 1 - seg(t, d.weigh - 0.3, d.weigh + 0.1);
+    this.list.style.opacity = listOut; this.cnt.style.opacity = listOut;
+    this.cnt.textContent = shown ? `${shown} of ${n} reviews` : `${n} critics`;
+    this.rows.forEach((e, i) => { if (t < R[i].t) { e.style.opacity = 0; return; }
+      const y = bottom - (f - i) * rowH; e.style.transform = `translateY(${y}px)`; e.style.opacity = clamp(y / 60) * clamp((t - R[i].t) / 0.15); });
+    const wIn = seg(t, d.weigh, d.weigh + 0.4), wOut = 1 - seg(t, d.say - 0.4, d.say);
+    this.wp.style.display = wIn > 0 && wOut > 0 ? 'block' : 'none'; this.wp.style.opacity = Math.min(wIn, wOut);
+    this.gs.forEach((g, i) => { const t0 = d.weigh + 0.2 + i * 0.35; g.e.style.opacity = seg(t, t0, t0 + 0.3);
+      g.bar.style.width = (100 * g.w * eo(seg(t, t0 + 0.1, t0 + 0.8))) + '%';
+      const hot = i === 0 ? d.top : i === this.gs.length - 1 ? d.low : null;
+      g.e.style.transform = `scale(${hot != null && t > hot ? 1 + 0.04 * Math.sin(Math.PI * seg(t, hot, hot + 0.6)) : 1})`; });
+    const rIn = seg(t, d.say - 0.2, d.say + 0.2), out = 1 - seg(t, d.end - 0.5, d.end - 0.1);
+    this.res.style.display = rIn > 0 && out > 0 ? 'flex' : 'none'; this.res.style.opacity = Math.min(rIn, out);
+    this.head.style.opacity = out;
+    setBadge(this.rb, d.score * eo(seg(t, d.say, d.land)));
+    this.rt.style.opacity = this.rs.style.opacity = seg(t, d.land + 0.1, d.land + 0.5);
+    if (d.vs) { this.vc.style.opacity = seg(t, d.vs.t - 0.3, d.vs.t); setBadge(this.vb, d.vs.score * eo(seg(t, d.vs.t, d.vs.land)), { size: 'sm' });
+      this.vc.querySelector('.vl').style.opacity = seg(t, d.vs.land + 0.1, d.vs.land + 0.5); }
+    this.end.style.opacity = seg(t, d.end - 0.1, d.end + 0.4); this.end.style.display = t < d.end - 0.15 ? 'none' : 'flex';
+    this.cap(t);
+  },
+};
 COMPS['reveal-voiced'] = voicedCut('reveal', 516);
 COMPS['every-voiced'] = voicedCut('every', 516);
 COMPS['top5-voiced'] = voicedCut('top5', 516);

@@ -3,6 +3,7 @@
 const fs = require('fs'), path = require('path'), { spawn } = require('child_process');
 let chromium; try { ({ chromium } = require('playwright')); } catch (e) { ({ chromium } = require(path.join(process.env.PW_GLOBAL || '/opt/node22/lib/node_modules', 'playwright'))); }
 const { getGoldThreshold, getScoreTierId, SCORE_TIER_LABELS } = require('../lib/score-tiers.js');
+const { TIER_WEIGHTS } = require('../lib/outlet-tiers.js');
 const { getAudienceGrade, totalAudienceReviews, MIN_AUDIENCE_REVIEWS } = require('../lib/audience-grade.js');
 const FPS = 30;
 const name = process.argv[2], outDir = process.argv[3] || __dirname;
@@ -36,7 +37,7 @@ function data(n, key) {
     return { title: L.title, sub: L.sub, endLine: L.endLine, shows: shows.map(s => ({ title: s.title, type: s.type, score: s.score, rc: s.rc, art: s.art })) };
   }
   if (n === 'versus') return voiced(n);
-  if (n === 'verdict' || n === 'duo' || n.endsWith('-voiced')) return voicedFromPlan(n);
+  if (n === 'verdict' || n === 'duo' || n === 'how' || n.endsWith('-voiced')) return voicedFromPlan(n);
   throw new Error('unknown composition ' + n);
 }
 
@@ -151,13 +152,28 @@ function voicedFromPlan(n) {
   }
   if (fmt === 'duo') {
     // two shows side by side (the explainer): each badge counts up from when the voice names the show to when it says the score.
-    // mode 'guess' shows both posters from the start; 'seq' brings each one in as it is named
+    // both posters show from the start with '?' badges; 'guess' mode only changes the script
     const mode = V.plan.mode === 'guess' ? 'guess' : 'seq';
     const shows = V.plan.shows.map(s => { const x = showInfo(s.id), rv = x.p.rv.filter(r => Number.isFinite(r.s)), score = Math.round(x.score);
       const say = at(s.say), count = s.count ? at(`${rv.length} critics`) : null, land = at(`${score}`); at(SCORE_TIER_LABELS[getScoreTierId(score, x.category)]);
       const quote = s.quote ? planQuotes({ ...V, plan: { quotes: [s.quote] } }, rv)[0] : null;
       return { title: x.title, type: x.type, art: x.art, isNew: x.isNew, category: x.category, score, count: rv.length, showCount: !!s.count, quote, say, land, on: 0.2 }; });
     return { kind: 'duo', mode, shows, end: at(V.plan.cue && V.plan.cue.end || 'every review'), ...base };
+  }
+  if (fmt === 'how') {
+    // how the score is made: every review scrolls past, then the outlet weights, then the score (and an optional second show)
+    const x = showInfo(V.plan.key), rv = x.p.rv.filter(r => Number.isFinite(r.s)).sort((a, b) => a.t - b.t || b.s - a.s), score = Math.round(x.score);
+    const from = at(cue.from || `${rv.length} critics`) + 0.3; if (cue.from) at(`${rv.length} critics`); const weigh = at(cue.weigh || 'weigh them');
+    const step = (weigh - 0.4 - from) / rv.length; if (step < 0.06) throw new Error(`how: ${rv.length} reviews need more time before "${cue.weigh || 'weigh them'}"`);
+    const groups = [[[1], 'Top critics'], [[2], 'Major outlets'], [[3, 4], 'Smaller sites and blogs']].map(([ts, name]) => {
+      const g = rv.filter(r => ts.includes(r.t)); return { name, n: g.length, w: g.length ? g.reduce((a, r) => a + TIER_WEIGHTS[r.t], 0) / g.length : TIER_WEIGHTS[ts[0]],
+        eg: g.map(r => r.o).filter(o => (cue.examples || []).includes(o)).slice(0, 3) }; }).filter(g => g.n);
+    const top = at(cue.top || 'Top critics'), low = at(cue.low || 'Smaller sites'), say = at(cue.score || 'one Critic Score'), land = at(`${score}`); at(SCORE_TIER_LABELS[getScoreTierId(score, x.category)]);
+    let vs = null; if (V.plan.compare) { const y = showInfo(V.plan.compare.id), ys = Math.round(y.score), t = at(V.plan.compare.say);
+      vs = { title: y.title, art: y.art, score: ys, category: y.category, t, land: at(`${ys}`) }; at(SCORE_TIER_LABELS[getScoreTierId(ys, y.category)]); }
+    return { kind: 'how', show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score, n: rv.length,
+      reviews: rv.map((r, i) => ({ o: r.o, cn: r.cn, s: r.s, top: r.t === 1, t: +(from + i * step).toFixed(3) })), groups, weigh, top, low, say, land, vs,
+      end: at(cue.end || 'Broadway Scorecard'), ...base };
   }
   const x = showInfo(V.plan.key), rv = x.p.rv.filter(r => Number.isFinite(r.s)), c = breakdown(rv, x.category);
   const aud = audienceGradeOf(x.p); if (!aud) throw new Error(x.id + ': no audience grade');

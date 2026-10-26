@@ -1,0 +1,65 @@
+{
+ "fmt": "how",
+ "key": "maybe-happy-ending-2024",
+ "compare": {
+  "id": "the-great-gatsby-2024",
+  "say": "Great Gatsby"
+ },
+ "cue": {
+  "from": "Maybe Happy Ending",
+  "weigh": "weigh them",
+  "top": "Top critics",
+  "low": "Smaller sites",
+  "score": "one Critic Score",
+  "end": "Broadway Scorecard",
+  "examples": [
+   "The New York Times",
+   "Vulture",
+   "Variety"
+  ]
+ },
+ "prompt": "[excited] How do we score a Broadway show? Take Maybe Happy Ending. Thirty-eight critics reviewed it, and we read every one. Then we weigh them. Top critics, like the New York Times, count the most. Smaller sites and blogs count less. Put it all together, and you get one Critic Score: eighty-six. Critical Gold. We did the same math for The Great Gatsby: fifty-seven. Mixed. That's Broadway Scorecard. We read all the reviews for you, so you see the great shows and skip the duds. Follow for new scores every week.",
+ "caption": "Here's how we score a show. We read every review. Top critics like The New York Times, Vulture and Variety count the most. Smaller sites and blogs count less. Maybe Happy Ending gets 86 from 38 critics, Critical Gold. The Great Gatsby gets 57, Mixed. See every review at broadwayscorecard.com\n\nWhose reviews do you check before you buy tickets?\n\n#Broadway #OffBroadway #MaybeHappyEnding #TheGreatGatsby #Theater #NYC",
+ "keep": {
+  "prompt": [
+   "Maybe Happy Ending",
+   "thirty-eight critics",
+   "weigh them",
+   "Top critics",
+   "New York Times",
+   "Smaller sites",
+   "one Critic Score",
+   "eighty-six",
+   "Critical Gold",
+   "Great Gatsby",
+   "fifty-seven",
+   "Mixed",
+   "Broadway Scorecard",
+   "see the great shows and skip the duds"
+  ],
+  "caption": [
+   "New York Times",
+   "Vulture",
+   "Variety",
+   "86",
+   "38 critics",
+   "Critical Gold",
+   "57",
+   "Mixed"
+  ]
+ },
+ "review": {
+  "pass": true,
+  "notes": [
+   "gpt: \"How do we score a Broadway show?\" sounds a little stiff/introductory compared with the rest of the voiceover.",
+   "gpt: \"Then we weigh them.\" feels slightly mechanical in isolation."
+  ],
+  "of": "c97b98b69e66",
+  "rounds": 1,
+  "by": [
+   "gpt",
+   "gemini"
+  ],
+  "at": "2026-10-26T03:32:53.749Z"
+ }
+}
