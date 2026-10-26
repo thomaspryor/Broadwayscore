@@ -1412,5 +1412,36 @@
       }
     ],
     "queuedAt": "2026-10-26T02:39:41.214Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6262-double-claim",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6262-double-claim",
+    "description": "land.yml did not land land/bro-6262-double-claim: the scripts-lib-tests gate went red at 9201cce328. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40259112080",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6262-double-claim"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "9201cce328af953cea3ebb14e6d2d9338ae7142b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40259112080"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:41:56.031Z"
   }
 ]
