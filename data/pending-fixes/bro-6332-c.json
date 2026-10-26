@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6332-c",
   "planId": "e40dd9ac-e3fb-4652-864b-6bf16de892ea",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T15:35:03.505Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "commercial.json: the-audience-2015.notes"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T15:57:03.149Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: recoupedDate updated for the-audience-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: notes updated for the-audience-2015"
+    }
+  ],
+  "executedIn": "ci"
 }
