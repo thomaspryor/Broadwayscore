@@ -57,6 +57,7 @@ function seedState(nowIso) {
       'cloud-data-route': { unlocked: true, since: nowIso, grant: 'baseline (BRO-6260)' },
       'review-texts-ro': { unlocked: true, since: nowIso, grant: 'baseline (BRO-6260)' },
     },
+    seededAt: nowIso,
     clock: { cleanSince: nowIso, lastEvalAt: null },
     handledRegressions: [],
     events: [],
@@ -69,6 +70,13 @@ function seedOwner() {
 
 // -> { state, owner, ok } ; a missing file is "not set up" (baseline), a file that will not parse is
 // "corrupt" (access() fails closed, narrowest, so a relock is never undone by a bad merge).
+function validState(st) {
+  return !!st && typeof st === 'object' && st.rungs && typeof st.rungs === 'object' && AUTO_KEYS.every((k) => st.rungs[k] && typeof st.rungs[k] === 'object')
+    && st.clock && typeof st.clock === 'object' && Number.isFinite(Date.parse(st.clock.cleanSince))
+    && Array.isArray(st.handledRegressions) && Array.isArray(st.events);
+}
+const AUTO_KEYS = ['larger-cards', 'cloud-data-route', 'review-texts-ro'];
+
 function loadFiles(root = process.cwd(), readFile = (p) => fs.readFileSync(p, 'utf8')) {
   const one = (rel) => {
     try { return { value: JSON.parse(readFile(path.join(root, rel))) }; } catch (e) {
@@ -76,13 +84,16 @@ function loadFiles(root = process.cwd(), readFile = (p) => fs.readFileSync(p, 'u
     }
   };
   const s = one(STATE_FILE); const o = one(OWNER_FILE);
+  // Valid JSON of the wrong shape is corrupt too: evaluate() would throw on it.
+  if (s.value !== undefined && s.value !== null && !validState(s.value)) { delete s.value; s.corrupt = true; }
+  if (o.value !== undefined && o.value !== null && (typeof o.value !== 'object' || Array.isArray(o.value))) { delete o.value; o.corrupt = true; }
   return {
     state: s.value || null, owner: o.value || null,
     stateMissing: !!s.missing, corrupt: !!(s.corrupt || o.corrupt),
   };
 }
 
-const killed = (owner, env) => !!(owner && owner.killSwitch) || /^(1|true|yes)$/i.test(String((env || {}).CODEX_TRUST_LADDER_DISABLED || ''));
+const killed = (owner, env) => !!(owner && owner.killSwitch) || /^(1|true|yes)$/i.test(String((env || {}).CODEX_TRUST_LADDER_DISABLED || '').trim());
 
 /**
  * What the runner may do right now. Callers read this through the existing default-parameter
@@ -152,9 +163,9 @@ function gitRegressions(raw) {
       if (t) { add(`revert:${t.sha.slice(0, 7)}`, c, `reverts Codex landing ${t.sha.slice(0, 7)}`); continue; }
     }
     if (/^Revert "/.test(c.subject)) continue; // a revert of something that is not a Codex landing, or of a revert
-    if (/\b(regress\w*|revert\w*|rollback|broke\w*|undo)\b/i.test(c.subject)) {
+    if (/\b(regress\w*|revert\w*|rollback|broke|undo)\b/i.test(c.subject)) {
       const cited = (c.subject.match(/\bBRO-\d+\b/g) || []);
-      const t = codex.find((x) => cited.some((id) => x.subject.includes(id)) && c.at >= x.at && c.at - x.at <= 7 * DAY);
+      const t = codex.find((x) => cited.some((id) => new RegExp(`\\b${id}\\b`).test(x.subject)) && c.at >= x.at && c.at - x.at <= 7 * DAY);
       if (t) add(`fwd:${c.sha.slice(0, 7)}`, c, `forward fix after Codex landing ${t.sha.slice(0, 7)}: ${c.subject.slice(0, 80)}`);
     }
   }
@@ -185,7 +196,12 @@ function evaluate({ state, owner, record, nowMs }) {
   }
 
   // 1. regressions: relock one rung each, once per id. Unknown source = hold, never "clean".
-  const regs = [...((rec.regressions) || []), ...(((owner && owner.regressions) || []).map((r) => ({ ...r, at: Date.parse(r.at) || nowMs })))];
+  const ownerRegs = ((owner && owner.regressions) || []).filter((r) => r && typeof r.id === 'string' && r.id).map((r) => ({ ...r, at: Date.parse(r.at) || nowMs }));
+  const bad = ((owner && owner.regressions) || []).length - ownerRegs.length;
+  if (bad) holds.push(`${bad} owner regression(s) ignored: each needs a string id`);
+  // Commits from before the ladder was seeded predate its record; they must not relock on the first live run.
+  const seededAt = Date.parse(next.seededAt || next.clock.cleanSince);
+  const regs = [...((rec.regressions) || []), ...ownerRegs].filter((r) => r.at >= seededAt);
   const fresh = regs.filter((r) => !next.handledRegressions.includes(r.id)).sort((a, b) => a.at - b.at);
   const relocked = [];
   for (const r of fresh) {
@@ -207,7 +223,7 @@ function evaluate({ state, owner, record, nowMs }) {
   if (rec.regressions === null || rec.regressions === undefined) unknown.push('git history');
   if (rec.breaches === null || rec.breaches === undefined) unknown.push('lane health');
   const last = next.clock.lastEvalAt ? Date.parse(next.clock.lastEvalAt) : null;
-  if (unknown.length && last && nowMs > last) next.clock.cleanSince = toIso(Date.parse(next.clock.cleanSince) + (nowMs - last));
+  if (unknown.length && last && nowMs > last) next.clock.cleanSince = toIso(Math.min(nowMs, Date.parse(next.clock.cleanSince) + (nowMs - last)));
   if (rec.breaches && rec.breaches.length && !relocked.length) { next.clock.cleanSince = toIso(nowMs); holds.push(`confirmed lane-health breach: ${rec.breaches.map((b) => `${b.lane}:${b.cls}`).join(', ')}`); }
   next.clock.lastEvalAt = toIso(nowMs);
   if (unknown.length) holds.push(`unreadable source: ${unknown.join(', ')}`);

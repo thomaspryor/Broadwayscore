@@ -80,7 +80,7 @@ async function main() {
   console.log(lines.join('\n'));
   if (arg('out')) fs.writeFileSync(arg('out'), JSON.stringify({ at: new Date(nowMs).toISOString(), mode: state.mode, report, events }, null, 2) + '\n');
 
-  const live = state.mode === 'live' && !owner.killSwitch;
+  const live = state.mode === 'live' && L.access({ state, owner, env: process.env }).source !== 'killed';
   let alertFailed = false;
   if (live && flag('alert') && events.some((e) => e.type === 'relock' || e.type === 'promote')) {
     const { routeAlert } = require('./lib/owner-alert-router');

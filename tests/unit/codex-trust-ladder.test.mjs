@@ -166,3 +166,46 @@ test('isProtectedPath covers the ladder files and nothing else', () => {
   for (const p of ['data/audit/codex-trust-ladder.json', 'data/audit/codex-trust-ladder-owner.json', 'scripts/lib/codex-trust-ladder.js', 'scripts/codex-trust-ladder.js']) assert.equal(L.isProtectedPath(p), true, p);
   for (const p of ['data/audit/codex-lane-health.json', 'scripts/lib/codex-runner.js', 'src/app/page.tsx', '', null]) assert.equal(L.isProtectedPath(p), false, String(p));
 });
+
+const liveState = (now) => ({ ...L.seedState(now), mode: 'live' });
+const NOW2 = Date.parse("2026-11-10T00:00:00Z");
+const rec2 = (regressions) => ({ stats: { attempts: 10, rate: 0.5 }, regressions, breaches: [] });
+
+test('regressions older than the seed do not relock on the first live run', () => {
+  const st = liveState('2026-10-26T00:00:00Z');
+  const old = [{ id: 'revert:aaaaaaa', at: Date.parse('2026-10-20T00:00:00Z'), why: 'old' }, { id: 'revert:bbbbbbb', at: Date.parse('2026-11-01T00:00:00Z'), why: 'new' }];
+  const r = L.evaluate({ state: st, owner: L.seedOwner(), record: rec2(old), nowMs: NOW2 });
+  assert.equal(r.report.relocked.length, 1);
+  assert.equal(r.report.relocked[0].regression.id, 'revert:bbbbbbb');
+});
+
+test('owner regressions without an id are ignored loudly and never jam the handled list', () => {
+  const owner = { ...L.seedOwner(), regressions: [{ at: '2026-11-02T00:00:00Z', why: 'x' }, { id: 'o1', at: '2026-11-03T00:00:00Z', why: 'y' }] };
+  const r = L.evaluate({ state: liveState('2026-10-26T00:00:00Z'), owner, record: rec2([]), nowMs: NOW2 });
+  assert.equal(r.report.relocked.length, 1);
+  assert.deepEqual(r.state.handledRegressions, ['o1']);
+  assert.match(r.report.holds.join(' '), /ignored/);
+});
+
+test('a card id is matched on a word boundary and "broken" is not a regression word', () => {
+  const sep = '\x1e'; const f = (sha, an, ct, subj, body = '') => [sha, an, ct, subj, body].join('\x1f') + sep;
+  const t = 1790000000;
+  const raw = f('a'.repeat(40), 'Codex runner', t, 'feat: BRO-100 something') + f('b'.repeat(40), 'Human', t + 60, 'BRO-10: rollback thing') + f('c'.repeat(40), 'Human', t + 90, 'BRO-100: fix broken link in docs');
+  assert.deepEqual(L.gitRegressions(raw), []);
+  const raw2 = f('a'.repeat(40), 'Codex runner', t, 'feat: BRO-100 something') + f('d'.repeat(40), 'Human', t + 60, 'BRO-100: rollback the thing');
+  assert.equal(L.gitRegressions(raw2).length, 1);
+});
+
+test('wrong-shape state is corrupt, not a crash', () => {
+  const files = { 'data/audit/codex-trust-ladder.json': '{}', 'data/audit/codex-trust-ladder-owner.json': JSON.stringify(L.seedOwner()) };
+  const got = L.loadFiles('/x', (p) => { const k = Object.keys(files).find((n) => p.endsWith(n)); if (!k) throw Object.assign(new Error('x'), { code: 'ENOENT' }); return files[k]; });
+  assert.equal(got.corrupt, true);
+  assert.equal(L.access({ state: got.state, owner: got.owner, corrupt: got.corrupt, env: {} }).source, 'corrupt-locked');
+});
+
+test('env kill switch tolerates whitespace and the clock pause never reaches the future', () => {
+  assert.equal(L.access({ state: liveState('2026-10-26T00:00:00Z'), owner: null, env: { CODEX_TRUST_LADDER_DISABLED: ' true ' } }).source, 'killed');
+  const st = liveState('2026-10-26T00:00:00Z'); st.clock.lastEvalAt = '2026-11-09T00:00:00Z'; st.clock.cleanSince = '2026-11-20T00:00:00Z';
+  const r = L.evaluate({ state: st, owner: L.seedOwner(), record: { stats: null, regressions: null, breaches: null }, nowMs: NOW2 });
+  assert.ok(Date.parse(r.state.clock.cleanSince) <= NOW2);
+});

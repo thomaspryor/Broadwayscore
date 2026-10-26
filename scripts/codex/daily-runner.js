@@ -498,7 +498,7 @@ const CHECK_BINARY_LINES = 1000; // a binary file is never "small"
 /** Commit Codex's working-tree changes (message: a --pr landing's own). -> { hasDiff, blocked } */
 function commitAttempt(card, attempt, message = null) {
   git(['add', '-A']); // node_modules is a gitignored symlink; naming it in a pathspec makes git add fail
-  const names = git(['diff', '--cached', '--name-only']).split('\n').filter(Boolean);
+  const names = git(['diff', '--cached', '--name-only', '--no-renames']).split('\n').filter(Boolean);
   if (!names.length) return { hasDiff: git(['rev-list', '--count', 'origin/main..HEAD']) !== '0', blocked: null };
   if (names.some((n) => n.startsWith('.github/workflows/'))) return { hasDiff: true, blocked: 'Codex edited .github/workflows/**, which the runner never lands' };
   if (names.some((n) => TL.isProtectedPath(n))) return { hasDiff: true, blocked: 'Codex edited the trust ladder (its own grading rules), which the runner never lands' };
