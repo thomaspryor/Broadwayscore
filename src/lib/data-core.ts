@@ -1169,17 +1169,17 @@ export function getWestEndComplexForVenue(venueSlug: string): { name: string; sl
 
 const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: string; filter: (show: ComputedShow) => boolean }> = {
   'musicals': {
-    title: 'Best Broadway Musicals',
+    title: 'Top Rated Broadway Musicals Playing Now',
     description: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. See which are must-sees right now. Updated weekly.',
     filter: (show) => show.type === 'musical' && show.status === 'open',
   },
   'plays': {
-    title: 'Best Broadway Plays',
+    title: 'Top Rated Broadway Plays Playing Now',
     description: 'Every Broadway play ranked by aggregated critic scores from 400+ outlets. Find the must-see dramas and comedies playing now.',
     filter: (show) => show.type === 'play' && show.status === 'open',
   },
   'new-shows': {
-    title: 'Best New Broadway Shows',
+    title: 'Top Rated New Broadway Shows This Season',
     description: 'The highest-rated Broadway shows that opened this season, ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets.',
     filter: (show) => {
       const openDate = new Date(show.openingDate);
@@ -1195,7 +1195,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
     filter: (show) => show.status === 'open' && show.criticScore?.score !== undefined,
   },
   'family': {
-    title: 'Best Broadway Shows for Families',
+    title: 'Top Rated Broadway Shows for Families',
     description: 'The best Broadway shows for kids and families, ranked by critics. Find age-appropriate musicals and plays the whole family will love.',
     filter: (show) => {
       const ageRec = show.ageRecommendation?.toLowerCase() || '';
@@ -1209,7 +1209,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
     },
   },
   'comedy': {
-    title: 'Best Broadway Comedies',
+    title: 'Top Rated Broadway Comedies Playing Now',
     description: 'The funniest shows on Broadway right now, ranked by aggregated critic scores from 400+ outlets. Find the laughs you need. Updated weekly.',
     filter: (show) => {
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
@@ -1217,7 +1217,7 @@ const BEST_OF_CONFIG: Record<BestOfCategory, { title: string; description: strin
     },
   },
   'drama': {
-    title: 'Best Broadway Dramas',
+    title: 'Top Rated Broadway Dramas Playing Now',
     description: 'The best dramas on Broadway right now, ranked by aggregated critic scores from 400+ outlets. Powerful plays currently captivating audiences and critics alike.',
     filter: (show) => {
       const tags = show.tags?.map(t => t.toLowerCase()) || [];
