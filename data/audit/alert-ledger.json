@@ -245,15 +245,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T14:03:17.073Z",
-      "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
-      "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
+      "incidentOpenedAt": "2026-10-26T13:49:09.630Z",
+      "lastSeen": "2026-10-26T14:20:26.657Z",
+      "lastNotifiedAt": "2026-10-26T13:49:09.630Z",
+      "lastSurfacedAt": "2026-10-26T13:49:09.630Z",
       "notifyCount": 175,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -27421,7 +27422,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:e41dfd34": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"hook file and line budget does not regrow\"",
       "firstSeen": "2026-10-26T10:51:44.343Z",
@@ -27434,9 +27435,12 @@
       "linearIdentifier": "BRO-6307",
       "silentRefires": 3,
       "absentRunIds": [
-        "40327815067",
-        "40333144748"
-      ]
+        "40327082307",
+        "40330416586",
+        "40334875365"
+      ],
+      "resolvedAt": "2026-10-26T14:20:26.223Z",
+      "resolveReason": "stale-signature"
     },
     "land:land/bro-6298-az-lookups": {
       "status": "open",
@@ -27556,8 +27560,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6328",
+      "silentRefires": 1,
       "absentRunIds": [
-        "40333144748"
+        "40334875365"
       ]
     },
     "land:land/job/linear-BRO-6307-mvp4vz58": {
@@ -27711,20 +27716,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every original record in data/show-origins.json says true story or invented (BRO-5871)\"",
-      "firstSeen": "2026-10-26T14:03:16.640Z",
-      "incidentOpenedAt": "2026-10-26T14:03:16.640Z",
-      "lastSeen": "2026-10-26T14:03:16.640Z",
-      "lastNotifiedAt": "2026-10-26T14:03:16.640Z",
+      "firstSeen": "2026-10-26T14:20:26.266Z",
+      "incidentOpenedAt": "2026-10-26T14:20:26.266Z",
+      "lastSeen": "2026-10-26T14:20:26.266Z",
+      "lastNotifiedAt": "2026-10-26T14:20:26.266Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6334",
-      "dispatch": {
-        "requestedAt": "2026-10-26T13:59:26.038Z",
-        "mode": "dispatch-at-filing",
-        "runId": "40331633769",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40331633769"
-      }
+      "linearIdentifier": "BRO-6334"
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
       "status": "open",
