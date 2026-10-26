@@ -101,8 +101,9 @@ test('reported-truth backtest: musicals hold MAE <= 5.2 and >= 73 inside; plays 
   // rows MAE 7.3 -> 3.7; timing 14.6 -> 12.7, no timing checkpoint worse.
   // BRO-6345: BRO-6218 re-sourced Cabaret 2024's cost to the filed $1.5M/week
   // (trade-reported, all-in), so the raw model now reads a -135% net loss against
-  // a reported 0% return: one row, +1 pt of MAE (3.7 -> 4.6, 77/89 inside). The
-  // displayed value floors at 0, so this is an artifact of scoring the raw pct.
+  // a reported 0% return: the largest single miss, ~1.5 pts of the 89-row MAE
+  // (3.7 -> 4.6, 77/89 inside). Viewers see the value floored at 0, but the raw
+  // -135% is still a model gap (does the all-in cost double-count?).
   // Bound sits between 4.6 and the pre-BRO-6188 7.3; the all-off gain below
   // (8.8 vs 4.6) still fails if MUSICAL_LIVE_OPTS is undone.
   assert.ok(m.newMae <= 5.2, `musical reported-truth MAE ${m.newMae} (7.3 before BRO-6188, 4.6 after BRO-6218)`);
