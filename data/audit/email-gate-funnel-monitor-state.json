@@ -3,43 +3,55 @@
   "recentCaptures": [
     3,
     3,
-    3
+    0
   ],
-  "lastRunAt": "2026-10-23T23:16:42.883Z",
+  "lastRunAt": "2026-10-26T19:05:30.005Z",
   "lastSummary": {
     "days": 7,
-    "impressions": 367,
-    "impressionEvents": 389,
-    "dismissed": 270,
-    "dismissRatePct": 73.57,
-    "captured": 3,
-    "capturedEvents": 3,
-    "convRatePct": 0.82,
-    "capturesPerWeek": 3,
-    "mobileBouncePct": 64.5,
+    "impressions": 386,
+    "impressionEvents": 403,
+    "dismissed": 287,
+    "dismissRatePct": 74.35,
+    "captured": 0,
+    "capturedEvents": 0,
+    "convRatePct": 0,
+    "capturesPerWeek": 0,
+    "mobileBouncePct": 63.89,
     "byTrigger": {
       "exit_intent": {
-        "n": 194,
-        "people": 181
+        "n": 207,
+        "people": 195
       },
       "scroll_depth": {
-        "n": 142,
-        "people": 139
+        "n": 148,
+        "people": 145
       },
       "return_visitor": {
-        "n": 52,
-        "people": 51
-      },
-      "recapture": {
-        "n": 1,
-        "people": 1
+        "n": 48,
+        "people": 48
       }
     },
     "byCopyVersion": {
+      "v4-2026-10-08": {
+        "shown": {
+          "n": 403,
+          "people": 386
+        },
+        "dismissed": {
+          "n": 288,
+          "people": 286
+        },
+        "captured": {
+          "n": 0,
+          "people": 0
+        },
+        "dismissRatePct": 74.09,
+        "convRatePct": 0
+      },
       "v2-2026-08-10": {
         "shown": {
-          "n": 1,
-          "people": 1
+          "n": 0,
+          "people": 0
         },
         "dismissed": {
           "n": 1,
@@ -49,25 +61,17 @@
           "n": 0,
           "people": 0
         },
-        "dismissRatePct": 100,
-        "convRatePct": 0
-      },
-      "v4-2026-10-08": {
-        "shown": {
-          "n": 388,
-          "people": 366
-        },
-        "dismissed": {
-          "n": 271,
-          "people": 269
-        },
-        "captured": {
-          "n": 3,
-          "people": 3
-        },
-        "dismissRatePct": 73.5,
-        "convRatePct": 0.82
+        "dismissRatePct": null,
+        "convRatePct": null
       }
+    },
+    "pageViewGuardrail": {
+      "checkedEvents": 24,
+      "belowMinimumEvents": 0,
+      "unknownPageViewEvents": 379,
+      "exemptEvents": 0,
+      "violationsByTrigger": {}
     }
-  }
+  },
+  "lastCollapseAlertAt": 1793041530004
 }
