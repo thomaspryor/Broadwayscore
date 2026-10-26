@@ -338,7 +338,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40312170901",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40314729681",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -347,11 +347,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40312170901)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40314729681)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40306853732)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40312170901)"
       },
       {
         "name": "Consecutive failures",
@@ -362,7 +362,7 @@
         "value": "Unit Tests, E2E Tests"
       }
     ],
-    "queuedAt": "2026-10-26T11:40:43.729Z"
+    "queuedAt": "2026-10-26T11:55:26.375Z"
   },
   {
     "conditionKey": "land:land/bro-6304-codex-disk-prune",
