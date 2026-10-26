@@ -944,9 +944,18 @@ function execBudgetMs({ untilMs, nowMs, capMs, landChecksMs = LAND_CHECKS_MS }) 
 }
 /** Time a card needs before the wrap-up so its review fits: verify (its 10-min timeout), a minimum exec, the land checks, the review. */
 const CARD_VERIFY_MS = 10 * 60_000;
-function cardStartMs(landChecksMs = LAND_CHECKS_MS) {
-  return CARD_VERIFY_MS + FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
+function cardStartMs(landChecksMs = LAND_CHECKS_MS, { laterCard = false, discountMs = LATER_CARD_DISCOUNT_MS } = {}) {
+  const full = CARD_VERIFY_MS + FIX_EXEC_MIN_MS + landChecksMs + REVIEW_RESERVE_MS;
+  if (!laterCard || !(discountMs > 0)) return full;
+  // Never below the unmeasured minimum (verify, minimum exec, default land checks, review): under
+  // it the review cannot fit and the card is handed back unjudged (BRO-5384).
+  const floor = CARD_VERIFY_MS + FIX_EXEC_MIN_MS + LAND_CHECKS_MS + REVIEW_RESERVE_MS;
+  return Math.max(floor, full - discountMs);
 }
+// The measured land checks (mutex wait included, clamped to 30 min) put the full gate at 85 min,
+// so a cloud slot that finished one card never had room for a second although 11 of 45 cards in
+// 2 days took under 40 min (BRO-6304). After a first card the gate drops by this much, floored above.
+const LATER_CARD_DISCOUNT_MS = Number(process.env.CODEX_LATER_CARD_DISCOUNT_MS ?? 20 * 60_000);
 
 /**
  * When the next fix round must finish (BRO-5384). A REJECT's round keeps to the card budget;
@@ -1505,6 +1514,68 @@ function staleTmpEntries(entries, nowMs) {
   }).map((e) => e.name);
 }
 
+// BRO-6304: .claude/worktrees/<name> that a Claude worker lane left behind (a skipped cleanup step or a
+// dead session, ~1.3 GB each). The runner's own slot worktrees are kept on purpose.
+const CODEX_SLOT_WORKTREE = /^codex-runner(-base)?(-\d+)?$/;
+const CLAUDE_WORKTREE_IDLE_MS = 3 * 3600_000;
+/**
+ * Names safe to remove. entries: [{ name, newestMs, liveCwd, dirty, unpushed, locked }] where
+ * newestMs is the newest mtime of the tree's files AND its git metadata (HEAD, index, logs/HEAD),
+ * liveCwd a process has its cwd inside, dirty uncommitted or untracked files, unpushed commits
+ * beyond origin/main, locked git's own lock. An unknown field (null/undefined) keeps the tree.
+ */
+function staleClaudeWorktrees(entries, nowMs, idleMs = CLAUDE_WORKTREE_IDLE_MS) {
+  return (entries || []).filter((e) => e && !CODEX_SLOT_WORKTREE.test(String(e.name))
+    && e.liveCwd === false && e.dirty === false && e.unpushed === false && e.locked === false
+    && Number.isFinite(e.newestMs) && nowMs - e.newestMs > idleMs).map((e) => e.name);
+}
+
+/** Paths of `locked` worktrees in `git worktree list --porcelain` text. */
+function lockedWorktreePaths(porcelain) {
+  return new Set(String(porcelain || '').split('\n\n').filter((b) => /^locked/m.test(b))
+    .map((b) => (b.match(/^worktree (.*)$/m) || [])[1]).filter(Boolean));
+}
+/** True when any process cwd is `dir` or inside it. */
+function cwdInside(cwds, dir) { return (cwds || []).some((c) => c === dir || String(c).startsWith(`${dir}/`)); }
+/**
+ * Newest mtime of files under `dir`, skipping .git, node_modules, .next, data and public (copies and
+ * images that are 100k+ files and say nothing about a worker's activity). Stops once one is newer
+ * than `cutoffMs`. An unfinished walk (budget spent) returns `nowMs`, which keeps the tree.
+ */
+function newestMtimeMs(dir, cutoffMs, { maxFiles = 250_000, nowMs = Date.now() } = {}) {
+  const fs = require('fs'), path = require('path');
+  const skip = new Set(['.git', 'node_modules', '.next', 'data', 'public']);
+  let left = maxFiles, newest = 0;
+  const stack = [dir];
+  while (stack.length && left > 0) {
+    const d = stack.pop();
+    let names = [];
+    try { names = fs.readdirSync(d, { withFileTypes: true }); } catch { continue; }
+    for (const e of names) {
+      if (skip.has(e.name)) continue;
+      left--;
+      const full = path.join(d, e.name);
+      try {
+        const st = fs.lstatSync(full);
+        if (st.mtimeMs > newest) newest = st.mtimeMs;
+        if (newest > cutoffMs) return newest;
+        if (e.isDirectory()) stack.push(full);
+      } catch { /* vanished */ }
+    }
+  }
+  return left > 0 ? newest : nowMs;
+}
+/** Gitignored work that `git status` and `git worktree remove` do not protect: a .env*, or a real (not linked) data/review-texts clone. */
+function holdsIgnoredWork(wt) {
+  const fs = require('fs'), path = require('path');
+  try { if (fs.readdirSync(wt).some((n) => /^\.env(\..+)?$/.test(n) && !/\.(example|sample|template)$/.test(n))) return true; } catch { return true; }
+  try {
+    const st = fs.lstatSync(path.join(wt, 'data/review-texts'));
+    if (st.isDirectory() && fs.existsSync(path.join(wt, 'data/review-texts/.git'))) return true;
+  } catch { /* absent */ }
+  return false;
+}
+
 // One slot's worktree or base worktree (public/images + data, measured 2026-10-16).
 const WORKTREE_BYTES = 1.4e9;
 /**
@@ -1660,6 +1731,14 @@ module.exports = {
   isCodexBounce,
   MIN_FREE_DISK_BYTES,
   staleTmpEntries,
+  staleClaudeWorktrees,
+  CLAUDE_WORKTREE_IDLE_MS,
+  lockedWorktreePaths,
+  cwdInside,
+  newestMtimeMs,
+  holdsIgnoredWork,
+  CODEX_SLOT_WORKTREE,
+  LATER_CARD_DISCOUNT_MS,
   slotsForDisk,
   isDiskFailure,
   encryptAuth,

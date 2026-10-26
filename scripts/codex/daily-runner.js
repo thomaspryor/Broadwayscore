@@ -266,6 +266,76 @@ function freeDisk() {
   return free;
 }
 
+/** Process cwds, so a worktree a live process stands in is never a candidate. */
+function liveCwds() {
+  const out = [];
+  try { for (const pid of fs.readdirSync('/proc')) if (/^\d+$/.test(pid)) { try { out.push(fs.readlinkSync(`/proc/${pid}/cwd`)); } catch { /* not ours or gone */ } } } catch { /* no /proc */ }
+  return out;
+}
+
+/**
+ * Remove .claude/worktrees/<name> a Claude worker lane left behind (BRO-6304: ~1.3 GB each filled
+ * the cloud container: "only 1.4 GB of disk left"). R.staleClaudeWorktrees decides; this gathers the
+ * facts, and a tree with any unknown fact is kept. Plain `git worktree remove`, never --force.
+ */
+function pruneClaudeWorktrees() {
+  const dir = path.join(ROOT, '.claude/worktrees');
+  let names = [];
+  try { names = fs.readdirSync(dir).filter((n) => !R.CODEX_SLOT_WORKTREE.test(n)); } catch { return; }
+  if (!names.length) return;
+  const now = Date.now();
+  const cutoff = now - R.CLAUDE_WORKTREE_IDLE_MS;
+  // unbounded-fetch-ok: the runner works in a full clone (never a fetch-depth:1 workflow checkout) and needs history for git cherry
+  sh('git', ['fetch', '-q', 'origin', 'main'], { cwd: ROOT, timeoutMs: 60_000 });
+  const lockedPaths = R.lockedWorktreePaths(sh('git', ['worktree', 'list', '--porcelain'], { cwd: ROOT }).stdout);
+  const cwds = liveCwds();
+  const entries = names.map((name) => {
+    const wt = path.join(dir, name);
+    let real = wt;
+    try { real = fs.realpathSync(wt); } catch { return { name }; }
+    const entry = { name, liveCwd: R.cwdInside(cwds, real), locked: lockedPaths.has(wt) || lockedPaths.has(real) };
+    let gitdir = null;
+    try { gitdir = fs.readFileSync(path.join(wt, '.git'), 'utf8').match(/^gitdir:\s*(.+)$/m)?.[1]?.trim() || null; } catch { /* not a worktree */ }
+    if (!gitdir) return entry;
+    let meta = 0;
+    for (const f of ['HEAD', 'index', 'logs/HEAD']) { try { meta = Math.max(meta, fs.statSync(path.join(gitdir, f)).mtimeMs); } catch { /* absent */ } }
+    // Cheapest checks first: a tree with a live process or a recent touch needs no git calls.
+    if (entry.liveCwd || entry.locked || !meta || now - meta <= R.CLAUDE_WORKTREE_IDLE_MS) return { ...entry, newestMs: now - meta <= R.CLAUDE_WORKTREE_IDLE_MS ? meta : undefined };
+    const newest = R.newestMtimeMs(wt, cutoff);
+    const status = sh('git', ['--no-optional-locks', 'status', '--porcelain'], { cwd: wt, timeoutMs: 60_000 });
+    // `git cherry`: a commit that landed rebased on main has an equivalent there ('-'); '+' is work main lacks.
+    const ahead = sh('git', ['cherry', 'origin/main', 'HEAD'], { cwd: wt, timeoutMs: 60_000 });
+    return {
+      ...entry, newestMs: Math.max(meta, newest),
+      // `git status` and `worktree remove` ignore gitignored files: a .env, or a real review-texts clone
+      // with unpushed commits, would go with the tree. Keep any tree holding one (BRO-6304 ship-check).
+      dirty: status.code === 0 ? status.stdout.trim() !== '' || R.holdsIgnoredWork(wt) : null,
+      unpushed: ahead.code === 0 ? /^\+/m.test(ahead.stdout) : null,
+    };
+  });
+  const doomed = R.staleClaudeWorktrees(entries, now);
+  const removed = [];
+  for (const name of doomed) {
+    // Non-throwing: a sibling slot may have removed it already.
+    const r = sh('git', ['worktree', 'remove', path.join(dir, name)], { cwd: ROOT, timeoutMs: 120_000 });
+    if (r.code === 0) removed.push(name); else log(`pruneDisk: worktree ${name} kept (${tail(r.out, 120).trim()})`);
+  }
+  if (removed.length) log(`pruneDisk: removed ${removed.length} stale Claude worktree(s): ${removed.slice(0, 8).join(', ')}`);
+  else log(`pruneDisk: ${names.length} non-runner worktree(s), none stale+clean+pushed`);
+}
+
+/** What holds the disk, for the run log when it runs low (BRO-6304): worktrees, temp dir, Codex home. */
+function logDiskUsage(why) {
+  const kb = (p) => { const r = sh('du', ['-sk', p], { timeoutMs: 30_000 }); return r.code === 0 || r.stdout ? Number(r.stdout.split('\t')[0]) || 0 : 0; };
+  const rows = [];
+  const add = (label, p) => { try { fs.statSync(p); rows.push([label, kb(p)]); } catch { /* absent */ } };
+  try { for (const n of fs.readdirSync(path.join(ROOT, '.claude/worktrees'))) add(`worktrees/${n}`, path.join(ROOT, '.claude/worktrees', n)); } catch { /* none */ }
+  try { for (const n of fs.readdirSync(os.tmpdir())) add(`tmp/${n}`, path.join(os.tmpdir(), n)); } catch { /* none */ }
+  add('CODEX_HOME', CODEX_HOME);
+  const top = rows.sort((a, b) => b[1] - a[1]).slice(0, 8).map(([l, k]) => `${l} ${(k / 1e6).toFixed(1)}G`);
+  log(`disk usage (${why}): ${top.join(', ') || 'nothing measurable'}`);
+}
+
 /**
  * Delete what killed tests and data copies left in the temp dir (R.staleTmpEntries: only known
  * prefixes, past an age no live run reaches, so a sibling slot's own temp dirs are safe) and
@@ -273,6 +343,8 @@ function freeDisk() {
  * 2 h, so leaks pile up across firings (BRO-5422/5443: 1.7 GB per leaked /tmp/bro-5217-*).
  */
 function pruneDisk() {
+  const lowFree = freeDisk();
+  if (lowFree != null && lowFree < R.MIN_FREE_DISK_BYTES * 3) logDiskUsage(`${(lowFree / 1e9).toFixed(1)} GB free, before pruning`);
   const tmp = os.tmpdir();
   let entries = [];
   try {
@@ -285,6 +357,7 @@ function pruneDisk() {
   for (const name of stale) { try { fs.rmSync(path.join(tmp, name), { recursive: true, force: true }); } catch (e) { log(`pruneDisk: ${name} kept (${e.code || e.message})`); } }
   // Safe beside a sibling slot's `git worktree add`: git locks a worktree while it initializes.
   sh('git', ['worktree', 'prune'], { cwd: ROOT });
+  pruneClaudeWorktrees();
   if (stale.length) log(`pruneDisk: removed ${stale.length} stale temp dir(s): ${stale.slice(0, 8).join(', ')}`);
 }
 
@@ -1552,7 +1625,7 @@ async function runLocked(startedMs) {
     // in a row stop only this slot: they can be this slot's cards.
     if (stop && (stats.aborted || stats.doneRefusals || diskLow)) stopAllSlots(stop);
     if (!stop) { const other = runStop(); if (other) stop = `another slot stopped this launch (${other})`; }
-    if (!stop && !fitsBeforeHardStop(R.cardStartMs(landChecksMs))) stop = `under ${Math.round((R.cardStartMs(landChecksMs) + WRAP_UP_MS) / 60_000)} min left before the ${OPTS.hardStopMinutes}-min hard stop (a card's exec, land checks and review would not fit)`;
+    if (!stop && !fitsBeforeHardStop(R.cardStartMs(landChecksMs, { laterCard: worked > 0 }))) stop = `under ${Math.round((R.cardStartMs(landChecksMs, { laterCard: worked > 0 }) + WRAP_UP_MS) / 60_000)} min left before the ${OPTS.hardStopMinutes}-min hard stop (a card's exec, land checks and review would not fit)`;
     let held = true;
     try { held = refreshLock(MAX_STAMP_GAP_MS); } catch { /* transient git error: the keep-alive retries */ }
     if (!stop && !OPTS.dryRun && !held) stop = 'lost the run lock (see the run log: another run took it, or it could not be re-stamped)';
@@ -1720,7 +1793,7 @@ async function runPr(n) {
   }
 }
 
-module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans };
+module.exports = { newLandFailures, landPreflight, provideData, takeLock, refreshLock, readLock, releaseLock, weeklyPct, recoverOrphans, pruneClaudeWorktrees };
 if (require.main === module) {
   main().catch(async (e) => {
     log(`runner failed: ${e && e.stack ? e.stack : e}`);

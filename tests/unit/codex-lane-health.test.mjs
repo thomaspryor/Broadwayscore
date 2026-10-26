@@ -101,3 +101,11 @@ test('a gha run that had not ended an hour ago is unfinished in the hour-earlier
   assert.ok(!c.prev[0].breaches.some((b) => b.cls === 'stand-down'));
   assert.ok(!c.confirmed.some((b) => b.cls === 'stand-down'));
 });
+
+test('cloud disk-low: the newest cloud summary stopped on disk (BRO-6304), judged on the stop line only', () => {
+  const full = (hrs) => sum(hrs, { worked: 0, landed: 'none', stop: 'only 1.4 GB of disk left (needs 3 GB to start a card)' });
+  assert.ok(classes(h.codexLaneHealth({ ...healthy(), summaries: [full(1), sum(3), sum(5)] })).includes('cloud:disk-low'));
+  assert.ok(!classes(h.codexLaneHealth({ ...healthy(), summaries: [sum(1), full(3), sum(5)] })).includes('cloud:disk-low'), 'cleared by the first healthy run');
+  const quoted = { createdAt: iso(1), body: sum(1).body + '\n- Runner error mid-card (back to Todo): BRO-9 (title: fix disk of the lane, No space left on device)' };
+  assert.ok(!classes(h.codexLaneHealth({ ...healthy(), summaries: [quoted, sum(3), sum(5)] })).includes('cloud:disk-low'));
+});

@@ -3,7 +3,9 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import fs, { readFileSync, mkdtempSync, writeFileSync } from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -324,7 +326,7 @@ test('dropDataDir: unlinks the symlink (target untouched), removes a test-made d
     assert.equal(dropDataDir(link, wt), 'none');
     assert.equal(dropDataDir(shared, wt), 'skipped', 'a real dir outside the worktree is never removed');
     assert.ok(fs.existsSync(shared));
-  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 3 }); }
+  } finally { fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('emptyBatchVerdict: an empty node unit batch fails closed; empty scripts/lib batch reads clean (BRO-2483)', () => {
@@ -724,7 +726,7 @@ test('daily-runner: execs, fix rounds and card starts use the measured land-chec
   assert.match(src, /finally \{ landChecksMs = Math\.min\(2 \* R\.LAND_CHECKS_MS, Math\.max\(R\.LAND_CHECKS_MS, Date\.now\(\) - t0\)\); \}/);
   assert.match(src, /const runExecMs = \(\) => R\.execBudgetMs\(\{ untilMs: HARD_END_MS - WRAP_UP_MS, nowMs: Date\.now\(\), capMs: CODEX_TIMEOUT_MS, landChecksMs \}\)/);
   assert.match(src, /const fixExecMs = \(\) => Math\.min\(runExecMs\(\),/);
-  assert.match(src, /fitsBeforeHardStop\(R\.cardStartMs\(landChecksMs\)\)/);
+  assert.match(src, /fitsBeforeHardStop\(R\.cardStartMs\(landChecksMs, \{ laterCard: worked > 0 \}\)\)/);
   assert.doesNotMatch(src, /CARD_START_MIN_MS/);
   assert.match(src, /linkNodeModules\(BASE_WT\);/, 'the base tree is linked like the slot tree');
 });
@@ -1417,4 +1419,73 @@ test('abReport: lane filter and a carried card is counted once', () => {
   const mk = (lane) => `${r.summaryHeading({ date: '2026-10-26', worked: 1, mins: 10, slot: 3, lane })}\n- Landed and Done: BRO-1\n${line}`;
   assert.deepEqual(Object.keys(r.abReport([mk('cloud')], { lane: 'gha' })), []);
   assert.equal(r.abReport([mk('gha'), mk('gha')], { lane: 'gha' }).high.cards, 1);
+});
+
+test('staleClaudeWorktrees: only idle, clean, pushed, unlocked, unwatched non-runner trees (BRO-6304)', () => {
+  const NOW = Date.parse('2026-10-26T12:00:00Z');
+  const old = NOW - 4 * 3600_000;
+  const ok = { liveCwd: false, dirty: false, unpushed: false, locked: false, newestMs: old };
+  const entries = [
+    { name: 'bro-1', ...ok },
+    { name: 'bro-live', ...ok, liveCwd: true },
+    { name: 'bro-dirty', ...ok, dirty: true },
+    { name: 'bro-ahead', ...ok, unpushed: true },
+    { name: 'bro-locked', ...ok, locked: true },
+    { name: 'bro-recent', ...ok, newestMs: NOW - 3600_000 },
+    { name: 'bro-unknown', ...ok, dirty: null },
+    { name: 'bro-nomtime', ...ok, newestMs: undefined },
+    { name: 'codex-runner', ...ok },
+    { name: 'codex-runner-base', ...ok },
+    { name: 'codex-runner-2', ...ok },
+    { name: 'codex-runner-base-3', ...ok },
+  ];
+  assert.deepEqual(r.staleClaudeWorktrees(entries, NOW), ['bro-1']);
+  assert.deepEqual(r.staleClaudeWorktrees(null, NOW), []);
+  // a name that only resembles a slot worktree is not one
+  assert.deepEqual(r.staleClaudeWorktrees([{ name: 'codex-runner-fix', ...ok }], NOW), ['codex-runner-fix']);
+});
+
+test('cardStartMs: a later card starts earlier but never below the unmeasured minimum (BRO-6304)', () => {
+  const min = (ms) => ms / 60_000;
+  assert.equal(min(r.cardStartMs(30 * 60_000)), 85, 'measured land checks are clamped to 30 min by the runner');
+  assert.equal(min(r.cardStartMs(30 * 60_000, { laterCard: true })), 70, 'the 20-min discount hits the floor');
+  assert.equal(min(r.cardStartMs(30 * 60_000, { laterCard: true, discountMs: 5 * 60_000 })), 80);
+  assert.equal(min(r.cardStartMs(15 * 60_000, { laterCard: true })), 70, 'never under the minimum');
+  assert.equal(min(r.cardStartMs(30 * 60_000, { laterCard: true, discountMs: 0 })), 85, 'discount 0 = off');
+});
+
+test('worktree facts: locked paths, cwd match, ignored work, mtime walk (BRO-6304)', () => {
+  const porcelain = 'worktree /a/main\nHEAD abc\n\nworktree /a/wt1\nHEAD def\nlocked reason\n\nworktree /a/wt2\nHEAD 123\n';
+  assert.deepEqual([...r.lockedWorktreePaths(porcelain)], ['/a/wt1']);
+  assert.equal(r.cwdInside(['/x', '/a/wt2/src'], '/a/wt2'), true);
+  assert.equal(r.cwdInside(['/a/wt22'], '/a/wt2'), false, 'prefix without a separator is another dir');
+  const d = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6304-'));
+  try {
+    assert.equal(r.holdsIgnoredWork(d), false);
+    fs.writeFileSync(path.join(d, '.env.sanity.example'), 'x');
+    assert.equal(r.holdsIgnoredWork(d), false, 'a tracked example file is not work');
+    fs.rmSync(path.join(d, '.env.sanity.example'));
+    fs.writeFileSync(path.join(d, '.env.bak-1'), 'x');
+    assert.equal(r.holdsIgnoredWork(d), true, 'an ignored .env goes with the tree');
+    fs.rmSync(path.join(d, '.env.bak-1'));
+    fs.mkdirSync(path.join(d, 'data/review-texts/.git'), { recursive: true });
+    assert.equal(r.holdsIgnoredWork(d), true, 'a real review-texts clone');
+    fs.mkdirSync(path.join(d, 'src'));
+    const f = path.join(d, 'src/a.js');
+    fs.writeFileSync(f, 'x');
+    const old = new Date('2026-10-01T00:00:00Z');
+    fs.utimesSync(f, old, old); fs.utimesSync(path.join(d, 'src'), old, old);
+    fs.utimesSync(d, old, old);
+    assert.equal(r.newestMtimeMs(d, Date.now() - 1000), old.getTime(), 'skips data/, finds the old src file');
+    assert.equal(r.newestMtimeMs(d, Date.now() - 1000, { maxFiles: 1, nowMs: 42 }), 42, 'budget spent = keep (now)');
+  } finally { fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+test('pruneDisk wiring: the runner prunes Claude worktrees and logs disk usage when low (BRO-6304)', () => {
+  const src = readFileSync(join(ROOT, 'scripts/codex/daily-runner.js'), 'utf8');
+  assert.match(src, /pruneClaudeWorktrees\(\);/);
+  assert.match(src, /R\.staleClaudeWorktrees\(entries, now\)/);
+  assert.match(src, /\['worktree', 'remove', path\.join\(dir, name\)\]/);
+  assert.doesNotMatch(src, /'worktree', 'remove', '--force'/);
+  assert.match(src, /logDiskUsage\(/);
 });
