@@ -239,9 +239,12 @@ jobs:
 
   # BRO-6214: weekly reader for three theater newsletters. Same Gmail secrets
   # and the same shared-workflow rationale as the jobs above. It reads ONLY
-  # the three senders in scripts/lib/newsletter-facts.js, stores no email
-  # content, and writes nothing to commercial data: new or conflicting
-  # Broadway business facts go to a person as one routeAlert card. The daily
+  # the Broadway Briefing sender in Gmail plus the public Chromolume blog and
+  # Abroad/Way RSS (BRO-6265, scripts/lib/newsletter-sources.js), stores no
+  # email content, and writes nothing to commercial data: new or conflicting
+  # Broadway business facts go to a person as one routeAlert card. The state
+  # file data/audit/newsletter-reader-state.json holds only already-read URLs
+  # and skip counters. The daily
   # cron runs this job but the first step only lets it continue on Mondays
   # (or on a manual dispatch that asks for it), so GitHub's 60-day
   # auto-disable never sees a separate quiet workflow.
@@ -300,8 +303,6 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-          # Dry runs also print host + first path segment of each link (no bodies) so SENDERS can be tuned.
-          NEWSLETTER_LINK_SHAPES: ${{ steps.gate.outputs.mode == 'dry-run' && '1' || '' }}
         run: |
           FLAGS=""
           if [ "$MODE" = "dry-run" ]; then FLAGS="--dry-run"; fi
@@ -315,7 +316,7 @@ jobs:
           # Kept on ONE line per invocation: the alert-ledger guard
           # (scripts/lint-workflow-guards.sh alert-ledger-commit) matches the
           # staging command and the filename on the SAME line.
-          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/newsletter-reader-state.json
           if git diff --staged --quiet; then
             echo "No alert state changes."
             exit 0
