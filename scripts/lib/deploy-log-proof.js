@@ -37,6 +37,8 @@
  * `Aliased:` line and every cloud check came back empty for a day).
  */
 
+const { forEachLine, detach } = require('./log-lines');
+
 const DEPLOY_JOB = 'deploy';
 const DEPLOY_ECHO = 'echo "Deployed to production: $URL"';
 const WAIT_CALL = 'node scripts/vercel-wait-deployment.js';
@@ -54,7 +56,8 @@ function prodProofFromLog(log) {
   let aliasedAt = null;
   const readies = []; // { host, at, n } in log order
   let echoed = null; // { host, n }
-  String(log || '').split('\n').forEach((raw, n) => {
+  // BRO-6257: walk lines lazily; a whole-log split OOMed on multi-MB logs.
+  forEachLine(log, (raw, n) => {
     const line = raw.replace(ANSI, '');
     const ts = (line.match(TS) || [])[1];
     // Pre-BRO-2067 logs only (one Aliased: per run). Those logs expire from
@@ -68,11 +71,11 @@ function prodProofFromLog(log) {
   });
   if (!echoed) return null;
   if (readies.length === 0) {
-    return aliasedAt == null ? null : { url: echoed.host, provenAtMs: aliasedAt };
+    return aliasedAt == null ? null : { url: detach(echoed.host), provenAtMs: aliasedAt };
   }
   const match = readies.find((r) => r.host === echoed.host)
     || (readies.length === 1 && readies[0].n < echoed.n ? readies[0] : null);
-  return match ? { url: match.host, provenAtMs: match.at } : null;
+  return match ? { url: detach(match.host), provenAtMs: match.at } : null;
 }
 
 function listingLooksStale(runs, nowMs, maxAgeMs = STALE_LISTING_MS) {

@@ -3,13 +3,33 @@
 // workflow_dispatch describes the workflow ref (usually main), not the land
 // input. Resolve BOTH the branch and the pre-rebase tip from Checks instead.
 // Never substitute today's ref tip: that would replay Checks for a moved ref.
+//
+// BRO-6257 (BRO-6040 recurrence): a Checks log can be tens of MB (gh's
+// maxBuffer is 64 MB). Splitting it into a line array and mapping every line
+// OOMed wait-for-land.js in Runtime_StringSplit. Walk it one line at a time
+// and stop once the answer is known: both markers sit near the top of the log.
+const { forEachLine, detach } = require('./log-lines');
+
 function landIdentityFromChecks(log) {
-  const lines = String(log || '').split('\n').map((line) => line
-    .replace(/^\uFEFF?\S*Z\s?/, '').replace(/\u001b\[[0-9;]*m/g, '').replace(/\r$/, ''));
-  const branch = lines.map((line) => /^  BRANCH: (land\/[\w./-]+)$/.exec(line)?.[1]).find(Boolean);
-  const checkout = lines.findIndex((line) => /^\[command\].*\/git log -1 --format=%H$/.test(line));
-  const sha = checkout >= 0 && /^[a-f0-9]{40}$/.test(lines[checkout + 1] || '') ? lines[checkout + 1] : null;
-  return branch && sha ? { branch, sha } : null;
+  let branch = null;
+  let afterCheckout = false; // the previous line was the first checkout command
+  let sha; // undefined until the first checkout line's successor is read
+  forEachLine(log, (raw, _n, truncated) => {
+    // Marker lines are short: a truncated line must never match a cut-off value.
+    const line = truncated ? '' : raw
+      .replace(/^\uFEFF?\S*Z\s?/, '').replace(/\u001b\[[0-9;]*m/g, '').replace(/\r$/, '');
+    if (afterCheckout) {
+      sha = /^[a-f0-9]{40}$/.test(line) ? line : null;
+      afterCheckout = false;
+      if (sha === null) return true; // the first checkout decides: no full SHA, no identity
+    } else if (sha === undefined && /^\[command\].*\/git log -1 --format=%H$/.test(line)) {
+      afterCheckout = true;
+    }
+    if (!branch) branch = /^  BRANCH: (land\/[\w./-]+)$/.exec(line)?.[1] || null;
+    return Boolean(branch && sha);
+  }, { maxLineLength: 4096 });
+  // detach: the cached identity must not pin the whole log in memory.
+  return branch && sha ? { branch: detach(branch), sha: detach(sha) } : null;
 }
 
 // BRO-6012: land.yml's run-name carries the branch for a hand dispatch, so an

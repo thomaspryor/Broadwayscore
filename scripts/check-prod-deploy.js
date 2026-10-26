@@ -50,6 +50,7 @@ const { execSync, execFileSync } = require('child_process');
 const { checkLanded } = require('./lib/landing-verify.js');
 const { pickBlobShaMeta } = require('./lib/core-data-blob-meta.js');
 const { prodProofFromLog, listingLooksStale, DEPLOY_JOB } = require('./lib/deploy-log-proof.js');
+const { firstLine } = require('./lib/log-lines.js');
 
 const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 // BRO-6058: job-log reads need the escape-sequence retry in runGhWithFallback.
@@ -89,7 +90,7 @@ function githubProdDeploy() {
       if (!job) continue; // gate said skip: no deploy happened in this run
       proof = prodProofFromLog(ghText(`repos/${REPO}/actions/jobs/${job.id}/logs`));
     } catch (e) {
-      console.error(`(skipping deploy run ${run.id}: ${String(e.stderr || e.message).trim().split('\n')[0]})`);
+      console.error(`(skipping deploy run ${run.id}: ${firstLine(String(e.stderr || e.message).trimStart())})`);
       continue; // an expired (410) or not-yet-ready log must not sink the whole check
     }
     if (!proof) continue;
@@ -176,7 +177,7 @@ function isLiveViaGithub(commit, deployedSha) {
     const { status } = ghJson(`repos/${REPO}/compare/${full}...${deployedSha}`);
     return status === 'ahead' || status === 'identical';
   } catch (e) {
-    console.error(`⚠️  Could not determine whether ${commit} is live (${String(e.stderr || e.message).trim().split('\n')[0]}).`);
+    console.error(`⚠️  Could not determine whether ${commit} is live (${firstLine(String(e.stderr || e.message).trimStart())}).`);
     return null;
   }
 }

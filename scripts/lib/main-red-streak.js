@@ -23,6 +23,7 @@
  */
 
 const crypto = require('crypto');
+const { forEachLine, detach } = require('./log-lines');
 
 const DEFAULT_THRESHOLD_HOURS = 2;
 
@@ -281,7 +282,9 @@ const TAP_NOT_OK_RE = /^\s*not ok \d+ - (.+?)\s*$/;
  * @returns {string|null} the first TAP failing test name in this job's log, or null
  */
 function firstFailingTestNameInJobLog(jobLogText) {
-  for (const raw of String(jobLogText || '').split('\n')) {
+  let name = null;
+  // BRO-6257: walk lines lazily; a whole-log split OOMs on multi-MB logs.
+  forEachLine(jobLogText, (raw) => {
     // Strip the leading GH Actions timestamp the same way trunk-status.js's
     // parseFailedLog does for its differently-shaped (tab-framed) input —
     // `\S*Z ` matches "2026-09-20T18:38:38.2331444Z ". A line that starts
@@ -292,9 +295,10 @@ function firstFailingTestNameInJobLog(jobLogText) {
     // below, since it no longer starts with "not ok" after whitespace.
     const line = raw.replace(/^\S*Z\s?/, '').replace(/\r$/, '');
     const m = TAP_NOT_OK_RE.exec(line);
-    if (m) return m[1].trim();
-  }
-  return null;
+    if (m) name = detach(m[1].trim());
+    return Boolean(m);
+  });
+  return name;
 }
 
 // BRO-6262: the test FILE behind firstFailingTestNameInJobLog()'s test. node's
@@ -305,17 +309,22 @@ function firstFailingTestNameInJobLog(jobLogText) {
 // (from its first tests/ scripts/ or src/ segment) or null.
 const TAP_LOCATION_RE = /location:\s*['"]?(?:[^'"\n]*?[\/])?((?:tests|scripts|src)\/[\w@./-]+\.test\.(?:m?js|cjs|ts)):\d+/;
 function firstFailingTestFileInJobLog(jobLogText) {
-  const lines = String(jobLogText || '').split('\n').map((raw) => raw.replace(/^\S*Z\s?/, '').replace(/\r$/, ''));
-  for (let i = 0; i < lines.length; i++) {
-    if (!TAP_NOT_OK_RE.test(lines[i])) continue;
-    for (let j = i + 1; j < Math.min(lines.length, i + 25); j++) {
-      if (TAP_NOT_OK_RE.test(lines[j])) break;
-      const m = TAP_LOCATION_RE.exec(lines[j]);
-      if (m) return m[1];
+  // BRO-6257: lazy walk, no whole-log line array. Only the 24 lines after the
+  // first `not ok` are searched, and a second `not ok` ends the search.
+  let notOkAt = -1;
+  let file = null;
+  forEachLine(jobLogText, (raw, n) => {
+    const line = raw.replace(/^\S*Z\s?/, '').replace(/\r$/, '');
+    if (notOkAt === -1) {
+      if (TAP_NOT_OK_RE.test(line)) notOkAt = n;
+      return false;
     }
-    return null;
-  }
-  return null;
+    if (n >= notOkAt + 25 || TAP_NOT_OK_RE.test(line)) return true;
+    const m = TAP_LOCATION_RE.exec(line);
+    if (m) file = detach(m[1]);
+    return Boolean(m);
+  });
+  return file;
 }
 
 // BRO-4151: `testNameByJob` is a JOB-wide scan (firstFailingTestNameInJobLog

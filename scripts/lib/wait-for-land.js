@@ -66,13 +66,9 @@ const STALE_EVICTION_MS = 30 * 60_000;
 const PROD_DEFAULT_MIN = 40;
 const PROD_MAX_ERRORS = 3;
 
-// Error messages can contain entire API responses. Bound the prefix before
-// looking for a newline so logging never allocates an array for the full body.
-function firstLine(value) {
-  const prefix = String(value || '').slice(0, 500);
-  const newline = prefix.indexOf('\n');
-  return newline === -1 ? prefix : prefix.slice(0, newline);
-}
+// Error messages can contain entire API responses: firstLine bounds them
+// (shared with check-prod-deploy.js since BRO-6257).
+const { firstLine } = require('./log-lines');
 
 // check-prod-deploy prints its verdict last. Preserve that line without
 // splitting all of stdout/stderr, and bound unusually long verdicts too.
@@ -175,7 +171,7 @@ function parseArgs(argv) {
 
 function readRefSha(ref) {
   const out = execFileSync('git', ['ls-remote', 'origin', `refs/heads/${ref}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-  return out.trim().split(/\s+/)[0] || null;
+  return /^\S+/.exec(out.trim())?.[0] || null;
 }
 
 const cancellationCache = new Map();
