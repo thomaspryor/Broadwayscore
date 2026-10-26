@@ -248,3 +248,12 @@ test('video posts are named after the show their caption mentions', () => {
   assert.equal(rows[0].slug, null); // visits still go only to posts that link the show
   assert.equal(rows[1].title, 'Here is how we score a show.');
 });
+
+test('a brief (compare) post is its own lane, named for the email, with the ledger title', () => {
+  const briefLedger = { posts: [{ type: 'brief', id: 'brief:abc', slug: 'tc-off-broadway', title: 'The Curious Case', text: 'x', channels: { twitter: { postId: 'x1' } } }] };
+  const rows = buildPostRows([{ id: 'x1', service: 'twitter', sentAt: '2026-10-30T17:00:00Z', text: 'x', metrics: m({ impressions: 3 }) }], briefLedger);
+  assert.equal(rows[0].lane, 'brief');
+  assert.equal(rows[0].title, 'The Curious Case');
+  assert.equal(rows[0].slug, 'tc-off-broadway');
+  assert.match(fs.readFileSync(new URL('./social-report.js', import.meta.url), 'utf8'), /brief: 'compare posts'/);
+});

@@ -5,7 +5,7 @@
  * and PostHog visit rows, returns the report scripts/build-social-report.js
  * writes and scripts/lib/traffic-report-email.js renders. No I/O here.
  *
- * Visits: a post's link carries utm_source=<network>&utm_campaign=autopost
+ * Visits: a post's link carries utm_source=<network>&utm_campaign=autopost (brief for brief posts)
  * (scripts/social-autopost/captions.js), so a pageview of /show/<slug> with
  * those tags belongs to the latest post of that show on that network sent on
  * or before the visit day. Instagram captions carry no link ("link in bio"),
@@ -25,7 +25,7 @@ const { scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../so
 const C = require('../social-autopost/config');
 
 const NETWORK_NAMES = { twitter: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
-const LANE_NAMES = { score: 'review score posts', video: 'videos', other: 'other posts' };
+const LANE_NAMES = { score: 'review score posts', brief: 'compare posts', video: 'videos', other: 'other posts' };
 const INTERACTION_TYPES = ['reactions', 'comments', 'shares', 'reposts', 'quotes', 'saves'];
 const DAY_MS = 86400000;
 // Fewer posts than this in a group and an average means nothing.
@@ -125,7 +125,7 @@ function findPost(rows, service, slug, day) {
 /**
  * Add visits to the post rows (mutates rows[].visits). Returns the visits
  * that matched no post (a show posted before the window, a hand-made post).
- * utmRows: [{source, path, day, views}] for utm_campaign=autopost.
+ * utmRows: [{source, path, day, views}] for utm_campaign=autopost or brief.
  * bioRows: [{source, path, day, views}] show pageviews whose previous page was
  *   /links; source is the utm_source the visitor reached /links with (each
  *   profile's bio link carries its own), 'none' when it had none.

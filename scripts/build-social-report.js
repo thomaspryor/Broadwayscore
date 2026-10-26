@@ -85,7 +85,7 @@ async function fetchVisits(days) {
   // Days in UTC to match Buffer's sentAt (the PostHog project clock is not UTC).
   const day = "toString(toDate(toTimeZone(timestamp, 'UTC')))";
   const utm = await phQuery(`SELECT properties.utm_source, properties.$pathname, ${day}, count()
-    FROM events WHERE ${base} AND properties.utm_campaign = 'autopost' AND properties.$pathname LIKE '/show/%'
+    FROM events WHERE ${base} AND properties.utm_campaign IN ('autopost', 'brief') AND properties.$pathname LIKE '/show/%'
     GROUP BY 1, 2, 3 LIMIT 5000`);
   // A click from /links to a show page, with the network tag the visitor reached
   // /links with in the same session (each profile's bio link has its own).
