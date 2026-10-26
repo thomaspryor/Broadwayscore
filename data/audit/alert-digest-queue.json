@@ -1349,9 +1349,23 @@
     "queuedAt": "2026-10-26T18:11:00.410Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 16 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +10 more). Checked 2026-10-26.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
+    "title": "Review gap — \"Jest to Impress\" missing 2 cited review(s)",
+    "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T19:19:57.221Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-26.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
     "severity": "info",
     "url": null,
     "decision": false,
@@ -1360,6 +1374,6 @@
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-26T18:57:41.060Z"
+    "queuedAt": "2026-10-26T19:20:05.322Z"
   }
 ]

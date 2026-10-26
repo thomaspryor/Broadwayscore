@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-26T18:54:32.381Z",
+  "generatedAt": "2026-10-26T19:20:26.608Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 248,
+  "checked": 247,
   "clean": 247,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "the-play-that-goes-wrong-west-end-2021",
-      "title": "The Play That Goes Wrong",
-      "openingDate": "2014-09-18",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 72.53 vs local 70.86 (Δ1.67)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 10,
-      "deployedCount": 11,
-      "firstDefectAt": "2026-10-26T18:54:25.695Z"
-    }
-  ],
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
