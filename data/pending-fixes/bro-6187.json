@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6187",
   "planId": "ed2bbcea-8014-4d1e-bbb4-72a487ced1cb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T01:00:00.000Z",
   "plan": {
     "summary": "Lock John Proctor's reported Did Not Recoup outcome. There is no reported loss percentage, and the model exceeding 100 percent does not establish recoupment. Evita 2012 already has this lock and remains unchanged.",
@@ -20,5 +20,18 @@
         "description": "BRO-6187 tier decision: keep Did Not Recoup with no reported loss figure; a model estimate above 100 percent cannot override the reported non-recoupment."
       }
     ]
-  }
+  },
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "executedAt": "2026-10-26T04:52:22.352Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for john-proctor-is-the-villain-2025"
+    }
+  ],
+  "executedIn": "ci"
 }
