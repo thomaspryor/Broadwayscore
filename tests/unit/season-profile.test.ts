@@ -435,3 +435,15 @@ test('recouped show names are listed per bucket; shows that did not recoup are n
   const pr = f.buckets.find((b) => b.label === 'Play revivals')!;
   assert.deepEqual(pr.recoupedShows.map((s) => s.title), ['A Show', 'B Show']);
 });
+
+test('capital by outcome: closed-unrecouped and running shows, same per-show figures as the estimated total', () => {
+  const shows = [
+    show({ openingDate: '2025-10-01', status: 'closed', commercial: com({ capitalization: 10e6, recouped: false }) }),
+    show({ openingDate: '2025-10-02', status: 'closed', commercial: com({ capitalization: 6e6, recouped: true }) }),
+    show({ openingDate: '2025-10-03', status: 'open', commercial: com({ capitalization: 4e6, recouped: false }) }),
+    show({ openingDate: '2025-10-04', status: 'open', commercial: com({ capitalization: 3e6, recouped: true }) }),
+  ];
+  const p = buildSeasonProfiles(shows).find((x) => x.season === '2025-2026')!;
+  assert.equal(p.estimatedCapital.total, 23e6);
+  assert.deepEqual(p.capitalByOutcome, { closedUnrecouped: 10e6, closedUnrecoupedShows: 1, running: 4e6, runningShows: 1 });
+});
