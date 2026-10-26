@@ -255,6 +255,7 @@ test('every money gate event and email_tom_click is wired to GA4', () => {
     assert.match(gateSrc, new RegExp(`gaEvent\\('${ev}'`), `${ev} missing gaEvent`);
   }
   assert.match(read('src/components/EmailTomLink.tsx'), /gaEvent\('email_tom_click'/);
+});
 
 // ---- BRO-6339: fake-email rules ----
 const me = await import('../../src/lib/money-email.ts');
