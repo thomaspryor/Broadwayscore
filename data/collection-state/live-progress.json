@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-26T12:01:52.903Z",
-  "processed": 44,
-  "failed": 6,
-  "successRate": "88.0%",
+  "updatedAt": "2026-10-26T12:34:28.015Z",
+  "processed": 62,
+  "failed": 14,
+  "successRate": "81.6%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 40,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 1,
-    "scrapingbee": 2,
+    "scrapingbee": 3,
     "brightdata": 4,
     "archiveToday": 0,
-    "archive": 14
+    "archive": 16
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-26T11:45:10.934Z",
@@ -70,6 +70,18 @@
       "t": "2026-10-26T11:43:16.791Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-26T12:33:54.679Z",
+      "event": "bb-session",
+      "session": "32c42dfa",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
+    },
+    {
+      "t": "2026-10-26T12:34:03.309Z",
+      "event": "bb-session",
+      "session": "92ee951b",
+      "url": "https://cityking.com/london/events/e/815617-cadel-lungs-on-legs"
     }
   ]
 }
