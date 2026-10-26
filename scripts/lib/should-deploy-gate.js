@@ -110,6 +110,7 @@ const SITE_DATA_FILES = [
   'data/show-schedules.json',
   'data/show-score-urls.json',
   'data/slug-redirects-compact.json',
+  'data/social-autopost-ledger.json',
   'data/theater-metadata.json',
   'data/todaytix-showtimes.json',
   'data/tony-ceremony-dates.json',
