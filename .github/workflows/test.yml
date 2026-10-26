@@ -57,6 +57,8 @@ on:
       # scripts/audit-test-yml-lib-deps.js — advisory CI check that catches
       # this shape of gap going forward).
       - 'scripts/check-orphan-commits.js'
+      # BRO-6391: scripts/lib/cost-report-alerts.test.mjs requires it (routeLines, renderActionHtml).
+      - 'scripts/route-cost-report-alerts.js'
       # BRO-5542: scripts/lib/owner-copy-no-claude.test.mjs requires it (fix-card text check).
       - 'scripts/file-ugc-fix-card.js'
       # BRO-6377: scripts/lib/social-report.test.mjs requires ../social-autopost/run.js
