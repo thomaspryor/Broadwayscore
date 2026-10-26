@@ -331,6 +331,7 @@ export default function AllShowsTable({ shows, initialLimit = 10 }: AllShowsTabl
                   key={show.slug}
                   className="group border-b border-white/5 hover:bg-white/5 transition-colors cursor-pointer"
                   onClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
+                  onAuxClick={(e) => openRowLink(e, `/show/${show.slug}`, router.push)}
                 >
                   <td className="py-3 px-4">
                     <Link
