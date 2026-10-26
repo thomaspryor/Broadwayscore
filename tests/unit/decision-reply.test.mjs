@@ -236,3 +236,191 @@ test('drain: the card is written before the Owner answered comment; label stays 
   assert.equal(calls[0][1].stateId, undefined);
   assert.match(calls[1][1], /has to be done by you/);
 });
+
+const approvalLabel = { id: 'approval-label', name: 'awaiting-owner' };
+const otherLabel = { id: 'other-label', name: 'design' };
+const approvalIssue = (comments, extra = {}) => issue('Review the attached screenshots.', comments, {
+  id: 'approval-id', identifier: 'BRO-APPROVAL', title: 'Updated show card',
+  labels: { nodes: [approvalLabel, otherLabel] }, ...extra,
+});
+const approvalRequest = () => c('Waiting on your approval: 3 visual-qa crops attached above.', '10:00');
+
+test('awaiting-owner: yes/approved unblock an approval without a decision line or options', () => {
+  for (const body of ['yes', 'Yes!', '**approved**', 'approve', 'yep', 'yeah', 'go ahead', 'do it']) {
+    const p = plan(approvalIssue([approvalRequest(), c(body, '10:05')]));
+    assert.equal(p.action, 'approve', body);
+    assert.equal(p.comment.body, body);
+  }
+});
+
+test('awaiting-owner: a no-type reply keeps the owner words for the acknowledgement', () => {
+  for (const body of ['no', 'No.', 'nope', 'nah', 'declined', 'reject', 'rejected', 'No, make the text larger.', 'not approved', 'do not ship', 'hold off', 'wait', 'not yet', "I don't approve"]) {
+    const p = plan(approvalIssue([approvalRequest(), c(body, '10:05')]));
+    assert.equal(p.action, 'decline', body);
+    assert.equal(p.comment.body, body);
+    assert.equal(plan(approvalIssue([approvalRequest(), c('yes', '10:03'), c(body, '10:05')])).action, 'decline', body);
+  }
+});
+
+test('approval replies require the label, current request, open card and a clear answer', () => {
+  for (const body of ['Working on it', 'Done.', 'No issues found', 'yes, but change the layout', 'approved https://example.test', 'yes\nVERIFY: something', 'A', '']) {
+    assert.equal(plan(approvalIssue([approvalRequest(), c(body, '10:05')])).action, 'skip', body);
+  }
+  const cases = [
+    approvalIssue([c('yes', '10:05')], { labels: { nodes: [otherLabel] } }),
+    approvalIssue([c('yes', '09:55'), approvalRequest()]),
+    approvalIssue([c('no', '09:55'), approvalRequest()]),
+    approvalIssue([c('yes', '10:05')], { state: { type: 'completed', name: 'Done' } }),
+    approvalIssue([c('yes', '10:05')], { state: { type: 'canceled', name: 'Canceled' } }),
+    approvalIssue([c('yes', '10:05'), c('**Owner decision** (answered by the owner through the email link)', '10:10')]),
+  ];
+  for (const value of cases) assert.equal(plan(value).action, 'skip');
+  assert.equal(reply.planReply(approvalIssue([c('yes', '10:05')]), {
+    date: '2026-11-01', nowMs: Date.parse('2026-11-01T20:00:00Z'),
+  }).why, 'reply-too-old');
+  // A labeled card with lettered options must still use the decision path.
+  assert.equal(plan(approvalIssue([c('yes', '10:05')], { description: B6111 })).action, 'needs-session');
+});
+
+test('approval replies: newer qualified answers cannot fall back to an earlier yes', () => {
+  for (const body of ['yes, but change the layout', 'no further approval until the screenshots are fixed', 'approved\nif you fix the layout']) {
+    const p = plan(approvalIssue([approvalRequest(), c('yes', '10:05'), c(body, '10:10')]));
+    assert.deepEqual(p, { action: 'skip', why: 'unclear-approval-reply' });
+  }
+  assert.equal(plan(approvalIssue([approvalRequest(), c('yes', '10:05'), c('Session note: ready for review.', '10:10')])).action, 'approve');
+});
+
+test('approval replies do not replace signed visual authorization', () => {
+  const p = plan(approvalIssue([approvalRequest(), c('yes', '10:05')], {
+    description: `VISUAL-APPROVAL: patch=${'a'.repeat(64)} verdict=${'b'.repeat(64)} hold=visual-hold/bro-6180-visual`,
+  }));
+  assert.deepEqual(p, { action: 'skip', why: 'signed-visual-approval' });
+});
+
+function approvalClient(cards) {
+  const calls = [];
+  const linear = {
+    listOpenIssuesWithDescriptions: async () => Object.values(cards),
+    getIssue: async (id) => structuredClone(cards[id]),
+    getTeam: async () => { throw new Error('approval-only runs need no Todo state'); },
+    createComment: async (id, body) => {
+      calls.push(['comment', id, body]);
+      Object.values(cards).find((card) => card.id === id).comments.nodes.push({
+        id: `ack-${calls.length}`, body, createdAt: '2026-10-24T20:00:00Z',
+      });
+    },
+    updateIssue: async (id, input) => {
+      calls.push(['update', id, input]);
+      const card = Object.values(cards).find((value) => value.id === id);
+      card.labels.nodes = card.labels.nodes.filter((label) => input.labelIds.includes(label.id));
+    },
+  };
+  return { linear, calls };
+}
+
+test('approval drain: dry run is read-only; yes removes only the label and records the words', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const card = approvalIssue([approvalRequest(), c('approved', '10:05')]);
+  const cards = { [card.identifier]: card };
+  const { linear, calls } = approvalClient(cards);
+  const deps = { linear, now: () => new Date('2026-10-24T20:00:00Z') };
+  const dry = await main([], deps);
+  assert.deepEqual(dry.approve, [card.identifier]);
+  assert.equal(calls.length, 0);
+  const live = await main(['--apply'], deps);
+  assert.deepEqual(live.approve, [card.identifier]);
+  assert.deepEqual(calls.map((call) => call[0]), ['update', 'comment']);
+  assert.match(calls[1][2], /^Owner answered: approved/);
+  assert.match(calls[1][2], /"approved"/);
+  assert.deepEqual(calls[0][2], { labelIds: [otherLabel.id] });
+  await main(['--apply'], deps);
+  assert.equal(calls.length, 2, 'second run does not repeat the acknowledgement');
+  card.labels.nodes.push(approvalLabel);
+  await main(['--apply'], deps);
+  assert.equal(calls.length, 2, 'manually re-labeling does not replay a handled approval');
+});
+
+test('approval drain: no records the reason once and leaves all card fields alone', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const card = approvalIssue([approvalRequest(), c('No, make the text larger.', '10:05')]);
+  const { linear, calls } = approvalClient({ [card.identifier]: card });
+  const deps = { linear, now: () => new Date('2026-10-24T20:00:00Z') };
+  const live = await main(['--apply'], deps);
+  assert.deepEqual(live.decline, [card.identifier]);
+  assert.deepEqual(calls.map((call) => call[0]), ['comment']);
+  assert.match(calls[0][2], /^Owner declined:/);
+  assert.match(calls[0][2], /"No, make the text larger\."/);
+  assert.deepEqual(card.labels.nodes, [approvalLabel, otherLabel]);
+  await main(['--apply'], deps);
+  assert.equal(calls.length, 1);
+});
+
+test('approval drain: rechecks the label and latest request before writing', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  for (const change of [
+    (card) => { card.labels.nodes = [otherLabel]; },
+    (card) => { card.comments.nodes.push(c('Waiting on your approval: new crops.', '10:10')); },
+    (card) => { card.comments.nodes[1].body = 'no'; },
+    (card) => { card.state = { type: 'completed' }; },
+  ]) {
+    const card = approvalIssue([approvalRequest(), c('yes', '10:05')]);
+    const { linear, calls } = approvalClient({ [card.identifier]: card });
+    let reads = 0;
+    const getIssue = linear.getIssue;
+    linear.getIssue = async (id) => { if (++reads === 2) change(card); return getIssue(id); };
+    const result = await main(['--apply'], { linear, now: () => new Date('2026-10-24T20:00:00Z') });
+    assert.equal(result.skipped['changed-since-read'], 1);
+    assert.equal(calls.length, 0);
+  }
+});
+
+test('approval drain: preserves labels added since the initial scan', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const card = approvalIssue([approvalRequest(), c('yes', '10:05')]);
+  const { linear, calls } = approvalClient({ [card.identifier]: card });
+  let reads = 0;
+  const getIssue = linear.getIssue;
+  linear.getIssue = async (id) => {
+    if (++reads === 2) card.labels.nodes.push({ id: 'new-label', name: 'new' });
+    return getIssue(id);
+  };
+  await main(['--apply'], { linear, now: () => new Date('2026-10-24T20:00:00Z') });
+  assert.deepEqual(calls[0][2], { labelIds: [otherLabel.id, 'new-label'] });
+});
+
+test('approval drain: a failed label removal posts no acknowledgement and retries next run', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const card = approvalIssue([approvalRequest(), c('yes', '10:05')]);
+  const { linear, calls } = approvalClient({ [card.identifier]: card });
+  const update = linear.updateIssue;
+  linear.updateIssue = async () => { throw new Error('label write failed'); };
+  const deps = { linear, now: () => new Date('2026-10-24T20:00:00Z') };
+  try {
+    const failed = await main(['--apply'], deps);
+    assert.deepEqual(failed.failed, [card.identifier]);
+    assert.equal(calls.length, 0);
+    assert.deepEqual(card.labels.nodes, [approvalLabel, otherLabel]);
+    linear.updateIssue = update;
+    const retried = await main(['--apply'], deps);
+    assert.deepEqual(retried.approve, [card.identifier]);
+    assert.deepEqual(calls.map((call) => call[0]), ['update', 'comment']);
+  } finally {
+    process.exitCode = 0;
+  }
+});
+
+test('approval drain: reports an acknowledgement failure after applying the approval', async () => {
+  const { main } = require('../../scripts/linear-decision-reply-drain.js');
+  const card = approvalIssue([approvalRequest(), c('yes', '10:05')]);
+  const { linear, calls } = approvalClient({ [card.identifier]: card });
+  linear.createComment = async () => { throw new Error('comment write failed'); };
+  const deps = { linear, now: () => new Date('2026-10-24T20:00:00Z') };
+  try {
+    assert.deepEqual((await main(['--apply'], deps)).failed, [card.identifier]);
+    assert.deepEqual(calls.map((call) => call[0]), ['update']);
+    assert.deepEqual(card.labels.nodes, [otherLabel]);
+    assert.equal(card.comments.nodes.at(-1).body, 'yes', 'the original owner words remain recorded');
+  } finally {
+    process.exitCode = 0;
+  }
+});

@@ -35,6 +35,9 @@ import { spawnSyncStdinFile } from '../tests/helpers/spawn-stdin-file.mjs';
 import { randomUUID } from 'node:crypto';
 import { createRequire } from 'node:module';
 import { checkByteCap } from './lib/check-claude-md-byte-cap.js';
+// BRO-2892: fixture worktrees on the real repo must be removable while still
+// locked 'initializing' (a SIGKILL'd add) and on interrupt, or they leak.
+const { removeTempWorktree, reapStaleTempWorktrees, registerExitCleanup } = createRequire(import.meta.url)('./lib/temp-worktree.js');
 
 const REPO_ROOT = path.resolve(new URL('.', import.meta.url).pathname, '..');
 const CLI_PATH = path.join(REPO_ROOT, 'scripts', 'lib', 'check-claude-md-byte-cap.js');
@@ -379,9 +382,17 @@ function commitInClone(relPath, content, message) {
   return after;
 }
 
+let cleanupHookWorktree = () => {};
+
 before(() => {
   try {
+    reapStaleTempWorktrees(REPO_ROOT);
     hookWorktreeDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pre-push-hook-wt-'));
+    const dirForCleanup = hookWorktreeDir;
+    cleanupHookWorktree = registerExitCleanup(() => {
+      removeTempWorktree(REPO_ROOT, dirForCleanup);
+      spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
+    });
     fs.rmSync(hookWorktreeDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); // `git worktree add` wants a non-existent path
     spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
     const added = spawnSync('git', ['-C', REPO_ROOT, 'worktree', 'add', '-q', '-b', HOOK_WT_BRANCH, hookWorktreeDir, 'HEAD'], {
@@ -419,11 +430,9 @@ before(() => {
 });
 
 after(() => {
-  if (hookWorktreeDir) {
-    spawnSync('git', ['-C', REPO_ROOT, 'worktree', 'remove', '--force', hookWorktreeDir], { timeout: GIT_TIMEOUT_MS });
-    fs.rmSync(hookWorktreeDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
-  }
-  spawnSync('git', ['-C', REPO_ROOT, 'branch', '-D', HOOK_WT_BRANCH], { timeout: GIT_TIMEOUT_MS });
+  // Runs even when the add failed or timed out: a SIGKILL'd add leaves the
+  // registration locked 'initializing', which plain `remove --force` refuses.
+  cleanupHookWorktree();
 });
 
 const skipNoHookClone = { get skip() { return (!hookWorktreeDir || !shaUntouched || !shaOversized) && `worktree fixture failed to build: ${hookWorktreeError}`; } };

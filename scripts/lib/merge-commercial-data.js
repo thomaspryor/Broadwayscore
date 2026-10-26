@@ -220,6 +220,10 @@ function mergeRecordFields(o, r, b, winner) {
     }
     if (Object.keys(est).length) out.isEstimate = est;
   }
+  // A stored comparables figure only stands in for a missing capitalization
+  // (BRO-6344): one side's new capitalization merged with the other side's
+  // older model run would otherwise leave both on the record.
+  if (out.capitalization) delete out.modelCapitalizationEstimate;
   return { record: out, conflicts, contentConflicts, modelRunConflict };
 }
 

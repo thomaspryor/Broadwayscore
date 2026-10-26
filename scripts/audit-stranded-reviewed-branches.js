@@ -28,6 +28,7 @@ const {
 } = require('./lib/stranded-reviewed-branches');
 
 const { hasHelpFlag } = require('./lib/cli-help');
+const { isTempFixtureWorktreePath } = require('./lib/temp-worktree');
 
 const REPO = path.resolve(__dirname, '..');
 const argv = process.argv.slice(2);
@@ -125,7 +126,15 @@ const branches = [];
 const skippedDetail = [];
 function skip(wt, why) { skippedDetail.push(path.basename(wt) + ': ' + why); }
 
+// Test-fixture worktrees (pre-push-hook-wt-*, merge-gate-hook-test-*) are
+// named only by hook test suites and hold synthetic commits, never session
+// work. A killed suite used to leave them locked 'initializing' with no .git
+// file, which made every sweep UNTRUSTWORTHY (BRO-2892). Name them instead of
+// counting them as unmeasured; the suites reap them (scripts/lib/temp-worktree.js).
+const fixtureDebris = [];
+
 for (const wt of worktreePaths) {
+  if (isTempFixtureWorktreePath(wt)) { fixtureDebris.push(wt); continue; }
   if (!fs.existsSync(wt)) { skip(wt, 'worktree directory is gone'); continue; }
   const branch = gitQuiet(['branch', '--show-current'], wt);
   if (branch === null) { skip(wt, 'git metadata unreadable'); continue; }
@@ -334,6 +343,12 @@ if (JSON_OUT) {
 // INCLUDING the shared main checkout, which is the highest-risk location. Leaving
 // it out of trust accounting would let the script exit 0 while the one place that
 // motivated it went unmeasured (caught in review).
+if (fixtureDebris.length > 0) {
+  console.error('');
+  console.error(`NOTE: ignored ${fixtureDebris.length} hook test-fixture worktree(s) (synthetic, not session work); `
+    + 'the next hook test run reaps them once stale (scripts/lib/temp-worktree.js):');
+  for (const d of fixtureDebris) console.error('  ' + d);
+}
 if (mainUnpushed === null) skippedDetail.push('the shared main checkout: could not count unpushed commits');
 const trust = sweepIsTrustworthy({ scanned: branches.length, skipped: skippedDetail.length, fetchOk });
 if (!trust.trustworthy) {

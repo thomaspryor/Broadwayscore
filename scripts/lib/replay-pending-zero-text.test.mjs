@@ -267,3 +267,45 @@ describe('_pending age guard in validate-review-texts.js (BRO-2735)', () => {
     assert.match(gate.stdout, /report-only error\(s\) \(stale_pending\)/);
   });
 });
+
+describe('replay-pending-bylines: closes the pending-unrecoverable condition (BRO-6338)', () => {
+  // A redundant stub (its article already landed) leaves nothing unrecoverable.
+  const redundantSeed = () => {
+    const article = 'Review-ZEPHYR-NIGHTS-20261011';
+    const s = seed(zeroTextStub({
+      outletId: 'broadwayworld', outlet: 'BroadwayWorld', url: `https://www.broadwayworld.com/westend/article/${article}`,
+    }), 'broadwayworld--1234abcd.json');
+    fs.writeFileSync(path.join(s.root, SHOW.id, 'broadwayworld--jane-critic.json'), JSON.stringify({
+      showId: SHOW.id, outletId: 'broadwayworld', criticName: 'Jane Critic',
+      url: `https://www.broadwayworld.com/article/${article}`, fullText: 'Zephyr Nights is a gripping evening of theatre. '.repeat(40),
+    }));
+    return s;
+  };
+
+  test('complete scan with zero unrecoverable stubs resolves the show condition', async (t) => {
+    const s = redundantSeed();
+    t.after(() => fs.rmSync(s.root, { recursive: true, force: true }));
+    const resolved = [];
+    const r = await run(s, fakes(), { resolve: (key) => resolved.push(key) });
+    assert.equal(r.unrecoverable, 0);
+    assert.deepEqual(resolved, [`pending-unrecoverable:${SHOW.id}`]);
+  });
+
+  test('dry run, budget stop and a still-unrecoverable stub never resolve it', async (t) => {
+    const resolved = [];
+    const s1 = redundantSeed();
+    t.after(() => fs.rmSync(s1.root, { recursive: true, force: true }));
+    await run(s1, fakes(), { dryRun: true, resolve: (k) => resolved.push(k) });
+    const s2 = redundantSeed();
+    t.after(() => fs.rmSync(s2.root, { recursive: true, force: true }));
+    const f2 = fakes();
+    f2.deps.budget = { exceeded: () => true, minutes: 0 };
+    await run(s2, f2, { resolve: (k) => resolved.push(k) });
+    const s3 = seed();
+    t.after(() => fs.rmSync(s3.root, { recursive: true, force: true }));
+    const f3 = fakes({ fetchImpl: () => { throw new Error('blocked'); } });
+    const r3 = await run(s3, f3, { resolve: (k) => resolved.push(k) });
+    assert.equal(r3.unrecoverable, 1);
+    assert.deepEqual(resolved, []);
+  });
+});

@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { execFileSync, spawn } from 'node:child_process';
-import { mkdtempSync, rmSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
+import { mkdirSync, mkdtempSync, rmSync, readFileSync, appendFileSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -78,6 +78,32 @@ test('liveness: completed or re-run as a newer attempt is gone; unreadable is go
   assert.equal(m.ticketLiveness(t, { status: 'queued', run_attempt: 2 }, { now: NOW }), 'gone');
   assert.equal(m.ticketLiveness(t, null, { now: NOW }), 'live');
   assert.equal(m.ticketLiveness(T('1', { at: NOW - m.STALE_AGE_MS - 1 }), null, { now: NOW }), 'gone');
+});
+
+test('HTTP 404 identifies a missing run; other lookup failures keep the age fallback', () => {
+  const { isRefNotFound } = require('./land-retry-on-cancel.js');
+  assert.equal(isRefNotFound({ stderr: Buffer.from('gh: Not Found (HTTP 404)') }), true);
+  for (const message of ['gh: Forbidden (HTTP 403)', 'gh: rate limit exceeded (HTTP 429)', 'gh: Server Error (HTTP 502)', 'connect ETIMEDOUT', 'Not Found']) {
+    assert.equal(isRefNotFound({ stderr: message }), false, message);
+  }
+});
+
+test('a fresh missing holder is broken; unreadable and in_progress holders keep the lock', () => {
+  const holder = T('1', { at: NOW - 1000 });
+  for (const [run, expectedLiveness, expectedAction] of [
+    [{ status: 'missing' }, 'gone', 'break-lock'],
+    [null, 'live', 'wait'],
+    [{ status: 'in_progress', run_attempt: 1 }, 'live', 'wait'],
+  ]) {
+    const verdict = m.ticketLiveness(holder, run, { now: NOW });
+    assert.equal(verdict, expectedLiveness);
+    const d = m.decideStep({ state: state([holder, T('2')], holder.sha), self: me,
+      liveness: (ref) => ref === holder.ref ? verdict : undefined,
+      stuck: { ref: holder.ref, since: NOW - m.GRACE_MS }, now: NOW });
+    assert.equal(d.action, expectedAction);
+    assert.equal(d.reason, expectedAction === 'break-lock' ? 'holder-gone' : 'locked');
+    if (d.action === 'break-lock') assert.equal(d.sha, holder.sha);
+  }
 });
 
 test('poll delay grows to the cap with jitter', () => {
@@ -157,6 +183,30 @@ test('CLI: a dead holder (lock + ticket left past the age cap) is broken and the
     assert.match(a.out, /dropped stale ticket/, a.out);
     assert.match(a.out, /holding the landing lock/, a.out);
     await run(['release'], cliEnv(ctx.remote, 21), ctx.work);
+  } finally {
+    rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
+test('CLI: HTTP 404 breaks a fresh holder through leased recovery and the waiter proceeds', { timeout: 30000 }, async () => {
+  const ctx = setup();
+  try {
+    const bin = path.join(ctx.dir, 'bin');
+    mkdirSync(bin);
+    writeFileSync(path.join(bin, 'gh'), '#!/usr/bin/env node\nprocess.stderr.write("gh: Not Found (HTTP 404)\\n"); process.exit(1);\n', { mode: 0o755 });
+    const tree = execFileSync('git', ['-C', ctx.work, 'hash-object', '-t', 'tree', '-w', '/dev/null'], { encoding: 'utf8' }).trim();
+    const sha = execFileSync('git', ['-C', ctx.work, '-c', 'user.name=t', '-c', 'user.email=t@t', 'commit-tree', tree, '-m', 'missing run'], { encoding: 'utf8' }).trim();
+    const holder = m.ticketName({ mainRed: false, enqueuedAt: Date.now(), runId: '99', attempt: 1 });
+    execFileSync('git', ['-C', ctx.work, 'push', '-q', ctx.remote, `${sha}:${holder}`, `${sha}:${m.LOCK_REF}`]);
+    const env = cliEnv(ctx.remote, 22, { LAND_MUTEX_NO_API: '0', PATH: `${bin}${path.delimiter}${process.env.PATH}` });
+    const a = await run(['acquire'], env, ctx.work);
+    assert.equal(a.code, 0, a.out);
+    assert.match(a.out, /broke stale lock .* \(holder-gone\)/, a.out);
+    assert.match(a.out, /dropped stale ticket/, a.out);
+    assert.match(a.out, /holding the landing lock/, a.out);
+    const r = await run(['release'], env, ctx.work);
+    assert.equal(r.code, 0, r.out);
+    assert.equal(execFileSync('git', ['ls-remote', ctx.remote, 'refs/land-mutex/*'], { encoding: 'utf8' }).trim(), '');
   } finally {
     rmSync(ctx.dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }

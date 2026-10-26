@@ -135,6 +135,8 @@ const RECENT_QUERY = `query RecentCards($filter: IssueFilter, $after: String) {
 function ceremonyKind(card, nowMs) {
   const title = String(card.title || '').trim();
   if (/^\[E2E Canary\]/i.test(title)) return 'canary';
+  // BRO-6338: sessions' own end-to-end test cards ("TEST (BRO-6235): ... safe to ignore") close themselves.
+  if (/^TEST \(BRO-\d+\):.*\bsafe to ignore\b/i.test(title)) return 'canary';
   // BRO-6130: a card closed as a Duplicate of another is the same work counted twice.
   if (String(card.state && card.state.name || '').trim().toLowerCase() === 'duplicate') return 'duplicate';
   if (/^Opening-night (?:watch|audit) \d{4}-\d{2}-\d{2}$/i.test(title)
@@ -399,6 +401,26 @@ function buildBoardNumbers({ data = {}, waiting = null, stuck = null, technicalI
   };
 }
 
+/**
+ * BRO-6338. PURE. When cards were added faster than they were closed on each of the last
+ * two complete days, one line naming the top filing source of the last 24h. null otherwise.
+ * Daily counts cover every card (session self-tracking included); the source split excludes
+ * test alarms, routine logs and self-tracking, so the line says which is which.
+ */
+function filingOutpacesClosingLine(m) {
+  // A truncated page makes the daily counts minimums, so the comparison can't be trusted.
+  const days = m && Array.isArray(m.daily) && !m.dailyTruncated ? m.daily.slice(-2) : [];
+  if (days.length < 2 || !days.every((d) => d.added > d.closed)) return null;
+  const top = m.bySource && Array.isArray(m.bySource.bySource) ? m.bySource.bySource[0] : null;
+  const added = days.reduce((a, d) => a + d.added, 0);
+  const closed = days.reduce((a, d) => a + d.closed, 0);
+  const total = m.bySource && Number.isFinite(m.bySource.total) ? m.bySource.total : null;
+  const who = top ? ` Top filer in 24h: ${top.source}, ${top.count}${total ? ` of ${total}` : ''} (not counting test alarms, routine logs and self-tracking).` : '';
+  const flood = m.bySource && m.bySource.floods && m.bySource.floods[0]
+    ? ` Biggest flood: ${m.bySource.floods[0].source} "${m.bySource.floods[0].kind}" ${m.bySource.floods[0].count}.` : '';
+  return `Filing is outpacing closing for 2 days: ${added} added, ${closed} closed (all cards, canceled counted as closed).${who}${flood}`;
+}
+
 const FLOOD_LABEL = `${cardDedupe.FLOOD_THRESHOLD}+ cards of one kind from one filer in 24h`;
 const show = (v) => (v === null || v === undefined ? 'n/a' : String(v));
 
@@ -423,6 +445,8 @@ function renderBoardNumbersLines(m) {
       lines.push(`Floods (${FLOOD_LABEL}): ${m.bySource.floods.slice(0, 5).map((f) => `${f.source} "${f.kind}" ${f.count}`).join('; ')}`);
     }
   }
+  const outpacing = filingOutpacesClosingLine(m);
+  if (outpacing) lines.push(outpacing);
   lines.push(flowLine('Completed', m.completed));
   exclusions('Completed', m.excluded.completed);
   lines.push(`Canceled: ${show(m.canceled.d1)} in 24h, ${show(m.canceled.d7)} in 7 days`);
@@ -453,5 +477,5 @@ function renderBoardNumbersHtml(m, esc = (s) => String(s)) {
 
 module.exports = {
   summarizeBoardFlow, fetchBoardInflowCounts,
-  fetchOpenByPriority, fetchStuckCards, fetchParkedCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchOpusUsage, fetchClaudeCost, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, PRIORITY_LABELS,
+  fetchOpenByPriority, fetchStuckCards, fetchParkedCards, fetchInflowBySource, summarizeInflowBySource, readLanded, fetchOpusUsage, fetchClaudeCost, fetchBoardNumbersData, buildBoardNumbers, renderBoardNumbersLines, renderBoardNumbersHtml, filingOutpacesClosingLine, ceremonyKind, PRIORITY_LABELS,
 };

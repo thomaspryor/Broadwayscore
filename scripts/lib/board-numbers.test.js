@@ -409,3 +409,24 @@ test('BRO-5770: an Opus read failure preserves the rest of the digest and render
   assert.ok(lines.includes('Added: 3 in 24h (7-day average 0.4/day), 3 in 7 days'));
   assert.ok(lines.includes(`Opus in last 24h: n/a of ${require('./bsc-next-model.js').linearOpusDailyCap()}`));
 });
+
+test('BRO-6338: filingOutpacesClosingLine names the top filer only when added > closed on both of the last 2 days', () => {
+  const bySource = { total: 40, bySource: [{ source: 'digest-autofix', count: 12 }, { source: 'ci-red', count: 5 }], floods: [{ source: 'digest-autofix', kind: 'fix', count: 9 }] };
+  const day = (added, closed) => ({ day: 'x', added, closed, canceled: 0 });
+  const line = B.filingOutpacesClosingLine({ daily: [day(1, 9), day(60, 40), day(70, 50)], bySource });
+  assert.match(line, /outpacing closing for 2 days: 130 added, 90 closed/);
+  assert.match(line, /Top filer in 24h: digest-autofix, 12 of 40/);
+  assert.match(line, /Biggest flood: digest-autofix "fix" 9/);
+  assert.equal(B.filingOutpacesClosingLine({ daily: [day(60, 40), day(30, 50)], bySource }), null, 'one catch-up day clears it');
+  assert.equal(B.filingOutpacesClosingLine({ daily: [day(50, 50), day(70, 50)], bySource }), null, 'equal is not outpacing');
+  assert.equal(B.filingOutpacesClosingLine({ daily: [day(70, 50)], bySource }), null, 'needs 2 days');
+  assert.equal(B.filingOutpacesClosingLine({ daily: null, bySource }), null);
+  assert.equal(B.filingOutpacesClosingLine({ daily: [day(70, 50), day(70, 50)], dailyTruncated: true, bySource }), null, 'truncated counts are minimums');
+  assert.match(B.filingOutpacesClosingLine({ daily: [day(9, 1), day(9, 1)], bySource: null }), /^Filing is outpacing closing for 2 days: 18 added, 2 closed \(all cards, canceled counted as closed\)\.$/);
+});
+
+test('BRO-6338: ceremonyKind treats "TEST (BRO-N) ... safe to ignore" cards as test alarms', () => {
+  const card = (title) => ({ title, description: 'Filed by: session (kind: fix)', createdAt: '2026-10-24T01:00:00Z', completedAt: '2026-10-24T02:00:00Z' });
+  assert.equal(B.ceremonyKind(card('TEST (BRO-6235): end-to-end check, safe to ignore'), Date.parse("2026-10-24T12:00:00Z")), 'canary');
+  assert.notEqual(B.ceremonyKind(card('TEST coverage for search, safe to ignore after launch'), Date.parse("2026-10-24T12:00:00Z")), 'canary');
+});

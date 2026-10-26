@@ -23,8 +23,8 @@
  *       both hold the lock.
  *
  * Stale-break: a holder or queue head that has not moved for GRACE_MS is
- * checked against the Actions API. Its run completed, or re-ran as a newer
- * attempt, means it is gone; the lock/ticket is deleted with a lease on the
+ * checked against the Actions API. A run that completed, was deleted (HTTP 404),
+ * or re-ran as a newer attempt is gone; the lock/ticket is deleted with a lease on the
  * exact sha seen, so a breaker can never delete a lock someone re-took in
  * between. Unreadable API → gone only past STALE_AGE_MS from enqueue (longer
  * than any job's timeout). A lock whose ticket is missing (its holder's ticket
@@ -114,13 +114,14 @@ function parseLsRemote(text) {
 const isSelf = (t, self) => Boolean(t && self) && t.runId === String(self.runId) && t.attempt === Number(self.attempt);
 
 /**
- * A ticket's run (GET actions/runs/{id}, or null when unreadable) → 'live' | 'gone'.
- * Gone: the run finished, or it is on a newer attempt than the ticket's (the
- * ticket's attempt died without releasing). Unreadable: gone only past the age cap.
+ * A ticket's run (GET actions/runs/{id}), {status: 'missing'} for HTTP 404,
+ * or null when unreadable → 'live' | 'gone'. Gone: the run finished, is missing,
+ * or is on a newer attempt than the ticket's (the ticket's attempt died without
+ * releasing). Unreadable: gone only past the age cap.
  */
 function ticketLiveness(ticket, run, { now = Date.now(), staleAgeMs = STALE_AGE_MS } = {}) {
   if (run && typeof run === 'object' && run.status) {
-    if (run.status === 'completed') return 'gone';
+    if (run.status === 'completed' || run.status === 'missing') return 'gone';
     if (Number(run.run_attempt || 1) > ticket.attempt) return 'gone';
     return 'live';
   }

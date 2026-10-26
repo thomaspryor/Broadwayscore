@@ -14,18 +14,20 @@
  * "go with A") and nothing a session usually writes. A reply that is short but
  * not a pick gets one plain follow-up question, never a guess.
  *
+ * BRO-6180: also handles yes/no replies to awaiting-owner approval cards.
  * Pure, no I/O (CLAUDE.md rule 15); scripts/linear-decision-reply-drain.js does
  * the reads and writes.
  */
 
 const { MARKER_RE, SETTLED_RE, cleanOwnerText, isPlaceholder, parseDecisionDescription, recommendedKey } = require('./decision-card-parse.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
+const { AWAITING_OWNER_LABEL, isAwaitingOwner } = require('./owner-approval-channel.js');
+const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
 
 const TAG_HANDLED = '[owner-reply-handled]';
 const TAG_UNCLEAR = '[owner-reply-unclear]';
 const MAX_PICK_CHARS = 60;
 const MAX_UNCLEAR_CHARS = 200;
-const AWAITING_OWNER_LABEL = 'awaiting-owner';
 
 // Comments a session or the machinery writes. A match is never the owner's reply.
 const SESSION_TEXT_RE = /^(?:owner (?:answered|declined|picked|chose)\b|answered\b|claimed by\b|dispatched\b|outcome\b|pr-evidence\b|verify\b|session report\b|key files\b|unparked\b|auto-|reclaimed|\*\*re-arm|##\s|<!--)/i;
@@ -80,6 +82,27 @@ function parseReply(body, card) {
   return { kind: 'ignore' };
 }
 
+function parseApprovalReply(body) {
+  if (!looksHuman(body)) return { kind: 'ignore' };
+  const text = plainBody(body);
+  const no = /^(?:no|nope|nah|declined?|reject(?:ed)?|not (?:approved|yet)|(?:i )?(?:do not|don['’]t) (?:approve|proceed|ship|go ahead)|hold off|wait|stop)\b/i.exec(text);
+  const unclear = { kind: no || /^(?:yes|yep|yeah|approve[ds]?|go ahead|do it|not sure|maybe)\b/i.test(text) ? 'unclear' : 'ignore' };
+  if (!text || text.length > MAX_UNCLEAR_CHARS || URL_RE.test(String(body).trim())) return unclear;
+  if (YES_RE.test(text)) return { kind: 'approve' };
+  // A reason after an explicit no is safe to record. Conditional yes replies
+  // and session notes such as "No issues found" never grant approval.
+  if (no && /^(?:\s*[.!]*|\s*[:,]\s*\S.*)$/.test(text.slice(no[0].length))) return { kind: 'decline' };
+  return unclear;
+}
+
+function approvalComment({ action, comment, date }) {
+  const words = JSON.stringify(plainBody(comment.body));
+  if (action === 'decline') {
+    return `Owner declined: by replying ${words} on ${date}.\n\nThe card remains awaiting-owner; nothing was started.`;
+  }
+  return `Owner answered: approved, by replying ${words} on ${date}.\n\nThe awaiting-owner label was removed. The blocked session or worker can continue.`;
+}
+
 function byCreatedAt(a, b) {
   return String(a.createdAt || '').localeCompare(String(b.createdAt || ''));
 }
@@ -91,15 +114,16 @@ function byCreatedAt(a, b) {
  * Settled markers: an "Owner answered" note, our handled/unclear tags.
  * @returns {{comment: object, reply: object} | null}
  */
-function findReplyComment(comments, card) {
+function findReplyComment(comments, card, { approval = false } = {}) {
   const sorted = (comments || []).filter((c) => c && c.body != null).slice().sort(byCreatedAt);
   let lastStop = -1;
   sorted.forEach((c, i) => {
     const t = plainBody(c.body);
+    if (approval && /^(?:Waiting on your approval\b|Owner decision\b)/i.test(t)) lastStop = i;
     if (/^owner (?:answered|declined|picked|chose)\b/i.test(t) || t.startsWith(TAG_HANDLED) || String(c.body).trim().startsWith(TAG_UNCLEAR)) lastStop = i;
   });
   for (let i = sorted.length - 1; i > lastStop; i--) {
-    const reply = parseReply(sorted[i].body, card);
+    const reply = approval ? parseApprovalReply(sorted[i].body) : parseReply(sorted[i].body, card);
     if (reply.kind !== 'ignore') return { comment: sorted[i], reply };
   }
   return null;
@@ -207,16 +231,24 @@ function clarifyComment({ options }) {
 /**
  * One decision, one verdict. `issue` is a full read (description, title, comments.nodes,
  * labels, state, priority). Returns {action, ...} where action is one of
- * 'skip' | 'clarify' | 'dispatch' | 'needs-session' | 'owner-only'.
+ * 'skip' | 'clarify' | 'dispatch' | 'needs-session' | 'owner-only' | 'approve' | 'decline'.
  */
 function planReply(issue, { date, verifyCommand, unfitReason, nowMs } = {}) {
+  if (['completed', 'canceled'].includes(issue.state && issue.state.type)) return { action: 'skip', why: 'closed' };
   const card = parseDecisionDescription(issue.description);
-  if (!card) return { action: 'skip', why: 'no-live-decision' };
-  const found = findReplyComment(issue.comments && issue.comments.nodes, card);
+  const approval = !card && isAwaitingOwner(issue);
+  if (!card && !approval) return { action: 'skip', why: 'no-live-decision' };
+  // Signed visual approvals bind a particular diff and verdict. A plain yes
+  // must not stand in for their VQA authorization.
+  if (approval && parseVisualApproval(issue.description)) return { action: 'skip', why: 'signed-visual-approval' };
+  const comments = (issue.comments && issue.comments.nodes) || [];
+  const found = findReplyComment(comments, card, { approval });
   if (!found) return { action: 'skip', why: 'no-reply' };
   const { comment, reply } = found;
   const at = Date.parse(comment.createdAt);
   if (Number.isFinite(nowMs) && Number.isFinite(at) && nowMs - at > MAX_REPLY_AGE_MS) return { action: 'skip', why: 'reply-too-old' };
+  if (approval && reply.kind === 'unclear') return { action: 'skip', why: 'unclear-approval-reply' };
+  if (approval) return { action: reply.kind, comment, date };
   if (reply.kind === 'unclear') return { action: 'clarify', why: reply.why, comment, card };
   const opt = card.options.find((o) => o.key === reply.key) || {};
   const base = { key: reply.key, name: opt.name || '', upside: opt.upside || '', comment, card, date };
@@ -234,6 +266,6 @@ function planReply(issue, { date, verifyCommand, unfitReason, nowMs } = {}) {
 
 module.exports = {
   AWAITING_OWNER_LABEL, TAG_HANDLED, TAG_UNCLEAR,
-  answeredComment, clarifyComment, dispatchedNote, dropMarkerFromTitle, findReplyComment, looksHuman,
+  answeredComment, approvalComment, clarifyComment, dispatchedNote, dropMarkerFromTitle, findReplyComment, looksHuman,
   needsSessionNote, ownerOnlyComment, ownerOnlyReason, parseReply, planReply, rewriteDescription,
 };

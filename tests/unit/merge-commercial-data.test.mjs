@@ -17,6 +17,15 @@ const {
 } = require('../../scripts/lib/merge-commercial-data');
 
 describe('mergeCommercialJson', () => {
+  it('drops a stale comparables estimate when the merge brings in a capitalization (BRO-6344)', () => {
+    const base = { shows: { a: { designation: 'Flop', modelCapitalizationEstimate: 9e6, lastUpdated: '2026-01-01T00:00:00.000Z' } } };
+    const ours = { shows: { a: { ...base.shows.a, capitalization: 3350000, capitalizationSource: 'x', lastUpdated: '2026-02-01T00:00:00.000Z' } } };
+    const remote = { shows: { a: { ...base.shows.a, modelLastRun: '2026-01-05', lastUpdated: '2026-01-05T00:00:00.000Z' } } };
+    const { merged } = mergeCommercialJson(ours, remote, base);
+    assert.equal(merged.shows.a.capitalization, 3350000);
+    assert.equal(merged.shows.a.modelCapitalizationEstimate, undefined);
+  });
+
   it('returns union of slugs when no overlap', () => {
     const ours = { shows: { 'a': { designation: 'Hit' } } };
     const remote = { shows: { 'b': { designation: 'Flop' } } };

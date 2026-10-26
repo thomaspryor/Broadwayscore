@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-26T13:15:05.071Z",
+  "generatedAt": "2026-10-26T14:22:03.249Z",
   "date": "2026-10-26",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 194468,
+  "entryCount": 198736,
   "shows": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -11857,6 +11857,141 @@
         "first-seen-to-collected": null,
         "collected-to-scored": 974197,
         "scored-to-rebuilt": 772790,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "lights-out-nat-king-cole-off-broadway-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1086230,
+        "scored-to-rebuilt": 235517,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "bowl-ep-off-broadway-2025",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1063396,
+        "scored-to-rebuilt": 869374,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "all-the-worlds-a-stage-off-broadway-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1039077,
+        "scored-to-rebuilt": 204835,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "irishtown-off-broadway-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1006552,
+        "scored-to-rebuilt": 184561,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-swamp-dwellers-off-broadway-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 957978,
+        "scored-to-rebuilt": 163821,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "im-assuming-you-know-david-greenspan-off-broadway-2025",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 910118,
+        "scored-to-rebuilt": 791107,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "have-you-met-jane-goodall-and-her-mother-off-broadway-2025",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 861952,
+        "scored-to-rebuilt": 779663,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "conversations-with-mother-off-broadway-2025",
+      "reviewCount": 8,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 799613,
+        "scored-to-rebuilt": 106027,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "hungry-women-off-broadway-2026",
+      "reviewCount": 9,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
