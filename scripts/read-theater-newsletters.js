@@ -95,7 +95,7 @@ function normalizeGmailMessage(m) {
   };
 }
 
-async function fetchGmail(days) {
+async function fetchGmail(days, query = nf.buildQuery(days)) {
   const { google } = require('googleapis'); // eslint-disable-line
   const { withGmailRetry } = require('./lib/gmail-quota-retry');
   const { GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET, GMAIL_REFRESH_TOKEN } = process.env;
@@ -105,7 +105,7 @@ async function fetchGmail(days) {
   const auth = new google.auth.OAuth2(GMAIL_CLIENT_ID, GMAIL_CLIENT_SECRET);
   auth.setCredentials({ refresh_token: GMAIL_REFRESH_TOKEN });
   const gmail = google.gmail({ version: 'v1', auth });
-  const q = nf.buildQuery(days);
+  const q = query;
   const out = [];
   let pageToken;
   do {
@@ -228,6 +228,23 @@ async function processPosts(source, posts, { extract, shows, commercial, items, 
   return issues;
 }
 
+// Substack refuses GitHub runner IPs on the feed and the archive API alike, but the same
+// posts reach the owner's inbox with their public URL, so the email copy is the fallback.
+const ABROADWAY_SENDER = 'gordoncox@substack.com';
+
+/** Gmail messages -> web-source posts: exact sender, DKIM-verified, public URL found. */
+function emailPosts(source, messages, sender = ABROADWAY_SENDER) {
+  const posts = [];
+  for (const m of messages || []) {
+    if (nf.parseFromAddress(m.from) !== sender) continue;
+    if (!nf.dkimPassesFor(source, m.authResults)) continue;
+    const url = nf.pickIssueUrl(source, nf.extractLinks(`${m.html || ''} ${m.text || ''}`));
+    if (!url) continue;
+    posts.push({ url, date: String(m.date).slice(0, 10), title: m.subject, text: m.text });
+  }
+  return posts;
+}
+
 const ABROADWAY_ARCHIVE = 'https://gordoncox.substack.com/api/v1/archive?sort=new&limit=10';
 
 const allowSourceUrl = (source) => (url) => {
@@ -313,6 +330,19 @@ async function main() {
     issues.push(...await processPosts(source, r.posts, shared));
   }
 
+  const abroadway = nf.WEB_SOURCES.find((w) => w.key === 'abroadway');
+  if (abroadway && want(abroadway.key) && listingEmptyBy[abroadway.key] && !args.fromFile) {
+    try {
+      const posts = emailPosts(abroadway, await fetchGmail(args.days, `newer_than:${args.days}d from:${ABROADWAY_SENDER}`));
+      console.log(`  Abroad/Way: web listing unreachable, read ${posts.length} issue(s) from email.`);
+      listingEmptyBy[abroadway.key] = posts.length === 0;
+      listings[abroadway.key] = posts;
+      issues.push(...await processPosts(abroadway, posts, shared));
+    } catch (err) {
+      console.error(`Abroad/Way email fallback failed: ${err.message}`);
+    }
+  }
+
   const briefing = nf.EMAIL_SENDERS[0];
   if (want(briefing.key)) {
     let messages;
@@ -392,4 +422,4 @@ async function main() {
 
 if (require.main === module) runMain(main);
 
-module.exports = { processMessages, processPosts, normalizeGmailMessage, htmlToText, parseArgs, summarize };
+module.exports = { processMessages, processPosts, emailPosts, normalizeGmailMessage, htmlToText, parseArgs, summarize };

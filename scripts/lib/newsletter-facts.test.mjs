@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const nf = require('./newsletter-facts.js');
-const { processMessages, processPosts } = require('../read-theater-newsletters.js');
+const { processMessages, processPosts, emailPosts } = require('../read-theater-newsletters.js');
 
 const CHROMO = nf.WEB_SOURCES[0];
 const SUBSTACK = nf.WEB_SOURCES[1];
@@ -298,4 +298,22 @@ test('processMessages: an email with no bway.ly links at all is a skip (format d
   const r = await processMessages([msg({ html: '<p>Raised $20 million, no short links here</p>', text: 'Raised $20 million' })], base(ex));
   assert.equal(r.issues[0].status, 'skipped');
   assert.equal(r.issues[0].reason, 'no-bway-links');
+});
+
+// BRO-6265: Substack blocks GitHub runners, so Abroad/Way falls back to its email copy.
+test('emailPosts keeps only DKIM-verified Gordon Cox mail with a public post URL', () => {
+  const aw = nf.WEB_SOURCES.find((w) => w.key === 'abroadway');
+  const dk = 'mx.google.com; dkim=pass header.i=@substack.com header.s=s1';
+  const post = 'https://gordoncox.substack.com/p/international-theater-news-x';
+  const m = (over) => ({ from: 'Gordon Cox <gordoncox@substack.com>', authResults: [dk], date: '2026-10-21T12:00:00.000Z', subject: 'ABROAD/WAY', text: 'body', html: `<a href="https://substack.com/redirect/abc">x</a> <a href="${post}?utm_source=email">read</a>`, ...over });
+  const posts = emailPosts(aw, [
+    m(),
+    m({ from: 'someone@substack.com' }),
+    m({ authResults: ['mx.google.com; dkim=fail header.i=@substack.com'] }),
+    m({ html: '<a href="https://otherwriter.substack.com/p/y">y</a>', text: '' }),
+  ]);
+  assert.equal(posts.length, 1);
+  assert.equal(posts[0].url, post);
+  assert.equal(posts[0].date, '2026-10-21');
+  assert.equal(posts[0].text, 'body');
 });
