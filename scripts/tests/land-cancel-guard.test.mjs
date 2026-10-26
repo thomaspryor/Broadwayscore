@@ -66,3 +66,21 @@ test('kill switch and unknown session fail open', () => {
 test('unreadable run fails open', () => {
   assert.equal(hook(bash('gh run cancel 40274353165'), 'not json').code, 0);
 });
+test('a -R on another command in the chain does not bypass the guard', () => {
+  assert.equal(hook(bash('ls -R /tmp && gh run cancel 40274353165'), run('01SomeoneElse')).code, 2);
+  assert.equal(hook(bash('gh run cancel 40274353165 --repo thomaspryor/Broadwayscore'), run('01SomeoneElse')).code, 2);
+});
+test('takes the run id after cancel, not another number in the command', () => {
+  const r = hook(bash('sleep 1234567 ; gh run cancel "40274353165" 2>&1 | tail -n 1000000'), run('01SomeoneElse'));
+  assert.equal(r.code, 2);
+  assert.match(r.err, /40274353165/);
+});
+test('refuses the :owner/:repo REST form and a run URL', () => {
+  for (const c of ['gh api -X POST repos/:owner/:repo/actions/runs/40274353165/cancel',
+    'gh run cancel https://github.com/thomaspryor/Broadwayscore/actions/runs/40274353165']) {
+    assert.equal(hook(bash(c), run('01SomeoneElse')).code, 2, c);
+  }
+});
+test('block message names the kill switch', () => {
+  assert.match(hook(bash('gh run cancel 40274353165'), run('01SomeoneElse')).err, /LAND_CANCEL_GUARD_OFF/);
+});

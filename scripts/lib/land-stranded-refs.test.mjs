@@ -149,7 +149,7 @@ test('a ref whose card later landed from another ref is a leftover, not stranded
 
 // ---- BRO-6276: name hand cancels ----
 const {
-  cancelledByFromAnnotations, isHandCancel, cancelledJob, buildHandCancelComment,
+  cancelledByFromAnnotations, isHandCancel, cancelledJobs, buildHandCancelComment,
 } = require('./land-stranded-refs.js');
 
 test('canceller is read from the GitHub annotation, bot and person alike', () => {
@@ -160,18 +160,20 @@ test('canceller is read from the GitHub annotation, bot and person alike', () =>
   assert.equal(cancelledByFromAnnotations(null), null);
 });
 
-test('only a non-bot login counts as a hand cancel (Admit parks with the workflow token)', () => {
+test('any login but the workflow token counts as a hand cancel (Admit parks with it)', () => {
   assert.equal(isHandCancel('thomaspryor'), true);
   assert.equal(isHandCancel('github-actions[bot]'), false);
   assert.equal(isHandCancel(null), false);
+  assert.equal(isHandCancel('claude[bot]'), true);
 });
 
-test('the cancelled Land job is preferred, else a cancelled Checks job', () => {
+test('cancelled Land then Checks jobs are both tried for the canceller', () => {
   const land = { ...queuedLand, id: 1 };
   const checks = { ...job('Checks', 'cancelled'), id: 2 };
-  assert.equal(cancelledJob([checksOk, land]).id, 1);
-  assert.equal(cancelledJob([checks, job('Land', 'skipped')]).id, 2);
-  assert.equal(cancelledJob([checksOk, job('Land', 'success')]), null);
+  assert.deepEqual(cancelledJobs([checksOk, land]).map((j) => j.id), [1]);
+  assert.deepEqual(cancelledJobs([checks, job('Land', 'skipped')]).map((j) => j.id), [2]);
+  assert.deepEqual(cancelledJobs([checks, land]).map((j) => j.id), [1, 2]);
+  assert.deepEqual(cancelledJobs([checksOk, job('Land', 'success')]), []);
 });
 
 test('hand-cancel note names the run and canceller and dedupes per attempt', () => {

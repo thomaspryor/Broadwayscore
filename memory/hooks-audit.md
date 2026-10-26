@@ -77,7 +77,7 @@ These run on cloud sessions, where `~/.claude/hooks/` does not exist. Copies tha
 | infra-plan-review-gate.sh | PreToolUse | KEEP | Cloud copy of the master guard. |
 | infra-post-write-audit.sh | PostToolUse Bash | KEEP | Cloud copy of the master backstop. |
 | github-main-guard.sh | PreToolUse GitHub MCP | KEEP | GitHub MCP writes server-side and bypasses every git hook; sole guard on main. |
-| land-cancel-guard.sh | PreToolUse Bash, GitHub MCP actions_run_trigger | KEEP | A session cancelling another session's Land run strands that land for an hour (BRO-6276); the mutex parks runs with the workflow token, so only a pre-execution block stops it. |
+| land-cancel-guard.sh | PreToolUse Bash, GitHub MCP actions_run_trigger | KEEP | A session cancelling another session's Land run strands that land for an hour (BRO-6276); the mutex parks runs with the workflow token, so only a pre-execution block stops it. Cloud-only in effect (keys on CLAUDE_CODE_REMOTE_SESSION_ID). |
 | block-prompting-remote-tools.sh | PreToolUse remote MCP | KEEP | Those tools prompt the owner's phone in every mode. |
 | enterworktree-guard.sh | PreToolUse EnterWorktree | KEEP | Same-name resume of a locked/dirty worktree caused a real cross-session clobber (2026-07-26). |
 | check-skill-redaction.sh | PreToolUse Bash | KEEP | Repo is public; blocks pushes that reintroduce a redacted sensitive string. |
