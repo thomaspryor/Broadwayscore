@@ -284,22 +284,39 @@ test('blocked live page verifies through its Wayback snapshot and records verifi
     fetched.push(url);
     return url.startsWith('https://web.archive.org/') ? { content: `<h1>Example closes</h1> Example's 2025 capitalization was $12.5 million. ${'x '.repeat(10)}` } : null;
   };
-  const waybackLookup = async () => ({ archived_snapshots: { closest: { available: true, url: 'http://web.archive.org/web/20251027000000/https://variety.com/example' } } });
+  const waybackLookup = async () => ({ archived_snapshots: { closest: { available: true, status: '200', timestamp: '20251027000000', url: 'http://web.archive.org/web/20251027000000/https://variety.com/example' } } });
   const evidence = await createSourceVerifier({ fetchPage, waybackLookup })(entry, show);
   assert.equal(evidence.capitalization.found, true);
   assert.equal(evidence.capitalization.verifiedVia, 'wayback');
-  assert.equal(evidence.fetchFailed, undefined);
+  assert.equal(evidence.weeklyRunningCost, undefined); // page states only capitalization: the cost stays retryable (fetchFailed)
   assert.equal(fetched[1], 'https://web.archive.org/web/20251027000000id_/https://variety.com/example');
   assert.equal(buildCommercialEntry(entry, null, { figureEvidence: evidence }).figureVerifiedVia.capitalization, 'wayback');
   // Homepage-sized answer (url_mismatch shape) also falls back; no snapshot leaves the live result standing.
   assert.deepEqual(await createSourceVerifier({ fetchPage: async () => ({ content: 'Home' }), waybackLookup: async () => ({ archived_snapshots: {} }) })(entry, show), {});
   assert.deepEqual(await createSourceVerifier({ fetchPage: async () => null, waybackLookup: async () => { throw Error('down'); } })(entry, show), { fetchFailed: true });
   // Non-archive snapshot hosts are refused.
-  assert.equal(await waybackSnapshotUrl('https://x.com/a', async () => ({ archived_snapshots: { closest: { available: true, url: 'https://evil.com/web/1/x' } } })), null);
+  assert.equal(await waybackSnapshotUrl('https://x.com/a', async () => ({ archived_snapshots: { closest: { available: true, status: '200', timestamp: 'x', url: 'https://evil.com/web/1/x' } } })), null);
 });
 test('a full live page that states the figure never touches the archive', async () => {
   const content = `Example's 2025 capitalization was $12.5 million. ${'filler '.repeat(300)}`;
   const evidence = await createSourceVerifier({ fetchPage: async () => ({ content }), waybackLookup: async () => { throw Error('should not be called'); } })(entry, show);
   assert.equal(evidence.capitalization.verifiedVia, undefined);
   assert.equal(evidence.capitalization.found, true);
+});
+test('an archived stub that lacks the figure keeps the fetch-failure retry; stale wayback marks clear', async () => {
+  const waybackLookup = async () => ({ archived_snapshots: { closest: { available: true, status: '200', timestamp: '20251027000000', url: 'x' } } });
+  const fetchPage = async (u) => (u.includes('web.archive.org') ? { content: 'Just a moment...' } : null);
+  assert.deepEqual(await createSourceVerifier({ fetchPage, waybackLookup })(entry, show), { fetchFailed: true });
+  const stale = buildCommercialEntry(entry, { figureVerifiedVia: { capitalization: 'wayback' } }, { mergeExisting: true, figureEvidence: {} });
+  assert.equal(stale.figureVerifiedVia, undefined);
+});
+test('archive reads count toward maxFetches', async () => {
+  let calls = 0;
+  const waybackLookup = async () => ({ archived_snapshots: { closest: { available: true, status: '200', timestamp: '20251027000000', url: 'x' } } });
+  await createSourceVerifier({ fetchPage: async () => { calls++; return null; }, waybackLookup, maxFetches: 1 })(entry, show);
+  assert.equal(calls, 1);
+});
+test('a redirect (3xx) capture is not used as the article', async () => {
+  const { waybackSnapshotUrl } = require('../../scripts/lib/commercial-source-verify');
+  assert.equal(await waybackSnapshotUrl('https://x.com/a', async () => ({ archived_snapshots: { closest: { available: true, status: '302', timestamp: '20251027000000' } } })), null);
 });

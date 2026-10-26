@@ -204,6 +204,13 @@ function recoupClaimDesignationAction(existing) {
  */
 const isSecFilingUrl = (url) => { try { const u = new URL(url); return /(^|\.)sec\.gov$/i.test(u.hostname) && /^\/Archives\/edgar\/data\//i.test(u.pathname); } catch { return false; } };
 
+// Merged records start from the existing row, so a stale 'wayback' mark is cleared when the figure is re-read live or lost.
+function setFigureVerifiedVia(result, field, via) {
+  const next = { ...result.figureVerifiedVia };
+  if (via) next[field] = via; else delete next[field];
+  if (Object.keys(next).length) result.figureVerifiedVia = next; else delete result.figureVerifiedVia;
+}
+
 function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null) {
   for (const field of ['capitalization', 'weeklyRunningCost']) {
     if (entry[field] == null) continue;
@@ -219,9 +226,10 @@ function applyFigureEvidence(result, entry, figureEvidence = {}, existing = null
       result.sources = [evidence.source, ...(result.sources || []).filter(s => s.url !== evidence.source.url)];
       if (field === 'weeklyRunningCost') result.costMethodology = 'trade-reported';
       // BRO-6392: the figure was read from an archive copy because the live page blocks every fetcher.
-      if (evidence.verifiedVia) result.figureVerifiedVia = { ...result.figureVerifiedVia, [field]: evidence.verifiedVia };
+      setFigureVerifiedVia(result, field, evidence.verifiedVia);
     } else {
       delete result[sourceField];
+      setFigureVerifiedVia(result, field, undefined);
       if (field === 'weeklyRunningCost') result.costMethodology = 'deep-research';
     }
     // A Form D maximum or "up to" quote prints "up to $X" (BRO-5660). A

@@ -3,6 +3,7 @@ const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
 const { normalizeSources } = require('./commercial-sources');
 const { foldDiacritics } = require('./title-match');
 const { buildShowTitleVariants } = require('./show-title-variants');
+const { archiveSnapshotFetchUrl } = require('./archive-snapshot-url');
 
 function pageText(page) {
   return String(page || '').replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
@@ -113,28 +114,29 @@ async function defaultWaybackLookup(url) {
 /** The raw (toolbar-free) web.archive.org snapshot URL closest to `url`, or null when none is archived. */
 async function waybackSnapshotUrl(url, lookup = defaultWaybackLookup) {
   const closest = (await lookup(url))?.archived_snapshots?.closest;
-  if (!closest?.available || !closest.url) return null;
-  let snap;
-  try { snap = new URL(closest.url); } catch { return null; }
-  if (snap.hostname !== 'web.archive.org') return null;
-  snap.protocol = 'https:';
-  return snap.href.replace(/^(https:\/\/web\.archive\.org\/web\/\d+)\//, '$1id_/');
+  if (!closest?.available || String(closest.status) !== '200' || !/^\d{14}$/.test(String(closest.timestamp || ''))) return null;
+  return archiveSnapshotFetchUrl(url, closest.timestamp);
 }
 
 function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fetchPage(...args), waybackLookup, maxFetches = 60 } = {}, budget = null) {
   const cache = new Map();
+  let fetchesUsed = 0; // live reads plus archive reads: the maxFetches cap counts both
   // Cited pages that refuse every fetch provider (or answer with a homepage / stub) are read from web.archive.org.
   const readPage = async (url) => {
+    fetchesUsed++;
     const live = await Promise.resolve().then(() => fetchPage(url)).then(
       (r) => ({ content: r?.content || '', failed: !r || !r.content }),
       () => ({ content: '', failed: true }),
     );
-    if (!live.failed && live.content.length >= SHORT_PAGE_CHARS) return live;
+    if (!live.failed && pageText(live.content).length >= SHORT_PAGE_CHARS) return live;
+    if (fetchesUsed >= maxFetches || (budget && budget.exceeded())) return live;
     try {
       const snapshot = await waybackSnapshotUrl(url, waybackLookup);
       if (!snapshot) return live;
+      fetchesUsed++;
       const r = await fetchPage(snapshot);
-      if (r?.content) return { content: r.content, failed: false, via: 'wayback', archiveUrl: snapshot, live };
+      // failed stays the live result's: an archived block page that lacks the figure must not cancel the retry.
+      if (r?.content) return { content: r.content, failed: live.failed, via: 'wayback', archiveUrl: snapshot, live };
     } catch { /* the archive is a fallback: its failure leaves the live result standing */ }
     return live;
   };
@@ -161,7 +163,7 @@ function createSourceVerifier({ fetchPage = (...args) => require('./scraper').fe
         if (!show?.title || !/^\d{4}$/.test(year)) continue;
         if (!cache.has(source.url)) {
           // Out of fetches or out of wall-clock budget (scripts/lib/run-budget.js): do not start another page read.
-          if (cache.size >= maxFetches || (budget && budget.exceeded())) { fieldCapped = true; continue; }
+          if (fetchesUsed >= maxFetches || (budget && budget.exceeded())) { fieldCapped = true; continue; }
           // A fetch that THROWS (network, 403, 429, missing credentials) is not the same as a page that loaded
           // and does not state the figure: record it so the caller can leave the entry pending instead of
           // downgrading a figure nobody actually checked.
