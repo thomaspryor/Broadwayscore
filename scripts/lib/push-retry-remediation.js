@@ -196,10 +196,9 @@ function proposeForWorkflow(text, file) {
       const d = pick ? pick.deadlineSec : plan.deadlineSec;
       return { step: x.step, stepBudgetSec: Math.max(d, audit.computeBackoffSum(r)) };
     });
-    const explicit = job.steps.filter((s) => s.timeoutMinutes != null);
     let neededSec = 0;
     for (const pc of pushCalls) {
-      const others = audit.computeOtherStepsBudgetSec(explicit, pushCalls, pc);
+      const others = audit.computeOtherStepsBudgetSec(job.steps, pushCalls, pc);
       neededSec = Math.max(neededSec, (pc.stepBudgetSec + others) / (1 - audit.MARGIN_THRESHOLD));
     }
     const neededMin = Math.ceil(neededSec / 60 / 5) * 5;
@@ -210,6 +209,9 @@ function proposeForWorkflow(text, file) {
     const r = results[i];
     const row = baseRow(r);
     const sizing = r.flags.filter((f) => SIZING_FLAGS.has(f));
+    if (r.advisoryFlags.includes('job-timeout-margin-estimated-undersized')) {
+      sizing.push('job-timeout-margin-estimated-undersized');
+    }
     const plan = stepPlans.get(e.step);
     const job = jobNeeds.get(e.job);
     row.gitNetTimeoutSec = plan.gitNetSec;

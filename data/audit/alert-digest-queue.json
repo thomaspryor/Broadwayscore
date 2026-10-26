@@ -1784,37 +1784,6 @@
     "queuedAt": "2026-10-26T06:03:47.771Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, E2E Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40277912927",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40277912927)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40275669346)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "31"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests, E2E Tests"
-      }
-    ],
-    "queuedAt": "2026-10-26T06:27:53.809Z"
-  },
-  {
     "conditionKey": "land:land/bro-2710-safe-write-3",
     "title": "Landing blocked: unit-tests-node red on land/bro-2710-safe-write-3",
     "description": "land.yml did not land land/bro-2710-safe-write-3: the unit-tests-node gate went red at 2d5476cc8a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40276526325",
@@ -1875,5 +1844,36 @@
       }
     ],
     "queuedAt": "2026-10-26T06:30:33.187Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6278-payload-trim-v2",
+    "title": "Landing blocked: rebase red on land/bro-6278-payload-trim-v2",
+    "description": "land.yml did not land land/bro-6278-payload-trim-v2: the rebase gate went red at 423b93c2c1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6278-payload-trim-v2 @ 423b93c2c1 (origin/land/bro-6278-payload-trim-v2) → origin/main @ 7b6367811b REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 7b6367811b: Rebasing (1/1) error: could not apply 423b93c2c10... SKIP-VISUAL-CHECK: visual-qa overallPass=true and owner approved on BRO-6278; squash of already-checked content hint: Resolve all conflicts manually, m Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40277623801",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6278-payload-trim-v2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "423b93c2c100f02283ed3a2556fe8faf8f02dd3a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40277623801"
+      }
+    ],
+    "queuedAt": "2026-10-26T07:11:34.698Z"
   }
 ]

@@ -33,6 +33,30 @@ test('deadline-cannot-fund (default 7/240): recommended keeps margin and re-audi
   assert.ok(row.thresholdOnly.deadlineSec <= row.proposed.deadlineSec);
 });
 
+test('BRO-2714: remediation sizes jobs with the shared Checkout and script budget model', () => {
+  const text = wf({ jobTimeout: 10, extraStep: `      - uses: actions/checkout@v5
+      - run: node audit.js --time-budget-min=9
+` });
+  const [row] = proposeForWorkflow(text, 'budget.yml');
+  assert.equal(row.status, 'proposal');
+  const requiredSec = (row.proposed.deadlineSec + audit.CHECKOUT_ESTIMATE_SEC + 540) / (1 - audit.MARGIN_THRESHOLD);
+  assert.equal(row.proposed.jobTimeoutMinutes, Math.ceil(requiredSec / 300) * 5);
+});
+
+test('BRO-2714: an estimate-only warning also gets a remediation proposal', () => {
+  const text = wf({ jobTimeout: 20, retries: '21', env: `        env:
+          PUSH_DEADLINE_SEC: 600
+`, extraStep: `      - uses: actions/checkout@v5
+      - run: node audit.js --time-budget-min=9
+` });
+  const [result] = audit.auditWorkflowText(text, 'budget.yml');
+  assert.deepEqual(result.flags, []);
+  assert.ok(result.advisoryFlags.includes('job-timeout-margin-estimated-undersized'));
+  const [row] = proposeForWorkflow(text, 'budget.yml');
+  assert.equal(row.status, 'proposal');
+  assert.ok(row.proposed.jobTimeoutMinutes > 20);
+});
+
 test('retries-undersized only (7 retries, 900s deadline): deadline is kept, retries raised', () => {
   const env = "        env:\n          PUSH_DEADLINE_SEC: 900\n          PUSH_API_FALLBACK_AFTER_ATTEMPTS: 3\n";
   const [row] = proposeForWorkflow(wf({ env, jobTimeout: 60 }), 'b.yml');

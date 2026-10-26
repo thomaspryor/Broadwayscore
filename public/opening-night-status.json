@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T05:46:30.259Z",
+  "generatedAt": "2026-10-26T07:18:21.534Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -388,28 +388,27 @@
       "status": "open",
       "slug": "aftermath-art-new-york-off-broadway",
       "thumbnail": "/images/shows/aftermath-art-new-york-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 51.66,
-      "liveScore": 52,
-      "scoreDrift": 0.3400000000000034,
+      "siteScore": 55.72,
+      "liveScore": 56,
+      "scoreDrift": 0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
-      "t2": 2,
+      "t2": 3,
       "t3": 1,
       "positive": 0,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:0/3",
-          "T2:2/3",
-          "hi-conf:3/8"
+          "hi-conf:4/8"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -763,6 +762,18 @@
           "t3": 1,
           "p": 0,
           "m": 1,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-26T07:18:21.534Z",
+          "rc": 4,
+          "s": 55.72,
+          "t1": 0,
+          "t2": 3,
+          "t3": 1,
+          "p": 0,
+          "m": 2,
           "n": 2,
           "bc": "waiting"
         }
