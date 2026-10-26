@@ -1339,5 +1339,47 @@
       }
     ],
     "queuedAt": "2026-10-26T02:01:36.719Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 8.65 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:13:50.834Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/tour-runtime-coverage.test.mjs::every national tour has a synopsis, or is a documented gap",
+    "title": "Live-data test failing: every national tour has a synopsis, or is a documented gap (tests/unit/tour-runtime-coverage.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"every national tour has a synopsis, or is a documented gap\" in tests/unit/tour-runtime-coverage.test.mjs is red against the live corpus.\n\ntours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-musical-tour-2026, the-bodyguard-tour-2026\n+ actual - expected\n\n+ [\n+   'the-unauthorized-hallmark-ish-parody-musical-tour-2026',\n+   'the-bodyguard-tour-2026'\n+ ]\n- []",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:13:50.863Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked candidate sub-venue slugs found (same class as the West End National Theatre bug): {\n\"theatre-row\": [\n{\n\"slug\": \"theatre-five-theatre-row\",\n\"rawStrings\": [\n\"Theatre Five @ Theatre Row\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'theatre-row': [\n+     {\n+       rawStrings: [\n+         'Theatre Five @ Theatre Row'\n+       ],\n+       showCount: 1,\n+       slug: 'theatre-five-theatre-row'\n+     }\n+   ]\n+ }\n- {}",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-26T02:13:50.876Z"
   }
 ]
