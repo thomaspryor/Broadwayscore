@@ -54,5 +54,29 @@ assert(!w.includes('2016'), '"Circusfest 2016" read as title "2016"');
 // titles that are numbers stay titles
 assert(t.includes('1984') && t.includes('946'), 'numeric titles dropped');
 
+// synthetic 2016 rows: a stray wrapped word before a numeric title is skipped, a title word before digits is not
+const L = (x, y, text, page = 1) => ({ issue: 't', page, x, y, x2: x + 200, text });
+const head = [L(34, 17, 'A–Z of productions running in London'), L(398, 42, 'OPENED VOL/pp PRESS')];
+const e = parseAzLines([...head, L(34, 100, 'a 1984 – New adaptation of Orwell'), L(330, 100, 'Playhouse'), L(400, 100, '28 Jun 16'),
+  L(34, 120, 'Circusfest 2016 – Incl. Race Horse Co.'), L(330, 120, 'Roundhouse')]).entries.map(x => x.title);
+assert(e.includes('1984'), 'stray word before 1984 not skipped');
+assert(!e.includes('2016'), 'Circusfest 2016 read as 2016');
+
+// 2015: a wrapped dd.mm.yy line is the current entry's text, never a new entry
+const f2015 = parseAzLines([L(34, 40, 'A-Z of productions running in'), L(34, 61, 'London at 10 November 2015'),
+  L(34, 100, 'EARLY SHOW New play by Someone; opened'), L(34, 107, '23.09.15; transfers 04.10.15')]).entries;
+assert.deepStrictEqual(f2015.map(x => [x.title, x.opened]), [['EARLY SHOW', '2015-09-23']]);
+
+// a carried shift does not crop a later standard-width page
+const shifted = [L(160, 215, 'A-Z of productions running in'), L(160, 234, 'London at 16 February 2016'),
+  L(160, 300, 'ANDY CAPP THE MUSICAL Revival of musical by Someone; opened 08.02.16'),
+  L(34, 100, 'CATS Revival of musical by Andrew Lloyd Webber; opened 23.10.15', 2)];
+const g = parseAzLines(shifted).entries.map(x => x.title);
+assert(g.includes('ANDY CAPP THE MUSICAL') && g.includes('CATS'), `carried shift cropped a page: ${g}`);
+
+// repeated positioned lines (overlapping dumps) count once
+const dup = parseAzLines([...head, L(34, 100, 'KINKY BOOTS – New musical'), L(330, 100, 'Adelphi'), L(330, 100, 'Adelphi'), L(400, 100, '15 Sep 15')]).entries;
+assert.strictEqual(dup.find(x => x.title === 'KINKY BOOTS').venue, 'Adelphi');
+
 assert.strictEqual(dMonY('28 Jun 16'), '2016-06-28');
 console.log('tr-az-parse ok', a.entries.length, b.entries.length, c.entries.length, d.entries.length);

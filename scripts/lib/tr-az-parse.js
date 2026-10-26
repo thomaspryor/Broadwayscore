@@ -146,10 +146,10 @@ const isSectionEnd = l => /^future london schedule\b/i.test(l.text);
 /** Split a page's lines into A-Z pages (from the marker up to the future schedule). */
 function azPages(lines) {
   const out = new Map();
-  // the section ends at the heading's position, not where it falls in text order (rows below it are the schedule)
-  const end = lines.find(l => isSectionEnd(l) && l.y < 200);
+  let ended = false;
   for (const l of lines) {
-    if (end && (l.page > end.page || (l.page === end.page && l.y >= end.y))) continue;
+    if (ended) break;
+    if (isSectionEnd(l) && l.y < 200) { ended = true; break; }
     if (!out.has(l.page)) out.set(l.page, []);
     out.get(l.page).push(l);
   }
@@ -175,7 +175,8 @@ function parse2015(pages, asAt) {
       pendingCaps = l.text;
       continue;
     }
-    if (caps.length && rest.length && /^[A-Z]/.test(rest[0]) && (plausibleCaps(caps) || (pendingCaps && caps.length))) {
+    // a wrapped "23.09.07; New Ambassadors" is the current entry's date, never a new title (BRO-6343)
+    if (caps.length && rest.length && /^[A-Z]/.test(rest[0]) && !/^\d{1,2}\.\d{2}\.\d{2}\b/.test(caps[0]) && (plausibleCaps(caps) || (pendingCaps && caps.length))) {
       flush();
       let title = caps.join(' ');
       if (pendingCaps) title = /-$/.test(pendingCaps) ? pendingCaps + title : `${pendingCaps} ${title}`;
@@ -208,8 +209,10 @@ function titleFromFragments(frags) {
   let rest = [];
   for (const f of frags.slice(0, 5)) {
     let toks = f.text.split(/\s+/).filter(Boolean);
-    // ...but not when only digits follow ("Circusfest 2016 – Incl. ..." is no title "2016")
-    if (toks.length && hasLower(toks[0]) && toks.length > 1 && !hasLower(toks[1]) && /[A-Z]/.test(toks[1])) toks = toks.slice(1);
+    // ...but a capitalised word before bare digits is the title itself ("Circusfest 2016 – Incl. ..." is no title "2016";
+    // a wrapped "a" before "1984 – New adaptation" is still stray)
+    const titleWordBeforeDigits = /^[A-Z][a-z]{3,}$/.test(toks[0] || '') && /^\d+$/.test(toks[1] || '');
+    if (toks.length && hasLower(toks[0]) && toks.length > 1 && !hasLower(toks[1]) && !titleWordBeforeDigits) toks = toks.slice(1);
     const sc = splitCaps(toks.join(' '));
     if (!sc.caps.length || !plausibleCaps(sc.caps) && !/^\d/.test(sc.caps[0])) continue;
     caps = caps.concat(sc.caps);
@@ -261,7 +264,7 @@ function parse2016(pages) {
  */
 const AZ_MARKER = /^A\s*[-–]\s*Z of productions running in\b/i;
 const MARKER_X = 34; // the marker's x on a standard A-Z page (fixtures 170, 929)
-const MARKER_Y = 40; // ...and its y on a 2015 page (2016 pages print it higher, at 17)
+const MARKER_Y = { 2015: 40, 2016: 17 }; // ...and its y on a standard 2015 / 2016 page
 
 /**
  * Some issues print the A-Z shifted right (159: every column +125) or as the
@@ -271,7 +274,7 @@ const MARKER_Y = 40; // ...and its y on a 2015 page (2016 pages print it higher,
  * comes from the marker line and carries over to the pages that follow it.
  * Standard pages (marker within 60pt of x=34) are left untouched (BRO-6343).
  */
-function alignAzColumns(lines) {
+function alignAzColumns(lines, format = 2015) {
   const byPage = new Map();
   for (const l of lines) { if (!byPage.has(l.page)) byPage.set(l.page, []); byPage.get(l.page).push(l); }
   const out = [];
@@ -282,10 +285,12 @@ function alignAzColumns(lines) {
     const marker = pl.find(l => AZ_MARKER.test(l.text));
     if (marker) {
       shift = marker.x - MARKER_X > 60 ? marker.x - MARKER_X : 0;
-      down = marker.y - MARKER_Y > 60 ? marker.y - MARKER_Y : 0;
+      down = marker.y - MARKER_Y[format] > 60 ? marker.y - MARKER_Y[format] : 0;
     }
     if (!shift && !down) { out.push(...pl); continue; }
     const leftEdge = shift ? MARKER_X + shift - 15 : -Infinity;
+    // a carried shift fits only a page laid out like its marker page: a standard-width continuation keeps its own columns
+    if (!marker && shift && !pl.some(l => !isSectionEnd(l) && Math.abs(l.x - (MARKER_X + shift)) <= 15)) { out.push(...pl); continue; }
     // the section-end heading is kept wherever it sits (163 prints it on the dropped left half of the next spread)
     for (const l of pl) if (l.x >= leftEdge || isSectionEnd(l)) out.push({ ...l, x: l.x - shift, x2: l.x2 - shift, y: l.y - down });
   }
@@ -293,10 +298,13 @@ function alignAzColumns(lines) {
 }
 
 function parseAzLines(lines) {
-  const pages = azPages(alignAzColumns(lines));
+  // overlapping dumps repeat positioned lines; each one counts once
+  const seenLine = new Set();
+  const unique = lines.filter(l => { const k = `${l.page}|${l.x}|${l.y}|${l.text}`; if (seenLine.has(k)) return false; seenLine.add(k); return true; });
+  const is2016 = unique.some(l => /^OPENED VOL\/pp/i.test(l.text));
+  const pages = azPages(alignAzColumns(unique, is2016 ? 2016 : 2015));
   const flat = pages.flat();
   const asAt = asAtDate(flat);
-  const is2016 = flat.some(l => /^OPENED VOL\/pp/i.test(l.text));
   const entries = is2016 ? parse2016(pages) : parse2015(pages, asAt);
   // a wrapped dd.mm.yy date is no title ("23.09.07"; "1984" and "946" are); a page printed twice (163) lists each row twice
   const seen = new Set();
