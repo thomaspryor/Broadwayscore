@@ -427,5 +427,5 @@ test('BRO-6338: filingOutpacesClosingLine names the top filer only when added > 
 test('BRO-6338: ceremonyKind treats "TEST (BRO-N) ... safe to ignore" cards as test alarms', () => {
   const card = (title) => ({ title, description: 'Filed by: session (kind: fix)', createdAt: '2026-10-24T01:00:00Z', completedAt: '2026-10-24T02:00:00Z' });
   assert.equal(B.ceremonyKind(card('TEST (BRO-6235): end-to-end check, safe to ignore'), Date.parse("2026-10-24T12:00:00Z")), 'canary');
-  assert.notEqual(B.ceremonyKind(card('TEST coverage for search'), Date.parse("2026-10-24T12:00:00Z")), 'canary');
+  assert.notEqual(B.ceremonyKind(card('TEST coverage for search, safe to ignore after launch'), Date.parse("2026-10-24T12:00:00Z")), 'canary');
 });

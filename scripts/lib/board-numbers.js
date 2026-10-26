@@ -136,7 +136,7 @@ function ceremonyKind(card, nowMs) {
   const title = String(card.title || '').trim();
   if (/^\[E2E Canary\]/i.test(title)) return 'canary';
   // BRO-6338: sessions' own end-to-end test cards ("TEST (BRO-6235): ... safe to ignore") close themselves.
-  if (/^TEST\b.*\bsafe to ignore\b/i.test(title)) return 'canary';
+  if (/^TEST \(BRO-\d+\):.*\bsafe to ignore\b/i.test(title)) return 'canary';
   // BRO-6130: a card closed as a Duplicate of another is the same work counted twice.
   if (String(card.state && card.state.name || '').trim().toLowerCase() === 'duplicate') return 'duplicate';
   if (/^Opening-night (?:watch|audit) \d{4}-\d{2}-\d{2}$/i.test(title)
