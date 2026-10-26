@@ -18,7 +18,7 @@ const { laneBypasses } = require('./lib/opening-night-lane/trust-model');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { parseHistoricalDate } = require('./lib/date-utils');
-const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { invalidateWrongProductionAutoClear, safeWriteReview } = require('./lib/review-write-guard');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
@@ -581,7 +581,7 @@ for (const [showId, showFindings] of Object.entries(byShow).sort((a, b) => a[0].
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = `Auto-flagged by audit: ${f.findings.map(ff => ff.type + ': ' + ff.detail).join('; ')}`;
-        fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+        safeWriteReview(filePath, data);
         fixCount++;
       }
     }

@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { safeWriteReview } = require('./lib/review-write-guard');
 const { parseHistoricalDate, maxPlausibleYear } = require('./lib/date-utils');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -319,7 +320,8 @@ function doUnflag(showId, dirPath, file, data, show, reason) {
     data.wrongProductionAutoCleared = `unflag-fps: ${reason}`;
     data.wrongProductionAutoClearedAt = new Date().toISOString().split('T')[0];
 
-    fs.writeFileSync(path.join(dirPath, file), JSON.stringify(data, null, 2) + '\n');
+    // Intentional clear: breadcrumbs (wrongProductionAutoCleared/At) are stamped above.
+    safeWriteReview(path.join(dirPath, file), data, { force: true });
   }
 
   stats.unflagged++;
