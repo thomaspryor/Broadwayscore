@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5289",
   "planId": "05b29c6f-a5c8-4e68-9ce4-8b98ed5b5f55",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-25T22:39:24.687Z",
   "submitter": {
     "name": null,
@@ -154,5 +154,92 @@
         "overwrite": true
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-26T00:38:26.067Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json wrongAttributionReason: \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\" -> \"superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "of-mice-and-men-2014/wsj--mark-kennedy.json outletId: \"wsj\" -> \"ap\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved of-mice-and-men-2014/wsj--mark-kennedy.json → of-mice-and-men-2014/ap--mark-kennedy.json",
+      "cleared": []
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pippin-2013/wsj--mark-kennedy.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted pippin-2013/ap--associated-press.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json criticName: \"Associated Press\" -> \"Mark Kennedy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json wrongAttributionReason: \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\" -> \"superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "pippin-2013/wsj--associated-press.json outletId: \"wsj\" -> \"ap\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved pippin-2013/wsj--associated-press.json → pippin-2013/ap--mark-kennedy.json",
+      "cleared": []
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json criticName: \"Terry Teachout\" -> \"Mark Kennedy\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json wrongAttributionReason: \"BRO-5243: Associated Press wire review (Mark Kennedy) syndicated on wsj.com, not a WSJ review\" -> \"superseded (BRO-5289): relabelled to ap; the AP wire page is filed as the Associated Press review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json wrongAttribution: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-glass-menagerie-2013/wsj--terry-teachout.json outletId: \"wsj\" -> \"ap\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved the-glass-menagerie-2013/wsj--terry-teachout.json → the-glass-menagerie-2013/ap--mark-kennedy.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
