@@ -43,7 +43,8 @@ const OWN_MARKER_RE = /Decision (?:email )?ref\s*OD[AE]|Visual approval (?:ref|l
 // about a person or session working the card, so they never count as activity. "Claimed by" is NOT here:
 // a session claiming a card is the signal this quiet period exists to honour. A test pins these to the
 // real builders (buildDispatchComment, HEADLESS_END_MARKER, WATCHDOG_SAFETY_NET_PREFIX).
-const MACHINE_RECEIPT_RE = /^\s*(?:Dispatched (?:[0-9a-f]+ )?to |Headless worker ended without its own session report|Watchdog safety net:)/i;
+// The watchdog and zombie sweep post through cmdReport, which wraps them in a "**Session report (status)**" header.
+const MACHINE_RECEIPT_RE = /^\s*(?:\**Session report \([^)]*\)\**\s*)?(?:Dispatched (?:[0-9a-f]+ )?to |Headless worker ended without its own session report|Watchdog safety net:|Auto-reset by bsc-reconcile)/i;
 // A bare choice, or words that say the decision was already made.
 const CHOICE_RE = /^\s*(?:option\s+)?[A-E][.!)]?\s*$|^\s*(?:option\s+)?[A-E]\b\s*[,.:!-]|^\s*(?:let'?s\s+)?(?:go\s+with|pick|choose|i\s+(?:pick|choose|want|prefer))\s+(?:option\s+)?[A-E]\b|^\s*(?:yes|no|approved?|go ahead|do it|ship it)\b[\s,.!]*(?:(?:please|approved?|do it|go ahead|ship it|it)\b[\s,.!]*)*$/i;
 const ALREADY_RE = /\balready (?:answered|decided|approved|said|replied|told|chose|picked|did)\b|\bdid(?:n['’]?t| not)? i (?:already|do this|answer)\b|\banswered (?:this|that|it)\b|\basked (?:this|me) (?:again|before)\b|\btold you\b/i;

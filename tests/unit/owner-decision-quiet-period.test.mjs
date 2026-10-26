@@ -7,6 +7,8 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const qp = require('../../scripts/lib/owner-decision-quiet-period.js');
+const lsr = require('../../scripts/lib/linear-session-reporting.js');
+const zs = require('../../scripts/lib/linear-started-zombie-sweep.js');
 const link = require('../../src/lib/owner-decision-link.js');
 const { buildDecisionsSection } = require('../../scripts/lib/owner-decision-notify.js');
 const { buildDecisionEmail } = require('../../scripts/lib/owner-decision-email.js');
@@ -188,7 +190,8 @@ test('BRO-6357: dispatch, headless-ended and watchdog receipts do not hold the e
     ld.buildDispatchComment({ ref: 'linear:BRO-1-abc', ts: min(5), mode: 'headless', correlationId: '66746217' }),
     ld.buildDispatchComment({ ref: 'linear:BRO-1-abc', ts: min(5), mode: 'cmux' }),
     `${her.HEADLESS_END_MARKER} (killed-timeout).`,
-    `${wd.WATCHDOG_SAFETY_NET_PREFIX} headless job 12 ended THIS SESSION.`,
+    lsr.buildOutcomeCommentBody({ status: 'blocked', summary: `${wd.WATCHDOG_SAFETY_NET_PREFIX} headless job 12 ended THIS SESSION: BLOCKED.` }),
+    lsr.buildOutcomeCommentBody({ status: 'paused', summary: `${zs.ZOMBIE_RESET_MARKER}: BRO-1's most recent dispatch died.` }),
   ];
   for (const body of receipts) {
     assert.match(body, qp.MACHINE_RECEIPT_RE, body);

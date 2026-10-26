@@ -28,6 +28,12 @@ test('a later comment cannot clear a waiting visual ask', () => {
   assert.equal(hd.visualAskOpen(notes, ['x']), true);
 });
 
+test('a re-ask after an expiry holds again; markers from the earlier ask do not count', () => {
+  assert.equal(hd.visualAskOpen(notes, [va.MARK.expired, 'Asked the owner to look at 2 screenshot(s).']), true);
+  assert.equal(hd.visualAskOpen(notes, ['Asked the owner to look at 2 screenshot(s).', va.MARK.expired]), false);
+  assert.equal(hd.visualAskOpen(notes, [null, undefined]), true);
+});
+
 test('an approved-and-pending ask also holds; a rejected one goes back to a worker', () => {
   assert.equal(hd.visualAskOpen(notes, [`${va.MARK.approved} abc`]), true);
   const rejected = `${notes.replace(/^DECISION NEEDED:/m, 'ANSWERED by the owner: reject\nDECISION NEEDED:')}`;

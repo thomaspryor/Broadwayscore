@@ -377,7 +377,11 @@ function commentClearsOwnerGate(comments) {
 // from an earlier ask can only make the card look answered, never the reverse.
 function visualAskOpen(notes, comments) {
   if (!parseVisualApproval(notes)) return false;
-  const state = visualApprovalStatus(notes, (comments || []).map((body) => ({ body: String(body || '') })));
+  // Bodies carry no timestamps, so apply classifyStatus's latest-ask cutoff by position (callers pass oldest first).
+  const bodies = (comments || []).map((body) => String(body || ''));
+  let from = 0;
+  bodies.forEach((b, i) => { if (/^Asked the owner to look at/.test(b.trim())) from = i; });
+  const state = visualApprovalStatus(notes, bodies.slice(from).map((body) => ({ body })));
   return state === 'waiting' || state === 'approved';
 }
 
