@@ -86,13 +86,13 @@ function tesseractStats(imgPath) {
         const id = hitPath.replace('/archive/issue/', '');
         const pages = sh('pdftotext', ['-layout', pdf2, '-']).split('\f');
         const markerRe = /A\s*[-\u2013]\s*Z of (?:current )?(?:London )?productions|Current London Shows A-Z|Page numbers in \(brackets\)/i;
-        const first = pages.findIndex(t => markerRe.test(t.replace(/\s+/g, ' ')));
+        const first = pages.findIndex((t, i) => i >= pages.length * 0.4 && markerRe.test(t.replace(/\s+/g, ' ')));
         console.log(`AZRAW ${id} pages=${pages.length} markerPage=${first}`);
         if (first < 0) {
           pages.forEach((t, i) => t.split('\n').forEach(l => { if (/\bA-Z\b|productions|running in/i.test(l)) console.log(`AZHINT|${id}|p${i + 1}|${l.replace(/\s+/g, ' ').slice(0, 120)}`); }));
           continue;
         }
-        const last = Math.min(pages.length, first + 8);
+        const last = Math.min(pages.length, first + 10);
         const xml = sh('pdftotext', ['-bbox-layout', '-f', String(first + 1), '-l', String(last), pdf2, '-']);
         const dec = t => t.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&apos;/g, "'");
         let pageNo = first;
