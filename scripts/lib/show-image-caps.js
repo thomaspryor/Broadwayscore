@@ -13,8 +13,11 @@ const RESIZE_QUALITY = 80;
  * Small list/card variants (BRO-6277). List and card slots render at 96-128 CSS
  * px, so 2x is 192-256px; the originals are 480-540px. Each canonical
  * `<show>/poster.<ext>` / `<show>/thumbnail.<ext>` gets a webp sibling at
- * `<show>/sm/<role>.webp`. A subfolder, not a `-240` suffix, so filename-based
- * scanners (imageRoleFromFilename, dup/aspect audits) never see the variants.
+ * `<show>/sm/<role>.<ext>.webp` (e.g. sm/poster.jpg.webp). One variant per source
+ * file, because 78 show dirs hold both a poster.jpg and a poster.webp and the
+ * site may reference either. A subfolder with a double extension, so the
+ * path-based scanners (check-image-aspect FILENAME_RE) and the dir listings
+ * (listImageFiles) never see the variants.
  * src/lib/images.ts mirrors these numbers (tested for equality).
  */
 const VARIANT_WIDTHS = { poster: 256, thumbnail: 240 };
@@ -27,11 +30,16 @@ function variantRoleFromFilename(filename) {
   return m ? m[1].toLowerCase() : null;
 }
 
+/** Variant file name for an original file name: poster.jpg -> poster.jpg.webp, or null. */
+function variantNameFor(filename) {
+  return variantRoleFromFilename(filename) ? `${filename.toLowerCase()}.webp` : null;
+}
+
 /** Absolute path of the variant for an original at `absPath` (always .webp). */
 function variantPathFor(absPath) {
   const path = require('path');
-  const role = variantRoleFromFilename(path.basename(absPath));
-  return role ? path.join(path.dirname(absPath), VARIANT_DIR, `${role}.webp`) : null;
+  const name = variantNameFor(path.basename(absPath));
+  return name ? path.join(path.dirname(absPath), VARIANT_DIR, name) : null;
 }
 
 /**
@@ -48,7 +56,10 @@ async function writeVariant(absPath, { force = false } = {}) {
   const buf = fs.readFileSync(absPath);
   const crypto = require('crypto');
   const { PLACEHOLDER_FILE_HASHES } = require('./show-images');
-  if (PLACEHOLDER_FILE_HASHES.has(crypto.createHash('md5').update(buf).digest('hex'))) return 'placeholder';
+  if (PLACEHOLDER_FILE_HASHES.has(crypto.createHash('md5').update(buf).digest('hex'))) {
+    fs.rmSync(out, { force: true }); // a placeholder must never keep a variant of earlier art
+    return 'placeholder';
+  }
   if (!force && fs.existsSync(out) && fs.statSync(out).mtimeMs >= fs.statSync(absPath).mtimeMs) return 'skipped';
   try {
     const small = await require('sharp')(buf).rotate()
@@ -58,6 +69,12 @@ async function writeVariant(absPath, { force = false } = {}) {
     fs.writeFileSync(out, small);
     return 'written';
   } catch { return 'unreadable'; }
+}
+
+/** Delete the variant of the original at `absPath` (used when the original is quarantined or removed). */
+function removeVariant(absPath) {
+  const out = variantPathFor(absPath);
+  if (out) require('fs').rmSync(out, { force: true });
 }
 
 // Files whose re-encode at the cap is LARGER than the original (flat-colour PNG
@@ -96,4 +113,4 @@ async function encodeToCap(buf, role, ext) {
   return img.toBuffer();
 }
 
-module.exports = { VARIANT_WIDTHS, VARIANT_DIR, variantRoleFromFilename, variantPathFor, writeVariant, encodeToCap, IMAGE_WIDTH_CAPS, RESIZE_QUALITY, WIDTH_CAP_EXCEPTIONS, imageRoleFromFilename, exceedsWidthCap };
+module.exports = { variantNameFor, removeVariant, VARIANT_WIDTHS, VARIANT_DIR, variantRoleFromFilename, variantPathFor, writeVariant, encodeToCap, IMAGE_WIDTH_CAPS, RESIZE_QUALITY, WIDTH_CAP_EXCEPTIONS, imageRoleFromFilename, exceedsWidthCap };

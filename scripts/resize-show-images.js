@@ -32,7 +32,7 @@ function listImageFiles(dir = IMAGES_DIR) {
 }
 
 async function main() {
-  if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/resize-show-images.js [--check | --dry-run | --variants | --check-variants]\n  (no flag) re-encode oversized posters/thumbnails in place; --check lists them and exits 1 if any'); return; }
+  if (hasHelpFlag(process.argv.slice(2))) { console.log('Usage: node scripts/resize-show-images.js [--check | --dry-run | --variants [--staged] | --check-variants]\n  (no flag) re-encode oversized posters/thumbnails in place; --check lists them and exits 1 if any'); return; }
   if (process.argv.includes('--check-variants')) {
     const sharp = require('sharp');
     const missing = [];
@@ -51,10 +51,35 @@ async function main() {
   }
   if (process.argv.includes('--variants')) {
     const tally = {};
-    for (const f of listImageFiles()) {
+    // --staged (CI commit steps): only originals staged for commit, run AFTER
+    // check-image-aspect --quarantine so rejected art never gets a variant, then
+    // stage the variants next to them.
+    const staged = process.argv.includes('--staged');
+    let files = listImageFiles();
+    if (staged) {
+      const { execFileSync } = require('child_process');
+      const names = execFileSync('git', ['diff', '--cached', '--name-only', '--diff-filter=ACMR', '--', 'public/images/shows'], { encoding: 'utf8' }).split('\n').filter(Boolean);
+      const set = new Set(names);
+      files = files.filter(f => set.has(`public/images/shows/${f.rel}`));
+    }
+    const written = [];
+    for (const f of files) {
       if (f.role === 'hero' || !variantPathFor(f.abs)) continue;
-      const r = await writeVariant(f.abs);
+      const r = await writeVariant(f.abs, { force: staged });
       tally[r] = (tally[r] || 0) + 1;
+      if (r === 'written') written.push(variantPathFor(f.abs));
+    }
+    // A variant whose original is gone (deleted or quarantined) must not outlive it.
+    for (const d of fs.readdirSync(IMAGES_DIR)) {
+      const smDir = path.join(IMAGES_DIR, d, 'sm');
+      if (!fs.existsSync(smDir)) continue;
+      for (const v of fs.readdirSync(smDir)) {
+        if (!fs.existsSync(path.join(IMAGES_DIR, d, v.replace(/\.webp$/, '')))) { fs.rmSync(path.join(smDir, v)); tally.pruned = (tally.pruned || 0) + 1; }
+      }
+    }
+    if (staged) {
+      const { execFileSync } = require('child_process');
+      execFileSync('git', ['add', '-A', '--', ...fs.readdirSync(IMAGES_DIR).map(d => `public/images/shows/${d}/sm`).filter(p => fs.existsSync(p))], { stdio: 'inherit' });
     }
     console.log('variants:', JSON.stringify(tally));
     return;
