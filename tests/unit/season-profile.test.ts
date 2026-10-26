@@ -574,3 +574,12 @@ test('Season by Season lists every season back to the oldest with tracked covera
   assert.equal(selectSeasonHistory(profiles, '2020-2021')[0].season, '2020-2021');
   assert.deepEqual(selectSeasonHistory(buildSeasonProfiles(shows.slice(0, 4)), '2012-2013').map((p) => p.season), ['2012-2013']);
 });
+
+test('selectSeasonHistory keeps uncovered gaps between covered seasons, drops future ones, and has no row cap (BRO-6362)', () => {
+  const mk = (y: number, tracked: boolean) => [1, 2, 3, 4].map((m) => show({ openingDate: `${y}-10-0${m}`, commercial: tracked ? com({ recouped: true }) : null }));
+  // 2010 covered, 2011-2013 uncovered, 2014 covered: gap rows stay; 2030 is in the future.
+  const profiles = buildSeasonProfiles([...mk(2010, true), ...mk(2011, false), ...mk(2012, false), ...mk(2013, false), ...mk(2014, true), ...mk(2030, true)]);
+  assert.deepEqual(selectSeasonHistory(profiles, '2014-2015').map((p) => p.season), ['2014-2015', '2013-2014', '2012-2013', '2011-2012', '2010-2011']);
+  // No current season given: every covered season is listed (no cap).
+  assert.equal(selectSeasonHistory(profiles, null).length, 6);
+});
