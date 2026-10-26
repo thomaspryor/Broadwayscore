@@ -34,9 +34,11 @@ test.describe('/biz Dashboard - Basic Tests', () => {
     await expect(page.getByText('Who made money on Broadway, and who lost it')).toBeVisible();
   });
 
-  test('season stats section renders', async ({ page }) => {
-    // exact: "Season by Season" also contains the phrase.
-    await expect(page.getByText('By Season', { exact: true })).toBeVisible();
+  // BRO-6283: the four season cards are gone; the Season by Season table leads the page.
+  test('season by season table renders first', async ({ page }) => {
+    await expect(page.getByRole('heading', { name: 'Season by Season', exact: true })).toBeVisible();
+    await expect(page.getByTestId('season-history')).toBeVisible();
+    await expect(page.getByText('Capital at Risk')).toHaveCount(0);
   });
 
   // BRO-4721: the JSON/CSV "(soon)" buttons were removed until downloads ship.
