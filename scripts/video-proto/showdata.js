@@ -5,7 +5,10 @@ const { getAudienceGrade, totalAudienceReviews, MIN_AUDIENCE_REVIEWS } = require
 const ROOT = path.resolve(__dirname, '../..');
 const slim = id => JSON.parse(fs.readFileSync(path.join(ROOT, 'public/data/shows/' + id + '.json'), 'utf8'));
 const meta = id => { const s = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')); return (s.shows || s).find(x => x.id === id); };
+// Owner rule 2026-10-26: no video without a real poster. Only art that fetch-art.js measured and vision-checked is used.
 function art(id) {
+  const ok = (() => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, 'art', 'verified.json'), 'utf8'))[id]; } catch (e) { return null; } })();
+  if (!ok) throw new Error(`${id}: no verified poster, so no video. Run: node fetch-art.js ${id}`);
   const b = fs.readFileSync(path.join(__dirname, 'art', id + '.img'));
   const mime = b[0] === 0x89 ? 'image/png' : 'image/jpeg';
   return `data:${mime};base64,${b.toString('base64')}`;
@@ -36,7 +39,7 @@ function topList(key) {
   const pick = all.filter(s => s.category === 'broadway' && ['musical', 'play'].includes(s.type) && s.openingDate && s.openingDate <= today && D.f(s))
     .map(s => ({ id: s.id, cs: cs(s.id) })).filter(s => s.cs != null).sort((x, y) => y.cs - x.cs).slice(0, 5);
   if (pick.length < 5) throw new Error(`LIST ${key}: only ${pick.length} scored shows`);
-  const missing = pick.filter(s => !fs.existsSync(path.join(__dirname, 'art', s.id + '.img'))).map(s => s.id);
+  const missing = pick.filter(s => { try { art(s.id); return false; } catch (e) { return true; } }).map(s => s.id);
   if (missing.length) throw new Error(`LIST ${key}: no key art yet, run: node fetch-art.js ${missing.join(' ')}`);
   return { title: D.title, sub: D.sub, endLine: D.end, ids: pick.map(s => s.id) };
 }
