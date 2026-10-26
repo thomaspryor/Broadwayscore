@@ -35,9 +35,29 @@ test('a finished poll (completion notice) does not count', () => {
   const t = { ...bro6154, tools: [...bro6154.tools, poll], done: ['abc'] };
   assert.equal(childWaitDecision(t).block, true);
 });
-test('report-back to @parent after the dispatch passes', () => {
-  const msg = { idx: 11, name: 'mcp__Claude_Code_Remote__send_message', input: { to: '@parent', message: 'waiting' }, ok: true };
-  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, msg] }).block, false);
+test('report-back to @parent is NOT a wake (nobody wakes the child)', () => {
+  const msg = { idx: 11, name: 'mcp__claude-code-remote__send_message', input: { session_id: '@parent', message: 'waiting' }, ok: true };
+  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, msg] }).block, true);
+});
+test('unrelated background command is not a wake', () => {
+  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, bash(10, 'sleep 5', { run_in_background: true })] }).block, true);
+});
+test('one background command that dispatches and polls passes', () => {
+  const t = { ...bro6154, tools: [bash(9, 'gh workflow run x.yml && gh run watch -i 60', { run_in_background: true })] };
+  assert.equal(childWaitDecision(t).block, false);
+});
+test('gh run rerun / git -C push reset the baseline', () => {
+  const old = bash(3, 'gh run view 1', { run_in_background: true });
+  for (const cmd of ['gh run rerun 123', 'git -C /x push origin land/y']) {
+    assert.equal(childWaitDecision({ ...bro6154, tools: [old, bash(9, cmd)] }).block, true, cmd);
+  }
+});
+test('wording: awaiting / in flight block; finished or nothing running does not', () => {
+  for (const c of ['KEEP OPEN — awaiting CI completion', 'KEEP OPEN — the workflow is in flight']) {
+    assert.equal(childWaitDecision({ ...bro6154, closing: c }).block, true, c);
+  }
+  assert.equal(childWaitDecision({ ...bro6154, closing: 'Still running: nothing, the land run finished green.\nKEEP OPEN — the owner may reply' }).block, false);
+  assert.equal(childWaitDecision({ ...bro6154, closing: 'No tests are running.\nKEEP OPEN — waiting on the parent' }).block, false);
 });
 test('human session is never blocked', () => {
   assert.equal(childWaitDecision({ ...bro6154, firstPrompt: 'fix the probe' }).block, false);
@@ -48,8 +68,4 @@ test('parent id in env marks a child', () => {
 test('KEEP OPEN not about CI, or other verdicts, pass', () => {
   assert.equal(childWaitDecision({ ...bro6154, closing: 'KEEP OPEN — waiting on the owner reply' }).block, false);
   assert.equal(childWaitDecision({ ...bro6154, closing: 'SAFE TO ARCHIVE — done' }).block, false);
-});
-test('real send_message shape (session_id: "@parent") passes', () => {
-  const msg = { idx: 11, name: 'mcp__claude-code-remote__send_message', input: { session_id: '@parent', message: 'waiting' }, ok: true };
-  assert.equal(childWaitDecision({ ...bro6154, tools: [...bro6154.tools, msg] }).block, false);
 });

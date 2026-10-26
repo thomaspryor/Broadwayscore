@@ -1340,14 +1340,19 @@ if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
                 if _k != 'tool':
                     continue
                 _nm, _inp, _tid = _p
+                if _nm == 'TaskStop' and isinstance(_inp, dict):
+                    _cw_done.add(str(_inp.get('task_id') or _inp.get('taskId') or ''))
                 _res = tool_results_by_id.get(_tid, '') or ''
                 _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res)
                 _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp if isinstance(_inp, dict) else {},
                                   'ok': _tid not in tool_error_ids, 'taskId': _bm.group(1) if _bm else None})
             _cw = subprocess.run(['node', _cw_js], input=json.dumps({
                 'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last,
-                'tools': _cw_tools, 'done': sorted(_cw_done), 'env': dict(os.environ)}),
+                'tools': _cw_tools, 'done': sorted(_cw_done),
+                'env': {k: v for k, v in os.environ.items() if k in ('CLAUDE_PARENT_SESSION_ID', 'PARENT_SESSION_ID')}}),
                 capture_output=True, text=True, timeout=10)
+            if _cw.stderr.strip():
+                sys.stderr.write('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n')
             if json.loads(_cw.stdout or '{}').get('block'):
                 _ve_block("CHILDWAIT")
     except Exception:
@@ -2345,7 +2350,7 @@ if [[ "$result" == "WAKELESS" ]]; then
 fi
 
 if [[ "$result" == "CHILDWAIT" ]]; then
-  echo "🛑 BLOCKED: this is a child worker session with no human, and KEEP OPEN says it is waiting on CI or a run it started, but nothing started after that run will wake it (BRO-6264: BRO-6154 sat about a day after firing a workflow). Wait for CI inside your turn: a Bash with run_in_background: true that polls that run's own id (actions/runs/<id>) or node scripts/lib/wait-for-land.js land/<name> 60 --prod, or Monitor, started AFTER the run; its exit wakes you. Or first send_message @parent with the run URL and what you will do when it ends. Never end a turn waiting on CI. Bypass: NO-VERIFY: <reason>. Kill switch CHILDWAIT_GATE_DISABLE=1." >&2
+  echo "🛑 BLOCKED: this is a child worker session with no human, and KEEP OPEN says it is waiting on CI or a run it started, but nothing started after that run will wake it (BRO-6264: BRO-6154 sat about a day after firing a workflow). Wait for CI inside your turn: a Bash with run_in_background: true that polls that run's own id (gh run view <id>, actions/runs/<id>) or node scripts/lib/wait-for-land.js land/<name> 60 --prod, or Monitor, started AFTER the run; its exit wakes you. A message to @parent does not wake you. Never end a turn waiting on CI. Bypass: NO-VERIFY: <reason>. Kill switch CHILDWAIT_GATE_DISABLE=1." >&2
   exit 2
 fi
 

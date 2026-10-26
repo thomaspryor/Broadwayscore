@@ -20,17 +20,21 @@
 // (block-prompting-remote-tools.sh enforces it); a parent id in env also counts.
 const CHILD_PROMPT_RE = /(^|\n)\s*BUDGET:[ \t]*(?:[1-9]|1[0-2])h\b/;
 
-// "waiting on CI", "the test run is in progress", "once it finishes" ...
+// "waiting on CI", "the test run is in progress", "awaiting CI", "once it finishes" ...
+const CI_NOUN = '(?:ci|checks?|tests?|workflows?|runs?|land(?:\\.yml| run)?|build|deploy(?:ment)?|actions?)';
 const CI_WAIT_RE = new RegExp(
-  '\\b(?:ci|checks?|tests?|workflows?|runs?|land(?:\\.yml| run)?|build|deploy(?:ment)?|actions?)\\b[^.\\n]{0,60}?'
-  + '\\b(?:in progress|is running|still running|running|pending|queued|to (?:finish|complete)|has not finished|hasn.t finished)\\b'
-  + '|\\bwaiting (?:on|for)\\b[^.\\n]{0,40}\\b(?:ci|checks?|tests?|workflow|run|land|build|deploy)'
-  + '|\\bonce (?:it|the (?:run|workflow|tests?|ci|checks?))\\b[^.\\n]{0,30}\\b(?:finish|complete|pass|land)',
+  '\\b' + CI_NOUN + '\\b[^.;\\n]{0,60}?\\b(?:in progress|in flight|is running|still running|running|pending|queued|to (?:finish|complete)|has not finished|hasn.t finished|kicked off)\\b'
+  + '|\\b(?:waiting|awaiting|wait)\\b[^.;\\n]{0,40}\\b' + CI_NOUN + '\\b'
+  + '|\\bonce (?:it|the (?:run|workflow|tests?|ci|checks?))\\b[^.;\\n]{0,30}\\b(?:finish|complete|pass|land)',
   'i'
 );
+// A line that says nothing is pending is not a wait.
+const NOT_WAITING_RE = /\b(?:nothing|no\b[^.\n]{0,30}\b(?:running|pending)|finished|completed|passed|green|landed|done)\b/i;
 
 // Commands / tools that start something this session will then wait on.
-const DISPATCH_CMD_RE = /\bgh\s+workflow\s+run\b|\bgh\s+api\b[^\n]*\/(?:dispatches|runs\/\d+\/rerun)|\bgit\s+push\b|merge-worktree-to-main|push-with-retry/;
+const DISPATCH_CMD_RE = /\bgh\s+workflow\s+run\b|\bgh\s+run\s+rerun\b|\bgh\s+api\b[^\n]*\/(?:dispatches|runs\/\d+\/rerun)|\bgit\b[^\n|;&]*\bpush\b|merge-worktree-to-main|push-with-retry/;
+// A background command only counts as a wake if it actually polls a run/deploy.
+const POLL_CMD_RE = /\bgh\s+(?:run|api|pr)\b|actions\/runs|wait-for-(?:land|run)|check-prod-deploy|land\.yml/;
 const DISPATCH_TOOL_RE = /run_workflow|workflow_dispatch|actions_run_trigger|rerun_workflow|(?:^|__)create_pull_request$/i;
 
 function isChildSession({ firstPrompt = '', env = {} } = {}) {
@@ -47,11 +51,9 @@ function startedRun(t) {
 function isWake(t, done) {
   if (!t || !t.ok) return false;
   const inp = t.input || {};
-  if (t.name === 'Monitor' || (t.name === 'Bash' && inp.run_in_background)) {
-    return !(t.taskId && done.includes(t.taskId));
-  }
-  if (/send_message$/.test(String(t.name || ''))) {
-    return /@?parent\b/i.test(String(inp.to || inp.session_id || inp.target || ''));
+  if (t.name === 'Monitor') return !(t.taskId && done.includes(t.taskId));
+  if (t.name === 'Bash' && inp.run_in_background) {
+    return POLL_CMD_RE.test(String(inp.command || '')) && !(t.taskId && done.includes(t.taskId));
   }
   return false;
 }
@@ -64,12 +66,17 @@ function childWaitDecision(input) {
   if (!/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT)\b/m.test(closing.split('\n').filter((l) => l.trim()).slice(-1)[0] || '')) {
     return no('closing verdict is not KEEP OPEN');
   }
-  if (!CI_WAIT_RE.test(closing)) return no('KEEP OPEN does not wait on CI or a run');
+  // Only the verdict line and "Still running:" lines state what is awaited.
+  const waitLines = closing.split('\n').filter((l) => /^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT|Still running)\b/i.test(l));
+  if (!waitLines.some((l) => CI_WAIT_RE.test(l) && !NOT_WAITING_RE.test(l.replace(/^[\s*_•-]{0,4}(?:KEEP OPEN|NOT SAFE TO EXIT)\b/i, '')))) {
+    return no('KEEP OPEN does not wait on CI or a run');
+  }
   let lastRun = -1;
   for (const t of tools) if (startedRun(t) && t.idx > lastRun) lastRun = t.idx;
-  const armed = tools.some((t) => t.idx > lastRun && isWake(t, done));
+  // >= : one background command may dispatch the run and then poll it.
+  const armed = tools.some((t) => t.idx >= lastRun && isWake(t, done));
   if (armed) return no('a wake was armed after the last run this session started');
-  return { block: true, reason: 'child session waiting on CI/a run it started with no wake armed after it' };
+  return { block: true, reason: 'child session waiting on CI/a run it started with no poll armed after it' };
 }
 
 module.exports = { childWaitDecision, isChildSession, CI_WAIT_RE, CHILD_PROMPT_RE };
@@ -83,6 +90,7 @@ if (require.main === module) {
       input.env = input.env || process.env;
       process.stdout.write(JSON.stringify(childWaitDecision(input)));
     } catch (e) {
+      process.stderr.write('child-session-wait-guard: failing open: ' + e.message + '\n');
       process.stdout.write(JSON.stringify({ block: false, reason: 'fail-open: ' + e.message }));
     }
   });
