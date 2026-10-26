@@ -75,6 +75,8 @@ on:
       - 'scripts/linear-decision-reply-drain.js'
       # BRO-6134: Codex lane health alarm, tested by tests/unit/codex-lane-health.test.mjs.
       - 'scripts/codex-lane-alarm.js'
+      # BRO-6260: one-time Codex retry backfill, tested by tests/unit/codex-retry-backfill.test.mjs.
+      - 'scripts/codex-retry-backfill.js'
       # BRO-6139: its replay() is the change-safety gate, tests/unit/codex-lane-backtest-replay.test.mjs.
       - 'scripts/backtest-codex-lane-health.js'
       # BRO-3579: multi-run workflow-status wrapper + its manifest-registered test.
@@ -776,6 +778,8 @@ on:
       - 'scripts/cloud-dispatch.js'
       - 'scripts/cloud-doctor.js'
       - 'scripts/new-fix-plan.js'
+      # BRO-6266: chat-answer recorder (tested by owner-decision-quiet-period.test.mjs).
+      - 'scripts/record-owner-answer.js'
       # Show Score import: the profile parser ships inside the edge function
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).

@@ -193,6 +193,7 @@ const IOS_APP_CARD_RE = /^\W*iOS\b(?!\s+Safari)/i;
 // Also the reclaim sweep's note (linear-reclaim-abandoned.js RECLAIM_MARKER) and
 // the Codex runner's hand-backs (scripts/codex/daily-runner.js), BRO-5360, and the
 // claim trace linear-session.js claim posts (buildClaimComment), BRO-6092.
+const { isFilerRefreshComment } = require('./filer-refresh-marker.js');
 const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Claimed by |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b|RECLAIMED-ABANDONED:|Headless worker ended without its own session report|<!-- codex-runner|## Codex runner\b)/i;
 // The reclaim sweep's note when it sends a card to Backlog, not Todo, after
 // MAX_RECLAIMS: "Someone should read the history before it is retried."
@@ -208,6 +209,19 @@ const OWNER_NEGATED_AFTER_RE = /^\s*(?:is\s+|was\s+)?(?:not|no\s+longer)\s+(?:re
 // An owner hold still gets one more worker after this long, so a card the
 // owner never answers in Linear (or a misread report) can't wait forever.
 const AWAITING_OWNER_MAX_MS = 14 * 24 * HOUR_MS;
+// BRO-6262: a worker that paused a card because this lane cannot do the work (no
+// attached review-texts repo, "not workable from the cloud lane") says so in its
+// report. Re-picking it only burns another session to learn the same thing
+// (BRO-5489, BRO-5401), so it stays out of the cloud pick until a person comments or
+// LANE_UNWORKABLE_MAX_MS passes (the lane may have been fixed meanwhile).
+// Deliberately narrow phrases: a report that merely mentions "review-texts" while
+// finishing other work must not match.
+const LANE_UNWORKABLE_RE = /not workable from the cloud lane|data\/review-texts is not attached|review-texts private repo not attached/i;
+const LANE_UNWORKABLE_MAX_MS = 14 * 24 * HOUR_MS;
+/** True when a paused session report says the cloud lane cannot do this card's work. */
+function laneUnworkableReason(reportBody) {
+  return LANE_UNWORKABLE_RE.test(String(reportBody || ''));
+}
 const AUTOMATION_PARK_STALE_MS = 3 * 24 * HOUR_MS;
 const MACHINE_PARK_LINE_RE = /Auto-filed by (?:digest-autofix|owner-alert-router)/;
 
@@ -243,7 +257,7 @@ function effectiveTouchMs(issue) {
   const dated = nodes.filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
     .sort((a, b) => Date.parse(a.createdAt) - Date.parse(b.createdAt));
   let end = dated.length;
-  while (end > 0 && FILER_RECOMMENT_RE.test(String(dated[end - 1].body || ''))) end--;
+  while (end > 0 && (FILER_RECOMMENT_RE.test(String(dated[end - 1].body || '')) || isFilerRefreshComment(dated[end - 1].body))) end--;
   if (end === dated.length) return updatedMs;
   const lastFilerMs = Date.parse(dated[dated.length - 1].createdAt);
   if (Math.abs(updatedMs - lastFilerMs) > FILER_RECOMMENT_SLACK_MS) return updatedMs;
@@ -358,7 +372,9 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
   // For the Codex runner only (codex: true): a fix round it carried to its next run (BRO-5384) is
   // its own hand-back note, not someone working the card. The Claude lane keeps the 6 h wait, so
   // it does not take the card first and redo it without Codex's carried change.
-  const carry = codex && require('./codex-runner.js').parseSwfCarry(issue.comments && issue.comments.nodes, nowMs);
+  const CR = codex && require('./codex-runner.js');
+  // A carried fix round or a retry note (BRO-6260) is the newest comment, which makes the card look recently touched.
+  const carry = codex && (CR.parseSwfCarry(issue.comments && issue.comments.nodes, nowMs) || CR.parseCodexRetry(issue.comments && issue.comments.nodes));
   if (nowMs - updatedMs < IDLE_MS && (fallback || !isStartNow(issue, nowMs)) && !carry) return 'recent-activity';
   return null;
 }
@@ -368,8 +384,8 @@ function skipReason(issue, nowMs, { tier = 'p0p1', codex = false } = {}) {
  * runner's claim-time re-check, leaveCodexCards): one call so the rule can't drift between them
  * (BRO-5407). `nodes` are the card's comments. -> reason string or null
  */
-function historySkipReason(issue, nodes, nowMs) {
-  return pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue) });
+function historySkipReason(issue, nodes, nowMs, { cloudLane = false } = {}) {
+  return pausedHistorySkipReason(nodes || [], nowMs, { priority: issue && issue.priority, pausedBacklog: isPausedBacklog(issue), cloudLane });
 }
 
 /**
@@ -641,9 +657,9 @@ function mayTakeUnchecked(entry) {
  *   wait out RECENT_PAUSE_URGENT_MS instead. pausedBacklog: the card is a paused Backlog card
  *   (isPausedBacklog), which is only taken when a worker's session report or a Codex runner
  *   note shows a worker put it there; one moved to Backlog by hand is 'backlog-unexplained'.
- * @returns {'awaiting-owner'|'backlog-unexplained'|'reclaimed-to-backlog'|'recheck-pending'|'paused-repeatedly'|'recently-paused'|null}
+ * @returns {'awaiting-owner'|'lane-unworkable'|'backlog-unexplained'|'reclaimed-to-backlog'|'recheck-pending'|'paused-repeatedly'|'recently-paused'|null}
  */
-function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = false } = {}) {
+function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = false, cloudLane = false } = {}) {
   const { parseSessionReportStatus } = require('./linear-session-reporting.js');
   const { BOUNCED_MARKER } = require('./codex-runner.js');
   const { parseRecheckAfter } = require('./recheck-stamp.js');
@@ -674,6 +690,7 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
   const answered = sorted.slice(0, idx).some((c) => !isMachineComment(c.body));
   const ageMs = nowMs - Date.parse(report.createdAt);
   if (!answered && ageMs < AWAITING_OWNER_MAX_MS && namesOwnerHold(report.body)) return 'awaiting-owner';
+  if (cloudLane && !answered && ageMs < LANE_UNWORKABLE_MAX_MS && laneUnworkableReason(report.body)) return 'lane-unworkable';
   const pauses = sorted.filter((c) => parseSessionReportStatus(c.body) === 'paused').length;
   if (!answered && pauses >= MAX_PAUSES) return 'paused-repeatedly';
   const cooldownMs = PRIORITIES.has(Number(priority)) ? RECENT_PAUSE_URGENT_MS : RECENT_PAUSE_MS;
@@ -682,7 +699,7 @@ function pausedHistorySkipReason(comments, nowMs, { priority, pausedBacklog = fa
 
 function isMachineComment(body) {
   const text = String(body || '').trim();
-  return MACHINE_COMMENT_RE.test(text) || MACHINE_TAG_RE.test(text);
+  return MACHINE_COMMENT_RE.test(text) || MACHINE_TAG_RE.test(text) || isFilerRefreshComment(text);
 }
 
 /** True when a paused report names the owner's call as its blocker (a negated mention doesn't count). */
@@ -774,7 +791,7 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   leaveCodexCards,
-  isMachineComment,
+  isMachineComment, laneUnworkableReason, LANE_UNWORKABLE_MAX_MS,
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, RECENT_PAUSE_URGENT_MS, MAX_PAUSES, AWAITING_OWNER_MAX_MS, isPausedBacklog,
   AUTOMATION_PARK_STALE_MS, effectiveTouchMs, hasPersonParkHold, isFallbackTechnicalPark, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS, IOS_APP_CARD_RE, isStaleAutomationParked, isStartNow, hasStartNowLine, startNowUnpickableReason, skipReason, pickCloudCard, pausedHistorySkipReason, historySkipReason, landRefCardNumber, resumableCardsByNumber,
   P2_PRIORITY, TIER_P0P1, TIER_P2, isP2FallbackCandidate, P3_PRIORITY, TIER_P3, isP3FallbackCandidate, buildPickQueue, needsComments, pickModel, modelPicker, opusClaimEntries, fetchOpusClaimEntries, withCloudOpusClaims, sessionModelFor, cloudPriorAttempts, mayTakeUnchecked,

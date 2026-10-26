@@ -140,7 +140,7 @@ async function firstUnpaused(queue, nowMs, historySkipped, breakerSkip = () => f
       const nodes = pre || (full && full.comments ? full.comments.nodes : []);
       // Both reads cap at 50 comments; past that the latest report may be cut off.
       if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
-      reason = historySkipReason(queue[i].issue, nodes, nowMs);
+      reason = historySkipReason(queue[i].issue, nodes, nowMs, { cloudLane: !process.argv.includes('--codex') });
       // Comments fetched just now: the per-card cap can apply only here.
       if (!reason && !pre && breakerSkip(queue[i], nodes)) continue;
     } catch (err) {

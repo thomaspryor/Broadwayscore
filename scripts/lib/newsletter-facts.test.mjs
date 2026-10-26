@@ -4,23 +4,23 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const nf = require('./newsletter-facts.js');
-const { processMessages } = require('../read-theater-newsletters.js');
+const { processMessages, processPosts } = require('../read-theater-newsletters.js');
 
-const CHROMO = nf.SENDERS[0];
-const SUBSTACK = nf.SENDERS[1];
-const BRIEFING = nf.SENDERS[2];
+const CHROMO = nf.WEB_SOURCES[0];
+const SUBSTACK = nf.WEB_SOURCES[1];
+const BRIEFING = nf.EMAIL_SENDERS[0];
 
-test('buildQuery names exactly the three approved senders', () => {
+test('buildQuery names only the Gmail-read sender (the other two are read from the web)', () => {
   const q = nf.buildQuery();
-  assert.equal(q, 'newer_than:8d (from:ido@chromolume.io OR from:gordoncox@substack.com OR from:broadwaybriefing@broadwaybriefing.com)');
+  assert.equal(q, 'newer_than:8d (from:broadwaybriefing@broadwaybriefing.com)');
   assert.equal(nf.buildQuery(3).startsWith('newer_than:3d '), true);
 });
 
 test('senderFor matches exact addresses only', () => {
-  assert.equal(nf.senderFor('Ido Gal <ido@chromolume.io>'), CHROMO);
-  assert.equal(nf.senderFor('gordoncox@substack.com'), SUBSTACK);
+  assert.equal(nf.senderFor('Ido Gal <ido@chromolume.io>'), null);
+  assert.equal(nf.senderFor('gordoncox@substack.com'), null);
   assert.equal(nf.senderFor('"Broadway Briefing" <BroadwayBriefing@broadwaybriefing.com>'), BRIEFING);
-  assert.equal(nf.senderFor('Ido Gal <ido@chromolume.io> (via list)'), CHROMO);
+  assert.equal(nf.senderFor('Broadway Briefing <broadwaybriefing@broadwaybriefing.com> (via list)'), BRIEFING);
   assert.equal(nf.senderFor('"ido@chromolume.io" <attacker@evil.com>'), null);
   assert.equal(nf.senderFor('ido@chromolume.io.evil.com'), null);
   assert.equal(nf.senderFor('Ido <ido@chromolume.io.evil.com>'), null);
@@ -52,12 +52,11 @@ test('pickIssueUrl returns a post link on the sender host, without tracking', ()
   ];
   assert.equal(nf.pickIssueUrl(SUBSTACK, links), 'https://gordoncox.substack.com/p/abroadway-oct-21');
   assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io?utm_source=newsletter']), null);
-  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/issues/commission-26/?utm=x']), 'https://chromolume.io/issues/commission-26');
-  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/week-18-analysis?utm=x']), 'https://chromolume.io/blog/week-18-analysis');
-  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/chromolume-composite-wordmark.png', 'https://chromolume.io/blog/week-18-analysis']), 'https://chromolume.io/blog/week-18-analysis');
-  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/chromolume-composite-wordmark.png']), null);
+  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/issues/commission-26/?utm=x']), null);
+  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/composite-october-4-2026?utm=x']), 'https://chromolume.io/blog/composite-october-4-2026');
+  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/composite-wordmark.png', 'https://chromolume.io/blog/composite-october-4-2026']), 'https://chromolume.io/blog/composite-october-4-2026');
+  assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog/week-18-analysis']), null);
   assert.equal(nf.pickIssueUrl(CHROMO, ['https://chromolume.io/blog']), null);
-  assert.equal(nf.pickIssueUrl(BRIEFING, ['https://www.broadwaybriefing.com/p/briefing-oct-23', 'https://example.com/p/x']), 'https://www.broadwaybriefing.com/p/briefing-oct-23');
   assert.equal(nf.pickIssueUrl(SUBSTACK, ['https://substack.com/redirect/2/abc']), null);
   assert.equal(nf.pickIssueUrl(SUBSTACK, ['not a url', 'https://evil.example/p/x']), null);
 });
@@ -153,36 +152,73 @@ test('buildFetchFailureAlertOpts has a stable key and trims the message', () => 
   assert.equal(o.description.length < 700, true);
 });
 
-// ---- end to end through processMessages, with a fake extractor ----
+// ---- end to end through processMessages (Briefing) and processPosts, with fakes ----
 const NOW = Date.parse('2026-10-26T12:00:00Z');
-const auth = 'mx.google.com; dkim=pass header.i=@substack.com';
-const msg = (over) => ({ id: 'm', date: '2026-10-21T12:00:00Z', from: 'gordoncox@substack.com', subject: 'Issue', authResults: [auth], text: `Read online: ${URL1}?utm=1`, ...over });
+const auth = 'mx.google.com; dkim=pass header.i=@broadwaybriefing.com';
+const LONG = 'The producers said the show has recouped its investment. '.repeat(20);
+const SRC = 'https://www.broadwaynews.com/some-article/';
+const msg = (over) => ({ id: 'm', date: '2026-10-21T12:00:00Z', from: 'broadwaybriefing@broadwaybriefing.com', subject: 'Briefing', authResults: [auth], text: 'The show closes after raising $20 million (https://bway.ly/abc123)', ...over });
 const extractor = (facts) => { const calls = []; const fn = async (p) => { calls.push(p); return JSON.stringify({ facts }); }; fn.calls = calls; return fn; };
+const fresh = { show: 'Hamilton', field: 'weeklyCost', value: 640000, broadway: true, explicit: true };
+const okLink = async () => ({ ok: true, url: SRC });
+const okPage = async () => ({ ok: true, body: `<article>${LONG}</article>` });
+const base = (ex, over = {}) => ({ extract: ex, shows: SHOWS, commercial: COMMERCIAL, windowDays: 7, now: NOW, resolveLink: okLink, fetchArticle: okPage, ...over });
 
-test('processMessages: only the approved senders reach the extractor', async () => {
+test('processMessages: only the approved sender reaches the extractor', async () => {
   const ex = extractor([good]);
-  const r = await processMessages([
-    msg({ from: 'newsletter@other.com', id: 'other' }),
-    msg({ from: 'ido@chromolume.io', authResults: ['mx.google.com; dkim=pass header.i=@chromolume.io'], text: 'https://chromolume.io/issues/c26', id: 'c' }),
-    msg({ id: 's' }),
-  ], { extract: ex, shows: SHOWS, commercial: COMMERCIAL, windowDays: 7, now: NOW });
-  assert.equal(ex.calls.length, 2);
-  assert.equal(r.skipped['sender-not-allowlisted'], 1);
-  assert.equal(r.issues.length, 2);
+  const r = await processMessages([msg({ from: 'newsletter@other.com', id: 'other' }), msg({ from: 'ido@chromolume.io' }), msg()], base(ex));
+  assert.equal(ex.calls.length, 1);
+  assert.equal(r.skipped['sender-not-allowlisted'], 2);
+  assert.equal(r.issues.length, 1);
 });
 
-test('processMessages: dkim failure, missing URL and old issues never reach the extractor', async () => {
+test('processMessages: facts are extracted from and cited to the resolved original article', async () => {
+  const ex = extractor([fresh]);
+  const r = await processMessages([msg()], base(ex));
+  assert.equal(r.issues[0].status, 'read');
+  assert.deepEqual(r.issues[0].citations, [SRC]);
+  assert.equal(r.items[0].fact.issueUrl, SRC);
+  assert.match(ex.calls[0], /news article/);
+});
+
+test('processMessages: dkim failure and old issues never reach the extractor', async () => {
   const ex = extractor([good]);
-  const r = await processMessages([
-    msg({ authResults: [] }),
-    msg({ text: 'no links here' }),
-    msg({ date: '2026-10-01T00:00:00Z' }),
-  ], { extract: ex, shows: SHOWS, commercial: COMMERCIAL, windowDays: 7, now: NOW });
+  const r = await processMessages([msg({ authResults: [] }), msg({ date: '2026-10-01T00:00:00Z' })], base(ex));
   assert.equal(ex.calls.length, 0);
   assert.equal(r.skipped['dkim-not-verified'], 1);
-  assert.equal(r.skipped['issue-has-no-public-url'], 1);
   assert.equal(r.skipped['older-than-window'], 1);
-  assert.equal(r.items.length, 0);
+});
+
+test('processMessages: unresolvable links are skipped and counted, never cited', async () => {
+  const ex = extractor([good]);
+  const r = await processMessages([msg()], base(ex, { resolveLink: async () => ({ ok: false, reason: 'destination-not-registered-outlet' }) }));
+  assert.equal(ex.calls.length, 0);
+  assert.equal(r.skipped['link-destination-not-registered-outlet'], 1);
+  assert.equal(r.issues[0].status, 'skipped');
+  assert.equal(r.issues[0].reason, 'no-item-resolvable');
+});
+
+test('processMessages: a paywall stub or fetch block skips the item', async () => {
+  const ex = extractor([good]);
+  const stub = await processMessages([msg()], base(ex, { fetchArticle: async () => ({ ok: true, body: '<article>Subscribe to read</article>' }) }));
+  assert.equal(stub.skipped['article-body-too-short'], 1);
+  const blocked = await processMessages([msg()], base(ex, { fetchArticle: async () => ({ ok: false, reason: 'fetch-blocked' }) }));
+  assert.equal(blocked.skipped['article-fetch-blocked'], 1);
+  assert.equal(ex.calls.length, 0);
+});
+
+test('processMessages: an issue with no money or closing item is read, not skipped', async () => {
+  const ex = extractor([good]);
+  const r = await processMessages([msg({ text: 'Opening night party photos (https://bway.ly/zzz999)' })], base(ex));
+  assert.equal(r.issues[0].status, 'read');
+  assert.equal(r.issues[0].candidates, 0);
+  assert.equal(ex.calls.length, 0);
+});
+
+test('processMessages: the same article linked twice is extracted once', async () => {
+  const ex = extractor([good]);
+  await processMessages([msg(), msg({ id: 'm2', date: '2026-10-22T12:00:00Z' })], base(ex));
+  assert.equal(ex.calls.length, 1);
 });
 
 test('processMessages: new and conflicting facts are reported, known and unsafe ones are not', async () => {
@@ -193,20 +229,36 @@ test('processMessages: new and conflicting facts are reported, known and unsafe 
     { show: 'Hamilton', field: 'weeklyCost', value: 1, broadway: false, explicit: true },
     { show: 'Hamilton', field: 'profit', value: 5000000, broadway: true, explicit: false },
   ]);
-  const r = await processMessages([msg()], { extract: ex, shows: SHOWS, commercial: COMMERCIAL, windowDays: 7, now: NOW });
+  const r = await processMessages([msg()], base(ex));
   assert.deepEqual(r.items.map((i) => `${i.status}:${i.slug}:${i.fact.field}`), ['conflict:hamilton:capitalization', 'conflict:the-lost-boys-2026:recouped']);
   assert.equal(r.skipped['already-in-commercial'], 1);
   assert.equal(r.skipped['not-broadway'], 1);
   assert.equal(r.skipped['not-explicit'], 1);
-  assert.equal(r.issues[0].issueUrl, URL1);
 });
 
 test('processMessages: nothing stored from the email body ends up in the report', async () => {
   const secret = 'PRIVATE-BODY-SENTENCE-7731';
   const ex = extractor([good]);
-  const r = await processMessages([msg({ text: `${secret} ${URL1}` })], { extract: ex, shows: SHOWS, commercial: COMMERCIAL, windowDays: 7, now: NOW });
+  const r = await processMessages([msg({ text: `${secret} raised $5 million (https://bway.ly/abc123)` })], base(ex));
   assert.equal(JSON.stringify(r).includes(secret), false);
   assert.equal(JSON.stringify(nf.buildAlertOpts(r.items)).includes(secret), false);
+});
+
+test('processPosts: reads web posts, cites the post URL, skips stubs and bad URLs', async () => {
+  const ex = extractor([fresh]);
+  const items = [];
+  const skipped = {};
+  const deps = { extract: ex, shows: SHOWS, commercial: COMMERCIAL, items, bump: (k) => { skipped[k] = (skipped[k] || 0) + 1; } };
+  const issues = await processPosts(CHROMO, [
+    { url: 'https://chromolume.io/blog/composite-october-4-2026', date: '2026-10-04', text: LONG },
+    { url: 'https://chromolume.io/blog/composite-october-11-2026', date: '2026-10-11', text: 'short' },
+    { url: 'https://evil.example/blog/composite-october-18-2026', date: '2026-10-18', text: LONG },
+    { url: 'https://chromolume.io/blog/composite-october-25-2026', date: '2026-10-25', error: 'post-fetch-blocked' },
+  ], deps);
+  assert.deepEqual(issues.map((i) => i.status), ['read', 'skipped', 'skipped', 'skipped']);
+  assert.deepEqual(issues.map((i) => i.reason), [null, 'body-too-short', 'issue-has-no-public-url', 'post-fetch-blocked']);
+  assert.equal(items[0].fact.issueUrl, 'https://chromolume.io/blog/composite-october-4-2026');
+  assert.equal(ex.calls.length, 1);
 });
 
 test('pickIssueUrl only takes Gordon Cox posts on Substack hosts', () => {
@@ -228,7 +280,22 @@ test('recouped facts never carry newsletter wording', () => {
 test('one failed extraction does not lose the other issues', async () => {
   let n = 0;
   const extract = async () => { if (n++ === 0) throw new Error('Anthropic HTTP 529'); return '{"facts":[]}'; };
-  const r = await processMessages([msg({ id: 'a' }), msg({ id: 'b' })], { extract, shows: SHOWS, commercial: COMMERCIAL, windowDays: 7, now: Date.parse('2026-10-25T00:00:00Z') });
+  const r = await processMessages([msg({ id: 'a' }), msg({ id: 'b', text: 'raised $9 million (https://bway.ly/other11)' })], base(extract, { resolveLink: async (u) => ({ ok: true, url: `${SRC}${u.slice(-3)}` }) }));
   assert.equal(r.skipped['extraction-failed'], 1);
   assert.equal(r.issues.length, 2);
+});
+
+test('processMessages: an issue whose only extraction failed is skipped, not read', async () => {
+  const extract = async () => { throw new Error('Anthropic HTTP 529'); };
+  const r = await processMessages([msg()], base(extract));
+  assert.equal(r.issues[0].status, 'skipped');
+  assert.equal(r.issues[0].reason, 'extraction-failed');
+  assert.equal(r.skipped['extraction-failed'], 1);
+});
+
+test('processMessages: an email with no bway.ly links at all is a skip (format drift)', async () => {
+  const ex = extractor([good]);
+  const r = await processMessages([msg({ html: '<p>Raised $20 million, no short links here</p>', text: 'Raised $20 million' })], base(ex));
+  assert.equal(r.issues[0].status, 'skipped');
+  assert.equal(r.issues[0].reason, 'no-bway-links');
 });

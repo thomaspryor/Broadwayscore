@@ -9,7 +9,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const sel = require('./social-autopost/select.js');
 const { buildCaptions, postMarkers, showUrl, LIMITS } = require('./social-autopost/captions.js');
-const { isUsablePoster, artVerdict, originalUrl } = require('./social-autopost/art.js');
+const { isUsablePoster, artVerdict, originalUrl, candidatesFor } = require('./social-autopost/art.js');
 const { buildCardHtml, SITE_CSS } = require('./social-autopost/render.js');
 const { metadataFor } = require('./social-autopost/buffer.js');
 const { breakdownFor, pendingRetries, abandonRetries, postsToVerify } = require('./social-autopost/run.js');
@@ -147,6 +147,10 @@ test('poster rules: a portrait at least 440 px wide, confirmed by the vision che
   assert.equal(artVerdict({ match: false, confidence: 'low' }).ok, false, 'a low-confidence no still fails');
   assert.equal(artVerdict({ skipped: true }).ok, false, 'unverified art is not used');
   assert.equal(originalUrl('https://images.ctfassets.net/a/b/c/x.jpg?w=1920&fm=webp'), 'https://images.ctfassets.net/a/b/c/x.jpg');
+  const show = { id: 's', todaytixId: 48323, images: { poster: '/images/shows/s/poster.jpg' } };
+  const order = c => c.url ? 'source' : c.todaytixId ? 'todaytix' : 'local';
+  assert.deepEqual(candidatesFor(show, { s: { poster: 'https://images.ctfassets.net/a/b/c/p.jpg?w=300' } }).map(order), ['source', 'todaytix', 'local']);
+  assert.deepEqual(candidatesFor({ ...show, todaytixId: null }, {}).map(order), ['local'], 'no TodayTix id: site copy only');
 });
 
 test("the card's badge CSS is exactly the site's (src/app/globals.css)", () => {

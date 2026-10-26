@@ -5,6 +5,8 @@
  * This module never upscales: it fetches the ORIGINAL poster (data/image-sources.json,
  * Contentful transform params stripped), measures it, and accepts it only when it
  * is a portrait poster at least MIN_POSTER_WIDTH wide (the card shows it 480 px wide).
+ * When that file has none, TodayTix's own 480x720 poster for the show's todaytixId is
+ * tried before the site's copy (many London and recent shows only have a small one).
  * A Gemini vision check (the site's own scripts/lib/verify-image.js) must also
  * confirm it belongs to this production. Otherwise the card uses a typographic poster.
  */
@@ -28,18 +30,33 @@ function originalUrl(url) {
   } catch { return null; }
 }
 
-/** Poster candidates, best first: the original source file, then the site's own copy. */
+/** Poster candidates, best first: the original source file, TodayTix, then the site's own copy. */
 function candidatesFor(show, sources) {
   const src = sources[show.id] || {};
   const out = [];
   if (src.poster) out.push({ url: originalUrl(src.poster) });
+  if (show.todaytixId) out.push({ todaytixId: show.todaytixId });
   const local = show.images && show.images.poster;
   if (local && local.startsWith('/')) out.push({ file: path.join(ROOT, 'public', local) });
   return out;
 }
 
+/** TodayTix's poster URL for a show id (public API, the same one scripts/fetch-show-images-auto.js uses). */
+async function todaytixPosterUrl(id) {
+  try {
+    const res = await fetch(`https://api.todaytix.com/api/v2/shows/${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(FETCH_TIMEOUT_MS) });
+    if (!res.ok) return null;
+    const media = ((await res.json()).data || {}).posterMedia;
+    return media && media.imageUrl ? originalUrl(media.imageUrl) : null;
+  } catch { return null; }
+}
+
 async function loadBuffer(c) {
   if (c.file) return fs.existsSync(c.file) ? fs.readFileSync(c.file) : null;
+  if (c.todaytixId) {
+    c.url = await todaytixPosterUrl(c.todaytixId);
+    if (!c.url) return null;
+  }
   const ctl = new AbortController();
   const t = setTimeout(() => ctl.abort(), FETCH_TIMEOUT_MS);
   try {
@@ -84,7 +101,7 @@ async function resolvePoster(show, { sources = loadImageSources(), check = check
   const reasons = [];
   for (const c of candidatesFor(show, sources)) {
     const buf = await loadBuffer(c);
-    const where = c.url || path.relative(ROOT, c.file);
+    const where = c.url || (c.file ? path.relative(ROOT, c.file) : `todaytix show ${c.todaytixId}`);
     if (!buf) { reasons.push(`${where}: not fetched`); continue; }
     let meta;
     try { meta = await sharp(buf).metadata(); } catch { reasons.push(`${where}: not an image`); continue; }
@@ -97,4 +114,4 @@ async function resolvePoster(show, { sources = loadImageSources(), check = check
   return { poster: false, reason: reasons.join(' | ') || 'no poster on file' };
 }
 
-module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, MIN_POSTER_WIDTH };
+module.exports = { resolvePoster, isUsablePoster, artVerdict, originalUrl, candidatesFor, MIN_POSTER_WIDTH };

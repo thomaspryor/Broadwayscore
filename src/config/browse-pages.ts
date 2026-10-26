@@ -213,9 +213,9 @@ function generateSeasonBrowsePages(): Record<string, BrowsePageConfig> {
 export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
   'broadway-shows-for-kids': {
     slug: 'broadway-shows-for-kids',
-    title: 'Best Broadway Shows for Kids',
-    h1: 'Best Broadway Shows for Kids',
-    metaTitle: `Best Broadway Shows for Kids (${CURRENT_YEAR})`,
+    title: 'Broadway Shows for Kids, Ranked',
+    h1: 'Broadway Shows for Kids, Ranked by Critics',
+    metaTitle: `Broadway Shows for Kids (${CURRENT_YEAR}): Full List`,
     metaDescription: 'Find the best family-friendly Broadway shows for children. Our guide to kid-appropriate musicals and plays perfect for young theatergoers.',
     intro: 'Looking for the perfect Broadway show to take your kids to? We\'ve curated a list of the best family-friendly productions currently playing on Broadway. These shows feature age-appropriate content, engaging stories, and spectacle that will captivate young audiences. From Disney classics to new favorites, these productions offer the perfect introduction to the magic of live theater. Most of these shows also offer family-friendly pricing and matinee performances.',
     filter: (show) => {
@@ -234,9 +234,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'broadway-shows-for-date-night': {
     slug: 'broadway-shows-for-date-night',
-    title: 'Best Broadway Date Night Shows',
-    h1: 'Best Broadway Date Night Shows',
-    metaTitle: `Best Broadway Shows for Date Night (${CURRENT_YEAR})`,
+    title: 'Broadway Date Night Shows, Ranked',
+    h1: 'Broadway Date Night Shows, Ranked by Critics',
+    metaTitle: `Broadway Date Night Shows Ranked (${CURRENT_YEAR})`,
     metaDescription: 'Romantic Broadway shows perfect for date night. From sweeping love stories to sophisticated dramas, find the ideal show for a memorable evening.',
     intro: 'Planning a romantic evening in New York? Broadway offers some of the most memorable date night experiences in the city. Whether you\'re looking for a sweeping romance, a sophisticated drama, or a spectacular musical, these shows deliver the perfect atmosphere for couples. We\'ve selected productions that combine quality storytelling with that special something that makes for an unforgettable night out together.',
     filter: (show) => {
@@ -269,9 +269,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'first-time-broadway': {
     slug: 'first-time-broadway',
-    title: 'Best Broadway Shows for First-Timers',
-    h1: 'Best Broadway Shows for First-Timers',
-    metaTitle: `Best Broadway Shows for First-Timers (${CURRENT_YEAR})`,
+    title: 'First-Time Broadway Shows, Ranked',
+    h1: 'First-Time Broadway Shows, Ranked by Critics',
+    metaTitle: `First-Time Broadway Shows Ranked (${CURRENT_YEAR})`,
     metaDescription: 'New to Broadway? These accessible, crowd-pleasing shows are perfect for your first theatrical experience. Start your Broadway journey here.',
     intro: 'Never been to a Broadway show before? Welcome! These productions are perfect for first-time theatergoers. We\'ve selected shows that are accessible, entertaining, and representative of what makes Broadway special. These aren\'t just "beginner" shows - they\'re critically acclaimed productions that happen to be particularly welcoming to newcomers. With engaging stories, spectacular staging, and universal themes, these shows will leave you excited to come back for more.',
     filter: (show) => {
@@ -401,9 +401,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'best-broadway-revivals': {
     slug: 'best-broadway-revivals',
-    title: 'Best Broadway Revivals',
-    h1: 'Best Broadway Revivals',
-    metaTitle: `Best Broadway Revivals (${CURRENT_YEAR})`,
+    title: 'Broadway Revivals Playing Now, Ranked',
+    h1: 'Broadway Revivals Playing Now, Ranked by Critics',
+    metaTitle: `Broadway Revivals Playing Now (${CURRENT_YEAR}): Ranked`,
     metaDescription: 'The best Broadway revival productions currently playing. Classic shows reimagined for today\'s audiences with fresh perspectives and new stars.',
     intro: 'Broadway revivals bring beloved classics back to life with fresh perspectives, new stars, and reimagined staging. These productions honor the original material while offering something new - whether it\'s an innovative concept, a diverse cast, or simply the chance to experience a legendary show in person. From Tony-winning productions to intimate reimaginings, these revivals prove that great theater is timeless.',
     filter: (show) => {
@@ -531,7 +531,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     slug: 'tony-winners-on-broadway',
     title: 'Tony Winning Shows Now on Broadway',
     h1: 'Tony Winning Shows Now on Broadway',
-    metaTitle: `Tony Award Winners on Broadway (${CURRENT_YEAR})`,
+    metaTitle: `Tony Winners Now Running on Broadway (${CURRENT_YEAR})`,
     metaDescription: 'See Tony Award-winning shows currently playing on Broadway. The best of the best, as recognized by the theater industry\'s highest honors.',
     intro: 'The Tony Awards represent the highest honors in American theater, and these shows have earned Broadway\'s most prestigious accolades. Whether they won Best Musical, Best Play, or collected multiple awards for their creative teams, these productions represent the pinnacle of theatrical achievement. Seeing a Tony winner is a chance to experience shows that have been recognized as the very best Broadway has to offer.',
     filter: (show) => {
@@ -576,9 +576,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'best-broadway-musicals': {
     slug: 'best-broadway-musicals',
-    title: 'Best Broadway Musicals',
-    h1: 'Best Broadway Musicals',
-    metaTitle: `Best Broadway Musicals (${CURRENT_YEAR}): Ranked by Critics`,
+    title: 'Every Broadway Musical, Ranked',
+    h1: 'Every Broadway Musical Ranked by Critics',
+    metaTitle: `Every Broadway Musical Ranked (${CURRENT_YEAR})`,
     metaDescription: 'Every Broadway musical ranked by aggregated critic scores from NYT, Variety, Vulture & 400+ outlets. See which musicals are must-sees and which to skip.',
     intro: 'Broadway musicals represent the pinnacle of theatrical entertainment, combining compelling stories with unforgettable songs, spectacular staging, and incredible performances. These are the highest-rated musicals currently playing on Broadway, as determined by aggregated critic reviews. Whether you\'re looking for a classic, a new hit, or something in between, these productions deliver the very best of what musical theater has to offer.',
     filter: (show) => {
@@ -654,9 +654,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'best-broadway-plays': {
     slug: 'best-broadway-plays',
-    title: 'Best Broadway Plays',
-    h1: 'Best Broadway Plays',
-    metaTitle: `Best Broadway Plays (${CURRENT_YEAR})`,
+    title: 'Every Broadway Play, Ranked',
+    h1: 'Every Broadway Play Ranked by Critics',
+    metaTitle: `Every Broadway Play Ranked (${CURRENT_YEAR})`,
     metaDescription: 'The highest-rated plays currently on Broadway. Powerful dramas, sharp comedies, and thought-provoking theater at its finest.',
     intro: 'Broadway plays offer some of the most powerful and intimate theatrical experiences available. Without the spectacle of big musical numbers, plays rely on exceptional writing, direction, and performances to captivate audiences. These are the highest-rated plays currently on Broadway, ranging from gripping dramas to sharp comedies. If you\'re looking for theater that challenges, moves, and stays with you, these productions deliver.',
     filter: (show) => {
@@ -830,9 +830,9 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
 
   'best-broadway-shows-all-time': {
     slug: 'best-broadway-shows-all-time',
-    title: 'Best Broadway Shows of All Time',
-    h1: 'Best Broadway Shows of All Time',
-    metaTitle: 'Best Broadway Shows of All Time: Ranked by Critics',
+    title: 'Greatest Broadway Shows of All Time',
+    h1: 'Greatest Broadway Shows of All Time',
+    metaTitle: 'Greatest Broadway Shows of All Time, Ranked',
     metaDescription: 'Every scored Broadway show ranked by aggregated CriticScore. The definitive all-time ranking of Broadway musicals, plays, and revivals.',
     intro: 'Every Broadway show we\'ve scored, ranked by aggregated CriticScore ratings from dozens of professional critics and publications. This isn\'t a popularity contest or a list of personal favorites. It\'s a data-driven ranking based on the collective judgment of theater critics across The New York Times, Variety, Vulture, and dozens more. From recent hits to classic revivals, these rankings span decades of Broadway history. Whether you\'re settling a debate or discovering your next obsession, this is the most comprehensive critical ranking of Broadway shows available anywhere.',
     filter: (show) => (show.criticScore?.score ?? 0) > 0,

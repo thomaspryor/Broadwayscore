@@ -581,37 +581,6 @@
     "queuedAt": "2026-10-25T20:10:15.725Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40231080930",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40231080930)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40230502991)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "6"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-25T20:50:21.237Z"
-  },
-  {
     "conditionKey": "land:land/bro-6236-codex-model-ab",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-6236-codex-model-ab",
     "description": "land.yml did not land land/bro-6236-codex-model-ab: the scripts-lib-tests gate went red at c9e9eca669. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40229496957",
@@ -1381,5 +1350,222 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-26T02:13:50.876Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6268-ocr-probe-2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6268-ocr-probe-2",
+    "description": "land.yml did not land land/bro-6268-ocr-probe-2: the unit-tests-node gate went red at 40622b29b2. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40258645789",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6268-ocr-probe-2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "40622b29b2c27abcd6fca7051df5bd4820545324"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40258645789"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:39:41.214Z"
+  },
+  {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40261585559",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": "opus",
+    "tracked": null,
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40261585559)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40260302523)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "31"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-26T03:19:07.993Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6262-double-claim",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6262-double-claim",
+    "description": "land.yml did not land land/bro-6262-double-claim: the scripts-lib-tests gate went red at 9201cce328. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40259112080",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6262-double-claim"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "9201cce328af953cea3ebb14e6d2d9338ae7142b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40259112080"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:41:56.031Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5989-probe",
+    "title": "Landing blocked: rebase red on land/bro-5989-probe",
+    "description": "land.yml did not land land/bro-5989-probe: the rebase gate went red at b4c364c23a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5989-probe @ b4c364c23a (origin/land/bro-5989-probe) → origin/main @ cb9d4c25db REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 1d5e39a715: Rebasing (1/1) error: could not apply b4c364c23ac... test(seo): RECHECK-AFTER probe for related-shows-position sample size (BRO-5989) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm <confli Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40253522325",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5989-probe"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b4c364c23ac5a6553e07b9887739d5d31a013835"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40253522325"
+      }
+    ],
+    "queuedAt": "2026-10-26T02:57:33.191Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6268-ocr-probe-3",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6268-ocr-probe-3",
+    "description": "land.yml did not land land/bro-6268-ocr-probe-3: the unit-tests-node gate went red at 08833d8658. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40260352521",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6268-ocr-probe-3"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "08833d8658d89d13a64fe843216b77f2114518a8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40260352521"
+      }
+    ],
+    "queuedAt": "2026-10-26T03:04:21.993Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6278-payload-trim",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6278-payload-trim",
+    "description": "land.yml did not land land/bro-6278-payload-trim: the unit-tests-node gate went red at 26dec48317. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40261900075",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6278-payload-trim"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "26dec483176e7e5bc87ba95c8a17e729a97019c8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40261900075"
+      }
+    ],
+    "queuedAt": "2026-10-26T03:20:39.546Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6265-archive",
+    "title": "Landing blocked: rebase red on land/bro-6265-archive",
+    "description": "land.yml did not land land/bro-6265-archive: the rebase gate went red at 3c446fd2e4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40263406931",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6265-archive"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3c446fd2e4e54d48b336a485ce15bc60a64349f4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40263406931"
+      }
+    ],
+    "queuedAt": "2026-10-26T03:20:19.096Z"
   }
 ]
