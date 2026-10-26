@@ -83,6 +83,8 @@ const EXEMPT_NEVER_CI = {
   'tests/unit/tour-runtime-source-agreement.test.mjs': 'BRO-4776',
   // BRO-6134 RECHECK-AFTER probe: reads live git/Linear/GitHub signals, red while a Codex lane is down.
   'tests/live/codex-lane-alarm-clean.test.mjs': 'BRO-6134',
+  // BRO-5989 RECHECK-AFTER probe: live PostHog data, red until each arm has the pre-registered minimum exposed people.
+  'tests/live/related-shows-ab-sample.test.mjs': 'BRO-5989',
   // BRO-3490 RECHECK-AFTER probe: live data, red until Saturday's deep-research run researches the six stuck closures.
   'scripts/verify-bro-3490-recheck.test.mjs': 'BRO-3490',
   // BRO-5879 RECHECK-AFTER probe: live data, red until the daily Reddit draft job has run the update-email code.
