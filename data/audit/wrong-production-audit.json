@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-26T11:25:05.897Z",
+  "timestamp": "2026-10-26T12:04:30.205Z",
   "stats": {
-    "totalReviews": 61876,
-    "alreadyFlagged": 21490,
+    "totalReviews": 61907,
+    "alreadyFlagged": 21489,
     "dateGuardCatches": 223,
     "directorMismatch": 2280,
     "tvFilmSignals": 1762,
-    "londonSignals": 2998,
+    "londonSignals": 2999,
     "offBroadwaySignals": 546,
     "yearMismatch": 206,
-    "noPublishDate": 5476
+    "noPublishDate": 5505
   },
   "findings": [
     {
@@ -84234,6 +84234,19 @@
       "score": 89,
       "publishDate": "2025-12-19",
       "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-west-end-2025",
+      "file": "variety--unknown.json",
+      "publishDate": "2026-10-22",
+      "url": "https://variety.com/2026/theater/global/jane-krakowski-reprise-oh-mary-london-west-end-1236919607/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
