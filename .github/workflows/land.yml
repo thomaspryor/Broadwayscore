@@ -868,8 +868,8 @@ jobs:
           TRAIN_ARGS=()
           if [ "$TRAIN_LANDED" = "true" ]; then TRAIN_ARGS+=(--train-landed-only)
           elif [ -s /tmp/land-riders.json ]; then TRAIN_ARGS+=(--riders-file /tmp/land-riders.json); fi
-          started="${LAND_JOB_STARTED_AT:-$(date +%s)}"
-          case "$started" in ''|*[!0-9]*) started=$(date +%s) ;; esac
+          started="${LAND_JOB_STARTED_AT:-}"
+          case "$started" in ''|*[!0-9]*) echo "::warning::LAND_JOB_STARTED_AT missing, sizing the deadman from now (the 125 min job timeout still caps it)"; started=$(date +%s) ;; esac
           backstop=$(( 110 - ($(date +%s) - started) / 60 ))
           [ "$backstop" -lt 10 ] && backstop=10
           deadline=$(( backstop - 50 )); [ "$deadline" -gt 55 ] && deadline=55; [ "$deadline" -lt 5 ] && deadline=5

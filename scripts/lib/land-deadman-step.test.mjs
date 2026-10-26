@@ -20,7 +20,7 @@ function runBlock(stepName) {
   return out.join('\n');
 }
 
-function runLand({ nodeExit, startedMinAgo = 0 }) {
+function runLand({ nodeExit, startedMinAgo = 0, startedAt }) {
   const dir = mkdtempSync(path.join(tmpdir(), 'deadman-'));
   try {
     const log = path.join(dir, 'calls.log');
@@ -33,7 +33,7 @@ function runLand({ nodeExit, startedMinAgo = 0 }) {
     const out = path.join(dir, 'out');
     const stdout = execFileSync('bash', [path.join(dir, 'run.sh')], {
       encoding: 'utf8',
-      env: { PATH: `${dir}:${process.env.PATH}`, BRANCH: 'land/x', TIP: 'a'.repeat(40), BASE: 'b'.repeat(40), GITHUB_OUTPUT: out, LAND_JOB_STARTED_AT: String(Math.floor(Date.now() / 1000) - startedMinAgo * 60) },
+      env: { PATH: `${dir}:${process.env.PATH}`, BRANCH: 'land/x', TIP: 'a'.repeat(40), BASE: 'b'.repeat(40), GITHUB_OUTPUT: out, LAND_JOB_STARTED_AT: startedAt ?? String(Math.floor(Date.now() / 1000) - startedMinAgo * 60) },
     });
     return { stdout, output: existsSync(out) ? readFileSync(out, 'utf8') : '', calls: existsSync(log) ? readFileSync(log, 'utf8') : '' };
   } finally {
@@ -61,4 +61,12 @@ test('an ordinary crash without a result stays fatal, and nothing is killed', ()
   const r = runLand({ nodeExit: 1 });
   assert.match(r.output, /failed_check=fatal/);
   assert.doesNotMatch(r.calls, /pkill/);
+});
+
+test('a missing or garbled job start warns and sizes from now instead of failing the step', () => {
+  for (const startedAt of ['', 'soon']) {
+    const r = runLand({ nodeExit: 0, startedAt });
+    assert.match(r.stdout, /::warning::LAND_JOB_STARTED_AT missing/);
+    assert.match(r.calls, /node deadline=55 /);
+  }
 });
