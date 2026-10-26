@@ -96,6 +96,18 @@ test('IBDB revival verdict fields: allowed, boolean only, isRevival syncs tags (
   assert.deepEqual(data.shows[0].tags, ['revival']);
 });
 
+test('ibdbUrl: allowed with an IBDB production URL only (BRO-6279)', () => {
+  const old = 'https://www.ibdb.com/broadway-production/x-1';
+  const data = { shows: [{ id: 'a-2020', ibdbUrl: old }] };
+  const edit = { file: 'shows.json', showId: 'a-2020', field: 'ibdbUrl', oldValue: old };
+  assert.equal(dataEditAllowProblem(edit), null);
+  assert.equal(applyDataEdit(data, { ...edit, newValue: 'https://example.com/x-2' }).ok, false);
+  assert.equal(data.shows[0].ibdbUrl, old);
+  const good = 'https://www.ibdb.com/broadway-production/x-524177';
+  assert.equal(applyDataEdit(data, { ...edit, newValue: good }).ok, true);
+  assert.equal(data.shows[0].ibdbUrl, good);
+});
+
 test('Playbill exemption pair: allowed, shapes checked, and the result exempts the row (BRO-5975)', async () => {
   const { isExemptFromPlaybillCheck } = await import('../validate-show-venue.js');
   const data = { shows: [{ id: 'a-2026' }] };

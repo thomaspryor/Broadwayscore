@@ -25,7 +25,7 @@ const EDITABLE_DATA_FIELDS = pickEditableFields([
 // Plan-only (owner-approved) extras, not user-feedback fields (BRO-5975): the exemption a
 // show earns when Playbill's page is a different production, which validate-show-venue.js
 // honors only alongside a substantive statusBackfillSource.
-EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked'];
+EDITABLE_DATA_FIELDS['shows.json'] = [...EDITABLE_DATA_FIELDS['shows.json'], 'noPlaybillProductionPage', 'statusBackfillSource', 'ibdbRevivalChecked', 'ibdbUrl'];
 
 // BRO-6191: plan-only (owner-approved) commercial.json extras with value checks
 // (cleared-field-guard.js planOnlyValueProblem); not offered to the feedback-plan LLM.
@@ -86,6 +86,12 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     // Read as a boolean by the site and syncRevivalTags; "true" would pass every other guard.
     if (field === 'isRevival' && typeof newValue !== 'boolean') {
       return { ok: false, reason: `isRevival: must be true or false, got ${JSON.stringify(newValue)}` };
+    }
+    // BRO-6279: a wrong-production IBDB link (e.g. the 1964 page on a 2020 revival) is
+    // fixed by plan; only a bare IBDB production URL is accepted, or null to clear it.
+    if (field === 'ibdbUrl' && newValue !== null
+        && !(typeof newValue === 'string' && /^https:\/\/www\.ibdb\.com\/broadway-production\/[a-z0-9-]+-\d+$/.test(newValue))) {
+      return { ok: false, reason: `ibdbUrl: must be https://www.ibdb.com/broadway-production/<slug>-<id> or null, got ${JSON.stringify(newValue)}` };
     }
     if (field === 'statusBackfillSource') {
       if (typeof newValue !== 'string' || newValue.length <= 50) return { ok: false, reason: 'statusBackfillSource: needs a substantive (51+ char) source string' };

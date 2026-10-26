@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6279",
   "planId": "6279a1b2-0c4d-4e5f-9a6b-7c8d9e0f1a2b",
-  "status": "partial",
+  "status": "pending",
   "createdAt": "2026-10-26T18:45:00.000Z",
   "submitter": {
     "name": null,
@@ -17,21 +17,12 @@
       {
         "type": "data-edit",
         "file": "shows.json",
-        "showSlug": "whos-afraid-of-virginia-woolf-2020",
         "field": "ibdbUrl",
         "oldValue": "https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-2919",
         "newValue": "https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-524177",
-        "description": "IBDB https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-524177 is the 2020 Booth Theatre production (previews Mar 3, closing Mar 11, 2020, never officially opened); the old URL is the 1964 production. Stored closingDate 2020-03-11 matches IBDB, unchanged."
+        "description": "IBDB https://www.ibdb.com/broadway-production/whos-afraid-of-virginia-woolf-524177 is the 2020 Booth Theatre production (previews Mar 3, closing Mar 11, 2020, never officially opened); the old URL is the 1964 production. Stored closingDate 2020-03-11 matches IBDB, unchanged.",
+        "showId": "whos-afraid-of-virginia-woolf-2020"
       }
     ]
-  },
-  "executedAt": "2026-10-26T18:44:29.072Z",
-  "results": [
-    {
-      "action": "data-edit",
-      "ok": false,
-      "reason": "Field \"ibdbUrl\" not allowed in shows.json"
-    }
-  ],
-  "executedIn": "ci"
+  }
 }
