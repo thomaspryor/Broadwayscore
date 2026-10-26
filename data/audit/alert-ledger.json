@@ -245,16 +245,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T15:11:23.050Z",
-      "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
-      "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
+      "incidentOpenedAt": "2026-10-26T13:49:09.630Z",
+      "lastSeen": "2026-10-26T15:18:55.880Z",
+      "lastNotifiedAt": "2026-10-26T13:49:09.630Z",
+      "lastSurfacedAt": "2026-10-26T13:49:09.630Z",
       "notifyCount": 175,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -27839,6 +27839,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:9e6f95d5": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.)",
+      "firstSeen": "2026-10-26T15:17:53.368Z",
+      "incidentOpenedAt": "2026-10-26T15:17:53.368Z",
+      "lastSeen": "2026-10-26T15:17:53.368Z",
+      "lastNotifiedAt": "2026-10-26T15:17:53.368Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6350",
+      "dispatch": {
+        "requestedAt": "2026-10-26T15:17:53.368Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40343846225",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343846225"
+      }
     },
     "land:land/bro-6302-tr-lift-honored-2": {
       "status": "open",
