@@ -30,5 +30,29 @@ const u = b.entries.map(e => e.title);
 for (const want of ['AMERICAN IDIOT', 'BEAUTIFUL - THE CAROLE KING MUSICAL', 'THE BOOK OF MORMON', 'CATS']) assert(u.includes(want), `missing ${want}`);
 assert(b.entries.every(e => !/\d{6,}/.test(e.title.replace(/\s/g, ""))), 'phone number glued to a title');
 
+// BRO-6343: issue 159 prints the 2015 layout 125pt right and 175pt down
+const c = fx('issue-159-p81');
+assert.strictEqual(c.format, 2015);
+assert.strictEqual(c.asAt, '2016-02-16');
+const v = c.entries.map(e => e.title);
+for (const want of ['ANDY CAPP THE MUSICAL', 'BEND IT LIKE BECKHAM', 'NELL GWYNN', 'MR FOOTE\'S OTHER LEG', 'WONDER.LAND']) assert(v.includes(want), `159 missing ${want}`);
+assert.strictEqual(c.entries.find(e => e.title === 'BEND IT LIKE BECKHAM').opened, '2015-06-24');
+assert.strictEqual(c.entries.find(e => e.title === 'BEND IT LIKE BECKHAM').closes, '2016-03-05');
+assert(!v.includes('23.09.07'), 'a wrapped date read as a title');
+assert(!v.includes('THE DEVIL SPEAKS TRUE'), 'future-schedule row read as A-Z (section end missed)');
+
+// BRO-6343: issue 163 prints the 2016 table on the right half of a two-page spread, and the page twice
+const d = fx('issue-163-p69');
+assert.strictEqual(d.format, 2016);
+assert.strictEqual(d.asAt, '2016-04-12');
+const w = d.entries.map(e => e.title);
+for (const want of ['THE BOOK OF MORMON', 'KINKY BOOTS', 'NOTMOSES', 'THE PAINKILLER', 'WONDER.LAND']) assert(w.includes(want), `163 missing ${want}`);
+assert.strictEqual(d.entries.find(e => e.title === 'KINKY BOOTS').venue, 'Adelphi');
+assert.strictEqual(new Set(w).size, w.length, '163 duplicate titles (page printed twice)');
+assert(!w.some(x => /HEDDA GABLER|DARK MIRROR/.test(x)), 'the other half of the spread or the schedule was read');
+assert(!w.includes('2016'), '"Circusfest 2016" read as title "2016"');
+// titles that are numbers stay titles
+assert(t.includes('1984') && t.includes('946'), 'numeric titles dropped');
+
 assert.strictEqual(dMonY('28 Jun 16'), '2016-06-28');
-console.log('tr-az-parse ok', a.entries.length, b.entries.length);
+console.log('tr-az-parse ok', a.entries.length, b.entries.length, c.entries.length, d.entries.length);
