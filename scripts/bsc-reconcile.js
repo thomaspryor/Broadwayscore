@@ -655,7 +655,7 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
   let workspaces = [];
   // BRO-2993: a failed listing must NOT read the same as "cmux confirmed
   // zero workspaces" — the two are opposite evidence for the liveTab guard
-  // below. `cmuxUnavailable` (set only in the catch) makes the distinction
+  // below. `cmuxUnavailable` (set only when the listing fails) makes the distinction
   // explicit so the guard can fail closed instead of silently becoming a
   // no-op on an empty array. The failure still has to be SEEN either way:
   // this was the third blind spot in BRO-2959, where an auth rejection here
