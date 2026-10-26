@@ -52,5 +52,5 @@ test('no other workflow opts in to optional Playwright (fail-closed elsewhere)',
 
 test('gather-reviews.js nulls chromium when the browser binary is missing', () => {
   const src = read('scripts/gather-reviews.js');
-  assert.match(src, /const candidate = playwright\.chromium;\s*if \(fs\.existsSync\(candidate\.executablePath\(\)\)\) \{\s*chromium = candidate;/);
+  assert.match(src, /const candidate = playwright\.chromium;\s*if \(fs\.existsSync\(candidate\.executablePath\(\)\)\s*\|\|\s*require\('\.\/lib\/playwright-exe'\)\.launchExtras\(candidate\)\.executablePath\) \{\s*chromium = candidate;/);
 });
