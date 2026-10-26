@@ -1,5 +1,7 @@
 'use strict';
 
+// venue-write-guard-ok: venue fields go to audit candidate rows and matching only; promote-historical-we.js writes through sanitizeVenueForWrite.
+
 /**
  * WE historical seasons from archived Official London Theatre listings
  * (BRO-6343). Pure: parsed OLT pages + second-source signals + shows.json

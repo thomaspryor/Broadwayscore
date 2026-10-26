@@ -1,5 +1,7 @@
 'use strict';
 
+// venue-write-guard-ok: parsed venue is audit/candidate input only; promote-historical-we.js writes it through sanitizeVenueForWrite.
+
 /**
  * Official London Theatre (SOLT) show pages, as archived by the Wayback
  * Machine (BRO-6343). Pre-2017 officiallondontheatre.co.uk show pages
