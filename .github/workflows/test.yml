@@ -784,6 +784,9 @@ on:
       # dir but its unit test runs in the tests/unit batch — path-listed so a
       # solo parser edit still triggers CI (plan-review finding, 2026-07-13).
       - 'supabase/functions/**'
+      # BRO-6290: delete-account-coverage.test.mjs checks this script reads the
+      # file that holds the account deletes.
+      - 'scripts/verify-supabase-schema.js'
       # Table-parsing scrapers audited for column-count brittleness (task
       # BRO-47/#118/#1331): each calls assertTableSchema (scripts/lib/,
       # globbed above; scrape-alltime.ts also uses findColumnIndex) before
