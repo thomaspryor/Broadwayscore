@@ -85,7 +85,7 @@ function tesseractStats(imgPath) {
         // pdftotext -bbox-layout text line with its position: AZL|issue|page|xMin|yMin|xMax|text
         const id = hitPath.replace('/archive/issue/', '');
         const pages = sh('pdftotext', ['-layout', pdf2, '-']).split('\f');
-        const markerRe = /A\s*[-\u2013]\s*Z of (?:current )?(?:London )?productions|Current London Shows A-Z|Page numbers in \(brackets\)/i;
+        const markerRe = /A\s*[-\u2013]\s*Z of (?:current )?(?:London )?productions/i;
         const first = pages.findIndex((t, i) => i >= pages.length * 0.4 && markerRe.test(t.replace(/\s+/g, ' ')));
         console.log(`AZRAW ${id} pages=${pages.length} markerPage=${first}`);
         if (first < 0) {
