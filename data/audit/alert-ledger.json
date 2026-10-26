@@ -246,7 +246,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T15:35:27.241Z",
+      "lastSeen": "2026-10-26T15:58:58.986Z",
       "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
       "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
@@ -254,7 +254,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -27726,7 +27726,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:1c72c00a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every original record in data/show-origins.json says true story or invented (BRO-5871)\"",
       "firstSeen": "2026-10-26T14:03:16.640Z",
@@ -27745,9 +27745,12 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "40343293092",
-        "40347574391"
-      ]
+        "40340690095",
+        "40344869643",
+        "40349786946"
+      ],
+      "resolvedAt": "2026-10-26T15:58:58.951Z",
+      "resolveReason": "stale-signature"
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
       "status": "open",
@@ -27790,7 +27793,8 @@
       "cardId": null,
       "linearIdentifier": "BRO-6344",
       "absentRunIds": [
-        "40347574391"
+        "40344869643",
+        "40349786946"
       ]
     },
     "land:land/bro-6302-tr-lift-honored": {
@@ -27810,20 +27814,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside\"",
-      "firstSeen": "2026-10-26T15:11:20.600Z",
-      "incidentOpenedAt": "2026-10-26T15:11:20.600Z",
-      "lastSeen": "2026-10-26T15:35:27.224Z",
-      "lastNotifiedAt": "2026-10-26T15:11:20.600Z",
+      "firstSeen": "2026-10-26T15:19:23.284Z",
+      "incidentOpenedAt": "2026-10-26T15:19:23.284Z",
+      "lastSeen": "2026-10-26T15:58:58.971Z",
+      "lastNotifiedAt": "2026-10-26T15:19:23.284Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6345",
-      "dispatch": {
-        "requestedAt": "2026-10-26T15:11:20.600Z",
-        "mode": "dispatch-at-filing",
-        "runId": "40343293092",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343293092"
-      },
       "silentRefires": 1
     },
     "land:land/job/linear-BRO-6339-mvpcbpns": {
@@ -27870,7 +27868,10 @@
         "mode": "dispatch-at-filing",
         "runId": "40343846225",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343846225"
-      }
+      },
+      "absentRunIds": [
+        "40349786946"
+      ]
     },
     "land:land/bro-6302-tr-lift-honored-2": {
       "status": "open",
