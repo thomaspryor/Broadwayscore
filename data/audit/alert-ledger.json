@@ -245,10 +245,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T13:49:09.630Z",
-      "lastSeen": "2026-10-26T15:18:55.880Z",
-      "lastNotifiedAt": "2026-10-26T13:49:09.630Z",
-      "lastSurfacedAt": "2026-10-26T13:49:09.630Z",
+      "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
+      "lastSeen": "2026-10-26T15:19:23.719Z",
+      "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
+      "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
       "cardId": null,
       "linearIdentifier": null,
@@ -27738,7 +27738,8 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "40343293092"
+        "40340690095",
+        "40344869643"
       ]
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
@@ -27780,7 +27781,10 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6344"
+      "linearIdentifier": "BRO-6344",
+      "absentRunIds": [
+        "40344869643"
+      ]
     },
     "land:land/bro-6302-tr-lift-honored": {
       "status": "open",
@@ -27799,20 +27803,14 @@
       "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"reported-truth backtest: musicals hold MAE <= 4.2 and >= 73 inside; plays MAE <= 6.5 and >= 24 inside\"",
-      "firstSeen": "2026-10-26T15:11:20.600Z",
-      "incidentOpenedAt": "2026-10-26T15:11:20.600Z",
-      "lastSeen": "2026-10-26T15:11:20.600Z",
-      "lastNotifiedAt": "2026-10-26T15:11:20.600Z",
+      "firstSeen": "2026-10-26T15:19:23.284Z",
+      "incidentOpenedAt": "2026-10-26T15:19:23.284Z",
+      "lastSeen": "2026-10-26T15:19:23.284Z",
+      "lastNotifiedAt": "2026-10-26T15:19:23.284Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6345",
-      "dispatch": {
-        "requestedAt": "2026-10-26T15:11:20.600Z",
-        "mode": "dispatch-at-filing",
-        "runId": "40343293092",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343293092"
-      }
+      "linearIdentifier": "BRO-6345"
     },
     "land:land/job/linear-BRO-6339-mvpcbpns": {
       "status": "open",
