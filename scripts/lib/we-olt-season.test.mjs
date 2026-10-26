@@ -3,7 +3,7 @@ import assert from 'assert';
 import fs from 'fs';
 const require = createRequire(import.meta.url);
 const { parseOltShowPage, oltDate, oltItemId, cleanOltTitle } = require('./olt-archive-parse.js');
-const { buildOltCandidates, azMatchesListing, trPageMatchesListing, genreSlugs } = require('./we-olt-candidates.js');
+const { buildOltCandidates, azMatchesListing, trPageMatchesListing, genreSlugs, trStatedClosing } = require('./we-olt-candidates.js');
 
 // Real archived OLT page (Wayback 20160109115438, item101870).
 const html = fs.readFileSync(new URL('./fixtures/olt-show-piaf-2008.html', import.meta.url), 'utf8');
@@ -18,6 +18,7 @@ assert.strictEqual(cleanOltTitle('Funny Girl Duration 2h30'), 'Funny Girl');
 assert.strictEqual(cleanOltTitle('The End Of Longing'), 'The End of Longing');
 assert.strictEqual(cleanOltTitle('DiaoChan: The Rise Of The Courtesan'), 'DiaoChan: The Rise of the Courtesan');
 assert.strictEqual(cleanOltTitle('What Are They Made Of'), 'What Are They Made Of');
+assert.strictEqual(cleanOltTitle('Showstopper! The Improvised Musical'), 'Showstopper! The Improvised Musical');
 assert.strictEqual(cleanOltTitle('Harry Potter And The Cursed Child Parts I And II Duration Part One: 2h40 / Part Two: 2h35'), 'Harry Potter and the Cursed Child Parts I and II');
 assert.strictEqual(parseOltShowPage('<h1>Funny Girl Duration 2h30</h1><dl><dt>Opening night</dt><dd>20.04.2016</dd></dl>').title, 'Funny Girl');
 assert.strictEqual(oltDate('2016-02-01'), null);
@@ -90,5 +91,32 @@ assert.match(c.decision.reason, /already in shows.json/);
 const both = run([page({ item: '1', snapshot: '20170101000000' }), page({ item: '2', snapshot: '20180101000000' })]);
 assert.strictEqual(both.length, 1);
 assert.ok(both[0].sourceUrls.olt.includes('20180101000000'));
+
+// Item ids a few days apart for one production collapse; a return season months later does not.
+assert.strictEqual(run([page({ item: '1', openingDate: '2016-08-30' }), page({ item: '2', openingDate: '2016-09-02', snapshot: '20180101000000' })]).length, 1);
+assert.strictEqual(run([page({ item: '1' }), page({ item: '2', previewsStartDate: '2016-05-01', openingDate: '2016-05-05', closingDate: '2016-06-01' })]).length, 2);
+
+// A return season ~10 months after an existing row is not "already in shows.json" (Cats, Palladium).
+const catsShows = [{ id: 'cats-west-end-2014', title: 'Cats', venue: 'London Palladium', market: 'west-end', previewsStartDate: '2014-12-06', openingDate: '2014-12-11' }];
+const catsPage = page({ title: 'Cats', venue: 'London Palladium', genre: 'Musical', previewsStartDate: '2015-10-23', openingDate: '2015-10-27', closingDate: '2016-01-02' });
+[c] = run([catsPage], { shows: catsShows, azTitles: [{ title: 'CATS', venue: 'London Palladium', opened: '2015-10-27' }] });
+assert.strictEqual(c.decision.promotable, true, c.decision.reason);
+
+// A second-house leg opening days after the first closed is a transfer, not a new production.
+const savoy = page({ item: '7', title: 'Guys and Dolls', venue: 'Savoy Theatre', genre: 'Musical', previewsStartDate: '2015-12-10', openingDate: '2016-01-06', closingDate: '2016-03-12' });
+const phoenix = page({ item: '8', title: 'Guys and Dolls', venue: 'Phoenix Theatre', genre: 'Musical', previewsStartDate: null, openingDate: '2016-03-19', closingDate: '2016-08-21' });
+const legs = run([savoy, phoenix], { azTitles: [{ title: 'GUYS AND DOLLS', venue: 'Phoenix', opened: '2016-03-19' }] });
+assert.match(legs.find(x => x.venue === 'Phoenix Theatre').decision.reason, /transfer leg of the Savoy Theatre run/);
+
+// Theatre Record stating a different close holds the row; a bare issue range does not count.
+assert.strictEqual(trStatedClosing('GROUNDHOG DAY\nPress night 16 Aug 2016\nCloses 17 Sep 2016'), '2016-09-17');
+assert.strictEqual(trStatedClosing('NELL GWYNN\n12 - 25 February 2016'), null);
+const gd = { review: { title: 'Groundhog Day', date: '2016-08-16' }, tr: { title: 'Groundhog Day', venue: 'Old Vic', link: 'https://www.theatrerecord.com/archive/volume/36/page/871' },
+  header: 'GROUNDHOG DAY\nPress night 16 Aug 2016\nCloses 17 Sep 2016' };
+const gdPage = page({ title: 'Groundhog Day', venue: 'The Old Vic', genre: 'Musical', previewsStartDate: '2016-07-15', openingDate: '2016-08-16', closingDate: '2016-09-19' });
+[c] = run([gdPage], { azTitles: [], trPages: [gd] });
+assert.match(c.decision.reason, /closing conflict: OLT 2016-09-19, Theatre Record 2016-09-17/);
+[c] = run([{ ...gdPage, closingDate: '2016-09-17' }], { azTitles: [], trPages: [gd] });
+assert.strictEqual(c.decision.promotable, true, c.decision.reason);
 
 console.log('we-olt-season ok');

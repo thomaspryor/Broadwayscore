@@ -178,7 +178,9 @@ async function main() {
   }
   console.log(`Second sources: TR A-Z dated titles ${azTitles.length}, TR production pages ${trPages.length}, WOS reviews ${reviews.length}, Olivier lines ${oliviers.length}`);
 
-  const shows = (() => { const d = readJson(path.join(ROOT, 'data', 'shows.json'), { shows: [] }); return d.shows || d; })();
+  // No silent fallback: an empty pool would mark nothing as already listed.
+  const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
+  const shows = showsData.shows || showsData;
   const candidates = buildOltCandidates({ season, pages: Object.values(cache.pages), azTitles, trPages, reviews, oliviers, shows });
   const promotable = candidates.filter(c => c.decision.promotable);
   for (const c of candidates) {

@@ -19,18 +19,19 @@ const { decodeHtmlEntities } = require('./text-cleaning');
 
 const text = s => decodeHtmlEntities(String(s || '').replace(/<[^>]*>/g, ' ')).replace(/\s+/g, ' ').trim();
 
-const MINOR_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'from', 'in', 'into', 'nor', 'of', 'on', 'or', 'the', 'to', 'with']);
+const MINOR_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
 
 /**
  * Later (2015+) show pages put the running time inside the <h1> ("Funny Girl
  * Duration 2h30", "... Duration Part One: 2h40 / Part Two: 2h35"), and OLT
  * capitalises every word ("The End Of Longing"). Minor words go lower case
- * except first, last and after a colon or dash.
+ * except first, last and after a colon, dash, ! or ? ("Showstopper! The
+ * Improvised Musical").
  */
 function cleanOltTitle(t) {
   const words = String(t || '').replace(/\s+Duration\b.*$/i, '').trim().split(/\s+/).filter(Boolean);
   return words.map((w, i) => {
-    const afterBreak = i > 0 && /[:\u2013\u2014-]$/.test(words[i - 1]);
+    const afterBreak = i > 0 && /[:!?\u2013\u2014-]$/.test(words[i - 1]);
     return i > 0 && i < words.length - 1 && !afterBreak && MINOR_WORDS.has(w.toLowerCase()) ? w.toLowerCase() : w;
   }).join(' ');
 }
