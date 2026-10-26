@@ -27,22 +27,53 @@ function data(n) {
     const audienceGrade = getAudienceGrade(aud);
     const gold = getGoldThreshold(x.category);
     if (Math.abs(x.score - (gold - 0.5)) < 1 && !process.env.ALLOW_BOUNDARY) throw new Error(`${x.id}: score ${x.score} is within 1 point of the Gold line (${gold}); one new review could flip the tier, skipping`);
-    return { show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score: x.score, count: x.rc, scores: rv.map(r => r.s), quotes,
+    return { show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score: x.score, count: x.rc, scores: rv.map(r => r.s).sort((a, b) => b - a), quotes,
       audienceGrade, gapLine: gap == null ? null : gap > 3 ? 'Audiences love it even more.' : gap < -3 ? 'Critics like it more than audiences do.' : 'Critics and audiences agree.' };
   }
   if (n === 'every') {
     const x = showInfo('school-girls-or-the-african-mean-girls-play-2026');
-    const rv = x.p.rv.filter(r => Number.isFinite(r.s)).sort((a, b) => String(a.d).localeCompare(String(b.d)) || a.t - b.t || b.s - a.s);
-    return { show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score: x.score, reviews: rv.map(r => ({ o: r.o, cn: r.cn, s: r.s })) };
+    // reviews land in score order (ORDER=desc, the default, or asc) so the breakdown bar fills one segment at a time
+    const order = process.env.ORDER === 'asc' ? 'asc' : 'desc', dir = order === 'asc' ? 1 : -1;
+    const rv = x.p.rv.filter(r => Number.isFinite(r.s)).sort((a, b) => dir * (a.s - b.s) || a.t - b.t);
+    return { order, show: { title: x.title, type: x.type }, isNew: x.isNew, category: x.category, art: x.art, score: x.score, reviews: rv.map(r => ({ o: r.o, cn: r.cn, s: r.s })) };
   }
   if (n === 'top5') {
-    const ids = ['hamilton-2015', 'book-of-mormon-2011', 'oh-mary-2024', 'the-lion-king-1997', 'maybe-happy-ending-2024'];
-    const shows = ids.map(showInfo);
+    const L = topList(process.env.LIST || 'now');
+    const shows = L.ids.map(showInfo);
     for (let i = 1; i < shows.length; i++) if (shows[i].score > shows[i - 1].score) throw new Error('top5 not sorted by score');
-    return { shows: shows.map(s => ({ title: s.title, type: s.type, score: s.score, rc: s.rc, art: s.art })) };
+    return { title: L.title, sub: L.sub, endLine: L.endLine, shows: shows.map(s => ({ title: s.title, type: s.type, score: s.score, rc: s.rc, art: s.art })) };
   }
   if (n === 'verdict' || n === 'versus') return voiced(n);
   throw new Error('unknown composition ' + n);
+}
+
+// Top 5 lists: Broadway only, musicals and plays, ranked by the site's Critic Score (cs, set only once a show clears the review gate)
+const { getSeasonForDate, getCurrentSeason } = require('../lib/broadway-seasons.js');
+const fmtSeason = s => s.slice(0, 5) + s.slice(7);
+function topList(key) {
+  const all = (j => j.shows || j)(JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')));
+  // a 'best of' claim needs a real sample: at least LIST_MIN_REVIEWS reviews (default 15), well above the site's 5-review score gate
+  const MINR = +(process.env.LIST_MIN_REVIEWS || 15);
+  const cs = id => { try { const p = slim(id); return typeof p.cs === 'number' && p.rc >= MINR ? p.cs : null; } catch (e) { return null; } };
+  const today = new Date().toISOString().slice(0, 10), yearsAgo = y => String(+today.slice(0, 4) - y) + today.slice(4);
+  const cur = getCurrentSeason(), [a] = cur.split('-').map(Number), last = `${a - 1}-${a}`;
+  const month = d => new Date(d + 'T12:00:00Z').toLocaleString('en-US', { month: 'short', year: 'numeric', timeZone: 'UTC' });
+  const NOW_END = 'New scores every week.', HIST_END = 'Every review. One score.';
+  const defs = {
+    now: { title: 'Top 5 on Broadway', sub: 'Ranked by Critic Score, shows playing now', end: NOW_END, f: s => s.status === 'open' },
+    'now-musicals': { title: 'Top 5 musicals on Broadway', sub: 'Ranked by Critic Score, playing now', end: NOW_END, f: s => s.status === 'open' && s.type === 'musical' },
+    'now-plays': { title: 'Top 5 plays on Broadway', sub: 'Ranked by Critic Score, playing now', end: NOW_END, f: s => s.status === 'open' && s.type === 'play' },
+    'last-season': { title: `Top 5 of the ${fmtSeason(last)} season`, sub: 'Broadway shows that opened that season', end: HIST_END, f: s => getSeasonForDate(s.openingDate) === last },
+    'five-years': { title: 'Top 5 of the last 5 years', sub: `Broadway shows that opened since ${month(yearsAgo(5))}`, end: HIST_END, f: s => s.openingDate >= yearsAgo(5) },
+    'decade-musicals': { title: 'Top 5 musicals of the last 10 years', sub: `Broadway musicals that opened since ${month(yearsAgo(10))}`, end: HIST_END, f: s => s.type === 'musical' && s.openingDate >= yearsAgo(10) },
+  };
+  const D = defs[key]; if (!D) throw new Error(`unknown LIST ${key}; one of ${Object.keys(defs).join(', ')}`);
+  const pick = all.filter(s => s.category === 'broadway' && ['musical', 'play'].includes(s.type) && s.openingDate && s.openingDate <= today && D.f(s))
+    .map(s => ({ id: s.id, cs: cs(s.id) })).filter(s => s.cs != null).sort((x, y) => y.cs - x.cs).slice(0, 5);
+  if (pick.length < 5) throw new Error(`LIST ${key}: only ${pick.length} scored shows`);
+  const missing = pick.filter(s => !fs.existsSync(path.join(__dirname, 'art', s.id + '.img'))).map(s => s.id);
+  if (missing.length) throw new Error(`LIST ${key}: no key art yet, run: node fetch-art.js ${missing.join(' ')}`);
+  return { title: D.title, sub: D.sub, endLine: D.end, ids: pick.map(s => s.id) };
 }
 
 // Voiced formats: timeline is driven by the voiceover's word timings (VO_DIR/<comp>.mp3 + <comp>.words.json from Whisper).
@@ -92,7 +123,30 @@ function voiced(n) {
 }
 
 const { synth } = require('./audio.js');
-const AUDIO_STYLE = process.env.AUDIO_STYLE || 'groove';
+const AUDIO_STYLE = process.env.AUDIO_STYLE || (process.env.MUSIC ? 'sfx' : 'groove');
+// Every path that writes a soundtrack goes through here: optional library music, then the voiceover over the bed.
+// A voiced comp must come out clearly louder than its bed alone, or the voice never made it into the mix.
+const meanDb = f => +/mean_volume: (-?[\d.]+) dB/.exec(require('child_process').spawnSync('ffmpeg', ['-i', f, '-af', 'volumedetect', '-f', 'null', '-'], { encoding: 'utf8' }).stderr)[1];
+function finishAudio(wav, dur, d, outDir) {
+  if (process.env.MUSIC) mixMusic(wav, dur);
+  if (!d.vo) return;
+  // the bed sits BED_DUCK dB (default 14) under the voice's average loudness, whatever the source track's level
+  const mix = path.join(outDir, `${name}-mix.wav`), voiceDb = meanDb(d.vo), bedDb = voiceDb - +(process.env.BED_DUCK || 14), bedVol = Math.pow(10, (bedDb - meanDb(wav)) / 20);
+  require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-i', d.vo, '-filter_complex',
+    `[0:a]volume=${bedVol.toFixed(4)}[m];[1:a]adelay=${VO_OFF * 1000}|${VO_OFF * 1000},volume=${process.env.VO_GAIN || 1}[v];[m][v]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.9[o]`, '-map', '[o]', '-ar', '44100', mix]);
+  if (!(voiceDb > -40)) throw new Error(`${name}: voiceover file is near silent (${voiceDb} dB)`);
+  // power check: the mix minus the bed must carry most of the voice's energy, or the voice never made it in
+  const P = db => Math.pow(10, db / 10), out = meanDb(mix);
+  if (P(out) - P(bedDb) < 0.5 * P(voiceDb)) throw new Error(`${name}: voiceover missing from the mix (mix ${out} dB, bed ${bedDb.toFixed(1)} dB, voice ${voiceDb} dB)`);
+  console.log(`voice check: mix ${out} dB, voice ${voiceDb} dB, bed ${bedDb.toFixed(1)} dB`);
+  fs.renameSync(mix, wav);
+}
+function mixMusic(wav, dur) {
+  const out = wav.replace(/\.wav$/, '-m.wav'), ss = process.env.MUSIC_START || '0', vol = process.env.MUSIC_VOL || '0.55';
+  require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-ss', ss, '-i', process.env.MUSIC, '-filter_complex',
+    `[1:a]atrim=0:${dur},asetpts=N/SR/TB,afade=t=in:d=0.3,afade=t=out:st=${Math.max(0, dur - 2)}:d=2,volume=${vol}[m];[0:a][m]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.9[o]`, '-map', '[o]', '-ar', '44100', out]);
+  fs.renameSync(out, wav);
+}
 
 (async () => {
   const d = data(name);
@@ -109,12 +163,7 @@ const AUDIO_STYLE = process.env.AUDIO_STYLE || 'groove';
   if (process.argv.includes('--audio-only')) { // re-sound an already rendered video: node render.js <comp> <dir> --audio-only
     const src = path.join(outDir, `${name}.mp4`), wav = path.join(outDir, `${name}-${AUDIO_STYLE}.wav`), dst = path.join(outDir, `${name}-${AUDIO_STYLE}.mp4`);
     synth(info.events, info.dur, wav, AUDIO_STYLE);
-  if (d.vo) { // music bed under the voice: bed at -16 dB, voice delayed by VO_OFF
-    const mix = path.join(outDir, `${name}-mix.wav`);
-    require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-i', d.vo, '-filter_complex',
-      `[0:a]volume=${process.env.BED_VOL || 0.16}[m];[1:a]adelay=${VO_OFF * 1000}|${VO_OFF * 1000},volume=1.0[v];[m][v]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.9[o]`, '-map', '[o]', '-ar', '44100', mix]);
-    fs.renameSync(mix, wav);
-  }
+    finishAudio(wav, info.dur, d, outDir);
     require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', src, '-i', wav, '-map', '0:v', '-map', '1:a', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest', '-movflags', '+faststart', dst]);
     console.log('wrote ' + dst); await browser.close(); return;
   }
@@ -139,6 +188,7 @@ const AUDIO_STYLE = process.env.AUDIO_STYLE || 'groove';
   if (stills.length) { for (const t of stills) fs.writeFileSync(path.join(outDir, `${name}-still-${t}.jpg`), await frame(t)); await browser.close(); return; }
   const wav = path.join(outDir, `${name}.wav`), mp4 = path.join(outDir, `${name}.mp4`);
   synth(info.events, info.dur, wav, AUDIO_STYLE);
+  finishAudio(wav, info.dur, d, outDir);
   const ff2 = spawn('ffmpeg', ['-loglevel', 'error', '-y', '-f', 'image2pipe', '-framerate', String(FPS), '-i', '-', '-i', wav, '-c:v', 'libx264', '-pix_fmt', 'yuv420p', '-crf', '18', '-preset', 'medium', '-r', String(FPS), '-c:a', 'aac', '-b:a', '128k', '-movflags', '+faststart', '-shortest', mp4], { stdio: ['pipe', 'inherit', 'inherit'] });
   const total = Math.round(info.dur * FPS);
   for (let i = 0; i < total; i++) { const b = await frame(i / FPS); if (!ff2.stdin.write(b)) await new Promise(r => ff2.stdin.once('drain', r)); }

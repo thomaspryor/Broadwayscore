@@ -40,18 +40,20 @@ function pcts(c, total) {
 }
 const BAR_COL = { rave: 'linear-gradient(135deg,#DAA520,#FFD700 30%,#FFF0A0 50%,#FFD700 70%,#DAA520)', positive: '#22c55e', mixed: '#d97706', negative: '#ef4444' };
 const BAR_LBL = { rave: 'Rave', positive: 'Positive', mixed: 'Mixed', negative: 'Negative' };
-function barHtml(reviewScores) {
+function barHtml(reviewScores, total = reviewScores.length, fromRight = false) {
+  // While reviews are still landing, widths are shares of the final total, so the bar fills one segment at a time
   const c = { rave: 0, positive: 0, mixed: 0, negative: 0 }; let n = 0;
   reviewScores.forEach(s => { c[bTier(s)]++; n++; });
   if (!n) return `<div class="bar"></div><div class="legend"><span>&nbsp;</span></div>`;
-  const p = pcts(c, n), T = ['rave', 'positive', 'mixed', 'negative'].filter(t => c[t] > 0);
-  return `<div class="bar">${T.map(t => `<div style="width:${p[t]}%;background:${BAR_COL[t]}"></div>`).join('')}</div>
+  const p = n >= total ? pcts(c, n) : Object.fromEntries(Object.keys(c).map(t => [t, c[t] / total * 100])), T = ['rave', 'positive', 'mixed', 'negative'].filter(t => c[t] > 0);
+  return `<div class="bar" style="${fromRight ? 'justify-content:flex-end' : ''}">${T.map(t => `<div style="width:${p[t]}%;background:${BAR_COL[t]}"></div>`).join('')}</div>
   <div class="legend">${T.map(t => `<span><i style="background:${t === 'rave' ? '#FFD700' : BAR_COL[t]}"></i>${c[t]} ${BAR_LBL[t]}</span>`).join('')}</div>`;
 }
 const fade = (el, o, y = 0) => { el.style.opacity = o; el.style.transform = `translateY(${y}px)`; };
 const artImg = (uri, size, extra = '') => `<img src="${uri}" style="width:${size}px;height:${size}px;border-radius:1rem;object-fit:cover;display:block;${extra}">`;
 
 const COMPS = {};
+const plusDot = (x, y, txt) => $('abs', `left:${x}px;top:${y}px;width:36px;height:36px;border-radius:9999px;background:#2a2a38;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:${txt === '+' ? 20 : 12}px;font-weight:800;color:#d4a574;z-index:2`, txt);
 
 /* ---------- A: score reveal ---------- */
 COMPS.reveal = {
@@ -77,7 +79,7 @@ COMPS.reveal = {
          <div style="font-size:13px;line-height:1.35;color:#e4e4e7;margin-top:8px;font-style:italic">&ldquo;${esc(q.q)}&rdquo;</div>`);
       g2.append(c); return c; });
     const g3 = this.g3 = $('abs', 'inset:0');
-    g3.append($('abs cap', 'left:0;right:0;top:72px;font-size:17px', 'Critics vs. audience'));
+    g3.append($('abs cap', 'left:0;right:0;top:72px;font-size:17px', 'Critics + audience'));
     const mk = (x, label, val, sub) => { const c = $('abs card', `left:${x}px;width:150px;top:150px;height:220px;display:flex;flex-direction:column;align-items:center;padding-top:18px`, `<div style="font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#d4a574">${label}</div>`); const w = badgeEl('lg', 'margin-top:36px'); c.append(w); c.append($('', 'margin-top:20px;font-size:12px;color:#9ca3af;text-align:center', sub)); c._w = w; c._v = val; return c; };
     this.ca = mk(20, 'Critics', sc, `${d.count} reviews`);
     // Audience is a letter grade (tile like BlendedTrioDisplay), never a number
@@ -87,7 +89,7 @@ COMPS.reveal = {
        <div class="${aplus ? 'audience-top-grade' : ''}" style="margin-top:36px;width:80px;height:80px;border-radius:.75rem;display:flex;align-items:center;justify-content:center;font-size:34px;font-weight:700;box-shadow:0 1px 2px rgba(0,0,0,.3);${aplus ? '' : `background:${ag.color};color:${ag.textColor}`}">${ag.grade}</div>
        <div style="margin-top:20px;font-size:12px;color:#9ca3af;text-align:center">Audience grade</div>`);
     this.cb._grade = this.cb.children[1]; this.cb._w = null;
-    g3.append(this.ca, this.cb);
+    g3.append(this.ca, this.cb, plusDot(162, 242, '+'));
     this.cap3 = $('abs cap', 'left:24px;right:24px;top:392px;font-size:17px;line-height:1.3', d.gapLine); g3.append(this.cap3);
     const g4 = this.g4 = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center');
     g4.innerHTML = `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`;
@@ -110,7 +112,7 @@ COMPS.reveal = {
     const pop = t > 4.5 ? 1 + 0.22 * Math.sin(Math.PI * seg(t, 4.5, 5.0)) : 1; this.bw.style.transform = `scale(${1.3 * pop})`;
     const r = Math.round(sc); this.tl.innerHTML = `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`; fade(this.tl, seg(t, 4.6, 5.1), (1 - seg(t, 4.6, 5.1)) * 8);
     const k = Math.round(d.scores.length * eo(seg(t, 5.3, 6.9)));
-    this.bc.innerHTML = barHtml(d.scores.slice(0, k)); fade(this.bc, seg(t, 5.2, 5.7), (1 - seg(t, 5.2, 5.7)) * 10);
+    this.bc.innerHTML = barHtml(d.scores.slice(0, k), d.scores.length); fade(this.bc, seg(t, 5.2, 5.7), (1 - seg(t, 5.2, 5.7)) * 10);
     // quotes
     const g2in = seg(t, 8.2, 8.6), g2out = 1 - seg(t, 14.4, 14.9);
     this.g2.style.opacity = Math.min(g2in, g2out); this.g2.style.display = (t < 8.1 || t > 15) ? 'none' : 'block';
@@ -167,7 +169,7 @@ COMPS.every = {
       e.style.opacity = age > 4 ? 0 : (shown - 1 === i ? slide : 1 - Math.max(0, age - 3.2) * 0.8);
     });
     this.rows.forEach((e, i) => { const age = shown - 1 - i; if (age >= 1 && age <= 5) { const prog = clamp((t - this.times[shown - 1]) / 0.3); const y = bottom - (age - 1 + eo(prog)) * rowH; e.style.transform = `translateY(${y}px)`; } });
-    this.bc.innerHTML = barHtml(d.reviews.slice(0, shown).map(r => r.s));
+    this.bc.innerHTML = barHtml(d.reviews.slice(0, shown).map(r => r.s), d.reviews.length, d.order === 'asc');
     this.bc.style.opacity = seg(t, 1.2, 1.8);
     const rv = seg(t, this.tEnd + 0.3, this.tEnd + 0.9);
     this.res.style.opacity = rv; this.res.style.display = rv > 0 ? 'flex' : 'none';
@@ -185,8 +187,8 @@ COMPS.top5 = {
   build(root, d) {
     this.d = d;
     root.append($('abs', 'left:0;right:0;top:34px;text-align:center', logo(14)));
-    root.append($('abs cap', 'left:0;right:0;top:66px;font-size:22px;font-weight:800;letter-spacing:-.02em', 'Top 5 on Broadway'));
-    root.append($('abs', 'left:0;right:0;top:96px;text-align:center;font-size:13px;color:#9ca3af;font-weight:600', 'Ranked by Critic Score, shows playing now'));
+    root.append($('abs cap', 'left:0;right:0;top:66px;font-size:22px;font-weight:800;letter-spacing:-.02em', esc(d.title)));
+    root.append($('abs', 'left:0;right:0;top:96px;text-align:center;font-size:13px;color:#9ca3af;font-weight:600', esc(d.sub)));
     this.start = [1.6, 5.0, 8.4, 11.8, 15.2]; // rank 5 first
     this.cards = d.shows.map((s, i) => { // i = rank-1
       const rk = i + 1, top3 = rk <= 3;
@@ -196,7 +198,7 @@ COMPS.top5 = {
         <div style="flex:1;min-width:0"><div style="font-size:14px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(s.title)}</div><div style="display:flex;align-items:center;gap:6px;margin-top:5px"><span class="pill pill-${s.type === 'musical' ? 'musical' : 'play'}" style="padding:3px 8px">${s.type === 'musical' ? 'Musical' : 'Play'}</span><span style="font-size:12px;color:#9ca3af">${s.rc} reviews</span></div></div>`;
       c._b = badgeEl('sm'); c.append(c._b); c._s = s; root.append(c); return c; });
     this.cap = $('abs cap', 'left:20px;right:20px;top:520px;display:none', '');
-    this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">New scores every week.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+    this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center', `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">${esc(d.endLine)}</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
     root.append(this.end);
     this.events = [];
     this.start.forEach(st => { for (let k = 0; k < 6; k++) this.events.push({ t: st + 0.4 + k * 0.12, k: 'tick', p: k / 6 }); });
@@ -261,7 +263,7 @@ function voicedBuild(self, root, d, kicker) {
   self.ca = sideCard(20, 'Critics', `<span style="color:${tierColor(r)}">${tierLabel(r)}</span>`); self.cbw = badgeEl('lg'); self.ca.querySelector('.slot').append(self.cbw);
   self.cb = sideCard(190, 'Audience', 'Audience grade'); self.cb.querySelector('.slot').innerHTML = gradeTile(d.audienceGrade);
   self.pair.append(self.ca, self.cb); g3.append(self.pair);
-  self.vs = $('abs', 'left:162px;top:248px;width:36px;height:36px;border-radius:9999px;background:#2a2a38;border:1px solid rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:#d4a574', 'VS');
+  self.vs = plusDot(162, 248, d.kind === 'versus' ? 'VS' : '+');
   g3.append(self.vs);
   self.ask = $('abs cap', 'left:20px;right:20px;top:388px;font-size:15px;color:#d4d4d8', 'Who is right? Tell us in the comments.'); g3.append(self.ask);
   // end
@@ -284,7 +286,7 @@ function voicedUpdate(self, t) {
   self.qc.forEach((c, i) => { const x = seg(t, d.quotes[i].t - 0.1, d.quotes[i].t + 0.3); fade(c, x, (1 - eo(x)) * 24); });
   const end = seg(t, A.end - 0.1, A.end + 0.4);
   show(self.g3, Math.min(seg(t, sc - 0.3, sc), 1 - end));
-  if (A.bar) { const k = Math.round(d.scores.length * eo(seg(t, A.bar, A.bar + 1.6))); self.bc.innerHTML = barHtml(d.scores.slice(0, k)); fade(self.bc, seg(t, A.bar - 0.2, A.bar + 0.2)); }
+  if (A.bar) { const k = Math.round(d.scores.length * eo(seg(t, A.bar, A.bar + 1.6))); self.bc.innerHTML = barHtml(d.scores.slice(0, k), d.scores.length); fade(self.bc, seg(t, A.bar - 0.2, A.bar + 0.2)); }
   else { self.bc.innerHTML = barHtml(d.scores); fade(self.bc, seg(t, A.count, A.count + 0.4)); }
   fade(self.ca, seg(t, A.count - 0.3, A.count + 0.1), (1 - seg(t, A.count - 0.3, A.count + 0.1)) * 12);
   const bt = seg(t, A.count, A.land); setBadge(self.cbw, bt === 0 ? 0 : d.score * eo(bt));
