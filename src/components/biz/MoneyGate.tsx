@@ -27,6 +27,7 @@ import {
   moneyGatePaywallSchema,
   moneyUnlockReason,
   submitMoneySignup,
+  retryPendingMoneySignups,
   unlockForExistingReader,
   type MoneyBypassReason,
   type MoneyRole,
@@ -92,6 +93,13 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
       window.removeEventListener(MONEY_UNLOCKED_EVENT, onUnlock);
       window.removeEventListener('bsc_subscribed', onSubscribed);
     };
+  }, []);
+
+  // A sign-up whose save failed on an earlier page view is retried here (BRO-6289).
+  useEffect(() => {
+    retryPendingMoneySignups().then(({ stored, remaining }) => {
+      if (stored) captureEvent('money_gate_signup_retried', { stored, remaining });
+    }).catch(() => { /* stays queued for the next page view */ });
   }, []);
 
   useEffect(() => {
