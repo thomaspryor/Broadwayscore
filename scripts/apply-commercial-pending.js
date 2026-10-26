@@ -236,13 +236,27 @@ async function main() {
     }
     // What gets applied: a released held row loses any "recouped" claim. `entry` stays the stored pending row
     // (its verify-attempt counter is written back below).
-    const row = RELEASE_HELD ? gate.withoutRecoupmentClaim(entry) : entry;
+    let row = RELEASE_HELD ? gate.withoutRecoupmentClaim(entry) : entry;
 
     // Confidence filter
     if (!VERIFIED_ONLY && !meetsConfidenceThreshold(row)) {
       console.log(`  ⏭️  "${showId}" — confidence ${entry.confidence || 'unknown'} below threshold ${MIN_CONFIDENCE}`);
       skipped++;
       continue;
+    }
+
+    // Verified-only mode drops the confidence filter, but only the figures get checked against a page. A row below
+    // the confidence bar therefore publishes its figures alone: its label, recoupment and notes were never confirmed.
+    if (VERIFIED_ONLY && !meetsConfidenceThreshold(row) && !hasRecoupedClaim(row)) {
+      if (row.capitalization == null && row.weeklyRunningCost == null) {
+        const reason = `research confidence ${entry.confidence || 'unknown'} and no capitalization or weekly cost a page could confirm`;
+        console.log(`  🚫 "${showId}" — ${reason}; moving to the rejected log`);
+        if (!DRY_RUN) rejectedIds.set(showId, { reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified', digest: true });
+        skipped++;
+        continue;
+      }
+      row = { ...row };
+      for (const f of ['designation', 'recouped', 'recoupedDate', 'recoupedSource', 'estimatedRecoupmentPct', 'notes']) delete row[f];
     }
 
     // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys)

@@ -48,3 +48,8 @@ test('rows held for a person do not count against the queue limits', () => {
   shows.fresh = { researchedAt: old };
   assert.equal(pendingQueueHealth({ shows }).ok, false);
 });
+
+test('a held row left over 60 days still trips the check', () => {
+  const old = new Date(Date.now() - 61 * 86400000).toISOString();
+  assert.equal(pendingQueueHealth({ shows: { a: { researchedAt: old, autoApplyBlocked: 'held' } } }).ok, false);
+});
