@@ -1,5 +1,5 @@
 /**
- * SeasonHistoryTable - the last 11 Broadway seasons side by side: mix
+ * SeasonHistoryTable - Broadway seasons side by side (seasonHistoryRows): mix
  * (musicals, revivals within each bucket), nonprofit share, recoupment and
  * disclosed and estimated capitalization (buildSeasonProfiles in
  * season-profile.ts), with an average row under it (seasonHistoryAverage).
@@ -12,6 +12,7 @@ import RowLinkArrow from '@/components/biz/RowLinkArrow';
 import {
   formatRowValue,
   hasEstimatedCapital,
+  hasUnknownOutcomes,
   hasFullCapitalCoverage,
   returnedCapitalText,
   hasTrackedCoverage,
@@ -93,7 +94,8 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                   </td>
                   <td className="py-2.5 px-3 text-center text-white font-semibold">{p.productions}</td>
                   <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                    {tracked || current ? `${p.recouped} of ${p.commercial}` : '—'}
+                    {tracked || current ? `${p.recouped} of ${p.outcomeKnown}` : '—'}
+                    {(tracked || current) && hasUnknownOutcomes(p) && cellNote(`${p.commercial - p.outcomeKnown} unknown`)}
                   </td>
                   {showCapital && (
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
@@ -142,7 +144,7 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
                 </th>
                 <td className="py-2.5 px-3 text-center text-white">{avg.productions == null ? '—' : Math.round(avg.productions)}</td>
                 <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                  {avg.recouped ? `${Math.round(avg.recouped.recouped)} of ${Math.round(avg.recouped.commercial)}` : '—'}
+                  {avg.recouped ? `${Math.round(avg.recouped.recouped)} of ${Math.round(avg.recouped.outcomeKnown)}` : '—'}
                   {avg.recouped && cellNote(seasonsNote(avg.recouped.seasons, avg.seasons))}
                 </td>
                 {showCapital && (
@@ -176,7 +178,8 @@ export default function SeasonHistoryTable({ profiles, currentSeason, asOf, show
       </div>
       <p className="px-4 py-3 text-xs text-gray-500">
         New Broadway productions by opening date (July 1 to June 30); 2020-21 had none and 2019-20 stopped in March 2020. Recouped counts commercial
-        productions (nonprofit runs and tour stops have no investors to repay). &ldquo;—&rdquo; means we track too few of
+        productions with a known outcome (nonprofit runs and tour stops have no investors to repay; a closed show
+        with no recoupment record, only our model&apos;s estimate, counts as unknown). &ldquo;—&rdquo; means we track too few of
         that season&apos;s productions to say{showCapital && '; a disclosed capital sum shows only where at least 80% of budgets are disclosed'}. Recent seasons&apos;
         recoupment counts can still rise.
         {showCapital && ' Est. total capital adds, for each tracked commercial production with no public figure, our own estimate of its budget where we have one (never counted as disclosed), else the median disclosed capitalization of similar shows (same type and original or revival, opening within two seasons, else four, else the same type within four); left out are nonprofit-presented runs with no public figure and productions we do not track (the cell counts them). Disclosed figures include SEC filing maximums, so both capital columns can run high. Est. money back so far is our estimate of how much of the capital in those shows has come back to investors (recouped shows at their reported return, otherwise an estimate: our model from weekly grosses and costs, or an outside estimate, never above 99% for a show not yet recouped), with the range below it; it counts only shows we can estimate and rises as running shows pay back.'}

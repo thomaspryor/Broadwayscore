@@ -154,9 +154,12 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-emerald-400">
               {stats.recoupedCount}{' '}
-              <span className="text-sm text-gray-400">of {stats.totalShows}</span>
+              <span className="text-sm text-gray-400">of {stats.outcomeKnown}</span>
             </div>
             <div className="text-xs text-gray-500">Commercial shows recouped</div>
+            {stats.outcomeKnown < stats.totalShows && (
+              <div className="text-xs text-gray-500">with a known outcome; {stats.totalShows - stats.outcomeKnown} unknown</div>
+            )}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-white">
