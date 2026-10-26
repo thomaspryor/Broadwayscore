@@ -24260,7 +24260,7 @@
       "resolvedAt": "2026-10-23T00:13:47.398Z"
     },
     "cron-health-failed:Commercial Pending Review Notify": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Cron's latest run failed (not yet stale): Commercial Pending Review Notify",
       "firstSeen": "2026-10-22T16:27:21.269Z",
@@ -24270,7 +24270,9 @@
       "lastSurfacedAt": "2026-10-22T16:27:21.269Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-26T18:03:33.692Z",
+      "resolveReason": "latest run no longer failing"
     },
     "cron-health-failed:Update Lottery/Rush": {
       "status": "open",
@@ -25923,7 +25925,7 @@
       "resolvedAt": "2026-10-24T15:31:54.761Z"
     },
     "cron-health:Commercial Pending Review Notify": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Commercial Pending Review Notify",
@@ -25934,7 +25936,8 @@
       "lastSurfacedAt": "2026-10-24T15:12:04.441Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-26T18:03:56.272Z"
     },
     "land:land/job/linear-BRO-6139-mvmhv6j1": {
       "status": "resolved",
@@ -26643,7 +26646,7 @@
       "linearIdentifier": null
     },
     "cron-health-chronic:Commercial Pending Review Notify": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Pending Review Notify",
       "firstSeen": "2026-10-25T15:22:55.146Z",
@@ -26653,7 +26656,8 @@
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6209"
+      "linearIdentifier": "BRO-6209",
+      "resolvedAt": "2026-10-26T18:03:56.291Z"
     },
     "slug-misroute:f99ee68ebd1c": {
       "status": "open",
@@ -28116,6 +28120,32 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "cron-health-chronic:GitLab Code Mirror": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: GitLab Code Mirror",
+      "firstSeen": "2026-10-26T18:03:33.829Z",
+      "incidentOpenedAt": "2026-10-26T18:03:33.829Z",
+      "lastSeen": "2026-10-26T18:03:33.829Z",
+      "lastNotifiedAt": "2026-10-26T18:03:33.829Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6363"
+    },
+    "cron-health-chronic:Update Lottery/Rush": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Cron stale 3+ consecutive days: Update Lottery/Rush",
+      "firstSeen": "2026-10-26T18:03:49.298Z",
+      "incidentOpenedAt": "2026-10-26T18:03:49.298Z",
+      "lastSeen": "2026-10-26T18:03:49.298Z",
+      "lastNotifiedAt": "2026-10-26T18:03:49.298Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6364"
     }
   }
 }
