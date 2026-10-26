@@ -306,7 +306,10 @@ function classifyCrossMarketContamination({
  *   show's pre-window threshold and outside every declared priorRun
  * @returns {{ level: 'skip'|'error'|'warning', reason: string }}
  */
-function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindowDate }) {
+function classifyUsOnWeCrossMarket({ region, isDualMarket, isTier12, isPreWindowDate, allowCrossMarket = false }) {
+  if (allowCrossMarket === true) {
+    return { level: 'skip', reason: 'review carries allowCrossMarket (human-approved cross-market coverage)' };
+  }
   if (isDualMarket) {
     return { level: 'skip', reason: 'dual-market outlet (legit by definition)' };
   }

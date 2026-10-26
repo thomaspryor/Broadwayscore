@@ -5246,6 +5246,7 @@ function validateCrossMarketContamination() {
       isDualMarket: dualMarket.has(oid),
       isTier12: tier12Outlets.has(oid),
       isPreWindowDate,
+      allowCrossMarket: r.allowCrossMarket === true,
     });
     if (level === 'error') {
       usOnWeErrors++;

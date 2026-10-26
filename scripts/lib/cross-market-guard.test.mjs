@@ -5,6 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   classifyReverseCrossMarket,
+  classifyUsOnWeCrossMarket,
   classifyCrossMarketContamination,
   isUkVenueString,
   isUsVenueString,
@@ -570,4 +571,11 @@ test('outletRegionExplicitlyNotLondon: region-less qualifies only after an expli
   assert.equal(outletRegionExplicitlyNotLondon({}), false);
   assert.equal(outletRegionExplicitlyNotLondon(null), false);
   assert.equal(outletRegionExplicitlyNotLondon({ regionCorrectedBy: 'BRO-5896' }), true);
+});
+
+test('allowCrossMarket skips the forward US-on-WE check too (BRO-6369)', () => {
+  const base = { region: 'us', isDualMarket: false, isTier12: false, isPreWindowDate: true };
+  const off = classifyUsOnWeCrossMarket(base).level;
+  assert.notEqual(off, 'skip');
+  assert.equal(classifyUsOnWeCrossMarket({ ...base, allowCrossMarket: true }).level, 'skip');
 });
