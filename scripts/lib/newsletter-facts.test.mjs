@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const nf = require('./newsletter-facts.js');
-const { processMessages, processPosts, emailPosts } = require('../read-theater-newsletters.js');
+const { processMessages, processPosts, emailPosts, canonicalPostUrl, readWebSource } = require('../read-theater-newsletters.js');
 
 const CHROMO = nf.WEB_SOURCES[0];
 const SUBSTACK = nf.WEB_SOURCES[1];
@@ -301,19 +301,46 @@ test('processMessages: an email with no bway.ly links at all is a skip (format d
 });
 
 // BRO-6265: Substack blocks GitHub runners, so Abroad/Way falls back to its email copy.
-test('emailPosts keeps only DKIM-verified Gordon Cox mail with a public post URL', () => {
-  const aw = nf.WEB_SOURCES.find((w) => w.key === 'abroadway');
-  const dk = 'mx.google.com; dkim=pass header.i=@substack.com header.s=s1';
-  const post = 'https://gordoncox.substack.com/p/international-theater-news-x';
-  const m = (over) => ({ from: 'Gordon Cox <gordoncox@substack.com>', authResults: [dk], date: '2026-10-21T12:00:00.000Z', subject: 'ABROAD/WAY', text: 'body', html: `<a href="https://substack.com/redirect/abc">x</a> <a href="${post}?utm_source=email">read</a>`, ...over });
-  const posts = emailPosts(aw, [
-    m(),
-    m({ from: 'someone@substack.com' }),
-    m({ authResults: ['mx.google.com; dkim=fail header.i=@substack.com'] }),
-    m({ html: '<a href="https://otherwriter.substack.com/p/y">y</a>', text: '' }),
+const AW = nf.WEB_SOURCES.find((w) => w.key === 'abroadway');
+const AW_POST = 'https://gordoncox.substack.com/p/international-theater-news-x';
+const AW_TEXT = `View this post on the web at ${AW_POST}\n${'Producers in Seoul and London announced new musicals. '.repeat(20)}`;
+const awMsg = (over) => ({ from: 'Gordon Cox <gordoncox@substack.com>', authResults: ['mx.google.com; dkim=pass header.i=@substack.com header.s=s1'], date: '2026-10-21T12:00:00.000Z', subject: 'ABROAD/WAY', text: AW_TEXT, html: `<a href="https://gordoncox.substack.com/p/older-issue">older</a>`, ...over });
+
+test('emailPosts keeps only DKIM-verified Gordon Cox issues, cited by the canonical post URL', () => {
+  const posts = emailPosts(AW, [
+    awMsg(),
+    awMsg({ from: 'someone@substack.com' }),
+    awMsg({ authResults: ['mx.google.com; dkim=fail header.i=@substack.com'] }),
+    awMsg({ text: `New comment on ${AW_POST}/comments` }), // short notification, not an issue
+    awMsg({ text: 'x'.repeat(700), html: '<a href="https://otherwriter.substack.com/p/y">y</a>' }),
   ]);
   assert.equal(posts.length, 1);
-  assert.equal(posts[0].url, post);
+  assert.equal(posts[0].url, AW_POST); // the text part's own link wins over an older post in the html
   assert.equal(posts[0].date, '2026-10-21');
-  assert.equal(posts[0].text, 'body');
+});
+
+test('canonicalPostUrl strips share/comment variants to gordoncox.substack.com/p/<slug>', () => {
+  assert.equal(canonicalPostUrl('https://open.substack.com/pub/gordoncox/p/abc?utm_source=x'), 'https://gordoncox.substack.com/p/abc');
+  assert.equal(canonicalPostUrl('https://gordoncox.substack.com/p/abc/comments'), 'https://gordoncox.substack.com/p/abc');
+  assert.equal(canonicalPostUrl(null), null);
+});
+
+const blocked = async () => ({ ok: false, status: 403, headers: { get: () => null } });
+const awArgs = { days: 8, maxNew: 2, dryRun: false };
+
+test('readWebSource falls back to email when Substack blocks, and skips already-processed issues', async () => {
+  const readEmail = async (q) => { assert.match(q, /^newer_than:8d from:gordoncox@substack\.com$/); return [awMsg()]; };
+  const first = await readWebSource(AW, { fetchImpl: blocked, args: awArgs, state: { processed: {} }, readEmail });
+  assert.equal(first.posts.length, 1);
+  assert.equal(first.listingEmpty, false);
+  const again = await readWebSource(AW, { fetchImpl: blocked, args: awArgs, state: { processed: { abroadway: [AW_POST] } }, readEmail });
+  assert.equal(again.posts.length, 0, 'an issue read last week is not re-read');
+});
+
+test('readWebSource marks the run failed when the email fallback throws', async () => {
+  const prev = process.exitCode;
+  const r = await readWebSource(AW, { fetchImpl: blocked, args: awArgs, state: { processed: {} }, readEmail: async () => { throw new Error('invalid_grant'); } });
+  assert.equal(r.listingEmpty, true);
+  assert.equal(process.exitCode, 1);
+  process.exitCode = prev;
 });

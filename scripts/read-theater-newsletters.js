@@ -4,7 +4,9 @@
  *
  * Sources (owner approval 2026-10-25, BRO-6156):
  *   Chromolume    public blog (chromolume.io/blog composite-* posts), cited by post URL.
- *   Abroad/Way    public RSS (gordoncox.substack.com/feed), cited by post URL.
+ *   Abroad/Way    public RSS (gordoncox.substack.com/feed), then the Substack archive API, then
+ *                 (GitHub runners are refused by Substack) the email copy from Gmail, read-only,
+ *                 exact sender + DKIM. Always cited by the canonical post URL.
  *   Broadway Briefing  Gmail (read-only, exact sender + DKIM). It has no web archive, so each
  *                 bway.ly short link next to a money/closing item is resolved to the ORIGINAL
  *                 article, and facts are extracted from and cited to that article.
@@ -229,16 +231,26 @@ async function processPosts(source, posts, { extract, shows, commercial, items, 
 }
 
 // Substack refuses GitHub runner IPs on the feed and the archive API alike, but the same
-// posts reach the owner's inbox with their public URL, so the email copy is the fallback.
-const ABROADWAY_SENDER = 'gordoncox@substack.com';
+// posts reach the owner's inbox, so the email copy is the last listing provider.
+const EMAIL_FALLBACK_SENDER = { abroadway: 'gordoncox@substack.com' };
 
-/** Gmail messages -> web-source posts: exact sender, DKIM-verified, public URL found. */
-function emailPosts(source, messages, sender = ABROADWAY_SENDER) {
+/** gordoncox.substack.com/p/<slug> for any accepted post URL (open.substack.com, /comments...). */
+function canonicalPostUrl(url) {
+  const m = /\/p\/([^/?#]+)/.exec(String(url || ''));
+  return m ? `https://gordoncox.substack.com/p/${m[1]}` : null;
+}
+
+/** Gmail messages -> posts: exact sender, DKIM-verified, full issue body, canonical post URL. */
+function emailPosts(source, messages) {
+  const sender = EMAIL_FALLBACK_SENDER[source.key];
   const posts = [];
   for (const m of messages || []) {
-    if (nf.parseFromAddress(m.from) !== sender) continue;
+    if (!sender || nf.parseFromAddress(m.from) !== sender) continue;
     if (!nf.dkimPassesFor(source, m.authResults)) continue;
-    const url = nf.pickIssueUrl(source, nf.extractLinks(`${m.html || ''} ${m.text || ''}`));
+    // Comment and reply notifications from the same sender are short; they are not issues.
+    if (!m.text || m.text.length < src.MIN_ARTICLE_CHARS) continue;
+    // The plain-text part names the issue's own link ("View this post on the web at ...") first.
+    const url = canonicalPostUrl(nf.pickIssueUrl(source, [...nf.extractLinks(m.text), ...nf.extractLinks(m.html || '')]));
     if (!url) continue;
     posts.push({ url, date: String(m.date).slice(0, 10), title: m.subject, text: m.text });
   }
@@ -252,11 +264,12 @@ const allowSourceUrl = (source) => (url) => {
 };
 
 /** Read the public listing for one web source. Returns { posts, listingEmpty }. */
-async function readWebSource(source, { fetchImpl, args, state }) {
+async function readWebSource(source, { fetchImpl, args, state, readEmail }) {
   const processed = (state.processed && state.processed[source.key]) || [];
   let listing = [];
   let listingEmpty = false;
   let viaApi = false;
+  let viaEmail = false;
   if (source.key === 'chromolume') {
     const idx = await src.fetchPublicText(src.CHROMOLUME_INDEX, { fetchImpl, isAllowed: (u) => /^https:\/\/(?:www\.)?chromolume\.io\/blog\/?$/.test(u) });
     if (!idx.ok) console.error(`Chromolume index unreadable: ${idx.reason}`);
@@ -271,6 +284,17 @@ async function readWebSource(source, { fetchImpl, args, state }) {
       if (!arch.ok) console.error(`Abroad/Way archive API unreadable: ${arch.reason}`);
       else { viaApi = true; listing = src.parseArchiveJson(arch.body).filter((i) => allowSourceUrl(source)(i.url)); }
     }
+    const sender = EMAIL_FALLBACK_SENDER[source.key];
+    if (!listing.length && sender && readEmail) {
+      try {
+        listing = emailPosts(source, await readEmail(`newer_than:${args.days}d from:${sender}`));
+        viaEmail = true;
+        console.log(`  ${source.label}: web listing unreachable, ${listing.length} issue(s) from email.`);
+      } catch (err) {
+        console.error(`${source.label} email fallback failed: ${err.message}`);
+        process.exitCode = 1;
+      }
+    }
   }
   if (!listing.length) listingEmpty = true;
   const { toRead, unreadOlder } = src.pickPosts(listing, processed, { maxNew: args.maxNew, dryRun: args.dryRun });
@@ -280,6 +304,8 @@ async function readWebSource(source, { fetchImpl, args, state }) {
     if (source.key === 'chromolume') {
       const page = await src.fetchPublicText(p.url, { fetchImpl, isAllowed: allowSourceUrl(source) });
       posts.push(page.ok ? { ...p, title: p.url.split('/').pop(), text: src.articleText(page.body) } : { ...p, title: p.url.split('/').pop(), error: `post-${page.reason}` });
+    } else if (viaEmail) {
+      posts.push(p);
     } else if (viaApi) {
       const page = await src.fetchPublicText(`https://gordoncox.substack.com/api/v1/posts/${encodeURIComponent(p.slug)}`, { fetchImpl, types: /json|text/i, isAllowed: (u) => /^https:\/\/gordoncox\.substack\.com\/api\/v1\/posts\/[A-Za-z0-9_-]+$/.test(u) });
       posts.push(page.ok ? { ...p, text: src.postBodyFromJson(page.body) } : { ...p, error: `post-${page.reason}` });
@@ -324,23 +350,10 @@ async function main() {
 
   for (const source of nf.WEB_SOURCES) {
     if (!want(source.key)) continue;
-    const r = await readWebSource(source, { fetchImpl: fetch, args, state });
+    const r = await readWebSource(source, { fetchImpl: fetch, args, state, readEmail: args.fromFile ? null : (q) => fetchGmail(args.days, q) });
     listingEmptyBy[source.key] = r.listingEmpty;
     listings[source.key] = r.listing;
     issues.push(...await processPosts(source, r.posts, shared));
-  }
-
-  const abroadway = nf.WEB_SOURCES.find((w) => w.key === 'abroadway');
-  if (abroadway && want(abroadway.key) && listingEmptyBy[abroadway.key] && !args.fromFile) {
-    try {
-      const posts = emailPosts(abroadway, await fetchGmail(args.days, `newer_than:${args.days}d from:${ABROADWAY_SENDER}`));
-      console.log(`  Abroad/Way: web listing unreachable, read ${posts.length} issue(s) from email.`);
-      listingEmptyBy[abroadway.key] = posts.length === 0;
-      listings[abroadway.key] = posts;
-      issues.push(...await processPosts(abroadway, posts, shared));
-    } catch (err) {
-      console.error(`Abroad/Way email fallback failed: ${err.message}`);
-    }
   }
 
   const briefing = nf.EMAIL_SENDERS[0];
@@ -422,4 +435,4 @@ async function main() {
 
 if (require.main === module) runMain(main);
 
-module.exports = { processMessages, processPosts, emailPosts, normalizeGmailMessage, htmlToText, parseArgs, summarize };
+module.exports = { processMessages, processPosts, emailPosts, canonicalPostUrl, readWebSource, normalizeGmailMessage, htmlToText, parseArgs, summarize };
