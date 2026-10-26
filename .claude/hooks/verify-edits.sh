@@ -466,7 +466,7 @@ def _is_owner_record(r, text):
     return bool(t) and not t.startswith(('<', '[Request interrupted', 'This session is being continued'))
 
 events = []  # list of (kind, payload)
-_user_prompts = []  # early non-meta user texts; CHILDWAIT looks for the worker `BUDGET:` line (BRO-6264)
+_user_prompts = []  # early user texts (CHILDWAIT: worker BUDGET: line)
 # kinds: 'tool' payload=(name,input,tool_use_id) | 'text' payload=str | 'result' payload=(tool_use_id, text)
 tool_results_by_id = {}
 result_ts_by_id = {}  # tool_use_id -> transcript timestamp of its result (scoring gate)
@@ -1311,52 +1311,38 @@ if os.environ.get('WAKELESS_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
-# ─── Child-wait gate (CHILDWAIT, BRO-6264, 2026-10-26) ──────────────────────
-# A child worker session has no human and no subscription to a run it fired,
-# so "KEEP OPEN — the test run is in progress" is never answered (BRO-6154 sat
-# ~1 day). WAKELESS passed it because ANY earlier background Bash counts as
-# armed. Here, for a child (prompt carries the worker `BUDGET: Nh` line)
-# waiting on CI, a wake only counts if armed AFTER the last run it started: a
-# background poll/Monitor or a report-back to @parent. Decision lives in
-# scripts/lib/child-session-wait-guard.js. Kill switch CHILDWAIT_GATE_DISABLE=1.
-# Fail-open.
+# ─── Child-wait gate (CHILDWAIT, BRO-6264) ──────────────────────────────────
+# A child worker (prompt has a `BUDGET: Nh` line) ending KEEP OPEN on CI it
+# started is never woken (BRO-6154 sat ~1 day); WAKELESS passed it on an older
+# background Bash. Decision: scripts/lib/child-session-wait-guard.js. Kill switch CHILDWAIT_GATE_DISABLE=1.
 if os.environ.get('CHILDWAIT_GATE_DISABLE', '0') != '1':
     try:
         _cw_text, _cw_last = _closing()
         _cw_js = os.path.join(os.environ.get('VE_REPO_ROOT', ''), 'scripts', 'lib', 'child-session-wait-guard.js')
-        if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '')
-                and not _ve_seen('CHILDWAIT') and os.path.isfile(_cw_js)
-                and not _owner_must_act(_cw_text)):
+        if (_KEEP_RE.match(_cw_last) and 'NO-VERIFY:' not in (_last_msg or '') and not _ve_seen('CHILDWAIT')
+                and os.path.isfile(_cw_js) and not _owner_must_act(_cw_text)):
             import subprocess
-            _cw_done = set()
-            for _k, _p in events:
-                if _k in ('user_notice', 'user_text'):
-                    for _mn in re.finditer(r'<task-notification>(.*?)</task-notification>', _p or '', flags=re.DOTALL):
-                        _im = re.search(r'<task-id>\s*([^<\s]+)\s*</task-id>', _mn.group(1))
-                        if _im:
-                            _cw_done.add(_im.group(1))
+            _cw_done = {m for k, p in events if k in ('user_notice', 'user_text')
+                        for m in re.findall(r'<task-notification>.*?<task-id>\s*([^<\s]+)\s*</task-id>', p or '', re.DOTALL)}
             _cw_tools = []
             for _i, (_k, _p) in enumerate(events):
                 if _k != 'tool':
                     continue
                 _nm, _inp, _tid = _p
-                if _nm == 'TaskStop' and isinstance(_inp, dict):
+                _inp = _inp if isinstance(_inp, dict) else {}
+                if _nm == 'TaskStop':
                     _cw_done.add(str(_inp.get('task_id') or _inp.get('taskId') or ''))
-                _res = tool_results_by_id.get(_tid, '') or ''
-                _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', _res)
-                _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp if isinstance(_inp, dict) else {},
-                                  'ok': _tid not in tool_error_ids, 'taskId': _bm.group(1) if _bm else None})
-            _cw = subprocess.run(['node', _cw_js], input=json.dumps({
-                'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last,
-                'tools': _cw_tools, 'done': sorted(_cw_done),
-                'env': {k: v for k, v in os.environ.items() if k in ('CLAUDE_PARENT_SESSION_ID', 'PARENT_SESSION_ID')}}),
-                capture_output=True, text=True, timeout=10)
-            if _cw.stderr.strip():
-                sys.stderr.write('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n')
+                _bm = re.search(r'\bID:\s*([0-9A-Za-z_-]{4,})', tool_results_by_id.get(_tid, '') or '')
+                _cw_tools.append({'idx': _i, 'name': _nm, 'input': _inp, 'ok': _tid not in tool_error_ids,
+                                  'taskId': _bm.group(1) if _bm else None})
+            _cw = subprocess.run(['node', _cw_js], capture_output=True, text=True, timeout=10, input=json.dumps({
+                'firstPrompt': '\n'.join(_user_prompts), 'closing': _cw_text + '\n' + _cw_last, 'tools': _cw_tools,
+                'done': sorted(_cw_done), 'env': {k: v for k, v in os.environ.items() if k.endswith('PARENT_SESSION_ID')}}))
+            sys.stderr.write(('⚠️  CHILDWAIT: ' + _cw.stderr.strip()[:200] + '\n') if _cw.stderr.strip() else '')
             if json.loads(_cw.stdout or '{}').get('block'):
                 _ve_block("CHILDWAIT")
     except Exception:
-        pass  # fail-open — never let this gate crash the rest of the script
+        pass  # fail-open
 
 # ─── Clear-closing gate (CLEARCLOSE, BRO-5910, 2026-10-22) ──────────────────
 # Owner: "extremely clear communicators, especially at the end of their
