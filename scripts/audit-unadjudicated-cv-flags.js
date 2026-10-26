@@ -15,6 +15,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { pickReviewTextsTree } = require('./lib/preflight-review-fix-plan');
 const { findUnadjudicatedCounted } = require('./lib/unadjudicated-cv-flags');
@@ -25,6 +26,10 @@ function argValue(name) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv)) {
+    console.log('Usage: node scripts/audit-unadjudicated-cv-flags.js [--max=N] [--json=out.json]  (read-only)');
+    return 0;
+  }
   const max = Number(argValue('max') || 0);
   const treeDir = pickReviewTextsTree();
   const reviewsPath = path.join(__dirname, '..', 'data', 'reviews.json');
