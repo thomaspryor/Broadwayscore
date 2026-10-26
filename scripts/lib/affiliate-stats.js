@@ -19,6 +19,10 @@ const IMPACT_MAX_DAYS = 45;       // Impact API rejects date ranges > 45 days
 // lookback of IMPACT_MAX_DAYS would request 46 days and always 400.
 const MAX_LOOKBACK_DAYS = IMPACT_MAX_DAYS - 1;
 const DAY_MS = 24 * 60 * 60 * 1000;
+// Every PostHog query here uses the one Real Users definition, so the funnel,
+// platform table and daily-click baseline count the same visitors (the funnel
+// used to include ~900 bot views a week that the baseline dropped).
+const { REAL_USERS_WHERE } = require('./posthog-query');
 const RATE_BUMP_DATE = new Date('2026-04-07T00:00:00Z'); // TodayTix 2% -> 5% cutover
 
 // Platforms we have an affiliate program for — used to flag rows in the
@@ -235,8 +239,7 @@ async function fetchPosthogDailyClicks(days, opts = {}) {
     WHERE event = 'ticket_click'
       AND timestamp >= toDateTime('${start.toISOString()}')
       AND timestamp <= toDateTime('${now.toISOString()}')
-      AND coalesce(JSONExtractString(properties, 'is_owner'), '') != 'true'
-      AND properties.$geoip_country_code NOT IN ('SG', 'CN', 'VN', 'HK')
+      AND ${REAL_USERS_WHERE}
     GROUP BY d ORDER BY d
   `;
   const { ok, status, data } = await fetchWithTimeout(
@@ -406,6 +409,7 @@ async function fetchPosthog(startDate, endDate) {
     FROM events
     WHERE timestamp >= toDateTime('${startISO}') AND timestamp <= toDateTime('${endISO}')
       AND (event = '$pageview' OR event = 'ticket_click')
+      AND ${REAL_USERS_WHERE}
   `;
   // Per-platform click breakdown
   const platformsHogQL = `
@@ -413,6 +417,7 @@ async function fetchPosthog(startDate, endDate) {
     FROM events
     WHERE event = 'ticket_click'
       AND timestamp >= toDateTime('${startISO}') AND timestamp <= toDateTime('${endISO}')
+      AND ${REAL_USERS_WHERE}
     GROUP BY platform
     ORDER BY clicks DESC
   `;

@@ -63,3 +63,12 @@ test('clampDays keeps the buffered Impact range within its 45-day cap', () => {
   const w = buildWindow(clampDays(45), { now: new Date('2026-10-26T00:00:00Z') });
   assert.ok((w.endBuffered - w.start) / 86400000 <= 45);
 });
+
+test('every PostHog query applies the shared Real Users filter', async () => {
+  const { readFileSync } = await import('node:fs');
+  const src = readFileSync(new URL('./affiliate-stats.js', import.meta.url), 'utf8');
+  const queries = (src.match(/FROM events/g) || []).length;
+  assert.ok(queries >= 3);
+  assert.equal((src.match(/\$\{REAL_USERS_WHERE\}/g) || []).length, queries,
+    'a query on events is missing ${REAL_USERS_WHERE}, so bots/owner leak into the funnel');
+});
