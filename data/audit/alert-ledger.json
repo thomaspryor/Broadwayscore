@@ -246,7 +246,7 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-26T14:03:17.073Z",
-      "lastSeen": "2026-10-26T16:06:19.997Z",
+      "lastSeen": "2026-10-26T16:06:49.861Z",
       "lastNotifiedAt": "2026-10-26T14:03:17.073Z",
       "lastSurfacedAt": "2026-10-26T14:03:17.073Z",
       "notifyCount": 175,
@@ -27747,9 +27747,9 @@
       "absentRunIds": [
         "40343293092",
         "40347574391",
-        "40351123409"
+        "40351614229"
       ],
-      "resolvedAt": "2026-10-26T16:06:19.947Z",
+      "resolvedAt": "2026-10-26T16:06:47.031Z",
       "resolveReason": "stale-signature"
     },
     "pending-unrecoverable:garry-starr-classic-penguins-off-west-end-2026": {
@@ -27794,7 +27794,7 @@
       "linearIdentifier": "BRO-6344",
       "absentRunIds": [
         "40347574391",
-        "40351123409"
+        "40351614229"
       ]
     },
     "land:land/bro-6302-tr-lift-honored": {
@@ -27828,7 +27828,10 @@
         "runId": "40343293092",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343293092"
       },
-      "silentRefires": 2
+      "silentRefires": 1,
+      "absentRunIds": [
+        "40351614229"
+      ]
     },
     "land:land/job/linear-BRO-6339-mvpcbpns": {
       "status": "resolved",
@@ -27876,7 +27879,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40343846225"
       },
       "absentRunIds": [
-        "40351123409"
+        "40351614229"
       ]
     },
     "land:land/bro-6302-tr-lift-honored-2": {
@@ -27918,6 +27921,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:c98cc8c1": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"no loss-labelled star play with a model run reads 90% or more\"",
+      "firstSeen": "2026-10-26T16:06:47.045Z",
+      "incidentOpenedAt": "2026-10-26T16:06:47.045Z",
+      "lastSeen": "2026-10-26T16:06:47.045Z",
+      "lastNotifiedAt": "2026-10-26T16:06:47.045Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6353",
+      "dispatch": {
+        "requestedAt": "2026-10-26T16:06:47.045Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40351614229",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40351614229"
+      }
     },
     "land:land/bro-6340-outlet-feeds": {
       "status": "open",
