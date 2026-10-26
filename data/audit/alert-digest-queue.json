@@ -653,7 +653,7 @@
     "title": "main test.yml STILL red — auto-dispatch did not resolve it",
     "description": "main test.yml is STILL red after 31 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40330416586",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40331633769",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
@@ -662,11 +662,11 @@
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40330416586)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40331633769)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40327815067)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40330416586)"
       },
       {
         "name": "Consecutive failures",
@@ -677,7 +677,7 @@
         "value": "Unit Tests"
       }
     ],
-    "queuedAt": "2026-10-26T13:49:09.631Z"
+    "queuedAt": "2026-10-26T13:59:28.358Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6287-mvp6ligf",
