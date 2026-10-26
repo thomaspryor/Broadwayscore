@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-10-26T16:16:24.609Z",
+  "runDate": "2026-10-26T16:26:31.753Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
     "showFilter": "the-last-bimbo-of-the-apocalypse-off-broadway-2025,on-the-evolutionary-function-of-shame-off-broadway-2025,how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025,last-call-off-broadway-2025,henry-iv-off-broadway-2025,grandiloquent-off-broadway-2025,the-jonathan-larson-project-off-broadway-2025,curse-of-the-starving-class-off-broadway-2025,elephant-and-piggies-we-are-in-a-play-off-broadway-2025,kowalski-off-broadway-2025,the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024,beckett-briefs-off-broadway-2025",
     "aggressive": false,
@@ -11,25 +11,25 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 71,
-    "failed": 2,
+    "processed": 68,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "97.3%"
+    "successRate": "93.2%"
   },
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 42,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 5,
-    "brightdata": 6,
+    "brightdata": 7,
     "archiveToday": 0,
     "archive": 14
   },
   "statistics": {
-    "tier1Attempts": 50,
-    "tier1Success": 46,
+    "tier1Attempts": 49,
+    "tier1Success": 45,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 4,
@@ -38,14 +38,14 @@
     "tier1_9Success": 0,
     "tier2Attempts": 14,
     "tier2Success": 5,
-    "tier3Attempts": 10,
-    "tier3Success": 6,
+    "tier3Attempts": 9,
+    "tier3Success": 7,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 8,
-    "tier4Success": 4,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 36,
+    "tier4Success": 7,
+    "totalFailed": 4,
+    "scrapingBeePageCredits": 26,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 4,
     "browserbaseMinutesUsed": 0.8,
@@ -54,8 +54,8 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 71,
-    "failed": 2,
+    "processed": 68,
+    "failed": 5,
     "shows": [
       "curse-of-the-starving-class-off-broadway-2025",
       "grandiloquent-off-broadway-2025",
@@ -123,10 +123,8 @@
     "henry-iv-off-broadway-2025/timeout--david-cote.json",
     "henry-iv-off-broadway-2025/wsj--unknown.json",
     "henry-iv-off-broadway-2025/amny--matt-windman.json",
-    "henry-iv-off-broadway-2025/exeunt-magazine--natasha-tripney.json",
     "henry-iv-off-broadway-2025/huffpost--david-finkle.json",
     "henry-iv-off-broadway-2025/independent--paul-taylor.json",
-    "henry-iv-off-broadway-2025/nysr--unknown.json",
     "henry-iv-off-broadway-2025/telegraph--dominic-cavendish.json",
     "henry-iv-off-broadway-2025/village-voice--jacob-gallagher-ross.json",
     "henry-iv-off-broadway-2025/wnyc--jennifer-vanasco.json",
@@ -137,7 +135,6 @@
     "kowalski-off-broadway-2025/nyt-theater--jonathan-mandell.json",
     "kowalski-off-broadway-2025/nytg--austin-fimmano.json",
     "kowalski-off-broadway-2025/cititour--brian-scott-lipton.json",
-    "kowalski-off-broadway-2025/culturesauce--unknown.json",
     "kowalski-off-broadway-2025/dc-theater-arts--deb-miller.json",
     "kowalski-off-broadway-2025/times-square-chronicles--suzanna-bowling.json",
     "grandiloquent-off-broadway-2025/nytg--joe-dziemianowicz.json",
@@ -148,6 +145,9 @@
   ],
   "failed": [
     "the-jonathan-larson-project-off-broadway-2025/musical-theatre-report--ben-west.json",
+    "henry-iv-off-broadway-2025/exeunt-magazine--natasha-tripney.json",
+    "henry-iv-off-broadway-2025/nysr--unknown.json",
+    "kowalski-off-broadway-2025/culturesauce--unknown.json",
     "grandiloquent-off-broadway-2025/theatermania--zachary-stewart.json"
   ],
   "cumulativeResumedState": {
@@ -201,10 +201,8 @@
       "henry-iv-off-broadway-2025/timeout--david-cote.json",
       "henry-iv-off-broadway-2025/wsj--unknown.json",
       "henry-iv-off-broadway-2025/amny--matt-windman.json",
-      "henry-iv-off-broadway-2025/exeunt-magazine--natasha-tripney.json",
       "henry-iv-off-broadway-2025/huffpost--david-finkle.json",
       "henry-iv-off-broadway-2025/independent--paul-taylor.json",
-      "henry-iv-off-broadway-2025/nysr--unknown.json",
       "henry-iv-off-broadway-2025/telegraph--dominic-cavendish.json",
       "henry-iv-off-broadway-2025/village-voice--jacob-gallagher-ross.json",
       "henry-iv-off-broadway-2025/wnyc--jennifer-vanasco.json",
@@ -215,7 +213,6 @@
       "kowalski-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "kowalski-off-broadway-2025/nytg--austin-fimmano.json",
       "kowalski-off-broadway-2025/cititour--brian-scott-lipton.json",
-      "kowalski-off-broadway-2025/culturesauce--unknown.json",
       "kowalski-off-broadway-2025/dc-theater-arts--deb-miller.json",
       "kowalski-off-broadway-2025/times-square-chronicles--suzanna-bowling.json",
       "grandiloquent-off-broadway-2025/nytg--joe-dziemianowicz.json",
@@ -226,6 +223,9 @@
     ],
     "failed": [
       "the-jonathan-larson-project-off-broadway-2025/musical-theatre-report--ben-west.json",
+      "henry-iv-off-broadway-2025/exeunt-magazine--natasha-tripney.json",
+      "henry-iv-off-broadway-2025/nysr--unknown.json",
+      "kowalski-off-broadway-2025/culturesauce--unknown.json",
       "grandiloquent-off-broadway-2025/theatermania--zachary-stewart.json"
     ]
   },
@@ -259,9 +259,7 @@
       "curse-of-the-starving-class-off-broadway-2025/nysr--frank-scheck.json",
       "henry-iv-off-broadway-2025/theatermania--zachary-stewart.json",
       "henry-iv-off-broadway-2025/timeout--david-cote.json",
-      "henry-iv-off-broadway-2025/amny--matt-windman.json",
       "henry-iv-off-broadway-2025/independent--paul-taylor.json",
-      "henry-iv-off-broadway-2025/nysr--unknown.json",
       "henry-iv-off-broadway-2025/wnyc--jennifer-vanasco.json",
       "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025/exeunt-magazine--loren-noveck.json",
@@ -269,7 +267,6 @@
       "how-is-it-that-we-live-or-shakey-jake-alice-off-broadway-2025/theater-scene--scott-bennett.json",
       "kowalski-off-broadway-2025/nyt-theater--jonathan-mandell.json",
       "kowalski-off-broadway-2025/nytg--austin-fimmano.json",
-      "kowalski-off-broadway-2025/culturesauce--unknown.json",
       "kowalski-off-broadway-2025/dc-theater-arts--deb-miller.json",
       "kowalski-off-broadway-2025/times-square-chronicles--suzanna-bowling.json",
       "grandiloquent-off-broadway-2025/nytg--joe-dziemianowicz.json",
@@ -295,6 +292,7 @@
       "the-jonathan-larson-project-off-broadway-2025/vulture--unknown.json",
       "the-jonathan-larson-project-off-broadway-2025/cititour--brian-scott-lipton.json",
       "on-the-evolutionary-function-of-shame-off-broadway-2025/vulture--sara-holdren.json",
+      "on-the-evolutionary-function-of-shame-off-broadway-2025/talkinbroadway--kimberly-ramirez.json",
       "curse-of-the-starving-class-off-broadway-2025/vulture--unknown.json",
       "kowalski-off-broadway-2025/cititour--brian-scott-lipton.json",
       "grandiloquent-off-broadway-2025/vulture--kathryn-vanarendonk.json"
@@ -307,16 +305,31 @@
       "the-jonathan-larson-project-off-broadway-2025/nydailynews--chris-jones.json",
       "the-jonathan-larson-project-off-broadway-2025/dailybeast--tim-teeman.json",
       "on-the-evolutionary-function-of-shame-off-broadway-2025/pages-on-stages--mason-pilevsky.json",
-      "on-the-evolutionary-function-of-shame-off-broadway-2025/talkinbroadway--kimberly-ramirez.json",
       "curse-of-the-starving-class-off-broadway-2025/nytimes--maya-phillips.json",
       "curse-of-the-starving-class-off-broadway-2025/dailybeast--tim-teeman.json",
       "henry-iv-off-broadway-2025/nytimes--unknown.json",
+      "henry-iv-off-broadway-2025/amny--matt-windman.json",
       "henry-iv-off-broadway-2025/exeunt-magazine--natasha-tripney.json",
       "henry-iv-off-broadway-2025/huffpost--david-finkle.json",
       "henry-iv-off-broadway-2025/telegraph--dominic-cavendish.json",
       "henry-iv-off-broadway-2025/village-voice--jacob-gallagher-ross.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "New York Stage Review": {
+      "count": 1,
+      "domain": "nystagereview.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Culture Sauce": {
+      "count": 1,
+      "domain": "culturesauce.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
