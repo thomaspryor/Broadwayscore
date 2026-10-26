@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T02:07:20.297Z",
+  "generatedAt": "2026-10-26T05:31:49.168Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -133,10 +133,6 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
-    },
-    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -149,8 +145,8 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 669,
-  "matchedGaps": 3,
+  "itemsScanned": 675,
+  "matchedGaps": 4,
   "possibleGaps": 1,
   "gaps": [
     {
@@ -179,6 +175,15 @@
       "url": "https://www.offoffonline.com/offoffonline/2026/10/19/phyl",
       "headline": "Phyl",
       "publishDate": "2026-10-25"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/oct/26/the-pianist-review-park-theatre-london",
+      "headline": "The Pianist review – Władysław Szpilman’s Holocaust memoir retold with his own music",
+      "publishDate": "2026-10-26"
     },
     {
       "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
