@@ -1,7 +1,7 @@
 {
   "system": "autofix",
   "status": "warn",
-  "lastChecked": "2026-10-25T23:39:13.537Z",
+  "lastChecked": "2026-10-26T07:50:34.813Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,7 +14,7 @@
     {
       "name": "Autofix: persistent visitor rows with no open card",
       "status": "warn",
-      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Data quality: revival-unverified lifetime sweep (13d, BRO-5439 closed)"
+      "message": "4 visitor-facing row(s) red for 4+ days with no open card: Data quality: cv-wrongproduction lifetime sweep (13d, BRO-5437 closed); Data quality: revival-unverified lifetime sweep (13d, BRO-5439 closed); Data quality: cross-outlet attribution drift (12d, BRO-4695 closed); Data quality: stale announced shows (4d, BRO-5522 closed)"
     }
   ]
 }
