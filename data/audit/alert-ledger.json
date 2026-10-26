@@ -245,15 +245,16 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T12:41:54.556Z",
-      "lastSeen": "2026-10-26T12:41:54.556Z",
-      "lastNotifiedAt": "2026-10-26T12:41:54.556Z",
-      "lastSurfacedAt": "2026-10-26T12:41:54.556Z",
+      "incidentOpenedAt": "2026-10-26T12:25:32.462Z",
+      "lastSeen": "2026-10-26T12:54:46.313Z",
+      "lastNotifiedAt": "2026-10-26T12:25:32.462Z",
+      "lastSurfacedAt": "2026-10-26T12:25:32.462Z",
       "notifyCount": 174,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -27426,13 +27427,13 @@
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"hook file and line budget does not regrow\"",
       "firstSeen": "2026-10-26T10:51:44.343Z",
       "incidentOpenedAt": "2026-10-26T10:51:44.343Z",
-      "lastSeen": "2026-10-26T12:41:54.538Z",
+      "lastSeen": "2026-10-26T12:54:46.216Z",
       "lastNotifiedAt": "2026-10-26T10:51:44.343Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6307",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-6298-az-lookups": {
       "status": "open",
