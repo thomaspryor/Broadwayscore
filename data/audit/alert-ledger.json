@@ -245,11 +245,11 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-26T12:41:54.556Z",
-      "lastSeen": "2026-10-26T13:11:25.477Z",
-      "lastNotifiedAt": "2026-10-26T12:41:54.556Z",
-      "lastSurfacedAt": "2026-10-26T12:41:54.556Z",
-      "notifyCount": 174,
+      "incidentOpenedAt": "2026-10-26T13:12:15.419Z",
+      "lastSeen": "2026-10-26T13:12:15.419Z",
+      "lastNotifiedAt": "2026-10-26T13:12:15.419Z",
+      "lastSurfacedAt": "2026-10-26T13:12:15.419Z",
+      "notifyCount": 175,
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 161,
@@ -6763,15 +6763,15 @@
       "resolveReason": "absent"
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "incidentOpenedAt": "2026-10-26T11:55:25.897Z",
-      "lastSeen": "2026-10-26T11:55:25.897Z",
-      "lastNotifiedAt": "2026-10-26T11:55:25.897Z",
+      "incidentOpenedAt": "2026-10-26T13:12:15.094Z",
+      "lastSeen": "2026-10-26T13:12:15.094Z",
+      "lastNotifiedAt": "2026-10-26T13:12:15.094Z",
       "lastSurfacedAt": null,
-      "notifyCount": 15,
+      "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-6281",
       "dispatch": {
@@ -6780,9 +6780,7 @@
         "runId": "40256915379",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
       },
-      "absentRunIds": [],
-      "resolvedAt": "2026-10-26T12:41:54.455Z",
-      "resolveReason": "job-green"
+      "absentRunIds": []
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -27435,7 +27433,7 @@
       "linearIdentifier": "BRO-6307",
       "silentRefires": 2,
       "absentRunIds": [
-        "40325513527"
+        "40325212037"
       ]
     },
     "land:land/bro-6298-az-lookups": {
@@ -27543,6 +27541,19 @@
       "cardId": null,
       "linearIdentifier": null
     },
+    "test-yml:red:Unit Tests:78db5ec3": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"findReviewsToProcess (real function) queues an aged closed-show stub inside the cut\"",
+      "firstSeen": "2026-10-26T13:12:14.703Z",
+      "incidentOpenedAt": "2026-10-26T13:12:14.703Z",
+      "lastSeen": "2026-10-26T13:12:14.703Z",
+      "lastNotifiedAt": "2026-10-26T13:12:14.703Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6328"
+    },
     "land:land/job/linear-BRO-6307-mvp4vz58": {
       "status": "open",
       "disposition": "digest",
@@ -27568,25 +27579,6 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
-    },
-    "test-yml:red:Unit Tests:78db5ec3": {
-      "status": "open",
-      "disposition": "auto",
-      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"findReviewsToProcess (real function) queues an aged closed-show stub inside the cut\"",
-      "firstSeen": "2026-10-26T13:09:22.656Z",
-      "incidentOpenedAt": "2026-10-26T13:09:22.656Z",
-      "lastSeen": "2026-10-26T13:09:22.656Z",
-      "lastNotifiedAt": "2026-10-26T13:09:22.656Z",
-      "lastSurfacedAt": null,
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": "BRO-6328",
-      "dispatch": {
-        "requestedAt": "2026-10-26T13:09:22.656Z",
-        "mode": "dispatch-at-filing",
-        "runId": "40325513527",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40325513527"
-      }
     },
     "land:land/bro-6298-az-v2": {
       "status": "open",
