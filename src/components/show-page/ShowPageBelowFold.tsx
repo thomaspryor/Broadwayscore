@@ -125,6 +125,20 @@ export interface ShowPageBelowFoldProps {
   faqs: ShowFAQ[];
 }
 
+/**
+ * Props that depend only on the show and are heavy enough (about 65KB on
+ * /show/hamilton) to matter in the document. The below-fold chunk is not
+ * server-rendered, so these ship as /show/<slug>/below-fold.json and are
+ * fetched by ShowPageBelowFoldLoader instead of riding the inlined RSC
+ * payload (BRO-6278). Built by src/lib/show-below-fold-data.ts.
+ */
+export type ShowBelowFoldDeferred = Pick<ShowPageBelowFoldProps,
+  | 'videoReviews' | 'awards' | 'awardsSummary' | 'tonyNamesByCategory'
+  | 'showtimeIds' | 'showSchedule' | 'theater'
+  | 'castChangesData' | 'castFile' | 'castActorSlugs' | 'castTonyMap'
+  | 'otherProductions' | 'relatedShowsOpen' | 'relatedShowsClosed' | 'comparisons'>;
+export type ShowPageBelowFoldInlineProps = Omit<ShowPageBelowFoldProps, keyof ShowBelowFoldDeferred>;
+
 function getGoogleMapsUrl(address: string): string {
   return `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(address)}`;
 }

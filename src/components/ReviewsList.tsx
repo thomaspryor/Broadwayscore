@@ -14,7 +14,6 @@ import { TIER_CHIP_BOX, TIER_CHIP_BOX_TIGHT, TierBars, tierChipTextClass } from 
 import { nestQuotes } from '@/lib/nest-quotes';
 
 interface Review {
-  showId: string;
   outletId: string;
   outlet: string;
   outletSlug?: string;
