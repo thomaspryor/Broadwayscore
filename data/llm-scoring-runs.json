@@ -1,5 +1,23 @@
 [
   {
+    "startedAt": "2026-10-24T12:29:30.913Z",
+    "completedAt": "2026-10-24T12:29:35.518Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "40093691070",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-10-24T12:43:19.919Z",
     "completedAt": "2026-10-24T12:43:19.921Z",
     "totalReviews": 0,
@@ -960743,21 +960761,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-26T08:55:05.670Z",
-    "completedAt": "2026-10-26T08:57:38.396Z",
-    "totalReviews": 34,
-    "processed": 26,
-    "skipped": 7,
+    "startedAt": "2026-10-26T09:07:07.507Z",
+    "completedAt": "2026-10-26T09:10:45.542Z",
+    "totalReviews": 46,
+    "processed": 44,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 151358,
-      "output": 8654,
-      "cacheRead": 82257,
+      "input": 252600,
+      "output": 13694,
+      "cacheRead": 145854,
       "cacheWrite": 18527,
-      "total": 388674
+      "total": 642291
     },
-    "costUsd": 0.6486536499999999,
-    "runId": "40294971887",
+    "costUsd": 1.02943635,
+    "runId": "40295650910",
     "errorDetails": [],
     "validation": [
       {
@@ -966188,12 +966206,12 @@
         "hasDisagreement": false
       },
       {
-        "showId": "burnout-paradise-off-broadway-2026",
+        "showId": "burnout-paradise-off-broadway-2024",
         "ourDistribution": {
-          "up": 11,
+          "up": 14,
           "flat": 4,
           "down": 0,
-          "total": 15
+          "total": 18
         },
         "bwwDistribution": {
           "up": 3,
@@ -966201,8 +966219,23 @@
           "down": 0,
           "total": 4
         },
-        "hasDisagreement": true,
-        "disagreementDetails": "BWW: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
+        "hasDisagreement": false
+      },
+      {
+        "showId": "burnout-paradise-off-broadway-2026",
+        "ourDistribution": {
+          "up": 14,
+          "flat": 4,
+          "down": 0,
+          "total": 18
+        },
+        "bwwDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 4
+        },
+        "hasDisagreement": false
       },
       {
         "showId": "burnt-up-love-off-west-end-2026",
@@ -968472,6 +968505,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "deep-history-off-broadway-2024",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 3,
+          "down": 1,
+          "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "degenerates-off-broadway-2026",
         "ourDistribution": {
           "up": 16,
@@ -970584,6 +970627,16 @@
           "flat": 0,
           "down": 1,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "gatz-off-broadway-2024",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 0,
+          "down": 0,
+          "total": 4
         },
         "hasDisagreement": false
       },
@@ -983059,6 +983112,23 @@
         "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
+        "showId": "strategic-love-play-off-broadway-2024",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 4,
+          "down": 2,
+          "total": 9
+        },
+        "bwwDistribution": {
+          "up": 2,
+          "flat": 0,
+          "down": 0,
+          "total": 5
+        },
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Flat thumbs differ by 44% (ours: 44%, theirs: 0%)"
+      },
+      {
         "showId": "strictly-ballroom-west-end-2018",
         "ourDistribution": {
           "up": 5,
@@ -984166,6 +984236,16 @@
           "flat": 3,
           "down": 0,
           "total": 5
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "the-blood-quilt-off-broadway-2024",
+        "ourDistribution": {
+          "up": 10,
+          "flat": 1,
+          "down": 0,
+          "total": 11
         },
         "hasDisagreement": false
       },
@@ -991281,12 +991361,32 @@
         "hasDisagreement": false
       },
       {
+        "showId": "we-are-your-robots-off-broadway-2024",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 1,
+          "down": 0,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "we-had-a-world-off-west-end-2026",
         "ourDistribution": {
           "up": 3,
           "flat": 3,
           "down": 0,
           "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "we-live-in-cairo-off-broadway-2024",
+        "ourDistribution": {
+          "up": 4,
+          "flat": 4,
+          "down": 0,
+          "total": 8
         },
         "hasDisagreement": false
       },
@@ -992047,8 +992147,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-26T08:59:48.884Z",
-    "completedAt": "2026-10-26T08:59:48.902Z",
+    "startedAt": "2026-10-26T09:12:36.014Z",
+    "completedAt": "2026-10-26T09:12:36.031Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -992061,7 +992161,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40294971887",
+    "runId": "40295650910",
     "errorDetails": []
   }
 ]
