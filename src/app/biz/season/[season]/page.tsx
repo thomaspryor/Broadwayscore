@@ -42,7 +42,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: { params: Promise<{ season: string }> }): Promise<Metadata> {
   const params = await props.params;
   return {
-    title: { absolute: `${params.season} Broadway Season | Money Scorecard` },
+    title: { absolute: `${params.season} Broadway Season | Profitability Scorecard` },
     description: `Commercial data and recoupment metrics for Broadway shows from the ${params.season} season.`,
     alternates: {
       canonical: `${BASE_URL}/biz/season/${params.season}`,
@@ -85,7 +85,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
             </svg>
-            Money Scorecard
+            Profitability Scorecard
           </Link>
 
           <h1 className="text-3xl font-bold text-white mb-4">{season} Season</h1>
@@ -122,7 +122,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Money Scorecard
+          Profitability Scorecard
         </Link>
 
         {/* Header */}
@@ -142,7 +142,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           </p>
           <p className="text-xs text-amber-500/70 mt-1">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
          </div>
-          <ShareButton path={`/biz/season/${season}`} title={`${season} Broadway Season | Money Scorecard`} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
+          <ShareButton path={`/biz/season/${season}`} title={`${season} Broadway Season | Profitability Scorecard`} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
         </div>
 
         {/* Season Stats Summary. text-xl on phones: "~$164.7M+" overflowed a two-column tile at 360px. */}

@@ -453,12 +453,12 @@ export default function MethodologyPage() {
           </p>
         </section>}
 
-        {/* Investment / commercial data (BRO-4623). Linked from /biz, /biz/season and the show-page Money Scorecard. */}
+        {/* Investment / commercial data (BRO-4623). Linked from /biz, /biz/season and the show-page Profitability Scorecard. */}
         {featureFlags.commercial && (
         <section id="commercial" className="card p-5 sm:p-6 scroll-mt-20">
           <h2 className="text-xl font-bold text-white mb-4">Investment Data</h2>
           <p className="text-gray-300 text-sm mb-4">
-            The Money Scorecard, on its own pages and on each show page, mixes two things: facts that have been reported publicly, and our own estimates. Every estimate is labelled, and we never present one as a reported figure.
+            The Profitability Scorecard, on its own pages and on each show page, mixes two things: facts that have been reported publicly, and our own estimates. Every estimate is labelled, and we never present one as a reported figure.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Reported facts</h3>
@@ -537,7 +537,7 @@ export default function MethodologyPage() {
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">How often it updates</h3>
           <p className="text-gray-300 text-sm mb-3">
-            Weekly grosses update every Tuesday after the League reports. We check the trade press every hour for recoupment and closing news, and rerun the estimates once a week. Each figure on the Money Scorecard carries the date it was last updated.
+            Weekly grosses update every Tuesday after the League reports. We check the trade press every hour for recoupment and closing news, and rerun the estimates once a week. Each figure on the Profitability Scorecard carries the date it was last updated.
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">Corrections</h3>

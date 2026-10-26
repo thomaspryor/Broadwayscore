@@ -1,4 +1,4 @@
-// Shared currency formatting for the /biz Money Scorecard.
+// Shared currency formatting for the /biz Profitability Scorecard.
 // Single source of truth so a missing data point renders "—" everywhere
 // instead of drifting per-component (the null → "~$0" credibility bug).
 //

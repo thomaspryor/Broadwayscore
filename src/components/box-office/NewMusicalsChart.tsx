@@ -53,7 +53,7 @@ export default function NewMusicalsChart({ cohort }: { cohort: MarketPage['cohor
       <h2 id="new-musicals-heading" className="m-0 text-xl font-bold text-white">How the new musicals are selling</h2>
       <p className="m-0 text-sm leading-relaxed text-gray-300">
         Gross per seat, week by week from first preview, against the middle half of the {cohort.musicals} new musicals since {cohort.fromYear} (shaded)
-        and past examples. Selling well is not the same as paying back. That depends on costs, which the Money Scorecard covers.
+        and past examples. Selling well is not the same as paying back. That depends on costs, which the Profitability Scorecard covers.
       </p>
       <div className="bg-surface-overlay/60 rounded-xl px-2.5 sm:px-3.5 pt-3 pb-2 flex flex-col gap-2">
         {/* Phones scroll the chart sideways rather than shrink its labels to unreadable. */}

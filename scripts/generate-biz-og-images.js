@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Render the Money Scorecard link-preview PNGs (BRO-6149):
+ * Render the Profitability Scorecard link-preview PNGs (BRO-6149):
  * public/og/biz.html (template) -> public/og/biz/<slug>.png at 1200x630.
  * Cards come from scripts/lib/biz-og-cards.js; one per season is derived from
  * the commercial data, so rerun this after a new season appears (the page
@@ -34,7 +34,7 @@ async function main() {
   const page = await browser.newPage({ viewport: { width: 1200, height: 630 } });
   for (const c of cards) {
     const url = new URL(pathToFileURL(TEMPLATE).href);
-    url.searchParams.set('kicker', c.kicker || 'Money Scorecard');
+    url.searchParams.set('kicker', c.kicker || 'Profitability Scorecard');
     url.searchParams.set('title', c.title);
     url.searchParams.set('sub', c.sub || '');
     await page.goto(url.href);

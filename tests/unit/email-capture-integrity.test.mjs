@@ -49,7 +49,7 @@ const EXCLUDED_PATHS = [
   'src/app/unsubscribe/',    // email for unsubscribe lookup
   'src/app/unfollow/',       // email for unfollow lookup
   'src/app/fantasy/',        // fantasy draft uses own /api/fantasy/draft endpoint, not Formspree
-  'src/components/biz/MoneyGate.tsx', // Money Scorecard list is separate by design (BRO-6210); money-gate.test.mjs asserts it posts to its own Supabase RPC
+  'src/components/biz/MoneyGate.tsx', // Profitability Scorecard list is separate by design (BRO-6210); money-gate.test.mjs asserts it posts to its own Supabase RPC
 ];
 
 describe('Email Capture Integrity', () => {

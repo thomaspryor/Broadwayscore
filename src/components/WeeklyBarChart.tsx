@@ -5,7 +5,7 @@ import { multipleTicks } from '@/lib/box-office-v2-display';
 /**
  * One bar per week (BRO-5007). Mode "multiple": gross as a share of the show's
  * break-even (green at or above 100%, amber below), a dashed 100% line and the
- * typical Broadway show that week as a cream line; the Money Scorecard's
+ * typical Broadway show that week as a cream line; the Profitability Scorecard's
  * cost section. Mode "gross": plain weekly grosses in dollars; the Box Office
  * Scorecard. Unreported weeks are gaps, never zero.
  */

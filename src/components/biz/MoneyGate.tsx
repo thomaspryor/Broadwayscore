@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * MoneyGate - email gate for the Money Scorecard's show-level detail (BRO-6210).
+ * MoneyGate - email gate for the Profitability Scorecard's show-level detail (BRO-6210).
  *
  * Wraps gated content. The content is always server-rendered into the HTML
  * (search engines read it; the paywall JSON-LD below says it is gated, so it
@@ -177,7 +177,7 @@ export default function MoneyGate({ children, page, preview = 'tall', schema = t
           <svg className="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
           </svg>
-          Unlocked on every Money Scorecard page
+          Unlocked on every Profitability Scorecard page
         </p>
       )}
       <div ref={contentRef} className="money-gated money-gate-content">
@@ -244,9 +244,9 @@ function MoneyGateCard({ page, onUnlocked }: { page: string; onUnlocked: () => v
             <path d="M8 11V8a4 4 0 118 0v3" strokeWidth={2} strokeLinecap="round" />
           </svg>
         </span>
-        <span className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Money Scorecard</span>
+        <span className="text-xs font-bold uppercase tracking-[0.14em] text-brand">Profitability Scorecard</span>
       </div>
-      <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Unlock the Money Scorecard</h3>
+      <h3 className="text-xl font-bold leading-tight text-white sm:text-2xl">Unlock the Profitability Scorecard</h3>
       <p className="mt-2 text-sm leading-relaxed text-gray-300">
         Always free. Show-by-show capitalization, recoupment and box office for every Broadway show.
         One sign&#8209;up unlocks every page.

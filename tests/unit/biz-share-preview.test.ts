@@ -1,4 +1,4 @@
-// Money Scorecard link previews (BRO-6149): every /biz page names its own
+// Profitability Scorecard link previews (BRO-6149): every /biz page names its own
 // 1200x630 card that exists on disk, and the card files have the true size.
 import { test } from 'node:test';
 import assert from 'node:assert';

@@ -1,4 +1,4 @@
-// Pure display-decision logic for the show-page Money Scorecard
+// Pure display-decision logic for the show-page Profitability Scorecard
 // (BizBuzzCard) and the /biz tables. Extracted per the test-extraction
 // pattern so the rules are locked by unit tests
 // (tests/unit/commercial-display.test.mjs, tests/unit/recoupment-progress-label.test.mjs,
@@ -668,7 +668,7 @@ export interface DesignationDisplay {
   isUndisclosed: boolean;
 }
 
-/** Whether the Money Scorecard has anything to show (it renders nothing otherwise). */
+/** Whether the Profitability Scorecard has anything to show (it renders nothing otherwise). */
 export function hasCommercialCard(
   c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'> & Partial<Pick<ShowCommercial, 'analystRecoupPct' | 'ourEstimateRangePct' | 'commercialConversion'>>
 ): boolean {

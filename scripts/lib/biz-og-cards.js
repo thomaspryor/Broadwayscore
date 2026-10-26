@@ -1,5 +1,5 @@
 /**
- * Link-preview cards for the Money Scorecard (/biz, its topic pages, and one
+ * Link-preview cards for the Profitability Scorecard (/biz, its topic pages, and one
  * per season; BRO-6149). Every card is evergreen: titles and one-line hooks
  * only, no figure that can go stale. Rendered by scripts/generate-biz-og-images.js
  * from public/og/biz.html into public/og/biz/<slug>.png.
@@ -31,14 +31,14 @@ const TOPIC_CARDS = [
 
 const HOME_CARD = {
   slug: 'home',
-  kicker: 'Money Scorecard',
+  kicker: 'Profitability Scorecard',
   title: 'Who made money on Broadway, and who lost it',
   sub: 'Recoupment, capitalization and running costs for every show.',
 };
 
 const SEASON_FALLBACK_CARD = {
   slug: 'season',
-  kicker: 'Money Scorecard',
+  kicker: 'Profitability Scorecard',
   title: 'Every Broadway Season, Show by Show',
   sub: 'Who recouped, who finished in the red.',
 };
@@ -51,7 +51,7 @@ function seasonLabel(season) {
 function seasonCard(season) {
   return {
     slug: `season-${season}`,
-    kicker: 'Money Scorecard',
+    kicker: 'Profitability Scorecard',
     title: `The ${seasonLabel(season)} Broadway Season`,
     sub: 'Every show: who recouped, who finished in the red.',
   };

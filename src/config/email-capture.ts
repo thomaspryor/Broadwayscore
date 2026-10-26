@@ -119,7 +119,7 @@ const presets: Record<string, EmailCaptureConfig> = {
     },
   },
   aggressive: {
-    // /biz is the Money Scorecard's own sub-site with its own sign-up
+    // /biz is the Profitability Scorecard's own sub-site with its own sign-up
     // (BRO-6210); the main-list popups never fire there.
     excludedPaths: ['/feedback', '/submit-review', '/beat-the-critics', '/biz'],
     // Raised 5 -> 30 (BRO-1959, 2026-08-21): gate-cold-start (started

@@ -1,5 +1,5 @@
 /**
- * Money Scorecard email quality rules (BRO-6339). Dependency-free so the unit
+ * Profitability Scorecard email quality rules (BRO-6339). Dependency-free so the unit
  * test can require() it. The gate has no confirm-by-click step, so the first
  * sign-up was a@a1a.com: these rules keep fakes out without one.
  *

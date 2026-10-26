@@ -568,7 +568,7 @@
     @apply animate-slide-up;
   }
 
-  /* Money Scorecard email gate (BRO-6210, src/components/biz/MoneyGate.tsx).
+  /* Profitability Scorecard email gate (BRO-6210, src/components/biz/MoneyGate.tsx).
      Locked unless <html data-money-unlocked>, which the gate's inline boot
      script sets before paint for a browser that already signed up. The
      gated content stays in the DOM; locked, it is clipped to a blurred,

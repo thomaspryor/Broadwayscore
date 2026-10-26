@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Advisory Money Scorecard season share-card audit (BRO-6159).
+ * Advisory Profitability Scorecard season share-card audit (BRO-6159).
  * Usage: node scripts/lib/audit-biz-og-coverage.js
  * Read-only: lists missing PNGs and the renderer command; always exits 0.
  * Also runs in the daily health check as a warning row.

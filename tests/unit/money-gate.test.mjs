@@ -1,5 +1,5 @@
 /**
- * Money Scorecard email gate (BRO-6210): the unlock contract, the separate
+ * Profitability Scorecard email gate (BRO-6210): the unlock contract, the separate
  * list, popup suppression and the paywall markup. Runs in the tsx unit batch
  * (test.yml) and imports src TS directly, like gate-logic.test.mjs.
  */
@@ -111,7 +111,7 @@ test('money_gate_bypassed reports why the gate was skipped, once per page view',
 
 test('gate copy: benefit-led, discloses email use, offers sign-in, no em dashes', () => {
   const tsx = read('src/components/biz/MoneyGate.tsx');
-  assert.match(tsx, />Unlock the Money Scorecard</);
+  assert.match(tsx, />Unlock the Profitability Scorecard</);
   assert.match(tsx, /Always free\. Show-by-show capitalization, recoupment and box office for every Broadway show\./);
   assert.match(tsx, /One sign&#8209;up unlocks every page\./, 'non-breaking hyphen keeps "sign-up" on one line at 390');
   assert.match(tsx, /\{MONEY_EMAIL_USE\}/);

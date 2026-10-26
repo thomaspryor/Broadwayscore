@@ -30,7 +30,7 @@ const write = (p, o) => { fs.writeFileSync(`${p}.tmp`, JSON.stringify(o, null, 2
   if (dryRun) { console.log(`${digest.title}\n${digest.description}`); return; }
   const { sendEmailAlert } = require('./lib/discord-notify');
   const key = `commercial-unverified:${crypto.createHash('sha1').update(items.map((i) => i.id).sort().join('|')).digest('hex').slice(0, 20)}`;
-  const delivered = await sendEmailAlert({ title: digest.title, description: digest.description, severity: 'error', idempotencyKey: key, subjectLabel: 'Money Scorecard' });
+  const delivered = await sendEmailAlert({ title: digest.title, description: digest.description, severity: 'error', idempotencyKey: key, subjectLabel: 'Profitability Scorecard' });
   if (!delivered) { console.log('Owner digest: email not delivered; items stay unsent and retry next run.'); process.exitCode = 1; return; }
   markSent({ pending, archive }, items);
   const now = new Date().toISOString();

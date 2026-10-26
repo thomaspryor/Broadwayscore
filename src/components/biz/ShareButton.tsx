@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Share button for the Money Scorecard pages (BRO-6149). Phones get the native
+ * Share button for the Profitability Scorecard pages (BRO-6149). Phones get the native
  * share sheet; desktop copies the link and says so on the button itself (no
  * ToastProvider needed, it is only mounted when user accounts are on). The
  * shared URL is always the public one (SITE_URL), never the demo origin.

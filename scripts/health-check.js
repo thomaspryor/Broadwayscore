@@ -260,7 +260,7 @@ const AUTO_FIX_PLAYBOOK = [
   // BRO-6336: 180 deep-research results sat unreviewed for four months. The verified auto-apply pass
   // (commercial-pending-daily.yml) should keep the queue near empty; this fires when it does not.
   { match: /^Commercial pending-review queue$/, urgency: 'fix-now', workflow: 'commercial-pending-daily.yml',
-    humanAction: 'Money Scorecard research results are piling up unreviewed. The daily automatic check applies what a source page confirms and emails the rest; open the latest "Commercial Pending Review" run to see why entries are stuck.' },
+    humanAction: 'Profitability Scorecard research results are piling up unreviewed. The daily automatic check applies what a source page confirms and emails the rest; open the latest "Commercial Pending Review" run to see why entries are stuck.' },
   { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
   // BRO-6159: advisory only; persistent gaps use the existing alert router.

@@ -1,5 +1,5 @@
 /**
- * TopicCard - one /biz card per Money Scorecard topic page: the headline
+ * TopicCard - one /biz card per Profitability Scorecard topic page: the headline
  * number, linking through (BRO-5865).
  */
 

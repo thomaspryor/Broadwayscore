@@ -320,7 +320,7 @@ export interface MarketPage {
   table: Record<string, { perSeat: number | null; yoyPct: number | null; isNew: boolean }>;
 }
 
-/** Past new musicals drawn on the cohort chart, with their outcome on the Money Scorecard. */
+/** Past new musicals drawn on the cohort chart, with their outcome on the Profitability Scorecard. */
 export const COHORT_EXAMPLES = ['dear-evan-hansen-2016', 'come-from-away-2017', 'king-kong-2018'];
 
 /** Weeks the cohort chart spans at most. */

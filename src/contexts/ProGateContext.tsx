@@ -239,7 +239,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     // the user clicked the action) are exempt; recapture is already one-shot
     // via RECAPTURED_KEY. See isPassiveTrigger in gate-logic.ts.
     if (isPassiveTrigger(trigger)) {
-      // Never stack the main-list ask over a show page's Money Scorecard
+      // Never stack the main-list ask over a show page's Profitability Scorecard
       // sign-up, which is a separate list (BRO-6210).
       if (isMoneyGateInView()) return false;
       // Don't ask before the visitor has shown real engagement this session

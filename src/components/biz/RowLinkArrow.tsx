@@ -1,5 +1,5 @@
 /**
- * RowLinkArrow - chevron after a show or season name in the Money Scorecard
+ * RowLinkArrow - chevron after a show or season name in the Profitability Scorecard
  * tables and lists, so rows read as links (owner, 2026-10-26). Turns brand
  * colored when its row or link (a `group`) is hovered. Pass the name as
  * `label` to keep the chevron on the same line as the name's last word (a

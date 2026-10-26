@@ -17,7 +17,7 @@ import { useAuth } from '@/contexts/AuthContext';
  * an account" (BRO-4893). Header only: the footer link row promotes the
  * account instead (BRO-4946).
  *
- * Never competes with the Money Scorecard sign-up (BRO-6248): hidden on every
+ * Never competes with the Profitability Scorecard sign-up (BRO-6248): hidden on every
  * /biz page, and hidden by CSS (globals.css `.header-subscribe-cta`) on any
  * page while a locked money gate is in it, i.e. show pages.
  */

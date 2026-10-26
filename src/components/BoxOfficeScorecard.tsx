@@ -9,7 +9,7 @@ import { type BoxOfficeFactsCard, type BestLine, formatGross } from '@/lib/box-o
 /**
  * Box Office Scorecard v3 (BRO-5007): "how are ticket sales?", from public
  * Broadway League numbers only. Everything that needs a cost estimate lives in
- * the Money Scorecard's break-even section. Unreleased; rendered only when
+ * the Profitability Scorecard's break-even section. Unreleased; rendered only when
  * featureFlags.commercial && boxOfficeV2.
  */
 interface Props {

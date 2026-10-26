@@ -30,7 +30,7 @@ test.describe('/biz Dashboard - Basic Tests', () => {
   });
 
   test('main header and subtitle render', async ({ page }) => {
-    await expect(page.locator('h1')).toContainText('Broadway Money Scorecard');
+    await expect(page.locator('h1')).toContainText('Broadway Profitability Scorecard');
     await expect(page.getByText('Who made money on Broadway, and who lost it')).toBeVisible();
   });
 

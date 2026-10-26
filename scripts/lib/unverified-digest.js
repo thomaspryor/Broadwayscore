@@ -52,7 +52,7 @@ function buildDigest(items) {
   const lines = items.map((i) => `${i.show}: ${i.claim}\n  Why it could not be checked: ${i.why}\n  Source: ${i.source || 'none cited'}`);
   const n = items.length;
   return {
-    title: `${n} Money Scorecard item${n === 1 ? '' : 's'} the automatic check could not confirm`,
+    title: `${n} Profitability Scorecard item${n === 1 ? '' : 's'} the automatic check could not confirm`,
     description: `These figures and news items did not pass the source check, so nothing was published from them. Each is listed once.\n\n${lines.join('\n\n')}`,
   };
 }

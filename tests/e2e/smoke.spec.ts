@@ -193,21 +193,21 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).not.toContain('NaN');
   });
 
-  // The Money Scorecard was released 2026-10-26 (BRO-6192). Before that this
+  // The Profitability Scorecard was released 2026-10-26 (BRO-6192). Before that this
   // asserted /biz was a 404; now it checks the hub, a browse page built on the
   // data and the discovery surfaces (llms.txt, sitemap) all serve it, and that
   // /biz is indexable. A 404 page also has an h1, so check the status code.
-  test('Money Scorecard is live', async ({ request }) => {
+  test('Profitability Scorecard is live', async ({ request }) => {
     await skipOnPrUntilLive(request, '/biz');
     for (const p of ['/biz', '/browse/biggest-broadway-flops']) {
       const res = await request.get(p, { maxRedirects: 0 });
-      expect(res.status(), `${p} should be live since the Money Scorecard launch`).toBe(200);
+      expect(res.status(), `${p} should be live since the Profitability Scorecard launch`).toBe(200);
     }
     const biz = await (await request.get('/biz')).text();
-    expect(biz).toContain('Money Scorecard');
+    expect(biz).toContain('Profitability Scorecard');
     expect(biz).not.toMatch(/<meta[^>]+name="robots"[^>]+noindex/);
 
-    expect(await (await request.get('/llms.txt')).text()).toContain('Money Scorecard');
+    expect(await (await request.get('/llms.txt')).text()).toContain('Profitability Scorecard');
     expect(await (await request.get('/llms.txt')).text()).toContain('/biz)');
     expect(await (await request.get('/sitemap/0.xml')).text()).toMatch(/\/biz</);
   });

@@ -1,5 +1,5 @@
 /**
- * TopicPageShell - frame for the Money Scorecard topic pages
+ * TopicPageShell - frame for the Profitability Scorecard topic pages
  * (/biz/musicals-since-reopening, /biz/reviews-and-money, ...; BRO-5865):
  * back link, title, sourcing note and methodology footer, matching /biz/season/[season].
  */
@@ -18,7 +18,7 @@ export default function TopicPageShell({ title, subtitle, sharePath, children }:
           <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
           </svg>
-          Money Scorecard
+          Profitability Scorecard
         </Link>
 
         <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">

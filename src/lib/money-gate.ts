@@ -1,7 +1,7 @@
 /**
- * Money Scorecard email gate (BRO-6210).
+ * Profitability Scorecard email gate (BRO-6210).
  *
- * The /biz section and each show page's Money Scorecard section are their own
+ * The /biz section and each show page's Profitability Scorecard section are their own
  * sub-site: show-level detail unlocks with a one-step email sign-up, stored on
  * a list separate from every other capture on the site (owner, 2026-10-25).
  * Sign-ups go to Supabase's money_scorecard_signups table through the
@@ -30,7 +30,7 @@ export const MONEY_UNLOCK_ATTR = 'data-money-unlocked';
 
 /** What the gate tells readers their email is used for. Owner-editable. */
 export const MONEY_EMAIL_USE =
-  'Occasional Money Scorecard emails: new recoupments, closings and big estimate changes. Unsubscribe anytime. Separate from our newsletter.';
+  'Occasional Profitability Scorecard emails: new recoupments, closings and big estimate changes. Unsubscribe anytime. Separate from our newsletter.';
 
 /**
  * localStorage keys that mark an existing reader: the main list's subscribed
@@ -134,7 +134,7 @@ export function markMoneyUnlocked(): void {
 /**
  * True while a locked money gate is on screen. The site's generic email
  * popups (exit intent, scroll depth, show follow banner) check this so they
- * never stack a second, unrelated ask over the Money Scorecard sign-up.
+ * never stack a second, unrelated ask over the Profitability Scorecard sign-up.
  */
 export function isMoneyGateInView(): boolean {
   if (typeof document === 'undefined') return false;

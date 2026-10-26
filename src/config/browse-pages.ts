@@ -133,7 +133,7 @@ function openedInYear(show: ComputedShow, year: number): boolean {
 }
 
 // Broadway season (Jul-Jun) from opening date: the same helper the
-// Money Scorecard uses, so the two can never disagree.
+// Profitability Scorecard uses, so the two can never disagree.
 function getShowSeason(show: ComputedShow): string | null {
   return getSeason(show.openingDate);
 }

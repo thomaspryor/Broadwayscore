@@ -1,5 +1,5 @@
 /**
- * /biz - Broadway Money Scorecard Dashboard
+ * /biz - Broadway Profitability Scorecard Dashboard
  * Sprint 3: Dashboard Page
  */
 
@@ -54,7 +54,7 @@ import { bizOgImage } from '@/lib/biz-og';
 import ShareButton from '@/components/biz/ShareButton';
 import { getMarketDate } from '@/lib/date-utils';
 
-const OG_ALT = 'Broadway Money Scorecard: who made money on Broadway, and who lost it';
+const OG_ALT = 'Broadway Profitability Scorecard: who made money on Broadway, and who lost it';
 const PAGE_TITLE = "Broadway Profitability Database: Who Recouped and Who Didn't";
 
 // Headline numbers for the hero and the meta description (BRO-6286).
@@ -131,7 +131,7 @@ export default function BizDashboard() {
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
-    { name: 'Money Scorecard', url: `${BASE_URL}/biz` },
+    { name: 'Profitability Scorecard', url: `${BASE_URL}/biz` },
   ]);
 
   const bizFaqSchema = {
@@ -175,13 +175,13 @@ export default function BizDashboard() {
             <span className="inline-flex items-center whitespace-nowrap rounded-full border border-brand/40 px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.04em] sm:tracking-[0.18em] text-brand">
               The Broadway profitability database
             </span>
-            <ShareButton path="/biz" title="Broadway Money Scorecard" className="shrink-0 ml-auto" />
+            <ShareButton path="/biz" title="Broadway Profitability Scorecard" className="shrink-0 ml-auto" />
             {/* JSON/CSV download buttons removed (owner decision, BRO-4721): they
                 only opened a waitlist and read as unfinished. GatedDownloadButtons
                 is kept for when downloads ship. */}
           </div>
           <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
-            Broadway Money Scorecard
+            Broadway Profitability Scorecard
           </h1>
           <p className="text-xl sm:text-2xl text-gray-200 mt-3 font-medium">
             Who made money on Broadway, and who lost it

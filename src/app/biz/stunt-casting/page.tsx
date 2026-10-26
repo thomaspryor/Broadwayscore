@@ -244,7 +244,7 @@ export default function StuntCastingPage() {
   // The page is public (owner, 2026-10-21) while /biz itself is still held,
   // so the way back is the public Season Report until /biz launches.
   const parent = featureFlags.commercial
-    ? { name: 'Money Scorecard', href: '/biz' }
+    ? { name: 'Profitability Scorecard', href: '/biz' }
     : { name: 'Season Report', href: '/season-report' };
 
   const breadcrumbSchema = generateBreadcrumbSchema([

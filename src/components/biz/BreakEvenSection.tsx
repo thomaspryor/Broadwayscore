@@ -15,7 +15,7 @@ import {
 } from '@/lib/box-office-v2-display';
 
 /**
- * The Money Scorecard's "Covering its weekly break-even?" section
+ * The Profitability Scorecard's "Covering its weekly break-even?" section
  * (BRO-5007 v3): the last four weeks' gross as a share of the show's
  * break-even, the 52-week chart against the typical Broadway show, and what it
  * would take. Every number here leans on a cost estimate, which is why it sits

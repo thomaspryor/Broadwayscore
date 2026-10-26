@@ -79,7 +79,7 @@ export interface ShowPageBelowFoldProps {
   commercial: ShowCommercial | undefined;
   /** Box Office Scorecard v3 (BRO-5007, unreleased): null unless commercial && boxOfficeV2. */
   boxOfficeFacts: BoxOfficeFactsCard | null;
-  /** The Money Scorecard's v3 break-even section (unreleased): null unless commercial && boxOfficeV2. */
+  /** The Profitability Scorecard's v3 break-even section (unreleased): null unless commercial && boxOfficeV2. */
   breakEvenCard: BoxOfficeV2Card | null;
   recoupmentTrend: RecoupmentTrend;
   ranks: ShowRanks | null;
@@ -263,7 +263,7 @@ export default function ShowPageBelowFold({
         ) : null
       )}
 
-      {/* Money Scorecard — Broadway only */}
+      {/* Profitability Scorecard — Broadway only */}
       <div id="commercial" className="scroll-mt-20" />
       {featureFlags.commercial && !isWestEnd && !isOffBroadway && (
         commercial ? (
@@ -279,7 +279,7 @@ export default function ShowPageBelowFold({
           />
         ) : show.status === 'previews' || show.status === 'upcoming' ? (
           <section className="card p-5 sm:p-6 mb-6">
-            <h2 className="text-lg font-bold text-white mb-3">Money Scorecard</h2>
+            <h2 className="text-lg font-bold text-white mb-3">Profitability Scorecard</h2>
             <p className="text-gray-400 text-sm">Financial data not available yet.</p>
           </section>
         ) : null

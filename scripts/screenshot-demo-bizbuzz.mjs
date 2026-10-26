@@ -10,7 +10,7 @@ const headings = await page.locator('h2, [class*="card"] >> nth=0').allInnerText
 console.log('Top-level texts:', headings.slice(0, 30));
 
 // Look for Commercial Scorecard / BizBuzz
-const biz = page.locator('text=/Recoupment|Capitalization|Commercial Scorecard|Commercial Performance|Money Scorecard/').first();
+const biz = page.locator('text=/Recoupment|Capitalization|Commercial Scorecard|Commercial Performance|Profitability Scorecard/').first();
 if (await biz.count() > 0) {
   await biz.scrollIntoViewIfNeeded();
   const box = await biz.boundingBox();

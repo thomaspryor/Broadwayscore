@@ -1,5 +1,5 @@
 /**
- * Money Scorecard sign-up round-trip (BRO-6289), run daily by
+ * Profitability Scorecard sign-up round-trip (BRO-6289), run daily by
  * test-ugc-roundtrip.mjs. The money gate unlocks a reader whether or not the
  * save worked, so a broken money_scorecard_signup() would lose every address
  * without anyone seeing an error. This calls the function exactly as the

@@ -1,11 +1,11 @@
 /**
- * The Money Scorecard (capitalization, recoupment, Hit/Flop designations, /biz)
+ * The Profitability Scorecard (capitalization, recoupment, Hit/Flop designations, /biz)
  * was released on prod 2026-10-26 (BRO-6192), the way the site releases
  * features: the `commercial` getter returns true and the name left
  * PROD_HELD_FEATURES. These tests pin that released state, so a prod build
  * (which no longer lists `commercial` in NEXT_PUBLIC_FEATURES) still ships /biz,
  * its browse pages, sitemap entries and llms.txt line. The post-deploy smoke
- * test 'Money Scorecard is live' checks what the live site serves.
+ * test 'Profitability Scorecard is live' checks what the live site serves.
  *
  * Box Office Scorecard v2 (boxOfficeV2) is still held: the guards below keep
  * its data and components behind commercial AND boxOfficeV2.
@@ -53,13 +53,13 @@ test('commercial browse pages exist on a prod build', () => {
   }
 });
 
-test('/biz surfaces advertise the Money Scorecard behind the flag only', () => {
+test('/biz surfaces advertise the Profitability Scorecard behind the flag only', () => {
   // Sitemap, llms.txt and the footer read the flag, so they follow the release
   // and the kill switch together.
   const sitemap = readFileSync(path.join(ROOT, 'src/app/sitemap.ts'), 'utf8');
   assert.match(sitemap, /featureFlags\.commercial \? \[[\s\S]*?\/biz`[\s\S]*?BIZ_TOPIC_PATHS[\s\S]*?getSeasonsWithCommercialData\(\)\.filter\(isIndexedCommercialSeason\)/);
   const llms = readFileSync(path.join(ROOT, 'src/app/llms.txt/route.ts'), 'utf8');
-  assert.match(llms, /featureFlags\.commercial \? `- \[Money Scorecard\]/);
+  assert.match(llms, /featureFlags\.commercial \? `- \[Profitability Scorecard\]/);
   const footer = readFileSync(path.join(ROOT, 'src/components/FooterMarketContent.tsx'), 'utf8');
   assert.match(footer, /featureFlags\.commercial && <li><Link href="\/biz"/);
   // Every topic page listed in the sitemap is a real route.

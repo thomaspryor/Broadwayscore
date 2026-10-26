@@ -19,7 +19,7 @@
  *   node scripts/query-analytics.js top-pages          # Most viewed pages (last 30 days)
  *   node scripts/query-analytics.js traffic            # Daily sessions & users (last 30 days)
  *   node scripts/query-analytics.js sessions-engaged    # Headline KPI: engaged sessions by channel (drops Direct bots)
- *   node scripts/query-analytics.js money              # Money Scorecard (/biz*): views, engaged sessions, referrers, gate funnel
+ *   node scripts/query-analytics.js money              # Profitability Scorecard (/biz*): views, engaged sessions, referrers, gate funnel
  *   node scripts/query-analytics.js events             # All custom events summary
  *   node scripts/query-analytics.js search-terms       # What users search for on-site
  *   node scripts/query-analytics.js geo-audit          # Country breakdown — find bot geos
@@ -233,7 +233,7 @@ async function reportSearchTerms(client, dateRange) {
   ]));
 }
 
-// Money Scorecard funnel (BRO-6331). /biz* page views and engaged sessions,
+// Profitability Scorecard funnel (BRO-6331). /biz* page views and engaged sessions,
 // where the readers came from, and the gate events (money_gate_shown /
 // _unlocked / _bypassed, email_tom_click). Counts only: signup emails live in
 // Supabase and are never printed here.
@@ -247,7 +247,7 @@ async function reportMoney(client, dateRange) {
     { filter: { fieldName: 'pagePath', stringFilter: { matchType: 'BEGINS_WITH', value: '/biz/' } } },
   ] } };
   const n = (r, i) => parseInt(r.metricValues[i]?.value || '0');
-  console.log('\nMoney Scorecard (/biz*)\n');
+  console.log('\nProfitability Scorecard (/biz*)\n');
 
   const [totals] = await client.runReport({
     property, dateRanges: [dateRange], dimensionFilter: bizFilter,

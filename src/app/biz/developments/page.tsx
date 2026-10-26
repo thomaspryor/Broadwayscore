@@ -19,7 +19,7 @@ const TITLE = 'Broadway Recoupments and Closings';
 const DESCRIPTION = 'Every Broadway recoupment and closing of the last two years, plus announced closings and shows grossing below break-even now.';
 
 export const metadata: Metadata = {
-  title: { absolute: `${TITLE} | Money Scorecard` },
+  title: { absolute: `${TITLE} | Profitability Scorecard` },
   description: DESCRIPTION,
   alternates: { canonical: `${BASE_URL}/biz/developments` },
   openGraph: { images: [bizOgImage('home', TITLE)], title: TITLE, description: DESCRIPTION, url: `${BASE_URL}/biz/developments` },

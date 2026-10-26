@@ -78,7 +78,7 @@ export default function RootLayout({
   const marketStats = getMarketStats();
 
   return (
-    // suppressHydrationWarning: the Money Scorecard gate's boot script sets
+    // suppressHydrationWarning: the Profitability Scorecard gate's boot script sets
     // data-money-unlocked on <html> before hydration (BRO-6210,
     // src/lib/money-gate.ts). One level deep: children still warn.
     <html lang="en" suppressHydrationWarning>

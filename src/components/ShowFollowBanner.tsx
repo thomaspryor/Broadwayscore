@@ -57,7 +57,7 @@ export default function ShowFollowBanner({ showId, showTitle }: ShowFollowBanner
       const scrollHeight = document.documentElement.scrollHeight - window.innerHeight;
       if (scrollHeight > 0) {
         const pct = window.scrollY / scrollHeight;
-        // Held, and hidden if already up, while the Money Scorecard's own
+        // Held, and hidden if already up, while the Profitability Scorecard's own
         // sign-up is on screen (BRO-6210).
         const gateInView = isMoneyGateInView();
         setMoneyGateInView(gateInView);
