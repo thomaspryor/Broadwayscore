@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T14:05:19.122Z",
+  "timestamp": "2026-10-27T14:35:17.191Z",
   "stats": {
-    "totalReviews": 63472,
+    "totalReviews": 63499,
     "alreadyFlagged": 21668,
     "dateGuardCatches": 224,
-    "directorMismatch": 2356,
+    "directorMismatch": 2357,
     "tvFilmSignals": 1788,
-    "londonSignals": 3047,
+    "londonSignals": 3048,
     "offBroadwaySignals": 563,
     "yearMismatch": 218,
-    "noPublishDate": 5717
+    "noPublishDate": 5741
   },
   "findings": [
     {
@@ -48836,6 +48836,19 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2025-03-11",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "new-york-sun--elysa-gardner.json",
       "score": 78,
       "publishDate": "2025-03-10",
@@ -64862,6 +64875,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "beckett-briefs-off-broadway-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": "2025-02-03",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K9T8I0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },

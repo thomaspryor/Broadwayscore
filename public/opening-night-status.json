@@ -1,7 +1,160 @@
 {
-  "generatedAt": "2026-10-27T14:05:29.728Z",
+  "generatedAt": "2026-10-27T14:35:27.938Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-27",
+      "status": "open",
+      "slug": "memoriam-off-west-end",
+      "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 61,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 1,
+      "siteFileExists": true,
+      "total": 2,
+      "t1": 0,
+      "t2": 2,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 2,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "2/8 total",
+          "T1:0/3",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-27T14:35:27.938Z",
+          "rc": 2,
+          "s": 61,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "i-became-we-off-broadway-2026",
       "title": "I Became We",
@@ -9,7 +162,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-27",
-      "status": "previews",
+      "status": "open",
       "slug": "i-became-we-off-broadway",
       "thumbnail": "/images/shows/i-became-we-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -385,7 +538,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-27",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-morbs-off-broadway",
       "thumbnail": "/images/shows/the-morbs-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
