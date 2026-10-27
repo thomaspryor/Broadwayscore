@@ -151,14 +151,16 @@ function voicedFromPlan(n) {
     return { ...d, ...base, cues };
   }
   if (fmt === 'compare') {
-    // one show reviewed in two productions (BRO-6412): London first, then Off-Broadway, then the caveat. Tiers are per side
-    // because gold differs by market; no tier label or delta is shown (the compare card avoids both).
-    const sides = V.plan.shows.map(s => { const x = showInfo(s.id), rv = x.p.rv.filter(r => Number.isFinite(r.s)), score = Math.round(x.score);
-      const say = at(s.say.replace('Off-Broadway', 'off Broadway')), land = at(`${score}`), count = at(`${rv.length} reviews`);
+    // compare template (BRO-6412, owner 2026-10-27): puzzle opener, both scores, caveat, neutral maybes, open question.
+    // The words come from compare-plan.js (assertTemplate refuses a hand-edited script); tiers are per side because gold differs by market.
+    require('./compare-plan').assertTemplate(V.plan);
+    const hookAt = at('Same show'), gapAt = at(`${V.plan.screen.gap}`);
+    const sides = V.plan.shows.map((s, i) => { const x = showInfo(s.id), rv = x.p.rv.filter(r => Number.isFinite(r.s)), score = Math.round(x.score);
+      const say = at(i ? 'off Broadway' : 'also reviewed'), land = at(`${score}`), count = at(`${rv.length} reviews`);
       return { title: x.title, art: x.art, category: x.category, score, count: rv.length, label: s.label, soFar: !!s.soFar, say, land, countAt: count }; });
     const tiersBy = {}; sides.forEach(s => { tiersBy[s.category] = { gold: getGoldThreshold(s.category), id: Array.from({ length: 101 }, (_, i) => getScoreTierId(i, s.category)) }; });
-    const caveat = at('Two years apart'), end = at(cue.end || 'Broadway Scorecard');
-    return { kind: 'compare', category: sides[0].category, tiersBy, shows: sides, caveat: V.plan.caveat, caveatAt: caveat, end, ...base };
+    const caveat = at('Two years apart'), possAt = at('Maybe'), end = at(cue.end || 'Why do you think');
+    return { kind: 'compare', category: sides[0].category, tiersBy, shows: sides, screen: V.plan.screen, caveat: V.plan.caveat, hookAt, gapAt, caveatAt: caveat, possAt, end, ...base };
   }
   if (fmt === 'duo') {
     // two shows side by side (the explainer): each badge counts up from when the voice names the show to when it says the score.

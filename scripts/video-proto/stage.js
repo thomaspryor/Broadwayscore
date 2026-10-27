@@ -383,19 +383,28 @@ COMPS.compare = {
     this.d = d; this.dur = d.dur;
     root.append($('abs', 'left:0;right:0;top:30px;text-align:center;z-index:5', logo(14)));
     this.g = $('abs', 'inset:0'); root.append(this.g);
+    // the puzzle first: same show, two cities, and the computed gap
+    this.h1 = $('abs', 'left:16px;right:16px;top:58px;text-align:center;font-size:23px;font-weight:800;letter-spacing:-.01em;line-height:1.1;opacity:0', esc(d.screen.l1));
+    this.h2 = $('abs', 'left:16px;right:16px;top:90px;text-align:center;font-size:16px;font-weight:700;color:#d4a574;opacity:0', esc(d.screen.l2));
+    this.g.append(this.h1, this.h2);
     this.cols = d.shows.map((s, i) => {
-      const col = $('abs', `left:${i ? 188 : 12}px;top:64px;width:160px;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0`);
+      const col = $('abs', `left:${i ? 188 : 12}px;top:124px;width:160px;display:flex;flex-direction:column;align-items:center;text-align:center;opacity:0`);
       col.innerHTML = `<div style="font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#d4a574;margin-bottom:8px">${esc(s.label)}</div>`
-        + `<img src="${s.art}" style="width:130px;height:195px;border-radius:.75rem;object-fit:cover;display:block;box-shadow:0 6px 20px rgba(0,0,0,.5)">`
-        + `<div style="margin-top:8px;font-weight:800;font-size:13px;line-height:1.15;min-height:30px;display:flex;align-items:center">${esc(s.title)}</div>`;
-      const bw = badgeEl('lg', 'margin-top:12px'); col.append(bw);
-      const ct = $('', 'margin-top:8px;font-size:12px;color:#9ca3af;opacity:0', `${s.count} critics${s.soFar ? ', so far' : ''}`); col.append(ct);
+        + `<img src="${s.art}" style="width:92px;height:138px;border-radius:.7rem;object-fit:cover;display:block;box-shadow:0 6px 20px rgba(0,0,0,.5)">`
+        + `<div style="margin-top:7px;font-weight:800;font-size:12px;line-height:1.15;min-height:28px;display:flex;align-items:center">${esc(s.title)}</div>`;
+      const bw = badgeEl('lg', 'margin-top:10px'); col.append(bw);
+      const ct = $('', 'margin-top:6px;font-size:12px;color:#9ca3af;opacity:0', `${s.count} critics${s.soFar ? ', so far' : ''}`); col.append(ct);
       this.g.append(col); return { col, bw, ct };
     });
-    this.cav = $('abs card', 'left:20px;right:20px;top:458px;padding:10px 14px;font-size:12.5px;line-height:1.35;color:#e4e4e7;text-align:center;opacity:0', esc(d.caveat));
-    this.g.append(this.cav);
+    const note = (txt, gold) => $('abs card', `left:20px;right:20px;top:442px;padding:10px 14px;font-size:13px;line-height:1.35;color:#e4e4e7;text-align:center;opacity:0${gold ? ';border-color:#d4a574' : ''}`, esc(txt));
+    this.cav = note(d.caveat); this.poss = note(d.screen.poss, true);
+    this.g.append(this.cav, this.poss);
+    // closing scene: the open question, big
+    const qs = d.screen.question.split(/(?<=\?) /);
     this.end = $('abs', 'inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;padding-bottom:110px;text-align:center',
-      `<div>${logo(30)}</div><div style="margin-top:14px;font-size:17px;font-weight:600;color:#d4d4d8">Every review. One score.</div><div style="margin-top:22px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
+      `<div style="padding:0 26px;font-size:28px;font-weight:800;line-height:1.15;letter-spacing:-.01em">${esc(qs[0])}</div>`
+      + `<div style="margin-top:12px;font-size:20px;font-weight:700;color:#d4a574">${esc(qs.slice(1).join(' '))}</div>`
+      + `<div style="margin-top:34px">${logo(24)}</div><div style="margin-top:12px;font-size:15px;font-weight:700;color:#d4a574">broadwayscorecard.com</div>`);
     root.append(this.end);
     this.events = d.shows.flatMap(s => { const T = window.TIERS_BY[s.category];
       return [...Array(10)].map((_, i) => ({ t: s.say + (s.land - s.say) * i / 10, k: 'tick', p: i / 10 })).concat({ t: s.land, k: s.score >= T.gold ? 'chime' : 'pop' }); });
@@ -405,16 +414,21 @@ COMPS.compare = {
     const d = this.d, out = 1 - seg(t, d.end - 0.5, d.end - 0.1);
     this.g.style.opacity = out; this.g.style.display = out <= 0 ? 'none' : 'block';
     this.end.style.opacity = seg(t, d.end - 0.1, d.end + 0.4); this.end.style.display = t < d.end - 0.15 ? 'none' : 'flex';
+    fade(this.h1, seg(t, d.hookAt - 0.1, d.hookAt + 0.3), (1 - seg(t, d.hookAt - 0.1, d.hookAt + 0.3)) * 8);
+    fade(this.h2, seg(t, d.gapAt - 0.3, d.gapAt + 0.2), (1 - seg(t, d.gapAt - 0.3, d.gapAt + 0.2)) * 8);
     d.shows.forEach((s, i) => { const c = this.cols[i], T = window.TIERS_BY[s.category], a = seg(t, s.say - 0.5, s.say + 0.1);
       c.col.style.opacity = a; c.col.style.transform = `scale(${lerp(0.92, 1, eob(a))})`;
       const k = seg(t, s.say, s.land), v = Math.round(s.score * eo(k));
       const b = c.bw.querySelector('.score-badge'), cr = c.bw.querySelector('.crown');
-      b.className = `score-badge bw-lg ${v <= 0 ? 'score-none' : TIER_CLASS[T.id[clamp(v, 0, 100)]]}`; b.textContent = v <= 0 ? '–' : v;
+      b.className = `score-badge bw-lg ${v <= 0 ? 'score-none' : TIER_CLASS[T.id[clamp(v, 0, 100)]]}`; b.textContent = v <= 0 ? '\u2013' : v;
       cr.style.display = v >= T.gold ? 'block' : 'none';
       const pop = t > s.land ? 1 + 0.22 * Math.sin(Math.PI * seg(t, s.land, s.land + 0.5)) : 1;
       c.bw.style.transform = `scale(${1.1 * pop})`;
       fade(c.ct, seg(t, s.countAt - 0.2, s.countAt + 0.2), 0); });
-    fade(this.cav, seg(t, d.caveatAt - 0.1, d.caveatAt + 0.3), (1 - seg(t, d.caveatAt - 0.1, d.caveatAt + 0.3)) * 8);
+    const cin = seg(t, d.caveatAt - 0.1, d.caveatAt + 0.3), cout = seg(t, d.possAt - 0.25, d.possAt + 0.05);
+    fade(this.cav, cin * (1 - cout), (1 - cin) * 8);
+    const pin = seg(t, d.possAt, d.possAt + 0.35);
+    fade(this.poss, pin, (1 - pin) * 8);
     this.cap(t);
   },
 };

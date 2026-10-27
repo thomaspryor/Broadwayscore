@@ -5,53 +5,63 @@
   {
    "id": "the-curious-case-of-benjamin-button-west-end-2024",
    "label": "London 2024",
-   "say": "reviewed in London"
+   "place": "London",
+   "city": "London"
   },
   {
    "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
    "label": "Off-Broadway 2026",
-   "say": "Off-Broadway",
+   "place": "Off-Broadway",
+   "city": "New York",
    "soFar": true
   }
  ],
- "caveat": "Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison.",
- "cue": {
-  "end": "Broadway Scorecard"
+ "caveat": "Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison.",
+ "screen": {
+  "gap": 8,
+  "l1": "Same show. Two cities.",
+  "l2": "London scored it 8 points higher.",
+  "poss": "Maybe the production changed, or maybe London and New York critics just see it differently.",
+  "question": "Why do you think the critics split? Tell us below."
  },
- "prompt": "[curious] The Curious Case of Benjamin Button was also reviewed in London. Critics there gave it eighty-five, from twenty-six reviews. Now the Off-Broadway production: seventy-seven, from twenty-four reviews so far. Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison. Every review, one score, at Broadway Scorecard.",
- "caption": "The Curious Case of Benjamin Button was also reviewed in London. The 2024 London production has a Critic Score of 85 from 26 critics. The 2026 Off-Broadway production has 77 from 24 critics so far. Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison. See every review at broadwayscorecard.com\n\n#OffBroadway #WestEnd #BenjaminButton #Theater #London #NYC",
+ "cue": {
+  "end": "Why do you think"
+ },
+ "prompt": "[curious] Same show, two cities, and London's critics scored it eight points higher. That's The Curious Case of Benjamin Button, which was also reviewed in London. Eighty-five, from twenty-six reviews. Now Off-Broadway: seventy-seven, from twenty-four reviews so far. Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison. Maybe the production changed, or maybe London and New York critics just see it differently. Why do you think the critics split? Tell us below.",
+ "caption": "Same show, two cities. London's critics scored The Curious Case of Benjamin Button 8 points higher. London 2024: Critic Score 85 from 26 critics. Off-Broadway 2026: 77 from 24 critics so far. Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison. Maybe the production changed, or maybe London and New York critics just see it differently. Why do you think the critics split? Tell us below.\n\nSee every review at broadwayscorecard.com\n\n#OffBroadway #WestEnd #BenjaminButton #Theater #London #NYC",
  "keep": {
   "prompt": [
-   "also reviewed in London",
+   "was also reviewed in London",
    "eighty-five",
    "twenty-six",
    "Off-Broadway",
    "seventy-seven",
    "twenty-four",
-   "Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison",
-   "Broadway Scorecard"
+   "Two years apart",
+   "Maybe the production changed",
+   "Why do you think the critics split"
   ],
   "caption": [
-   "also reviewed in London",
    "85",
    "26",
    "77",
    "24",
-   "Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison"
+   "like-for-like",
+   "Why do you think the critics split? Tell us below."
   ]
  },
  "review": {
   "pass": true,
   "notes": [
-   "gemini: \"The 2024 London production has a Critic Score of 85 from 26 critics.\" - This phrasing is a bit stiff and formal, not quite like a theater fan talking to a friend.",
-   "gemini: \"The 2026 Off-Broadway production has 77 from 24 critics so far.\" - This repeats the stiff sentence structure from the previous line, making it sound less natural."
+   "gpt: \"Same show, two cities, and London's critics scored it eight points higher.\" feels a little stiff and report-like for a quick vertical video.",
+   "gpt: \"Two years apart, different critics, and the cast and production may differ, so it's not a perfect comparison.\" is awkwardly formal and a bit over-explained out loud."
   ],
-  "of": "f14b1af2bd6e",
+  "of": "97c0ec247c90",
   "rounds": 1,
   "by": [
    "gpt",
    "gemini"
   ],
-  "at": "2026-10-27T00:49:42.573Z"
+  "at": "2026-10-27T02:14:42.476Z"
  }
 }
