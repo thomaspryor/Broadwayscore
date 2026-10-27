@@ -31,6 +31,7 @@ import {
 } from '@/lib/commercial-display';
 import { formatCapitalization, weeklyCostLabel } from '@/lib/biz-format';
 import { isRunningStatus } from '@/lib/commercial-metrics';
+import { returnSnapshotLabel } from '../../scripts/lib/commercial-return-snapshot';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 import AnalystEstimateCredit from './biz/AnalystEstimateCredit';
 import MoneyGate from './biz/MoneyGate';
@@ -171,6 +172,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
   // Closed + TBD reads "Undisclosed" (display only; the record keeps TBD).
   const designation = getDesignationDisplay(commercial.designation, showStatus, commercial.recouped);
   const running = isRunningStatus(showStatus);
+  const snapshotLabel = returnSnapshotLabel(commercial, { status: showStatus, closingDate });
   const producerLine = getNonprofitProducerLine(commercial);
   const isNonprofit = commercial.designation === 'Nonprofit';
   const lossCaveat = lossBasisCaveat(commercial);
@@ -285,6 +287,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             <span className={`font-extrabold text-xl sm:text-[1.375rem] uppercase tracking-[0.04em] leading-[1.15] ${designation.textClass}`}>
               {designation.label}
             </span>
+            {snapshotLabel && <span className="text-xs text-gray-400" data-testid="return-snapshot-date">{snapshotLabel}</span>}
           </div>
           {/* A Nonprofit show names its company instead of the generic "(LCT, Roundabout, etc.)". */}
           {/* Owner policy B (BRO-5020): a loss label resting on silence says so,

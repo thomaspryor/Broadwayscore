@@ -47,6 +47,15 @@ const base = {
   recoupedWeeks: null,
 };
 
+test('the public card retains the return snapshot date even when raw estimate fields are omitted', () => {
+  const { returnSnapshotLabel } = createRequire(import.meta.url)('../../scripts/lib/commercial-return-snapshot');
+  const row = { ...base, designation: 'Trickle', recouped: true, recoupedDate: '2024-04', estimatedRecoupmentPct: [110, 120], estimatedRecoupmentDate: '2025-06-01' };
+  const publicRow = toPublicShowCommercial(row);
+  assert.equal(publicRow.returnSnapshotAsOf, '2025-06-01');
+  assert.equal(returnSnapshotLabel(publicRow, { status: 'open' }), 'as of Jun 2025');
+  assert.equal(returnSnapshotLabel(publicRow, { status: 'closed' }), null);
+});
+
 test('Q1: announced recoupment always wins — model is never quoted', () => {
   // Real conflict shape (our-town): producers announced, model disagrees.
   const conflict = {

@@ -452,6 +452,8 @@ export interface DeepResearchMetadata {
 
 export interface ShowCommercial {
   designation: import('@/config/commercial').CommercialDesignation;
+  /** Dated evidence for the return label; Trickle can fall back to its recoupment date. */
+  returnSnapshotAsOf?: string | null;
   capitalization: number | null;
   capitalizationSource: string | null;
   /** What the figure is: a Form D/"up to" ceiling, the amount sold, or a stated capitalization (BRO-5660). Absent: read from the source wording. */

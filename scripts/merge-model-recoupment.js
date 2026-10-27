@@ -25,6 +25,7 @@ const { makeGrossesLookup } = require('./lib/grosses-lookup');
 const { makeCapEstimator, optsWithCapEstimate } = require('./lib/cap-comparables');
 const { modelInputBasis, canResizeByModel } = require('./lib/model-input-basis');
 const { modelContradictsDesignation, planModelLossResizes, MODEL_LOSS_RESIZE_LIMIT } = require('./lib/commercial-designations');
+const { findStaleReturns, queueStaleReturns } = require('./lib/commercial-return-freshness');
 
 // ---------------------------------------------------------------------------
 // Paths
@@ -230,6 +231,28 @@ function main() {
   }
   if (normalizedCount > 0) {
     console.log(`Normalized sources[] for ${normalizedCount} shows (type/date coercion)`);
+  }
+
+  // The daily commercial pending-review job already runs this refresh and
+  // persists the pending queue. Local math only; holds can never auto-apply.
+  const staleReturns = findStaleReturns({
+    shows: SINGLE ? allShows.filter(s => s.slug === SINGLE || s.id === SINGLE) : allShows,
+    commercial, grossesHistory,
+  });
+  console.log(`Stale return snapshots: ${staleReturns.length} candidate(s)`);
+  for (const row of staleReturns) {
+    console.log(`  [RETURN REVIEW] ${row.slug}: as of ${row.snapshotAsOf}, ${row.ageDays} days; estimated ${row.estimate.investorMultiple ?? 'unknown'}x${row.estimate.usesEstimatedCost ? ' (category cost estimate)' : ''}`);
+  }
+  if (!DRY_RUN && staleReturns.length) {
+    const pendingPath = path.join(DATA_DIR, 'commercial-pending-review.json');
+    const archivePath = path.join(DATA_DIR, 'commercial-pending-archive.json');
+    const readQueue = file => fs.existsSync(file) ? JSON.parse(fs.readFileSync(file, 'utf8')) : { shows: {} };
+    const pending = readQueue(pendingPath);
+    const { added } = queueStaleReturns(pending, readQueue(archivePath), staleReturns);
+    if (added) {
+      fs.writeFileSync(pendingPath, JSON.stringify(pending, null, 2) + '\n');
+      console.log(`Queued ${added} return snapshot review hold(s); no labels changed by this check.`);
+    }
   }
 
   // Save

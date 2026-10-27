@@ -19,6 +19,7 @@
 import type { ShowCommercial } from './data-types';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION, TBD_STATUS_DESCRIPTIONS } from '@/config/commercial';
 import { reportedReturnLabel } from '../../scripts/lib/reported-return';
+import { returnSnapshotDate } from '../../scripts/lib/commercial-return-snapshot';
 import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
@@ -436,6 +437,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
   const estimatedInputs = estimatedInputNotes(commercial);
   return {
     designation: commercial.designation,
+    returnSnapshotAsOf: returnSnapshotDate(commercial),
     capitalization: commercial.capitalization,
     capitalizationSource: publicSourceText(commercial.capitalizationSource),
     ...(commercial.capitalizationBasis ? { capitalizationBasis: commercial.capitalizationBasis } : {}),
