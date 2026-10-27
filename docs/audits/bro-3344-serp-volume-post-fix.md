@@ -1,5 +1,105 @@
 # BRO-3344 production verification, 2026-10-26
 
+## Breaker evidence instrumentation, 2026-10-27
+
+The analyzer, report and five-test acceptance check already exist on main.
+`git log -S 'serp-volume-post-fix' --oneline -5` returns the shallow checkpoint
+`0284019f`; the acceptance test file is identical to `origin/main` and passes.
+This follow-up leaves that implementation intact and addresses the missing
+correlation in the production writer instead.
+
+The current real ledger contains 109,049 records. None of its 70,174 SD organic,
+3,134 BD or 344 SD image rows has a run identifier or breaker snapshot. The new
+writer fields apply prospectively; they cannot reconstruct historical trips.
+
+`provider-telemetry.js` now adds a random process-scoped `run_id` and increasing
+`run_seq` to existing `serp.*` rows, including SB fallbacks. `url-discovery.js`
+supplies `breaker` on actual SD organic/image and BD API/unlocker outcomes:
+
+- `consecutive_failures`: the actual counter after the outcome.
+- `opened_at`: the current cooldown timestamp in milliseconds, or null.
+- `threshold` and `cooldown_ms`: the configured trip and cooldown limits.
+- `probe`: whether the request's dispatcher admitted it after cooldown.
+
+Group by `run_id` and host, then sort by `run_seq`, not file order. The two BD
+functions share one counter; SD organic and images have independent counters.
+A sequence reaching five failures followed by a successful `probe:true` row
+with zero failures provides evidence of recovery in that process. Check the
+intervening rows and timing too. An incomplete or rotated run cannot establish
+the full sequence. Rows from older code lack these fields and remain unknown.
+
+SD starts its cooldown on the next blocked call, so its fifth failure can have
+`opened_at:null`. Both BD subpaths can carry `probe:true` from the same
+dispatcher admission. BD `short_html` failures do not increment the current
+breaker counter. These are existing behaviors, preserved in the diagnostics.
+Concurrent requests can overlap; completion sequence is not request-start
+sequence, and a probe marker does not assert exclusive probe admission.
+
+Existing callers, including `opening-night-poller.js` and
+`rediscover-review-urls.js`, already use `url-discovery.js`; its telemetry
+delegates through `bd-telemetry.js` to `recordProviderCall()`. No new entry point,
+cron, provider request or paid/LLM/API call is introduced. Existing scheduled
+consumers emit the additional fields with their normal calls. There are no
+extra event rows or changes to routing, credits, retries or breaker state.
+The fields contain numeric state, a UUID and a boolean, without query text or
+credentials. Ledger lines grow, while the existing line and time retention
+policies are unchanged.
+On this checkout's 75,315 SERP rows, the proposed fields would add about
+12.48 MB, or 166 bytes per row, to the existing 23.06 MB of SERP records.
+That is about 54% more SERP ledger storage and additional I/O in the existing
+full-ledger writer. No historical rows are backfilled to produce this estimate.
+
+### Before/after evidence
+
+The new regression file initially failed all four original cases because
+`breaker` and `run_id` were absent. Its final five tests use the real public
+callers with stubbed HTTP and controlled time. They exercise five failures,
+cooldown skips, a failed SD probe, successful SD/BD/image recovery, BD async
+fallback probe attribution, BD's unchanged `short_html` counter, and distinct
+run identifiers in separate Node processes. HTTP is stubbed so these tests
+make no paid calls; they are not production-recovery evidence.
+
+Separately, eight real rows were replayed through `recordProviderCall()` before
+and after the edit with a scratch ledger. Six SERP rows gained only run
+correlation fields. Both non-SERP page rows were unchanged. All previous fields
+matched after excluding the recording timestamp. Examples preserved were SD
+organic HTTP 400, BD HTTP 200 and SD images HTTP 400. Historical breaker values
+were not invented for these replays. All 109,049 source records remained
+unchanged, confirmed by `sha256sum -c` on the original ledger.
+
+`node --test --test-timeout 300000 tests/unit/serp-breaker-telemetry.test.mjs tests/unit/serp-volume-post-fix.test.mjs scripts/lib/serp-fallback-attribution.test.mjs scripts/lib/provider-telemetry.test.mjs`
+passed: 20 tests, zero failures. The existing unit-test collector lists both
+`tests/unit/serp-breaker-telemetry.test.mjs` and the original acceptance test,
+without a manifest or workflow change.
+
+The dependent-test sweep used
+`rg -l 'url-discovery|provider-telemetry' tests scripts --glob '*.test.*'`
+followed by `xargs node --test --test-concurrency=4 --test-timeout 300000`.
+Across 59 files, 779 tests passed and one failed:
+`scripts/lib/scraper-sb-latch.test.mjs:52`, with
+`checkScrapingBeeCredits reports credits unavailable` (`true !== false`).
+Loading both changed modules from `git show origin/main:<path>` using a Node
+preload hook reproduced that exact failure on main: two passed, one failed.
+It is not introduced by these diagnostics.
+
+`GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet`
+passed with `lint-workflows: all gates green`, exit 0. The log explicitly
+skipped unavailable `actionlint`; CI runs it. After the final test adjustment,
+`node --test --test-timeout 300000 tests/unit/serp-breaker-telemetry.test.mjs tests/unit/serp-volume-post-fix.test.mjs`
+passed: 10 tests, zero failures. No TypeScript files changed.
+
+### Still unverified
+
+- The exact cause of SD's generic HTTP 400 needs a controlled live request or
+  provider diagnostics. `SCRAPINGDOG_API_KEY` is absent in this environment.
+- A production five-failure trip followed by recovery needs new production
+  rows after this instrumentation lands. Existing ledger history cannot prove
+  it, and mocked integration tests do not substitute for it.
+- The elevated weekly SB spend remains the result recorded below. Reducing it
+  belongs to BRO-3386 and BRO-4936; this change makes no spend-reduction claim.
+
+## Original production comparison
+
 The ledger does **not** confirm a reduction in total ScrapingBee SERP volume or
 credits. For the complete UTC week October 19 through 25, it records 3,138 calls
 and 75,375 credits, up 477.9% and 482.0% from the card's August 31 baseline.
