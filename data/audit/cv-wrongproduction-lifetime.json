@@ -1,21 +1,25 @@
 {
-  "updatedAt": "2026-10-26T08:07:44.347Z",
-  "scanned": 2823,
-  "showsWithViolations": 117,
-  "totalViolations": 147,
-  "newSinceLastRun": 0,
+  "updatedAt": "2026-10-27T08:08:55.521Z",
+  "scanned": 2940,
+  "showsWithViolations": 118,
+  "totalViolations": 149,
+  "newSinceLastRun": 2,
   "handled": {
-    "temporal-override-low-confidence": 805,
+    "temporal-override-low-confidence": 815,
     "not-shipped": 55,
-    "duplicate-not-shipped": 56,
+    "duplicate-not-shipped": 57,
     "rebuild-skip-audit": 31,
     "manual-clear-reason": 13,
-    "prior-run-or-tour-leg": 45
+    "prior-run-or-tour-leg": 46
   },
-  "newViolationKeys": [],
+  "newViolationKeys": [
+    "oh-mary-2024::deadline--unknown.json",
+    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json"
+  ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
     "ragtime-2025::america-magazine--weinert-kendt.json",
+    "oh-mary-2024::deadline--unknown.json",
     "hells-kitchen-2024::chelsea-community-news--michael-musto.json",
     "hells-kitchen-2024::theater-life--samuel-l-leiter.json",
     "the-sign-in-sidney-brusteins-window-2023::nytg--brian-scott-lipton.json",
@@ -66,6 +70,7 @@
     "sting-west-end-2026::artsdesk--aleks-sierz.json",
     "between-the-river-and-the-sea-west-end-2026::artsdesk--aleks-sierz.json",
     "blood-of-my-blood-west-end-2026::guardian--unknown.json",
+    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json",
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
@@ -201,6 +206,27 @@
           "cvIssues": [
             "Venue mismatch: Review describes Lincoln Center Theater (Vivian Beaumont), but scraped text says 'at Lincoln Center Theater' without specifying Vivian Beaumont Theater",
             "Critic name not found: Expected critic 'Weinert-Kendt' does not appear in the scraped content"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-2024",
+      "title": "Oh, Mary!",
+      "openingDate": "2024-07-11",
+      "message": "deadline/Greg Evans (deadline--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 827d of opening, likely correct production] This is a news piece reporting on casting changes a — https://deadline.com/2026/10/j-harrison-ghee-oh-mary-john-andrew-morrison-1237165698/",
+      "violations": [
+        {
+          "filename": "deadline--unknown.json",
+          "url": "https://deadline.com/2026/10/j-harrison-ghee-oh-mary-john-andrew-morrison-1237165698/",
+          "outletId": "deadline",
+          "criticName": "Greg Evans",
+          "matchedBy": "outlet+critic",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 827d of opening, likely correct production] This is a news piece reporting on casting changes a",
+          "cvIssues": [
+            "This is a news article about casting changes and J. Harrison Ghee's medical leave from the touring production, not a theater review.",
+            "The article explicitly refers to 'the touring production of Oh, Mary!' and 'the tour' — it is reviewing/reporting on the national tour, not the Broadway production at Lyceum Theatre."
           ]
         }
       ]
@@ -1142,7 +1168,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "openingDate": "2026-10-07",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 19d of opening, likely correct production] This is a legitimate theater review (contains critic — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -1152,6 +1178,19 @@
           "matchedBy": "url",
           "cvReasoning": null,
           "cvIssues": null
+        },
+        {
+          "filename": "islingtontribune--unknown.json",
+          "url": "https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+          "outletId": "islingtontribune",
+          "criticName": "Unknown",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 19d of opening, likely correct production] This is a legitimate theater review (contains critic",
+          "cvIssues": [
+            "Review publish date (15th October) does NOT match expected review publish date (2026-10-26)",
+            "Review publish date (15th October) is BEFORE the West End opening date (2026-10-07) — this is temporally impossible"
+          ]
         }
       ]
     },
