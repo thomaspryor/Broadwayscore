@@ -1845,6 +1845,48 @@
     "queuedAt": "2026-10-27T04:46:00.129Z"
   },
   {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 9.35 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T05:05:22.820Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/tour-runtime-coverage.test.mjs::every national tour has a synopsis, or is a documented gap",
+    "title": "Live-data test failing: every national tour has a synopsis, or is a documented gap (tests/unit/tour-runtime-coverage.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"every national tour has a synopsis, or is a documented gap\" in tests/unit/tour-runtime-coverage.test.mjs is red against the live corpus.\n\ntours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-musical-tour-2026, the-bodyguard-tour-2026\n+ actual - expected\n\n+ [\n+   'the-unauthorized-hallmark-ish-parody-musical-tour-2026',\n+   'the-bodyguard-tour-2026'\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T05:05:22.854Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked candidate sub-venue slugs found (same class as the West End National Theatre bug): {\n\"mcc-theater\": [\n{\n\"slug\": \"the-robert-w-wilson-mcc-theater-space\",\n\"rawStrings\": [\n\"The Robert W. Wilson MCC Theater Space\"\n],\n\"showCount\": 5\n}\n],\n\"atlantic-theater-company\": [\n{\n\"slug\": \"atlantic-theater-company-stage-2\",\n\"rawStrings\": [\n\"Atlantic Theater Company/Stage 2\"\n],\n\"showCount\": 2\n}\n],\n\"theatre-row\": [\n{\n\"slug\": \"theatre-five-theatre-row\",\n\"rawStrings\": [\n\"Theatre Five @ Theatre Row\"\n],\n\"showCount\": 4\n}\n],\n\"signature-theatre\": [\n{\n\"slug\": \"the-pershing-square-signature-center-romulus-linney-courtyard-theatre\",\n\"rawStrings\": [\n\"The Pershing Square Signature Center/Romulus Linney Courtyard Theatre\"\n],\n\"showCount\": 3\n}\n],\n\"lincoln-center-theater\": [\n{\n\"slug\": \"mitzi-e-newhouse-theatre\",\n\"rawStrings\": [\n\"Mitzi E. Newhouse Theatre\"\n],\n\"showCount\": 3\n}\n],\n\"new-world-stages\": [\n{\n\"slug\": \"new-world-stages-stage-1\",\n\"rawStrings\": [\n\"New World Stages Stage 1\"\n],\n\"showCount\": 4\n},\n{\n\"slug\": \"new-world-stages-stage-5\",\n\"rawStrings\": [\n\"New World Stages Stage 5\"\n],\n\"showCount\": 2\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'atlantic-theater-company': [\n+     {\n+       rawStrings: [\n+         'Atlantic Theater Company/Stage 2'\n+       ],\n+       showCount: 2,\n+       slug: 'atlantic-theater-company-stage-2'\n+     }\n+   ],\n+   'lincoln-center-theater': [\n+     {\n+       rawStrings: [\n+         'Mitzi E. Newhouse Theatre'\n+       ],\n+       showCount: 3,\n+       slug: 'mitzi-e-newhouse-theatre'\n+",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T05:05:22.869Z"
+  },
+  {
     "conditionKey": "land:land/job/linear-BRO-6418-mvq7ia7i",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6418-mvq7ia7i",
     "description": "land.yml did not land land/job/linear-BRO-6418-mvq7ia7i: the rebase gate went red at 790b31440b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40452912743",
