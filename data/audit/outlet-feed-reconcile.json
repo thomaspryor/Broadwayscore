@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T13:53:53.127Z",
+  "generatedAt": "2026-10-27T17:27:41.987Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -29,6 +29,11 @@
       "openingDate": "2026-10-21"
     },
     {
+      "id": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "openingDate": "2026-10-27"
+    },
+    {
       "id": "jest-to-impress-off-broadway-2026",
       "title": "Jest to Impress",
       "openingDate": "2026-10-21"
@@ -47,6 +52,11 @@
       "id": "the-imaginary-invalid-2026",
       "title": "The Imaginary Invalid",
       "openingDate": "2026-10-22"
+    },
+    {
+      "id": "i-became-we-off-broadway-2026",
+      "title": "I Became We",
+      "openingDate": "2026-10-27"
     },
     {
       "id": "aftermath-art-new-york-off-broadway-2026",
@@ -79,6 +89,11 @@
       "openingDate": "2026-10-22"
     },
     {
+      "id": "the-morbs-off-broadway-2026",
+      "title": "The Morbs",
+      "openingDate": "2026-10-27"
+    },
+    {
       "id": "the-kick-inside-off-broadway-2026",
       "title": "The Kick Inside",
       "openingDate": "2026-10-23"
@@ -94,14 +109,13 @@
       "openingDate": "2026-10-22"
     }
   ],
-  "skipped": [
-    {
-      "showId": "i-became-we-off-broadway-2026",
-      "reason": "no data/review-texts directory for this show"
-    }
-  ],
+  "skipped": [],
   "feedsChecked": 73,
   "feedsFailed": [
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -109,6 +123,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -123,27 +141,18 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 793,
-  "matchedGaps": 2,
+  "itemsScanned": 777,
+  "matchedGaps": 1,
   "possibleGaps": 3,
   "gaps": [
     {
-      "showId": "the-kick-inside-off-broadway-2026",
-      "title": "The Kick Inside",
+      "showId": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
       "level": "matched",
-      "outletId": "this-week-in-new-york",
-      "url": "https://twi-ny.com/2026/10/26/the-kick-inside-nicolas-norena-here-arts-center/",
-      "headline": "LOVE LANGUAGE: THE KICK INSIDE AT HERE ARTS CENTER",
-      "publishDate": "2026-10-26"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "matched",
-      "outletId": "adventuresintheatreland",
-      "url": "https://www.adventuresintheatreland.com/post/the-pianist-park-theatre",
-      "headline": "The Pianist | Park Theatre",
-      "publishDate": "2026-10-26"
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-memoriam-southwark-playhouse",
+      "headline": "Review: MEMORIAM, Southwark Playhouse",
+      "publishDate": "2026-10-27"
     },
     {
       "showId": "aftermath-art-new-york-off-broadway-2026",
