@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-27T23:15:09.221Z",
+  "timestamp": "2026-10-27T23:30:31.441Z",
   "stats": {
-    "totalReviews": 63969,
+    "totalReviews": 63971,
     "alreadyFlagged": 21773,
     "dateGuardCatches": 237,
     "directorMismatch": 2385,
     "tvFilmSignals": 1809,
-    "londonSignals": 3058,
+    "londonSignals": 3059,
     "offBroadwaySignals": 577,
     "yearMismatch": 217,
     "noPublishDate": 5664
@@ -62019,6 +62019,19 @@
       "score": 76,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
+      "showId": "a-month-in-the-country-west-end-2026",
+      "file": "lovelondonloveculture--unknown.json",
+      "publishDate": "2026-09-03",
+      "url": "https://lovelondonloveculture.com/2026/09/03/review-a-month-in-the-country-donmar-warehouse/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
