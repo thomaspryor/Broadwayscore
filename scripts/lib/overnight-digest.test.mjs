@@ -263,3 +263,36 @@ test('BRO-2989: owner alerts get their own digest line ahead of the noisy headle
   assert.match(lines[0], /NOT restarted.*owner-card-session-died/);
   assert.equal(lines.length, 2);
 });
+
+test('gatherDigest drops a rebuild regression whose show has recovered (BRO-6432)', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    fs.mkdirSync(path.join(repo, 'data', 'audit'), { recursive: true });
+    const reg = (id, oldCount) => ({ showId: id, oldCount, newCount: 1, dropped: oldCount - 1, reason: 'x' });
+    fs.writeFileSync(path.join(repo, 'data', 'audit', 'rebuild-regression.json'),
+      JSON.stringify({ timestamp: new Date().toISOString(), regressions: [reg('recovered', 3), reg('still-low', 3)] }));
+    const rev = (id, n) => Array.from({ length: n }, () => ({ showId: id }));
+    fs.writeFileSync(path.join(repo, 'data', 'reviews.json'),
+      JSON.stringify({ _meta: { lastUpdated: new Date(Date.now() + 1000).toISOString() }, reviews: [...rev('recovered', 3), ...rev('still-low', 1)] }));
+    const digest = gatherDigest({ repo, skipFetch: true });
+    assert.equal(digest.stuck.reviewRegressions.length, 1);
+    assert.match(digest.stuck.reviewRegressions[0], /^still-low:/);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});
+
+test('gatherDigest keeps a regression when reviews.json is missing or older than it (BRO-6432)', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    fs.mkdirSync(path.join(repo, 'data', 'audit'), { recursive: true });
+    fs.writeFileSync(path.join(repo, 'data', 'audit', 'rebuild-regression.json'),
+      JSON.stringify({ timestamp: new Date().toISOString(), regressions: [{ showId: 's', oldCount: 2, newCount: 1, dropped: 1, reason: 'x' }] }));
+    assert.equal(gatherDigest({ repo, skipFetch: true }).stuck.reviewRegressions.length, 1);
+    fs.writeFileSync(path.join(repo, 'data', 'reviews.json'),
+      JSON.stringify({ _meta: { lastUpdated: '2020-01-01T00:00:00Z' }, reviews: [{ showId: 's' }, { showId: 's' }] }));
+    assert.equal(gatherDigest({ repo, skipFetch: true }).stuck.reviewRegressions.length, 1);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});

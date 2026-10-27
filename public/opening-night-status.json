@@ -1,7 +1,172 @@
 {
-  "generatedAt": "2026-10-27T10:34:30.271Z",
+  "generatedAt": "2026-10-27T15:07:10.975Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "memoriam-off-west-end-2026",
+      "title": "Memoriam",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-27",
+      "status": "open",
+      "slug": "memoriam-off-west-end",
+      "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
+      "siteScore": 64.8,
+      "liveScore": 65,
+      "scoreDrift": 0.20000000000000284,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
+      "siteFileExists": true,
+      "total": 5,
+      "t1": 0,
+      "t2": 3,
+      "t3": 2,
+      "positive": 0,
+      "mixed": 5,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "5/8 total",
+          "T1:0/3",
+          "hi-conf:4/6"
+        ],
+        "highConfidence": 4,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Sunday Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Evening Standard",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "The i",
+          "isDualMarket": false
+        },
+        {
+          "name": "Time Out London",
+          "isDualMarket": false
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Mail on Sunday",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Arts Desk",
+          "isDualMarket": false
+        },
+        {
+          "name": "British Theatre Guide",
+          "isDualMarket": false
+        },
+        {
+          "name": "BritishTheatre.com",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Spectator (UK)",
+          "isDualMarket": false
+        },
+        {
+          "name": "The Reviews Hub",
+          "isDualMarket": false
+        },
+        {
+          "name": "London Theatre",
+          "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-27T14:35:27.938Z",
+          "rc": 2,
+          "s": 61,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-27T14:52:11.803Z",
+          "rc": 5,
+          "s": 64.8,
+          "t1": 0,
+          "t2": 3,
+          "t3": 2,
+          "p": 0,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "i-became-we-off-broadway-2026",
       "title": "I Became We",
@@ -9,7 +174,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-27",
-      "status": "previews",
+      "status": "open",
       "slug": "i-became-we-off-broadway",
       "thumbnail": "/images/shows/i-became-we-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -80,10 +245,6 @@
         },
         {
           "name": "Deadline",
-          "isDualMarket": false
-        },
-        {
-          "name": "Time Out New York",
           "isDualMarket": false
         },
         {
@@ -385,7 +546,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-27",
-      "status": "upcoming",
+      "status": "open",
       "slug": "the-morbs-off-broadway",
       "thumbnail": "/images/shows/the-morbs-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
@@ -1146,27 +1307,27 @@
       "status": "open",
       "slug": "aftermath-art-new-york-off-broadway",
       "thumbnail": "/images/shows/aftermath-art-new-york-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 57.99,
+      "siteScore": 57.63,
       "liveScore": 58,
-      "scoreDrift": 0.00999999999999801,
+      "scoreDrift": 0.36999999999999744,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 1,
       "positive": 0,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1303,10 +1464,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -1540,6 +1697,18 @@
           "t3": 1,
           "p": 0,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-27T12:42:31.338Z",
+          "rc": 6,
+          "s": 57.63,
+          "t1": 0,
+          "t2": 5,
+          "t3": 1,
+          "p": 0,
+          "m": 4,
           "n": 2,
           "bc": "waiting"
         }

@@ -332,3 +332,16 @@ test('static guard scanner: catches a flagged-only row, accepts pass twins and S
     f = { status: 'error', name: 'Status first', message: 'x' };`;
   assert.deepEqual(scanFlaggedWithoutTwin(src), ['Only warns', 'Status first']);
 });
+
+test('reverseDiscoveryBacklogResults: empty report passes; absent report passes none; core check reaches the --live probe (BRO-4689)', () => {
+  const NAME = 'Data: reviewed shows missing from shows.json';
+  const now = new Date('2026-10-27T12:00:00Z');
+  assertAllAbsent(hc.reverseDiscoveryBacklogResults({ generatedAt: '2026-10-27T10:00:00Z', candidates: [] }, {}, now), [NAME]);
+  assertNoneAbsent(hc.reverseDiscoveryBacklogResults(null, {}, now), [NAME]);
+  // Stale or undated empty report cannot verify a fix.
+  assertNoneAbsent(hc.reverseDiscoveryBacklogResults({ generatedAt: '2026-10-20T10:00:00Z', candidates: [] }, {}, now), [NAME]);
+  assertNoneAbsent(hc.reverseDiscoveryBacklogResults({ candidates: [] }, {}, now), [NAME]);
+  const flagged = hc.reverseDiscoveryBacklogResults({ candidates: [{ title: 'Zzzz Unlisted Qqq Play', source: 'bww-roundup', market: 'nyc', url: 'u' }] }, {});
+  assert.equal(probeVerdict(flagged, NAME), 'present');
+  assert.match(String(hc.computeCoreHealthResults), /checkReverseDiscovery\(\)/);
+});

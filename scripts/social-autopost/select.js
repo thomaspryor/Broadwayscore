@@ -13,6 +13,7 @@ const { hasEnoughReviews } = require('../lib/min-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
 const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
+const { homeSet, targetSets } = require('./routing');
 
 const DAY_MS = 864e5;
 const MIN_MS = 60e3;
@@ -71,7 +72,12 @@ function nextWindowSlot(t, tz) {
 }
 
 function doneKeys(ledger) {
-  return new Set((ledger && ledger.posts || []).filter(p => p.showId).map(p => `${p.type || 'score'}:${p.showId}`));
+  const keys = new Set();
+  for (const p of (ledger && ledger.posts) || []) {
+    if (p.showId) keys.add(`${p.type || 'score'}:${p.showId}`);
+    if (p.type === 'weekly-roundup' && p.id) keys.add(p.id); // weekly-roundup:<set>:<post day>
+  }
+  return keys;
 }
 
 /** Reviews of this run for a returning production (BRO-4954); null when there is no prior run. */
@@ -83,6 +89,25 @@ function newReviewCountFor(show, shows, showReviews) {
 }
 
 /**
+ * The checks every post type shares before it states a show's Critic Score: the site shows
+ * a score, the confidence gate passes and the show has enough reviews. {ok: true, gate} or
+ * {ok: false, why, gate?} with why one of no-score, not-confident, too-few-reviews.
+ */
+function scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows }) {
+  const pub = slim[show.id];
+  if (!pub || !Number.isFinite(pub.cs) || !pub.rc) return { ok: false, why: 'no-score' };
+  const showReviews = reviewsByShow[show.id] || [];
+  const gate = evaluateScoreConfidence({
+    showReviews, category: show.category, getOutletTier,
+    newReviewCount: newReviewCountFor(show, shows, showReviews),
+    floors: C.SCORE_FLOORS[show.category] || null,
+  });
+  if (!gate.ok) return { ok: false, why: 'not-confident', gate };
+  if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) return { ok: false, why: 'too-few-reviews', gate };
+  return { ok: true, gate };
+}
+
+/**
  * Why one show's score post is or is not due now. {due: true, slot, gate} or
  * {due: false, why, slot, gate?}; why is one of ineligible, done, not-yet,
  * too-old, no-score, not-confident, too-few-reviews. The checks run in this
@@ -90,23 +115,16 @@ function newReviewCountFor(show, shows, showReviews) {
  * ignoreAge skips the too-old check, so the weekly email can say what was
  * still missing when a show aged out (scripts/lib/social-report.js).
  */
-function scoreDecision(show, { done, now, reviewsByShow, slim, getOutletTier, shows }, { ignoreAge = false } = {}) {
+function scoreDecision(show, ctx, { ignoreAge = false } = {}) {
+  const { done, now } = ctx;
   if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
   if (done.has(`score:${show.id}`)) return { due: false, why: 'done' };
   const slot = morningAfter(show);
   if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', slot };
   if (!ignoreAge && now - slot > C.SCORE_LOOKBACK_DAYS * DAY_MS) return { due: false, why: 'too-old', slot };
-  const pub = slim[show.id];
-  if (!pub || !Number.isFinite(pub.cs) || !pub.rc) return { due: false, why: 'no-score', slot };
-  const showReviews = reviewsByShow[show.id] || [];
-  const gate = evaluateScoreConfidence({
-    showReviews, category: show.category, getOutletTier,
-    newReviewCount: newReviewCountFor(show, shows, showReviews),
-    floors: C.SCORE_FLOORS[show.category] || null,
-  });
-  if (!gate.ok) return { due: false, why: 'not-confident', slot, gate };
-  if (!hasEnoughReviews(pub.rc, show.category, gate.counts.t1 + gate.counts.t2)) return { due: false, why: 'too-few-reviews', slot, gate };
-  return { due: true, slot, gate };
+  const settled = scoreSettled(show, ctx);
+  if (!settled.ok) return { due: false, why: settled.why, slot, ...(settled.gate ? { gate: settled.gate } : {}) };
+  return { due: true, slot, gate: settled.gate };
 }
 
 /**
@@ -245,4 +263,153 @@ function splitBacklog(events, ledger, now) {
   return { post, skip };
 }
 
-module.exports = { findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+// ---------------------------------------------------------------------------
+// Weekly roundup and closing soon (BRO-6413). Pure like the rest of this file.
+
+const ymdDays = (a, b) => Math.round((Date.parse(`${a}T00:00:00Z`) - Date.parse(`${b}T00:00:00Z`)) / DAY_MS);
+const weekdayOf = ymd => new Date(`${ymd}T12:00:00Z`).getUTCDay();
+const setTz = set => C.MARKETS[set === 'west-end' ? 'west-end' : 'broadway'].tz;
+
+/**
+ * The roundup day for a set: the latest local day with the configured weekday whose
+ * post time (SCORE_POST_LOCAL_HOUR) is within the creation lead of `now`. {ymd, slot} or null.
+ */
+function roundupDay(now, set, cfg = C.WEEKLY_ROUNDUP) {
+  const tz = setTz(set);
+  const today = localParts(new Date(now), tz).ymd;
+  for (let back = -1; back <= 7; back++) {
+    const ymd = addDaysYmd(today, -back);
+    if (weekdayOf(ymd) !== cfg.weekday) continue;
+    const slot = zonedTime(ymd, C.SCORE_POST_LOCAL_HOUR, tz).getTime();
+    if (slot - C.CREATE_LEAD_MINUTES * MIN_MS <= now) return { ymd, slot };
+  }
+  return null;
+}
+
+/** First and last opening day (YYYY-MM-DD) a roundup posted on `ymd` covers. */
+function roundupWindow(ymd, cfg = C.WEEKLY_ROUNDUP) {
+  const last = addDaysYmd(ymd, -cfg.lagDays);
+  return { first: addDaysYmd(last, -(cfg.windowDays - 1)), last };
+}
+
+/**
+ * Shows a roundup posted on `ymd` for `set` ('broadway' | 'west-end', the show's home market)
+ * can list: opened in the window, a settled score, best score first. Whether each has a
+ * poster is run.js's business (art.js), not decided here.
+ */
+function roundupCandidates(ymd, set, { shows, reviewsByShow, slim, getOutletTier }, cfg = C.WEEKLY_ROUNDUP) {
+  const { first, last } = roundupWindow(ymd, cfg);
+  const ctx = { reviewsByShow, slim, getOutletTier, shows };
+  return shows.filter(s => isEligibleShow(s) && homeSet(s) === set)
+    .filter(s => { const o = String(s.openingDate).slice(0, 10); return o >= first && o <= last; })
+    .filter(s => scoreSettled(s, ctx).ok)
+    .sort((a, b) => slim[b.id].cs - slim[a.id].cs || String(a.openingDate).localeCompare(String(b.openingDate)) || a.id.localeCompare(b.id));
+}
+
+/**
+ * Roundup posts due now, one per set with at least cfg.minShows candidates.
+ * {type: 'weekly-roundup', id, set, ymd, first, last, candidates, show (best-scored), slot, dueAt}.
+ */
+function findRoundupEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTier, cfg = C.WEEKLY_ROUNDUP }) {
+  const done = doneKeys(ledger);
+  const out = [];
+  for (const set of ['broadway', 'west-end']) {
+    const day = roundupDay(now, set, cfg);
+    if (!day || now - day.slot > cfg.lookbackDays * DAY_MS) continue;
+    const id = `weekly-roundup:${set}:${day.ymd}`;
+    if (done.has(id)) continue;
+    const candidates = roundupCandidates(day.ymd, set, { shows, reviewsByShow, slim, getOutletTier }, cfg);
+    if (candidates.length < cfg.minShows) continue;
+    const tz = setTz(set);
+    out.push({ type: 'weekly-roundup', id, set, ymd: day.ymd, ...roundupWindow(day.ymd, cfg), candidates, show: candidates[0], slot: day.slot, dueAt: new Date(nextWindowSlot(Math.max(day.slot, now + 10 * MIN_MS), tz)) });
+  }
+  return out;
+}
+
+/** Dry-run look back: every roundup day of the last `days` days, per set, with what the rules would do. */
+function roundupLookback({ shows, ledger, now, reviewsByShow, slim, getOutletTier, days, cfg = C.WEEKLY_ROUNDUP }) {
+  const done = doneKeys(ledger);
+  const out = [];
+  for (const set of ['broadway', 'west-end']) {
+    const tz = setTz(set);
+    const today = localParts(new Date(now), tz).ymd;
+    for (let back = 0; back <= days; back++) {
+      const ymd = addDaysYmd(today, -back);
+      if (weekdayOf(ymd) !== cfg.weekday || zonedTime(ymd, C.SCORE_POST_LOCAL_HOUR, tz).getTime() > now || back > days) continue;
+      const candidates = roundupCandidates(ymd, set, { shows, reviewsByShow, slim, getOutletTier }, cfg);
+      out.push({ set, ymd, ...roundupWindow(ymd, cfg), candidates, done: done.has(`weekly-roundup:${set}:${ymd}`), wouldFire: candidates.length >= cfg.minShows });
+    }
+  }
+  return out.sort((a, b) => b.ymd.localeCompare(a.ymd) || a.set.localeCompare(b.set));
+}
+
+/**
+ * Why one show's closing-soon post is or is not due now. {due: true, days, score, gate, slot}
+ * or {due: false, why, ...}; why is one of ineligible, done, not-open, no-closing-date,
+ * out-of-range (days says how far), no-score, not-confident, too-few-reviews, below-score, not-yet.
+ * Days are local days in the show's market, from today to the closing date.
+ */
+function closingDecision(show, ctx, cfg = C.CLOSING_SOON) {
+  if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
+  if (ctx.done.has(`closing-soon:${show.id}`)) return { due: false, why: 'done' };
+  if (show.status !== 'open') return { due: false, why: 'not-open' };
+  const closing = String(show.closingDate || '').slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(closing)) return { due: false, why: 'no-closing-date' };
+  const tz = C.MARKETS[show.category].tz;
+  const today = localParts(new Date(ctx.now), tz).ymd;
+  const days = ymdDays(closing, today);
+  if (days < cfg.minDays || days > cfg.maxDays) return { due: false, why: 'out-of-range', days };
+  const settled = scoreSettled(show, ctx);
+  if (!settled.ok) return { due: false, why: settled.why, days };
+  const score = Math.round(ctx.slim[show.id].cs);
+  if (score < cfg.minScore) return { due: false, why: 'below-score', days, score };
+  const slot = zonedTime(today, C.SCORE_POST_LOCAL_HOUR, tz).getTime();
+  if (ctx.now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', days, score, slot };
+  return { due: true, days, score, closing, gate: settled.gate, slot };
+}
+
+/** Closing-soon posts due now: {type: 'closing-soon', show, closing, days, score, slot, dueAt}. */
+function findClosingSoonEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTier, cfg = C.CLOSING_SOON }) {
+  const ctx = { done: doneKeys(ledger), now, reviewsByShow, slim, getOutletTier, shows };
+  const out = [];
+  for (const show of shows) {
+    const d = closingDecision(show, ctx, cfg);
+    if (!d.due) continue;
+    const tz = C.MARKETS[show.category].tz;
+    out.push({ type: 'closing-soon', show, closing: d.closing, days: d.days, score: d.score, gate: d.gate, slot: d.slot, dueAt: new Date(nextWindowSlot(Math.max(d.slot, now + 10 * MIN_MS), tz)) });
+  }
+  out.sort((a, b) => a.closing.localeCompare(b.closing) || a.show.id.localeCompare(b.show.id));
+  // A season's worth of closings never floods the accounts: soonest first, at most maxPerDay a day (the rest stay in range and go out on later days).
+  const today = new Date(now).toISOString().slice(0, 10);
+  const sent = (ledger.posts || []).filter(p => p.type === 'closing-soon' && p.date === today).length;
+  return cfg.maxPerDay ? out.slice(0, Math.max(0, cfg.maxPerDay - sent)) : out;
+}
+
+/**
+ * Dry-run look back: shows whose closing date put them in the closing-soon range at some
+ * point in the last `days` days (or does now). Uses today's score and closing date, so it
+ * is an approximation for shows that have closed since. firstDay: the first day of the range
+ * inside the look-back; wouldFire: scored high enough and open or since closed on schedule.
+ */
+function closingSoonLookback({ shows, ledger, now, reviewsByShow, slim, getOutletTier, days, cfg = C.CLOSING_SOON }) {
+  const done = doneKeys(ledger);
+  const out = [];
+  for (const show of shows) {
+    if (!isEligibleShow(show)) continue;
+    const closing = String(show.closingDate || '').slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(closing)) continue;
+    const tz = C.MARKETS[show.category].tz;
+    const today = localParts(new Date(now), tz).ymd;
+    const first = addDaysYmd(closing, -cfg.maxDays);
+    const last = addDaysYmd(closing, -cfg.minDays);
+    if (last < addDaysYmd(today, -days) || first > addDaysYmd(today, cfg.maxDays)) continue;
+    if (!['open', 'closed'].includes(show.status)) continue;
+    const settled = scoreSettled(show, { reviewsByShow, slim, getOutletTier, shows });
+    const score = slim[show.id] && Number.isFinite(slim[show.id].cs) ? Math.round(slim[show.id].cs) : null;
+    const firstDay = first < addDaysYmd(today, -days) ? addDaysYmd(today, -days) : first;
+    out.push({ show, closing, firstDay, score, settled: settled.ok, done: done.has(`closing-soon:${show.id}`), wouldFire: settled.ok && score !== null && score >= cfg.minScore });
+  }
+  return out.sort((a, b) => a.firstDay.localeCompare(b.firstDay) || a.show.id.localeCompare(b.show.id));
+}
+
+module.exports = { scoreSettled, roundupDay, roundupWindow, roundupCandidates, findRoundupEvents, roundupLookback, closingDecision, findClosingSoonEvents, closingSoonLookback, ymdDays, addDaysYmd, findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

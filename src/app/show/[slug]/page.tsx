@@ -1035,7 +1035,7 @@ export default async function ShowPage(props: { params: Promise<{ slug: string }
 
         {/* One fixed 300x250 AdSense unit (BRO-5893). Renders nothing unless the
             PostHog `ads` flag, auth, region and automation checks all pass and
-            the script loaded; ships dark (empty IDs, flag at 0%). Kept here,
+            the script loaded; ships dark (flag at 0% `ads`). Kept here,
             far below the hero's ticket buttons and above ShowtimesCard. */}
         <AdSlot slot="showInline" />
 

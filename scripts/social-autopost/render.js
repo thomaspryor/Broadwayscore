@@ -21,6 +21,7 @@ const ROOT = path.resolve(__dirname, '..', '..');
 const W = 1080;
 const H = 1350;
 const ZOOM = 2.5;
+const ROW_POSTER_W = 40; // roundup rows: poster width in CSS px before ZOOM
 const COMPARE_POSTER_W = 152; // CSS px before ZOOM; the poster's output width is COMPARE_POSTER_W * ZOOM
 
 // The site's badge classes, verbatim from src/app/globals.css (rule bodies only;
@@ -74,7 +75,7 @@ function interFontCss() {
 /**
  * Build the card HTML. Pure apart from reading the font and logo files; exported for tests.
  * card: { market, title, venue, score, tierId, tierLabel, breakdown: {rave,positive,mixed,negative},
- *         poster: { dataUri } | null }
+ *         poster: { dataUri } | null, label? (the line above the poster; default "The reviews are in") }
  */
 function buildCardHtml(card) {
   const m = MARKETS[card.market] || MARKETS.broadway;
@@ -107,7 +108,7 @@ ${Object.entries(SITE_CSS).map(([k, v]) => `.${k}{${v}}`).join('\n')}
 </style></head><body>
 <div data-frame style="zoom:${ZOOM};width:432px;height:540px;box-sizing:border-box;padding:22px 24px 16px;display:flex;flex-direction:column;align-items:center;overflow:hidden">
   <img src="${logo}" alt="${esc(m.label)} Scorecard" style="height:21px;width:auto;display:block">
-  <span style="margin-top:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:${m.brand}">The reviews are in</span>
+  <span style="margin-top:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:${m.brand}">${esc(card.label || 'The reviews are in')}</span>
   <div data-poster style="margin-top:14px;width:184px;height:276px;flex-shrink:0;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,.1);box-shadow:0 25px 50px -12px rgba(0,0,0,.25)">${poster}</div>
   <div style="margin-top:-40px;position:relative;z-index:2">${crown}
     <div class="${tier.cls}" style="width:80px;height:80px;box-sizing:border-box;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:30px;line-height:36px;font-weight:700">${esc(card.score)}</div>
@@ -245,4 +246,50 @@ async function renderCompareCard(card, outPath) {
   return renderHtml(buildCompareHtml(card), outPath);
 }
 
-module.exports = { buildCardHtml, buildCompareHtml, renderCard, renderCompareCard, closeBrowser, SITE_CSS, TIER, W, H, COMPARE_POSTER_PX: COMPARE_POSTER_W * ZOOM };
+/**
+ * Weekly roundup card (BRO-6413): one row per opening, best score first, each with its
+ * poster, title, venue and the site's badge. At most MAX_ROWS rows. Same frame, fonts,
+ * badge classes and fitting as the score card.
+ * card: { market (wordmark), range ("Oct 22 to Oct 28"), rows: [{ title, venue, score, tierId, poster: {dataUri} }] }
+ */
+const MAX_ROWS = 6;
+function buildRoundupHtml(card) {
+  if (!card.rows.length || card.rows.length > MAX_ROWS) throw new Error(`roundup card takes 1 to ${MAX_ROWS} rows, got ${card.rows.length}`);
+  const m = MARKETS[card.market] || MARKETS.broadway;
+  const logo = dataUriFor(`public/brand-kit/logos/${m.logo}`, 'image/png');
+  const row = r => {
+    const tier = TIER[r.tierId] || TIER['worth-seeing'];
+    const poster = r.poster && r.poster.dataUri
+      ? `<img src="${r.poster.dataUri}" alt="" style="width:100%;height:100%;object-fit:cover;display:block">`
+      : '';
+    return `<div data-row style="height:${ROW_POSTER_W * 1.5 + 6}px;box-sizing:border-box;padding:3px 10px 3px 3px;display:flex;align-items:center;gap:10px;border-radius:12px;background:#171720;border:1px solid rgba(255,255,255,.08)">
+      <div style="width:${ROW_POSTER_W}px;height:${ROW_POSTER_W * 1.5}px;flex-shrink:0;border-radius:8px;overflow:hidden;background:#1a1a24">${poster}</div>
+      <div style="flex:1;min-width:0;display:flex;flex-direction:column;gap:1px">
+        <span data-fit data-max="15" data-min="11" data-lines="2" style="line-height:1.2;font-weight:800;letter-spacing:-.02em;width:100%">${esc(r.title)}</span>
+        <span data-fit data-max="11" data-min="10" data-lines="1" style="width:100%;line-height:14px;color:#9ca3af">${esc(r.venue || '')}</span>
+      </div>
+      <div class="${tier.cls}" style="width:44px;height:44px;flex-shrink:0;box-sizing:border-box;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:19px;line-height:24px;font-weight:700">${esc(r.score)}</div>
+    </div>`;
+  };
+  return `<!doctype html><html><head><meta charset="utf-8"><style>
+${interFontCss()}
+*{margin:0;padding:0}
+html,body{width:${W}px;height:${H}px;background:#0f0f14;overflow:hidden}
+body{font-family:'InterCard',sans-serif;color:#ffffff;-webkit-font-smoothing:antialiased}
+${Object.entries(SITE_CSS).map(([k, v]) => `.${k}{${v}}`).join('\n')}
+</style></head><body>
+<div data-frame style="zoom:${ZOOM};width:432px;height:540px;box-sizing:border-box;padding:22px 24px 16px;display:flex;flex-direction:column;align-items:center;overflow:hidden">
+  <img src="${logo}" alt="${esc(m.label)} Scorecard" style="height:21px;width:auto;display:block">
+  <span style="margin-top:6px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.12em;color:${m.brand}">New openings</span>
+  <span style="margin-top:2px;font-size:12px;color:#9ca3af">${esc(card.range)}</span>
+  <div style="margin-top:12px;width:100%;flex:1;display:flex;flex-direction:column;justify-content:center;gap:6px">${card.rows.map(row).join('')}</div>
+</div>
+</body></html>`;
+}
+
+/** Render a roundup card to a 1080x1350 PNG. */
+async function renderRoundupCard(card, outPath) {
+  return renderHtml(buildRoundupHtml(card), outPath);
+}
+
+module.exports = { buildCardHtml, buildCompareHtml, buildRoundupHtml, renderCard, renderCompareCard, renderRoundupCard, closeBrowser, SITE_CSS, TIER, W, H, MAX_ROWS, COMPARE_POSTER_PX: COMPARE_POSTER_W * ZOOM, ROW_POSTER_PX: ROW_POSTER_W * ZOOM };

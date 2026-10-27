@@ -102,3 +102,49 @@ test('renderBoardSummaryHtml: fills use background-color; Gmail drops the backgr
     assert.match(html, /background-color:#/, `${name}: fills are present, so the check is not vacuous`);
   }
 });
+
+// BRO-6442: the board category table in the morning email.
+const { renderBoardCategoriesHtml } = require('./board-summary.js');
+const bc = require('./board-categories.js');
+
+function sampleReport() {
+  const base = { priority: 2, createdAt: '2026-10-01T00:00:00Z', updatedAt: '2026-10-01T00:00:00Z', labels: { nodes: [] }, comments: { nodes: [] }, description: '## Acceptance criteria\nVERIFY: node --test scripts/lib/foo.test.mjs' };
+  return bc.categorizeBoard([
+    { ...base, identifier: 'BRO-1', title: 'A <b>bold</b> title', state: { name: 'Todo', type: 'unstarted' } },
+    { ...base, identifier: 'BRO-2', title: 'Two', state: { name: 'In Progress', type: 'started' } },
+    { ...base, identifier: 'BRO-3', title: 'Three', state: { name: 'Paused', type: 'backlog' }, priority: 4 },
+  ], { now: NOW });
+}
+
+test('renderBoardCategoriesHtml: every category row, totals, email-safe, no ids or titles', () => {
+  const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
+  const html = renderBoardCategoriesHtml(sampleReport(), null, esc);
+  for (const c of bc.CATEGORIES) assert.ok(html.includes(esc(c.label)), c.label);
+  assert.match(html, /Total open<\/td><td[^>]*>3</);
+  assert.doesNotMatch(html, /<svg|<style|class=|BRO-\d|bold/);
+  assert.doesNotMatch(html, /change since/);
+  assert.match(html, /white-space:nowrap/);
+});
+
+test('renderBoardCategoriesHtml: change since the last email when a snapshot exists', () => {
+  const report = sampleReport();
+  const prev = bc.snapshotOf(report);
+  prev.open = 5;
+  prev.categories.find((c) => c.key === 'paused').exclusive = 3;
+  const html = renderBoardCategoriesHtml(report, prev);
+  assert.match(html, /change since the last morning email/);
+  assert.match(html, /\(-2\)/); // paused 3 -> 1, open 5 -> 3
+  assert.equal((html.match(/\(-2\)/g) || []).length, 2);
+  assert.doesNotMatch(html, /\(\+0\)|\(0\)/);
+});
+
+test('renderBoardCategoriesHtml: a failed fetch shows a visible unavailable line', () => {
+  const html = renderBoardCategoriesHtml(null, null);
+  assert.match(html, /Board table unavailable this morning/);
+});
+
+test('renderBoardCategoriesHtml: a malformed snapshot renders without deltas instead of throwing', () => {
+  const html = renderBoardCategoriesHtml(sampleReport(), { categories: { nope: 1 }, open: 'x' });
+  assert.match(html, /Every open card, once/);
+  assert.doesNotMatch(html, /change since/);
+});

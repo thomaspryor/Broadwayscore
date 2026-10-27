@@ -3,14 +3,14 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-10-26T14:45:07.145Z"
+    "at": "2026-10-27T13:47:25.490Z"
   },
   "venueReaders": {
-    "at": "2026-10-26T14:45:07.145Z",
+    "at": "2026-10-27T13:47:25.490Z",
     "readers": 54,
     "active": 185,
-    "activeCovered": 110,
-    "activeDated": 83,
+    "activeCovered": 109,
+    "activeDated": 82,
     "uncovered": {
       "la mama experimental theatre club": {
         "firstSeen": "2026-10-03T12:53:57.507Z",
@@ -35,6 +35,10 @@
       "gene frankel": {
         "firstSeen": "2026-10-12T17:12:05.221Z",
         "venue": "Gene Frankel Theatre"
+      },
+      "secret": {
+        "firstSeen": "2026-10-27T13:47:25.490Z",
+        "venue": "The Secret Theatre"
       },
       "tank": {
         "firstSeen": "2026-10-01T15:00:20.501Z",
@@ -61,11 +65,6 @@
         "reason": "queue-it bot wall on theshed.org/program; needs a real browser"
       },
       {
-        "venue": "The Culture Club",
-        "recentShows": 4,
-        "reason": "no public listing found"
-      },
-      {
         "venue": "Theater 555",
         "recentShows": 4,
         "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
@@ -74,6 +73,11 @@
         "venue": "the cell",
         "recentShows": 3,
         "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
+      },
+      {
+        "venue": "Culture Club",
+        "recentShows": 3,
+        "reason": "no public listing found"
       },
       {
         "venue": "St. Luke's Theatre",
@@ -103,19 +107,19 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-10-26T14:45:07.145Z",
+    "at": "2026-10-27T13:47:25.490Z",
     "readers": 23,
-    "active": 96,
+    "active": 97,
     "activeCovered": 32,
     "activeDated": 27,
     "uncovered": {
+      "greenwich": {
+        "firstSeen": "2026-10-27T13:47:25.490Z",
+        "venue": "Greenwich Theatre"
+      },
       "haymarket theatre royal": {
         "firstSeen": "2026-10-01T15:00:20.501Z",
         "venue": "Haymarket, Theatre Royal"
-      },
-      "secret cinema greenwich peninsula": {
-        "firstSeen": "2026-10-19T15:10:52.077Z",
-        "venue": "Secret Cinema, Greenwich Peninsula"
       },
       "unicorn": {
         "firstSeen": "2026-10-26T14:45:07.145Z",

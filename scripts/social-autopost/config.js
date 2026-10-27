@@ -82,7 +82,33 @@ const FIRST_RUN_FRESH_DAYS = 3; // first live run only: older shows are skipped 
 const STAGGER_MINUTES = 90; // gap between two posts
 const LONDON_COMPARE_LOOKBACK_DAYS = 5; // a London comparison later than this after its morning-after slot is dropped (BRO-6373)
 
+// Weekly roundup (BRO-6413): one post per channel set listing the week's openings with
+// their Critic Scores. weekday is the single knob (0 = Sunday ... 5 = Friday); the post goes out
+// at SCORE_POST_LOCAL_HOUR on that day in the set's home time zone. The window is the
+// WINDOW_DAYS days that end LAG_DAYS before the post day: a show that opened the evening before
+// has its own score post that morning (one post per show per network per day, score posts win),
+// so it waits for next week's roundup. ON since the owner approved the sample (2026-10-27); set false to stop.
+const WEEKLY_ROUNDUP = {
+  enabled: true,
+  weekday: 5,
+  minShows: 2, // fewer shows with a score and a poster: the week is skipped
+  maxRows: 6, // rows on the card
+  windowDays: 7,
+  lagDays: 2,
+  lookbackDays: 2, // a roundup missed by more than this is dropped
+};
+
+// Closing soon (BRO-6413): a top-rated show in its last weeks, posted once ever per show.
+// ON since the owner approved the sample (2026-10-27); set false to stop.
+const CLOSING_SOON = {
+  enabled: true,
+  minDays: 14, // closing date at least this many local days away...
+  maxDays: 28, // ...and at most this many
+  minScore: 80, maxPerDay: 2, // rounded Critic Score
+};
+
 module.exports = {
+  WEEKLY_ROUNDUP, CLOSING_SOON,
   MARKETS, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
   SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,

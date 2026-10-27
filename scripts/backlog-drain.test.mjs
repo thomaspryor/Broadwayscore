@@ -390,7 +390,12 @@ test('reconcileAndAppend: lock busy skips the tick instead of appending', () => 
     { ts: '2026-07-30T11:00:00Z', event: 'drain-dispatch', taskId: '4', subject: 'x', contentHash: 'abc' }) + '\n');
   fs.writeFileSync(`${ledger}.lock`, `${process.pid} live\n`); // live holder: this very process
   const { reconcileAndAppend } = require('./backlog-drain.js');
-  const r = reconcileAndAppend(ledger, new Map([['4', { id: '4', status: 'pending' }]]), [], { lockOpts: { timeoutMs: 150, waitMs: 10 } });
+  const r = reconcileAndAppend(ledger, new Map([['4', { id: '4', status: 'pending' }]]), [], {
+    // The lock's mtime is real-fs time; a shifted Date.now() (time-bomb audit)
+    // would age it past ABANDONED_LOCK_MS and recover the "live" lock. Pin the
+    // age limit so only holder liveness is under test, whatever the clock says.
+    lockOpts: { timeoutMs: 150, waitMs: 10, abandonedMs: Number.MAX_SAFE_INTEGER, staleMs: Number.MAX_SAFE_INTEGER },
+  });
   assert.equal(r.skipped, true);
   assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 1, 'nothing appended');
   fs.rmSync(dir, { recursive: true, force: true });

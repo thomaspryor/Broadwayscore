@@ -13,9 +13,10 @@ commission?
 - **Variants**: `ads` / `no-ads`, 100% release rollout,
   `ensure_experience_continuity: false` (ads only render for signed-out
   visitors, so the test is anonymous-only)
-- **State today**: pre-launch, **0% `ads` / 100% `no-ads`**. Code ships dark:
-  `ADSENSE_CLIENT` and the slot id in `src/lib/ads.ts` are empty until the
-  AdSense account is approved.
+- **State today**: pre-launch, **0% `ads` / 100% `no-ads`**. `ADSENSE_CLIENT`
+  and the `showInline` slot id are committed in `src/lib/ads.ts`, so the flag
+  is the only switch: nobody sees an ad or loads the Google script until it
+  moves off 0%.
 - **Client**: `src/components/ads/AdSlot.tsx` via `usePostHogFlag(ADS_FLAG)`;
   decision in `decideAdRender()` (`src/lib/ads.ts`)
 - **Registry entry**: `scripts/lib/flag-registry.js` (`REGISTERED_FLAGS`)

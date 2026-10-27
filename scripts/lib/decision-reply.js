@@ -19,7 +19,7 @@
  * the reads and writes.
  */
 
-const { MARKER_RE, SETTLED_RE, cleanOwnerText, isPlaceholder, parseDecisionDescription, recommendedKey } = require('./decision-card-parse.js');
+const { HEADING_RE, MARKER_RE, SETTLED_RE, headingQuestionLine, cleanOwnerText, isPlaceholder, parseDecisionDescription, recommendedKey } = require('./decision-card-parse.js');
 const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
 const { AWAITING_OWNER_LABEL, isAwaitingOwner } = require('./owner-approval-channel.js');
 const { parseVisualApproval } = require('../../src/lib/owner-decision-link.js');
@@ -178,11 +178,19 @@ function rewriteDescription(description, { key, name, upside, date, tag, ownerOn
   for (let i = 0; i < raw.length; i++) {
     if (/^\s*(```|~~~)/.test(raw[i])) { inFence = !inFence; continue; }
     if (inFence) continue;
-    const m = MARKER_RE.exec(raw[i].replace(/`[^`]*`/g, ''));
+    const plain = raw[i].replace(/`[^`]*`/g, '');
+    let m = MARKER_RE.exec(plain);
+    let qLine = i;
+    if (HEADING_RE.test(plain)) { // BRO-6443: "## DECISION NEEDED" heading, question on the next line
+      const h = headingQuestionLine(raw, i);
+      if (h < 0) continue;
+      qLine = h;
+      m = MARKER_RE.exec(raw[h]) || [null, raw[h].replace(/^\s*(?:(?:[-*>]|\d+[.)])\s+)*(?:\[[ xX]\]\s+)?(?:\*\*|__)?/, '')];
+    }
     if (!m) continue;
     const q = cleanOwnerText(m[1]).replace(/\*+$/, '').trim();
     if (!q || isPlaceholder(q) || isEmptyDecisionContent(q) || SETTLED_RE.test(q)) continue;
-    at = i; question = q;
+    at = qLine; question = q;
     break;
   }
   if (at < 0) return null;

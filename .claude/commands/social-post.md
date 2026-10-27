@@ -8,11 +8,12 @@ Arguments: $ARGUMENTS
 
 ## Rules
 
+- Read `scripts/social-autopost/VOICE.md` first: inform, then invite discussion. Every caption ends with an open question that the code builds from the facts; keep any hook line in that voice (a fact or angle, never a question of its own, never "Thoughts?").
 - Never write a number yourself. Every score and review count comes from `public/data/shows/<id>.json` through `brief.js`; it refuses captions with a number that is not a fact.
 - Never post before the owner's approval message. Pass their words verbatim to `--approved`.
 - No Buffer key is needed in the session: only the `social-autopost.yml` workflow talks to Buffer.
 - A hook line (`--hook="..."`) is optional: one line, at most 140 characters, no digits, no links, no comparisons ("more", "better", "transfer"). Leave it out unless the owner asked for one.
-- When the two productions opened in different years or cities, the compare template adds a caveat line on its own ("Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison."). X and Bluesky drop the hook, then switch to the short caveat ("Two years apart, different cities and critics."), then drop it, then shorten the title, when there is no room; numbers and links always stay.
+- When the two productions opened in different years or cities, the compare template adds a caveat line on its own ("Two years apart, in different cities, with different critics, so the scores aren't a like-for-like comparison."). X and Bluesky drop the hook, then switch to the short caveat ("Two years apart, different cities and critics."), then drop it, then shorten the title, then shorten the closing question, and only then drop it, when there is no room; numbers and links always stay.
 
 ## Steps
 

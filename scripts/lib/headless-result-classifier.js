@@ -85,7 +85,7 @@ const CLOUD_CLEAN_RE = /^\s*[^\w\s]{0,6}\s*SAFE TO ARCHIVE\b/;
 // OPEN"), which this already classifies as stopped-short — the DECISION
 // NEEDED detail itself lives in the chat prose, not in a machine-parseable
 // suffix, so it isn't surfaced as a distinct `blocked` outcome here.
-const PLAIN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*you can close this tab\b/i;
+const PLAIN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*you can close this tab\b(?!\s+(?:after|once|when|until|if)\b)/i; // BRO-6314: conditional close is not a finish
 const PLAIN_IDLE_RE = /^\s*[^\w\s]{0,6}\s*nothing is running here\b/i;
 const PLAIN_KEEP_OPEN_RE = /^\s*[^\w\s]{0,6}\s*keep this tab open\b/i;
 
@@ -135,7 +135,52 @@ function classifyHeadlessResult(resultText) {
     return { outcome: 'clean' };
   }
 
+  // BRO-6314: sessions fold the closing sentences into one paragraph or put the
+  // worktree sentence last ("Nothing is still running. ... You can close this
+  // tab and remove the worktree.", "Nothing is running. ... You can remove the
+  // worktree, since ..."). None starts the final line with a template, so
+  // finished autofix jobs (Paused/In Review with a recheck) were scored
+  // job-stopped-short -> card-fail. Conservative on purpose: clean needs a
+  // close phrase and NOTHING in the paragraph that says work is pending.
+  const tail = lastParagraph(resultText);
+  if (PENDING_RE.test(tail)) {
+    return {
+      outcome: 'stopped-short',
+      reason: 'final paragraph says work is pending (keep tab/worktree, decision needed, or a conditional close) — a headless -p session is never resumed by a background notification',
+    };
+  }
+  if (CLOSE_PHRASE_RE.test(tail) || (REMOVE_WORKTREE_RE.test(tail) && NOTHING_RUNNING_RE.test(tail))) {
+    return { outcome: 'clean' };
+  }
+
   return { outcome: 'stopped-short', reason: 'no THIS SESSION: status line in final result' };
+}
+
+// Final-paragraph phrases (BRO-6314). Any pending signal anywhere in the
+// paragraph beats a close phrase: false-clean is the dangerous direction.
+const PENDING_RE = new RegExp([
+  /\bkeep this tab open\b(?!\s+only if you want\b)/.source,
+  /\bdecision needed\b/.source,
+  /\baction needed from you\b/.source,
+  /\bblocked:/.source,
+  // negated close: "Do not assume you can close this tab"
+  /\b(?:do not|don't|not)\b[^.;]*\byou can close this tab\b/.source,
+  /\byou need to:\s*(?!nothing\b)\S/.source,
+  // conditional close: "you can close this tab after/once/when/until/if ..."
+  /\b(?:after|once|when|until|if)\b[^.]*\byou can close this tab\b/.source,
+  /\byou can close this tab\s+(?:after|once|when|until|if)\b/.source,
+].join('|'), 'i');
+// BRO-6430: "Keep the worktree, it holds unfinished work." is the item-4b
+// worktree sentence, not a keep-the-tab signal (unlanded work is caught
+// separately by detectJobLanding -> stranded), so it is no longer PENDING.
+// "Keep this tab (open) only if you want to ..." is the IDLE template.
+const CLOSE_PHRASE_RE = /\b(?:you can close this tab|nothing is running here|keep this tab (?:open )?only if you want|this session is idle and can be closed)\b(?!\s*,?\s*but\b)/i;
+const REMOVE_WORKTREE_RE = /\byou can remove the worktree\b/i;
+const NOTHING_RUNNING_RE = /\bnothing is (?:still )?running\b/i;
+
+function lastParagraph(text) {
+  const paras = String(text || '').split(/\n\s*\n/).map(p => p.trim()).filter(p => p && !DECORATION_ONLY.test(p));
+  return paras.length ? paras[paras.length - 1] : '';
 }
 
 module.exports = { classifyHeadlessResult, lastContentLine };

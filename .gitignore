@@ -599,6 +599,8 @@ tmp/
 # send-morning-digest.js + consumer scripts/check-linear-drain-throughput.js
 # both run on this Mac (the digest is launchd-scheduled, not CI).
 /data/audit/linear-drain-throughput-snapshot.json
+# BRO-6442: board-report-snapshot.json, counts only, written by the digest on a real send.
+/data/audit/board-report-snapshot.json
 # sync-audit-checkout.sh refusal snapshots (task #1563) — Mac-local, one per
 # SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit). Producer:
 # scripts/lib/sync-audit-checkout.sh's refuse-loud path. Consumer:

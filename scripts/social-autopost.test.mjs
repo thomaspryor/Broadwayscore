@@ -278,12 +278,12 @@ test('compare caveat: on all five networks after the score lines, computed in wo
     assert.ok(text.includes(CAVEAT), `${net} misses the caveat`);
     assert.ok(text.indexOf(CAVEAT) > text.search(/85 from 26 critics/), `${net} caveat before the scores`);
   }
-  // X keeps the short form when the full one has no room; Bluesky (links counted in full) keeps it if it fits.
-  assert.ok(c.captions.twitter.includes(CAVEAT), 'X has room for the full caveat with a short title');
+  // On X and Bluesky the closing question outranks the caveat: the caveat goes first (full, then short, then none).
+  for (const net of ['twitter', 'bluesky']) assert.match(c.captions[net], /critics (warmed|warm) to it more\?/, `${net} lost its question`);
   const real = 'The Curious Case of Benjamin Button';
   const x = briefs.buildCompare({ descA: desc({ ...london, title: real }, 85, 26), descB: desc({ ...offb, title: real }, 77, 24), hook: '', now: NOW }).captions.twitter;
-  assert.ok(x.includes(SHORT_CAVEAT) && !x.includes(CAVEAT) && x.includes(real), 'X falls back to the short caveat before shortening the title');
-  assert.ok(x.indexOf(SHORT_CAVEAT) > x.search(/85 from 26 critics/));
+  assert.ok(!x.includes(CAVEAT) && x.includes(real) && /critics warmed to it more\?/.test(x), 'X drops the caveat before the title or the question');
+  if (x.includes(SHORT_CAVEAT)) assert.ok(x.indexOf(SHORT_CAVEAT) > x.search(/85 from 26 critics/));
   assert.equal(cap.compareCaveat(offb, london, { short: true }), SHORT_CAVEAT);
   assert.equal(cap.compareCaveat({ ...offb, openingDate: '2024-03-01' }, london, { short: true }), 'Different cities and critics.');
   assert.equal(cap.compareCaveat({ ...offb, openingDate: '2021-01-01' }, offb, { short: true }), 'Five years apart, different critics.');
@@ -307,7 +307,9 @@ test('compare caveat: a short network drops it before any number, link or the ti
     assert.match(text, /77 from 24 critics so far/);
     assert.match(text, /85 from 26 critics/);
     assert.match(text, /\/show\/tc-off-broadway\?/);
-    if (!text.includes(SHORT_CAVEAT)) assert.ok(text.includes(longTitle), `${net} dropped the caveat but still shortened the title`);
+    // The question outranks the caveat and the full title: caveat first, then the title, then the question.
+    assert.match(text, /critics (warmed|warm) to it more\?/, `${net} lost its question`);
+    if (text.includes(SHORT_CAVEAT)) assert.ok(text.includes(longTitle), `${net} kept the caveat but shortened the title`);
     assert.ok(!text.includes(CAVEAT) || !text.includes(SHORT_CAVEAT));
   }
 });
@@ -322,7 +324,7 @@ test('compare: refuses mismatched titles, same city, digits or links in the hook
   // The hook rides where there is room; on X the caveat outranks it.
   const hooked = compare('Two cities, one strange story.').captions;
   assert.ok(hooked.instagram.startsWith('Two cities') && hooked.facebook.startsWith('Two cities'));
-  assert.ok(hooked.twitter.includes(CAVEAT) || hooked.twitter.includes(SHORT_CAVEAT));
+  assert.ok(/warmed to it more\?/.test(hooked.twitter), 'X keeps the question');
   assert.deepEqual(cap.strayNumbers('Score 77 from 24, see broadwayscorecard.com/show/x-2026 #Theatre2026', [77, 24]), []);
   assert.deepEqual(cap.strayNumbers('Score 78 from 24', [77, 24]), ['78']);
 });
@@ -767,8 +769,8 @@ test('london-compare posts the compare card on all five networks and records lon
     assert.equal(seen.created.length, 5);
     const x = seen.created.find(i => i.channelId === 'ch-twitter');
     assert.match(x.text, /Lc was also reviewed in London\./);
-    assert.doesNotMatch(x.text, /transfer/i);
-    assert.match(x.text, /different cities, with different critics/);
+    assert.match(x.text, /different cities and critics/);
+    assert.match(x.text, /Why do you think London critics warmed to it more\?/);
     assert.match(x.text, /utm_campaign=brief/);
   });
   const entry = ledger.posts.find(p => p.type === 'london-compare');
@@ -842,4 +844,349 @@ test('every London pair the matcher finds in the real data can be ordered into a
   const pairs = td.detectLondonComparePairs(shows, { hasScore: () => true });
   assert.ok(pairs.length >= 15);
   for (const p of pairs) assert.doesNotThrow(() => briefs.orderCompare(byId.get(p.londonId), byId.get(p.showId)), `${p.showId} / ${p.londonId}`);
+});
+
+// ---- weekly roundup and closing soon (BRO-6413) ----
+const C6413 = require('./social-autopost/config.js');
+const ymdOf = iso => iso.slice(0, 10);
+// Fri 2026-10-23 10:00 New York = 14:00Z. Roundup window: opened Oct 15 to Oct 21.
+const FRI = at('2026-10-23T14:00:00Z');
+const rShow = (id, opening, over = {}) => lshow(id, id.toUpperCase(), 'broadway', 'play', opening, { status: 'open', ...over });
+const rShows = [rShow('ra-2026', '2026-10-15'), rShow('rb-2026', '2026-10-20'), rShow('rc-2026', '2026-10-21'), rShow('rd-2026', '2026-10-22'), rShow('re-2026', '2026-10-14')];
+const rSlim = { 'ra-2026': { cs: 83.4, rc: 14 }, 'rb-2026': { cs: 70.2, rc: 14 }, 'rc-2026': { cs: 77, rc: 14 }, 'rd-2026': { cs: 90, rc: 14 }, 're-2026': { cs: 95, rc: 14 } };
+const rRev = Object.fromEntries(rShows.map(s => [s.id, reviews(3, 3, 8)]));
+const rCtx = (over = {}) => ({ shows: rShows, ledger: { posts: [] }, now: FRI, slim: rSlim, getOutletTier, reviewsByShow: rRev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true }, ...over });
+
+test('both new types ship ON (owner approved 2026-10-27), with the owner weekday, thresholds and range as plain config values', () => {
+  assert.equal(C6413.WEEKLY_ROUNDUP.enabled, true);
+  assert.equal(C6413.CLOSING_SOON.enabled, true);
+  assert.equal(C6413.WEEKLY_ROUNDUP.weekday, 5);
+  assert.equal(C6413.WEEKLY_ROUNDUP.minShows, 2);
+  assert.equal(C6413.WEEKLY_ROUNDUP.maxRows, 6);
+  assert.deepEqual([C6413.CLOSING_SOON.minDays, C6413.CLOSING_SOON.maxDays, C6413.CLOSING_SOON.minScore], [14, 28, 80]);
+});
+
+test('roundup: Friday 10:00 New York, window ends 2 days earlier so score posts keep their own day', () => {
+  assert.equal(sel.roundupDay(FRI, 'broadway').ymd, '2026-10-23');
+  assert.equal(sel.roundupDay(FRI - 3 * 3600e3, 'broadway').ymd, '2026-10-16'); // before the creation lead: still last week's
+  assert.deepEqual(sel.roundupWindow('2026-10-23'), { first: '2026-10-15', last: '2026-10-21' });
+  const events = sel.findRoundupEvents(rCtx());
+  assert.equal(events.length, 1);
+  assert.equal(events[0].id, 'weekly-roundup:broadway:2026-10-23');
+  assert.deepEqual(events[0].candidates.map(s => s.id), ['ra-2026', 'rc-2026', 'rb-2026']); // best score first; Oct 14 and Oct 22 are outside
+});
+
+test('roundup: the weekday is one config value', () => {
+  const wed = at('2026-10-28T14:00:00Z');
+  assert.equal(sel.findRoundupEvents(rCtx({ now: wed })).length, 0, 'Friday config does not fire on Wednesday');
+  const ev = sel.findRoundupEvents(rCtx({ now: wed, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true, weekday: 3 } }));
+  assert.equal(ev.length, 1);
+  assert.equal(ev[0].ymd, '2026-10-28');
+});
+
+test('roundup: skips the week below 2 scored shows, never re-fires, drops past the lookback', () => {
+  const one = rCtx({ shows: [rShows[0]] });
+  assert.equal(sel.findRoundupEvents(one).length, 0);
+  const unsettled = rCtx({ reviewsByShow: { ...rRev, 'rb-2026': [], 'rc-2026': [] } });
+  assert.equal(sel.findRoundupEvents(unsettled).length, 0, 'unsettled scores do not count');
+  assert.equal(sel.findRoundupEvents(rCtx({ ledger: { posts: [{ type: 'weekly-roundup', id: 'weekly-roundup:broadway:2026-10-23' }] } })).length, 0);
+  assert.equal(sel.findRoundupEvents(rCtx({ now: FRI + 3 * 86400e3 })).length, 0, 'Monday is past the 2-day lookback');
+});
+
+test('roundup: a West End week goes to the West End set, Off-Broadway stays with Broadway', () => {
+  const we = [lshow('wa-west-end-2026', 'WA', 'west-end', 'play', '2026-10-16', { status: 'open' }), lshow('wb-off-west-end-2026', 'WB', 'off-west-end', 'play', '2026-10-17', { status: 'open' }), rShow('ob-off-broadway-2026', '2026-10-16', { category: 'off-broadway' })];
+  const slim = { 'wa-west-end-2026': { cs: 80, rc: 14 }, 'wb-off-west-end-2026': { cs: 71, rc: 14 }, 'ob-off-broadway-2026': { cs: 75, rc: 14 } };
+  const rev = Object.fromEntries(we.map(s => [s.id, reviews(6, 3, 6)]));
+  const ev = sel.findRoundupEvents({ shows: we, ledger: { posts: [] }, now: at('2026-10-23T09:05:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true } });
+  const bySet = Object.fromEntries(ev.map(e => [e.set, e.candidates.map(s => s.id)]));
+  assert.deepEqual(bySet['west-end'], ['wa-west-end-2026', 'wb-off-west-end-2026']);
+  assert.equal(bySet.broadway, undefined, 'one Off-Broadway show alone is under the minimum');
+});
+
+const rRows = [{ title: 'Alpha Show', category: 'broadway', score: 83, tierLabel: 'Critical Gold' }, { title: 'Beta 2', category: 'off-broadway', score: 77, tierLabel: 'Recommended' }, { title: 'Gamma', category: 'broadway', score: 70, tierLabel: 'Worth Seeing' }];
+const rCaps = (rows = rRows, more = 0) => cap.buildRoundupCaptions({ set: 'broadway', first: '2026-10-15', last: '2026-10-21', rows, more });
+
+test('roundup captions: facts only, every limit, no em dashes, the right markers, never a score or compare sentence', () => {
+  const many = Array.from({ length: 6 }, (_, i) => ({ title: `A Fairly Long Show Title Number ${i + 1} Of Six`, category: i % 2 ? 'off-broadway' : 'broadway', score: 90 - i, tierLabel: 'Critical Gold' }));
+  for (const [rows, more] of [[rRows, 0], [many, 3], [many.slice(0, 2), 0]]) {
+    const caps = rCaps(rows, more);
+    for (const [net, text] of Object.entries(caps)) {
+      if (LIMITS[net]) assert.ok(xLength(net, text) <= LIMITS[net], `${net} ${xLength(net, text)} > ${LIMITS[net]}`);
+      assert.doesNotMatch(text, /[—–]/);
+      if (net !== 'altText') for (const re of cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway')) assert.match(text, re, `${net} carries the roundup marker`);
+      assert.doesNotMatch(text, cap.SCORE_SENTENCE);
+      assert.doesNotMatch(text, cap.COMPARE_SENTENCE);
+    }
+    assert.ok(caps.twitter.split('\n').filter(l => /: \d+$/.test(l)).length >= 2, 'X keeps at least two rows');
+    for (const [net, text] of Object.entries(caps)) assert.deepEqual(cap.strayNumbers(text, cap.roundupAllowedNumbers({ rows, first: '2026-10-15', last: '2026-10-21', more })), [], net);
+  }
+});
+
+test('roundup captions: a number that is not a fact is refused by the stray-number check', () => {
+  const text = `${rCaps().threads}\nUp 12 points.`;
+  assert.deepEqual(cap.strayNumbers(text, cap.roundupAllowedNumbers({ rows: rRows, first: '2026-10-15', last: '2026-10-21', more: 0 })), ['12']);
+});
+
+test('roundup card HTML: one row per show, at most 6, text escaped, badge classes from the site CSS', () => {
+  const { buildRoundupHtml } = require('./social-autopost/render.js');
+  const row = (i, title = `Show ${i}`) => ({ title, venue: 'V & Co <b>', score: 80 - i, tierId: 'recommended', poster: { dataUri: 'data:image/png;base64,AAAA' } });
+  const html = buildRoundupHtml({ market: 'broadway', rows: [row(0, 'A <script>x</script> B'), row(1)], range: 'Oct 15 to Oct 21' });
+  assert.equal((html.match(/data-row/g) || []).length, 2);
+  assert.doesNotMatch(html, /<script>x/);
+  assert.match(html, /&lt;script&gt;/);
+  assert.match(html, /V &amp; Co &lt;b&gt;/);
+  assert.match(html, /Oct 15 to Oct 21/);
+  assert.match(html, /data-fit/);
+  assert.throws(() => buildRoundupHtml({ market: 'broadway', rows: Array.from({ length: 7 }, (_, i) => row(i)), range: 'x' }));
+  assert.throws(() => buildRoundupHtml({ market: 'broadway', rows: [], range: 'x' }));
+});
+
+// closing soon: show closes 2026-11-10; "today" Oct 27 = 14 days out
+const cShow = (over = {}) => rShow('cs-2026', '2026-09-01', { closingDate: '2026-11-10', ...over });
+const cSlim = (cs = 84) => ({ 'cs-2026': { cs, rc: 20 } });
+const cFind = (over = {}) => sel.findClosingSoonEvents({ shows: [cShow(over.show)], ledger: { posts: [] }, now: at('2026-10-27T14:05:00Z'), slim: cSlim(over.cs), getOutletTier, reviewsByShow: { 'cs-2026': reviews(3, 3, 8) }, cfg: { ...C6413.CLOSING_SOON, enabled: true }, ...(over.ctx || {}) });
+
+test('closing-soon: fires only 14 to 28 days before the closing date, with a score of 80 or more', () => {
+  const day = d => at(`${d}T14:05:00Z`);
+  const ev = cFind();
+  assert.equal(ev.length, 1);
+  assert.equal(ev[0].closing, '2026-11-10');
+  assert.equal(ev[0].days, 14);
+  assert.equal(ev[0].score, 84);
+  assert.equal(cFind({ ctx: { now: day('2026-10-28') } }).length, 0, '13 days is too late');
+  assert.equal(cFind({ ctx: { now: day('2026-10-13') } }).length, 1, '28 days is in');
+  assert.equal(cFind({ ctx: { now: day('2026-10-12') } }).length, 0, '29 days is too early');
+  assert.equal(cFind({ cs: 79.4 }).length, 0, 'rounds to 79: below 80');
+  assert.equal(cFind({ cs: 79.5 }).length, 1, 'rounds to 80: in');
+});
+
+test('closing-soon: one per show ever, open shows with a real date and a settled score only', () => {
+  assert.equal(cFind({ ctx: { ledger: { posts: [{ type: 'closing-soon', id: 'closing-soon:cs-2026', showId: 'cs-2026' }] } } }).length, 0);
+  assert.ok(sel.doneKeys({ posts: [{ type: 'closing-soon', id: 'closing-soon:cs-2026', showId: 'cs-2026' }] }).has('closing-soon:cs-2026'));
+  assert.equal(cFind({ show: { status: 'closed' } }).length, 0);
+  assert.equal(cFind({ show: { closingDate: null } }).length, 0);
+  assert.equal(cFind({ show: { closingDate: 'TBD' } }).length, 0);
+  assert.equal(cFind({ ctx: { reviewsByShow: { 'cs-2026': [] } } }).length, 0, 'unsettled score');
+  assert.equal(cFind({ show: { provisional: true } }).length, 0, 'provisional rows are ineligible');
+});
+
+test('closing captions: facts only, every limit, no em dashes, closing marker, not the score or compare sentence', () => {
+  const s = cShow({ title: 'A Very Long Closing Show Title That Goes On And On For A While Over Here' });
+  const p = { show: s, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' };
+  const caps = cap.buildClosingCaptions(p);
+  for (const [net, text] of Object.entries(caps)) {
+    if (LIMITS[net]) assert.ok(xLength(net, text) <= LIMITS[net], `${net} ${xLength(net, text)}`);
+    assert.doesNotMatch(text, /[—–]/);
+    assert.deepEqual(cap.strayNumbers(text, cap.closingAllowedNumbers(p)), [], net);
+    if (net !== 'altText') for (const re of cap.closingMarkers(s)) assert.match(text, re, `${net} marker`);
+    assert.doesNotMatch(text, cap.SCORE_SENTENCE);
+    assert.doesNotMatch(text, cap.COMPARE_SENTENCE);
+  }
+  assert.match(caps.threads, /closes Nov 10, with a Critic Score of 84/);
+  assert.match(caps.twitter, /utm_campaign=closing/);
+});
+
+test('new types: ledger entries recover their own markers on a retry, never a score post', () => {
+  const r = entryMarkers({ type: 'weekly-roundup', id: 'weekly-roundup:broadway:2026-10-23', set: 'broadway', first: '2026-10-15', last: '2026-10-21', showIds: [] });
+  assert.ok(r.some(re => re.source === cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway')[1].source));
+  const c = entryMarkers({ type: 'closing-soon', id: 'closing-soon:cs-2026', showId: 'cs-2026', showIds: ['cs-2026'] });
+  assert.ok(c.some(re => re.source === cap.CLOSING_SENTENCE.source));
+});
+
+const newTypePost = async (ledger, { type, now, remaining }) => {
+  const run = require('./social-autopost/run.js');
+  await bufferLib.listChannels().catch(() => {});
+  const summary = [], problems = [];
+  const isRound = type === 'weekly-roundup';
+  const s = cShow();
+  const captions = isRound ? rCaps() : cap.buildClosingCaptions({ show: s, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' });
+  const markers = isRound ? cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway') : cap.closingMarkers(s);
+  const entry = isRound
+    ? { type, id: 'weekly-roundup:broadway:2026-10-23', set: 'broadway', first: '2026-10-15', last: '2026-10-21', showIds: ['ra-2026', 'rc-2026', 'rb-2026'], showId: 'ra-2026', template: 'roundup', auto: true }
+    : { type, id: `closing-soon:${s.id}`, showId: s.id, template: 'closing', auto: true };
+  await run.postCompare({
+    label: entry.id, shows: isRound ? [rShows[0], rShows[2], rShows[1]] : [s], newer: isRound ? rShows[0] : s, olderLabel: '', markers,
+    captions, imageUrl: 'https://img.example/x.jpg', ctx: { ledger, ledgerFile: path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'nt-ledger-')), 'ledger.json') }, buffer: bufferLib, channels: lcChannels, now,
+    earliest: now, summary, problems, entry,
+  });
+};
+
+for (const type of ['weekly-roundup', 'closing-soon']) {
+  test(`${type}: posts on all five networks through the fake Buffer and records its ledger type and key`, async () => {
+    const ledger = { _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [] };
+    await withFakeBuffer(240, [], async seen => {
+      await newTypePost(ledger, { type, now: FRI });
+      assert.equal(seen.created.length, 5);
+      assert.deepEqual(seen.created.map(i => i.channelId).sort(), lcChannels.map(c => c.id).sort());
+    });
+    const entry = ledger.posts.find(p => p.type === type);
+    assert.ok(entry, 'ledger entry written');
+    assert.ok(sel.doneKeys(ledger).has(entry.id));
+    assert.deepEqual(Object.keys(entry.channels).sort(), ['bluesky', 'facebook', 'instagram', 'threads', 'twitter']);
+  });
+
+  test(`${type}: the Buffer quota guard creates nothing when requests are low`, async () => {
+    const ledger = { _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [] };
+    await withFakeBuffer(5, [], async seen => {
+      await assert.rejects(newTypePost(ledger, { type, now: FRI }), e => e.code === 'QUOTA');
+      assert.equal(seen.created.length, 0);
+    });
+    assert.equal(ledger.posts.filter(p => p.type === type).length, 0);
+  });
+}
+
+test('closing-soon: a score post already scheduled for that show that day moves it to the next free day (cross-lane rule)', async () => {
+  const s = cShow();
+  const ledger = { _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [{ type: 'score', showId: s.id, dueAt: '2026-10-27T14:00:00.000Z', channels: { twitter: { postId: 'x1' } } }] };
+  const busy = { id: 'x1', text: `X https://broadwayscorecard.com/show/${s.slug}?utm_source=twitter`, status: 'scheduled', dueAt: '2026-10-27T14:00:00Z' };
+  await withFakeBuffer(240, [busy], async () => { await newTypePost(ledger, { type: 'closing-soon', now: at('2026-10-27T14:05:00Z') }); });
+  const entry = ledger.posts.find(p => p.type === 'closing-soon');
+  assert.ok(Date.parse(entry.dueAt) >= at('2026-10-28T13:00:00Z'), `moved off the busy day: ${entry.dueAt}`);
+});
+
+test('new types: the kill switch stops both lanes, and the social report names them', () => {
+  const src = fs.readFileSync(new URL('./social-autopost/run.js', import.meta.url), 'utf8');
+  assert.match(src, /WEEKLY_ROUNDUP\.enabled/);
+  assert.match(src, /CLOSING_SOON\.enabled/);
+  assert.match(src, /kill|SOCIAL_AUTOPOST_DISABLED|disabled/i);
+  const report = fs.readFileSync(new URL('./lib/social-report.js', import.meta.url), 'utf8');
+  assert.match(report, /'weekly-roundup': 'weekly roundup posts'/);
+  assert.match(report, /'closing-soon': 'closing soon posts'/);
+});
+
+const haveData = fs.existsSync(new URL('../data/shows.json', import.meta.url));
+test('roundup and closing on the real data: every candidate has a slim score, no row is a duplicate, previews build captions', { skip: !haveData }, () => {
+  const shows = require('../data/shows.json');
+  const list = shows.shows || shows;
+  const slimDir = new URL('../public/data/shows/', import.meta.url);
+  const slim = Object.fromEntries(list.filter(s => fs.existsSync(new URL(`${s.id}.json`, slimDir))).map(s => [s.id, JSON.parse(fs.readFileSync(new URL(`${s.id}.json`, slimDir), 'utf8'))]));
+  assert.ok(Object.keys(slim).length > 50);
+  const ctx = { shows: list, ledger: { posts: [] }, now: FRI, slim, getOutletTier, reviewsByShow: {} };
+  const rows = sel.roundupLookback({ ...ctx, days: 90 });
+  assert.ok(rows.length >= 20);
+  for (const r of rows) assert.equal(new Set(r.candidates.map(c => c.id)).size, r.candidates.length);
+  const cl = sel.closingSoonLookback({ ...ctx, days: 90 });
+  assert.ok(Array.isArray(cl));
+});
+
+// ---------------------------------------------------------------------------
+// Voice (BRO-6417, scripts/social-autopost/VOICE.md): every builder ends with an open question built from the facts.
+
+const VOICE_BANNED = [/thoughts\?/i, /\bagree\?/i, /tag a friend/i, /like if/i, /share if/i, /comment below/i, /drop a /i, /excited to share/i, /thrilled to/i,
+  /\bdelve\b/i, /\brobust\b/i, /\bleverage\b/i, /\bunlock\b/i, /tapestry/i, /\brealm\b/i, /deep dive/i, /landscape of/i, /journey of/i, /navigate the/i, /[—–]/];
+const ASKS = /\b(what|why|which|who|where|how|do you)\b[^.?!]*\?/i;
+const LONG_TITLE = 'The Extraordinarily Long-Winded Musical Adventure of Somebody and Everybody Else Entirely';
+
+/** Every builder, with tight (long title) and roomy fixtures. */
+function voiceFixtures() {
+  const out = [];
+  for (const title of ['Hadestown', LONG_TITLE]) {
+    for (const [tierId, tierLabel, breakdown] of [['must-see', 'Critical Gold', { rave: 19, positive: 11, mixed: 1, negative: 1 }], ['recommended', 'Recommended', { rave: 3, positive: 14, mixed: 12, negative: 2 }], ['skippable', 'Skippable', { rave: 0, positive: 2, mixed: 9, negative: 8 }]]) {
+      const s = show({ title, id: 'voice-show', slug: 'voice-show' });
+      const p = { show: s, score: 84, tierId, tierLabel, reviewCount: 32, breakdown };
+      out.push({ name: `score ${tierId} ${title.length}`, caps: buildCaptions(p), allowed: cap.scoreAllowedNumbers(p) });
+    }
+    for (const [a, b] of [[85, 77], [77, 85], [80, 81]]) {
+      const c = briefs.buildCompare({ descA: desc({ ...london, title }, a, 26), descB: desc({ ...offb, title }, b, 24), hook: '', now: NOW });
+      out.push({ name: `compare ${a}/${b} ${title.length}`, caps: c.captions, allowed: [a, b, 26, 24, c.delta, 2024, 2026] });
+    }
+    const rows = Array.from({ length: 6 }, (_, i) => ({ title: `${title} ${i}`.slice(0, 60), category: 'broadway', score: 90 - i, tierLabel: 'Critical Gold' }));
+    for (const [r, more] of [[rRows, 0], [rows, 2], [rows.slice(0, 2), 0]]) {
+      const p = { set: 'broadway', first: '2026-10-15', last: '2026-10-21', rows: r, more };
+      out.push({ name: `roundup ${r.length} ${title.length}`, caps: cap.buildRoundupCaptions(p), allowed: cap.roundupAllowedNumbers(p) });
+    }
+    const cs = cShow({ title });
+    const cp = { show: cs, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' };
+    out.push({ name: `closing ${title.length}`, caps: cap.buildClosingCaptions(cp), allowed: cap.closingAllowedNumbers(cp) });
+  }
+  return out;
+}
+
+test('voice: every builder on every network carries an open closing question, within limits, no stray numbers', () => {
+  for (const f of voiceFixtures()) {
+    for (const net of Object.keys(LIMITS)) {
+      const text = f.caps[net];
+      assert.ok(xLength(net, text) <= LIMITS[net], `${f.name} ${net} over its limit (${xLength(net, text)})`);
+      const body = text.replace(/https?:\/\/\S+/g, '');
+      assert.match(body, ASKS, `${f.name} ${net} lost its question:\n${text}`);
+      assert.doesNotMatch(body, /\b(yes|no)\b[^.?!]*\?$/im, `${f.name} ${net} asks a yes/no question`);
+      assert.deepEqual(cap.strayNumbers(text, f.allowed), [], `${f.name} ${net} stray numbers`);
+    }
+  }
+});
+
+test('voice: no banned phrase, no em dash, and no question that is only engagement bait', () => {
+  for (const f of voiceFixtures()) {
+    for (const [net, text] of Object.entries(f.caps)) for (const re of VOICE_BANNED) assert.doesNotMatch(text, re, `${f.name} ${net} hits ${re}`);
+  }
+  const voice = fs.readFileSync(new URL('./social-autopost/VOICE.md', import.meta.url), 'utf8');
+  assert.doesNotMatch(voice, /[—–]/, 'VOICE.md has a dash');
+  assert.match(voice, /replies/i, 'VOICE.md covers replies');
+  assert.match(fs.readFileSync(new URL('../.claude/commands/social-post.md', import.meta.url), 'utf8'), /VOICE\.md/, 'social-post.md points at VOICE.md');
+});
+
+test('voice: compare question follows the direction and size of the gap; within 3 points the angle is agreement', () => {
+  const q = (a, b) => cap.compareQuestion({ show: offb, score: a }, { show: london, score: b });
+  assert.match(q(77, 90).long, /a 13-point gap\. Why do you think London critics warmed to it more\?/);
+  assert.match(q(90, 77).long, /Why do you think New York critics warmed to it more\?/);
+  assert.match(q(80, 81).long, /critics largely agree/);
+  assert.match(q(80, 88).short, /^An 8-point gap\. Why did London critics warm to it more\?$/);
+});
+
+test('voice: a divided tally asks about the split, a one-sided one asks by tier', () => {
+  assert.match(cap.scoreQuestion({ tierId: 'recommended', breakdown: { rave: 3, positive: 14, mixed: 12, negative: 2 } }).long, /17 positive, 14 mixed or negative/);
+  assert.match(cap.scoreQuestion({ tierId: 'must-see', breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 } }).long, /raving/);
+});
+
+// ---------------------------------------------------------------------------
+// Review fixes (BRO-6413 ship-check)
+
+test('roundup markers: the Broadway and West End roundups of one week never adopt each other', () => {
+  const b = cap.buildRoundupCaptions({ set: 'broadway', first: '2026-10-15', last: '2026-10-21', rows: rRows, more: 0 });
+  const w = cap.buildRoundupCaptions({ set: 'west-end', first: '2026-10-15', last: '2026-10-21', rows: rRows, more: 0 });
+  for (const net of ['twitter', 'bluesky', 'threads', 'instagram', 'facebook']) {
+    assert.ok(cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway').every(re => re.test(b[net])), `${net} broadway own`);
+    assert.ok(!cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway').every(re => re.test(w[net])), `${net} west end is not adopted as broadway`);
+    assert.ok(!cap.roundupMarkers('2026-10-15', '2026-10-21', 'west-end').every(re => re.test(b[net])), `${net} broadway is not adopted as west end`);
+  }
+});
+
+test('west end roundup and closing-soon post nowhere while the West End accounts are unconfigured', async () => {
+  const run = require('./social-autopost/run.js');
+  const ledger = { _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [] };
+  await withFakeBuffer(240, [], async seen => {
+    const ctx = { ledger, shows: [] };
+    const args = { ctx, buffer: bufferLib, channels: lcChannels, now: FRI, outDir: os.tmpdir(), summary: [], problems: [] };
+    assert.equal(await run.runRoundup({ id: 'weekly-roundup:west-end:2026-10-23', set: 'west-end', first: '2026-10-15', last: '2026-10-21', candidates: [], dueAt: new Date(FRI) }, args), 'idle');
+    assert.equal(await run.runClosingSoon({ show: { ...cShow(), category: 'west-end', id: 'we-closing-west-end-2026' }, closing: '2026-11-10', score: 84, dueAt: new Date(FRI) }, args), 'idle');
+    assert.equal(seen.created.length, 0);
+  });
+  assert.equal(ledger.posts.length, 0);
+});
+
+test('closing-soon: a season of closings goes out at most maxPerDay a day, soonest first', () => {
+  const mk = (i, closing) => cShow({ id: `c${i}-2026`, slug: `c${i}`, closingDate: closing });
+  const shows = [mk(1, '2026-11-12'), mk(2, '2026-11-10'), mk(3, '2026-11-14'), mk(4, '2026-11-16')];
+  const slim = Object.fromEntries(shows.map(s => [s.id, { cs: 85, rc: 14 }]));
+  const rev = Object.fromEntries(shows.map(s => [s.id, reviews(6, 3, 6)]));
+  const args = { shows, now: at('2026-10-27T14:00:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.CLOSING_SOON, enabled: true } };
+  const first = sel.findClosingSoonEvents({ ...args, ledger: { posts: [] } });
+  assert.ok(first.length <= 2, `${first.length} closing-soon events in one day`);
+  assert.deepEqual(first.map(e => e.closing), [...first.map(e => e.closing)].sort(), 'soonest first');
+  const one = sel.findClosingSoonEvents({ ...args, ledger: { posts: [{ type: 'closing-soon', id: 'closing-soon:zz', showId: 'zz', date: '2026-10-27' }] } });
+  assert.ok(one.length <= 1, 'one already sent today leaves room for one');
+});
+
+test('captions never cut a title through a number', () => {
+  const p = { show: cShow({ title: '1776 The Musical About A Declaration That Goes On And On Forever Amen' }), score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' };
+  const caps = cap.buildClosingCaptions(p);
+  for (const net of ['twitter', 'bluesky']) assert.deepEqual(cap.strayNumbers(caps[net], cap.closingAllowedNumbers(p)), [], net);
+});
+
+test('closing captions: X keeps the question with a long real show link (the link counts 23 on X)', () => {
+  const s = cShow({ title: 'School Girls; Or, The African Mean Girls Play' });
+  const caps = cap.buildClosingCaptions({ show: s, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-15' });
+  assert.ok(caps.twitter.includes('Last chance') || caps.twitter.includes('does it live up'), caps.twitter);
+  assert.ok(caps.twitter.includes(s.title), 'full title kept on X');
+  assert.ok(xLength('twitter', caps.twitter) <= LIMITS.twitter);
 });

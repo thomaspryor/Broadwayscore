@@ -300,7 +300,8 @@ test('digest surfacing: reverseDiscoveryBacklogResults wired in health-check', (
   assert.equal(out.length, 1);
   assert.equal(out[0].status, 'warn');
   assert.match(out[0].message, /Midnight at the Never Get/);
-  assert.equal(reverseDiscoveryBacklogResults({ candidates: [] }).length, 0);
+  // Empty backlog → explicit pass row (verifiable 'absent'); no report → nothing.
+  assert.deepEqual(reverseDiscoveryBacklogResults({ generatedAt: new Date().toISOString(), candidates: [] }).map((r) => r.status), ['pass']);
   assert.equal(reverseDiscoveryBacklogResults(null).length, 0);
 });
 
@@ -554,7 +555,7 @@ test('BRO-4689: separators never reduce a title to a bare article', () => {
 test('BRO-4689: health row lists only reviewed (evidence-anchored) candidates', () => {
   const { reverseDiscoveryBacklogResults } = require('../health-check.js');
   const cal = { title: 'Zzzz Fringe Festival Qqq', source: 'nyt-theater', market: 'nyc', url: 'https://x.test/' };
-  assert.deepEqual(reverseDiscoveryBacklogResults({ candidates: [cal] }, {}), []);
+  assert.deepEqual(reverseDiscoveryBacklogResults({ generatedAt: new Date().toISOString(), candidates: [cal] }, {}).map((r) => r.status), ['pass']);
   const rev = { title: 'Zzzz Unlisted Qqq Play', source: 'bww-roundup', market: 'nyc', url: 'https://x.test/r' };
   const rows = reverseDiscoveryBacklogResults({ candidates: [cal, rev] }, {});
   assert.equal(rows.length, 1);
@@ -610,4 +611,59 @@ test('BRO-4689: dash-subtitle catalogue title matches its BWW headline head', ()
 test('BRO-4689: caps single-word dash head applies to NYC only', () => {
   const we = buildShowTitleIndex([{ id: 's', title: 'STORIES – The Tap Dance Sensation', category: 'off-west-end', status: 'open' }], 'we');
   assert.equal(titleMatchesIndex('Stories', we), false);
+});
+
+// BRO-4689 (2026-10-27): both remaining "missing" shows were catalogued. 860
+// is "Billy Crystal 860" with akaTitles ["860"]; the Guardian heads Murder in
+// the Cathedral with the author's possessive.
+test('BRO-4689: akaTitles are indexed, possessive author lead is dropped', () => {
+  const { resolveMatchedShowId } = require('./reverse-discovery.js');
+  const shows = [
+    { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], category: 'broadway', status: 'open' },
+    { id: 'murder-cathedral-off-west-end-2026', title: 'Murder in the Cathedral', category: 'off-west-end', status: 'open' },
+  ];
+  const nyc = buildShowTitleIndex(shows, 'nyc');
+  const we = buildShowTitleIndex(shows, 'we');
+  assert.equal(titleMatchesIndex('860', nyc), true);
+  assert.equal(resolveMatchedShowId('860', nyc), 'billy-crystal-860-2026');
+  assert.equal(titleMatchesIndex('860', we), false); // market scoping still applies to aliases
+  assert.equal(titleMatchesIndex('TS Eliot’s Murder in the Cathedral', we), true);
+  assert.equal(resolveMatchedShowId('TS Eliot’s Murder in the Cathedral', we), 'murder-cathedral-off-west-end-2026');
+  // The lead-drop needs a real remainder and a capitalised lead.
+  assert.equal(titleMatchesIndex("Shakespeare's Globe", buildShowTitleIndex([{ title: 'Globe', category: 'west-end', status: 'open' }], 'we')), false);
+  assert.equal(titleMatchesIndex("the world's Cathedral", we), false);
+});
+
+test('BRO-4689: "<Person> Returns to Broadway in SHOW" extracts the show, not the star', () => {
+  const x = extractShowTitleFromBwwRoundup;
+  assert.equal(x('Review Roundup: Billy Crystal Returns to Broadway in 860'), '860');
+  assert.equal(x('Review Roundup: Gaten Matarazzo Comes to Broadway in RENT'), 'RENT');
+  // A show returning keeps the existing verb split.
+  assert.equal(x('Review Roundup: MAMMA MIA! Returns to Broadway'), 'MAMMA MIA!');
+  assert.equal(x('Review Roundup: OH, MARY! Returns to Broadway in New Cast'), 'OH, MARY!');
+  // Title-case show titles with a non-title tail keep the show (review finding).
+  assert.equal(x('Review Roundup: Kimberly Akimbo Returns to Broadway in March'), 'Kimberly Akimbo');
+  assert.equal(x('Review Roundup: Funny Girl Returns to Broadway in Summer'), 'Funny Girl');
+  assert.equal(x("Review Roundup: Sunset Boulevard Returns to Broadway in Jamie Lloyd's Revival"), 'Sunset Boulevard');
+});
+
+test('BRO-4689: possessive lead-drop never hides a revival or a different production', () => {
+  const { resolveMatchedShowId } = require('./reverse-discovery.js');
+  const shows = [
+    { id: 'james-joyces-the-dead-2000', title: "James Joyce's The Dead", category: 'broadway', status: 'closed' },
+    { id: 'the-dead-1904-off-broadway-2026', title: 'The Dead, 1904', category: 'off-broadway', status: 'upcoming' },
+    { id: 'romeo-1', title: 'Romeo and Juliet', category: 'broadway', status: 'closed' },
+    { id: 'company-1', title: 'Company', akaTitles: ['Sondheim Company'], category: 'broadway', status: 'open' },
+    { id: 'x-1', title: 'Something Else', akaTitles: ['Annie'], category: 'broadway', status: 'open' },
+  ];
+  const nyc = buildShowTitleIndex(shows, 'nyc');
+  // Full title is catalogued (closed musical): never strip to "The Dead" → The Dead, 1904.
+  assert.equal(resolveMatchedShowId('James Joyce\u2019s The Dead', nyc), null);
+  // Lead-drop only lands on a LIVE exact title.
+  assert.equal(titleMatchesIndex("Shakespeare's Romeo and Juliet", nyc), false);
+  // Contractions are not leads.
+  assert.equal(titleMatchesIndex("It's Only a Play", buildShowTitleIndex([{ id: 'p', title: 'Only a Play', category: 'broadway', status: 'open' }], 'nyc')), false);
+  // One-word aliases are not indexed (would hide a new "Annie").
+  assert.equal(titleMatchesIndex('Annie', nyc), false);
+  assert.equal(titleMatchesIndex('Sondheim Company', nyc), true);
 });
