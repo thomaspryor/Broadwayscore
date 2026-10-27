@@ -1,0 +1,1880 @@
+{
+  "generatedAt": "2026-10-27T10:08:37.114Z",
+  "season": "2012-2013",
+  "sources": [
+    "official-london-theatre (wayback)",
+    "tr-az",
+    "tr-page",
+    "wos-review",
+    "olivier-2013",
+    "olivier-2014"
+  ],
+  "counts": {
+    "listings": 19,
+    "promotable": 10,
+    "notPromotable": {
+      "no closing date": 1,
+      "non-theatre genre": 3,
+      "no review signal (WOS review, Olivier nomination)": 4,
+      "already in shows.json": 1
+    }
+  },
+  "candidates": [
+    {
+      "title": "Mamma Mia!",
+      "venue": "Novello Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2012-09-06",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2012-2013",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-09-29",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170929052915/http://www.officiallondontheatre.co.uk:80/london-shows/show/item148257/mamma-mia"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no closing date"
+      }
+    },
+    {
+      "title": "Hedda Gabler",
+      "venue": "Old Vic",
+      "previewsStartDate": "2012-09-05",
+      "openingDate": "2012-09-12",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2012-11-10",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "olivier-2013"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-10",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160410035530/http://www.officiallondontheatre.co.uk/london-shows/show/item144042/hedda-gabler/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: olivier-2013"
+      }
+    },
+    {
+      "title": "Let It Be",
+      "venue": "Prince of Wales Theatre",
+      "previewsStartDate": "2012-09-14",
+      "openingDate": "2012-09-24",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-01-19",
+      "genres": [
+        "event"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2015-07-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20150701212016/http://www.officiallondontheatre.co.uk/london-shows/show/item139684/let-it-be/"
+      },
+      "trAz": {
+        "title": "LET IT BE",
+        "venue": null,
+        "opened": "2012-09-24"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "A Chorus of Disapproval",
+      "venue": "Harold Pinter Theatre",
+      "previewsStartDate": "2012-09-17",
+      "openingDate": "2012-09-27",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-01-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-11",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160411171640/http://www.officiallondontheatre.co.uk/london-shows/show/item146319/a-chorus-of-disapproval/"
+      },
+      "trAz": {
+        "title": "A CHORUS OF DISAPPROVAL",
+        "venue": null,
+        "opened": "2012-09-27"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "Paul Merton - Out of My Head",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2012-10-01",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2012-10-20",
+      "genres": [
+        "event"
+      ],
+      "season": "2012-2013",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2017-04-10",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20170410204723/http://www.officiallondontheatre.co.uk:80/london-shows/show/item139422/paul-merton-out-of-my-head"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Monty Python's Spamalot",
+      "venue": "Playhouse Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2012-11-14",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2014-04-12",
+      "genres": [
+        "musical"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-07",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171007203713/http://www.officiallondontheatre.co.uk:80/london-shows/show/item159355/monty-pythons-spamalot"
+      },
+      "trAz": {
+        "title": "MONTY PYTHON'S SPA!MALOT",
+        "venue": null,
+        "opened": "2012-11-20"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "A Christmas Carol",
+      "venue": "Arts Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2012-11-29",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-01-05",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2015-11-01",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20151101121625/http://www.officiallondontheatre.co.uk:80/london-shows/show/item161907/a-christmas-carol/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Bodyguard",
+      "venue": "Adelphi Theatre",
+      "previewsStartDate": "2012-11-06",
+      "openingDate": "2012-12-05",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2014-08-29",
+      "genres": [
+        "musical"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az",
+        "olivier-2013"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-10",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160410190515/http://www.officiallondontheatre.co.uk/london-shows/show/item141348/the-bodyguard/"
+      },
+      "trAz": {
+        "title": "THE BODYGUARD",
+        "venue": null,
+        "opened": "2012-12-05"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, olivier-2013"
+      }
+    },
+    {
+      "title": "Rock of Ages",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": null,
+      "openingDate": "2013-01-18",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-11-02",
+      "genres": [
+        "musical"
+      ],
+      "season": "2012-2013",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-04-11",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160411223010/http://www.officiallondontheatre.co.uk/london-shows/show/item165263/rock-of-ages/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Judas Kiss",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2013-01-09",
+      "openingDate": "2013-01-22",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-04-06",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-09-21",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160921052610/http://www.officiallondontheatre.co.uk/london-shows/show/item158594/the-judas-kiss/"
+      },
+      "trAz": {
+        "title": "THE JUDAS KISS",
+        "venue": null,
+        "opened": "2013-01-17"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "The Curious Incident of the Dog in the Night-Time",
+      "venue": "Apollo Theatre",
+      "previewsStartDate": "2013-03-01",
+      "openingDate": "2013-03-12",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-12-19",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-04-11",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160411010149/http://www.officiallondontheatre.co.uk/london-shows/show/item160832/the-curious-incident-of-the-dog-in-the-night-time/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "The Book of Mormon",
+      "venue": "Prince of Wales Theatre",
+      "previewsStartDate": "2013-02-25",
+      "openingDate": "2013-03-21",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": null,
+      "genres": [
+        "musical"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az",
+        "olivier-2014"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2017-10-24",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20171024213557/http://www.officiallondontheatre.co.uk:80/london-shows/show/item157833/the-book-of-mormon/"
+      },
+      "trAz": {
+        "title": "THE BOOK OF MORMON",
+        "venue": null,
+        "opened": "2013-03-21",
+        "seasonFrom": "2013-08-30"
+      },
+      "inShowsJson": "the-book-of-mormon-west-end-2024",
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "already in shows.json: the-book-of-mormon-west-end-2024"
+      }
+    },
+    {
+      "title": "Potted Potter",
+      "venue": "Garrick Theatre",
+      "previewsStartDate": "2013-03-23",
+      "openingDate": "2013-03-24",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-04-21",
+      "genres": [
+        "event"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2015-09-26",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20150926095357/http://www.officiallondontheatre.co.uk:80/london-shows/show/item166245/potted-potter"
+      },
+      "trAz": {
+        "title": "POTTED POTTER",
+        "venue": null,
+        "opened": null,
+        "seasonFrom": "2013-03-24"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": true,
+        "reason": "non-theatre genre: event"
+      }
+    },
+    {
+      "title": "Alan Bennett's Untold Stories",
+      "venue": "Duchess Theatre",
+      "previewsStartDate": "2013-03-22",
+      "openingDate": "2013-04-02",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-06-15",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [],
+      "origin": "olt",
+      "snapshotDate": "2016-04-11",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160411132049/http://www.officiallondontheatre.co.uk/london-shows/show/item169410/alan-bennetts-untold-stories/"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": false,
+        "persistent": false,
+        "reason": "no review signal (WOS review, Olivier nomination)"
+      }
+    },
+    {
+      "title": "Once",
+      "venue": "Phoenix Theatre",
+      "previewsStartDate": "2013-03-16",
+      "openingDate": "2013-04-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2015-03-21",
+      "genres": [
+        "musical"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az",
+        "olivier-2014"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-12",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160412053102/http://www.officiallondontheatre.co.uk/london-shows/show/item158698/once/"
+      },
+      "trAz": {
+        "title": "ONCE",
+        "venue": null,
+        "opened": "2013-04-09"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, olivier-2014"
+      }
+    },
+    {
+      "title": "Beautiful Thing",
+      "venue": "Arts Theatre",
+      "previewsStartDate": "2013-04-13",
+      "openingDate": "2013-04-17",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-05-25",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2015-07-08",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20150708055832/http://www.officiallondontheatre.co.uk:80/london-shows/show/item167778/beautiful-thing/"
+      },
+      "trAz": {
+        "title": "BEAUTIFUL THING",
+        "venue": null,
+        "opened": null,
+        "seasonFrom": "2013-04-17"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "Passion Play",
+      "venue": "Duke of York's Theatre",
+      "previewsStartDate": "2013-05-01",
+      "openingDate": "2013-05-07",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-08-03",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-15",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160415080028/http://www.officiallondontheatre.co.uk/london-shows/show/item161508/passion-play/"
+      },
+      "trAz": {
+        "title": "PASSION PLAY",
+        "venue": null,
+        "opened": "2013-05-07"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    },
+    {
+      "title": "Private Lives",
+      "venue": "Gielgud Theatre",
+      "previewsStartDate": "2013-06-22",
+      "openingDate": "2013-07-03",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-09-21",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az",
+        "olivier-2014"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-15",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160415192931/http://www.officiallondontheatre.co.uk/london-shows/show/item170083/private-lives/"
+      },
+      "trAz": {
+        "title": "PRIVATE LIVES",
+        "venue": null,
+        "opened": null,
+        "seasonFrom": "2013-07-03"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az, olivier-2014"
+      }
+    },
+    {
+      "title": "The Ladykillers",
+      "venue": "Vaudeville Theatre",
+      "previewsStartDate": "2013-06-29",
+      "openingDate": "2013-07-09",
+      "openingDateSource": "official-london-theatre",
+      "closingDate": "2013-11-16",
+      "genres": [
+        "play"
+      ],
+      "season": "2012-2013",
+      "signals": [
+        "tr-az"
+      ],
+      "origin": "olt",
+      "snapshotDate": "2016-04-10",
+      "sourceUrls": {
+        "olt": "https://web.archive.org/web/20160410093034/http://www.officiallondontheatre.co.uk/london-shows/show/item175572/the-ladykillers/"
+      },
+      "trAz": {
+        "title": "THE LADYKILLERS",
+        "venue": null,
+        "opened": "2013-07-09"
+      },
+      "inShowsJson": null,
+      "decision": {
+        "promotable": true,
+        "persistent": true,
+        "reason": "signals: tr-az"
+      }
+    }
+  ],
+  "signalInputs": {
+    "reviews": [],
+    "oliviers": [
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Audience",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Constellations",
+        "venues": [
+          "Duke of York's Theatre"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "This House",
+        "venues": [
+          "National Theatre Cottesloe / Olivier"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Bodyguard",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Loserville",
+        "venues": [
+          "Garrick"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Soul Sister",
+        "venues": [
+          "Savoy"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Long Day's Journey into Night",
+        "venues": [
+          "Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Macbeth",
+        "venues": [
+          "Trafalgar Studios"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Old Times",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Twelfth Night",
+        "venues": [
+          "Globe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sweeney Todd",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "A Chorus Line",
+        "venues": [
+          "London Palladium"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Cabaret",
+        "venues": [
+          "Savoy"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Kiss Me, Kate",
+        "venues": [
+          "Old Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Goodnight Mister Tom",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Cinderella: A Fairytale",
+        "venues": [
+          "St James"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Hansel and Gretel",
+        "venues": [
+          "National Theatre Cottesloe"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Room on the Broom",
+        "venues": [
+          "Lyric"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Judas Kiss",
+        "venues": [
+          "Hampstead / Duke of York's"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Macbeth",
+        "venues": [
+          "Trafalgar Studios"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Twelfth Night",
+        "venues": [
+          "Globe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Constellations",
+        "venues": [
+          "Duke of York's theatre"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Audience",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "A Doll's House",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Effect",
+        "venues": [
+          "National Theatre Cottesloe"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Old Times",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sweeney Todd",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Kiss Me, Kate",
+        "venues": [
+          "Old Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Cabaret",
+        "venues": [
+          "Savoy"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sweeney Todd",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Bodyguard",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Kiss Me, Kate",
+        "venues": [
+          "Old Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Audience",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Twelfth Night",
+        "venues": [
+          "Globe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Hedda Gabler",
+        "venues": [
+          "Old Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Long Day's Journey into Night",
+        "venues": [
+          "Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "NSFW",
+        "venues": [
+          "Royal Court"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Effect",
+        "venues": [
+          "National Theatre Cottesloe"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Julius Caesar",
+        "venues": [
+          "Donmar Warehouse"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Last of the Haussmans",
+        "venues": [
+          "National Theatre Lyttelton"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "A Chorus Line",
+        "venues": [
+          "London Palladium"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Kiss Me, Kate",
+        "venues": [
+          "Old Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Bodyguard",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Cabaret",
+        "venues": [
+          "Savoy"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Audience",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "This House",
+        "venues": [
+          "National Theatre Cottesloe / Olivier"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Master and Margarita",
+        "venues": [
+          "Barbican Theatre"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Chariots of Fire",
+        "venues": [
+          "Hampstead/Gielgud"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Kiss Me, Kate",
+        "venues": [
+          "Old Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Wild Swans",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Bodyguard",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Audience",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Twelfth Night",
+        "venues": [
+          "Globe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sweeney Todd",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Master and Margarita",
+        "venues": [
+          "Barbican Theatre"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Constellations",
+        "venues": [
+          "Duke of York's Theatre"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sweeney Todd",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The Curious Incident of the Dog in the Night-Time",
+        "venues": [
+          "National Theatre Cottesloe / Apollo"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sweeney Todd",
+        "venues": [
+          "Adelphi"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Constellations",
+        "venues": [
+          "Duke of York's Theatre"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Top Hat",
+        "venues": [
+          "Aldwych"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "– Royal Ballet, Royal Opera House",
+        "venues": [
+          "Royal Ballet",
+          "Royal Opera House"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Sleeping Beauty",
+        "venues": [
+          "Sadler's Wells"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Breakin' Convention",
+        "venues": [
+          "Sadler's Wells"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Aeternum",
+        "venues": [
+          "Royal Opera House"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Cacti",
+        "venues": [
+          "Sadler's Wells"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "A Streetcar Named Desire",
+        "venues": [
+          "Sadler's Wells"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Les Troyens",
+        "venues": [
+          "Royal Opera House"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Billy Budd",
+        "venues": [
+          "London Coliseum"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Ghost Patrol",
+        "venues": [
+          "Linbury Studio",
+          "Royal Opera House"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Einstein on the Beach",
+        "venues": [
+          "Barbican"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Billy Budd",
+        "venues": [
+          "London Coliseum"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Caligula",
+        "venues": [
+          "London Coliseum"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "La traviata",
+        "venues": [
+          "London Coliseum"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "The season of new writing – Jerwood Theatre Upstairs, Royal Court",
+        "venues": [
+          "Jerwood Theatre Upstairs",
+          "Royal Court"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "You Me Bum Bum Train",
+        "venues": [
+          "Theatre Royal Stratford East"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Red Velvet",
+        "venues": [
+          "Tricycle"
+        ],
+        "year": 2013
+      },
+      {
+        "title": "Chimerica",
+        "venues": [
+          "Almeida / Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "1984",
+        "venues": [
+          "Almeida"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Peter and Alice",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Night Alive",
+        "venues": [
+          "Donmar Warehouse"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Book of Mormon",
+        "venues": [
+          "Prince of Wales"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Once",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Scottsboro Boys",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Ghosts",
+        "venues": [
+          "Almeida / Trafalgar Studios"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Othello",
+        "venues": [
+          "National Theatre Olivier"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Private Lives",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Amen Corner",
+        "venues": [
+          "National Theatre Olivier"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Tell Me on a Sunday",
+        "venues": [
+          "St James / Duchess"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Sound of Music",
+        "venues": [
+          "Regent's Park Open Air"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Jeeves and Wooster in Perfect Nonsense",
+        "venues": [
+          "Duke of York's"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Duck House",
+        "venues": [
+          "Vaudeville"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Full Monty",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Same Deep Water as Me",
+        "venues": [
+          "Donmar Warehouse"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Wind in the Willows",
+        "venues": [
+          "Duchess"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Derren Brown: Infamous",
+        "venues": [
+          "Palace"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Eric and Little Ern",
+        "venues": [
+          "Vaudeville"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Othello",
+        "venues": [
+          "National Theatre Olivier"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Resistible Rise of Arturo Ui",
+        "venues": [
+          "Duchess"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Coriolanus",
+        "venues": [
+          "Donmar Warehouse"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Henry V",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Ghosts",
+        "venues": [
+          "Almeida / Trafalgar Studios"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Pride",
+        "venues": [
+          "Trafalgar Studios"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Private Lives",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Peter and Alice",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Book of Mormon",
+        "venues": [
+          "Prince of Wales"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Book of Mormon",
+        "venues": [
+          "Prince of Wales"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Scottsboro Boys",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Once",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Light Princess",
+        "venues": [
+          "National Theatre Lyttelton"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Sound of Music",
+        "venues": [
+          "Regent's Park Open Air"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Ghosts",
+        "venues": [
+          "Almeida / Trafalgar Studios"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Henry V",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Coriolanus",
+        "venues": [
+          "Donmar Warehouse"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Weir",
+        "venues": [
+          "Donmar Warehouse / Wyndham's"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Amen Corner",
+        "venues": [
+          "National Theatre Olivier"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Cripple of Inishmaan",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "A Midsummer Night's Dream",
+        "venues": [
+          "Noël Coward"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Amen Corner",
+        "venues": [
+          "National Theatre Olivier"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Book of Mormon",
+        "venues": [
+          "Prince of Wales"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Scottsboro Boys",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Chimerica",
+        "venues": [
+          "Almeida / Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Ghosts",
+        "venues": [
+          "Almeida / Trafalgar Studios"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Scottsboro Boys",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Book of Mormon",
+        "venues": [
+          "Prince of Wales"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Once",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Scottsboro Boys",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Chimerica",
+        "venues": [
+          "Almeida / Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Once",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Strangers on a Train",
+        "venues": [
+          "Gielgud"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Wind in the Willows",
+        "venues": [
+          "Duchess"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Light Princess",
+        "venues": [
+          "National Theatre Lyttelton"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Chimerica",
+        "venues": [
+          "Almeida / Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Charlie and the Chocolate Factory",
+        "venues": [
+          "Theatre Royal",
+          "Drury Lane"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Light Princess",
+        "venues": [
+          "National Theatre Lyttelton"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Ghosts",
+        "venues": [
+          "Almeida / Trafalgar Studios"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Chimerica",
+        "venues": [
+          "Almeida / Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Light Princess",
+        "venues": [
+          "National Theatre Lyttelton"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Once",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Once",
+        "venues": [
+          "Phoenix"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Scottsboro Boys",
+        "venues": [
+          "Young Vic"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Book of Mormon",
+        "venues": [
+          "Prince of Wales"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Merrily We Roll Along",
+        "venues": [
+          "Harold Pinter"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Witch-Hunt",
+        "venues": [
+          "Linbury Studio",
+          "Royal Opera House"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Puz/zle",
+        "venues": [
+          "Sadler's Wells"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Barbican Britten: Phaedra",
+        "venues": [
+          "Barbican"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "La donna del lago",
+        "venues": [
+          "Royal Opera House"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Nabucco",
+        "venues": [
+          "Royal Opera House"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Les vêpres siciliennes",
+        "venues": [
+          "Royal Opera House"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Firework-Maker's Daughter",
+        "venues": [
+          "Linbury Studio",
+          "Royal Opera House"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Wozzeck",
+        "venues": [
+          "London Coliseum"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Handbagged",
+        "venues": [
+          "Tricycle"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Josephine and I",
+        "venues": [
+          "Bush"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Fleabag",
+        "venues": [
+          "Soho"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Oh, What a Lovely War",
+        "venues": [
+          "Theatre Royal",
+          "Stratford East"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Les Misérables",
+        "venues": [
+          "Queen's"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Matilda",
+        "venues": [
+          "Cambridge"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "The Phantom of the Opera",
+        "venues": [
+          "Her Majesty's"
+        ],
+        "year": 2014
+      },
+      {
+        "title": "Wicked",
+        "venues": [
+          "Apollo Victoria"
+        ],
+        "year": 2014
+      }
+    ]
+  }
+}
