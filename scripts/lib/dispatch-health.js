@@ -255,6 +255,19 @@ function ownershipWindows(entries) {
 }
 
 /**
+ * True when a `landed-acked` row for this exact job (same jobId) follows the
+ * terminal job-* event `last`. A row with no jobId is not trusted: it cannot
+ * be tied to this attempt rather than a sibling attempt on the same card.
+ */
+function isLandedAcked(rows, taskId, last) {
+  if (!last || !last.jobId) return false;
+  return rows.some((e) => e && e.event === 'landed-acked'
+    && String(e.taskId) === String(taskId)
+    && e.jobId === last.jobId
+    && tsOf(e) !== null && tsOf(e) > last.ts);
+}
+
+/**
  * Job-lane (headless) launch outcomes over a trailing window — same shape and
  * window semantics as computeDeadRate, built on job-* events instead of cmux
  * `dead` rows.
@@ -313,6 +326,13 @@ function computeJobLaneOutcomeRate(entries, { nowMs, windowDays = DEFAULTS.windo
       // still broken out by name so a fix can be judged against the right
       // bucket instead of a generic "failed" blob.
       else if (last.event === JOB_EVENTS.BLOCKED) outcome = 'blocked';
+      // BRO-6430: ack-landed.js writes `landed-acked` after re-verifying a
+      // stopped-short/stranded job's work reached origin/main and its
+      // acceptance command exits 0. That is the explicit "this was a false
+      // alarm" signal, but it is not a job-* event so the scan above never
+      // saw it and the rate kept counting every acked job as a failure.
+      else if ((last.event === JOB_EVENTS.STOPPED_SHORT || last.event === JOB_EVENTS.STRANDED)
+        && isLandedAcked(rows, taskId, last)) outcome = 'done';
       else if (last.event === JOB_EVENTS.STOPPED_SHORT) outcome = 'stoppedShort';
       else if (last.event === JOB_EVENTS.STRANDED) outcome = 'stranded';
       else if (TERMINAL_JOB_EVENTS.has(last.event)) outcome = 'failed'; // FAILED/ABANDONED/RETRIED-with-no-successor-spawn-yet

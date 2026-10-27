@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
-  foldAttempts, computeDeadRate, computeDispatchHealthDigest, computeHeadlessDispatchDigest, CMUX_LANE,
+  foldAttempts, computeDeadRate, computeDispatchHealthDigest, computeHeadlessDispatchDigest, computeJobLaneOutcomeRate, CMUX_LANE,
 } = require('./dispatch-health.js');
 const { JOB_EVENTS } = require('./dispatch-ledger.js');
 // Rule 15: the REAL producer of the shape-1 dead pair, not a hand-copied
@@ -491,4 +491,30 @@ test('a shape-1 pair is immune to the reconciling rule — the death IS this lau
   const folded = foldAttempts(entries);
   assert.equal(folded.attempts.find((a) => a.taskId === '911').dead, true);
   assert.equal(folded.unattributedDeadCount, 0);
+});
+
+// BRO-6430: ack-landed.js's `landed-acked` row is the verified "false alarm"
+// signal for a stopped-short/stranded job; the rate must honor it, but only
+// for the exact job it names.
+const stoppedRun = (taskId, launchTs) => [
+  ...headlessRun(taskId, launchTs, 'inFlight'),
+  { ts: new Date(Date.parse(launchTs) + 60000).toISOString(), event: JOB_EVENTS.STOPPED_SHORT, taskId, jobId: `j-${taskId}` },
+];
+
+test('landed-acked for the same jobId turns a stopped-short job into done', () => {
+  const entries = [...stoppedRun('h-ack', '2026-08-05T00:00:00.000Z'),
+    { ts: '2026-08-06T00:00:00.000Z', event: 'landed-acked', taskId: 'h-ack', jobId: 'j-h-ack' }];
+  const r = computeJobLaneOutcomeRate(entries, { nowMs: NOW, windowDays: 14 });
+  assert.equal(r.done, 1);
+  assert.equal(r.stoppedShort, 0);
+});
+
+test('landed-acked for a different jobId (or none) does not rescue the job', () => {
+  for (const ack of [{ jobId: 'other-job' }, {}]) {
+    const entries = [...stoppedRun('h-noack', '2026-08-05T00:00:00.000Z'),
+      { ts: '2026-08-06T00:00:00.000Z', event: 'landed-acked', taskId: 'h-noack', ...ack }];
+    const r = computeJobLaneOutcomeRate(entries, { nowMs: NOW, windowDays: 14 });
+    assert.equal(r.stoppedShort, 1);
+    assert.equal(r.done, 0);
+  }
 });
