@@ -13,6 +13,9 @@
 
 const MIN_PRESS_NIGHT_SCORED = 3;
 
+// Inside the window reviews are landing now; the 16h early-fire delay could land after it closes.
+const PRESS_NIGHT_RETRY_DELAY_HOURS = 2;
+
 /**
  * @param {object} args
  * @param {number} args.scoredCount scored (includable) reviews for the show
@@ -31,4 +34,4 @@ function shouldRetryForThinPressNight({ scoredCount, window, now = new Date(), i
   return { retry: true, reason: `only ${n} scored review(s) inside the press-night window (minimum ${minScored})` };
 }
 
-module.exports = { MIN_PRESS_NIGHT_SCORED, shouldRetryForThinPressNight };
+module.exports = { MIN_PRESS_NIGHT_SCORED, PRESS_NIGHT_RETRY_DELAY_HOURS, shouldRetryForThinPressNight };

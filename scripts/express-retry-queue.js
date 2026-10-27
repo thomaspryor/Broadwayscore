@@ -62,7 +62,7 @@ const {
   markEntryAttempted,
 } = require('./lib/express-retry-decision');
 const { isShowCoverageComplete } = require('./lib/opening-night-readiness');
-const { shouldRetryForThinPressNight } = require('./lib/opening-night-retry-decision');
+const { shouldRetryForThinPressNight, PRESS_NIGHT_RETRY_DELAY_HOURS } = require('./lib/opening-night-retry-decision');
 const { computeWindow } = require('./lib/opening-night-windows');
 const { isIncludableForRebuild } = require('./lib/review-guards');
 const { dispatchExpressRetry } = require('./lib/dispatch-express-retry');
@@ -219,14 +219,17 @@ async function cmdEvaluate() {
   // retry even when the real-text ratio looks fine (Billy Crystal 860, 1/1).
   const pressNight = shouldRetryForThinPressNight({
     scoredCount: reviewFiles.filter((r) => isIncludableForRebuild(r, show || {})).length,
-    window: show ? computeWindow({ ...show, category: show.category || 'broadway' }) : null,
+    window: show ? computeWindow({ ...show, category: show.category || 'broadway' }, { now: new Date(nowIso) }) : null,
+    now: new Date(nowIso),
     isRetry,
   });
   if (pressNight.retry) console.log(`[express-retry-queue] ${showId}: ${pressNight.reason}`);
   if (!decision.retry && !pressNight.retry) return;
 
   const current = readQueueEntries();
-  const { entries, changed } = enqueueRetry(current, { showId, market, nowIso, delayHours });
+  // In-window thin count: reviews are landing now, so retry soon, not after the 16h early-fire delay.
+  const retryDelayHours = decision.retry ? delayHours : PRESS_NIGHT_RETRY_DELAY_HOURS;
+  const { entries, changed } = enqueueRetry(current, { showId, market, nowIso, delayHours: retryDelayHours });
   if (changed) {
     writeQueueEntries(entries);
     console.log(`[express-retry-queue] queued retry for ${showId}, due ${entries[entries.length - 1].dueAt}`);

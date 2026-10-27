@@ -27,7 +27,10 @@ test('exactly the minimum -> no retry; one below -> retry', () => {
 test('a retry run never re-enqueues (cap), zero scored included', () => {
   assert.equal(shouldRetryForThinPressNight({ scoredCount: 0, window: win, now: inside, isRetry: true }).retry, false);
 });
-test('no window / bad input -> no retry', () => {
+test('no window -> no retry; missing count inside window counts as zero -> retry', () => {
   assert.equal(shouldRetryForThinPressNight({ scoredCount: 0, window: null, now: inside }).retry, false);
   assert.equal(shouldRetryForThinPressNight({ scoredCount: undefined, window: win, now: inside }).retry, true);
+});
+test('after the window closes -> no retry', () => {
+  assert.equal(shouldRetryForThinPressNight({ scoredCount: 0, window: win, now: new Date('2026-10-23T12:00:00Z') }).retry, false);
 });
