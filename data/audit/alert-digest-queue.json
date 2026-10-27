@@ -377,20 +377,6 @@
     "queuedAt": "2026-10-27T14:47:17.213Z"
   },
   {
-    "conditionKey": "pending-unrecoverable:the-curious-case-of-benjamin-button-off-broadway-2026",
-    "title": "1 review(s) for the-curious-case-of-benjamin-button-off-broadway-2026 stuck in _pending with no text and no byline",
-    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--40c5d2b3.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-button/",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T15:08:00.204Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-6384-mvqsbs80",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-6384-mvqsbs80",
     "description": "land.yml did not land land/job/linear-BRO-6384-mvqsbs80: the rebase gate went red at 3b40eb6a4a. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6384-mvqsbs80 @ 3b40eb6a4a (origin/land/job/linear-BRO-6384-mvqsbs80) → origin/main @ dd301a3575 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ dd301a3575: Rebasing (1/1) error: could not apply 3b40eb6a4a7... fix(BRO-6384): fantasy roster privacy test uses injected clock for computeLeaderboard hint: Resolve all conflicts manually, mark them as resolv Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40524207653",
@@ -434,5 +420,47 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T15:22:49.009Z"
+  },
+  {
+    "conditionKey": "corpus-drift:contradicted-flag-basis",
+    "title": "Corpus drift: exclusion flag whose own stated basis (a date-guard claim) is contradicted by the current record (zero-tolerance)",
+    "description": "check-corpus-drift.js audit \"contradicted-flag-basis\" (node scripts/audit-contradicted-flag-basis.js --gate --max=0) has been drifting. Latest output:\n\nContradicted-flag-basis sweep: 3012 shows scanned, 1 match(es).\n  [wrongProduction] a-view-from-the-bridge-2015/njcom--christopher-kelly.json\n      basis cites 2015-07-01 but record is dated 2015-11-12, inside run 2015-10-21..2016-02-28\n\nFAIL: 1 review file(s) carry an exclusion flag whose date basis the record itself contradicts (> max 0).\nEach match is a real review suppressed from live Critic Scores on a date that is no longer on the record.\nAdjudicate by hand and clear with the full PROTECTED_FIELDS set — there is no bulk drain, by design.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T15:50:17.879Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-27.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T15:50:17.929Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "1 review(s) for the-curious-case-of-benjamin-button-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--40c5d2b3.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-button/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T15:08:00.204Z"
   }
 ]
