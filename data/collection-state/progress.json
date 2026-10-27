@@ -95,7 +95,16 @@
     "some-woman-west-end-2026/tixculture--unknown.json",
     "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/firstnews--unknown.json",
     "baby-off-west-end-2026/looge--unknown.json",
-    "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/megasuperweb--unknown.json"
+    "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/megasuperweb--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -136,7 +145,8 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -158,7 +168,11 @@
       "data/review-texts/double-bill-tell-me-straight-and-aggy-off-west-end-2026/iloveeventfest--unknown.json",
       "data/review-texts/some-woman-west-end-2026/thestage--sam-marlowe.json",
       "data/review-texts/baby-off-west-end-2026/looge--unknown.json",
-      "data/review-texts/larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/megasuperweb--unknown.json"
+      "data/review-texts/larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/megasuperweb--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
     ],
     "archive": [
       "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
@@ -168,9 +182,39 @@
       "cadel-lungs-on-legs-west-end-2026/reviewsgate--william-russell.json",
       "stories-the-tap-dance-sensation-west-end-2026/theupcoming--scarlett-bruin.json",
       "stories-the-tap-dance-sensation-west-end-2026/times-uk--donald-hutera-contributor.json"
-    ]
+    ],
+    "brightdata": []
   },
   "startTime": "2026-10-27T07:41:36.307Z",
-  "lastProcessed": "larger-than-life-starring-wallace-and-gromit-shaun-and-more-off-west-end-2026/megasuperweb--unknown.json",
-  "log": []
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+  "log": [
+    {
+      "t": "2026-10-27T08:38:22.318Z",
+      "event": "bb-session",
+      "session": "68e1647b",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-27T08:43:39.314Z",
+      "event": "bb-session",
+      "session": "e93a8227",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T08:43:40.201Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T08:43:49.654Z",
+      "event": "bb-session",
+      "session": "b468b1b1",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T08:43:50.425Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
