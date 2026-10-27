@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T16:49:50.151Z",
+  "generatedAt": "2026-10-27T17:35:29.928Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,27 +12,26 @@
       "status": "open",
       "slug": "memoriam-off-west-end",
       "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 63.04,
-      "liveScore": 63,
-      "scoreDrift": -0.03999999999999915,
+      "siteScore": 67.34,
+      "liveScore": 67,
+      "scoreDrift": -0.3400000000000034,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
       "t2": 3,
-      "t3": 2,
-      "positive": 0,
+      "t3": 3,
+      "positive": 1,
       "mixed": 5,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/8 total",
-          "T1:0/3",
-          "hi-conf:5/6"
+          "6/8 total",
+          "T1:0/3"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -185,6 +184,18 @@
           "t2": 3,
           "t3": 2,
           "p": 0,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-27T17:35:29.928Z",
+          "rc": 6,
+          "s": 67.34,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 1,
           "m": 5,
           "n": 0,
           "bc": "waiting"

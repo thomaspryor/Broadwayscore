@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T16:49:34.032Z",
+  "timestamp": "2026-10-27T17:35:19.947Z",
   "stats": {
-    "totalReviews": 63682,
+    "totalReviews": 63747,
     "alreadyFlagged": 21742,
     "dateGuardCatches": 238,
     "directorMismatch": 2359,
-    "tvFilmSignals": 1791,
-    "londonSignals": 3057,
-    "offBroadwaySignals": 563,
+    "tvFilmSignals": 1792,
+    "londonSignals": 3055,
+    "offBroadwaySignals": 564,
     "yearMismatch": 217,
-    "noPublishDate": 5662
+    "noPublishDate": 5710
   },
   "findings": [
     {
@@ -277,6 +277,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "file": "dtli--juan-michael-porter-ii.json",
+      "score": 41,
+      "publishDate": "2022-12-04",
+      "url": "https://didtheylikeit.com/shows/a-beautiful-noise/a-beautiful-noise-serves-cheap-thrills-but-no-drama/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"ars nova\""
         }
       ]
     },
@@ -45107,7 +45126,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -63023,20 +63042,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "an-enemy-of-the-people-2012",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 81,
-      "publishDate": "2012-09-27",
-      "url": "https://www.hollywoodreporter.com/lifestyle/style/an-enemy-of-the-people-theater-review-374734/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -81016,23 +81021,9 @@
     },
     {
       "showId": "leopoldstadt-2022",
-      "file": "variety--charles-isherwood.json",
-      "score": 90,
-      "publishDate": "October 3, 2022",
-      "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard-1235390899/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "leopoldstadt-2022",
       "file": "variety--marilyn-stasio.json",
       "score": 90,
-      "publishDate": "October 2, 2022",
+      "publishDate": "October 3, 2022",
       "url": "https://variety.com/2022/legit/reviews/leopoldstadt-review-broadway-tom-stoppard-1235390899/",
       "findings": [
         {
@@ -83067,7 +83058,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 64,
+      "score": 66,
       "publishDate": "2026-10-22",
       "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
       "findings": [
@@ -83095,7 +83086,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "london-theatre--anya-ryan.json",
-      "score": 62,
+      "score": 64,
       "publishDate": "2026-10-21",
       "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
       "findings": [
@@ -83135,7 +83126,7 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "file": "musical-theatre-review--scott-matthewman.json",
-      "score": 65,
+      "score": 66,
       "publishDate": "2026-10-21",
       "url": "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
       "findings": [
@@ -89602,7 +89593,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "ground--unknown.json",
-      "score": 66,
+      "score": 67,
       "publishDate": "2026-10-08",
       "url": "https://ground.news/article/rent-reborn-how-star-gaten-matarazzo-director-luke-sheppard-and-a-perfectly-cast-west-end-ensemble-are-giving-the-musical-its-biggest-revi",
       "findings": [
@@ -89643,7 +89634,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 61,
+      "score": 55,
       "publishDate": "2026-10-08",
       "url": "https://www.timeout.com/london/news/rent-review-tom-stoppard-theatre-gaten-matarazzo-100826",
       "findings": [
@@ -95388,7 +95379,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
-      "score": 80,
+      "score": 82,
       "publishDate": "2026-10-14",
       "url": "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
       "findings": [
@@ -95416,7 +95407,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "theatreandtonic--annie.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-10-16",
       "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
       "findings": [
