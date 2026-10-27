@@ -17,6 +17,10 @@ commission?
   and the `showInline` slot id are committed in `src/lib/ads.ts`, so the flag
   is the only switch: nobody sees an ad or loads the Google script until it
   moves off 0%.
+- **At launch**: eligible visitors already log `no-ads` exposures
+  (`$feature_flag_called`) while the flag sits at 0%, so count the 4 weeks
+  (and set any PostHog experiment's start date) from the moment it moves to
+  50/50, not from when the code shipped.
 - **Client**: `src/components/ads/AdSlot.tsx` via `usePostHogFlag(ADS_FLAG)`;
   decision in `decideAdRender()` (`src/lib/ads.ts`)
 - **Registry entry**: `scripts/lib/flag-registry.js` (`REGISTERED_FLAGS`)
