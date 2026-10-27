@@ -120,7 +120,9 @@ function buildCompare({ descA, descB, hook = '', now }) {
 function briefConflicts(ledger, { hash, pair }, now) {
   const posts = (ledger && ledger.posts) || [];
   const sameHash = posts.find(p => p.type === 'brief' && p.hash === hash) || null;
-  const samePair = posts.find(p => p.type === 'brief' && p.hash !== hash && p.pair === pair
+  // An automatic London comparison (BRO-6373) for the pair also blocks a brief, whatever its age.
+  const samePair = posts.find(p => p.type === 'london-compare' && p.pair === pair)
+    || posts.find(p => p.type === 'brief' && p.hash !== hash && p.pair === pair
     && now - Date.parse(p.dueAt || p.date || 0) < PAIR_DEDUPE_DAYS * DAY_MS) || null;
   return { sameHash, samePair };
 }

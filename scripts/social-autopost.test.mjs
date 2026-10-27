@@ -810,3 +810,36 @@ test('london-compare keeps the lane name in the social report', () => {
   if (lanes) assert.equal(lanes, 'London comparison posts');
   assert.match(fs.readFileSync(new URL('./lib/social-report.js', import.meta.url), 'utf8'), /'london-compare': 'London comparison posts'/);
 });
+
+test('london matcher: titles must match as strictly as the compare card, provisional and twin New York rows match nothing', () => {
+  const ny = lshow('old-friends-2025', "Stephen Sondheim's Old Friends", 'broadway', 'musical', '2025-03-01');
+  const we = lshow('old-friends-we', 'Old Friends', 'west-end', 'musical', '2023-01-01');
+  assert.match(find(ny, [ny, we]).reason, /no London run/); // buildCompare would refuse this pair
+  const a = lshow('a-2026', 'Giant', 'broadway', 'play', '2026-10-01');
+  const w = lshow('giant-we', 'Giant', 'west-end', 'play', '2025-01-01');
+  assert.match(find({ ...a, provisional: true }, [a, w]).reason, /provisional/);
+  const twin = lshow('giant-off-2026', 'Giant', 'off-broadway', 'play', '2026-03-01');
+  assert.match(find(a, [a, w, twin]).reason, /ambiguous New York side/);
+  // Every pair the matcher returns can be built into a compare card.
+  const sameDay = lshow('giant-we-same', 'Giant', 'west-end', 'play', '2026-10-01');
+  const built = briefs.buildCompare({ descA: desc(sameDay, 84, 30), descB: desc(a, 80, 20), hook: '', now: at('2026-10-21T14:05:00Z') });
+  assert.equal(built.older.show.id, sameDay.id); // on a tie London is the older production
+  assert.equal(built.newer.show.id, a.id);
+});
+
+test('a london-compare for a pair blocks a later brief for it, and a brief blocks the compare', () => {
+  const pair = briefs.pairKey([lc.ny.id, lc.we.id]);
+  const ledger = { posts: [{ type: 'london-compare', id: `london-compare:${lc.ny.id}`, showId: lc.ny.id, pair, dueAt: '2025-01-01T00:00:00Z' }] };
+  assert.ok(briefs.briefConflicts(ledger, { hash: 'zzz', pair }, at('2026-10-27T00:00:00Z')).samePair);
+  assert.equal(briefs.briefConflicts({ posts: [] }, { hash: 'zzz', pair }, at('2026-10-27T00:00:00Z')).samePair, null);
+  assert.ok(sel.briefCoversPair({ posts: [{ type: 'brief', pair }] }, [lc.we.id, lc.ny.id]));
+});
+
+test('every London pair the matcher finds in the real data can be ordered into a compare card', { skip: !fs.existsSync(new URL('../data/shows.json', import.meta.url)) }, () => {
+  const raw = JSON.parse(fs.readFileSync(new URL('../data/shows.json', import.meta.url), 'utf8'));
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  const byId = new Map(shows.map(x => [x.id, x]));
+  const pairs = td.detectLondonComparePairs(shows, { hasScore: () => true });
+  assert.ok(pairs.length >= 15);
+  for (const p of pairs) assert.doesNotThrow(() => briefs.orderCompare(byId.get(p.londonId), byId.get(p.showId)), `${p.showId} / ${p.londonId}`);
+});

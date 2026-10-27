@@ -26,7 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('../lib/score-tiers');
-const { findScoreEvents, findLondonCompareEvents, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { findScoreEvents, findLondonCompareEvents, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
 const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
 const { renderCard, renderCompareCard, closeBrowser, COMPARE_POSTER_PX } = require('./render');
@@ -386,7 +386,7 @@ async function renderCompareFor(built, ctx, png, { requirePoster = false } = {})
  */
 async function runLondonCompare(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
   const label = `london-compare:${ev.show.id}`;
-  const built = briefs.buildCompare({ descA: describe(ev.show, ctx), descB: describe(ev.london, ctx), hook: '', now });
+  const built = briefs.buildCompare({ descA: describe(ev.london, ctx), descB: describe(ev.show, ctx), hook: '', now });
   const png = path.join(outDir, `london-compare-${ev.show.id}.png`);
   fs.mkdirSync(outDir, { recursive: true });
   await renderCompareFor(built, ctx, png, { requirePoster: true });
@@ -683,9 +683,11 @@ async function main() {
     // London comparisons come after the score posts: a score post always gets its slot first.
     for (const ev of compareEvents) {
       const key = `london-compare:${ev.show.id}`;
+      // A brief for this pair may have gone out earlier in this very run.
+      if (briefCoversPair(ctx.ledger, [ev.show.id, ev.london.id])) { console.log(`  ${key}: skipped, a brief for the pair exists`); continue; }
       try {
         if (!live) {
-          const built = briefs.buildCompare({ descA: describe(ev.show, ctx), descB: describe(ev.london, ctx), hook: '', now });
+          const built = briefs.buildCompare({ descA: describe(ev.london, ctx), descB: describe(ev.show, ctx), hook: '', now });
           console.log(`\n[autopost] ${key} (with ${ev.london.id}) due ${ev.dueAt.toISOString()}`);
           console.log(`  X/Bluesky: ${built.captions.twitter.replace(/\n/g, ' | ')}`);
           continue;

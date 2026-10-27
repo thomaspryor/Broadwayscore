@@ -220,8 +220,14 @@ function _isClassicRevival(show) {
 
 // Strict title equality: the shared normalizer, or deduplication.js's, which
 // strips a trailing " - <venue tag>". No fuzzy (Jaccard) matching.
+// The compare card (social-autopost/briefs.js orderCompare) refuses titles that differ after
+// this fold, so a pair that only matches looser (Old Friends vs Stephen Sondheim's Old Friends)
+// could never be posted: it is not a match here either.
+const _foldTitle = t => String(t || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+
 function _sameTitle(a, b) {
   if (!a || !b) return false;
+  if (!_foldTitle(a) || _foldTitle(a) !== _foldTitle(b)) return false;
   const na = normalizeTitle(a);
   if (na && na === normalizeTitle(b)) return true;
   const da = dedupNormalizeTitle(a);
@@ -248,11 +254,16 @@ function _sameTitle(a, b) {
 function findLondonRun(show, shows, { hasScore } = {}) {
   if (!show || !NY_CATEGORIES.has(show.category)) return { london: null, reason: 'not a Broadway or Off-Broadway show' };
   const candidates = (Array.isArray(shows) ? shows : []).filter(s => s && s.id !== show.id && LONDON_CATEGORIES.has(s.category) && _sameTitle(show.title, s.title));
+  if (show.provisional === true) return { london: null, reason: 'a provisional New York row' };
   if (candidates.length === 0) return { london: null, reason: 'no London run with this title' };
   if (candidates.length > 1) return { london: null, reason: `ambiguous: ${candidates.map(c => c.id).join(', ')}` };
   const london = candidates[0];
   if (!show.type || !london.type || show.type !== london.type) return { london: null, reason: `different type (${show.type || 'unknown'} vs ${london.type || 'unknown'})` };
   if (_isClassicRevival(show) || _isClassicRevival(london)) return { london: null, reason: 'a classic revival' };
+  // Two New York rows for one London run (an Off-Broadway run, then the Broadway transfer) would
+  // each claim it and post twice: neither matches.
+  const nyTwins = (Array.isArray(shows) ? shows : []).filter(s => s && s.id !== show.id && NY_CATEGORIES.has(s.category) && _sameTitle(show.title, s.title) && s.type === show.type);
+  if (nyTwins.length) return { london: null, reason: `ambiguous New York side: ${nyTwins.map(c => c.id).join(', ')}` };
   const ny = _runStart(show);
   const lon = _runStart(london);
   if (ny === null || lon === null) return { london: null, reason: 'a run has no opening or previews date' };
