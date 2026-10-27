@@ -136,10 +136,15 @@ test('reapStaleTempWorktrees: reaps stale fixture debris, keeps fresh fixtures a
     fs.rmSync(staleGone, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 
     // Fresh: nothing is reaped (a parallel suite may be mid-add right now).
-    assert.deepEqual(reapStaleTempWorktrees(repo), []);
+    // `now` comes from the filesystem clock (the registrations' mtimes use it),
+    // not Date.now(), so the test is immune to a shifted/faked process clock.
+    const probe = path.join(repo, '.fs-clock-probe');
+    fs.writeFileSync(probe, '');
+    const fsNow = fs.statSync(probe).mtimeMs;
+    assert.deepEqual(reapStaleTempWorktrees(repo, { now: fsNow }), []);
     assert.ok(isRegistered(repo, stale) && isRegistered(repo, staleGone));
 
-    const reaped = reapStaleTempWorktrees(repo, { now: Date.now() + STALE_AFTER_MS + 60_000 });
+    const reaped = reapStaleTempWorktrees(repo, { now: fsNow + STALE_AFTER_MS + 60_000 });
     assert.equal(reaped.length, 2);
     assert.ok(reaped.every((r) => r.removed && r.lockReason === 'initializing'));
     assert.ok(!isRegistered(repo, stale) && !isRegistered(repo, staleGone));
