@@ -1,26 +1,31 @@
 {
-  "updatedAt": "2026-10-27T11:11:06.848Z",
-  "processed": 358,
-  "failed": 196,
-  "successRate": "64.6%",
+  "updatedAt": "2026-10-27T11:44:10.812Z",
+  "processed": 418,
+  "failed": 246,
+  "successRate": "63.0%",
   "tierBreakdown": {
-    "playwright": 193,
+    "playwright": 215,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 27,
+    "scrapingdog": 30,
     "scrapingbee": 21,
-    "brightdata": 4,
-    "archiveToday": 32,
-    "archive": 88
+    "brightdata": 7,
+    "archiveToday": 38,
+    "archive": 112
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-27T10:37:00.796Z",
+      "t": "2026-10-27T08:59:03.659Z",
       "event": "bb-session",
-      "session": "2edc0eae",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "9b9edc50",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-27T08:59:04.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
