@@ -1,29 +1,117 @@
 {
-  "updatedAt": "2026-10-27T19:41:28.605Z",
-  "processed": 2,
-  "failed": 1,
-  "successRate": "66.7%",
+  "updatedAt": "2026-10-27T20:29:57.486Z",
+  "processed": 94,
+  "failed": 6,
+  "successRate": "94.0%",
   "tierBreakdown": {
-    "playwright": 0,
-    "amp": 2,
-    "browserbase": 0,
+    "playwright": 65,
+    "amp": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
+    "scrapingdog": 2,
+    "scrapingbee": 8,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 1
+    "archiveToday": 3,
+    "archive": 19
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
-      "t": "2026-10-27T19:40:39.528Z",
+      "t": "2026-10-27T20:05:47.537Z",
       "event": "bb-session",
-      "session": "cc655d6f",
-      "url": "https://www.nytimes.com/1971/03/12/archives/stage-miller-version-of-an-enemy-of-"
+      "session": "d9dc01cb",
+      "url": "https://www.nytimes.com/2024/03/11/theater/corruption-review-phone-hacking-murdo"
     },
     {
-      "t": "2026-10-27T19:40:39.822Z",
+      "t": "2026-10-27T20:05:48.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:13:05.735Z",
+      "event": "bb-session",
+      "session": "fe06fa95",
+      "url": "https://www.nytimes.com/2024/03/10/theater/dead-outlaw-review.html"
+    },
+    {
+      "t": "2026-10-27T20:13:06.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:17:13.543Z",
+      "event": "bb-session",
+      "session": "ea8b9da7",
+      "url": "https://www.wsj.com/articles/brooklyn-laundry-review-john-patrick-shanley-cecily"
+    },
+    {
+      "t": "2026-10-27T20:17:14.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T20:19:37.200Z",
+      "event": "bb-session",
+      "session": "00ef5ba5",
+      "url": "https://www.nytimes.com/2024/02/26/theater/seven-year-disappear-review.html"
+    },
+    {
+      "t": "2026-10-27T20:19:38.024Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:23:23.919Z",
+      "event": "bb-session",
+      "session": "4766b347",
+      "url": "https://www.nytimes.com/2024/02/22/theater/a-sign-of-the-times-review.html"
+    },
+    {
+      "t": "2026-10-27T20:23:24.760Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:24:52.312Z",
+      "event": "bb-session",
+      "session": "141060ee",
+      "url": "https://www.nytimes.com/2024/02/06/theater/the-connector-review.html"
+    },
+    {
+      "t": "2026-10-27T20:24:53.173Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:28:24.256Z",
+      "event": "bb-session",
+      "session": "f90c186d",
+      "url": "https://www.newyorker.com/magazine/2024/02/26/russian-troll-farm-theatre-review"
+    },
+    {
+      "t": "2026-10-27T20:28:25.067Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-27T20:28:36.264Z",
+      "event": "bb-session",
+      "session": "926ea9f7",
+      "url": "https://www.newyorker.com/magazine/2024/02/26/russian-troll-farm-theatre-review"
+    },
+    {
+      "t": "2026-10-27T20:28:37.027Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-27T20:29:29.976Z",
+      "event": "bb-session",
+      "session": "27f0810c",
+      "url": "https://www.nytimes.com/2024/02/08/theater/russian-troll-farm-review.html"
+    },
+    {
+      "t": "2026-10-27T20:29:30.786Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
