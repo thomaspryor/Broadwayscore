@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-27T11:46:02.017Z",
-  "processed": 368,
-  "failed": 168,
-  "successRate": "68.7%",
+  "updatedAt": "2026-10-27T12:17:48.936Z",
+  "processed": 473,
+  "failed": 271,
+  "successRate": "63.6%",
   "tierBreakdown": {
-    "playwright": 205,
+    "playwright": 230,
     "amp": 0,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 21,
-    "brightdata": 0,
-    "archiveToday": 37,
-    "archive": 89
+    "scrapingdog": 35,
+    "scrapingbee": 23,
+    "brightdata": 13,
+    "archiveToday": 43,
+    "archive": 133
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-27T08:59:03.659Z",
@@ -23,10 +23,20 @@
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     },
     {
-      "t": "2026-10-27T11:38:32.696Z",
+      "t": "2026-10-27T08:59:04.001Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T12:02:17.327Z",
       "event": "bb-session",
-      "session": "686a2cff",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "cc406422",
+      "url": "https://www.nytimes.com/2025/10/15/theater/ariel-stachel-other.html"
+    },
+    {
+      "t": "2026-10-27T12:02:17.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
