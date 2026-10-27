@@ -178,7 +178,10 @@ function isPrimaryFileFor(fileName, primaries, criticName) {
  */
 function isLiveSyndicationPrimary(d) {
   if (!d) return false;
-  return !(d.wrongProduction || d.wrongShow || d.crossOutletDuplicate || d.isSyndicatedDuplicate
+  // BRO-5245: a wrongShow file a person cleared in the rebuild gate ships, so it can be a primary.
+  const { wrongShowExplicitlyCleared } = require('./review-guards');
+  const wrongShowActive = d.wrongShow && !wrongShowExplicitlyCleared(d);
+  return !(d.wrongProduction || wrongShowActive || d.crossOutletDuplicate || d.isSyndicatedDuplicate
     || d.isNonReview || d.nonReviewFlag || d.nonReviewContent || d.duplicateOf
     || d.contentTier === 'invalid');
 }

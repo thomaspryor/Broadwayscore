@@ -52,7 +52,7 @@
 
 'use strict';
 
-const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild, isRoundupPageAsReview } = require('./review-guards');
+const { wrongShowCleared, isStaleCvPromotedWrongShow, computeCvIsStale, isIncludableForRebuild, isRoundupPageAsReview, wrongShowExplicitlyCleared } = require('./review-guards');
 const { clearWrongProductionFlags } = require('./wrong-production-clear');
 const { hasApprovedFlag } = require('./approved-fix-flag');
 const { DATE_ONLY_AUTO_REASONS } = require('./wrong-production-autoclear');
@@ -654,6 +654,7 @@ module.exports = {
   retractStaleClearBreadcrumb,
   demoteStaleWrongShowPromotion,
   hasClearBreadcrumbValue,
+  wrongShowExplicitlyCleared,
   contradictionFixCommand,
   shouldAlertContradiction,
   isHumanDecided,

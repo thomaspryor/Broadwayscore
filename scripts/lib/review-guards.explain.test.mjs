@@ -390,3 +390,16 @@ test('BRO-4317: a clear aimed at wrongShow admits the file, including its stale 
   assert.strictEqual(wrongShowExplicitlyCleared({ wrongShowManualClear: 'true' }), false);
   assert.strictEqual(wrongShowExplicitlyCleared(null), false);
 });
+
+test('BRO-5245: syndication primary and ingest collision honor an explicit wrongShow clear', () => {
+  const synd = require('./syndication-pairs');
+  const fc = require('./flag-contradiction');
+  assert.strictEqual(synd.isLiveSyndicationPrimary({ wrongShow: true }), false);
+  assert.strictEqual(synd.isLiveSyndicationPrimary({ wrongShow: true, wrongShowManualClear: true }), true);
+  assert.strictEqual(synd.isLiveSyndicationPrimary({ wrongShow: true, wrongShowOverride: true }), true);
+  assert.strictEqual(fc.wrongShowExplicitlyCleared({ wrongShow: true, wrongShowManualClear: true }), true);
+  assert.strictEqual(fc.wrongShowExplicitlyCleared({ wrongShow: true }), false);
+  // ingest-review route uses the same predicate (no local copy of the clear fields).
+  const route = fs.readFileSync(new URL('../../src/app/api/admin/ingest-review/route.ts', import.meta.url), 'utf8');
+  assert.ok(!/existingData\.wrongShow === true(?! &&)/.test(route), 'route.ts reads raw wrongShow without the clear check');
+});

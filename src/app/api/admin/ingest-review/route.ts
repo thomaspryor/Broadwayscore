@@ -29,8 +29,9 @@ const { resolveIngestFilename, normalizeReviewUrl: normalizeUrl } = cjsRequire('
 const { submissionNonReviewReason } = cjsRequire('../../../../../scripts/lib/non-review-url-patterns') as {
   submissionNonReviewReason: (url: string) => string | null;
 };
-const { hasClearBreadcrumbValue } = cjsRequire('../../../../../scripts/lib/flag-contradiction') as {
+const { hasClearBreadcrumbValue, wrongShowExplicitlyCleared } = cjsRequire('../../../../../scripts/lib/flag-contradiction') as {
   hasClearBreadcrumbValue: (v: unknown) => boolean;
+  wrongShowExplicitlyCleared: (d: unknown) => boolean;
 };
 const { buildManualReviewFields } = cjsRequire('../../../../../scripts/lib/manual-review-fields') as {
   buildManualReviewFields: (opts: {
@@ -313,7 +314,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
   if (existingData) {
     const flagged =
       existingData.wrongProduction === true ||
-      existingData.wrongShow === true ||
+      (existingData.wrongShow === true && !wrongShowExplicitlyCleared(existingData)) ||
       hasClearBreadcrumbValue(existingData.wrongProductionAutoCleared);
     const resolved = flagged ? null : resolveIngestFilename({ filename, existingData, url });
     if (resolved?.versioned) {
@@ -421,7 +422,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
     // other — so both use hasClearBreadcrumbValue (#1020).
     const hasStaleFlag =
       existingData.wrongProduction === true ||
-      existingData.wrongShow === true ||
+      (existingData.wrongShow === true && !wrongShowExplicitlyCleared(existingData)) ||
       hasClearBreadcrumbValue(existingData.wrongProductionAutoCleared);
     const existingUrl = typeof existingData.url === 'string' ? existingData.url : null;
     const urlsDiffer = existingUrl && normalizeUrl(existingUrl) !== normalizeUrl(url);
@@ -437,7 +438,7 @@ export async function POST(request: NextRequest): Promise<NextResponse<IngestRes
             incomingUrl: url,
             existingFlags: {
               wrongProduction: existingData.wrongProduction === true,
-              wrongShow: existingData.wrongShow === true,
+              wrongShow: existingData.wrongShow === true && !wrongShowExplicitlyCleared(existingData),
               wrongProductionAutoCleared: hasClearBreadcrumbValue(existingData.wrongProductionAutoCleared),
             },
             existingPublishDate: existingData.publishDate || null,

@@ -1559,7 +1559,8 @@ const crossMarketCriticIndexEntries = [];
           if (!urlShowIdsAll.has(allNorm)) urlShowIdsAll.set(allNorm, new Set());
           urlShowIdsAll.get(allNorm).add(sid);
         }
-        if (d.wrongProduction || d.wrongShow) continue;
+        // BRO-5245: a wrongShow file a person cleared ships, so it belongs in this index.
+        if (d.wrongProduction || (d.wrongShow && !wrongShowExplicitlyCleared(d))) continue;
         const norm = allNorm;
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
