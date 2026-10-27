@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T12:42:17.923Z",
+  "timestamp": "2026-10-27T13:01:49.154Z",
   "stats": {
-    "totalReviews": 63000,
-    "alreadyFlagged": 21624,
+    "totalReviews": 63074,
+    "alreadyFlagged": 21628,
     "dateGuardCatches": 224,
-    "directorMismatch": 2349,
-    "tvFilmSignals": 1783,
+    "directorMismatch": 2351,
+    "tvFilmSignals": 1784,
     "londonSignals": 3038,
-    "offBroadwaySignals": 560,
+    "offBroadwaySignals": 561,
     "yearMismatch": 217,
-    "noPublishDate": 5575
+    "noPublishDate": 5636
   },
   "findings": [
     {
@@ -11720,6 +11720,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-let-me-do-my-show-off-broadway-2023",
+      "file": "theater-scene--joel-benjamin.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theaterscene.net/plays/offbway-plays/death-let-me-do-my-show/joel-benjamin/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -48818,6 +48832,39 @@
       "file": "nytimes--unknown.json",
       "publishDate": "2025-02-22",
       "url": "https://www.nytimes.com/2025/02/22/theater/jonathan-larson-project-off-broadway-music.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "off-off-online--deirdre-donovan.json",
+      "score": 63,
+      "publishDate": "2025-03-16",
+      "url": "https://www.offoffonline.com/offoffonline/2025/3/7/the-jonathan-larson-project",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 85,
+      "publishDate": "2025-03-19",
+      "url": "https://www.theaterscene.net/musicals/offbway/the-jonathan-larson-project/victor-gluck/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
