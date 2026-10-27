@@ -104,5 +104,6 @@ test('the health row has its own this-week playbook route, ahead of the generic 
   const { getPlaybookEntry } = require('../health-check.js');
   const entry = getPlaybookEntry('Quality: opening date vs review dates');
   assert.equal(entry.urgency, 'this-week');
-  assert.match(entry.humanAction, /opening date/);
+  assert.match(entry.ownerText, /opening date/);
+  assert.match(entry.workerInstruction, /opening date/);
 });

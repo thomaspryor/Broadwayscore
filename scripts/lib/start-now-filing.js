@@ -11,6 +11,7 @@
 // module adds the rows that need the owner's money or the owner's Mac.
 
 const { classifyHealthCheck } = require('./digest-audience.js');
+const { hasPlaybookAction } = require('./playbook-copy.js');
 
 // Rows whose fix is a purchase, a credential rotation or a cookie refresh on
 // the owner's Mac (health-check.js AUTO_FIX_PLAYBOOK: "consider upgrading",
@@ -47,7 +48,8 @@ function startNowLine(who) {
 
 /**
  * PURE. health-check.js routes only rows whose playbook entry has a
- * humanAction; every other failing row reached no tracker at all from CI, so
+ * humanAction or ownerText/workerInstruction (playbook-copy.js
+ * hasPlaybookAction); every other failing row reached no tracker at all from CI, so
  * while the Mac was down nothing filed a card for it (BRO-5168). This picks
  * the failing rows a worker could fix that have no route yet.
  * @param {Array<{name:string,status:string,message?:string}>} rows
@@ -57,7 +59,7 @@ function selectUnroutedVisitorRows(rows, { getPlaybookEntry, today } = {}) {
   return (Array.isArray(rows) ? rows : []).filter((r) => {
     if (!r || !r.name || (r.status !== 'error' && r.status !== 'warn')) return false;
     const entry = getPlaybookEntry ? getPlaybookEntry(r.name) : null;
-    if (entry && (entry.workflow || entry.humanAction)) return false;
+    if (entry && (entry.workflow || hasPlaybookAction(entry))) return false;
     return startNowHealthRowReason(r, today) === null;
   });
 }

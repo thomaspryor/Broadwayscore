@@ -16,11 +16,10 @@ const ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..',
 const BANNED = /(?:open|ask|tell) (?:a |the )?claude\b|paste (?:this|the|that|it) (?:email|alert|message)|paste (?:it )?into (?:a |the )?(?:claude|session)/i;
 const COMMENT = /^\s*(?:\/\/|\*|\/\*|#)/;
 
-// health-check.js humanAction paste-prompts are filed as cards by the router;
-// owner-decision-notify.js is a reply to a decision the owner must make.
-const BASELINE = {
-  'scripts/health-check.js': 28,
-};
+// BRO-5543 split health-check.js's 28 humanAction paste-prompts into
+// ownerText + workerInstruction, so the baseline is empty: every file must
+// hold none.
+const BASELINE = {};
 
 function walk(dir, out = []) {
   for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -71,4 +70,55 @@ test('the signed-in-users alert files a START-NOW card and no longer asks the ow
   assert.match(card.description, /^START-NOW: /);
   assert.match(card.description, /^VERIFY: /m);
   assert.equal(startNowUnpickableReason({ ...card, priority: 1, mode: 'dispatch' }), null);
+});
+
+test('BRO-5543: every split playbook row has owner text in plain English and a worker hint, neither naming Claude', async () => {
+  const { getPlaybookEntry } = require('../health-check.js');
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/health-check.js'), 'utf8');
+  const names = ['Dispatch health: dead-launch rate', 'Sync: cast coverage', 'Quality: opening date vs review dates', 'Cookies: nyt', 'Secrets: x', 'Workflow repeat-failure: x', 'Cron failed: x'];
+  for (const n of names) {
+    const e = getPlaybookEntry(n);
+    assert.ok(e && e.ownerText && e.workerInstruction, `${n} is split`);
+    assert.equal(e.humanAction, undefined, `${n} keeps no shared humanAction`);
+    assert.doesNotMatch(e.ownerText, BANNED, n);
+    assert.doesNotMatch(e.workerInstruction, BANNED, n);
+    assert.ok(!e.ownerText.includes('\u2014'), `em dash in ${n} ownerText`);
+  }
+  assert.ok((src.match(/^\s+ownerText: /gm) || []).length >= 28, 'all 28 former paste-prompt rows carry ownerText');
+});
+
+test('BRO-5543: the digest renders ownerText and the card hint uses workerInstruction, with humanAction back-compat', () => {
+  const { ownerDigestInstruction, playbookWorkerHint, playbookOwnerText, hasPlaybookAction } = require('./playbook-copy.js');
+  const split = { ownerText: 'Cast lists are missing. Nothing is needed from you.', workerInstruction: 'Run backfill-cast.js.' };
+  const legacy = { humanAction: 'Legacy text' };
+  const row = { message: 'raw row message' };
+  // Owner side: ownerText wins, never the worker text, for every tracker state.
+  for (const d of [undefined, { deferred: true }, { action: 'silent', linearIdentifier: 'BRO-1' }, { action: 'silent' }, { dispatchOk: false, dispatchError: 'boom' }, { linearIdentifier: 'BRO-2' }, {}]) {
+    const out = ownerDigestInstruction(split, row, d);
+    assert.ok(out.startsWith(split.ownerText), JSON.stringify(d));
+    assert.doesNotMatch(out, /backfill-cast/);
+    assert.ok(!out.includes('\u2014'), 'no em dash in rendered owner line');
+  }
+  assert.equal(ownerDigestInstruction(split, row, { linearIdentifier: 'BRO-2' }), `${split.ownerText} Filed as BRO-2 in Linear for triage.`);
+  // Back-compat: humanAction-only rows render as before, minus the em dash.
+  assert.equal(ownerDigestInstruction(legacy, row, { deferred: true }), 'Legacy text. Being watched; a card is filed if this is still happening after 3 days.');
+  assert.equal(ownerDigestInstruction({ humanFallback: 'fb' }, row), 'fb');
+  assert.equal(ownerDigestInstruction(null, row), 'raw row message');
+  assert.equal(playbookOwnerText({ ownerText: 'o', humanAction: 'h' }), 'o');
+  // Worker side.
+  assert.equal(playbookWorkerHint(split), 'Run backfill-cast.js.');
+  assert.equal(playbookWorkerHint(legacy), 'Legacy text');
+  assert.equal(hasPlaybookAction(split), true);
+  assert.equal(hasPlaybookAction(legacy), true);
+  assert.equal(hasPlaybookAction({ workflow: 'x.yml', humanFallback: 'f' }), false);
+});
+
+test('BRO-5543: health-check.js reads playbook copy only through playbook-copy.js', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'scripts/health-check.js'), 'utf8');
+  assert.doesNotMatch(src, /entry\??\.humanAction/, 'read entry text via playbook-copy.js helpers');
+  assert.match(src, /hint: playbookWorkerHint\(entry\)/);
+  assert.match(src, /ownerDigestInstruction\(entry, r, dispatch\)/);
+  const { selectUnroutedVisitorRows } = require('./start-now-filing.js');
+  const rows = selectUnroutedVisitorRows([{ name: 'A', status: 'error' }], { getPlaybookEntry: () => ({ ownerText: 'o', workerInstruction: 'w' }) });
+  assert.deepEqual(rows, [], 'a split playbook row counts as routed');
 });

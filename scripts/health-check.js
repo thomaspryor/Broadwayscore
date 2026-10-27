@@ -41,6 +41,7 @@ const { checkBizOgCoverage, RENDER_HINT: BIZ_OG_RENDER_HINT } = require('./lib/a
 const { fitCheckStatus: waltzFitCheckStatus } = require('./lib/waltz-model-fit');
 const { revisitBarStatus } = require('./lib/recoupment-timing-report');
 const { selectUnroutedVisitorRows } = require('./lib/start-now-filing.js');
+const { playbookWorkerHint, hasPlaybookAction, ownerDigestInstruction } = require('./lib/playbook-copy.js');
 const { untrackedPersistentRowsResult, ROW_NAME: UNTRACKED_ROWS_ROW_NAME } = require('./lib/untracked-persistent-rows.js');
 // BRO-5168: card filings per run for failing rows with no playbook route.
 const MAX_UNROUTED_FILINGS_PER_RUN = 4;
@@ -209,7 +210,12 @@ const HEALTH_DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'health-digest-snapshot
 // --- Auto-Fix Playbook ---
 // Maps health check names (regex) to automated fixes or human-readable instructions.
 // `workflow`: dispatched automatically via `gh workflow run` (user sees "Auto-fixed").
-// `humanAction`: plain-English instruction for non-technical user (no jargon).
+// `humanAction`: legacy single text shown to the owner AND used as the card hint.
+// `ownerText` + `workerInstruction` (BRO-5543, preferred): ownerText is what
+//   the owner reads (what broke, what the automation does; an owner action
+//   only for a login, a payment or a decision; plain English, no em dashes).
+//   workerInstruction is the filed card's hint and never reaches the owner.
+//   Read both through scripts/lib/playbook-copy.js, never the raw fields.
 // `urgency`: 'fix-now' (red), 'this-week' (yellow), 'low' (gray).
 
 const AUTO_FIX_PLAYBOOK = [
@@ -228,7 +234,8 @@ const AUTO_FIX_PLAYBOOK = [
   // "no card, show the raw instruction" path already used when
   // MAX_CARD_DISPATCHES_PER_RUN caps out).
   { match: /^Dispatch health: dead-launch rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
-    humanAction: 'More than 1 in 10 cmux dispatches is creating its workspace but never rendering a terminal surface, so the seeded command never runs. The retry layer recovers the work, so nothing is lost — but each failure burns a launch and leaves a zombie tab. Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then open Claude Code and say: "Investigate the dispatch dead-launch rate (card #1199) — judge any fix by this rate over a week, never by one clean dispatch."' },
+    ownerText: "More than 1 in 10 automatic work launches start but never run their command. The retry layer redoes the work, so nothing is lost, but each failure wastes a launch. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/audit-dispatch-dead-rate.js` for the per-day/per-lane breakdown, then investigate the dispatch dead-launch rate (card #1199). Judge any fix by this rate over a week, never by one clean dispatch." },
   // Card #1714, same #1199 trap: an unregistered check name defaults to
   // urgency 'low' and never files a card even on 'error'. 'this-week' to
   // match its sibling dead-launch row — a low headless success rate is
@@ -237,7 +244,8 @@ const AUTO_FIX_PLAYBOOK = [
   // `ledger`: same BRO-2603 note as the dead-launch-rate entry above — also
   // sourced from dispatch-ledger.jsonl.
   { match: /^Headless dispatch: success rate$/, urgency: 'this-week', ledger: DISPATCH_LEDGER_NAME,
-    humanAction: 'Headless (job-lane) dispatches are failing more often than the 80% success floor. Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then open Claude Code and say: "Investigate the headless dispatch success rate (card #1714) — judge any fix by this rate over the window, never by one clean dispatch."' },
+    ownerText: "Background work sessions are succeeding less than 80% of the time. Unfinished work is retried, so nothing is lost. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/audit-headless-outcome-rate.js` for the per-task breakdown, then investigate the headless dispatch success rate (card #1714). Judge any fix by this rate over the window, never by one clean dispatch." },
   // Task #1648, same #1199 trap: without an explicit entry this row defaults
   // to urgency 'low' and renders as an anonymous count instead of a named
   // FAIL — for a check whose whole purpose is ending a silent digest-content
@@ -245,7 +253,8 @@ const AUTO_FIX_PLAYBOOK = [
   // close. 'fix-now': a tripped invariant means the LIVE owner-facing email
   // already shipped wrong content, not a risk of it.
   { match: /^Digest: content-invariant check$/, urgency: 'fix-now',
-    humanAction: 'The morning digest email failed its own content-invariant check (a forbidden section reappeared, or another assertDigestInvariants() rule broke) — the digest still sent, so this is a live content bug the owner already saw. Open Claude Code and say: "Check the digest content-invariant FAIL named in this check — run send-morning-digest.js --dry-run, compare data/audit/morning-digest-preview.html against scripts/lib/digest-content-invariants.js, and fix the regression."' },
+    ownerText: "The morning email broke one of its own content rules (for example, a section that should be gone came back). The email still went out. Nothing is needed from you.",
+    workerInstruction: "Find the digest content-invariant FAIL named in this check: run `node scripts/send-morning-digest.js --dry-run`, compare data/audit/morning-digest-preview.html against scripts/lib/digest-content-invariants.js, and fix the regression." },
   // Freshness — all auto-fixable via workflow dispatch
   { match: /^Freshness: reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'The review scores database is out of date. This usually fixes itself overnight.' },
@@ -256,7 +265,8 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Freshness: audience-buzz\.json$/, urgency: 'this-week', workflow: 'update-show-score.yml',
     humanFallback: 'Audience scores are out of date.' },
   { match: /^Audience coverage: open-show gaps$/, urgency: 'this-week',
-    humanAction: 'A currently-running show has audience ratings on a source that never linked — usually a title/venue mismatch. The check message names the source(s) and the correct override knob (MEZZANINE_OVERRIDES in scrape-mezzanine-audience.js, or THEATR_OVERRIDES in scrape-theatr-audience.js — they are separate). Open Claude Code and say: "Add the override for the flagged show and re-run that source’s scraper." Details in data/audit/mezzanine-coverage.json / theatr-coverage.json.' },
+    ownerText: "A running show has audience ratings on another site that are not linked to it yet, usually because the title or theater name does not match. Nothing is needed from you.",
+    workerInstruction: "The check message names the source(s) and the override knob (MEZZANINE_OVERRIDES in scrape-mezzanine-audience.js, or THEATR_OVERRIDES in scrape-theatr-audience.js; they are separate). Add the override for the flagged show and re-run that source's scraper. Details in data/audit/mezzanine-coverage.json / theatr-coverage.json." },
   // BRO-6336: 180 deep-research results sat unreviewed for four months. The verified auto-apply pass
   // (commercial-pending-daily.yml) should keep the queue near empty; this fires when it does not.
   { match: /^Commercial pending-review queue$/, urgency: 'fix-now', workflow: 'commercial-pending-daily.yml',
@@ -291,11 +301,14 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Sync: review-texts vs reviews\.json$/, urgency: 'fix-now', workflow: 'rebuild-reviews.yml',
     humanFallback: 'Review database is out of sync with source files.' },
   { match: /^Sync: cast coverage$/, urgency: 'this-week',
-    humanAction: 'One or more open Broadway shows are missing cast data. Open Claude Code and say: "Run backfill-cast.js to repopulate cast data for open shows."' },
+    ownerText: "Some open Broadway shows are missing their cast lists. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/backfill-cast.js` to repopulate cast data for open shows, then confirm the Sync: cast coverage row clears." },
   { match: /^Sync: open show coverage$/, urgency: 'this-week',
-    humanAction: 'Some open shows are missing reviews or grosses data. Open Claude Code and say: "Check which open shows are missing data and collect reviews for them."' },
+    ownerText: "Some open shows are missing reviews or box office numbers. Nothing is needed from you.",
+    workerInstruction: "Find which open shows are missing reviews or grosses data and collect reviews for them." },
   { match: /^Sync: baseline drift$/, urgency: 'this-week',
-    humanAction: 'The data counts have drifted from the last known-good baseline. Open Claude Code and say: "Run validate-data.js and update the validation baseline."' },
+    ownerText: "The overall data counts have moved away from the last known good snapshot. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/validate-data.js`, confirm the drift is legitimate, and update the validation baseline." },
 
   // Pipeline — warn-only, no auto-fix needed (they run on schedule)
   { match: /^Pipeline:/, urgency: 'low',
@@ -303,11 +316,14 @@ const AUTO_FIX_PLAYBOOK = [
 
   // Quality — needs investigation
   { match: /^Quality: standingCoverage drift$/, urgency: 'this-week',
-    humanAction: 'Some critic outlets should be added to or removed from the "reviews every Broadway opening" list, based on their actual coverage. Open Claude Code and say: "Check the standingCoverage drift and update outlet-registry.json."' },
+    ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every Broadway opening, based on what they actually cover. Nothing is needed from you.",
+    workerInstruction: "Check the standingCoverage drift and update outlet-registry.json." },
   { match: /^Quality: coverageExpectation drift$/, urgency: 'this-week',
-    humanAction: 'An outlet\'s "does not review theatre" flag is stale or contradicted by actual coverage. Open Claude Code and say: "Check the coverageExpectation drift and re-decide the flagged outlets."' },
+    ownerText: "A critic outlet marked as not reviewing theater has been reviewing shows anyway, or the reverse. Nothing is needed from you.",
+    workerInstruction: "Check the coverageExpectation drift and re-decide the flagged outlets in outlet-registry.json." },
   { match: /^Quality: outlet-heartbeat red flags$/, urgency: 'this-week',
-    humanAction: 'One or more critic outlets have gone quiet for 2+ straight weekly checks. Open Claude Code and say: "Check the outlet-heartbeat red flags and find out if the outlet stopped reviewing or an extractor broke."' },
+    ownerText: "One or more critic outlets have had no reviews picked up for 2 or more weekly checks in a row. Nothing is needed from you.",
+    workerInstruction: "Check the outlet-heartbeat red flags and find out whether the outlet stopped reviewing or an extractor broke." },
 
   // Silent-exclusion detectors (#1147 tracker, card #1188, ship-check
   // finding). Without explicit entries these fall through to the generic
@@ -315,62 +331,76 @@ const AUTO_FIX_PLAYBOOK = [
   // problem, which is not what either measures — same trap the SERP census
   // recall entry above exists to avoid.
   { match: /^Quality: missing contentTier$/, urgency: 'this-week',
-    humanAction: 'A review-text file has fullText + a real byline + no rejection flags but no contentTier, so it is not reaching reviews.json. Open Claude Code and say: "Check the missing contentTier gap named in this check and restore contentTier on that review-text file."' },
+    ownerText: "A complete review is not showing on the site because a label it needs is missing. Nothing is needed from you.",
+    workerInstruction: "Find the review-text file named in this check (fullText, a real byline, no rejection flags, but no contentTier) and restore contentTier so it reaches reviews.json." },
   { match: /^Quality: outlet domain moves$/, urgency: 'this-week',
-    humanAction: 'An unregistered host name-matches a known outlet — probably that outlet moved to a new domain (e.g. a critic switching to Substack) and reviews on the new host are being silently dropped. Open Claude Code and say: "Check the probable outlet domain move named in this check, confirm it, and add the host to that outlet\'s domainAliases."' },
+    ownerText: "A critic outlet looks like it moved to a new web address (for example, a critic switching to Substack), so its new reviews are being missed. Nothing is needed from you.",
+    workerInstruction: "Confirm the probable outlet domain move named in this check and add the new host to that outlet's domainAliases." },
   { match: /^Quality: outlet stub rate$/, urgency: 'this-week',
-    humanAction: 'An outlet has a spike in stub-tier (0-char extraction) reviews collected in the last 30 days — the signature of a site redesign breaking its article-extractor.js pattern (this is exactly what happened with TheaterMania in 2026). Open Claude Code and say: "Check the outlet stub-rate flag named in this check, confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet."' },
+    ownerText: "Reviews from one outlet are suddenly coming in empty, which usually means the outlet redesigned its website. Nothing is needed from you.",
+    workerInstruction: "Check the outlet stub-rate flag named in this check (a spike in stub-tier, 0-char extractions over the last 30 days), confirm the extractor is broken, and fix the article-extractor.js pattern for that outlet. TheaterMania broke this way in 2026." },
 
   // BRO-5027. Advisory: only stale/missing/drift warns reach the digest.
   { match: /^Commercial model: Boring Waltz fit$/, urgency: 'this-week',
-    humanAction: 'Boring Waltz is a Reddit user who posts weekly profit estimates for each show. Our profit model now agrees with his estimates much less often than usual, or this weekly comparison stopped updating. Nothing on the site changes by itself. Open Claude Code and say: "Check the Boring Waltz fit warning in the health digest and find out what changed."' },
+    ownerText: "Boring Waltz is a Reddit user who posts weekly profit estimates for each show. Our profit model now agrees with his estimates much less often than usual, or this weekly comparison stopped updating. Nothing on the site changes by itself. Nothing is needed from you.",
+    workerInstruction: "Check the Boring Waltz fit warning in the health digest and find out what changed." },
 
   // BRO-5073. Warns only when the revisit bar is met.
   { match: /^Commercial model: running-show bar revisit$/, urgency: 'this-week',
-    humanAction: 'The "% returned" bar for shows still running was kept off because the model was not accurate enough. Enough shows have now announced recoupment, and the model got enough of them right, to look at turning it on. Nothing on the site changes by itself. Open Claude Code and say: "The running-show bar revisit check passed; review the numbers and recommend whether to turn on RUNNING_MODEL_BAR_ENABLED."' },
+    ownerText: "The \"% returned\" bar for shows still running was kept off because the model was not accurate enough. Enough shows have now announced recoupment, and the model got enough of them right, to look at turning it on. Nothing on the site changes by itself. Turning it on is your decision; a worker will bring you the numbers and a recommendation first.",
+    workerInstruction: "The running-show bar revisit check passed. Review the numbers and write a recommendation on whether to turn on RUNNING_MODEL_BAR_ENABLED; turning it on is the owner's decision, so ask it as a plain-English DECISION NEEDED." },
 
   // BRO-5004. Without an entry this falls to urgency 'low' and never shows.
   { match: /^Commercial model: stored vs fresh run$/, urgency: 'this-week',
-    humanAction: 'Some recoupment percentages on the site were computed before a cost or capital figure changed, so they are out of date until the model re-runs. Open Claude Code and say: "Check the stored-vs-fresh model drift and re-run the recoupment model."' },
+    ownerText: "Some recoupment percentages on the site were computed before a cost or capital figure changed, so they are out of date until the model re-runs. Nothing is needed from you.",
+    workerInstruction: "Check the stored-vs-fresh model drift and re-run the recoupment model." },
 
   // BRO-5156. Before the generic /^Quality:/ route, which would describe this
   // as a scored-review-percentage drop.
   { match: /^Quality: opening date vs review dates$/, urgency: 'this-week',
-    humanAction: 'Some shows have a stored opening date later than the date critics reviewed them, which hides real first-night reviews from the score. Open Claude Code and say: "Check the opening date vs review dates warning and fix the dates."' },
+    ownerText: "Some shows have a stored opening date later than the date critics reviewed them, which hides real first-night reviews from the score. Nothing is needed from you.",
+    workerInstruction: "Check the opening date vs review dates warning and fix the stored opening dates." },
 
   { match: /^Quality:/, urgency: 'this-week',
-    humanAction: 'The percentage of scored reviews has dropped. Open Claude Code and say: "Check why the scored review percentage dropped and fix it."' },
+    ownerText: "The share of reviews that have a score has dropped. Nothing is needed from you.",
+    workerInstruction: "Find why the scored review percentage dropped and fix it." },
 
   // Coverage Verdict S1 (#872/#898). Without an explicit entry this would fall
   // through to the generic route and be described as a scored-review-percentage
   // problem, which is not what it measures.
   { match: /^Coverage: SERP census recall$/, urgency: 'this-week',
-    humanAction: 'The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Open Claude Code and say: "Check the census recall regression — run audit-serp-census-recall.js and find which arm dropped."' },
+    ownerText: "The review census is finding fewer published reviews than it recently did, so new shows may be going live with reviews missing. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/audit-serp-census-recall.js`, find which census arm dropped, and fix it." },
 
   // Affiliate revenue monitor (affiliate hardening 2026-08-03). fix-now: this
   // is the site's only revenue stream, and check-affiliate-health.js already
   // filtered out Poisson noise before writing anything non-pass.
   { match: /^Revenue: affiliate health$/, urgency: 'fix-now',
-    humanAction: 'The affiliate ticket-revenue monitor flagged a problem (or the monitor itself stopped running). Open Claude Code and say: "Run check-affiliate-health.js --dry-run and investigate the failing layer — the check output names it (site clicks, Impact handoff, conversions, or payouts)."' },
+    ownerText: "The ticket-sales commission monitor flagged a problem, or the monitor itself stopped running. Nothing is needed from you.",
+    workerInstruction: "Run `node scripts/check-affiliate-health.js --dry-run` and investigate the failing layer; the check output names it (site clicks, Impact handoff, conversions, or payouts)." },
 
   // Provider spend ledger dead-man (BRO-3317). fix-now: the whole reason this
   // check exists is that the ledger froze for 11 days with nothing paging —
   // a repeat needs to surface the same day, not sit in a weekly bucket.
   { match: /^Data quality: provider spend ledger$/, urgency: 'fix-now',
-    humanAction: 'The provider spend ledger (data/audit/provider-spend-daily.jsonl) has not been updated in >48h. Open Claude Code and say: "Check the \'Commit provider spend ledger (apiFallbackSafe)\' and \'Provider spend reconciliation\' steps in data-health-check.yml — confirm the write in the reconciliation step is actually reaching a committed push, not being wiped by an earlier commit step\'s push-with-retry.sh fallback."' },
+    ownerText: "The daily record of what we spend on outside data services has not updated in over 2 days. Nothing is needed from you.",
+    workerInstruction: "Check the 'Commit provider spend ledger (apiFallbackSafe)' and 'Provider spend reconciliation' steps in data-health-check.yml. Confirm the reconciliation step's write to data/audit/provider-spend-daily.jsonl reaches a committed push and is not wiped by an earlier commit step's push-with-retry.sh fallback." },
 
   // Cookies — requires human action on Mac. Urgency escalates with proximity.
   { match: /^Cookies:/, urgency: 'fix-now',
-    humanAction: 'A paywall cookie needs refreshing. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."',
+    ownerText: "A login cookie for a paywalled critic site has expired or is about to. Refreshing it needs you to log in to that site on your Mac; the countdown below shows which ones and when.",
+    workerInstruction: "Find which paywall cookies are expired or near expiry and refresh every one that can be refreshed without the owner. For any that needs a fresh owner login, name the site in one plain sentence.",
     useCountdown: true },
 
   // CWV — needs investigation
   { match: /^CWV:/, urgency: 'this-week',
-    humanAction: 'Website performance has degraded. Open Claude Code and say: "Check the Core Web Vitals report and fix any performance regressions."' },
+    ownerText: "The website has gotten slower. Nothing is needed from you.",
+    workerInstruction: "Check the Core Web Vitals report and fix any performance regressions." },
 
   // SEO — needs investigation
   { match: /^SEO:/, urgency: 'this-week',
-    humanAction: 'SEO health has degraded. Open Claude Code and say: "Check the SEO health report and fix any issues."' },
+    ownerText: "Search engine health for the site has slipped. Nothing is needed from you.",
+    workerInstruction: "Check the SEO health report and fix any issues." },
 
   // Cron staleness — low-priority; auto-dispatch for a few known-fixable ones.
   // NB: failed-last-run cases are emitted under `Cron failed:` (see below)
@@ -384,13 +414,15 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Cron: failing every scheduled run$/, urgency: 'low',
     humanAction: 'A scheduled job has failed its last 3 runs in a row and nobody is being paged about it. The row names the workflows; a fix session picks it up from the board.' },
   { match: /^Cron:/, urgency: 'low',
-    humanAction: "A scheduled job hasn't run recently. It'll likely run on its next schedule. If it persists, open Claude Code and say: \"Check why the cron jobs aren't running.\"" },
+    ownerText: "A scheduled job has not run recently. It will likely run on its next schedule. Nothing is needed from you.",
+    workerInstruction: "If the cron row persists, find why the scheduled jobs are not running and fix it." },
 
   // Cron failed-last-run — surfaces in the daily digest's prominent section.
   // Added 2026-04-14 so that update-lottery-rush / weekly-grosses / etc.
   // failures don't sit silently in the Actions log for a week.
   { match: /^Cron failed:/, urgency: 'fix-now',
-    humanAction: 'A critical scheduled workflow failed its most recent run. Open Claude Code and say: "Check what broke in {workflow} and fix it."' },
+    ownerText: "A critical scheduled job failed its most recent run. Nothing is needed from you.",
+    workerInstruction: "Find what broke in the workflow this check row names and fix it." },
 
   // Repeat workflow failures — promoted from a passive digest body section to a
   // first-class check (2026-06-16, Notion 381637c5) so a workflow failing 2+
@@ -399,11 +431,13 @@ const AUTO_FIX_PLAYBOOK = [
   // "Workflow repeat-failure: update-lottery-rush.yml". Self-resolves once the
   // workflow stops failing.
   { match: /^Workflow repeat-failure:/, urgency: 'fix-now',
-    humanAction: 'A workflow failed repeatedly in the last 24 hours — likely broken, not a transient blip. Open Claude Code and say: "Check what broke in this workflow and fix it." The Repeat Workflow Failures section below links each failing run.' },
+    ownerText: "A job failed several times in the last 24 hours, so it is likely broken rather than a one-off. The Repeat Workflow Failures section below links each failing run. Nothing is needed from you.",
+    workerInstruction: "Find what broke in this workflow (the row names it and links each failing run) and fix it." },
 
   // Secrets — needs manual rotation
   { match: /^Secrets:/, urgency: 'fix-now',
-    humanAction: 'A secret or API key may be expiring. On your Mac, open Claude Code and say: "Check which secrets need rotation and rotate them."' },
+    ownerText: "A password or API key the site uses may be expiring soon. Renewing some keys needs your login to that service; if so, you will be told which one.",
+    workerInstruction: "Find which secrets need rotation and rotate them. If a rotation needs the owner's login or a payment, name the service in one plain sentence." },
 
   // API Credits — needs attention if low. Provider-specific entries first;
   // the generic /^Credits:/ line is the fallback for future providers
@@ -5626,7 +5660,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
       let dispatchCapped = false;
       for (const r of actionable) {
         const entry = getPlaybookEntry(r.name);
-        if (!entry || entry.workflow || !entry.humanAction) continue;
+        if (!entry || entry.workflow || !hasPlaybookAction(entry)) continue;
         // BRO-2603: entry.ledger names the frozen ledger this check is
         // sourced from (see AUTO_FIX_PLAYBOOK above). Skip filing — falls
         // back to the same "no card, raw instruction only" render as the
@@ -5642,7 +5676,7 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             conditionKey: `health-check:${r.name}`,
             title: `BSC Daily: ${r.name}`,
             description: `${r.message}${r.hint ? `\n\n${r.hint}` : ''}`,
-            hint: entry.humanAction,
+            hint: playbookWorkerHint(entry),
             severity: r.status === 'error' ? 'error' : 'warning',
             disposition: 'auto',
             // BRO-4487: a stable, daily-checked condition. File its card only
@@ -5691,34 +5725,9 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
         const entry = getPlaybookEntry(r.name);
         const urgency = URGENCY_LABELS[r._escalatedUrgency || (entry ? entry.urgency : 'low')] || URGENCY_LABELS['low'];
         const dispatch = dispatchedCards[r.name];
-        const instruction = dispatch
-          ? (dispatch.deferred
-              // BRO-4487: plain 'auto' alerts wait out their incident age
-              // before a card is filed; say so instead of claiming a tracker.
-              ? `${entry.humanAction} — being watched; a card is filed if this is still happening after 3 days.`
-              : dispatch.action === 'silent'
-              // Rail 2 (task #1341): a Linear-deduped condition never filed a
-              // Notion card — say where the tracker actually lives, or the
-              // owner goes hunting for an Action Queue card that doesn't exist.
-              ? (dispatch.linearIdentifier
-                  ? `${entry.humanAction} — already tracked as ${dispatch.linearIdentifier} in Linear (still open).`
-                  : `${entry.humanAction} — already dispatched to the Action Queue (still open).`)
-              : dispatch.dispatchOk === false
-                // Surface the REAL captured error, not a guess — this exact
-                // line used to hardcode "Check logs / NOTION_API_KEY", which
-                // is what sent every session chasing the wrong cause during
-                // the 2026-07-24 npm-ci incident (the real error was
-                // "Cannot find module '@notionhq/client'").
-                ? `${entry.humanAction} — tracker filing failed, will retry next run. Error: ${(dispatch.dispatchError || '(no error captured)').slice(0, 200)}`
-                // BRO-286 honesty: name the filed issue; never claim
-                // hands-free work without a journaled dispatch (the parked-
-                // issue drain is a Phase 2 follow-up still in build).
-                : (dispatch.linearIdentifier
-                    ? `${entry.humanAction} — filed as ${dispatch.linearIdentifier} in Linear for triage.`
-                    : `${entry.humanAction} — tracker filed in Linear for triage.`))
-          : entry
-            ? (entry.humanAction || entry.humanFallback || r.message)
-            : r.message;
+        // BRO-5543: the owner reads ownerText plus the tracker status, never
+        // the worker hint (scripts/lib/playbook-copy.js ownerDigestInstruction).
+        const instruction = ownerDigestInstruction(entry, r, dispatch);
         const fix = autoFixMap[r.name];
         const failNote = fix && fix.message
           ? `<br><span style="color:#e74c3c;font-size:11px;">Couldn't auto-fix. ${entry?.workflow ? `<a href="https://github.com/thomaspryor/Broadwayscore/actions/workflows/${entry.workflow}" style="color:#e74c3c;text-decoration:underline;">Tap to retry manually</a>` : ''}</span>`
