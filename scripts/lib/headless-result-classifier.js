@@ -159,15 +159,22 @@ function classifyHeadlessResult(resultText) {
 // Final-paragraph phrases (BRO-6314). Any pending signal anywhere in the
 // paragraph beats a close phrase: false-clean is the dangerous direction.
 const PENDING_RE = new RegExp([
-  /\bkeep this tab open\b/.source,
-  /\bkeep the worktree\b/.source,
+  /\bkeep this tab open\b(?!\s+only if you want\b)/.source,
   /\bdecision needed\b/.source,
+  /\baction needed from you\b/.source,
+  /\bblocked:/.source,
+  // negated close: "Do not assume you can close this tab"
+  /\b(?:do not|don't|not)\b[^.;]*\byou can close this tab\b/.source,
   /\byou need to:\s*(?!nothing\b)\S/.source,
   // conditional close: "you can close this tab after/once/when/until/if ..."
   /\b(?:after|once|when|until|if)\b[^.]*\byou can close this tab\b/.source,
   /\byou can close this tab\s+(?:after|once|when|until|if)\b/.source,
 ].join('|'), 'i');
-const CLOSE_PHRASE_RE = /\b(?:you can close this tab|nothing is running here)\b(?!\s*,?\s*but\b)/i;
+// BRO-6430: "Keep the worktree, it holds unfinished work." is the item-4b
+// worktree sentence, not a keep-the-tab signal (unlanded work is caught
+// separately by detectJobLanding -> stranded), so it is no longer PENDING.
+// "Keep this tab (open) only if you want to ..." is the IDLE template.
+const CLOSE_PHRASE_RE = /\b(?:you can close this tab|nothing is running here|keep this tab (?:open )?only if you want|this session is idle and can be closed)\b(?!\s*,?\s*but\b)/i;
 const REMOVE_WORKTREE_RE = /\byou can remove the worktree\b/i;
 const NOTHING_RUNNING_RE = /\bnothing is (?:still )?running\b/i;
 
