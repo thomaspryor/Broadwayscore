@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-27T17:59:08.449Z",
+  "updatedAt": "2026-10-27T18:15:27.033Z",
   "processed": 250,
-  "failed": 164,
-  "successRate": "60.4%",
+  "failed": 178,
+  "successRate": "58.4%",
   "tierBreakdown": {
     "playwright": 135,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
     "scrapingdog": 21,
     "scrapingbee": 13,
     "brightdata": 9,
-    "archiveToday": 25,
+    "archiveToday": 31,
     "archive": 60
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-27T15:46:03.722Z",
@@ -37,6 +37,51 @@
       "t": "2026-10-27T15:49:30.743Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T18:06:44.010Z",
+      "event": "bb-session",
+      "session": "244c9bab",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-27T18:06:44.446Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-27T18:09:23.455Z",
+      "event": "bb-session",
+      "session": "3ae8cd77",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-27T18:12:18.321Z",
+      "event": "bb-session",
+      "session": "7ae6b229",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T18:12:18.778Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T18:12:28.362Z",
+      "event": "bb-session",
+      "session": "394e7d96",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T18:12:28.808Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T18:15:14.221Z",
+      "event": "bb-session",
+      "session": "beb58c5f",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
