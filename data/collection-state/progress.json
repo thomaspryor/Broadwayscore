@@ -1,43 +1,14 @@
 {
   "processed": [
-    "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
-    "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json",
-    "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
-    "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
-    "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
-    "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
-    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-    "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-    "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
-    "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-    "ilford-boy-west-end-2026/guardian--kate-wyver.json",
-    "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json"
+    "merry-me-off-broadway-2023/timeout--regina-robbins.json"
   ],
   "failed": [
-    "scene-partners-off-broadway-2023/thestage--unknown.json",
-    "an-oak-tree-off-west-end-2026/times-uk--dominic-maxwell.json",
-    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
-    "derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
-    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json",
-    "girls-off-west-end-2026/radio-times--molly-moss.json",
-    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
-    "the-pianist-off-west-end-2026/soundsandstage--unknown.json"
+    "merry-me-off-broadway-2023/nytimes--laura-collins-hughes.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "garry-starr-classic-penguins-off-west-end-2026/londonlivinglarge--london-living-large.json",
-      "derren-brown-only-human-west-end-2026/guardian--brian-logan.json",
-      "derren-brown-only-human-west-end-2026/everything-theatre--tate-miller.json",
-      "derren-brown-only-human-west-end-2026/jonathan-baz--unknown.json",
-      "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
-      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "the-pianist-off-west-end-2026/jonathan-baz--unknown.json",
-      "the-pianist-off-west-end-2026/notesfromrowh--unknown.json",
-      "the-pianist-off-west-end-2026/theatre-south-east--helena-featherstone.json",
-      "ilford-boy-west-end-2026/guardian--kate-wyver.json",
-      "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json"
+      "merry-me-off-broadway-2023/timeout--regina-robbins.json"
     ],
     "amp": [],
     "browserbase": [
@@ -45,32 +16,24 @@
     ],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
-      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
-      "data/review-texts/derren-brown-only-human-west-end-2026/london-theatre-reviews--ramsey-baghdadi.json",
-      "data/review-texts/the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json"
-    ],
+    "archiveToday": [],
     "archive": []
   },
-  "startTime": "2026-10-27T04:18:53.399Z",
-  "lastProcessed": "ilford-boy-west-end-2026/revstanstheatreblog--unknown.json",
+  "startTime": "2026-10-27T04:55:03.161Z",
+  "lastProcessed": "merry-me-off-broadway-2023/timeout--regina-robbins.json",
   "log": [
     {
-      "t": "2026-10-27T04:43:48.277Z",
+      "t": "2026-10-27T04:55:25.125Z",
       "event": "bb-session",
-      "session": "4201d64e",
-      "url": "https://soundsandstage.com/show/cirque-berserk"
+      "session": "13778861",
+      "url": "https://www.nytimes.com/2023/11/01/theater/merry-me-review-hansol-jung.html"
     },
     {
-      "t": "2026-10-27T04:50:00.311Z",
-      "event": "bb-session",
-      "session": "b2733bfa",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "t": "2026-10-27T04:55:25.624Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
