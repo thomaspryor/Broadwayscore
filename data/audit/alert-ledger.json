@@ -22584,7 +22584,7 @@
       "resolvedAt": "2026-10-20T22:22:57.440Z"
     },
     "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
       "firstSeen": "2026-10-20T21:59:17.665Z",
@@ -22594,7 +22594,9 @@
       "lastSurfacedAt": "2026-10-26T23:32:28.350Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-27T00:03:11.793Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5776-commercial-coverage": {
       "status": "open",
@@ -23820,13 +23822,13 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-26T23:32:28.334Z",
+      "lastSeen": "2026-10-27T00:03:11.749Z",
       "lastNotifiedAt": "2026-10-26T15:45:10.597Z",
       "lastSurfacedAt": "2026-10-26T15:45:10.597Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24575,13 +24577,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-26T23:32:28.315Z",
+      "lastSeen": "2026-10-27T00:03:11.733Z",
       "lastNotifiedAt": "2026-10-26T02:13:50.833Z",
       "lastSurfacedAt": "2026-10-26T02:13:50.833Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -26403,13 +26405,13 @@
       "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-24T23:08:26.440Z",
-      "lastSeen": "2026-10-26T23:32:28.393Z",
+      "lastSeen": "2026-10-27T00:03:11.777Z",
       "lastNotifiedAt": "2026-10-26T02:13:50.876Z",
       "lastSurfacedAt": "2026-10-26T02:13:50.876Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -27115,13 +27117,13 @@
       "title": "Live-data test failing: every national tour has a synopsis, or is a documented gap (tests/unit/tour-runtime-coverage.test.mjs)",
       "firstSeen": "2026-10-26T02:13:50.863Z",
       "incidentOpenedAt": "2026-10-26T02:13:50.863Z",
-      "lastSeen": "2026-10-26T23:32:28.367Z",
+      "lastSeen": "2026-10-27T00:03:11.762Z",
       "lastNotifiedAt": "2026-10-26T02:13:50.863Z",
       "lastSurfacedAt": "2026-10-26T02:13:50.863Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-6268-ocr-probe-2": {
       "status": "open",
