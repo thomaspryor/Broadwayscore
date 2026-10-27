@@ -96,6 +96,36 @@ test.describe('Homepage', () => {
     expect(filterCount).toBeGreaterThan(0);
   });
 
+  test('search responds to the first pointer click or mobile tap without an overlay', async ({ page, isMobile }) => {
+    // Capture errors before navigation, including initialization failures.
+    const errors: string[] = [];
+    page.on('pageerror', error => errors.push(error.message));
+    await page.goto('/');
+    const input = page.locator('#show-search');
+    await expect(input).toBeVisible();
+    await input.scrollIntoViewIfNeeded();
+
+    // Test both the text area and the decorative icon. Hit testing must reach
+    // the input through the icon, while the adjacent Filters button stays usable.
+    for (const x of [80, 24]) {
+      await input.evaluate(el => el.blur());
+      if (isMobile) await input.tap({ position: { x, y: 24 } });
+      else await input.click({ position: { x, y: 24 } });
+      await expect(input).toBeFocused();
+    }
+    await input.pressSequentially('Hamilton');
+    await expect(input).toHaveValue('Hamilton');
+    await expect(page).toHaveURL(/[?&]q=Hamilton(?:&|$)/);
+    await expect(page.getByRole('list', { name: 'Broadway shows' }).locator('h3').first()).toHaveText('Hamilton');
+    await expect(input).toBeFocused();
+    await expect(page.getByRole('dialog')).toHaveCount(0);
+
+    await input.fill('');
+    await expect(page).not.toHaveURL(/[?&]q=/);
+    await expect(input).toBeFocused();
+    expect(errors).toEqual([]);
+  });
+
   test('clicking a show card navigates to show page', async ({ page }) => {
     // Wait for show cards
     const showLink = page.locator('a[href^="/show/"]').first();
