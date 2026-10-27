@@ -1,3 +1,4 @@
+// timebomb-audit-exempt-test: an earlier all-market run started 5h ago does not cover us | the guard is real bash reading the real `date`; clock-shift only moves Node Date.now(), so the fixture stamp lands in the bash clock's future and counts as cover
 // BRO-2730: West End press embargoes lift ~21:00-22:00 UTC but the only West
 // End evening cron was 18:00 UTC. Also: GitHub delays these crons 3-6h, so the
 // market must come from the cron string (github.event.schedule), never the
