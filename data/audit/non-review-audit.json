@@ -1,16 +1,17 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-20T09:52:38.747Z",
-    "totalScanned": 46471,
-    "flagged": 112,
+    "generatedAt": "2026-10-27T10:16:16.720Z",
+    "totalScanned": 50347,
+    "flagged": 118,
     "byType": {
-      "cast_announcement": 1,
-      "preview_article": 63,
-      "obituary": 11,
+      "cast_announcement": 3,
+      "preview_article": 62,
+      "obituary": 13,
       "garbage_scrape": 11,
       "press_release": 5,
-      "awards_coverage": 7,
-      "news_article": 11,
+      "news_article": 10,
+      "awards_coverage": 8,
+      "photo_gallery": 3,
       "interview": 3
     }
   },
@@ -21,7 +22,7 @@
       "type": "cast_announcement",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "joins the cast | LLM: NOT_REVIEW. This text is a preview or promotional piece that describes the show and its cast without",
+      "evidence": "joins the cast | LLM: NOT_REVIEW. This text primarily provides information about cast changes, plot summary, and backgroun",
       "outlet": "Time Out London",
       "critic": "Alice Saville",
       "score": 68
@@ -32,7 +33,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating that the requested content could not be found, n",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -43,10 +44,21 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "died aged 92 | LLM: NOT_REVIEW. The text is an incomplete preview or introduction to a review, as it ends abruptly befor",
+      "evidence": "died aged 92 | LLM: NOT_REVIEW. The text is an introduction to a review, providing background information about the play",
       "outlet": "The Arts Desk",
       "critic": "Aleks Sierz",
       "score": 97
+    },
+    {
+      "showId": "a-day-in-the-death-of-joe-egg-west-end-2019",
+      "file": "daily-mail--patrick-marmion.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic",
+      "evidence": "aged 92, there couldn't be a more fitting tribute; death last month aged 92",
+      "outlet": "Daily Mail",
+      "critic": "Patrick Marmion",
+      "score": 88
     },
     {
       "showId": "a-midsummer-nights-dream-globe-west-end-2026",
@@ -65,7 +77,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, not a review of a play.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 77
@@ -87,7 +99,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text provides background information about the musical and its inspiration, along w",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text provides background information about the musical and its inspiration, along wi",
       "outlet": "womens-voices-for-change",
       "critic": "Alexandra MacAaron",
       "score": 77
@@ -98,7 +110,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 77
@@ -115,15 +127,15 @@
       "score": 81
     },
     {
-      "showId": "arcadia-west-end-2026",
-      "file": "telegraph--dominic-cavendish.json",
+      "showId": "back-to-the-future-tour-2024",
+      "file": "so-sumi--glenn-sumi.json",
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "died in November aged 88 | LLM: NOT_REVIEW. The text is a preview or announcement of the play's return, not a critical evaluation of",
-      "outlet": "The Telegraph",
-      "critic": "Dominic Cavendish",
-      "score": 86
+      "evidence": "passed away | LLM: NOT_REVIEW. This text is an obituary and remembrance of Joseph Ziegler, not a review of \"Back to the",
+      "outlet": "So Sumi",
+      "critic": "Glenn Sumi",
+      "score": 43
     },
     {
       "showId": "beetlejuice-tour-2022",
@@ -131,7 +143,7 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tickets on sale | LLM: NOT_REVIEW. This text is an announcement and plot summary, not an evaluation of the production's per",
+      "evidence": "Tickets on sale | LLM: NOT_REVIEW. This text is an announcement and plot summary, not an evaluation of the show's performan",
       "outlet": "Oklahoma City Free Press",
       "critic": "Adrienne Proctor",
       "score": 81
@@ -142,7 +154,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating that the requested content could not be found, n",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error message from a website, not a review of a play.",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 62
@@ -153,7 +165,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, not a review of a show.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 76
@@ -164,7 +176,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The provided text is an error message from a website and does not contain any content re",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error message and a list of unrelated videos, not a review of \"Born Yest",
       "outlet": "TheaterMania",
       "critic": "Andy Propst",
       "score": 81
@@ -175,21 +187,10 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 71
-    },
-    {
-      "showId": "bring-it-on-the-musical-2012",
-      "file": "village-voice--michael-musto.json",
-      "type": "awards_coverage",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "Tony winners | LLM: NOT_REVIEW. This text is a collection of headlines and snippets, not a cohesive review of \"Bring It ",
-      "outlet": "Village Voice",
-      "critic": "Michael Musto",
-      "score": 63
     },
     {
       "showId": "choir-boy-2019",
@@ -197,21 +198,10 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closes on | LLM: NOT_REVIEW. This text is a promotional piece urging people to see the show before it closes, rather ",
+      "evidence": "closes on | LLM: NOT_REVIEW. This text is a promotional piece urging people to see the play before it closes, rather ",
       "outlet": "Theatre Reviews Limited",
       "critic": "David Roberts",
       "score": 80
-    },
-    {
-      "showId": "clara-sex-love-and-classical-off-broadway-2026",
-      "file": "theater-pizzazz--alix-cohen.json",
-      "type": "preview_article",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "what to expect | LLM: NOT_REVIEW. This text is a plot summary and character description rather than an evaluation of the t",
-      "outlet": "Theater Pizzazz",
-      "critic": "Alix Cohen",
-      "score": 77
     },
     {
       "showId": "clybourne-park-2012",
@@ -219,7 +209,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 76
@@ -230,7 +220,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "died in June 2014 aged 62 | LLM: NOT_REVIEW. The text discusses the playwright's body of work and previous stagings of \"Coming Clean,",
+      "evidence": "died in June 2014 aged 62 | LLM: NOT_REVIEW. The text provides background information about the playwright Kevin Elyot and his works,",
       "outlet": "The Telegraph",
       "critic": "Dominic Cavendish",
       "score": 79
@@ -241,7 +231,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 78
@@ -252,7 +242,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 81
@@ -263,7 +253,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 76
@@ -274,7 +264,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "has been cancelled | LLM: NOT_REVIEW. This text is a news announcement about a cancelled performance and cast information, not",
+      "evidence": "has been cancelled | LLM: NOT_REVIEW. This text is a news announcement about a cancelled performance, not an evaluation of a s",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 78
@@ -285,7 +275,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, not a review of \"Death of a Salesman.\"",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"Death of a Salesman",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 50
@@ -296,7 +286,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page and does not contain any content related to a theater critic's",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 79
@@ -307,7 +297,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with unrelated content, not a review of \"Elf.\"",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania, not a review of \"Elf.\"",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 50
@@ -318,7 +308,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with a search bar and unrelated video links, not a critical ev",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -329,7 +319,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any critical evaluation",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with a search bar and unrelated video links, not a critical ev",
       "outlet": "TheaterMania",
       "critic": "David Rooney",
       "score": 83
@@ -351,10 +341,21 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"Evita.\"",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 50
+    },
+    {
+      "showId": "gettin-the-band-back-together-2018",
+      "file": "variety--marilyn-stasio.json",
+      "type": "awards_coverage",
+      "confidence": "medium",
+      "method": "heuristic-only",
+      "evidence": "Award nominations",
+      "outlet": "Variety",
+      "critic": "Marilyn Stasio",
+      "score": 76
     },
     {
       "showId": "giant-2026",
@@ -362,7 +363,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "first look at | LLM: NOT_REVIEW. This text is an announcement and promotional piece for the play, providing information a",
+      "evidence": "first look at | LLM: NOT_REVIEW. This text is an announcement and promotional piece for the play \"Giant,\" providing cast ",
       "outlet": "New York Theatre Guide",
       "critic": "Gillian Russo",
       "score": 62
@@ -373,7 +374,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page and does not contain any content related to a theater review.",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 50
@@ -384,7 +385,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any evaluation of a sho",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error page with unrelated content, not a review of \"Golden Boy.\"",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 61
@@ -406,7 +407,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error page from TheaterMania and does not contain any content related to",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with unrelated content, not an evaluation of a show.",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 81
@@ -417,7 +418,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania, not a review of \"Gypsy.\"",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 50
@@ -428,10 +429,21 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from a website and does not contain any critical evaluation of",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 82
+    },
+    {
+      "showId": "hangmen-west-end-2015",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "type": "photo_gallery",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Photo Gallery | LLM: NOT_REVIEW. This text is a plot summary and description of the play's premise, not an evaluation of ",
+      "outlet": "WhatsOnStage",
+      "critic": "Daisy Bowie-Sell",
+      "score": 91
     },
     {
       "showId": "harvey-2012",
@@ -439,7 +451,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 50
@@ -450,21 +462,21 @@
       "type": "interview",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Q&A with | LLM: NOT_REVIEW. This text is a review of \"All My Sons\" by Ivo van Hove, not \"heart wall west end\".",
+      "evidence": "Q&A with | LLM: NOT_REVIEW. The text is a review of \"All My Sons,\" not \"heart wall west end.\"",
       "outlet": "The Upcoming",
       "critic": "Benedetta Mancusi",
       "score": 88
     },
     {
-      "showId": "here-we-are-west-end-2025",
-      "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "type": "obituary",
+      "showId": "hello-dolly-2017",
+      "file": "theatermania--pete-hempstead.json",
+      "type": "cast_announcement",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "passed away | LLM: NOT_REVIEW. The text is a preview or an announcement of the show, providing background information a",
-      "outlet": "All That Dazzles (UK)",
-      "critic": "All That Dazzles",
-      "score": 78
+      "evidence": "joins the cast | LLM: NOT_REVIEW. This text provides a plot summary and cast information with some descriptive praise, but",
+      "outlet": "TheaterMania",
+      "critic": "Pete Hempstead",
+      "score": 86
     },
     {
       "showId": "holiday-inn-the-new-irving-berlin-musical-2016",
@@ -472,7 +484,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text provides historical context about the origins of \"Holiday Inn\" and its connect",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text provides historical background on the \"Holiday Inn\" concept and its evolution,",
       "outlet": "broad-street-review",
       "critic": "Steve Cohen",
       "score": 77
@@ -494,7 +506,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with unrelated content, not a review of \"illinoise.\"",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 83
@@ -505,7 +517,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. This text is a news article reporting on the extension of the play's run, not an evaluat",
+      "evidence": "closing notice | LLM: NOT_REVIEW. This text is a news announcement about the extension of the play's run, not an evaluatio",
       "outlet": "TheaterMania",
       "critic": "Dan Bacalzo",
       "score": 82
@@ -516,7 +528,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any evaluation of a sho",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 61
@@ -538,7 +550,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from a website and does not contain any critical evaluation of",
       "outlet": "TheaterMania",
       "critic": "David Gordon",
       "score": 50
@@ -560,7 +572,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text is a plot summary with some basic information about the show, but it lacks the ",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text is incomplete and appears to be a promotional blurb or summary rather than a fu",
       "outlet": "Theatre is Easy",
       "critic": "Adrienne Urbanski",
       "score": 82
@@ -571,7 +583,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error page from TheaterMania and does not contain any content, let alone",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 70
@@ -582,7 +594,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and does not contain any content related to a theater revie",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with unrelated content, not a review of \"Lempicka.\"",
       "outlet": "TheaterMania",
       "critic": "David Gordon",
       "score": 50
@@ -593,21 +605,10 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW. This text provides background information about the play and its director, but it does n",
+      "evidence": "Award winners | LLM: NOT_REVIEW. This text provides background information about the play and its author, but it does not",
       "outlet": "BroadwayWorld",
       "critic": "Michael Dale",
       "score": 75
-    },
-    {
-      "showId": "maybe-happy-ending-2024",
-      "file": "theatermania--adam-feldman.json",
-      "type": "news_article",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. This text is a preview or an update about cast changes, not an evaluation of a performan",
-      "outlet": "TheaterMania",
-      "critic": "Adam Feldman",
-      "score": 93
     },
     {
       "showId": "meteor-shower-2017",
@@ -615,7 +616,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW. This text is a preview that provides information about the cast, creative team, and plot",
+      "evidence": "Award winners | LLM: NOT_REVIEW. This text is a news announcement providing details about the cast, creative team, and pl",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 43
@@ -626,7 +627,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text is a summary of the show's background and critical reception, not an evaluatio",
+      "evidence": "Tony nominations | LLM: NOT_REVIEW. This text summarizes the show's background and poses questions about its quality, but it",
       "outlet": "The Stage",
       "critic": "Sam Marlowe",
       "score": 42
@@ -637,7 +638,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and a list of unrelated videos, not a review of \"Motown the",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"Motown the Musical.",
       "outlet": "TheaterMania",
       "critic": "David Rooney",
       "score": 50
@@ -648,7 +649,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "closing notice | LLM: NOT_REVIEW. This text is a news article discussing the show's return to Broadway, its production cha",
+      "evidence": "closing notice | LLM: NOT_REVIEW. This text is a news article discussing the show's return, changes, and plot, rather than",
       "outlet": "WNBC",
       "critic": "Robert Kahn",
       "score": 77
@@ -659,7 +660,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a webpage snippet that includes the title of a review but does not ",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a webpage snippet that includes a title suggesting a review, but th",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 61
@@ -670,7 +671,7 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "announce that | LLM: NOT_REVIEW. The text is a plot summary and background information about the film, not an evaluation ",
+      "evidence": "announce that | LLM: NOT_REVIEW. The text is an excerpt that primarily summarizes the plot and background of \"Network\" ra",
       "outlet": "CurtainUp",
       "critic": "Elyse Sommer",
       "score": 78
@@ -681,7 +682,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "final performance | LLM: NOT_REVIEW. This text provides background information about Kander and Ebb musicals and the show \"Ne",
+      "evidence": "final performance | LLM: NOT_REVIEW. This text provides background information about the musical and its creators, but it doe",
       "outlet": "amNY",
       "critic": "Matt Windman",
       "score": 60
@@ -703,7 +704,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error message from a website, not a review of a theatrical production.",
       "outlet": "TheaterMania",
       "critic": "David Gordon",
       "score": 75
@@ -714,7 +715,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a snippet from a website, including a browser update message and a ",
+      "evidence": "BROWSER UPDATE | LLM: NOT_REVIEW. The provided text is a snippet from a webpage that includes a browser update message and",
       "outlet": "The Wall Street Journal",
       "critic": "Terry Teachout",
       "score": 93
@@ -725,7 +726,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Sneak Peek | LLM: NOT_REVIEW. This text consists of celebrity news headlines and does not contain a review of \"On Your",
+      "evidence": "Sneak Peek | LLM: NOT_REVIEW. This text is a collection of celebrity news headlines and does not contain a theater cri",
       "outlet": "Perez Hilton",
       "critic": "Perez Hilton",
       "score": 88
@@ -736,7 +737,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"Once Upon a One Mor",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any evaluation of a sho",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -747,7 +748,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"Once Upon a One Mor",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message indicating the content could not be found, not a review of ",
       "outlet": "TheaterMania",
       "critic": "David Gordon",
       "score": 50
@@ -758,7 +759,7 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "announces that | LLM: NOT_REVIEW. This text is a preview or an announcement, setting expectations for an upcoming producti",
+      "evidence": "announces that | LLM: NOT_REVIEW. The text describes the show's content but does not evaluate its performances, direction,",
       "outlet": "The Times",
       "critic": "Libby Purves",
       "score": 75
@@ -769,7 +770,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "has died | LLM: NOT_REVIEW. This text is an interview with an actress from the production, discussing the play's the",
+      "evidence": "has died | LLM: NOT_REVIEW. This text is an interview with an actress from the production, discussing her interpreta",
       "outlet": "The New York Times",
       "critic": "Mervyn Rothstein",
       "score": 52
@@ -780,7 +781,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error page from TheaterMania and does not contain any content related to",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error message from a website, not a review of \"Parade.\"",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 86
@@ -791,7 +792,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 79
@@ -813,7 +814,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"patriots.\"",
       "outlet": "TheaterMania",
       "critic": "Frank Scheck",
       "score": 79
@@ -824,10 +825,21 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "David Rooney",
       "score": 76
+    },
+    {
+      "showId": "pigeon-english-west-end-2016",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "type": "photo_gallery",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Photo Gallery | LLM: NOT_REVIEW. This text is a photo gallery caption that provides a plot summary and some background in",
+      "outlet": "WhatsOnStage",
+      "critic": "Daisy Bowie-Sell",
+      "score": 57
     },
     {
       "showId": "pippin-2013",
@@ -835,7 +847,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Award winners | LLM: NOT_REVIEW. This text is an announcement of award winners and presenters, not an evaluation of a spe",
+      "evidence": "Award winners | LLM: NOT_REVIEW. This text is a list of award winners and presenters, not an evaluation of a theatrical p",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 84
@@ -846,7 +858,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from a website and does not contain any content related to a t",
+      "evidence": "First Look at | LLM: NOT_REVIEW. This text is an error message from a website, not a review of \"Private Lives.\"",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 50
@@ -863,12 +875,23 @@
       "score": 50
     },
     {
+      "showId": "rent-west-end-2026",
+      "file": "camdennewjournal--unknown.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "died aged 35 | LLM: NOT_REVIEW. This text is a plot summary with some descriptive adjectives rather than an evaluative r",
+      "outlet": "Camden New Journal",
+      "critic": "Unknown",
+      "score": 75
+    },
+    {
       "showId": "romeo-juliet-2024",
       "file": "theatermania--jesse-green.json",
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page and does not contain any content related to a review of \"Romeo",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, not a review of \"Romeo and Juliet.\"",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 50
@@ -879,7 +902,7 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "tickets now on sale | LLM: NOT_REVIEW. This text is a website's ticket sales page and does not contain any evaluative content a",
+      "evidence": "tickets now on sale | LLM: NOT_REVIEW. This text is a website's ticket sales page, providing information on how to purchase tic",
       "outlet": "Schoolofrockthemusical.com/tickets",
       "critic": "Unknown",
       "score": 50
@@ -890,7 +913,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "David Finkle",
       "score": 50
@@ -901,7 +924,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any critical evaluation",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "David Rooney",
       "score": 77
@@ -912,7 +935,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "what to expect | LLM: NOT_REVIEW. The text provides a plot summary and character descriptions but does not offer critical ",
+      "evidence": "what to expect | LLM: NOT_REVIEW. This text provides a plot summary and character descriptions without evaluating the perf",
       "outlet": "Lighting & Sound America",
       "critic": "David Barbour",
       "score": 87
@@ -934,7 +957,7 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. This text is a news article discussing the play's themes in the context of the pandemic ",
+      "evidence": "close on | LLM: NOT_REVIEW. This text is an article discussing the play's themes and its relevance to the contempora",
       "outlet": "The Hollywood Reporter",
       "critic": "Angie Han",
       "score": 77
@@ -945,7 +968,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "has died | LLM: NOT_REVIEW. This is an obituary for Mitzi Gaynor, not a critical evaluation of a performance of \"Sou",
+      "evidence": "has died | LLM: NOT_REVIEW. This text is an obituary for Mitzi Gaynor, discussing her life and career, rather than a",
       "outlet": "Associated Press",
       "critic": "Michael Kuchwara",
       "score": 83
@@ -956,7 +979,7 @@
       "type": "interview",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "In an interview | LLM: NOT_REVIEW. This text is a preview or an article discussing the play and its themes, rather than an ",
+      "evidence": "In an interview | LLM: NOT_REVIEW. This text provides background information about the play and its author, introduces the ",
       "outlet": "WhatsOnStage",
       "critic": "Sarah Crompton",
       "score": 80
@@ -967,10 +990,21 @@
       "type": "news_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "close on | LLM: NOT_REVIEW. This text is a broader commentary on the state of British musicals, using \"Standing at t",
+      "evidence": "close on | LLM: NOT_REVIEW. This text is an essay discussing the state of British musicals and introduces two new sh",
       "outlet": "The New York Times",
       "critic": "Matt Wolf",
       "score": 77
+    },
+    {
+      "showId": "stepping-out-west-end-2017",
+      "file": "whatsonstage--daisy-bowie-sell.json",
+      "type": "photo_gallery",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Photo Gallery | LLM: NOT_REVIEW. This text is a plot summary and description of the play's setting and characters, rather",
+      "outlet": "WhatsOnStage",
+      "critic": "Daisy Bowie-Sell",
+      "score": 65
     },
     {
       "showId": "stereophonic-2024",
@@ -978,7 +1012,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page and does not contain any critical evaluation of \"Stereophonic.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any critical evaluation",
       "outlet": "TheaterMania",
       "critic": "Jackson McHenry",
       "score": 50
@@ -989,7 +1023,7 @@
       "type": "press_release",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "announce the | LLM: NOT_REVIEW. This text discusses the play's relevance and context rather than evaluating its performa",
+      "evidence": "announce the | LLM: NOT_REVIEW. This text discusses the play's relevance and transfer to Broadway, but it does not evalu",
       "outlet": "Edge Media Network",
       "critic": "Steve Weinstein",
       "score": 63
@@ -1000,7 +1034,7 @@
       "type": "interview",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "in an interview | LLM: NOT_REVIEW. This text provides a plot summary and character descriptions but lacks critical evaluati",
+      "evidence": "in an interview | LLM: NOT_REVIEW. While the text discusses the play \"Sweat\" and its themes, it relies heavily on quoting t",
       "outlet": "Theater Life",
       "critic": "Isa Goldberg",
       "score": 84
@@ -1011,7 +1045,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "award nominations | LLM: NOT_REVIEW. This text is a compilation of critical picks and a summary of other critics' reactions, ",
+      "evidence": "award nominations | LLM: NOT_REVIEW. This text is a compilation of critical picks and a summary of critical reception, not a ",
       "outlet": "Daily Mail",
       "critic": "The Independent",
       "score": 81
@@ -1022,21 +1056,10 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any review content.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with unrelated content, not an evaluation of a theatrical prod",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 83
-    },
-    {
-      "showId": "sylvia-2015",
-      "file": "theatre-is-easy--shoshana-roberts.json",
-      "type": "garbage_scrape",
-      "confidence": "high",
-      "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text is a preview or summary of the play rather than an evaluative review of a speci",
-      "outlet": "Theatre is Easy",
-      "critic": "Shoshana Roberts",
-      "score": 78
     },
     {
       "showId": "take-me-out-2022",
@@ -1055,7 +1078,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page and does not contain any content related to a theater critic's",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 50
@@ -1066,7 +1089,7 @@
       "type": "awards_coverage",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Tony winners | LLM: NOT_REVIEW. The text discusses the Broadway production of \"The Book of Mormon\" and its creators, not",
+      "evidence": "Tony winners | LLM: NOT_REVIEW. The text is a review of \"The Book of Mormon\" on Broadway, not the West End production.",
       "outlet": "Variety",
       "critic": "Steven Suskin",
       "score": 93
@@ -1077,7 +1100,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text is a list of articles and a partial article about drag queens' opinions on Dona",
+      "evidence": "Sneak Peek | LLM: NOT_REVIEW. The text is an article about drag queens' opinions on Donald Trump, with a brief mention",
       "outlet": "Out Magazine",
       "critic": "Michael Musto",
       "score": 64
@@ -1088,7 +1111,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text is an academic analysis of the play's themes and techniques, not a critical eva",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text is an academic analysis of the play's themes and techniques, not a critical ev",
       "outlet": "HuffPost",
       "critic": "Lucy Bell",
       "score": 88
@@ -1099,10 +1122,21 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "died voices. Janet and Margaret (aged 11 | LLM: NOT_REVIEW. The text primarily provides background information on the Enfield Poltergeist case and t",
+      "evidence": "died voices. Janet and Margaret (aged 11 | LLM: NOT_REVIEW. The text provides background information and context about the play but does not offer a",
       "outlet": "BroadwayWorld",
       "critic": "Cindy Marcolina",
       "score": 35
+    },
+    {
+      "showId": "the-father-2016",
+      "file": "broadstreetreview--carol-rocamora.json",
+      "type": "garbage_scrape",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The provided text is incomplete and does not offer a full evaluation of \"The Father\" as ",
+      "outlet": "broad-street-review",
+      "critic": "Carol Rocamora",
+      "score": 62
     },
     {
       "showId": "the-importance-of-being-earnest-2011",
@@ -1110,10 +1144,21 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website, not a review of a play.",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from a website, not a review of a play.",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 50
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "type": "obituary",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "died suddenly at age 35 | LLM: NOT_REVIEW. The text provides background information about a song and the show, but it does not offe",
+      "outlet": "New York Theater",
+      "critic": "Jonathan Mandell",
+      "score": 76
     },
     {
       "showId": "the-last-ship-2014",
@@ -1132,9 +1177,20 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The provided text is an article discussing the adaptation of \"The Notebook\" to Broadway ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The provided text is an article discussing the trend of adapting movies into stage shows",
       "outlet": "IndieWire",
       "critic": "Erin Strecker",
+      "score": 78
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "the-news-herald--mark-meszoros.json",
+      "type": "awards_coverage",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Award nominations | LLM: NOT_REVIEW. The text is an article preview or snippet, not a full review evaluating the show's perfo",
+      "outlet": "The News Herald",
+      "critic": "Mark Meszoros",
       "score": 78
     },
     {
@@ -1143,7 +1199,7 @@
       "type": "obituary",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "has died | LLM: NOT_REVIEW. This text primarily summarizes the plot and setting of the play rather than evaluating i",
+      "evidence": "has died | LLM: NOT_REVIEW. This text primarily provides a plot summary and background information about the play ra",
       "outlet": "The Sunday Times",
       "critic": "Christopher Hart",
       "score": 80
@@ -1165,7 +1221,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"the thanksgiving pl",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page with unrelated content, not a review of \"the thanksgiving play",
       "outlet": "TheaterMania",
       "critic": "Adam Feldman",
       "score": 50
@@ -1176,7 +1232,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page and unrelated to a review of \"The Wiz.\"",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from a website and does not contain any content related to \"Th",
       "outlet": "TheaterMania",
       "critic": "Jesse Green",
       "score": 50
@@ -1187,7 +1243,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. The text is a review of \"King Charles III,\" not \"Therese Raquin.\"",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text is a review of \"King Charles III,\" not \"Therese Raquin.\"",
       "outlet": "HuffPost",
       "critic": "Fern Siegel",
       "score": 45
@@ -1202,6 +1258,17 @@
       "outlet": "Time Out London",
       "critic": "Andrzej Lukowski",
       "score": 82
+    },
+    {
+      "showId": "translations-west-end-2019",
+      "file": "britishtheatrecom--sophie-adnitt.json",
+      "type": "cast_announcement",
+      "confidence": "high",
+      "method": "heuristic+llm",
+      "evidence": "Casting Announced | LLM: NOT_REVIEW. This text is a news summary that includes a brief plot summary and some production detai",
+      "outlet": "BritishTheatre.com",
+      "critic": "Sophie Adnitt",
+      "score": 93
     },
     {
       "showId": "trouble-in-mind-2021",
@@ -1220,7 +1287,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message and unrelated content, not a review of \"Twelfth Night.\"",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 50
@@ -1231,7 +1298,7 @@
       "type": "garbage_scrape",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text is a \"Page Not Found\" error message and a sitemap, not a theater review.",
+      "evidence": "Please upgrade your browser | LLM: NOT_REVIEW. This text is a website's navigation and error message, not a review of a play.",
       "outlet": "Associated Press",
       "critic": "Michael Kuchwara",
       "score": 71
@@ -1242,7 +1309,7 @@
       "type": "preview_article",
       "confidence": "high",
       "method": "heuristic+llm",
-      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error message from a website and does not contain any content related to ",
+      "evidence": "First Look at | LLM: NOT_REVIEW. The text is an error page from TheaterMania and does not contain any content related to ",
       "outlet": "TheaterMania",
       "critic": "Charles Isherwood",
       "score": 50
