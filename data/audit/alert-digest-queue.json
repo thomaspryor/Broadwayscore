@@ -259,20 +259,6 @@
     "queuedAt": "2026-10-27T13:01:02.476Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T13:01:06.958Z"
-  },
-  {
     "conditionKey": "opening-night-remediation-exhausted-t1-missing:hospital-hour-off-broadway-2026",
     "title": "Auto-remediation gave up on hospital-hour-off-broadway-2026",
     "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"hospital-hour-off-broadway-2026\"}",
@@ -299,6 +285,34 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T13:18:01.850Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:memoriam-off-west-end-2026",
+    "title": "Review gap — \"Memoriam\" missing 1 cited review(s)",
+    "description": "Memoriam (memoriam-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=memoriam-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T13:53:28.946Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-27.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T13:53:35.181Z"
   },
   {
     "conditionKey": "land:land/bro-6442-board-report",

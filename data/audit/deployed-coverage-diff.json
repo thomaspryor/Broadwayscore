@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-27T13:05:27.557Z",
+  "generatedAt": "2026-10-27T13:53:52.811Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 248,
-  "clean": 247,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
-      "openingDate": "2026-10-24",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 57.63 vs local 57.99 (Δ0.36)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-10-27T13:05:22.243Z"
-    }
-  ],
+  "clean": 248,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
