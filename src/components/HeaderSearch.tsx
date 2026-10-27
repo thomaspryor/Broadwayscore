@@ -7,6 +7,7 @@ import type Fuse from 'fuse.js';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { captureEvent } from '@/lib/posthog-events';
+import { getRegionalLabel } from '@/lib/market-utils';
 import {
   mergeSearchResults, suggestCloseMatches, createSuggestionIndex, withHeaderSearchExtra, HEADER_FUSE_OPTIONS,
 } from '../../scripts/lib/show-search-match';
@@ -289,7 +290,7 @@ export default function HeaderSearch() {
                       {show.category === 'west-end' ? 'West End' :
                        show.category === 'off-west-end' ? 'Off-West End' :
                        show.category === 'off-broadway' ? 'Off-Bway' :
-                       show.category === 'regional' ? 'Regional' :
+                       show.category === 'regional' ? getRegionalLabel(show) :
                        show.category === 'tour' ? 'Tour' : 'Broadway'}
                     </span>
                     {show.venue ? <span className="truncate">{show.venue}</span> : show.year ? <span>{show.year}</span> : null}

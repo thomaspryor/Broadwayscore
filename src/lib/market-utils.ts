@@ -97,6 +97,11 @@ export function isUkRegionalShow(show: { category?: string; venue?: string }): b
   return isUkRegionalVenue(show.category, show.venue);
 }
 
+/** Badge/alt-text wording for a regional show: UK flagship houses read "UK Regional", US tryouts "Regional" (BRO-5269). */
+export function getRegionalLabel(show: { category?: string; venue?: string }): string {
+  return isUkRegionalShow(show) ? 'UK Regional' : 'Regional';
+}
+
 /** City for a UK-regional venue (e.g. 'Stratford-upon-Avon' for RSC), from data/uk-regional-venues.json. Undefined for non-UK-regional venues. */
 export function getUkRegionalVenueCity(category?: string, venue?: string): string | undefined {
   return findUkRegionalVenue(category, venue)?.city;

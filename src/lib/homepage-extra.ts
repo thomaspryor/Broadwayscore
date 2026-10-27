@@ -59,7 +59,7 @@ export function buildHomepageExtra(): HomepageExtra {
   // from aggregator roundups). Small universe like opera; tryouts are limited
   // runs so CLOSED shows stay on the shelf (the score is the point — it's the
   // pre-Broadway signal), running productions first, then most recent.
-  const regionalShelfShows = pickRegionalShelf(getRegionalShows());
+  const regionalShelfShows = pickRegionalShelf(getRegionalShows(), { requireEnoughReviews: true });
 
   // Pre-compute ALL featured rows server-side to avoid 700+ item iterations on client hydration
   const tonyWinnersShows = allShows

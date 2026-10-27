@@ -5,6 +5,7 @@
 
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import { useShowSearch } from '@/hooks/useShowSearch';
+import { getRegionalLabel } from '@/lib/market-utils';
 import { searchMezzanineCatalog, MEZZANINE_SEARCH_ERROR_COPY, type MezzanineCandidate } from '@/lib/mezzanine-search';
 
 interface SearchShow {
@@ -168,7 +169,7 @@ export default function ShowSearchDropdown({
                       {show.category === 'west-end' ? 'West End' :
                        show.category === 'off-west-end' ? 'Off-West End' :
                        show.category === 'off-broadway' ? 'Off-Bway' :
-                       show.category === 'regional' ? 'Regional' :
+                       show.category === 'regional' ? getRegionalLabel(show) :
                        show.category === 'tour' ? 'Tour' : 'Broadway'}
                     </span>
                     {show.od && <span className="text-gray-500">{show.od.slice(0, 4)}</span>}

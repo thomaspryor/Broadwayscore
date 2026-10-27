@@ -65,7 +65,7 @@ import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { featureFlags } from '@/config/feature-flags';
 import { getOptimizedImageUrl } from '@/lib/images';
-import { getCurrencySymbol } from '@/lib/market-utils';
+import { getCurrencySymbol, getRegionalLabel } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getBroadwayDuration } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
@@ -452,7 +452,7 @@ function Inner({
   const posterMarketLabel = isOperaShow(show) ? 'Met Opera'
     : isWestEnd ? 'West End'
     : isOffBroadway ? 'Off-Broadway'
-    : show.category === 'regional' ? 'Regional'
+    : show.category === 'regional' ? getRegionalLabel(show)
     : show.category === 'tour' ? 'National Tour'
     : 'Broadway';
 

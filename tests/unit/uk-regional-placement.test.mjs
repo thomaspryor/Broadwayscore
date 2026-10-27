@@ -131,3 +131,14 @@ test('show page <title> labels a UK house "in the UK", not as a regional (US) pr
   const src = readFileSync('src/app/show/[slug]/page.tsx', 'utf8');
   assert.match(src, /isUkRegionalMeta \? 'in the UK' : isRegionalMeta \? 'in a regional production'/);
 });
+
+test('UK flagship shows read "UK Regional" in search/alt text; the US shelf applies the review floor (BRO-5269)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const { getRegionalLabel } = await import('../../src/lib/market-utils.ts');
+  assert.equal(getRegionalLabel({ category: 'regional', venue: 'Swan Theatre, Stratford-upon-Avon' }), 'UK Regional');
+  assert.equal(getRegionalLabel({ category: 'regional', venue: 'Swan Theatre, Worcester' }), 'Regional');
+  for (const f of ['src/components/HeaderSearch.tsx', 'src/components/show-cards/ShowSearchDropdown.tsx', 'src/components/show-page/ShowHeroRedesign.tsx']) {
+    assert.doesNotMatch(readFileSync(f, 'utf8'), /category === 'regional' \? 'Regional'/, `${f} hardcodes Regional`);
+  }
+  assert.match(readFileSync('src/lib/homepage-extra.ts', 'utf8'), /pickRegionalShelf\(getRegionalShows\(\), \{ requireEnoughReviews: true \}\)/);
+});
