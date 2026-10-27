@@ -245,14 +245,15 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-27T06:18:22.537Z",
-      "lastSeen": "2026-10-27T06:18:22.537Z",
+      "lastSeen": "2026-10-27T06:41:46.024Z",
       "lastNotifiedAt": "2026-10-27T06:18:22.537Z",
       "lastSurfacedAt": "2026-10-27T06:18:22.537Z",
       "notifyCount": 176,
       "cardId": null,
       "linearIdentifier": "BRO-6422",
       "notifyCountAtRelease": 161,
-      "sweptTracker": "BRO-6024"
+      "sweptTracker": "BRO-6024",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4337,7 +4338,7 @@
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
       "incidentOpenedAt": "2026-10-27T06:18:20.169Z",
-      "lastSeen": "2026-10-27T06:18:20.169Z",
+      "lastSeen": "2026-10-27T06:41:46.010Z",
       "lastNotifiedAt": "2026-10-27T06:18:20.169Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
@@ -4348,7 +4349,8 @@
         "mode": "dispatch-at-filing",
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
-      }
+      },
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -28464,7 +28466,8 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "40458183423"
+        "40458183423",
+        "40460787314"
       ]
     },
     "land:land/job/linear-BRO-6418-mvq7ia7i": {
@@ -28487,12 +28490,13 @@
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"the whole registry has no unreviewed run-together display names\"",
       "firstSeen": "2026-10-27T06:18:22.326Z",
       "incidentOpenedAt": "2026-10-27T06:18:22.326Z",
-      "lastSeen": "2026-10-27T06:18:22.326Z",
+      "lastSeen": "2026-10-27T06:41:45.993Z",
       "lastNotifiedAt": "2026-10-27T06:18:22.326Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-6421"
+      "linearIdentifier": "BRO-6421",
+      "silentRefires": 1
     }
   }
 }
