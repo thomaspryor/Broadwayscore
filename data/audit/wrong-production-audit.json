@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T04:35:36.630Z",
+  "timestamp": "2026-10-27T04:59:30.203Z",
   "stats": {
     "totalReviews": 62825,
-    "alreadyFlagged": 21588,
+    "alreadyFlagged": 21589,
     "dateGuardCatches": 224,
     "directorMismatch": 2339,
-    "tvFilmSignals": 1777,
+    "tvFilmSignals": 1779,
     "londonSignals": 3029,
-    "offBroadwaySignals": 554,
+    "offBroadwaySignals": 557,
     "yearMismatch": 216,
-    "noPublishDate": 5604
+    "noPublishDate": 5576
   },
   "findings": [
     {
@@ -28447,6 +28447,20 @@
       ]
     },
     {
+      "showId": "lone-star-off-broadway-2023",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2023-12-06",
+      "url": "https://frontmezzjunkies.com/2023/12/06/ruth-stage-lone-star/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "long-days-journey-into-night-2016",
       "file": "ew--melissa-rose-bernardo.json",
       "score": 60,
@@ -29834,6 +29848,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "merry-me-off-broadway-2023",
+      "file": "new-york-sun--elysa-gardner.json",
+      "score": null,
+      "publishDate": "2023-10-31",
+      "url": "https://www.nysun.com/article/a-queer-cocktail-of-a-play-merry-me-nods-to-the-greeks-angels-in-america-but-doesnt-fully-intoxicate",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -83188,6 +83216,34 @@
     },
     {
       "showId": "merry-me-off-broadway-2023",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2023-10-31",
+      "url": "https://culturesauce.com/2023/10/31/merry-me-hansol-jung-off-broadway-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "merry-me-off-broadway-2023",
+      "file": "culturesauce--unknown.json",
+      "score": null,
+      "publishDate": "2023-10-31",
+      "url": "https://culturesauce.com/merry-me-hansol-jung-off-broadway-review/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "merry-me-off-broadway-2023",
       "file": "nyt-theater--jonathan-mandell.json",
       "publishDate": "2023-11-04",
       "url": "https://newyorktheater.me/2023/11/04/merry-me-review/",
@@ -104248,6 +104304,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "waiting-for-godot-off-broadway-2023",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": null,
+      "publishDate": "2023-11-14",
+      "url": "https://www.nytimes.com/2023/11/14/theater/waiting-for-godot-review.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
         }
       ]
     },
