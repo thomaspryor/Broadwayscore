@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-27T04:53:02.949Z",
+  "generatedAt": "2026-10-27T06:22:01.500Z",
   "date": "2026-10-27",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 262011,
+  "entryCount": 266997,
   "shows": [
     {
       "showId": "11-to-midnight-off-broadway-2026",
@@ -12717,7 +12717,7 @@
     },
     {
       "showId": "the-entertainer-west-end-2016",
-      "reviewCount": 5,
+      "reviewCount": 7,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12732,7 +12732,7 @@
     },
     {
       "showId": "groundhog-day-west-end-2016",
-      "reviewCount": 14,
+      "reviewCount": 16,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12747,7 +12747,7 @@
     },
     {
       "showId": "the-bodyguard-west-end-2016",
-      "reviewCount": 3,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12762,7 +12762,7 @@
     },
     {
       "showId": "american-idiot-west-end-2016",
-      "reviewCount": 2,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12777,7 +12777,7 @@
     },
     {
       "showId": "the-go-between-west-end-2016",
-      "reviewCount": 4,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12792,7 +12792,7 @@
     },
     {
       "showId": "a-view-from-islington-north-west-end-2016",
-      "reviewCount": 2,
+      "reviewCount": 4,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12897,7 +12897,7 @@
     },
     {
       "showId": "nell-gwynn-west-end-2016",
-      "reviewCount": 11,
+      "reviewCount": 12,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -12927,7 +12927,7 @@
     },
     {
       "showId": "hangmen-west-end-2015",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13002,7 +13002,7 @@
     },
     {
       "showId": "impossible-west-end-2015",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13572,7 +13572,7 @@
     },
     {
       "showId": "the-end-of-longing-west-end-2016",
-      "reviewCount": 1,
+      "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
@@ -13682,8 +13682,8 @@
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
+        "collected-to-scored": 1702341,
+        "scored-to-rebuilt": 909336,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -13692,6 +13692,51 @@
     },
     {
       "showId": "make-me-gorgeous-off-broadway-2023",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1681172,
+        "scored-to-rebuilt": 895313,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "waiting-for-godot-off-broadway-2023",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1628771,
+        "scored-to-rebuilt": 280985,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "merry-me-off-broadway-2023",
+      "reviewCount": 16,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": 1495991,
+        "scored-to-rebuilt": 218681,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "breakfast-at-tiffanys-west-end-2016",
       "reviewCount": 3,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
@@ -13706,23 +13751,8 @@
       "slowest_reviews": []
     },
     {
-      "showId": "waiting-for-godot-off-broadway-2023",
-      "reviewCount": 11,
-      "median_e2e_ms": null,
-      "p90_e2e_ms": null,
-      "per_stage_median_ms": {
-        "first-seen-to-collected": null,
-        "collected-to-scored": null,
-        "scored-to-rebuilt": null,
-        "rebuilt-to-deployed": null
-      },
-      "reviews_over_15min": 0,
-      "reviews_over_60min": 0,
-      "slowest_reviews": []
-    },
-    {
-      "showId": "merry-me-off-broadway-2023",
-      "reviewCount": 16,
+      "showId": "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016",
+      "reviewCount": 1,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
