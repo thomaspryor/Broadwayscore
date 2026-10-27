@@ -156,8 +156,8 @@ export function isValidLeaderboardEntry(entry: Pick<FantasyEntry, 'picks' | 'cre
   return true;
 }
 
-export function computeLeaderboard(entries: FantasyEntry[]): LeaderboardEntry[] {
-  const leaderboard: LeaderboardEntry[] = entries.filter(e => isValidLeaderboardEntry(e)).map(entry => {
+export function computeLeaderboard(entries: FantasyEntry[], now: Date = new Date()): LeaderboardEntry[] {
+  const leaderboard: LeaderboardEntry[] = entries.filter(e => isValidLeaderboardEntry(e, now)).map(entry => {
     let totalCritic = 0;
     let totalAudience = 0;
     let totalBoxOffice = 0;
