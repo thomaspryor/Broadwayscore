@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6259-c2-d",
   "planId": "b3489626-c9c7-4e97-b439-fd0607b7b8b3",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-26T23:49:21.481Z",
   "submitter": {
     "name": null,
@@ -196,5 +196,44 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-27T00:19:25.704Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-sign-of-the-times-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added aristocrats-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added illinoise-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-white-chip-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added white-rose-the-musical-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jonah-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-welkin-off-broadway-2024"
+    }
+  ],
+  "executedIn": "ci"
 }
