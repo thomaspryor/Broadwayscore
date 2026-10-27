@@ -1,21 +1,32 @@
 {
-  "updatedAt": "2026-10-27T23:33:37.816Z",
-  "processed": 372,
-  "failed": 138,
-  "successRate": "72.9%",
+  "updatedAt": "2026-10-27T23:37:45.933Z",
+  "processed": 281,
+  "failed": 101,
+  "successRate": "73.6%",
   "tierBreakdown": {
-    "playwright": 238,
-    "amp": 4,
-    "browserbase": 14,
+    "playwright": 203,
+    "amp": 2,
+    "browserbase": 13,
     "directCookies": 0,
     "scrapingdog": 24,
     "scrapingbee": 23,
     "brightdata": 0,
     "archiveToday": 33,
-    "archive": 80
+    "archive": 43
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
+    {
+      "t": "2026-10-27T21:12:32.210Z",
+      "event": "bb-session",
+      "session": "07666e2b",
+      "url": "https://www.wsj.com/articles/jonah-review-a-young-womans-wariness-rachel-bonds-r"
+    },
+    {
+      "t": "2026-10-27T21:12:32.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-10-27T21:24:08.655Z",
       "event": "bb-session",
@@ -47,7 +58,7 @@
     {
       "t": "2026-10-27T21:31:51.857Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
       "t": "2026-10-27T21:41:25.232Z",
@@ -105,26 +116,16 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-27T23:15:42.466Z",
+      "t": "2026-10-27T22:32:44.841Z",
       "event": "bb-session",
-      "session": "7d75a775",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+      "session": "c3be226a",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     },
     {
-      "t": "2026-10-27T23:15:42.788Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T23:17:10.973Z",
+      "t": "2026-10-27T23:30:45.285Z",
       "event": "bb-session",
-      "session": "bea45130",
-      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
-    },
-    {
-      "t": "2026-10-27T23:17:11.269Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "session": "91e4c1dd",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
