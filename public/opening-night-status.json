@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T10:46:34.904Z",
+  "generatedAt": "2026-10-27T12:42:31.338Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1146,27 +1146,27 @@
       "status": "open",
       "slug": "aftermath-art-new-york-off-broadway",
       "thumbnail": "/images/shows/aftermath-art-new-york-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 57.99,
+      "siteScore": 57.63,
       "liveScore": 58,
-      "scoreDrift": 0.00999999999999801,
+      "scoreDrift": 0.36999999999999744,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 6,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 1,
       "positive": 0,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 2,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "6/12 total",
           "T1:0/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1303,10 +1303,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -1540,6 +1536,18 @@
           "t3": 1,
           "p": 0,
           "m": 3,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-27T12:42:31.338Z",
+          "rc": 6,
+          "s": 57.63,
+          "t1": 0,
+          "t2": 5,
+          "t3": 1,
+          "p": 0,
+          "m": 4,
           "n": 2,
           "bc": "waiting"
         }
