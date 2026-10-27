@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-27T06:05:48.561Z",
-  "processed": 21,
-  "failed": 15,
-  "successRate": "58.3%",
+  "updatedAt": "2026-10-27T06:28:01.246Z",
+  "processed": 23,
+  "failed": 18,
+  "successRate": "56.1%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
     "scrapingdog": 4,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 5,
+    "archiveToday": 7,
     "archive": 7
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
       "t": "2026-10-27T05:42:27.857Z",
@@ -65,6 +65,12 @@
       "t": "2026-10-27T06:04:49.417Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T06:25:55.633Z",
+      "event": "bb-session",
+      "session": "1ca752ab",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }

@@ -20,7 +20,9 @@
     "hangmen-west-end-2015/london-box-office--unknown.json",
     "hangmen-west-end-2015/standard--unknown.json",
     "cats-west-end-2015/standard--fiona-mountford.json",
-    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
   ],
   "failed": [
     "the-go-between-west-end-2016/london-box-office--phil-willmott.json",
@@ -37,7 +39,10 @@
     "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
     "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
     "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
-    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "girls-off-west-end-2026/sunday-times--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -53,11 +58,14 @@
       "a-view-from-islington-north-west-end-2016/london-box-office--david-scotland.json",
       "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016/everything-theatre--brian-penn.json",
       "hangmen-west-end-2015/london-box-office--unknown.json",
-      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -73,7 +81,9 @@
       "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
       "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
       "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
-      "data/review-texts/king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
+      "data/review-texts/king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/girls-off-west-end-2026/sunday-times--unknown.json"
     ],
     "archive": [
       "breakfast-at-tiffanys-west-end-2016/nytimes--unknown.json",
@@ -86,7 +96,7 @@
     ]
   },
   "startTime": "2026-10-27T05:42:03.476Z",
-  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+  "lastProcessed": "buffy-revamped-west-end-2026/ticketswitch--unknown.json",
   "log": [
     {
       "t": "2026-10-27T05:42:27.857Z",
@@ -137,6 +147,12 @@
       "t": "2026-10-27T06:04:49.417Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T06:25:55.633Z",
+      "event": "bb-session",
+      "session": "1ca752ab",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
