@@ -404,7 +404,10 @@
     "inter-alia-west-end-2026/west-end-best-friend--cara-brazier.json",
     "becky-shaw-2026/cote-notices--david-cote.json",
     "the-authenticator-west-end-2026/camdennewjournal--unknown.json",
-    "the-authenticator-west-end-2026/islingtontribune--unknown.json"
+    "the-authenticator-west-end-2026/islingtontribune--unknown.json",
+    "hospital-hour-off-broadway-2026/nytg--kyle-turner.json",
+    "hospital-hour-off-broadway-2026/theatermania--pete-hempstead.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "liberation-off-broadway-2025/latimes--unknown.json",
@@ -659,7 +662,8 @@
     "death-of-a-salesman-2026/talkinbroadway--unknown.json",
     "death-of-a-salesman-2026/theatrely--kobi-kassal.json",
     "inter-alia-west-end-2026/telegraph--unknown.json",
-    "cats-the-jellicle-ball-2026/vulture--sara-holdren.json"
+    "cats-the-jellicle-ball-2026/vulture--sara-holdren.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -863,7 +867,10 @@
       "end-of-the-rainbow-west-end-2026/north-west-end--zain-russell.json",
       "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
       "joe-turners-come-and-gone-2026/ny1--spectrum-news-staff.json",
-      "joe-turners-come-and-gone-2026/the-recs--the-recs-rdc-randall-david-cook.json"
+      "joe-turners-come-and-gone-2026/the-recs--the-recs-rdc-randall-david-cook.json",
+      "hospital-hour-off-broadway-2026/nytg--kyle-turner.json",
+      "hospital-hour-off-broadway-2026/theatermania--pete-hempstead.json",
+      "hospital-hour-off-broadway-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
@@ -958,7 +965,11 @@
       "data/review-texts/trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
       "data/review-texts/hole-off-west-end-2026/broadwayworld--unknown.json",
       "data/review-texts/the-oresteia-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json"
+      "data/review-texts/hamlet-off-broadway-2026/here--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
     ],
     "archive": [
       "liberation-off-broadway-2025/nytimes--jesse-green.json",
@@ -1086,7 +1097,7 @@
     ]
   },
   "startTime": "2026-10-26T22:21:57.828Z",
-  "lastProcessed": "the-authenticator-west-end-2026/islingtontribune--unknown.json",
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
   "log": [
     {
       "t": "2026-10-26T23:38:20.725Z",
@@ -1128,6 +1139,34 @@
       "event": "bb-session",
       "session": "1e8f05e5",
       "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-27T03:56:44.128Z",
+      "event": "bb-session",
+      "session": "b60b5762",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-27T04:03:23.409Z",
+      "event": "bb-session",
+      "session": "3f45ff14",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T04:03:24.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T04:03:35.396Z",
+      "event": "bb-session",
+      "session": "31d18929",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T04:03:36.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ],
   "recoveredAfterFailure": [

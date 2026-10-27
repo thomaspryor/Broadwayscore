@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-27T03:25:53.838Z",
-  "processed": 405,
-  "failed": 253,
+  "updatedAt": "2026-10-27T04:04:21.815Z",
+  "processed": 408,
+  "failed": 254,
   "successRate": "61.6%",
   "tierBreakdown": {
-    "playwright": 200,
+    "playwright": 203,
     "amp": 2,
     "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 29,
     "scrapingbee": 20,
     "brightdata": 1,
-    "archiveToday": 29,
+    "archiveToday": 33,
     "archive": 122
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-10-26T23:38:20.725Z",
@@ -56,6 +56,34 @@
       "event": "bb-session",
       "session": "1e8f05e5",
       "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-27T03:56:44.128Z",
+      "event": "bb-session",
+      "session": "b60b5762",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-27T04:03:23.409Z",
+      "event": "bb-session",
+      "session": "3f45ff14",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T04:03:24.473Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T04:03:35.396Z",
+      "event": "bb-session",
+      "session": "31d18929",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T04:03:36.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
