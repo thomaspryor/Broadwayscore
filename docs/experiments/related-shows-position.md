@@ -27,3 +27,37 @@ Known limits: the row mounts after the flag resolves (up to a 5s poll), so a use
 
 ## Rules
 Do not change rollout, stop the flag, or declare a winner without the owner (`memory/feedback_ab_test_guardrails.md`).
+
+## Result monitor (BRO-6271)
+
+Readout: `node scripts/analyze-related-shows-ab.js --json`. The cumulative
+query selects each person's first `related_shows_ab_exposed` session after
+the cutover. The denominator is exposed people; the numerator is people
+whose selected session landed on a show page from search and had at least
+two pageviews. Search landers are also reported separately. The exposure
+event supplies mobile eligibility, as defined above. Repeat exposures and
+later sessions do not add trials. Only aggregate counts leave PostHog.
+
+Monitor: `node scripts/monitor-related-shows-ab.js --dry-run`. It uses the
+shared weekly runner, alerts on suppressed, degenerate, or malformed results,
+and sends a one-time review nudge only at **3,140 per arm**, with healthy
+data. The 906 floor and p-value never trigger readiness. Failed delivery
+leaves the alert eligible to retry. State belongs in
+`data/audit/related-shows-ab-monitor-state.json`; dry runs send and save nothing.
+Neither command changes the flag or names a winner.
+
+**Scheduling still required:** the unattended worker cannot edit workflows.
+After infrastructure review, add the monitor to `monitor-gate-ab.yml` with
+`POSTHOG_PERSONAL_API_KEY`, `RESEND_API_KEY`, `OWNER_EMAIL`, and the existing
+dry-run input. Add its state file to the workflow's guarded commit loop.
+Add both top-level CLIs to `test.yml`'s push paths. The libraries and their
+colocated tests already fall under `scripts/lib/**`. This is an advisory
+monitor; it must not become a blocking experiment gate. Until this wiring
+lands, it does not run on a cron.
+
+Cost per run: one read-only PostHog flag GET and one cumulative HogQL query
+(the shared query helper can retry three times). No scraper or LLM calls.
+At most one alert is eligible per run, with a six-day data-problem cooldown
+and a permanent successful-delivery stamp for readiness. The shared mail
+transport can retry a send up to four times. Live verification requires the
+PostHog key; offline fixtures do not establish live query compatibility.
