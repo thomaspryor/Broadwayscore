@@ -1817,20 +1817,6 @@
     "queuedAt": "2026-10-27T02:45:40.457Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-27.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T05:01:18.680Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:the-ask-off-broadway-2026",
     "title": "1 review(s) for the-ask-off-broadway-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--24124b82.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/paul-mccartney-upcoming-beatles-biopics/6560611/",
@@ -1916,5 +1902,19 @@
       }
     ],
     "queuedAt": "2026-10-27T05:03:27.300Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-27.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T05:37:08.939Z"
   }
 ]
