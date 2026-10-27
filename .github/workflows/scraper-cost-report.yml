@@ -13,13 +13,13 @@ on:
 # owner-alert-router.js (scripts/route-cost-report-alerts.js) and the email
 # names the card instead of asking the owner to investigate. contents: write
 # is for the alert-router state push at the end.
-permissions:
-  contents: write
-  actions: read
-
 concurrency:
   group: scraper-cost-report
   cancel-in-progress: false
+
+permissions:
+  contents: write
+  actions: read
 
 jobs:
   report:
@@ -29,15 +29,15 @@ jobs:
     # failure digest. Also registered in check-cron-health.yml CRITICAL_CRONS.
     timeout-minutes: 30
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
         with:
           # The alert-router state is pushed to main at the end.
           ref: main
 
       - name: Setup Node.js
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
-          node-version: '20'
+          node-version: '22'
 
       - name: Collect data and build report
         id: report

@@ -321,7 +321,7 @@ Groups shared by 2+ workflows:
 Workflows without any concurrency block, by class (read-only / alerting / test jobs mostly):
 
 - **scoring** (4): `llm-evaluate.yml`, `scoring-experiment.yml`, `snapshot-audience-grades.yml`, `snapshot-award-scores.yml`
-- **scraping** (2): `diag-fetch-timing.yml`, `scraper-cost-report.yml`
+- **scraping** (1): `diag-fetch-timing.yml`
 - **other** (30): `batch-commercial-research.yml`, `check-cookie-health.yml`, `check-cutoff-freshness.yml`, `check-linear-drain-health.yml`, `check-opening-night-readiness.yml`, `check-secrets-health.yml`, `check-show-metadata-consensus.yml`, `critique-plan-v2.yml`, `generate-related-shows.yml`, `get-ai-feedback.yml`, `get-gpt-plan-review.yml`, `investigate-alert.yml`, `lighthouse-post-deploy.yml`, `opening-night-orchestrator.yml`, `opening-night-stage-alert.yml`, `posthog-weekly-insights.yml`, `review-sprint-plan.yml`, `rotate-apple-secret.yml`, `rotate-gitlab-token.yml`, `run-script.yml`, `scrapingdog-account-usage.yml`, `sentry-triage.yml`, `supabase-functions.yml`, `test-model-consistency.yml`, `test-paywalled-access.yml`, `test-review-validation.yml`, `tr-layout-diag.yml`, `verify-reviews.yml`, `we-newsletter-draft.yml`, `weekly-affiliate-report.yml`
 
 ## Secrets used by cross-repo writers
@@ -365,7 +365,7 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GOOGLE_INDEXING_KEY` | 2 cross-repo writers (of 7 workflows using it): `opening-night-broadcast.yml`, `update-show-status.yml` |
 | `GUARDIAN_API_KEY` | 4 cross-repo writers (of 6 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
-| `LINEAR_API_KEY` | 27 cross-repo writers (of 75 workflows using it) |
+| `LINEAR_API_KEY` | 27 cross-repo writers (of 76 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
