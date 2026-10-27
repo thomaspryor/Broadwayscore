@@ -1,31 +1,32 @@
 {
-  "updatedAt": "2026-10-27T04:42:38.279Z",
-  "processed": 32,
-  "failed": 1,
-  "successRate": "97.0%",
+  "updatedAt": "2026-10-27T04:52:33.429Z",
+  "processed": 12,
+  "failed": 9,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 11,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 1,
-    "brightdata": 3,
-    "archiveToday": 0,
-    "archive": 5
+    "brightdata": 0,
+    "archiveToday": 4,
+    "archive": 0
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-27T04:39:04.719Z",
+      "t": "2026-10-27T04:43:48.277Z",
       "event": "bb-session",
-      "session": "9b9f0501",
-      "url": "https://www.nytimes.com/2023/11/01/theater/merry-me-review-hansol-jung.html"
+      "session": "4201d64e",
+      "url": "https://soundsandstage.com/show/cirque-berserk"
     },
     {
-      "t": "2026-10-27T04:39:05.571Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "t": "2026-10-27T04:50:00.311Z",
+      "event": "bb-session",
+      "session": "b2733bfa",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
