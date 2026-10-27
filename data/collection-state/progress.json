@@ -493,24 +493,14 @@
     "bull-off-west-end-2026/whatsonstage--unknown.json",
     "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-invention-of-love-off-broadway-2026/whatsonstage--miriam-sallon.json",
-    "my-sons-a-queer-but-what-can-you-do-west-end-2026/standard--nick-curtis.json",
-    "darkling-off-west-end-2026/thestage--holly-omahony.json",
-    "the-score-regional-2026/times-uk--unknown.json",
-    "twenty-thousand-streets-off-west-end-2026/plays-to-see--jad-adams.json",
-    "the-visit-regional-2026/london-unattached--madeleine-morrow.json",
-    "man-to-man-west-end-2026/deadline--katie-campione.json",
-    "man-to-man-west-end-2026/latimes--alexandra-del-rosario.json",
-    "man-to-man-west-end-2026/plays-to-see--tim-hochstrasser.json",
-    "the-getaway-driver-regional-2026/broadwayworld--unknown.json",
-    "a-month-in-the-country-west-end-2026/londonlivinglarge--london-living-large.json",
-    "the-winters-tale-off-broadway-2026/publictheaterorg--unknown.json",
-    "cats-west-end-2026/thewrap--robert-hofler.json",
-    "cats-west-end-2026/times-uk--carol-midgley.json",
-    "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
-    "disruption-off-broadway-2026/thestage--dave-fargnoli.json",
-    "tao-of-glass-west-end-2026/click-liverpool--unknown.json"
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -685,7 +675,9 @@
       "data/review-texts/oh-mary-west-end-2025/variety--unknown.json",
       "oh-mary-west-end-2025/variety--unknown.json"
     ],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
@@ -831,7 +823,7 @@
     ]
   },
   "startTime": "2026-10-26T22:21:57.828Z",
-  "lastProcessed": "the-car-man-west-end-2026/balletcoforum--unknown.json",
+  "lastProcessed": "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
   "log": [
     {
       "t": "2026-10-26T23:38:20.725Z",
@@ -843,6 +835,36 @@
       "t": "2026-10-26T23:38:21.344Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T01:57:52.829Z",
+      "event": "bb-session",
+      "session": "96080717",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-27T01:59:03.184Z",
+      "event": "bb-session",
+      "session": "9edebece",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-27T01:59:12.356Z",
+      "event": "bb-session",
+      "session": "4a8a6957",
+      "url": "https://exeuntnyc.com/reviews/review-the-curious-case-of-benjamin-button-at-the-"
+    },
+    {
+      "t": "2026-10-27T02:02:53.128Z",
+      "event": "bb-session",
+      "session": "f7f6de56",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
+    },
+    {
+      "t": "2026-10-27T02:03:02.427Z",
+      "event": "bb-session",
+      "session": "1e8f05e5",
+      "url": "https://exeuntnyc.com/reviews/review-king-of-the-yees-at-pershing-square-signatu"
     }
   ]
 }
