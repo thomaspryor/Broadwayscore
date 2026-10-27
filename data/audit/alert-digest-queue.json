@@ -344,5 +344,36 @@
       }
     ],
     "queuedAt": "2026-10-27T13:53:05.100Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6413-roundup-closing",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6413-roundup-closing",
+    "description": "land.yml did not land land/bro-6413-roundup-closing: the unit-tests-node gate went red at 64a1191334. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40517355160",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6413-roundup-closing"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "64a1191334c395e594b133f2b108e063fcfa313e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40517355160"
+      }
+    ],
+    "queuedAt": "2026-10-27T14:23:42.083Z"
   }
 ]
