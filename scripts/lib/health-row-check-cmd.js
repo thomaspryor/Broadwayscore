@@ -62,7 +62,10 @@ function rowMatchKey(name) {
   while (key && Buffer.from(key, 'utf8').toString('base64url').length > SAFE_TOKEN_MAX_CHARS) {
     key = key.slice(0, -1);
   }
-  return key;
+  // Re-trim after the cut: slicing can leave trailing whitespace, and the
+  // checkers trim the decoded token, so without this rowMatchKey is not
+  // idempotent and a clamped key never matches its own ledger entry (BRO-6387).
+  return key.trimEnd();
 }
 
 /**

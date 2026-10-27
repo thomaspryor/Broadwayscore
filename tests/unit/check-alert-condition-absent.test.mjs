@@ -90,3 +90,16 @@ test('read-only: the ledger is byte-identical after a run', () => {
   run(ledger, 'cron-health-chronic:Firing Cron');
   assert.equal(fs.readFileSync(ledger, 'utf8'), before);
 });
+
+// BRO-6387: a long key whose 120-char cut lands on a space produced a token the
+// checker trimmed, so it never matched its own ledger entry (always exit 3).
+test('long key clamped at a space round-trips through its own encoded command', () => {
+  const { rowMatchKey } = require('../../scripts/lib/health-row-check-cmd.js');
+  const key = 'time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::cutoff boundary: just under counts, just over does not';
+  const tok = alertAbsentCheckCmd(key).split('--key-b64 ')[1];
+  const decoded = Buffer.from(tok, 'base64url').toString('utf8');
+  assert.equal(rowMatchKey(decoded.trim()), rowMatchKey(key));
+  assert.equal(rowMatchKey(rowMatchKey(key)), rowMatchKey(key), 'idempotent');
+  const l = writeLedger('clamp.json', { [key]: { status: 'resolved', lastSeen: iso(5), resolvedAt: iso(1) } });
+  assert.equal(run(l, key).status, 0);
+});
