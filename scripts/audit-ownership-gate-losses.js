@@ -77,7 +77,13 @@ function currentIndex() {
 function main() {
   if (!fs.existsSync(DIR)) { console.error('data/review-texts missing'); process.exit(3); }
   // Bounded (BRO-6038: runs unattended in data-health-check.yml); on timeout it audits the history it has.
-  try { execFileSync('git', ['-C', DIR, 'fetch', '--quiet', `--shallow-since=${days + 2} days ago`, 'origin'], { stdio: 'ignore', timeout: 8 * 60 * 1000 }); } catch { /* full clone, offline or timed out */ }
+  let historyShort = false;
+  try { execFileSync('git', ['-C', DIR, 'fetch', '--quiet', `--shallow-since=${days + 2} days ago`, 'origin'], { stdio: 'ignore', timeout: 8 * 60 * 1000 }); } catch {
+    // Offline or timed out. A full clone already has the window; a shallow one may not, so a
+    // zero below would be a false pass: the --counts snapshot records no result instead.
+    try { historyShort = git(['rev-parse', '--is-shallow-repository']).trim() === 'true'; } catch { historyShort = true; }
+    if (historyShort) console.error(`warning: could not deepen review-texts history to ${days} days; results may miss drops`);
+  }
   const commits = git(['log', `--since=${days} days ago`, '--format=%H %P %cI %s', '--grep=^ownership-gate: drop'])
     .split('\n').filter(Boolean).map((l) => { const [sha, parent, at] = l.split(' '); return { sha, parent, at }; });
   const idx = currentIndex();
@@ -106,7 +112,7 @@ function main() {
     }
   }
   const oldest = commits.length ? commits[commits.length - 1].at : null;
-  require('./lib/audit-counts').writeAuditCounts(ARGS, losses.length, { days, dropCommits: commits.length, drops: drops.length });
+  require('./lib/audit-counts').writeAuditCounts(ARGS, historyShort ? null : losses.length, { days, dropCommits: commits.length, drops: drops.length, ...(historyShort ? { insufficient: true } : {}) });
   if (ARGS.includes('--json')) { console.log(JSON.stringify({ days, commits: commits.length, oldestDropCommit: oldest, drops: drops.length, losses }, null, 2)); return; }
   console.log(`${commits.length} ownership-gate drop commits in ${days} days (oldest ${oldest}); ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
   for (const l of losses) console.log(`LOSS ${l.sourcePath} | ${l.outletId} | ${l.critic} | ${l.textChars} chars | dropped ${l.at} | fromCommit ${l.fromCommit} | ${l.url || '-'} | url today: ${(l.urlHoldersToday || []).join('; ') || 'nowhere'}`);
