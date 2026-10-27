@@ -1,0 +1,158 @@
+{
+  "issueNumber": "bro-6446",
+  "planId": "023520e0-0002-4ee2-82d0-478dde1b4dcb",
+  "status": "pending",
+  "createdAt": "2026-10-27T18:55:49.020Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6446: move seven new/untested works that recouped without a star draw to the new Breakout designation (owner approved 2026-10-27)",
+    "steps": [
+      "commercial.json: appropriate.designation",
+      "commercial.json: appropriate.humanReviewedDesignation",
+      "commercial.json: purpose-2025.designation",
+      "commercial.json: purpose-2025.humanReviewedDesignation",
+      "commercial.json: the-humans-2016.designation",
+      "commercial.json: the-humans-2016.humanReviewedDesignation",
+      "commercial.json: what-the-constitution-means-to-me-2019.designation",
+      "commercial.json: what-the-constitution-means-to-me-2019.humanReviewedDesignation",
+      "commercial.json: the-lehman-trilogy-2021.designation",
+      "commercial.json: the-lehman-trilogy-2021.humanReviewedDesignation",
+      "commercial.json: the-ferryman-2018.designation",
+      "commercial.json: the-ferryman-2018.humanReviewedDesignation",
+      "commercial.json: kimberly-akimbo-2022.designation",
+      "commercial.json: kimberly-akimbo-2022.humanReviewedDesignation"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Breakout",
+        "description": "commercial.json: appropriate.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "appropriate",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": true,
+        "description": "commercial.json: appropriate.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Breakout",
+        "description": "commercial.json: purpose-2025.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "purpose-2025",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": true,
+        "description": "commercial.json: purpose-2025.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Breakout",
+        "description": "commercial.json: the-humans-2016.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-humans-2016",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": true,
+        "description": "commercial.json: the-humans-2016.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "what-the-constitution-means-to-me-2019",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Breakout",
+        "description": "commercial.json: what-the-constitution-means-to-me-2019.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "what-the-constitution-means-to-me-2019",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: what-the-constitution-means-to-me-2019.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "designation",
+        "oldValue": "Easy Winner",
+        "newValue": "Breakout",
+        "description": "commercial.json: the-lehman-trilogy-2021.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-lehman-trilogy-2021",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: the-lehman-trilogy-2021.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-ferryman-2018",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Breakout",
+        "description": "commercial.json: the-ferryman-2018.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "the-ferryman-2018",
+        "field": "humanReviewedDesignation",
+        "oldValue": true,
+        "newValue": true,
+        "description": "commercial.json: the-ferryman-2018.humanReviewedDesignation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "field": "designation",
+        "oldValue": "Trickle",
+        "newValue": "Breakout",
+        "description": "commercial.json: kimberly-akimbo-2022.designation"
+      },
+      {
+        "type": "data-edit",
+        "file": "commercial.json",
+        "showSlug": "kimberly-akimbo-2022",
+        "field": "humanReviewedDesignation",
+        "oldValue": null,
+        "newValue": true,
+        "description": "commercial.json: kimberly-akimbo-2022.humanReviewedDesignation"
+      }
+    ]
+  }
+}
