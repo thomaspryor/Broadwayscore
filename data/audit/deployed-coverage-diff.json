@@ -1,87 +1,13 @@
 {
-  "generatedAt": "2026-10-27T17:27:41.709Z",
+  "generatedAt": "2026-10-27T19:19:36.369Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 251,
-  "clean": 247,
-  "defective": 4,
-  "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 4
-  },
-  "shows": [
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: readaboutstuff"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 67.34 vs local 67.58 (Δ0.24)"
-        }
-      ],
-      "missingFromProd": [
-        "readaboutstuff"
-      ],
-      "localCount": 7,
-      "deployedCount": 6,
-      "firstDefectAt": "2026-10-27T17:27:36.870Z"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.59 vs local 74.67 (Δ0.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32,
-      "firstDefectAt": "2026-10-27T17:27:36.870Z"
-    },
-    {
-      "showId": "the-master-builder-off-west-end-2026",
-      "title": "The Master Builder",
-      "openingDate": "2026-10-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.84 vs local 69.92 (Δ0.08)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 19,
-      "deployedCount": 19,
-      "firstDefectAt": "2026-10-27T17:27:36.870Z"
-    },
-    {
-      "showId": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "openingDate": "2026-10-20",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 70.94 vs local 70.71 (Δ0.23)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29,
-      "firstDefectAt": "2026-10-27T17:27:36.870Z"
-    }
-  ],
+  "clean": 251,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

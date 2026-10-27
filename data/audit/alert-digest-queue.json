@@ -464,20 +464,6 @@
     "queuedAt": "2026-10-27T17:25:40.957Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
-    "title": "Review gap — \"Queeney Todd: The Demon Bottom of Fleet Street\" missing 1 cited review(s)",
-    "description": "Queeney Todd: The Demon Bottom of Fleet Street (queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T17:27:09.876Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-kick-inside-off-broadway-2026",
     "title": "Review gap — \"The Kick Inside\" missing 15 cited review(s)",
     "description": "The Kick Inside (the-kick-inside-off-broadway-2026): 15 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-kick-inside-off-broadway-2026 --checkpoint --ingest-missing",
@@ -520,20 +506,6 @@
     "queuedAt": "2026-10-27T17:27:09.935Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T17:27:23.570Z"
-  },
-  {
     "conditionKey": "opening-night-placeholder-synopsis-memoriam-off-west-end-2026",
     "title": "Placeholder synopsis on Memoriam",
     "description": "synopsis for memoriam-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
@@ -560,5 +532,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T18:26:24.841Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jest-to-impress-off-broadway-2026",
+    "title": "Review gap — \"Jest to Impress\" missing 1 cited review(s)",
+    "description": "Jest to Impress (jest-to-impress-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jest-to-impress-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T19:16:41.552Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-27.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T19:16:48.683Z"
   }
 ]
