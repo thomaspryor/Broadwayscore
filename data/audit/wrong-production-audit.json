@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T14:51:54.947Z",
+  "timestamp": "2026-10-27T15:06:54.739Z",
   "stats": {
-    "totalReviews": 63523,
-    "alreadyFlagged": 21668,
+    "totalReviews": 63585,
+    "alreadyFlagged": 21687,
     "dateGuardCatches": 224,
     "directorMismatch": 2357,
-    "tvFilmSignals": 1788,
-    "londonSignals": 3048,
+    "tvFilmSignals": 1790,
+    "londonSignals": 3049,
     "offBroadwaySignals": 563,
     "yearMismatch": 218,
-    "noPublishDate": 5762
+    "noPublishDate": 5748
   },
   "findings": [
     {
@@ -2607,6 +2607,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming series\""
+        }
+      ]
+    },
+    {
+      "showId": "all-of-me-off-broadway-2024",
+      "file": "nytimes--naveen-kumar.json",
+      "score": null,
+      "publishDate": "2024-05-14",
+      "url": "https://www.nytimes.com/2024/05/14/theater/all-of-me-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"amazon prime\""
         }
       ]
     },
@@ -41968,6 +41982,20 @@
       ]
     },
     {
+      "showId": "still-off-broadway-2024",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theaterpizzazz.com/still-only-fools-rush-in/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
       "file": "a-youngish-perspective--mark-lloyd.json",
       "score": 81,
@@ -51755,7 +51783,7 @@
       "showId": "the-pajama-game-west-end-2014",
       "file": "telegraph--charles-spencer.json",
       "publishDate": "2014-05-14",
-      "url": null,
+      "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10828149/The-Pajama-Game-Shaftesbury-Theatre-review-pure-pleasure.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -74429,6 +74457,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "grenfell-in-the-words-of-survivors-off-broadway-2024",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2024-04-24",
+      "url": "https://exeuntnyc.com/reviews/review-grenfell-in-the-words-of-survivors-at-st-anns-warehouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
