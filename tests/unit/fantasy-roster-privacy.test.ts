@@ -85,7 +85,7 @@ describe('roster privacy', () => {
         { id: 'a', email: 'x***@gmail.com', team_name: 'Dolly Fans', league_name: 'friends', picks: Array(5).fill(HIDDEN_PICK), total_cost: null as unknown as number, season: '2026-2027', created_at: '2026-11-10T15:00:00Z' },
         { id: 'b', email: 'y***@gmail.com', team_name: null, league_name: 'friends', picks: Array(8).fill(HIDDEN_PICK), total_cost: null as unknown as number, season: '2026-2027', created_at: '2026-11-11T15:00:00Z' },
       ];
-      const board = computeLeaderboard(entries);
+      const board = computeLeaderboard(entries, during);
       assert.equal(board.length, 2, 'both teams counted, so a league is not 404 and a search finds its team');
       assert.deepEqual(board.map(e => e.displayName).sort(), ['Dolly Fans', board.find(e => e.id === 'b')!.displayName].sort());
     });
