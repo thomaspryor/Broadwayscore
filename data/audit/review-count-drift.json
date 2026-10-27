@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-26T15:56:28.675Z",
+  "generatedAt": "2026-10-27T15:11:35.604Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-26T15:48:22.912Z",
+    "reviewsJsonLastUpdated": "2026-10-27T15:05:12.288Z",
     "reviewsJsonAgeHours": 0.1,
     "freshnessBreach": false,
-    "showsScanned": 31,
-    "allShowsScanned": 2868,
-    "filesScanned": 62056,
+    "showsScanned": 30,
+    "allShowsScanned": 3010,
+    "filesScanned": 63592,
     "showsOverThreshold": 0,
-    "newOffenders": 0,
+    "newOffenders": 2,
     "blindShows": 20,
-    "orphanReviews": 5
+    "orphanReviews": 4
   },
   "thresholds": {
     "suppressedPerShow": 3,
@@ -18,7 +18,30 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [],
+  "newOffenders": [
+    {
+      "showDir": "miss-saigon-west-end-2014",
+      "suppressed": 1,
+      "actual": 0,
+      "files": [
+        "london-box-office--phil-willmott.json"
+      ],
+      "newFiles": [
+        "london-box-office--phil-willmott.json"
+      ]
+    },
+    {
+      "showDir": "the-crucible-west-end-2014",
+      "suppressed": 1,
+      "actual": 0,
+      "files": [
+        "london-box-office--daniel-perks.json"
+      ],
+      "newFiles": [
+        "london-box-office--daniel-perks.json"
+      ]
+    }
+  ],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -50,10 +73,6 @@
       "count": 6
     },
     {
-      "showId": "bull-durham-paper-mill-regional-2025",
-      "count": 6
-    },
-    {
       "showId": "gun-and-powder-regional-2020",
       "count": 12
     }
@@ -61,8 +80,8 @@
   "perShow": [
     {
       "showDir": "aftermath-art-new-york-off-broadway-2026",
-      "actual": 4,
-      "scanned": 6,
+      "actual": 6,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -85,16 +104,16 @@
     },
     {
       "showDir": "derren-brown-only-human-west-end-2026",
-      "actual": 24,
-      "scanned": 34,
+      "actual": 26,
+      "scanned": 36,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "garry-starr-classic-penguins-off-west-end-2026",
-      "actual": 11,
-      "scanned": 23,
+      "actual": 14,
+      "scanned": 29,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -108,41 +127,41 @@
       "overThreshold": false
     },
     {
-      "showDir": "ilford-boy-west-end-2026",
-      "actual": 27,
-      "scanned": 36,
+      "showDir": "hospital-hour-off-broadway-2026",
+      "actual": 3,
+      "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "king-of-the-yees-off-broadway-2026",
-      "actual": 17,
-      "scanned": 24,
+      "showDir": "memoriam-off-west-end-2026",
+      "actual": 5,
+      "scanned": 9,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "machine-learning-off-broadway-2026",
-      "actual": 4,
-      "scanned": 5,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "martin-guerre-west-end-2026",
-      "actual": 27,
-      "scanned": 42,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "showDir": "miss-saigon-west-end-2014",
+      "actual": 0,
+      "scanned": 20,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2014-05-30",
+          "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "phyl-off-broadway-2026",
-      "actual": 8,
-      "scanned": 11,
+      "actual": 11,
+      "scanned": 14,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -161,6 +180,22 @@
       "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-crucible-west-end-2014",
+      "actual": 0,
+      "scanned": 3,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "london-box-office--daniel-perks.json",
+          "outletId": "london-box-office",
+          "criticName": "Daniel Perks",
+          "publishDate": "2014-08-22",
+          "url": "https://www.londonboxoffice.co.uk/news/post/crucible-review"
+        }
+      ],
       "overThreshold": false
     },
     {
@@ -189,16 +224,16 @@
     },
     {
       "showDir": "the-master-builder-off-west-end-2026",
-      "actual": 13,
-      "scanned": 20,
+      "actual": 18,
+      "scanned": 25,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-pianist-off-west-end-2026",
-      "actual": 25,
-      "scanned": 36,
+      "actual": 31,
+      "scanned": 43,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
