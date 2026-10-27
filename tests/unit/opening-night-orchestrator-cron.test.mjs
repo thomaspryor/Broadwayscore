@@ -1,4 +1,3 @@
-// timebomb-audit-exempt-test: an earlier all-market run started 5h ago does not cover us | the guard is real bash reading the real `date`; clock-shift only moves Node Date.now(), so the fixture stamp lands in the bash clock's future and counts as cover
 // BRO-2730: West End press embargoes lift ~21:00-22:00 UTC but the only West
 // End evening cron was 18:00 UTC. Also: GitHub delays these crons 3-6h, so the
 // market must come from the cron string (github.event.schedule), never the
@@ -66,6 +65,10 @@ function runGuard(otherStartedMinAgo, startOverride) {
   ].map((r) => r.join('\t')).join('\n');
   fs.writeFileSync(path.join(tmp, 'rows.tsv'), rows + '\n');
   fs.writeFileSync(path.join(tmp, 'gh'), `#!/bin/bash\ncat "${tmp}/rows.tsv"\n`, { mode: 0o755 });
+  // The guard reads `date -u +%s` for "now". Pin it to Node's Date.now() so the
+  // fixture and the bash share one clock (the time-bomb audit shifts only Node's).
+  fs.writeFileSync(path.join(tmp, 'date'),
+    `#!/bin/bash\nif [ "$1 $2" = "-u +%s" ]; then echo ${Math.floor(Date.now() / 1000)}; else exec /bin/date "$@"; fi\n`, { mode: 0o755 });
   fs.writeFileSync(path.join(tmp, 'guard.sh'), guardScript());
   const out = path.join(tmp, 'out');
   const log = execFileSync('bash', ['-eo', 'pipefail', path.join(tmp, 'guard.sh')], {
