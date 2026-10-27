@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-27T00:50:34.340Z",
+  "generatedAt": "2026-10-27T01:23:56.730Z",
   "windowDays": 1095,
   "targets": 690,
-  "auditedThisRun": 25,
-  "carriedForward": 883,
+  "auditedThisRun": 13,
+  "carriedForward": 894,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 452,
-    "missingCurrentRun": 764,
+    "withGap": 451,
+    "missingCurrentRun": 771,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 704,
+    "totalFlaggedMisses": 711,
     "totalRecoverable": 16,
     "totalRecovered": 20,
     "humanExcluded": 4,
-    "automatedExcluded": 419,
-    "automatedExcludedListed": 350,
-    "priorProductionCitations": 5574
+    "automatedExcluded": 418,
+    "automatedExcludedListed": 349,
+    "priorProductionCitations": 5643
   },
   "results": [
     {
@@ -27710,17 +27710,89 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Billy Crystal 860\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Billy Crystal 860\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Billy Crystal 860\" review imperial",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Billy Crystal 860\" Crystal review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Billy Crystal 860 Imperial Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Billy Crystal 860 Imperial Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Billy Crystal 860 Imperial Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 284,
+        "count": 418,
         "byReason": {
-          "aggregator-internal-nav": 208,
-          "not-http-url": 52,
-          "aggregator-section-root": 6,
-          "non-review-host": 15,
-          "roundup-page": 3
+          "aggregator-internal-nav": 257,
+          "not-http-url": 72,
+          "production-database-listing": 10,
+          "aggregator-section-root": 11,
+          "non-review-host": 56,
+          "roundup-page": 4,
+          "bare-host": 2,
+          "ticketing-reseller": 3,
+          "venue-production-page": 2,
+          "show-listing-page": 1
         }
       },
       "dedupedVariants": [],
@@ -27924,7 +27996,7 @@
         "liveCount": 20,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "birthright-off-broadway-2026",
@@ -52580,16 +52652,21 @@
         "https://www.theguardian.com/stage/2026/oct/25/derren-brown-only-human-review-gasp-inducing-stunts-apollo-london",
         "https://theatreandtonic.co.uk/blog/derren-brown-only-human-at-apollo-theatre-reviewnbsp",
         "https://www.timeout.com/london/theatre/derren-brown-only-human-review",
-        "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
         "https://loureviews.blog/2026/10/23/show-review-derren-brown-only-human-at-the-apollo-theatre/",
+        "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
         "https://www.londonboxoffice.co.uk/news/post/derren-brown-only-human-apollo-theatre-review",
+        "https://theatresoutheast.com/derren-brown-only-human-apollo-theatre-review/derren-brown-only-human/",
+        "https://www.tabinthecity.co.uk/post/derren-brown-only-human",
+        "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-10-28-19-30",
         "https://www.allthatdazzles.co.uk/post/review-derren-brown-only-human-apollo-theatre",
         "https://matineemouse.substack.com/p/derren-brown-only-human-review",
+        "https://www.whatsonstage.com/news/derren-brown-opens-up-about-only-human-and-his-most-bizarre-onstage-experience_1732354/",
+        "https://www.liverpool-theatre.co.uk/reviews/customer-reviews/derren-brown-only-human",
+        "https://www.westendbestfriend.co.uk/news/review-derren-brown-only-human-apollo-theatre",
+        "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
         "https://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
         "https://everything-theatre.co.uk/2026/10/review-derren-brown-only-human-apollo-theatre/",
         "https://theatresoutheast.com/derren-brown-only-human-apollo-theatre-review/",
-        "https://www.westendbestfriend.co.uk/news/review-derren-brown-only-human-apollo-theatre",
-        "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
         "https://loureviews.blog/2026/10/23/show-review-derren-brown-only-human-at-the-apollo-theatre/amp/",
         "https://www.thereviewshub.com/derren-brown-only-human-the-apollo-london/",
         "http://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
@@ -52598,7 +52675,6 @@
         "https://www.whatsonstage.com/news/derren-brown-only-human-in-the-west-end-review_1735644/",
         "https://www.broadwayworld.com/westend/article/Review-DERREN-BROWN-ONLY-HUMAN-Apollo-Theatre-20261022",
         "https://www.telegraph.co.uk/theatre/what-to-see/derren-brown-only-human-review/",
-        "https://www.liverpool-theatre.co.uk/reviews/customer-reviews/derren-brown-only-human",
         "https://www.beyondthecurtain.co.uk/2026/04/derren-brown-only-human-review.html",
         "https://thespyinthestalls.com/2026/10/derren-brown/",
         "https://theatreweekly.com/review-derren-browns-only-human-at-apollo-theatre/",
@@ -52608,6 +52684,18 @@
       "dirClean": 25,
       "inReviewsJson": 25,
       "missing": [
+        {
+          "url": "https://www.tabinthecity.co.uk/post/derren-brown-only-human",
+          "host": "tabinthecity.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-10-28-19-30",
+          "host": "consequence.net",
+          "knownOutletId": "consequence",
+          "serpCensus": true
+        },
         {
           "url": "https://www.liverpool-theatre.co.uk/reviews/customer-reviews/derren-brown-only-human",
           "host": "liverpool-theatre.co.uk",
@@ -52630,6 +52718,29 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.whatsonstage.com/news/derren-brown-opens-up-about-only-human-and-his-most-bizarre-onstage-experience_1732354/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--tom-millward.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/derren-brown-opens-up-about-only-human-and-his-most-bizarre-onstage-experience_1732354/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://www.beyondthecurtain.co.uk/2026/04/derren-brown-only-human-review.html",
           "host": "beyondthecurtain.co.uk",
@@ -52709,17 +52820,110 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Derren Brown: Only Human\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Derren Brown: Only Human\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Derren Brown: Only Human\" review apollo",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Derren Brown: Only Human Apollo Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Derren Brown: Only Human Apollo Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Derren Brown: Only Human Apollo Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 15,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 19,
+        "byReason": {
+          "non-review-host": 14,
+          "bare-host": 1,
+          "census-junk-host": 1,
+          "non-review-path": 1,
+          "ticket-seller-product-page": 2
+        }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 1,
+      "automatedExcludedListed": 2,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.tabinthecity.co.uk/post/derren-brown-only-human",
+          "host": "tabinthecity.co.uk",
+          "outletId": "tabinthecity",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-10-28-19-30",
+          "host": "consequence.net",
+          "outletId": "consequence",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "derren-brown-only-human-west-end-2026: https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-10-28-19-30 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
         {
           "url": "https://www.liverpool-theatre.co.uk/reviews/customer-reviews/derren-brown-only-human",
           "host": "liverpool-theatre.co.uk",
@@ -52741,11 +52945,32 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "tabinthecity.co.uk",
+            "outlet": "tabinthecity.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tabinthecity.co.uk/post/derren-brown-only-human"
+          },
+          {
+            "outletId": "consequence",
+            "outlet": "consequence",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-10-28-19-30"
+          },
+          {
             "outletId": "liverpool-theatre.co.uk",
             "outlet": "liverpool-theatre.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.liverpool-theatre.co.uk/reviews/customer-reviews/derren-brown-only-human"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/derren-brown-opens-up-about-only-human-and-his-most-bizarre-onstage-experience_1732354/"
           },
           {
             "outletId": "beyondthecurtain",
@@ -52776,22 +53001,28 @@
             "firstSeenAt": "2026-10-24T10:01:46.935Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-25T00:00:48.604Z"
-          },
-          {
             "url": "https://loureviews.blog/2026/10/23/show-review-derren-brown-only-human-at-the-apollo-theatre/",
             "outletId": "loureviews.blog",
             "state": "live",
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/derren-brown-only-human-apollo-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-25T00:00:48.604Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/derren-brown-only-human-apollo-theatre-review",
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/derren-brown-only-human-apollo-theatre-review/derren-brown-only-human/",
+            "outletId": "theatresoutheast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-derren-brown-only-human-apollo-theatre",
@@ -52804,6 +53035,18 @@
             "outletId": "matineemouse.substack.com",
             "state": "live",
             "firstSeenAt": "2026-10-24T14:59:13.348Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-derren-brown-only-human-apollo-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T02:13:33.776Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T02:13:33.776Z"
           },
           {
             "url": "https://www.jonathanbaz.com/2026/10/derren-brown-only-human-review.html",
@@ -52822,18 +53065,6 @@
             "outletId": "theatresoutheast.com",
             "state": "live",
             "firstSeenAt": "2026-10-24T10:01:46.935Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-derren-brown-only-human-apollo-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T02:13:33.776Z"
-          },
-          {
-            "url": "https://liamodell.com/2026/10/22/derren-brown-only-human-review-apollo-theatre-west-end-live-show-london/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T02:13:33.776Z"
           },
           {
             "url": "https://loureviews.blog/2026/10/23/show-review-derren-brown-only-human-at-the-apollo-theatre/amp/",
@@ -52902,11 +53133,32 @@
             "firstSeenAt": "2026-10-23T02:13:33.776Z"
           },
           {
+            "url": "https://www.tabinthecity.co.uk/post/derren-brown-only-human",
+            "outletId": "tabinthecity.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
+            "url": "https://concerts.consequence.net/events/derren-brown-only-human-at-apollo-theatre-on-2026-10-28-19-30",
+            "outletId": "consequence",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
             "url": "https://www.liverpool-theatre.co.uk/reviews/customer-reviews/derren-brown-only-human",
             "outletId": "liverpool-theatre.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/derren-brown-opens-up-about-only-human-and-his-most-bizarre-onstage-experience_1732354/",
+            "outletId": "whatsonstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
           },
           {
             "url": "https://www.beyondthecurtain.co.uk/2026/04/derren-brown-only-human-review.html",
@@ -52918,9 +53170,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 22,
-        "candidateCount": 24
+        "candidateCount": 27
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "dinosaur-world-live-off-west-end-2026",
@@ -63214,7 +63466,7 @@
         "liveCount": 23,
         "candidateCount": 24
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "ewa-dziarnowska-this-resting-patience-off-broadway-2026",
@@ -67838,30 +68090,41 @@
       "openingDate": "2026-10-23",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909"
+      ],
       "aggregatorListedUrls": [
-        "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
-        "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
-        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
+        "https://cititour.com/NYC_Broadway/Garry-Starr-Classic-Penguins/1392",
+        "https://culturesauce.com/garry-starr-classic-penguins-off-broadway-review/",
+        "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+        "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-naked-laughter/",
+        "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
+        "https://theaterscene.com/reviews/garry-starr-classic-penguins/",
+        "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-4/",
+        "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
         "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+        "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
+        "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins",
+        "https://1minutecritic.com/garry-starr-classic-penguins-review/",
+        "https://www.fringestars.com/show/2026-garry-starr-classic-penguins/",
+        "https://www.westendbestfriend.co.uk/news/review-garry-starr-classic-penguins-the-other-palace",
         "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
         "https://theatreweekly.com/review-garry-starr-classic-penguins-at-the-other-palace/",
+        "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+        "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
         "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
         "https://www.londontheatre.co.uk/reviews/garry-starr-classic-penguins-review-the-other-palace",
         "https://www.jackstage.co.uk/post/garry-starr-classic-penguins-review",
         "http://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
         "https://www.thereviewshub.com/garry-starr-classic-penguins-arts-theatre-london/",
         "https://ayoungishperspective.co.uk/2026/08/29/review-garry-starr-classic-penguins-grand-pleasance-courtyard/",
-        "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
         "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
         "https://www.thestage.co.uk/reviews/garry-starr-classic-penguins-review-damien-warren-smith-the-other-palace",
         "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
         "https://therecs.co.uk/garry-starr-classic-penguins/",
         "https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre",
         "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
-        "https://corrblimey.uk/2026/08/27/edinburgh-festival-fringe-2026-review-garry-starr-classic-penguins-grand-at-pleasance-courtyard/",
-        "https://playsinternational.org.uk/garry-starr-classic-penguins-pleasance-grand-edinburgh/",
-        "https://www.timeout.com/sydney/theatre/garry-starr-classic-penguins",
         "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-3/",
         "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-garry-starr-classic-penguins",
         "https://www.london-unattached.com/classic-penguins-gary-starr/"
@@ -67870,6 +68133,53 @@
       "dirClean": 14,
       "inReviewsJson": 14,
       "missing": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Garry-Starr-Classic-Penguins/1392",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://culturesauce.com/garry-starr-classic-penguins-off-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-naked-laughter/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.fringestars.com/show/2026-garry-starr-classic-penguins/",
+          "host": "fringestars.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
           "host": "timeout.com",
@@ -68070,17 +68380,166 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Garry Starr Classic Penguins\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Garry Starr Classic Penguins\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Garry Starr Classic Penguins\" review other",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Garry Starr Classic Penguins The Other Palace - Main Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 325,
+        "byReason": {
+          "aggregator-internal-nav": 210,
+          "not-http-url": 70,
+          "aggregator-section-root": 6,
+          "non-review-host": 28,
+          "roundup-page": 2,
+          "census-junk-host": 1,
+          "ticketing-listing": 2,
+          "no-review-evidence": 3,
+          "review-hub-page": 2,
+          "event-listing": 1
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909",
+          "publishDate": "2026-09-09"
+        }
+      ],
       "automatedExcludedListed": 4,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/garry-starr-classic-penguins-4/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
+          "serpCensus": true,
+          "zeroCharAttempts": 5
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://cititour.com/NYC_Broadway/Garry-Starr-Classic-Penguins/1392",
+          "host": "cititour.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://culturesauce.com/garry-starr-classic-penguins-off-broadway-review/",
+          "host": "culturesauce.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-much-ado-about-nothing-on/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/08/garry-starr-classic-penguins-naked-laughter/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/garry-starr-classic-penguins-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/",
+          "host": "1minutecritic.com",
+          "outletId": "one-minute-critic",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.fringestars.com/show/2026-garry-starr-classic-penguins/",
+          "host": "fringestars.com",
+          "outletId": "fringestars",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  provisional outlet \"fringestars\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
         {
           "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
           "host": "timeout.com",
@@ -68125,27 +68584,32 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "garry-starr-classic-penguins-off-west-end-2026: https://www.londonbornandbred.co.uk/post/garry-starr-s-classic-penguins-a-delightfully-daft-evening-at-the-arts-theatre dated 2025-11-05 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/",
           "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "garry-starr-classic-penguins-off-west-end-2026: https://exeuntnyc.com/reviews/review-garry-starr-classic-penguins-at-studio-seaview/ is already owned by garry-starr-classic-penguins-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/garry-starr-classic-penguins-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "outletId": "exeunt-magazine"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "one-minute-critic",
+            "outlet": "one-minute-critic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/"
+          },
+          {
+            "outletId": "fringestars.com",
+            "outlet": "fringestars.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.fringestars.com/show/2026-garry-starr-classic-penguins/"
+          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -68213,10 +68677,10 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
-            "outletId": "ayoungishperspective.co.uk",
+            "url": "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
+            "outletId": "chiswickcalendar.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-26T18:53:32.675Z"
+            "firstSeenAt": "2026-10-24T14:59:13.348Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/garry-starr-classic-penguins-at-the-other-palace-review",
@@ -68231,12 +68695,6 @@
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
           },
           {
-            "url": "https://chiswickcalendar.co.uk/garry-starr-classic-penguins-the-other-palace-theatre-review/",
-            "outletId": "chiswickcalendar.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T14:59:13.348Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/garry-starr-classic-penguins-the-other-palace-london/",
             "outletId": "thereviewshub.com",
             "state": "live",
@@ -68247,6 +68705,18 @@
             "outletId": "theatreweekly.com",
             "state": "live",
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
+          },
+          {
+            "url": "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
+            "outletId": "londonlivinglarge.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/10/25/review-garry-starr-classic-penguins-3/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T18:53:32.675Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-GARRY-STARR-CLASSIC-PENGUINS-The-Other-Palace-20261026",
@@ -68285,12 +68755,6 @@
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
           },
           {
-            "url": "https://www.londonlivinglarge.com/2026/10/garry-starr-classic-penguins-other.html",
-            "outletId": "londonlivinglarge.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T08:25:08.978Z"
-          },
-          {
             "url": "https://everything-theatre.co.uk/2026/10/review-garry-starr-classic-penguins-the-other-palace/",
             "outletId": "everything-theatre.co.uk",
             "state": "live",
@@ -68307,6 +68771,20 @@
             "outletId": "london-unattached.com",
             "state": "live",
             "firstSeenAt": "2026-10-25T00:00:48.604Z"
+          },
+          {
+            "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/",
+            "outletId": "one-minute-critic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
+            "url": "https://www.fringestars.com/show/2026-garry-starr-classic-penguins/",
+            "outletId": "fringestars.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
           },
           {
             "url": "https://www.timeout.com/london/comedy/garry-starr-classic-penguins",
@@ -68374,9 +68852,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 13,
-        "candidateCount": 21
+        "candidateCount": 23
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "gatz-off-broadway-2024",
@@ -86647,8 +87125,15 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://amyleighchandler.co.uk/review-harry-potter-and-the-cursed-child-palace-theatre-london/",
+        "https://www.crazychris.net/post/harry-potter-and-the-cursed-child-parts-one-and-two-palace-theatre-shaftesbury-avenue",
+        "https://theusualchaos.com/f/harry-potter-and-the-cursed-child--review",
         "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
+        "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+        "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
+        "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+        "https://www.ayoungertheatre.com/review-harry-potter-and-the-cursed-child-parts-1-and-2-palace-theatre/",
+        "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
+        "https://amyleighchandler.co.uk/review-harry-potter-and-the-cursed-child-palace-theatre-london/",
         "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
         "https://books.rixx.de/john-tiffany/harry-potter-and-the-cursed-child/",
         "https://www.theguardian.com/stage/2026/oct/07/harry-potter-and-the-cursed-child-hogwarts-palace-theatre-london",
@@ -86659,9 +87144,43 @@
       "inReviewsJson": 1,
       "missing": [
         {
+          "url": "https://www.crazychris.net/post/harry-potter-and-the-cursed-child-parts-one-and-two-palace-theatre-shaftesbury-avenue",
+          "host": "crazychris.net",
+          "knownOutletId": "crazychris",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theusualchaos.com/f/harry-potter-and-the-cursed-child--review",
+          "host": "theusualchaos.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
           "host": "stageleft.nyc",
           "knownOutletId": "stage-left",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-07-31",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-07-26",
           "serpCensus": true
         },
         {
@@ -86679,6 +87198,31 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://exeuntnyc.com/reviews/review-harry-potter-cursed-child/",
+          "host": "exeuntnyc.com",
+          "knownOutletId": "exeunt-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "exeunt-magazine--kev-berry.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://exeuntnyc.com/reviews/review-harry-potter-cursed-child/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2018-05-01",
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.theguardian.com/stage/2026/oct/07/harry-potter-and-the-cursed-child-hogwarts-palace-theatre-london",
           "host": "theguardian.com",
@@ -86773,17 +87317,149 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Harry Potter and the Cursed Child\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Harry Potter and the Cursed Child\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Harry Potter and the Cursed Child\" review palace",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Harry Potter and the Cursed Child\" Tiffany review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Harry Potter and the Cursed Child Palace Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Harry Potter and the Cursed Child Palace Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Harry Potter and the Cursed Child Palace Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 8,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "aggregator-internal-nav": 1,
+          "not-http-url": 1,
+          "non-review-host": 16,
+          "roundup-page": 2,
+          "bare-host": 2,
+          "ticketing-listing": 1,
+          "no-review-evidence": 4,
+          "show-hub": 2,
+          "write-path-blocked": 1,
+          "ugc-platform": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.ayoungertheatre.com/review-harry-potter-and-the-cursed-child-parts-1-and-2-palace-theatre/",
+          "host": "ayoungertheatre.com",
+          "knownOutletId": "a-younger-theatre",
+          "serpCensus": true,
+          "zeroCharAttempts": 3
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.theguardian.com/stage/2016/jul/31/harry-potter-and-the-cursed-child-review-palace-theatre",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/review-harry-potter-and-the-cursed-child-palace-theatre_41360/",
+          "host": "whatsonstage.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://www.crazychris.net/post/harry-potter-and-the-cursed-child-parts-one-and-two-palace-theatre-shaftesbury-avenue",
+          "host": "crazychris.net",
+          "outletId": "crazychris",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://www.crazychris.net/post/harry-potter-and-the-cursed-child-parts-one-and-two-palace-theatre-shaftesbury-avenue dated 2017-08-20 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://theusualchaos.com/f/harry-potter-and-the-cursed-child--review",
+          "host": "theusualchaos.com",
+          "outletId": "theusualchaos",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://theusualchaos.com/f/harry-potter-and-the-cursed-child--review has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
         {
           "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
           "host": "stageleft.nyc",
@@ -86800,6 +87476,21 @@
           "reason": "⚠️  Cross-market reroute: harry-potter-and-the-cursed-child-one-part-west-end-2026 → harry-potter-2021 (sibling opening 0d from publishDate vs current 3104d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/harry-potter-2021/stage-left--robert-russo.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         },
         {
+          "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london is already owned by harry-potter-and-the-cursed-child-both-parts-west-end-2021 — one of the two is contaminated. Inspect data/review-texts/harry-potter-and-the-cursed-child-both-parts-west-end-2021/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
           "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
           "host": "jigsaw-arts.co.uk",
           "outletId": "jigsaw-arts",
@@ -86813,33 +87504,45 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
-        },
+        }
+      ],
+      "ingestSkippedByCap": [
         {
           "url": "https://books.rixx.de/john-tiffany/harry-potter-and-the-cursed-child/",
           "host": "rixx.de",
-          "outletId": "rixx",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "publish-date-unresolved",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "harry-potter-and-the-cursed-child-one-part-west-end-2026: https://books.rixx.de/john-tiffany/harry-potter-and-the-cursed-child/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+          "outletId": "rixx"
         }
       ],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "crazychris",
+            "outlet": "crazychris",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.crazychris.net/post/harry-potter-and-the-cursed-child-parts-one-and-two-palace-theatre-shaftesbury-avenue"
+          },
+          {
+            "outletId": "theusualchaos.com",
+            "outlet": "theusualchaos.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theusualchaos.com/f/harry-potter-and-the-cursed-child--review"
+          },
           {
             "outletId": "stage-left",
             "outlet": "stage-left",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london"
           },
           {
             "outletId": "jigsaw-arts.co.uk",
@@ -86879,11 +87582,32 @@
             "firstSeenAt": "2026-10-23T17:42:57.462Z"
           },
           {
+            "url": "https://www.crazychris.net/post/harry-potter-and-the-cursed-child-parts-one-and-two-palace-theatre-shaftesbury-avenue",
+            "outletId": "crazychris",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
+            "url": "https://theusualchaos.com/f/harry-potter-and-the-cursed-child--review",
+            "outletId": "theusualchaos.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
             "url": "https://www.stageleft.nyc/blog/2018/4/22/review-harry-potter-and-the-cursed-child-is-pure-magic",
             "outletId": "stage-left",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-22T11:18:11.739Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2016/jul/26/harry-potter-cursed-child-review-palace-theatre-london",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
           },
           {
             "url": "https://www.jigsaw-arts.co.uk/news-detail/harry-potter-and-the-cursed-child-review",
@@ -86916,9 +87640,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 6
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "harry-potter-tour-2024",
@@ -97667,7 +98391,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "in-the-print-off-west-end-2026",
@@ -118861,6 +119585,8 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.londontheatre1.com/reviews/strategic-love-play-at-soho-theatre-review/",
+        "https://www.newyorktheatreguide.com/reviews/piaf-love-conquers-all",
         "https://www.newyorktheatreguide.com/reviews/love-child",
         "https://www.lvpnews.com/20250822/theater-review-she-loves-me-a-love-letter-to-yesteryear-at-bucks-county-playhouse/"
       ],
@@ -118868,6 +119594,20 @@
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://www.londontheatre1.com/reviews/strategic-love-play-at-soho-theatre-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2023-09-08",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/piaf-love-conquers-all",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/love-child",
           "host": "newyorktheatreguide.com",
@@ -118888,17 +119628,91 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Love Me\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Love Me\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Love Me\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Love Me SoHo Playhouse review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Love Me SoHo Playhouse review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Love Me SoHo Playhouse review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 35,
+        "byReason": {
+          "aggregator-internal-nav": 2,
+          "non-review-host": 15,
+          "bare-host": 3,
+          "ticketing-reseller": 2,
+          "venue-production-page": 2,
+          "show-listing-page": 1,
+          "census-junk-host": 1,
+          "no-review-evidence": 4,
+          "non-review-path": 5
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
+        {
+          "url": "https://www.londontheatre1.com/reviews/strategic-love-play-at-soho-theatre-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/love-child",
           "host": "newyorktheatreguide.com",
@@ -118908,6 +119722,21 @@
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/piaf-love-conquers-all",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "love-me-off-broadway-2026: https://www.newyorktheatreguide.com/reviews/piaf-love-conquers-all dated 2017-09-22 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
         {
           "url": "https://www.lvpnews.com/20250822/theater-review-she-loves-me-a-love-letter-to-yesteryear-at-bucks-county-playhouse/",
           "host": "lvpnews.com",
@@ -118929,6 +119758,13 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/piaf-love-conquers-all"
+          },
+          {
             "outletId": "lvpnews.com",
             "outlet": "lvpnews.com",
             "critic": "Unknown",
@@ -118938,6 +119774,13 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/piaf-love-conquers-all",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
           {
             "url": "https://www.lvpnews.com/20250822/theater-review-she-loves-me-a-love-letter-to-yesteryear-at-bucks-county-playhouse/",
             "outletId": "lvpnews.com",
@@ -118950,7 +119793,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "loves-labours-lost-globe-west-end-2026",
@@ -178132,8 +178975,8 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/",
-        "https://www.westendbestfriend.co.uk/news/showstopper-the-kids-show-return-london-october-half-term"
+        "https://www.westendbestfriend.co.uk/news/showstopper-the-kids-show-return-london-october-half-term",
+        "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/"
       ],
       "dirFiles": 2,
       "dirClean": 0,
@@ -178141,29 +178984,6 @@
       "missing": [],
       "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/",
-          "host": "fringereview.co.uk",
-          "knownOutletId": "fringereview",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "fringereview--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
         {
           "url": "https://www.westendbestfriend.co.uk/news/showstopper-the-kids-show-return-london-october-half-term",
           "host": "westendbestfriend.co.uk",
@@ -178187,6 +179007,29 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/",
+          "host": "fringereview.co.uk",
+          "knownOutletId": "fringereview",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "fringereview--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         }
       ],
       "citedNoUrl": [],
@@ -178235,12 +179078,76 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Showstopper! The Kids Show\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Showstopper! The Kids Show\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Showstopper! The Kids Show\" review soho",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 4,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Showstopper! The Kids Show Soho Theatre Walthamstow review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Showstopper! The Kids Show Soho Theatre Walthamstow review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Showstopper! The Kids Show Soho Theatre Walthamstow review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 14,
+          "venue-production-page": 1,
+          "census-junk-host": 1,
+          "ticket-seller-product-page": 2,
+          "review-hub-page": 1,
+          "write-path-blocked": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -178249,32 +179156,32 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "fringereview",
-            "outlet": "fringereview",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/"
-          },
-          {
             "outletId": "west-end-best-friend",
             "outlet": "west-end-best-friend",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.westendbestfriend.co.uk/news/showstopper-the-kids-show-return-london-october-half-term"
+          },
+          {
+            "outletId": "fringereview",
+            "outlet": "fringereview",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/",
-            "outletId": "fringereview",
+            "url": "https://www.westendbestfriend.co.uk/news/showstopper-the-kids-show-return-london-october-half-term",
+            "outletId": "west-end-best-friend",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-24T18:45:20.421Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/showstopper-the-kids-show-return-london-october-half-term",
-            "outletId": "west-end-best-friend",
+            "url": "https://fringereview.co.uk/review/edinburgh-fringe/2026/showstopper-the-kids-show/",
+            "outletId": "fringereview",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-24T18:45:20.421Z"
@@ -178284,7 +179191,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "shucked-tour-2024",
@@ -213031,6 +213938,10 @@
         "https://culturesauce.com/imaginary-invalid-moliere-broadway-review/",
         "https://www.theatermania.com/news/review-revival-of-the-imaginary-invalid-is-terminally-short-on-laughs_1857994/",
         "https://exeuntnyc.com/reviews/review-the-imaginary-invalid-at-todd-haimes-theatre/",
+        "https://culturesauce.com/imaginary-invalid-moliere-broadway-review/comment-page-1/",
+        "https://dk.headtopics.com/news/the-imaginary-invalid-review-unfunny-moliere-revival-on-89103923",
+        "https://gotham-playgoer.blogspot.com/2026/10/the-imaginary-invalid.html",
+        "https://theatredance.ua.edu/in-the-news/review-the-imaginary-invalid-and-its-lasting-relevance-across-the-centuries/",
         "https://www.theatrely.com/post/the-imaginary-invalid-with-a-starry-cast-hits-broadway-review"
       ],
       "dirFiles": 35,
@@ -213041,6 +213952,26 @@
           "url": "https://cititour.com/NYC_Broadway/The-Imaginary-Invalid/1404",
           "host": "cititour.com",
           "knownOutletId": "cititour"
+        },
+        {
+          "url": "https://dk.headtopics.com/news/the-imaginary-invalid-review-unfunny-moliere-revival-on-89103923",
+          "host": "headtopics.com",
+          "knownOutletId": "headtopics",
+          "serpCensus": true
+        },
+        {
+          "url": "https://gotham-playgoer.blogspot.com/2026/10/the-imaginary-invalid.html",
+          "host": "gotham-playgoer.blogspot.com",
+          "knownOutletId": "bobs-theater-blog",
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatredance.ua.edu/in-the-news/review-the-imaginary-invalid-and-its-lasting-relevance-across-the-centuries/",
+          "host": "ua.edu",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-11-02",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -213061,18 +213992,92 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Imaginary Invalid\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Imaginary Invalid\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Imaginary Invalid\" review todd",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"The Imaginary Invalid\" Molière review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Imaginary Invalid Todd Haimes Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Imaginary Invalid Todd Haimes Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Imaginary Invalid Todd Haimes Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 15,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 397,
+        "count": 435,
         "byReason": {
-          "aggregator-internal-nav": 253,
+          "aggregator-internal-nav": 254,
           "not-http-url": 85,
           "production-database-listing": 9,
           "aggregator-section-root": 11,
-          "non-review-host": 36,
-          "roundup-page": 3
+          "non-review-host": 57,
+          "roundup-page": 7,
+          "ticketing-reseller": 5,
+          "show-listing-page": 2,
+          "census-junk-host": 1,
+          "ticketing-listing": 1,
+          "no-review-evidence": 1,
+          "review-index-page": 1,
+          "show-hub": 1
         }
       },
       "dedupedVariants": [],
@@ -213093,6 +214098,36 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "the-imaginary-invalid-2026: https://cititour.com/NYC_Broadway/The-Imaginary-Invalid/1404 has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
+        {
+          "url": "https://dk.headtopics.com/news/the-imaginary-invalid-review-unfunny-moliere-revival-on-89103923",
+          "host": "headtopics.com",
+          "outletId": "headtopics",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=dk.headtopics.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=dk.headtopics.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright D"
+        },
+        {
+          "url": "https://gotham-playgoer.blogspot.com/2026/10/the-imaginary-invalid.html",
+          "host": "gotham-playgoer.blogspot.com",
+          "outletId": "bobs-theater-blog",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-imaginary-invalid-2026: https://gotham-playgoer.blogspot.com/2026/10/the-imaginary-invalid.html has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -213105,6 +214140,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://cititour.com/NYC_Broadway/The-Imaginary-Invalid/1404"
+          },
+          {
+            "outletId": "headtopics",
+            "outlet": "headtopics",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://dk.headtopics.com/news/the-imaginary-invalid-review-unfunny-moliere-revival-on-89103923"
+          },
+          {
+            "outletId": "bobs-theater-blog",
+            "outlet": "bobs-theater-blog",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://gotham-playgoer.blogspot.com/2026/10/the-imaginary-invalid.html"
           }
         ],
         "suppressedMissing": [],
@@ -213206,6 +214255,12 @@
             "firstSeenAt": "2026-10-24T04:35:08.329Z"
           },
           {
+            "url": "https://culturesauce.com/imaginary-invalid-moliere-broadway-review/comment-page-1/",
+            "outletId": "culturesauce.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
             "url": "https://www.theatrely.com/post/the-imaginary-invalid-with-a-starry-cast-hits-broadway-review",
             "outletId": "theatrely.com",
             "state": "live",
@@ -213217,13 +214272,27 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-23T11:55:46.300Z"
+          },
+          {
+            "url": "https://dk.headtopics.com/news/the-imaginary-invalid-review-unfunny-moliere-revival-on-89103923",
+            "outletId": "headtopics",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
+          },
+          {
+            "url": "https://gotham-playgoer.blogspot.com/2026/10/the-imaginary-invalid.html",
+            "outletId": "bobs-theater-blog",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 16,
-        "candidateCount": 17
+        "candidateCount": 19
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -228034,22 +229103,27 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://theartsdesk.com/theatre/pianist-park-theatre-review-loving-recreation-wladyslaw-szpilmans-musical-legacy",
-        "https://theatreandtonic.co.uk/blog/the-pianist-at-park-theatre-review",
+        "https://www.theguardian.com/stage/2026/oct/26/the-pianist-review-park-theatre-london",
         "https://www.strandmagazine.co.uk/single-post/the-pianist-at-park-theatre",
+        "https://theatreandtonic.co.uk/blog/the-pianist-at-park-theatre-review",
+        "https://musicaltheatrereview.com/the-pianist-park-theatre/",
+        "https://monstagigz.com/2026/10/19/theatre-review-the-pianist-starring-daniel-krikler-at-the-park-theatre/",
+        "https://www.thereviewshub.com/the-pianist-park-theatre-london/",
+        "https://liamodell.com/2026/10/26/the-pianist-review-park-theatre-finsbury-park-london-wladyslaw-szpilman-memoir-film/",
+        "https://theatresoutheast.com/the-pianist-park-theatre-review/",
+        "https://theartsdesk.com/theatre/pianist-park-theatre-review-loving-recreation-wladyslaw-szpilmans-musical-legacy",
         "https://www.thetimes.com/culture/film/article/the-pianist-on-stage-interview-r0p62mk56",
         "https://www.pinkprincetheatre.com/post/review-the-pianist-park-theatre",
-        "https://musicaltheatrereview.com/the-pianist-park-theatre/",
-        "https://notesfromrowh.com/2026/10/22/review-the-pianist-at-park-theatre/",
+        "https://www.whatsonstage.com/news/the-pianist-stage-adaptation-at-the-park-theatre-review_1735769/",
+        "https://www.timeout.com/london/theatre/the-pianist-1",
+        "https://www.londonbornandbred.co.uk/post/the-pianist-park-theatre-finsbury-park",
+        "https://www.londontheatre.co.uk/reviews/the-pianist-review-park-theatre",
+        "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
         "https://firstnightmagazine.com/2026/10/24/review-of-the-pianist-2026-park-theatre-stage-adaptation-hits-all-the-right-notes-despite-lacking-a-few-fortes/",
         "https://www.standard.co.uk/culture/theatre/the-pianist-at-park-theatre-review-b1302039.html",
-        "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
         "https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
         "https://www.westendbestfriend.co.uk/news/review-the-pianist-park-theatre",
-        "https://monstagigz.com/2026/10/19/theatre-review-the-pianist-starring-daniel-krikler-at-the-park-theatre/",
-        "https://www.londontheatre.co.uk/reviews/the-pianist-review-park-theatre",
-        "https://theatresoutheast.com/the-pianist-park-theatre-review/",
-        "https://www.whatsonstage.com/news/the-pianist-stage-adaptation-at-the-park-theatre-review_1735769/",
+        "https://notesfromrowh.com/2026/10/22/review-the-pianist-at-park-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-THE-PIANIST-Park-Theatre-20261023",
         "https://thespyinthestalls.com/2026/10/the-pianist/",
         "https://therecs.co.uk/the-pianist-park-theatre/",
@@ -228059,15 +229133,11 @@
         "https://www.jewishnews.co.uk/review-the-pianist-park-theatre/amp/",
         "https://www.theupcoming.co.uk/2026/10/22/the-pianist-at-park-theatre-theatre-review/",
         "https://susanelkin.co.uk/articles/the-pianist-susan-elkin-reviews/",
-        "https://www.theguardian.com/stage/2026/oct/26/the-pianist-review-park-theatre-london",
         "https://inspiringtravelexperiences.com/reviews/entertainment/the-pianist-park-theatre-review/",
         "https://www.jolienstheatrediary.com/reviews/review-the-pianist-the-park-theatre-london",
-        "https://www.timeout.com/london/theatre/the-pianist-1",
         "https://stagedtheatre.co.uk/blogs/theatre-reviews/the-pianist-park-theatre",
         "https://www.thejc.com/life/this-show-tells-my-fathers-musical-story-better-than-polanksis-the-pianist-uihkz8tt",
-        "https://liamodell.com/2026/10/26/the-pianist-review-park-theatre-finsbury-park-london-wladyslaw-szpilman-memoir-film/",
-        "https://www.londonboxoffice.co.uk/news/post/review-pianist-willesden-lane",
-        "https://www.thereviewshub.com/the-pianist-park-theatre-london/"
+        "https://www.londonboxoffice.co.uk/news/post/review-pianist-willesden-lane"
       ],
       "dirFiles": 42,
       "dirClean": 32,
@@ -228077,6 +229147,12 @@
           "url": "https://www.timeout.com/london/theatre/the-pianist-1",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/the-pianist-park-theatre-finsbury-park",
+          "host": "londonbornandbred.co.uk",
+          "knownOutletId": "londonbornandbred",
           "serpCensus": true
         }
       ],
@@ -228099,6 +229175,36 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.thereviewshub.com/the-pianist-park-theatre-london/",
+          "host": "thereviewshub.com",
+          "knownOutletId": "thereviewshub",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "thereviewshub--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.thereviewshub.com/the-pianist-park-theatre-london/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2016-07-28",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "bestoftheatre",
+          "reverify": false
+        },
         {
           "url": "https://www.thejc.com/life/this-show-tells-my-fathers-musical-story-better-than-polanksis-the-pianist-uihkz8tt",
           "host": "thejc.com",
@@ -228147,36 +229253,6 @@
           "priorRunSource": "flagged-file-date:2016-01-27",
           "weRef": true,
           "weRefSources": [],
-          "reverify": false
-        },
-        {
-          "url": "https://www.thereviewshub.com/the-pianist-park-theatre-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thereviewshub--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thereviewshub.com/the-pianist-park-theatre-london/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2016-07-28",
-          "weRef": true,
-          "weRefSources": [
-            "bestoftheatre"
-          ],
-          "weRefStars": 3,
-          "weRefStarsSource": "bestoftheatre",
           "reverify": false
         }
       ],
@@ -228231,12 +229307,64 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Pianist\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Pianist\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 8,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Pianist Park Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Pianist Park Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Pianist Park Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 20,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 10,
+        "byReason": {
+          "non-review-host": 6,
+          "roundup-page": 1,
+          "census-junk-host": 1,
+          "ticketing-listing": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -228256,6 +229384,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "the-pianist-off-west-end-2026: https://www.timeout.com/london/theatre/the-pianist-1 is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://www.londonbornandbred.co.uk/post/the-pianist-park-theatre-finsbury-park",
+          "host": "londonbornandbred.co.uk",
+          "outletId": "londonbornandbred",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -228270,6 +229413,13 @@
             "url": "https://www.timeout.com/london/theatre/the-pianist-1"
           },
           {
+            "outletId": "londonbornandbred",
+            "outlet": "londonbornandbred",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londonbornandbred.co.uk/post/the-pianist-park-theatre-finsbury-park"
+          },
+          {
             "outletId": "the-jewish-chronicle",
             "outlet": "the-jewish-chronicle",
             "critic": "Unknown",
@@ -228280,10 +229430,16 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://theartsdesk.com/theatre/pianist-park-theatre-review-loving-recreation-wladyslaw-szpilmans-musical-legacy",
-            "outletId": "theartsdesk.com",
+            "url": "https://www.theguardian.com/stage/2026/oct/26/the-pianist-review-park-theatre-london",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-10-24T01:24:25.910Z"
+            "firstSeenAt": "2026-10-26T18:53:32.675Z"
+          },
+          {
+            "url": "https://www.strandmagazine.co.uk/single-post/the-pianist-at-park-theatre",
+            "outletId": "strandmagazine.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T02:13:33.776Z"
           },
           {
             "url": "https://theatreandtonic.co.uk/blog/the-pianist-at-park-theatre-review",
@@ -228292,10 +229448,34 @@
             "firstSeenAt": "2026-10-24T01:24:25.910Z"
           },
           {
-            "url": "https://www.strandmagazine.co.uk/single-post/the-pianist-at-park-theatre",
-            "outletId": "strandmagazine.co.uk",
+            "url": "https://musicaltheatrereview.com/the-pianist-park-theatre/",
+            "outletId": "musicaltheatrereview.com",
             "state": "live",
-            "firstSeenAt": "2026-10-23T02:13:33.776Z"
+            "firstSeenAt": "2026-10-24T01:24:25.910Z"
+          },
+          {
+            "url": "https://monstagigz.com/2026/10/19/theatre-review-the-pianist-starring-daniel-krikler-at-the-park-theatre/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T02:10:58.478Z"
+          },
+          {
+            "url": "https://liamodell.com/2026/10/26/the-pianist-review-park-theatre-finsbury-park-london-wladyslaw-szpilman-memoir-film/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T18:53:32.675Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/the-pianist-park-theatre-review/",
+            "outletId": "theatresoutheast.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T11:55:46.300Z"
+          },
+          {
+            "url": "https://theartsdesk.com/theatre/pianist-park-theatre-review-loving-recreation-wladyslaw-szpilmans-musical-legacy",
+            "outletId": "theartsdesk.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T01:24:25.910Z"
           },
           {
             "url": "https://www.thetimes.com/culture/film/article/the-pianist-on-stage-interview-r0p62mk56",
@@ -228310,14 +229490,20 @@
             "firstSeenAt": "2026-10-25T21:33:02.264Z"
           },
           {
-            "url": "https://musicaltheatrereview.com/the-pianist-park-theatre/",
-            "outletId": "musicaltheatrereview.com",
+            "url": "https://www.whatsonstage.com/news/the-pianist-stage-adaptation-at-the-park-theatre-review_1735769/",
+            "outletId": "whatsonstage.com",
             "state": "live",
-            "firstSeenAt": "2026-10-24T01:24:25.910Z"
+            "firstSeenAt": "2026-10-23T11:55:46.300Z"
           },
           {
-            "url": "https://notesfromrowh.com/2026/10/22/review-the-pianist-at-park-theatre/",
-            "outletId": "notesfromrowh.com",
+            "url": "https://www.londontheatre.co.uk/reviews/the-pianist-review-park-theatre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T11:55:46.300Z"
+          },
+          {
+            "url": "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
+            "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-10-25T14:15:42.198Z"
           },
@@ -228334,12 +229520,6 @@
             "firstSeenAt": "2026-10-24T01:24:25.910Z"
           },
           {
-            "url": "https://readaboutstuff.com/2026/10/25/review-the-pianist-park-theatre-london/",
-            "outletId": "readaboutstuff.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-25T14:15:42.198Z"
-          },
-          {
             "url": "https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
             "outletId": "thestage.co.uk",
             "state": "live",
@@ -228352,28 +229532,10 @@
             "firstSeenAt": "2026-10-23T19:01:04.708Z"
           },
           {
-            "url": "https://monstagigz.com/2026/10/19/theatre-review-the-pianist-starring-daniel-krikler-at-the-park-theatre/",
-            "outletId": "monstagigz.com",
+            "url": "https://notesfromrowh.com/2026/10/22/review-the-pianist-at-park-theatre/",
+            "outletId": "notesfromrowh.com",
             "state": "live",
-            "firstSeenAt": "2026-10-22T02:10:58.478Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/the-pianist-review-park-theatre",
-            "outletId": "londontheatre.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T11:55:46.300Z"
-          },
-          {
-            "url": "https://theatresoutheast.com/the-pianist-park-theatre-review/",
-            "outletId": "theatresoutheast.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T11:55:46.300Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-pianist-stage-adaptation-at-the-park-theatre-review_1735769/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T11:55:46.300Z"
+            "firstSeenAt": "2026-10-25T14:15:42.198Z"
           },
           {
             "url": "https://www.broadwayworld.com/westend/article/Review-THE-PIANIST-Park-Theatre-20261023",
@@ -228430,12 +229592,6 @@
             "firstSeenAt": "2026-10-25T14:15:42.198Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/oct/26/the-pianist-review-park-theatre-london",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T18:53:32.675Z"
-          },
-          {
             "url": "https://inspiringtravelexperiences.com/reviews/entertainment/the-pianist-park-theatre-review/",
             "outletId": "inspiringtravelexperiences.com",
             "state": "live",
@@ -228454,17 +229610,18 @@
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
-            "url": "https://liamodell.com/2026/10/26/the-pianist-review-park-theatre-finsbury-park-london-wladyslaw-szpilman-memoir-film/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T18:53:32.675Z"
-          },
-          {
             "url": "https://www.timeout.com/london/theatre/the-pianist-1",
             "outletId": "timeout-london",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
+          },
+          {
+            "url": "https://www.londonbornandbred.co.uk/post/the-pianist-park-theatre-finsbury-park",
+            "outletId": "londonbornandbred",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T01:23:56.730Z"
           },
           {
             "url": "https://www.thejc.com/life/this-show-tells-my-fathers-musical-story-better-than-polanksis-the-pianist-uihkz8tt",
@@ -228476,9 +229633,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 27,
-        "candidateCount": 29
+        "candidateCount": 30
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "the-picture-of-dorian-gray-2025",
@@ -230846,7 +232003,71 @@
       "dirFiles": 33,
       "dirClean": 18,
       "inReviewsJson": 20,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://ew.com/theater/2017/03/16/the-price-stage-review/",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/16/no-one-eats-an-egg-like-danny-devito-review-of-the-price-on-broadway.html",
+          "host": "thedailybeast.com",
+          "knownOutletId": "dailybeast",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://deadline.com/2017/03/the-price-mark-ruffalo-danny-devito-broadway-review-1202044954/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/price-not-theater-review-article-1.3000346",
+          "host": "nydailynews.com",
+          "knownOutletId": "nydailynews",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.thewrap.com/price-broadway-review-danny-devito-mark-ruffalo-tony-shalhoub/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.yahoo.com/movies/broadway-review-price-starring-mark-ruffalo-tony-shalhoub-020037998.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/03/the_price_mark_ruffalo_danny_devito_broadway_revie.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-price-broadway-review-ent-0316-20170316-column.html",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
       "dirOnly": [
         {
           "host": "britishtheatre.com",
@@ -230893,7 +232114,138 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "http://www.nbcnewyork.com/entertainment/the-scene/Review-DeVito-Ruffalo-The-Price-Roundabout-416159903.html",
+          "host": "nbcnewyork.com",
+          "knownOutletId": "nbcny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nbcny--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/Review-DeVito-Ruffalo-The-Price-Roundabout-416159903.html"
+            },
+            {
+              "file": "nbcny--robert-kahn.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.nbcnewyork.com/entertainment/the-scene/Review-DeVito-Ruffalo-The-Price-Roundabout-416159903.html"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.newsday.com/entertainment/theater/the-price-review-danny-devito-mark-ruffalo-make-arthur-miller-revival-shine-1.13270467",
+          "host": "newsday.com",
+          "knownOutletId": "newsday",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "newsday--linda-winer.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.newsday.com/entertainment/theater/the-price-review-danny-devito-mark-ruffalo-make-arthur-miller-revival-shine-1.13270467"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.huffingtonpost.com/entry/aisle-view-arthurs-price_us_58cad722e4b0e0d348b34141",
+          "host": "huffingtonpost.com",
+          "knownOutletId": "huffpost",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "huffpost--steven-suskin.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.huffingtonpost.com/entry/aisle-view-arthurs-price_us_58cad722e4b0e0d348b34141"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.amny.com/entertainment/the-price-review-an-arthur-miller-play-revival-done-right-1.13278781",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "amny--matt-windman.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.amny.com/entertainment/the-price-review-an-arthur-miller-play-revival-done-right-1.13278781"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        },
+        {
+          "url": "http://www.hollywoodreporter.com/review/price-theater-review-986815",
+          "host": "hollywoodreporter.com",
+          "knownOutletId": "hollywood-reporter",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "hollywood-reporter--chris-jones.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.hollywoodreporter.com/review/price-theater-review-986815"
+            },
+            {
+              "file": "hollywood-reporter--david-rooney.json",
+              "flag": "wrongProduction",
+              "urlInDir": "http://www.hollywoodreporter.com/review/price-theater-review-986815"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date",
+          "reverify": false
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -230901,12 +232253,91 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 298,
+        "byReason": {
+          "aggregator-internal-nav": 223,
+          "not-http-url": 55,
+          "aggregator-section-root": 4,
+          "non-review-host": 15,
+          "roundup-page": 1
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Arthur-Millers-THE-PRICE-Opens-on-Broadway-Updating-Live-20170316",
+          "publishDate": "2017-03-16"
+        }
+      ],
       "automatedExcludedListed": 0,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2017/03/16/theater/review-the-price-mark-ruffalo-arthur-miller.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://ew.com/theater/2017/03/16/the-price-stage-review/",
+          "host": "ew.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thedailybeast.com/articles/2017/03/16/no-one-eats-an-egg-like-danny-devito-review-of-the-price-on-broadway.html",
+          "host": "thedailybeast.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://deadline.com/2017/03/the-price-mark-ruffalo-danny-devito-broadway-review-1202044954/",
+          "host": "deadline.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nydailynews.com/entertainment/theater-arts/price-not-theater-review-article-1.3000346",
+          "host": "nydailynews.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.thewrap.com/price-broadway-review-danny-devito-mark-ruffalo-tony-shalhoub/",
+          "host": "thewrap.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.yahoo.com/movies/broadway-review-price-starring-mark-ruffalo-tony-shalhoub-020037998.html",
+          "host": "yahoo.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.nj.com/entertainment/index.ssf/2017/03/the_price_mark_ruffalo_danny_devito_broadway_revie.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-price-broadway-review-ent-0316-20170316-column.html",
+          "host": "chicagotribune.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "complete",
         "missing": [],
@@ -230959,7 +232390,7 @@
         "liveCount": 7,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026",
@@ -232170,7 +233601,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "the-rocky-horror-show-2026",
@@ -245728,7 +247159,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T01:23:56.730Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -266057,29 +267488,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-27T00:50:34.340Z",
+    "at": "2026-10-27T01:23:56.729Z",
     "reserveEvery": 4,
     "reservedAttempted": [
       "the-price-off-west-end-2026",
-      "evita-west-end-2025",
-      "giant-royal-court-off-west-end-2024",
-      "giant-west-end-2025"
+      "evita-west-end-2025"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "tosca-english-national-opera-west-end-2026",
-      "medea-off-broadway-2026"
+      "tosca-english-national-opera-west-end-2026"
     ],
     "neverAuditedDueAtStart": 312,
     "oldestDueRowAtStart": {
       "showId": "the-price-off-west-end-2026",
       "computedAt": "2026-09-20T01:54:21.561Z",
-      "ageHours": 886.6
+      "ageHours": 887.2
     },
     "oldestDueRowAfterRun": {
-      "showId": "archduke-west-end-2026",
+      "showId": "giant-royal-court-off-west-end-2024",
       "computedAt": "2026-09-20T01:54:21.561Z",
-      "ageHours": 886.9
+      "ageHours": 887.5
     }
   }
 }
