@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T15:06:54.739Z",
+  "timestamp": "2026-10-27T15:41:49.845Z",
   "stats": {
-    "totalReviews": 63585,
-    "alreadyFlagged": 21687,
+    "totalReviews": 63596,
+    "alreadyFlagged": 21690,
     "dateGuardCatches": 224,
     "directorMismatch": 2357,
     "tvFilmSignals": 1790,
-    "londonSignals": 3049,
+    "londonSignals": 3050,
     "offBroadwaySignals": 563,
     "yearMismatch": 218,
-    "noPublishDate": 5748
+    "noPublishDate": 5747
   },
   "findings": [
     {
@@ -29859,13 +29859,14 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
+      "score": 59,
       "publishDate": "2026-10-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 2\""
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -82887,6 +82888,19 @@
       "score": 89,
       "publishDate": "2026-10-21",
       "url": "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "martin-guerre-west-end-2026",
+      "file": "standard--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-10-21",
+      "url": "https://www.westendtheatre.com/373126/news/martin-guerre-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
