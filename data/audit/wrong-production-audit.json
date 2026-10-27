@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T18:52:37.303Z",
+  "timestamp": "2026-10-27T19:03:28.092Z",
   "stats": {
-    "totalReviews": 63789,
-    "alreadyFlagged": 21748,
+    "totalReviews": 63791,
+    "alreadyFlagged": 21749,
     "dateGuardCatches": 238,
     "directorMismatch": 2360,
     "tvFilmSignals": 1793,
     "londonSignals": 3057,
-    "offBroadwaySignals": 565,
+    "offBroadwaySignals": 567,
     "yearMismatch": 217,
-    "noPublishDate": 5732
+    "noPublishDate": 5711
   },
   "findings": [
     {
@@ -97953,6 +97953,34 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "the-half-god-of-rainfall-off-broadway-2023",
+      "file": "front-row-center--sarah-downs.json",
+      "score": null,
+      "publishDate": "2023-08-01",
+      "url": "https://thefrontrowcenter.com/2023/08/the-half-god-of-rainfall/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "the-half-god-of-rainfall-off-broadway-2023",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2023-08-07",
+      "url": "https://www.theaterpizzazz.com/the-half-god-of-rainfall/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
