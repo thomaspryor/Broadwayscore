@@ -1,0 +1,210 @@
+'use strict';
+
+/**
+ * we-season-reference.js (BRO-6450)
+ *
+ * Pure helpers for the West End season reference lists: what opened at a SOLT
+ * West End house (data/west-end-venues.json, the same set the west-end
+ * category uses, NT stages and the Royal Court included, Barbican and the
+ * Off-West End houses not) in a Sep-Aug season, from two or more independent
+ * sources. build-we-season-reference.js fetches; audit-we-historical-season.js
+ * reads the committed lists and reports the titles the site is missing.
+ *
+ * Primary source: Theatricalia venue histories (dated production lists).
+ * Corroborators: Theatre Record A-Z titles, the archived Official London
+ * Theatre listings, the venue's Wikipedia article.
+ */
+
+const { normalizeTitle } = require('./deduplication');
+const { getSeasonDates } = require('./we-seasons');
+
+const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
+const DAY_MS = 86400000;
+// The OLT candidate rule (we-olt-candidates.js): a run under two weeks is a
+// one-off, gala or concert, not a production a season list should carry.
+const MIN_RUN_DAYS = 14;
+// Share of the reference list the site must carry (BRO-6450).
+const MIN_REFERENCE_COVERAGE = 0.85;
+// A matched row's first date may sit this far from the reference start (previews vs press night, archive drift).
+const MATCH_WINDOW_DAYS = 75;
+
+const decode = s => String(s || '')
+  .replace(/<[^>]+>/g, '')
+  .replace(/&rsquo;|&lsquo;|&#8217;|&#39;/g, "'")
+  .replace(/&ldquo;|&rdquo;|&quot;/g, '"')
+  .replace(/&amp;/g, '&')
+  .replace(/&ndash;|&mdash;|&#8211;/g, '–')
+  .replace(/&nbsp;|&#8239;/g, ' ')
+  .replace(/&middot;/g, '·')
+  .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(Number(n)))
+  .replace(/\s+/g, ' ')
+  .trim();
+
+const iso = (y, m, d) => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+
+function parsePart(text) {
+  const m = String(text).trim().match(/^(?:(\d{1,2})(?:st|nd|rd|th)?\s+)?([A-Za-z]+)?\s*(\d{4})?$/);
+  if (!m) return null;
+  const month = m[2] ? MONTHS.indexOf(m[2].toLowerCase()) : -1;
+  if (m[2] && month < 0) return null;
+  return { day: m[1] ? Number(m[1]) : null, month: month >= 0 ? month : null, year: m[3] ? Number(m[3]) : null };
+}
+
+/**
+ * Theatricalia's date line → { start, end } (ISO, end null when open or
+ * unknown). "2nd October – 30th December 2017", "15th November 2016 – 11th
+ * February 2017", "23rd April – July 2013", "started 19th March 2014",
+ * "3rd December 2017" (one date: start = end).
+ */
+function parseTheatricaliaDates(text) {
+  const t = decode(text).replace(/<sup>|<\/sup>/g, '').replace(/\.$/, '').trim();
+  const started = t.match(/started\s+(.+)$/i);
+  if (started) {
+    const p = parsePart(started[1]);
+    if (!p || !p.year || p.month === null) return null;
+    return { start: iso(p.year, p.month, p.day || 1), end: null, open: true };
+  }
+  const range = t.match(/([0-9A-Za-z ]+?)\s*[–-]\s*([0-9A-Za-z ]+)$/);
+  if (range) {
+    const a = parsePart(range[1]);
+    const b = parsePart(range[2]);
+    if (!a || !b || !b.year) return null;
+    const aYear = a.year || b.year;
+    const aMonth = a.month === null ? b.month : a.month;
+    if (aMonth === null || b.month === null) return null;
+    // "1st – 20th June 2015": a carries only a day.
+    const lastDay = new Date(Date.UTC(b.year, b.month + 1, 0)).getUTCDate();
+    return { start: iso(aYear, aMonth, a.day || 1), end: iso(b.year, b.month, b.day || lastDay), open: false };
+  }
+  const one = parsePart(t);
+  if (one && one.year && one.month !== null && one.day) {
+    const d = iso(one.year, one.month, one.day);
+    return { start: d, end: d, open: false };
+  }
+  return null;
+}
+
+/** One Theatricalia /place/.../past page → [{ title, url, companies, start, end, open }]. */
+function parseTheatricaliaList(html) {
+  const out = [];
+  const re = /<li itemprop="events"[\s\S]*?(?=<li itemprop="events"|<\/ul>)/g;
+  let m;
+  while ((m = re.exec(String(html))) !== null) {
+    const block = m[0];
+    const a = block.match(/<a itemprop="url" href="(\/play\/[^"]+)">([\s\S]*?)<\/a>/);
+    if (!a) continue;
+    const meta = block.match(/<span class="meta">([\s\S]*?)<\/span>/);
+    const dates = meta ? parseTheatricaliaDates(meta[1]) : null;
+    const companies = [...block.matchAll(/href="\/company\/[^"]+">([\s\S]*?)<\/a>/g)].map(c => decode(c[1]));
+    out.push({ title: decode(a[2]), url: `https://theatricalia.com${a[1]}`, companies, ...(dates || { start: null, end: null, open: false }) });
+  }
+  return out;
+}
+
+const runDays = e => (e.start && e.end ? Math.round((Date.parse(e.end) - Date.parse(e.start)) / DAY_MS) + 1 : null);
+
+function inSeason(date, season) {
+  if (!date) return false;
+  const { start, end } = getSeasonDates(season);
+  const d = new Date(`${date}T12:00:00`);
+  return d >= start && d <= new Date(end.getTime() + DAY_MS - 1);
+}
+
+const titleKey = t => normalizeTitle(String(t || '').replace(/\s*\/\s*/g, ' and ')).replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+
+/** Same title, allowing one side to carry a subtitle or a possessive brand the other drops. */
+function titlesMatch(a, b) {
+  const x = titleKey(a);
+  const y = titleKey(b);
+  if (!x || !y) return false;
+  if (x === y) return true;
+  const [short, long] = x.length <= y.length ? [x, y] : [y, x];
+  return short.length >= 5 && (long.startsWith(`${short} `) || long.endsWith(` ${short}`));
+}
+
+// A dated corroborator (a review) must fall near the entry's start: a Guardian
+// "Hamlet review" from a Bristol run a year later vouches for nothing.
+const REVIEW_BEFORE_DAYS = 30;
+const REVIEW_AFTER_DAYS = 150;
+function corroborates(t, e) {
+  if (typeof t === 'string') return titlesMatch(t, e.title);
+  if (!titlesMatch(t.title, e.title)) return false;
+  if (!t.date) return true;
+  const gap = (Date.parse(t.date) - Date.parse(e.start)) / DAY_MS;
+  return gap >= -REVIEW_BEFORE_DAYS && gap <= REVIEW_AFTER_DAYS;
+}
+
+/**
+ * Season reference list from venue histories plus corroborators.
+ * @param {{ season: string, venueEntries: {venue: string, entries: object[]}[],
+ *   corroborators: {name: string, titles: (string|{title: string, date?: string})[]}[], wikipedia?: Record<string,string> }} input
+ *   wikipedia: venue → plain article text (a title found in it corroborates).
+ * @returns {{ entries: object[], excluded: object[] }}
+ */
+function buildSeasonReference({ season, venueEntries, corroborators = [], wikipedia = {} }) {
+  const entries = [];
+  const excluded = [];
+  const seen = new Set();
+  for (const { venue, entries: rows } of venueEntries) {
+    const wikiText = titleKey(wikipedia[venue] || '');
+    for (const e of rows) {
+      if (!inSeason(e.start, season)) continue;
+      const key = `${titleKey(e.title)}|${venue}`;
+      if (seen.has(key)) continue;
+      seen.add(key);
+      const days = runDays(e);
+      if (days !== null && days < MIN_RUN_DAYS) { excluded.push({ title: e.title, venue, start: e.start, end: e.end, reason: `run of ${days} days < ${MIN_RUN_DAYS}` }); continue; }
+      const sources = ['theatricalia'];
+      for (const c of corroborators) if (c.titles.some(t => corroborates(t, e))) sources.push(c.name);
+      const k = titleKey(e.title);
+      if (wikiText && k.length >= 4 && ` ${wikiText} `.includes(` ${k} `)) sources.push('wikipedia');
+      entries.push({ title: e.title, venue, start: e.start, end: e.end, sources, corroborated: sources.length >= 2, url: e.url });
+    }
+  }
+  entries.sort((a, b) => a.start.localeCompare(b.start) || a.title.localeCompare(b.title));
+  return { entries, excluded };
+}
+
+const firstDate = s => s.previewsStartDate || s.openingDate || null;
+
+/**
+ * How much of a season's reference list the site carries.
+ * A reference entry is present when a west-end row has a matching title and
+ * its first date is within MATCH_WINDOW_DAYS of the entry's start, or its run
+ * spans the entry's start (a transfer or extension stored as one row).
+ * @param {{ reference: object[], shows: object[] }} input  reference: corroborated entries only
+ */
+function referenceCoverage({ reference, shows }) {
+  const westEnd = shows.filter(s => s.category === 'west-end');
+  const present = [];
+  const missing = [];
+  for (const r of reference) {
+    const refStart = Date.parse(r.start);
+    const hit = westEnd.find(s => {
+      if (!titlesMatch(s.title, r.title)) return false;
+      const f = Date.parse(firstDate(s));
+      if (Number.isNaN(f)) return false;
+      if (Math.abs(f - refStart) <= MATCH_WINDOW_DAYS * DAY_MS) return true;
+      const close = Date.parse(s.closingDate || '');
+      return f <= refStart && !Number.isNaN(close) && close >= refStart;
+    });
+    if (hit) present.push({ title: r.title, venue: r.venue, start: r.start, showId: hit.id });
+    else missing.push({ title: r.title, venue: r.venue, start: r.start, end: r.end });
+  }
+  const total = reference.length;
+  const share = total ? present.length / total : 0;
+  return { total, present, missing, share: Math.round(share * 100) / 100, pass: total > 0 && share >= MIN_REFERENCE_COVERAGE, threshold: MIN_REFERENCE_COVERAGE };
+}
+
+module.exports = {
+  parseTheatricaliaDates,
+  parseTheatricaliaList,
+  buildSeasonReference,
+  referenceCoverage,
+  titlesMatch,
+  titleKey,
+  inSeason,
+  MIN_RUN_DAYS,
+  MIN_REFERENCE_COVERAGE,
+  MATCH_WINDOW_DAYS,
+};
