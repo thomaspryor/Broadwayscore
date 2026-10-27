@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T05:11:37.774Z",
+  "timestamp": "2026-10-27T06:06:37.652Z",
   "stats": {
-    "totalReviews": 62825,
-    "alreadyFlagged": 21589,
+    "totalReviews": 62854,
+    "alreadyFlagged": 21593,
     "dateGuardCatches": 224,
-    "directorMismatch": 2339,
-    "tvFilmSignals": 1779,
-    "londonSignals": 3029,
+    "directorMismatch": 2340,
+    "tvFilmSignals": 1781,
+    "londonSignals": 3033,
     "offBroadwaySignals": 557,
     "yearMismatch": 216,
-    "noPublishDate": 5576
+    "noPublishDate": 5571
   },
   "findings": [
     {
@@ -19476,6 +19476,19 @@
     },
     {
       "showId": "gypsy-west-end-2015",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2015-04-16",
+      "url": "https://www.theguardian.com/stage/2015/apr/16/gypsy-review-imelda-staunton-momma-rose-stephen-sondheim-jonathan-kent-peter-davison",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-west-end-2015",
       "file": "standard--fiona-mountford.json",
       "score": 80,
       "publishDate": "2015-04-16",
@@ -28449,7 +28462,7 @@
     {
       "showId": "lone-star-off-broadway-2023",
       "file": "frontmezzjunkies--unknown.json",
-      "score": null,
+      "score": 60,
       "publishDate": "2023-12-06",
       "url": "https://frontmezzjunkies.com/2023/12/06/ruth-stage-lone-star/",
       "findings": [
@@ -29854,7 +29867,7 @@
     {
       "showId": "merry-me-off-broadway-2023",
       "file": "new-york-sun--elysa-gardner.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2023-10-31",
       "url": "https://www.nysun.com/article/a-queer-cocktail-of-a-play-merry-me-nods-to-the-greeks-angels-in-america-but-doesnt-fully-intoxicate",
       "findings": [
@@ -45895,6 +45908,33 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-end-of-longing-west-end-2016",
+      "file": "daily-mail--lucy-mapstone.json",
+      "score": null,
+      "publishDate": "2016-05-02",
+      "url": "https://www.dailymail.com/tvshowbiz/article-3569142/The-one-Chandler-Joey-s-reunion-Matthew-Perry-looks-thrilled-Friends-star-Matt-LeBlanc-supports-play-End-Longing-London.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-end-of-longing-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2016-02-11",
+      "url": "https://www.theguardian.com/stage/2016/feb/11/the-end-of-longing-review-matthew-perry-friends-playhouse-london",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -74135,6 +74175,19 @@
     },
     {
       "showId": "groundhog-day-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2016-08-16",
+      "url": "https://www.theguardian.com/stage/2016/aug/16/groundhog-day-review-tim-minchin-musical-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2016",
       "file": "independent--paul-taylor.json",
       "score": 89,
       "publishDate": "2016-08-17",
@@ -74167,6 +74220,19 @@
       "score": 73,
       "publishDate": "2016-08-17",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "groundhog-day-west-end-2016",
+      "file": "whatsonstage--sarah-crompton.json",
+      "publishDate": "2016-08-16",
+      "url": "https://www.whatsonstage.com/news/review-groundhog-day-old-vic_41556/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -75230,6 +75296,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "score": null,
+      "publishDate": "2016-01-04",
+      "url": "https://www.standard.co.uk/culture/theatre/hangmen-theatre-review-blackest-of-black-comedies-a3132091.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -83217,7 +83297,7 @@
     {
       "showId": "merry-me-off-broadway-2023",
       "file": "culturesauce--thom-geier.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2023-10-31",
       "url": "https://culturesauce.com/2023/10/31/merry-me-hansol-jung-off-broadway-review/",
       "findings": [
@@ -83245,6 +83325,7 @@
     {
       "showId": "merry-me-off-broadway-2023",
       "file": "nyt-theater--jonathan-mandell.json",
+      "score": 60,
       "publishDate": "2023-11-04",
       "url": "https://newyorktheater.me/2023/11/04/merry-me-review/",
       "findings": [
@@ -93873,6 +93954,20 @@
       ]
     },
     {
+      "showId": "the-bodyguard-west-end-2016",
+      "file": "london-theatre--tom-millward.json",
+      "score": null,
+      "publishDate": "2016-07-22",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-the-bodyguard-at-dominion-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-bounds-west-end-2024",
       "file": "all-that-dazzles-uk--sam-admin.json",
       "score": 64,
@@ -104310,7 +104405,7 @@
     {
       "showId": "waiting-for-godot-off-broadway-2023",
       "file": "nytimes--laura-collins-hughes.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2023-11-14",
       "url": "https://www.nytimes.com/2023/11/14/theater/waiting-for-godot-review.html",
       "findings": [
