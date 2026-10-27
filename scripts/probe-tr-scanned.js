@@ -79,6 +79,8 @@ function tesseractStats(imgPath) {
       const jar2 = path.join(tmp2, 'c.txt');
       fs.writeFileSync(jar2, `www.theatrerecord.com\tFALSE\t/\tFALSE\t0\tPHPSESSID\t${sess2.value}\n`, { mode: 0o600 });
       try { sh('curl', ['-s', '-f', '-L', '-m', '120', '-o', pdf2, '-b', jar2, 'https://www.theatrerecord.com' + hitPath]); } catch (e) { console.log('dump download failed', e.status); continue; }
+      // BRO-6428: a volume page past the volume's end returns HTML with a 200; every pdftotext below would throw on it
+      if (fs.readFileSync(pdf2).subarray(0, 5).toString() !== '%PDF-') { console.log(`${hitPath} not-a-pdf`); continue; }
       if (pg === 'azraw') {
         // BRO-6298: the A-Z section only (a listing of titles, types, venues, dates, phone numbers; no review prose).
         // Finds the marker page via per-page layout text, then prints up to 8 pages from it as one line per
