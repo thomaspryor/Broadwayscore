@@ -1,4 +1,4 @@
-# BRO-6343 state (2026-10-26 ~23:57Z)
+# BRO-6343 state (2026-10-27 ~00:20Z)
 
 ## Done
 - Run-head parsing for TR volumes 35-36 (2015-16): headers 11 -> 32 of ~60 PDF matches. Landed on main.
@@ -9,7 +9,8 @@
   Notmoses, Roosevelvis, The Deep Blue Sea, The Flick). 25 rows still "no dates on TR production page".
 
 ## Remaining (in order)
-1. Land this branch: `bash scripts/merge-worktree-to-main.sh`
+1. Confirm the venue-fix landing: land.yml run for branch land/job/linear-BRO-6343-mvpupj0x (pushed d3c8886632 at 00:14Z).
+   Check `git log origin/main --oneline -5 | grep 'tie run-head stages'`.
 2. `gh workflow run we-historical-tr-resolve.yml -f seasons=2015-2016 -f resume=true` (wait, then git pull)
 3. `node scripts/promote-historical-we.js --season=2015-2016 --verbose`, run
    `node scripts/validate-show-venue.js --show=<id>` on each new id, then `--plan=bro-6343-1516-tr`,
@@ -19,3 +20,8 @@
 5. A-Z re-dump of all 2015-16 issues (159-179, 607, 608, 928-932) via we-historical-tr-ocr-probe.yml
    `@dump:/archive/issue/N:azraw:0`, then `node scripts/build-we-az-season.js --season=2015-2016 --lines=<dump>`.
    Issue 160 has a +29 char-shifted text layer (not parsed; 159/161 bracket it).
+
+## Season audit on 2026-10-27 00:18Z
+`node scripts/audit-we-historical-season.js --season=2015-2016` gives SEASON FAIL, only `FAIL displayable: 0.55 (need >= 0.7)`
+(review gather/score, which BRO-6396 owns). Also needed: the fact-check sample
+(`node scripts/fact-check-historical-sample.js sample --cohort=we-historical --season=2015-2016 --n=30`).
