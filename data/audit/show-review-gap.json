@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-27T01:23:56.730Z",
+  "generatedAt": "2026-10-27T06:11:00.993Z",
   "windowDays": 1095,
-  "targets": 690,
-  "auditedThisRun": 13,
-  "carriedForward": 894,
+  "targets": 687,
+  "auditedThisRun": 8,
+  "carriedForward": 900,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 451,
-    "missingCurrentRun": 771,
+    "withGap": 453,
+    "missingCurrentRun": 785,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 711,
+    "totalFlaggedMisses": 703,
     "totalRecoverable": 16,
-    "totalRecovered": 20,
+    "totalRecovered": 19,
     "humanExcluded": 4,
-    "automatedExcluded": 418,
-    "automatedExcludedListed": 349,
-    "priorProductionCitations": 5643
+    "automatedExcluded": 420,
+    "automatedExcludedListed": 351,
+    "priorProductionCitations": 5604
   },
   "results": [
     {
@@ -17950,42 +17950,26 @@
       "openingDate": "2026-06-26",
       "status": "closed",
       "category": "west-end",
-      "aggregatorArticles": [
-        "https://playbill.com/article/what-are-the-reviews-for-archduke-off-broadway",
-        "https://www.broadwayworld.com/article/Review-Roundup-Rajiv-Josephs-ARCHDUKE-Opens-Off-Broadway-20251113"
-      ],
+      "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/",
-        "https://culturesauce.com/2025/11/12/archduke-off-broadway-review/",
-        "https://nystagereview.com/2025/11/12/archduke-murder-he-says/",
-        "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html",
-        "https://newyorktheater.me/2025/11/12/archduke-review/",
-        "https://www.newyorktheatreguide.com/reviews/archduke-off-broadway-review",
-        "https://www.theatermania.com/news/review-archduke-rajiv-josephs-historical-comedy-about-hungry-young-assassins_1811647/",
-        "https://therecs.co.uk/archduke/",
-        "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
-        "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V",
-        "https://www.talkinbroadway.com/page/ob/11_12_25.html",
         "https://www.theaterscene.net/plays/offbway-plays/archduke/victor-gluck/"
       ],
       "dirFiles": 46,
-      "dirClean": 25,
-      "inReviewsJson": 26,
+      "dirClean": 30,
+      "inReviewsJson": 29,
       "missing": [
-        {
-          "url": "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
         {
           "url": "https://www.theaterscene.net/plays/offbway-plays/archduke/victor-gluck/",
           "host": "theaterscene.net",
-          "knownOutletId": "theater-scene"
+          "knownOutletId": "theater-scene",
+          "serpCensus": true
         }
       ],
       "dirOnly": [
+        {
+          "host": "ayoungishperspective.co.uk",
+          "count": 1
+        },
         {
           "host": "allthatdazzles.co.uk",
           "count": 1
@@ -17995,11 +17979,19 @@
           "count": 1
         },
         {
+          "host": "boycottingtrends.blogspot.com",
+          "count": 1
+        },
+        {
           "host": "britishtheatreguide.info",
           "count": 1
         },
         {
           "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "camdennewjournal.co.uk",
           "count": 1
         },
         {
@@ -18043,6 +18035,10 @@
           "count": 1
         },
         {
+          "host": "readaboutstuff.com",
+          "count": 1
+        },
+        {
           "host": "standard.co.uk",
           "count": 1
         },
@@ -18079,6 +18075,10 @@
           "count": 1
         },
         {
+          "host": "islingtontribune.co.uk",
+          "count": 1
+        },
+        {
           "host": "westendbestfriend.co.uk",
           "count": 1
         },
@@ -18087,194 +18087,7 @@
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "one-minute-critic--matthew-wexler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://1minutecritic.com/archduke-off-broadway-review-rajiv-joseph-patrick-page/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://culturesauce.com/2025/11/12/archduke-off-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "culturesauce--thom-geier.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://culturesauce.com/2025/11/12/archduke-off-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2025/11/12/archduke-murder-he-says/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nysr--michael-sommers.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://nystagereview.com/2025/11/12/archduke-murder-he-says/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytimes--juan-a-ramirez.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nytimes.com/2025/11/13/theater/archduke-review-rajiv-joseph.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2025/11/12/archduke-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nyt-theater--jonathan-mandell.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://newyorktheater.me/2025/11/12/archduke-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/archduke-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--amelia-merrill.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/archduke-off-broadway-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-archduke-rajiv-josephs-historical-comedy-about-hungry-young-assassins_1811647/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--zachary-stewart.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/review-archduke-rajiv-josephs-historical-comedy-about-hungry-young-assassins_1811647/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://therecs.co.uk/archduke/",
-          "host": "therecs.co.uk",
-          "knownOutletId": "the-recs",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "the-recs--the-recs-rdc-randall-david-cook.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://therecs.co.uk/archduke/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V",
-          "host": "lightingandsoundamerica.com",
-          "knownOutletId": "lighting-and-sound-america",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "lighting-and-sound-america--david-barbour.json",
-              "flag": "wrongProduction",
-              "urlInDir": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V"
-            }
-          ]
-        },
-        {
-          "url": "https://www.talkinbroadway.com/page/ob/11_12_25.html",
-          "host": "talkinbroadway.com",
-          "knownOutletId": "talkinbroadway",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "talkinbroadway--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.talkinbroadway.com/page/ob/11_12_25.html"
-            }
-          ]
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -18282,33 +18095,12 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 410,
-        "byReason": {
-          "aggregator-internal-nav": 303,
-          "non-review-host": 38,
-          "not-http-url": 61,
-          "aggregator-section-root": 8
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/what-are-the-reviews-for-archduke-off-broadway",
-          "publishDate": "2025-11-13"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Rajiv-Josephs-ARCHDUKE-Opens-Off-Broadway-20251113",
-          "publishDate": "2025-11-13"
-        }
-      ],
-      "weIngestBlocked": [
-        {
-          "url": "https://www.vulture.com/article/theater-review-archduke-rajiv-joseph-princip-roundabout.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        }
-      ],
+      "automatedExcludedListed": 0,
+      "unextractable": [],
       "ingestResults": [
         {
           "url": "https://www.theaterscene.net/plays/offbway-plays/archduke/victor-gluck/",
@@ -18319,8 +18111,11 @@
           "noop": false,
           "conflict": false,
           "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "zeroChar": false,
+          "reason": "⚠️  Cross-market reroute: archduke-west-end-2026 → archduke-off-broadway-2025 (sibling opening 12d from publishDate vs current 214d)\n\n❌ Stale merge: fullText still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/archduke-off-broadway-2025/theater-scene--victor-gluck.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
         }
       ],
       "ingestSkippedByCap": [],
@@ -18333,20 +18128,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.theaterscene.net/plays/offbway-plays/archduke/victor-gluck/"
-          },
-          {
-            "outletId": "lighting-and-sound-america",
-            "outlet": "lighting-and-sound-america",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V"
-          },
-          {
-            "outletId": "talkinbroadway",
-            "outlet": "talkinbroadway",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.talkinbroadway.com/page/ob/11_12_25.html"
           }
         ],
         "suppressedMissing": [],
@@ -18357,27 +18138,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-20T01:54:21.561Z"
-          },
-          {
-            "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-4P28V",
-            "outletId": "lighting-and-sound-america",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T01:54:21.561Z"
-          },
-          {
-            "url": "https://www.talkinbroadway.com/page/ob/11_12_25.html",
-            "outletId": "talkinbroadway",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-20T01:54:21.561Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 3
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-20T01:54:21.561Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "are-you-mad-at-me-off-broadway-2026",
@@ -41009,10 +40776,13 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.timeout.com/london/theatre/ceilidh-the-musical",
         "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
         "https://theatresoutheast.com/tag/ceilidh-the-musical/",
+        "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/",
+        "https://www.timeout.com/london/theatre/ceilidh-the-musical",
+        "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/",
         "https://www.lsbo.co.uk/musical/ceilidh",
+        "https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights",
         "https://www.londontheatredirect.com/news/event/ceilidh-tickets",
         "https://www.theatrebookings.com/musical/ceilidh",
         "https://www.theatre-news.com/news/UK/127828/Ceilidh-A-New-Musical-reels-into-Shoreditch-Town-Hall-ahead-of-extensive-tour",
@@ -41026,6 +40796,12 @@
           "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights",
+          "host": "designmynight.com",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -41076,6 +40852,56 @@
           ],
           "serpCensus": true,
           "reverify": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--alex-wood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-09",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
+          "url": "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-weekly--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-09",
+          "serpCensus": true,
+          "reverify": false
         },
         {
           "url": "https://www.lsbo.co.uk/musical/ceilidh",
@@ -41212,7 +41038,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -41242,12 +41068,79 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Ceilidh The Musical\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Ceilidh The Musical\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Ceilidh The Musical\" review shoreditch",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Ceilidh The Musical Shoreditch Town Hall review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 7,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 25,
+          "aggregator-internal-nav": 1,
+          "non-review-path": 2,
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
+          "bare-host": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 4,
+          "ticketing-reseller": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 4,
@@ -41267,6 +41160,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "ceilidh-the-musical-off-west-end-2026: https://www.timeout.com/london/theatre/ceilidh-the-musical is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights",
+          "host": "designmynight.com",
+          "outletId": "designmynight",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ceilidh-the-musical-off-west-end-2026: https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -41279,6 +41187,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical"
+          },
+          {
+            "outletId": "designmynight.com",
+            "outlet": "designmynight.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights"
           },
           {
             "outletId": "bestoftheatre",
@@ -41340,6 +41255,13 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
+            "url": "https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights",
+            "outletId": "designmynight.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
             "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
             "outletId": "bestoftheatre",
             "state": "IN_FLIGHT",
@@ -41391,9 +41313,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-26T21:04:47.417Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -42717,15 +42639,60 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
-        "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
         "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
         "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
+        "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
+        "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
+        "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+        "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+        "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+        "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+        "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
         "https://soundsandstage.com/show/cirque-berserk"
       ],
       "dirFiles": 6,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-08-25",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2021-08-25",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-02-09",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+          "host": "mixuptheatre.com",
+          "knownOutletId": "mixuptheatre",
+          "serpCensus": true
+        },
+        {
+          "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+          "host": "asiw.co.uk",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2015-02-27",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -42800,6 +42767,31 @@
           "reverify": true
         },
         {
+          "url": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--alex-wood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-21",
+          "serpCensus": true,
+          "reverify": false
+        },
+        {
           "url": "https://soundsandstage.com/show/cirque-berserk",
           "host": "soundsandstage.com",
           "knownOutletId": "soundsandstage",
@@ -42839,7 +42831,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -42869,19 +42861,137 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Cirque Berserk\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Cirque Berserk\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Cirque Berserk\" review garrick",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Cirque Berserk Garrick Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Cirque Berserk Garrick Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Cirque Berserk Garrick Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "non-review-host": 24,
+          "aggregator-internal-nav": 2,
+          "ticket-seller-product-page": 2,
+          "non-review-path": 1,
+          "ticketing-listing": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://theatreweekly.com/review-cirque-berserk-at-the-garrick-theatre/",
+          "host": "theatreweekly.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/cirque-berserk-at-the-garrick-theatre-review/",
+          "host": "londontheatre1.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/cirque-berserk-review-at-the-peacock-theatre-london--thrilling",
+          "host": "thestage.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://asiw.co.uk/reviews/cirque-berserk-jaw-dropping",
+          "host": "asiw.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+          "host": "mixuptheatre.com",
+          "outletId": "mixuptheatre",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "cirque-berserk-west-end-2026: https://www.mixuptheatre.com/post/fringe-review-cirque-berserk dated 2022-08-15 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "mixuptheatre",
+            "outlet": "mixuptheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk"
+          },
           {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
@@ -42913,6 +43023,13 @@
             "firstSeenAt": "2026-10-23T08:15:37.359Z"
           },
           {
+            "url": "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+            "outletId": "mixuptheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
             "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
             "outletId": "london-box-office",
             "state": "GAP",
@@ -42936,9 +43053,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-26T21:04:47.417Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "clara-sex-love-and-classical-music-off-broadway-2026",
@@ -96045,35 +96162,148 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.timeout.com/newyork/theater/i-became-we"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/i-became-we",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"I Became We\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"I Became We\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"I Became We\" review atlantic",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "I Became We Atlantic Theater Company/Linda Gross Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "I Became We Atlantic Theater Company/Linda Gross Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "I Became We Atlantic Theater Company/Linda Gross Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 37,
+        "byReason": {
+          "non-review-host": 20,
+          "aggregator-internal-nav": 6,
+          "non-review-path": 1,
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "ticketing-reseller": 1,
+          "production-database-listing": 3,
+          "show-listing-page": 1,
+          "venue-production-page": 1
+        }
       },
       "dedupedVariants": [],
+      "automatedExcludedListed": 0,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.timeout.com/newyork/theater/i-became-we",
+          "host": "timeout.com",
+          "outletId": "timeout-london",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "timeout-listing-capsule",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "i-became-we-off-broadway-2026: https://www.timeout.com/newyork/theater/i-became-we is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/newyork/theater/i-became-we"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.timeout.com/newyork/theater/i-became-we",
+            "outletId": "timeout-london",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          }
+        ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-26T21:04:47.417Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "i-made-you-a-mixtape-off-west-end-2026",
@@ -132663,7 +132893,9 @@
         {
           "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
           "host": "wsj.com",
-          "knownOutletId": "wsj"
+          "knownOutletId": "wsj",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-09-28"
         },
         {
           "url": "https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html",
@@ -132693,24 +132925,16 @@
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
-        }
-      ],
-      "ingestResults": [
+        },
         {
           "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
           "host": "wsj.com",
-          "outletId": "wsj",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "medea-off-broadway-2026: https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172 dated 2022-09-28 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
+      "ingestResults": [
         {
           "url": "https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html",
           "host": "theatermania.com",
@@ -132724,7 +132948,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  ScrapingBee failed (render_js=true, domain=theatermania.com): ScrapingBee request timeout\nFetch failed: All scraping methods failed"
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -132739,23 +132963,8 @@
             "url": "https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html"
           }
         ],
-        "suppressedMissing": [
-          {
-            "outletId": "wsj",
-            "outlet": "wsj",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172"
-          }
-        ],
+        "suppressedMissing": [],
         "candidates": [
-          {
-            "url": "https://www.wsj.com/articles/medea-review-luigi-cherubini-metropolitan-opera-sondra-radvanosky-david-mcvicar-matthew-polenzani-francois-benoit-hoffman-carlo-zangarini-janai-brugger-michele-pertusi-carlo-rizzi-ekaterina-gubanova-11664398172",
-            "outletId": "wsj",
-            "state": "SUPPRESSED",
-            "reason": "ci-unfetchable",
-            "firstSeenAt": "2026-10-27T00:50:34.340Z"
-          },
           {
             "url": "https://www.theatermania.com/new-york-city-theater/reviews/review-medea-metropolitan-opera-radvanovsky_94358.html",
             "outletId": "theatermania",
@@ -132766,9 +132975,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 2
+        "candidateCount": 1
       },
-      "computedAt": "2026-10-27T00:50:34.340Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "meet-the-cartozians-off-broadway-2025",
@@ -215030,6 +215239,14 @@
         "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
         "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
+        "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+        "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+        "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+        "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+        "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+        "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
+        "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
+        "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
         "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside"
       ],
@@ -215040,6 +215257,54 @@
         {
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
           "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -215079,12 +215344,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Kick Inside\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Kick Inside\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Kick Inside\" review here",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 1,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 8,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 15,
+          "aggregator-internal-nav": 3,
+          "census-junk-host": 1,
+          "bare-host": 1,
+          "no-review-evidence": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -215110,10 +215438,55 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright D"
         },
         {
-          "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
+          "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog request timeout\n⚠️  Bright Data failed: Bright Data request timeout\nFetch failed: fallbackFromLabel: unknown skipReason \"sb-host-cooldown\""
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright D"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  provisio"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic",
           "provisional": true,
@@ -215128,7 +215501,33 @@
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
+          "outletId": "musicboard"
+        },
+        {
+          "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -215138,6 +215537,62 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850"
+          },
+          {
+            "outletId": "musicboard.app",
+            "outlet": "musicboard.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/"
           },
           {
             "outletId": "rateyourmusic.com",
@@ -215176,6 +215631,62 @@
             "firstSeenAt": "2026-10-24T06:45:39.049Z"
           },
           {
+            "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+            "outletId": "musicboard.app",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
             "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
             "outletId": "rateyourmusic.com",
             "state": "GAP",
@@ -215192,9 +215703,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 2,
-        "candidateCount": 4
+        "candidateCount": 5
       },
-      "computedAt": "2026-10-26T21:04:47.417Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "the-last-five-years-2025",
@@ -221975,33 +222486,97 @@
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/the-master-builder-at-arcola-theatre-review",
         "https://liamodell.com/2026/10/23/the-master-builder-review-arcola-theatre-london-henrik-ibsen-greg-hicks/",
-        "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
-        "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
-        "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
-        "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
         "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
-        "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
-        "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
+        "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
+        "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
         "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
+        "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
+        "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
         "https://www.londonpubtheatres.com/the-master-builder-at-arcola-theatre-16-oct-21-nov-2026",
+        "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
+        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+        "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
         "https://playstosee.com/reviews/the-master-builder-3/",
         "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
         "https://www.reviewsgate.co.uk/all-reviews/the-master-builder-by-henrik-ibsen-the-arcola-theatre-studio-1-24-ashwin-street-london-e8-until-21-november-2026-review-by-william-russell",
         "https://www.timeout.com/london/theatre/the-master-builder-3",
         "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
-        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+        "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
+        "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
+        "https://www.timeout.com/london/theatre/my-master-builder-review",
+        "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
+        "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
+        "https://www.thestage.co.uk/reviews/my-master-builder-review-wyndhams-theatre-london-2025-ewan-mcgregor-elizabeth-debicki-michael-grandage",
+        "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
         "https://www.londonboxoffice.co.uk/news/post/master-builder-review"
       ],
       "dirFiles": 24,
-      "dirClean": 16,
-      "inReviewsJson": 16,
+      "dirClean": 17,
+      "inReviewsJson": 17,
       "missing": [
         {
           "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
           "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
+          "host": "independent.co.uk",
+          "knownOutletId": "independent",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/my-master-builder-review",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
+          "host": "ft.com",
+          "knownOutletId": "financialtimes",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
+          "host": "standard.co.uk",
+          "knownOutletId": "standard",
+          "weRef": true,
+          "weRefSources": [],
+          "priorRun": true
         }
       ],
       "dirOnly": [
@@ -222012,9 +222587,37 @@
         {
           "host": "northwestend.com",
           "count": 1
+        },
+        {
+          "host": "theupcoming.co.uk",
+          "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
+          "host": "flickermagazine.art",
+          "knownOutletId": "flicker-magazine",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "flicker-magazine--natalia-cherepanova.json",
+              "flag": "wrongShow",
+              "urlInDir": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongShow"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
           "host": "viewfromthegods.co.uk",
@@ -222042,30 +222645,6 @@
           "weRefStars": 4,
           "weRefStarsSource": "bestoftheatre",
           "reverify": true
-        },
-        {
-          "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
-          "host": "flickermagazine.art",
-          "knownOutletId": "flicker-magazine",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "flicker-magazine--natalia-cherepanova.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongShow"
-          ],
-          "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
         },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
@@ -222096,7 +222675,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 13,
+        "rowCount": 22,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -222106,11 +222685,11 @@
             "fetchErrors": 0
           },
           "theatre-reviews": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 9,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 3
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -222145,16 +222724,132 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Master Builder\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Master Builder\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Master Builder\" review arcola",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 30,
+        "byReason": {
+          "non-review-host": 14,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "ticketing-reseller": 11,
+          "event-listing": 1,
+          "roundup-page": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
+          "host": "theguardian.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
+          "host": "independent.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/my-master-builder-wyndhams-theatre-review-ewan-mcgregor/",
+          "host": "telegraph.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/my-master-builder-review",
+          "host": "timeout.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/my-master-builder-review-wyndhams-ewan-mcgregor-elizabeth-debicki-kate-fleetwood",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ft.com/content/a19b1a9f-57b0-41d3-8789-77ee935c91ee",
+          "host": "ft.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.standard.co.uk/culture/theatre/my-master-builder-wyndham-theatre-review-ewan-mcgregor-b1225100.html",
+          "host": "standard.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
@@ -222173,32 +222868,6 @@
         }
       ],
       "ingestSkippedByCap": [],
-      "recoveryResults": [
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
-          "host": "thestage.co.uk",
-          "file": "thestage--dave-fargnoli.json",
-          "recovered": false,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": "ingest no-op (text landed elsewhere or unchanged)",
-          "recoveryCount": 3,
-          "uncited": true
-        },
-        {
-          "url": "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
-          "host": "theupcoming.co.uk",
-          "file": "theupcoming--unknown.json",
-          "recovered": true,
-          "skipped": false,
-          "provisional": false,
-          "starFallback": false,
-          "reason": null,
-          "recoveryCount": 0,
-          "uncited": true
-        }
-      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
@@ -222210,18 +222879,18 @@
             "url": "https://www.timeout.com/london/theatre/the-master-builder-3"
           },
           {
-            "outletId": "viewfromthegods",
-            "outlet": "viewfromthegods",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/"
-          },
-          {
             "outletId": "flicker-magazine",
             "outlet": "flicker-magazine",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview"
+          },
+          {
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/"
           }
         ],
         "suppressedMissing": [],
@@ -222239,22 +222908,10 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
-            "outletId": "londontheatre1.com",
+            "url": "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
-            "outletId": "fringereview.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
             "url": "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
@@ -222263,26 +222920,8 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T08:25:08.978Z"
-          },
-          {
-            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
-            "outletId": "westendbestfriend.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-24T15:06:22.735Z"
-          },
-          {
-            "url": "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
-            "outletId": "theatreweekly.com",
+            "url": "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
@@ -222293,10 +222932,40 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
+            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-24T15:06:22.735Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
             "url": "https://www.londonpubtheatres.com/the-master-builder-at-arcola-theatre-16-oct-21-nov-2026",
             "outletId": "londonpubtheatres.com",
             "state": "live",
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
             "url": "https://playstosee.com/reviews/the-master-builder-3/",
@@ -222317,6 +222986,12 @@
             "firstSeenAt": "2026-10-26T16:01:10.315Z"
           },
           {
+            "url": "https://www.thestage.co.uk/reviews/my-master-builder-review-wyndhams-theatre-london-2025-ewan-mcgregor-elizabeth-debicki-michael-grandage",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
             "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
             "outletId": "timeout-london",
             "state": "GAP",
@@ -222324,25 +222999,25 @@
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
-            "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
-            "outletId": "viewfromthegods",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-24T11:53:28.442Z"
-          },
-          {
             "url": "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
             "outletId": "flicker-magazine",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-20T04:58:31.558Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
+            "outletId": "viewfromthegods",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-24T11:53:28.442Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 14,
         "candidateCount": 17
       },
-      "computedAt": "2026-10-26T21:04:47.417Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "the-meeting-the-interpreter-off-broadway-2024",
@@ -223206,12 +223881,79 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Morbs\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Morbs\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Morbs\" review jeffrey",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 26,
+        "byReason": {
+          "non-review-host": 15,
+          "aggregator-internal-nav": 1,
+          "census-junk-host": 1,
+          "bare-host": 2,
+          "no-review-evidence": 2,
+          "production-database-listing": 1,
+          "show-listing-page": 1,
+          "merch-store": 1,
+          "tag-index-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -223230,7 +223972,7 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
+          "reason": "⚠️  ScrapingBee failed (render_js=false, domain=tickettailor.com): ScrapingBee HTTP 500: {\"error\": \"Error with your request, please try again (you will not be charged for this request).You should: 1) check that your URL is correctly encoded 2) try with render_js=True (5 credits per reques\nFetch failed: All scraping methods failed"
         }
       ],
       "ingestSkippedByCap": [],
@@ -223259,7 +224001,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-26T21:04:47.417Z"
+      "computedAt": "2026-10-27T06:11:00.993Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -267488,26 +268230,25 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-27T01:23:56.729Z",
+    "at": "2026-10-27T06:11:00.992Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "the-price-off-west-end-2026",
-      "evita-west-end-2025"
+      "archduke-west-end-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "tosca-english-national-opera-west-end-2026"
+      "medea-off-broadway-2026"
     ],
-    "neverAuditedDueAtStart": 312,
+    "neverAuditedDueAtStart": 311,
     "oldestDueRowAtStart": {
-      "showId": "the-price-off-west-end-2026",
+      "showId": "archduke-west-end-2026",
       "computedAt": "2026-09-20T01:54:21.561Z",
-      "ageHours": 887.2
+      "ageHours": 892
     },
     "oldestDueRowAfterRun": {
-      "showId": "giant-royal-court-off-west-end-2024",
-      "computedAt": "2026-09-20T01:54:21.561Z",
-      "ageHours": 887.5
+      "showId": "les-liaisons-dangereuses-west-end-2026",
+      "computedAt": "2026-09-20T12:57:21.255Z",
+      "ageHours": 881.2
     }
   }
 }

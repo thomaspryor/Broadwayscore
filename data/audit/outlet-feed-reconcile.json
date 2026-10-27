@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T01:27:07.277Z",
+  "generatedAt": "2026-10-27T06:11:29.383Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,28 +103,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "HTTP 403 for https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed"
-    },
-    {
-      "outletId": "slantmagazine",
-      "error": "HTTP 403 for https://www.slantmagazine.com/theater/feed/"
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "viewfromthegods",
-      "error": "AggregateError"
     },
     {
       "outletId": "theartsdispatch",
@@ -137,15 +121,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 644,
+  "itemsScanned": 796,
   "matchedGaps": 3,
-  "possibleGaps": 2,
+  "possibleGaps": 3,
   "gaps": [
     {
       "showId": "phyl-off-broadway-2026",
@@ -191,6 +171,15 @@
       "url": "https://timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
       "headline": "16.&nbsp;Harry Potter and the Cursed Child",
       "publishDate": null
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/lambeth-fringe-2026-happy-heart-the-songs-of-andy-williams-toulouse-lautrec-jazz-club-london/",
+      "headline": "Lambeth Fringe 2026: Happy Heart: The Songs of Andy Williams – Toulouse Lautrec Jazz Club, London",
+      "publishDate": "2026-10-19"
     }
   ]
 }

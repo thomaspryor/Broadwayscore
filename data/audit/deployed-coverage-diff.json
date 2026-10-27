@@ -1,13 +1,32 @@
 {
-  "generatedAt": "2026-10-27T01:27:06.872Z",
+  "generatedAt": "2026-10-27T06:11:28.997Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 246,
-  "clean": 246,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 248,
+  "clean": 247,
+  "defective": 1,
+  "byType": {
+    "score-drift": 1
+  },
+  "shows": [
+    {
+      "showId": "other-desert-cities-2026",
+      "title": "Other Desert Cities",
+      "openingDate": "2026-10-18",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 68.14 vs local 68.07 (Δ0.07)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 34,
+      "deployedCount": 34,
+      "firstDefectAt": "2026-10-27T06:11:25.794Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
