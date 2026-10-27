@@ -27,6 +27,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const EXEMPT = {
   "scripts/audit-coverage-holes.js|data/audit/coverage-holes-decisions.json":
     "read-only: LEDGER is the human decisions input; data-health-check.yml passes --counts=data/audit/coverage-holes.json, not the decisions path",
+  "scripts/audit-corpus-determinism.js|data/audit/deploy-watermark.json":
+    "read-only: WATERMARK_PATH is read through git log -p; the data-health-check.yml orphan-audits step passes --no-report and writes only --counts=data/audit/corpus-determinism.json (BRO-6038)",
   "scripts/audit-critic-coverage-bucket.js|data/audit/critic-coverage-audit.json":
     "read-only: readFileSync loads the audit produced by audit-critic-coverage.js; bucket output uses separate paths",
   "scripts/audit-critic-coverage-bucket.js|data/audit/critic-coverage-buckets.json":
