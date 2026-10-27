@@ -104,7 +104,7 @@ const CLOSING_SOON = {
   enabled: false,
   minDays: 14, // closing date at least this many local days away...
   maxDays: 28, // ...and at most this many
-  minScore: 80, // rounded Critic Score
+  minScore: 80, maxPerDay: 2, // rounded Critic Score
 };
 
 module.exports = {

@@ -66,37 +66,92 @@ function breakdownLine(b) {
   return parts.join(', ');
 }
 
+
+// ---------------------------------------------------------------------------
+// Voice (BRO-6417, scripts/social-autopost/VOICE.md): every post informs, then asks
+// an open question. The question is built here from the facts, never written by a
+// session, so it cannot misstate a number or a direction. On X and Bluesky it
+// outranks the caveat and the lead-in: those go first, then the title is shortened,
+// and the question is dropped only if nothing else is left to cut.
+
+const cap1 = t => `${t[0].toUpperCase()}${t.slice(1)}`;
+const an = n => (/^8/.test(String(n)) || n === 11 || n === 18 ? 'an' : 'a');
+const plural = (n, word) => `${n} ${word}${n === 1 ? '' : 's'}`;
+/** Shorten a title to at most `max` characters at a word boundary. */
+const clipTitle = (t, max) => {
+  if (t.length <= max) return t;
+  let c = t.slice(0, max - 1);
+  if (/\d$/.test(c) && /^\d/.test(t.slice(max - 1))) c = c.replace(/\d+$/, ''); // never cut through a number ("1776" must not become "17")
+  return `${c.replace(/[\s,:;–-]+\S*$/, '')}…`;
+};
+/** First attempt that fits `budget` characters, else the last one. */
+const firstFit = (budget, tries) => tries.find(t => [...t].length <= budget) || tries[tries.length - 1];
+/** Title lengths to try when a short caption has to give up title characters. */
+const CLIPS = [60, 48, 38, 30, 24, 18, 14];
+
+/** Critic counts the score question reads: positive side (rave + positive), mixed-or-negative side, and the total. */
+function sides(b) {
+  if (!b) return { pos: 0, neg: 0, total: 0 };
+  const pos = (b.rave || 0) + (b.positive || 0), neg = (b.mixed || 0) + (b.negative || 0);
+  return { pos, neg, total: pos + neg };
+}
+
+/**
+ * The closing question of a score post: {long, short}. A divided tally (both sides at
+ * least 30% of six or more reviews) asks what is behind the split; otherwise the tier
+ * picks the angle. Numbers it states are rave+positive and mixed+negative (scoreAllowedNumbers).
+ */
+function scoreQuestion(p) {
+  const { pos, neg, total } = sides(p.breakdown);
+  if (total >= 6 && pos / total >= 0.3 && neg / total >= 0.3) {
+    return { long: `Critics are divided: ${pos} positive, ${neg} mixed or negative. What do you think is behind the split?`, short: `${pos} positive, ${neg} mixed or negative. What's behind the split?` };
+  }
+  const by = {
+    'must-see': { long: 'Critics are raving. What do you think makes it land so well?', short: 'What makes it land so well with critics?' },
+    recommended: { long: 'What would convince you to book it, and what might hold you back?', short: 'What would convince you to book it?' },
+    'worth-seeing': { long: 'Who do you think this one is for?', short: 'Who do you think this one is for?' },
+    skippable: { long: 'What do you think is holding it back, and who might it still work for?', short: 'What is holding it back, and who might it work for?' },
+    'stay-away': { long: 'What do you make of that verdict, and where do you think it went wrong?', short: 'What do you make of that verdict?' },
+  };
+  return by[p.tierId] || by['worth-seeing'];
+}
+
+/** Numbers a score caption may carry: the facts and the two tally sides the question states. */
+function scoreAllowedNumbers(p) {
+  const b = p.breakdown || {}, sd = sides(b);
+  return [p.score, p.reviewCount, b.rave, b.positive, b.mixed, b.negative, sd.pos, sd.neg, 100, ...(String(p.show.title).match(/\d+/g) || [])].filter(n => n != null);
+}
+
 /**
  * @param {object} p {show, score, tierId, tierLabel, reviewCount, breakdown}
  * @returns {{twitter, bluesky, threads, instagram, facebook, altText}}
  */
 function buildCaptions(p) {
   const { show } = p;
-  // X and Bluesky first drop the lead-in, then shorten the title; never the numbers.
+  // Never the numbers.
   const sentence = (title, withLead = true) =>
     `${withLead ? `${TIER_LEAD[p.tierId] || 'The reviews are in.'} ` : ''}${title} has a Critic Score of ${p.score} (${p.tierLabel}) from ${p.reviewCount} critics' reviews.`;
   const title = show.title;
   const bd = breakdownLine(p.breakdown);
-  const long = `${sentence(title)}${bd ? `\n\nThe tally: ${bd}.` : ''}`;
+  const q = scoreQuestion(p);
+  const long = `${sentence(title)}${bd ? `\n\nThe tally: ${bd}.` : ''}\n\n${q.long}`;
   const alt = `${title} poster with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}${bd ? `. Critics: ${bd}` : ''}.`;
 
   const withUrl = (text, network) => `${text}\n\n${showUrl(show, network)}`;
+  // Order: drop the lead-in, then shorten the title, then (only if nothing else is left) the question.
   const fitShort = (network) => {
     const url = showUrl(show, network);
     const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - url.length - 2;
-    let t = sentence(title);
-    if (t.length > budget) t = sentence(title, false);
-    if (t.length > budget) {
-      const room = Math.max(12, title.length - (t.length - budget) - 1);
-      t = sentence(`${title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`, false);
-    }
+    const body = (t, lead, ask) => `${sentence(t, lead)}${ask ? `\n\n${ask}` : ''}`;
+    const t = firstFit(budget, [body(title, true, q.short), body(title, false, q.short),
+      ...CLIPS.map(n => body(clipTitle(title, n), false, q.short)), body(clipTitle(title, 14), false, null)]);
     return `${t}\n\n${url}`;
   };
 
   return {
     twitter: fitShort('twitter'),
     bluesky: fitShort('bluesky'),
-    threads: withUrl(long, 'threads'),
+    threads: withUrl(long.length + showUrl(show, 'threads').length + 2 <= LIMITS.threads ? long : `${sentence(title, false)}\n\n${q.short}`, 'threads'),
     // Instagram captions cannot carry live links; point at the site by name.
     instagram: `${long}\n\nFull reviews: ${MARKETS[show.category].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
     facebook: withUrl(long, 'facebook'),
@@ -191,8 +246,20 @@ function compareCaveat(newerShow, olderShow, { short = false } = {}) {
   return `${cap(s)}, so the scores aren't a like-for-like comparison.`;
 }
 
+/**
+ * Closing question of a compare post, from the direction and size of the gap
+ * (the gap is allowed in briefs.allowedNumbers as `delta`). Within 3 points the angle is the agreement.
+ */
+function compareQuestion(newer, older) {
+  const gap = Math.abs(newer.score - older.score);
+  if (gap <= 3) return { long: 'Same show, two cities, and the critics largely agree. What do you think carried over so well?', short: 'Two cities, critics agree. What carried over?', tiny: 'What carried over?' };
+  const warmer = newer.score > older.score ? newer : older, city = CITY[warmer.show.category];
+  return { long: `Same show, two cities, ${an(gap)} ${gap}-point gap. Why do you think ${city} critics warmed to it more?`, short: `${cap1(an(gap))} ${gap}-point gap. Why did ${city} critics warm to it more?`, tiny: `Why did ${city} critics warm to it more?` };
+}
+
 function buildCompareCaptions(p) {
   const { newer, older } = p;
+  const q = compareQuestion(newer, older);
   const lead = title => `${title} was also reviewed in ${CITY[older.show.category]}.`;
   const fact = d => `${productionLabel(d.show)}: Critic Score ${d.score} from ${d.reviewCount} critics${d.soFar ? ' so far' : ''}.`;
   const facts = `${fact(newer)}\n${fact(older)}`;
@@ -201,33 +268,35 @@ function buildCompareCaptions(p) {
   const title = newer.show.title;
   const caveat = compareCaveat(newer.show, older.show);
   const shortCaveat = compareCaveat(newer.show, older.show, { short: true });
-  const long = `${hook}${lead(title)}\n\n${facts}${caveat ? `\n\n${caveat}` : ''}`;
+  const long = `${hook}${lead(title)}\n\n${facts}${caveat ? `\n\n${caveat}` : ''}\n\n${q.long}`;
   const links = network => `${productionLabel(newer.show)} reviews: ${showUrl(newer.show, network, 'brief')}\n${productionLabel(older.show)} reviews: ${showUrl(older.show, network, 'brief')}`;
 
-  // X and Bluesky carry the newer show's link only, in a compact form: drop the hook,
-  // then the full caveat for the short one, then the caveat, then shorten the title,
-  // never the numbers or the link. X counts any link as 23 characters
-  // (t.co); Bluesky counts it in full.
+  // X and Bluesky carry the newer show's link only. Fit order: drop the hook, then the
+  // caveat (full, short, none), then shorten the title; the question goes last, and the
+  // numbers and the link never. X counts any link as 23 characters (t.co); Bluesky in full.
   const fitShort = network => {
     const url = showUrl(newer.show, network, 'brief');
     const linkCost = network === 'twitter' ? 23 : url.length;
-    const budget = LIMITS[network] - 10 - linkCost - 1;
-    const body = (t, withHook, line = caveat) => `${withHook ? hook : ''}${lead(t)}\n${shortFact(newer)}\n${shortFact(older)}${line ? `\n${line}` : ''}`;
-    let t = body(title, true);
-    if (t.length > budget) t = body(title, false);
-    if (t.length > budget) t = body(title, false, shortCaveat);
-    if (t.length > budget) t = body(title, false, null);
-    if (t.length > budget) {
-      const room = Math.max(12, title.length - (t.length - budget) - 1);
-      t = body(`${title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`, false, null);
-    }
+    const budget = LIMITS[network] - 4 - linkCost - 1;
+    // bare: the lead-in sentence shrinks to the title alone (the production labels below it say where).
+    const body = (t, { withHook = false, line = null, ask = q.long, bare = false } = {}) =>
+      `${withHook ? hook : ''}${bare ? t : lead(t)}\n${shortFact(newer)}\n${shortFact(older)}${line ? `\n${line}` : ''}${ask ? `\n${ask}` : ''}`;
+    const t = firstFit(budget, [
+      body(title, { withHook: true, line: caveat }), body(title, { line: caveat }), body(title, { line: shortCaveat }),
+      body(title), body(title, { ask: q.short }),
+      body(title, { ask: q.short, bare: true }), body(title, { ask: q.tiny, bare: true }),
+      ...CLIPS.map(n => body(clipTitle(title, n), { ask: q.short, bare: true })),
+      body(clipTitle(title, 14), { ask: null }),
+    ]);
     return `${t}\n${url}`;
   };
-  // Threads allows 500 characters, links included: drop the hook, then the older show's link.
+  // Threads allows 500 characters, links included: drop the hook, then the older show's link, then the caveat.
   const fitThreads = () => {
-    const noHook = `${lead(title)}\n\n${facts}${caveat ? `\n\n${caveat}` : ''}`;
+    const noHook = `${lead(title)}\n\n${facts}${caveat ? `\n\n${caveat}` : ''}\n\n${q.long}`;
+    const bare = `${lead(title)}\n\n${facts}\n\n${q.long}`;
     const tries = [`${long}\n\n${links('threads')}`, `${noHook}\n\n${links('threads')}`,
-      `${noHook}\n\n${showUrl(newer.show, 'threads', 'brief')}`, `${lead(title)}\n\n${facts}\n\n${showUrl(newer.show, 'threads', 'brief')}`];
+      `${noHook}\n\n${showUrl(newer.show, 'threads', 'brief')}`, `${bare}\n\n${showUrl(newer.show, 'threads', 'brief')}`,
+      `${lead(title)}\n\n${facts}\n\n${showUrl(newer.show, 'threads', 'brief')}`];
     return tries.find(t => t.length <= LIMITS.threads) || tries[tries.length - 1];
   };
   const tags = [...new Set([...MARKETS[newer.show.category].hashtags, ...MARKETS[older.show.category].hashtags, 'Theatre'])].map(t => `#${t}`).join(' ');
@@ -264,8 +333,9 @@ const rootUrl = (set, network) => `https://${SET_DOMAIN[set]}/?utm_source=${netw
 const roundupHeader = (first, last) => `New openings, ${monthDay(first)} to ${monthDay(last)}, Critic Scores:`;
 
 /** Patterns every caption of this roundup matches (buffer.js findExistingPost). */
-function roundupMarkers(first, last) {
-  return [ROUNDUP_SENTENCE, new RegExp(escapeRe(roundupHeader(first, last)))];
+function roundupMarkers(first, last, set) {
+  // The set's domain tells the Broadway and West End roundups of one week apart (they share a header).
+  return [ROUNDUP_SENTENCE, new RegExp(escapeRe(roundupHeader(first, last))), new RegExp(escapeRe(SET_DOMAIN[set]))];
 }
 
 /**
@@ -273,7 +343,13 @@ function roundupMarkers(first, last) {
  * rows are the ones on the card (best score first); more = openings with a score that
  * did not fit (or have no poster yet). The score is the rounded badge number.
  */
+function roundupQuestion(p) {
+  const top = p.rows[0];
+  return { long: `${top.title} leads at ${top.score}. Which of these are you booking?`, short: 'Which of these are you booking?' };
+}
+
 function buildRoundupCaptions(p) {
+  const rq = roundupQuestion(p);
   const header = roundupHeader(p.first, p.last);
   const mixed = new Set(p.rows.map(r => r.category)).size > 1;
   const tag = r => (mixed ? ` (${MARKETS[r.category].label})` : '');
@@ -286,27 +362,32 @@ function buildRoundupCaptions(p) {
   const fitLong = (network, tail) => {
     for (let n = p.rows.length; n >= Math.min(2, p.rows.length); n--) {
       for (const tier of [true, false]) {
-        const text = `${longText(n, tier)}${tail}`;
+        const text = `${longText(n, tier)}\n\n${rq.long}${tail}`;
         if ([...text].length <= LIMITS[network]) return text;
       }
     }
-    return `${longText(Math.min(2, p.rows.length), false)}${tail}`;
+    return `${longText(Math.min(2, p.rows.length), false)}\n\n${rq.short}${tail}`;
   };
-  const long = longText(p.rows.length, true);
+  const long = `${longText(p.rows.length, true)}\n\n${rq.long}`;
   const domain = SET_DOMAIN[p.set];
   const tags = [...new Set([...p.rows.flatMap(r => MARKETS[r.category].hashtags), 'Theatre'])].map(t => `#${t}`).join(' ');
 
-  // X and Bluesky: all rows if they fit, else the best rows that do (never fewer than two), never the numbers.
+  // X and Bluesky: all rows if they fit, else the best rows that do (never fewer than two); the
+  // question is kept in its short form before a row goes, and never the numbers.
   const fitShort = network => {
     const url = rootUrl(p.set, network);
     const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
-    let n = p.rows.length, text;
-    do {
-      const shown = p.rows.slice(0, n);
+    const text = (n, ask, clip = Infinity) => {
       const cut = p.rows.length - n + p.more;
-      text = `${header}\n${shown.map(r => line(r, false)).join('\n')}${cut > 0 ? `\nPlus ${cut} more on the site.` : ''}`;
-    } while ([...text].length > budget && --n >= 2);
-    return `${text}\n${url}`;
+      return `${header}\n${p.rows.slice(0, n).map(r => line({ ...r, title: clipTitle(r.title, clip) }, false)).join('\n')}${cut > 0 ? `\nPlus ${cut} more on the site.` : ''}\n\n${ask}`;
+    };
+    const tries = [];
+    for (let n = p.rows.length; n >= Math.min(2, p.rows.length); n--) tries.push(text(n, rq.long), text(n, rq.short));
+    // Then shorter titles (the question outranks them), all rows first.
+    for (const clip of [36, 28, 22, 16]) for (let n = p.rows.length; n >= Math.min(2, p.rows.length); n--) tries.push(text(n, rq.short, clip));
+    // Last resort: two rows and no question, so the numbers and the link still go out.
+    tries.push(text(Math.min(2, p.rows.length), '').trimEnd());
+    return `${firstFit(budget, tries)}\n${url}`;
   };
 
   return {
@@ -333,26 +414,30 @@ function closingMarkers(show) {
 /**
  * Closing-soon captions. p: {show, score, tierLabel, reviewCount, breakdown, closing (YYYY-MM-DD)}.
  */
+function closingQuestion(p) {
+  return { long: `Last chance: who has seen it, and does it live up to the ${p.score}?`, short: `Who has seen it, and does it live up to the ${p.score}?` };
+}
+
 function buildClosingCaptions(p) {
   const { show } = p;
+  const cq = closingQuestion(p);
   const sentence = title => `${title} closes ${monthDay(p.closing)}, with a Critic Score of ${p.score} (${p.tierLabel}) from ${p.reviewCount} critics' reviews.`;
   const bd = breakdownLine(p.breakdown);
-  const long = `${sentence(show.title)}${bd ? `\n\nThe tally: ${bd}.` : ''}`;
+  const long = `${sentence(show.title)}${bd ? `\n\nThe tally: ${bd}.` : ''}\n\n${cq.long}`;
   const withUrl = (text, network) => `${text}\n\n${showUrl(show, network, 'closing')}`;
+  // Fit order: the long question, the short one, a shorter title, and only then no question.
   const fitShort = network => {
     const url = showUrl(show, network, 'closing');
     const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - url.length - 2;
-    let t = sentence(show.title);
-    if (t.length > budget) {
-      const room = Math.max(12, show.title.length - (t.length - budget) - 1);
-      t = sentence(`${show.title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`);
-    }
+    const body = (t, ask) => `${sentence(t)}${ask ? `\n\n${ask}` : ''}`;
+    const t = firstFit(budget, [body(show.title, cq.long), body(show.title, cq.short),
+      ...CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(clipTitle(show.title, 14), null)]);
     return `${t}\n\n${url}`;
   };
   return {
     twitter: fitShort('twitter'),
     bluesky: fitShort('bluesky'),
-    threads: withUrl(long, 'threads'),
+    threads: withUrl(long.length + showUrl(show, 'threads', 'closing').length + 2 <= LIMITS.threads ? long : `${sentence(show.title)}\n\n${cq.short}`, 'threads'),
     instagram: `${long}\n\nFull reviews: ${MARKETS[show.category].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
     facebook: withUrl(long, 'facebook'),
     altText: `${show.title} poster with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}. Closing ${monthDay(p.closing)}.`,
@@ -366,6 +451,7 @@ function closingAllowedNumbers(p) {
 }
 
 module.exports = {
+  scoreQuestion, scoreAllowedNumbers, compareQuestion, roundupQuestion, closingQuestion,
   buildCaptions, showUrl, postMarkers, LIMITS,
   buildCompareCaptions, compareCaveat, compareMarkers, validateHook, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
   monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,

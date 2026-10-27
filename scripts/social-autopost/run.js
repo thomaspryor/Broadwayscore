@@ -34,7 +34,7 @@ const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, st
 const { resolvePoster, minPosterWidth } = require('./art');
 const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
 const { CHANNEL_SETS, MARKETS, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON } = require('./config');
-const { targetSets, tagChannels, channelKey } = require('./routing');
+const { targetSets, tagChannels, channelKey, homeSet } = require('./routing');
 const briefs = require('./briefs');
 
 const ROOT = path.resolve(__dirname, '..', '..');
@@ -171,7 +171,7 @@ const entryName = p => p.showId || p.id;
 
 /** Dedupe markers for a ledger entry's captions (captions.js). */
 function entryMarkers(p) {
-  if (p.type === 'weekly-roundup') return roundupMarkers(p.first, p.last);
+  if (p.type === 'weekly-roundup') return roundupMarkers(p.first, p.last, p.set);
   if (p.type === 'closing-soon') return closingMarkers({ id: p.showId, slug: p.slug });
   return p.type === 'brief' || p.type === 'london-compare' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
 }
@@ -331,7 +331,7 @@ const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_M
  * self-tested, Buffer quota too low, no free day for either show, or every network failed.
  * `entry` holds the type-specific ledger fields (type, id, pair, approval...).
  */
-async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
+async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', maxDelayDays = null, entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
   const targets = briefChannels(channels, newer);
   if (!targets.length) throw new Error(`${label}: no usable channel for ${newer.category}`);
   const notValidated = unvalidated(ctx.ledger, targets);
@@ -343,6 +343,8 @@ async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl
   const taken = (ctx.ledger.posts || []).map(p => Date.parse(p.dueAt || '')).filter(Number.isFinite);
   const t = briefs.pickBriefSlot({ now, earliest, tz: MARKETS[newer.category].tz, shows: busy, taken, inWindow, nextWindowSlot, zonedTime, localDay: buffer.localDay });
   if (t == null) throw Object.assign(new Error(`${label}: no free day in the next ${briefs.MAX_SLOT_DAYS} days for ${shows.map(s => s.id).join(' and ')}`), { code: 'NO_SLOT' });
+  // A roundup must not drift into the next week's news: past maxDelayDays the numbers stop being timely.
+  if (maxDelayDays != null && t - earliest > maxDelayDays * 864e5) throw Object.assign(new Error(`${label}: no free day within ${maxDelayDays} days of ${new Date(earliest).toISOString().slice(0, 10)}`), { code: 'NO_SLOT' });
   const dueAt = new Date(t);
   console.log(`[autopost] ${label} goes out ${dueAt.toISOString()}${note ? ` ${note}` : ''}`);
 
@@ -476,15 +478,29 @@ async function buildClosing(ev, ctx, outDir, { requirePoster = true } = {}) {
   return { desc, captions, card };
 }
 
+/**
+ * Roundups and closing-soon posts go only to their own market's accounts: until that set is
+ * fully configured (West End, BRO-6378) they are not posted at all, rather than falling back to
+ * the Broadway accounts as the score lane does.
+ */
+function ownSetConfigured(set) {
+  return set === 'broadway' || Object.keys(CHANNEL_SETS.broadway).every(svc => (CHANNEL_SETS[set] || {})[svc]);
+}
+function idleUnconfigured(label, set) {
+  console.log(`[autopost] ${label}: the ${set} accounts are not configured yet (BRO-6378), nothing posted`);
+  return 'idle';
+}
+
 /** Post one weekly roundup. Returns 'posted' or 'skipped' (quota or no free day, retried next run). */
 async function runRoundup(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
+  if (!ownSetConfigured(ev.set)) return idleUnconfigured(ev.id, ev.set);
   const built = await buildRoundup(ev, ctx, outDir);
   const imageUrl = await hostPng(built.png, `roundup/<month>/${ev.id.replace(/:/g, '-')}`, now);
   const title = `New openings, ${monthDay(ev.first)} to ${monthDay(ev.last)}`;
   try {
     await postCompare({
       label: ev.id, shows: built.rows.map(r => r.show), newer: built.rows[0].show, captions: built.captions, imageUrl, ctx, buffer, channels, now,
-      earliest: ev.dueAt.getTime(), summary, problems, markers: roundupMarkers(ev.first, ev.last),
+      earliest: ev.dueAt.getTime(), summary, problems, markers: roundupMarkers(ev.first, ev.last, ev.set), maxDelayDays: 2,
       entry: { type: 'weekly-roundup', id: ev.id, template: 'roundup', set: ev.set, first: ev.first, last: ev.last, auto: true },
       fields: { title, scores: Object.fromEntries(built.rows.map(r => [r.show.id, r.score])) },
     });
@@ -498,8 +514,10 @@ async function runRoundup(ev, { ctx, buffer, channels, now, outDir, summary, pro
 /** Post one closing-soon card (ledger key closing-soon:<showId>). Returns 'posted' or 'skipped'. */
 async function runClosingSoon(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
   const label = `closing-soon:${ev.show.id}`;
+  if (!ownSetConfigured(homeSet(ev.show))) return idleUnconfigured(label, homeSet(ev.show));
   const built = await buildClosing(ev, ctx, outDir, { requirePoster: true });
-  const imageUrl = await hostCard(built.card.path, { id: `closing-${ev.show.id}` }, now);
+  const imageUrl = await hostCard(built.card.path, { id: `closing-${ev.show.id}` }, now)
+    .catch(e => { throw new Error(`image hosting failed: ${e.message}`); });
   try {
     await postCompare({
       label, shows: [ev.show], newer: ev.show, captions: built.captions, imageUrl, ctx, buffer, channels, now,
@@ -932,13 +950,15 @@ async function main() {
             console.log(`  X/Bluesky: ${built.captions.twitter.replace(/\n/g, ' | ')}`);
             continue;
           }
-          if (await runner(ev, { ctx, buffer, channels, now, outDir, summary, problems }) === 'skipped') break; // quota or no free day: the next run tries again
+          const result = await runner(ev, { ctx, buffer, channels, now, outDir, summary, problems });
+          if (result === 'skipped') break; // quota or no free day: the next run tries again
+          if (result === 'idle') continue; // that market's accounts are not set up; nothing was posted or recorded
           delete failures[key];
           if (ctx.ledger._meta.waitingForPoster) delete ctx.ledger._meta.waitingForPoster[key];
         } catch (e) {
           if (e.code === 'NO_POSTER') {
             const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
-            if (!waiting[key]) problems.push(`${key}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
+            if (!waiting[key]) problems.push(`${key}: held, ${e.message}. Add a full-size poster (at least ${key.startsWith('weekly-roundup') ? minPosterWidth(ROW_POSTER_PX) : 440}px wide) and it posts on the next run.`);
             waiting[key] = { since: (waiting[key] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
             console.log(`  [art] ${key}: HELD, ${e.message}`);
             writeLedger(ctx.ledger);

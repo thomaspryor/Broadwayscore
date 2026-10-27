@@ -378,7 +378,11 @@ function findClosingSoonEvents({ shows, ledger, now, reviewsByShow, slim, getOut
     const tz = C.MARKETS[show.category].tz;
     out.push({ type: 'closing-soon', show, closing: d.closing, days: d.days, score: d.score, gate: d.gate, slot: d.slot, dueAt: new Date(nextWindowSlot(Math.max(d.slot, now + 10 * MIN_MS), tz)) });
   }
-  return out.sort((a, b) => a.closing.localeCompare(b.closing) || a.show.id.localeCompare(b.show.id));
+  out.sort((a, b) => a.closing.localeCompare(b.closing) || a.show.id.localeCompare(b.show.id));
+  // A season's worth of closings never floods the accounts: soonest first, at most maxPerDay a day (the rest stay in range and go out on later days).
+  const today = new Date(now).toISOString().slice(0, 10);
+  const sent = (ledger.posts || []).filter(p => p.type === 'closing-soon' && p.date === today).length;
+  return cfg.maxPerDay ? out.slice(0, Math.max(0, cfg.maxPerDay - sent)) : out;
 }
 
 /**

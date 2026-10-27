@@ -278,12 +278,12 @@ test('compare caveat: on all five networks after the score lines, computed in wo
     assert.ok(text.includes(CAVEAT), `${net} misses the caveat`);
     assert.ok(text.indexOf(CAVEAT) > text.search(/85 from 26 critics/), `${net} caveat before the scores`);
   }
-  // X keeps the short form when the full one has no room; Bluesky (links counted in full) keeps it if it fits.
-  assert.ok(c.captions.twitter.includes(CAVEAT), 'X has room for the full caveat with a short title');
+  // On X and Bluesky the closing question outranks the caveat: the caveat goes first (full, then short, then none).
+  for (const net of ['twitter', 'bluesky']) assert.match(c.captions[net], /critics (warmed|warm) to it more\?/, `${net} lost its question`);
   const real = 'The Curious Case of Benjamin Button';
   const x = briefs.buildCompare({ descA: desc({ ...london, title: real }, 85, 26), descB: desc({ ...offb, title: real }, 77, 24), hook: '', now: NOW }).captions.twitter;
-  assert.ok(x.includes(SHORT_CAVEAT) && !x.includes(CAVEAT) && x.includes(real), 'X falls back to the short caveat before shortening the title');
-  assert.ok(x.indexOf(SHORT_CAVEAT) > x.search(/85 from 26 critics/));
+  assert.ok(!x.includes(CAVEAT) && x.includes(real) && /critics warmed to it more\?/.test(x), 'X drops the caveat before the title or the question');
+  if (x.includes(SHORT_CAVEAT)) assert.ok(x.indexOf(SHORT_CAVEAT) > x.search(/85 from 26 critics/));
   assert.equal(cap.compareCaveat(offb, london, { short: true }), SHORT_CAVEAT);
   assert.equal(cap.compareCaveat({ ...offb, openingDate: '2024-03-01' }, london, { short: true }), 'Different cities and critics.');
   assert.equal(cap.compareCaveat({ ...offb, openingDate: '2021-01-01' }, offb, { short: true }), 'Five years apart, different critics.');
@@ -307,7 +307,9 @@ test('compare caveat: a short network drops it before any number, link or the ti
     assert.match(text, /77 from 24 critics so far/);
     assert.match(text, /85 from 26 critics/);
     assert.match(text, /\/show\/tc-off-broadway\?/);
-    if (!text.includes(SHORT_CAVEAT)) assert.ok(text.includes(longTitle), `${net} dropped the caveat but still shortened the title`);
+    // The question outranks the caveat and the full title: caveat first, then the title, then the question.
+    assert.match(text, /critics (warmed|warm) to it more\?/, `${net} lost its question`);
+    if (text.includes(SHORT_CAVEAT)) assert.ok(text.includes(longTitle), `${net} kept the caveat but shortened the title`);
     assert.ok(!text.includes(CAVEAT) || !text.includes(SHORT_CAVEAT));
   }
 });
@@ -322,7 +324,7 @@ test('compare: refuses mismatched titles, same city, digits or links in the hook
   // The hook rides where there is room; on X the caveat outranks it.
   const hooked = compare('Two cities, one strange story.').captions;
   assert.ok(hooked.instagram.startsWith('Two cities') && hooked.facebook.startsWith('Two cities'));
-  assert.ok(hooked.twitter.includes(CAVEAT) || hooked.twitter.includes(SHORT_CAVEAT));
+  assert.ok(/warmed to it more\?/.test(hooked.twitter), 'X keeps the question');
   assert.deepEqual(cap.strayNumbers('Score 77 from 24, see broadwayscorecard.com/show/x-2026 #Theatre2026', [77, 24]), []);
   assert.deepEqual(cap.strayNumbers('Score 78 from 24', [77, 24]), ['78']);
 });
@@ -767,8 +769,8 @@ test('london-compare posts the compare card on all five networks and records lon
     assert.equal(seen.created.length, 5);
     const x = seen.created.find(i => i.channelId === 'ch-twitter');
     assert.match(x.text, /Lc was also reviewed in London\./);
-    assert.doesNotMatch(x.text, /transfer/i);
-    assert.match(x.text, /different cities, with different critics/);
+    assert.match(x.text, /different cities and critics/);
+    assert.match(x.text, /Why do you think London critics warmed to it more\?/);
     assert.match(x.text, /utm_campaign=brief/);
   });
   const entry = ledger.posts.find(p => p.type === 'london-compare');
@@ -911,7 +913,7 @@ test('roundup captions: facts only, every limit, no em dashes, the right markers
     for (const [net, text] of Object.entries(caps)) {
       if (LIMITS[net]) assert.ok(xLength(net, text) <= LIMITS[net], `${net} ${xLength(net, text)} > ${LIMITS[net]}`);
       assert.doesNotMatch(text, /[—–]/);
-      if (net !== 'altText') for (const re of cap.roundupMarkers('2026-10-15', '2026-10-21')) assert.match(text, re, `${net} carries the roundup marker`);
+      if (net !== 'altText') for (const re of cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway')) assert.match(text, re, `${net} carries the roundup marker`);
       assert.doesNotMatch(text, cap.SCORE_SENTENCE);
       assert.doesNotMatch(text, cap.COMPARE_SENTENCE);
     }
@@ -985,8 +987,8 @@ test('closing captions: facts only, every limit, no em dashes, closing marker, n
 });
 
 test('new types: ledger entries recover their own markers on a retry, never a score post', () => {
-  const r = entryMarkers({ type: 'weekly-roundup', id: 'weekly-roundup:broadway:2026-10-23', first: '2026-10-15', last: '2026-10-21', showIds: [] });
-  assert.ok(r.some(re => re.source === cap.roundupMarkers('2026-10-15', '2026-10-21')[1].source));
+  const r = entryMarkers({ type: 'weekly-roundup', id: 'weekly-roundup:broadway:2026-10-23', set: 'broadway', first: '2026-10-15', last: '2026-10-21', showIds: [] });
+  assert.ok(r.some(re => re.source === cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway')[1].source));
   const c = entryMarkers({ type: 'closing-soon', id: 'closing-soon:cs-2026', showId: 'cs-2026', showIds: ['cs-2026'] });
   assert.ok(c.some(re => re.source === cap.CLOSING_SENTENCE.source));
 });
@@ -998,7 +1000,7 @@ const newTypePost = async (ledger, { type, now, remaining }) => {
   const isRound = type === 'weekly-roundup';
   const s = cShow();
   const captions = isRound ? rCaps() : cap.buildClosingCaptions({ show: s, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' });
-  const markers = isRound ? cap.roundupMarkers('2026-10-15', '2026-10-21') : cap.closingMarkers(s);
+  const markers = isRound ? cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway') : cap.closingMarkers(s);
   const entry = isRound
     ? { type, id: 'weekly-roundup:broadway:2026-10-23', set: 'broadway', first: '2026-10-15', last: '2026-10-21', showIds: ['ra-2026', 'rc-2026', 'rb-2026'], showId: 'ra-2026', template: 'roundup', auto: true }
     : { type, id: `closing-soon:${s.id}`, showId: s.id, template: 'closing', auto: true };
@@ -1065,4 +1067,118 @@ test('roundup and closing on the real data: every candidate has a slim score, no
   for (const r of rows) assert.equal(new Set(r.candidates.map(c => c.id)).size, r.candidates.length);
   const cl = sel.closingSoonLookback({ ...ctx, days: 90 });
   assert.ok(Array.isArray(cl));
+});
+
+// ---------------------------------------------------------------------------
+// Voice (BRO-6417, scripts/social-autopost/VOICE.md): every builder ends with an open question built from the facts.
+
+const VOICE_BANNED = [/thoughts\?/i, /\bagree\?/i, /tag a friend/i, /like if/i, /share if/i, /comment below/i, /drop a /i, /excited to share/i, /thrilled to/i,
+  /\bdelve\b/i, /\brobust\b/i, /\bleverage\b/i, /\bunlock\b/i, /tapestry/i, /\brealm\b/i, /deep dive/i, /landscape of/i, /journey of/i, /navigate the/i, /[—–]/];
+const ASKS = /\b(what|why|which|who|where|how|do you)\b[^.?!]*\?/i;
+const LONG_TITLE = 'The Extraordinarily Long-Winded Musical Adventure of Somebody and Everybody Else Entirely';
+
+/** Every builder, with tight (long title) and roomy fixtures. */
+function voiceFixtures() {
+  const out = [];
+  for (const title of ['Hadestown', LONG_TITLE]) {
+    for (const [tierId, tierLabel, breakdown] of [['must-see', 'Critical Gold', { rave: 19, positive: 11, mixed: 1, negative: 1 }], ['recommended', 'Recommended', { rave: 3, positive: 14, mixed: 12, negative: 2 }], ['skippable', 'Skippable', { rave: 0, positive: 2, mixed: 9, negative: 8 }]]) {
+      const s = show({ title, id: 'voice-show', slug: 'voice-show' });
+      const p = { show: s, score: 84, tierId, tierLabel, reviewCount: 32, breakdown };
+      out.push({ name: `score ${tierId} ${title.length}`, caps: buildCaptions(p), allowed: cap.scoreAllowedNumbers(p) });
+    }
+    for (const [a, b] of [[85, 77], [77, 85], [80, 81]]) {
+      const c = briefs.buildCompare({ descA: desc({ ...london, title }, a, 26), descB: desc({ ...offb, title }, b, 24), hook: '', now: NOW });
+      out.push({ name: `compare ${a}/${b} ${title.length}`, caps: c.captions, allowed: [a, b, 26, 24, c.delta, 2024, 2026] });
+    }
+    const rows = Array.from({ length: 6 }, (_, i) => ({ title: `${title} ${i}`.slice(0, 60), category: 'broadway', score: 90 - i, tierLabel: 'Critical Gold' }));
+    for (const [r, more] of [[rRows, 0], [rows, 2], [rows.slice(0, 2), 0]]) {
+      const p = { set: 'broadway', first: '2026-10-15', last: '2026-10-21', rows: r, more };
+      out.push({ name: `roundup ${r.length} ${title.length}`, caps: cap.buildRoundupCaptions(p), allowed: cap.roundupAllowedNumbers(p) });
+    }
+    const cs = cShow({ title });
+    const cp = { show: cs, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' };
+    out.push({ name: `closing ${title.length}`, caps: cap.buildClosingCaptions(cp), allowed: cap.closingAllowedNumbers(cp) });
+  }
+  return out;
+}
+
+test('voice: every builder on every network carries an open closing question, within limits, no stray numbers', () => {
+  for (const f of voiceFixtures()) {
+    for (const net of Object.keys(LIMITS)) {
+      const text = f.caps[net];
+      assert.ok(xLength(net, text) <= LIMITS[net], `${f.name} ${net} over its limit (${xLength(net, text)})`);
+      const body = text.replace(/https?:\/\/\S+/g, '');
+      assert.match(body, ASKS, `${f.name} ${net} lost its question:\n${text}`);
+      assert.doesNotMatch(body, /\b(yes|no)\b[^.?!]*\?$/im, `${f.name} ${net} asks a yes/no question`);
+      assert.deepEqual(cap.strayNumbers(text, f.allowed), [], `${f.name} ${net} stray numbers`);
+    }
+  }
+});
+
+test('voice: no banned phrase, no em dash, and no question that is only engagement bait', () => {
+  for (const f of voiceFixtures()) {
+    for (const [net, text] of Object.entries(f.caps)) for (const re of VOICE_BANNED) assert.doesNotMatch(text, re, `${f.name} ${net} hits ${re}`);
+  }
+  const voice = fs.readFileSync(new URL('./social-autopost/VOICE.md', import.meta.url), 'utf8');
+  assert.doesNotMatch(voice, /[—–]/, 'VOICE.md has a dash');
+  assert.match(voice, /replies/i, 'VOICE.md covers replies');
+  assert.match(fs.readFileSync(new URL('../.claude/commands/social-post.md', import.meta.url), 'utf8'), /VOICE\.md/, 'social-post.md points at VOICE.md');
+});
+
+test('voice: compare question follows the direction and size of the gap; within 3 points the angle is agreement', () => {
+  const q = (a, b) => cap.compareQuestion({ show: offb, score: a }, { show: london, score: b });
+  assert.match(q(77, 90).long, /a 13-point gap\. Why do you think London critics warmed to it more\?/);
+  assert.match(q(90, 77).long, /Why do you think New York critics warmed to it more\?/);
+  assert.match(q(80, 81).long, /critics largely agree/);
+  assert.match(q(80, 88).short, /^An 8-point gap\. Why did London critics warm to it more\?$/);
+});
+
+test('voice: a divided tally asks about the split, a one-sided one asks by tier', () => {
+  assert.match(cap.scoreQuestion({ tierId: 'recommended', breakdown: { rave: 3, positive: 14, mixed: 12, negative: 2 } }).long, /17 positive, 14 mixed or negative/);
+  assert.match(cap.scoreQuestion({ tierId: 'must-see', breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 } }).long, /raving/);
+});
+
+// ---------------------------------------------------------------------------
+// Review fixes (BRO-6413 ship-check)
+
+test('roundup markers: the Broadway and West End roundups of one week never adopt each other', () => {
+  const b = cap.buildRoundupCaptions({ set: 'broadway', first: '2026-10-15', last: '2026-10-21', rows: rRows, more: 0 });
+  const w = cap.buildRoundupCaptions({ set: 'west-end', first: '2026-10-15', last: '2026-10-21', rows: rRows, more: 0 });
+  for (const net of ['twitter', 'bluesky', 'threads', 'instagram', 'facebook']) {
+    assert.ok(cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway').every(re => re.test(b[net])), `${net} broadway own`);
+    assert.ok(!cap.roundupMarkers('2026-10-15', '2026-10-21', 'broadway').every(re => re.test(w[net])), `${net} west end is not adopted as broadway`);
+    assert.ok(!cap.roundupMarkers('2026-10-15', '2026-10-21', 'west-end').every(re => re.test(b[net])), `${net} broadway is not adopted as west end`);
+  }
+});
+
+test('west end roundup and closing-soon post nowhere while the West End accounts are unconfigured', async () => {
+  const run = require('./social-autopost/run.js');
+  const ledger = { _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [] };
+  await withFakeBuffer(240, [], async seen => {
+    const ctx = { ledger, shows: [] };
+    const args = { ctx, buffer: bufferLib, channels: lcChannels, now: FRI, outDir: os.tmpdir(), summary: [], problems: [] };
+    assert.equal(await run.runRoundup({ id: 'weekly-roundup:west-end:2026-10-23', set: 'west-end', first: '2026-10-15', last: '2026-10-21', candidates: [], dueAt: new Date(FRI) }, args), 'idle');
+    assert.equal(await run.runClosingSoon({ show: { ...cShow(), category: 'west-end', id: 'we-closing-west-end-2026' }, closing: '2026-11-10', score: 84, dueAt: new Date(FRI) }, args), 'idle');
+    assert.equal(seen.created.length, 0);
+  });
+  assert.equal(ledger.posts.length, 0);
+});
+
+test('closing-soon: a season of closings goes out at most maxPerDay a day, soonest first', () => {
+  const mk = (i, closing) => cShow({ id: `c${i}-2026`, slug: `c${i}`, closingDate: closing });
+  const shows = [mk(1, '2026-11-12'), mk(2, '2026-11-10'), mk(3, '2026-11-14'), mk(4, '2026-11-16')];
+  const slim = Object.fromEntries(shows.map(s => [s.id, { cs: 85, rc: 14 }]));
+  const rev = Object.fromEntries(shows.map(s => [s.id, reviews(6, 3, 6)]));
+  const args = { shows, now: at('2026-10-27T14:00:00Z'), slim, getOutletTier, reviewsByShow: rev, cfg: { ...C6413.CLOSING_SOON, enabled: true } };
+  const first = sel.findClosingSoonEvents({ ...args, ledger: { posts: [] } });
+  assert.ok(first.length <= 2, `${first.length} closing-soon events in one day`);
+  assert.deepEqual(first.map(e => e.closing), [...first.map(e => e.closing)].sort(), 'soonest first');
+  const one = sel.findClosingSoonEvents({ ...args, ledger: { posts: [{ type: 'closing-soon', id: 'closing-soon:zz', showId: 'zz', date: '2026-10-27' }] } });
+  assert.ok(one.length <= 1, 'one already sent today leaves room for one');
+});
+
+test('captions never cut a title through a number', () => {
+  const p = { show: cShow({ title: '1776 The Musical About A Declaration That Goes On And On Forever Amen' }), score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-10' };
+  const caps = cap.buildClosingCaptions(p);
+  for (const net of ['twitter', 'bluesky']) assert.deepEqual(cap.strayNumbers(caps[net], cap.closingAllowedNumbers(p)), [], net);
 });
