@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T16:06:54.278Z",
+  "timestamp": "2026-10-27T16:22:07.445Z",
   "stats": {
-    "totalReviews": 63637,
-    "alreadyFlagged": 21700,
+    "totalReviews": 63638,
+    "alreadyFlagged": 21743,
     "dateGuardCatches": 238,
-    "directorMismatch": 2359,
-    "tvFilmSignals": 1791,
-    "londonSignals": 3055,
+    "directorMismatch": 2361,
+    "tvFilmSignals": 1792,
+    "londonSignals": 3057,
     "offBroadwaySignals": 563,
-    "yearMismatch": 218,
-    "noPublishDate": 5665
+    "yearMismatch": 217,
+    "noPublishDate": 5634
   },
   "findings": [
     {
@@ -11112,6 +11112,7 @@
     {
       "showId": "daphne-off-broadway-2023",
       "file": "vulture--sara-holdren.json",
+      "score": 60,
       "publishDate": "2023-10-23",
       "url": "https://www.vulture.com/2023/10/theater-review-renae-simone-jarrett-daphne-lincoln-center.html",
       "findings": [
@@ -29859,7 +29860,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 59,
+      "score": 55,
       "publishDate": "2026-10-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
       "findings": [
@@ -35792,6 +35793,7 @@
     {
       "showId": "passion-play-west-end-2013",
       "file": "guardian--sheldon-green.json",
+      "score": 62,
       "publishDate": "2013-05-20",
       "url": null,
       "findings": [
@@ -37598,6 +37600,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"howard davies\" from private-lives-2002"
+        }
+      ]
+    },
+    {
+      "showId": "private-lives-west-end-2013",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2013-07-04",
+      "url": "https://www.britishtheatreguide.info/reviews/private-lives-gielgud-8990",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sir richard eyre\" from private-lives-2011"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -44481,19 +44502,6 @@
       ]
     },
     {
-      "showId": "the-bodyguard-west-end-2012",
-      "file": "londontheatre1--unknown.json",
-      "publishDate": null,
-      "url": "https://www.londontheatre1.com/shows/the-bodyguard-at-new-victoria-theatre-woking/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (4x) more than 2012 (1x). 2026 matches production: the-bodyguard-tour-2026"
-        }
-      ]
-    },
-    {
       "showId": "the-bodyguard-west-end-2016",
       "file": "standard--fiona-mountford.json",
       "score": 66,
@@ -45913,8 +45921,22 @@
     {
       "showId": "the-commitments-west-end-2013",
       "file": "daily-mail--unknown.json",
+      "score": 47,
       "publishDate": "2013-10-09",
       "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-commitments-west-end-2013",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2015-09-28",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-the-commitments",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -46121,6 +46143,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-doctor-off-broadway-2023",
+      "file": "nysr--frank-scheck.json",
+      "publishDate": "2023-06-15",
+      "url": "https://nystagereview.com/2023/06/15/the-doctor-great-theatrical-medicine-doesnt-always-go-down-easy/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
         }
       ]
     },
@@ -46588,6 +46623,7 @@
     {
       "showId": "the-full-monty-west-end-2014",
       "file": "financialtimes--unknown.json",
+      "score": 74,
       "publishDate": "2014-02-27",
       "url": "https://www.ft.com/content/5f1791ec-9ed7-11e3-8663-00144feab7de",
       "findings": [
@@ -46601,6 +46637,7 @@
     {
       "showId": "the-full-monty-west-end-2014",
       "file": "metro-uk--robert-shore.json",
+      "score": 63,
       "publishDate": "2014-02-27",
       "url": null,
       "findings": [
@@ -48866,6 +48903,7 @@
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 78,
       "publishDate": "2025-03-11",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-8PONVB",
       "findings": [
@@ -49278,7 +49316,7 @@
       "showId": "the-ladykillers-west-end-2013",
       "file": "guardian--unknown.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2013-07-07",
       "url": "https://www.theguardian.com/culture/2013/jul/07/graham-linehan-ladykillers-play-father-ted",
       "findings": [
         {
@@ -51771,6 +51809,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "daily-mail--patrick-marmion.json",
+      "score": 77,
       "publishDate": "2014-05-17",
       "url": null,
       "findings": [
@@ -51784,7 +51823,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 97,
       "publishDate": "2014-05-13",
       "url": "https://www.theguardian.com/stage/2014/may/13/the-pajama-game-richard-eyre-review",
       "findings": [
@@ -51798,6 +51837,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "sunday-telegraph--tim-walker.json",
+      "score": 77,
       "publishDate": "2014-05-18",
       "url": null,
       "findings": [
@@ -51811,6 +51851,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "telegraph--charles-spencer.json",
+      "score": 88,
       "publishDate": "2014-05-14",
       "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10828149/The-Pajama-Game-Shaftesbury-Theatre-review-pure-pleasure.html",
       "findings": [
@@ -51824,6 +51865,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "timeout-london--rachel-haliburton.json",
+      "score": 87,
       "publishDate": "2014-05-14",
       "url": null,
       "findings": [
@@ -51837,7 +51879,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2014-05-14",
       "url": "http://www.whatsonstage.com/london-theatre/reviews/05-2014/the-pajama-game-shaftesbury-theatre_34424.html?cid=top_story",
       "findings": [
@@ -62397,6 +62439,20 @@
       ]
     },
     {
+      "showId": "alan-bennetts-untold-stories-west-end-2013",
+      "file": "standard--the-standard.json",
+      "score": null,
+      "publishDate": "2013-04-05",
+      "url": "https://www.standard.co.uk/culture/theatre/untold-stories-duchess-theatre-theatre-review-8557957.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "alice-in-wonderland-west-end-2026",
       "file": "britishtheatrecom--susan-novak.json",
       "score": null,
@@ -64957,6 +65013,7 @@
     {
       "showId": "beckett-briefs-off-broadway-2025",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 81,
       "publishDate": "2025-02-03",
       "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-K9T8I0",
       "findings": [
@@ -76541,6 +76598,20 @@
       ]
     },
     {
+      "showId": "hedda-gabler-west-end-2012",
+      "file": "british-theatre--philip-fisher.json",
+      "score": null,
+      "publishDate": "2012-09-13",
+      "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-old-vic-8023",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "hello-dolly-2017",
       "file": "theater-time--joseph-cervelli.json",
       "score": 87,
@@ -79458,6 +79529,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
+      "score": 86,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79541,6 +79613,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "guardian--arifa-akbar.json",
+      "score": 63,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79554,6 +79627,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
+      "score": 88,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79567,6 +79641,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "independent--alice-saville.json",
+      "score": 77,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79580,6 +79655,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "london-theatre--marianka-swain.json",
+      "score": 94,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79593,6 +79669,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
+      "score": 74,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79606,6 +79683,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "mail-on-sunday--robert-gore-langton.json",
+      "score": 84,
       "publishDate": "2026-07-12",
       "url": null,
       "findings": [
@@ -79619,6 +79697,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "observer--katherine-cowles.json",
+      "score": 64,
       "publishDate": "2026-07-17",
       "url": null,
       "findings": [
@@ -79637,6 +79716,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "standard--nick-curtis.json",
+      "score": 78,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79650,6 +79730,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 94,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79663,6 +79744,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 69,
       "publishDate": "2026-07-07",
       "url": null,
       "findings": [
@@ -79676,6 +79758,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "thereviewshub--harry-mayes.json",
+      "score": 79,
       "publishDate": "2026-07-08",
       "url": null,
       "findings": [
@@ -79689,6 +79772,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "thestage--sam-marlowe.json",
+      "score": 64,
       "publishDate": "2026-07-08",
       "url": "https://www.thestage.co.uk/your-views/reviews-response-jesus-christ-superstar-and-fun-home-this-month-in-your-views",
       "findings": [
@@ -79702,6 +79786,7 @@
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
+      "score": 75,
       "publishDate": "2026-07-07",
       "url": null,
       "findings": [
@@ -82137,7 +82222,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "radio-times--joanna-magill.json",
-      "score": null,
+      "score": 63,
       "publishDate": "2026-02-11",
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/man-and-boy-review/",
       "findings": [
@@ -82165,7 +82250,7 @@
     {
       "showId": "man-and-boy-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 60,
+      "score": 58,
       "publishDate": "2026-02-11",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/ben-daniels-man-and-boy-national-theatre-review/",
       "findings": [
@@ -84363,6 +84448,7 @@
     {
       "showId": "miss-saigon-west-end-2014",
       "file": "sunday-express--michael-arditti.json",
+      "score": 66,
       "publishDate": "2014-05-25",
       "url": null,
       "findings": [
@@ -87595,6 +87681,7 @@
     {
       "showId": "other-desert-cities-west-end-2014",
       "file": "daily-mail--quentin-letts.json",
+      "score": 63,
       "publishDate": "2014-03-28",
       "url": null,
       "findings": [
@@ -87608,6 +87695,7 @@
     {
       "showId": "other-desert-cities-west-end-2014",
       "file": "timeout-london--andrzej-lukowski.json",
+      "score": 90,
       "publishDate": "2014-03-25",
       "url": null,
       "findings": [
@@ -88019,19 +88107,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "passion-play-west-end-2013",
-      "file": "telegraph--evestebbing.json",
-      "publishDate": "2013-05-06",
-      "url": null,
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -89130,6 +89205,7 @@
     {
       "showId": "private-lives-west-end-2013",
       "file": "guardian--lyn-gardner.json",
+      "score": 63,
       "publishDate": "2013-07-05",
       "url": "https://www.theguardian.com/stage/2013/jul/04/private-lives-review",
       "findings": [
@@ -92219,7 +92295,7 @@
     {
       "showId": "stephen-ward-west-end-2013",
       "file": "nytimes--ben-brantley.json",
-      "score": null,
+      "score": 44,
       "publishDate": "2014-01-20",
       "url": "https://www.nytimes.com/2014/01/21/theater/londons-dark-musicals-american-psycho-and-stephen-ward.html",
       "findings": [
@@ -92233,6 +92309,7 @@
     {
       "showId": "stephen-ward-west-end-2013",
       "file": "sunday-telegraph--tim-walker.json",
+      "score": 17,
       "publishDate": "2013-12-22",
       "url": null,
       "findings": [
@@ -96139,7 +96216,7 @@
     {
       "showId": "the-crucible-west-end-2014",
       "file": "express-uk--michael-arditti.json",
-      "score": null,
+      "score": 50,
       "publishDate": "2014-07-13",
       "url": "https://www.express.co.uk/entertainment/theatre/488165/Arthur-Miller-s-The-Crucible-in-Old-Vic-and-Shakespeare-s-Richard-III",
       "findings": [
@@ -96362,6 +96439,7 @@
     {
       "showId": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2013",
       "file": "sunday-telegraph--tim-walker.json",
+      "score": 90,
       "publishDate": "2013-03-17",
       "url": null,
       "findings": [
@@ -97454,7 +97532,7 @@
     {
       "showId": "the-full-monty-west-end-2014",
       "file": "variety--david-benedict.json",
-      "score": null,
+      "score": 78,
       "publishDate": "2014-02-25",
       "url": "https://variety.com/2014/legit/reviews/west-end-review-the-full-monty-1201120894/",
       "findings": [
@@ -100543,6 +100621,7 @@
     {
       "showId": "the-pajama-game-west-end-2014",
       "file": "nytimes--matt-wolf.json",
+      "score": 52,
       "publishDate": "2014-05-27",
       "url": null,
       "findings": [
@@ -102642,6 +102721,7 @@
     {
       "showId": "the-unexpected-3rd-2026",
       "file": "njcom--patrick-maley.json",
+      "score": 62,
       "publishDate": "2026-10-26",
       "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
       "findings": [

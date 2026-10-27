@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-27T15:57:05.612Z",
+  "generated": "2026-10-27T16:12:18.682Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 35,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -155,13 +155,6 @@
       "loserFile": "patch--unknown.json",
       "targetFile": "patch--katie-rosin.json",
       "reason": "orphaned-duplicate-heal: patch--katie-rosin.json was flagged invalid after patch--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "seagull-true-story-off-broadway-2026",
-      "loserFile": "one-minute-critic--bobby-mcguire.json",
-      "targetFile": "one-minute-critic--matthew-wexler.json",
-      "reason": "orphaned-duplicate-heal: one-minute-critic--matthew-wexler.json was flagged invalid after one-minute-critic--bobby-mcguire.json was pointed at it",
       "field": "duplicateOf"
     },
     {
