@@ -227,6 +227,14 @@ function mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic = fal
     merged.contentTierReason = reviewData.contentTierReason;
     markRescoreNeeded(merged, 'theatre-record: wrong-production text replaced (BRO-6154)', undefined, { requeue: true });
   }
+  // BRO-6356: merged files skip the extractor's NO-RECORD sweep. If a TR
+  // re-extraction still yields the rejected opening, record the unresolved
+  // production gap here, keeping the rejection and any existing stamp.
+  if (isWrongShowRejection(merged) && existing.source === 'theatre-record'
+      && !merged.trNoRecordForProduction && openingOf(existing.fullText)
+      && openingOf(existing.fullText) === openingOf(reviewData.fullText)) {
+    merged.trNoRecordForProduction = { reason: 'Theatre Record has no review by this outlet and critic under this production (BRO-6154)', at: new Date().toISOString() };
+  }
   if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
   if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt' || merged.contentTier === 'invalid') {
     merged.contentTier = reviewData.contentTier;

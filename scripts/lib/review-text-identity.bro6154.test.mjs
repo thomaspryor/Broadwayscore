@@ -27,6 +27,60 @@ test('BRO-6154 same text re-extracted keeps the rejection; non-rejected files ar
   assert.equal(isWrongShowRejection({ rejectedBy: 'other', rejectionReason: 'wrong_show' }), false);
 });
 
+test('BRO-6356 unchanged rejected TR text gets NO-RECORD without lifting or requeuing', () => {
+  const r = { ...rejected(), source: 'theatre-record', theatreRecordUrl: 'https://www.theatrerecord.com/archive/volume/38/page/657' };
+  for (const text of [r.fullText, r.fullText.replaceAll(' ', '\n'), r.fullText + 'A changed tail.']) {
+    const out = mergeTheatreRecordIntoExisting(r, { ...fresh(text), theatreRecordUrl: r.theatreRecordUrl });
+    assert.equal(out.trNoRecordForProduction?.reason, 'Theatre Record has no review by this outlet and critic under this production (BRO-6154)');
+    assert.ok(Number.isFinite(Date.parse(out.trNoRecordForProduction.at)));
+    assert.equal(out.fullText, r.fullText);
+    assert.equal(out.rejectedBy, r.rejectedBy);
+    assert.equal(out.wrongShow, true);
+    assert.equal(out.needsRescore, undefined);
+    assert.equal(r.trNoRecordForProduction, undefined, 'input is not mutated');
+    const again = mergeTheatreRecordIntoExisting(out, fresh(text));
+    assert.deepEqual(again.trNoRecordForProduction, out.trNoRecordForProduction);
+    const lifted = mergeTheatreRecordIntoExisting(out, fresh('A corrected production has a different review. '.repeat(20)));
+    assert.equal(lifted.trNoRecordForProduction, undefined);
+    assert.equal(lifted.rejectedBy, undefined);
+    assert.equal(lifted.needsRescore, true);
+  }
+});
+
+test('BRO-6356 NO-RECORD requires existing rejected TR text and a nonempty re-extraction', () => {
+  const r = { ...rejected(), source: 'theatre-record' };
+  for (const existing of [
+    { ...r, source: 'outlet' },
+    { ...r, source: undefined },
+    { ...r, rejectedBy: 'another-check' },
+    { ...r, rejectionReason: 'stub' },
+    { ...r, fullText: undefined },
+  ]) {
+    assert.equal(mergeTheatreRecordIntoExisting(existing, fresh(r.fullText)).trNoRecordForProduction, undefined);
+  }
+  assert.equal(mergeTheatreRecordIntoExisting(r, fresh('')).trNoRecordForProduction, undefined);
+});
+
+test('BRO-6356 safeWriteReview persists NO-RECORD on a merged rejected file', async () => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const { safeWriteReview } = createRequire(import.meta.url)('./review-write-guard.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6356-'));
+  try {
+    const showDir = path.join(dir, 'king-lear-west-end-2018');
+    fs.mkdirSync(showDir);
+    const p = path.join(showDir, 'telegraph--dominic-cavendish.json');
+    const r = { ...rejected(), source: 'theatre-record', showId: 'king-lear-west-end-2018', outletId: 'telegraph', criticName: 'Dominic Cavendish' };
+    fs.writeFileSync(p, JSON.stringify(r));
+    safeWriteReview(p, mergeTheatreRecordIntoExisting(r, fresh(r.fullText)));
+    const out = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.match(out.trNoRecordForProduction?.reason || '', /BRO-6154/);
+    assert.equal(out.rejectionReason, 'wrong_show');
+    assert.equal(out.fullText, r.fullText);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
 // BRO-6302: the merge lifted the rejection, but safeWriteReview's restore pass copied it back from disk.
 test('BRO-6302 safeWriteReview honors the BRO-6154 lift (rejection is not resurrected from disk)', async () => {
   const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
