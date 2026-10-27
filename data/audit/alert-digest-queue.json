@@ -1890,18 +1890,35 @@
     "queuedAt": "2026-10-27T05:37:08.939Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:billy-crystal-860-2026",
-    "title": "Review gap — \"Billy Crystal 860\" missing 2 cited review(s)",
-    "description": "Billy Crystal 860 (billy-crystal-860-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=billy-crystal-860-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-6422",
+    "description": "This condition already has an open tracker (BRO-6422); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 6 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Lint Workflows, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423",
     "decision": false,
     "info": false,
     "decisionPrompt": null,
     "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T06:11:01.381Z"
+    "tracked": "BRO-6422",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40457275951)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "6"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Lint Workflows, Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-27T06:18:22.716Z"
   },
   {
     "conditionKey": "review-gap:opening-window:dance-is-not-for-us-off-west-end-2026",
@@ -1958,50 +1975,5 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T06:11:01.545Z"
-  },
-  {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-27.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T06:11:08.455Z"
-  },
-  {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it — already tracked at BRO-6422",
-    "description": "This condition already has an open tracker (BRO-6422); not filing a duplicate. It will go quiet in the digest from here.\n\nmain test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40457120357",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": "BRO-6422",
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40457120357)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40457275951)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "5"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-27T06:09:02.009Z"
   }
 ]
