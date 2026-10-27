@@ -349,6 +349,20 @@ function _noteBdSuccess() {
   _brightDataBreakerOpenedAt = null;
 }
 
+// Diagnostic snapshot only: never advance a breaker to produce telemetry.
+// SD initializes openedAt on the next blocked call, so its fifth failure can
+// still have opened_at:null. probe means the dispatcher admitted a half-open
+// request; both BD subpaths can share that admission.
+function _serpBreakerSnapshot(failures, openedAt, probe) {
+  return {
+    consecutive_failures: failures,
+    opened_at: openedAt,
+    threshold: MAX_CONSECUTIVE_FAILURES,
+    cooldown_ms: SERP_BREAKER_COOLDOWN_MS,
+    probe: probe === true,
+  };
+}
+
 // ScrapingBee SERP (store/google) costs ~25 credits/call and is SEPARATE from
 // scraper.js's SB_CREDIT_BUDGET (page fetches) — sharing one flag would let a
 // SERP burst black out the paywalled-outlet page-fetch fallback mid-run. The
@@ -514,7 +528,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
       _scrapingdogSerpFailures = 0;
       _scrapingdogBreakerOpenedAt = null;
       // credits reflects actual attempts made — a retried call bills twice.
-      recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: SD_SERP_CREDITS_PER_CALL * attemptsMade });
+      recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: true, status: 200, credits: SD_SERP_CREDITS_PER_CALL * attemptsMade, breaker: _serpBreakerSnapshot(_scrapingdogSerpFailures, _scrapingdogBreakerOpenedAt, isProbe) });
       return organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
@@ -537,7 +551,7 @@ async function _serpViaScrapingdog(query, log, dateRange, geo, preferSpeed, page
   if (isProbe) _scrapingdogBreakerOpenedAt = _breakerNow;
   // SD bills only successful requests (A0 billing probe, see sdBilledCredits) —
   // booking failures at 5cr overstated SD SERP spend in the ledger (BRO-3325).
-  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_CREDITS_PER_CALL * attemptsMade), detail: scrapingdogSerpFailureDetail(lastError, q, geo, page, !!dateRange) });
+  recordSdCall({ host: 'serp.scrapingdog', fn: 'serp', success: false, status: lastError.response?.status || (lastError.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_CREDITS_PER_CALL * attemptsMade), detail: scrapingdogSerpFailureDetail(lastError, q, geo, page, !!dateRange), breaker: _serpBreakerSnapshot(_scrapingdogSerpFailures, _scrapingdogBreakerOpenedAt, isProbe) });
   log(`    ✗ Scrapingdog SERP error (${_scrapingdogSerpFailures}/${MAX_CONSECUTIVE_FAILURES}): ${lastError.message} — falling back to BD/SB`);
   return null;
 }
@@ -676,7 +690,7 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   const fullQuery = query + dateQuery;
 
   // Try synchronous SERP API first (fastest, returns structured JSON directly)
-  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page);
+  const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen);
   if (syncResult !== null) return syncResult;
 
   // Second consult before the async fallback (ship-check finding). These two
@@ -691,13 +705,13 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   }
 
   // Fallback: async SERP API (polling-based, slower but more reliable)
-  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page);
+  return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen);
 }
 
 const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
 const _BD_SERP_ZONE = process.env.BRIGHTDATA_SERP_ZONE || 'serp_api1';
 
-async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page = 0) {
+async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page = 0, isProbe = false) {
   try {
     // Use Google UK for West End queries, Google US for Broadway/OB
     // (explicit override wins — see _resolveGeo for UK-only slug-discovery callers)
@@ -718,14 +732,14 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
     if (!submitRes.ok) {
       _noteBdFailure();
       log(`    ✗ BD SERP API submit ${submitRes.status} (${_brightDataConsecutiveFailures}/${MAX_CONSECUTIVE_FAILURES}) — trying Web Unlocker`);
-      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: submitRes.status });
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: submitRes.status, breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
       return null; // Fall through to Web Unlocker
     }
     const submitData = await submitRes.json();
     const responseId = submitData.response_id;
     if (!responseId) {
       _noteBdFailure();
-      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'no_response_id' });
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'no_response_id', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
       return null;
     }
 
@@ -742,13 +756,13 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
       if (pollRes.status === 202) continue;
       if (!pollRes.ok) {
         _noteBdFailure();
-        recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: pollRes.status });
+        recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: pollRes.status, breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
         return null;
       }
       const data = await pollRes.json();
       if (data.organic) {
         _noteBdSuccess();
-        recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 200 });
+        recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 200, breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
         return data.organic.slice(0, 10).map(r => ({
           url: r.link || r.url || '',
           title: r.title || '',
@@ -757,22 +771,22 @@ async function _serpViaBrightDataSerpApi(query, apiKey, log, geoOverride, page =
       }
       if (data.response_id) continue;
       _noteBdSuccess();
-      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 'empty' });
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: true, status: 'empty', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
       return [];
     }
     _noteBdFailure();
     log('    ⚠ BD SERP API timeout (20s) — trying Web Unlocker');
-    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'timeout' });
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: 'timeout', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
     return null;
   } catch (error) {
     _noteBdFailure();
     log(`    ✗ BD SERP API error: ${error.message} — trying Web Unlocker`);
-    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: error.message?.slice(0, 80) || 'error' });
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-api', success: false, status: error.message?.slice(0, 80) || 'error', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
     return null;
   }
 }
 
-async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, page = 0) {
+async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, page = 0, isProbe = false) {
   const axios = require('axios');
   // Use SERP zone — Web Unlocker (mcp_unlocker) can't access Google Search
   const geo = _resolveGeo(query, geoOverride);
@@ -797,7 +811,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
     // Structured JSON response (unlikely from Web Unlocker but handle it)
     if (data && typeof data === 'object' && Array.isArray(data.organic)) {
       _noteBdSuccess();
-      recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api' });
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
       return data.organic.slice(0, 10).map(r => ({
         url: r.link || r.url || '',
         title: r.title || '',
@@ -808,7 +822,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
     // Raw HTML — parse with regex
     const html = typeof data === 'string' ? data : '';
     if (!html || html.length < 500) {
-      recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: 'short_html', fallbackFrom: 'serp-api' });
+      recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: 'short_html', fallbackFrom: 'serp-api', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
       return [];
     }
 
@@ -837,7 +851,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
     }
 
     _noteBdSuccess();
-    recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api' });
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: true, status: 200, fallbackFrom: 'serp-api', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
     return results.slice(0, 10);
   } catch (error) {
     _noteBdFailure();
@@ -845,7 +859,7 @@ async function _serpViaBrightDataWebUnlocker(query, apiKey, log, geoOverride, pa
     if (_brightDataConsecutiveFailures >= MAX_CONSECUTIVE_FAILURES) {
       log(`    ⚠ Bright Data SERP breaker open after ${MAX_CONSECUTIVE_FAILURES} consecutive failures — cooling down ${Math.round(SERP_BREAKER_COOLDOWN_MS / 60000)}min before the next probe`);
     }
-    recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: error.message?.slice(0, 80) || 'error', fallbackFrom: 'serp-api' });
+    recordBdCall({ host: 'serp.brightdata', fn: 'serp-unlocker', success: false, status: error.message?.slice(0, 80) || 'error', fallbackFrom: 'serp-api', breaker: _serpBreakerSnapshot(_brightDataConsecutiveFailures, _brightDataBreakerOpenedAt, isProbe) });
     return null;
   }
 }
@@ -1960,13 +1974,13 @@ async function _serpImagesViaScrapingdog(query, sdKey, nbResults, log, attempt =
     }
     _sdImagesFailures = 0;
     _sdImagesBreakerOpenedAt = null;
-    recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: true, status: 200, credits: SD_SERP_IMAGES_CREDITS_PER_CALL });
+    recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: true, status: 200, credits: SD_SERP_IMAGES_CREDITS_PER_CALL, breaker: _serpBreakerSnapshot(_sdImagesFailures, _sdImagesBreakerOpenedAt, verdict.halfOpen) });
     return normalizeScrapingdogImageResults(response.data).slice(0, nbResults);
   } catch (error) {
     _sdImagesFailures++;
     if (verdict.halfOpen) _sdImagesBreakerOpenedAt = Date.now();
     const status = error.response?.status;
-    recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_IMAGES_CREDITS_PER_CALL) });
+    recordSdCall({ host: 'serp.scrapingdog.images', fn: 'serp', success: false, status: status || (error.message || 'error').slice(0, 80), credits: sdBilledCredits(false, SD_SERP_IMAGES_CREDITS_PER_CALL), breaker: _serpBreakerSnapshot(_sdImagesFailures, _sdImagesBreakerOpenedAt, verdict.halfOpen) });
     log(`    ✗ Scrapingdog images SERP error (${_sdImagesFailures}/${MAX_CONSECUTIVE_FAILURES}): ${error.message} — trying the next images tier`);
     return null;
   }

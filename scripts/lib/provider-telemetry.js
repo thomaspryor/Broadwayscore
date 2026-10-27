@@ -25,6 +25,12 @@ const fs = require('fs');
 const path = require('path');
 const { isTestRun } = require('./test-run-guard');
 const { AsyncLocalStorage } = require('async_hooks');
+const { randomUUID } = require('crypto');
+
+// SERP breakers live in one Node process, not an entire workflow or job.
+// Union merges can reorder ledger lines; use run_seq within run_id instead.
+const SERP_RUN_ID = randomUUID();
+let _serpRunSequence = 0;
 
 // Per-show spend attribution (BRO-3386). A per-show loop wraps its work in
 // withSpendShow(show.id, fn) and every provider call made under it (fetchPage,
@@ -184,6 +190,7 @@ function _appendLedgerLine(record) {
  * @param {number|string|null} [opts.status]
  * @param {number|null} [opts.credits] - SB/SD credit cost
  * @param {string|null} [opts.fallbackFrom]
+ * @param {Object} [opts.breaker] - SERP consecutive-failure state after this outcome
  * @param {string|null} [opts.purpose] - free-text reason (Browserbase userMetadata parity)
  * @param {'review-text'|'discovery'|null} [opts.category] - Browserbase only (BRO-3097): distinguishes a
  *   Tier-1.5 paywalled review-text fetch from an aggregator-discovery session (BWW/Stagedoor/WE listing
@@ -209,6 +216,8 @@ function recordProviderCall(opts) {
       purpose: opts.purpose || process.env.SCRAPER_SPEND_PURPOSE || null, // env: per-show tag, see spend-purpose.js
       category: opts.category || null,
       showId: currentSpendShowId(opts.showId),
+      ...(typeof opts.host === 'string' && opts.host.startsWith('serp.') ? { run_id: SERP_RUN_ID, run_seq: ++_serpRunSequence } : {}),
+      ...(opts.breaker ? { breaker: opts.breaker } : {}),
       // Optional small diagnostic object (BRO-3344: why a SERP call failed).
       ...(opts.detail ? { detail: opts.detail } : {}),
     };
