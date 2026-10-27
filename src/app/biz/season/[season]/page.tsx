@@ -9,6 +9,9 @@ import { seasonOgImage } from '@/lib/biz-og';
 import BizHeader from '@/components/biz/BizHeader';
 import { notFound } from 'next/navigation';
 
+// Below this many tracked commercial shows a recoup ratio (e.g. 1 of 3) overstates a thin sample.
+const MIN_TRACKED_SHOWS = 5;
+
 import { featureFlags } from '@/config/feature-flags';
 import {
   getSeasonsWithCommercialData,
@@ -132,7 +135,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
         {/* Header */}
         <BizHeader
           title={`${season} Season`}
-          tagline="Commercial data for all Broadway productions from this season"
+          tagline={stats.totalShows >= MIN_TRACKED_SHOWS ? 'Commercial data for all Broadway productions from this season' : 'Commercial data for the Broadway productions we track from this season'}
           sharePath={`/biz/season/${season}`}
           shareTitle={`${season} Broadway Season | Profitability Scorecard`}
         >
@@ -154,11 +157,20 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             <div className="text-xs text-gray-500">Total Shows</div>
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
-            <div className="text-xl sm:text-2xl font-bold text-emerald-400">
-              {stats.recoupedCount}{' '}
-              <span className="text-sm text-gray-400">of {stats.totalShows}</span>
-            </div>
-            <div className="text-xs text-gray-500">Commercial shows recouped</div>
+            {stats.totalShows >= MIN_TRACKED_SHOWS ? (
+              <>
+                <div className="text-xl sm:text-2xl font-bold text-emerald-400">
+                  {stats.recoupedCount}{' '}
+                  <span className="text-sm text-gray-400">of {stats.totalShows}</span>
+                </div>
+                <div className="text-xs text-gray-500">Commercial shows recouped</div>
+              </>
+            ) : (
+              <>
+                <div className="text-sm text-gray-400">Too few tracked shows to state a recoup rate</div>
+                <div className="text-xs text-gray-500">Commercial shows recouped</div>
+              </>
+            )}
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-white">
