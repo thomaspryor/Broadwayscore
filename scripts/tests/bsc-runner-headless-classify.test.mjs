@@ -215,13 +215,23 @@ describe('classifyHeadlessResult — closing phrase inside the final paragraph (
     assert.equal(classifyHeadlessResult(t).outcome, 'stopped-short');
   });
   test('same paragraph: last phrase wins in both directions', () => {
-    assert.equal(classifyHeadlessResult('Do not keep this tab open now. CI is green. You can close this tab.').outcome, 'clean');
     assert.equal(classifyHeadlessResult('Nothing is blocked. You can close this tab. Keep this tab open.').outcome, 'stopped-short');
+    assert.equal(classifyHeadlessResult('CI is pending, so keep this tab open. You can remove the worktree.').outcome, 'stopped-short');
   });
   test('"Keep the worktree, it holds unfinished work." is stopped-short', () => {
     assert.equal(classifyHeadlessResult('Half done.\n\nKeep the worktree, it holds unfinished work.').outcome, 'stopped-short');
   });
   test('a closing phrase quoted in an EARLIER paragraph does not count', () => {
     assert.equal(classifyHeadlessResult('You can close this tab.\n\nI ran out of time.').outcome, 'stopped-short');
+  });
+  test('pending decision / conditional close / "but" are never clean (ship-check review)', () => {
+    for (const t of [
+      'Fixed half of it.\n\nYou need to: answer the question above.\nNothing is running. You can remove the worktree.',
+      'DECISION NEEDED: pick A or B. Once you answer, you can close this tab.',
+      'Done.\n\nYou can close this tab after CI goes green.',
+      'I did not finish. Nothing is running here, but the fix is not pushed.',
+      'Fixed half. You can remove the worktree.',
+    ]) assert.equal(classifyHeadlessResult(t).outcome, 'stopped-short', t);
+    assert.equal(classifyHeadlessResult('Done.\n\nYou need to: nothing. Nothing is running. You can close this tab.').outcome, 'clean');
   });
 });

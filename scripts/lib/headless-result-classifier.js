@@ -85,7 +85,7 @@ const CLOUD_CLEAN_RE = /^\s*[^\w\s]{0,6}\s*SAFE TO ARCHIVE\b/;
 // OPEN"), which this already classifies as stopped-short — the DECISION
 // NEEDED detail itself lives in the chat prose, not in a machine-parseable
 // suffix, so it isn't surfaced as a distinct `blocked` outcome here.
-const PLAIN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*you can close this tab\b/i;
+const PLAIN_CLOSE_RE = /^\s*[^\w\s]{0,6}\s*you can close this tab\b(?!\s+(?:after|once|when|until|if)\b)/i; // BRO-6314: conditional close is not a finish
 const PLAIN_IDLE_RE = /^\s*[^\w\s]{0,6}\s*nothing is running here\b/i;
 const PLAIN_KEEP_OPEN_RE = /^\s*[^\w\s]{0,6}\s*keep this tab open\b/i;
 
@@ -137,39 +137,39 @@ function classifyHeadlessResult(resultText) {
 
   // BRO-6314: sessions fold the closing sentences into one paragraph or put the
   // worktree sentence last ("Nothing is still running. ... You can close this
-  // tab and remove the worktree.", "You can remove the worktree, since ...").
-  // None starts the final line with a template, so 4 of 11 autofix jobs that
-  // finished their work (Paused/In Review with a recheck) were scored
-  // job-stopped-short -> card-fail. Scan the last paragraph; the LAST closing
-  // phrase wins, so a trailing "Keep this tab open." still fails safe.
+  // tab and remove the worktree.", "Nothing is running. ... You can remove the
+  // worktree, since ..."). None starts the final line with a template, so
+  // finished autofix jobs (Paused/In Review with a recheck) were scored
+  // job-stopped-short -> card-fail. Conservative on purpose: clean needs a
+  // close phrase and NOTHING in the paragraph that says work is pending.
   const tail = lastParagraph(resultText);
-  let last = null;
-  for (const [re, outcome] of PARAGRAPH_VERDICTS) {
-    const g = new RegExp(re.source, 'gi');
-    let m;
-    while ((m = g.exec(tail))) if (!last || m.index > last.index) last = { index: m.index, outcome };
-  }
-  if (last && last.outcome === 'clean') return { outcome: 'clean' };
-  if (last) {
+  if (PENDING_RE.test(tail)) {
     return {
       outcome: 'stopped-short',
-      reason: 'ended on plain-English "Keep this tab open" — a headless -p session is never resumed by a background notification',
+      reason: 'final paragraph says work is pending (keep tab/worktree, decision needed, or a conditional close) — a headless -p session is never resumed by a background notification',
     };
+  }
+  if (CLOSE_PHRASE_RE.test(tail) || (REMOVE_WORKTREE_RE.test(tail) && NOTHING_RUNNING_RE.test(tail))) {
+    return { outcome: 'clean' };
   }
 
   return { outcome: 'stopped-short', reason: 'no THIS SESSION: status line in final result' };
 }
 
-// Closing phrases recognised anywhere in the final paragraph (BRO-6314).
-// "remove the worktree" means the session reports nothing unfinished in it;
-// "keep the worktree" means it does (CLAUDE.md talking-to-the-owner item 4b).
-const PARAGRAPH_VERDICTS = [
-  [/\byou can close this tab\b/, 'clean'],
-  [/\bnothing is running here\b/, 'clean'],
-  [/\byou can remove the worktree\b/, 'clean'],
-  [/\bkeep this tab open\b/, 'keep'],
-  [/\bkeep the worktree\b/, 'keep'],
-];
+// Final-paragraph phrases (BRO-6314). Any pending signal anywhere in the
+// paragraph beats a close phrase: false-clean is the dangerous direction.
+const PENDING_RE = new RegExp([
+  /\bkeep this tab open\b/.source,
+  /\bkeep the worktree\b/.source,
+  /\bdecision needed\b/.source,
+  /\byou need to:\s*(?!nothing\b)\S/.source,
+  // conditional close: "you can close this tab after/once/when/until/if ..."
+  /\b(?:after|once|when|until|if)\b[^.]*\byou can close this tab\b/.source,
+  /\byou can close this tab\s+(?:after|once|when|until|if)\b/.source,
+].join('|'), 'i');
+const CLOSE_PHRASE_RE = /\b(?:you can close this tab|nothing is running here)\b(?!\s*,?\s*but\b)/i;
+const REMOVE_WORKTREE_RE = /\byou can remove the worktree\b/i;
+const NOTHING_RUNNING_RE = /\bnothing is (?:still )?running\b/i;
 
 function lastParagraph(text) {
   const paras = String(text || '').split(/\n\s*\n/).map(p => p.trim()).filter(p => p && !DECORATION_ONLY.test(p));
