@@ -19,14 +19,28 @@
     "gypsy-west-end-2015/musical-theatre-review--unknown.json",
     "gypsy-west-end-2015/britishtheatrecom--unknown.json",
     "gypsy-west-end-2015/musicaltheatremusings--unknown.json",
-    "clarence-darrow-west-end-2015/telegraph--dominic-cavendish.json"
+    "clarence-darrow-west-end-2015/telegraph--dominic-cavendish.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
   ],
   "failed": [
     "dear-lupin-west-end-2015/guardian--unknown.json",
     "dear-lupin-west-end-2015/britishtheatrecom--unknown.json",
     "dear-lupin-west-end-2015/london-box-office--davor-golub.json",
     "1984-west-end-2015/guardian--unknown.json",
-    "1984-west-end-2015/thestage--unknown.json"
+    "1984-west-end-2015/thestage--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+    "king-of-the-yees-off-broadway-2026/timeout--unknown.json",
+    "king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json",
+    "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -38,13 +52,18 @@
       "hay-fever-west-end-2015/standard--fiona-mountford.json",
       "gypsy-west-end-2015/loureviews--louise-penn.json",
       "gypsy-west-end-2015/britishtheatrecom--unknown.json",
-      "gypsy-west-end-2015/musicaltheatremusings--unknown.json"
+      "gypsy-west-end-2015/musicaltheatremusings--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
-      "gypsy-west-end-2015/musical-theatre-review--unknown.json"
+      "gypsy-west-end-2015/musical-theatre-review--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
     ],
     "scrapingbee": [
       "bend-it-like-beckham-the-musical-west-end-2015/daily-mail--quentin-letts.json"
@@ -53,7 +72,11 @@
       "bend-it-like-beckham-the-musical-west-end-2015/variety--matt-trueman.json"
     ],
     "archiveToday": [
-      "data/review-texts/1984-west-end-2015/thestage--unknown.json"
+      "data/review-texts/1984-west-end-2015/thestage--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/king-of-the-yees-off-broadway-2026/exeunt-magazine--unknown.json"
     ],
     "archive": [
       "bend-it-like-beckham-the-musical-west-end-2015/standard--henry-hitchings.json",
@@ -67,6 +90,35 @@
     ]
   },
   "startTime": "2026-10-27T06:29:37.736Z",
-  "lastProcessed": "clarence-darrow-west-end-2015/telegraph--dominic-cavendish.json",
-  "log": []
+  "lastProcessed": "lincoln-in-the-bardo-off-broadway-2026/nytimes--yoonha-park.json",
+  "log": [
+    {
+      "t": "2026-10-27T07:02:17.655Z",
+      "event": "bb-session",
+      "session": "6933b0e0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-27T07:07:22.046Z",
+      "event": "bb-session",
+      "session": "78a30a47",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T07:07:22.718Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T07:07:31.504Z",
+      "event": "bb-session",
+      "session": "ea23ae0c",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-27T07:07:32.064Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
