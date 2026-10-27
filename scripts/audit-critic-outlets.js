@@ -37,6 +37,7 @@ const path = require('path');
 const { baselineKeySet, computeNewViolators } = require('./lib/critic-outlets-baseline');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { findTenureFlags, describeTenureFlag } = require('./lib/critic-tenure');
+const { findAffiliationFlags } = require('./lib/critic-affiliations');
 const { scanReviewTexts: scanCriticReviewTexts } = require('./lib/critic-review-scan');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -276,6 +277,16 @@ function main() {
     }
   }
 
+  // BRO-6027: check explicit contradictions even for freelancers and fetched
+  // text that omits the true byline. This is advisory, with no new CI gate.
+  const affiliationFlags = findAffiliationFlags(critics);
+  console.log(`\nAffiliation flags (advisory): ${affiliationFlags.length}`);
+  if (!jsonOutput) {
+    for (const f of affiliationFlags) {
+      console.log(`  ${f.critic} at ${f.outlet} for ${f.showId}: ${f.reason}`);
+    }
+  }
+
   // --update-baseline: regenerate the baseline from the current scan and exit,
   // bypassing registry/audit file output (mirrors audit-outlet-registry.js).
   if (UPDATE_BASELINE) {
@@ -315,6 +326,7 @@ function main() {
     },
     flaggedReviews,
     tenureFlags,
+    affiliationFlags,
     freelancers: Object.entries(registry)
       .filter(([, c]) => c.isFreelancer)
       .map(([slug, c]) => ({
