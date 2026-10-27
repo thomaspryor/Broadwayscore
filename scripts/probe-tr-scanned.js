@@ -84,7 +84,9 @@ function tesseractStats(imgPath) {
         // Finds the marker page via per-page layout text, then prints up to 8 pages from it as one line per
         // pdftotext -bbox-layout text line with its position: AZL|issue|page|xMin|yMin|xMax|text
         const id = hitPath.replace('/archive/issue/', '');
-        const pages = sh('pdftotext', ['-layout', pdf2, '-']).split('\f');
+        // BRO-6428: a volume page past the volume's end returns an HTML page, not a PDF; skip it instead of aborting the batch
+        let pages;
+        try { pages = sh('pdftotext', ['-layout', pdf2, '-'], { stdio: ['ignore', 'pipe', 'ignore'] }).split('\f'); } catch (e) { console.log(`AZRAW ${id} not-a-pdf`); continue; }
         const markerRe = /A\s*[-\u2013]\s*Z of (?:current )?(?:London )?productions/i;
         let first = pages.findIndex((t, i) => i >= pages.length * 0.4 && markerRe.test(t.replace(/\s+/g, ' ')));
         // BRO-6343: issue 160 prints no "A-Z of productions" heading text; its A-Z page carries this footnote
