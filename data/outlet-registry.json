@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-26T23:22:06.627Z",
+    "lastUpdated": "2026-10-27T02:40:21.151Z",
     "version": "2.1.0",
     "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
   },
@@ -13635,6 +13635,14 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-26T23:22:06.627Z"
+    },
+    "substack-com": {
+      "displayName": "Substack Com",
+      "tier": 4,
+      "aliases": [
+        "substack-com"
+      ],
+      "domain": "substack.com"
     }
   },
   "_aliasIndex": {
