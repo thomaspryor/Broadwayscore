@@ -1,63 +1,71 @@
 {
-  "runDate": "2026-10-27T04:57:32.615Z",
+  "runDate": "2026-10-27T05:50:27.714Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "merry-me-off-broadway-2023,lone-star-off-broadway-2023,make-me-gorgeous-off-broadway-2023,waiting-for-godot-off-broadway-2023,mind-mangler-a-night-of-tragic-illusion-off-broadway-2023,partnership-off-broadway-2023",
+    "showFilter": "cats-west-end-2015,hangmen-west-end-2015,the-end-of-longing-west-end-2016,f-a-n-y-first-aid-nursing-yeomanry-west-end-2016,a-view-from-islington-north-west-end-2016,the-go-between-west-end-2016,american-idiot-west-end-2016,the-bodyguard-west-end-2016,breakfast-at-tiffanys-west-end-2016",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 20,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "90.9%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 2,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 0
+    "archiveToday": 1,
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 14,
+    "tier1Success": 11,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier1_9Attempts": 3,
+    "tier1_9Success": 2,
+    "tier2Attempts": 3,
     "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 11,
+    "tier4Success": 7,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 10,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.4,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 20,
+    "failed": 2,
     "shows": [
-      "merry-me-off-broadway-2023"
+      "a-view-from-islington-north-west-end-2016",
+      "american-idiot-west-end-2016",
+      "breakfast-at-tiffanys-west-end-2016",
+      "cats-west-end-2015",
+      "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016",
+      "hangmen-west-end-2015",
+      "the-bodyguard-west-end-2016",
+      "the-end-of-longing-west-end-2016",
+      "the-go-between-west-end-2016"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,31 +74,94 @@
     }
   },
   "processed": [
-    "merry-me-off-broadway-2023/timeout--regina-robbins.json"
+    "breakfast-at-tiffanys-west-end-2016/nytimes--unknown.json",
+    "breakfast-at-tiffanys-west-end-2016/london-box-office--stuart-king.json",
+    "the-bodyguard-west-end-2016/all-that-dazzles-uk--daz-gale.json",
+    "the-bodyguard-west-end-2016/everything-theatre--amelia-braddick.json",
+    "the-bodyguard-west-end-2016/london-box-office--stacey-tyler.json",
+    "the-bodyguard-west-end-2016/london-theatre--unknown.json",
+    "the-bodyguard-west-end-2016/west-end-best-friend--ryan-bishop.json",
+    "american-idiot-west-end-2016/london-box-office--david-scotland.json",
+    "the-go-between-west-end-2016/nytimes--unknown.json",
+    "the-go-between-west-end-2016/britishtheatrecom--unknown.json",
+    "a-view-from-islington-north-west-end-2016/british-theatre--philip-fisher.json",
+    "a-view-from-islington-north-west-end-2016/independent--unknown.json",
+    "a-view-from-islington-north-west-end-2016/london-box-office--david-scotland.json",
+    "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016/everything-theatre--brian-penn.json",
+    "the-end-of-longing-west-end-2016/daily-mail--lucy-mapstone.json",
+    "the-end-of-longing-west-end-2016/london-box-office--phil-willmott.json",
+    "the-end-of-longing-west-end-2016/metro-uk--brooke-ivey-johnson.json",
+    "hangmen-west-end-2015/london-box-office--unknown.json",
+    "hangmen-west-end-2015/standard--unknown.json",
+    "cats-west-end-2015/standard--fiona-mountford.json"
   ],
   "failed": [
-    "merry-me-off-broadway-2023/nytimes--laura-collins-hughes.json"
+    "the-go-between-west-end-2016/london-box-office--phil-willmott.json",
+    "a-view-from-islington-north-west-end-2016/thestage--mark-shenton.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "merry-me-off-broadway-2023/timeout--regina-robbins.json"
+      "breakfast-at-tiffanys-west-end-2016/nytimes--unknown.json",
+      "breakfast-at-tiffanys-west-end-2016/london-box-office--stuart-king.json",
+      "the-bodyguard-west-end-2016/all-that-dazzles-uk--daz-gale.json",
+      "the-bodyguard-west-end-2016/everything-theatre--amelia-braddick.json",
+      "the-bodyguard-west-end-2016/london-box-office--stacey-tyler.json",
+      "the-bodyguard-west-end-2016/london-theatre--unknown.json",
+      "the-bodyguard-west-end-2016/west-end-best-friend--ryan-bishop.json",
+      "american-idiot-west-end-2016/london-box-office--david-scotland.json",
+      "the-go-between-west-end-2016/nytimes--unknown.json",
+      "the-go-between-west-end-2016/britishtheatrecom--unknown.json",
+      "a-view-from-islington-north-west-end-2016/british-theatre--philip-fisher.json",
+      "a-view-from-islington-north-west-end-2016/independent--unknown.json",
+      "a-view-from-islington-north-west-end-2016/london-box-office--david-scotland.json",
+      "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016/everything-theatre--brian-penn.json",
+      "the-end-of-longing-west-end-2016/daily-mail--lucy-mapstone.json",
+      "the-end-of-longing-west-end-2016/london-box-office--phil-willmott.json",
+      "the-end-of-longing-west-end-2016/metro-uk--brooke-ivey-johnson.json",
+      "hangmen-west-end-2015/london-box-office--unknown.json",
+      "hangmen-west-end-2015/standard--unknown.json",
+      "cats-west-end-2015/standard--fiona-mountford.json"
     ],
     "failed": [
-      "merry-me-off-broadway-2023/nytimes--laura-collins-hughes.json"
+      "the-go-between-west-end-2016/london-box-office--phil-willmott.json",
+      "a-view-from-islington-north-west-end-2016/thestage--mark-shenton.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "merry-me-off-broadway-2023/timeout--regina-robbins.json"
+      "breakfast-at-tiffanys-west-end-2016/london-box-office--stuart-king.json",
+      "the-bodyguard-west-end-2016/all-that-dazzles-uk--daz-gale.json",
+      "the-bodyguard-west-end-2016/everything-theatre--amelia-braddick.json",
+      "the-bodyguard-west-end-2016/london-theatre--unknown.json",
+      "the-bodyguard-west-end-2016/west-end-best-friend--ryan-bishop.json",
+      "american-idiot-west-end-2016/london-box-office--david-scotland.json",
+      "the-go-between-west-end-2016/britishtheatrecom--unknown.json",
+      "a-view-from-islington-north-west-end-2016/british-theatre--philip-fisher.json",
+      "a-view-from-islington-north-west-end-2016/london-box-office--david-scotland.json",
+      "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016/everything-theatre--brian-penn.json",
+      "hangmen-west-end-2015/london-box-office--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "the-end-of-longing-west-end-2016/daily-mail--lucy-mapstone.json",
+      "the-end-of-longing-west-end-2016/metro-uk--brooke-ivey-johnson.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/a-view-from-islington-north-west-end-2016/thestage--mark-shenton.json"
+    ],
+    "archive": [
+      "breakfast-at-tiffanys-west-end-2016/nytimes--unknown.json",
+      "the-bodyguard-west-end-2016/london-box-office--stacey-tyler.json",
+      "the-go-between-west-end-2016/nytimes--unknown.json",
+      "a-view-from-islington-north-west-end-2016/independent--unknown.json",
+      "the-end-of-longing-west-end-2016/london-box-office--phil-willmott.json",
+      "hangmen-west-end-2015/standard--unknown.json",
+      "cats-west-end-2015/standard--fiona-mountford.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
