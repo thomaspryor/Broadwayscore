@@ -11,6 +11,7 @@ test('goal-only and role-less runs get the plain checklist', () => {
   assert.equal(rolePromptHeader(null), REVIEW_CHECKLIST);
   assert.equal(rolePromptHeader([]), REVIEW_CHECKLIST);
   assert.equal(rolePromptHeader(['goal', 'goal']), REVIEW_CHECKLIST);
+  assert.match(rolePromptHeader(['goal']), /never report elements outside the crop as missing/);
 });
 
 test('runs with only BEFORE references never see the matching checklist', () => {

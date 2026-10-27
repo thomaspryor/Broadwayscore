@@ -23,6 +23,9 @@ CRITICAL ANTI-HALLUCINATION RULES:
 - The reference image and the implementation may differ in dynamic content (today's date, scores
   that change with new data). DO NOT flag dynamic content differences. Flag only LAYOUT, COPY,
   STYLING, COLOR, and TYPOGRAPHY issues.
+- IMPLEMENTATION images may be tight crops of single components, while the REFERENCE shows a full page.
+  Compare each crop only to the matching region of the REFERENCE;
+  never report elements outside the crop as missing.
 - If the reference shows a single UI component (a card, a pill, a section) and the implementation
   shows a full page, look ONLY at the implementation region that corresponds to the reference.
 
