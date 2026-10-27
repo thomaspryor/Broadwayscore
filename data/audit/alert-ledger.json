@@ -23909,13 +23909,12 @@
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
       "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-27T15:22:49.030Z",
-      "lastNotifiedAt": "2026-10-26T15:45:10.597Z",
-      "lastSurfacedAt": "2026-10-26T15:45:10.597Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-10-27T15:54:26.700Z",
+      "lastNotifiedAt": "2026-10-27T15:54:26.700Z",
+      "lastSurfacedAt": "2026-10-27T15:54:26.700Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 14
+      "linearIdentifier": null
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24664,13 +24663,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-27T15:22:49.021Z",
+      "lastSeen": "2026-10-27T15:54:26.683Z",
       "lastNotifiedAt": "2026-10-27T05:05:22.819Z",
       "lastSurfacedAt": "2026-10-27T05:05:22.819Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -25921,7 +25920,7 @@
       "resolveReason": "job-green"
     },
     "live-data-test:scripts/verify-contamination-gate.test.mjs::no class-A cross-market leaks (a show showing another production's reviews)": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: no class-A cross-market leaks (a show showing another production's reviews) (scripts/verify-contamination-gate.test.mjs)",
       "firstSeen": "2026-10-24T13:07:31.042Z",
@@ -25931,7 +25930,9 @@
       "lastSurfacedAt": "2026-10-27T15:22:49.009Z",
       "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-27T15:54:26.741Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-6101-aggregator-repair": {
       "status": "resolved",
@@ -26493,13 +26494,13 @@
       "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-24T23:08:26.440Z",
       "incidentOpenedAt": "2026-10-24T23:08:26.440Z",
-      "lastSeen": "2026-10-27T15:22:49.047Z",
+      "lastSeen": "2026-10-27T15:54:26.728Z",
       "lastNotifiedAt": "2026-10-27T05:05:22.868Z",
       "lastSurfacedAt": "2026-10-27T05:05:22.868Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -27205,13 +27206,13 @@
       "title": "Live-data test failing: every national tour has a synopsis, or is a documented gap (tests/unit/tour-runtime-coverage.test.mjs)",
       "firstSeen": "2026-10-26T02:13:50.863Z",
       "incidentOpenedAt": "2026-10-26T02:13:50.863Z",
-      "lastSeen": "2026-10-27T15:22:49.038Z",
+      "lastSeen": "2026-10-27T15:54:26.715Z",
       "lastNotifiedAt": "2026-10-27T05:05:22.854Z",
       "lastSurfacedAt": "2026-10-27T05:05:22.854Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "land:land/bro-6268-ocr-probe-2": {
       "status": "open",

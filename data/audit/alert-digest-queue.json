@@ -462,5 +462,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T15:08:00.204Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
+    "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nnew same-show/same-outlet critic-name near-duplicate(s) found — this is the Markoski/Markosky double-count shape (BRO-4156). Either merge the duplicate files (keep the richer/real-URL record, dedupe criticName to the outlet's own byline spelling), or if this is a genuine two-different-critics collision, add it to KNOWN_BACKLOG/allow-list with a note why.\n+ actual - expected\n\n+ [\n+   [\n+     'angels-in-america-west-end-2017',\n+     'timeout-london',\n+     'Andrjez Lukowski',\n+     'Andrzej Lukowski'\n+   ],\n+   [\n+     'forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024',\n+     'times-square-chronicles',\n+     'Suzanna Bowling',\n+     'Suzanne Bowling'\n+   ],\n+   [\n+     'im-not-running-west-end-2018',\n+     'sunday-times',\n+     'David Jays',\n+     'Davis Jays'\n+   ],\n+   [\n+     'im-not-running-west-end-2018',\n+     'telegraph',\n+     'Dominic Cavandish',\n+     'Dominic Cavendish'\n+   ],\n+   [\n+     'oh-mary-off-broadway-2024',\n+     'nytimes',\n+     'Joshua Baron',\n+     'Joshua Barone'\n+   ],\n+   [\n+     'rockets-and-blue-lights-west-end-2021',\n+     'london-theatre',\n+     'Hailey Bachrach',\n+     'Hayley Bachrach'\n+   ],\n+   [\n+     'the-phantom-of-the-opera-west-end-1986',\n+     'express-uk',\n+     'Stefan Kyriazis',\n+     'Stephan Kyriazis'\n+   ]\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T15:54:26.700Z"
   }
 ]
