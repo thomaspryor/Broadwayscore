@@ -240,7 +240,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
@@ -253,7 +253,8 @@
       "linearIdentifier": "BRO-6422",
       "notifyCountAtRelease": 161,
       "sweptTracker": "BRO-6024",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-27T06:59:54.263Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4333,7 +4334,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Lint Workflows:1ff49e04": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
@@ -4350,7 +4351,9 @@
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-27T06:59:54.021Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
       "status": "resolved",
@@ -28447,7 +28450,7 @@
       "silentRefires": 2
     },
     "test-yml:red:Unit Tests:dddde6f0": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"generic substack host falls back to a host-derived provisional outlet\"",
       "firstSeen": "2026-10-27T04:49:31.428Z",
@@ -28468,7 +28471,9 @@
       "absentRunIds": [
         "40458183423",
         "40460787314"
-      ]
+      ],
+      "resolvedAt": "2026-10-27T06:59:54.046Z",
+      "resolveReason": "job-green"
     },
     "land:land/job/linear-BRO-6418-mvq7ia7i": {
       "status": "resolved",
@@ -28485,7 +28490,7 @@
       "resolvedAt": "2026-10-27T05:45:25.828Z"
     },
     "test-yml:red:Unit Tests:b7d1a320": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"the whole registry has no unreviewed run-together display names\"",
       "firstSeen": "2026-10-27T06:18:22.326Z",
@@ -28496,7 +28501,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6421",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-27T06:59:54.062Z",
+      "resolveReason": "job-green"
     }
   }
 }
