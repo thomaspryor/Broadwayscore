@@ -189,6 +189,34 @@
     "queuedAt": "2026-10-27T11:15:24.657Z"
   },
   {
+    "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
+    "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T12:30:17.013Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:fences-off-west-end-2026",
+    "title": "1 review(s) for fences-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- nbcny--5a0f0ca7.json (nbcny): fetch failed: All scraping methods failed https://www.nbcnewyork.com/entertainment/entertainment-news/tom-skerritt-actor-picket-fences-alien-top-gun-dies/6562233/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T12:30:40.929Z"
+  },
+  {
     "conditionKey": "review-gap:opening-window:king-of-the-yees-off-broadway-2026",
     "title": "Review gap — \"King of the Yees\" missing 4 cited review(s)",
     "description": "King of the Yees (king-of-the-yees-off-broadway-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=king-of-the-yees-off-broadway-2026 --checkpoint --ingest-missing",
