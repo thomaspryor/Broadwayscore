@@ -1,181 +1,39 @@
 {
-  "generatedAt": "2026-10-26T08:10:22.877Z",
-  "scope": "2 opening window(s): hospital-hour-off-broadway-2026 (2026-10-26), aftermath-art-new-york-off-broadway-2026 (2026-10-24)",
+  "generatedAt": "2026-10-27T08:11:37.337Z",
+  "scope": "2 opening window(s): i-became-we-off-broadway-2026 (2026-10-27), the-morbs-off-broadway-2026 (2026-10-27)",
   "degraded": null,
   "windows": [
     {
-      "showId": "hospital-hour-off-broadway-2026",
-      "openingDate": "2026-10-26",
-      "from": "2026-10-25T00:00:00.000Z",
-      "to": "2026-10-30T23:59:59.999Z"
+      "showId": "i-became-we-off-broadway-2026",
+      "openingDate": "2026-10-27",
+      "from": "2026-10-26T00:00:00.000Z",
+      "to": "2026-10-31T23:59:59.999Z"
     },
     {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "openingDate": "2026-10-24",
-      "from": "2026-10-23T00:00:00.000Z",
-      "to": "2026-10-28T23:59:59.999Z"
+      "showId": "the-morbs-off-broadway-2026",
+      "openingDate": "2026-10-27",
+      "from": "2026-10-26T00:00:00.000Z",
+      "to": "2026-10-31T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 176148,
+  "logEntryCount": 276257,
   "logOldestEntryAt": "2026-10-24T10:38:53.848Z",
   "publishTimesLoaded": 0,
   "verdict": {
-    "verdict": "fail",
+    "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 5,
+    "evaluated": 0,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": 0,
-    "p50Ms": 47287985,
-    "p90Ms": 47291771,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [
-      {
-        "showId": "aftermath-art-new-york-off-broadway-2026",
-        "reviewKey": "nytimes:ben-brantley:",
-        "outletId": "nytimes",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-10-25T14:53:04.229Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-10-25T14:57:25.032Z",
-        "liveAt": "2026-10-26T03:51:16.000Z",
-        "pipelineMs": 46691771,
-        "publishedToLiveMs": 47291771,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      },
-      {
-        "showId": "aftermath-art-new-york-off-broadway-2026",
-        "reviewKey": "theatermania:dan-bacalzo:http://www.theatermania.com/off-broadway/news/09-2009/aftermath_21177.html",
-        "outletId": "theatermania",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-10-25T14:53:07.748Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-10-25T14:57:25.032Z",
-        "liveAt": "2026-10-26T03:51:16.000Z",
-        "pipelineMs": 46688252,
-        "publishedToLiveMs": 47288252,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      },
-      {
-        "showId": "aftermath-art-new-york-off-broadway-2026",
-        "reviewKey": "variety:marilyn-stasio:",
-        "outletId": "variety",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-10-25T14:53:08.015Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-10-25T14:57:25.032Z",
-        "liveAt": "2026-10-26T03:51:16.000Z",
-        "pipelineMs": 46687985,
-        "publishedToLiveMs": 47287985,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      },
-      {
-        "showId": "aftermath-art-new-york-off-broadway-2026",
-        "reviewKey": "backstage:erik-haagensen:",
-        "outletId": "backstage",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-10-25T14:53:08.317Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-10-25T14:57:25.032Z",
-        "liveAt": "2026-10-26T03:51:16.000Z",
-        "pipelineMs": 46687683,
-        "publishedToLiveMs": 47287683,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      },
-      {
-        "showId": "aftermath-art-new-york-off-broadway-2026",
-        "reviewKey": "timeout:time-out-new-york:http://newyork.timeout.com/articles/theater/77985/jessica-blank-and-erik-jensen-aftermath-at-new-york-theatre-workshop-interview",
-        "outletId": "timeout",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-10-25T14:53:08.630Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-10-25T14:57:25.032Z",
-        "liveAt": "2026-10-26T03:51:16.000Z",
-        "pipelineMs": 46687370,
-        "publishedToLiveMs": 47287370,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      }
-    ],
-    "byBasis": {
-      "poller-bounded": {
-        "evaluated": 5,
-        "compliant": 0
-      }
-    }
+    "breaches": [],
+    "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "outletId": "nytimes",
-      "reviewKey": "nytimes:ben-brantley:",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-10-25T14:53:04.229Z",
-      "liveAt": "2026-10-26T03:51:16.000Z",
-      "pipelineMinutes": 778.2,
-      "publishedToLiveMinutes": 788.2,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "outletId": "theatermania",
-      "reviewKey": "theatermania:dan-bacalzo:http://www.theatermania.com/off-broadway/news/09-2009/aftermath_21177.html",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-10-25T14:53:07.748Z",
-      "liveAt": "2026-10-26T03:51:16.000Z",
-      "pipelineMinutes": 778.1,
-      "publishedToLiveMinutes": 788.1,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "outletId": "variety",
-      "reviewKey": "variety:marilyn-stasio:",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-10-25T14:53:08.015Z",
-      "liveAt": "2026-10-26T03:51:16.000Z",
-      "pipelineMinutes": 778.1,
-      "publishedToLiveMinutes": 788.1,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "outletId": "backstage",
-      "reviewKey": "backstage:erik-haagensen:",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-10-25T14:53:08.317Z",
-      "liveAt": "2026-10-26T03:51:16.000Z",
-      "pipelineMinutes": 778.1,
-      "publishedToLiveMinutes": 788.1,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "outletId": "timeout",
-      "reviewKey": "timeout:time-out-new-york:http://newyork.timeout.com/articles/theater/77985/jessica-blank-and-erik-jensen-aftermath-at-new-york-theatre-workshop-interview",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-10-25T14:53:08.630Z",
-      "liveAt": "2026-10-26T03:51:16.000Z",
-      "pipelineMinutes": 778.1,
-      "publishedToLiveMinutes": 788.1,
-      "stuckAtStage": null
-    }
-  ]
+  "records": []
 }
