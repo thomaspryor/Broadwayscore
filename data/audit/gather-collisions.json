@@ -1,20 +1,5 @@
 [
   {
-    "recordedAt": "2026-10-19T05:23:57.480Z",
-    "showId": "other-desert-cities-2026",
-    "newFile": "amny--matt-windman.json",
-    "ok": false,
-    "file": "amny--matt-windman.json",
-    "reason": "publish-date-gap-exceeds-365-days",
-    "detail": {
-      "existingPublishDate": "2026-10-19",
-      "incomingPublishDate": "November 3, 2011",
-      "diffDays": 5464,
-      "existingUrl": "https://www.amny.com/entertainment/broadway/review-other-desert-cities-2026/",
-      "incomingUrl": "http://www.amny.com/urbanite-1.812039/theater-review-other-desert-cities-3-5-stars-1.3295262"
-    }
-  },
-  {
     "recordedAt": "2026-10-19T10:46:16.219Z",
     "showId": "blood-of-my-blood-west-end-2026",
     "newFile": "times-uk--unknown.json",
@@ -9474,6 +9459,25 @@
   },
   {
     "recordedAt": "2026-10-27T02:48:41.360Z",
+    "showId": "girls-off-west-end-2026",
+    "newFile": "exeunt-magazine--loren-noveck.json",
+    "ok": false,
+    "file": "exeunt-magazine--unknown.json",
+    "reason": "stale-flag-on-existing-file",
+    "detail": {
+      "existingUrl": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/attachment/dsc00744/",
+      "existingFlags": {
+        "wrongProduction": true,
+        "wrongShow": false,
+        "wrongProductionAutoCleared": false
+      },
+      "existingPublishDate": null,
+      "incomingUrl": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+      "incomingPublishDate": null
+    }
+  },
+  {
+    "recordedAt": "2026-10-27T03:47:31.305Z",
     "showId": "girls-off-west-end-2026",
     "newFile": "exeunt-magazine--loren-noveck.json",
     "ok": false,
