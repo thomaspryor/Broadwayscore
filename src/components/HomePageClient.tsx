@@ -939,7 +939,7 @@ function HomePageInner({ shows, archiveHash, upcomingShows, totalShows, totalRev
       )}
 
       <div className="mt-8 flex items-baseline justify-between text-sm text-gray-400">
-        <span>{panel.filteredShows.length} shows</span>
+        <span>{panel.filteredShows.length} {panel.filteredShows.length === 1 ? 'show' : 'shows'}</span>
         <Link href="/methodology" prefetch={false} className="text-brand hover:text-brand-hover transition-colors">
           How scores work →
         </Link>

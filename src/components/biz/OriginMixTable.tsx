@@ -32,14 +32,14 @@ export default function OriginMixTable<Id extends string>({
               <th key={e.id} className="py-2 px-1 sm:px-4 font-medium text-center">
                 <span className="block text-white">{e.id}</span>
                 <span className="block text-[11px] leading-tight font-normal text-gray-500">{e.short}</span>
-                <span className="block text-xs font-normal text-gray-500">{totals[i]} shows</span>
+                <span className="block text-xs font-normal text-gray-500">{totals[i]} {totals[i] === 1 ? 'show' : 'shows'}</span>
               </th>
             ))}
             {current && (
               <th className="py-2 px-1 sm:px-4 font-medium text-center border-l border-white/10">
                 <span className="block text-white whitespace-nowrap">{current.label}</span>
                 <span className="block text-[11px] leading-tight font-normal text-gray-500">opened + announced</span>
-                <span className="block text-xs font-normal text-gray-500">{current.total} shows</span>
+                <span className="block text-xs font-normal text-gray-500">{current.total} {current.total === 1 ? 'show' : 'shows'}</span>
               </th>
             )}
           </tr>

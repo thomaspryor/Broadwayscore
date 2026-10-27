@@ -1,0 +1,198 @@
+{
+  "src/app/admin/ingest/IngestForm.tsx": {
+    "successCount | reviews": 1
+  },
+  "src/app/audience-buzz/page.tsx": {
+    "showsWithBuzz.length | shows": 1
+  },
+  "src/app/award-score/page.tsx": {
+    "showsWithScore.length | shows": 1,
+    "showsWithScore.length - AWARD_TABLE_INITIAL_ROWS | shows": 1
+  },
+  "src/app/best-value/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithDiscounts.length | shows": 1
+  },
+  "src/app/biz/reviews-and-money/page.tsx": {
+    "MIN_RATE_SAMPLE | shows": 1
+  },
+  "src/app/biz/season/[season]/page.tsx": {
+    "profile.returnedCapital.shows | shows": 1
+  },
+  "src/app/browse/[slug]/page.tsx": {
+    "shows.length | shows": 1
+  },
+  "src/app/cast-changes/page.tsx": {
+    "showsWithCast.length | shows": 1
+  },
+  "src/app/compare/[shows]/page.tsx": {
+    "show.criticScore.reviewCount | reviews": 1
+  },
+  "src/app/critics/CriticIndexClient.tsx": {
+    "totalReviews.toLocaleString('en-US') | reviews": 1
+  },
+  "src/app/critics/outlets/OutletIndexClient.tsx": {
+    "totalReviews.toLocaleString('en-US') | reviews": 1
+  },
+  "src/app/critics/page.tsx": {
+    "totalReviews.toLocaleString() | reviews": 1
+  },
+  "src/app/discount-tickets/page.tsx": {
+    "rows.length | shows": 1
+  },
+  "src/app/fantasy/draft/page.tsx": {
+    "FANTASY_TEAM_SIZE | shows": 2
+  },
+  "src/app/fantasy/page.tsx": {
+    "info.teamSize | shows": 1,
+    "openedNow.length | shows": 2
+  },
+  "src/app/guides/broadway-first-timer-guide/page.tsx": {
+    "openShowCount | shows": 3
+  },
+  "src/app/guides/cheap-broadway-tickets/page.tsx": {
+    "lotteryShowCount | shows": 2,
+    "rushShowCount | shows": 2,
+    "openShowsWithDiscounts.length | shows": 1
+  },
+  "src/app/lists/[listType]/[season]/page.tsx": {
+    "market | shows": 1,
+    "config.maxPerSeason | shows": 1
+  },
+  "src/app/lists/[listType]/all-time/page.tsx": {
+    "market | shows": 1
+  },
+  "src/app/llms.txt/route.ts": {
+    "openShows.length | shows": 1,
+    "s.criticScore?.reviewCount | reviews": 1
+  },
+  "src/app/lotteries/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithLottery.length | shows": 1
+  },
+  "src/app/my-shows/ImportShows.tsx": {
+    "importStats.imported | shows": 1
+  },
+  "src/app/nvp/NVPClient.tsx": {
+    "nvpShows.length | shows": 1
+  },
+  "src/app/off-broadway/page.tsx": {
+    "activeShows.length | shows": 1
+  },
+  "src/app/off-broadway/theater/[slug]/page.tsx": {
+    "theater.showCount | shows": 1
+  },
+  "src/app/path-to-broadway/page.tsx": {
+    "SOLID_SAMPLE | shows": 1
+  },
+  "src/app/rankings/page.tsx": {
+    "showCount | shows": 1,
+    "openShows.length | shows": 1
+  },
+  "src/app/rss.xml/route.ts": {
+    "show.criticScore.reviewCount | reviews": 1,
+    "show.title | reviews": 1
+  },
+  "src/app/rush/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithRush.length | shows": 1
+  },
+  "src/app/show/[slug]/page.tsx": {
+    "reviewCount | reviews": 4
+  },
+  "src/app/standing-room/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithSRO.length | shows": 1
+  },
+  "src/app/theater/[slug]/page.tsx": {
+    "theater.showCount | shows": 2
+  },
+  "src/app/tony-awards/people/page.tsx": {
+    "entry.shows.length | shows": 1
+  },
+  "src/app/video-critics/[slug]/page.tsx": {
+    "creator.reviewCount | shows": 1
+  },
+  "src/app/west-end/audience-buzz/page.tsx": {
+    "showsWithBuzz.length | shows": 1
+  },
+  "src/app/west-end/best-value/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithDiscounts.length | shows": 1
+  },
+  "src/app/west-end/discount-tickets/page.tsx": {
+    "rows.length | shows": 1
+  },
+  "src/app/west-end/lotteries/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithLottery.length | shows": 1
+  },
+  "src/app/west-end/rush/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithRush.length | shows": 1
+  },
+  "src/app/west-end/standing-room/page.tsx": {
+    "show.criticScore?.reviewCount || 0 | reviews": 1,
+    "showsWithSRO.length | shows": 1
+  },
+  "src/app/west-end/theater/[slug]/page.tsx": {
+    "theater.showCount | shows": 1
+  },
+  "src/components/BoxOfficeScorecard.tsx": {
+    "card.of | shows": 1
+  },
+  "src/components/HamburgerMenu.tsx": {
+    "localList.length | shows": 1
+  },
+  "src/components/HomepageExplainerShelf.tsx": {
+    "totalReviews.toLocaleString('en-US') | reviews": 1
+  },
+  "src/components/biz/AllShowsTable.tsx": {
+    "shows.length | shows": 1
+  },
+  "src/components/box-office/MarketStories.tsx": {
+    "perSeat.ranked | shows": 1
+  },
+  "src/components/my-shows/stats/AisleMates.tsx": {
+    "a.shared | shows": 2,
+    "sharedShowCount | shows": 1,
+    "highVolumeNemesis.shared | shows": 1
+  },
+  "src/components/my-shows/stats/StatsTab.tsx": {
+    "MIN_ENTRIES_FOR_STATS | shows": 1,
+    "bundle.critics.comparable | shows": 1,
+    "bundle.audience.comparable | shows": 1
+  },
+  "src/components/my-shows/stats/YouVsCritics.tsx": {
+    "critics.comparable | shows": 1,
+    "audience.comparable | shows": 1
+  },
+  "src/components/onboarding/WelcomeSheet.tsx": {
+    "saveFailed | shows": 1
+  },
+  "src/config/email-list-copy.ts": {
+    "marketLabel(market) | shows": 1
+  },
+  "src/config/guide-pages.ts": {
+    "count | shows": 12
+  },
+  "src/hooks/useUserLists.ts": {
+    "MAX_ITEMS_PER_LIST | shows": 1
+  },
+  "src/lib/box-office-display.ts": {
+    "m.performances | shows": 2
+  },
+  "src/lib/engine.ts": {
+    "reviewCount | reviews": 4
+  },
+  "src/lib/seo.ts": {
+    "reviewCount | reviews": 5,
+    "getMarketMinReviews(shows[0]?.category) | reviews": 1,
+    "critic.reviewCount | reviews": 1,
+    "critic.reviewCount | shows": 1,
+    "outlet.reviewCount | reviews": 1,
+    "context.entryCount | shows": 1,
+    "maxLabel | shows": 1,
+    "stats.totalReviews.toLocaleString() | reviews": 1
+  }
+}
