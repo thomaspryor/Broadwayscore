@@ -857,9 +857,9 @@ const rSlim = { 'ra-2026': { cs: 83.4, rc: 14 }, 'rb-2026': { cs: 70.2, rc: 14 }
 const rRev = Object.fromEntries(rShows.map(s => [s.id, reviews(3, 3, 8)]));
 const rCtx = (over = {}) => ({ shows: rShows, ledger: { posts: [] }, now: FRI, slim: rSlim, getOutletTier, reviewsByShow: rRev, cfg: { ...C6413.WEEKLY_ROUNDUP, enabled: true }, ...over });
 
-test('both new types ship OFF, with the owner weekday, thresholds and range as plain config values', () => {
-  assert.equal(C6413.WEEKLY_ROUNDUP.enabled, false);
-  assert.equal(C6413.CLOSING_SOON.enabled, false);
+test('both new types ship ON (owner approved 2026-10-27), with the owner weekday, thresholds and range as plain config values', () => {
+  assert.equal(C6413.WEEKLY_ROUNDUP.enabled, true);
+  assert.equal(C6413.CLOSING_SOON.enabled, true);
   assert.equal(C6413.WEEKLY_ROUNDUP.weekday, 5);
   assert.equal(C6413.WEEKLY_ROUNDUP.minShows, 2);
   assert.equal(C6413.WEEKLY_ROUNDUP.maxRows, 6);

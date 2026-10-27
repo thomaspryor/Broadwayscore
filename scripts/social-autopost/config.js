@@ -87,9 +87,9 @@ const LONDON_COMPARE_LOOKBACK_DAYS = 5; // a London comparison later than this a
 // at SCORE_POST_LOCAL_HOUR on that day in the set's home time zone. The window is the
 // WINDOW_DAYS days that end LAG_DAYS before the post day: a show that opened the evening before
 // has its own score post that morning (one post per show per network per day, score posts win),
-// so it waits for next week's roundup. Default OFF until the owner has seen a sample.
+// so it waits for next week's roundup. ON since the owner approved the sample (2026-10-27); set false to stop.
 const WEEKLY_ROUNDUP = {
-  enabled: false,
+  enabled: true,
   weekday: 5,
   minShows: 2, // fewer shows with a score and a poster: the week is skipped
   maxRows: 6, // rows on the card
@@ -99,9 +99,9 @@ const WEEKLY_ROUNDUP = {
 };
 
 // Closing soon (BRO-6413): a top-rated show in its last weeks, posted once ever per show.
-// Default OFF until the owner has seen a sample.
+// ON since the owner approved the sample (2026-10-27); set false to stop.
 const CLOSING_SOON = {
-  enabled: false,
+  enabled: true,
   minDays: 14, // closing date at least this many local days away...
   maxDays: 28, // ...and at most this many
   minScore: 80, maxPerDay: 2, // rounded Critic Score
