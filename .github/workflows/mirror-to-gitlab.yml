@@ -41,20 +41,23 @@ jobs:
         # for 3+ days: GitLab held 12.2 GB (free limit 10 GB) vs 4 GB on GitHub, because
         # force-pushes leave unreachable objects that only GitLab housekeeping removes.
         # The failure alert mislabels this as push-contention, so log the numbers here and
-        # ask GitLab to prune + repack when over 8 GB. Never fails the job.
+        # ask GitLab to prune + eager-repack when over 8 GB (valid task values: prune, eager). Never fails the job.
         continue-on-error: true
         run: |
           PROJECT=$(echo "${GITLAB_NAMESPACE}/broadwayscorecard" | sed 's/\//%2F/g')
           SIZE=$(curl -s -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
             "https://gitlab.com/api/v4/projects/${PROJECT}?statistics=true" \
-            | jq -r '.statistics.storage_size // 0')
-          echo "GitLab storage_size=${SIZE} bytes; GitHub clone: heads=$(git -C repo.git for-each-ref refs/heads | wc -l) size=$(du -sh repo.git | cut -f1)"
+            | jq -r '.statistics.repository_size // 0') || SIZE=0
+          case "$SIZE" in ''|*[!0-9]*) echo "::warning::GitLab storage stats unavailable (got '${SIZE}'); skipping housekeeping"; SIZE=0 ;; esac
+          echo "GitLab repository_size=${SIZE} bytes; GitHub clone: heads=$(git -C repo.git for-each-ref refs/heads | wc -l) size=$(du -sh repo.git | cut -f1)"
           if [ "$SIZE" -gt 8000000000 ]; then
-            echo "Over 8 GB: requesting GitLab housekeeping (prune, then gc)"
-            for TASK in prune gc; do
-              curl -s -o /dev/null -w "housekeeping ${TASK}: HTTP %{http_code}\n" -X POST \
+            echo "Over 8 GB: requesting GitLab housekeeping (prune, then eager)"
+            for TASK in prune eager; do
+              CODE=$(curl -s -o /dev/null -w "%{http_code}" -X POST \
                 -H "PRIVATE-TOKEN: ${GITLAB_TOKEN}" \
-                "https://gitlab.com/api/v4/projects/${PROJECT}/housekeeping?task=${TASK}"
+                "https://gitlab.com/api/v4/projects/${PROJECT}/housekeeping?task=${TASK}")
+              echo "housekeeping ${TASK}: HTTP ${CODE}"
+              case "$CODE" in 2*) ;; *) echo "::warning::GitLab housekeeping ${TASK} rejected (HTTP ${CODE})" ;; esac
             done
           fi
         env:
