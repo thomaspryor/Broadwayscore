@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-27T09:08:20.336Z",
+  "generated": "2026-10-27T09:31:44.001Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 35,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -240,13 +240,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "ceilidh-the-musical-off-west-end-2026",
-      "loserFile": "theatrebookings--tube.json",
-      "targetFile": "lsbo--unknown.json",
-      "reason": "orphaned-duplicate-heal: lsbo--unknown.json was flagged invalid after theatrebookings--tube.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
