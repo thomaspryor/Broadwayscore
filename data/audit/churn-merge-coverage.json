@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-26T23:23:38.907Z",
+    "generatedAt": "2026-10-26T23:56:06.943Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -20,11 +20,11 @@
     },
     {
       "path": "data/audit/bundle-size-history.json",
-      "churn": 55
+      "churn": 56
     },
     {
       "path": "data/audit/outlet-registry-staging.json",
-      "churn": 50
+      "churn": 52
     },
     {
       "path": "data/audit/outlet-feed-reconcile.json",
@@ -34,7 +34,7 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 1015
+      "churn": 1017
     },
     {
       "path": "data/audit/alert-digest-queue.json",
@@ -54,15 +54,15 @@
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 167
+      "churn": 168
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 144
+      "churn": 145
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 122
+      "churn": 123
     },
     {
       "path": "public/data/shows/the-comedy-about-spies-west-end-2025.json",
@@ -70,7 +70,7 @@
     },
     {
       "path": "public/data/shows/translations-west-end-2018.json",
-      "churn": 88
+      "churn": 89
     },
     {
       "path": "public/data/shows/the-pianist-off-west-end-2026.json",
@@ -93,11 +93,11 @@
       "churn": 37
     },
     {
-      "path": "public/data/shows/billy-crystal-860-2026.json",
-      "churn": 36
+      "path": "public/data/shows/ilford-boy-west-end-2026.json",
+      "churn": 37
     },
     {
-      "path": "public/data/shows/ilford-boy-west-end-2026.json",
+      "path": "public/data/shows/billy-crystal-860-2026.json",
       "churn": 36
     },
     {
@@ -106,22 +106,22 @@
     },
     {
       "path": "public/data/shows/derren-brown-only-human-west-end-2026.json",
-      "churn": 32
+      "churn": 33
     },
     {
       "path": "public/data/shows/the-master-builder-off-west-end-2026.json",
-      "churn": 31
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 900,
+      "churn": 899,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 574,
+      "churn": 572,
       "mergeAttr": "union"
     },
     {
@@ -146,22 +146,22 @@
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 369,
+      "churn": 372,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/exclusion-daily-totals.json",
-      "churn": 305,
+      "churn": 304,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/skipped-alias-collisions.json",
-      "churn": 257,
+      "churn": 260,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 249,
+      "churn": 250,
       "mergeAttr": "ours"
     },
     {
@@ -181,57 +181,52 @@
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 208,
+      "churn": 209,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/lane-rehearsal.json",
-      "churn": 164,
+      "churn": 161,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 150,
+      "churn": 151,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/exclusion-mirror-summary.json",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 144,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 144,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 109,
+      "churn": 145,
       "mergeAttr": "ours"
     },
     {
@@ -240,18 +235,23 @@
       "mergeAttr": "ours"
     },
     {
+      "path": "data/audit/pipeline-health/test.last-success",
+      "churn": 107,
+      "mergeAttr": "ours"
+    },
+    {
       "path": "data/audit/validation-baseline.json",
-      "churn": 103,
+      "churn": 102,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 99,
+      "churn": 98,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 98,
+      "churn": 97,
       "mergeAttr": "ours"
     },
     {
@@ -271,17 +271,22 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 49,
+      "churn": 48,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 49,
+      "churn": 48,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/url-mismatch-suspects.json",
       "churn": 48,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/poller-backoff/buffy-revamped-west-end-2026.json",
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
@@ -306,11 +311,6 @@
     },
     {
       "path": "data/audit/gap-audit-checkpoint.json",
-      "churn": 37,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/poller-backoff/buffy-revamped-west-end-2026.json",
       "churn": 37,
       "mergeAttr": "ours"
     },
