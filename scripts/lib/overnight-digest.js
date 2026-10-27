@@ -335,7 +335,10 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
       const fresh = reg.timestamp && (Date.now() - new Date(reg.timestamp).getTime()) < hours * 3600000;
       // The file is only rewritten when a rebuild finds a regression, never cleared, so a
       // drop that has since recovered (BRO-6432) must not keep the row warn for 24h.
-      const live = fresh && Array.isArray(reg.regressions) ? reg.regressions.filter(r => !regressionRecovered(repo, r)) : [];
+      const counts = fresh && Array.isArray(reg.regressions) ? reviewCountsSince(repo, reg.timestamp) : null;
+      const live = fresh && Array.isArray(reg.regressions)
+        ? reg.regressions.filter(r => !(counts && r && r.oldCount > 0 && (counts[r.showId] || 0) >= r.oldCount))
+        : [];
       if (live.length) {
         digest.stuck.reviewRegressions = live.slice(0, 5).map(r => `${r.showId}: ${r.oldCount}→${r.newCount} reviews (${r.reason})`);
       }
@@ -347,14 +350,17 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
   return digest;
 }
 
-// True when reviews.json now holds at least the pre-drop count for the show.
-// Any read problem returns false so an unreadable file keeps the signal.
-function regressionRecovered(repo, r) {
+// Show -> review count from reviews.json, only when it was rebuilt AFTER the regression was
+// recorded (a stale checkout must keep the signal). null on any read problem.
+function reviewCountsSince(repo, sinceIso) {
   try {
-    const all = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'reviews.json'), 'utf8')).reviews;
-    if (!Array.isArray(all) || !r || !r.showId || !(r.oldCount > 0)) return false;
-    return all.filter(x => x.showId === r.showId).length >= r.oldCount;
-  } catch { return false; }
+    const raw = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'reviews.json'), 'utf8'));
+    const built = Date.parse(raw && raw._meta && raw._meta.lastUpdated);
+    if (!Array.isArray(raw.reviews) || !(built > Date.parse(sinceIso))) return null;
+    const counts = {};
+    for (const x of raw.reviews) counts[x.showId] = (counts[x.showId] || 0) + 1;
+    return counts;
+  } catch { return null; }
 }
 
 // ── Render (HTML block for the morning email) ───────────────────────────────
