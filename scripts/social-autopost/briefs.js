@@ -129,17 +129,18 @@ function briefConflicts(ledger, { hash, pair }, now) {
  * When a brief post goes out: the first time from now+10 min that is inside the
  * daytime window (in `tz`, the newer production's market), STAGGER_MINUTES from
  * every post in `taken`, and on a local day that none of `shows` ({tz, busy:Set of
- * YYYY-MM-DD}) already has a post. Null when no such time exists within MAX_SLOT_DAYS.
+ * YYYY-MM-DD}) already has a post. `earliest` (ms) holds the search back to a known
+ * slot, e.g. a London comparison's morning after. Null when no such time exists within MAX_SLOT_DAYS.
  * select.js supplies the window helpers (passed in to keep this module pure).
  */
-function pickBriefSlot({ now, tz, shows, taken, inWindow, nextWindowSlot, zonedTime, localDay }) {
+function pickBriefSlot({ now, earliest = 0, tz, shows, taken, inWindow, nextWindowSlot, zonedTime, localDay }) {
   const gap = C.STAGGER_MINUTES * MIN_MS;
   const nextDay = (t) => {
     const d = new Date(`${localDay(t, tz)}T12:00:00Z`);
     d.setUTCDate(d.getUTCDate() + 1);
     return zonedTime(d.toISOString().slice(0, 10), C.SCORE_POST_WINDOW.start, tz).getTime();
   };
-  let t = nextWindowSlot(now + 10 * MIN_MS, tz);
+  let t = nextWindowSlot(Math.max(earliest, now + 10 * MIN_MS), tz);
   for (let guard = 0; guard < 200 && t - now <= MAX_SLOT_DAYS * DAY_MS; guard++) {
     if (!inWindow(t, tz)) { t = nextWindowSlot(t, tz); continue; }
     if (shows.some(s => s.busy.has(localDay(t, s.tz)))) { t = nextDay(t); continue; }

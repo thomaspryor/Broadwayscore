@@ -11,6 +11,7 @@
 const { evaluateScoreConfidence } = require('../lib/score-confidence-gate');
 const { hasEnoughReviews } = require('../lib/min-reviews');
 const { priorRunClassifier } = require('../lib/prior-run-sibling');
+const { findLondonRun } = require('../lib/transfer-detection');
 const C = require('./config');
 
 const DAY_MS = 864e5;
@@ -124,6 +125,87 @@ function findScoreEvents({ shows, ledger, now, reviewsByShow, slim, getOutletTie
   return out;
 }
 
+/** True when the site shows a Critic Score for this show (the number a post would state). */
+function hasSiteScore(slim, id) {
+  const pub = slim[id];
+  return !!pub && Number.isFinite(pub.cs) && !!pub.rc;
+}
+
+/** The ledger entry of a score post that actually went to Buffer (not a go-live backlog skip), or null. */
+function sentScoreEntry(ledger, showId) {
+  return (ledger && ledger.posts || []).find(p => (p.type || 'score') === 'score' && p.showId === showId && !p.skipped
+    && Object.values(p.channels || {}).some(c => c && c.postId)) || null;
+}
+
+/** True when a brief compare post already covers this pair of shows (any time). */
+function briefCoversPair(ledger, ids) {
+  const key = [...ids].sort().join('+');
+  return (ledger && ledger.posts || []).some(p => p.type === 'brief' && p.pair === key);
+}
+
+/**
+ * Why one show's London comparison post (BRO-6373) is or is not due now. {due: true, london, slot}
+ * or {due: false, why, ...}; why is one of ineligible, done, no-london-run (reason says why),
+ * brief-exists, no-score-post, not-yet, too-old. The post goes out at SCORE_POST_LOCAL_HOUR on the
+ * day after the show's score post went out, so the score post always comes first.
+ */
+function londonCompareDecision(show, { shows, ledger, now, slim, done }) {
+  if (!isEligibleShow(show)) return { due: false, why: 'ineligible' };
+  if (done.has(`london-compare:${show.id}`)) return { due: false, why: 'done' };
+  const { london, reason } = findLondonRun(show, shows, { hasScore: id => hasSiteScore(slim, id) });
+  if (!london) return { due: false, why: 'no-london-run', reason };
+  if (briefCoversPair(ledger, [show.id, london.id])) return { due: false, why: 'brief-exists', london };
+  const score = sentScoreEntry(ledger, show.id);
+  if (!score) return { due: false, why: 'no-score-post', london };
+  const tz = C.MARKETS[show.category].tz;
+  const slot = zonedTime(addDaysYmd(localParts(new Date(score.dueAt), tz).ymd, 1), C.SCORE_POST_LOCAL_HOUR, tz).getTime();
+  if (now < slot - C.CREATE_LEAD_MINUTES * MIN_MS) return { due: false, why: 'not-yet', london, slot };
+  if (now - slot > C.LONDON_COMPARE_LOOKBACK_DAYS * DAY_MS) return { due: false, why: 'too-old', london, slot };
+  return { due: true, london, slot };
+}
+
+/**
+ * London comparison posts whose slot is reached (or within the creation lead): a Broadway or
+ * Off-Broadway show whose score post went out and that has exactly one London run
+ * (transfer-detection.js findLondonRun). The post carries the Phase A compare card.
+ */
+function findLondonCompareEvents({ shows, ledger, now, slim }) {
+  const done = doneKeys(ledger);
+  const out = [];
+  for (const show of shows) {
+    const d = londonCompareDecision(show, { shows, ledger, now, slim, done });
+    if (d.due) out.push({ type: 'london-compare', show, london: d.london, slot: d.slot, dueAt: new Date(d.slot) });
+  }
+  return out;
+}
+
+/**
+ * Dry-run look back: every eligible show that opened in the last `days` days and has a London
+ * run, with what the live rules would do about it. wouldFire: its score post went out, it is not
+ * done and no brief covers the pair. Shows without a sent score post are still listed, so a
+ * go-live backlog skip is visible.
+ */
+function londonCompareLookback({ shows, ledger, now, slim, days }) {
+  const done = doneKeys(ledger);
+  const out = [];
+  for (const show of shows) {
+    if (!isEligibleShow(show)) continue;
+    const opened = Date.parse(`${String(show.openingDate).slice(0, 10)}T00:00:00Z`);
+    if (!(now - opened <= days * DAY_MS && opened <= now)) continue;
+    const { london } = findLondonRun(show, shows, { hasScore: id => hasSiteScore(slim, id) });
+    if (!london) continue;
+    const score = sentScoreEntry(ledger, show.id);
+    const scoreRow = (ledger.posts || []).find(p => (p.type || 'score') === 'score' && p.showId === show.id);
+    out.push({
+      show, london,
+      scorePost: score ? 'sent' : scoreRow && scoreRow.skipped ? `skipped (${scoreRow.skipped})` : 'none',
+      brief: briefCoversPair(ledger, [show.id, london.id]), done: done.has(`london-compare:${show.id}`),
+      wouldFire: !!score && !done.has(`london-compare:${show.id}`) && !briefCoversPair(ledger, [show.id, london.id]),
+    });
+  }
+  return out.sort((a, b) => String(b.show.openingDate).localeCompare(String(a.show.openingDate)));
+}
+
 /**
  * Space posts STAGGER_MINUTES apart (counting posts already scheduled in the
  * ledger), keep each in the daytime window, and return only the ones due within
@@ -163,4 +245,4 @@ function splitBacklog(events, ledger, now) {
   return { post, skip };
 }
 
-module.exports = { findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };
+module.exports = { findLondonCompareEvents, londonCompareDecision, londonCompareLookback, hasSiteScore, sentScoreEntry, briefCoversPair, findScoreEvents, scoreDecision, doneKeys, scheduleEvents, splitBacklog, morningAfter, nextWindowSlot, inWindow, zonedTime, localParts, isEligibleShow, newReviewCountFor };

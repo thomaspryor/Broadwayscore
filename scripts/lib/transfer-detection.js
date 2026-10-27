@@ -194,4 +194,89 @@ function detectLondonTransferPairs(shows) {
   return results;
 }
 
-module.exports = { detectTransferPairs, detectLondonTransferPairs, TITLE_JACCARD_THRESHOLD, LONDON_TRANSFER_WINDOW_DAYS };
+// ---------------------------------------------------------------------------
+// London run of a New York show (BRO-6373): the strict matcher behind the
+// `london-compare` social post ("X was also reviewed in London"). Unlike the
+// suggestions above, a match here is acted on automatically, so every guard
+// errs toward no match. Nothing is written to shows.json and the post never
+// calls it a transfer: no data field supports that claim.
+
+const LONDON_COMPARE_MAX_YEARS = 5;
+const NY_CATEGORIES = new Set(['broadway', 'off-broadway']);
+const LONDON_CATEGORIES = new Set(['west-end', 'off-west-end']);
+const YEAR_MS = 365.25 * DAY_MS;
+
+// Opening date, else previews: some historical London rows carry only previews.
+function _runStart(show) {
+  return _parseMs(show.openingDate) ?? _parseMs(show.previewsStartDate);
+}
+
+// A classic revival (flagged by the revival audit, or linked to an original
+// production) is a new staging of an old title, so a same-title row in the
+// other city is as likely the old staging as this one.
+function _isClassicRevival(show) {
+  return show.isRevival === true || !!show.originalProductionId;
+}
+
+// Strict title equality: the shared normalizer, or deduplication.js's, which
+// strips a trailing " - <venue tag>". No fuzzy (Jaccard) matching.
+function _sameTitle(a, b) {
+  if (!a || !b) return false;
+  const na = normalizeTitle(a);
+  if (na && na === normalizeTitle(b)) return true;
+  const da = dedupNormalizeTitle(a);
+  return da.length >= 3 && da === dedupNormalizeTitle(b);
+}
+
+/**
+ * The one London run of a Broadway / Off-Broadway show, or why there is none.
+ * A match needs all of:
+ *  - exactly one West End / Off-West End row with the same normalized title
+ *    (any type counts toward "exactly one", so Medea the opera next to Medea
+ *    the play, or four Much Ado productions, match nothing);
+ *  - that row has the same type (musical / play), both known;
+ *  - it started 0 to LONDON_COMPARE_MAX_YEARS years before the New York one
+ *    (opening date, else previews date);
+ *  - neither row is a classic revival;
+ *  - both have a Critic Score (hasScore).
+ *
+ * @param {Object} show - the New York row
+ * @param {Array<Object>} shows - full shows.json array
+ * @param {{hasScore: function(string): boolean}} opts
+ * @returns {{london: Object|null, reason: string}}
+ */
+function findLondonRun(show, shows, { hasScore } = {}) {
+  if (!show || !NY_CATEGORIES.has(show.category)) return { london: null, reason: 'not a Broadway or Off-Broadway show' };
+  const candidates = (Array.isArray(shows) ? shows : []).filter(s => s && s.id !== show.id && LONDON_CATEGORIES.has(s.category) && _sameTitle(show.title, s.title));
+  if (candidates.length === 0) return { london: null, reason: 'no London run with this title' };
+  if (candidates.length > 1) return { london: null, reason: `ambiguous: ${candidates.map(c => c.id).join(', ')}` };
+  const london = candidates[0];
+  if (!show.type || !london.type || show.type !== london.type) return { london: null, reason: `different type (${show.type || 'unknown'} vs ${london.type || 'unknown'})` };
+  if (_isClassicRevival(show) || _isClassicRevival(london)) return { london: null, reason: 'a classic revival' };
+  const ny = _runStart(show);
+  const lon = _runStart(london);
+  if (ny === null || lon === null) return { london: null, reason: 'a run has no opening or previews date' };
+  const gapYears = (ny - lon) / YEAR_MS;
+  if (gapYears < 0) return { london: null, reason: 'the London run is later' };
+  if (gapYears > LONDON_COMPARE_MAX_YEARS) return { london: null, reason: `the London run is ${gapYears.toFixed(1)} years earlier` };
+  if (typeof hasScore !== 'function' || !hasScore(show.id) || !hasScore(london.id)) return { london: null, reason: 'a run has no Critic Score' };
+  return { london, reason: `same title and type, London run ${gapYears.toFixed(1)} years earlier` };
+}
+
+/**
+ * Every Broadway / Off-Broadway show with a London run (see findLondonRun).
+ * @returns {Array<{showId: string, londonId: string, reason: string}>}
+ */
+function detectLondonComparePairs(shows, opts) {
+  const out = [];
+  for (const show of Array.isArray(shows) ? shows : []) {
+    const { london, reason } = findLondonRun(show, shows, opts);
+    if (london) out.push({ showId: show.id, londonId: london.id, reason });
+  }
+  return out;
+}
+
+module.exports = {
+  detectTransferPairs, detectLondonTransferPairs, findLondonRun, detectLondonComparePairs,
+  TITLE_JACCARD_THRESHOLD, LONDON_TRANSFER_WINDOW_DAYS, LONDON_COMPARE_MAX_YEARS,
+};

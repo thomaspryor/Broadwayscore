@@ -38,8 +38,7 @@ async function preview() {
   const template = arg('template');
   if (!briefs.TEMPLATES.includes(template)) throw new Error(`--template must be one of: ${briefs.TEMPLATES.join(', ')}`);
   const run = require('./run');
-  const { resolvePoster, minPosterWidth } = require('./art');
-  const { renderCompareCard, closeBrowser, COMPARE_POSTER_PX } = require('./render');
+  const { closeBrowser } = require('./render');
   const { encodeForSocial, hostImage, putBriefFile } = require('./host');
   const now = Date.now();
   const ctx = run.loadContext();
@@ -55,12 +54,7 @@ async function preview() {
   fs.mkdirSync(outDir, { recursive: true });
   const png = path.join(outDir, `compare-${older.show.id}--${newer.show.id}.png`);
   try {
-    for (const [i, d] of [older, newer].entries()) {
-      const poster = await resolvePoster(d.show, { minWidth: minPosterWidth(COMPARE_POSTER_PX), shows: ctx.shows, mezzanine: true });
-      if (!poster.poster) console.log(`  [art] ${d.show.id}: typographic poster (${poster.reason})`);
-      built.card.sides[i].poster = poster.poster ? poster : null;
-    }
-    await renderCompareCard(built.card, png);
+    await run.renderCompareFor(built, ctx, png);
   } finally {
     await closeBrowser();
   }

@@ -12,22 +12,24 @@
  *   node scripts/social-autopost/run.js --self-test      # draft post on every channel, then delete it
  *   node scripts/social-autopost/run.js --cancel-queued  # delete every not-yet-sent post it created
  *   node scripts/social-autopost/run.js --brief=HASH     # post an approved brief (BRO-6368, from brief.js --post)
+ *   node scripts/social-autopost/run.js --dry-run --london-lookback=90   # which shows of the last 90 days have a London run (BRO-6373)
  *
  * Options: --now=ISO (pretend time), --out=DIR (where cards are written).
  * Env: BUFFER_API_KEY, NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, GEMINI_API_KEY
  *      (art check), SOCIAL_AUTOPOST_DISABLED=true (kill switch), SOCIAL_CHROMIUM_PATH.
  * State: data/social-autopost-ledger.json, written by this script only (one workflow,
- * one concurrency group), one entry per show score post and one per brief post.
+ * one concurrency group), one entry per show score post, one per brief post and one per
+ * London comparison post (type 'london-compare', key london-compare:<showId>).
  */
 
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('../lib/score-tiers');
-const { findScoreEvents, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { findScoreEvents, findLondonCompareEvents, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
 const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel } = require('./captions');
-const { resolvePoster } = require('./art');
-const { renderCard, closeBrowser } = require('./render');
+const { resolvePoster, minPosterWidth } = require('./art');
+const { renderCard, renderCompareCard, closeBrowser, COMPARE_POSTER_PX } = require('./render');
 const { CHANNEL_SETS, MARKETS, SCORE_LOOKBACK_DAYS } = require('./config');
 const { targetSets, tagChannels, channelKey } = require('./routing');
 const briefs = require('./briefs');
@@ -166,7 +168,7 @@ const entryName = p => p.showId || p.id;
 
 /** Dedupe markers for a ledger entry's captions (captions.js). */
 function entryMarkers(p) {
-  return p.type === 'brief' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
+  return p.type === 'brief' || p.type === 'london-compare' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
 }
 
 /** Ledger entries with networks still owed a post (an earlier run's channel error). */
@@ -318,6 +320,95 @@ async function briefBusyDays({ shows, channels, buffer, ledger, now }) {
 const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_MARGIN;
 
 /**
+ * Schedule one compare post on the newer production's home channels and record it in the
+ * ledger: the shared tail of a brief (owner-approved) and a london-compare (automatic).
+ * Throws "<label>: <reason>" when it cannot post: no usable channel, channels never
+ * self-tested, Buffer quota too low, no free day for either show, or every network failed.
+ * `entry` holds the type-specific ledger fields (type, id, pair, approval...).
+ */
+async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', entry: extra }) {
+  const targets = briefChannels(channels, newer);
+  if (!targets.length) throw new Error(`${label}: no usable channel for ${newer.category}`);
+  const notValidated = unvalidated(ctx.ledger, targets);
+  if (notValidated.length) throw new Error(`${label}: ${notValidated.map(c => c.key).join(', ')} never passed the Buffer self-test; run the workflow with self_test first`);
+
+  const quota = buffer.quotaProblem(buffer.rateLimit(), briefQuotaNeed(channels.length, targets.length));
+  if (quota) throw Object.assign(new Error(`${label}: ${quota}`), { code: 'QUOTA' });
+  const busy = await briefBusyDays({ shows, channels, buffer, ledger: ctx.ledger, now });
+  const taken = (ctx.ledger.posts || []).map(p => Date.parse(p.dueAt || '')).filter(Number.isFinite);
+  const t = briefs.pickBriefSlot({ now, earliest, tz: MARKETS[newer.category].tz, shows: busy, taken, inWindow, nextWindowSlot, zonedTime, localDay: buffer.localDay });
+  if (t == null) throw Object.assign(new Error(`${label}: no free day in the next ${briefs.MAX_SLOT_DAYS} days for ${shows.map(s => s.id).join(' and ')}`), { code: 'NO_SLOT' });
+  const dueAt = new Date(t);
+  console.log(`[autopost] ${label} goes out ${dueAt.toISOString()}${note ? ` ${note}` : ''}`);
+
+  const { posted, errors } = await publishEvent({ channels: targets, buffer, captions, imageUrl, markers: compareMarkers(newer, olderLabel), dueAt, label, now });
+  if (!Object.keys(posted).length) throw new Error(`${label}: failed on every network (${Object.values(errors)[0]})`);
+  const entry = {
+    ...extra, showIds: shows.map(s => s.id),
+    date: new Date(now).toISOString().slice(0, 10), slug: newer.slug || newer.id, olderLabel, title: newer.title, dueAt: dueAt.toISOString(),
+    imageUrl, text: captions.twitter, channels: posted,
+  };
+  if (Object.keys(errors).length) {
+    entry.errors = errors;
+    entry.pending = Object.fromEntries(targets.filter(c => errors[c.key]).map(c => [c.key, captions[c.network]]));
+    entry.altText = captions.altText;
+    entry.attempts = 1;
+    problems.push(`${label}: failed on ${Object.keys(errors).join(', ')} (will retry)`);
+  }
+  ctx.ledger.posts.push(entry);
+  writeLedger(ctx.ledger, ctx.ledgerFile); // ctx.ledgerFile: tests only; undefined means the real ledger
+  summary.push(`| ${newer.title} (${label}) | ${entry.dueAt} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
+}
+
+/**
+ * Render a compare card (two posters, two badges) for buildCompare() output. Shared by
+ * brief.js --preview and the automatic London comparison. With requirePoster, a side
+ * without a usable poster throws NO_POSTER (owner rule: never post without the poster).
+ */
+async function renderCompareFor(built, ctx, png, { requirePoster = false } = {}) {
+  for (const [i, d] of [built.older, built.newer].entries()) {
+    const poster = await resolvePoster(d.show, { minWidth: minPosterWidth(COMPARE_POSTER_PX), shows: ctx.shows, mezzanine: true });
+    if (!poster.poster) {
+      if (requirePoster) throw Object.assign(new Error(`${d.show.id}: no usable poster (${poster.reason})`), { code: 'NO_POSTER' });
+      console.log(`  [art] ${d.show.id}: typographic poster (${poster.reason})`);
+    }
+    built.card.sides[i].poster = poster.poster ? poster : null;
+  }
+  await renderCompareCard(built.card, png);
+}
+
+/**
+ * Post one London comparison (BRO-6373): the Phase A compare card and captions for a
+ * New York show and its London run, no hook sentence and no owner approval. Posts only
+ * when Buffer's quota allows (a skipped post is retried by the next hourly run until
+ * LONDON_COMPARE_LOOKBACK_DAYS pass). Returns 'posted', 'skipped' (quota or no free day),
+ * or throws for anything else.
+ */
+async function runLondonCompare(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
+  const label = `london-compare:${ev.show.id}`;
+  const built = briefs.buildCompare({ descA: describe(ev.show, ctx), descB: describe(ev.london, ctx), hook: '', now });
+  const png = path.join(outDir, `london-compare-${ev.show.id}.png`);
+  fs.mkdirSync(outDir, { recursive: true });
+  await renderCompareFor(built, ctx, png, { requirePoster: true });
+  const { encodeForSocial, hostImage } = require('./host');
+  const jpeg = await encodeForSocial(png);
+  const sha = crypto.createHash('sha1').update(jpeg.buffer).digest('hex').slice(0, 10);
+  const imageUrl = await hostImage(jpeg.buffer, `brief/${new Date(now).toISOString().slice(0, 7)}/london-compare-${ev.show.id}-${sha}.jpg`)
+    .catch(e => { throw new Error(`image hosting failed: ${e.message}`); });
+  try {
+    await postCompare({
+      label, shows: [built.older.show, built.newer.show], newer: built.newer.show, olderLabel: productionLabel(built.older.show),
+      captions: built.captions, imageUrl, ctx, buffer, channels, now, earliest: ev.dueAt.getTime(), summary, problems,
+      entry: { type: 'london-compare', id: label, showId: ev.show.id, template: 'compare', pair: briefs.pairKey([ev.show.id, ev.london.id]), auto: true },
+    });
+  } catch (e) {
+    if (e.code === 'QUOTA' || e.code === 'NO_SLOT') { console.log(`[autopost] ${e.message}; trying again next run`); return 'skipped'; }
+    throw e;
+  }
+  return 'posted';
+}
+
+/**
  * Post an approved brief (brief.js --post dispatches the workflow with its hash).
  * Refuses unless the stored manifest still hashes to `hash`, the owner's approval is
  * stored, every fact is unchanged, the hook and numbers pass, and neither this
@@ -352,38 +443,12 @@ async function runBrief(hash, { ctx, buffer, channels, now, summary, problems })
   if (!newer) throw new Error(`brief ${hash}: manifest names no newer production`);
   const olderLabel = productionLabel(shows.find(s => s !== newer));
 
-  const targets = briefChannels(channels, newer);
-  if (!targets.length) throw new Error(`brief ${hash}: no usable channel for ${newer.category}`);
-  const notValidated = unvalidated(ctx.ledger, targets);
-  if (notValidated.length) throw new Error(`brief ${hash}: ${notValidated.map(c => c.key).join(', ')} never passed the Buffer self-test; run the workflow with self_test first`);
-
-  const quota = buffer.quotaProblem(buffer.rateLimit(), briefQuotaNeed(channels.length, targets.length));
-  if (quota) throw new Error(`brief ${hash}: ${quota}`);
-  const busy = await briefBusyDays({ shows, channels, buffer, ledger: ctx.ledger, now });
-  const taken = (ctx.ledger.posts || []).map(p => Date.parse(p.dueAt || '')).filter(Number.isFinite);
-  const t = briefs.pickBriefSlot({ now, tz: MARKETS[newer.category].tz, shows: busy, taken, inWindow, nextWindowSlot, zonedTime, localDay: buffer.localDay });
-  if (t == null) throw new Error(`brief ${hash}: no free day in the next ${briefs.MAX_SLOT_DAYS} days for ${shows.map(s => s.id).join(' and ')}`);
-  const dueAt = new Date(t);
-  console.log(`[autopost] brief ${hash} (${manifest.template}: ${pair}) goes out ${dueAt.toISOString()}; approved: "${approval.words}"`);
-
-  const { posted, errors } = await publishEvent({ channels: targets, buffer, captions: manifest.captions, imageUrl: manifest.imageUrl, markers: compareMarkers(newer, olderLabel), dueAt, label: `brief:${hash}`, now });
-  if (!Object.keys(posted).length) throw new Error(`brief ${hash}: failed on every network (${Object.values(errors)[0]})`);
-  const entry = {
-    type: 'brief', id: `brief:${hash}`, hash, template: manifest.template, pair, showIds: manifest.ids,
-    date: new Date(now).toISOString().slice(0, 10), slug: newer.slug || newer.id, olderLabel, title: newer.title, dueAt: dueAt.toISOString(),
-    imageUrl: manifest.imageUrl, text: manifest.captions.twitter, channels: posted,
-    approved: String(approval.words).slice(0, 300), approvedAt: approval.at || null,
-  };
-  if (Object.keys(errors).length) {
-    entry.errors = errors;
-    entry.pending = Object.fromEntries(targets.filter(c => errors[c.key]).map(c => [c.key, manifest.captions[c.network]]));
-    entry.altText = manifest.captions.altText;
-    entry.attempts = 1;
-    problems.push(`brief ${hash}: failed on ${Object.keys(errors).join(', ')} (will retry)`);
-  }
-  ctx.ledger.posts.push(entry);
-  writeLedger(ctx.ledger);
-  summary.push(`| ${newer.title} (brief ${hash}) | ${entry.dueAt} | ${Object.keys(posted).join(', ')} | ${Object.keys(errors).join(', ') || '-'} |`);
+  await postCompare({
+    label: `brief ${hash}`, shows, newer, olderLabel, captions: manifest.captions, imageUrl: manifest.imageUrl,
+    ctx, buffer, channels, now, summary, problems,
+    note: `(${manifest.template}: ${pair}); approved: "${approval.words}"`,
+    entry: { type: 'brief', id: `brief:${hash}`, hash, template: manifest.template, pair, approved: String(approval.words).slice(0, 300), approvedAt: approval.at || null },
+  });
 }
 
 /**
@@ -464,6 +529,7 @@ async function main() {
   if (brief && (dryRun || !configured || arg('show'))) throw new Error('--brief posts for real: it needs BUFFER_API_KEY, no --dry-run and no --show');
 
   let events;
+  let compareEvents = [];
   let backlogSkipped = [];
   if (arg('show')) {
     if (!dryRun) throw new Error('--show is for previews; add --dry-run');
@@ -476,10 +542,22 @@ async function main() {
     backlogSkipped = skip;
     const failures = ctx.ledger._meta.failures || {};
     events = scheduleEvents(post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS)), ctx.ledger, now);
+    compareEvents = findLondonCompareEvents({ shows: ctx.shows, ledger: ctx.ledger, now, slim: ctx.slim })
+      .filter(ev => !(failures[`london-compare:${ev.show.id}`] && failures[`london-compare:${ev.show.id}`].count >= MAX_SHOW_ATTEMPTS));
   }
   const owed = pendingRetries(ctx.ledger, now).length;
   const toVerify = postsToVerify(ctx.ledger, now).length;
-  console.log(`[autopost] ${events.length} post(s) due, ${owed} retry(ies) owed, ${toVerify} to read back${backlogSkipped.length ? `, ${backlogSkipped.length} older show(s) skipped at go-live` : ''}${dryRun ? ' (dry run)' : ''}`);
+  console.log(`[autopost] ${events.length} post(s) due${compareEvents.length ? `, ${compareEvents.length} London comparison(s) due` : ''}, ${owed} retry(ies) owed, ${toVerify} to read back${backlogSkipped.length ? `, ${backlogSkipped.length} older show(s) skipped at go-live` : ''}${dryRun ? ' (dry run)' : ''}`);
+
+  if (arg('london-lookback')) {
+    if (!dryRun) throw new Error('--london-lookback is a listing; add --dry-run');
+    const days = Number(arg('london-lookback'));
+    if (!(days > 0)) throw new Error('--london-lookback=DAYS needs a number of days');
+    const rows = londonCompareLookback({ shows: ctx.shows, ledger: ctx.ledger, now, slim: ctx.slim, days });
+    console.log(`[autopost] ${rows.length} show(s) opened in the last ${days} days with a London run; ${rows.filter(r => r.wouldFire).length} would fire`);
+    for (const r of rows) console.log(`  ${r.wouldFire ? 'WOULD FIRE' : r.done ? 'done' : r.brief ? 'brief exists' : 'no sent score post'} ${r.show.id} (opened ${String(r.show.openingDate).slice(0, 10)}) with ${r.london.id}; score post: ${r.scorePost}`);
+    return;
+  }
 
   if (flag('check')) {
     // Workflow gate: install the browser only when there is work. Without a key,
@@ -487,9 +565,10 @@ async function main() {
     // A cron-redispatch run stands in for a dropped scheduled run, so it is not manual.
     const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch' && process.env.INPUT_REDISPATCHED !== 'true';
     if (!configured) console.log('::notice::BUFFER_API_KEY not set: nothing will be posted');
-    const due = configured ? events.length + owed + toVerify + backlogSkipped.length + (brief ? 1 : 0) : manual ? events.length : 0;
-    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${due ? events.length : 0}\n`);
+    const due = configured ? events.length + compareEvents.length + owed + toVerify + backlogSkipped.length + (brief ? 1 : 0) : manual ? events.length : 0;
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${due ? events.length + compareEvents.length : 0}\n`);
     for (const ev of events) console.log(`  ${ev.show.id} due ${ev.dueAt.toISOString()}`);
+    for (const ev of compareEvents) console.log(`  london-compare:${ev.show.id} (with ${ev.london.id}) due ${ev.dueAt.toISOString()}`);
     return;
   }
 
@@ -545,7 +624,7 @@ async function main() {
     writeLedger(ctx.ledger);
   };
   try {
-    if (live && events.length && unvalidated(ctx.ledger, channels).length) await selfTest(buffer, channels, outDir, ctx, now);
+    if (live && (events.length || compareEvents.length) && unvalidated(ctx.ledger, channels).length) await selfTest(buffer, channels, outDir, ctx, now);
     for (const ev of events) {
       // One show's failure must not lose the record of shows already scheduled:
       // each is written to the ledger as soon as Buffer accepts it.
@@ -600,6 +679,35 @@ async function main() {
         recordFailure(ev.show.id, e.message);
       }
     }
+
+    // London comparisons come after the score posts: a score post always gets its slot first.
+    for (const ev of compareEvents) {
+      const key = `london-compare:${ev.show.id}`;
+      try {
+        if (!live) {
+          const built = briefs.buildCompare({ descA: describe(ev.show, ctx), descB: describe(ev.london, ctx), hook: '', now });
+          console.log(`\n[autopost] ${key} (with ${ev.london.id}) due ${ev.dueAt.toISOString()}`);
+          console.log(`  X/Bluesky: ${built.captions.twitter.replace(/\n/g, ' | ')}`);
+          continue;
+        }
+        if (await runLondonCompare(ev, { ctx, buffer, channels, now, outDir, summary, problems }) === 'skipped') break; // quota or no free day: the next run tries again
+        delete failures[key];
+        if (ctx.ledger._meta.waitingForPoster) delete ctx.ledger._meta.waitingForPoster[key];
+      } catch (e) {
+        if (e.code === 'NO_POSTER') {
+          const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
+          if (!waiting[key]) problems.push(`${key}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
+          waiting[key] = { since: (waiting[key] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
+          console.log(`  [art] ${key}: HELD, ${e.message}`);
+          writeLedger(ctx.ledger);
+          continue;
+        }
+        failed++;
+        console.log(`::error::${key}: ${e.message}`);
+        if (/self-test failed|BUFFER_API_KEY|HTTP 401|rate limit|image hosting failed/i.test(e.message)) break;
+        recordFailure(key, e.message);
+      }
+    }
   } finally {
     await closeBrowser();
   }
@@ -618,4 +726,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, LEDGER_FILE };
+module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, LEDGER_FILE };

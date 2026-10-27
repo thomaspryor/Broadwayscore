@@ -4,6 +4,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
@@ -589,4 +591,222 @@ test('compare dedupe: a second pair with the same newer production never adopts 
   assert.ok(cap.compareMarkers(newer, cap.productionLabel(london)).every(m => m.test(text)));
   assert.ok(!cap.compareMarkers(newer, 'Broadway 2019').every(m => m.test(text)), 'another older production must not match');
   assert.ok(cap.compareMarkers(newer).every(m => m.test(text)), 'ledger entries from before olderLabel still match');
+});
+
+// ---- London comparison posts (BRO-6373): strict matcher, selection rules, posting ----
+const td = require('./lib/transfer-detection.js');
+const lshow = (id, title, category, type, openingDate, over = {}) => ({ id, slug: id, title, category, type, status: 'closed', venue: 'V', openingDate, ...over });
+const scored = ids => ({ hasScore: id => ids.includes(id) });
+const find = (s, all, ids = all.map(x => x.id)) => td.findLondonRun(s, all, scored(ids));
+
+test('london matcher: one same-type London run 0-5 years earlier with scores matches; previews date is the fallback', () => {
+  const ny = lshow('bb-off-broadway-2026', 'The Curious Case of Benjamin Button', 'off-broadway', 'musical', '2026-10-21');
+  const we = lshow('bb-west-end-2024', 'The Curious Case of Benjamin Button', 'west-end', 'musical', null, { previewsStartDate: '2024-10-10' });
+  const r = find(ny, [ny, we]);
+  assert.equal(r.london && r.london.id, we.id);
+  assert.deepEqual(td.detectLondonComparePairs([ny, we], scored([ny.id, we.id])), [{ showId: ny.id, londonId: we.id, reason: r.reason }]);
+  // The same day, or a few days after New York, is still "0 years earlier"; a London run that comes later is not.
+  assert.ok(find(ny, [ny, { ...we, openingDate: '2026-10-21' }]).london);
+  assert.equal(find(ny, [ny, { ...we, openingDate: '2026-11-01' }]).london, null);
+});
+
+test('london matcher: more than one candidate, a different type, a revival, a long gap or a missing score match nothing', () => {
+  const ny = lshow('medea-off-broadway-2026', 'Medea', 'off-broadway', 'play', '2026-09-01');
+  const opera = lshow('medea-opera-west-end-2025', 'Medea', 'west-end', 'opera', '2025-06-01');
+  assert.match(find(ny, [ny, opera]).reason, /different type \(play vs opera\)/);
+  const play = lshow('medea-west-end-2025', 'Medea', 'west-end', 'play', '2025-03-01');
+  assert.match(find(ny, [ny, opera, play]).reason, /ambiguous/); // the opera counts toward "exactly one"
+  const many = ['2022', '2025', '2026'].map(y => lshow(`much-ado-we-${y}`, 'Much Ado About Nothing', y === '2026' ? 'off-west-end' : 'west-end', 'play', `${y}-05-01`));
+  const ado = lshow('much-ado-2026', 'Much Ado About Nothing', 'broadway', 'play', '2026-10-01');
+  assert.match(find(ado, [ado, ...many]).reason, /ambiguous/);
+  const one = lshow('x-we', 'Giant', 'west-end', 'play', '2025-01-01');
+  const gi = lshow('giant-2026', 'Giant', 'broadway', 'play', '2026-10-01');
+  assert.ok(find(gi, [gi, one]).london);
+  assert.match(find({ ...gi, isRevival: true }, [gi, one]).reason, /classic revival/);
+  assert.match(find(gi, [gi, { ...one, originalProductionId: 'giant-1998' }]).reason, /classic revival/);
+  assert.match(find(gi, [gi, { ...one, openingDate: '2019-01-01' }]).reason, /years earlier/);
+  assert.match(find(gi, [gi, one], [gi.id]).reason, /no Critic Score/);
+  assert.match(find(gi, [gi, one], [one.id]).reason, /no Critic Score/);
+  assert.match(find({ ...gi, type: null }, [gi, one]).reason, /different type/);
+  assert.match(find(gi, [gi, { ...one, openingDate: null, previewsStartDate: null }]).reason, /no opening or previews date/);
+  // Only Broadway and Off-Broadway shows look for a London run; a different title never matches.
+  assert.match(find(one, [gi, one]).reason, /not a Broadway/);
+  assert.match(find(gi, [gi, { ...one, title: 'Giants' }]).reason, /no London run/);
+});
+
+test('london matcher on the real data: Benjamin Button matches, the known false-positive traps do not', { skip: !fs.existsSync(new URL('../data/shows.json', import.meta.url)) }, () => {
+  const raw = JSON.parse(fs.readFileSync(new URL('../data/shows.json', import.meta.url), 'utf8'));
+  const shows = Array.isArray(raw) ? raw : raw.shows;
+  const hasScore = () => true; // the traps must fail on their own, not for want of a score
+  const run = id => td.findLondonRun(shows.find(s => s.id === id), shows, { hasScore });
+  assert.equal(run('the-curious-case-of-benjamin-button-off-broadway-2026').london.id, 'the-curious-case-of-benjamin-button-west-end-2024');
+  for (const id of ['medea-off-broadway-2026', 'othello-off-broadway-2026', 'much-ado-about-nothing-2026', 'giant-2026', 'romeo-and-juliet-off-broadway-2026']) {
+    const s = shows.find(x => x.id === id);
+    if (s) assert.equal(run(id).london, null, `${id} must not match: ${run(id).reason}`);
+  }
+});
+
+// ---- selection ----
+const NYC = 'America/New_York';
+const lc = {
+  ny: lshow('lc-2026', 'Lc', 'broadway', 'play', '2026-10-01', { status: 'open' }),
+  we: lshow('lc-west-end-2025', 'Lc', 'west-end', 'play', '2025-03-01'),
+};
+const lcSlim = { [lc.ny.id]: { cs: 80, rc: 20 }, [lc.we.id]: { cs: 84, rc: 30 } };
+const scorePost = (over = {}) => ({ type: 'score', showId: lc.ny.id, dueAt: '2026-10-20T14:00:00.000Z', channels: { twitter: { postId: 'p1' } }, ...over });
+const lcFind = (ledger, now) => sel.findLondonCompareEvents({ shows: [lc.ny, lc.we], ledger, now, slim: lcSlim });
+const at = iso => Date.parse(iso);
+
+test('london-compare is due 10:00 New York time the morning after the score post went out', () => {
+  const ledger = { posts: [scorePost()] };
+  assert.equal(lcFind(ledger, at('2026-10-20T20:00:00Z')).length, 0); // the day of the score post
+  assert.equal(lcFind(ledger, at('2026-10-21T12:30:00Z')).length, 0); // 08:30 local: more than the 70-minute creation lead early
+  const [ev] = lcFind(ledger, at('2026-10-21T14:00:00Z')); // 10:00 EDT
+  assert.equal(ev.type, 'london-compare');
+  assert.equal(ev.show.id, lc.ny.id);
+  assert.equal(ev.london.id, lc.we.id);
+  assert.equal(ev.dueAt.toISOString(), '2026-10-21T14:00:00.000Z');
+});
+
+test('london-compare waits for a score post that really went out, and is dropped after the lookback', () => {
+  const t = at('2026-10-21T15:00:00Z');
+  assert.equal(lcFind({ posts: [] }, t).length, 0);
+  assert.equal(lcFind({ posts: [scorePost({ skipped: 'backlog at go-live', channels: undefined })] }, t).length, 0);
+  assert.equal(lcFind({ posts: [scorePost({ channels: {} })] }, t).length, 0);
+  assert.equal(sel.londonCompareDecision(lc.ny, { shows: [lc.ny, lc.we], ledger: { posts: [scorePost()] }, now: t, slim: {}, done: new Set() }).why, 'no-london-run'); // no Critic Score on the site
+  assert.equal(lcFind({ posts: [scorePost()] }, at('2026-10-21T14:00:00Z') + 6 * 864e5).length, 0);
+  assert.equal(lcFind({ posts: [scorePost()] }, at('2026-10-21T14:00:00Z') + 4 * 864e5).length, 1);
+});
+
+test('london-compare never repeats: its own ledger key, or a brief for the same pair, stops it', () => {
+  const t = at('2026-10-21T15:00:00Z');
+  const done = { posts: [scorePost(), { type: 'london-compare', id: `london-compare:${lc.ny.id}`, showId: lc.ny.id }] };
+  assert.equal(lcFind(done, t).length, 0);
+  assert.ok(sel.doneKeys(done).has(`london-compare:${lc.ny.id}`));
+  const brief = { posts: [scorePost(), { type: 'brief', id: 'brief:abc', hash: 'abc', pair: briefs.pairKey([lc.ny.id, lc.we.id]), dueAt: '2026-09-01T14:00:00Z' }] };
+  assert.equal(lcFind(brief, t).length, 0); // even a brief older than the 30-day pair dedupe
+  assert.equal(sel.londonCompareDecision(lc.ny, { shows: [lc.ny, lc.we], ledger: brief, now: t, slim: lcSlim, done: sel.doneKeys(brief) }).why, 'brief-exists');
+  const other = { posts: [scorePost(), { type: 'brief', id: 'brief:def', hash: 'def', pair: 'a+b' }] };
+  assert.equal(lcFind(other, t).length, 1);
+});
+
+test('london-compare lookback lists matches with the score post state; only a sent score post would fire', () => {
+  const now = at('2026-10-27T12:00:00Z');
+  const rows = ledger => sel.londonCompareLookback({ shows: [lc.ny, lc.we], ledger, now, slim: lcSlim, days: 90 });
+  assert.deepEqual(rows({ posts: [] }).map(r => [r.show.id, r.scorePost, r.wouldFire]), [[lc.ny.id, 'none', false]]);
+  assert.equal(rows({ posts: [{ type: 'score', showId: lc.ny.id, skipped: 'backlog at go-live' }] })[0].scorePost, 'skipped (backlog at go-live)');
+  assert.equal(rows({ posts: [scorePost()] })[0].wouldFire, true);
+  assert.equal(sel.londonCompareLookback({ shows: [lc.ny, lc.we], ledger: { posts: [] }, now, slim: lcSlim, days: 10 }).length, 0); // opened 26 days ago
+});
+
+test('london-compare ledger entries use the compare markers, so a retry never adopts a score post', () => {
+  const m = entryMarkers({ type: 'london-compare', slug: 'lc', olderLabel: 'London 2025' });
+  assert.equal(m.length, 3);
+  assert.ok(m.some(re => re.source === cap.COMPARE_SENTENCE.source));
+  assert.ok(!m.some(re => re.source === cap.SCORE_SENTENCE.source));
+});
+
+// ---- posting through a fake Buffer server (never the live API: the quota is shared) ----
+async function withFakeBuffer(remaining, existing, fn) {
+  const http = require('http');
+  const seen = { created: [], listings: 0, requests: 0 };
+  const server = http.createServer((req, res) => {
+    let body = '';
+    req.on('data', c => { body += c; });
+    req.on('end', () => {
+      seen.requests++;
+      const { query, variables } = JSON.parse(body);
+      let data;
+      if (/createPost/.test(query)) {
+        seen.created.push(variables.input);
+        data = { createPost: { post: { id: `new-${seen.created.length}`, dueAt: variables.input.dueAt, status: 'scheduled' } } };
+      } else if (variables.input && variables.input.filter && variables.input.filter.dueAt) {
+        seen.listings++;
+        data = { posts: { edges: existing.map(node => ({ node })), pageInfo: { hasNextPage: false } } };
+      } else if (/organizations/.test(query)) {
+        data = { account: { organizations: [] } };
+      } else {
+        data = { channels: [] };
+      }
+      res.writeHead(200, { 'Content-Type': 'application/json', 'X-Ratelimit-Remaining': String(remaining), 'X-Ratelimit-Reset': '1793051582' });
+      res.end(JSON.stringify({ data }));
+    });
+  });
+  await new Promise(r => server.listen(0, '127.0.0.1', r));
+  const saved = { url: process.env.BUFFER_API_URL, key: process.env.BUFFER_API_KEY };
+  process.env.BUFFER_API_URL = `http://127.0.0.1:${server.address().port}`;
+  process.env.BUFFER_API_KEY = 'fake';
+  try {
+    await fn(seen);
+  } finally {
+    for (const [k, v] of [['BUFFER_API_URL', saved.url], ['BUFFER_API_KEY', saved.key]]) { if (v === undefined) delete process.env[k]; else process.env[k] = v; }
+    await new Promise(r => server.close(r));
+  }
+}
+const lcChannels = ['instagram', 'facebook', 'twitter', 'threads', 'bluesky'].map(s => ({ id: `ch-${s}`, key: s, service: s, network: s, set: 'broadway', organizationId: 'org' }));
+const lcLedger = () => ({ _meta: { bufferValidatedChannels: lcChannels.map(c => c.id) }, posts: [scorePost()] });
+const lcPost = async (ctxLedger, now = at('2026-10-21T14:05:00Z')) => {
+  const run = require('./social-autopost/run.js');
+  await bufferLib.listChannels().catch(() => {}); // lets the fake report its quota headers first, as allowedChannels does in a real run
+  const built = briefs.buildCompare({ descA: desc(lc.we, 84, 30), descB: desc(lc.ny, 80, 20), hook: '', now });
+  const summary = [], problems = [];
+  await run.postCompare({
+    label: `london-compare:${lc.ny.id}`, shows: [built.older.show, built.newer.show], newer: built.newer.show, olderLabel: cap.productionLabel(built.older.show),
+    captions: built.captions, imageUrl: 'https://img.example/x.jpg', ctx: { ledger: ctxLedger, ledgerFile: path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'lc-ledger-')), 'ledger.json') }, buffer: bufferLib, channels: lcChannels, now,
+    earliest: at('2026-10-21T14:00:00Z'), summary, problems,
+    entry: { type: 'london-compare', id: `london-compare:${lc.ny.id}`, showId: lc.ny.id, template: 'compare', pair: briefs.pairKey([lc.ny.id, lc.we.id]), auto: true },
+  });
+  return { summary, problems };
+};
+
+test('london-compare posts the compare card on all five networks and records london-compare:<showId>', async () => {
+  const ledger = lcLedger();
+  const run = require('./social-autopost/run.js');
+  await withFakeBuffer(240, [{ id: 'p1', text: `Lc https://broadwayscorecard.com/show/${lc.ny.slug}?utm_source=twitter`, status: 'sent', dueAt: '2026-10-20T14:00:00.000Z' }], async seen => {
+    await lcPost(ledger);
+    assert.equal(seen.created.length, 5);
+    const x = seen.created.find(i => i.channelId === 'ch-twitter');
+    assert.match(x.text, /Lc was also reviewed in London\./);
+    assert.doesNotMatch(x.text, /transfer/i);
+    assert.match(x.text, /different cities, with different critics/);
+    assert.match(x.text, /utm_campaign=brief/);
+  });
+  const entry = ledger.posts.find(p => p.type === 'london-compare');
+  assert.equal(entry.id, `london-compare:${lc.ny.id}`);
+  assert.equal(entry.showId, lc.ny.id);
+  assert.deepEqual(entry.showIds, [lc.we.id, lc.ny.id]);
+  assert.equal(entry.auto, true);
+  assert.deepEqual(Object.keys(entry.channels).sort(), ['bluesky', 'facebook', 'instagram', 'threads', 'twitter']);
+  assert.ok(sel.doneKeys(ledger).has(`london-compare:${lc.ny.id}`));
+  // Next day, 10:00 New York time or later, never before the morning after the score post.
+  assert.ok(Date.parse(entry.dueAt) >= at('2026-10-21T14:00:00Z'));
+
+});
+
+test('london-compare obeys the quota guard: too few Buffer requests left creates nothing', async () => {
+  const ledger = lcLedger();
+  await withFakeBuffer(5, [], async seen => {
+    await assert.rejects(lcPost(ledger), e => e.code === 'QUOTA' && /left under its rate limit/.test(e.message));
+    assert.equal(seen.created.length, 0);
+    assert.equal(seen.listings, 0); // the guard runs before the cross-lane listing
+  });
+  assert.equal(ledger.posts.filter(p => p.type === 'london-compare').length, 0);
+});
+
+test('london-compare obeys the cross-lane rule: a day that already has a post for either show moves it to the next free day', async () => {
+  const ledger = lcLedger();
+  const day1 = { id: 'x1', text: `Lc https://broadwayscorecard.com/show/${lc.ny.slug}?utm_source=twitter`, status: 'scheduled', dueAt: '2026-10-21T14:00:00Z' };
+  ledger.posts.push({ ...scorePost({ dueAt: '2026-10-21T14:00:00.000Z', channels: { twitter: { postId: 'x1' } } }), type: 'score' });
+  await withFakeBuffer(240, [day1], async () => {
+    await lcPost(ledger, at('2026-10-21T14:05:00Z'));
+  });
+  const entry = ledger.posts.find(p => p.type === 'london-compare');
+  assert.ok(Date.parse(entry.dueAt) >= at('2026-10-22T13:00:00Z'), `moved off the busy day: ${entry.dueAt}`);
+});
+
+test('london-compare keeps the lane name in the social report', () => {
+  const social = require('./lib/social-report.js');
+  const lanes = social.laneNameOf ? social.laneNameOf('london-compare') : null;
+  if (lanes) assert.equal(lanes, 'London comparison posts');
+  assert.match(fs.readFileSync(new URL('./lib/social-report.js', import.meta.url), 'utf8'), /'london-compare': 'London comparison posts'/);
 });

@@ -80,9 +80,10 @@ const CREATE_LEAD_MINUTES = 70; // a post is created in Buffer at most this long
 const SCORE_LOOKBACK_DAYS = 10; // a score that settles later than this after opening is not posted
 const FIRST_RUN_FRESH_DAYS = 3; // first live run only: older shows are skipped (select.js splitBacklog)
 const STAGGER_MINUTES = 90; // gap between two posts
+const LONDON_COMPARE_LOOKBACK_DAYS = 5; // a London comparison later than this after its morning-after slot is dropped (BRO-6373)
 
 module.exports = {
   MARKETS, CHANNELS, CHANNEL_SETS, MARKET_CHANNEL_SET, HIGH_PROFILE, SCORE_FLOORS, ELIGIBLE_CATEGORIES, SKIP_TYPES,
   SCORE_POST_LOCAL_HOUR, SCORE_POST_WINDOW, CREATE_LEAD_MINUTES,
-  SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES,
+  SCORE_LOOKBACK_DAYS, FIRST_RUN_FRESH_DAYS, STAGGER_MINUTES, LONDON_COMPARE_LOOKBACK_DAYS,
 };
