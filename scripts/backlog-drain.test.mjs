@@ -393,8 +393,9 @@ test('reconcileAndAppend: lock busy skips the tick instead of appending', () => 
   const r = reconcileAndAppend(ledger, new Map([['4', { id: '4', status: 'pending' }]]), [], {
     // The lock's mtime is real-fs time; a shifted Date.now() (time-bomb audit)
     // would age it past ABANDONED_LOCK_MS and recover the "live" lock. Pin the
-    // age limit so only holder liveness is under test, whatever the clock says.
-    lockOpts: { timeoutMs: 150, waitMs: 10, abandonedMs: Number.MAX_SAFE_INTEGER, staleMs: Number.MAX_SAFE_INTEGER },
+    // abandoned limit (age alone never recovers) and set staleMs 0 so the
+    // recovery decision rests on holder pid liveness, whatever the clock says.
+    lockOpts: { timeoutMs: 150, waitMs: 10, abandonedMs: Number.MAX_SAFE_INTEGER, staleMs: 0 },
   });
   assert.equal(r.skipped, true);
   assert.equal(fs.readFileSync(ledger, 'utf8').trim().split('\n').length, 1, 'nothing appended');

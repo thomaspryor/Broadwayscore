@@ -95,8 +95,16 @@ const STAR_VETOED_TYPES = new Set(['awards_coverage', 'obituary']);
  * review never contains a tide table or a SCOREBOARD header. Other signals keep
  * the original "2 matches in the opening + 0 review signals = high" rule.
  */
+// WhatsOnStage article pages open with the photo-gallery widget's label and
+// counter ("Photo Gallery 602 Hanging used to be ..."). That is page chrome in
+// front of a real review, not a gallery page: Hangmen, Pigeon English and
+// Stepping Out (all Daisy Bowie-Sell) were flagged photo_gallery on it (BRO-6268).
+const LEADING_GALLERY_WIDGET = /^\s*Photo Gallery\s+\d+\s+/i;
+
 function heuristicClassify(text) {
   if (!text || text.length < 50) return null;
+  text = text.replace(LEADING_GALLERY_WIDGET, '');
+  if (text.length < 50) return null;
 
   let reviewSignals = 0;
   for (const pattern of REVIEW_INDICATORS) {

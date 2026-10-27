@@ -1735,7 +1735,9 @@ async function main() {
   }
   console.log(`[digest] sent to ${sendTo} (subject: ${subject} · id ${res.json?.id || '?'})`);
   // Tomorrow's "change since yesterday" reads this; a dry run never writes it.
-  saveBoardTableSnapshot(boardTable.report);
+  // The snapshot is the owner's baseline for the (+N) deltas: a test send to
+  // another address must not move it.
+  if (process.env.OWNER_EMAIL && sendTo === process.env.OWNER_EMAIL) saveBoardTableSnapshot(boardTable.report);
   try {
     sentState[sendTo] = { dayET: todayET, id: res.json?.id || null, at: new Date().toISOString() };
     fs.mkdirSync(path.dirname(SENT_STATE), { recursive: true });

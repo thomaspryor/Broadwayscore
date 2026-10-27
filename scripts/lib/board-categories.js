@@ -101,7 +101,10 @@ function cardTraits(issue, { nowMs, secret = null } = {}) {
   if (waitsOnOwner(issue, bodies, { secret, nowMs })) traits.add('waiting-owner');
   if (stateType === 'started') traits.add('being-worked');
 
-  const stamp = parseRecheckAfterFromCard({ comments: bodies, notes: description });
+  // The recheck only reads paused (Paused/Backlog) cards, so an old stamp on a
+  // card back in Todo or In Progress is history, not a date it waits on.
+  const stamp = (stateName === 'Paused' || stateName === 'Backlog')
+    ? parseRecheckAfterFromCard({ comments: bodies, notes: description }) : null;
   if (stamp != null) traits.add(stamp >= utcDayStart(nowMs) ? 'dated-future' : 'dated-past');
 
   const reasons = parkReasons(description);
@@ -335,14 +338,17 @@ async function fetchFlow24h({ graphql, now = new Date() } = {}) {
 /** board-report.js flags (kept here so the CLI is a printer and its parsing is tested with the lib). */
 function parseReportArgs(argv) {
   const opts = { mode: 'markdown', compare: null, save: null };
+  const modes = new Set();
   for (const a of argv) {
-    if (a === '--markdown') opts.mode = 'markdown';
-    else if (a === '--json') opts.mode = 'json';
-    else if (a.startsWith('--compare=')) { opts.mode = 'compare'; opts.compare = a.slice('--compare='.length); }
+    if (a === '--markdown') { opts.mode = 'markdown'; modes.add(a); }
+    else if (a === '--json') { opts.mode = 'json'; modes.add(a); }
+    else if (a.startsWith('--compare=')) { opts.mode = 'compare'; opts.compare = a.slice('--compare='.length); modes.add('--compare'); }
     else if (a.startsWith('--save=')) opts.save = a.slice('--save='.length);
     else return { error: `unknown argument: ${a}` };
   }
+  if (modes.size > 1) return { error: `pick one of ${[...modes].join(', ')}` };
   if (opts.mode === 'compare' && !opts.compare) return { error: '--compare needs a file' };
+  if (opts.save === '') return { error: '--save needs a file' };
   return opts;
 }
 

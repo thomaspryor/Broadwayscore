@@ -32,8 +32,8 @@ const categoryOf = (issue) => bc.categorizeBoard([issue], { now: NOW }).cards[0]
 const FIXTURES = {
   'waiting-owner': () => withDesc('DECISION NEEDED: Ship the new homepage or keep the old one?'),
   'being-worked': () => card({ state: { name: 'In Progress', type: 'started' } }),
-  'dated-future': () => withDesc('RECHECK-AFTER: 2026-11-05'),
-  'dated-past': () => withDesc('RECHECK-AFTER: 2026-10-20'),
+  'dated-future': () => withDesc('RECHECK-AFTER: 2026-11-05', { state: { name: 'Paused', type: 'backlog' } }),
+  'dated-past': () => withDesc('RECHECK-AFTER: 2026-10-20', { state: { name: 'Paused', type: 'backlog' } }),
   'parked-real-block': () => withDesc('PARKED: needs an API key from the vendor'),
   'parked-automatic': () => card({ title: 'BSC Daily estimate check failed', description: `${VERIFY}\nPARKED: estimate drift` }),
   'parked-owner-wording': () => withDesc('PARKED: needs owner decision'),
@@ -73,7 +73,7 @@ test('overlap: a Paused card with a future date is dated exclusively and Paused 
 });
 
 test('a date stamp on today counts as future (stamp on or after today)', () => {
-  assert.equal(categoryOf(withDesc('RECHECK-AFTER: 2026-10-27')), 'dated-future');
+  assert.equal(categoryOf(withDesc('RECHECK-AFTER: 2026-10-27', { state: { name: 'Paused', type: 'backlog' } })), 'dated-future');
 });
 
 test('an answered question does not count as waiting on the owner', () => {
@@ -118,7 +118,7 @@ test('answeredCheck says whether the answer-link secret was available', () => {
 test('important and stuck: Urgent or High that nobody is on', () => {
   const stuck = card({ priority: 1, title: 'Prod is down' });
   const worked = card({ priority: 1, state: { name: 'In Progress', type: 'started' } });
-  const dated = withDesc('RECHECK-AFTER: 2026-11-05', { priority: 2 });
+  const dated = withDesc('RECHECK-AFTER: 2026-11-05', { priority: 2, state: { name: 'Paused', type: 'backlog' } });
   const low = card({ priority: 4 });
   const r = bc.categorizeBoard([low, dated, worked, stuck], { now: NOW });
   assert.deepEqual(r.importantStuck.map((c) => c.title), ['Prod is down']);
@@ -220,4 +220,13 @@ test('board-report parseArgs', () => {
   assert.equal(bc.parseReportArgs(['--save=x.json']).save, 'x.json');
   assert.ok(bc.parseReportArgs(['--bogus']).error);
   assert.ok(bc.parseReportArgs(['--compare=']).error);
+  assert.ok(bc.parseReportArgs(['--save=']).error, 'empty --save is refused');
+  assert.ok(bc.parseReportArgs(['--compare=a.json', '--json']).error, 'two modes are refused');
+});
+
+test('an old RECHECK stamp on a Todo card is history: an Urgent one still shows as stuck', () => {
+  const issue = withDesc('RECHECK-AFTER: 2026-10-01', { priority: 1 });
+  const r = bc.categorizeBoard([issue], { now: NOW });
+  assert.ok(!r.cards[0].traits.includes('dated-past'));
+  assert.equal(r.importantStuck.length, 1);
 });
