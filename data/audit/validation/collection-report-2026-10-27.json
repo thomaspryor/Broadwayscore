@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-27T07:46:43.509Z",
+  "runDate": "2026-10-27T10:20:30.489Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "madwomen-of-the-west-off-broadway-2023,iluminate-off-broadway-2023",
+    "showFilter": "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023,amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023,the-gardens-of-anuncia-off-broadway-2023,bite-me-off-broadway-2023,ode-to-the-wasp-woman-off-broadway-2023,emergence-things-are-not-as-they-seem-off-broadway-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 24,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 14,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 3,
     "scrapingbee": 1,
-    "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 3
+    "brightdata": 2,
+    "archiveToday": 2,
+    "archive": 7
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 8,
-    "ampAttempts": 0,
+    "tier1Attempts": 19,
+    "tier1Success": 14,
+    "ampAttempts": 1,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 11,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 4,
+    "tier2Attempts": 7,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 2,
+    "tier4Success": 1,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 52,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,11 +54,13 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 24,
+    "failed": 6,
     "shows": [
-      "iluminate-off-broadway-2023",
-      "madwomen-of-the-west-off-broadway-2023"
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023",
+      "bite-me-off-broadway-2023",
+      "the-gardens-of-anuncia-off-broadway-2023",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,75 +69,125 @@
     }
   },
   "processed": [
-    "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
-    "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
-    "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json",
-    "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
-    "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
-    "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
-    "iluminate-off-broadway-2023/timeout--raven-snook.json",
-    "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
-    "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
-    "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
-    "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json",
-    "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
+    "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+    "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/nytimes--unknown.json",
+    "the-gardens-of-anuncia-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+    "the-gardens-of-anuncia-off-broadway-2023/nytg--allison-considine.json",
+    "the-gardens-of-anuncia-off-broadway-2023/nytimes--juan-a-ramirez.json",
+    "the-gardens-of-anuncia-off-broadway-2023/vulture--jackson-mchenry.json",
+    "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theatermania--zachary-stewart.json",
+    "the-gardens-of-anuncia-off-broadway-2023/theatermania--david-gordon.json",
+    "the-gardens-of-anuncia-off-broadway-2023/cititour--brian-scott-lipton.json",
+    "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theater-pizzazz--unknown.json",
+    "the-gardens-of-anuncia-off-broadway-2023/culturesauce--thom-geier.json",
+    "the-gardens-of-anuncia-off-broadway-2023/exeunt-magazine--lane-williamson.json",
+    "the-gardens-of-anuncia-off-broadway-2023/nysr--david-finkle.json",
+    "the-gardens-of-anuncia-off-broadway-2023/off-off-online--deirdre-donovan.json",
+    "the-gardens-of-anuncia-off-broadway-2023/stagebuddy--elyse-trevers.json",
+    "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/nytg--joe-dziemianowicz.json",
+    "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/nytimes--laura-collins-hughes.json",
+    "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/vulture--jackson-mchenry.json",
+    "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/timeout--raven-snook.json",
+    "bite-me-off-broadway-2023/nytimes--naveen-kumar.json",
+    "bite-me-off-broadway-2023/theatermania--zachary-stewart.json",
+    "bite-me-off-broadway-2023/off-off-online--adrienne-onofri.json",
+    "bite-me-off-broadway-2023/theater-pizzazz--samuel-l-leiter.json",
+    "bite-me-off-broadway-2023/theater-scene--christopher-caz-caswell.json"
   ],
   "failed": [
-    "iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json",
-    "iluminate-off-broadway-2023/zeal-nyc--mercedes-vizcaino.json"
+    "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/dailybeast--unknown.json",
+    "the-gardens-of-anuncia-off-broadway-2023/theater-life--david-sheward.json",
+    "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json",
+    "the-gardens-of-anuncia-off-broadway-2023/theater-pizzazz--carol-rocamora.json",
+    "the-gardens-of-anuncia-off-broadway-2023/theater-scene--victor-gluck.json",
+    "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/thewrap--robert-hofler.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
-      "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
-      "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json",
-      "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
-      "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
-      "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
-      "iluminate-off-broadway-2023/timeout--raven-snook.json",
-      "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
-      "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json",
-      "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/nytimes--unknown.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nytg--allison-considine.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nytimes--juan-a-ramirez.json",
+      "the-gardens-of-anuncia-off-broadway-2023/vulture--jackson-mchenry.json",
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theatermania--zachary-stewart.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theatermania--david-gordon.json",
+      "the-gardens-of-anuncia-off-broadway-2023/cititour--brian-scott-lipton.json",
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theater-pizzazz--unknown.json",
+      "the-gardens-of-anuncia-off-broadway-2023/culturesauce--thom-geier.json",
+      "the-gardens-of-anuncia-off-broadway-2023/exeunt-magazine--lane-williamson.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nysr--david-finkle.json",
+      "the-gardens-of-anuncia-off-broadway-2023/off-off-online--deirdre-donovan.json",
+      "the-gardens-of-anuncia-off-broadway-2023/stagebuddy--elyse-trevers.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/nytg--joe-dziemianowicz.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/nytimes--laura-collins-hughes.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/vulture--jackson-mchenry.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/timeout--raven-snook.json",
+      "bite-me-off-broadway-2023/nytimes--naveen-kumar.json",
+      "bite-me-off-broadway-2023/theatermania--zachary-stewart.json",
+      "bite-me-off-broadway-2023/off-off-online--adrienne-onofri.json",
+      "bite-me-off-broadway-2023/theater-pizzazz--samuel-l-leiter.json",
+      "bite-me-off-broadway-2023/theater-scene--christopher-caz-caswell.json"
     ],
     "failed": [
-      "iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json",
-      "iluminate-off-broadway-2023/zeal-nyc--mercedes-vizcaino.json"
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/dailybeast--unknown.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-life--david-sheward.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-pizzazz--carol-rocamora.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-scene--victor-gluck.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/thewrap--robert-hofler.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
-      "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
-      "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
-      "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
-      "iluminate-off-broadway-2023/timeout--raven-snook.json",
-      "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
-      "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
-      "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nyt-theater--jonathan-mandell.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nytg--allison-considine.json",
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theatermania--zachary-stewart.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theatermania--david-gordon.json",
+      "the-gardens-of-anuncia-off-broadway-2023/culturesauce--thom-geier.json",
+      "the-gardens-of-anuncia-off-broadway-2023/exeunt-magazine--lane-williamson.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nysr--david-finkle.json",
+      "the-gardens-of-anuncia-off-broadway-2023/off-off-online--deirdre-donovan.json",
+      "the-gardens-of-anuncia-off-broadway-2023/stagebuddy--elyse-trevers.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/timeout--raven-snook.json",
+      "bite-me-off-broadway-2023/theatermania--zachary-stewart.json",
+      "bite-me-off-broadway-2023/off-off-online--adrienne-onofri.json",
+      "bite-me-off-broadway-2023/theater-scene--christopher-caz-caswell.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [
-      "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json"
+    "scrapingdog": [
+      "the-gardens-of-anuncia-off-broadway-2023/theater-life--david-sheward.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-life--samuel-l-leiter.json",
+      "the-gardens-of-anuncia-off-broadway-2023/theater-scene--victor-gluck.json"
     ],
-    "brightdata": [],
+    "scrapingbee": [
+      "the-gardens-of-anuncia-off-broadway-2023/cititour--brian-scott-lipton.json"
+    ],
+    "brightdata": [
+      "the-gardens-of-anuncia-off-broadway-2023/vulture--jackson-mchenry.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/vulture--jackson-mchenry.json"
+    ],
     "archiveToday": [
-      "data/review-texts/iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json"
+      "data/review-texts/amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/dailybeast--unknown.json",
+      "data/review-texts/walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/thewrap--robert-hofler.json"
     ],
     "archive": [
-      "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json"
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/nytimes--unknown.json",
+      "the-gardens-of-anuncia-off-broadway-2023/nytimes--juan-a-ramirez.json",
+      "amid-falling-walls-tsvishn-falndike-vent-off-broadway-2023/theater-pizzazz--unknown.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/nytg--joe-dziemianowicz.json",
+      "walk-on-through-confessions-of-a-museum-novice-off-broadway-2023/nytimes--laura-collins-hughes.json",
+      "bite-me-off-broadway-2023/nytimes--naveen-kumar.json",
+      "bite-me-off-broadway-2023/theater-pizzazz--samuel-l-leiter.json"
     ]
   },
   "failuresByOutlet": {
-    "Zeal NYC": {
+    "Theater Pizzazz": {
       "count": 1,
-      "domain": "zealnyc.com",
+      "domain": "theaterpizzazz.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
