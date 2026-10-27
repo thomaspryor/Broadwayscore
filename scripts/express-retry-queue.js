@@ -62,6 +62,9 @@ const {
   markEntryAttempted,
 } = require('./lib/express-retry-decision');
 const { isShowCoverageComplete } = require('./lib/opening-night-readiness');
+const { shouldRetryForThinPressNight } = require('./lib/opening-night-retry-decision');
+const { computeWindow } = require('./lib/opening-night-windows');
+const { isIncludableForRebuild } = require('./lib/review-guards');
 const { dispatchExpressRetry } = require('./lib/dispatch-express-retry');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
@@ -212,7 +215,15 @@ async function cmdEvaluate() {
     if (decision.thin) await routeStillThinAlert(showId, market, decision.reason);
     return;
   }
-  if (!decision.retry) return;
+  // BRO-5953: inside the press-night window, fewer than 3 scored reviews is a
+  // retry even when the real-text ratio looks fine (Billy Crystal 860, 1/1).
+  const pressNight = shouldRetryForThinPressNight({
+    scoredCount: reviewFiles.filter((r) => isIncludableForRebuild(r, show || {})).length,
+    window: show ? computeWindow({ ...show, category: show.category || 'broadway' }) : null,
+    isRetry,
+  });
+  if (pressNight.retry) console.log(`[express-retry-queue] ${showId}: ${pressNight.reason}`);
+  if (!decision.retry && !pressNight.retry) return;
 
   const current = readQueueEntries();
   const { entries, changed } = enqueueRetry(current, { showId, market, nowIso, delayHours });
