@@ -211,6 +211,50 @@ ${tiles}
 </div>`;
 }
 
+/**
+ * BRO-6442: the same category table board-report.js prints, email-safe (inline
+ * styles, no SVG). Labels wrap and numbers never do, so it reads at 390px.
+ * `prev` is yesterday's snapshot (board-categories.js snapshotOf); without it
+ * no change column is shown. `report` null renders a visible "unavailable"
+ * line rather than dropping the block silently.
+ */
+function renderBoardCategoriesHtml(report, prev, esc = (s) => String(s)) {
+  const title = `<p style="font-size:15px;font-weight:700;color:${INK};margin:0 0 6px;">Every open card, once</p>`;
+  if (!report || !Array.isArray(report.categories)) {
+    return `<div style="margin:0 0 18px;">${title}<p style="font-size:13px;color:${MUTED};margin:0;">Board table unavailable this morning (the board could not be read from Linear).</p></div>`;
+  }
+  const before = new Map((prev && Array.isArray(prev.categories) ? prev.categories : []).filter((c) => c && Number.isFinite(c.exclusive)).map((c) => [c.key, c.exclusive]));
+  const hasPrev = before.size > 0;
+  const delta = (key, now) => {
+    if (!before.has(key)) return '';
+    const d = now - before.get(key);
+    if (!d) return '';
+    return ` <span style="font-size:11px;color:${MUTED};">(${d > 0 ? '+' : ''}${d})</span>`;
+  };
+  const th = (s, align) => `<th style="font-size:11px;font-weight:600;color:${MUTED};text-align:${align};padding:4px 4px;border-bottom:1px solid #e4e4df;">${s}</th>`;
+  const num = 'font-size:13px;color:#1a1a19;text-align:right;padding:4px 4px;white-space:nowrap;border-bottom:1px solid #f0f0ec;';
+  const rows = report.categories.map((c) => {
+    const uh = c.byPriority.urgent + c.byPriority.high;
+    return `<tr><td style="font-size:13px;color:${INK};padding:4px 4px;border-bottom:1px solid #f0f0ec;">${esc(c.label)}</td>`
+      + `<td style="${num}font-weight:700;">${c.exclusive}${delta(c.key, c.exclusive)}</td>`
+      + `<td style="${num}color:${MUTED};">${c.overlap}</td>`
+      + `<td style="${num}${uh ? '' : `color:${MUTED};`}">${uh}</td></tr>`;
+  }).join('\n');
+  const tb = report.totals.byPriority;
+  const openDelta = hasPrev && Number.isFinite(prev.open) && report.open !== prev.open
+    ? ` <span style="font-size:11px;color:${MUTED};">(${report.open > prev.open ? '+' : ''}${report.open - prev.open})</span>` : '';
+  const stuck = report.importantStuck || [];
+  const gated = require('./board-categories.js').ownerGatedNoQuestion(report);
+  return `<div style="margin:0 0 18px;">
+${title}<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;">
+<tr>${th('', 'left')}${th('Only here', 'right')}${th('All with this', 'right')}${th('Urgent+High', 'right')}</tr>
+${rows}
+<tr><td style="font-size:13px;font-weight:700;color:${INK};padding:6px 4px;">Total open</td><td style="${num}font-weight:700;border-bottom:0;">${report.totals.exclusive}${openDelta}</td><td style="${num}border-bottom:0;"></td><td style="${num}font-weight:700;border-bottom:0;">${tb.urgent + tb.high}</td></tr>
+</table>
+<p style="font-size:12px;color:${MUTED};margin:6px 0 0;">Each card counts once, in the first row that fits${hasPrev ? '; numbers in brackets are the change since the last morning email' : ''}. "All with this" counts every card that fits the row. The questions at the top of this email also include ones from your Mac tabs, so that number can differ.${stuck.length ? ` ${stuck.length} Urgent or High ${stuck.length === 1 ? 'card has' : 'cards have'} nobody on ${stuck.length === 1 ? 'it' : 'them'}.` : ''}${gated ? ` ${gated} ${gated === 1 ? 'card in Other is' : 'cards in Other are'} held for you without a clear question.` : ''}</p>
+</div>`;
+}
+
 module.exports = {
-  DAILY_FLOW_QUERY, localDay, dayKeys, bucketDailyFlow, fetchDailyFlow, boardVerdict, tilesFor, renderBoardSummaryHtml,
+  DAILY_FLOW_QUERY, localDay, dayKeys, bucketDailyFlow, fetchDailyFlow, boardVerdict, tilesFor, renderBoardSummaryHtml, renderBoardCategoriesHtml,
 };

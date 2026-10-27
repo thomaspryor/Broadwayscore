@@ -197,3 +197,44 @@ test('forbidden headings: headings match, card titles and prose do not', async (
   assert.equal(hits('<h3>📉 Score drift</h3>'), 1);
   assert.equal(hits('<h3>Fixes &amp; features merged</h3>'), 1);
 });
+
+// BRO-6442: the board category table rides in the email without breaking any invariant.
+test('board category table: absent when not fetched, rendered when given, unavailable line on failure', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const bc = require('./board-categories.js');
+  const { fetchBoardTable, saveBoardTableSnapshot } = require('../send-morning-digest.js');
+  const health = healthWith([]);
+  const base = { sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH };
+
+  const without = composeDigestEmail(base);
+  assert.ok(!without.html.includes('Every open card, once'));
+
+  const report = bc.categorizeBoard([{ identifier: 'BRO-1', title: 'x', priority: 2, state: { name: 'Todo', type: 'unstarted' }, comments: { nodes: [] }, description: '' }], { now: NOW });
+  const withTable = composeDigestEmail({ ...base, boardReport: report, boardReportPrev: null });
+  assert.ok(withTable.html.includes('Every open card, once'));
+  assert.deepEqual(assertDigestInvariants(withTable.html, { health, subject: withTable.subject }).violations, []);
+  assert.equal(withTable.subject, without.subject);
+
+  const failed = composeDigestEmail({ ...base, boardReport: null });
+  assert.ok(failed.html.includes('Board table unavailable this morning'));
+
+  // fetchBoardTable: kill switch, Linear failure, previous snapshot round trip.
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'board-table-'));
+  const snap = path.join(dir, 'snap.json');
+  const ok = async () => ({ issues: { nodes: [{ identifier: 'BRO-9', title: 't', priority: 3, state: { name: 'Todo', type: 'unstarted' }, comments: { nodes: [] } }], pageInfo: { hasNextPage: false } } });
+  process.env.DIGEST_BOARD_TABLE_DISABLED = '1';
+  try {
+    assert.equal((await fetchBoardTable({ now: NOW, graphql: ok, snapshotPath: snap })).report, undefined);
+  } finally { delete process.env.DIGEST_BOARD_TABLE_DISABLED; }
+  const broken = await fetchBoardTable({ now: NOW, graphql: async () => { throw new Error('linear down'); }, snapshotPath: snap });
+  assert.equal(broken.report, null);
+  const first = await fetchBoardTable({ now: NOW, graphql: ok, snapshotPath: snap });
+  assert.equal(first.report.open, 1);
+  assert.equal(first.prev, null);
+  saveBoardTableSnapshot(first.report, snap);
+  const second = await fetchBoardTable({ now: NOW, graphql: ok, snapshotPath: snap });
+  assert.equal(second.prev.open, 1);
+  assert.doesNotMatch(fs.readFileSync(snap, 'utf8'), /BRO-9/);
+});

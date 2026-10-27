@@ -601,7 +601,7 @@ function digestLoopDeadMessage({ sections = {}, autofixRows = null, stuckCount =
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, loopDeadMsg: givenLoopDeadMsg, reportOnly = false, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -693,6 +693,16 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
       head.push(require('./lib/board-summary.js').renderBoardSummaryHtml(m, m.daily, esc, { partial: m.daily ? m.dailyTruncated : m.floors }));
     } catch (err) {
       console.error(`[digest] WARN board numbers block failed: ${String(err.message).slice(0, 120)}`);
+    }
+  }
+  // BRO-6442: every open card in one category, the same table board-report.js
+  // prints. undefined = not fetched (kill switch, tests): no block. null = the
+  // fetch failed: a visible "unavailable" line, never a silent gap.
+  if (boardReport !== undefined) {
+    try {
+      head.push(require('./lib/board-summary.js').renderBoardCategoriesHtml(boardReport, boardReportPrev, esc));
+    } catch (err) {
+      console.error(`[digest] WARN board category table failed: ${String(err.message).slice(0, 120)}`);
     }
   }
 
@@ -891,7 +901,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, reportOnly = false, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, pipelineIssues = null, boardNumbersData = null, boardReport = undefined, boardReportPrev = null, reportOnly = false, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -925,8 +935,41 @@ function composeDigestEmail({
 
   const loopDeadMsg = digestLoopDeadMessage({ sections, autofixRows, stuckCount, pipelineIssues });
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, loopDeadMsg, reportOnly, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport, boardReportPrev, loopDeadMsg, reportOnly, now });
   return { subject, html };
+}
+
+const BOARD_TABLE_SNAPSHOT = path.join(REPO, 'data', 'audit', 'board-report-snapshot.json');
+
+/**
+ * BRO-6442: the board category report plus yesterday's snapshot. Never throws:
+ * report undefined = kill switch (no block), null = Linear failed (the email
+ * says the table is unavailable).
+ */
+async function fetchBoardTable({ now = new Date(), graphql = null, snapshotPath = BOARD_TABLE_SNAPSHOT } = {}) {
+  if (/^(1|true)$/i.test(String(process.env.DIGEST_BOARD_TABLE_DISABLED || ''))) return { report: undefined, prev: null };
+  let prev = null;
+  try { prev = JSON.parse(fs.readFileSync(snapshotPath, 'utf8')); } catch { /* first run, or no snapshot on this machine */ }
+  try {
+    const bc = require('./lib/board-categories.js');
+    const gql = graphql || require('./lib/linear-client.js').graphql;
+    const issues = await withTimeout(bc.fetchOpenBoard({ graphql: gql }), 60_000, { message: 'timed out after 60000ms' });
+    return { report: bc.categorizeBoard(issues, { now, secret: process.env.APPROVAL_HMAC_SECRET || null }), prev };
+  } catch (err) {
+    console.error(`[digest] WARN board category table failed: ${String(err.message).slice(0, 120)}`);
+    return { report: null, prev };
+  }
+}
+
+/** Counts only (no titles), gitignored, per machine: same convention as linear-drain-throughput-snapshot.json. */
+function saveBoardTableSnapshot(report, snapshotPath = BOARD_TABLE_SNAPSHOT) {
+  if (!report) return;
+  try {
+    fs.mkdirSync(path.dirname(snapshotPath), { recursive: true });
+    fs.writeFileSync(snapshotPath, JSON.stringify(require('./lib/board-categories.js').snapshotOf(report), null, 2) + '\n');
+  } catch (err) {
+    console.error(`[digest] WARN could not write board-report-snapshot.json (non-fatal): ${err.message}`);
+  }
 }
 
 async function main() {
@@ -1575,12 +1618,14 @@ async function main() {
   } catch (err) {
     console.error(`[digest] WARN board numbers failed: ${String(err.message).slice(0, 120)}`);
   }
+  // BRO-6442: the board category table, fail-soft. DIGEST_BOARD_TABLE_DISABLED=1 drops the block.
+  const boardTable = await fetchBoardTable({ now });
   if (skipMacLocal) {
     const { readMacAlive } = require('./lib/mac-applied-heartbeat.js');
     sections.macLocalSkipped = macLocalSkippedLine(await readMacAlive({ token: process.env.GH_TOKEN || process.env.GITHUB_TOKEN }));
     console.log(`[digest] ${sections.macLocalSkipped.text}`);
   }
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, reportOnly: noAutofix, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, pipelineIssues, boardNumbersData, boardReport: boardTable.report, boardReportPrev: boardTable.prev, reportOnly: noAutofix, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
@@ -1689,6 +1734,8 @@ async function main() {
     process.exit(1);
   }
   console.log(`[digest] sent to ${sendTo} (subject: ${subject} · id ${res.json?.id || '?'})`);
+  // Tomorrow's "change since yesterday" reads this; a dry run never writes it.
+  saveBoardTableSnapshot(boardTable.report);
   try {
     sentState[sendTo] = { dayET: todayET, id: res.json?.id || null, at: new Date().toISOString() };
     fs.mkdirSync(path.dirname(SENT_STATE), { recursive: true });
@@ -1703,4 +1750,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday };
+module.exports = { decisionsListLinkHtml, buildSubject, buildHtml, parseArgs, composeDigestEmail, mergeNeedsYouSections, macLabelRetired, localCyrusRelayMessage, localRunnerHealthMessage, localLinearDelegationMessage, localCodexConnectionLine, retiredSyncTags, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage, macLocalSkippedLine, resendSentToday, fetchBoardTable, saveBoardTableSnapshot };
