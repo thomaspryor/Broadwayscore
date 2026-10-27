@@ -1,7 +1,7 @@
 /**
  * Profitability Scorecard email gate (BRO-6210): the unlock contract, the separate
- * list, popup suppression and the paywall markup. Runs in the tsx unit batch
- * (test.yml) and imports src TS directly, like gate-logic.test.mjs.
+ * list, popup suppression, paywall markup and admin signup panel. Runs with
+ * plain node (the card acceptance command) and in the tsx unit batch.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -9,12 +9,13 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import vm from 'node:vm';
+import { require as tsxRequire } from 'tsx/cjs/api';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
-const gate = await import('../../src/lib/money-gate.ts');
-const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
-const hooks = await import('../../src/hooks/useFormspreeSubscribed.ts');
-const supa = await import('../../src/lib/supabase.ts');
+const gate = tsxRequire('../../src/lib/money-gate.ts', import.meta.url);
+const { emailCaptureConfig } = tsxRequire('../../src/config/email-capture.ts', import.meta.url);
+const hooks = tsxRequire('../../src/hooks/useFormspreeSubscribed.ts', import.meta.url);
+const supa = tsxRequire('../../src/lib/supabase.ts', import.meta.url);
 const read = (p) => readFileSync(join(ROOT, p), 'utf8');
 
 function runBoot({ stored = null, items = {}, cookie = '', storageThrows = false } = {}) {
@@ -235,7 +236,7 @@ test('every gate retries the outbox on mount', () => {
 
 // BRO-6331: gate and Email Tom events must reach GA4 (the only analytics that works).
 test('gaEvent sends through window.gtag, or holds the event until gtag loads', async () => {
-  const { gaEvent } = await import('../../src/lib/analytics/ga-event.ts');
+  const { gaEvent } = tsxRequire('../../src/lib/analytics/ga-event.ts', import.meta.url);
   const calls = [];
   globalThis.window = { gtag: (...a) => calls.push(a) };
   gaEvent('money_gate_shown', { page: 'biz-dashboard' });
@@ -258,7 +259,7 @@ test('every money gate event and email_tom_click is wired to GA4', () => {
 });
 
 // ---- BRO-6339: fake-email rules ----
-const me = await import('../../src/lib/money-email.ts');
+const me = tsxRequire('../../src/lib/money-email.ts', import.meta.url);
 
 test('junk, disposable and malformed addresses are refused; real ones pass (BRO-6339)', () => {
   const refused = {
@@ -370,4 +371,121 @@ test('the RPC mirrors the TypeScript disposable and junk rules (BRO-6339)', () =
   assert.match(tsx, /suggestMoneyEmail\(email\)/);
   assert.match(tsx, /MONEY_EMAIL_PROBLEM_MESSAGES\[reason\]/);
   for (const t of [read('src/lib/money-email.ts'), ...Object.values(me.MONEY_EMAIL_PROBLEM_MESSAGES)]) assert.doesNotMatch(t, /—/);
+});
+
+// BRO-6380: exercise the actual read and aggregation used by the admin page.
+const { readAdminMoneySignups, summarizeMoneySignups } = tsxRequire('../../scripts/lib/admin-money-signups.js', import.meta.url);
+const signupNow = new Date('2026-10-27T12:00:00Z');
+const signupRow = (email, created_at = '2026-10-27T11:00:00Z', fields = {}) => ({
+  email, created_at, role: 'investor', first_page: 'biz-dashboard:/biz', ...fields,
+});
+const signupResponse = (rows, range = rows.length ? `0-${rows.length - 1}/${rows.length}` : '*/0') => ({
+  ok: true, headers: new Headers({ 'content-range': range }), json: async () => rows,
+});
+const signupOptions = { url: 'https://signups.invalid', serviceKey: 'test-service-key', now: signupNow };
+
+test('admin counts and daily records exclude only the requested owner patterns', () => {
+  const rows = [
+    signupRow('reader@example.com'),
+    signupRow('boundary@example.com', '2026-10-20T12:00:00Z'),
+    signupRow('older@example.com', '2026-10-20T11:59:59Z', { role: null, first_page: null }),
+    signupRow('thomas.pryor@example.com'), signupRow(' THOMAS.PRYOR+panel@example.com '),
+    signupRow('tom_pryor@example.org'),
+    signupRow('tom_pryor2@example.com', '2026-10-26T23:59:59Z'),
+    signupRow('other.thomas.pryor@example.com'),
+  ];
+  const result = summarizeMoneySignups(rows, signupNow);
+  assert.equal(result.total, 5);
+  assert.equal(result.last7Days, 4, 'rolling seven days includes its exact boundary');
+  assert.deepEqual(result.days.map(d => d.date), ['2026-10-27', '2026-10-26', '2026-10-20']);
+  assert.deepEqual(result.days[0].signups.map(s => s.email), ['other.thomas.pryor@example.com', 'reader@example.com']);
+  assert.deepEqual(result.days[2].signups[1], {
+    email: 'older@example.com', createdAt: '2026-10-20T11:59:59.000Z', role: 'Unspecified', firstPage: 'Unspecified',
+  });
+  assert.equal(result.days[0].signups[0].firstPage, 'biz-dashboard:/biz');
+  assert.equal(rows.length, 8, 'read-only, with no writes or input mutation');
+});
+
+test('admin reads every result page using a service key and no shared cache', async () => {
+  const rows = [signupRow('reader@example.com'), signupRow('tom_pryor@example.com'), signupRow('older@example.com', '2026-10-01T00:00:00Z')];
+  let calls = 0;
+  const result = await readAdminMoneySignups({ ...signupOptions, fetchImpl: async (url, init) => {
+    const offset = Number(url.searchParams.get('offset'));
+    assert.equal(url.pathname, '/rest/v1/money_scorecard_signups');
+    assert.equal(url.searchParams.get('select'), 'email,created_at,role,first_page');
+    assert.equal(url.searchParams.get('order'), 'created_at.desc,email.asc');
+    assert.equal(url.searchParams.get('created_at'), `lte.${signupNow.toISOString()}`);
+    assert.equal(init.method, 'GET');
+    assert.equal(init.cache, 'no-store');
+    assert.equal(init.headers.apikey, signupOptions.serviceKey);
+    assert.equal(init.headers.Authorization, `Bearer ${signupOptions.serviceKey}`);
+    assert.equal(init.headers.Prefer, 'count=exact');
+    assert.ok(init.signal instanceof AbortSignal);
+    calls++;
+    // Even a server cap below our requested limit must not truncate the list.
+    return signupResponse(rows.slice(offset, offset + 2), offset === 0 ? '0-1/3' : '2-2/3');
+  } });
+  assert.equal(calls, 2);
+  assert.equal(result.total, 2);
+  assert.equal(result.last7Days, 1);
+});
+
+test('an empty or owner-only list is a valid zero, missing credentials make no request', async () => {
+  for (const rows of [[], [signupRow('thomas.pryor+test@example.com'), signupRow('tom_pryor@example.com')]]) {
+    assert.deepEqual(await readAdminMoneySignups({ ...signupOptions, fetchImpl: async () => signupResponse(rows) }), {
+      total: 0, last7Days: 0, days: [],
+    });
+  }
+  let calls = 0;
+  for (const missing of [{ url: undefined }, { serviceKey: undefined }]) {
+    assert.deepEqual(await readAdminMoneySignups({ ...signupOptions, ...missing, fetchImpl: async () => { calls++; } }), { unavailable: true });
+  }
+  assert.equal(calls, 0);
+});
+
+test('upstream failures and incomplete scans never show partial totals or private errors', async () => {
+  const row = signupRow('reader@example.com');
+  const cases = [
+    async () => { throw new Error('private upstream details'); },
+    async () => ({ ok: false }),
+    async () => signupResponse([row], '0-0/*'),
+    async () => signupResponse([row], '2-2/3'),
+    async () => signupResponse([signupRow('reader@example.com', 'invalid')]),
+    async () => signupResponse([signupRow('reader@example.com', '2027-01-01T00:00:00Z')]),
+    async () => signupResponse([{ created_at: row.created_at }]),
+    async () => signupResponse({ error: 'private upstream details' }, '*/0'),
+  ];
+  for (const fetchImpl of cases) {
+    assert.deepEqual(await readAdminMoneySignups({ ...signupOptions, fetchImpl }), { unavailable: true });
+  }
+  for (const lastPage of [signupResponse([], '*/2'), signupResponse([row], '1-1/3'), { ok: false }]) {
+    let calls = 0;
+    const result = await readAdminMoneySignups({ ...signupOptions, fetchImpl: async () => ++calls === 1 ? signupResponse([row], '0-0/2') : lastPage });
+    assert.equal(calls, 2);
+    assert.deepEqual(result, { unavailable: true });
+  }
+});
+
+test('admin scan is bounded even when upstream advertises more pages', async () => {
+  let calls = 0;
+  const result = await readAdminMoneySignups({ ...signupOptions, fetchImpl: async () => {
+    const offset = calls++;
+    return signupResponse([signupRow(`reader${offset}@example.com`)], `${offset}-${offset}/101`);
+  } });
+  assert.equal(calls, 100);
+  assert.deepEqual(result, { unavailable: true });
+});
+
+test('the dynamic server admin page authorizes before reading emails and is linked from accounts', () => {
+  const page = read('src/app/admin/page.tsx');
+  assert.match(page, /if \(!\(await isAdmin\(\)\)\) notFound\(\);/);
+  assert.ok(page.indexOf('notFound();') < page.indexOf('await getAdminMoneySignups()'));
+  assert.match(page, /dynamic = 'force-dynamic'/);
+  assert.match(page, /index: false, follow: false/);
+  assert.doesNotMatch(page, /['"]use client['"]/);
+  const server = read('src/lib/admin-money-signups.ts');
+  assert.match(server, /import 'server-only'/);
+  assert.match(server, /readAdminMoneySignups\(/);
+  assert.match(server, /serviceKey: process.env.SUPABASE_SERVICE_ROLE_KEY/);
+  assert.match(read('src/app/admin/accounts/page.tsx'), /href="\/admin"/);
 });

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { isAdmin } from '@/lib/admin-auth';
 import Dashboard from './Dashboard';
@@ -24,6 +25,9 @@ export default async function AdminAccountsPage() {
           <p className="text-sm text-gray-400 mt-1">
             Sign-ups and what signed-in people do. Updated every 3 hours.
           </p>
+          <Link href="/admin" className="inline-block text-sm text-brand hover:underline mt-3">
+            Money Scorecard sign-ups
+          </Link>
         </header>
         <Dashboard />
       </div>
