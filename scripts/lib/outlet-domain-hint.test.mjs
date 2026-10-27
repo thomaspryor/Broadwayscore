@@ -46,3 +46,8 @@ test('majority-votes when an outlet has urls on more than one non-blocked host',
 test('malformed urls are ignored, not thrown', () => {
   assert.equal(inferOutletDomainHint(['not a url', 'https://www.oxfordshireguardian.co.uk/x']), 'oxfordshireguardian.co.uk');
 });
+
+test('bare blog-platform hosts are never an outlet domain (BRO-6418)', () => {
+  assert.equal(inferOutletDomainHint(['https://substack.com/p/x', 'https://wordpress.com/y']), null);
+  assert.equal(inferOutletDomainHint(['https://substack.com/p/x', 'https://pub.substack.com/p/y']), 'pub.substack.com');
+});

@@ -24,6 +24,7 @@
  */
 
 const { isBlockedReviewUrl } = require('./domain-filters');
+const { isBareSuffix } = require('./host-suffix-lists');
 
 /**
  * @param {string[]} urls - review URLs seen for one outletId (any order, may include blocked/junk hosts)
@@ -41,6 +42,10 @@ function inferOutletDomainHint(urls) {
       continue;
     }
     if (!hostname) continue;
+    // A bare blog platform (substack.com, wordpress.com) carries no outlet
+    // identity; registering it minted 'substack-com' and shadowed every
+    // substack URL fallback (BRO-6418). Park as no-domain instead.
+    if (isBareSuffix(hostname)) continue;
     counts[hostname] = (counts[hostname] || 0) + 1;
   }
   const sorted = Object.entries(counts).sort((a, b) => b[1] - a[1]);
