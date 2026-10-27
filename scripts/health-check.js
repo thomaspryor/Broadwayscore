@@ -4647,7 +4647,13 @@ function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
     nowMs: now.getTime(),
     isStillMissing,
   });
-  if (!ranked) return [];
+  if (!ranked) {
+    // An explicit pass row once the report exists, so a fixed backlog can
+    // verify 'absent' (check-health-row-absent --live; BRO-3833 pattern).
+    // No report at all proves nothing: no row (BRO-4689).
+    if (!report || !Array.isArray(report.candidates)) return [];
+    return [{ name: 'Data: reviewed shows missing from shows.json', status: 'pass', message: 'No aggregator-reviewed show is missing from the catalogue' }];
+  }
 
   // Named-first-in-array is not named-most-urgent — the same lesson
   // obClosingBacklogResults learned. Rhinoceros sat 12 days behind an
@@ -6149,6 +6155,27 @@ async function checkNeverRunWorkflowHealth() {
 // absent.js can't just re-run scripts/health-check.js wholesale). This is the
 // ONLY place the check list is enumerated; main() and the probe both call it
 // so the two can never drift apart.
+// Reads only committed audit files, so it lives in computeCoreHealthResults
+// where the live probe (check-health-row-absent --live) sees it; it used to
+// run in main()'s CI-only block and could never be verified fixed (BRO-4689).
+function checkReverseDiscovery() {
+  try {
+    const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
+    // firstSeen lives in the STATE file, not the candidates report — without
+    // it every candidate looks brand new and nothing can ever escalate.
+    let rdState = {};
+    try {
+      rdState = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-state.json'), 'utf8'));
+    } catch { /* state absent on a first run — ages stay unknown, status stays warn */ }
+    return [
+      ...reverseDiscoveryBacklogResults(rdReport, rdState),
+      ...reverseDiscoveryFreshnessResults(rdReport, Date.now()),
+    ];
+  } catch {
+    return []; // report absent (detector not yet run) — nothing to surface
+  }
+}
+
 async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
   return [
     ...checkFreshness(),
@@ -6201,6 +6228,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkStarBandDrift(),
     ...checkEarlyPublishDates(),
     ...checkCorpusAudits(),
+    ...checkReverseDiscovery(),
   ];
 }
 
@@ -6269,18 +6297,6 @@ async function main() {
     } catch {
       allResults.push(...notionScheduleCouplingResults(null));
     }
-
-    try {
-      const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
-      // firstSeen lives in the STATE file, not the candidates report — without
-      // it every candidate looks brand new and nothing can ever escalate.
-      let rdState = {};
-      try {
-        rdState = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-state.json'), 'utf8'));
-      } catch { /* state absent on a first run — ages stay unknown, status stays warn */ }
-      allResults.push(...reverseDiscoveryBacklogResults(rdReport, rdState));
-      allResults.push(...reverseDiscoveryFreshnessResults(rdReport, Date.now()));
-    } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     try {
       const progressReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/progress-watch-state.json'), 'utf8'));
