@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-27T23:30:31.441Z",
+  "timestamp": "2026-10-27T23:46:27.770Z",
   "stats": {
     "totalReviews": 63971,
-    "alreadyFlagged": 21773,
+    "alreadyFlagged": 21774,
     "dateGuardCatches": 237,
     "directorMismatch": 2385,
     "tvFilmSignals": 1809,
-    "londonSignals": 3059,
+    "londonSignals": 3060,
     "offBroadwaySignals": 577,
     "yearMismatch": 217,
     "noPublishDate": 5664
@@ -84682,6 +84682,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "theatreandtonic--eleanor-bywater.json",
+      "score": null,
+      "publishDate": "2026-10-27",
+      "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
