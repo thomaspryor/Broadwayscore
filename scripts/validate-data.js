@@ -672,10 +672,9 @@ function validateOfficialUrls(shows) {
   for (const show of shows) {
     if (!show.officialUrl || !isBlockedOfficialUrl(show.officialUrl)) continue;
     blocked++;
-    // BRO-5345 / CLAUDE.md section 19: land advisory first. Switch warn()
-    // back to error() once data/pending-fixes/bro-5345.json has been applied
-    // to private core data, so existing rows do not break gated pipelines.
-    warn(`Show "${show.title}" (${show.id}) has a blocked officialUrl: ${show.officialUrl}. Use the show's own site, a known venue site or null.`);
+    // BRO-5345 / CLAUDE.md section 19: landed advisory, armed (BRO-5703) once
+    // core data held 0 blocked rows (gate-arm-ok: 0 of 4181 shows blocked 2026-10-27).
+    error(`Show "${show.title}" (${show.id}) has a blocked officialUrl: ${show.officialUrl}. Use the show's own site, a known venue site or null.`);
   }
   if (blocked === 0) ok('No blocked official URLs (known venue fallbacks allowed)');
 }
