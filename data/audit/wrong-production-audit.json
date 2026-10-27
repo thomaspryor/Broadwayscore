@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-27T01:12:35.612Z",
+  "timestamp": "2026-10-27T01:28:41.005Z",
   "stats": {
-    "totalReviews": 62687,
+    "totalReviews": 62690,
     "alreadyFlagged": 21573,
     "dateGuardCatches": 223,
     "directorMismatch": 2317,
     "tvFilmSignals": 1773,
-    "londonSignals": 3020,
+    "londonSignals": 3022,
     "offBroadwaySignals": 553,
     "yearMismatch": 212,
     "noPublishDate": 5561
@@ -88448,6 +88448,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2016",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2016-06-08",
+      "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-of-kenneth-branagh-theatre-companys-production-at-the-garrick",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2016",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2016-05-26",
+      "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-theatre-review-not-romantic-or-deeply-moving-a3257446.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
