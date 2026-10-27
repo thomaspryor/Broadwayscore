@@ -1,37 +1,89 @@
 {
   "processed": [
-    "merry-me-off-broadway-2023/timeout--regina-robbins.json"
+    "breakfast-at-tiffanys-west-end-2016/nytimes--unknown.json",
+    "breakfast-at-tiffanys-west-end-2016/london-box-office--stuart-king.json",
+    "the-bodyguard-west-end-2016/all-that-dazzles-uk--daz-gale.json",
+    "the-bodyguard-west-end-2016/everything-theatre--amelia-braddick.json",
+    "the-bodyguard-west-end-2016/london-box-office--stacey-tyler.json",
+    "the-bodyguard-west-end-2016/london-theatre--unknown.json",
+    "the-bodyguard-west-end-2016/west-end-best-friend--ryan-bishop.json",
+    "american-idiot-west-end-2016/london-box-office--david-scotland.json",
+    "the-go-between-west-end-2016/nytimes--unknown.json",
+    "the-go-between-west-end-2016/britishtheatrecom--unknown.json",
+    "a-view-from-islington-north-west-end-2016/british-theatre--philip-fisher.json",
+    "a-view-from-islington-north-west-end-2016/independent--unknown.json",
+    "a-view-from-islington-north-west-end-2016/london-box-office--david-scotland.json",
+    "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016/everything-theatre--brian-penn.json",
+    "the-end-of-longing-west-end-2016/daily-mail--lucy-mapstone.json",
+    "the-end-of-longing-west-end-2016/london-box-office--phil-willmott.json",
+    "the-end-of-longing-west-end-2016/metro-uk--brooke-ivey-johnson.json",
+    "hangmen-west-end-2015/london-box-office--unknown.json",
+    "hangmen-west-end-2015/standard--unknown.json",
+    "cats-west-end-2015/standard--fiona-mountford.json"
   ],
   "failed": [
-    "merry-me-off-broadway-2023/nytimes--laura-collins-hughes.json"
+    "the-go-between-west-end-2016/london-box-office--phil-willmott.json",
+    "a-view-from-islington-north-west-end-2016/thestage--mark-shenton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "merry-me-off-broadway-2023/timeout--regina-robbins.json"
+      "breakfast-at-tiffanys-west-end-2016/london-box-office--stuart-king.json",
+      "the-bodyguard-west-end-2016/all-that-dazzles-uk--daz-gale.json",
+      "the-bodyguard-west-end-2016/everything-theatre--amelia-braddick.json",
+      "the-bodyguard-west-end-2016/london-theatre--unknown.json",
+      "the-bodyguard-west-end-2016/west-end-best-friend--ryan-bishop.json",
+      "american-idiot-west-end-2016/london-box-office--david-scotland.json",
+      "the-go-between-west-end-2016/britishtheatrecom--unknown.json",
+      "a-view-from-islington-north-west-end-2016/british-theatre--philip-fisher.json",
+      "a-view-from-islington-north-west-end-2016/london-box-office--david-scotland.json",
+      "f-a-n-y-first-aid-nursing-yeomanry-west-end-2016/everything-theatre--brian-penn.json",
+      "hangmen-west-end-2015/london-box-office--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "the-end-of-longing-west-end-2016/daily-mail--lucy-mapstone.json",
+      "the-end-of-longing-west-end-2016/metro-uk--brooke-ivey-johnson.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/a-view-from-islington-north-west-end-2016/thestage--mark-shenton.json"
+    ],
+    "archive": [
+      "breakfast-at-tiffanys-west-end-2016/nytimes--unknown.json",
+      "the-bodyguard-west-end-2016/london-box-office--stacey-tyler.json",
+      "the-go-between-west-end-2016/nytimes--unknown.json",
+      "a-view-from-islington-north-west-end-2016/independent--unknown.json",
+      "the-end-of-longing-west-end-2016/london-box-office--phil-willmott.json",
+      "hangmen-west-end-2015/standard--unknown.json",
+      "cats-west-end-2015/standard--fiona-mountford.json"
+    ]
   },
-  "startTime": "2026-10-27T04:55:03.161Z",
-  "lastProcessed": "merry-me-off-broadway-2023/timeout--regina-robbins.json",
+  "startTime": "2026-10-27T05:42:03.476Z",
+  "lastProcessed": "cats-west-end-2015/standard--fiona-mountford.json",
   "log": [
     {
-      "t": "2026-10-27T04:55:25.125Z",
+      "t": "2026-10-27T05:42:27.857Z",
       "event": "bb-session",
-      "session": "13778861",
-      "url": "https://www.nytimes.com/2023/11/01/theater/merry-me-review-hansol-jung.html"
+      "session": "d070dfa5",
+      "url": "https://www.nytimes.com/2016/08/13/theater/review-breakfast-at-tiffanys-the-plou"
     },
     {
-      "t": "2026-10-27T04:55:25.624Z",
+      "t": "2026-10-27T05:42:28.518Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T05:44:20.848Z",
+      "event": "bb-session",
+      "session": "e9f36aa2",
+      "url": "https://www.nytimes.com/2016/06/17/arts/international/review-the-go-between-and-"
+    },
+    {
+      "t": "2026-10-27T05:44:21.459Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
