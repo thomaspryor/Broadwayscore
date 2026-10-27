@@ -16,6 +16,12 @@ quoted publicly. Requiring a public link threw those figures away.
 **How to apply:**
 - A figure with only a private source may still be shown publicly. Record the
   source privately (who, when, what they said) so it can be audited.
+- Do not name a private contact on the site unless they agreed to be named
+  (BRO-6245: a producer's snapshot is used but never attributed).
+- Write a tip down when it arrives (show, figure, who, date) in the record's
+  notes or the Linear card. Several older labels (MJ, Next to Normal, West
+  Side Story, In the Heights) have no recorded basis, so a tip that shaped
+  them could not be found later (BRO-6446).
 - Never invent a source, and never show a figure with no source at all, public
   or private.
 - Code that hides a figure for lacking a public URL (e.g.
