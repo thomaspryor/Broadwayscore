@@ -1182,3 +1182,11 @@ test('captions never cut a title through a number', () => {
   const caps = cap.buildClosingCaptions(p);
   for (const net of ['twitter', 'bluesky']) assert.deepEqual(cap.strayNumbers(caps[net], cap.closingAllowedNumbers(p)), [], net);
 });
+
+test('closing captions: X keeps the question with a long real show link (the link counts 23 on X)', () => {
+  const s = cShow({ title: 'School Girls; Or, The African Mean Girls Play' });
+  const caps = cap.buildClosingCaptions({ show: s, score: 84, tierLabel: 'Critical Gold', reviewCount: 32, breakdown: { rave: 19, positive: 11, mixed: 1, negative: 1 }, closing: '2026-11-15' });
+  assert.ok(caps.twitter.includes('Last chance') || caps.twitter.includes('does it live up'), caps.twitter);
+  assert.ok(caps.twitter.includes(s.title), 'full title kept on X');
+  assert.ok(xLength('twitter', caps.twitter) <= LIMITS.twitter);
+});

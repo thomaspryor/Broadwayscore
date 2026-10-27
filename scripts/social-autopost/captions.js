@@ -428,10 +428,10 @@ function buildClosingCaptions(p) {
   // Fit order: the long question, the short one, a shorter title, and only then no question.
   const fitShort = network => {
     const url = showUrl(show, network, 'closing');
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - url.length - 2;
+    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2; // X counts any link as 23
     const body = (t, ask) => `${sentence(t)}${ask ? `\n\n${ask}` : ''}`;
     const t = firstFit(budget, [body(show.title, cq.long), body(show.title, cq.short),
-      ...CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(clipTitle(show.title, 14), null)]);
+      ...CLIPS.map(n => body(clipTitle(show.title, n), cq.short)), body(show.title, null), body(clipTitle(show.title, 14), null)]);
     return `${t}\n\n${url}`;
   };
   return {
