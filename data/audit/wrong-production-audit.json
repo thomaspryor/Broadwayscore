@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T08:07:59.148Z",
+  "timestamp": "2026-10-27T09:41:43.683Z",
   "stats": {
-    "totalReviews": 62893,
-    "alreadyFlagged": 21615,
+    "totalReviews": 62936,
+    "alreadyFlagged": 21622,
     "dateGuardCatches": 224,
-    "directorMismatch": 2343,
+    "directorMismatch": 2344,
     "tvFilmSignals": 1781,
     "londonSignals": 3037,
-    "offBroadwaySignals": 557,
+    "offBroadwaySignals": 558,
     "yearMismatch": 217,
-    "noPublishDate": 5570
+    "noPublishDate": 5564
   },
   "findings": [
     {
@@ -13480,6 +13480,20 @@
       "score": 81,
       "publishDate": "2026-08-22",
       "url": "https://www.startribune.com/sexy-dirty-dancing-finds-its-groove-in-new-stage-version-in-st-paul/601879471",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lonny price\" from dirty-dancing-2027"
+        }
+      ]
+    },
+    {
+      "showId": "dirty-dancing-tour-2026",
+      "file": "nydailynews--brian-niemietz.json",
+      "score": null,
+      "publishDate": "2026-10-06",
+      "url": "https://www.nydailynews.com/2026/10/06/dirty-dancing-broadway-musical/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -93986,6 +94000,20 @@
       "score": 91,
       "publishDate": "2017-11-10",
       "url": "https://www.thewrap.com/bands-visit-theater-review-tony-shalhoub-musical-egypt-israel/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bands-visit-2017",
+      "file": "village-voice--michael-feingold.json",
+      "score": 90,
+      "publishDate": "November 14th, 2017",
+      "url": "https://www.villagevoice.com/2017/11/14/the-unimportance-of-the-broadway-musical-the-bands-visit-is-downright-inspiring/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
