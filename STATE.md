@@ -9,8 +9,7 @@
   Notmoses, Roosevelvis, The Deep Blue Sea, The Flick). 25 rows still "no dates on TR production page".
 
 ## Remaining (in order)
-1. Confirm the venue-fix landing: land.yml run for branch land/job/linear-BRO-6343-mvpupj0x (pushed d3c8886632 at 00:14Z).
-   Check `git log origin/main --oneline -5 | grep 'tie run-head stages'`.
+1. DONE: venue fix landed (land run 40425173252 success; VERIFY 47/47 on main). Resolver rerun dispatched: run 40427089139 (resume=true); it commits data/audit/we-historical-review-led-2015-2016.json to main.
 2. `gh workflow run we-historical-tr-resolve.yml -f seasons=2015-2016 -f resume=true` (wait, then git pull)
 3. `node scripts/promote-historical-we.js --season=2015-2016 --verbose`, run
    `node scripts/validate-show-venue.js --show=<id>` on each new id, then `--plan=bro-6343-1516-tr`,
