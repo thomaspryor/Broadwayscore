@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-6036-e-c",
+  "planId": "44858378-5cae-419c-9faa-c4f8833de9f6",
+  "status": "pending",
+  "createdAt": "2026-10-27T16:49:53.176Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036 part e: date the last 25 dateless closed West End rows from sourced run pages; 23 get the first performance (source first-performance-no-press-night-found, no press night published), Shitheads and Dorian Gray get press nights from royalcourttheatre.com and theatreweekly.com (part 3 of 3)",
+    "steps": [
+      "shows.json: the-picture-of-dorian-gray-west-end-2024.openingDate",
+      "shows.json: the-picture-of-dorian-gray-west-end-2024.openingDateSource"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-picture-of-dorian-gray-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-02-15",
+        "description": "shows.json: the-picture-of-dorian-gray-west-end-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-picture-of-dorian-gray-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Thursday 15 February 2024; first performance 6 Feb (theatreweekly.com announcement, Nov 2023)",
+        "description": "shows.json: the-picture-of-dorian-gray-west-end-2024.openingDateSource"
+      }
+    ]
+  }
+}

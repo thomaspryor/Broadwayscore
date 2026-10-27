@@ -1,0 +1,268 @@
+{
+  "issueNumber": "bro-6036-e-b",
+  "planId": "5c2283f3-23f5-4711-b05a-2a9d031be3c3",
+  "status": "pending",
+  "createdAt": "2026-10-27T16:49:53.176Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6036 part e: date the last 25 dateless closed West End rows from sourced run pages; 23 get the first performance (source first-performance-no-press-night-found, no press night published), Shitheads and Dorian Gray get press nights from royalcourttheatre.com and theatreweekly.com (part 2 of 3)",
+    "steps": [
+      "shows.json: player-off-west-end-2026.openingDateSource",
+      "shows.json: the-dasslers-off-west-end-2026.openingDate",
+      "shows.json: the-dasslers-off-west-end-2026.openingDateSource",
+      "shows.json: reel-life-off-west-end-2026.openingDate",
+      "shows.json: reel-life-off-west-end-2026.openingDateSource",
+      "shows.json: ancient-grease-off-west-end-2026.openingDate",
+      "shows.json: ancient-grease-off-west-end-2026.openingDateSource",
+      "shows.json: the-curious-case-of-benjamin-button-west-end-2024.openingDate",
+      "shows.json: the-curious-case-of-benjamin-button-west-end-2024.openingDateSource",
+      "shows.json: robin-hood-west-end-2024.openingDate",
+      "shows.json: robin-hood-west-end-2024.openingDateSource",
+      "shows.json: myras-story-west-end-2023.openingDate",
+      "shows.json: myras-story-west-end-2023.openingDateSource",
+      "shows.json: why-am-i-so-single-west-end-2024.openingDate",
+      "shows.json: why-am-i-so-single-west-end-2024.openingDateSource",
+      "shows.json: pigeon-english-west-end-2016.openingDate",
+      "shows.json: pigeon-english-west-end-2016.openingDateSource",
+      "shows.json: blood-brothers-west-end-2026.openingDate",
+      "shows.json: blood-brothers-west-end-2026.openingDateSource",
+      "shows.json: abigails-party-richmond-theatre-west-end-2026.openingDate",
+      "shows.json: abigails-party-richmond-theatre-west-end-2026.openingDateSource",
+      "shows.json: the-shitheads-west-end-2026.previewsStartDate",
+      "shows.json: the-shitheads-west-end-2026.openingDate",
+      "shows.json: the-shitheads-west-end-2026.openingDateSource",
+      "shows.json: the-picture-of-dorian-gray-west-end-2024.previewsStartDate"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "player-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Riverside Studios run 11-31 May 2026 (existing evidence URL)",
+        "description": "shows.json: player-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-dasslers-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-21",
+        "description": "shows.json: the-dasslers-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-dasslers-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Bridewell Theatre run 21-23 May 2026 (existing evidence URL)",
+        "description": "shows.json: the-dasslers-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "reel-life-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-06-17",
+        "description": "shows.json: reel-life-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "reel-life-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Etcetera Theatre run 17-24 Jun 2026 (existing evidence URL)",
+        "description": "shows.json: reel-life-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ancient-grease-off-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-03-04",
+        "description": "shows.json: ancient-grease-off-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "ancient-grease-off-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: The Vaults run 4 Mar-30 May 2026 (existing evidence URL)",
+        "description": "shows.json: ancient-grease-off-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-10-10",
+        "description": "shows.json: the-curious-case-of-benjamin-button-west-end-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-curious-case-of-benjamin-button-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Ambassadors Theatre first performance 10 Oct 2024 (theatreweekly.com, whatsonstage.com)",
+        "description": "shows.json: the-curious-case-of-benjamin-button-west-end-2024.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "robin-hood-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-12-07",
+        "description": "shows.json: robin-hood-west-end-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "robin-hood-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: London Palladium panto run from 7 Dec 2024 (whatsonstage.com review 13 Dec 2024)",
+        "description": "shows.json: robin-hood-west-end-2024.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "myras-story-west-end-2023",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2023-09-19",
+        "description": "shows.json: myras-story-west-end-2023.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "myras-story-west-end-2023",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Trafalgar Theatre run from 19 Sep 2023 (whatsonstage.com)",
+        "description": "shows.json: myras-story-west-end-2023.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "why-am-i-so-single-west-end-2024",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2024-08-27",
+        "description": "shows.json: why-am-i-so-single-west-end-2024.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "why-am-i-so-single-west-end-2024",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Garrick Theatre first performance 27 Aug 2024 (nimaxtheatres.com/shows/abfm)",
+        "description": "shows.json: why-am-i-so-single-west-end-2024.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pigeon-english-west-end-2016",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2016-09-28",
+        "description": "shows.json: pigeon-english-west-end-2016.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "pigeon-english-west-end-2016",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Ambassadors Theatre run from late Sep 2016 (whatsonstage.com, theatrerecord.com vol 36)",
+        "description": "shows.json: pigeon-english-west-end-2016.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blood-brothers-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-05-12",
+        "description": "shows.json: blood-brothers-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "blood-brothers-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Richmond Theatre tour stop 12-16 May 2026 (kenwright.com/productions/blood-brothers-uk-tour)",
+        "description": "shows.json: blood-brothers-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "abigails-party-richmond-theatre-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-07-20",
+        "description": "shows.json: abigails-party-richmond-theatre-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "abigails-party-richmond-theatre-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "first-performance-no-press-night-found: Richmond Theatre tour stop 20-25 Jul 2026 (atgtickets.com/shows/abigails-party)",
+        "description": "shows.json: abigails-party-richmond-theatre-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-shitheads-west-end-2026",
+        "field": "previewsStartDate",
+        "oldValue": "2026-02-13",
+        "newValue": "2026-02-06",
+        "description": "shows.json: the-shitheads-west-end-2026.previewsStartDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-shitheads-west-end-2026",
+        "field": "openingDate",
+        "oldValue": null,
+        "newValue": "2026-02-12",
+        "description": "shows.json: the-shitheads-west-end-2026.openingDate"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-shitheads-west-end-2026",
+        "field": "openingDateSource",
+        "oldValue": "human-correction",
+        "newValue": "press night Thursday 12 February 2026; run 6 Feb-14 Mar (royalcourttheatre.com cast announcement)",
+        "description": "shows.json: the-shitheads-west-end-2026.openingDateSource"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "the-picture-of-dorian-gray-west-end-2024",
+        "field": "previewsStartDate",
+        "oldValue": "2024-01-23",
+        "newValue": "2024-02-06",
+        "description": "shows.json: the-picture-of-dorian-gray-west-end-2024.previewsStartDate"
+      }
+    ]
+  }
+}
