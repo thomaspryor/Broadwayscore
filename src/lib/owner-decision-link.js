@@ -275,9 +275,10 @@ function sanitizeAnswer(text) {
   return t;
 }
 
-function buildAnswerComment({ choiceLabel, text, ref, now = new Date(), via = 'the email link' }) {
+function buildAnswerComment({ choiceLabel, text, ref, now = new Date(), via = 'the email link', voided = false }) {
   const day = now.toISOString().slice(0, 10);
-  const lines = [`**Owner decision** (answered by the owner through ${via}, ${day} UTC)`, '', `Chose: ${sanitizeAnswer(choiceLabel).replace(/\n/g, ' ')}`];
+  const how = voided ? `closed without an owner tap through ${via}` : `answered by the owner through ${via}`;
+  const lines = [`**Owner decision** (${how}, ${day} UTC)`, '', `Chose: ${sanitizeAnswer(choiceLabel).replace(/\n/g, ' ')}`];
   const body = sanitizeAnswer(text);
   if (body) lines.push('', ...body.split('\n').map((l) => `> ${l}`));
   lines.push('', answerMarker(ref));
@@ -346,19 +347,22 @@ async function loadDecision({ graphql, id, hash, secret }) {
  * Record the owner's answer: comment first (the durable record), then the
  * fixed ANSWERED line, label, and state. Idempotent per decision ref.
  */
-async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, now = new Date(), sleep = defaultSleep }) {
+async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, allowVoid = false, now = new Date(), sleep = defaultSleep }) {
   const loaded = await loadDecision({ graphql, id, hash, secret });
   // BRO-6401: the comment is the durable record but the card write can fail after it
   // (BRO-5977: answered 15:59Z, DECISION NEEDED line never rewritten). A replay finishes it.
   if (loaded.status === 'answered') return repairAnswered({ graphql, loaded, hash, secret, id, sleep });
   if (loaded.status !== 'open') return loaded;
-  const choice = loaded.choices.find((c) => c.key === choiceKey) || (choiceKey === 'own' ? { key: 'own', label: 'Own words' } : null);
+  // BRO-6411: 'void' closes a visual ask whose change shipped another way (VISUAL-OK commit); never an approval, and only for trusted callers (allowVoid: the CLI run and the lander, never the web link).
+  const voidable = choiceKey === 'void' && allowVoid && Boolean(visualBindingFor(loaded.issue.description, loaded.question));
+  const choice = loaded.choices.find((c) => c.key === choiceKey) || (choiceKey === 'own' ? { key: 'own', label: 'Own words' } : null)
+    || (voidable ? { key: 'void', label: VOID_LABEL } : null);
   if (!choice) return { ...loaded, status: 'bad-choice' };
   const cleanText = sanitizeAnswer(text);
   if (choice.key === 'own' && !cleanText) return { ...loaded, status: 'empty' };
 
   const { issue, ref } = loaded;
-  const body = buildAnswerComment({ choiceLabel: choice.label, text: cleanText, ref, now, via });
+  const body = buildAnswerComment({ choiceLabel: choice.label, text: cleanText, ref, now, via, voided: choice.key === 'void' });
   const created = await graphql(COMMENT_CREATE, { input: { issueId: issue.id, body } });
   if (!created || !created.commentCreate || !created.commentCreate.success) throw new Error('comment was not created');
   const ourId = created.commentCreate.comment.id;
@@ -383,7 +387,7 @@ async function recordAnswer({ graphql, id, hash, secret, choiceKey, text, via, n
   }
 
   const input = settlePatch({ issue, hash, approved, visual, replay: false });
-  const todoId = todoStateId(issue, approved, visual);
+  const todoId = choice.key === 'void' ? null : todoStateId(issue, approved, visual);
   if (todoId) input.stateId = todoId;
   if (Object.keys(input).length) await updateIssue(graphql, issue.id, input, sleep);
   return { ...loaded, status: 'recorded', answer: { label: choice.label, text: cleanText }, moved: Boolean(input.stateId) };
@@ -415,6 +419,7 @@ async function updateIssue(graphql, id, input, sleep = defaultSleep, attempts = 
   }
 }
 
+const VOID_LABEL = 'Void: the change shipped another way, nothing to approve';
 const ANSWERED_LINE = 'ANSWERED by the owner (see the "Owner decision" comment on this card).';
 
 /**
@@ -464,7 +469,8 @@ async function repairAnswered({ graphql, loaded, hash, secret, id, sleep }) {
   const input = settlePatch({ issue, hash, approved, visual, replay: true });
   // Another question still waiting on the owner: the card stays where it is.
   const otherOpen = markerLines(issue.description).some((m) => questionHash(m.question) !== hash && !isPlaceholderQuestion(m.question));
-  const todoId = otherOpen ? null : todoStateId(issue, approved, visual);
+  const voided = /^Void\b/i.test(choiceLabel);
+  const todoId = otherOpen || voided ? null : todoStateId(issue, approved, visual);
   if (todoId) input.stateId = todoId;
   if (!Object.keys(input).length) return loaded;
   await updateIssue(graphql, issue.id, input, sleep);
@@ -616,5 +622,5 @@ module.exports = {
   VISUAL_TTL_MS, visualBinding, parseVisualApproval, visualBindingFor, visualMac, visualMarker, hasVisualApproval,
   signToken, verifyToken, decisionRef, answerMarker, emailMarker, bodyHasMarker,
   sanitizeAnswer, buildAnswerComment, summarizeAnswerComment, parseOwnerReply,
-  loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,
+  VOID_LABEL, loadDecision, recordAnswer, reconcileAnswered, updateIssue, markerComments, unparkOwnerHolds,
 };

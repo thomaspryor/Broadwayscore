@@ -13,6 +13,8 @@
  *     patch+verdict, written within 14 days): when visual-hold/bro-n still has
  *     that exact patch-id against origin/main, push it to land/bro-n-visual,
  *     which land.yml gates, rebases and ships. Comments once; moves on.
+ *   - Already shipped under a VISUAL-OK-1440: commit naming the card: void the ask
+ *     (recordAnswer choice void), then the next pass removes the held refs.
  *   - Unanswered for 14 days: comment, move the card to Todo, delete the hold and
  *     evidence refs (the card returns to the queue to be redone).
  * Exit: 0 ran, 3 could not read Linear / git.
@@ -46,15 +48,40 @@ function approvalTime(comments, marker) {
 /** An approval that is still not shipping after STALE_APPROVAL_MS. */
 const isStale = (approvedAt, now = Date.now()) => approvedAt != null && now - approvedAt > STALE_APPROVAL_MS;
 
+/**
+ * BRO-6411: the newest main commit that shipped this card's change under VISUAL-OK
+ * (subject starts VISUAL-OK-1440: and names the card). `log` is `sha<TAB>subject` lines.
+ */
+function shippedVisualCommit(log, id) {
+  const named = new RegExp(`\\b${String(id).replace(/[^A-Za-z0-9-]/g, '')}(?![0-9])`, 'i');
+  for (const line of String(log || '').split('\n')) {
+    const [sha, ...rest] = line.split('\t');
+    const subject = rest.join('\t');
+    if (/^[0-9a-f]{40}$/.test(sha) && /^VISUAL-OK-1440:/.test(subject) && named.test(subject)) return sha;
+  }
+  return null;
+}
+
+/** When the worker last asked the owner (ms: the newest ask, so an older round's commit never counts); a card without that comment counts from its creation. */
+function askedSince(issue) {
+  const t = ((issue.comments && issue.comments.nodes) || []).filter((c) => /^Asked the owner to look at/.test(link.unescapeMarkdown(c.body).trim()))
+    .map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
+  return t || new Date(issue.createdAt).getTime() || 0;
+}
+
 /** What to do with one card. Pure: the CLI below does the git and Linear writes. */
-function planCard(issue, secret, now = Date.now(), currentPatch = null) {
+function planCard(issue, secret, now = Date.now(), currentPatch = null, shippedSha = null) {
   const v = link.parseVisualApproval(issue.description);
   if (!v) return { action: 'skip', why: 'no visual approval line' };
   const mac = link.visualMac(secret, issue.identifier, v.patch, v.verdict);
   const comments = issue.comments || { nodes: [] };
   const has = (m) => (comments.nodes || []).some((c) => link.bodyHasMarker(c.body, m));
   if (has(landedMarker(mac)) || has(expiredMarker(mac))) return { action: 'skip', why: 'already handled', v, mac };
-  if (link.hasVisualApproval({ comments, secret, id: issue.identifier, patch: v.patch, verdict: v.verdict, now })) {
+  // The change is already live under VISUAL-OK: the ask has nothing left to approve (BRO-6411).
+  // An owner Approve already on the card keeps the landing path below: their tap wins.
+  const approvedNow = link.hasVisualApproval({ comments, secret, id: issue.identifier, patch: v.patch, verdict: v.verdict, now });
+  if (shippedSha && !approvedNow && !/ANSWERED by the owner/.test(issue.description || '')) return { action: 'shipped', sha: shippedSha, v, mac };
+  if (approvedNow) {
     const approvedAt = approvalTime(comments, link.visualMarker(mac));
     if (currentPatch === null) return { action: 'land', v, mac, approvedAt };
     return currentPatch === v.patch ? { action: 'land', v, mac, approvedAt } : { action: 'void', why: 'the held branch no longer matches the approved change', v, mac, approvedAt };
@@ -102,7 +129,15 @@ async function main(argv = process.argv.slice(2)) {
   };
   let failures = 0;
   for (const issue of issues) {
-    const first = planCard(issue, secret);
+    let shippedSha = null;
+    // A VISUAL-OK prefix is on every UI commit, so a match alone proves nothing: the held change must also be gone from the hold branch (deleted, or no diff left against main).
+    let holdSettled = false;
+    try {
+      const hb = va.holdBranch(issue.identifier);
+      try { va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]); holdSettled = va.patchId('origin/main', `origin/${hb}`) === null; } catch { holdSettled = true; }
+    } catch { holdSettled = false; }
+    try { if (holdSettled) shippedSha = shippedVisualCommit(va.git(['log', 'origin/main', `--since=@${Math.floor(askedSince(issue) / 1000)}`, '--format=%H%x09%s']), issue.identifier); } catch (e) { console.error(`[visual-land] ${issue.identifier}: could not read main history: ${e.message}`); }
+    const first = planCard(issue, secret, Date.now(), null, shippedSha);
     if (first.action === 'skip' || first.action === 'wait') { console.log(`[visual-land] ${issue.identifier}: ${first.action}${first.why ? ` (${first.why})` : ''}`); continue; }
     const { v, mac } = first;
     const hold = va.holdBranch(issue.identifier);
@@ -140,6 +175,14 @@ async function main(argv = process.argv.slice(2)) {
         if (dryRun) continue;
         va.git(['push', 'origin', `refs/remotes/origin/${hold}:refs/heads/${landRef}`]);
         await comment(issue, `Owner approved. Pushed the held change to ${landRef}; land.yml gates and ships it. Check the Land run and prod before closing this card.\n\n${landedMarker(mac)}`);
+      } else if (first.action === 'shipped') {
+        console.log(`[visual-land] ${issue.identifier}: shipped as VISUAL-OK ${first.sha.slice(0, 11)}, ${dryRun ? 'would void' : 'voiding'} the ask`);
+        if (dryRun) continue;
+        const ask = link.markerLines(issue.description).find((m) => link.visualBindingFor(issue.description, m.question));
+        if (!ask) { console.log(`[visual-land] ${issue.identifier}: no visual question on the card, nothing to void`); continue; }
+        const out = await link.recordAnswer({ graphql: linear.graphql, id: issue.identifier, hash: link.questionHash(ask.question), secret, choiceKey: 'void', allowVoid: true, via: `the lander: the change shipped as VISUAL-OK ${first.sha.slice(0, 11)}`, text: `Shipped on main as ${first.sha}; nothing left to approve.` });
+        console.log(`[visual-land] ${issue.identifier}: ${out.status}`);
+        if (out.status !== 'recorded' && out.status !== 'answered') throw new Error(`void not recorded (${out.status})`);
       } else if (first.action === 'cleanup') {
         console.log(`[visual-land] ${issue.identifier}: rejected, removing ${hold}`);
         if (dryRun) continue;
@@ -162,4 +205,4 @@ async function main(argv = process.argv.slice(2)) {
 if (require.main === module) {
   main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[visual-land] ${e.stack || e.message}`); process.exitCode = 3; });
 }
-module.exports = { planCard, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };
+module.exports = { planCard, shippedVisualCommit, askedSince, main, landedMarker, expiredMarker, voidMarker, unverifiedMarker, staleMarker, isStale, approvalTime };

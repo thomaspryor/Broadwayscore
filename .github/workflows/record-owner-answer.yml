@@ -17,7 +17,7 @@ on:
         required: true
         type: string
       choice:
-        description: 'Option key (a, b, approve, reject) or own'
+        description: 'Option key (a, b, approve, reject), own, or void (visual ask whose change shipped another way)'
         required: true
         type: string
       text:

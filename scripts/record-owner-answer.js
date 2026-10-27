@@ -6,14 +6,14 @@
  * decision" comment, the ANSWERED line, the label and the state). Without it
  * the emailer cannot see a chat answer and asks the owner again.
  *
- *   node scripts/record-owner-answer.js BRO-N --choice A|B|approve|reject|own --text "..." [--via "a chat with Claude"] [--check]
+ *   node scripts/record-owner-answer.js BRO-N --choice A|B|approve|reject|own|void --text "..." [--via "a chat with Claude"] [--check]
  *
  * Cloud sessions do not hold APPROVAL_HMAC_SECRET, so by default this checks
  * the card (prints the open question and its choices) and dispatches
  * record-owner-answer.yml, which runs this script with --execute in CI.
  * --check stops after the card check. Cards carrying a VISUAL-APPROVAL line are
- * refused: approving a visual change ships it, so that stays with the owner's
- * own tap on the email. Exit 0 recorded (or already answered), 1 refused or
+ * refused unless --choice void (the change shipped another way, e.g. a VISUAL-OK
+ * commit): approving a visual change ships it, so that stays with the owner's own tap. Exit 0 recorded (or already answered), 1 refused or
  * failed, 2 bad usage.
  */
 'use strict';
@@ -22,7 +22,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const link = require('../src/lib/owner-decision-link.js');
 
-const USAGE = 'Usage: node scripts/record-owner-answer.js BRO-N --choice A|B|approve|reject|own --text "..." [--via "a chat with Claude"] [--check]';
+const USAGE = 'Usage: node scripts/record-owner-answer.js BRO-N --choice A|B|approve|reject|own|void --text "..." [--via "a chat with Claude"] [--check]';
 const WORKFLOW = 'record-owner-answer.yml';
 const MAX_VIA = 80;
 
@@ -63,8 +63,11 @@ function parseArgs(argv, { readEvent = eventInputs } = {}) {
  */
 function resolveDecision(issue, choice) {
   if (!issue) return { error: 'card not found' };
-  if (link.parseVisualApproval(issue.description)) {
-    return { error: 'this card asks the owner to approve a visual change; only the owner\'s own tap on the email may approve it' };
+  const visual = link.parseVisualApproval(issue.description);
+  // BRO-6411: void closes a visual ask whose change shipped another way. It never approves.
+  if (choice === 'void' && !visual) return { error: 'void is only for a card with a visual ask (VISUAL-APPROVAL line)' };
+  if (visual && choice !== 'void') {
+    return { error: 'this card asks the owner to approve a visual change; only the owner\'s own tap on the email may approve it (or --choice void when the change shipped another way)' };
   }
   const decision = link.listOpenDecisions([issue])[0];
   if (!decision) return { error: 'the card has no open DECISION NEEDED question (already answered, or never asked)' };
@@ -73,7 +76,7 @@ function resolveDecision(issue, choice) {
   const questions = link.markerLines(issue.description).filter((m) => !link.isPlaceholderQuestion(m.question));
   if (questions.length > 1) return { error: `the card has ${questions.length} DECISION NEEDED questions; answer it from the email so the answer is recorded against the right one`, decision };
   const keys = decision.choices.map((c) => c.key);
-  if (choice !== 'own' && !keys.includes(choice)) {
+  if (choice !== 'own' && choice !== 'void' && !keys.includes(choice)) {
     return { error: `"${choice}" is not one of this card's choices: ${[...keys, 'own'].join(', ')}`, decision };
   }
   return { decision, choiceKey: choice };
@@ -100,7 +103,7 @@ async function execute(opts) {
   // The run that wrote it, so a chat answer can always be traced to its dispatch.
   const run = process.env.GITHUB_RUN_ID ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null;
   const via = run ? `${opts.via} (recorded by ${run}${process.env.GITHUB_ACTOR ? `, dispatched by ${process.env.GITHUB_ACTOR}` : ''})` : opts.via;
-  const out = await link.recordAnswer({ graphql: linear.graphql, id: opts.id, hash: r.decision.hash, secret, choiceKey: r.choiceKey, text: opts.text, via });
+  const out = await link.recordAnswer({ graphql: linear.graphql, id: opts.id, hash: r.decision.hash, secret, choiceKey: r.choiceKey, allowVoid: true, text: opts.text, via });
   console.log(`[record-owner-answer] ${opts.id}: ${out.status}`);
   return out.status === 'recorded' || out.status === 'answered' ? 0 : 1;
 }
