@@ -1,54 +1,21 @@
 {
-  "updatedAt": "2026-10-27T23:37:45.933Z",
-  "processed": 281,
-  "failed": 101,
-  "successRate": "73.6%",
+  "updatedAt": "2026-10-27T23:47:27.850Z",
+  "processed": 394,
+  "failed": 166,
+  "successRate": "70.4%",
   "tierBreakdown": {
-    "playwright": 203,
-    "amp": 2,
-    "browserbase": 13,
+    "playwright": 249,
+    "amp": 4,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 24,
-    "scrapingbee": 23,
+    "scrapingdog": 25,
+    "scrapingbee": 25,
     "brightdata": 0,
-    "archiveToday": 33,
-    "archive": 43
+    "archiveToday": 37,
+    "archive": 87
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-27T21:12:32.210Z",
-      "event": "bb-session",
-      "session": "07666e2b",
-      "url": "https://www.wsj.com/articles/jonah-review-a-young-womans-wariness-rachel-bonds-r"
-    },
-    {
-      "t": "2026-10-27T21:12:32.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T21:24:08.655Z",
-      "event": "bb-session",
-      "session": "a8fbf1fc",
-      "url": "https://www.nytimes.com/2024/01/24/theater/aristocrats-review.html"
-    },
-    {
-      "t": "2026-10-27T21:24:10.629Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T21:28:55.249Z",
-      "event": "bb-session",
-      "session": "70e035bb",
-      "url": "https://www.wsj.com/articles/public-obscenities-review-a-perceptive-bengali-dram"
-    },
-    {
-      "t": "2026-10-27T21:28:55.761Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
     {
       "t": "2026-10-27T21:31:51.394Z",
       "event": "bb-session",
@@ -124,8 +91,35 @@
     {
       "t": "2026-10-27T23:30:45.285Z",
       "event": "bb-session",
-      "session": "91e4c1dd",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "bea45130",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-27T23:17:11.269Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T23:37:41.116Z",
+      "event": "bb-session",
+      "session": "08663dc3",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+    },
+    {
+      "t": "2026-10-27T23:37:41.434Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-27T23:37:52.479Z",
+      "event": "bb-session",
+      "session": "415a41d8",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/harry-potter-and-the-curs"
+    },
+    {
+      "t": "2026-10-27T23:37:52.721Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
