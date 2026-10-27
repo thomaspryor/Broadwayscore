@@ -1,40 +1,112 @@
 {
-  "generatedAt": "2026-10-26T07:57:29.239Z",
+  "generatedAt": "2026-10-27T07:58:24.924Z",
   "shadow": true,
-  "checkoutSha": "95c3235bb55ba55cc80c93cd402a5635ebe61fbf",
-  "totalCandidates": 486,
-  "eligibleCandidates": 79,
-  "checked": 23,
+  "checkoutSha": "627a835d3c3fed583ec63d56baef60d5d5665c0d",
+  "totalCandidates": 480,
+  "eligibleCandidates": 112,
+  "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 16,
+    "pass": 18,
     "fail": 1,
-    "unverifiable": 6
+    "unverifiable": 11
   },
   "alreadyDone": [
     {
-      "id": "BRO-6294",
-      "name": "Land mutex: lock-watch second layer (release a lock whose holder run is dead)",
-      "verifyCmd": "node --test scripts/lib/land-mutex.test.mjs",
+      "id": "BRO-6420",
+      "name": "UK Regional market pill on show page + /browse/beyond-london view-all page",
+      "verifyCmd": "npx tsx --test tests/unit/uk-regional-placement.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6279",
-      "name": "Source per-show Covid-closing last-performance dates from IBDB (BRO-5088 item 4 leftover)",
-      "verifyCmd": "node scripts/validate-data.js",
+      "id": "BRO-6416",
+      "name": "Extract and unit-test the lander's hold-settled check (visual-approval-land.js main)",
+      "verifyCmd": "node --test scripts/lib/owner-answer-void.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6272",
-      "name": "Fix red test tests/unit/validate-data-push-refusal-sentinel.test.mjs on main",
-      "verifyCmd": "node --test tests/unit/validate-data-push-refusal-sentinel.test.mjs",
+      "id": "BRO-6409",
+      "name": "Queued commercial tips: give the owner a one-click approve link (owner-decision + execute-approved-fix) instead of a hand edit",
+      "verifyCmd": "node --test scripts/lib/commercial-tip-record.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6391",
+      "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
+      "verifyCmd": "node --test scripts/lib/cost-report-alerts.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6372",
+      "name": "Email-list monitor: confirm sign-in joins from Formspree auth-auto submissions, not just sign_in_completed",
+      "verifyCmd": "node --test scripts/lib/email-gate-funnel-rules.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6356",
+      "name": "TR wrong_show repair, part 3: 88 files still rejected after re-extract (parser keeps another show's text; merged files never get NO-RECORD)",
+      "verifyCmd": "node --test scripts/lib/we-historical-tr-coverage.test.js scripts/lib/tr-pdf-parse.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6352",
+      "name": "Outlet poller: alert when a configured feed/sitemap goes stale while the outlet keeps publishing",
+      "verifyCmd": "node --test tests/unit/outlet-listing-poller.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6349",
+      "name": "Missing show: Akhnaten",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6348",
+      "name": "Missing show: Hundred Days",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6304",
+      "name": "Cloud Codex lane: disk runs out mid-firing (stale Claude worktrees never pruned) and each cloud slot works only one card per run",
+      "verifyCmd": "node --test tests/unit/codex-lane-health.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6276",
+      "name": "P1: Land queue throughput collapse: 2 of last 40 land runs succeeded, lock held 49+ min, 12 cancelled, 6 failed",
+      "verifyCmd": "test -f scripts/lib/land-dispatch-guard.js",
+      "detail": null
+    },
+    {
+      "id": "BRO-6260",
+      "name": "Codex throughput: first pick of Codex-fit cards, retry-with-feedback instead of 14-day lockout, cloud dispatch switch, more runs",
+      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6236",
+      "name": "Codex model trial: pin the model and A/B 'extra-high' reasoning effort on one lane vs 'high', decide by landed rate",
+      "verifyCmd": "node --test tests/unit/codex-runner.test.mjs",
       "detail": null
     },
     {
       "id": "BRO-6233",
       "name": "Hand-review long review bodies still parked in wrongFullText by head-of-article CV verdicts (BRO-6225 follow-up)",
       "verifyCmd": "node --test scripts/lib/content-verifier.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6223",
+      "name": "Redate trade/producer cost anchors still on a guessed date (dateBasis migrated) to the period each source measured",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6221",
+      "name": "shows.json lists poster/thumbnail paths for ~272 shows whose image files don't exist (404 on prod)",
+      "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
     },
     {
@@ -48,66 +120,6 @@
       "name": "Owner's yes/no on an awaiting-owner approval card is not picked up either (extend the BRO-6168 reply drain)",
       "verifyCmd": "node --test tests/unit/decision-reply.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-6140",
-      "name": "BRO-6137 leftovers: model false negatives, Bucknell cap conflicts, 88 missing Bucknell musicals, live-data check",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6099",
-      "name": "Bound the 60 inline git clone/fetch/pull/push calls rule (z) now flags (BRO-6029 follow-up)",
-      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6097",
-      "name": "Theatre Record: recover missing reviews for 2016-2022 West End shows (PDF extraction under-yields)",
-      "verifyCmd": "node --test scripts/lib/we-historical-tr-coverage.test.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6095",
-      "name": "Video reviews: match UK creators' reviews and London runs (465 undated YouTube reviews never re-matched)",
-      "verifyCmd": "node --test tests/unit/youtube-captions.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6082",
-      "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
-      "verifyCmd": "node scripts/check-health-row-absent.js --row-b64 UXVhbGl0eTogY29ycHVzIGRyaWZ0",
-      "detail": null
-    },
-    {
-      "id": "BRO-6038",
-      "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
-      "verifyCmd": "node --test tests/unit/audit-script-wiring.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6035",
-      "name": "land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing",
-      "verifyCmd": "test -f scripts/generate-workflow-dependencies.js",
-      "detail": null
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "verifyCmd": "node --test scripts/lib/poller-loop-budget.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6029",
-      "name": "Bound the 21 inline git fetch/pull calls in workflows with git_net (BRO-5972 cousin)",
-      "verifyCmd": "node --test tests/unit/audit-workflow-hygiene-unbounded-clone.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-6027",
-      "name": "Five more TheaterMania reviews credited to David Rooney (BRO-4889 cousin): verify true bylines and fix",
-      "verifyCmd": "node --test tests/unit/revival-promo-older-broadway.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
@@ -120,43 +132,115 @@
   ],
   "unverifiable": [
     {
+      "id": "BRO-6408",
+      "name": "Declare the packages the code imports but only gets by transitive hoisting (glob, yaml, https-proxy-agent, node-fetch, acorn-walk, @next/env, entities, ajv) + guard test; check-secrets-health should flag a classic REVIEW_TEXTS_TOKEN",
+      "verifyCmd": "node --test tests/unit/declared-dependencies.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/declared-dependencies.test.mjs"
+    },
+    {
+      "id": "BRO-6404",
+      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
+      "verifyCmd": "node --test tests/unit/dependency-audit-clean.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/dependency-audit-clean.test.mjs"
+    },
+    {
+      "id": "BRO-6403",
+      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
+      "verifyCmd": "node --test tests/unit/llm-scoring-untrusted-framing.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/llm-scoring-untrusted-framing.test.mjs"
+    },
+    {
       "id": "BRO-6271",
       "name": "Ship weekly result monitor for the related-shows-position A/B (README step f)",
       "verifyCmd": "node --test scripts/lib/related-shows-ab-monitor-rules.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/related-shows-ab-monitor-rules.test.mjs"
     },
     {
+      "id": "BRO-6269",
+      "name": "iOS: iPhone-only for the public App Store launch (supportsTablet false)",
+      "verifyCmd": "node --test tests/unit/ios-tablet-support.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/ios-tablet-support.test.mjs"
+    },
+    {
+      "id": "BRO-6263",
+      "name": "Codex trust ladder: unlock more access automatically as its record holds, relock on regression",
+      "verifyCmd": "node --test scripts/lib/codex-runner.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/codex-runner.test.mjs"
+    },
+    {
+      "id": "BRO-6249",
+      "name": "Three-tier planning rule: substantial = plan + /plan-review + owner yes; moderate = /second-opinion; simple = go (rule text + advisory hook)",
+      "verifyCmd": "node --test scripts/lib/review-gate.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/review-gate.test.mjs"
+    },
+    {
+      "id": "BRO-6228",
+      "name": "Diary photos: enforce the 6-per-entry limit and file size/type in Supabase, not only in the clients",
+      "verifyCmd": "node --test scripts/verify-photo-limits.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/verify-photo-limits.test.mjs"
+    },
+    {
+      "id": "BRO-6224",
+      "name": "iOS Stats: 'Critic nemesis' can be a 70% match or the same critic shown as a closest/rising match",
+      "verifyCmd": "node --test tests/unit/aisle-mates.test.mjs",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/aisle-mates.test.mjs"
+    },
+    {
+      "id": "BRO-6219",
+      "name": "iOS alerts v2: fix reviews-in + rate duplicate, prefs, closing alerts (plan-reviewed)",
+      "verifyCmd": "test -f memory/push-alerts.md",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/push-alerts.md"
+    },
+    {
       "id": "BRO-6176",
       "name": "iOS design round: ideas from the inspiration app (stats strip, feature cards, numbered Top 10, quick-log +)",
       "verifyCmd": "node --test tests/unit/inspiration-ideas-variants.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/inspiration-ideas-variants.test.mjs"
-    },
-    {
-      "id": "BRO-6128",
-      "name": "Fix: Tour candidate: Liberation national tour",
-      "verifyCmd": "node scripts/check-alert-condition-absent.js --key-b64 ZGlnZXN0LW5lZWRzLXlvdTpUb3VyIGNhbmRpZGF0ZTogTGliZXJhdGlvbiBuYXRpb25hbCB0b3Vy",
-      "detail": "check exited 3 (cannot verify — evidence unavailable): [check-alert-condition-absent] CANNOT TELL: \"digest-needs-you:Tour candidate: Liberation national tour\" is in no alert ledger (/tmp/open-backlog-sweep-4vATF7/main/data/audit/alert-ledger.json) — never"
-    },
-    {
-      "id": "BRO-6098",
-      "name": "Aggregator health: fix The Stage (failing since Oct), Stagedoor (stopped June), LBO/BWW-London yield drops; add coverage-drop alarm",
-      "verifyCmd": "node --test scripts/audit-aggregator-health.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/audit-aggregator-health.test.mjs"
-    },
-    {
-      "id": "BRO-6014",
-      "name": "Cloud dev loop: npm run build dirties ~17 tracked data files (swept into commits); land-local-check keeps no per-gate failure output",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 77308ms (timeout — no verdict)"
-    },
-    {
-      "id": "BRO-6004",
-      "name": "Cloud pre-push tsc OOMs at default 2GB heap; raise max-old-space-size in scripts/hooks/pre-push",
-      "verifyCmd": "npx tsc --noEmit",
-      "detail": "check killed by SIGTERM after 38649ms (timeout — no verdict)"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-6391",
+      "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
+      "branch": "land/bro-6391-cost-report-cards",
+      "sha": "fca42ddc2fb2077c54652ca3c5b0323944f371ba",
+      "landedAt": "2026-10-26T22:38:01.928Z"
+    },
+    {
+      "id": "BRO-6356",
+      "name": "TR wrong_show repair, part 3: 88 files still rejected after re-extract (parser keeps another show's text; merged files never get NO-RECORD)",
+      "branch": "land/codex-bro-6356",
+      "sha": "b27571749f51bfdc14406e1a4051b09a62646d2c",
+      "landedAt": "2026-10-27T05:47:03.427Z"
+    },
+    {
+      "id": "BRO-6304",
+      "name": "Cloud Codex lane: disk runs out mid-firing (stale Claude worktrees never pruned) and each cloud slot works only one card per run",
+      "branch": "land/bro-6304-codex-disk-prune-v2",
+      "sha": "69f247041c4ce5e87488369fb1dfdbe9855af155",
+      "landedAt": "2026-10-26T13:01:26.399Z"
+    },
+    {
+      "id": "BRO-6276",
+      "name": "P1: Land queue throughput collapse: 2 of last 40 land runs succeeded, lock held 49+ min, 12 cancelled, 6 failed",
+      "branch": "land/bro-6276-dispatch-guard-r3",
+      "sha": "ee86507bcf1574c4aaf4a8454df9ec493409af61",
+      "landedAt": "2026-10-26T12:47:15.080Z"
+    },
+    {
+      "id": "BRO-6260",
+      "name": "Codex throughput: first pick of Codex-fit cards, retry-with-feedback instead of 14-day lockout, cloud dispatch switch, more runs",
+      "branch": "land/bro-6260-person-test",
+      "sha": "3a0a3bed616ecc80051774b723460bc5fbcd37d0",
+      "landedAt": "2026-10-26T10:23:40.714Z"
+    },
+    {
+      "id": "BRO-6236",
+      "name": "Codex model trial: pin the model and A/B 'extra-high' reasoning effort on one lane vs 'high', decide by landed rate",
+      "branch": "land/bro-6236-codex-model-ab",
+      "sha": "90c4ed80aa38506340dd6d7f930d1838bc1cda75",
+      "landedAt": "2026-10-25T20:53:57.715Z"
+    },
     {
       "id": "BRO-6187",
       "name": "Commercial estimates: drift re-sizing pass, getRecentClosings, stunt-casting class, 2 over-100% DNR keepers, 39 locked entries",
@@ -165,53 +249,11 @@
       "landedAt": "2026-10-26T04:40:43.729Z"
     },
     {
-      "id": "BRO-6099",
-      "name": "Bound the 60 inline git clone/fetch/pull/push calls rule (z) now flags (BRO-6029 follow-up)",
-      "branch": "land/codex-bro-6099",
-      "sha": "8ad40b05d26666ce62060770a9d3a32d3e7297b8",
-      "landedAt": "2026-10-24T21:41:32.419Z"
-    },
-    {
-      "id": "BRO-6097",
-      "name": "Theatre Record: recover missing reviews for 2016-2022 West End shows (PDF extraction under-yields)",
-      "branch": "land/bro-6097-title",
-      "sha": "a4e971d1839d5df99c443a903bf4e733f15c7698",
-      "landedAt": "2026-10-24T06:47:03.918Z"
-    },
-    {
-      "id": "BRO-6095",
-      "name": "Video reviews: match UK creators' reviews and London runs (465 undated YouTube reviews never re-matched)",
-      "branch": "land/bro-6095-reuse-score-bucket",
-      "sha": "086140abe39e6e940fb478c93c2935464db73b53",
-      "landedAt": "2026-10-24T19:24:27.392Z"
-    },
-    {
-      "id": "BRO-6082",
-      "name": "Digest self-heal: parked rows that cloud workers can't fix (T1/T2 silent gaps non-reviews, umbrella corpus-drift row)",
-      "branch": "land/bro-6082-digest-parked-selfheal",
-      "sha": "85cd643a7eaddf087a39dbfedcbc4d8fd1160bb7",
-      "landedAt": "2026-10-23T23:05:05.686Z"
-    },
-    {
-      "id": "BRO-6038",
-      "name": "Wire top bucket-(a) audit-*.js scripts into data-health-check.yml shadow mode and triage bucket u",
-      "branch": "land/codex-bro-6038",
-      "sha": "cdca40aa73b4913b62a02f53fbc099f1c5b18f0d",
-      "landedAt": "2026-10-23T11:37:31.712Z"
-    },
-    {
-      "id": "BRO-6033",
-      "name": "Opening-night poller: publish main-stage first wave without waiting for Off-Broadway/fringe front shows",
-      "branch": "land/bro-6033-poller-first-wave",
-      "sha": "979fa74f85bc25c76d7f23d2b2771df211a14ae5",
-      "landedAt": "2026-10-23T05:02:28.175Z"
-    },
-    {
-      "id": "BRO-6029",
-      "name": "Bound the 21 inline git fetch/pull calls in workflows with git_net (BRO-5972 cousin)",
-      "branch": "land/bro-6029-git-net-fetch",
-      "sha": "945fdb54c9b098aede309cceb976b1bc5a87b258",
-      "landedAt": "2026-10-24T02:36:30.314Z"
+      "id": "BRO-6180",
+      "name": "Owner's yes/no on an awaiting-owner approval card is not picked up either (extend the BRO-6168 reply drain)",
+      "branch": "land/codex-bro-6180",
+      "sha": "f827b6f2b31292f2a8fab93d544bbde41046cf3f",
+      "landedAt": "2026-10-26T14:20:08.224Z"
     }
   ]
 }
