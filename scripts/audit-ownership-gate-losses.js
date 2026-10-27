@@ -76,7 +76,8 @@ function currentIndex() {
 
 function main() {
   if (!fs.existsSync(DIR)) { console.error('data/review-texts missing'); process.exit(3); }
-  try { execFileSync('git', ['-C', DIR, 'fetch', '--quiet', `--shallow-since=${days + 2} days ago`, 'origin'], { stdio: 'ignore' }); } catch { /* full clone or offline */ }
+  // Bounded (BRO-6038: runs unattended in data-health-check.yml); on timeout it audits the history it has.
+  try { execFileSync('git', ['-C', DIR, 'fetch', '--quiet', `--shallow-since=${days + 2} days ago`, 'origin'], { stdio: 'ignore', timeout: 8 * 60 * 1000 }); } catch { /* full clone, offline or timed out */ }
   const commits = git(['log', `--since=${days} days ago`, '--format=%H %P %cI %s', '--grep=^ownership-gate: drop'])
     .split('\n').filter(Boolean).map((l) => { const [sha, parent, at] = l.split(' '); return { sha, parent, at }; });
   const idx = currentIndex();

@@ -4966,7 +4966,7 @@ function earlyPublishDatesResults(report, now = Date.now()) {
 const ORPHAN_AUDIT_STALE_MS = 3 * 24 * 60 * 60 * 1000;
 const ORPHAN_AUDIT_DIGESTS = [
   { file: 'star-bands.json', script: 'audit-star-bands.js', max: 0, name: 'Data: starred reviews scored outside their star band', what: 'review(s) with an N/5 rating score outside the CLAUDE.md §3 band' },
-  { file: 'announced-cast.json', script: 'audit-announced-cast.js', max: 0, name: 'Data: announced shows carrying an unverified cast', what: 'announced show(s) hold a cast with no matching data/cast file (BRO-5809)' },
+  { file: 'announced-cast.json', script: 'audit-announced-cast.js', max: 0, name: 'Data: announced shows carrying an unverified cast', what: 'announced show(s) hold a cast whose data/cast file is missing or from another production (BRO-5809)' },
   { file: 'scoreless-llmscore.json', script: 'audit-scoreless-llmscore.js', max: 0, name: 'Data: review files with an llmScore but no score', what: 'review file(s) carry an llmScore object with no numeric score, so they are never scored (BRO-5395)' },
   // 209 on 2026-10-27 (131 complete, 78 truncated): the backlog BRO-5794 left; alert when it grows.
   { file: 'uncounted-real-reviews.json', script: 'audit-uncounted-real-reviews.js', max: 209, name: 'Data: unflagged review texts missing from reviews.json', what: 'review text(s) on this year\'s shows carry text and no exclusion flag but are not counted (BRO-5794)' },

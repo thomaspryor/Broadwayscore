@@ -1,4 +1,5 @@
 // BRO-6038: digest rows for the BRO-2688 rank 1-8 audits, and the workflow wiring that feeds them.
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural only (the star-bands run asserts a counts-only shape, no data facts).
 import { test } from 'node:test';
 import assert from 'node:assert';
 import fs from 'node:fs';

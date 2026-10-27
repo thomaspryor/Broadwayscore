@@ -24,6 +24,12 @@
   },
   {
     "workflow": "data-health-check.yml",
+    "step": "Corpus determinism audit",
+    "script": "scripts/audit-corpus-determinism.js",
+    "reason": "BRO-6038: advisory first (rule 19); it writes only its --counts file, and health-check.js orphanAuditCountsResults warns when data/audit/corpus-determinism.json is missing a result or older than 3 days."
+  },
+  {
+    "workflow": "data-health-check.yml",
     "step": "Spend guard audit",
     "script": "scripts/guard-audit.js",
     "reason": "Workflow comment: a crash must not block the snapshot commits; a stuck producer shows as stale in the spend rows."

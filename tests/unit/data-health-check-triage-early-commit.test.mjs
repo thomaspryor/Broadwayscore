@@ -23,7 +23,11 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const REPO = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
-const lines = fs.readFileSync(path.join(REPO, '.github', 'workflows', 'data-health-check.yml'), 'utf8').split('\n');
+const allLines = fs.readFileSync(path.join(REPO, '.github', 'workflows', 'data-health-check.yml'), 'utf8').split('\n');
+// The health-check job only: other jobs in this file (BRO-6038 orphan-audits) push from their own checkout.
+const jobStart = allLines.findIndex((l) => /^ {2}health-check:\s*$/.test(l));
+const jobEndRel = allLines.slice(jobStart + 1).findIndex((l) => /^ {2}[A-Za-z0-9_-]+:\s*$/.test(l));
+const lines = allLines.slice(jobStart, jobEndRel < 0 ? allLines.length : jobStart + 1 + jobEndRel);
 
 function parseSteps(allLines) {
   const starts = [];
