@@ -68,7 +68,7 @@ function runGuard(otherStartedMinAgo, startOverride) {
   // The guard reads `date -u +%s` for "now". Pin it to Node's Date.now() so the
   // fixture and the bash share one clock (the time-bomb audit shifts only Node's).
   fs.writeFileSync(path.join(tmp, 'date'),
-    `#!/bin/bash\nif [ "$1 $2" = "-u +%s" ]; then echo ${Math.floor(Date.now() / 1000)}; else exec /bin/date "$@"; fi\n`, { mode: 0o755 });
+    `#!/bin/bash\nif [ "$# $1 $2" = "2 -u +%s" ]; then echo ${Math.floor(Date.now() / 1000)}; else exec /bin/date "$@"; fi\n`, { mode: 0o755 });
   fs.writeFileSync(path.join(tmp, 'guard.sh'), guardScript());
   const out = path.join(tmp, 'out');
   const log = execFileSync('bash', ['-eo', 'pipefail', path.join(tmp, 'guard.sh')], {
@@ -87,6 +87,9 @@ describe('Redundancy guard ignores earlier runs near their loop deadline (BRO-60
     const r = runGuard(300);
     assert.equal(r.redundant, 'redundant=false', r.log);
     assert.match(r.log, /Ignoring run 111/);
+  });
+  it('guard reads "now" via the exact `date -u +%s` call the test clock stub intercepts', () => {
+    assert.match(guardScript(), /NOW_EPOCH=\$\(date -u \+%s\)/);
   });
   it('an earlier all-market run started 30m ago still covers us', () => {
     const r = runGuard(30);
