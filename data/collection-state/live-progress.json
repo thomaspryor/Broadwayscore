@@ -1,29 +1,23 @@
 {
-  "updatedAt": "2026-10-27T22:33:02.055Z",
-  "processed": 309,
-  "failed": 50,
-  "successRate": "86.1%",
+  "updatedAt": "2026-10-27T22:36:29.544Z",
+  "processed": 237,
+  "failed": 51,
+  "successRate": "82.3%",
   "tierBreakdown": {
-    "playwright": 226,
+    "playwright": 184,
     "amp": 2,
-    "browserbase": 16,
+    "browserbase": 13,
     "directCookies": 0,
-    "scrapingdog": 18,
-    "scrapingbee": 19,
+    "scrapingdog": 11,
+    "scrapingbee": 17,
     "brightdata": 0,
-    "archiveToday": 18,
-    "archive": 53
+    "archiveToday": 20,
+    "archive": 30
   },
-  "browserbaseSessions": 22,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-27T21:52:39.708Z",
-      "event": "bb-session",
-      "session": "a1f07957",
-      "url": "https://www.nytimes.com/2023/10/22/theater/here-we-are-review-stephen-sondheim.h"
-    },
-    {
-      "t": "2026-10-27T21:52:40.128Z",
+      "t": "2026-10-27T21:09:53.026Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -124,7 +118,13 @@
     {
       "t": "2026-10-27T22:27:29.979Z",
       "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T22:32:44.841Z",
+      "event": "bb-session",
+      "session": "c3be226a",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
