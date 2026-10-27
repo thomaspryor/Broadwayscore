@@ -240,15 +240,16 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "resolved",
-      "disposition": "auto",
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "incidentOpenedAt": "2026-10-27T06:18:22.537Z",
-      "lastSeen": "2026-10-27T06:41:46.024Z",
-      "lastNotifiedAt": "2026-10-27T06:18:22.537Z",
+      "incidentOpenedAt": "2026-10-27T06:59:56.903Z",
+      "lastSeen": "2026-10-27T06:59:56.903Z",
+      "lastNotifiedAt": "2026-10-27T06:59:56.903Z",
       "lastSurfacedAt": "2026-10-27T06:18:22.537Z",
-      "notifyCount": 176,
+      "notifyCount": 177,
       "cardId": null,
       "linearIdentifier": "BRO-6422",
       "notifyCountAtRelease": 161,
@@ -4339,7 +4340,7 @@
       "title": "main test.yml red: Lint Workflows / Audit — no submitter PII in committed data/audit files",
       "firstSeen": "2026-09-20T19:22:49.867Z",
       "incidentOpenedAt": "2026-10-27T06:18:20.169Z",
-      "lastSeen": "2026-10-27T06:41:46.010Z",
+      "lastSeen": "2026-10-27T06:59:56.889Z",
       "lastNotifiedAt": "2026-10-27T06:18:20.169Z",
       "lastSurfacedAt": null,
       "notifyCount": 4,
@@ -28469,10 +28470,9 @@
       },
       "silentRefires": 1,
       "absentRunIds": [
-        "40458183423",
-        "40460787314"
+        "40458183423"
       ],
-      "resolvedAt": "2026-10-27T06:59:54.046Z",
+      "resolvedAt": "2026-10-27T06:59:56.853Z",
       "resolveReason": "job-green"
     },
     "land:land/job/linear-BRO-6418-mvq7ia7i": {
@@ -28501,8 +28501,7 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6421",
-      "silentRefires": 1,
-      "resolvedAt": "2026-10-27T06:59:54.062Z",
+      "resolvedAt": "2026-10-27T06:59:56.870Z",
       "resolveReason": "job-green"
     }
   }
