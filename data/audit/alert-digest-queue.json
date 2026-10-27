@@ -271,5 +271,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T13:01:06.958Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:hospital-hour-off-broadway-2026",
+    "title": "Auto-remediation gave up on hospital-hour-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"hospital-hour-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T13:18:01.836Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:the-greatest-story-ever-off-broadway-2026",
+    "title": "Auto-remediation gave up on the-greatest-story-ever-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"the-greatest-story-ever-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T13:18:01.850Z"
   }
 ]
