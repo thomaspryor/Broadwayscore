@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6428-1213",
   "planId": "36af4993-d557-466a-85a2-3f95dc267055",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-27T10:08:55.570Z",
   "submitter": {
     "name": null,
@@ -350,5 +350,69 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-27T10:40:21.012Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hedda-gabler-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-chorus-of-disapproval-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added monty-pythons-spamalot-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-bodyguard-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-judas-kiss-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-curious-incident-of-the-dog-in-the-night-time-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added alan-bennetts-untold-stories-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added once-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added beautiful-thing-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added passion-play-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added private-lives-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-ladykillers-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
 }
