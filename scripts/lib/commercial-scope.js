@@ -45,7 +45,8 @@ function isCommercialScope(show) {
 const DESIGNATION_CRITERIA = `Designation — pick EXACTLY one, using these criteria:
 - Miracle: long-running mega-hit with extraordinary returns — recouped AND has run (or clearly will run) roughly ${MIRACLE_MIN_YEARS}+ years with massive profit multiples (Hamilton, Wicked, The Lion King). Recouping fast is NOT enough; a limited run can NEVER be a Miracle.
 - Windfall: open-ended commercial run that recouped and turned a solid profit, but is not a decade-defining phenomenon.
-- Easy Winner: LIMITED engagement (planned closing date, often a star-driven play) that recouped during its run — even if it recouped very fast or broke house records.
+- Breakout: a NEW or untested work (new play or musical, or a first Broadway production) with no big-star draw that recouped against the odds, e.g. Purpose, Appropriate, The Humans. Use it instead of Easy Winner or Trickle; a new work that made a big profit is still Windfall or Miracle.
+- Easy Winner: LIMITED engagement (planned closing date, usually sold on a star's name) that recouped during its run — even if it recouped very fast or broke house records.
 - Trickle: roughly broke even or made a modest profit.
 - Fizzle: closed without recouping, and a source says roughly ${FIZZLE_MIN_RETURNED_PCT}% or more of its capitalization came back.
 - Flop: closed without recouping, and a source says less than ${FIZZLE_MIN_RETURNED_PCT}% of its capitalization came back.

@@ -65,7 +65,7 @@ const BACKFILL_TAG = 'BRO-4990';
 // BRO-5041: a held row is released by name (--release-held). Refuse when the
 // record already carries something a person or a verified pass put there: a
 // human-reviewed or non-TBD label, or a recoupment on file. Also refuse a row
-// whose own label says the show recouped (Easy Winner/Windfall/Miracle): the
+// whose own label says the show recouped (Breakout/Easy Winner/Windfall/Miracle): the
 // release drops the row's recoupment claim, and validation requires
 // recouped:true for those labels. Also refuse a row the BRO-5020 truth
 // review stamped anything but "released" (held, cap-released, rejected): its
@@ -73,7 +73,7 @@ const BACKFILL_TAG = 'BRO-4990';
 // published a tax-credit back-solve and unsourced Flop/Fizzle labels
 // (run 38126158629). An owner approval (ownerApproved: true on the row) is the
 // only override. Null = may release.
-const RECOUPED_LABELS = ['Easy Winner', 'Windfall', 'Miracle'];
+const RECOUPED_LABELS = ['Breakout', 'Easy Winner', 'Windfall', 'Miracle'];
 function heldReleaseRefusal(existing, row) {
   const verdict = row && row.truthReview && row.truthReview.verdict;
   if (verdict && verdict !== 'released' && row.ownerApproved !== true) return `truth review verdict is "${verdict}", not "released"`;

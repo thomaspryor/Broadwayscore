@@ -10,6 +10,7 @@ import { FIZZLE_MIN_RETURNED_PCT } from '../../scripts/lib/commercial-designatio
 export type CommercialDesignation =
   | 'Miracle'
   | 'Windfall'
+  | 'Breakout'
   | 'Easy Winner'
   | 'Trickle'
   | 'TBD'
@@ -63,10 +64,22 @@ export const DESIGNATIONS: DesignationConfig[] = [
     borderClass: 'border-emerald-500/25',
   },
   {
+    // A new or untested work that recouped without a star draw (owner
+    // 2026-10-27, BRO-6446): replaces Easy Winner or Trickle, never Windfall.
+    name: 'Breakout',
+    color: 'text-violet-400',
+    description: 'New or untested work, no big-star draw, that recouped',
+    sortOrder: 3,
+    showInLegend: true,
+    icon: '🚀',
+    bgClass: 'bg-violet-500/15',
+    borderClass: 'border-violet-500/25',
+  },
+  {
     name: 'Easy Winner',
     color: 'text-lime-400',
-    description: 'Limited run that recouped quickly',
-    sortOrder: 3,
+    description: 'Star-led limited run that recouped quickly',
+    sortOrder: 4,
     showInLegend: true,
     icon: '🎁',
     bgClass: 'bg-lime-500/15',
@@ -76,7 +89,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Trickle',
     color: 'text-cyan-400',
     description: 'Broke even or modest profit',
-    sortOrder: 4,
+    sortOrder: 5,
     showInLegend: true,
     icon: '💧',
     bgClass: 'bg-cyan-500/15',
@@ -86,7 +99,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'TBD',
     color: 'text-gray-400',
     description: 'Too early to tell: still running or not open yet',
-    sortOrder: 5,
+    sortOrder: 6,
     showInLegend: true,
     icon: '⏳',
     bgClass: 'bg-gray-500/15',
@@ -96,7 +109,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Fizzle',
     color: 'text-orange-400',
     description: `Closed without recouping; an estimated ${FIZZLE_MIN_RETURNED_PCT}% or more returned`,
-    sortOrder: 6,
+    sortOrder: 7,
     showInLegend: true,
     icon: '📉',
     bgClass: 'bg-orange-500/15',
@@ -107,7 +120,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Did Not Recoup',
     color: 'text-rose-300',
     description: 'Closed without recouping; no estimate of how much came back',
-    sortOrder: 7,
+    sortOrder: 8,
     showInLegend: true,
     icon: '🔻',
     bgClass: 'bg-rose-500/15',
@@ -117,7 +130,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Flop',
     color: 'text-red-400',
     description: `Closed without recouping; an estimated under ${FIZZLE_MIN_RETURNED_PCT}% returned`,
-    sortOrder: 8,
+    sortOrder: 9,
     showInLegend: true,
     icon: '💸',
     bgClass: 'bg-red-500/15',
@@ -127,7 +140,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Nonprofit',
     color: 'text-blue-400',
     description: 'Nonprofit production (LCT, Roundabout, etc.)',
-    sortOrder: 9,
+    sortOrder: 10,
     showInLegend: true,
     icon: '🎭',
     bgClass: 'bg-blue-500/15',
@@ -137,7 +150,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Tour Stop',
     color: 'text-gray-400',
     description: 'National tour engagement on Broadway',
-    sortOrder: 10,
+    sortOrder: 11,
     showInLegend: true,
     icon: '🚌',
     bgClass: 'bg-gray-500/15',

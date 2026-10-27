@@ -222,10 +222,10 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   }
 
   // Outcome-driven designation policy (memory/feedback_enhancement_deal_designation_policy.md):
-  // Easy Winner / Windfall / Miracle imply the production recouped — require recouped=true.
+  // Breakout / Easy Winner / Windfall / Miracle imply the production recouped — require recouped=true.
   // Loss labels (Fizzle, Flop, Did Not Recoup) imply it did not — require recouped=false (null means we don't know).
   // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
-  const WIN_DESIGNATIONS = ['Easy Winner', 'Windfall', 'Miracle'];
+  const WIN_DESIGNATIONS = ['Breakout', 'Easy Winner', 'Windfall', 'Miracle'];
   const modelEstimated = show.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE;
   // A model-estimate tier is our estimate, not a reported recoupment (owner 2026-10-24, BRO-6158).
   if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true && !modelEstimated) {

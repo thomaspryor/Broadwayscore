@@ -9,7 +9,7 @@
  */
 
 const VALID_DESIGNATIONS = [
-  'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
+  'Miracle', 'Windfall', 'Breakout', 'Easy Winner', 'Trickle',
   'TBD', 'Fizzle', 'Did Not Recoup', 'Flop', 'Nonprofit', 'Tour Stop',
 ];
 
@@ -87,7 +87,7 @@ function modelMiddleReturnedPct(entry) {
  * BRO-6158): the record's own estimate, else the model's middle figure at any
  * data quality. Under FIZZLE_MIN_RETURNED_PCT returned is Flop, 30% to under
  * 100% Fizzle, 100% or more the recouped side by the same 1.5x split the rule
- * uses (Trickle under, Windfall at or above). Easy Winner and Miracle need a
+ * uses (Trickle under, Windfall at or above). Easy Winner, Breakout and Miracle need a
  * reported recoupment, so an estimate never picks them. null with no estimate.
  */
 function estimatedDesignationForClosed(entry) {
@@ -208,7 +208,20 @@ function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
   return { moves, held: moves.length > limit };
 }
 /** Classes the recoupment rule never moves. */
-const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
+const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Breakout', 'Easy Winner', 'Nonprofit', 'Tour Stop']);
+
+/**
+ * Labels that say the show recouped. Breakout (owner 2026-10-27, BRO-6446):
+ * a new or untested work, with no star whose name sells the tickets, that
+ * recouped; it replaces Easy Winner or Trickle, never Windfall or Miracle.
+ * Compare with isRecoupedDesignation, never a hand-written list
+ * (tests/unit/recouped-designations.test.mjs).
+ */
+const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Breakout', 'Easy Winner', 'Trickle']);
+const RECOUPED_DESIGNATION_SET = new Set(RECOUPED_DESIGNATIONS);
+function isRecoupedDesignation(designation) {
+  return RECOUPED_DESIGNATION_SET.has(designation);
+}
 
 /**
  * Model central recoupment % that contradicts a designation (a review flag,
@@ -220,7 +233,7 @@ const MODEL_CONTRADICTION = { FAILED_ABOVE_PCT: 150, WINNER_BELOW_PCT: 0, TRICKL
 function modelContradictsDesignation(pct, designation) {
   const c = MODEL_CONTRADICTION;
   return (pct > c.FAILED_ABOVE_PCT && isLossDesignation(designation))
-    || (pct < c.WINNER_BELOW_PCT && (designation === 'Windfall' || designation === 'Miracle' || designation === 'Easy Winner'))
+    || (pct < c.WINNER_BELOW_PCT && (designation === 'Windfall' || designation === 'Miracle' || designation === 'Easy Winner' || designation === 'Breakout'))
     || (pct > c.TRICKLE_ABOVE_PCT && designation === 'Trickle');
 }
 
@@ -265,7 +278,7 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, ownReturnedRangePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
-  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
+  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, isRecoupedDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,

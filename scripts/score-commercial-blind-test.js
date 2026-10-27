@@ -23,9 +23,9 @@
 
 const fs = require('fs');
 const path = require('path');
-const { canonicalDesignation, isLossDesignation } = require('./lib/commercial-designations');
+const { canonicalDesignation, isLossDesignation, RECOUPED_DESIGNATIONS } = require('./lib/commercial-designations');
 
-const RECOUPED = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
+const RECOUPED = new Set(RECOUPED_DESIGNATIONS);
 const CAP_TOLERANCE = 0.2;
 
 function outcomeClass(d) {

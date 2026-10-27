@@ -6,7 +6,7 @@
 
 import { DESIGNATION_MAP } from '@/config/commercial';
 
-const HEADLINE_DESIGNATIONS = ['Miracle', 'Windfall', 'Easy Winner', 'Trickle', 'Fizzle', 'Flop'] as const;
+const HEADLINE_DESIGNATIONS = ['Miracle', 'Windfall', 'Breakout', 'Easy Winner', 'Trickle', 'Fizzle', 'Flop'] as const; // recouped-list-ok: headline chips, not a recouped test
 
 export const DESIGNATION_GUIDE_ID = 'designation-guide';
 

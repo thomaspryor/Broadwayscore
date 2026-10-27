@@ -45,7 +45,7 @@ describe('modelContradictsDesignation', () => {
   // The rule merge-model-recoupment.js used before BRO-4989 C, kept here as the fixture it must match,
   // with Did Not Recoup counted among the failed labels (BRO-5636).
   const before = (pct, d) => (pct > 150 && ['Fizzle', 'Flop', 'Did Not Recoup'].includes(d))
-    || (pct < 0 && (d === 'Windfall' || d === 'Miracle' || d === 'Easy Winner'))
+    || (pct < 0 && (d === 'Windfall' || d === 'Miracle' || d === 'Easy Winner' || d === 'Breakout'))
     || (pct > 300 && d === 'Trickle');
   it('matches the previous inline rule on every designation and boundary', () => {
     for (const d of D.VALID_DESIGNATIONS) {
