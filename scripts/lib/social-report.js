@@ -25,7 +25,7 @@ const { scoreDecision, doneKeys, isEligibleShow, morningAfter } = require('../so
 const C = require('../social-autopost/config');
 
 const NETWORK_NAMES = { twitter: 'X', bluesky: 'Bluesky', threads: 'Threads', instagram: 'Instagram', facebook: 'Facebook', tiktok: 'TikTok', youtube: 'YouTube' };
-const LANE_NAMES = { score: 'review score posts', brief: 'compare posts', 'london-compare': 'London comparison posts', video: 'videos', other: 'other posts' };
+const LANE_NAMES = { score: 'review score posts', brief: 'compare posts', 'london-compare': 'London comparison posts', 'weekly-roundup': 'weekly roundup posts', 'closing-soon': 'closing soon posts', video: 'videos', other: 'other posts' };
 const INTERACTION_TYPES = ['reactions', 'comments', 'shares', 'reposts', 'quotes', 'saves'];
 const DAY_MS = 86400000;
 // Fewer posts than this in a group and an average means nothing.

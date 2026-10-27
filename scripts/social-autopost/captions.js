@@ -244,7 +244,129 @@ function buildCompareCaptions(p) {
   };
 }
 
+// ---------------------------------------------------------------------------
+// Weekly roundup and closing soon (BRO-6413). Like every caption here these are
+// templates over the site's numbers; the only words are fixed.
+
+const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+/** "Oct 22" from a YYYY-MM-DD string (no time zone involved). */
+const monthDay = ymd => `${MONTHS[+String(ymd).slice(5, 7) - 1]} ${+String(ymd).slice(8, 10)}`;
+
+// The roundup header and the closing sentence. No other post type may use them
+// (social-autopost.test.mjs), and neither matches SCORE_SENTENCE or COMPARE_SENTENCE.
+const ROUNDUP_SENTENCE = /New openings, [A-Z][a-z]{2} \d{1,2} to [A-Z][a-z]{2} \d{1,2}, Critic Scores:/;
+const CLOSING_SENTENCE = / closes [A-Z][a-z]{2} \d{1,2}, with a Critic Score of \d/;
+
+const SET_DOMAIN = { broadway: 'broadwayscorecard.com', 'west-end': 'westendscorecard.com' };
+const rootUrl = (set, network) => `https://${SET_DOMAIN[set]}/?utm_source=${network}&utm_medium=social&utm_campaign=roundup`;
+
+/** Header line for a roundup covering the opening days first..last (YYYY-MM-DD). */
+const roundupHeader = (first, last) => `New openings, ${monthDay(first)} to ${monthDay(last)}, Critic Scores:`;
+
+/** Patterns every caption of this roundup matches (buffer.js findExistingPost). */
+function roundupMarkers(first, last) {
+  return [ROUNDUP_SENTENCE, new RegExp(escapeRe(roundupHeader(first, last)))];
+}
+
+/**
+ * Roundup captions. p: { set, first, last, rows: [{title, category, score, tierLabel}], more }
+ * rows are the ones on the card (best score first); more = openings with a score that
+ * did not fit (or have no poster yet). The score is the rounded badge number.
+ */
+function buildRoundupCaptions(p) {
+  const header = roundupHeader(p.first, p.last);
+  const mixed = new Set(p.rows.map(r => r.category)).size > 1;
+  const tag = r => (mixed ? ` (${MARKETS[r.category].label})` : '');
+  const line = (r, tier) => `${r.title}${tag(r)}: ${r.score}${tier ? ` (${r.tierLabel})` : ''}`;
+  // Long form: every row with its tier word; Threads (500) drops the tier words, then trailing rows (never fewer than two).
+  const longText = (n, tier) => {
+    const cut = p.rows.length - n + p.more;
+    return `${header}\n\n${p.rows.slice(0, n).map(r => line(r, tier)).join('\n')}${cut > 0 ? `\nPlus ${cut} more on the site.` : ''}`;
+  };
+  const fitLong = (network, tail) => {
+    for (let n = p.rows.length; n >= Math.min(2, p.rows.length); n--) {
+      for (const tier of [true, false]) {
+        const text = `${longText(n, tier)}${tail}`;
+        if ([...text].length <= LIMITS[network]) return text;
+      }
+    }
+    return `${longText(Math.min(2, p.rows.length), false)}${tail}`;
+  };
+  const long = longText(p.rows.length, true);
+  const domain = SET_DOMAIN[p.set];
+  const tags = [...new Set([...p.rows.flatMap(r => MARKETS[r.category].hashtags), 'Theatre'])].map(t => `#${t}`).join(' ');
+
+  // X and Bluesky: all rows if they fit, else the best rows that do (never fewer than two), never the numbers.
+  const fitShort = network => {
+    const url = rootUrl(p.set, network);
+    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
+    let n = p.rows.length, text;
+    do {
+      const shown = p.rows.slice(0, n);
+      const cut = p.rows.length - n + p.more;
+      text = `${header}\n${shown.map(r => line(r, false)).join('\n')}${cut > 0 ? `\nPlus ${cut} more on the site.` : ''}`;
+    } while ([...text].length > budget && --n >= 2);
+    return `${text}\n${url}`;
+  };
+
+  return {
+    twitter: fitShort('twitter'),
+    bluesky: fitShort('bluesky'),
+    threads: fitLong('threads', `\n\n${rootUrl(p.set, 'threads')}`),
+    instagram: `${long}\n\nAll the reviews: ${domain} (link in bio)\n\n${tags}`,
+    facebook: `${long}\n\n${rootUrl(p.set, 'facebook')}`,
+    altText: `Critic Scores for the week's openings, ${monthDay(p.first)} to ${monthDay(p.last)}: ${p.rows.map(r => `${r.title} ${r.score}`).join(', ')}.`,
+  };
+}
+
+/** The only numbers a roundup caption may carry: scores, the two days, the "more" count and digits in titles. */
+function roundupAllowedNumbers(p) {
+  return [...p.rows.flatMap(r => [r.score, ...(String(r.title).match(/\d+/g) || [])]), +p.first.slice(8), +p.last.slice(8),
+    ...Array.from({ length: p.rows.length + 1 }, (_, i) => p.more + i)];
+}
+
+/** Patterns every caption of a closing-soon post matches. */
+function closingMarkers(show) {
+  return [pathMarker(show), CLOSING_SENTENCE];
+}
+
+/**
+ * Closing-soon captions. p: {show, score, tierLabel, reviewCount, breakdown, closing (YYYY-MM-DD)}.
+ */
+function buildClosingCaptions(p) {
+  const { show } = p;
+  const sentence = title => `${title} closes ${monthDay(p.closing)}, with a Critic Score of ${p.score} (${p.tierLabel}) from ${p.reviewCount} critics' reviews.`;
+  const bd = breakdownLine(p.breakdown);
+  const long = `${sentence(show.title)}${bd ? `\n\nThe tally: ${bd}.` : ''}`;
+  const withUrl = (text, network) => `${text}\n\n${showUrl(show, network, 'closing')}`;
+  const fitShort = network => {
+    const url = showUrl(show, network, 'closing');
+    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - url.length - 2;
+    let t = sentence(show.title);
+    if (t.length > budget) {
+      const room = Math.max(12, show.title.length - (t.length - budget) - 1);
+      t = sentence(`${show.title.slice(0, room).replace(/[\s,:;–-]+\S*$/, '')}…`);
+    }
+    return `${t}\n\n${url}`;
+  };
+  return {
+    twitter: fitShort('twitter'),
+    bluesky: fitShort('bluesky'),
+    threads: withUrl(long, 'threads'),
+    instagram: `${long}\n\nFull reviews: ${MARKETS[show.category].domain}${showPath(show)} (link in bio)\n\n${hashtagLine(show)}`,
+    facebook: withUrl(long, 'facebook'),
+    altText: `${show.title} poster with its Critic Score of ${p.score} out of 100, rated ${p.tierLabel}. Closing ${monthDay(p.closing)}.`,
+  };
+}
+
+/** The only numbers a closing-soon caption may carry. */
+function closingAllowedNumbers(p) {
+  const b = p.breakdown || {};
+  return [100, p.score, p.reviewCount, +p.closing.slice(8), b.rave, b.positive, b.mixed, b.negative, ...(String(p.show.title).match(/\d+/g) || [])].filter(n => n != null);
+}
+
 module.exports = {
   buildCaptions, showUrl, postMarkers, LIMITS,
   buildCompareCaptions, compareCaveat, compareMarkers, validateHook, strayNumbers, productionLabel, pathMarker, CITY, SCORE_SENTENCE, COMPARE_SENTENCE,
+  monthDay, ROUNDUP_SENTENCE, CLOSING_SENTENCE, roundupHeader, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers, SET_DOMAIN,
 };

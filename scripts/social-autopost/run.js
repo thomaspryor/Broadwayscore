@@ -9,6 +9,9 @@
  *   node scripts/social-autopost/run.js --dry-run        # render cards + captions only
  *   node scripts/social-autopost/run.js --dry-run --show=ID   # preview one show's card
  *   node scripts/social-autopost/run.js --list-channels  # which Buffer channels it would use
+ *   node scripts/social-autopost/run.js --dry-run --preview-roundup[=YYYY-MM-DD] [--host]   # BRO-6413: sample weekly roundup card + captions (flag-independent)
+ *   node scripts/social-autopost/run.js --dry-run --preview-closing[=SHOW_ID] [--host]        # sample closing-soon card; best candidate, or the nearest and says so
+ *   node scripts/social-autopost/run.js --dry-run --roundup-lookback=90 --closing-lookback=90 # what each new type would have fired in the last N days
  *   node scripts/social-autopost/run.js --self-test      # draft post on every channel, then delete it
  *   node scripts/social-autopost/run.js --cancel-queued  # delete every not-yet-sent post it created
  *   node scripts/social-autopost/run.js --brief=HASH     # post an approved brief (BRO-6368, from brief.js --post)
@@ -26,11 +29,11 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { getScoreTierId, getScoreTierLabel, getGoldThreshold } = require('../lib/score-tiers');
-const { findScoreEvents, findLondonCompareEvents, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
-const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel } = require('./captions');
+const { findScoreEvents, findLondonCompareEvents, findRoundupEvents, findClosingSoonEvents, roundupLookback, closingSoonLookback, briefCoversPair, londonCompareLookback, scheduleEvents, splitBacklog, isEligibleShow, morningAfter, inWindow, nextWindowSlot, zonedTime } = require('./select');
+const { buildCaptions, postMarkers, compareMarkers, pathMarker, validateHook, strayNumbers, productionLabel, monthDay, roundupMarkers, buildRoundupCaptions, roundupAllowedNumbers, closingMarkers, buildClosingCaptions, closingAllowedNumbers } = require('./captions');
 const { resolvePoster, minPosterWidth } = require('./art');
-const { renderCard, renderCompareCard, closeBrowser, COMPARE_POSTER_PX } = require('./render');
-const { CHANNEL_SETS, MARKETS, SCORE_LOOKBACK_DAYS } = require('./config');
+const { renderCard, renderCompareCard, renderRoundupCard, closeBrowser, COMPARE_POSTER_PX, ROW_POSTER_PX, MAX_ROWS } = require('./render');
+const { CHANNEL_SETS, MARKETS, SCORE_LOOKBACK_DAYS, WEEKLY_ROUNDUP, CLOSING_SOON } = require('./config');
 const { targetSets, tagChannels, channelKey } = require('./routing');
 const briefs = require('./briefs');
 
@@ -128,7 +131,7 @@ function describe(show, ctx) {
  * poster throws NO_POSTER and waits. Only the self-test (drafts, deleted) and dry-run
  * previews pass requirePoster: false to render the typographic card.
  */
-async function buildCard(desc, outDir, { requirePoster = true } = {}) {
+async function buildCard(desc, outDir, { requirePoster = true, label = null, name = desc.show.id } = {}) {
   const poster = await resolvePoster(desc.show);
   if (!poster.poster && requirePoster) {
     const err = new Error(`no usable poster (${poster.reason})`);
@@ -139,9 +142,9 @@ async function buildCard(desc, outDir, { requirePoster = true } = {}) {
   const card = {
     market: desc.show.category, title: desc.show.title, venue: desc.show.venue,
     score: desc.score, tierId: desc.tierId, tierLabel: desc.tierLabel, breakdown: desc.breakdown,
-    poster: poster.poster ? poster : null,
+    poster: poster.poster ? poster : null, label,
   };
-  const out = path.join(outDir, `${desc.show.id}.png`);
+  const out = path.join(outDir, `${name}.png`);
   await renderCard(card, out);
   return { path: out, poster: poster.poster ? `${poster.width}x${poster.height} ${poster.source}` : `none (${poster.reason})` };
 }
@@ -168,6 +171,8 @@ const entryName = p => p.showId || p.id;
 
 /** Dedupe markers for a ledger entry's captions (captions.js). */
 function entryMarkers(p) {
+  if (p.type === 'weekly-roundup') return roundupMarkers(p.first, p.last);
+  if (p.type === 'closing-soon') return closingMarkers({ id: p.showId, slug: p.slug });
   return p.type === 'brief' || p.type === 'london-compare' ? compareMarkers({ slug: p.slug }, p.olderLabel) : postMarkers({ id: p.showId, slug: p.slug });
 }
 
@@ -326,7 +331,7 @@ const briefQuotaNeed = (listed, targets) => listed + 3 * targets + BRIEF_QUOTA_M
  * self-tested, Buffer quota too low, no free day for either show, or every network failed.
  * `entry` holds the type-specific ledger fields (type, id, pair, approval...).
  */
-async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', entry: extra }) {
+async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl, ctx, buffer, channels, now, earliest, summary, problems, note = '', entry: extra, markers = compareMarkers(newer, olderLabel), fields = {} }) {
   const targets = briefChannels(channels, newer);
   if (!targets.length) throw new Error(`${label}: no usable channel for ${newer.category}`);
   const notValidated = unvalidated(ctx.ledger, targets);
@@ -341,12 +346,12 @@ async function postCompare({ label, shows, newer, olderLabel, captions, imageUrl
   const dueAt = new Date(t);
   console.log(`[autopost] ${label} goes out ${dueAt.toISOString()}${note ? ` ${note}` : ''}`);
 
-  const { posted, errors } = await publishEvent({ channels: targets, buffer, captions, imageUrl, markers: compareMarkers(newer, olderLabel), dueAt, label, now });
+  const { posted, errors } = await publishEvent({ channels: targets, buffer, captions, imageUrl, markers, dueAt, label, now });
   if (!Object.keys(posted).length) throw new Error(`${label}: failed on every network (${Object.values(errors)[0]})`);
   const entry = {
     ...extra, showIds: shows.map(s => s.id),
     date: new Date(now).toISOString().slice(0, 10), slug: newer.slug || newer.id, olderLabel, title: newer.title, dueAt: dueAt.toISOString(),
-    imageUrl, text: captions.twitter, channels: posted,
+    imageUrl, text: captions.twitter, channels: posted, ...fields,
   };
   if (Object.keys(errors).length) {
     entry.errors = errors;
@@ -400,6 +405,106 @@ async function runLondonCompare(ev, { ctx, buffer, channels, now, outDir, summar
       label, shows: [built.older.show, built.newer.show], newer: built.newer.show, olderLabel: productionLabel(built.older.show),
       captions: built.captions, imageUrl, ctx, buffer, channels, now, earliest: ev.dueAt.getTime(), summary, problems,
       entry: { type: 'london-compare', id: label, showId: ev.show.id, template: 'compare', pair: briefs.pairKey([ev.show.id, ev.london.id]), auto: true },
+    });
+  } catch (e) {
+    if (e.code === 'QUOTA' || e.code === 'NO_SLOT') { console.log(`[autopost] ${e.message}; trying again next run`); return 'skipped'; }
+    throw e;
+  }
+  return 'posted';
+}
+
+
+/** Refuse a caption set that carries a number that is not a fact, an em dash or too many characters. */
+function checkCaptions(captions, allowed, label) {
+  const { LIMITS } = require('./captions');
+  for (const [net, text] of Object.entries(captions)) {
+    const stray = strayNumbers(text, allowed);
+    if (stray.length) throw new Error(`${label}: ${net} caption carries number(s) that are not facts: ${stray.join(', ')}`);
+    if (text.includes('—')) throw new Error(`${label}: ${net} caption has an em dash`);
+    const len = [...(net === 'twitter' ? text.replace(/https?:\/\/\S+/g, 'x'.repeat(23)) : text)].length; // X counts every link as 23
+    if (LIMITS[net] && len > LIMITS[net]) throw new Error(`${label}: ${net} caption is ${len} characters, over its ${LIMITS[net]} limit`);
+  }
+}
+
+/** Encode a rendered PNG and host it under a content-addressed key (a re-render never replaces a scheduled post's image). */
+async function hostPng(png, keyPrefix, now) {
+  const { encodeForSocial, hostImage } = require('./host');
+  const jpeg = await encodeForSocial(png);
+  const sha = crypto.createHash('sha1').update(jpeg.buffer).digest('hex').slice(0, 10);
+  return hostImage(jpeg.buffer, `${keyPrefix.replace('<month>', new Date(now).toISOString().slice(0, 7))}-${sha}.jpg`)
+    .catch(e => { throw new Error(`image hosting failed: ${e.message}`); });
+}
+
+/**
+ * Build one weekly roundup (BRO-6413): up to MAX_ROWS of the event's candidates that have a
+ * real poster (owner rule: never post without it; a show without one is left off), the card
+ * and the captions. Throws NO_POSTER when fewer than cfg.minShows have a poster.
+ */
+async function buildRoundup(ev, ctx, outDir, { cfg = WEEKLY_ROUNDUP } = {}) {
+  const rows = [], held = [];
+  for (const show of ev.candidates) {
+    if (rows.length >= MAX_ROWS) break;
+    let d;
+    try { d = describe(show, ctx); } catch (e) { held.push(`${show.id}: ${e.message}`); continue; }
+    const poster = await resolvePoster(show, { minWidth: minPosterWidth(ROW_POSTER_PX), shows: ctx.shows, mezzanine: true });
+    if (!poster.poster) { held.push(`${show.id}: ${poster.reason}`); continue; }
+    rows.push({ show, title: show.title, venue: show.venue, category: show.category, score: d.score, tierId: d.tierId, tierLabel: d.tierLabel, poster });
+  }
+  if (rows.length < cfg.minShows) {
+    throw Object.assign(new Error(`${ev.id}: only ${rows.length} of ${ev.candidates.length} opening(s) have a usable poster (${held.join(' | ').slice(0, 200)})`), { code: 'NO_POSTER' });
+  }
+  const more = ev.candidates.length - rows.length;
+  const p = { set: ev.set, first: ev.first, last: ev.last, rows, more };
+  const captions = buildRoundupCaptions(p);
+  checkCaptions(captions, roundupAllowedNumbers(p), ev.id);
+  const png = path.join(outDir, `${ev.id.replace(/:/g, '-')}.png`);
+  await renderRoundupCard({
+    market: ev.set === 'west-end' ? 'west-end' : 'broadway', range: `${monthDay(ev.first)} to ${monthDay(ev.last)}`,
+    rows: rows.map(r => ({ title: r.title, venue: r.venue, score: r.score, tierId: r.tierId, poster: r.poster })),
+  }, png);
+  return { png, captions, rows, more, held };
+}
+
+/** Build one closing-soon post: the D4 score card labelled "Closing <date>" and its captions. */
+async function buildClosing(ev, ctx, outDir, { requirePoster = true } = {}) {
+  const desc = describe(ev.show, ctx);
+  if (desc.score !== ev.score) throw new Error(`${ev.show.id}: score is ${desc.score}, was ${ev.score} when selected`);
+  const p = { show: ev.show, score: desc.score, tierId: desc.tierId, tierLabel: desc.tierLabel, reviewCount: desc.reviewCount, breakdown: desc.breakdown, closing: ev.closing };
+  const captions = buildClosingCaptions(p);
+  checkCaptions(captions, closingAllowedNumbers(p), `closing-soon:${ev.show.id}`);
+  const card = await buildCard(desc, outDir, { requirePoster, label: `Closing ${monthDay(ev.closing)}`, name: `closing-${ev.show.id}` });
+  return { desc, captions, card };
+}
+
+/** Post one weekly roundup. Returns 'posted' or 'skipped' (quota or no free day, retried next run). */
+async function runRoundup(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
+  const built = await buildRoundup(ev, ctx, outDir);
+  const imageUrl = await hostPng(built.png, `roundup/<month>/${ev.id.replace(/:/g, '-')}`, now);
+  const title = `New openings, ${monthDay(ev.first)} to ${monthDay(ev.last)}`;
+  try {
+    await postCompare({
+      label: ev.id, shows: built.rows.map(r => r.show), newer: built.rows[0].show, captions: built.captions, imageUrl, ctx, buffer, channels, now,
+      earliest: ev.dueAt.getTime(), summary, problems, markers: roundupMarkers(ev.first, ev.last),
+      entry: { type: 'weekly-roundup', id: ev.id, template: 'roundup', set: ev.set, first: ev.first, last: ev.last, auto: true },
+      fields: { title, scores: Object.fromEntries(built.rows.map(r => [r.show.id, r.score])) },
+    });
+  } catch (e) {
+    if (e.code === 'QUOTA' || e.code === 'NO_SLOT') { console.log(`[autopost] ${e.message}; trying again next run`); return 'skipped'; }
+    throw e;
+  }
+  return 'posted';
+}
+
+/** Post one closing-soon card (ledger key closing-soon:<showId>). Returns 'posted' or 'skipped'. */
+async function runClosingSoon(ev, { ctx, buffer, channels, now, outDir, summary, problems }) {
+  const label = `closing-soon:${ev.show.id}`;
+  const built = await buildClosing(ev, ctx, outDir, { requirePoster: true });
+  const imageUrl = await hostCard(built.card.path, { id: `closing-${ev.show.id}` }, now);
+  try {
+    await postCompare({
+      label, shows: [ev.show], newer: ev.show, captions: built.captions, imageUrl, ctx, buffer, channels, now,
+      earliest: ev.dueAt.getTime(), summary, problems, markers: closingMarkers(ev.show),
+      entry: { type: 'closing-soon', id: label, showId: ev.show.id, template: 'closing', closing: ev.closing, score: built.desc.score, auto: true },
     });
   } catch (e) {
     if (e.code === 'QUOTA' || e.code === 'NO_SLOT') { console.log(`[autopost] ${e.message}; trying again next run`); return 'skipped'; }
@@ -474,6 +579,72 @@ async function selfTest(buffer, channels, outDir, ctx, now) {
   console.log(`[autopost] Buffer self-test passed on ${channels.map(c => c.key).join(', ')} (drafts created and deleted)`);
 }
 
+
+/**
+ * Dry-run previews of the two new post types, whatever their config.js flags say (the owner
+ * sees a sample before a flag is turned on). Renders the card(s) into outDir, prints the
+ * captions for every network, and with --host uploads the card to the public bucket and
+ * prints its URL. --preview-roundup[=POST_DAY] uses the latest roundup day (or the given
+ * YYYY-MM-DD); --preview-closing[=SHOW_ID] uses that show, or the best current candidate:
+ * a show in the closing range with the highest score, else the nearest open show with a
+ * closing date and a settled score of at least CLOSING_SOON.minScore (and says so).
+ */
+async function previewNewTypes({ ctx, now, outDir }) {
+  const { roundupDay, roundupCandidates, ymdDays, scoreSettled, closingDecision, doneKeys } = require('./select');
+  const base = { shows: ctx.shows, reviewsByShow: ctx.reviewsByShow, slim: ctx.slim, getOutletTier: ctx.getOutletTier };
+  const host = async (png, name) => (flag('host') ? `\n  hosted: ${await hostPng(png, `preview/<month>/${name}`, now)}` : '');
+  try {
+    if (flag('preview-roundup') || arg('preview-roundup')) {
+      for (const set of ['broadway', 'west-end']) {
+        const day = arg('preview-roundup') ? { ymd: arg('preview-roundup') } : roundupDay(now, set);
+        const candidates = roundupCandidates(day.ymd, set, base);
+        const ev = { type: 'weekly-roundup', set, ymd: day.ymd, id: `weekly-roundup:${set}:${day.ymd}`, ...require('./select').roundupWindow(day.ymd), candidates };
+        console.log(`\n[preview] ${ev.id}: openings ${ev.first} to ${ev.last}, ${candidates.length} with a settled score${candidates.length < WEEKLY_ROUNDUP.minShows ? ` (fewer than ${WEEKLY_ROUNDUP.minShows}: the week would be skipped)` : ''}`);
+        if (candidates.length < WEEKLY_ROUNDUP.minShows) continue;
+        try {
+          const built = await buildRoundup(ev, ctx, outDir);
+          console.log(`  card: ${built.png} (${built.rows.length} rows${built.more ? `, ${built.more} more not shown` : ''}${built.held.length ? `; left off, no usable poster: ${built.held.map(h => h.split(':')[0]).join(', ')}` : ''})`);
+          for (const r of built.rows) console.log(`    ${r.score} ${r.title} (${r.category})`);
+          for (const [net, text] of Object.entries(built.captions)) console.log(`  --- ${net}\n${text.replace(/^/gm, '  ')}`);
+          console.log(await host(built.png, ev.id.replace(/:/g, '-')));
+        } catch (e) { console.log(`  not buildable: ${e.message}`); }
+      }
+    }
+    if (flag('preview-closing') || arg('preview-closing')) {
+      const done = doneKeys(ctx.ledger);
+      const dctx = { ...base, done, now };
+      const open = ctx.shows.filter(sh => require('./select').isEligibleShow(sh) && sh.status === 'open' && /^\d{4}-\d{2}-\d{2}/.test(String(sh.closingDate || '')));
+      let show = arg('preview-closing') ? ctx.shows.find(sh => sh.id === arg('preview-closing')) : null;
+      if (arg('preview-closing') && !show) throw new Error(`--preview-closing=${arg('preview-closing')}: not in shows.json`);
+      let note = 'chosen by id';
+      if (!show) {
+        const tz = sh => require('./config').MARKETS[sh.category].tz;
+        const rows = open.map(sh => {
+          const d = closingDecision(sh, dctx);
+          const days = ymdDays(String(sh.closingDate).slice(0, 10), require('./select').localParts(new Date(now), tz(sh)).ymd);
+          const s = scoreSettled(sh, dctx);
+          const score = s.ok ? Math.round(ctx.slim[sh.id].cs) : null;
+          const gap = days < CLOSING_SOON.minDays ? CLOSING_SOON.minDays - days : days > CLOSING_SOON.maxDays ? days - CLOSING_SOON.maxDays : 0;
+          return { sh, d, days, score, gap };
+        }).filter(r => r.days >= 0 && r.score !== null && r.score >= CLOSING_SOON.minScore && require('./select').isEligibleShow(r.sh));
+        rows.sort((a, b) => a.gap - b.gap || b.score - a.score || a.sh.id.localeCompare(b.sh.id));
+        if (!rows.length) { console.log(`\n[preview] closing-soon: no open show with a closing date and a score of ${CLOSING_SOON.minScore}+`); return; }
+        show = rows[0].sh;
+        note = rows[0].gap === 0 ? `qualifies: closes in ${rows[0].days} days (range ${CLOSING_SOON.minDays} to ${CLOSING_SOON.maxDays}), score ${rows[0].score}` : `DOES NOT QUALIFY YET, nearest candidate: closes in ${rows[0].days} days (range ${CLOSING_SOON.minDays} to ${CLOSING_SOON.maxDays}), score ${rows[0].score}`;
+      }
+      const closing = String(show.closingDate).slice(0, 10);
+      const ev = { type: 'closing-soon', show, closing, score: Math.round((ctx.slim[show.id] || {}).cs) };
+      console.log(`\n[preview] closing-soon:${show.id}: ${note}`);
+      const built = await buildClosing(ev, ctx, outDir, { requirePoster: true });
+      console.log(`  card: ${built.card.path} poster=${built.card.poster}`);
+      for (const [net, text] of Object.entries(built.captions)) console.log(`  --- ${net}\n${text.replace(/^/gm, '  ')}`);
+      console.log(await host(built.card.path, `closing-${show.id}`));
+    }
+  } finally {
+    await closeBrowser();
+  }
+}
+
 function writeSummary(summary) {
   if (!summary.length || !process.env.GITHUB_STEP_SUMMARY) return;
   fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, ['## Scheduled in Buffer', '', '| Show | Goes out (UTC) | Networks | Failed |', '|---|---|---|---|', ...summary,
@@ -530,6 +701,8 @@ async function main() {
 
   let events;
   let compareEvents = [];
+  let roundupEvents = [];
+  let closingEvents = [];
   let backlogSkipped = [];
   if (arg('show')) {
     if (!dryRun) throw new Error('--show is for previews; add --dry-run');
@@ -544,10 +717,15 @@ async function main() {
     events = scheduleEvents(post.filter(ev => !(failures[ev.show.id] && failures[ev.show.id].count >= MAX_SHOW_ATTEMPTS)), ctx.ledger, now);
     compareEvents = findLondonCompareEvents({ shows: ctx.shows, ledger: ctx.ledger, now, slim: ctx.slim })
       .filter(ev => !(failures[`london-compare:${ev.show.id}`] && failures[`london-compare:${ev.show.id}`].count >= MAX_SHOW_ATTEMPTS));
+    // BRO-6413: each type runs only when its config.js flag is on (default off).
+    const tooManyFailures = key => failures[key] && failures[key].count >= MAX_SHOW_ATTEMPTS;
+    const found2 = { shows: ctx.shows, ledger: ctx.ledger, now, reviewsByShow: ctx.reviewsByShow, slim: ctx.slim, getOutletTier: ctx.getOutletTier };
+    if (WEEKLY_ROUNDUP.enabled) roundupEvents = findRoundupEvents({ ...found2, cfg: WEEKLY_ROUNDUP }).filter(ev => !tooManyFailures(ev.id));
+    if (CLOSING_SOON.enabled) closingEvents = findClosingSoonEvents({ ...found2, cfg: CLOSING_SOON }).filter(ev => !tooManyFailures(`closing-soon:${ev.show.id}`));
   }
   const owed = pendingRetries(ctx.ledger, now).length;
   const toVerify = postsToVerify(ctx.ledger, now).length;
-  console.log(`[autopost] ${events.length} post(s) due${compareEvents.length ? `, ${compareEvents.length} London comparison(s) due` : ''}, ${owed} retry(ies) owed, ${toVerify} to read back${backlogSkipped.length ? `, ${backlogSkipped.length} older show(s) skipped at go-live` : ''}${dryRun ? ' (dry run)' : ''}`);
+  console.log(`[autopost] ${events.length} post(s) due${compareEvents.length ? `, ${compareEvents.length} London comparison(s) due` : ''}${roundupEvents.length ? `, ${roundupEvents.length} weekly roundup(s) due` : ''}${closingEvents.length ? `, ${closingEvents.length} closing-soon post(s) due` : ''}, ${owed} retry(ies) owed, ${toVerify} to read back${backlogSkipped.length ? `, ${backlogSkipped.length} older show(s) skipped at go-live` : ''}${dryRun ? ' (dry run)' : ''}`);
 
   if (arg('london-lookback')) {
     if (!dryRun) throw new Error('--london-lookback is a listing; add --dry-run');
@@ -559,16 +737,45 @@ async function main() {
     return;
   }
 
+
+  if (arg('roundup-lookback') || arg('closing-lookback')) {
+    if (!dryRun) throw new Error('--roundup-lookback / --closing-lookback are listings; add --dry-run');
+    const base = { shows: ctx.shows, ledger: ctx.ledger, now, reviewsByShow: ctx.reviewsByShow, slim: ctx.slim, getOutletTier: ctx.getOutletTier };
+    if (arg('roundup-lookback')) {
+      const days = Number(arg('roundup-lookback'));
+      if (!(days > 0)) throw new Error('--roundup-lookback=DAYS needs a number of days');
+      const rows = roundupLookback({ ...base, days });
+      console.log(`[autopost] weekly roundup, last ${days} days (weekday ${WEEKLY_ROUNDUP.weekday}, flag ${WEEKLY_ROUNDUP.enabled ? 'ON' : 'off'}): ${rows.filter(r => r.wouldFire).length} of ${rows.length} would fire`);
+      for (const r of rows) console.log(`  ${r.wouldFire ? 'WOULD FIRE' : 'skip (fewer than ' + WEEKLY_ROUNDUP.minShows + ' scored)'} ${r.ymd} ${r.set}, openings ${r.first} to ${r.last}: ${r.candidates.map(sh => `${sh.id} ${Math.round(ctx.slim[sh.id].cs)}`).join(', ') || 'none'}`);
+    }
+    if (arg('closing-lookback')) {
+      const days = Number(arg('closing-lookback'));
+      if (!(days > 0)) throw new Error('--closing-lookback=DAYS needs a number of days');
+      const rows = closingSoonLookback({ ...base, days });
+      console.log(`[autopost] closing soon, last ${days} days (flag ${CLOSING_SOON.enabled ? 'ON' : 'off'}; today's scores and closing dates, so approximate): ${rows.filter(r => r.wouldFire).length} of ${rows.length} shows in range would fire`);
+      for (const r of rows) console.log(`  ${r.wouldFire ? 'WOULD FIRE' : r.settled ? `below ${CLOSING_SOON.minScore}` : 'score not settled'} ${r.show.id} (${r.show.category}, ${r.show.status}) score ${r.score}, closes ${r.closing}, in range from ${r.firstDay}`);
+    }
+    return;
+  }
+
+  if (flag('preview-roundup') || arg('preview-roundup') || flag('preview-closing') || arg('preview-closing')) {
+    if (!dryRun) throw new Error('--preview-roundup / --preview-closing are previews; add --dry-run');
+    await previewNewTypes({ ctx, now, outDir });
+    return;
+  }
+
   if (flag('check')) {
     // Workflow gate: install the browser only when there is work. Without a key,
     // scheduled runs do nothing (a manual dispatch still renders as a check).
     // A cron-redispatch run stands in for a dropped scheduled run, so it is not manual.
     const manual = process.env.GITHUB_EVENT_NAME === 'workflow_dispatch' && process.env.INPUT_REDISPATCHED !== 'true';
     if (!configured) console.log('::notice::BUFFER_API_KEY not set: nothing will be posted');
-    const due = configured ? events.length + compareEvents.length + owed + toVerify + backlogSkipped.length + (brief ? 1 : 0) : manual ? events.length : 0;
-    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${due ? events.length + compareEvents.length : 0}\n`);
+    const due = configured ? events.length + compareEvents.length + roundupEvents.length + closingEvents.length + owed + toVerify + backlogSkipped.length + (brief ? 1 : 0) : manual ? events.length : 0;
+    if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `due=${due}\nrender=${due ? events.length + compareEvents.length + roundupEvents.length + closingEvents.length : 0}\n`);
     for (const ev of events) console.log(`  ${ev.show.id} due ${ev.dueAt.toISOString()}`);
     for (const ev of compareEvents) console.log(`  london-compare:${ev.show.id} (with ${ev.london.id}) due ${ev.dueAt.toISOString()}`);
+    for (const ev of roundupEvents) console.log(`  ${ev.id} (${ev.candidates.length} openings) due ${ev.dueAt.toISOString()}`);
+    for (const ev of closingEvents) console.log(`  closing-soon:${ev.show.id} (closes ${ev.closing}) due ${ev.dueAt.toISOString()}`);
     return;
   }
 
@@ -624,7 +831,7 @@ async function main() {
     writeLedger(ctx.ledger);
   };
   try {
-    if (live && (events.length || compareEvents.length) && unvalidated(ctx.ledger, channels).length) await selfTest(buffer, channels, outDir, ctx, now);
+    if (live && (events.length || compareEvents.length || roundupEvents.length || closingEvents.length) && unvalidated(ctx.ledger, channels).length) await selfTest(buffer, channels, outDir, ctx, now);
     for (const ev of events) {
       // One show's failure must not lose the record of shows already scheduled:
       // each is written to the ledger as soon as Buffer accepts it.
@@ -710,6 +917,40 @@ async function main() {
         recordFailure(key, e.message);
       }
     }
+
+    // Weekly roundups, then closing-soon posts (BRO-6413): after the score posts, which always get their slot first.
+    for (const [list, keyOf, build, runner] of [
+      [roundupEvents, ev => ev.id, ev => buildRoundup(ev, ctx, outDir), runRoundup],
+      [closingEvents, ev => `closing-soon:${ev.show.id}`, ev => buildClosing(ev, ctx, outDir, { requirePoster: false }), runClosingSoon],
+    ]) {
+      for (const ev of list) {
+        const key = keyOf(ev);
+        try {
+          if (!live) {
+            const built = await build(ev);
+            console.log(`\n[autopost] ${key} due ${ev.dueAt.toISOString()}`);
+            console.log(`  X/Bluesky: ${built.captions.twitter.replace(/\n/g, ' | ')}`);
+            continue;
+          }
+          if (await runner(ev, { ctx, buffer, channels, now, outDir, summary, problems }) === 'skipped') break; // quota or no free day: the next run tries again
+          delete failures[key];
+          if (ctx.ledger._meta.waitingForPoster) delete ctx.ledger._meta.waitingForPoster[key];
+        } catch (e) {
+          if (e.code === 'NO_POSTER') {
+            const waiting = ctx.ledger._meta.waitingForPoster = ctx.ledger._meta.waitingForPoster || {};
+            if (!waiting[key]) problems.push(`${key}: held, ${e.message}. Add a full-size poster (at least 440px wide) and it posts on the next run.`);
+            waiting[key] = { since: (waiting[key] || {}).since || new Date(now).toISOString(), reason: e.message.slice(0, 300) };
+            console.log(`  [art] ${key}: HELD, ${e.message}`);
+            writeLedger(ctx.ledger);
+            continue;
+          }
+          failed++;
+          console.log(`::error::${key}: ${e.message}`);
+          if (/self-test failed|BUFFER_API_KEY|HTTP 401|rate limit|image hosting failed/i.test(e.message)) break;
+          recordFailure(key, e.message);
+        }
+      }
+    }
   } finally {
     await closeBrowser();
   }
@@ -728,4 +969,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[autopost] ${err.stack || err.message}`); process.exit(1); });
 }
 
-module.exports = { MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, LEDGER_FILE };
+module.exports = { buildRoundup, buildClosing, runRoundup, runClosingSoon, checkCaptions, MAX_SHOW_ATTEMPTS, unvalidated, describe, renderCompareFor, runLondonCompare, postCompare, breakdownFor, pendingRetries, abandonRetries, postsToVerify, writeLedger, loadContext, hostCard, buildCard, publishEvent, entryMarkers, briefChannels, briefBusyDays, briefQuotaNeed, runBrief, LEDGER_FILE };
