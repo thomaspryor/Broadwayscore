@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T13:01:49.154Z",
+  "timestamp": "2026-10-27T13:16:44.828Z",
   "stats": {
-    "totalReviews": 63074,
+    "totalReviews": 63146,
     "alreadyFlagged": 21628,
     "dateGuardCatches": 224,
-    "directorMismatch": 2351,
+    "directorMismatch": 2352,
     "tvFilmSignals": 1784,
-    "londonSignals": 3038,
+    "londonSignals": 3039,
     "offBroadwaySignals": 561,
     "yearMismatch": 217,
-    "noPublishDate": 5636
+    "noPublishDate": 5698
   },
   "findings": [
     {
@@ -44423,6 +44423,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-bodyguard-west-end-2016",
+      "file": "loureviews--louise-penn.json",
+      "publishDate": "2026-02-17",
+      "url": "https://loureviews.blog/2026/02/17/musical-review-the-bodyguard-at-new-wimbledon-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"thea sharrock\" from the-bodyguard-west-end-2012"
         }
       ]
     },
@@ -95773,6 +95786,19 @@
       "score": 59,
       "publishDate": "2024-11-10",
       "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2013",
+      "file": "loureviews--louise-penn.json",
+      "publishDate": "2026-03-22",
+      "url": "https://loureviews.blog/2026/03/22/play-review-the-curious-incident-of-the-dog-in-the-night-time-at-questors/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
