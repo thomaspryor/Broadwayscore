@@ -263,3 +263,21 @@ test('BRO-2989: owner alerts get their own digest line ahead of the noisy headle
   assert.match(lines[0], /NOT restarted.*owner-card-session-died/);
   assert.equal(lines.length, 2);
 });
+
+test('gatherDigest drops a rebuild regression whose show has recovered (BRO-6432)', () => {
+  const repo = fs.mkdtempSync(path.join(os.tmpdir(), 'overnight-digest-'));
+  try {
+    fs.mkdirSync(path.join(repo, 'data', 'audit'), { recursive: true });
+    const reg = (id, oldCount) => ({ showId: id, oldCount, newCount: 1, dropped: oldCount - 1, reason: 'x' });
+    fs.writeFileSync(path.join(repo, 'data', 'audit', 'rebuild-regression.json'),
+      JSON.stringify({ timestamp: new Date().toISOString(), regressions: [reg('recovered', 3), reg('still-low', 3)] }));
+    const rev = (id, n) => Array.from({ length: n }, () => ({ showId: id }));
+    fs.writeFileSync(path.join(repo, 'data', 'reviews.json'),
+      JSON.stringify({ reviews: [...rev('recovered', 3), ...rev('still-low', 1)] }));
+    const digest = gatherDigest({ repo, skipFetch: true });
+    assert.equal(digest.stuck.reviewRegressions.length, 1);
+    assert.match(digest.stuck.reviewRegressions[0], /^still-low:/);
+  } finally {
+    fs.rmSync(repo, { recursive: true, force: true });
+  }
+});

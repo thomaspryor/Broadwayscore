@@ -333,8 +333,11 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
     if (fs.existsSync(regPath)) {
       const reg = JSON.parse(fs.readFileSync(regPath, 'utf8'));
       const fresh = reg.timestamp && (Date.now() - new Date(reg.timestamp).getTime()) < hours * 3600000;
-      if (fresh && Array.isArray(reg.regressions) && reg.regressions.length) {
-        digest.stuck.reviewRegressions = reg.regressions.slice(0, 5).map(r => `${r.showId}: ${r.oldCount}→${r.newCount} reviews (${r.reason})`);
+      // The file is only rewritten when a rebuild finds a regression, never cleared, so a
+      // drop that has since recovered (BRO-6432) must not keep the row warn for 24h.
+      const live = fresh && Array.isArray(reg.regressions) ? reg.regressions.filter(r => !regressionRecovered(repo, r)) : [];
+      if (live.length) {
+        digest.stuck.reviewRegressions = live.slice(0, 5).map(r => `${r.showId}: ${r.oldCount}→${r.newCount} reviews (${r.reason})`);
       }
     }
   } catch (err) {
@@ -342,6 +345,16 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
   }
 
   return digest;
+}
+
+// True when reviews.json now holds at least the pre-drop count for the show.
+// Any read problem returns false so an unreadable file keeps the signal.
+function regressionRecovered(repo, r) {
+  try {
+    const all = JSON.parse(fs.readFileSync(path.join(repo, 'data', 'reviews.json'), 'utf8')).reviews;
+    if (!Array.isArray(all) || !r || !r.showId || !(r.oldCount > 0)) return false;
+    return all.filter(x => x.showId === r.showId).length >= r.oldCount;
+  } catch { return false; }
 }
 
 // ── Render (HTML block for the morning email) ───────────────────────────────
