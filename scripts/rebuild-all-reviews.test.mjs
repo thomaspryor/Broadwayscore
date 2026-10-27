@@ -4,6 +4,7 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 
 // BRO-925 — per-file exclusion logging (silent failure pattern).
 //
@@ -222,4 +223,86 @@ test('BRO-5805 wiring: wrong-production and film/TV CV promotions are gated on p
   // Cast overlap shows which show a text is about, not that it is a review: the not-a-review branch stays ungated.
   assert.ok(/cv\.wrongArticle === true && cv\.wrongProduction === true && !ensembleSaysReview && d\.wrongShow !== true/.test(src), 'not-a-review promotion ungated');
   assert.ok(/cv\.isFilmTv === true && !ensembleSaysReview && !ppOwnShowEvidence && d\.wrongShow !== true/.test(src), 'film/TV promotion');
+});
+
+// BRO-5428: measure calls, not elapsed time, so a slow CI host cannot make the
+// performance regression flaky. Each subprocess loads the real selector with
+// the CLI/env configuration used by the poller or an explicit diagnostic run.
+function excerptWorkload({ verbose = false, enforce = false } = {}) {
+  const child = spawnSync(process.execPath, ['-e', `
+    if (${verbose}) process.argv.push('--verbose');
+    const validation = require('./scripts/lib/excerpt-validation');
+    const guards = require('./scripts/lib/pull-quote-guards');
+    let crossChecks = 0;
+    let hedgeChecks = 0;
+    const crossCheck = validation.excerptMentionsWrongShow;
+    validation.excerptMentionsWrongShow = (...args) => {
+      crossChecks++;
+      return crossCheck(...args);
+    };
+    const hedgeCheck = guards.shouldRejectAsReservation;
+    guards.shouldRejectAsReservation = (...args) => {
+      hedgeChecks++;
+      return hedgeCheck(...args);
+    };
+    const logs = [];
+    console.log = (...args) => logs.push(args.join(' '));
+    const { selectBestExcerpt } = require('./scripts/rebuild-all-reviews');
+    const foreign = [...validation.getMatchableTitles().values()].find(
+      ({ title, regex }) => title.length < 40 && regex.test(title)
+    ).title;
+    const crossQuote = 'An inspired revival of ' + foreign + ' makes this a glorious evening at the theatre.';
+    const hedgeQuote = 'But the second act loses momentum despite the wonderful singing.';
+    const verdictQuote = 'The magnificent cast turns this intimate drama into a thrilling evening of theatre.';
+    const common = { showId: 'profiling-test-show', llmScore: { score: 90 } };
+    const selected = [];
+    for (let i = 0; i < 25; i++) {
+      selected.push([
+        selectBestExcerpt({ ...common, showScoreExcerpt: crossQuote }, 'Profiling Test Show'),
+        selectBestExcerpt({ ...common, showScoreExcerpt: hedgeQuote, bwwExcerpt: verdictQuote }, 'Profiling Test Show'),
+        selectBestExcerpt({ ...common, showScoreExcerpt: hedgeQuote }, 'Profiling Test Show'),
+        selectBestExcerpt({ ...common, llmScore: { score: 60 }, showScoreExcerpt: hedgeQuote }, 'Profiling Test Show'),
+        selectBestExcerpt({ ...common, pullQuote: verdictQuote }, 'Profiling Test Show'),
+        selectBestExcerpt({}, 'Profiling Test Show'),
+      ]);
+    }
+    process.stdout.write(JSON.stringify({ selected, crossQuote, hedgeQuote, verdictQuote, crossChecks, hedgeChecks, logs }));
+  `], {
+    cwd: path.resolve(path.dirname(new URL(import.meta.url).pathname), '..'),
+    env: { ...process.env, DRY_RUN_CROSS_SHOW: enforce ? 'false' : 'true' },
+    encoding: 'utf8',
+    timeout: 30000,
+  });
+  assert.equal(child.status, 0, child.stderr || child.error?.message);
+  return JSON.parse(child.stdout);
+}
+
+test('BRO-5428: default fast-path processing skips diagnostic cross-show scans and per-review guard logs', () => {
+  const result = excerptWorkload();
+  assert.equal(result.crossChecks, 0, 'dry-run title scans must not run on the default rebuild path');
+  assert.ok(result.hedgeChecks > 0, 'hedge deferrals still protect quote selection');
+  assert.deepEqual(result.logs, [], 'default processing must not log each hedge or dry-run candidate');
+  for (const quotes of result.selected) {
+    assert.deepEqual(quotes, [result.crossQuote, result.verdictQuote, result.hedgeQuote, result.hedgeQuote, result.verdictQuote, null]);
+  }
+});
+
+test('BRO-5428: --verbose restores cross-show diagnostics and hedge logs without changing quotes', () => {
+  const normal = excerptWorkload();
+  const verbose = excerptWorkload({ verbose: true });
+  assert.deepEqual(verbose.selected, normal.selected);
+  assert.ok(verbose.crossChecks > 0);
+  assert.equal(verbose.hedgeChecks, normal.hedgeChecks);
+  assert.ok(verbose.logs.some(line => line.includes('DRY-RUN [cross-show]')));
+  assert.ok(verbose.logs.some(line => line.includes('[hedge-guard]')));
+});
+
+test('BRO-5428: DRY_RUN_CROSS_SHOW=false still enforces the guard without --verbose', () => {
+  const result = excerptWorkload({ enforce: true });
+  assert.ok(result.crossChecks > 0);
+  assert.ok(result.logs.some(line => line.includes('SUPPRESSED [cross-show]')));
+  assert.ok(result.logs.every(line => !line.includes('[hedge-guard]') && !line.includes('DRY-RUN')));
+  for (const quotes of result.selected) {
+    assert.deepEqual(quotes, [null, result.verdictQuote, result.hedgeQuote, result.hedgeQuote, result.verdictQuote, null]);
+  }
 });

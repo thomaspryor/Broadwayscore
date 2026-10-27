@@ -144,6 +144,7 @@ Usage:
   node scripts/rebuild-all-reviews.js                 rebuild + write reviews.json
   node scripts/rebuild-all-reviews.js --ignore-pause   bypass an opening-night rebuild-pause tombstone
   node scripts/rebuild-all-reviews.js --force-write    suppress the >2% review-count regression guard
+  node scripts/rebuild-all-reviews.js --verbose        run cross-show dry-run diagnostics and log hedge deferrals
   node scripts/rebuild-all-reviews.js --help, -h       print this usage and exit — no reads/writes
 
 WARNING: this script has no main() wrapper — the whole rebuild pipeline (shows.json
@@ -687,8 +688,11 @@ function extractExcerptFromFullText(fullText, showTitle) {
  *           nycTheatreExcerpt > stagedoorExcerpt > dtliExcerpt > theatreReviewsExcerpt >
  *           westEndTheatreExcerpt > lboRoundupExcerpt > fullText extract > existing pullQuote
  */
-// Cross-show validation: dry-run by default (log but don't suppress)
+// Cross-show enforcement is opt-in. Its diagnostic-only title scan is expensive
+// across the full corpus, so default rebuilds (including fast_path) skip it.
+// --verbose restores the dry-run scan and per-candidate hedge diagnostics.
 const CROSS_SHOW_DRY_RUN = process.env.DRY_RUN_CROSS_SHOW !== 'false';
+const VERBOSE_EXCERPTS = process.argv.includes('--verbose');
 
 // isGenericQuote, trimToCompleteSentence — imported from ./lib/rebuild-helpers
 
@@ -946,8 +950,10 @@ function selectBestExcerpt(data, showTitle) {
     // it here would silently downgrade 1-in-5 valid LLM excerpts to lower-quality sources.
 
     // Layer 3: Cross-show validation
-    const crossCheck = excerptMentionsWrongShow(excerpt, showId, showTitle);
-    if (crossCheck.isWrongShow) {
+    const crossCheck = (!CROSS_SHOW_DRY_RUN || VERBOSE_EXCERPTS)
+      ? excerptMentionsWrongShow(excerpt, showId, showTitle)
+      : null;
+    if (crossCheck?.isWrongShow) {
       const msg = `[cross-show] ${showId}: "${source}" mentions "${crossCheck.mentionedTitle}" (${crossCheck.mentionedShowId})`;
       if (CROSS_SHOW_DRY_RUN) {
         // Log only — don't suppress
@@ -985,7 +991,7 @@ function selectBestExcerpt(data, showTitle) {
     if (shouldRejectAsReservation(excerpt, reviewScore)) {
       if (!stats.hedgeExcerptSuppressed) stats.hedgeExcerptSuppressed = [];
       stats.hedgeExcerptSuppressed.push({ showId, source, excerpt: excerpt.slice(0, 80) });
-      console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" deferred as reservation (score ${reviewScore})`);
+      if (VERBOSE_EXCERPTS) console.log(`  🛡️  [hedge-guard] ${showId}: "${source}" deferred as reservation (score ${reviewScore})`);
       deferred.push({ rank, excerpt: hardCutExcerpt(excerpt), reason: pendingDeferral || 'hedge', source });
       return null;
     }
