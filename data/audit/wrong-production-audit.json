@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T19:35:17.961Z",
+  "timestamp": "2026-10-27T19:57:03.023Z",
   "stats": {
-    "totalReviews": 63794,
-    "alreadyFlagged": 21750,
-    "dateGuardCatches": 238,
-    "directorMismatch": 2360,
+    "totalReviews": 63935,
+    "alreadyFlagged": 21752,
+    "dateGuardCatches": 237,
+    "directorMismatch": 2362,
     "tvFilmSignals": 1793,
     "londonSignals": 3057,
     "offBroadwaySignals": 567,
     "yearMismatch": 217,
-    "noPublishDate": 5713
+    "noPublishDate": 5852
   },
   "findings": [
     {
@@ -22229,6 +22229,20 @@
       ]
     },
     {
+      "showId": "illinoise-off-broadway-2024",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
       "showId": "im-almost-there-off-broadway-2026",
       "file": "exeunt-magazine--unknown.json",
       "score": 85,
@@ -25064,6 +25078,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "job-off-broadway-2024",
+      "file": "theater-scene--victor-gluck.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theaterscene.net/plays/offbway-plays/job/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael herwitz\" from job-2024"
         }
       ]
     },
@@ -45144,7 +45172,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2026-10-13",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-cherry-orchard-review/",
       "findings": [
@@ -79622,20 +79650,6 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
-      "file": "guardian--arifa-akbar.json",
-      "score": 63,
-      "publishDate": "2026-07-08",
-      "url": "https://www.theguardian.com/stage/2026/jul/08/jesus-christ-superstar-review-sam-ryder",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "i-paper--fiona-mountford.json",
       "score": 88,
       "publishDate": "2026-07-08",
@@ -89694,7 +89708,7 @@
     {
       "showId": "rent-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2026-10-08",
       "url": "https://www.timeout.com/london/news/rent-review-tom-stoppard-theatre-gaten-matarazzo-100826",
       "findings": [
@@ -95439,7 +95453,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2026-10-14",
       "url": "https://www.cityam.com/the-cherry-orchard-noel-coward-theatre-kristin-scott-thomas-is-luminous/",
       "findings": [
@@ -95467,7 +95481,7 @@
     {
       "showId": "the-cherry-orchard-west-end-2026",
       "file": "theatreandtonic--annie.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-10-16",
       "url": "https://theatreandtonic.co.uk/blog/the-cherry-orchard-starring-kristin-scott-thomas-review",
       "findings": [
