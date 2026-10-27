@@ -19,15 +19,13 @@ import {
 } from '../../src/lib/ads';
 import { middleware } from '../../src/middleware';
 
-// The happy path with IDs filled in (they're '' while the code ships dark).
+// The happy path: every gate open.
 const ON = {
   variant: 'ads',
   authLoading: false,
   isAuthenticated: false,
   automated: false,
   region: 'ads-ok',
-  client: 'ca-pub-0000000000000000',
-  slotId: '1234567890',
 };
 
 test('happy path renders', () => {
@@ -59,17 +57,6 @@ test("region 'no-ads', missing or garbage means no ads", () => {
   assert.equal(decideAdRender({ ...ON, region: 'no-ads' }), false);
   assert.equal(decideAdRender({ ...ON, region: undefined }), false);
   assert.equal(decideAdRender({ ...ON, region: 'ADS-OK' }), false);
-});
-
-test('ships dark: empty publisher id or slot id means no ads for everyone', () => {
-  assert.equal(decideAdRender({ ...ON, client: '' }), false);
-  assert.equal(decideAdRender({ ...ON, slotId: '' }), false);
-  // The committed constants: with today's empty IDs the real defaults are off.
-  const { client: _c, ...noClient } = ON;
-  assert.equal(
-    decideAdRender({ ...noClient, slotId: AD_SLOTS.showInline.id }),
-    Boolean(ADSENSE_CLIENT && AD_SLOTS.showInline.id),
-  );
 });
 
 test('slot config is a fixed 300x250 unit', () => {
@@ -209,9 +196,8 @@ test('middleware: no write when the cookie already matches, or off /show/', () =
   assert.equal(middleware(req('https://broadwayscorecard.com/critics/zz-none', { 'x-vercel-ip-country': 'US' })), undefined);
 });
 
-test('launch state: publisher id set, slot id still empty, so ads stay dark', () => {
+test('committed AdSense ids', () => {
   assert.equal(ADSENSE_CLIENT, 'ca-pub-5443308376628971');
   assert.equal(ADS_TXT_LINE, 'google.com, pub-5443308376628971, DIRECT, f08c47fec0942fa0');
-  // Remove this assertion in B-T2 when the approved unit's slot id is committed.
-  assert.equal(AD_SLOTS.showInline.id, '');
+  assert.equal(AD_SLOTS.showInline.id, '3592344699');
 });

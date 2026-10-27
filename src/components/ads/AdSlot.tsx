@@ -51,7 +51,6 @@ export default function AdSlot({ slot }: { slot: AdSlotName }) {
     isAuthenticated,
     automated: env.automated,
     region: env.region,
-    slotId: config.id,
   };
   const exposable = decideAdRender({ ...gates, variant: 'ads' });
   const variant = usePostHogFlag(ADS_FLAG, exposable);

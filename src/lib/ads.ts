@@ -2,11 +2,9 @@
  * Google AdSense: slot config, script loader and the pure render decision
  * (BRO-5893, sprint-plan-adsense.md B-T2/B-T9).
  *
- * Ships dark: every slot id is '' until the owner's AdSense account is
- * approved and the unit exists, and the PostHog `ads` flag sits at 0% `ads`.
- * With an empty slot id, decideAdRender() is false for everyone, so no
- * visitor sees a box or loads the Google script. ADSENSE_CLIENT is set so
- * ads.txt and the verification meta tag can serve during Google's review.
+ * Ships dark: the PostHog `ads` flag sits at 0% `ads` / 100% `no-ads`, so
+ * decideAdRender() is false for everyone and no visitor sees a box or loads
+ * the Google script until the owner starts the experiment.
  *
  * Kept free of React and `@/` imports: src/middleware.ts (edge) and the
  * unit tests import it directly.
@@ -24,7 +22,7 @@ export const ADS_FLAG = 'ads';
 export const AD_SLOTS = {
   // Fixed 300×250 display unit `bwsc-show-inline` (not responsive: a
   // responsive unit can outgrow its box and get clipped, which breaks policy).
-  showInline: { id: '', width: 300, height: 250 },
+  showInline: { id: '3592344699', width: 300, height: 250 },
 } as const;
 
 export type AdSlotName = keyof typeof AD_SLOTS;
@@ -115,10 +113,6 @@ export interface AdRenderInput {
   isAuthenticated: boolean;
   automated: boolean;
   region: AdRegion | string | undefined;
-  /** Defaults to ADSENSE_CLIENT; injectable for tests. */
-  client?: string;
-  /** The slot's `data-ad-slot` id. */
-  slotId: string;
 }
 
 /**
@@ -132,11 +126,7 @@ export function decideAdRender({
   isAuthenticated,
   automated,
   region,
-  client = ADSENSE_CLIENT,
-  slotId,
 }: AdRenderInput): boolean {
-  // TODO(BRO-5893): remove once the slot id is committed
-  if (!client || !slotId) return false;
   return (
     variant === 'ads' &&
     !authLoading &&
