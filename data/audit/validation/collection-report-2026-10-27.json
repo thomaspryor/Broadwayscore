@@ -1,64 +1,66 @@
 {
-  "runDate": "2026-10-27T07:46:43.509Z",
+  "runDate": "2026-10-27T10:21:16.479Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "madwomen-of-the-west-off-broadway-2023,iluminate-off-broadway-2023",
+    "showFilter": "bettingers-luggage-off-broadway-2023,dracula-a-comedy-of-terrors-off-broadway-2023,anne-frank-a-musical-off-broadway-2023,arms-and-the-man-off-broadway-2023,translations-off-broadway-2023,daphne-off-broadway-2023",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 21,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "85.7%"
+    "successRate": "95.5%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 1,
     "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 10,
-    "tier1Success": 8,
+    "tier1Attempts": 19,
+    "tier1Success": 18,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 3,
-    "tier2Success": 1,
+    "tier2Attempts": 2,
+    "tier2Success": 0,
     "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
     "tier4Attempts": 1,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 1,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 12,
-    "failed": 2,
+    "processed": 21,
+    "failed": 1,
     "shows": [
-      "iluminate-off-broadway-2023",
-      "madwomen-of-the-west-off-broadway-2023"
+      "arms-and-the-man-off-broadway-2023",
+      "bettingers-luggage-off-broadway-2023",
+      "daphne-off-broadway-2023",
+      "dracula-a-comedy-of-terrors-off-broadway-2023"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,79 +69,95 @@
     }
   },
   "processed": [
-    "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
-    "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
-    "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json",
-    "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
-    "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
-    "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
-    "iluminate-off-broadway-2023/timeout--raven-snook.json",
-    "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
-    "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
-    "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
-    "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json",
-    "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
+    "dracula-a-comedy-of-terrors-off-broadway-2023/theatermania--christian-lewis.json",
+    "arms-and-the-man-off-broadway-2023/theatermania--pete-hempstead.json",
+    "arms-and-the-man-off-broadway-2023/front-row-center--cameron-hughes.json",
+    "arms-and-the-man-off-broadway-2023/northjerseycom--unknown.json",
+    "arms-and-the-man-off-broadway-2023/off-off-online--charles-wright.json",
+    "arms-and-the-man-off-broadway-2023/theater-life--samuel-l-leiter.json",
+    "arms-and-the-man-off-broadway-2023/theater-pizzazz--walter-murphy.json",
+    "daphne-off-broadway-2023/nytg--gillian-russo.json",
+    "bettingers-luggage-off-broadway-2023/theater-scene--joel-benjamin.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/nytg--kyle-turner.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/nytimes--elisabeth-vincentelli.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/timeout--raven-snook.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/dc-theater-arts--deb-miller.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/front-row-center--margret-echeverria.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/nysr--melissa-rose-bernardo.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/nysr--sandy-macdonald.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/off-off-online--stanford-friedman.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/stagebuddy--elyse-trevers.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/theater-pizzazz--brian-scott-lipton.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/theater-scene--darryl-reilly.json",
+    "dracula-a-comedy-of-terrors-off-broadway-2023/theater-scene--victor-gluck.json"
   ],
   "failed": [
-    "iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json",
-    "iluminate-off-broadway-2023/zeal-nyc--mercedes-vizcaino.json"
+    "dracula-a-comedy-of-terrors-off-broadway-2023/theatres-leiter-side--samuel-l-leiter.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
-      "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
-      "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json",
-      "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
-      "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
-      "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
-      "iluminate-off-broadway-2023/timeout--raven-snook.json",
-      "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
-      "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json",
-      "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theatermania--christian-lewis.json",
+      "arms-and-the-man-off-broadway-2023/theatermania--pete-hempstead.json",
+      "arms-and-the-man-off-broadway-2023/front-row-center--cameron-hughes.json",
+      "arms-and-the-man-off-broadway-2023/northjerseycom--unknown.json",
+      "arms-and-the-man-off-broadway-2023/off-off-online--charles-wright.json",
+      "arms-and-the-man-off-broadway-2023/theater-life--samuel-l-leiter.json",
+      "arms-and-the-man-off-broadway-2023/theater-pizzazz--walter-murphy.json",
+      "daphne-off-broadway-2023/nytg--gillian-russo.json",
+      "bettingers-luggage-off-broadway-2023/theater-scene--joel-benjamin.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nytg--kyle-turner.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nytimes--elisabeth-vincentelli.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/timeout--raven-snook.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/dc-theater-arts--deb-miller.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/front-row-center--margret-echeverria.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nysr--melissa-rose-bernardo.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nysr--sandy-macdonald.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/off-off-online--stanford-friedman.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/stagebuddy--elyse-trevers.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-pizzazz--brian-scott-lipton.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-scene--darryl-reilly.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-scene--victor-gluck.json"
     ],
     "failed": [
-      "iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json",
-      "iluminate-off-broadway-2023/zeal-nyc--mercedes-vizcaino.json"
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theatres-leiter-side--samuel-l-leiter.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
-      "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
-      "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
-      "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
-      "iluminate-off-broadway-2023/timeout--raven-snook.json",
-      "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
-      "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
-      "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theatermania--christian-lewis.json",
+      "arms-and-the-man-off-broadway-2023/theatermania--pete-hempstead.json",
+      "arms-and-the-man-off-broadway-2023/front-row-center--cameron-hughes.json",
+      "arms-and-the-man-off-broadway-2023/northjerseycom--unknown.json",
+      "arms-and-the-man-off-broadway-2023/off-off-online--charles-wright.json",
+      "arms-and-the-man-off-broadway-2023/theater-life--samuel-l-leiter.json",
+      "daphne-off-broadway-2023/nytg--gillian-russo.json",
+      "bettingers-luggage-off-broadway-2023/theater-scene--joel-benjamin.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nytg--kyle-turner.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/timeout--raven-snook.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/dc-theater-arts--deb-miller.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/front-row-center--margret-echeverria.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nysr--melissa-rose-bernardo.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nysr--sandy-macdonald.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/off-off-online--stanford-friedman.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/stagebuddy--elyse-trevers.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-scene--darryl-reilly.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-scene--victor-gluck.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json"
+      "data/review-texts/dracula-a-comedy-of-terrors-off-broadway-2023/theatres-leiter-side--samuel-l-leiter.json"
     ],
     "archive": [
-      "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
-      "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json"
+      "arms-and-the-man-off-broadway-2023/theater-pizzazz--walter-murphy.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/nytimes--elisabeth-vincentelli.json",
+      "dracula-a-comedy-of-terrors-off-broadway-2023/theater-pizzazz--brian-scott-lipton.json"
     ]
   },
-  "failuresByOutlet": {
-    "Zeal NYC": {
-      "count": 1,
-      "domain": "zealnyc.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }

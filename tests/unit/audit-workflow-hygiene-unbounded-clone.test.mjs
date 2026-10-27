@@ -111,6 +111,32 @@ test('network rule checks sudo, until and env commands with and without a timeou
   }
 });
 
+test('message redirects cannot hide a chained git network command', () => {
+  for (const body of [
+    'echo "x" >> f && git push',
+    'printf "x" > f; git fetch origin main',
+    'echo "x" >> f || git pull',
+    'echo "x" > f | git push origin main',
+    'echo "x" >> "summary file" && git fetch origin main',
+    "printf '%s' 'x' > 'summary file' || git pull",
+    'echo "x" >> f && git clone https://x/y.git d',
+  ]) {
+    assert.equal(findUnboundedGitNetworkCommands(wf(body)).length, 1, body);
+  }
+  assert.equal(findUnboundedGitClones(wf('echo "x" >> f && git clone https://x/y.git d')).length, 1);
+});
+
+test('redirected messages with one file target remain exempt', () => {
+  for (const body of [
+    'echo "git fetch origin && git reset --hard origin/main" >> summary',
+    'echo "git push origin main; git pull" > "summary file"',
+    "printf '%s' 'git push origin main | git pull' >> 'summary file'",
+    'echo "git fetch origin && git reset --hard origin/main" >> "$GITHUB_STEP_SUMMARY"',
+  ]) {
+    assert.deepEqual(findUnboundedGitNetworkCommands(wf(body)), [], body);
+  }
+});
+
 test('quoted values cannot supply a timeout for a git network command', () => {
   for (const body of [
     'env NOTE="timeout 60" git fetch origin main',

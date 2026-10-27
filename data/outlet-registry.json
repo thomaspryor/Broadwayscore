@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-27T05:30:58.298Z",
+    "lastUpdated": "2026-10-27T10:31:52.803Z",
     "version": "2.1.0",
     "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
   },
@@ -13647,6 +13647,14 @@
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-10-27T05:30:58.298Z",
       "displayNameReviewed": true
+    },
+    "travel-arts-journal": {
+      "displayName": "Travel Arts Journal",
+      "tier": 3,
+      "aliases": [
+        "travel-arts-journal"
+      ],
+      "domain": "travelartsjournal.com"
     }
   },
   "_aliasIndex": {

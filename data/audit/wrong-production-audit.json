@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T09:41:43.683Z",
+  "timestamp": "2026-10-27T10:34:17.308Z",
   "stats": {
-    "totalReviews": 62936,
-    "alreadyFlagged": 21622,
+    "totalReviews": 62988,
+    "alreadyFlagged": 21624,
     "dateGuardCatches": 224,
     "directorMismatch": 2344,
-    "tvFilmSignals": 1781,
+    "tvFilmSignals": 1782,
     "londonSignals": 3037,
-    "offBroadwaySignals": 558,
+    "offBroadwaySignals": 559,
     "yearMismatch": 217,
-    "noPublishDate": 5564
+    "noPublishDate": 5570
   },
   "findings": [
     {
@@ -596,6 +596,7 @@
     {
       "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
       "file": "piedmontexedra--leslie-katz.json",
+      "score": 74,
       "publishDate": "2025-06-06",
       "url": "https://piedmontexedra.com/2025/06/review-neil-diamond-fans-get-on-board-for-a-beautiful-noise",
       "findings": [
@@ -2247,6 +2248,7 @@
     {
       "showId": "aint-too-proud-tour-2024",
       "file": "dc-theater-arts--isabella-artino.json",
+      "score": 91,
       "publishDate": "2025-06-18",
       "url": "https://dctheaterarts.org/2025/06/18/aint-too-proud-on-tour-at-the-national-is-a-jukebox-musical-for-the-ages/",
       "findings": [
@@ -2265,6 +2267,7 @@
     {
       "showId": "aint-too-proud-tour-2024",
       "file": "feature-presentation--patrick-j-regal.json",
+      "score": 74,
       "publishDate": "2025-06-18",
       "url": "https://featurepresentationvideo.substack.com/p/tour-review-aint-too-proud-the-life",
       "findings": [
@@ -2278,6 +2281,7 @@
     {
       "showId": "aint-too-proud-tour-2024",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 88,
       "publishDate": "2025-06-18",
       "url": "https://mdtheatreguide.com/2025/06/theatre-review-aint-too-proud-the-life-and-times-of-the-temptations-at-the-national-theatre/",
       "findings": [
@@ -5490,6 +5494,7 @@
     {
       "showId": "beetlejuice-tour-2022",
       "file": "syracuse-herald-journal--linda-lowen.json",
+      "score": 77,
       "publishDate": "2025-05-15",
       "url": "https://www.syracuse.com/entertainment/2025/05/darkly-snarky-and-rudely-crude-beetlejuice-the-musical-brightens-deaths-door-at-syracuses-landmark-review.html",
       "findings": [
@@ -6055,6 +6060,7 @@
     {
       "showId": "book-of-mormon-tour-2022",
       "file": "broadwayworld--erinmarie-reiter.json",
+      "score": 88,
       "publishDate": "2025-06-12",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-THE-BOOK-OF-MORMON-at-Broadway-San-Diego-20250612",
       "findings": [
@@ -11333,7 +11339,7 @@
     {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "file": "all-that-dazzles-uk--sam-waite.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "February 25th, 2026",
       "url": "https://www.allthatdazzles.co.uk/post/review-dear-england-new-wimbledon-theatre---uk-tour",
       "findings": [
@@ -13938,6 +13944,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
+        }
+      ]
+    },
+    {
+      "showId": "dracula-a-comedy-of-terrors-off-broadway-2023",
+      "file": "nytg--kyle-turner.json",
+      "score": null,
+      "publishDate": "2023-09-18",
+      "url": "https://www.newyorktheatreguide.com/reviews/dracula-a-comedy-of-terrors-off-broadway-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -25404,7 +25424,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 63,
+      "score": 58,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -25555,7 +25575,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -25574,7 +25594,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "redbuslondinium--unknown.json",
-      "score": 86,
+      "score": 87,
       "publishDate": "2026-04-09",
       "url": "https://redbuslondinium.uk/2026/04/09/review-john-proctor-is-a-villain-royal-court/",
       "findings": [
@@ -25612,7 +25632,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "standard--the-standard.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-03-27",
       "url": "https://www.standard.co.uk/culture/theatre/john-proctor-is-the-villain-royal-court-theatre-review-b1276711.html",
       "findings": [
@@ -25701,7 +25721,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "thestage--sam-marlowe.json",
-      "score": 75,
+      "score": 67,
       "publishDate": "March 27th, 2026",
       "url": "https://www.thestage.co.uk/reviews/john-proctor-is-the-villain-review-jerwood-theatre-downstairs-royal-court-london",
       "findings": [
@@ -25748,7 +25768,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 85,
+      "score": 82,
       "publishDate": "March 26th, 2026",
       "url": "https://www.timeout.com/london/news/review-john-proctor-is-the-villain-at-the-royal-court-theatre-in-london-032626",
       "findings": [
@@ -25762,7 +25782,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-03-27",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/john-proctor-is-the-villain-review-arthur-miller-for-the-metoo-era-kx3bcrjbl",
       "findings": [
@@ -27332,6 +27352,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "broadwayworld--brian-bochicchio.json",
+      "score": 78,
       "publishDate": "2025-06-18",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-LES-MISERABLES-AT-THE-KENNEDY-CENTER-at-The-Kennedy-Center-20250618",
       "findings": [
@@ -27411,6 +27432,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "dc-theater-arts--isabella-artino.json",
+      "score": 90,
       "publishDate": "2025-06-14",
       "url": "https://dctheaterarts.org/2025/06/14/stellar-les-miserables-on-tour-at-kennedy-center-is-still-revolutionary/",
       "findings": [
@@ -27458,6 +27480,7 @@
     {
       "showId": "les-miserables-tour-2022",
       "file": "maryland-theatre-guide--unknown.json",
+      "score": 87,
       "publishDate": "2025-06-17",
       "url": "https://mdtheatreguide.com/2025/06/theatre-review-les-miserables-at-the-kennedy-center-2/",
       "findings": [
@@ -30640,6 +30663,7 @@
     {
       "showId": "moulin-rouge-tour-2022",
       "file": "broadwayworld--joni-lorraine.json",
+      "score": 90,
       "publishDate": "2025-05-22",
       "url": "https://www.broadwayworld.com/austin/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Bass-Concert-Hall-20250522",
       "findings": [
@@ -35185,6 +35209,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "localnewsmatters--leslie-katz-bay-city-news.json",
+      "score": 76,
       "publishDate": "2025-05-23",
       "url": "https://localnewsmatters.org/2025/05/23/review-parade-musically-details-an-american-miscarriage-of-justice/",
       "findings": [
@@ -35240,6 +35265,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "san-francisco-chronicle--zack-ruskin.json",
+      "score": 78,
       "publishDate": "2025-05-23",
       "url": "https://www.sfchronicle.com/entertainment/article/parade-broadwaysf-review-20290935.php",
       "findings": [
@@ -35300,6 +35326,7 @@
     {
       "showId": "parade-tour-2025",
       "file": "weliveentertainment--kevin-taft.json",
+      "score": 79,
       "publishDate": "2025-06-19",
       "url": "https://weliveentertainment.com/we-live-entertainment/theater-review-michael-ardens-parade-haunting-timely-spectacle/",
       "findings": [
@@ -39660,6 +39687,7 @@
     {
       "showId": "shucked-tour-2024",
       "file": "wtlgomag--unknown.json",
+      "score": 84,
       "publishDate": "2025-06-12",
       "url": "https://wtlgomag.com/2025/06/12/review-shucked-is-broadways-corniest-comedy-and-thats-a-good-thing/",
       "findings": [
@@ -70276,7 +70304,7 @@
     {
       "showId": "dracula-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 85,
+      "score": 89,
       "publishDate": "2025-03-18",
       "url": "https://www.broadwayworld.com/westend/article/Review-DRACULA-A-COMEDY-OF-TERRORS-Menier-Chocolate-Factory-20250318",
       "findings": [
@@ -90069,7 +90097,7 @@
     {
       "showId": "sexual-misconduct-of-the-middle-classes-off-broadway-2026",
       "file": "nysr--melissa-rose-bernardo.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2025-05-08",
       "url": "https://nystagereview.com/2025/05/08/sexual-misconduct-of-the-middle-classes-lets-hear-it-from-the-boy/",
       "findings": [
@@ -96680,6 +96708,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-gardens-of-anuncia-off-broadway-2023",
+      "file": "theater-life--david-sheward.json",
+      "score": 56,
+      "publishDate": "2023-12-23",
+      "url": "https://theaterlife.com/the-gardens-of-anuncia-manahatta/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -104179,7 +104221,7 @@
     {
       "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
       "file": "nysr--roma-torre.json",
-      "score": 88,
+      "score": 77,
       "publishDate": "March 15th, 2026",
       "url": "https://nystagereview.com/2026/03/15/ulster-american-irish-reps-scalding-satire-pulls-no-punches/",
       "findings": [

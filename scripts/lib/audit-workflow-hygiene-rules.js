@@ -1410,9 +1410,10 @@ function findUnboundedGitCommands(raw, pattern) {
     const body = text.replace(/^\s*(?:-\s+)?run:\s*/, '').replace(/\s+#.*$/, '').trim();
     // Quoted message text can contain shell separators without executing them.
     // Command substitutions inside messages still execute and need a cap.
+    // A redirect may name one file; shell operators after it must still be scanned.
     if (!/\$\(|(?<!\\)`/.test(body) && (
       /^(?:echo|printf)\b[^;&|]*$/.test(body) ||
-      /^(?:echo|printf)\s+(?:"(?:\\.|[^"\\])*"|'[^']*')(?:\s+(?:"(?:\\.|[^"\\])*"|'[^']*'))*(?:\s*>>?\s*.*)?$/.test(body)
+      /^(?:echo|printf)\s+(?:"(?:\\.|[^"\\])*"|'[^']*')(?:\s+(?:"(?:\\.|[^"\\])*"|'[^']*'))*(?:\s*>>?\s*(?:"(?:\\.|[^"\\])*"|'[^']*'|[^\s"';&|<>]+))?\s*$/.test(body)
     )) return false;
     if (UNBOUNDED_CLONE_OK_RE.test(text) || UNBOUNDED_CLONE_OK_RE.test(lines[lineNum - 2] || '')) return false;
     return [...body.matchAll(pattern)].some((match) => {
