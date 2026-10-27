@@ -75,11 +75,13 @@ function isPlausiblePersonName(name) {
 // blogger ("Ross") or a co-author byline ("Sara Holdren and Jesse David Fox")
 // would put a real name up for replacement.
 const OUTLET_THEN_PAREN_NAME_RE = /^[^()]*\b(Post|Times|News|Magazine|Journal|Review|Tribune|Herald|Guardian|Telegraph|Daily|Weekly)\s\(([A-Z][a-z]+(?:\s[A-Z][\w.'’-]+)+)\)$/;
+// CMS account handles the page chrome credits instead of the critic (BRO-5317):
+// "Sam - Admin", "Vivantadmin", "Ri-admin", "OperaWireAdmin2".
+const CMS_ADMIN_HANDLE_RE = /admin\d*$/i;
 const JUNK_CRITIC_NAME_PATTERNS = [
   /^read more articles by\s+\S/i,           // Exeunt author-box link text
   /^view (more posts|my complete)\b/i,      // WordPress / Blogger profile links
-  /^\S+\s+-\s+admin$/i,                     // "Sam - Admin"
-  /admin\d*$/i,                             // "LALadmin", "OperaWireAdmin2"
+  CMS_ADMIN_HANDLE_RE,                      // "Sam - Admin", "LALadmin", "OperaWireAdmin2"
   /^[a-z]+\d+$/,                            // account handles: "nick730", "helena6"
   /^guest author$/i,
   /^(national theatre|york magazine|london theatre direct)$/i,
@@ -414,6 +416,7 @@ module.exports = {
   isJunkCriticName,
   nameFromJunkCriticName,
   JUNK_CRITIC_NAME_PATTERNS,
+  CMS_ADMIN_HANDLE_RE,
   pickRecoveredName,
   recoverBylineForEntry,
   resolveCriticName,

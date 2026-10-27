@@ -3204,6 +3204,8 @@ function isValidAuthorName(name) {
                      'arts editor', 'culture editor', 'guest writer', 'special to',
                      'tribune news', 'news service', 'wire service'];
   if (skipNames.some(s => trimmed.toLowerCase().includes(s))) return false;
+  // A CMS account ("Sam - Admin") is the site, not the critic (BRO-5317).
+  if (require('./byline-recovery').CMS_ADMIN_HANDLE_RE.test(trimmed)) return false;
   return true;
 }
 
