@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T13:16:44.828Z",
+  "timestamp": "2026-10-27T14:05:19.122Z",
   "stats": {
-    "totalReviews": 63146,
-    "alreadyFlagged": 21628,
+    "totalReviews": 63472,
+    "alreadyFlagged": 21668,
     "dateGuardCatches": 224,
-    "directorMismatch": 2352,
-    "tvFilmSignals": 1784,
-    "londonSignals": 3039,
-    "offBroadwaySignals": 561,
-    "yearMismatch": 217,
-    "noPublishDate": 5698
+    "directorMismatch": 2356,
+    "tvFilmSignals": 1788,
+    "londonSignals": 3047,
+    "offBroadwaySignals": 563,
+    "yearMismatch": 218,
+    "noPublishDate": 5717
   },
   "findings": [
     {
@@ -11720,20 +11720,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
-        }
-      ]
-    },
-    {
-      "showId": "death-let-me-do-my-show-off-broadway-2023",
-      "file": "theater-scene--joel-benjamin.json",
-      "score": null,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/plays/offbway-plays/death-let-me-do-my-show/joel-benjamin/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -29857,6 +29843,19 @@
       ]
     },
     {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "publishDate": "2026-10-26",
+      "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "merrily-we-roll-along-2023",
       "file": "nypost--johnny-oleksinski.json",
       "score": 97,
@@ -30316,6 +30315,19 @@
       "score": 97,
       "publishDate": "2017-05-06T15:07:02",
       "url": "https://theaterlife.com/miss-saigon/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from miss-saigon-1991"
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-west-end-2014",
+      "file": "the-jewish-chronicle--john-nathan.json",
+      "publishDate": "2014-06-02",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -35759,6 +35771,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"amazon prime\""
+        }
+      ]
+    },
+    {
+      "showId": "passion-play-west-end-2013",
+      "file": "guardian--sheldon-green.json",
+      "publishDate": "2013-05-20",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -44427,15 +44452,15 @@
       ]
     },
     {
-      "showId": "the-bodyguard-west-end-2016",
-      "file": "loureviews--louise-penn.json",
-      "publishDate": "2026-02-17",
-      "url": "https://loureviews.blog/2026/02/17/musical-review-the-bodyguard-at-new-wimbledon-theatre/",
+      "showId": "the-bodyguard-west-end-2012",
+      "file": "londontheatre1--unknown.json",
+      "publishDate": null,
+      "url": "https://www.londontheatre1.com/shows/the-bodyguard-at-new-victoria-theatre-woking/",
       "findings": [
         {
-          "type": "DIRECTOR_MISMATCH",
+          "type": "YEAR_MISMATCH",
           "severity": "HIGH",
-          "detail": "Mentions director \"thea sharrock\" from the-bodyguard-west-end-2012"
+          "detail": "Mentions year 2026 (4x) more than 2012 (1x). 2026 matches production: the-bodyguard-tour-2026"
         }
       ]
     },
@@ -45857,6 +45882,19 @@
       ]
     },
     {
+      "showId": "the-commitments-west-end-2013",
+      "file": "daily-mail--unknown.json",
+      "publishDate": "2013-10-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "the-cottage-2023",
       "file": "queerty--matthew-wexler.json",
       "score": 60,
@@ -46510,6 +46548,32 @@
       "score": 66,
       "publishDate": "2016-10-24",
       "url": "https://dctheatrescene.com/2016/10/24/front-page-review-nathan-lane-leads-star-newspaper-comedy-revival/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-full-monty-west-end-2014",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2014-02-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-full-monty-west-end-2014",
+      "file": "metro-uk--robert-shore.json",
+      "publishDate": "2014-02-27",
+      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -51640,6 +51704,58 @@
       "score": 85,
       "publishDate": null,
       "url": "https://variety.com/2006/legit/reviews/the-pajama-game-5-1200518102/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-west-end-2014",
+      "file": "daily-mail--patrick-marmion.json",
+      "publishDate": "2014-05-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-west-end-2014",
+      "file": "sunday-telegraph--tim-walker.json",
+      "publishDate": "2014-05-18",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-west-end-2014",
+      "file": "telegraph--charles-spencer.json",
+      "publishDate": "2014-05-14",
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-west-end-2014",
+      "file": "timeout-london--rachel-haliburton.json",
+      "publishDate": "2014-05-14",
+      "url": null,
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -73023,6 +73139,20 @@
     },
     {
       "showId": "fun-home-2015",
+      "file": "hollywood-reporter--david-rooney.json",
+      "score": 87,
+      "publishDate": "2015-04-19",
+      "url": "http://www.hollywoodreporter.com/review/fun-home-broadway-review-790003",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "fun-home-2015",
       "file": "northjerseycom--robert-feldberg.json",
       "score": 82,
       "publishDate": "April 20th, 2015",
@@ -83915,6 +84045,19 @@
       ]
     },
     {
+      "showId": "miss-saigon-west-end-2014",
+      "file": "sunday-express--michael-arditti.json",
+      "publishDate": "2014-05-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "mj-the-musical-west-end-2024",
       "file": "guardian--anya-ryan.json",
       "score": 37,
@@ -84003,6 +84146,19 @@
       "score": 75,
       "publishDate": "July 3rd, 2024",
       "url": "https://www.whatsonstage.com/news/mnemonic-at-the-national-theatre-review-the-iceman-stunneth_1611356/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "monty-pythons-spamalot-west-end-2012",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2012-11-27",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -87121,6 +87277,32 @@
       ]
     },
     {
+      "showId": "other-desert-cities-west-end-2014",
+      "file": "daily-mail--quentin-letts.json",
+      "publishDate": "2014-03-28",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-west-end-2014",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2014-03-25",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "our-generation-west-end-2022",
       "file": "guardian--emma-john.json",
       "score": 82,
@@ -87521,6 +87703,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "passion-play-west-end-2013",
+      "file": "telegraph--evestebbing.json",
+      "publishDate": "2013-05-06",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -88613,6 +88808,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "private-lives-west-end-2013",
+      "file": "guardian--lyn-gardner.json",
+      "publishDate": "2013-07-05",
+      "url": "https://www.theguardian.com/stage/2013/jul/04/private-lives-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -91689,6 +91897,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "stephen-ward-west-end-2013",
+      "file": "sunday-telegraph--tim-walker.json",
+      "publishDate": "2013-12-22",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -95796,9 +96017,9 @@
     },
     {
       "showId": "the-curious-incident-of-the-dog-in-the-night-time-west-end-2013",
-      "file": "loureviews--louise-penn.json",
-      "publishDate": "2026-03-22",
-      "url": "https://loureviews.blog/2026/03/22/play-review-the-curious-incident-of-the-dog-in-the-night-time-at-questors/",
+      "file": "sunday-telegraph--tim-walker.json",
+      "publishDate": "2013-03-17",
+      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -99962,6 +100183,19 @@
       ]
     },
     {
+      "showId": "the-pajama-game-west-end-2014",
+      "file": "nytimes--matt-wolf.json",
+      "publishDate": "2014-05-27",
+      "url": null,
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-parisian-woman-2017",
       "file": "bobs-theater-blog--robert-sholiton.json",
       "score": 66,
@@ -102044,6 +102278,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unexpected-3rd-2026",
+      "file": "njcom--patrick-maley.json",
+      "publishDate": "2026-10-26",
+      "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
