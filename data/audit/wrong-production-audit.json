@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T02:02:52.128Z",
+  "timestamp": "2026-10-27T02:16:20.945Z",
   "stats": {
-    "totalReviews": 62729,
-    "alreadyFlagged": 21576,
-    "dateGuardCatches": 223,
-    "directorMismatch": 2337,
-    "tvFilmSignals": 1775,
-    "londonSignals": 3024,
+    "totalReviews": 62746,
+    "alreadyFlagged": 21582,
+    "dateGuardCatches": 224,
+    "directorMismatch": 2338,
+    "tvFilmSignals": 1777,
+    "londonSignals": 3025,
     "offBroadwaySignals": 553,
     "yearMismatch": 215,
-    "noPublishDate": 5556
+    "noPublishDate": 5559
   },
   "findings": [
     {
@@ -16410,6 +16410,19 @@
       ]
     },
     {
+      "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
+      "file": "times-square-chronicles--suzanne-bowling.json",
+      "publishDate": "2024-09-20",
+      "url": "https://t2conline.com/forbidden-broadway-merrily-we-stole-a-song-and-a-laugh-or-two/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "foxfinder-west-end-2018",
       "file": "london-box-office--hugh-wooldridge.json",
       "score": 35,
@@ -16828,6 +16841,20 @@
       "score": 78,
       "publishDate": "2026-08-09",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/game-of-thrones-the-mad-king-rsc/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "game-of-thrones-the-mad-king-regional-2026",
+      "file": "theargus--pa-news-agency.json",
+      "score": 78,
+      "publishDate": "2026-08-10",
+      "url": "https://www.theargus.co.uk/news/national/26449545.game-thrones-mad-king-reviews-hail-titanic-display-theatre-magic/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -27919,6 +27946,20 @@
     },
     {
       "showId": "liberation-off-broadway-2025",
+      "file": "theater-life--david-sheward.json",
+      "score": 87,
+      "publishDate": "2025-02-22",
+      "url": "https://theaterlife.com/liberation-the-antiquities/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
       "file": "theater-life--unknown.json",
       "score": 87,
       "publishDate": "2025-02-22",
@@ -31816,6 +31857,25 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 576d before show (2022-10-19 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "express-uk--neil-norman.json",
+      "score": null,
+      "publishDate": "2022-10-27",
+      "url": "https://www.express.co.uk/entertainment/theatre/1688608/My-Neighbour-Totoro-theatre-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 568d before show (2022-10-27 vs 2024-05-17)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -65135,7 +65195,7 @@
     },
     {
       "showId": "blood-of-my-blood-west-end-2026",
-      "file": "plays-international--unknown.json",
+      "file": "plays-international--neil-dowden.json",
       "score": 82,
       "publishDate": "2026-10-12",
       "url": "https://playsinternational.org.uk/blood-of-my-blood-royal-court-theatre-upstairs/",
