@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T00:46:52.934Z",
+  "timestamp": "2026-10-27T01:12:35.612Z",
   "stats": {
-    "totalReviews": 62684,
-    "alreadyFlagged": 21572,
-    "dateGuardCatches": 224,
-    "directorMismatch": 2316,
+    "totalReviews": 62687,
+    "alreadyFlagged": 21573,
+    "dateGuardCatches": 223,
+    "directorMismatch": 2317,
     "tvFilmSignals": 1773,
-    "londonSignals": 3019,
+    "londonSignals": 3020,
     "offBroadwaySignals": 553,
-    "yearMismatch": 211,
-    "noPublishDate": 5563
+    "yearMismatch": 212,
+    "noPublishDate": 5561
   },
   "findings": [
     {
@@ -17108,6 +17108,19 @@
     },
     {
       "showId": "giant-west-end-2025",
+      "file": "london-theatre--matt-wolf.json",
+      "publishDate": "2025-05-02",
+      "url": "https://www.londontheatre.co.uk/reviews/giant-review-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"nicholas hytner\" from giant-2026"
+        }
+      ]
+    },
+    {
+      "showId": "giant-west-end-2025",
       "file": "standard--nick-curtis.json",
       "score": 88,
       "publishDate": "2025-05-02",
@@ -19846,6 +19859,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2015 (2x) more than 2022 (0x). 2015 matches production: hangmen-west-end-2015"
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-2022",
+      "file": "theatermania--david-gordon.json",
+      "publishDate": "2022-04-21",
+      "url": "https://www.theatermania.com/broadway/reviews/review-martin-mcdonaghs-hangmen-is-a-fun-broadway_93664.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2015 (2x) more than 2022 (1x). 2015 matches production: hangmen-west-end-2015"
         }
       ]
     },
@@ -86103,20 +86129,6 @@
       ]
     },
     {
-      "showId": "oslo-2017",
-      "file": "timeout--adam-feldman.json",
-      "score": 78,
-      "publishDate": "July 11, 2016",
-      "url": "http://www.timeout.com/newyork/theater/oslo",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 255d before show (July 11, 2016 vs 2017-03-23)"
-        }
-      ]
-    },
-    {
       "showId": "othello-west-end-2022",
       "file": "artsdesk--helen-hawkins.json",
       "score": 63,
@@ -86926,6 +86938,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "photograph-51-west-end-2015",
+      "file": "nytimes--ben-brantley.json",
+      "publishDate": "2015-09-14",
+      "url": "http://www.nytimes.com/2015/09/15/theater/review-in-photograph-51-nicole-kidman-is-a-steely-dna-scientist.html?_r=0",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
