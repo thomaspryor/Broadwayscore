@@ -1,98 +1,21 @@
 {
-  "updatedAt": "2026-10-27T22:03:12.968Z",
-  "processed": 218,
-  "failed": 42,
-  "successRate": "83.8%",
+  "updatedAt": "2026-10-27T22:33:02.055Z",
+  "processed": 309,
+  "failed": 50,
+  "successRate": "86.1%",
   "tierBreakdown": {
-    "playwright": 166,
+    "playwright": 226,
     "amp": 2,
-    "browserbase": 12,
+    "browserbase": 16,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 16,
+    "scrapingdog": 18,
+    "scrapingbee": 19,
     "brightdata": 0,
-    "archiveToday": 16,
-    "archive": 30
+    "archiveToday": 18,
+    "archive": 53
   },
-  "browserbaseSessions": 15,
+  "browserbaseSessions": 22,
   "recentActivity": [
-    {
-      "t": "2026-10-27T21:09:52.563Z",
-      "event": "bb-session",
-      "session": "585cd7f6",
-      "url": "https://www.nytimes.com/2024/02/01/theater/jonah-review.html"
-    },
-    {
-      "t": "2026-10-27T21:09:53.026Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T21:12:32.210Z",
-      "event": "bb-session",
-      "session": "07666e2b",
-      "url": "https://www.wsj.com/articles/jonah-review-a-young-womans-wariness-rachel-bonds-r"
-    },
-    {
-      "t": "2026-10-27T21:12:32.639Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T21:24:08.655Z",
-      "event": "bb-session",
-      "session": "a8fbf1fc",
-      "url": "https://www.nytimes.com/2024/01/24/theater/aristocrats-review.html"
-    },
-    {
-      "t": "2026-10-27T21:24:10.629Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T21:28:55.249Z",
-      "event": "bb-session",
-      "session": "70e035bb",
-      "url": "https://www.wsj.com/articles/public-obscenities-review-a-perceptive-bengali-dram"
-    },
-    {
-      "t": "2026-10-27T21:28:55.761Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T21:31:51.394Z",
-      "event": "bb-session",
-      "session": "c2a95eb1",
-      "url": "https://www.wsj.com/articles/the-gardens-of-anuncia-review-the-blooming-of-a-bro"
-    },
-    {
-      "t": "2026-10-27T21:31:51.857Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T21:41:25.232Z",
-      "event": "bb-session",
-      "session": "23833e97",
-      "url": "https://www.nytimes.com/2023/10/30/theater/i-can-get-it-for-you-wholesale-review"
-    },
-    {
-      "t": "2026-10-27T21:41:25.726Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T21:47:55.770Z",
-      "event": "bb-session",
-      "session": "01c2b6b2",
-      "url": "https://www.nytimes.com/2023/10/27/theater/covenant-review.html"
-    },
-    {
-      "t": "2026-10-27T21:47:56.327Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-27T21:52:39.708Z",
       "event": "bb-session",
@@ -125,6 +48,83 @@
       "t": "2026-10-27T22:00:17.075Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T22:14:11.030Z",
+      "event": "bb-session",
+      "session": "16800ca0",
+      "url": "https://www.nytimes.com/2023/09/14/theater/review-death-let-me-do-my-show.html"
+    },
+    {
+      "t": "2026-10-27T22:14:11.496Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T22:17:51.060Z",
+      "event": "bb-session",
+      "session": "d80439b0",
+      "url": "https://www.wsj.com/articles/the-creeps-review-a-one-woman-cast-of-the-uncanny-3"
+    },
+    {
+      "t": "2026-10-27T22:17:51.511Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T22:19:00.913Z",
+      "event": "bb-session",
+      "session": "3e576e11",
+      "url": "https://www.newyorker.com/goings-on-about-town/pay-the-writer-09-04-23"
+    },
+    {
+      "t": "2026-10-27T22:19:01.398Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-27T22:19:12.465Z",
+      "event": "bb-session",
+      "session": "d1cb4ad5",
+      "url": "https://www.newyorker.com/goings-on-about-town/pay-the-writer-09-04-23"
+    },
+    {
+      "t": "2026-10-27T22:19:12.884Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-27T22:19:47.663Z",
+      "event": "bb-session",
+      "session": "94239dfd",
+      "url": "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-disconte"
+    },
+    {
+      "t": "2026-10-27T22:19:48.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T22:27:18.283Z",
+      "event": "bb-session",
+      "session": "cd4b738f",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/flex-07-31-23"
+    },
+    {
+      "t": "2026-10-27T22:27:18.726Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-27T22:27:29.564Z",
+      "event": "bb-session",
+      "session": "781974a6",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/flex-07-31-23"
+    },
+    {
+      "t": "2026-10-27T22:27:29.979Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
