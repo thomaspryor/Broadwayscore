@@ -1,68 +1,52 @@
 {
   "processed": [
-    "impossible-west-end-2015/nytimes--unknown.json",
-    "impossible-west-end-2015/whatsonstage--unknown.json",
-    "1984-west-end-2015/britishtheatrecom--james-garden.json",
-    "the-audience-west-end-2015/standard--henry-hitchings.json",
-    "gypsy-west-end-2015/britishtheatrecom--stephen-collins.json",
-    "the-nether-west-end-2015/nytimes--ben-brantley.json",
-    "my-night-with-reg-west-end-2015/financialtimes--unknown.json",
-    "my-night-with-reg-west-end-2015/standard--alice-saville.json",
-    "my-night-with-reg-west-end-2015/times-uk--sam-marlowe.json",
-    "my-night-with-reg-west-end-2015/whatsonstage--alex-wood.json",
-    "speed-the-plow-west-end-2014/guardian--unknown.json"
+    "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
+    "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
+    "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json",
+    "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
+    "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
+    "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
+    "iluminate-off-broadway-2023/timeout--raven-snook.json",
+    "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
+    "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
+    "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
+    "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json",
+    "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
   ],
   "failed": [
-    "impossible-west-end-2015/thestage--unknown.json",
-    "1984-west-end-2015/guardian--unknown.json",
-    "my-night-with-reg-west-end-2015/britishtheatrecom--unknown.json",
-    "my-night-with-reg-west-end-2015/london-theatre--unknown.json",
-    "my-night-with-reg-west-end-2015/thestage--paul-vale.json",
-    "memphis-the-musical-west-end-2014/london-box-office--phil-willmott.json",
-    "speed-the-plow-west-end-2014/mail-on-sunday--unknown.json"
+    "iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json",
+    "iluminate-off-broadway-2023/zeal-nyc--mercedes-vizcaino.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "impossible-west-end-2015/whatsonstage--unknown.json",
-      "1984-west-end-2015/britishtheatrecom--james-garden.json",
-      "gypsy-west-end-2015/britishtheatrecom--stephen-collins.json",
-      "my-night-with-reg-west-end-2015/financialtimes--unknown.json",
-      "my-night-with-reg-west-end-2015/whatsonstage--alex-wood.json"
+      "madwomen-of-the-west-off-broadway-2023/theatermania--zachary-stewart.json",
+      "madwomen-of-the-west-off-broadway-2023/nysr--david-finkle.json",
+      "madwomen-of-the-west-off-broadway-2023/off-off-online--stanford-friedman.json",
+      "madwomen-of-the-west-off-broadway-2023/theater-scene--victor-gluck.json",
+      "iluminate-off-broadway-2023/timeout--raven-snook.json",
+      "iluminate-off-broadway-2023/nj-kids-on-the-go--nj-kids-team.json",
+      "iluminate-off-broadway-2023/stagebuddy--jose-solis.json",
+      "iluminate-off-broadway-2023/times-square-chronicles--suzanna-bowling.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/the-nether-west-end-2015/nytimes--ben-brantley.json",
-      "the-nether-west-end-2015/nytimes--ben-brantley.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [],
+    "scrapingbee": [
+      "madwomen-of-the-west-off-broadway-2023/cititour--brian-scott-lipton.json"
+    ],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/impossible-west-end-2015/thestage--unknown.json",
-      "data/review-texts/my-night-with-reg-west-end-2015/thestage--paul-vale.json"
+      "data/review-texts/iluminate-off-broadway-2023/the-dance-coach--bob-rizzo.json"
     ],
     "archive": [
-      "impossible-west-end-2015/nytimes--unknown.json",
-      "the-audience-west-end-2015/standard--henry-hitchings.json",
-      "my-night-with-reg-west-end-2015/standard--alice-saville.json",
-      "my-night-with-reg-west-end-2015/times-uk--sam-marlowe.json"
+      "madwomen-of-the-west-off-broadway-2023/nytimes--unknown.json",
+      "iluminate-off-broadway-2023/theater-pizzazz--carole-di-tosti.json",
+      "iluminate-off-broadway-2023/theater-pizzazz--joel-benjamin.json"
     ]
   },
-  "startTime": "2026-10-27T07:11:50.892Z",
-  "lastProcessed": "speed-the-plow-west-end-2014/mail-on-sunday--unknown.json",
-  "log": [
-    {
-      "t": "2026-10-27T07:15:07.581Z",
-      "event": "bb-session",
-      "session": "200bb7ce",
-      "url": "http://www.nytimes.com/2015/02/25/theater/review-jennifer-haleys-the-nether-expl"
-    },
-    {
-      "t": "2026-10-27T07:15:07.878Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    }
-  ]
+  "startTime": "2026-10-27T07:41:36.307Z",
+  "lastProcessed": "iluminate-off-broadway-2023/zeal-nyc--mercedes-vizcaino.json",
+  "log": []
 }
