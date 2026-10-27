@@ -1,8 +1,8 @@
 {
-  "runDate": "2026-10-27T04:15:11.412Z",
+  "runDate": "2026-10-27T04:19:32.383Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 100,
+    "maxReviews": 1000,
     "priority": "all",
     "showFilter": "til-death-off-broadway-2023,arcadia-off-broadway-2023,scene-partners-off-broadway-2023,a-good-day-to-me-not-to-you-off-broadway-2023,madwomen-of-the-west-off-broadway-2023,iluminate-off-broadway-2023",
     "aggressive": false,
@@ -11,56 +11,53 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 15,
-    "failed": 3,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "83.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 13,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 13,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 11,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 15,
-    "failed": 3,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "a-good-day-to-me-not-to-you-off-broadway-2023",
-      "arcadia-off-broadway-2023",
-      "scene-partners-off-broadway-2023",
-      "til-death-off-broadway-2023"
+      "scene-partners-off-broadway-2023"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -68,89 +65,27 @@
       "failed": 0
     }
   },
-  "processed": [
-    "til-death-off-broadway-2023/theatermania--zachary-stewart.json",
-    "til-death-off-broadway-2023/front-row-center--sarah-downs.json",
-    "til-death-off-broadway-2023/off-off-online--adrienne-onofri.json",
-    "a-good-day-to-me-not-to-you-off-broadway-2023/theater-scene--unknown.json",
-    "scene-partners-off-broadway-2023/nyt-theater--jonathan-mandell.json",
-    "scene-partners-off-broadway-2023/nytg--kyle-turner.json",
-    "scene-partners-off-broadway-2023/nytimes--jesse-green.json",
-    "arcadia-off-broadway-2023/timeout--unknown.json",
-    "scene-partners-off-broadway-2023/theatermania--zachary-stewart.json",
-    "scene-partners-off-broadway-2023/cititour--brian-scott-lipton.json",
-    "scene-partners-off-broadway-2023/exeunt-magazine--lane-williamson.json",
-    "scene-partners-off-broadway-2023/front-row-center--tulis-mccall.json",
-    "scene-partners-off-broadway-2023/off-off-online--stanford-friedman.json",
-    "scene-partners-off-broadway-2023/theater-scene--darryl-reilly.json",
-    "scene-partners-off-broadway-2023/theater-scene--joel-benjamin.json"
-  ],
+  "processed": [],
   "failed": [
-    "til-death-off-broadway-2023/theater-pizzazz--ron-fassler-critic.json",
-    "scene-partners-off-broadway-2023/theater-pizzazz--adam-cohen.json",
     "scene-partners-off-broadway-2023/thestage--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "til-death-off-broadway-2023/theatermania--zachary-stewart.json",
-      "til-death-off-broadway-2023/front-row-center--sarah-downs.json",
-      "til-death-off-broadway-2023/off-off-online--adrienne-onofri.json",
-      "a-good-day-to-me-not-to-you-off-broadway-2023/theater-scene--unknown.json",
-      "scene-partners-off-broadway-2023/nyt-theater--jonathan-mandell.json",
-      "scene-partners-off-broadway-2023/nytg--kyle-turner.json",
-      "scene-partners-off-broadway-2023/nytimes--jesse-green.json",
-      "arcadia-off-broadway-2023/timeout--unknown.json",
-      "scene-partners-off-broadway-2023/theatermania--zachary-stewart.json",
-      "scene-partners-off-broadway-2023/cititour--brian-scott-lipton.json",
-      "scene-partners-off-broadway-2023/exeunt-magazine--lane-williamson.json",
-      "scene-partners-off-broadway-2023/front-row-center--tulis-mccall.json",
-      "scene-partners-off-broadway-2023/off-off-online--stanford-friedman.json",
-      "scene-partners-off-broadway-2023/theater-scene--darryl-reilly.json",
-      "scene-partners-off-broadway-2023/theater-scene--joel-benjamin.json"
-    ],
+    "processed": [],
     "failed": [
-      "til-death-off-broadway-2023/theater-pizzazz--ron-fassler-critic.json",
-      "scene-partners-off-broadway-2023/theater-pizzazz--adam-cohen.json",
       "scene-partners-off-broadway-2023/thestage--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "til-death-off-broadway-2023/theatermania--zachary-stewart.json",
-      "til-death-off-broadway-2023/front-row-center--sarah-downs.json",
-      "til-death-off-broadway-2023/off-off-online--adrienne-onofri.json",
-      "a-good-day-to-me-not-to-you-off-broadway-2023/theater-scene--unknown.json",
-      "scene-partners-off-broadway-2023/nyt-theater--jonathan-mandell.json",
-      "scene-partners-off-broadway-2023/nytg--kyle-turner.json",
-      "arcadia-off-broadway-2023/timeout--unknown.json",
-      "scene-partners-off-broadway-2023/theatermania--zachary-stewart.json",
-      "scene-partners-off-broadway-2023/exeunt-magazine--lane-williamson.json",
-      "scene-partners-off-broadway-2023/front-row-center--tulis-mccall.json",
-      "scene-partners-off-broadway-2023/off-off-online--stanford-friedman.json",
-      "scene-partners-off-broadway-2023/theater-scene--darryl-reilly.json",
-      "scene-partners-off-broadway-2023/theater-scene--joel-benjamin.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "scene-partners-off-broadway-2023/cititour--brian-scott-lipton.json"
-    ],
+    "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "scene-partners-off-broadway-2023/nytimes--jesse-green.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "Theater Pizzazz": {
-      "count": 2,
-      "domain": "theaterpizzazz.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
