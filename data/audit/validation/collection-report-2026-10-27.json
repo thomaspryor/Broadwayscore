@@ -1,71 +1,70 @@
 {
-  "runDate": "2026-10-27T06:36:23.477Z",
+  "runDate": "2026-10-27T07:20:42.617Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "oppenheimer-west-end-2015,death-of-a-salesman-west-end-2015,gypsy-west-end-2015,1984-west-end-2015,bend-it-like-beckham-the-musical-west-end-2015,the-audience-west-end-2015,impossible-west-end-2015,clarence-darrow-west-end-2015,hay-fever-west-end-2015,dear-lupin-west-end-2015",
+    "showFilter": "speed-the-plow-west-end-2014,memphis-the-musical-west-end-2014,my-night-with-reg-west-end-2015,the-nether-west-end-2015,gypsy-west-end-2015,the-audience-west-end-2015,1984-west-end-2015,impossible-west-end-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
-    "failed": 5,
+    "processed": 11,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "61.1%"
   },
   "tierBreakdown": {
-    "playwright": 8,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 1,
-    "archiveToday": 1,
-    "archive": 8
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 2,
+    "archive": 4
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 9,
+    "tier1Attempts": 10,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 1,
-    "tier2Attempts": 2,
-    "tier2Success": 1,
+    "tier1_5Attempts": 1,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 3,
+    "tier1_9Success": 0,
+    "tier2Attempts": 5,
+    "tier2Success": 0,
     "tier3Attempts": 2,
-    "tier3Success": 1,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 10,
-    "tier4Success": 6,
-    "totalFailed": 5,
-    "scrapingBeePageCredits": 11,
+    "tier3Success": 0,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 9,
+    "tier4Success": 4,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 40,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 1,
+    "browserbaseMinutesUsed": 0.2,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 20,
-    "failed": 5,
+    "processed": 11,
+    "failed": 7,
     "shows": [
       "1984-west-end-2015",
-      "bend-it-like-beckham-the-musical-west-end-2015",
-      "clarence-darrow-west-end-2015",
-      "dear-lupin-west-end-2015",
-      "death-of-a-salesman-west-end-2015",
       "gypsy-west-end-2015",
-      "hay-fever-west-end-2015",
       "impossible-west-end-2015",
-      "the-audience-west-end-2015"
+      "memphis-the-musical-west-end-2014",
+      "my-night-with-reg-west-end-2015",
+      "speed-the-plow-west-end-2014",
+      "the-audience-west-end-2015",
+      "the-nether-west-end-2015"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -74,100 +73,77 @@
     }
   },
   "processed": [
-    "impossible-west-end-2015/guardian--michael-billington.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/variety--matt-trueman.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/daily-mail--quentin-letts.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/mail-on-sunday--unknown.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/standard--henry-hitchings.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/telegraph--dominic-cavendish.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/thestage--mark-shenton.json",
-    "bend-it-like-beckham-the-musical-west-end-2015/whatsonstage--michael-coveney.json",
-    "1984-west-end-2015/britishtheatrecom--unknown.json",
-    "death-of-a-salesman-west-end-2015/london-box-office--phil-willmott.json",
-    "hay-fever-west-end-2015/artsdesk--unknown.json",
-    "hay-fever-west-end-2015/standard--fiona-mountford.json",
-    "hay-fever-west-end-2015/telegraph--jane-shilling.json",
-    "the-audience-west-end-2015/nytg--tulis-mccall.json",
-    "the-audience-west-end-2015/standard--unknown.json",
-    "gypsy-west-end-2015/loureviews--louise-penn.json",
-    "gypsy-west-end-2015/musical-theatre-review--unknown.json",
-    "gypsy-west-end-2015/britishtheatrecom--unknown.json",
-    "gypsy-west-end-2015/musicaltheatremusings--unknown.json",
-    "clarence-darrow-west-end-2015/telegraph--dominic-cavendish.json"
+    "impossible-west-end-2015/nytimes--unknown.json",
+    "impossible-west-end-2015/whatsonstage--unknown.json",
+    "1984-west-end-2015/britishtheatrecom--james-garden.json",
+    "the-audience-west-end-2015/standard--henry-hitchings.json",
+    "gypsy-west-end-2015/britishtheatrecom--stephen-collins.json",
+    "the-nether-west-end-2015/nytimes--ben-brantley.json",
+    "my-night-with-reg-west-end-2015/financialtimes--unknown.json",
+    "my-night-with-reg-west-end-2015/standard--alice-saville.json",
+    "my-night-with-reg-west-end-2015/times-uk--sam-marlowe.json",
+    "my-night-with-reg-west-end-2015/whatsonstage--alex-wood.json",
+    "speed-the-plow-west-end-2014/guardian--unknown.json"
   ],
   "failed": [
-    "dear-lupin-west-end-2015/guardian--unknown.json",
-    "dear-lupin-west-end-2015/britishtheatrecom--unknown.json",
-    "dear-lupin-west-end-2015/london-box-office--davor-golub.json",
+    "impossible-west-end-2015/thestage--unknown.json",
     "1984-west-end-2015/guardian--unknown.json",
-    "1984-west-end-2015/thestage--unknown.json"
+    "my-night-with-reg-west-end-2015/britishtheatrecom--unknown.json",
+    "my-night-with-reg-west-end-2015/london-theatre--unknown.json",
+    "my-night-with-reg-west-end-2015/thestage--paul-vale.json",
+    "memphis-the-musical-west-end-2014/london-box-office--phil-willmott.json",
+    "speed-the-plow-west-end-2014/mail-on-sunday--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "impossible-west-end-2015/guardian--michael-billington.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/variety--matt-trueman.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/daily-mail--quentin-letts.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/mail-on-sunday--unknown.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/standard--henry-hitchings.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/telegraph--dominic-cavendish.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/thestage--mark-shenton.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/whatsonstage--michael-coveney.json",
-      "1984-west-end-2015/britishtheatrecom--unknown.json",
-      "death-of-a-salesman-west-end-2015/london-box-office--phil-willmott.json",
-      "hay-fever-west-end-2015/artsdesk--unknown.json",
-      "hay-fever-west-end-2015/standard--fiona-mountford.json",
-      "hay-fever-west-end-2015/telegraph--jane-shilling.json",
-      "the-audience-west-end-2015/nytg--tulis-mccall.json",
-      "the-audience-west-end-2015/standard--unknown.json",
-      "gypsy-west-end-2015/loureviews--louise-penn.json",
-      "gypsy-west-end-2015/musical-theatre-review--unknown.json",
-      "gypsy-west-end-2015/britishtheatrecom--unknown.json",
-      "gypsy-west-end-2015/musicaltheatremusings--unknown.json",
-      "clarence-darrow-west-end-2015/telegraph--dominic-cavendish.json"
+      "impossible-west-end-2015/nytimes--unknown.json",
+      "impossible-west-end-2015/whatsonstage--unknown.json",
+      "1984-west-end-2015/britishtheatrecom--james-garden.json",
+      "the-audience-west-end-2015/standard--henry-hitchings.json",
+      "gypsy-west-end-2015/britishtheatrecom--stephen-collins.json",
+      "the-nether-west-end-2015/nytimes--ben-brantley.json",
+      "my-night-with-reg-west-end-2015/financialtimes--unknown.json",
+      "my-night-with-reg-west-end-2015/standard--alice-saville.json",
+      "my-night-with-reg-west-end-2015/times-uk--sam-marlowe.json",
+      "my-night-with-reg-west-end-2015/whatsonstage--alex-wood.json",
+      "speed-the-plow-west-end-2014/guardian--unknown.json"
     ],
     "failed": [
-      "dear-lupin-west-end-2015/guardian--unknown.json",
-      "dear-lupin-west-end-2015/britishtheatrecom--unknown.json",
-      "dear-lupin-west-end-2015/london-box-office--davor-golub.json",
+      "impossible-west-end-2015/thestage--unknown.json",
       "1984-west-end-2015/guardian--unknown.json",
-      "1984-west-end-2015/thestage--unknown.json"
+      "my-night-with-reg-west-end-2015/britishtheatrecom--unknown.json",
+      "my-night-with-reg-west-end-2015/london-theatre--unknown.json",
+      "my-night-with-reg-west-end-2015/thestage--paul-vale.json",
+      "memphis-the-musical-west-end-2014/london-box-office--phil-willmott.json",
+      "speed-the-plow-west-end-2014/mail-on-sunday--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "bend-it-like-beckham-the-musical-west-end-2015/mail-on-sunday--unknown.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/whatsonstage--michael-coveney.json",
-      "1984-west-end-2015/britishtheatrecom--unknown.json",
-      "hay-fever-west-end-2015/artsdesk--unknown.json",
-      "hay-fever-west-end-2015/standard--fiona-mountford.json",
-      "gypsy-west-end-2015/loureviews--louise-penn.json",
-      "gypsy-west-end-2015/britishtheatrecom--unknown.json",
-      "gypsy-west-end-2015/musicaltheatremusings--unknown.json"
+      "impossible-west-end-2015/whatsonstage--unknown.json",
+      "1984-west-end-2015/britishtheatrecom--james-garden.json",
+      "gypsy-west-end-2015/britishtheatrecom--stephen-collins.json",
+      "my-night-with-reg-west-end-2015/financialtimes--unknown.json",
+      "my-night-with-reg-west-end-2015/whatsonstage--alex-wood.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/the-nether-west-end-2015/nytimes--ben-brantley.json",
+      "the-nether-west-end-2015/nytimes--ben-brantley.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [
-      "gypsy-west-end-2015/musical-theatre-review--unknown.json"
-    ],
-    "scrapingbee": [
-      "bend-it-like-beckham-the-musical-west-end-2015/daily-mail--quentin-letts.json"
-    ],
-    "brightdata": [
-      "bend-it-like-beckham-the-musical-west-end-2015/variety--matt-trueman.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [
-      "data/review-texts/1984-west-end-2015/thestage--unknown.json"
+      "data/review-texts/impossible-west-end-2015/thestage--unknown.json",
+      "data/review-texts/my-night-with-reg-west-end-2015/thestage--paul-vale.json"
     ],
     "archive": [
-      "bend-it-like-beckham-the-musical-west-end-2015/standard--henry-hitchings.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/telegraph--dominic-cavendish.json",
-      "bend-it-like-beckham-the-musical-west-end-2015/thestage--mark-shenton.json",
-      "death-of-a-salesman-west-end-2015/london-box-office--phil-willmott.json",
-      "hay-fever-west-end-2015/telegraph--jane-shilling.json",
-      "the-audience-west-end-2015/nytg--tulis-mccall.json",
-      "the-audience-west-end-2015/standard--unknown.json",
-      "clarence-darrow-west-end-2015/telegraph--dominic-cavendish.json"
+      "impossible-west-end-2015/nytimes--unknown.json",
+      "the-audience-west-end-2015/standard--henry-hitchings.json",
+      "my-night-with-reg-west-end-2015/standard--alice-saville.json",
+      "my-night-with-reg-west-end-2015/times-uk--sam-marlowe.json"
     ]
   },
   "failuresByOutlet": {},
