@@ -14,7 +14,9 @@
  * Skips files the rebuild already excludes (review-guards isIncludableForRebuild). Prints show/file, outlet, critic, score,
  * signals; never the text.
  *
- *   node scripts/audit-listing-page-text.js [--show=a,b] [--json]
+ *   node scripts/audit-listing-page-text.js [--show=a,b] [--json] [--counts=PATH]
+ * --counts (BRO-6038): counts-only snapshot; `findings` = header hits (readmore/dated alone also match
+ * ordinary reviews with related-article links, so they are counted but not alerted).
  */
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
@@ -85,6 +87,8 @@ function main() {
       }
     }
   }
+  const has = (kind) => hits.filter((h) => h.signals.some((s) => s.startsWith(`${kind}:`))).length;
+  require('./lib/audit-counts').writeAuditCounts(ARGS, has('header'), { scanned, hits: hits.length, header: has('header'), readmore: has('readmore'), dated: has('dated') });
   if (ARGS.includes('--json')) { console.log(JSON.stringify({ scanned, hits }, null, 2)); return; }
   console.log(`Scanned ${scanned} included files with text; ${hits.length} look like listing/search pages.`);
   for (const h of hits) console.log(`${h.file} | ${h.outletId} | ${h.critic} | score ${h.score} | ${h.tier} | ${h.signals.join(' ')} | ${h.url || '-'}`);

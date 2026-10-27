@@ -10,7 +10,8 @@
  * rejectedTextHash, the scorer's text-gate block), and lists them. Ids only,
  * no review text.
  *
- * Usage: node scripts/audit-scoreless-llmscore.js [--list=N] [--json]
+ * Usage: node scripts/audit-scoreless-llmscore.js [--list=N] [--json] [--counts=PATH]
+ * --counts writes a counts-only snapshot for the health digest (BRO-6038).
  */
 'use strict';
 
@@ -48,6 +49,7 @@ function main() {
   }
   const count = (key) => rows.reduce((m, r) => { const k = String(r[key]); m[k] = (m[k] || 0) + 1; return m; }, {});
   const summary = { scanned, scoreless: rows.length, byKeys: count('llmKeys'), byRejected: count('rejected'), byRejectionReason: count('rejectionReason'), byTier: count('tier') };
+  require('./lib/audit-counts').writeAuditCounts(args, rows.length, { scanned, byRejected: summary.byRejected });
   if (asJson) { console.log(JSON.stringify({ summary, rows: rows.slice(0, listN) }, null, 2)); return; }
   for (const [k, v] of Object.entries(summary)) console.log(`${k}: ${typeof v === 'object' ? JSON.stringify(v) : v}`);
   console.log('\nshow | file | rejected | reason | tier | chars | assignedScore | llmScore keys');

@@ -4,7 +4,9 @@
  * reviews.json (no assignedScore), with the metadata that decides whether a
  * text-less fallback applies. Prints metadata only, never review text.
  *
- * Usage: node scripts/audit-uncounted-real-reviews.js [--year=2026] [--json]
+ * Usage: node scripts/audit-uncounted-real-reviews.js [--year=2026] [--json] [--counts=PATH]
+ * --counts (BRO-6038): counts-only snapshot; `findings` = uncounted files that carry text, are not
+ * tier invalid and have no exclusion flag (wrongShow, wrongProduction, isRoundupArticle, rejectionReason).
  */
 const fs = require('fs');
 const path = require('path');
@@ -46,6 +48,10 @@ for (const s of listShowDirs(dir)) {
     });
   }
 }
+const EXCLUDING = new Set(['wrongShow', 'wrongProduction', 'isRoundupArticle', 'rejectionReason']);
+const candidates = rows.filter(r => r.textLen > 0 && r.tier !== 'invalid' && !r.flags.some(f => EXCLUDING.has(f.split('=')[0])));
+const byTier = {}; for (const r of candidates) byTier[String(r.tier)] = (byTier[String(r.tier)] || 0) + 1;
+require('./lib/audit-counts').writeAuditCounts(args, candidates.length, { year, uncountedFiles: rows.length, byTier });
 if (asJson) console.log(JSON.stringify(rows, null, 1));
 else for (const r of rows) console.log(`${r.show}/${r.file} | ${r.outlet} | tier=${r.tier} len=${r.textLen} ex=[${r.excerpts}] og=${r.og} serp=${r.serp} stars=${r.stars} | pub=${r.publishDate} open=${r.opening} | ${r.flags.join(',')} | ${r.url}`);
 console.error(`uncounted files on ${year} shows: ${rows.length}`);

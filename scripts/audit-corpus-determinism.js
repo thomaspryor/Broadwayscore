@@ -20,6 +20,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { buildReport, evaluateGate, DEFAULT_MIN_DELTA, DEFAULT_TOLERANCE } = require('./lib/corpus-determinism.js');
+const { writeAuditCounts } = require('./lib/audit-counts.js');
 
 const WATERMARK_PATH = 'data/audit/deploy-watermark.json';
 const DEFAULT_REPORT_PATH = path.join(__dirname, '../data/audit/corpus-determinism.json');
@@ -40,6 +41,8 @@ Options:
   --json               Print the raw report as JSON
   --report-out=PATH    Write the report JSON (default data/audit/corpus-determinism.json)
   --no-report          Skip the report write
+  --counts=PATH        Write a counts-only snapshot for the health digest (BRO-6038);
+                       findings = gate failures, null when history is too short
   --help               Show this message
 
 Reads git history only — never mutates review data.
@@ -120,11 +123,16 @@ function main() {
     // Under --gate this must NOT read as a pass. An acceptance recheck that green-lights
     // on "no data" is exactly the confident-unresolved pattern this card exists to kill.
     // Exit 2 = insufficient data (distinct from 1 = gate failed, 0 = pass).
+    writeAuditCounts(process.argv.slice(2), null, { windowHours: opts.sinceHours, samples: samples.length, insufficient: true });
     return opts.gate ? 2 : 0;
   }
 
   const report = buildReport(samples, { minDelta: opts.minDelta, tolerance: opts.tolerance });
   const gate = evaluateGate(report, { maxMaterialDecreases: opts.maxDecreases });
+  writeAuditCounts(process.argv.slice(2), gate.failures.length, {
+    windowHours: opts.sinceHours, samples: samples.length, materialDecreases: report.materialDecreases,
+    transientExcursions: report.transientExcursions, worstDrop: report.worstDrop,
+  });
 
   if (opts.json) {
     console.log(JSON.stringify({ ...report, gate, windowHours: opts.sinceHours }, null, 2));

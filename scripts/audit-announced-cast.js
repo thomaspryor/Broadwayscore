@@ -5,7 +5,8 @@
  * production (BRO-5809: Private Lives 2025 held the 1948 Tallulah Bankhead cast).
  * Flags announced rows with a cast whose data/cast file is rejected by
  * castFileMismatchReason, or that have no cast file at all (source unknown).
- *   node scripts/audit-announced-cast.js [--strict]   --strict exits 1 on any hit
+ *   node scripts/audit-announced-cast.js [--strict] [--counts=PATH]   --strict exits 1 on any hit;
+ *   --counts writes a counts-only snapshot for the health digest (BRO-6038)
  */
 const fs = require('fs');
 const path = require('path');
@@ -28,4 +29,6 @@ for (const s of shows) {
 }
 console.log(`announced rows with a cast: ${withCast}; suspicious: ${hits.length}`);
 for (const h of hits) console.log(`  ${h.id} (${h.reason}) first=${h.first}`);
+const byReason = {}; for (const h of hits) byReason[h.reason] = (byReason[h.reason] || 0) + 1;
+require('./lib/audit-counts').writeAuditCounts(process.argv, hits.length, { announcedWithCast: withCast, byReason });
 process.exit(process.argv.includes('--strict') && hits.length ? 1 : 0);

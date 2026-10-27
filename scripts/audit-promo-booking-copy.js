@@ -16,7 +16,9 @@
  * boilerplate phrases only, never review text.
  *
  * Usage:
- *   node scripts/audit-promo-booking-copy.js [--json] [--show=ID]
+ *   node scripts/audit-promo-booking-copy.js [--json] [--show=ID] [--counts=PATH]
+ * --counts (BRO-6038): counts-only snapshot; `findings` = live promo + live show-hub files
+ * (blocked-domain and same-URL twin counts are recorded, not alerted: both are large and mostly benign).
  * Exit 0 always (report only). Needs data/review-texts.
  */
 const fs = require('fs');
@@ -93,6 +95,10 @@ function main(argv) {
     const r = auditShowFiles(showId, files);
     for (const k of Object.keys(total)) total[k].push(...r[k]);
   }
+  const liveN = rows => rows.filter(r => r.live).length;
+  require('./lib/audit-counts').writeAuditCounts(argv, liveN(total.promo) + liveN(total.showHub), {
+    scanned, unreadable, promoLive: liveN(total.promo), showHubLive: liveN(total.showHub), blockedLive: liveN(total.blocked), twins: total.twins.length,
+  });
   if (json) {
     console.log(JSON.stringify({ scanned, unreadable, ...total }, null, 2));
     return 0;
@@ -115,7 +121,7 @@ module.exports = { auditShowFiles, isLive };
 if (require.main === module) {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) {
-    console.log('Usage: node scripts/audit-promo-booking-copy.js [--json] [--show=ID]\nRead-only sweep: promo booking copy, blocked-domain URLs, aggregator show-hub URLs, same-URL live twins.');
+    console.log('Usage: node scripts/audit-promo-booking-copy.js [--json] [--show=ID] [--counts=PATH]\nRead-only sweep: promo booking copy, blocked-domain URLs, aggregator show-hub URLs, same-URL live twins.');
     process.exit(0);
   }
   process.exit(main(argv));

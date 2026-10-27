@@ -15,7 +15,8 @@
  * Each loss prints the restore inputs: fromCommit (40-char sha of the parent),
  * sourcePath, url, critic, text length.
  *
- *   node scripts/audit-ownership-gate-losses.js [--days=60] [--json]
+ *   node scripts/audit-ownership-gate-losses.js [--days=60] [--json] [--counts=PATH]
+ * --counts (BRO-6038): counts-only snapshot; `findings` = losses.
  * Cloud: node scripts/cloud-run-script.js --review-texts scripts/audit-ownership-gate-losses.js
  */
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
@@ -104,6 +105,7 @@ function main() {
     }
   }
   const oldest = commits.length ? commits[commits.length - 1].at : null;
+  require('./lib/audit-counts').writeAuditCounts(ARGS, losses.length, { days, dropCommits: commits.length, drops: drops.length });
   if (ARGS.includes('--json')) { console.log(JSON.stringify({ days, commits: commits.length, oldestDropCommit: oldest, drops: drops.length, losses }, null, 2)); return; }
   console.log(`${commits.length} ownership-gate drop commits in ${days} days (oldest ${oldest}); ${drops.length} files dropped; ${losses.length} with text that exist nowhere today.`);
   for (const l of losses) console.log(`LOSS ${l.sourcePath} | ${l.outletId} | ${l.critic} | ${l.textChars} chars | dropped ${l.at} | fromCommit ${l.fromCommit} | ${l.url || '-'} | url today: ${(l.urlHoldersToday || []).join('; ') || 'nowhere'}`);

@@ -4,11 +4,12 @@
  * rating scores inside its CLAUDE.md §3 band (1/5 0-30, 2/5 31-50, 3/5 51-70,
  * 4/5 71-90, 5/5 91-100; half stars accept the union of both neighbours).
  * No model calls, no review text. Per cohort (BRO-5951). `--json` for rows.
+ * `--counts=PATH` writes a counts-only snapshot for the health digest (BRO-6038).
  */
 'use strict';
 const fs = require('fs');
 const path = require('path');
-if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) { console.log('audit-star-bands.js [--json]: star rating vs score-band check per historical cohort (read-only)'); process.exit(0); }
+if (require('./lib/cli-help.js').hasHelpFlag(process.argv.slice(2))) { console.log('audit-star-bands.js [--json] [--counts=PATH]: star rating vs score-band check per historical cohort (read-only)'); process.exit(0); }
 const ROOT = path.join(__dirname, '..');
 const BANDS = { 1: [0, 30], 2: [31, 50], 3: [51, 70], 4: [71, 90], 5: [91, 100] };
 
@@ -47,8 +48,9 @@ if (require.main === module) {
   const reviews = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8')).reviews;
   const sj = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
   const { per, bad } = audit(reviews, Array.isArray(sj) ? sj : sj.shows);
+  const bySource = {}; for (const b of bad) bySource[b.scoreSource] = (bySource[b.scoreSource] || 0) + 1;
+  require('./lib/audit-counts').writeAuditCounts(process.argv, bad.length, { starred: Object.values(per).reduce((n, p) => n + p.starred, 0), bySource });
   if (process.argv.includes('--json')) { console.log(JSON.stringify({ per, bad }, null, 1)); process.exit(0); }
   for (const [c, p] of Object.entries(per).sort()) console.log(`${c}\tstarred ${p.starred}\tout of band ${p.outOfBand} (${((100 * p.outOfBand) / p.starred).toFixed(1)}%)`);
-  const bySrc = {}; for (const b of bad) bySrc[b.scoreSource] = (bySrc[b.scoreSource] || 0) + 1;
-  console.log('out-of-band by scoreSource', JSON.stringify(bySrc));
+  console.log('out-of-band by scoreSource', JSON.stringify(bySource));
 }
