@@ -37,7 +37,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes — gate ENFORCES)
-**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): crops + overflow probe + LLM diff. Stop hook blocks claims sans verdict; pre-push blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. No owner (cloud): commit, then `node scripts/visual-approval.js request --issue=BRO-N --what=...`; Approve lands via CI. Bypass: `NO-VERIFY: <why>`. **Score badges sacred** (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
+**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. No owner (cloud): commit, then `node scripts/visual-approval.js request --issue=BRO-N --what=...`; Approve lands via CI. **Score badges sacred** (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
 **Linear is the source of truth, never Notion cards.** Notion is retired (froze 2026-08-20); its cards have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
@@ -45,7 +45,7 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
 - **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
-- **Owner answered in chat? Record it that turn** (`record-owner-answer.js`, CLOUD.md); **before asking the owner anything, read the card for an open or answered question.** Re-asking is the failure (BRO-6411).
+- **Owner answered in chat? Run `record-owner-answer.js` that turn; read the card for an open or answered question before asking the owner (BRO-6411).**
 - **If Linear is down:** warn, continue untracked, print the Outcome. Never fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
@@ -117,7 +117,7 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Memory Entries: Encode First, Write Rarely
-**Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change (rare: triage recipes); (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**; it never satisfies "Prevention added" when code-level prevention was possible. "Remember this" from the user → write it.
+**Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change; (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**. "Remember this" from the user → write it.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full history.
