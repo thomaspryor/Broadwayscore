@@ -375,5 +375,19 @@
       }
     ],
     "queuedAt": "2026-10-27T14:23:42.083Z"
+  },
+  {
+    "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
+    "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- theatre-weekly--2346818a.json (theatre-weekly): no byline in page and no recoverable body https://theatreweekly.com/young-vic-releases-first-production-images-for-girls/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-27T14:47:17.213Z"
   }
 ]
