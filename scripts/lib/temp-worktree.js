@@ -119,12 +119,25 @@ function removeTempWorktree(repoRoot, dir) {
   return { removed: registeredEntry(repoRoot, dir) === null };
 }
 
+// Registration ages are measured against file mtimes, so "now" must come from
+// the filesystem clock too. Date.now() is shifted by the time-bomb audit
+// (tests/helpers/clock-shift.mjs); using it here made every live sibling
+// suite's fixture look stale and reapable (BRO-6389).
+function fsClockNow() {
+  try {
+    const d = fs.mkdtempSync(path.join(require('os').tmpdir(), 'fs-clock-'));
+    const t = fs.statSync(d).mtimeMs;
+    fs.rmdirSync(d);
+    return t;
+  } catch { return Date.now(); }
+}
+
 /**
  * Clear fixture registrations left by earlier runs that never reached
  * teardown (SIGKILL, OOM, a killed CI job). Only names matching
  * TEMP_WORKTREE_PREFIXES and older than staleAfterMs are touched.
  */
-function reapStaleTempWorktrees(repoRoot, { now = Date.now(), prefixes = TEMP_WORKTREE_PREFIXES, staleAfterMs = STALE_AFTER_MS } = {}) {
+function reapStaleTempWorktrees(repoRoot, { now = fsClockNow(), prefixes = TEMP_WORKTREE_PREFIXES, staleAfterMs = STALE_AFTER_MS } = {}) {
   const r = git(repoRoot, ['worktree', 'list', '--porcelain']);
   if (r.status !== 0) return [];
   const admins = adminDirsByPath(repoRoot);
