@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-27T10:26:18.867Z",
+  "generated": "2026-10-27T10:38:47.284Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 37,
+  "count": 34,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -130,24 +130,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "motown-the-musical-2013",
-      "loserFile": "rollingstone--unknown.json",
-      "targetFile": "rollingstone--rj-cubarrubia.json",
-      "reason": "orphaned-duplicate-heal: rollingstone--rj-cubarrubia.json was flagged invalid after rollingstone--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "mr-saturday-night-2022",
       "loserFile": "variety--frank-rizzo.json",
       "targetFile": "variety--maya-phillips.json",
       "reason": "orphaned-duplicate-heal: variety--maya-phillips.json was flagged invalid after variety--frank-rizzo.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "othello-2025",
-      "loserFile": "latimes--unknown.json",
-      "targetFile": "latimes--kaitlyn-huamani.json",
-      "reason": "orphaned-duplicate-heal: latimes--kaitlyn-huamani.json was flagged invalid after latimes--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -254,13 +240,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "rent-west-end-2026",
-      "loserFile": "islingtontribune--unknown.json",
-      "targetFile": "camdennewjournal--unknown.json",
-      "reason": "orphaned-duplicate-heal: camdennewjournal--unknown.json was flagged invalid after islingtontribune--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
