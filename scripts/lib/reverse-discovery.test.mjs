@@ -301,7 +301,7 @@ test('digest surfacing: reverseDiscoveryBacklogResults wired in health-check', (
   assert.equal(out[0].status, 'warn');
   assert.match(out[0].message, /Midnight at the Never Get/);
   // Empty backlog → explicit pass row (verifiable 'absent'); no report → nothing.
-  assert.deepEqual(reverseDiscoveryBacklogResults({ candidates: [] }).map((r) => r.status), ['pass']);
+  assert.deepEqual(reverseDiscoveryBacklogResults({ generatedAt: new Date().toISOString(), candidates: [] }).map((r) => r.status), ['pass']);
   assert.equal(reverseDiscoveryBacklogResults(null).length, 0);
 });
 
@@ -555,7 +555,7 @@ test('BRO-4689: separators never reduce a title to a bare article', () => {
 test('BRO-4689: health row lists only reviewed (evidence-anchored) candidates', () => {
   const { reverseDiscoveryBacklogResults } = require('../health-check.js');
   const cal = { title: 'Zzzz Fringe Festival Qqq', source: 'nyt-theater', market: 'nyc', url: 'https://x.test/' };
-  assert.deepEqual(reverseDiscoveryBacklogResults({ candidates: [cal] }, {}).map((r) => r.status), ['pass']);
+  assert.deepEqual(reverseDiscoveryBacklogResults({ generatedAt: new Date().toISOString(), candidates: [cal] }, {}).map((r) => r.status), ['pass']);
   const rev = { title: 'Zzzz Unlisted Qqq Play', source: 'bww-roundup', market: 'nyc', url: 'https://x.test/r' };
   const rows = reverseDiscoveryBacklogResults({ candidates: [cal, rev] }, {});
   assert.equal(rows.length, 1);

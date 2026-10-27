@@ -4650,8 +4650,11 @@ function reverseDiscoveryBacklogResults(report, state, now = new Date()) {
   if (!ranked) {
     // An explicit pass row once the report exists, so a fixed backlog can
     // verify 'absent' (check-health-row-absent --live; BRO-3833 pattern).
-    // No report at all proves nothing: no row (BRO-4689).
-    if (!report || !Array.isArray(report.candidates)) return [];
+    // No report, an undated one, or a stale one proves nothing: no row
+    // (BRO-4689 review: a week-old empty report must not verify a fix).
+    if (!report || !Array.isArray(report.candidates) || !Number.isFinite(Date.parse(report.generatedAt))) return [];
+    const { checkReverseDiscoveryFreshness } = require('./lib/reverse-discovery-freshness');
+    if (checkReverseDiscoveryFreshness(report, now.getTime())) return [];
     return [{ name: 'Data: reviewed shows missing from shows.json', status: 'pass', message: 'No aggregator-reviewed show is missing from the catalogue' }];
   }
 
