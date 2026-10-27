@@ -1,21 +1,14 @@
-# BRO-6343 state (2026-10-26 ~23:57Z)
+# BRO-6268 state (2026-10-27 ~16:45Z)
 
-## Done
-- Run-head parsing for TR volumes 35-36 (2015-16): headers 11 -> 32 of ~60 PDF matches. Landed on main.
-- A-Z parser handles shifted (issue 159) and spread (163) pages. Landing via land.yml run 40421374290.
-- Run-head venue lines "NATIONAL, OLIVIER", "ROYAL COURT, DOWNSTAIRS", "CENTRAL ST MARTINS, FOUND 111", "UNION SE1"
-  now match (commits on this branch after 2f8ce3ed2a0; reviewed, verdict recorded). 47 tests pass.
-- Promote dry run on main data: 8 new 2015-16 shows (Cleansed, Farinelli, Hobson's Choice, Husbands and Sons,
-  Notmoses, Roosevelvis, The Deep Blue Sea, The Flick). 25 rows still "no dates on TR production page".
+## Findings
+- Seasons already promoted by earlier cards: 2012-13..2015-16. Owners: BRO-6396 (2015-16, 2014-15 gather/score/SEASON PASS), BRO-6428 (2013-14, 2012-13). Nobody has 2011-12 / 2010-11 yet (0 promoted).
+- 2015-16 audit: only FAIL is displayable 0.68 (15/22 shows with >=5 reviews, need 16).
+- Landed (land run 40535678633 green): heuristicClassify no longer flags WOS "Photo Gallery NNN" widget as a gallery page. 3 real WOS reviews had been wrongly flagged (hangmen-west-end-2015, pigeon-english-west-end-2016, stepping-out-west-end-2017); flags cleared in broadway-review-texts (d36f17bb555). Rebuild dispatched: run 40539539237.
+- End of Longing's Daily Mail/Metro files are correctly rejected as not_a_review; not a gap.
+- Wayback CDX timed out locally, so build-we-olt-season.js for 2011-12 failed; retry via cloud-run-script.js.
+- Spend this session: ~0 (one tiny scoring dispatch that scored nothing). OCR path not built; TR 2015-16 is digital-text, pre-2015 scanned (scripts/probe-tr-scanned.js, we-historical-tr-ocr-probe.yml).
 
-## Remaining (in order)
-1. Land this branch: `bash scripts/merge-worktree-to-main.sh`
-2. `gh workflow run we-historical-tr-resolve.yml -f seasons=2015-2016 -f resume=true` (wait, then git pull)
-3. `node scripts/promote-historical-we.js --season=2015-2016 --verbose`, run
-   `node scripts/validate-show-venue.js --show=<id>` on each new id, then `--plan=bro-6343-1516-tr`,
-   `git add -f data/pending-fixes/bro-6343-1516-tr.json`, land, dispatch execute-approved-fix.yml
-   (issue_number=bro-6343-1516-tr, plan_id from the file).
-4. Gather/collect/score for the new ids: BRO-6396 owns the season's gather/score/SEASON PASS chain.
-5. A-Z re-dump of all 2015-16 issues (159-179, 607, 608, 928-932) via we-historical-tr-ocr-probe.yml
-   `@dump:/archive/issue/N:azraw:0`, then `node scripts/build-we-az-season.js --season=2015-2016 --lines=<dump>`.
-   Issue 160 has a +29 char-shifted text layer (not parsed; 159/161 bracket it).
+## Next
+1. After run 40539539237: `git pull; node scripts/audit-we-historical-season.js --season=2015-2016` (expect Hangmen 5 scored -> 16/22 -> displayable PASS). Also needs fact-check sample.
+2. `node scripts/cloud-run-script.js scripts/build-we-olt-season.js --season=2011-2012 --print-pages` then --pages-from, for 2011-12 and 2010-11.
+3. Build TR OCR path for pre-2015 issues (cost-measure on 5 shows first).
