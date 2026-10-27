@@ -25,7 +25,8 @@ const { isEmptyDecisionContent } = require('./needs-you-snapshot.js');
 const MARKER_RE = /^\s*(?:#{1,6}\s+|[-*>]\s+|\d+[.)]\s+)?\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*:\s*\**\s*(\S.*)$/i;
 // BRO-6443: heading form, "## DECISION NEEDED" (optional trailing colon) with the question on the
 // next non-empty line.
-const HEADING_RE = /^\s*#{1,6}\s+\**DECISION NEEDED\**(?:\s*\([^)]*\))?\s*:?\s*\**\s*$/i;
+// Only "(owner)" may follow the words: "(none)" / "(resolved ...)" are settled stubs.
+const HEADING_RE = /^\s*#{1,6}\s+\**DECISION NEEDED\**(?:\s*\(\s*owner\s*\))?\s*:?\s*\**\s*$/i;
 // Stub or leftover lines a session wrote instead of deleting the block.
 const SETTLED_RE = /^\s*(?:answered|resolved|decided|done|closed)\b/i;
 // No line is ever this long in a real card; the cap keeps hostile text cheap to scan.
@@ -40,6 +41,23 @@ function stripCode(text) {
     out.push(line.slice(0, MAX_LINE_CHARS).replace(/`[^`]*`/g, ''));
   }
   return out;
+}
+
+// Prefix noise on the line under a heading: bullet, quote, number, checkbox, emphasis.
+const HEADING_LINE_PREFIX_RE = /^\s*(?:(?:[-*>]|\d+[.)])\s+)*(?:\[[ xX]\]\s+)?(?:\*\*|__)?/;
+
+// BRO-6443: index of the line holding the question under a "## DECISION NEEDED" heading at `i`, or -1.
+// Shared with decision-reply.js so parsing and rewriting pick the same line. Structural lines (another
+// heading, a rule, a table row, a card field or option, a fence) are not a question.
+function headingQuestionLine(lines, i) {
+  let at = i + 1;
+  while (at < lines.length && !lines[at].trim()) at++;
+  if (at >= lines.length) return -1;
+  const line = lines[at];
+  if (/^\s*(?:#{1,6}\s|[-*_]{3,}\s*$|\||```|~~~)/.test(line)) return -1;
+  const bare = line.replace(HEADING_LINE_PREFIX_RE, '');
+  if (OPTION_RE.test(bare) || FIELD_RES.some(([, re]) => re.test(bare))) return -1;
+  return at;
 }
 
 function isPlaceholder(q) {
@@ -65,11 +83,10 @@ function findDecisionQuestion(description) {
     let m = MARKER_RE.exec(lines[index]);
     let at = index;
     if (HEADING_RE.test(lines[index])) {
-      at = index + 1;
-      while (at < lines.length && !lines[at].trim()) at++;
-      // A following heading means the section is empty, not that the heading is the question.
-      if (at >= lines.length || /^\s*#{1,6}\s/.test(lines[at])) continue;
-      m = [null, lines[at].replace(/^\s*(?:[-*>]\s+)?/, '')];
+      const h = headingQuestionLine(lines, index);
+      if (h < 0) continue;
+      at = h;
+      m = MARKER_RE.exec(lines[h]) || [null, lines[h].replace(HEADING_LINE_PREFIX_RE, '')];
     }
     if (!m) continue;
     const q = collapseSelfLinks(m[1]).replace(/\*+$/, '').trim();
@@ -175,6 +192,6 @@ function recommendedKey(recommendation, options) {
 }
 
 module.exports = {
-  MARKER_RE, SETTLED_RE, cleanOwnerText, collapseSelfLinks, findDecisionQuestion, hasInlineDecision, isPlaceholder,
+  MARKER_RE, HEADING_RE, SETTLED_RE, headingQuestionLine, cleanOwnerText, collapseSelfLinks, findDecisionQuestion, hasInlineDecision, isPlaceholder,
   parseDecisionDescription, recommendedKey, splitOption, stripCode,
 };
