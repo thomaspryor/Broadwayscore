@@ -19,10 +19,10 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 describe('recouped labels', () => {
   it('are valid designations and include Breakout', () => {
     for (const d of D.RECOUPED_DESIGNATIONS) assert.ok(D.VALID_DESIGNATIONS.includes(d), d);
-    assert.ok(D.isRecoupedDesignation('Breakout'));
-    assert.ok(!D.isRecoupedDesignation('Fizzle'));
-    assert.ok(!D.isRecoupedDesignation('TBD'));
-    assert.ok(Object.isFrozen(D.RECOUPED_DESIGNATIONS));
+    assert.ok(D.RECOUPED_DESIGNATIONS.includes('Breakout'));
+    for (const d of [...D.REPORTED_WIN_DESIGNATIONS, ...D.MODEST_RETURN_DESIGNATIONS]) assert.ok(D.RECOUPED_DESIGNATIONS.includes(d), d);
+    assert.ok(!D.REPORTED_WIN_DESIGNATIONS.includes('Trickle'), 'Trickle can be our estimate');
+    for (const l of [D.RECOUPED_DESIGNATIONS, D.REPORTED_WIN_DESIGNATIONS, D.MODEST_RETURN_DESIGNATIONS]) assert.ok(Object.isFrozen(l));
   });
   it('never overlap the loss labels', () => {
     for (const d of D.RECOUPED_DESIGNATIONS) assert.ok(!D.isLossDesignation(d), d);
@@ -33,20 +33,23 @@ describe('recouped labels', () => {
   });
 });
 
-describe('the recoupment rule never moves a Breakout', () => {
+describe('the recoupment rule and Breakout', () => {
   const show = { openingDate: '2024-01-01', closingDate: '2024-06-01' };
-  it('keeps it even with a reported multiple on either side of 1.5x', () => {
-    for (const investorMultiple of [1.0, 2.0]) {
-      const r = proposeDesignation({ record: { designation: 'Breakout', recouped: true, investorMultiple }, show, model: null, now: Date.parse('2026-10-27') });
+  const p = (record) => proposeDesignation({ record: { designation: 'Breakout', recouped: true, ...record }, show, model: null, now: Date.parse('2026-10-27') });
+  it('keeps it under 1.5x and with no reported return', () => {
+    for (const r of [p({ investorMultiple: 1.0 }), p({ investorMultiple: 1.49 }), p({})]) {
       assert.equal(r.changed, false);
       assert.equal(r.designation, 'Breakout');
     }
   });
+  it('proposes Windfall at a reported 1.5x or more', () => {
+    for (const investorMultiple of [1.5, 2.0]) assert.equal(p({ investorMultiple }).designation, 'Windfall');
+  });
 });
 
 describe('no literal recouped-label lists outside commercial-designations.js', () => {
-  // A list naming both Easy Winner and Trickle is a "recouped labels" list.
-  const PATTERN = /\[[^\]]*['"]Easy Winner['"][^\]]*['"]Trickle['"][^\]]*\]|\[[^\]]*['"]Trickle['"][^\]]*['"]Easy Winner['"][^\]]*\]/;
+  // A list naming Easy Winner with Trickle or Windfall is a recouped-labels list.
+  const PATTERN = /\[[^\]]*['"]Easy Winner['"][^\]]*\]/;
   const ALLOW = new Set(['scripts/lib/commercial-designations.js']);
   // A list that means something else (the /biz headline chips) says so on the line.
   const OK_MARKER = /recouped-list-ok: \S/;

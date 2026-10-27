@@ -73,7 +73,7 @@ const URL_RE = /\bhttps?:\/\/\S+/gi;
 // something that reads like a checked source.
 const CITATION_FIELDS = ['capitalizationSource', 'recoupedSource'];
 const { NP_VENUES, venueMatches } = require('./nonprofit-venues');
-const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, VALID_DESIGNATION_BASES, DESIGNATION_BASES, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, returnedEstimatePct, labelSizingPct, isLossDesignation, lossDesignationFor, REPORTED_WIN_DESIGNATIONS } = require('./commercial-designations');
 const { conversionOf, conversionShapeProblems } = require('./commercial-conversion');
 const { COST_BASES, BASIS_CUE_TEXT } = require('./cost-split');
 const { CAPITALIZATION_BASES } = require('./public-source-text');
@@ -225,7 +225,7 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   // Breakout / Easy Winner / Windfall / Miracle imply the production recouped — require recouped=true.
   // Loss labels (Fizzle, Flop, Did Not Recoup) imply it did not — require recouped=false (null means we don't know).
   // Catches the purpose-2025 / floyd-collins-2025 class of inconsistency.
-  const WIN_DESIGNATIONS = ['Breakout', 'Easy Winner', 'Windfall', 'Miracle'];
+  const WIN_DESIGNATIONS = REPORTED_WIN_DESIGNATIONS;
   const modelEstimated = show.designationBasis === DESIGNATION_BASES.MODEL_ESTIMATE;
   // A model-estimate tier is our estimate, not a reported recoupment (owner 2026-10-24, BRO-6158).
   if (WIN_DESIGNATIONS.includes(show.designation) && show.recouped !== true && !modelEstimated) {

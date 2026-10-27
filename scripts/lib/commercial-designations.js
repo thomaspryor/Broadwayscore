@@ -208,20 +208,20 @@ function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
   return { moves, held: moves.length > limit };
 }
 /** Classes the recoupment rule never moves. */
-const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Breakout', 'Easy Winner', 'Nonprofit', 'Tour Stop']);
+const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
 
 /**
  * Labels that say the show recouped. Breakout (owner 2026-10-27, BRO-6446):
  * a new or untested work, with no star whose name sells the tickets, that
- * recouped; it replaces Easy Winner or Trickle, never Windfall or Miracle.
- * Compare with isRecoupedDesignation, never a hand-written list
- * (tests/unit/recouped-designations.test.mjs).
+ * recouped; it replaces Easy Winner or Trickle, and a reported return of
+ * TRICKLE_MAX_MULTIPLE or more moves it to Windfall (designation-rule.js).
+ * Use these lists, never a hand-written one (tests/unit/recouped-designations.test.mjs).
  */
 const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Breakout', 'Easy Winner', 'Trickle']);
-const RECOUPED_DESIGNATION_SET = new Set(RECOUPED_DESIGNATIONS);
-function isRecoupedDesignation(designation) {
-  return RECOUPED_DESIGNATION_SET.has(designation);
-}
+/** Recouped labels that need a reported recoupment (recouped:true): never our estimate. */
+const REPORTED_WIN_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Breakout', 'Easy Winner']);
+/** Recouped labels that mean returned under TRICKLE_MAX_MULTIPLE: watched for crossing it. */
+const MODEST_RETURN_DESIGNATIONS = Object.freeze(['Trickle', 'Breakout']);
 
 /**
  * Model central recoupment % that contradicts a designation (a review flag,
@@ -278,7 +278,7 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, ownReturnedRangePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
-  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, isRecoupedDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
+  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, REPORTED_WIN_DESIGNATIONS, MODEST_RETURN_DESIGNATIONS, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,

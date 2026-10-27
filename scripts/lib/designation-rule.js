@@ -8,6 +8,7 @@
  *   Windfall = recouped, open-ended, returned >= 1.5x
  *   Miracle  = recouped decade-plus mega-hit (existing Miracles that have run
  *              10+ years stay Miracle)
+ *   Breakout = kept while returned < 1.5x; a reported 1.5x or more is Windfall
  *   Easy Winner, Nonprofit, Tour Stop: unchanged
  *   Fizzle / Flop: closed without recouping, >= / < 30% returned
  *   Did Not Recoup: closed without recouping, no returned % (BRO-5636)
@@ -95,6 +96,8 @@ function proposeDesignation({ record, show, model, now = Date.now(), modelTiebre
 
   const src = basis === 'reported' ? `reported ${multiple}x` : `model ${range[0]}x-${range[2]}x (central ${multiple}x)`;
   const conf = multiple < 1.15 || Math.abs(multiple - TRICKLE_MAX_MULTIPLE) < 0.15 ? 'low' : 'normal';
+  // Breakout says how the show recouped, not how much: kept under 1.5x (BRO-6446).
+  if (current === 'Breakout' && multiple < TRICKLE_MAX_MULTIPLE) return keep('breakout', `Breakout kept, returned under ${TRICKLE_MAX_MULTIPLE}x (${src})`);
   if (multiple < TRICKLE_MAX_MULTIPLE) return to('Trickle', basis, `recouped, returned under ${TRICKLE_MAX_MULTIPLE}x (${src})`, conf);
   if (current === 'Miracle') return to('Windfall', basis, `Miracle under ${MIRACLE_MIN_YEARS} years (${years.toFixed(1)}), ${src}`, conf);
   return to('Windfall', basis, `recouped, returned ${TRICKLE_MAX_MULTIPLE}x or more (${src})`, conf);

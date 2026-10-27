@@ -1348,7 +1348,7 @@ RULES:
    - "medium": Strongly implied by multiple data points or the Reddit Grosses Analysis post
    - "low": Inferred from a single Reddit comment, speculation, or unclear data
 3. NEVER auto-upgrade a designation to "Miracle" -- that requires extraordinary long-term proof.
-4. You MAY upgrade TBD -> Windfall if the show has CONFIRMED recoupment (high or medium confidence).
+4. You MAY upgrade TBD -> Windfall if the show has CONFIRMED recoupment (high or medium confidence). Use Breakout instead when it is a new or untested work with no big-star draw that recouped without a reported return of 1.5x or more.
 5. You MAY upgrade TBD -> a loss label if the show has CONFIRMED closing without recouping: Fizzle (${FIZZLE_MIN_RETURNED_PCT}% or more of the capitalization returned) or Flop (under ${FIZZLE_MIN_RETURNED_PCT}%) only when a source states how much came back, and propose that figure as estimatedRecoupmentPct too; otherwise "Did Not Recoup".
 6. Designation changes between non-TBD categories (e.g., Fizzle -> Windfall) should be flagged, not auto-applied.
 7. productionType changes should be flagged, not auto-applied.
