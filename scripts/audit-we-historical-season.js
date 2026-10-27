@@ -255,7 +255,10 @@ function main() {
   let reference = null;
   try {
     reference = JSON.parse(fs.readFileSync(path.join(root, 'data', 'audit', 'we-season-reference', `${season}.json`), 'utf8')).reference;
-  } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  } catch (e) {
+    // Advisory input: a broken list must not turn into a SEASON FAIL.
+    if (e.code !== 'ENOENT') console.log(`INFO completeness: reference list unreadable (${e.message.split('\n')[0]}); skipped`);
+  }
   const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions, textFiles, reference });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }

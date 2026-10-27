@@ -15,7 +15,6 @@
  * Theatre listings, the venue's Wikipedia article.
  */
 
-const { normalizeTitle } = require('./deduplication');
 const { foldDiacritics } = require('./title-match');
 const { getSeasonDates } = require('./we-seasons');
 const { THEATRICALIA_FIRST_PERFORMANCE_SOURCE } = require('./we-historical-dates');
@@ -114,16 +113,29 @@ function inSeason(date, season) {
   return d >= start && d <= new Date(end.getTime() + DAY_MS - 1);
 }
 
-const titleKey = t => foldDiacritics(normalizeTitle(String(t || '').replace(/\s*\/\s*/g, ' and '))).replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+// Own key, not deduplication.normalizeTitle: that drops a leading possessive
+// ("A Doll's House" to "house", "Neville's Island" to "island"), which merges
+// unrelated titles here.
+const titleKey = t => foldDiacritics(String(t || '').toLowerCase())
+  .replace(/\s*\/\s*/g, ' and ').replace(/&/g, ' and ').replace(/['’]/g, '')
+  .replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim()
+  .replace(/^(the|a|an) /, '').replace(/ the musical$/, '');
 
-/** Same title, allowing one side to carry a subtitle or a possessive brand the other drops. */
+/**
+ * Same title, allowing one side to carry a subtitle ("Macbeth" / "Macbeth: A
+ * New Version") or a possessive brand the other drops ("Disney's Aladdin").
+ * A bare word in front is a different show ("Top Girls" / "The Girls").
+ */
 function titlesMatch(a, b) {
   const x = titleKey(a);
   const y = titleKey(b);
   if (!x || !y) return false;
   if (x === y) return true;
-  const [short, long] = x.length <= y.length ? [x, y] : [y, x];
-  return short.length >= 5 && (long.startsWith(`${short} `) || long.endsWith(` ${short}`));
+  const [short, long, longRaw] = x.length <= y.length ? [x, y, b] : [y, x, a];
+  if (short.length < 5) return false;
+  if (long.startsWith(`${short} `)) return true;
+  // A brand needs a distinctive remainder: "A Doll's House" is not "House".
+  return short.length >= 7 && long.endsWith(` ${short}`) && /^[^:]*['’]s\s/i.test(String(longRaw));
 }
 
 // A dated corroborator (a review) must fall near the entry's start: a Guardian
@@ -155,9 +167,10 @@ function buildSeasonReference({ season, venueEntries, corroborators = [], wikipe
       if (!inSeason(e.start, season)) continue;
       const key = `${titleKey(e.title)}|${venue}`;
       if (seen.has(key)) continue;
-      seen.add(key);
       const days = runDays(e);
+      // Checked before marking seen: a one-night gala must not hide a full run of the same title.
       if (days !== null && days < MIN_RUN_DAYS) { excluded.push({ title: e.title, venue, start: e.start, end: e.end, reason: `run of ${days} days < ${MIN_RUN_DAYS}` }); continue; }
+      seen.add(key);
       const sources = ['theatricalia'];
       for (const c of corroborators) if (c.titles.some(t => corroborates(t, e))) sources.push(c.name);
       const k = titleKey(e.title);
@@ -190,8 +203,11 @@ function referenceCoverage({ reference, shows }) {
       const f = Date.parse(firstDate(s));
       if (Number.isNaN(f)) return false;
       if (Math.abs(f - refStart) <= MATCH_WINDOW_DAYS * DAY_MS) return true;
-      const close = Date.parse(s.closingDate || '');
-      if (Number.isNaN(close) || f > refStart) return false;
+      if (f > refStart) return false;
+      // No closing date: still running (Mamma Mia!, Dirty Dancing), so it spans the start.
+      if (!s.closingDate) return true;
+      const close = Date.parse(s.closingDate);
+      if (Number.isNaN(close)) return false;
       // The run spans the start, or the entry is a return run of that
       // production (The Kite Runner: Wyndham's to Mar 2017, Playhouse from Jun).
       return close >= refStart || refStart - close <= RETURN_RUN_DAYS * DAY_MS;

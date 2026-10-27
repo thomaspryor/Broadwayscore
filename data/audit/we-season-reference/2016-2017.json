@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T23:27:35.817Z",
+  "generatedAt": "2026-10-27T23:55:30.519Z",
   "season": "2016-2017",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
@@ -10,8 +10,8 @@
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 53,
-    "theatricaliaOnly": 11,
+    "reference": 52,
+    "theatricaliaOnly": 12,
     "excludedShortRuns": 4
   },
   "reference": [
@@ -643,25 +643,14 @@
       "url": "https://theatricalia.com/play/gwn/gangsta-granny/production/134r"
     },
     {
-      "title": "13, the musical / The Adventures of Pinocchio",
-      "venue": "Ambassadors Theatre",
-      "start": "2017-07-28",
-      "end": "2017-08-31",
-      "sources": [
-        "theatricalia",
-        "guardian"
-      ],
-      "corroborated": true,
-      "url": "https://theatricalia.com/play/gy6/13-the-musical-the-adventures-of-pinocchio/production/137n"
-    },
-    {
       "title": "Apologia",
       "venue": "Trafalgar Theatre",
       "start": "2017-07-29",
       "end": "2017-11-18",
       "sources": [
         "theatricalia",
-        "guardian"
+        "guardian",
+        "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/ecf/apologia/production/14y3"
@@ -779,6 +768,17 @@
       ],
       "corroborated": false,
       "url": "https://theatricalia.com/play/gwp/tape-face/production/134s"
+    },
+    {
+      "title": "13, the musical / The Adventures of Pinocchio",
+      "venue": "Ambassadors Theatre",
+      "start": "2017-07-28",
+      "end": "2017-08-31",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gy6/13-the-musical-the-adventures-of-pinocchio/production/137n"
     },
     {
       "title": "Evita",

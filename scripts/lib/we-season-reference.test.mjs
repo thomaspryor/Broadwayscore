@@ -183,3 +183,35 @@ test('referenceCandidates adds a production once when the list also carries its 
   });
   assert.deepEqual(c.map(x => x.venue), ["Wyndham's Theatre"]);
 });
+
+test('titlesMatch keeps possessive and bare-prefix titles apart (ship-check BRO-6450)', () => {
+  assert.ok(!ref.titlesMatch("Neville's Island", 'Treasure Island'));
+  assert.ok(!ref.titlesMatch("A Doll's House", 'House'));
+  assert.ok(!ref.titlesMatch('Top Girls', 'The Girls'));
+  assert.ok(!ref.titlesMatch('Lady Macbeth', 'Macbeth'));
+  assert.ok(!ref.titlesMatch('& Juliet', 'Romeo and Juliet'));
+  assert.ok(!ref.titlesMatch('Wise Children', 'The Children'));
+  assert.ok(ref.titlesMatch("Disney's Aladdin", 'Aladdin'));
+  assert.ok(ref.titlesMatch("Monty Python's Spamalot", 'Spamalot'));
+  assert.ok(ref.titlesMatch('Jersey Boys', 'Jersey Boys: The Story of Frankie Valli'));
+});
+
+test('referenceCoverage treats a row with no closing date as still running', () => {
+  const c = ref.referenceCoverage({
+    reference: [{ title: 'Mamma Mia!', venue: 'Novello Theatre', start: '2012-09-06' }],
+    shows: [{ id: 'mamma-mia-west-end', title: 'Mamma Mia!', category: 'west-end', openingDate: '1999-04-06' }],
+  });
+  assert.equal(c.share, 1);
+});
+
+test('buildSeasonReference: a one-night gala listed first does not hide the full run', () => {
+  const { entries } = ref.buildSeasonReference({
+    season: '2012-2013',
+    venueEntries: [{ venue: 'Garrick Theatre', entries: [
+      { title: 'Loserville', start: '2013-01-20', end: '2013-01-20', url: 'g' },
+      { title: 'Loserville', start: '2012-10-17', end: '2013-01-31', url: 'r' },
+    ] }],
+    corroborators: [{ name: 'tr-az', titles: ['Loserville'] }],
+  });
+  assert.deepEqual(entries.map(e => e.url), ['r']);
+});

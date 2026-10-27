@@ -1,47 +1,19 @@
 {
   "issueNumber": "bro-6450-we-2016-17-b",
-  "planId": "d35ad4d9-a816-4ddb-ab02-f66057c8966c",
+  "planId": "3b8925e0-1c8e-4bb4-88fb-9fb167c26349",
   "status": "pending",
-  "createdAt": "2026-10-27T23:14:50.052Z",
+  "createdAt": "2026-10-27T23:55:51.370Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Add 2 closed West End production(s) for 2016-2017 from the historical backfill (we-historical:theatricalia; BRO-6450).",
+    "summary": "Add 1 closed West End production(s) for 2016-2017 from the historical backfill (we-historical:theatricalia; BRO-6450).",
     "steps": [
-      "Append apologia-west-end-2017 (Trafalgar Theatre, 2017-07-29 to 2017-11-18)",
       "Append follies-west-end-2017 (Olivier Theatre, 2017-08-22 to 2018-01-03)"
     ],
     "riskLevel": "Low",
     "actions": [
-      {
-        "type": "add-show",
-        "show": {
-          "id": "apologia-west-end-2017",
-          "title": "Apologia",
-          "slug": "apologia-west-end-2017",
-          "venue": "Trafalgar Theatre",
-          "previewsStartDate": "2017-07-29",
-          "openingDate": "2017-07-29",
-          "closingDate": "2017-11-18",
-          "status": "closed",
-          "category": "west-end",
-          "market": "west-end",
-          "type": "play",
-          "tags": [
-            "historical"
-          ],
-          "season": "2016-2017",
-          "discoverySource": "we-historical:theatricalia",
-          "discoveredAt": "2026-10-27T23:14:49.996Z",
-          "openingDateSource": "theatricalia-first-performance",
-          "closingDateSource": "theatricalia",
-          "evidenceUrls": [
-            "https://theatricalia.com/play/ecf/apologia/production/14y3"
-          ]
-        }
-      },
       {
         "type": "add-show",
         "show": {
@@ -61,7 +33,7 @@
           ],
           "season": "2016-2017",
           "discoverySource": "we-historical:theatricalia",
-          "discoveredAt": "2026-10-27T23:14:50.016Z",
+          "discoveredAt": "2026-10-27T23:55:51.319Z",
           "openingDateSource": "theatricalia-first-performance",
           "closingDateSource": "theatricalia",
           "evidenceUrls": [

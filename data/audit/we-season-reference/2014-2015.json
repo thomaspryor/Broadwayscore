@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T23:27:34.916Z",
+  "generatedAt": "2026-10-27T23:55:29.513Z",
   "season": "2014-2015",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
@@ -11,8 +11,8 @@
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 48,
-    "theatricaliaOnly": 4,
+    "reference": 46,
+    "theatricaliaOnly": 6,
     "excludedShortRuns": 3
   },
   "reference": [
@@ -609,8 +609,7 @@
         "theatricalia",
         "tr-az",
         "olt",
-        "guardian",
-        "wikipedia"
+        "guardian"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/ghn/green-days-american-idiot/production/12ex"
@@ -631,18 +630,6 @@
       "url": "https://theatricalia.com/play/gnc/impossible/production/12nh"
     },
     {
-      "title": "Barmy Britain Part Three",
-      "venue": "Garrick Theatre",
-      "start": "2015-07-25",
-      "end": "2015-09-05",
-      "sources": [
-        "theatricalia",
-        "tr-az"
-      ],
-      "corroborated": true,
-      "url": "https://theatricalia.com/play/gy0/barmy-britain-part-three/production/137a"
-    },
-    {
       "title": "Dear Lupin",
       "venue": "Apollo Theatre",
       "start": "2015-07-30",
@@ -656,18 +643,6 @@
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/h0s/dear-lupin/production/13e3"
-    },
-    {
-      "title": "A Midsummer Night's Dream in New Orleans",
-      "venue": "Arts Theatre",
-      "start": "2015-08-04",
-      "end": "2015-08-30",
-      "sources": [
-        "theatricalia",
-        "tr-az"
-      ],
-      "corroborated": true,
-      "url": "https://theatricalia.com/play/gmb/a-midsummer-nights-dream-in-new-orleans/production/12km"
     },
     {
       "title": "McQueen",
@@ -726,6 +701,28 @@
       ],
       "corroborated": false,
       "url": "https://theatricalia.com/play/gya/be-bop-a-lula-1st-wed-of-each-month/production/137w"
+    },
+    {
+      "title": "Barmy Britain Part Three",
+      "venue": "Garrick Theatre",
+      "start": "2015-07-25",
+      "end": "2015-09-05",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gy0/barmy-britain-part-three/production/137a"
+    },
+    {
+      "title": "A Midsummer Night's Dream in New Orleans",
+      "venue": "Arts Theatre",
+      "start": "2015-08-04",
+      "end": "2015-08-30",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gmb/a-midsummer-nights-dream-in-new-orleans/production/12km"
     }
   ],
   "excluded": [

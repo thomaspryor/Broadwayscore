@@ -54,6 +54,7 @@ const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('
 const { candidatesPath } = require('./discover-historical-shows-we');
 const { oltPath } = require('./build-we-olt-season');
 const { referenceCandidates } = require('./lib/we-season-reference');
+const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 
@@ -394,14 +395,21 @@ function main() {
     ? buildReviewLedCandidates({ season, lookups: reviewLed.lookups, shows: showsData.shows })
     : [];
   const oltCandidates = oltAudit?.candidates || [];
+  // Rows other seasons' plans already queue count as on the site: a transfer
+  // or return run that crosses a season boundary (Great Britain: Lyttelton
+  // Jun 2014, Haymarket Sep 2014) is added once, by the earlier season.
+  // This season's own pending rows stay out so a rerun rewrites its plan.
+  const liveIds = new Set(showsData.shows.map(s => s.id));
+  const queued = loadPendingAddShows().filter(s => s.category === 'west-end' && s.season !== season && !liveIds.has(s.id));
+  const knownShows = [...showsData.shows, ...queued];
   const refCandidates = referenceFile
-    ? referenceCandidates({ season, reference: referenceFile.reference || [], shows: showsData.shows })
+    ? referenceCandidates({ season, reference: referenceFile.reference || [], shows: knownShows })
     : [];
   // Dated listings first: a review-led row for the same production then
   // dedups against the listing row promoted ahead of it. Reference rows last:
   // a listing row carries a press night they lack.
   const candidates = [...(audit.candidates || []), ...oltCandidates, ...reviewLedCandidates, ...refCandidates];
-  const { toPromote, skipped, typeGuessed } = planPromotions({ candidates, shows: showsData.shows, approvals, only });
+  const { toPromote, skipped, typeGuessed } = planPromotions({ candidates, shows: knownShows, approvals, only });
 
   const unknownOnly = [...only].filter(t => !candidates.some(c => c.title === t));
   if (unknownOnly.length) console.log(`--only titles not in the candidates file: ${unknownOnly.join(' | ')}`);
