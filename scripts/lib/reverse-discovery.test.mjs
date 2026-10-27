@@ -611,3 +611,33 @@ test('BRO-4689: caps single-word dash head applies to NYC only', () => {
   const we = buildShowTitleIndex([{ id: 's', title: 'STORIES – The Tap Dance Sensation', category: 'off-west-end', status: 'open' }], 'we');
   assert.equal(titleMatchesIndex('Stories', we), false);
 });
+
+// BRO-4689 (2026-10-27): both remaining "missing" shows were catalogued. 860
+// is "Billy Crystal 860" with akaTitles ["860"]; the Guardian heads Murder in
+// the Cathedral with the author's possessive.
+test('BRO-4689: akaTitles are indexed, possessive author lead is dropped', () => {
+  const { resolveMatchedShowId } = require('./reverse-discovery.js');
+  const shows = [
+    { id: 'billy-crystal-860-2026', title: 'Billy Crystal 860', akaTitles: ['860'], category: 'broadway', status: 'open' },
+    { id: 'murder-cathedral-off-west-end-2026', title: 'Murder in the Cathedral', category: 'off-west-end', status: 'open' },
+  ];
+  const nyc = buildShowTitleIndex(shows, 'nyc');
+  const we = buildShowTitleIndex(shows, 'we');
+  assert.equal(titleMatchesIndex('860', nyc), true);
+  assert.equal(resolveMatchedShowId('860', nyc), 'billy-crystal-860-2026');
+  assert.equal(titleMatchesIndex('860', we), false); // market scoping still applies to aliases
+  assert.equal(titleMatchesIndex('TS Eliot’s Murder in the Cathedral', we), true);
+  assert.equal(resolveMatchedShowId('TS Eliot’s Murder in the Cathedral', we), 'murder-cathedral-off-west-end-2026');
+  // The lead-drop needs a real remainder and a capitalised lead.
+  assert.equal(titleMatchesIndex("Shakespeare's Globe", buildShowTitleIndex([{ title: 'Globe', category: 'west-end', status: 'open' }], 'we')), false);
+  assert.equal(titleMatchesIndex("the world's Cathedral", we), false);
+});
+
+test('BRO-4689: "<Person> Returns to Broadway in SHOW" extracts the show, not the star', () => {
+  const x = extractShowTitleFromBwwRoundup;
+  assert.equal(x('Review Roundup: Billy Crystal Returns to Broadway in 860'), '860');
+  assert.equal(x('Review Roundup: Gaten Matarazzo Comes to Broadway in RENT'), 'RENT');
+  // A show returning keeps the existing verb split.
+  assert.equal(x('Review Roundup: MAMMA MIA! Returns to Broadway'), 'MAMMA MIA!');
+  assert.equal(x('Review Roundup: OH, MARY! Returns to Broadway in New Cast'), 'OH, MARY!');
+});

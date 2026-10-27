@@ -21,6 +21,7 @@
 const { normalizeTitle } = require('./title-match');
 const { decodeHtmlEntities } = require('./text-cleaning');
 const { ukFlagshipVenueFor } = require('./uk-regional-guardian');
+const { aliasNorms } = require('./aka-title-match');
 
 // BWW's gnews sitemap double-encodes ampersands, so retain two passes.
 function decodeDiscoveryText(s) {
@@ -205,6 +206,14 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
     /^(?:[A-Z][\w.'’-]*\s+){2,4}(?:&|and)\s+(?:[A-Z][\w.'’-]*\s+){2,4}in\s+(.+)$/
   );
   if (actorLead) rest = actorLead[1].trim();
+  // "<Person> Returns to Broadway in SHOW": the returning subject is a star,
+  // not the show ("Billy Crystal Returns to Broadway in 860", BRO-4689). Only
+  // for a 2-4 word Title-case name lead, so "MAMMA MIA! Returns to Broadway"
+  // still splits at the verb below.
+  const personLead = rest.match(
+    /^(?:[A-Z][a-z][\w.'’-]*\s+){1,3}[A-Z][a-z][\w.'’-]*\s+(?:Returns?|Comes?|Heads?)\s+to\s+(?:Broadway|Off-Broadway)\s+in\s+(.+)$/
+  );
+  if (personLead) rest = personLead[1].trim();
   const sep = rest.match(
     /^(.{2,80}?)(?:,\s*(?:Starring|Featuring|With)\b|\s+(?:Launches|World\s+Premiere(?!\s+of\b))\b|\s+-\s+All\s+the\s+Reviews|\s+(?:Opens?\b|Comes?\s+to|Starring|Begins|Returns?\s+to|Transfers?\s+to)\b|\s+(?:Off-Broadway|on\s+Broadway)(?=\s|$))/i
   );
@@ -409,6 +418,13 @@ function titleCandidates(title) {
   if (flat !== title && !out.includes(flat)) out.push(flat);
   const tail = capsTitleTail(title);
   if (tail && !out.includes(tail)) out.push(tail);
+  // Possessive author lead: "TS Eliot's Murder in the Cathedral" (Guardian)
+  // for the catalogued "Murder in the Cathedral" (BRO-4689). The 's-strip
+  // above keeps the name ("TS Eliot Murder…"); this drops the whole lead.
+  // Lead is 1-3 capitalised words; the rest must be multi-word (a one-word
+  // rest is the "Shakespeare's Globe" shape; caps tails cover BWW's case).
+  const lead = String(title || '').match(/^[A-Z][\w.\-]*(?:\s+[A-Z][\w.\-]*){0,2}[’'‘]s\s+(.+)$/);
+  if (lead && /\S\s+\S/.test(lead[1]) && lead[1].length >= 6 && !out.includes(lead[1])) out.push(lead[1]);
   return out;
 }
 
@@ -674,6 +690,10 @@ function buildShowTitleIndex(shows, market = null) {
     if (s.title && /\s+(?:on\s+Broadway|Off-Broadway)$/i.test(s.title)) {
       raws.push(s.title.replace(/\s+(?:on\s+Broadway|Off-Broadway)$/i, ''));
     }
+    // akaTitles: the press/billing title differs from the catalogue title
+    // ("860" for "Billy Crystal 860"); the show read as missing for days
+    // although its akaTitles already said so (BRO-4689).
+    raws.push(...aliasNorms(s));
     for (const raw of raws) {
       if (!raw) continue;
       const n = normalizeTitle(raw);
