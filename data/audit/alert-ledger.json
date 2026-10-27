@@ -770,19 +770,17 @@
       "resolveReason": "absent"
     },
     "time-to-publish-sla:unmeasurable": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Time-to-publish SLA cannot be measured — only 0 review(s) in scope (need 5)",
       "firstSeen": "2026-08-08T11:39:46.729Z",
-      "incidentOpenedAt": "2026-10-25T08:14:45.996Z",
-      "lastSeen": "2026-10-26T00:18:16.840Z",
-      "lastNotifiedAt": "2026-10-25T08:14:45.996Z",
-      "lastSurfacedAt": "2026-10-25T08:14:45.996Z",
-      "notifyCount": 11,
+      "incidentOpenedAt": "2026-10-27T08:11:38.216Z",
+      "lastSeen": "2026-10-27T08:11:38.216Z",
+      "lastNotifiedAt": "2026-10-27T08:11:38.216Z",
+      "lastSurfacedAt": "2026-10-27T08:11:38.216Z",
+      "notifyCount": 12,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 2,
-      "resolvedAt": "2026-10-26T08:10:23.271Z"
+      "linearIdentifier": null
     },
     "affiliate:bot-divergence": {
       "status": "resolved",
@@ -2783,7 +2781,7 @@
       "resolveReason": "absent"
     },
     "time-to-publish-sla:missed": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Time-to-publish SLA missed — 0% within 15 min (target 90%)",
       "firstSeen": "2026-09-05T02:23:04.226Z",
@@ -2793,7 +2791,8 @@
       "lastSurfacedAt": "2026-10-26T08:10:23.262Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-27T08:11:38.202Z"
     },
     "opening-night-slug-mismatch-the-story-west-end-2026": {
       "status": "resolved",
@@ -25145,13 +25144,13 @@
       "title": "Opening Night Email Never Reached Subscribers — Martin Guerre",
       "firstSeen": "2026-10-23T07:58:39.315Z",
       "incidentOpenedAt": "2026-10-23T07:58:39.315Z",
-      "lastSeen": "2026-10-26T08:10:11.308Z",
+      "lastSeen": "2026-10-27T08:11:32.237Z",
       "lastNotifiedAt": "2026-10-23T07:58:39.315Z",
       "lastSurfacedAt": "2026-10-23T07:58:39.315Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "land:land/bro-6018-agg-stars": {
       "status": "resolved",
@@ -25759,10 +25758,10 @@
       "title": "The Stage roundups: scrape-thestage-roundups.yml failed its last 19 runs in a row (last success 2026-06-09)",
       "firstSeen": "2026-10-24T07:38:57.669Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.669Z",
-      "lastSeen": "2026-10-26T08:08:06.141Z",
-      "lastNotifiedAt": "2026-10-26T08:08:06.141Z",
-      "lastSurfacedAt": "2026-10-26T08:08:06.141Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-27T08:09:20.385Z",
+      "lastNotifiedAt": "2026-10-27T08:09:20.385Z",
+      "lastSurfacedAt": "2026-10-27T08:09:20.385Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -25772,10 +25771,10 @@
       "title": "NYC Theatre roundups: archive coverage 54% in 2025Q4+2026Q2 vs 82% baseline (2024Q2+2024Q4+2025Q1+2025Q2)",
       "firstSeen": "2026-10-24T07:38:57.677Z",
       "incidentOpenedAt": "2026-10-24T07:38:57.677Z",
-      "lastSeen": "2026-10-26T08:08:06.149Z",
-      "lastNotifiedAt": "2026-10-26T08:08:06.149Z",
-      "lastSurfacedAt": "2026-10-26T08:08:06.149Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-27T08:09:20.401Z",
+      "lastNotifiedAt": "2026-10-27T08:09:20.401Z",
+      "lastSurfacedAt": "2026-10-27T08:09:20.401Z",
+      "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null
     },
