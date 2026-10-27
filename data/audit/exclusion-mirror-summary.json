@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-27T16:21:51.111Z",
-  "totalScanned": 63793,
-  "totalExcluded": 28685,
+  "generatedAt": "2026-10-27T16:49:17.606Z",
+  "totalScanned": 63838,
+  "totalExcluded": 28729,
   "ruleCounts": {
     "wrongProduction": 18842,
     "duplicateOf": 2193,
     "wrongShow": 1850,
     "rejectionReason": 1242,
     "unverifiableWebSearchRow": 951,
-    "noTextOrScoreSignal": 743,
+    "noTextOrScoreSignal": 786,
     "nonReview": 632,
     "wrongAttribution": 347,
     "blockedReviewUrl": 223,
@@ -18,7 +18,7 @@
     "isSyndicatedDuplicate": 140,
     "knownSyndicationSecondary": 131,
     "previewPlaceholder": 121,
-    "cvWrongArticleHighConfidence": 96,
+    "cvWrongArticleHighConfidence": 97,
     "scoreStatusToBeCalculated": 91,
     "listingPageUrl": 79,
     "namedNonReviewUrl": 64,
@@ -42,25 +42,21 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 14,
-    "wrongShow": 29,
-    "rejectionReason": 15,
-    "noTextOrScoreSignal": -21,
-    "nonReview": 1,
-    "bodylessAggregatorScoreUncorroborated": -1
+    "noTextOrScoreSignal": 43,
+    "cvWrongArticleHighConfidence": 1
   },
-  "previousGeneratedAt": "2026-10-27T16:06:35.617Z",
+  "previousGeneratedAt": "2026-10-27T16:21:51.111Z",
   "mirror": {
     "comparedShows": 2933,
-    "comparedFiles": 63162,
-    "agreeExcluded": 28502,
-    "agreeIncluded": 34283,
-    "mirrorOnly": 108,
+    "comparedFiles": 63206,
+    "agreeExcluded": 28539,
+    "agreeIncluded": 34289,
+    "mirrorOnly": 109,
     "rebuildOnly": 269,
-    "disagreements": 377,
+    "disagreements": 378,
     "disagreementRate": 0.006,
     "mirrorOnlyByRule": {
-      "cvWrongArticleHighConfidence": 60,
+      "cvWrongArticleHighConfidence": 61,
       "contentTierInvalid": 31,
       "noTextOrScoreSignal": 10,
       "previewPlaceholder": 3,
@@ -87,7 +83,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 78,
-    "notComparedFiles": 631
+    "notComparedFiles": 632
   },
   "previousDisagreementRate": 0.006
 }

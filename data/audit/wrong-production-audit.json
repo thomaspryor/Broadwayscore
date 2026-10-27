@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T16:22:07.445Z",
+  "timestamp": "2026-10-27T16:49:34.032Z",
   "stats": {
-    "totalReviews": 63638,
-    "alreadyFlagged": 21743,
+    "totalReviews": 63682,
+    "alreadyFlagged": 21742,
     "dateGuardCatches": 238,
-    "directorMismatch": 2361,
-    "tvFilmSignals": 1792,
+    "directorMismatch": 2359,
+    "tvFilmSignals": 1791,
     "londonSignals": 3057,
     "offBroadwaySignals": 563,
     "yearMismatch": 217,
-    "noPublishDate": 5634
+    "noPublishDate": 5662
   },
   "findings": [
     {
@@ -17605,34 +17605,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"patrick marber\" from glengarry-glen-ross-2025"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "file": "nydailynews--chris-jones.json",
-      "score": 45,
-      "publishDate": "2012-12-08",
-      "url": "https://www.nydailynews.com/2012/12/08/theater-review-glengarry-glen-ross/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from glengarry-glen-ross-2005"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-2012",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 45,
-      "publishDate": "2012-12-08",
-      "url": "https://www.nydailynews.com/2012/12/08/theater-review-glengarry-glen-ross/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"joe mantello\" from glengarry-glen-ross-2005"
         }
       ]
     },
@@ -37606,7 +37578,7 @@
     {
       "showId": "private-lives-west-end-2013",
       "file": "british-theatre--philip-fisher.json",
-      "score": null,
+      "score": 66,
       "publishDate": "2013-07-04",
       "url": "https://www.britishtheatreguide.info/reviews/private-lives-gielgud-8990",
       "findings": [
@@ -38951,20 +38923,6 @@
       "score": 44,
       "publishDate": "October 24, 2024",
       "url": "https://www.washingtonpost.com/entertainment/theater/2024/10/24/romeo-juliet-left-tenth/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "romeo-juliet-2024",
-      "file": "wsj--charles-isherwood.json",
-      "score": 76,
-      "publishDate": "2024-10-25",
-      "url": "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegler-kit-connor-sam-gold-6b43d781?gaa_at=eafs&gaa_n=AWEtsqeL3K7WIFKocTTTqTwWildtFfcI3B5JhToEbF36Yw1Egh9ZJJynoN3j&gaa_ts=69952112&gaa_sig=jBeIdDfA3OQqzyXRhBkhqZ9-Mk82H1TELktzPgSQAP0N4khGPGBvSFX-KvV7MqvHTQQvi4mP8vS0WdbHr7xKHA%3D%3D",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -45935,6 +45893,7 @@
     {
       "showId": "the-commitments-west-end-2013",
       "file": "london-box-office--phil-willmott.json",
+      "score": 94,
       "publishDate": "2015-09-28",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-the-commitments",
       "findings": [
@@ -62441,7 +62400,7 @@
     {
       "showId": "alan-bennetts-untold-stories-west-end-2013",
       "file": "standard--the-standard.json",
-      "score": null,
+      "score": 77,
       "publishDate": "2013-04-05",
       "url": "https://www.standard.co.uk/culture/theatre/untold-stories-duchess-theatre-theatre-review-8557957.html",
       "findings": [
@@ -76600,7 +76559,7 @@
     {
       "showId": "hedda-gabler-west-end-2012",
       "file": "british-theatre--philip-fisher.json",
-      "score": null,
+      "score": 75,
       "publishDate": "2012-09-13",
       "url": "https://www.britishtheatreguide.info/reviews/hedda-gabler-old-vic-8023",
       "findings": [
