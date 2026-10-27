@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-26T20:17:16.448Z",
+  "generatedAt": "2026-10-27T19:48:39.461Z",
   "counts": {
-    "router": 205,
+    "router": 206,
     "digest": 1,
     "direct": 0,
     "humanCallerIgnoresDigest": 0
@@ -9,21 +9,21 @@
   "senders": [
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 744,
+      "line": 748,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 796,
+      "line": 800,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 845,
+      "line": 849,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -65,7 +65,7 @@
     },
     {
       "file": ".github/workflows/process-feedback.yml",
-      "line": 567,
+      "line": 572,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -86,35 +86,35 @@
     },
     {
       "file": ".github/workflows/test-ugc-roundtrip.yml",
-      "line": 82,
+      "line": 86,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": ".github/workflows/test-ugc-roundtrip.yml",
-      "line": 134,
+      "line": 138,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4434,
+      "line": 4444,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4443,
+      "line": 4453,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6546,
+      "line": 6556,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -156,7 +156,7 @@
     },
     {
       "file": ".github/workflows/ux-walkthrough.yml",
-      "line": 114,
+      "line": 118,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -744,14 +744,14 @@
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 397,
+      "line": 396,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/dispatch-watchdog.js",
-      "line": 515,
+      "line": 514,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -905,28 +905,28 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2673,
+      "line": 2709,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2841,
+      "line": 2877,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5630,
+      "line": 5675,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5662,
+      "line": 5707,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -1080,7 +1080,7 @@
     },
     {
       "file": "scripts/lib/opening-night-lane/driver.js",
-      "line": 137,
+      "line": 140,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -1308,6 +1308,13 @@
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
+    },
+    {
+      "file": "scripts/route-cost-report-alerts.js",
+      "line": 92,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "auto"
     },
     {
       "file": "scripts/route-live-data-failures.js",
