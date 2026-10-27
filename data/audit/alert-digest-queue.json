@@ -140,41 +140,6 @@
     "queuedAt": "2026-10-27T09:43:51.696Z"
   },
   {
-    "conditionKey": "opening-night-drift:the-curious-case-of-benjamin-button-off-broadway-2026",
-    "title": "Opening night drift: The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): local review-texts=27, reviews.json aggregate=24, live production=24, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40486753458",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=27, aggregate=24, live=24, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-10-21",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40486753458)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-10-27T10:16:35.064Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:the-pianist-off-west-end-2026",
     "title": "1 review(s) for the-pianist-off-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--5e07c019.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/the-pianist-review-park-theatre-london",
@@ -560,5 +525,40 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-27T19:16:41.552Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "Opening night drift: The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
+    "description": "Review counts do not reconcile for The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026): local review-texts=27, reviews.json aggregate=24, live production=24, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40578752772",
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "The Curious Case of Benjamin Button (the-curious-case-of-benjamin-button-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=27, aggregate=24, live=24, drift=3",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-10-21",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40578752772)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-27T20:33:45.424Z"
   }
 ]
