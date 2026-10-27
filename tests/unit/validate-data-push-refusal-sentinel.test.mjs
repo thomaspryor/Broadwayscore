@@ -15,6 +15,12 @@
  * override the shows.json path it validates; every other data file it reads
  * still resolves against the real data/ dir.
  *
+ * Pass --write because BRO-5892's cloudAuditDryRun defaults cloud sessions to
+ * dry-run mode, which suppresses both writing and clearing the sentinel.
+ * VALIDATE_DATA_SHOWS_JSON keeps shows writes in the throwaway copy and enables
+ * FIXTURE_MODE to block shared audit-artifact writes; RUNNER_TEMP isolates the
+ * sentinel too.
+ *
  * The two "clean shows.json → exit 0" subtests below run validate-data.js
  * against an UNMODIFIED copy of the live corpus — they cannot use a hand-built
  * minimal fixture instead (rejected via /second-opinion, 2026-08-23):
@@ -90,11 +96,11 @@ function plantSyntheticBadRow(fixturePath) {
   writeFileSync(fixturePath, JSON.stringify(data, null, 2));
 }
 
-function runValidate(fixturePath) {
+function runValidate(fixturePath, env = process.env) {
   try {
-    execFileSync('node', [VALIDATE], {
+    execFileSync('node', [VALIDATE, '--write'], {
       stdio: 'pipe',
-      env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: fixtureDir },
+      env: { ...env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: fixtureDir },
       // Same ceiling, same reason, as validate-data-venue-complex-wiring.test.mjs:
       // the 1 MiB default killed that sibling with ENOBUFS on main and turned
       // Unit Tests red (run 33989118480). This fixture is a full-corpus copy so
@@ -143,21 +149,26 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
     }
   });
 
-  test('corrupt shows.json → exit 1, sentinel written with marker', () => {
+  test('corrupt shows.json → exit 1, sentinel written with marker', async (t) => {
     const fixturePath = freshFixtureCopy();
     try {
       plantSyntheticBadRow(fixturePath);
-      const code = runValidate(fixturePath);
-      assert.strictEqual(code, 1, 'expected exit 1 when shows.json has a null-category open show');
-      assert.strictEqual(existsSync(SENTINEL), true,
-        'sentinel was NOT written — push-core-data would push the corrupt row to the private repo');
-      const content = readFileSync(SENTINEL, 'utf8');
-      // Assert on the CONTRACT (refusal marker always present), not the brittle first-error
-      // reason — validate-data runs many checks and any earlier unrelated error would
-      // displace our synthetic one as errors[0]. The contract for push-core-data is "the
-      // marker line exists"; the reason is operator-facing detail, not test surface.
-      assert.match(content, /validate-data\.js refused push/, 'sentinel missing the refusal marker line');
-      assert.match(content, /reason:/, 'sentinel missing the reason: prefix that operators key on');
+      // Reuse this full-corpus run for the cloud regression to stay within CI's timeout.
+      await t.test('cloud session: sentinel written without GITHUB_ACTIONS', () => {
+        const env = { ...process.env, CLAUDE_CODE_REMOTE: 'true' };
+        delete env.GITHUB_ACTIONS;
+        const code = runValidate(fixturePath, env);
+        assert.strictEqual(code, 1, 'expected exit 1 when shows.json has a null-category open show');
+        assert.strictEqual(existsSync(SENTINEL), true,
+          'sentinel was NOT written: push-core-data would push the corrupt row to the private repo');
+        const content = readFileSync(SENTINEL, 'utf8');
+        // Assert on the CONTRACT (refusal marker always present), not the brittle first-error
+        // reason: validate-data runs many checks and any earlier unrelated error would
+        // displace our synthetic one as errors[0]. The contract for push-core-data is "the
+        // marker line exists"; the reason is operator-facing detail, not test surface.
+        assert.match(content, /validate-data\.js refused push/, 'sentinel missing the refusal marker line');
+        assert.match(content, /reason:/, 'sentinel missing the reason: prefix that operators key on');
+      });
     } finally {
       cleanupFixture();
     }
