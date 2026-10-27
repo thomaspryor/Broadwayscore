@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-6036-e",
-  "planId": "3dc79b31-876e-420c-a5a6-9f2af01a4fbb",
+  "planId": "769e98dd-4948-4f57-a97a-ef60efb23f4c",
   "status": "pending",
-  "createdAt": "2026-10-27T16:49:53.176Z",
+  "createdAt": "2026-10-27T16:53:40.552Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-6036 part e: date the last 25 dateless closed West End rows from sourced run pages; 23 get the first performance (source first-performance-no-press-night-found, no press night published), Shitheads and Dorian Gray get press nights from royalcourttheatre.com and theatreweekly.com (part 1 of 3)",
+    "summary": "BRO-6036 part e: date 24 more closed West End rows. 8 get a press night inferred from the review-publish-date cluster (inferred-from-reviews-mode), Shitheads and Dorian Gray get press nights from royalcourttheatre.com and theatreweekly.com (review clusters agree), 14 get the first performance (first-performance-no-press-night-found; run pages: venue sites, TodayTix, ATG, Kenwright). Ancient Grease stays undated (reviews 9 days after first performance, no cluster). (part 1 of 2)",
     "steps": [
       "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDate",
       "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDateSource",
@@ -53,7 +53,7 @@
         "showId": "whodunnit-unrehearsed-4-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Park Theatre run 11 May-28 Jun 2026 (ianvisits.co.uk, TodayTix)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: whodunnit-unrehearsed-4-off-west-end-2026.openingDateSource"
       },
       {
@@ -62,7 +62,7 @@
         "showId": "this-is-not-about-me-off-west-end-2026",
         "field": "openingDate",
         "oldValue": null,
-        "newValue": "2026-03-25",
+        "newValue": "2026-03-30",
         "description": "shows.json: this-is-not-about-me-off-west-end-2026.openingDate"
       },
       {
@@ -71,7 +71,7 @@
         "showId": "this-is-not-about-me-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Soho Theatre Upstairs run 25 Mar-18 Apr 2026 (timeout.com, northwestend.com review)",
+        "newValue": "inferred-from-reviews-mode",
         "description": "shows.json: this-is-not-about-me-off-west-end-2026.openingDateSource"
       },
       {
@@ -89,7 +89,7 @@
         "showId": "lander-23-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Punchdrunk run from 5 Nov 2025 (todaytix.com/london/shows/44984-lander-23)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: lander-23-off-west-end-2026.openingDateSource"
       },
       {
@@ -107,7 +107,7 @@
         "showId": "yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Peacock Theatre run 12-30 May 2026 (listing)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: yamato-the-drummers-of-japan-hito-no-chikara-the-power-of-human-strength-off-west-end-2026.openingDateSource"
       },
       {
@@ -125,7 +125,7 @@
         "showId": "jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Theatre on Kew panto run 18 Jul-23 Aug 2026 (listing)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: jack-and-the-beanstalk-theatre-on-kew-off-west-end-2026.openingDateSource"
       },
       {
@@ -143,7 +143,7 @@
         "showId": "grease-the-immersive-movie-musical-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Evolution London Battersea run 22 Jul-13 Sep 2026 (westendbestfriend.co.uk, todaytix.com)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: grease-the-immersive-movie-musical-off-west-end-2026.openingDateSource"
       },
       {
@@ -152,7 +152,7 @@
         "showId": "stage-kiss-off-west-end-2026",
         "field": "openingDate",
         "oldValue": null,
-        "newValue": "2026-05-08",
+        "newValue": "2026-05-14",
         "description": "shows.json: stage-kiss-off-west-end-2026.openingDate"
       },
       {
@@ -161,7 +161,7 @@
         "showId": "stage-kiss-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Hampstead Theatre run 8 May-13 Jun 2026 (hampsteadtheatre.com/whats-on/2026/stage-kiss)",
+        "newValue": "inferred-from-reviews-mode",
         "description": "shows.json: stage-kiss-off-west-end-2026.openingDateSource"
       },
       {
@@ -179,7 +179,7 @@
         "showId": "children-of-the-night-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Southwark Playhouse Borough run Mar-4 Apr 2026 (everything-theatre.co.uk review; the press night found was the Doncaster tour opener, 5 Feb)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: children-of-the-night-off-west-end-2026.openingDateSource"
       },
       {
@@ -188,7 +188,7 @@
         "showId": "lost-atoms-off-west-end-2026",
         "field": "openingDate",
         "oldValue": null,
-        "newValue": "2026-01-29",
+        "newValue": "2026-02-03",
         "description": "shows.json: lost-atoms-off-west-end-2026.openingDate"
       },
       {
@@ -197,7 +197,7 @@
         "showId": "lost-atoms-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Lyric Hammersmith run 29 Jan-28 Feb 2026 (timeout.com, curveonline.co.uk)",
+        "newValue": "inferred-from-reviews-mode",
         "description": "shows.json: lost-atoms-off-west-end-2026.openingDateSource"
       },
       {
@@ -215,7 +215,7 @@
         "showId": "the-last-days-of-liz-truss-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Other Palace Studio run 3-15 Mar 2026 (theotherpalace.co.uk/the-last-days-of-liz-truss)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: the-last-days-of-liz-truss-off-west-end-2026.openingDateSource"
       },
       {
@@ -233,7 +233,7 @@
         "showId": "crybabies-the-scaring-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Soho Theatre Main House run 3-23 Sep 2026 (sohotheatre.com/events/crybabies-the-scaring)",
+        "newValue": "first-performance-no-press-night-found",
         "description": "shows.json: crybabies-the-scaring-off-west-end-2026.openingDateSource"
       },
       {
@@ -242,7 +242,7 @@
         "showId": "bitch-boxer-off-west-end-2026",
         "field": "openingDate",
         "oldValue": null,
-        "newValue": "2026-02-18",
+        "newValue": "2026-02-25",
         "description": "shows.json: bitch-boxer-off-west-end-2026.openingDate"
       },
       {
@@ -251,7 +251,7 @@
         "showId": "bitch-boxer-off-west-end-2026",
         "field": "openingDateSource",
         "oldValue": "human-correction",
-        "newValue": "first-performance-no-press-night-found: Arcola Studio 2 run 18 Feb-14 Mar 2026 (londonpubtheatres.com, timeout.com)",
+        "newValue": "inferred-from-reviews-mode",
         "description": "shows.json: bitch-boxer-off-west-end-2026.openingDateSource"
       },
       {
