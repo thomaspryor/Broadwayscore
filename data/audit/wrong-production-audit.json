@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T07:07:26.306Z",
+  "timestamp": "2026-10-27T07:28:06.052Z",
   "stats": {
-    "totalReviews": 62868,
-    "alreadyFlagged": 21598,
+    "totalReviews": 62882,
+    "alreadyFlagged": 21605,
     "dateGuardCatches": 224,
-    "directorMismatch": 2343,
+    "directorMismatch": 2344,
     "tvFilmSignals": 1781,
-    "londonSignals": 3035,
-    "offBroadwaySignals": 557,
+    "londonSignals": 3038,
+    "offBroadwaySignals": 558,
     "yearMismatch": 217,
-    "noPublishDate": 5575
+    "noPublishDate": 5571
   },
   "findings": [
     {
@@ -208,6 +208,25 @@
     {
       "showId": "1984-west-end-2015",
       "file": "britishtheatrecom--james-garden.json",
+      "score": null,
+      "publishDate": "2015-06-23",
+      "url": "https://www.britishtheatre.com/es/posts/review-1984-playhouse-theatre-4stars",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2015",
+      "file": "britishtheatrecom--unknown.json",
       "score": null,
       "publishDate": "2015-06-23",
       "url": "https://www.britishtheatre.com/es/posts/review-1984-playhouse-theatre-4stars",
@@ -69897,6 +69916,19 @@
       ]
     },
     {
+      "showId": "di-and-viv-and-rose-west-end-2015",
+      "file": "financialtimes--unknown.json",
+      "publishDate": "2015-02-01",
+      "url": "https://www.ft.com/content/5b90d414-a86a-11e4-bd17-00144feab7de?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "dinosaur-world-live-off-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 68,
@@ -91136,6 +91168,20 @@
       ]
     },
     {
+      "showId": "speed-the-plow-west-end-2014",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2014-10-03",
+      "url": "https://www.theguardian.com/stage/2014/oct/03/lindsay-lohan-in-speed-the-plow-what-the-critics-said-theatre-reviews",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "spirited-away-west-end-2024",
       "file": "1883magazine--nick-barr.json",
       "score": 90,
@@ -99217,6 +99263,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-nether-west-end-2015",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "2015-02-24",
+      "url": "http://www.nytimes.com/2015/02/25/theater/review-jennifer-haleys-the-nether-explores-the-dark-side-of-the-web.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
