@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T15:41:49.845Z",
+  "timestamp": "2026-10-27T16:06:54.278Z",
   "stats": {
-    "totalReviews": 63596,
-    "alreadyFlagged": 21690,
-    "dateGuardCatches": 224,
-    "directorMismatch": 2357,
-    "tvFilmSignals": 1790,
-    "londonSignals": 3050,
+    "totalReviews": 63637,
+    "alreadyFlagged": 21700,
+    "dateGuardCatches": 238,
+    "directorMismatch": 2359,
+    "tvFilmSignals": 1791,
+    "londonSignals": 3055,
     "offBroadwaySignals": 563,
     "yearMismatch": 218,
-    "noPublishDate": 5747
+    "noPublishDate": 5665
   },
   "findings": [
     {
@@ -2613,7 +2613,7 @@
     {
       "showId": "all-of-me-off-broadway-2024",
       "file": "nytimes--naveen-kumar.json",
-      "score": null,
+      "score": 76,
       "publishDate": "2024-05-14",
       "url": "https://www.nytimes.com/2024/05/14/theater/all-of-me-review.html",
       "findings": [
@@ -41985,8 +41985,8 @@
     {
       "showId": "still-off-broadway-2024",
       "file": "theater-pizzazz--samuel-l-leiter.json",
-      "score": null,
-      "publishDate": null,
+      "score": 72,
+      "publishDate": "April 18th, 2024",
       "url": "https://www.theaterpizzazz.com/still-only-fools-rush-in/",
       "findings": [
         {
@@ -46589,7 +46589,7 @@
       "showId": "the-full-monty-west-end-2014",
       "file": "financialtimes--unknown.json",
       "publishDate": "2014-02-27",
-      "url": null,
+      "url": "https://www.ft.com/content/5f1791ec-9ed7-11e3-8663-00144feab7de",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -49275,6 +49275,20 @@
       ]
     },
     {
+      "showId": "the-ladykillers-west-end-2013",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/culture/2013/jul/07/graham-linehan-ladykillers-play-father-ted",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "the-last-five-years-2025",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 35,
@@ -51769,6 +51783,20 @@
     },
     {
       "showId": "the-pajama-game-west-end-2014",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2014-05-13",
+      "url": "https://www.theguardian.com/stage/2014/may/13/the-pajama-game-richard-eyre-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-west-end-2014",
       "file": "sunday-telegraph--tim-walker.json",
       "publishDate": "2014-05-18",
       "url": null,
@@ -51803,6 +51831,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        }
+      ]
+    },
+    {
+      "showId": "the-pajama-game-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": null,
+      "publishDate": "2014-05-14",
+      "url": "http://www.whatsonstage.com/london-theatre/reviews/05-2014/the-pajama-game-shaftesbury-theatre_34424.html?cid=top_story",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"george abbott\" from the-pajama-game-1973"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -74464,7 +74511,7 @@
     {
       "showId": "grenfell-in-the-words-of-survivors-off-broadway-2024",
       "file": "exeunt-magazine--unknown.json",
-      "score": null,
+      "score": 56,
       "publishDate": "2024-04-24",
       "url": "https://exeuntnyc.com/reviews/review-grenfell-in-the-words-of-survivors-at-st-anns-warehouse/",
       "findings": [
@@ -79410,6 +79457,19 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "artsdesk--rachel-halliburton.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "bestoftheatre--ella-dunmore.json",
       "score": null,
       "publishDate": "2026-10-06",
@@ -79475,6 +79535,180 @@
           "type": "DATE_GUARD",
           "severity": "MEDIUM",
           "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "i-paper--fiona-mountford.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "london-theatre--marianka-swain.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "londontheatre1--chris-omaweng.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "mail-on-sunday--robert-gore-langton.json",
+      "publishDate": "2026-07-12",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 96d before show (2026-07-12 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "observer--katherine-cowles.json",
+      "publishDate": "2026-07-17",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 91d before show (2026-07-17 vs 2026-10-16)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2026-07-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 101d before show (2026-07-07 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "thereviewshub--harry-mayes.json",
+      "publishDate": "2026-07-08",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "thestage--sam-marlowe.json",
+      "publishDate": "2026-07-08",
+      "url": "https://www.thestage.co.uk/your-views/reviews-response-jesus-christ-superstar-and-fun-home-this-month-in-your-views",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 100d before show (2026-07-08 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "publishDate": "2026-07-07",
+      "url": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 101d before show (2026-07-07 vs 2026-10-16)"
         }
       ]
     },
@@ -91984,6 +92218,20 @@
     },
     {
       "showId": "stephen-ward-west-end-2013",
+      "file": "nytimes--ben-brantley.json",
+      "score": null,
+      "publishDate": "2014-01-20",
+      "url": "https://www.nytimes.com/2014/01/21/theater/londons-dark-musicals-american-psycho-and-stephen-ward.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "stephen-ward-west-end-2013",
       "file": "sunday-telegraph--tim-walker.json",
       "publishDate": "2013-12-22",
       "url": null,
@@ -95889,6 +96137,20 @@
       ]
     },
     {
+      "showId": "the-crucible-west-end-2014",
+      "file": "express-uk--michael-arditti.json",
+      "score": null,
+      "publishDate": "2014-07-13",
+      "url": "https://www.express.co.uk/entertainment/theatre/488165/Arthur-Miller-s-The-Crucible-in-Old-Vic-and-Shakespeare-s-Richard-III",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-crucible-west-end-2022",
       "file": "broadwayworld--cindy-marcolina.json",
       "score": 82,
@@ -97186,6 +97448,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"brooklyn academy\""
+        }
+      ]
+    },
+    {
+      "showId": "the-full-monty-west-end-2014",
+      "file": "variety--david-benedict.json",
+      "score": null,
+      "publishDate": "2014-02-25",
+      "url": "https://variety.com/2014/legit/reviews/west-end-review-the-full-monty-1201120894/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
