@@ -255,4 +255,6 @@ The `update_snapshots` run only *writes* baselines (it doesn't compare), so alwa
 
 ## Maintenance
 
+The `/biz` dashboard, topic pages and season pages share `src/components/biz/BizHeader.tsx`: brand eyebrow pill, responsive title and tagline, share control, and children for statistics and fine print. Keep back links in the page or topic shell above the hero.
+
 When adding new shared components or tokens, update this file. When a session reads this doc and finds it incomplete, add the missing information before proceeding.

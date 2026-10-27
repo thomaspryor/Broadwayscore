@@ -6,7 +6,7 @@ import Link from 'next/link';
 import type { Metadata } from 'next';
 import { BASE_URL } from '@/lib/seo';
 import { seasonOgImage } from '@/lib/biz-og';
-import ShareButton from '@/components/biz/ShareButton';
+import BizHeader from '@/components/biz/BizHeader';
 import { notFound } from 'next/navigation';
 
 import { featureFlags } from '@/config/feature-flags';
@@ -88,8 +88,12 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             Profitability Scorecard
           </Link>
 
-          <h1 className="text-3xl font-bold text-white mb-4">{season} Season</h1>
-          <p className="text-gray-400">No commercial data available for this season yet.</p>
+          <BizHeader
+            title={`${season} Season`}
+            tagline="No commercial data available for this season yet."
+            sharePath={`/biz/season/${season}`}
+            shareTitle={`${season} Broadway Season | Profitability Scorecard`}
+          />
         </div>
       </div>
     );
@@ -126,24 +130,22 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
         </Link>
 
         {/* Header */}
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-         <div>
-          <h1 className="text-3xl sm:text-4xl font-bold text-white">
-            {season} Season
-          </h1>
-          <p className="text-gray-400 mt-2">
-            Commercial data for all Broadway productions from this season
-          </p>
-          <p className="text-xs text-amber-500/70 mt-1">
-            {ESTIMATE_SOURCES_NOTE}{' '}
-            <Link href="/methodology#commercial" className="underline hover:text-amber-400">
-              How we measure
-            </Link>
-          </p>
-          <p className="text-xs text-amber-500/70 mt-1">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
-         </div>
-          <ShareButton path={`/biz/season/${season}`} title={`${season} Broadway Season | Profitability Scorecard`} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
-        </div>
+        <BizHeader
+          title={`${season} Season`}
+          tagline="Commercial data for all Broadway productions from this season"
+          sharePath={`/biz/season/${season}`}
+          shareTitle={`${season} Broadway Season | Profitability Scorecard`}
+        >
+          <div className="mt-5 space-y-1">
+            <p className="text-xs text-amber-500/70">
+              {ESTIMATE_SOURCES_NOTE}{' '}
+              <Link href="/methodology#commercial" className="underline hover:text-amber-400">
+                How we measure
+              </Link>
+            </p>
+            <p className="text-xs text-amber-500/70">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
+          </div>
+        </BizHeader>
 
         {/* Season Stats Summary. text-xl on phones: "~$164.7M+" overflowed a two-column tile at 360px. */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8">

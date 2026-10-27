@@ -52,7 +52,7 @@ import BizPageTracker from '@/components/biz/BizPageTracker';
 import CostCoverageCard from '@/components/box-office/CostCoverageCard';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 import { bizOgImage } from '@/lib/biz-og';
-import ShareButton from '@/components/biz/ShareButton';
+import BizHeader from '@/components/biz/BizHeader';
 import { getMarketDate } from '@/lib/date-utils';
 
 const OG_ALT = 'Broadway Profitability Scorecard: who made money on Broadway, and who lost it';
@@ -171,22 +171,11 @@ export default function BizDashboard() {
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         {/* Header (BRO-6286): mirrors the /biz share card, eyebrow pill, the
             tagline as the lead, then headline numbers and the fine print. */}
-        <header className="mb-10">
-          <div className="flex flex-wrap items-center justify-between gap-3 mb-4">
-            <span className="inline-flex items-center whitespace-nowrap rounded-full border border-brand/40 px-2.5 sm:px-3 py-1 text-[11px] sm:text-xs font-semibold uppercase tracking-[0.04em] sm:tracking-[0.18em] text-brand">
-              The Broadway profitability database
-            </span>
-            <ShareButton path="/biz" title="Broadway Profitability Scorecard" className="shrink-0 ml-auto" />
-            {/* JSON/CSV download buttons removed (owner decision, BRO-4721): they
-                only opened a waitlist and read as unfinished. GatedDownloadButtons
-                is kept for when downloads ship. */}
-          </div>
-          <h1 className="text-4xl sm:text-5xl font-bold text-white tracking-tight">
-            Broadway Profitability Scorecard
-          </h1>
-          <p className="text-xl sm:text-2xl text-gray-200 mt-3 font-medium">
-            Who made money on Broadway, and who lost it
-          </p>
+        <BizHeader
+          title="Broadway Profitability Scorecard"
+          tagline="Who made money on Broadway, and who lost it"
+          sharePath="/biz"
+        >
           <p className="text-base text-gray-400 mt-3 max-w-3xl">
             For the first time ever, Broadway profitability in one public database:
             capitalization, weekly running costs and recoupment for every commercial production
@@ -225,7 +214,7 @@ export default function BizDashboard() {
             <p className="text-xs text-amber-500/70">{ESTIMATE_SOURCES_NOTE}</p>
             <p className="text-xs text-amber-500/70">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
           </div>
-        </header>
+        </BizHeader>
 
         {/* Season by season */}
         {seasonHistory.length > 0 && (

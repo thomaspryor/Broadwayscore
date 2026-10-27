@@ -8,7 +8,7 @@ import Link from 'next/link';
 import type { ReactNode } from 'react';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 import EmailTomLink from '@/components/EmailTomLink';
-import ShareButton from '@/components/biz/ShareButton';
+import BizHeader from '@/components/biz/BizHeader';
 
 export default function TopicPageShell({ title, subtitle, sharePath, children }: { title: string; subtitle: string; sharePath: string; children: ReactNode }) {
   return (
@@ -21,18 +21,15 @@ export default function TopicPageShell({ title, subtitle, sharePath, children }:
           Profitability Scorecard
         </Link>
 
-        <div className="mb-8 flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
-          <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white">{title}</h1>
-            <p className="text-gray-400 mt-2">{subtitle}</p>
-            <p className="text-xs text-amber-500/70 mt-1">
+        <BizHeader title={title} tagline={subtitle} sharePath={sharePath}>
+          <div className="mt-5 space-y-1">
+            <p className="text-xs text-amber-500/70">
               {ESTIMATE_SOURCES_NOTE}{' '}
               <Link href="/methodology#commercial" className="underline hover:text-amber-400">How we measure</Link>
             </p>
-            <p className="text-xs text-amber-500/70 mt-1">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
+            <p className="text-xs text-amber-500/70">Questions, ideas, requests?{' '}<EmailTomLink className="underline hover:text-amber-400" /></p>
           </div>
-          <ShareButton path={sharePath} title={title} className="shrink-0 order-first self-end sm:order-none sm:self-start" />
-        </div>
+        </BizHeader>
 
         {children}
 

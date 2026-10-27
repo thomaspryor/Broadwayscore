@@ -16,7 +16,7 @@ import type { Metadata } from 'next';
 import { featureFlags } from '@/config/feature-flags';
 import { BASE_URL, generateBreadcrumbSchema } from '@/lib/seo';
 import { bizOgImage } from '@/lib/biz-og';
-import ShareButton from '@/components/biz/ShareButton';
+import BizHeader from '@/components/biz/BizHeader';
 
 type Fame = 'screen' | 'music' | 'other' | 'stage' | 'none';
 type Headliner = { name: string; fame: Fame; knownFor: string };
@@ -265,15 +265,9 @@ export default function StuntCastingPage() {
             {parent.name}
           </Link>
 
-          <header className="mb-8">
-            <div className="flex items-start justify-between gap-4 mb-2">
-              <div className="text-xs uppercase tracking-wider text-brand pt-3">Research</div>
-              <ShareButton path="/biz/stunt-casting" title={TITLE} className="shrink-0" />
-            </div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-white tracking-tight leading-snug">{TITLE}</h1>
-            <p className="text-gray-300 mt-4 leading-relaxed">{DESCRIPTION}</p>
-            <p className="text-xs text-gray-500 mt-3">Updated {DATA.generated}</p>
-          </header>
+          <BizHeader title={TITLE} tagline={DESCRIPTION} sharePath="/biz/stunt-casting">
+            <p className="text-xs text-gray-500 mt-5">Research · Updated {DATA.generated}</p>
+          </BizHeader>
 
           {lastFull && (
             <section className="grid grid-cols-2 sm:grid-cols-4 gap-3 mb-10" aria-label="Key numbers">

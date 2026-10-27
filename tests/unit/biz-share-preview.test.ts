@@ -32,6 +32,6 @@ test('every biz page wires its card and a share button', () => {
     const f = p === 'season' ? path.join(dir, p, '[season]', 'page.tsx') : path.join(dir, p, 'page.tsx');
     const src = readFileSync(f, 'utf8');
     assert.match(src, /bizOgImage|seasonOgImage/, `${p} still uses the generic site card`);
-    assert.match(src, /ShareButton|TopicPageShell/, `${p} has no share button`);
+    assert.match(src, /ShareButton|TopicPageShell|BizHeader/, `${p} has no share button`);
   }
 });
