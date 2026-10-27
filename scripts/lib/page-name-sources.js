@@ -62,7 +62,7 @@ function londonShows(shows) {
   );
 }
 
-/** getOffBroadwayShows(). */
+/** Category-only set used by getAllOffBroadwayTheaters(), including opera. */
 function offBroadwayShows(shows) {
   return shows.filter((s) => s && !s._devOnly && s.category === 'off-broadway');
 }

@@ -44,6 +44,21 @@ test('real server query excludes exactly the opera inventory', () => {
   assert.equal(core.getOffBroadwayShows().length, listed.size);
 });
 
+test('venue pages retain opera houses and match the redirect inventory', () => {
+  const { offBroadwayShows, stubTheaterNames } = require('../../scripts/lib/page-name-sources');
+  const { slugify } = require('../../scripts/lib/url-slug');
+  assert.ok(core.getAllOffBroadwayTheaterSlugs().includes('metropolitan-opera-house'));
+  // The venue index groups spelling variants by slug; redirects retain every name.
+  assert.deepEqual(
+    core.getAllOffBroadwayTheaters().map(theater => theater.slug).sort(),
+    [...new Set(stubTheaterNames(offBroadwayShows(core.getAllShows())).map(slugify))].sort(),
+  );
+  const met = core.getOffBroadwayTheaterBySlug('metropolitan-opera-house');
+  const expected = offBroadwayShows(core.getAllShows()).filter(show => show.venue === met.name);
+  assert.ok(expected.length > 0, 'real Met productions exist');
+  assert.deepEqual(met.allShows.map(show => show.id).sort(), expected.map(show => show.id).sort());
+});
+
 test('active props, shelves, counts and JSON-LD use the opera-free inventory', () => {
   const tree = OffBroadwayPage();
   const elements = [];

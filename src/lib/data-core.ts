@@ -1038,7 +1038,8 @@ export function getAllLondonTheaterSlugs(): string[] {
 let _offBroadwayTheatersCache: Theater[] | null = null;
 export function getAllOffBroadwayTheaters(): Theater[] {
   if (_offBroadwayTheatersCache) return _offBroadwayTheatersCache;
-  _offBroadwayTheatersCache = buildStubTheaterIndex(getOffBroadwayShows());
+  // Venue pages retain every genre, including opera excluded from browse listings.
+  _offBroadwayTheatersCache = buildStubTheaterIndex(getAllShows().filter(s => s.category === 'off-broadway'));
   return _offBroadwayTheatersCache;
 }
 
