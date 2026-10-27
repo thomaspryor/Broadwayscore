@@ -377,18 +377,18 @@
     "queuedAt": "2026-10-27T14:47:17.213Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-27.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "pending-unrecoverable:the-curious-case-of-benjamin-button-off-broadway-2026",
+    "title": "1 review(s) for the-curious-case-of-benjamin-button-off-broadway-2026 stuck in _pending with no text and no byline",
+    "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- publictheaterorg--40c5d2b3.json (publictheaterorg): no byline in page and no recoverable body https://publictheater.org/productions/season/2627/the-curious-case-of-benjamin-button/",
+    "severity": "warning",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
     "fields": [],
-    "queuedAt": "2026-10-27T15:19:27.021Z"
+    "queuedAt": "2026-10-27T15:08:00.204Z"
   },
   {
     "conditionKey": "land:land/job/linear-BRO-6384-mvqsbs80",
