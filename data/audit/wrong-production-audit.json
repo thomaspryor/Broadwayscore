@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T19:57:03.023Z",
+  "timestamp": "2026-10-27T20:46:47.484Z",
   "stats": {
-    "totalReviews": 63935,
-    "alreadyFlagged": 21752,
+    "totalReviews": 63953,
+    "alreadyFlagged": 21755,
     "dateGuardCatches": 237,
-    "directorMismatch": 2362,
-    "tvFilmSignals": 1793,
+    "directorMismatch": 2376,
+    "tvFilmSignals": 1797,
     "londonSignals": 3057,
-    "offBroadwaySignals": 567,
+    "offBroadwaySignals": 568,
     "yearMismatch": 217,
-    "noPublishDate": 5852
+    "noPublishDate": 5778
   },
   "findings": [
     {
@@ -11389,6 +11389,165 @@
       ]
     },
     {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": null,
+      "publishDate": "2024-03-10",
+      "url": "https://cititour.com/NYC_News/Review-Dead-Outlaw-Has-Great-Live-Music/8147",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": "2024-03-29",
+      "url": "https://exeuntnyc.com/reviews/review-dead-outlaw-at-the-minetta-lane/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": null,
+      "publishDate": "2024-03-10",
+      "url": "https://thefrontrowcenter.com/2024/03/dead-outlaw/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "nytg--amelia-merrill.json",
+      "score": null,
+      "publishDate": "2024-03-10",
+      "url": "https://www.newyorktheatreguide.com/reviews/dead-outlaw-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": null,
+      "publishDate": "2024-03-10",
+      "url": "https://www.nytimes.com/2024/03/10/theater/dead-outlaw-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "off-off-online--deirdre-donovan.json",
+      "score": null,
+      "publishDate": "2024-03-18",
+      "url": "https://www.offoffonline.com/offoffonline/2024/3/14/dead-outlaw",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "theater-pizzazz--samuel-l-leiter.json",
+      "score": null,
+      "publishDate": "2024-03-24",
+      "url": "https://www.theaterpizzazz.com/dead-outlaw/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "theater-scene--joseph-pisano.json",
+      "score": null,
+      "publishDate": "2024-04-01",
+      "url": "http://www.theaterscene.net/musicals/offbway/dead-outlaw/joseph-pisano/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "theatermania--zachary-stewart.json",
+      "score": null,
+      "publishDate": "2024-03-11",
+      "url": "https://www.theatermania.com/news/review-dead-outlaw-is-a-new-musical-about-an-infamous-corpse_1732817/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "this-week-in-new-york--mark-rifkin.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://twi-ny.com/2024/03/10/dead-outlaw/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
+      "showId": "dead-outlaw-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "score": null,
+      "publishDate": "2024-03-10",
+      "url": "https://www.vulture.com/article/theater-review-dead-outlaw-moses-yazbek-della-penna-elmer-mccurdy.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from dead-outlaw-2025"
+        }
+      ]
+    },
+    {
       "showId": "dear-england-new-wimbledon-theatre-west-end-2026",
       "file": "all-that-dazzles-uk--sam-waite.json",
       "score": 97,
@@ -22230,15 +22389,62 @@
     },
     {
       "showId": "illinoise-off-broadway-2024",
+      "file": "broadwayworld--lora-strum.json",
+      "score": null,
+      "publishDate": "2024-03-20",
+      "url": "https://www.broadwayworld.com/bwwdance/article/Review-ILLINOISE-is-Storytelling-at-its-Very-Finest-20240320",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
+      "file": "consequence--scoop-harrison.json",
+      "score": null,
+      "publishDate": "2024-03-19",
+      "url": "https://consequence.net/2024/03/sufjan-stevens-illinoise-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
+      "file": "culturesauce--thom-geier.json",
+      "score": null,
+      "publishDate": "2024-03-08",
+      "url": "https://culturesauce.com/2024/03/08/illinoise-sufjan-stevens-off-broadway-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-off-broadway-2024",
       "file": "theater-scene--victor-gluck.json",
       "score": null,
-      "publishDate": null,
+      "publishDate": "2024-03-21",
       "url": "http://www.theaterscene.net/plays/offbway-plays/illinoise/victor-gluck/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"justin peck\" from illinoise-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -45970,6 +46176,20 @@
       ]
     },
     {
+      "showId": "the-connector-off-broadway-2024",
+      "file": "slantmagazine--dan-rubins.json",
+      "score": null,
+      "publishDate": "2024-02-07",
+      "url": "https://www.slantmagazine.com/theater/the-connector-review-truth-or-consequences/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "the-cottage-2023",
       "file": "queerty--matthew-wexler.json",
       "score": 60,
@@ -53660,6 +53880,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"noel coward theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-seven-year-disappear-off-broadway-2024",
+      "file": "nysr--melissa-rose-bernardo.json",
+      "publishDate": "2024-02-26",
+      "url": "https://nystagereview.com/2024/02/26/the-seven-year-disappear-a-tour-de-force-for-cynthia-nixon/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
         }
       ]
     },
@@ -66909,6 +67142,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "brooklyn-laundry-off-broadway-2024",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "2024-03-01",
+      "url": "https://www.vulture.com/article/theater-review-john-patrick-shanley-brooklyn-laundry-cecily-strong.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"lortel\""
         }
       ]
     },
