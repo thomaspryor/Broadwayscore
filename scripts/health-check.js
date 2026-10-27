@@ -2313,12 +2313,14 @@ function checkSEO() {
       // or every SEO alert reads "N critical SEO anomalies: , " with blank
       // descriptions and is unactionable (the state this digest sat in).
       const describe = (a) => a.message || a.type || 'unknown';
-      if (data.anomalies && data.anomalies.length > 0) {
-        const critical = data.anomalies.filter(a => a.severity === 'error');
+      // BRO-477: lab-only (simulated-test) wobbles stay in seo-health.json but are not a daily row.
+      const anomalies = require('./lib/seo-lab-noise').actionableSeoAnomalies(data.anomalies);
+      if (anomalies.length > 0) {
+        const critical = anomalies.filter(a => a.severity === 'error');
         if (critical.length > 0) {
           return { name: 'SEO: health', status: 'error', message: `${critical.length} critical SEO anomalies: ${critical.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
         }
-        return { name: 'SEO: health', status: 'warn', message: `${data.anomalies.length} SEO warning(s): ${data.anomalies.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
+        return { name: 'SEO: health', status: 'warn', message: `${anomalies.length} SEO warning(s): ${anomalies.map(describe).join('; ')}`, hint: 'Check data/audit/seo-health.json for details' };
       }
       // Check index coverage — only warn if <50% (sample is 50 URLs from 700+ pages,
       // skewed toward historical shows Google deprioritizes)
