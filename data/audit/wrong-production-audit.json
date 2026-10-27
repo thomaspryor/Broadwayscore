@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T01:42:17.254Z",
+  "timestamp": "2026-10-27T02:02:52.128Z",
   "stats": {
-    "totalReviews": 62693,
-    "alreadyFlagged": 21574,
+    "totalReviews": 62729,
+    "alreadyFlagged": 21576,
     "dateGuardCatches": 223,
-    "directorMismatch": 2317,
-    "tvFilmSignals": 1773,
-    "londonSignals": 3022,
+    "directorMismatch": 2337,
+    "tvFilmSignals": 1775,
+    "londonSignals": 3024,
     "offBroadwaySignals": 553,
-    "yearMismatch": 212,
-    "noPublishDate": 5561
+    "yearMismatch": 215,
+    "noPublishDate": 5556
   },
   "findings": [
     {
@@ -552,6 +552,19 @@
       "score": 77,
       "publishDate": null,
       "url": "https://patch.com/connecticut/hartford/theater-review-beautiful-noise-tour-bushnell",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "piedmontexedra--leslie-katz.json",
+      "publishDate": "2025-06-06",
+      "url": "https://piedmontexedra.com/2025/06/review-neil-diamond-fans-get-on-board-for-a-beautiful-noise",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -2195,6 +2208,50 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "aint-too-proud-tour-2024",
+      "file": "dc-theater-arts--isabella-artino.json",
+      "publishDate": "2025-06-18",
+      "url": "https://dctheaterarts.org/2025/06/18/aint-too-proud-on-tour-at-the-national-is-a-jukebox-musical-for-the-ages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from aint-too-proud-2019"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "aint-too-proud-tour-2024",
+      "file": "feature-presentation--patrick-j-regal.json",
+      "publishDate": "2025-06-18",
+      "url": "https://featurepresentationvideo.substack.com/p/tour-review-aint-too-proud-the-life",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from aint-too-proud-2019"
+        }
+      ]
+    },
+    {
+      "showId": "aint-too-proud-tour-2024",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2025-06-18",
+      "url": "https://mdtheatreguide.com/2025/06/theatre-review-aint-too-proud-the-life-and-times-of-the-temptations-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"des mcanuff\" from aint-too-proud-2019"
         }
       ]
     },
@@ -5398,6 +5455,19 @@
       ]
     },
     {
+      "showId": "beetlejuice-tour-2022",
+      "file": "syracuse-herald-journal--linda-lowen.json",
+      "publishDate": "2025-05-15",
+      "url": "https://www.syracuse.com/entertainment/2025/05/darkly-snarky-and-rudely-crude-beetlejuice-the-musical-brightens-deaths-door-at-syracuses-landmark-review.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: beetlejuice-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "beetlejuice-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
       "score": 82,
@@ -5941,6 +6011,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "book-of-mormon-tour-2022",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "publishDate": "2025-06-12",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-THE-BOOK-OF-MORMON-at-Broadway-San-Diego-20250612",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
         }
       ]
     },
@@ -17071,7 +17154,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "broadwayworld--cindy-marcolina.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2025-05-02",
       "url": "https://www.broadwayworld.com/westend/article/Review-GIANT-Harold-Pinter-Theatre-Starring-John-Lithgow-20250502",
       "findings": [
@@ -17090,7 +17173,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 94,
+      "score": 95,
       "publishDate": "2025-05-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/giant-harold-pinter-theatre-review",
       "findings": [
@@ -17109,6 +17192,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "london-theatre--matt-wolf.json",
+      "score": 100,
       "publishDate": "2025-05-02",
       "url": "https://www.londontheatre.co.uk/reviews/giant-review-harold-pinter-theatre",
       "findings": [
@@ -17160,7 +17244,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "timeout-london--tim-bano.json",
-      "score": 93,
+      "score": 95,
       "publishDate": "2025-05-02",
       "url": "https://www.timeout.com/london/theatre/giant-review-3",
       "findings": [
@@ -17198,7 +17282,7 @@
     {
       "showId": "giant-west-end-2025",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 92,
+      "score": 94,
       "publishDate": "2025-05-02",
       "url": "https://www.thetimes.com/article/ecd0bc1e-6fb8-4627-9884-bbc6e6f8768c",
       "findings": [
@@ -19865,6 +19949,7 @@
     {
       "showId": "hangmen-2022",
       "file": "theatermania--david-gordon.json",
+      "score": 77,
       "publishDate": "2022-04-21",
       "url": "https://www.theatermania.com/broadway/reviews/review-martin-mcdonaghs-hangmen-is-a-fun-broadway_93664.html",
       "findings": [
@@ -27097,6 +27182,29 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "broadwayworld--brian-bochicchio.json",
+      "publishDate": "2025-06-18",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-LES-MISERABLES-AT-THE-KENNEDY-CENTER-at-The-Kennedy-Center-20250618",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john caird\" from les-miserables-2006"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "broadwayworld--christina-mancuso.json",
       "score": 78,
       "publishDate": "2026-01-28",
@@ -27153,6 +27261,19 @@
     },
     {
       "showId": "les-miserables-tour-2022",
+      "file": "dc-theater-arts--isabella-artino.json",
+      "publishDate": "2025-06-14",
+      "url": "https://dctheaterarts.org/2025/06/14/stellar-les-miserables-on-tour-at-kennedy-center-is-still-revolutionary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
       "file": "ladue-news--mark-bretz.json",
       "score": 88,
       "publishDate": "2025-11-24",
@@ -27182,6 +27303,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"trevor nunn and john caird\" from les-miserables-west-end-2021"
+        }
+      ]
+    },
+    {
+      "showId": "les-miserables-tour-2022",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2025-06-17",
+      "url": "https://mdtheatreguide.com/2025/06/theatre-review-les-miserables-at-the-kennedy-center-2/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"laurence connor\" from les-miserables-2014"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james powell\" from les-miserables-2014"
         }
       ]
     },
@@ -30299,6 +30438,19 @@
       "score": 78,
       "publishDate": "2026-06-21",
       "url": "https://www.broadwayworld.com/washington-dc/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-The-Kennedy-Center-20260621",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"alex timbers\" from moulin-rouge-2019"
+        }
+      ]
+    },
+    {
+      "showId": "moulin-rouge-tour-2022",
+      "file": "broadwayworld--joni-lorraine.json",
+      "publishDate": "2025-05-22",
+      "url": "https://www.broadwayworld.com/austin/article/Review-MOULIN-ROUGE-THE-MUSICAL-at-Bass-Concert-Hall-20250522",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34822,6 +34974,24 @@
     },
     {
       "showId": "parade-tour-2025",
+      "file": "localnewsmatters--leslie-katz-bay-city-news.json",
+      "publishDate": "2025-05-23",
+      "url": "https://localnewsmatters.org/2025/05/23/review-parade-musically-details-an-american-miscarriage-of-justice/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
       "file": "maryland-theatre-guide--unknown.json",
       "publishDate": "2025-08-19",
       "url": "https://mdtheatreguide.com/2025/08/a-quick-5-with-ben-cherington-actor-in-parade-at-the-kennedy-center/",
@@ -34859,6 +35029,42 @@
     },
     {
       "showId": "parade-tour-2025",
+      "file": "san-francisco-chronicle--zack-ruskin.json",
+      "publishDate": "2025-05-23",
+      "url": "https://www.sfchronicle.com/entertainment/article/parade-broadwaysf-review-20290935.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (1x). 2023 matches production: parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "san-jose-mercury-news--david-john-chavez.json",
+      "publishDate": "2025-05-25",
+      "url": "https://www.mercurynews.com/2025/05/25/parade-returns-to-bay-area-as-frighteningly-relevant-as-ever/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from parade-1998"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
       "file": "splash-magazines--susan-lillis.json",
       "score": 90,
       "publishDate": "2025-08-06",
@@ -34878,6 +35084,24 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2023 (4x) more than 2025 (2x). 2023 matches production: parade-2023"
+        }
+      ]
+    },
+    {
+      "showId": "parade-tour-2025",
+      "file": "weliveentertainment--kevin-taft.json",
+      "publishDate": "2025-06-19",
+      "url": "https://weliveentertainment.com/we-live-entertainment/theater-review-michael-ardens-parade-haunting-timely-spectacle/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from parade-2023"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (1x). 2023 matches production: parade-2023"
         }
       ]
     },
@@ -39215,6 +39439,19 @@
       "score": 77,
       "publishDate": "2026-03-10",
       "url": "https://www.theglobeandmail.com/culture/stage/article-shucked-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-tour-2024",
+      "file": "wtlgomag--unknown.json",
+      "publishDate": "2025-06-12",
+      "url": "https://wtlgomag.com/2025/06/12/review-shucked-is-broadways-corniest-comedy-and-thats-a-good-thing/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -48224,6 +48461,19 @@
     },
     {
       "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "nytimes--unknown.json",
+      "publishDate": "2025-02-22",
+      "url": "https://www.nytimes.com/2025/02/22/theater/jonathan-larson-project-off-broadway-music.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
       "file": "theatermania--david-gordon.json",
       "score": 77,
       "publishDate": "2025-03-10",
@@ -48247,6 +48497,20 @@
       "score": 86,
       "publishDate": "2025-03-10",
       "url": "https://www.theatrely.com/post/the-jonathan-larson-project-soars-off-broadway-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john simpkins\" from the-jonathan-larson-project-off-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "the-jonathan-larson-project-off-broadway-2025",
+      "file": "timeout--raven-snook.json",
+      "score": 59,
+      "publishDate": "March 13th, 2025",
+      "url": "https://www.timeout.com/newyork/theater/the-jonathan-larson-project-off-broadway-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -53994,6 +54258,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-tour-2026",
+      "file": "broadwayworld--sam-desmond.json",
+      "publishDate": "2026-10-26",
+      "url": "https://www.broadwayworld.com/long-island/article/Review-THE-WIZ-at-Cultural-Arts-Playhouse-Merrick-20261026",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -80835,6 +81112,19 @@
       ]
     },
     {
+      "showId": "mamma-mia-tour-2026",
+      "file": "maryland-theatre-guide--unknown.json",
+      "publishDate": "2026-10-22",
+      "url": "https://mdtheatreguide.com/2026/10/a-quick-5-with-jessica-crouch-actor-in-mamma-mia-at-the-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "mamma-mia-west-end-2021",
       "file": "west-end-wilma--west-end-wilma.json",
       "score": 90,
@@ -86944,6 +87234,7 @@
     {
       "showId": "photograph-51-west-end-2015",
       "file": "nytimes--ben-brantley.json",
+      "score": 88,
       "publishDate": "2015-09-14",
       "url": "http://www.nytimes.com/2015/09/15/theater/review-in-photograph-51-nicole-kidman-is-a-steely-dna-scientist.html?_r=0",
       "findings": [
@@ -88454,6 +88745,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2016",
       "file": "london-theatre--unknown.json",
+      "score": 43,
       "publishDate": "2016-06-08",
       "url": "https://www.londontheatre.co.uk/reviews/romeo-and-juliet-review-of-kenneth-branagh-theatre-companys-production-at-the-garrick",
       "findings": [
@@ -88467,6 +88759,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2016",
       "file": "standard--henry-hitchings.json",
+      "score": 62,
       "publishDate": "2016-05-26",
       "url": "https://www.standard.co.uk/culture/theatre/romeo-and-juliet-theatre-review-not-romantic-or-deeply-moving-a3257446.html",
       "findings": [
