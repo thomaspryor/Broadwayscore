@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-27T19:09:23.922Z",
-  "processed": 93,
-  "failed": 22,
-  "successRate": "80.9%",
+  "updatedAt": "2026-10-27T19:33:51.444Z",
+  "processed": 95,
+  "failed": 35,
+  "successRate": "73.1%",
   "tierBreakdown": {
     "playwright": 57,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 9,
+    "scrapingdog": 1,
+    "scrapingbee": 10,
     "brightdata": 10,
-    "archiveToday": 11,
-    "archive": 19
+    "archiveToday": 16,
+    "archive": 20
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-27T18:24:11.555Z",
@@ -54,6 +54,23 @@
       "event": "bb-session",
       "session": "24d3d61e",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-27T19:24:49.029Z",
+      "event": "bb-session",
+      "session": "9e447cf6",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-27T19:24:49.913Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-27T19:29:05.326Z",
+      "event": "bb-session",
+      "session": "0f9998af",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ]
 }
