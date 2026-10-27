@@ -1,26 +1,26 @@
 {
-  "updatedAt": "2026-10-27T12:17:48.936Z",
-  "processed": 473,
-  "failed": 271,
-  "successRate": "63.6%",
+  "updatedAt": "2026-10-27T12:49:15.516Z",
+  "processed": 513,
+  "failed": 291,
+  "successRate": "63.8%",
   "tierBreakdown": {
-    "playwright": 230,
+    "playwright": 250,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 35,
-    "scrapingbee": 23,
-    "brightdata": 13,
-    "archiveToday": 43,
-    "archive": 133
+    "scrapingdog": 43,
+    "scrapingbee": 25,
+    "brightdata": 14,
+    "archiveToday": 45,
+    "archive": 148
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-27T08:59:03.659Z",
       "event": "bb-session",
-      "session": "2edc0eae",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "9b9edc50",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
       "t": "2026-10-27T08:59:04.001Z",
@@ -35,6 +35,28 @@
     },
     {
       "t": "2026-10-27T12:02:17.656Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T12:34:19.493Z",
+      "event": "bb-session",
+      "session": "c5174b9a",
+      "url": "https://www.nytimes.com/2025/04/08/theater/wole-soyinka-swamp-dwellers-nyc.html"
+    },
+    {
+      "t": "2026-10-27T12:34:19.803Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T12:35:23.970Z",
+      "event": "bb-session",
+      "session": "c83f9e25",
+      "url": "https://www.nytimes.com/2025/04/06/theater/im-assuming-you-know-david-greenspan-"
+    },
+    {
+      "t": "2026-10-27T12:35:24.246Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     }
