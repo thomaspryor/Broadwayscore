@@ -1,15 +1,15 @@
 {
   "system": "codex runner",
-  "status": "pass",
-  "lastChecked": "2026-10-26T07:50:34.812Z",
+  "status": "warn",
+  "lastChecked": "2026-10-27T07:52:42.104Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Codex runner: landing cards",
-      "status": "pass",
-      "message": "34 run(s), 11 card(s) landed, 0 crashed mid-card, Claude check $8.78 ($0.80 per landed card) in the last 24h."
+      "status": "warn",
+      "message": "Codex runner crashed on 6 cards: 33 run(s), 19 card(s) landed, 6 crashed mid-card, Claude check $9.01 ($0.47 per landed card) in the last 24h."
     }
   ]
 }

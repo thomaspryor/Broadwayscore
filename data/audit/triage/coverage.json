@@ -1,7 +1,7 @@
 {
   "system": "coverage",
   "status": "warn",
-  "lastChecked": "2026-10-26T07:50:34.808Z",
+  "lastChecked": "2026-10-27T07:52:42.101Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,12 +9,12 @@
     {
       "name": "Coverage: SERP census recall",
       "status": "pass",
-      "message": "a plain Google search found 34%, reviews already collected found 95%, our targeted searches found 23% — across 5 recent opening(s); 82 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (7d ago)"
+      "message": "a plain Google search found 38%, reviews already collected found 74%, our targeted searches found 30% — across 5 recent opening(s); 53 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (14h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "The naive search found 2 review URL(s) this pipeline hasn't discovered yet: the-hope-theory-off-broadway-2026, the-first-year-off-west-end-2026"
+      "message": "The naive search found 4 review URL(s) this pipeline hasn't discovered yet: our-sinatra-a-musical-celebration-off-broadway-2026, the-humanities-regional-2026"
     }
   ]
 }

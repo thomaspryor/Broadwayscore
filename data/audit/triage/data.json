@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-26T07:50:34.809Z",
+  "lastChecked": "2026-10-27T07:52:42.101Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -63,38 +63,38 @@
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "2 discovered review URL(s) across 1 live show(s) were never fetched. First: the-notebook-tour-2025 (2 stranded)"
+      "status": "pass",
+      "message": "Every discovered review URL for live shows was fetched"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "4 Linear card(s) carry an acceptance check that cannot tell done from not done (4 can never fail, 0 can never pass). First: BRO-6165 Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills"
+      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-6035 land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "3 of 519 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6153 OB historical backfill: season 2024-25 at scope S (hand ramp first, then tooling)"
+      "message": "14 of 486 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6309 Money Scorecard welcome email for new sign-ups (ready, ship on owner go)"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-25"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-26"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "72 review(s) with no usable text, 58 rejected although verified as a review, 26 never scored, 28 with a blocked URL (0 published on the site), across 460 current shows"
+      "message": "73 review(s) with no usable text, 56 rejected although verified as a review, 54 never scored, 28 with a blocked URL (0 published on the site), across 460 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31502 checked"
+      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31547 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "66 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
+      "message": "67 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -104,17 +104,17 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 579 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 565 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (1 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored); 1 newer still in flight"
+      "message": "2 discovered review(s) not reaching the composite score (2 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 5d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 6d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }
