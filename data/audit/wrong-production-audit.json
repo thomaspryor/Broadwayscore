@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T06:48:11.804Z",
+  "timestamp": "2026-10-27T07:07:26.306Z",
   "stats": {
-    "totalReviews": 62867,
-    "alreadyFlagged": 21595,
+    "totalReviews": 62868,
+    "alreadyFlagged": 21598,
     "dateGuardCatches": 224,
-    "directorMismatch": 2340,
+    "directorMismatch": 2343,
     "tvFilmSignals": 1781,
-    "londonSignals": 3033,
+    "londonSignals": 3035,
     "offBroadwaySignals": 557,
-    "yearMismatch": 216,
-    "noPublishDate": 5582
+    "yearMismatch": 217,
+    "noPublishDate": 5575
   },
   "findings": [
     {
@@ -202,6 +202,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2015",
+      "file": "britishtheatrecom--james-garden.json",
+      "score": null,
+      "publishDate": "2015-06-23",
+      "url": "https://www.britishtheatre.com/es/posts/review-1984-playhouse-theatre-4stars",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -8786,6 +8805,7 @@
     {
       "showId": "cats-west-end-2015",
       "file": "london-box-office--phil-willmott.json",
+      "score": 74,
       "publishDate": "2015-10-28",
       "url": "https://www.londonboxoffice.co.uk/news/post/cats-review2",
       "findings": [
@@ -19462,6 +19482,20 @@
     },
     {
       "showId": "gypsy-west-end-2015",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": "2015-04-16",
+      "url": "https://www.britishtheatre.com/ar/posts/review-gypsy-savoy-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-west-end-2015",
       "file": "express-uk--neil-norman.json",
       "score": 86,
       "publishDate": "2015-04-17",
@@ -19479,6 +19513,20 @@
       "file": "guardian--michael-billington.json",
       "publishDate": "2015-04-16",
       "url": "https://www.theguardian.com/stage/2015/apr/16/gypsy-review-imelda-staunton-momma-rose-stephen-sondheim-jonathan-kent-peter-davison",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"arthur laurents\" from gypsy-2008"
+        }
+      ]
+    },
+    {
+      "showId": "gypsy-west-end-2015",
+      "file": "musical-theatre-review--jeremy-chapman.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/gypsy-savoy-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -20449,6 +20497,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "score": 87,
+      "publishDate": "2015-05-12",
+      "url": "https://www.standard.co.uk/culture/theatre/hay-fever-review-felicity-kendal-hits-comedy-high-notes-perfectly-at-duke-of-yorks-theatre-10243569.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2015 (0x). 2026 matches production: hay-fever-west-end-2026"
         }
       ]
     },
@@ -45928,6 +45990,7 @@
     {
       "showId": "the-end-of-longing-west-end-2016",
       "file": "guardian--michael-billington.json",
+      "score": 36,
       "publishDate": "2016-02-11",
       "url": "https://www.theguardian.com/stage/2016/feb/11/the-end-of-longing-review-matthew-perry-friends-playhouse-london",
       "findings": [
@@ -67730,6 +67793,20 @@
       ]
     },
     {
+      "showId": "clarence-darrow-west-end-2015",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 90,
+      "publishDate": "2015-03-09",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/11454142/Clarence-Darrow-Old-Vic-review-mesmerising.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "cleansed-off-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 36,
@@ -74176,6 +74253,7 @@
     {
       "showId": "groundhog-day-west-end-2016",
       "file": "guardian--michael-billington.json",
+      "score": 75,
       "publishDate": "2016-08-16",
       "url": "https://www.theguardian.com/stage/2016/aug/16/groundhog-day-review-tim-minchin-musical-old-vic",
       "findings": [
@@ -74231,6 +74309,7 @@
     {
       "showId": "groundhog-day-west-end-2016",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 100,
       "publishDate": "2016-08-16",
       "url": "https://www.whatsonstage.com/news/review-groundhog-day-old-vic_41556/",
       "findings": [
@@ -75302,7 +75381,7 @@
     {
       "showId": "hangmen-west-end-2015",
       "file": "standard--fiona-mountford.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2016-01-04",
       "url": "https://www.standard.co.uk/culture/theatre/hangmen-theatre-review-blackest-of-black-comedies-a3132091.html",
       "findings": [
@@ -93956,7 +94035,7 @@
     {
       "showId": "the-bodyguard-west-end-2016",
       "file": "london-theatre--tom-millward.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2016-07-22",
       "url": "https://www.londontheatre.co.uk/reviews/review-of-the-bodyguard-at-dominion-theatre",
       "findings": [
