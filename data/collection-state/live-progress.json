@@ -1,23 +1,84 @@
 {
-  "updatedAt": "2026-10-27T23:00:55.091Z",
-  "processed": 278,
-  "failed": 92,
-  "successRate": "75.1%",
+  "updatedAt": "2026-10-27T23:33:37.816Z",
+  "processed": 372,
+  "failed": 138,
+  "successRate": "72.9%",
   "tierBreakdown": {
-    "playwright": 201,
-    "amp": 2,
-    "browserbase": 13,
+    "playwright": 238,
+    "amp": 4,
+    "browserbase": 14,
     "directCookies": 0,
-    "scrapingdog": 19,
-    "scrapingbee": 17,
+    "scrapingdog": 24,
+    "scrapingbee": 23,
     "brightdata": 0,
-    "archiveToday": 26,
-    "archive": 42
+    "archiveToday": 33,
+    "archive": 80
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-27T21:09:53.026Z",
+      "t": "2026-10-27T21:24:08.655Z",
+      "event": "bb-session",
+      "session": "a8fbf1fc",
+      "url": "https://www.nytimes.com/2024/01/24/theater/aristocrats-review.html"
+    },
+    {
+      "t": "2026-10-27T21:24:10.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:28:55.249Z",
+      "event": "bb-session",
+      "session": "70e035bb",
+      "url": "https://www.wsj.com/articles/public-obscenities-review-a-perceptive-bengali-dram"
+    },
+    {
+      "t": "2026-10-27T21:28:55.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T21:31:51.394Z",
+      "event": "bb-session",
+      "session": "c2a95eb1",
+      "url": "https://www.wsj.com/articles/the-gardens-of-anuncia-review-the-blooming-of-a-bro"
+    },
+    {
+      "t": "2026-10-27T21:31:51.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T21:41:25.232Z",
+      "event": "bb-session",
+      "session": "23833e97",
+      "url": "https://www.nytimes.com/2023/10/30/theater/i-can-get-it-for-you-wholesale-review"
+    },
+    {
+      "t": "2026-10-27T21:41:25.726Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:47:55.770Z",
+      "event": "bb-session",
+      "session": "01c2b6b2",
+      "url": "https://www.nytimes.com/2023/10/27/theater/covenant-review.html"
+    },
+    {
+      "t": "2026-10-27T21:47:56.327Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:52:39.708Z",
+      "event": "bb-session",
+      "session": "a1f07957",
+      "url": "https://www.nytimes.com/2023/10/22/theater/here-we-are-review-stephen-sondheim.h"
+    },
+    {
+      "t": "2026-10-27T21:52:40.128Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -44,87 +105,26 @@
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-27T22:14:11.030Z",
+      "t": "2026-10-27T23:15:42.466Z",
       "event": "bb-session",
-      "session": "16800ca0",
-      "url": "https://www.nytimes.com/2023/09/14/theater/review-death-let-me-do-my-show.html"
+      "session": "7d75a775",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-27T22:14:11.496Z",
+      "t": "2026-10-27T23:15:42.788Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-27T22:17:51.060Z",
+      "t": "2026-10-27T23:17:10.973Z",
       "event": "bb-session",
-      "session": "d80439b0",
-      "url": "https://www.wsj.com/articles/the-creeps-review-a-one-woman-cast-of-the-uncanny-3"
+      "session": "bea45130",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
     {
-      "t": "2026-10-27T22:17:51.511Z",
+      "t": "2026-10-27T23:17:11.269Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T22:19:00.913Z",
-      "event": "bb-session",
-      "session": "3e576e11",
-      "url": "https://www.newyorker.com/goings-on-about-town/pay-the-writer-09-04-23"
-    },
-    {
-      "t": "2026-10-27T22:19:01.398Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-27T22:19:12.465Z",
-      "event": "bb-session",
-      "session": "d1cb4ad5",
-      "url": "https://www.newyorker.com/goings-on-about-town/pay-the-writer-09-04-23"
-    },
-    {
-      "t": "2026-10-27T22:19:12.884Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-27T22:19:47.663Z",
-      "event": "bb-session",
-      "session": "94239dfd",
-      "url": "https://www.wsj.com/articles/pay-the-writer-and-small-reviews-dramas-of-disconte"
-    },
-    {
-      "t": "2026-10-27T22:19:48.060Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T22:27:18.283Z",
-      "event": "bb-session",
-      "session": "cd4b738f",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/flex-07-31-23"
-    },
-    {
-      "t": "2026-10-27T22:27:18.726Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-10-27T22:27:29.564Z",
-      "event": "bb-session",
-      "session": "781974a6",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/flex-07-31-23"
-    },
-    {
-      "t": "2026-10-27T22:27:29.979Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T22:32:44.841Z",
-      "event": "bb-session",
-      "session": "c3be226a",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "domain": "nytimes.com"
     }
   ]
 }
