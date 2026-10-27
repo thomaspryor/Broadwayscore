@@ -242,7 +242,24 @@ function musicFor(d) {
   if (!fs.existsSync(f)) throw new Error(`MUSIC=rotate picked ${pick} but it is not in MUSIC_DIR (${process.env.MUSIC_DIR || 'unset'})`);
   return f;
 }
+// Platforms (TikTok, Reels, Shorts) expect about -14 LUFS; a quieter file sounds silent in the feed (BRO-6412).
+// Two-pass loudnorm to -14 LUFS / -1.5 dBTP (headroom for AAC) on the finished soundtrack, then a gate: anything under -16 LUFS fails the render.
+const LOUD_TARGET = -14, LOUD_FLOOR = -16;
+const loudness = f => { const r = require('child_process').spawnSync('ffmpeg', ['-hide_banner', '-nostats', '-i', f, '-af', 'ebur128=peak=true', '-f', 'null', '-'], { encoding: 'utf8' }).stderr;
+  const m = /Integrated loudness:\s*I:\s*(-?[\d.]+) LUFS/.exec(r.slice(r.lastIndexOf('Summary:'))); if (!m) throw new Error('could not measure loudness of ' + f); return +m[1]; };
+function normalizeLoudness(wav) {
+  const sp = require('child_process').spawnSync, out = wav.replace(/\.wav$/, '-ln.wav'), base = `I=${LOUD_TARGET}:TP=-1.5:LRA=11`;
+  const j = sp('ffmpeg', ['-hide_banner', '-nostats', '-i', wav, '-af', `loudnorm=${base}:print_format=json`, '-f', 'null', '-'], { encoding: 'utf8' }).stderr;
+  const m = JSON.parse(j.slice(j.lastIndexOf('{'), j.lastIndexOf('}') + 1));
+  require('child_process').execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', wav, '-af', `loudnorm=${base}:measured_I=${m.input_i}:measured_TP=${m.input_tp}:measured_LRA=${m.input_lra}:measured_thresh=${m.input_thresh}:offset=${m.target_offset}:linear=true`, '-ar', '44100', out]);
+  fs.renameSync(out, wav);
+  const lufs = loudness(wav); console.log(`loudness: ${m.input_i} -> ${lufs} LUFS`);
+  if (!(lufs >= LOUD_FLOOR)) throw new Error(`${name}: soundtrack is ${lufs} LUFS, under the ${LOUD_FLOOR} LUFS floor (target ${LOUD_TARGET})`);
+}
 function finishAudio(wav, dur, d, outDir) {
+  finishMix(wav, dur, d, outDir); normalizeLoudness(wav);
+}
+function finishMix(wav, dur, d, outDir) {
   const track = musicFor(d);
   console.log(`music: ${track ? path.basename(track) : 'none (effects only)'}`);
   if (track) mixMusic(wav, dur, track);
