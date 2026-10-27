@@ -1,26 +1,31 @@
 {
-  "updatedAt": "2026-10-27T07:15:48.521Z",
-  "processed": 37,
-  "failed": 13,
-  "successRate": "74.0%",
+  "updatedAt": "2026-10-27T07:19:39.629Z",
+  "processed": 11,
+  "failed": 7,
+  "successRate": "61.1%",
   "tierBreakdown": {
-    "playwright": 23,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 2,
-    "brightdata": 2,
-    "archiveToday": 5,
-    "archive": 8
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 2,
+    "archive": 4
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-27T07:11:07.767Z",
+      "t": "2026-10-27T07:15:07.581Z",
       "event": "bb-session",
-      "session": "b4af3dcd",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "200bb7ce",
+      "url": "http://www.nytimes.com/2015/02/25/theater/review-jennifer-haleys-the-nether-expl"
+    },
+    {
+      "t": "2026-10-27T07:15:07.878Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
