@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T03:39:20.017Z",
+  "timestamp": "2026-10-27T04:26:37.033Z",
   "stats": {
-    "totalReviews": 62767,
-    "alreadyFlagged": 21587,
+    "totalReviews": 62809,
+    "alreadyFlagged": 21588,
     "dateGuardCatches": 224,
     "directorMismatch": 2339,
     "tvFilmSignals": 1777,
-    "londonSignals": 3028,
-    "offBroadwaySignals": 553,
-    "yearMismatch": 215,
-    "noPublishDate": 5568
+    "londonSignals": 3029,
+    "offBroadwaySignals": 554,
+    "yearMismatch": 216,
+    "noPublishDate": 5590
   },
   "findings": [
     {
@@ -8780,6 +8780,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bill rauch\" from cats-the-jellicle-ball-2026"
+        }
+      ]
+    },
+    {
+      "showId": "cats-west-end-2015",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2015-10-28",
+      "url": "https://www.londonboxoffice.co.uk/news/post/cats-review2",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2015 (1x). 2026 matches production: cats-the-jellicle-ball-2026"
         }
       ]
     },
@@ -75181,6 +75194,19 @@
     },
     {
       "showId": "hangmen-west-end-2015",
+      "file": "mail-on-sunday--quentin-letts.json",
+      "publishDate": "2015-12-07",
+      "url": "https://www.dailymail.com/tvshowbiz/article-3350430/Comedy-dash-darkness-QUENTIN-LETTS-gives-night-review-Martin-McDonagh-s-new-play-Hangmen.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hangmen-west-end-2015",
       "file": "times-uk--ann-treneman.json",
       "score": 91,
       "publishDate": "2015-12-09",
@@ -89385,6 +89411,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"nytw\""
+        }
+      ]
+    },
+    {
+      "showId": "scene-partners-off-broadway-2023",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": null,
+      "publishDate": "2023-11-15",
+      "url": "https://newyorktheater.me/2023/11/15/scene-partners-review-dianne-wiest-as-a-maybe-delusional-movie-star/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
         }
       ]
     },
