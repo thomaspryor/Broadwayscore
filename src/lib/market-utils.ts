@@ -126,12 +126,12 @@ export function getCurrencySymbol(category?: string, venue?: string): string {
 }
 
 /** Human-readable market label for a category. */
-export function getMarketLabel(category?: string): string {
+export function getMarketLabel(category?: string, venue?: string): string {
   switch (category) {
     case 'west-end': return 'West End';
     case 'off-west-end': return 'Off-West End';
     case 'off-broadway': return 'Off-Broadway';
-    case 'regional': return 'Regional';
+    case 'regional': return getRegionalLabel({ category, venue });
     case 'tour': return 'Tour';
     default: return 'Broadway';
   }

@@ -87,7 +87,7 @@ const ShowListCard = memo(function ShowListCard({
   const primaryTicket = sortedLinks[0];
   const canShowTicket = showTicketLink && primaryTicket && (show.status === 'open' || show.status === 'previews');
   const isOpera = isOperaShow(show);
-  const marketLabel = isOpera ? OPERA_MARKET_LABEL : getMarketLabel(category);
+  const marketLabel = isOpera ? OPERA_MARKET_LABEL : getMarketLabel(category, show.venue);
   const durationSuffix = isOpera ? OPERA_DURATION_SUFFIX : getDurationSuffix(category, show.venue);
   const cardHref = overrideHref ?? `/show/${show.slug}`;
 

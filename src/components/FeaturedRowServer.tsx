@@ -26,6 +26,7 @@ export interface ServerShelfShow {
   title: string;
   type: string;
   category?: string;
+  venue?: string;
   status?: string;
   previewsStartDate?: string | null;
   openingDate?: string | null;
@@ -65,7 +66,7 @@ function ServerMiniShowCard({ show, priority, eager }: { show: ServerShelfShow; 
               src={imgSrc}
               srcSet={srcSet || undefined}
               sizes={srcSet ? '(min-width: 640px) 128px, 112px' : undefined}
-              alt={`${show.title} ${getMarketLabel(show.category)} ${show.type}`}
+              alt={`${show.title} ${getMarketLabel(show.category, show.venue)} ${show.type}`}
               loading={eager ? 'eager' : 'lazy'}
               fetchPriority={priority ? 'high' : undefined}
               decoding="async"

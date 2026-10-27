@@ -134,7 +134,10 @@ test('show page <title> labels a UK house "in the UK", not as a regional (US) pr
 
 test('UK flagship shows read "UK Regional" in search/alt text; the US shelf applies the review floor (BRO-5269)', async () => {
   const { readFileSync } = await import('node:fs');
-  const { getRegionalLabel } = await import('../../src/lib/market-utils.ts');
+  const { getRegionalLabel, getMarketLabel } = await import('../../src/lib/market-utils.ts');
+  assert.equal(getMarketLabel('regional', 'Royal Exchange Theatre, Manchester'), 'UK Regional');
+  assert.equal(getMarketLabel('regional', 'Swan Theatre, Worcester'), 'Regional');
+  assert.equal(getMarketLabel('regional'), 'Regional');
   assert.equal(getRegionalLabel({ category: 'regional', venue: 'Swan Theatre, Stratford-upon-Avon' }), 'UK Regional');
   assert.equal(getRegionalLabel({ category: 'regional', venue: 'Swan Theatre, Worcester' }), 'Regional');
   for (const f of ['src/components/HeaderSearch.tsx', 'src/components/show-cards/ShowSearchDropdown.tsx', 'src/components/show-page/ShowHeroRedesign.tsx']) {

@@ -7,7 +7,7 @@ import ShowImage from '@/components/ShowImage';
 import { getScoreColorClass, MustSeeCrown } from '@/components/show-cards';
 import { isCriticalGold, hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { getMarketLabel, getRegionalLabel } from '@/lib/market-utils';
+import { getMarketLabel } from '@/lib/market-utils';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import HoverRateStars from '@/components/user/HoverRateStars';
 import type { ShowCardShow } from './types';
@@ -29,7 +29,7 @@ const MiniShowCard = memo(function MiniShowCard({ show, priority = false, eager 
   const t1t2 = (show.criticScore?.tier1Count ?? 0) + (show.criticScore?.tier2Count ?? 0);
   const rawScore = show.criticScore?.score;
   const score = rawScore != null && hasEnoughReviews(reviewCount, category, t1t2, CURATED_HISTORICAL_SHOWS.has(show.id)) ? rawScore : null;
-  const marketLabel = category === 'regional' ? getRegionalLabel(show) : getMarketLabel(category);
+  const marketLabel = getMarketLabel(category, show.venue);
 
   // For not-yet-open shows there's no score, so the badge slot would just read
   // "—". Surface the start date there instead — the most useful fact for an
