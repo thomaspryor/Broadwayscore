@@ -215,7 +215,7 @@ describe('classifyHeadlessResult — closing phrase inside the final paragraph (
     assert.equal(classifyHeadlessResult(t).outcome, 'stopped-short');
   });
   test('same paragraph: last phrase wins in both directions', () => {
-    assert.equal(classifyHeadlessResult('Keep this tab open until CI is green. You can close this tab otherwise.').outcome, 'clean');
+    assert.equal(classifyHeadlessResult('Do not keep this tab open now. CI is green. You can close this tab.').outcome, 'clean');
     assert.equal(classifyHeadlessResult('You can close this tab. Keep this tab open.').outcome, 'stopped-short');
   });
   test('"Keep the worktree, it holds unfinished work." is stopped-short', () => {
