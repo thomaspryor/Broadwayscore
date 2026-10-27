@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T07:11:03.902Z",
+  "generatedAt": "2026-10-27T13:05:27.804Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,6 +103,10 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -123,7 +127,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 796,
+  "itemsScanned": 786,
   "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
