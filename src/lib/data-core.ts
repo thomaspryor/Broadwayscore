@@ -29,6 +29,7 @@ import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs 
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { broadwayTheaterNames, stubTheaterName, foldVenueName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
 import { partitionShowRows } from '../../scripts/lib/show-row-guard';
+import { belongsOnOffBroadwayListing } from '../../scripts/lib/off-broadway-listing';
 import { readCoverageFloorInputs, coverageFloorOptsForShow } from '../../scripts/lib/coverage-floor-inputs';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
@@ -177,11 +178,11 @@ export function getWestEndShows(): ComputedShow[] {
 }
 
 export function isOffBroadwayShow(show: ComputedShow): boolean {
-  return show.category === 'off-broadway';
+  return belongsOnOffBroadwayListing(show);
 }
 
 /**
- * Get all Off-Broadway shows
+ * Get public Off-Broadway listings. Opera remains available via getOperaShows().
  */
 export function getOffBroadwayShows(): ComputedShow[] {
   return getAllShows().filter(isOffBroadwayShow);

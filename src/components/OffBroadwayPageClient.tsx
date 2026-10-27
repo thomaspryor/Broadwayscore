@@ -71,7 +71,7 @@ interface OffBroadwayPageClientProps {
 type StatusParam = 'now_playing' | 'previews' | 'closed' | 'all';
 type SortParam = 'recent' | 'recent_asc' | 'score_desc' | 'score_asc' | 'alpha' | 'alpha_desc' | 'audience_buzz' | 'audience_asc';
 const SORT_PARAMS: SortParam[] = ['recent', 'recent_asc', 'score_desc', 'score_asc', 'alpha', 'alpha_desc', 'audience_buzz', 'audience_asc'];
-type TypeParam = 'all' | 'musical' | 'play' | 'opera';
+type TypeParam = 'all' | 'musical' | 'play';
 // Internal filter values
 type StatusFilter = 'all' | 'open' | 'previews' | 'closed';
 
@@ -142,7 +142,7 @@ function filtersFromParams(initialSearchParams: URLSearchParams) {
         ? initialSearchParams.get('status') as StatusParam : DEFAULT_STATUS),
       sort: (SORT_PARAMS.includes(initialSearchParams.get('sort') as SortParam)
         ? initialSearchParams.get('sort') as SortParam : DEFAULT_SORT),
-      type: (['all', 'musical', 'play', 'opera'].includes(initialSearchParams.get('type') as string)
+      type: (['all', 'musical', 'play'].includes(initialSearchParams.get('type') as string)
         ? initialSearchParams.get('type') as TypeParam : DEFAULT_TYPE),
       scoreMode: (['critics', 'audience'].includes(initialSearchParams.get('scoreMode') as string)
         ? initialSearchParams.get('scoreMode') as ScoreModeParam : DEFAULT_SCORE_MODE),

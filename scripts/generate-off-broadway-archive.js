@@ -21,10 +21,11 @@
  */
 
 const { generateMarketArchive } = require('./lib/generate-market-archive');
+const { belongsOnOffBroadwayListing } = require('./lib/off-broadway-listing');
 
 generateMarketArchive({
   outputFilename: 'off-broadway-archive.json',
   entryCategory: 'off-broadway',
-  belongsToMarket: show => show.category === 'off-broadway',
+  belongsToMarket: belongsOnOffBroadwayListing,
   label: 'Off-Broadway',
 });

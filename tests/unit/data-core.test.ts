@@ -22,6 +22,7 @@ import {
   getWestEndShows,
   getOffWestEndShows,
   getOffBroadwayShows,
+  getOperaShows,
   getToursOf,
   getTourShows,
   getTourBrowseShows,
@@ -224,7 +225,7 @@ describe('national tours (launched in code, BRO-4211)', () => {
 });
 
 describe('market partitioning', () => {
-  test('broadway + west-end + off-west-end + off-broadway covers all shows (modulo hidden)', () => {
+  test('theatre hubs plus opera cover all shows (modulo hidden)', () => {
     // The market filters are expected to partition all shows EXCEPT
     // entries that the public listings deliberately hide (e.g. ABBA Voyage —
     // a hologram concert, not theatre — is in the data set but excluded from
@@ -245,6 +246,7 @@ describe('market partitioning', () => {
     for (const s of getWestEndShows()) partitioned.add(s.id);
     for (const s of getOffWestEndShows()) partitioned.add(s.id);
     for (const s of getOffBroadwayShows()) partitioned.add(s.id);
+    for (const s of getOperaShows()) partitioned.add(s.id);
     // National tours (BRO-4211) are their own flag-gated partition.
     for (const s of allShows.filter(x => x.category === 'tour')) partitioned.add(s.id);
     const missing = Array.from(allIds).filter(id => !partitioned.has(id));
