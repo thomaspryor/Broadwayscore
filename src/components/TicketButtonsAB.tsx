@@ -32,8 +32,8 @@
  * ═══════════════════════════════════════════════════════════════════════
  */
 
-import { useState, useEffect } from 'react';
 import TicketLink from '@/components/TicketLink';
+import { usePostHogFlag } from '@/lib/hooks';
 import { sortTicketLinks, type TicketLinkData } from '@/lib/ticket-utils';
 import { getCurrencySymbol } from '@/lib/market-utils';
 
@@ -83,47 +83,13 @@ export default function TicketButtonsAB({
   primaryButtonClassName = "w-full inline-flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-lg bg-gradient-brand text-white font-bold text-sm hover:shadow-glow-sm hover:scale-[1.01] active:scale-[0.99] transition-all whitespace-nowrap",
   secondaryAfter,
 }: TicketButtonsABProps) {
-  // null until the PostHog flag resolves to a string value. Rendering never
+  // undefined until the PostHog flag resolves to a string value. Rendering never
   // blocks on this resolving — sortTicketLinks() with no override already
   // produces the locked-100% `todaytix` ordering,
   // so the first paint is control-equivalent in the overwhelming majority
   // of loads; abPlatformVariant only matters for the currently-0%-rollout
   // `stubhub` override, applied via a cheap re-render once/if it resolves.
-  const [abPlatformVariant, setAbPlatformVariant] = useState<string | null>(null);
-
-  useEffect(() => {
-    let attempts = 0;
-    const maxAttempts = 20; // 20 × 250ms = 5 seconds total
-    let intervalId: ReturnType<typeof setInterval> | null = null;
-
-    const checkFlags = () => {
-      const ph = window.posthog;
-      if (ph?.getFeatureFlag) {
-        const platformFlag = ph.getFeatureFlag('ticket-primary-platform');
-
-        if (typeof platformFlag === 'string') {
-          setAbPlatformVariant(platformFlag);
-          if (intervalId) clearInterval(intervalId);
-          return;
-        }
-      }
-      attempts++;
-      if (attempts >= maxAttempts && intervalId) {
-        clearInterval(intervalId);
-      }
-    };
-
-    // Try immediately, then poll every 250ms for up to 5s. No fallback timer
-    // needed anymore: the button already rendered with the default ordering
-    // on first paint (see above), so giving up here just means we never
-    // apply the stubhub override — not a rendering gap.
-    checkFlags();
-    intervalId = setInterval(checkFlags, 250);
-
-    return () => {
-      if (intervalId) clearInterval(intervalId);
-    };
-  }, []);
+  const abPlatformVariant = usePostHogFlag('ticket-primary-platform');
 
   // Platform ordering (test 1 — locked to `todaytix` at 100% in PostHog).
   //

@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { usePostHogFlag } from '@/lib/hooks';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
 import { isMoneyGateInView } from '@/lib/money-gate';
@@ -349,33 +350,18 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // Resolve the flag BEFORE arming the scroll listener — flags load 0.5-5s after
   // mount, and a fast scroller crossing the threshold pre-resolution would get
   // control behavior while PostHog's sticky assignment records the variant
-  // (contaminated arms). Same poll-then-fallback shape as TicketButtonsAB:
-  // 250ms x 20; after 5s unresolved → 'fallback' (control BEHAVIOR, but labeled
-  // fallback so analysis EXCLUDES those users rather than polluting control).
-  // undefined = still resolving (listener stays unarmed); string|null = resolved.
-  const [mobileGateFlag, setMobileGateFlag] = useState<string | null | undefined>(undefined);
+  // (contaminated arms). After 5s unresolved, use control behavior with the
+  // fallback label so analysis excludes those users from the control arm.
+  // Only expose touch devices while the mobile gate is enabled.
+  const mobileGateEnabled = isClient && emailCaptureConfig.mobileScrollGate.enabled
+    && window.matchMedia('(pointer: coarse)').matches;
+  const mobileGateFlag = usePostHogFlag(MOBILE_GATE_FLAG, mobileGateEnabled);
+  const [mobileGateTimedOut, setMobileGateTimedOut] = useState(false);
   useEffect(() => {
-    if (!isClient) return;
-    if (!emailCaptureConfig.mobileScrollGate.enabled) return;
-    // Only resolve on touch devices — the experiment exists only there, and
-    // resolving on desktop would put desktop users in PostHog's exposure cohort.
-    if (!window.matchMedia('(pointer: coarse)').matches) return;
-
-    let tries = 0;
-    const poll = setInterval(() => {
-      tries++;
-      const ph = window.posthog; // typed via the global posthog declaration (TicketButtonsAB idiom)
-      const value = ph?.getFeatureFlag?.(MOBILE_GATE_FLAG);
-      if (typeof value === 'string' || value === true) {
-        setMobileGateFlag(String(value));
-        clearInterval(poll);
-      } else if (tries >= 20) {
-        setMobileGateFlag(null); // ad blocker / opt-out / flag missing → fallback
-        clearInterval(poll);
-      }
-    }, 250);
-    return () => clearInterval(poll);
-  }, [isClient]);
+    if (!mobileGateEnabled || mobileGateFlag !== undefined) return;
+    const timeout = setTimeout(() => setMobileGateTimedOut(true), 5000);
+    return () => clearTimeout(timeout);
+  }, [mobileGateEnabled, mobileGateFlag]);
   // Per-PAGE dwell clock for the mobile scroll gate — resets on every pathname
   // change, same pattern as exitIntentPageMountRef above. Previously this was
   // a single mountTimeRef set once per ProGateProvider mount (the provider
@@ -397,13 +383,13 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   useEffect(() => {
     if (!emailCaptureConfig.mobileScrollGate.enabled) return;
     if (!isClient || hasEmail || scrollFired || passiveModalFired) return;
-    if (mobileGateFlag === undefined) return; // flag unresolved — listener stays unarmed
+    if (mobileGateFlag === undefined && !mobileGateTimedOut) return;
 
     // Only fire on touch devices (no fine pointer = mobile/tablet)
     const isTouchDevice = window.matchMedia('(pointer: coarse)').matches;
     if (!isTouchDevice) return;
 
-    const params = getMobileGateParams(mobileGateFlag);
+    const params = getMobileGateParams(mobileGateFlag ?? null);
     const abVariant = buildGateAbVariant(params.timing);
     let fired = false;
 
@@ -439,7 +425,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
 
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [isClient, hasEmail, scrollFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate, mobileGateFlag]);
+  }, [isClient, hasEmail, scrollFired, passiveModalFired, isReturnVisitor, modalOpen, triggerGate, mobileGateFlag, mobileGateTimedOut]);
 
   const handleModalSubmit = useCallback((data: CapturedUserData) => {
     // Save to localStorage

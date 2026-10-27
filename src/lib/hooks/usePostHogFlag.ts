@@ -9,8 +9,8 @@ import { useEffect, useState } from 'react';
  * PostHog is blocked or the flag never resolves). Callers must treat
  * `undefined` as the safe default.
  *
- * Same loop as TicketButtonsAB.tsx and ProGateContext.tsx (migrating those is
- * a separate card). The flag-registry scanner (scripts/lib/flag-registry.js)
+ * Shared by TicketButtonsAB.tsx and ProGateContext.tsx, among others.
+ * The flag-registry scanner (scripts/lib/flag-registry.js)
  * reads `usePostHogFlag(...)` call sites, so pass a literal or an exported
  * UPPER_SNAKE constant.
  *

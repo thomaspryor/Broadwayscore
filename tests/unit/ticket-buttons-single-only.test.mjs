@@ -21,7 +21,7 @@ const source = () => readFileSync(COMPONENT_PATH, 'utf-8');
 
 test('TicketButtonsAB no longer reads the retired ticket-single-button flag or branches on a button-count variant', () => {
   const src = source();
-  assert.doesNotMatch(src, /getFeatureFlag\(['"]ticket-single-button['"]\)/, 'must not re-add the retired flag read');
+  assert.doesNotMatch(src, /(?:getFeatureFlag|usePostHogFlag)\(['"]ticket-single-button['"]\)/, 'must not re-add the retired flag read');
   assert.doesNotMatch(src, /abButtonVariant/, 'must not reintroduce button-variant state');
   assert.doesNotMatch(src, /isSingleButton/, 'must not reintroduce the multi/single branch condition');
   assert.doesNotMatch(src, /\bmaxButtons\b/, 'must not reintroduce the dead multi-button prop');
@@ -29,7 +29,8 @@ test('TicketButtonsAB no longer reads the retired ticket-single-button flag or b
 
 test('TicketButtonsAB still reads the live ticket-primary-platform flag (unrelated experiment, must survive this teardown)', () => {
   const src = source();
-  assert.match(src, /getFeatureFlag\(['"]ticket-primary-platform['"]\)/, 'ticket-primary-platform read must not have been collaterally removed');
+  assert.match(src, /usePostHogFlag\(['"]ticket-primary-platform['"]\)/, 'ticket-primary-platform must use the shared flag hook');
+  assert.doesNotMatch(src, /\bsetInterval\b/, 'flag polling belongs in the shared hook');
   assert.match(src, /overridePlatform/, 'the stubhub-override branch must still exist (see file header: do not remove)');
 });
 
