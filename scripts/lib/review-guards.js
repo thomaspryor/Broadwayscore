@@ -2975,6 +2975,8 @@ const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./multi-show-s
 function shouldSkipCrossShowUrlFlag(data) {
   if (!data || typeof data !== 'object') return false;
   if (shouldSkipWrongProductionAudit(data)) return true;
+  // BRO-5245: a person said this file is for THIS show; year distance must not override that.
+  if (data.wrongShow && wrongShowExplicitlyCleared(data)) return true;
   if (isProductionAwareCvVerdict(data.contentVerification)) return true;
   return false;
 }

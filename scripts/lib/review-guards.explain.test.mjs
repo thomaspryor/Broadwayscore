@@ -403,3 +403,9 @@ test('BRO-5245: syndication primary and ingest collision honor an explicit wrong
   const route = fs.readFileSync(new URL('../../src/app/api/admin/ingest-review/route.ts', import.meta.url), 'utf8');
   assert.ok(!/existingData\.wrongShow === true(?! &&)/.test(route), 'route.ts reads raw wrongShow without the clear check');
 });
+
+test('BRO-5245: cross-show URL check skips an explicitly wrongShow-cleared file', () => {
+  assert.strictEqual(guards.shouldSkipCrossShowUrlFlag({ wrongShow: true, wrongShowManualClear: true }), true);
+  assert.strictEqual(guards.shouldSkipCrossShowUrlFlag({ wrongShow: true, wrongShowOverride: true }), true);
+  assert.strictEqual(guards.shouldSkipCrossShowUrlFlag({ wrongShow: true }), false);
+});
