@@ -264,7 +264,7 @@ function isLandedAcked(rows, taskId, last) {
   return rows.some((e) => e && e.event === 'landed-acked'
     && String(e.taskId) === String(taskId)
     && e.jobId === last.jobId
-    && tsOf(e) !== null && tsOf(e) >= last.ts);
+    && tsOf(e) !== null && tsOf(e) > last.ts);
 }
 
 /**
