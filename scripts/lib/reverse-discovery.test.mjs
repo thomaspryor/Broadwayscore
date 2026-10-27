@@ -640,4 +640,29 @@ test('BRO-4689: "<Person> Returns to Broadway in SHOW" extracts the show, not th
   // A show returning keeps the existing verb split.
   assert.equal(x('Review Roundup: MAMMA MIA! Returns to Broadway'), 'MAMMA MIA!');
   assert.equal(x('Review Roundup: OH, MARY! Returns to Broadway in New Cast'), 'OH, MARY!');
+  // Title-case show titles with a non-title tail keep the show (review finding).
+  assert.equal(x('Review Roundup: Kimberly Akimbo Returns to Broadway in March'), 'Kimberly Akimbo');
+  assert.equal(x('Review Roundup: Funny Girl Returns to Broadway in Summer'), 'Funny Girl');
+  assert.equal(x("Review Roundup: Sunset Boulevard Returns to Broadway in Jamie Lloyd's Revival"), 'Sunset Boulevard');
+});
+
+test('BRO-4689: possessive lead-drop never hides a revival or a different production', () => {
+  const { resolveMatchedShowId } = require('./reverse-discovery.js');
+  const shows = [
+    { id: 'james-joyces-the-dead-2000', title: "James Joyce's The Dead", category: 'broadway', status: 'closed' },
+    { id: 'the-dead-1904-off-broadway-2026', title: 'The Dead, 1904', category: 'off-broadway', status: 'upcoming' },
+    { id: 'romeo-1', title: 'Romeo and Juliet', category: 'broadway', status: 'closed' },
+    { id: 'company-1', title: 'Company', akaTitles: ['Sondheim Company'], category: 'broadway', status: 'open' },
+    { id: 'x-1', title: 'Something Else', akaTitles: ['Annie'], category: 'broadway', status: 'open' },
+  ];
+  const nyc = buildShowTitleIndex(shows, 'nyc');
+  // Full title is catalogued (closed musical): never strip to "The Dead" → The Dead, 1904.
+  assert.equal(resolveMatchedShowId('James Joyce\u2019s The Dead', nyc), null);
+  // Lead-drop only lands on a LIVE exact title.
+  assert.equal(titleMatchesIndex("Shakespeare's Romeo and Juliet", nyc), false);
+  // Contractions are not leads.
+  assert.equal(titleMatchesIndex("It's Only a Play", buildShowTitleIndex([{ id: 'p', title: 'Only a Play', category: 'broadway', status: 'open' }], 'nyc')), false);
+  // One-word aliases are not indexed (would hide a new "Annie").
+  assert.equal(titleMatchesIndex('Annie', nyc), false);
+  assert.equal(titleMatchesIndex('Sondheim Company', nyc), true);
 });

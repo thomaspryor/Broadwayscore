@@ -208,10 +208,11 @@ function extractShowTitleFromBwwRoundup(rawTitle) {
   if (actorLead) rest = actorLead[1].trim();
   // "<Person> Returns to Broadway in SHOW": the returning subject is a star,
   // not the show ("Billy Crystal Returns to Broadway in 860", BRO-4689). Only
-  // for a 2-4 word Title-case name lead, so "MAMMA MIA! Returns to Broadway"
-  // still splits at the verb below.
+  // for a 2-4 word Title-case name lead and a BWW-style caps/number tail, so
+  // "MAMMA MIA! Returns to Broadway" and "Kimberly Akimbo Returns to Broadway
+  // in March" still split at the verb below.
   const personLead = rest.match(
-    /^(?:[A-Z][a-z][\w.'’-]*\s+){1,3}[A-Z][a-z][\w.'’-]*\s+(?:Returns?|Comes?|Heads?)\s+to\s+(?:Broadway|Off-Broadway)\s+in\s+(.+)$/
+    /^(?:[A-Z][a-z][\w.'’-]*\s+){1,3}[A-Z][a-z][\w.'’-]*\s+(?:Returns?|Comes?|Heads?)\s+to\s+(?:Broadway|Off-Broadway)\s+in\s+([A-Z0-9][^a-z]*)$/
   );
   if (personLead) rest = personLead[1].trim();
   const sep = rest.match(
@@ -418,13 +419,6 @@ function titleCandidates(title) {
   if (flat !== title && !out.includes(flat)) out.push(flat);
   const tail = capsTitleTail(title);
   if (tail && !out.includes(tail)) out.push(tail);
-  // Possessive author lead: "TS Eliot's Murder in the Cathedral" (Guardian)
-  // for the catalogued "Murder in the Cathedral" (BRO-4689). The 's-strip
-  // above keeps the name ("TS Eliot Murder…"); this drops the whole lead.
-  // Lead is 1-3 capitalised words; the rest must be multi-word (a one-word
-  // rest is the "Shakespeare's Globe" shape; caps tails cover BWW's case).
-  const lead = String(title || '').match(/^[A-Z][\w.\-]*(?:\s+[A-Z][\w.\-]*){0,2}[’'‘]s\s+(.+)$/);
-  if (lead && /\S\s+\S/.test(lead[1]) && lead[1].length >= 6 && !out.includes(lead[1])) out.push(lead[1]);
   return out;
 }
 
@@ -443,6 +437,31 @@ function capsTitleTail(title) {
   if (!/[a-z]/.test(lead) || lead.split(/\s+/).length > 4) return null;
   if ((tail.match(/[A-Z]/g) || []).length < 4) return null;
   return tail.trim();
+}
+
+/**
+ * Possessive author lead: "TS Eliot’s Murder in the Cathedral" (Guardian)
+ * for the catalogued "Murder in the Cathedral" (BRO-4689). Dropping a lead
+ * can erase identity ("James Joyce's The Dead" is its own closed musical;
+ * "Shakespeare's Romeo and Juliet" may be a new revival), so it only counts
+ * when: the full title is not itself catalogued, the rest is multi-word,
+ * and the rest EXACTLY equals (no year/market-stripped variant) the title of
+ * exactly one live show. Returns that show id, or null.
+ */
+const POSSESSIVE_LEAD_STOP = new Set(['it', 'who', 'that', 'what', 'here', 'there', 'let', 'he', 'she', 'one', 'everyone', 'nobody', 'somebody']);
+function possessiveLeadShowId(title, index) {
+  const m = String(title || '').trim().match(/^([A-Z][\w.\-]*(?:\s+[A-Z][\w.\-]*){0,2})[’'‘]s\s+(.+)$/);
+  if (!m || POSSESSIVE_LEAD_STOP.has(m[1].toLowerCase())) return null;
+  const rest = normalizeTitle(m[2]);
+  if (!rest || !rest.includes(' ') || rest.length < 6) return null;
+  for (const cand of titleCandidates(title)) {
+    const n = normalizeTitle(cand);
+    if (n && [...titleVariants(n)].some((v) => index.exact.has(v))) return null;
+  }
+  const entries = ((index.statusByVariant && index.statusByVariant.get(rest)) || [])
+    .filter((e) => e.full && e.id && e.status && e.status !== 'closed');
+  const ids = new Set(entries.map((e) => e.id));
+  return ids.size === 1 ? [...ids][0] : null;
 }
 
 /**
@@ -469,6 +488,7 @@ function resolveMatchedShowId(title, index) {
       }
     }
   }
+  if (ids.size === 0) return possessiveLeadShowId(title, index);
   return ids.size === 1 ? [...ids][0] : null;
 }
 
@@ -693,7 +713,9 @@ function buildShowTitleIndex(shows, market = null) {
     // akaTitles: the press/billing title differs from the catalogue title
     // ("860" for "Billy Crystal 860"); the show read as missing for days
     // although its akaTitles already said so (BRO-4689).
-    raws.push(...aliasNorms(s));
+    // Guarded like the ":" head: multi-word, or a number title ("860"); a
+    // one-word alias ("Company") would hide an unrelated new show.
+    for (const a of aliasNorms(s)) if ((a.includes(' ') && a.length >= 6) || /^\d{2,}$/.test(a)) raws.push(a);
     for (const raw of raws) {
       if (!raw) continue;
       const n = normalizeTitle(raw);
@@ -701,7 +723,7 @@ function buildShowTitleIndex(shows, market = null) {
       for (const v of titleVariants(n)) {
         exact.add(v);
         if (!statusByVariant.has(v)) statusByVariant.set(v, []);
-        statusByVariant.get(v).push({ id: s.id || s.slug || null, status: s.status || null, closingDate: s.closingDate || null });
+        statusByVariant.get(v).push({ id: s.id || s.slug || null, status: s.status || null, closingDate: s.closingDate || null, full: v === n });
       }
       if (n.includes(' ') && n.length >= 8) containment.add(n);
     }
@@ -725,7 +747,8 @@ function titleMatchesIndex(title, index, opts = {}) {
   // Possessive lead-ins ("Cat Cohen's Broad Strokes" for "Cat Cohen: Broad
   // Strokes") only differ by an 's — try the stripped variant too, so a
   // Playbill-style headline can't false-positive as a missing show.
-  return titleCandidates(title).some((c) => titleMatchesIndexSingle(c, index, opts));
+  return titleCandidates(title).some((c) => titleMatchesIndexSingle(c, index, opts)) ||
+    possessiveLeadShowId(title, index) !== null;
 }
 
 function titleMatchesIndexSingle(title, index, opts = {}) {
