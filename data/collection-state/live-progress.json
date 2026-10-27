@@ -1,32 +1,31 @@
 {
-  "updatedAt": "2026-10-27T15:44:08.138Z",
-  "processed": 61,
-  "failed": 55,
-  "successRate": "52.6%",
+  "updatedAt": "2026-10-27T15:47:44.549Z",
+  "processed": 103,
+  "failed": 57,
+  "successRate": "64.4%",
   "tierBreakdown": {
-    "playwright": 46,
+    "playwright": 66,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 2,
-    "brightdata": 0,
-    "archiveToday": 9,
-    "archive": 6
+    "scrapingdog": 14,
+    "scrapingbee": 3,
+    "brightdata": 1,
+    "archiveToday": 7,
+    "archive": 15
   },
   "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-27T15:25:37.234Z",
+      "t": "2026-10-27T15:46:03.722Z",
       "event": "bb-session",
-      "session": "a49d29c4",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "9be1886a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-10-27T15:43:42.795Z",
-      "event": "bb-session",
-      "session": "499d88b1",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "t": "2026-10-27T15:46:04.015Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
