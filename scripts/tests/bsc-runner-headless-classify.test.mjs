@@ -197,3 +197,31 @@ describe('classifyHeadlessJobResult — findBlockFn is never allowed to crash th
     assert.equal(r.source, 'result-text');
   });
 });
+
+// BRO-6314: real final texts from 2026-10-25/26 autofix jobs that finished
+// (Paused/In Review with a recheck) but were scored job-stopped-short because
+// the closing sentence was not the start of the last line.
+describe('classifyHeadlessResult — closing phrase inside the final paragraph (BRO-6314)', () => {
+  test('BRO-6311: "Nothing is still running. ... You can close this tab and remove the worktree." is clean', () => {
+    const t = 'The Test UGC Features workflow is fixed.\n\nNothing is still running. Nothing is needed from you. You can close this tab and remove the worktree.';
+    assert.deepEqual(classifyHeadlessResult(t), { outcome: 'clean' });
+  });
+  test('BRO-6201: a lone "You can remove the worktree, since ..." closing is clean', () => {
+    const t = 'paused, not done.\n\nNothing is running and nothing is needed from you. You can remove the worktree, since its two commits are already on main.';
+    assert.deepEqual(classifyHeadlessResult(t), { outcome: 'clean' });
+  });
+  test('BRO-4695: a trailing "Keep this tab open." still fails safe even after "You can remove the worktree"', () => {
+    const t = 'In review.\n\nYou can remove the worktree, since both commits are already on main.\n\nKeep this tab open.';
+    assert.equal(classifyHeadlessResult(t).outcome, 'stopped-short');
+  });
+  test('same paragraph: last phrase wins in both directions', () => {
+    assert.equal(classifyHeadlessResult('Keep this tab open until CI is green. You can close this tab otherwise.').outcome, 'clean');
+    assert.equal(classifyHeadlessResult('You can close this tab. Keep this tab open.').outcome, 'stopped-short');
+  });
+  test('"Keep the worktree, it holds unfinished work." is stopped-short', () => {
+    assert.equal(classifyHeadlessResult('Half done.\n\nKeep the worktree, it holds unfinished work.').outcome, 'stopped-short');
+  });
+  test('a closing phrase quoted in an EARLIER paragraph does not count', () => {
+    assert.equal(classifyHeadlessResult('You can close this tab.\n\nI ran out of time.').outcome, 'stopped-short');
+  });
+});

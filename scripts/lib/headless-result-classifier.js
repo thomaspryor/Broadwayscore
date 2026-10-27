@@ -135,7 +135,45 @@ function classifyHeadlessResult(resultText) {
     return { outcome: 'clean' };
   }
 
+  // BRO-6314: sessions fold the closing sentences into one paragraph or put the
+  // worktree sentence last ("Nothing is still running. ... You can close this
+  // tab and remove the worktree.", "You can remove the worktree, since ...").
+  // None starts the final line with a template, so 4 of 11 autofix jobs that
+  // finished their work (Paused/In Review with a recheck) were scored
+  // job-stopped-short -> card-fail. Scan the last paragraph; the LAST closing
+  // phrase wins, so a trailing "Keep this tab open." still fails safe.
+  const tail = lastParagraph(resultText);
+  let last = null;
+  for (const [re, outcome] of PARAGRAPH_VERDICTS) {
+    const g = new RegExp(re.source, 'gi');
+    let m;
+    while ((m = g.exec(tail))) if (!last || m.index > last.index) last = { index: m.index, outcome };
+  }
+  if (last && last.outcome === 'clean') return { outcome: 'clean' };
+  if (last) {
+    return {
+      outcome: 'stopped-short',
+      reason: 'ended on plain-English "Keep this tab open" — a headless -p session is never resumed by a background notification',
+    };
+  }
+
   return { outcome: 'stopped-short', reason: 'no THIS SESSION: status line in final result' };
+}
+
+// Closing phrases recognised anywhere in the final paragraph (BRO-6314).
+// "remove the worktree" means the session reports nothing unfinished in it;
+// "keep the worktree" means it does (CLAUDE.md talking-to-the-owner item 4b).
+const PARAGRAPH_VERDICTS = [
+  [/\byou can close this tab\b/, 'clean'],
+  [/\bnothing is running here\b/, 'clean'],
+  [/\byou can remove the worktree\b/, 'clean'],
+  [/\bkeep this tab open\b/, 'keep'],
+  [/\bkeep the worktree\b/, 'keep'],
+];
+
+function lastParagraph(text) {
+  const paras = String(text || '').split(/\n\s*\n/).map(p => p.trim()).filter(p => p && !DECORATION_ONLY.test(p));
+  return paras.length ? paras[paras.length - 1] : '';
 }
 
 module.exports = { classifyHeadlessResult, lastContentLine };
