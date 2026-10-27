@@ -394,7 +394,9 @@ function pressNightSpentUsd(purpose, { ledgerPath, table } = {}) {
  * Counts what the ledger holds. Exact within one run (rows are appended per
  * call); best-effort across concurrent runs and when a run's ledger commit is
  * lost; a chain already in flight can overshoot the cap by one call or so.
- * Only gather-reviews/Express spend carries the tag.
+ * Gather-reviews/Express uses the hard cap. The lane, poller and outlet collector
+ * scope SD_PRESS_NIGHT_CAP_MODE=warn per show: report the limit without denying
+ * a fetch, including when the ledger is unreadable. Other provider limits stay on.
  *
  * @returns {{applies: boolean, exceeded: boolean, reason?: string, spentUsd?: number, capUsd?: number}}
  */
@@ -403,7 +405,19 @@ function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table } =
   const tag = purpose !== undefined ? purpose : env.SCRAPER_SPEND_PURPOSE;
   const parsed = parsePressNightPurpose(tag);
   if (parsed === null) return { applies: false, exceeded: false };
-  if (parsed === 'malformed') return { applies: true, exceeded: true, reason: 'malformed-tag' };
+  const warnOnly = env.SD_PRESS_NIGHT_CAP_MODE === 'warn';
+  const overLimit = (details) => {
+    if (warnOnly) {
+      const key = `over:${tag}:${details.reason}`;
+      if (!_pressNightWarned.has(key)) {
+        _pressNightWarned.add(key);
+        console.warn(`  Press-night spend warning: ${tag} (${details.reason}${details.spentUsd === undefined ? '' : `, $${details.spentUsd.toFixed(3)} of $${details.capUsd.toFixed(2)}`}); continuing fetches (warn-only)`);
+      }
+      return { applies: true, exceeded: false, warnOnly: true, ...details };
+    }
+    return { applies: true, exceeded: true, ...details };
+  };
+  if (parsed === 'malformed') return overLimit({ reason: 'malformed-tag' });
   const capUsd = resolvePressNightCapUsd(env);
   let spentUsd;
   try {
@@ -414,10 +428,10 @@ function pressNightCapStatus({ env = process.env, purpose, ledgerPath, table } =
     }
     spentUsd = pressNightSpentUsd(tag, { ledgerPath: ledgerPath || env.SCRAPER_SPEND_LEDGER_PATH || telemetry.resolveLedgerPath(), table: priceTable });
   } catch (e) {
-    return { applies: true, exceeded: true, reason: `ledger-unreadable: ${e && e.message}`, capUsd };
+    return overLimit({ reason: `ledger-unreadable: ${e && e.message}`, capUsd });
   }
   if (spentUsd >= capUsd) {
-    return { applies: true, exceeded: true, reason: 'press-night-cap', spentUsd, capUsd };
+    return overLimit({ reason: 'press-night-cap', spentUsd, capUsd });
   }
   if (spentUsd >= capUsd * PRESS_NIGHT_WARN_FRACTION && !_pressNightWarned.has(tag)) {
     _pressNightWarned.add(tag);

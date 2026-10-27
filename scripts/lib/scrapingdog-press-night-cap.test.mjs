@@ -3,12 +3,14 @@
  * Run: node --test scripts/lib/scrapingdog-press-night-cap.test.mjs
  * Requires the real modules (CLAUDE.md rule 15).
  */
-import { test, beforeEach } from 'node:test';
+import { test, beforeEach, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import https from 'node:https';
+import { EventEmitter } from 'node:events';
 
 const require = createRequire(import.meta.url);
 const caps = require('./scrapingdog-caps.js');
@@ -18,6 +20,7 @@ const { loadProviderPricing } = require('./provider-pricing.js');
 const TAG_A = sp.pressNightPurpose('show-a-2026', '2026-10-29');
 const TAG_B = sp.pressNightPurpose('show-b-2026', '2026-10-29');
 const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'pn-cap-'));
+after(() => fs.rmSync(dir, { recursive: true, force: true }));
 let ledger;
 let n = 0;
 
@@ -116,6 +119,207 @@ test('SD_PRESS_NIGHT_CAP_USD can only LOWER the cap', () => {
 test('explicit off switch disables the cap', () => {
   rows(Array.from({ length: 1400 }, () => row(TAG_A, 'brightdata', null)));
   assert.equal(status(TAG_A, { SD_PRESS_NIGHT_CAP_DISABLED: '1' }).exceeded, false);
+});
+
+test('warn-only mode reports an exceeded cap without blocking; hard mode still blocks', (t) => {
+  rows([row(TAG_A, 'brightdata', 1400)]);
+  const warnings = [];
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  const env = { SCRAPER_SPEND_PURPOSE: TAG_A, SCRAPER_SPEND_LEDGER_PATH: ledger, SD_CAPS_DISABLED: '1' };
+  assert.equal(caps.consultScrapingdog({ env: { ...env, SD_PRESS_NIGHT_CAP_MODE: 'warn' } }).allowed, true);
+  assert.equal(caps.consultScrapingdog({ env: { ...env, SD_PRESS_NIGHT_CAP_MODE: 'warn' } }).allowed, true);
+  assert.equal(warnings.length, 1);
+  assert.match(warnings[0], /press-night:show-a-2026:2026-10-29.*continuing fetches/);
+  assert.equal(caps.consultScrapingdog({ env }).allowed, false);
+});
+
+test('per-show scope restores both environment values and clears stale tags off-night', () => {
+  const keys = ['SCRAPER_SPEND_PURPOSE', 'SD_PRESS_NIGHT_CAP_MODE'];
+  const saved = Object.fromEntries(keys.map(key => [key, process.env[key]]));
+  try {
+    for (const key of keys) delete process.env[key];
+    const show = { id: 'show-a-2026', category: 'broadway', openingDate: '2026-10-29' };
+    const restore = sp.beginPressNightSpend(show, Date.parse('2026-10-29T23:00:00Z'));
+    assert.equal(process.env.SCRAPER_SPEND_PURPOSE, TAG_A);
+    assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, 'warn');
+    const restoreOff = sp.beginPressNightSpend(show, Date.parse('2026-12-01T23:00:00Z'));
+    assert.equal(process.env.SCRAPER_SPEND_PURPOSE, '');
+    assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, undefined);
+    restoreOff();
+    assert.equal(process.env.SCRAPER_SPEND_PURPOSE, TAG_A);
+    restore();
+    for (const key of keys) assert.equal(process.env[key], undefined);
+    process.env.SCRAPER_SPEND_PURPOSE = 'evidence-catchup';
+    process.env.SD_PRESS_NIGHT_CAP_MODE = 'hard';
+    const restoreDispatch = sp.beginPressNightSpend(show, Date.parse('2026-10-29T23:00:00Z'));
+    restoreDispatch();
+    assert.equal(process.env.SCRAPER_SPEND_PURPOSE, 'evidence-catchup');
+    assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, 'hard');
+  } finally {
+    for (const key of keys) {
+      if (saved[key] === undefined) delete process.env[key];
+      else process.env[key] = saved[key];
+    }
+  }
+});
+
+function scopeEnv(t, values) {
+  const saved = Object.fromEntries(Object.keys(values).map(key => [key, process.env[key]]));
+  for (const [key, value] of Object.entries(values)) {
+    if (value === undefined) delete process.env[key];
+    else process.env[key] = value;
+  }
+  t.after(() => {
+    for (const [key, value] of Object.entries(saved)) {
+      if (value === undefined) delete process.env[key];
+      else process.env[key] = value;
+    }
+  });
+}
+
+const openingShow = { id: 'show-a-2026', title: 'Show A', category: 'broadway', openingDate: '2026-10-29', status: 'open' };
+const openingNow = Date.parse('2026-10-29T23:00:00Z');
+
+test('lane production driver scopes the real runNight on success and failure', async (t) => {
+  const { runProductionLane } = require('./opening-night-lane/driver');
+  t.mock.method(Date, 'now', () => openingNow);
+  scopeEnv(t, { SCRAPER_SPEND_PURPOSE: 'dispatch-purpose', SD_PRESS_NIGHT_CAP_MODE: undefined });
+  for (const fail of [false, true]) {
+    const result = await runProductionLane({
+      show: openingShow, night: openingShow.openingDate, holder: 'test',
+      deps: {
+        armCheck: async () => ({ arm: true }), claim: async () => ({ ok: true }),
+        heartbeat: async () => ({ ok: true }), release: async () => {}, page: async () => {},
+        setInterval: () => 1, clearInterval: () => {},
+        runNight: async () => {
+          await Promise.resolve();
+          assert.equal(process.env.SCRAPER_SPEND_PURPOSE, TAG_A);
+          assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, 'warn');
+          if (fail) throw new Error('injected lane failure');
+          return { passes: 1 };
+        },
+      },
+    });
+    assert.equal(result.exit, fail ? 1 : 0);
+    assert.equal(process.env.SCRAPER_SPEND_PURPOSE, 'dispatch-purpose');
+    assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, undefined);
+  }
+});
+
+test('poller scopes its loaded show before discovery and restores on an exception', async (t) => {
+  t.mock.method(Date, 'now', () => openingNow);
+  scopeEnv(t, { SCRAPER_SPEND_PURPOSE: undefined, SD_PRESS_NIGHT_CAP_MODE: undefined });
+  const savedArgv = process.argv;
+  process.argv = [...savedArgv, `--show=${openingShow.id}`];
+  t.after(() => { process.argv = savedArgv; });
+  const gather = require('../gather-reviews');
+  const policy = require('./opening-night-discovery-policy');
+  const lease = require('./opening-night-lane/lease-guard');
+  t.mock.method(gather, 'loadShowData', () => openingShow);
+  t.mock.method(lease, 'leaseSkipReason', () => null);
+  const stop = new Error('stop before discovery side effects');
+  let observed;
+  t.mock.method(policy, 'warnStalledReviewStubs', () => {
+    observed = [process.env.SCRAPER_SPEND_PURPOSE, process.env.SD_PRESS_NIGHT_CAP_MODE];
+    throw stop;
+  });
+  const pollerPath = require.resolve('../opening-night-poller');
+  delete require.cache[pollerPath];
+  t.after(() => { delete require.cache[pollerPath]; });
+  const { pollCycle } = require('../opening-night-poller');
+  await assert.rejects(pollCycle(), error => error === stop);
+  assert.deepEqual(observed, [TAG_A, 'warn']);
+  assert.equal(process.env.SCRAPER_SPEND_PURPOSE, undefined);
+  assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, undefined);
+});
+
+test('outlet collector scopes each show at its SERP caller and clears off-night tags', async (t) => {
+  t.mock.method(Date, 'now', () => openingNow);
+  scopeEnv(t, { SCRAPER_SPEND_PURPOSE: TAG_B, SD_PRESS_NIGHT_CAP_MODE: 'hard', SCRAPINGBEE_API_KEY: 'test-only' });
+  const shows = [openingShow, { ...openingShow, id: 'show-b-2026' }, { ...openingShow, id: 'off-night', openingDate: '2025-01-01' }];
+  const savedArgv = process.argv;
+  process.argv = [...savedArgv.slice(0, 2), '--shows', shows.map(show => show.id).join(','), '--no-skip-existing', '--dry-run'];
+  t.after(() => { process.argv = savedArgv; });
+  const discovery = require('./url-discovery');
+  const observed = [];
+  t.mock.method(discovery, 'discoverCorrectUrl', async () => {
+    await Promise.resolve();
+    observed.push([process.env.SCRAPER_SPEND_PURPOSE, process.env.SD_PRESS_NIGHT_CAP_MODE]);
+    return '__SERP_UNAVAILABLE__'; // End this show's outlet loop without sleeping or writing.
+  });
+  const read = fs.readFileSync;
+  t.mock.method(fs, 'readFileSync', (file, ...args) => {
+    if (String(file).endsWith('/data/shows.json')) return JSON.stringify({ shows });
+    if (String(file).endsWith('/data/outlet-registry.json')) return JSON.stringify({ outlets: { nytimes: { tier: 1, domain: 'nytimes.com' } } });
+    return read(file, ...args);
+  });
+  const collectorPath = require.resolve('../collect-outlet-reviews');
+  delete require.cache[collectorPath];
+  t.after(() => { delete require.cache[collectorPath]; });
+  const { main } = require('../collect-outlet-reviews');
+  await main();
+  assert.deepEqual(observed, [[TAG_A, 'warn'], [TAG_B, 'warn'], ['', undefined]]);
+  assert.equal(process.env.SCRAPER_SPEND_PURPOSE, TAG_B);
+  assert.equal(process.env.SD_PRESS_NIGHT_CAP_MODE, 'hard');
+});
+
+test('real paid fetch proceeds and records the show above cap in warn mode; gather mode blocks', async (t) => {
+  rows([row(TAG_A, 'brightdata', 1400)]);
+  scopeEnv(t, {
+    SCRAPINGDOG_API_KEY: 'test-only', SCRAPER_SPEND_LEDGER_PATH: ledger,
+    SCRAPER_SPEND_PURPOSE: TAG_A, SD_PRESS_NIGHT_CAP_MODE: undefined,
+    SD_PRESS_NIGHT_CAP_DISABLED: undefined, SD_CAPS_DISABLED: '1', BD_TELEMETRY_DISABLED: undefined,
+  });
+  let paidFetches = 0;
+  const warnings = [];
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  t.mock.method(https, 'get', (url, options, callback) => {
+    const response = new EventEmitter();
+    response.statusCode = 200;
+    const account = String(url).includes('/account?');
+    if (!account) paidFetches++;
+    queueMicrotask(() => {
+      callback(response);
+      response.emit('data', account ? '{}' : '<html>review</html>');
+      response.emit('end');
+    });
+    return new EventEmitter();
+  });
+  const scraperPath = require.resolve('./scraper');
+  delete require.cache[scraperPath];
+  t.after(() => { delete require.cache[scraperPath]; });
+  const { fetchWithScrapingdog } = require('./scraper');
+  assert.equal(await fetchWithScrapingdog('https://example.com/review'), null);
+  assert.equal(paidFetches, 0);
+  const restore = sp.beginPressNightSpend(openingShow, openingNow);
+  try {
+    assert.equal((await fetchWithScrapingdog('https://example.com/review')).source, 'scrapingdog');
+    assert.equal(paidFetches, 1);
+    assert.equal(warnings.filter(message => /continuing fetches/.test(message)).length, 1);
+    const recorded = JSON.parse(fs.readFileSync(ledger, 'utf8').trim().split('\n').at(-1));
+    assert.equal(recorded.purpose, TAG_A);
+    assert.equal(recorded.provider, 'scrapingdog');
+  } finally { restore(); }
+  assert.equal(await fetchWithScrapingdog('https://example.com/review'), null);
+  assert.equal(paidFetches, 1);
+});
+
+test('warn-only warns again at the cap after the 80% warning, and fails open on unreadable ledgers', (t) => {
+  const warnings = [];
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  const env = { SD_PRESS_NIGHT_CAP_MODE: 'warn' };
+  rows([row(TAG_A, 'brightdata', 1200)]);
+  assert.equal(status(TAG_A, env).exceeded, false);
+  rows([row(TAG_A, 'brightdata', 1400)]);
+  assert.equal(status(TAG_A, env).exceeded, false);
+  assert.equal(warnings.length, 1);
+  fs.unlinkSync(ledger);
+  fs.mkdirSync(ledger);
+  assert.equal(status(TAG_A, env).exceeded, false);
+  assert.match(warnings[1], /ledger-unreadable/);
+  assert.equal(status('press-night:broken', env).exceeded, false);
+  assert.match(warnings[2], /malformed-tag/);
+  assert.equal(status(TAG_A).exceeded, true);
 });
 
 test('consultScrapingdog: capped show is blocked even for an exempt caller and with SD_CAPS_DISABLED', () => {

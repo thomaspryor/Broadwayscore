@@ -36,6 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { beginPressNightSpend } = require('./lib/spend-purpose');
 const { discoverCorrectUrl, OUTLET_DOMAINS, calculateDateWindow } = require('./lib/url-discovery');
 const { generateReviewFilename, findExistingReviewFile, resolveOutletFromUrl } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
@@ -449,173 +450,178 @@ async function main() {
   let totalSkipped = 0;
 
   for (const [showIdx, show] of targetShows.entries()) {
-    // Determine market for this show (auto-detect from category)
-    const market = show.category || opts.market || 'broadway';
-    let targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
-    if (opts.outlets) targetOutlets = targetOutlets.filter(o => opts.outlets.has(o.id));
+    const restoreSpend = beginPressNightSpend(show);
+    try {
+      // Determine market for this show (auto-detect from category)
+      const market = show.category || opts.market || 'broadway';
+      let targetOutlets = getTargetOutlets(market, opts.minTier, opts.maxTier, registry, opts.maxOutlets);
+      if (opts.outlets) targetOutlets = targetOutlets.filter(o => opts.outlets.has(o.id));
 
-    if (targetOutlets.length === 0) {
-      console.log(`SKIP (no outlets for market ${market}): ${show.id}`);
-      continue;
-    }
-
-    const existingOutlets = opts.skipExisting
-      ? getExistingOutlets(show.id, registry, { retryUrlless: opts.retryUrlless })
-      : new Set();
-
-    // Find which target outlets are missing
-    const missing = targetOutlets.filter(o => {
-      if (existingOutlets.has(o.id)) return false;
-      const info = registry.outlets[o.id];
-      if (info && info.aliases) {
-        return !info.aliases.some(a => existingOutlets.has(a.toLowerCase()));
-      }
-      return true;
-    });
-
-    if (missing.length === 0) {
-      continue;
-    }
-
-    // Calculate date window for this show
-    // Skip date filter for WE shows — Google's after:/before: operators are unreliable
-    // for UK content and cause false negatives. The site: + title query is precise enough.
-    const isWEShow = isLondonMarket(show.category);
-    const dateRange = isWEShow ? null : calculateDateWindow(show);
-    if (dateRange) {
-      const fmtDate = d => d.toISOString().split('T')[0];
-      console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [${fmtDate(dateRange.dateMin)} to ${fmtDate(dateRange.dateMax)}]`);
-    } else {
-      console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [no date filter${isWEShow ? ' — WE: date filter disabled' : ''}]`);
-    }
-
-    // --- Site-scoped T1/T2 outlet searches ---
-    const foundOutlets = new Set();
-
-    for (const outlet of missing) {
-      if (totalSearches >= opts.maxSearches) {
-        console.log('\n--- Max searches reached ---');
-        break;
-      }
-      // Checked in the INNER loop, not just the per-show loop: the unit of work
-      // here is one outlet SERP call (~10s including the 1500ms sleep below),
-      // and a single show can hold the whole --max-searches allowance (80 on
-      // opening night ≈ 13min). Gating only the outer loop would let one
-      // in-flight show overshoot the budget by 13min and blow the job cap
-      // anyway — the exact failure this budget exists to prevent (review
-      // finding). Overshoot is now bounded to one SERP call.
-      if (timeBudget.exceeded()) {
-        console.log(`\n⏱ Time budget (${timeBudget.minutes}min) exceeded after ${timeBudget.elapsedMin()}min — stopping`);
-        break;
-      }
-
-      const outletInfo = registry.outlets[outlet.id];
-      const outletName = outletInfo ? outletInfo.displayName : outlet.id;
-      const domain = OUTLET_DOMAINS[outlet.id] || (outletInfo ? outletInfo.domain : null);
-
-      if (!domain) {
-        console.log(`  [${outlet.id}] SKIP — no domain configured`);
-        totalSkipped++;
+      if (targetOutlets.length === 0) {
+        console.log(`SKIP (no outlets for market ${market}): ${show.id}`);
         continue;
       }
 
-      // Skip uncollectable outlets — no online content to discover via SERP
-      if (outletInfo && (outletInfo.accessModel === 'print-only' || outletInfo.accessModel === 'defunct')) {
-        console.log(`  [${outlet.id}] SKIP — ${outletInfo.accessModel} outlet`);
-        totalSkipped++;
-        continue;
-      }
+      const existingOutlets = opts.skipExisting
+        ? getExistingOutlets(show.id, registry, { retryUrlless: opts.retryUrlless })
+        : new Set();
 
-      const fakeReview = {
-        showId: show.id,
-        outletId: outlet.id,
-        outlet: outletName,
-        criticName: null,
-        url: null,
-      };
-
-      console.log(`  [T${outlet.tier}] [${outlet.id}] site:${domain} "${show.title}"...`);
-      totalSearches++;
-
-      try {
-        const result = await discoverCorrectUrl(fakeReview, scrapingBeeKey, {
-          brightDataKey,
-          dateRange,
-          domainOverride: domain,  // Use registry domain for site: query
-          returnMetadata: true,
-          log: () => {},
-        });
-
-        if (result && result !== '__SERP_UNAVAILABLE__' && typeof result === 'object') {
-          const { url: foundUrl, serpTitle } = result;
-          console.log(`    FOUND: ${foundUrl}`);
-          if (serpTitle) console.log(`    TITLE: ${serpTitle}`);
-
-          // Domain validation: SERP sometimes returns wrong-domain URLs even with site: query
-          try {
-            const foundHostname = new URL(foundUrl).hostname.replace(/^www\./, '');
-            if (domain && !domainMatchesExpected(domain, foundHostname)) {
-              console.log(`    SKIP (wrong domain: expected ${domain}, got ${foundHostname})`);
-              totalSkipped++;
-              await sleep(1500);
-              continue;
-            }
-          } catch (e) { /* invalid URL, let downstream handle it */ }
-
-          // Review-relevance filter: block obvious non-review URLs
-          if (!looksLikeReview(foundUrl, serpTitle)) {
-            console.log(`    SKIP (non-review URL pattern)`);
-            totalSkipped++;
-          } else {
-            totalFound++;
-            foundOutlets.add(outlet.id);
-
-            // Skip URL validation for paywalled/metered outlets — they block HEAD requests
-            const accessModel = outletInfo ? outletInfo.accessModel : 'free';
-            const skipValidation = accessModel === 'paywalled' || accessModel === 'metered';
-
-            const valid = skipValidation || await validateUrl(foundUrl);
-            if (valid) {
-              if (skipValidation) console.log(`    SKIP validation (${accessModel} outlet)`);
-              const written = await writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName, opts);
-              if (written) totalWritten++;
-            } else {
-              console.log(`    INVALID (HTTP error): ${foundUrl}`);
-            }
-          }
-        } else if (result === '__SERP_UNAVAILABLE__') {
-          console.log(`    SERP UNAVAILABLE — stopping`);
-          break;
-        } else {
-          console.log(`    Not found`);
+      // Find which target outlets are missing
+      const missing = targetOutlets.filter(o => {
+        if (existingOutlets.has(o.id)) return false;
+        const info = registry.outlets[o.id];
+        if (info && info.aliases) {
+          return !info.aliases.some(a => existingOutlets.has(a.toLowerCase()));
         }
-      } catch (e) {
-        console.log(`    ERROR: ${e.message}`);
+        return true;
+      });
+
+      if (missing.length === 0) {
+        continue;
       }
 
-      await sleep(1500);
-    }
-
-    if (totalSearches >= opts.maxSearches) break;
-    if (timeBudget.exceeded()) {
-      // DROPPED, not "deferred": nothing persists a backlog and the outlet-serp
-      // job hands this script a fixed --shows list, so these shows are simply
-      // not searched this tick (same semantics as the maxSearches break above).
-      // They are re-attempted only because opening-night-reviews.yml re-dispatches
-      // the same day-1..3 window 8x/day (cron 0 5,17 + 0 2,8,11,14,20,23) — this
-      // workflow is workflow_dispatch-only and has no queue of its own.
-      //
-      // Indexed by position, not indexOf(show): repeating an id in --shows puts
-      // the SAME object in targetShows twice, and indexOf would return the first
-      // position and over-report the tail as dropped (ship-check finding).
-      const dropped = targetShows.slice(showIdx + 1).map((s) => s.id);
-      // The current show is partially searched, not untouched — name it
-      // separately so the log does not imply it completed.
-      console.log(`⏱ Time budget spent after ${timeBudget.elapsedMin()}min — ${show.id} only partially searched this run`);
-      if (dropped.length) {
-        console.log(`⏱ Dropping ${dropped.length} unsearched show(s) this run: ${dropped.join(', ')}`);
+      // Calculate date window for this show
+      // Skip date filter for WE shows — Google's after:/before: operators are unreliable
+      // for UK content and cause false negatives. The site: + title query is precise enough.
+      const isWEShow = isLondonMarket(show.category);
+      const dateRange = isWEShow ? null : calculateDateWindow(show);
+      if (dateRange) {
+        const fmtDate = d => d.toISOString().split('T')[0];
+        console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [${fmtDate(dateRange.dateMin)} to ${fmtDate(dateRange.dateMax)}]`);
+      } else {
+        console.log(`\n${show.title} (${show.id}) — ${missing.length} missing outlets [no date filter${isWEShow ? ' — WE: date filter disabled' : ''}]`);
       }
-      break;
+
+      // --- Site-scoped T1/T2 outlet searches ---
+      const foundOutlets = new Set();
+
+      for (const outlet of missing) {
+        if (totalSearches >= opts.maxSearches) {
+          console.log('\n--- Max searches reached ---');
+          break;
+        }
+        // Checked in the INNER loop, not just the per-show loop: the unit of work
+        // here is one outlet SERP call (~10s including the 1500ms sleep below),
+        // and a single show can hold the whole --max-searches allowance (80 on
+        // opening night ≈ 13min). Gating only the outer loop would let one
+        // in-flight show overshoot the budget by 13min and blow the job cap
+        // anyway — the exact failure this budget exists to prevent (review
+        // finding). Overshoot is now bounded to one SERP call.
+        if (timeBudget.exceeded()) {
+          console.log(`\n⏱ Time budget (${timeBudget.minutes}min) exceeded after ${timeBudget.elapsedMin()}min — stopping`);
+          break;
+        }
+
+        const outletInfo = registry.outlets[outlet.id];
+        const outletName = outletInfo ? outletInfo.displayName : outlet.id;
+        const domain = OUTLET_DOMAINS[outlet.id] || (outletInfo ? outletInfo.domain : null);
+
+        if (!domain) {
+          console.log(`  [${outlet.id}] SKIP — no domain configured`);
+          totalSkipped++;
+          continue;
+        }
+
+        // Skip uncollectable outlets — no online content to discover via SERP
+        if (outletInfo && (outletInfo.accessModel === 'print-only' || outletInfo.accessModel === 'defunct')) {
+          console.log(`  [${outlet.id}] SKIP — ${outletInfo.accessModel} outlet`);
+          totalSkipped++;
+          continue;
+        }
+
+        const fakeReview = {
+          showId: show.id,
+          outletId: outlet.id,
+          outlet: outletName,
+          criticName: null,
+          url: null,
+        };
+
+        console.log(`  [T${outlet.tier}] [${outlet.id}] site:${domain} "${show.title}"...`);
+        totalSearches++;
+
+        try {
+          const result = await discoverCorrectUrl(fakeReview, scrapingBeeKey, {
+            brightDataKey,
+            dateRange,
+            domainOverride: domain,  // Use registry domain for site: query
+            returnMetadata: true,
+            log: () => {},
+          });
+
+          if (result && result !== '__SERP_UNAVAILABLE__' && typeof result === 'object') {
+            const { url: foundUrl, serpTitle } = result;
+            console.log(`    FOUND: ${foundUrl}`);
+            if (serpTitle) console.log(`    TITLE: ${serpTitle}`);
+
+            // Domain validation: SERP sometimes returns wrong-domain URLs even with site: query
+            try {
+              const foundHostname = new URL(foundUrl).hostname.replace(/^www\./, '');
+              if (domain && !domainMatchesExpected(domain, foundHostname)) {
+                console.log(`    SKIP (wrong domain: expected ${domain}, got ${foundHostname})`);
+                totalSkipped++;
+                await sleep(1500);
+                continue;
+              }
+            } catch (e) { /* invalid URL, let downstream handle it */ }
+
+            // Review-relevance filter: block obvious non-review URLs
+            if (!looksLikeReview(foundUrl, serpTitle)) {
+              console.log(`    SKIP (non-review URL pattern)`);
+              totalSkipped++;
+            } else {
+              totalFound++;
+              foundOutlets.add(outlet.id);
+
+              // Skip URL validation for paywalled/metered outlets — they block HEAD requests
+              const accessModel = outletInfo ? outletInfo.accessModel : 'free';
+              const skipValidation = accessModel === 'paywalled' || accessModel === 'metered';
+
+              const valid = skipValidation || await validateUrl(foundUrl);
+              if (valid) {
+                if (skipValidation) console.log(`    SKIP validation (${accessModel} outlet)`);
+                const written = await writeReviewFile(show.id, outlet.id, foundUrl, show.title, outletName, opts);
+                if (written) totalWritten++;
+              } else {
+                console.log(`    INVALID (HTTP error): ${foundUrl}`);
+              }
+            }
+          } else if (result === '__SERP_UNAVAILABLE__') {
+            console.log(`    SERP UNAVAILABLE — stopping`);
+            break;
+          } else {
+            console.log(`    Not found`);
+          }
+        } catch (e) {
+          console.log(`    ERROR: ${e.message}`);
+        }
+
+        await sleep(1500);
+      }
+
+      if (totalSearches >= opts.maxSearches) break;
+      if (timeBudget.exceeded()) {
+        // DROPPED, not "deferred": nothing persists a backlog and the outlet-serp
+        // job hands this script a fixed --shows list, so these shows are simply
+        // not searched this tick (same semantics as the maxSearches break above).
+        // They are re-attempted only because opening-night-reviews.yml re-dispatches
+        // the same day-1..3 window 8x/day (cron 0 5,17 + 0 2,8,11,14,20,23) — this
+        // workflow is workflow_dispatch-only and has no queue of its own.
+        //
+        // Indexed by position, not indexOf(show): repeating an id in --shows puts
+        // the SAME object in targetShows twice, and indexOf would return the first
+        // position and over-report the tail as dropped (ship-check finding).
+        const dropped = targetShows.slice(showIdx + 1).map((s) => s.id);
+        // The current show is partially searched, not untouched — name it
+        // separately so the log does not imply it completed.
+        console.log(`⏱ Time budget spent after ${timeBudget.elapsedMin()}min — ${show.id} only partially searched this run`);
+        if (dropped.length) {
+          console.log(`⏱ Dropping ${dropped.length} unsearched show(s) this run: ${dropped.join(', ')}`);
+        }
+        break;
+      }
+    } finally {
+      restoreSpend();
     }
   }
 
@@ -630,7 +636,7 @@ async function main() {
 }
 
 // Export the write path for tests (CLAUDE.md §15 — test the real function).
-module.exports = { writeReviewFile, looksLikeReview };
+module.exports = { main, writeReviewFile, looksLikeReview };
 
 if (require.main === module) {
   main().catch(e => {

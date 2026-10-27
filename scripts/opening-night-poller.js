@@ -29,6 +29,7 @@
 const { isReviewTextFile } = require('./lib/review-text-sidecars');
 const fs = require('fs');
 const path = require('path');
+const { beginPressNightSpend } = require('./lib/spend-purpose');
 
 // Reuse existing infrastructure
 const {
@@ -1673,6 +1674,15 @@ async function pollCycle() {
     process.exit(1);
   }
 
+  const restoreSpend = beginPressNightSpend(show);
+  try {
+    return await pollShow(show);
+  } finally {
+    restoreSpend();
+  }
+}
+
+async function pollShow(show) {
   const market = isLondonMarket(show.category) ? 'west-end' : (show.category === 'regional' ? 'regional' : 'broadway');
   const isOffBroadway = show.category === 'off-broadway';
   const isWestEnd = isLondonMarket(show.category);

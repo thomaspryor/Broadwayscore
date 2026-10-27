@@ -61,6 +61,28 @@ function pressNightPurposeForShow(show, nowMs = Date.now()) {
 }
 
 /**
+ * Scope count-and-warn spend to one show (BRO-5977). Call the returned cleanup
+ * in finally, after all of the show's fetches settle. These entry points run
+ * one show at a time; concurrent fetches within that show share the same tag.
+ */
+function beginPressNightSpend(show, nowMs = Date.now()) {
+  const previousPurpose = process.env.SCRAPER_SPEND_PURPOSE;
+  const previousMode = process.env.SD_PRESS_NIGHT_CAP_MODE;
+  const purpose = pressNightPurposeForShow(show, nowMs);
+  // Preserve dispatch purposes, but never inherit another show's press-night tag.
+  process.env.SCRAPER_SPEND_PURPOSE = purpose
+    || (parsePressNightPurpose(previousPurpose) === null ? previousPurpose || '' : '');
+  if (purpose) process.env.SD_PRESS_NIGHT_CAP_MODE = 'warn';
+  else delete process.env.SD_PRESS_NIGHT_CAP_MODE;
+  return () => {
+    if (previousPurpose === undefined) delete process.env.SCRAPER_SPEND_PURPOSE;
+    else process.env.SCRAPER_SPEND_PURPOSE = previousPurpose;
+    if (previousMode === undefined) delete process.env.SD_PRESS_NIGHT_CAP_MODE;
+    else process.env.SD_PRESS_NIGHT_CAP_MODE = previousMode;
+  };
+}
+
+/**
  * Is an empty Scrapingdog SERP a final answer for this gather query? On press
  * night it is not: Google has not indexed the reviews yet, so 0 results means
  * "not yet" and the query must keep falling through to ScrapingBee/Bright Data
@@ -80,4 +102,5 @@ module.exports = {
   emptySerpAuthoritativeForGather,
   HISTORICAL_BACKFILL, BACKFILL_CLOSED_DAYS, gatherPurposeForShow,
   PRESS_NIGHT_PREFIX, pressNightPurpose, parsePressNightPurpose, pressNightPurposeForShow,
+  beginPressNightSpend,
 };

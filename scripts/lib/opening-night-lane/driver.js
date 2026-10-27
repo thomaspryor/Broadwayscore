@@ -16,6 +16,7 @@
  */
 const fs = require('fs');
 const path = require('path');
+const { beginPressNightSpend } = require('../spend-purpose');
 
 const HEARTBEAT_MS = 10 * 60 * 1000;
 const LEASE_TTL_MS = 30 * 60 * 1000;
@@ -65,12 +66,14 @@ async function runProductionLane({ show, night, holder, deps, heartbeatMs = HEAR
   }
 
   let result;
+  const restoreSpend = beginPressNightSpend(show);
   try {
     result = await runNight({ shouldStop: () => leaseLost !== null });
   } catch (e) {
     await page({ conditionKey: key('crashed'), title: `Opening-night lane crashed for ${show.id}`, description: String((e && e.message) || e).slice(0, 400) });
     return { exit: 1, reason: 'run-threw' };
   } finally {
+    restoreSpend();
     clearTimer(timer);
     try { await release(); } catch (e) { log(`opening-night lane: release failed (${String(e && e.message).slice(0, 160)}); the lease expires by TTL`); }
   }
