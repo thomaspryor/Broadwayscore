@@ -53,6 +53,7 @@ const { venueFamily, decideWeHistoricalPromotion, WE_HISTORICAL_DISCOVERY_SOURCE
 const { buildReviewLedCandidates, findContinuingRun, reviewLedPath } = require('./lib/we-review-led-candidates');
 const { candidatesPath } = require('./discover-historical-shows-we');
 const { oltPath } = require('./build-we-olt-season');
+const { referenceCandidates } = require('./lib/we-season-reference');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 
@@ -83,6 +84,10 @@ const REVIEW_LED_DISCOVERY_SOURCE = 'we-historical:tr';
 // Listing-led rows dated from an archived Official London Theatre show page
 // (build-we-olt-season.js, BRO-6343), for seasons WOS no longer lists.
 const OLT_DISCOVERY_SOURCE = 'we-historical:olt';
+// Rows from the two-source season reference lists, dated from Theatricalia
+// venue histories (build-we-season-reference.js, BRO-6450).
+const REFERENCE_DISCOVERY_SOURCE = 'we-historical:theatricalia';
+const REFERENCE_DIR = path.join(ROOT, 'data', 'audit', 'we-season-reference');
 
 const SMALL_WORDS = new Set(['a', 'an', 'and', 'as', 'at', 'but', 'by', 'for', 'in', 'of', 'on', 'or', 'the', 'to', 'with']);
 
@@ -174,8 +179,9 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
   const id = `${withMarketSuffix(slugify(normalizedTitle), 'west-end')}-${year}`;
   const reviewLed = candidate.origin === 'review-led';
   const olt = candidate.origin === 'olt';
-  const dateSource = reviewLed ? 'theatre-record' : olt ? 'official-london-theatre' : 'whatsonstage';
-  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.olt, candidate.sourceUrls?.wosReview, candidate.sourceUrls?.theatreRecord].filter(Boolean);
+  const ref = candidate.origin === 'reference';
+  const dateSource = reviewLed ? 'theatre-record' : olt ? 'official-london-theatre' : ref ? 'theatricalia' : 'whatsonstage';
+  const evidenceUrls = [candidate.sourceUrls?.wos, candidate.sourceUrls?.olt, candidate.sourceUrls?.wosReview, candidate.sourceUrls?.theatreRecord, candidate.sourceUrls?.theatricalia].filter(Boolean);
   return {
     id,
     title: normalizedTitle,
@@ -192,7 +198,7 @@ function buildShowEntry(candidate, venueVocabulary, venueSpellings = new Map(), 
     type: inferShowType(candidate, musicalTitles).type,
     tags: ['historical'],
     season: candidate.season,
-    discoverySource: reviewLed ? REVIEW_LED_DISCOVERY_SOURCE : olt ? OLT_DISCOVERY_SOURCE : DISCOVERY_SOURCE,
+    discoverySource: reviewLed ? REVIEW_LED_DISCOVERY_SOURCE : olt ? OLT_DISCOVERY_SOURCE : ref ? REFERENCE_DISCOVERY_SOURCE : DISCOVERY_SOURCE,
     discoveredAt: new Date().toISOString(),
     ...(candidate.openingDate ? { openingDateSource: candidate.openingDateSource || dateSource } : {}),
     closingDateSource: dateSource,
@@ -372,7 +378,9 @@ function main() {
   const file = candidatesPath(season);
   // Listing-led rows from archived Official London Theatre pages (BRO-6343).
   const oltAudit = readJson(oltPath(season), null);
-  if (!fs.existsSync(file) && !oltAudit) {
+  // Missing productions from the season reference list (BRO-6450).
+  const referenceFile = readJson(path.join(REFERENCE_DIR, `${season}.json`), null);
+  if (!fs.existsSync(file) && !oltAudit && !referenceFile) {
     console.error(`No candidates file at ${path.relative(ROOT, file)} — run discover-historical-shows-we.js --season=${season} (or build-we-olt-season.js) first.`);
     process.exit(1);
   }
@@ -386,9 +394,13 @@ function main() {
     ? buildReviewLedCandidates({ season, lookups: reviewLed.lookups, shows: showsData.shows })
     : [];
   const oltCandidates = oltAudit?.candidates || [];
+  const refCandidates = referenceFile
+    ? referenceCandidates({ season, reference: referenceFile.reference || [], shows: showsData.shows })
+    : [];
   // Dated listings first: a review-led row for the same production then
-  // dedups against the listing row promoted ahead of it.
-  const candidates = [...(audit.candidates || []), ...oltCandidates, ...reviewLedCandidates];
+  // dedups against the listing row promoted ahead of it. Reference rows last:
+  // a listing row carries a press night they lack.
+  const candidates = [...(audit.candidates || []), ...oltCandidates, ...reviewLedCandidates, ...refCandidates];
   const { toPromote, skipped, typeGuessed } = planPromotions({ candidates, shows: showsData.shows, approvals, only });
 
   const unknownOnly = [...only].filter(t => !candidates.some(c => c.title === t));
@@ -396,6 +408,7 @@ function main() {
   console.log(`Candidates: ${audit.candidates?.length || 0} (file generated ${audit.generatedAt})`);
   console.log(`Official London Theatre candidates: ${oltCandidates.length}${oltAudit ? ` (file generated ${oltAudit.generatedAt})` : ''}`);
   console.log(`Review-led candidates (Theatre Record): ${reviewLedCandidates.length}${reviewLed ? ` (lookups ${reviewLed.generatedAt})` : ' (no lookup file; run we-historical-tr-resolve.yml)'}`);
+  console.log(`Season reference candidates (missing from the site): ${refCandidates.length}${referenceFile ? ` (list generated ${referenceFile.generatedAt})` : ''}`);
   console.log(`Will promote: ${toPromote.length}`);
   for (const e of toPromote) console.log(`  + ${e.id} | ${e.title} | ${e.venue} | ${e.previewsStartDate || '?'} / ${e.openingDate || '?'} → ${e.closingDate}`);
   if (typeGuessed.length) {

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T22:53:38.841Z",
+  "generatedAt": "2026-10-27T23:27:35.437Z",
   "season": "2015-2016",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
@@ -12,9 +12,9 @@
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 59,
-    "theatricaliaOnly": 8,
-    "excludedShortRuns": 1
+    "reference": 61,
+    "theatricaliaOnly": 9,
+    "excludedShortRuns": 3
   },
   "reference": [
     {
@@ -86,6 +86,18 @@
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/ghm/ushers/production/12ew"
+    },
+    {
+      "title": "The Rocky Horror Show",
+      "venue": "Playhouse Theatre",
+      "start": "2015-09-11",
+      "end": "2015-09-26",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/53h/the-rocky-horror-show/production/19dv"
     },
     {
       "title": "Kinky Boots",
@@ -222,6 +234,19 @@
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/fgc/mr-footes-other-leg/production/1060"
+    },
+    {
+      "title": "Lovesong of the Electric Bear",
+      "venue": "Arts Theatre",
+      "start": "2015-11-04",
+      "end": "2015-11-21",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "guardian"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/k66/lovesong-of-the-electric-bear/production/1dah"
     },
     {
       "title": "Derren Brown: Miracle",
@@ -686,7 +711,8 @@
         "theatricalia",
         "tr-az",
         "olt",
-        "guardian"
+        "guardian",
+        "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/ggb/disneys-aladdin/production/129x"
@@ -914,6 +940,17 @@
       "url": "https://theatricalia.com/play/dvt/bad-jews/production/108v"
     },
     {
+      "title": "Diao Chan, The Rise of the Courtesan",
+      "venue": "Arts Theatre",
+      "start": "2016-05-09",
+      "end": "2016-05-28",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/ghh/diao-chan-the-rise-of-the-courtesan/production/12eq"
+    },
+    {
       "title": "Quentin Crisp: Naked Hope",
       "venue": "Arts Theatre",
       "start": "2016-06-26",
@@ -943,6 +980,20 @@
       "start": "2016-06-23",
       "end": "2016-07-02",
       "reason": "run of 10 days < 14"
+    },
+    {
+      "title": "Vampire Hospital Waiting Room",
+      "venue": "Arts Theatre",
+      "start": "2015-11-09",
+      "end": "2015-11-21",
+      "reason": "run of 13 days < 14"
+    },
+    {
+      "title": "The Speech / The Door",
+      "venue": "Arts Theatre",
+      "start": "2015-10-20",
+      "end": "2015-10-24",
+      "reason": "run of 5 days < 14"
     }
   ]
 }

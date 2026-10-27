@@ -15,13 +15,14 @@
  *   wos           WhatsOnStage listing candidates (we-historical-candidates-<season>.json)
  *   guardian      Guardian theatre reviews near the entry's start (review archive pages,
  *                 cached in data/audit/we-season-reference/guardian-reviews.json)
- *   wikipedia     the venue's Wikipedia article (production history sections)
+ *   wikipedia     the venue's Wikipedia article (production history sections),
+ *                 cached in data/audit/we-season-reference/wikipedia-cache.json
  * An entry counts toward the reference list only when two sources carry it.
  *
  * Usage:
  *   node scripts/build-we-season-reference.js --season=2013-2014 [--offline] [--refresh]
- *     --offline  use the Theatricalia cache only (Wikipedia skipped)
- *     --refresh  refetch Theatricalia even when cached
+ *     --offline  caches only, no fetches
+ *     --refresh  refetch Theatricalia and Wikipedia even when cached
  */
 
 'use strict';
@@ -38,14 +39,15 @@ Usage:
   node scripts/build-we-season-reference.js --season=YYYY-YYYY [--offline] [--refresh]
 
 Options:
-  --offline   Theatricalia cache only, no Wikipedia fetch
-  --refresh   Refetch Theatricalia venue histories even when cached
+  --offline   caches only, no fetches
+  --refresh   Refetch Theatricalia venue histories and Wikipedia articles even when cached
   --help, -h  print this usage and exit
 `;
 
 const ROOT = path.join(__dirname, '..');
 const DIR = path.join(ROOT, 'data', 'audit', 'we-season-reference');
 const CACHE = path.join(DIR, 'theatricalia-cache.json');
+const WIKI_CACHE = path.join(DIR, 'wikipedia-cache.json');
 const UA = 'BroadwayScorecard/1.0 (season reference research; https://broadwayscorecard.com)';
 // Venue histories are newest first; stop paging once a page is wholly older than this.
 const OLDEST_NEEDED = '2012-01-01';
@@ -165,16 +167,23 @@ async function main() {
     }
   }
 
-  const wikipedia = {};
-  if (!offline) {
-    const pages = [...new Set(venues.map(v => v.wikipedia).filter(Boolean))];
-    const byPage = {};
-    for (const page of pages) {
-      try { byPage[page] = wikiPlain(await get(`https://en.wikipedia.org/wiki/${page}?action=raw`)); } catch (e) { process.stderr.write(`wikipedia ${page}: ${e.message}\n`); }
-      await sleep(300);
-    }
-    for (const v of venues) if (byPage[v.wikipedia]) wikipedia[v.venue] = byPage[v.wikipedia];
+  // Venue articles are cached like the Theatricalia pages, so a rate-limited
+  // fetch cannot silently drop the wikipedia source from a rebuilt list.
+  const wikiCache = readJson(WIKI_CACHE, { fetchedAt: {}, pages: {} });
+  const pages = [...new Set(venues.map(v => v.wikipedia).filter(Boolean))];
+  const failed = [];
+  for (const page of pages) {
+    if (offline || (wikiCache.pages[page] && !refresh)) continue;
+    try {
+      wikiCache.pages[page] = wikiPlain(await get(`https://en.wikipedia.org/wiki/${page}?action=raw`));
+      wikiCache.fetchedAt[page] = new Date().toISOString().slice(0, 10);
+      fs.writeFileSync(WIKI_CACHE, `${JSON.stringify(wikiCache, null, 1)}\n`);
+    } catch (e) { failed.push(page); process.stderr.write(`wikipedia ${page}: ${e.message}\n`); }
+    await sleep(1500);
   }
+  if (failed.length) { console.error(`Wikipedia fetch failed for ${failed.join(', ')}; rerun (cached pages are kept).`); process.exit(1); }
+  const wikipedia = {};
+  for (const v of venues) if (wikiCache.pages[v.wikipedia]) wikipedia[v.venue] = wikiCache.pages[v.wikipedia];
 
   const venueEntries = venues.map(v => ({ venue: v.venue, entries: v.theatricalia.flatMap(p => cache.places[p] || []) }));
   const corroborators = corroboratorsFor(season);

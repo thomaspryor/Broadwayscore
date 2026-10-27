@@ -16,7 +16,9 @@
  */
 
 const { normalizeTitle } = require('./deduplication');
+const { foldDiacritics } = require('./title-match');
 const { getSeasonDates } = require('./we-seasons');
+const { THEATRICALIA_FIRST_PERFORMANCE_SOURCE } = require('./we-historical-dates');
 
 const MONTHS = ['january', 'february', 'march', 'april', 'may', 'june', 'july', 'august', 'september', 'october', 'november', 'december'];
 const DAY_MS = 86400000;
@@ -27,6 +29,8 @@ const MIN_RUN_DAYS = 14;
 const MIN_REFERENCE_COVERAGE = 0.85;
 // A matched row's first date may sit this far from the reference start (previews vs press night, archive drift).
 const MATCH_WINDOW_DAYS = 75;
+// A same-title entry starting this soon after a row's run closed is that production's return run.
+const RETURN_RUN_DAYS = 183;
 
 const decode = s => String(s || '')
   .replace(/<[^>]+>/g, '')
@@ -43,7 +47,7 @@ const decode = s => String(s || '')
 const iso = (y, m, d) => `${y}-${String(m + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 
 function parsePart(text) {
-  const m = String(text).trim().match(/^(?:(\d{1,2})(?:st|nd|rd|th)?\s+)?([A-Za-z]+)?\s*(\d{4})?$/);
+  const m = String(text).trim().match(/^(?:(\d{1,2})(?:st|nd|rd|th)?(?:\s+|$))?([A-Za-z]+)?\s*(\d{4})?$/);
   if (!m) return null;
   const month = m[2] ? MONTHS.indexOf(m[2].toLowerCase()) : -1;
   if (m[2] && month < 0) return null;
@@ -110,7 +114,7 @@ function inSeason(date, season) {
   return d >= start && d <= new Date(end.getTime() + DAY_MS - 1);
 }
 
-const titleKey = t => normalizeTitle(String(t || '').replace(/\s*\/\s*/g, ' and ')).replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
+const titleKey = t => foldDiacritics(normalizeTitle(String(t || '').replace(/\s*\/\s*/g, ' and '))).replace(/[^a-z0-9 ]/g, '').replace(/\s+/g, ' ').trim();
 
 /** Same title, allowing one side to carry a subtitle or a possessive brand the other drops. */
 function titlesMatch(a, b) {
@@ -170,8 +174,9 @@ const firstDate = s => s.previewsStartDate || s.openingDate || null;
 /**
  * How much of a season's reference list the site carries.
  * A reference entry is present when a west-end row has a matching title and
- * its first date is within MATCH_WINDOW_DAYS of the entry's start, or its run
- * spans the entry's start (a transfer or extension stored as one row).
+ * its first date is within MATCH_WINDOW_DAYS of the entry's start, its run
+ * spans the entry's start (a transfer or extension stored as one row), or it
+ * closed under RETURN_RUN_DAYS before the entry's start (a return run).
  * @param {{ reference: object[], shows: object[] }} input  reference: corroborated entries only
  */
 function referenceCoverage({ reference, shows }) {
@@ -186,7 +191,10 @@ function referenceCoverage({ reference, shows }) {
       if (Number.isNaN(f)) return false;
       if (Math.abs(f - refStart) <= MATCH_WINDOW_DAYS * DAY_MS) return true;
       const close = Date.parse(s.closingDate || '');
-      return f <= refStart && !Number.isNaN(close) && close >= refStart;
+      if (Number.isNaN(close) || f > refStart) return false;
+      // The run spans the start, or the entry is a return run of that
+      // production (The Kite Runner: Wyndham's to Mar 2017, Playhouse from Jun).
+      return close >= refStart || refStart - close <= RETURN_RUN_DAYS * DAY_MS;
     });
     if (hit) present.push({ title: r.title, venue: r.venue, start: r.start, showId: hit.id });
     else missing.push({ title: r.title, venue: r.venue, start: r.start, end: r.end });
@@ -196,7 +204,43 @@ function referenceCoverage({ reference, shows }) {
   return { total, present, missing, share: Math.round(share * 100) / 100, pass: total > 0 && share >= MIN_REFERENCE_COVERAGE, threshold: MIN_REFERENCE_COVERAGE };
 }
 
+const REVIEW_SIGNAL_SOURCES = { guardian: 'Guardian review', 'tr-az': 'Theatre Record review' };
+
+/**
+ * Promotion candidates (promote-historical-we.js, origin 'reference') for the
+ * reference entries the site is missing. Dated from Theatricalia, which gives
+ * the first performance only: written collapsed with an unconfirmed source so
+ * the press-night repair and the audit's opening check both see it. Entries
+ * with no closing date stay out (decideWeHistoricalPromotion refuses them).
+ */
+function referenceCandidates({ season, reference, shows }) {
+  const missing = referenceCoverage({ reference, shows }).missing.sort((a, b) => a.start.localeCompare(b.start));
+  // A return run of a production this list already adds (The Father:
+  // Wyndham's to Nov 2015, Duke of York's from Feb 2016) is that row, not a second one.
+  const kept = missing.filter((m, i) => !missing.slice(0, i).some(e => titlesMatch(e.title, m.title) && e.end
+    && Date.parse(m.start) >= Date.parse(e.end) && Date.parse(m.start) - Date.parse(e.end) <= RETURN_RUN_DAYS * DAY_MS));
+  return kept.map(m => {
+    const r = reference.find(e => e.title === m.title && e.venue === m.venue && e.start === m.start) || m;
+    return {
+      title: r.title,
+      venue: r.venue,
+      previewsStartDate: r.start,
+      openingDate: r.start,
+      openingDateSource: THEATRICALIA_FIRST_PERFORMANCE_SOURCE,
+      closingDate: r.end || null,
+      genres: [],
+      season,
+      origin: 'reference',
+      // Only review sources are review signals (decideWeHistoricalPromotion):
+      // a Guardian review near the start, or a Theatre Record A-Z entry.
+      signals: (r.sources || []).filter(x => REVIEW_SIGNAL_SOURCES[x]).map(x => REVIEW_SIGNAL_SOURCES[x]),
+      sourceUrls: { theatricalia: r.url || null },
+    };
+  });
+}
+
 module.exports = {
+  referenceCandidates,
   parseTheatricaliaDates,
   parseTheatricaliaList,
   buildSeasonReference,

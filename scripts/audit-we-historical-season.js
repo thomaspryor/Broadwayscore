@@ -38,7 +38,11 @@
  *                    sourced press night with a fix plan, or, when a sourced
  *                    search finds none, openingDateSource
  *                    'first-performance-no-press-night-found' (counted, not
- *                    gated).
+ *                    gated). BRO-6450: 'theatricalia-first-performance' too.
+ *  10. completeness  advisory (BRO-6450): share of the two-source season
+ *                    reference list (data/audit/we-season-reference/<season>.json,
+ *                    build-we-season-reference.js) that has a west-end row,
+ *                    with the missing titles listed. Gate once the backfill lands.
  *
  * Usage:
  *   node scripts/audit-we-historical-season.js --season=2024-2025 [--json] [--ids=a,b]
@@ -57,7 +61,8 @@ const { nonStoryReason } = require('./lib/todaytix-page-identity');
 const { isRejectedImage } = require('./lib/image-source-match');
 const { WE_HISTORICAL_DISCOVERY_SOURCES } = require('./lib/we-historical-corroboration');
 const { seasonSummary } = require('./lib/fact-check-sample');
-const { WOS_FIRST_PERFORMANCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE } = require('./lib/we-historical-dates');
+const { WOS_FIRST_PERFORMANCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE, THEATRICALIA_FIRST_PERFORMANCE_SOURCE } = require('./lib/we-historical-dates');
+const { referenceCoverage } = require('./lib/we-season-reference');
 
 const NYC_ONLY_IMAGE_HOST_RE = /theatr-app\.appspot\.com/;
 const CENSORED_TITLE_RE = /[a-z]\*+[a-z]/i;
@@ -111,7 +116,7 @@ const windowExceptionKey = (showId, outletId, publishDate) => `${showId}|${outle
 // other sign of why (2016-17: 215 such files, BRO-5851).
 const isUnfetched = f => f && f.contentTier === 'stub' && f.incompleteReason === 'not_attempted' && !f.wrongProduction;
 
-function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [], textFiles = {} }) {
+function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheckVerdicts = [], windowExceptions = [], textFiles = {}, reference = null }) {
   const excepted = new Map(windowExceptions.map(e => [windowExceptionKey(e.showId, e.outletId, e.publishDate), e]));
   const exempted = [];
   const promoted = shows.filter(s => WE_HISTORICAL_DISCOVERY_SOURCES.has(s.discoverySource) && s.season === season
@@ -169,6 +174,7 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
   // performance); on any other shape the label means nothing, so it fails.
   const collapsed = s => Boolean(s.previewsStartDate) && s.openingDate === s.previewsStartDate;
   const firstPerformanceOpenings = promoted.filter(s => s.openingDateSource === WOS_FIRST_PERFORMANCE_SOURCE
+    || s.openingDateSource === THEATRICALIA_FIRST_PERFORMANCE_SOURCE
     || (s.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE && !collapsed(s)))
     .map(s => ({ showId: s.id, openingDate: s.openingDate }));
   const noPressNightFound = promoted.filter(s => s.openingDateSource === NO_PRESS_NIGHT_FOUND_SOURCE && collapsed(s)).length;
@@ -190,6 +196,13 @@ function auditSeason({ shows, reviews, season, ids, imageSources = {}, factCheck
     opening: { pass: firstPerformanceOpenings.length === 0, value: firstPerformanceOpenings.length, rows: firstPerformanceOpenings, noPressNightFound },
     unfetched: { pass: null, value: unfetched.reduce((n, r) => n + r.count, 0), rows: unfetched, unreadable },
     factCheck: { pass: null, ...seasonSummary(factCheckVerdicts, promoted.map(s => s.id)) },
+    // Completeness against the two-source season reference list (BRO-6450).
+    // Every west-end row counts, not only promoted ones: a long-runner or a
+    // pre-existing row carries its reference entry too. Advisory until the
+    // backfill lands (CLAUDE.md §19); `wouldPass` is what gating would say.
+    completeness: reference
+      ? (({ pass, ...rest }) => ({ pass: null, wouldPass: pass, ...rest }))(referenceCoverage({ reference, shows }))
+      : { pass: null, total: 0, present: [], missing: [], share: null, wouldPass: null },
   };
   const gated = Object.values(checks).filter(c => c.pass !== null);
   return { season, shows: promoted.length, pass: promoted.length > 0 && gated.every(c => c.pass), checks, perShow };
@@ -238,7 +251,12 @@ function main() {
       } catch { return null; }
     });
   }
-  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions, textFiles });
+  // Committed reference list (scripts/build-we-season-reference.js); none for this season reads as "not checked".
+  let reference = null;
+  try {
+    reference = JSON.parse(fs.readFileSync(path.join(root, 'data', 'audit', 'we-season-reference', `${season}.json`), 'utf8')).reference;
+  } catch (e) { if (e.code !== 'ENOENT') throw e; }
+  const result = auditSeason({ shows, reviews, season, ids, imageSources, factCheckVerdicts, windowExceptions, textFiles, reference });
 
   if (args.includes('--json')) { console.log(JSON.stringify(result, null, 2)); }
   else {
@@ -260,7 +278,7 @@ function main() {
     for (const r of c.titles.rows) console.log(`    ${r.showId}: "${r.title}" (set the real title)`);
     console.log(`${mark(c.synopsis.pass)} synopsis: ${c.synopsis.value} to look at (pitch/billing/quotes); ${c.synopsis.missing.length} missing`);
     for (const r of c.synopsis.rows) console.log(`    ${r.showId}: ${r.synopsis}`);
-    console.log(`${mark(c.opening.pass)} opening: ${c.opening.value} row(s) whose openingDate is a WhatsOnStage first performance, not a press night; ${c.opening.noPressNightFound} kept after a search found no press night`);
+    console.log(`${mark(c.opening.pass)} opening: ${c.opening.value} row(s) whose openingDate is a first performance (WhatsOnStage or Theatricalia), not a press night; ${c.opening.noPressNightFound} kept after a search found no press night`);
     for (const r of c.opening.rows) console.log(`    ${r.showId}: ${r.openingDate} (set a sourced press night)`);
     if (c.unfetched.value) {
       console.log(`INFO unfetched: ${c.unfetched.value} review(s) found but never fetched, so they cannot be scored (dispatch collect-review-texts.yml -f show_filter=<ids> -f archive_first=true -f max_reviews=0)`);
@@ -276,6 +294,13 @@ function main() {
       const line = Object.entries(t).filter(([, v]) => v.checked).map(([f, v]) => `${f} ${v.wrong}/${v.checked}`).join(', ');
       console.log(`INFO fact-check: ${c.factCheck.sampled} sampled row(s), wrong/checked: ${line}`);
       for (const w of c.factCheck.wrong) console.log(`    ${w.id} ${w.field}: ${w.note || ''}${w.url ? ` (${w.url})` : ''}`);
+    }
+    const k = c.completeness;
+    if (k.total) {
+      console.log(`INFO completeness: ${k.present.length}/${k.total} reference production(s) on the site (${k.share}, ${k.wouldPass ? 'meets' : 'below'} ${k.threshold}; advisory)`);
+      for (const r of k.missing) console.log(`    missing: ${r.title} (${r.venue}, ${r.start})`);
+    } else {
+      console.log(`INFO completeness: no reference list for ${season} (node scripts/build-we-season-reference.js --season=${season})`);
     }
     console.log(result.pass ? 'SEASON PASS' : 'SEASON FAIL');
   }

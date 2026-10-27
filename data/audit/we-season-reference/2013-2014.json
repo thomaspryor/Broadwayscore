@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T22:54:29.323Z",
+  "generatedAt": "2026-10-27T23:27:34.453Z",
   "season": "2013-2014",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
@@ -11,9 +11,9 @@
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 51,
+    "reference": 52,
     "theatricaliaOnly": 3,
-    "excludedShortRuns": 3
+    "excludedShortRuns": 7
   },
   "reference": [
     {
@@ -272,7 +272,8 @@
       "sources": [
         "theatricalia",
         "tr-az",
-        "olt"
+        "olt",
+        "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/fx0/stephen-ward/production/10z7"
@@ -575,7 +576,8 @@
       "sources": [
         "theatricalia",
         "tr-az",
-        "guardian"
+        "guardian",
+        "wikipedia"
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/fxy/bring-up-the-bodies/production/110y"
@@ -692,6 +694,18 @@
       "url": "https://theatricalia.com/play/djc/daytona/production/1090"
     },
     {
+      "title": "The Confessions of Gordon Brown",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-07-08",
+      "end": "2014-07-30",
+      "sources": [
+        "theatricalia",
+        "tr-az"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/gye/the-confessions-of-gordon-brown/production/1381"
+    },
+    {
       "title": "Let It Be",
       "venue": "Garrick Theatre",
       "start": "2014-07-10",
@@ -754,6 +768,34 @@
     }
   ],
   "excluded": [
+    {
+      "title": "Maria Friedman & Adam Guettel",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-05-20",
+      "end": "2014-05-21",
+      "reason": "run of 2 days < 14"
+    },
+    {
+      "title": "Oliver Reed – Wild Thing",
+      "venue": "Ambassadors Theatre",
+      "start": "2014-04-01",
+      "end": "2014-04-08",
+      "reason": "run of 8 days < 14"
+    },
+    {
+      "title": "Ghost Stories",
+      "venue": "Arts Theatre",
+      "start": "2014-02-13",
+      "end": "2014-02-25",
+      "reason": "run of 13 days < 14"
+    },
+    {
+      "title": "Cool Rider",
+      "venue": "Duchess Theatre",
+      "start": "2014-04-15",
+      "end": "2014-04-19",
+      "reason": "run of 5 days < 14"
+    },
     {
       "title": "Constellations",
       "venue": "Duke of York's Theatre",

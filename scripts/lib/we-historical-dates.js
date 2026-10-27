@@ -30,6 +30,10 @@ const MODE_INFERENCE_SOURCE = 'inferred-from-reviews-mode';
 // record). Still unconfirmed, so a press-night source may overwrite it; the
 // season audit accepts it where it refuses WOS_FIRST_PERFORMANCE_SOURCE.
 const NO_PRESS_NIGHT_FOUND_SOURCE = 'first-performance-no-press-night-found';
+// BRO-6450: a Theatricalia venue history gives the first performance only,
+// written collapsed like WOS_FIRST_PERFORMANCE_SOURCE and repaired the same
+// way (enrich-west-end-dates.js --fix-unconfirmed, from the review cluster).
+const THEATRICALIA_FIRST_PERFORMANCE_SOURCE = 'theatricalia-first-performance';
 const DAY_MS = 86400000;
 const MAX_PREVIEW_DAYS = 42;
 
@@ -100,6 +104,6 @@ function repairWosOpening(show, reviews) {
 }
 
 module.exports = {
-  WOS_FIRST_PERFORMANCE_SOURCE, MODE_INFERENCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE,
+  WOS_FIRST_PERFORMANCE_SOURCE, MODE_INFERENCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE, THEATRICALIA_FIRST_PERFORMANCE_SOURCE,
   plausibleOpeningDate, wosStartDates, pressNightFromReviewMode, repairWosOpening,
 };

@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T22:56:18.790Z",
+  "generatedAt": "2026-10-27T23:27:33.941Z",
   "season": "2012-2013",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
@@ -11,9 +11,9 @@
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 54,
-    "theatricaliaOnly": 5,
-    "excludedShortRuns": 0
+    "reference": 55,
+    "theatricaliaOnly": 6,
+    "excludedShortRuns": 4
   },
   "reference": [
     {
@@ -177,6 +177,19 @@
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/f/twelfth-night/production/13ea"
+    },
+    {
+      "title": "All That Fall (A Radio Play)",
+      "venue": "Arts Theatre",
+      "start": "2012-11-06",
+      "end": "2012-11-24",
+      "sources": [
+        "theatricalia",
+        "tr-az",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/ghx/all-that-fall-a-radio-play/production/12f9"
     },
     {
       "title": "The Effect",
@@ -797,6 +810,17 @@
       "url": "https://theatricalia.com/play/crt/seussical-the-musical/production/12f6"
     },
     {
+      "title": "Little Charley Bear and his Christmas Adventure",
+      "venue": "Ambassadors Theatre",
+      "start": "2012-12-05",
+      "end": "2012-12-24",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/gyk/little-charley-bear-and-his-christmas-adventure/production/1386"
+    },
+    {
       "title": "Peppa Pig – Treasure Hunt",
       "venue": "Criterion Theatre",
       "start": "2012-12-06",
@@ -808,5 +832,34 @@
       "url": "https://theatricalia.com/play/h2x/peppa-pig-treasure-hunt/production/13jq"
     }
   ],
-  "excluded": []
+  "excluded": [
+    {
+      "title": "Murder, Marple and Me",
+      "venue": "Ambassadors Theatre",
+      "start": "2013-06-11",
+      "end": "2013-06-19",
+      "reason": "run of 9 days < 14"
+    },
+    {
+      "title": "Tim Key – Masterslut",
+      "venue": "Arts Theatre",
+      "start": "2012-11-15",
+      "end": "2012-11-24",
+      "reason": "run of 10 days < 14"
+    },
+    {
+      "title": "Uncle Vanya",
+      "venue": "Noël Coward Theatre",
+      "start": "2012-11-05",
+      "end": "2012-11-10",
+      "reason": "run of 6 days < 14"
+    },
+    {
+      "title": "Private Peaceful",
+      "venue": "Theatre Royal Haymarket",
+      "start": "2012-09-18",
+      "end": "2012-09-29",
+      "reason": "run of 12 days < 14"
+    }
+  ]
 }

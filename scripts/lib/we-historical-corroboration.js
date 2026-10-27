@@ -31,9 +31,10 @@ const DEFAULT_DAY_TOLERANCE = 14;
 
 // discoverySource values promote-historical-we.js writes: WOS-listing-led
 // rows, review-led rows dated from Theatre Record (BRO-5031), and rows dated
-// from archived Official London Theatre listings (BRO-6343). Revert and
-// the season audit must cover both.
-const WE_HISTORICAL_DISCOVERY_SOURCES = new Set(['we-historical:wos', 'we-historical:tr', 'we-historical:olt']);
+// from archived Official London Theatre listings (BRO-6343), and rows from
+// the two-source season reference lists, dated from Theatricalia (BRO-6450).
+// Revert and the season audit must cover all of them.
+const WE_HISTORICAL_DISCOVERY_SOURCES = new Set(['we-historical:wos', 'we-historical:tr', 'we-historical:olt', 'we-historical:theatricalia']);
 const MIN_RUN_DAYS = 14;
 
 // WOS genre slugs that are not plays or musicals. Opera/dance at the

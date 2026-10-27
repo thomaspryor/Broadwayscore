@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T22:51:27.596Z",
+  "generatedAt": "2026-10-27T23:27:35.817Z",
   "season": "2016-2017",
   "issue": "BRO-6450",
   "definition": "Productions whose first performance falls in the Sep-Aug season at a SOLT West End house as data/west-end-venues.json defines it (NT Olivier/Lyttelton/Dorfman, Old Vic and Royal Court included; Barbican and Off-West End houses not), with a run of 14+ days. An entry is in the reference list when two independent sources carry it.",
@@ -10,9 +10,9 @@
     "wikipedia (venue articles)"
   ],
   "counts": {
-    "reference": 52,
-    "theatricaliaOnly": 10,
-    "excludedShortRuns": 1
+    "reference": 53,
+    "theatricaliaOnly": 11,
+    "excludedShortRuns": 4
   },
   "reference": [
     {
@@ -177,6 +177,18 @@
       ],
       "corroborated": true,
       "url": "https://theatricalia.com/play/9k/hedda-gabler/production/wvf"
+    },
+    {
+      "title": "Dirty Dancing",
+      "venue": "Phoenix Theatre",
+      "start": "2016-12-06",
+      "end": "2016-12-31",
+      "sources": [
+        "theatricalia",
+        "wikipedia"
+      ],
+      "corroborated": true,
+      "url": "https://theatricalia.com/play/dnb/dirty-dancing/production/10ex"
     },
     {
       "title": "Art",
@@ -714,6 +726,17 @@
       "url": "https://theatricalia.com/play/b3s/potted-panto/production/1379"
     },
     {
+      "title": "Mr Popper's Penguins",
+      "venue": "Criterion Theatre",
+      "start": "2016-12-15",
+      "end": "2016-12-31",
+      "sources": [
+        "theatricalia"
+      ],
+      "corroborated": false,
+      "url": "https://theatricalia.com/play/h2s/mr-poppers-penguins/production/13jk"
+    },
+    {
       "title": "Escaped Alone",
       "venue": "Royal Court",
       "start": "2017-01-25",
@@ -782,11 +805,32 @@
   ],
   "excluded": [
     {
+      "title": "Cat – the Play!!!",
+      "venue": "Ambassadors Theatre",
+      "start": "2017-04-25",
+      "end": "2017-04-26",
+      "reason": "run of 2 days < 14"
+    },
+    {
+      "title": "Nina Conti – In Your Face",
+      "venue": "Criterion Theatre",
+      "start": "2016-09-07",
+      "end": "2016-09-17",
+      "reason": "run of 11 days < 14"
+    },
+    {
       "title": "Sand in the Sandwiches",
       "venue": "Theatre Royal Haymarket",
       "start": "2017-05-30",
       "end": "2017-06-03",
       "reason": "run of 5 days < 14"
+    },
+    {
+      "title": "The Boys in the Band",
+      "venue": "Vaudeville Theatre",
+      "start": "2017-02-07",
+      "end": "2017-02-18",
+      "reason": "run of 12 days < 14"
     }
   ]
 }
