@@ -84,9 +84,9 @@ async function fetchVisits(days) {
   // Explicit LIMITs: HogQL silently caps GROUP BY results at ~100 rows.
   // Days in UTC to match Buffer's sentAt (the PostHog project clock is not UTC).
   const day = "toString(toDate(toTimeZone(timestamp, 'UTC')))";
-  const utm = await phQuery(`SELECT properties.utm_source, properties.$pathname, ${day}, count()
+  const utm = await phQuery(`SELECT properties.utm_source, properties.$pathname, ${day}, properties.utm_campaign, count()
     FROM events WHERE ${base} AND properties.utm_campaign IN ('autopost', 'brief') AND properties.$pathname LIKE '/show/%'
-    GROUP BY 1, 2, 3 LIMIT 5000`);
+    GROUP BY 1, 2, 3, 4 LIMIT 5000`);
   // A click from /links to a show page, with the network tag the visitor reached
   // /links with in the same session (each profile's bio link has its own).
   const bio = await phQuery(`SELECT s.path, s.day, coalesce(l.src, 'none'), count()
@@ -99,7 +99,7 @@ async function fetchVisits(days) {
     FROM events WHERE event = '$pageview' AND timestamp > now() - INTERVAL 7 DAY AND ${REAL_USERS_WHERE} AND properties.$pathname = '/links'
     GROUP BY 1 LIMIT 100`);
   return {
-    utmRows: utm.map(([source, p, day, views]) => ({ source, path: p, day, views })),
+    utmRows: utm.map(([source, p, day, campaign, views]) => ({ source, path: p, day, campaign, views })),
     bioRows: bio.map(([p, d, source, views]) => ({ source, path: p, day: d, views })),
     bioPageViews: page.map(([source, views]) => ({ source, views })),
   };

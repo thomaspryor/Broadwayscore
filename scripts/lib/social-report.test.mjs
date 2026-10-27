@@ -257,3 +257,27 @@ test('a brief (compare) post is its own lane, named for the email, with the ledg
   assert.equal(rows[0].slug, 'tc-off-broadway');
   assert.match(fs.readFileSync(new URL('./social-report.js', import.meta.url), 'utf8'), /brief: 'compare posts'/);
 });
+
+test('brief visits go to the compare post, score-post visits stay with the score post, and both linked shows count', () => {
+  const ledger = { posts: [
+    { showId: 'tc-ob', slug: 'tc-off-broadway', title: 'TC score', text: 'x', channels: { facebook: { postId: 'f1' } } },
+    { type: 'brief', id: 'brief:abc', slug: 'tc-off-broadway', title: 'TC compare', text: 'x', channels: { facebook: { postId: 'f2' } } },
+  ] };
+  const rows = buildPostRows([
+    { id: 'f1', service: 'facebook', sentAt: '2026-10-20T13:00:00Z', text: 'https://broadwayscorecard.com/show/tc-off-broadway?utm_campaign=autopost', metrics: m({}) },
+    { id: 'f2', service: 'facebook', sentAt: '2026-10-26T17:00:00Z', text: 'https://broadwayscorecard.com/show/tc-off-broadway?utm_campaign=brief\nhttps://westendscorecard.com/show/tc-west-end-2024?utm_campaign=brief', metrics: m({}) },
+  ], ledger);
+  const unmatched = attributeVisits(rows, { utmRows: [
+    { source: 'facebook', path: '/show/tc-off-broadway', day: '2026-10-27', campaign: 'autopost', views: 5 },
+    { source: 'facebook', path: '/show/tc-off-broadway', day: '2026-10-27', campaign: 'brief', views: 3 },
+    { source: 'facebook', path: '/show/tc-west-end-2024', day: '2026-10-27', campaign: 'brief', views: 2 },
+  ] });
+  assert.equal(unmatched, 0);
+  assert.equal(rows.find((r) => r.id === 'f1').visits, 5);
+  assert.equal(rows.find((r) => r.id === 'f2').visits, 5);
+});
+
+test('compare posts do not skew posting-time advice', () => {
+  const rows = Array.from({ length: 12 }, (_, i) => ({ lane: 'brief', service: 'x', sentAt: new Date(Date.UTC(2026, 8, 1 + i * 3, 15)).toISOString(), visits: 1, interactions: 1 }));
+  assert.match(postingTimeAdvice(rows, Date.UTC(2026, 9, 27))[0], /starts once there are 4 weeks/);
+});

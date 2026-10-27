@@ -53,6 +53,11 @@ function slugFromText(text) {
   return hit ? hit[1] : null;
 }
 
+/** Every distinct /show/<slug> in a post's text (a compare post links both productions). */
+function slugsFromText(text) {
+  return [...new Set([...String(text || '').matchAll(/\/show\/([a-z0-9-]+)/gi)].map((m) => m[1]))];
+}
+
 /** Ledger entries indexed by Buffer post id → {entry, service}. */
 function indexLedger(ledger) {
   const byPostId = new Map();
@@ -102,6 +107,8 @@ function buildPostRows(bufferPosts, ledger, shows = []) {
       lane: entry ? (entry.type || 'score') : (p.isVideo ? 'video' : 'other'),
       title: (entry && entry.title) || (named && `${named.title} (video)`) || (firstLine.length > 70 ? `${firstLine.slice(0, 67)}...` : firstLine) || 'Untitled post',
       slug: (entry && entry.slug) || slugFromText(p.text),
+      // Slugs whose visits count for this post: a compare post links both shows.
+      slugs: [...new Set([(entry && entry.slug) || slugFromText(p.text), ...slugsFromText(p.text)].filter(Boolean))],
       reviewCount: entry ? Number((/from (\d+) critics/.exec(entry.text || '') || [])[1]) || null : null,
       // hit.service is the ledger's channel key ('instagram', or 'instagram@westend' for a
       // second account set), so read the link from that key, not the network name.
@@ -112,11 +119,16 @@ function buildPostRows(bufferPosts, ledger, shows = []) {
   });
 }
 
-/** Latest post of `slug` on `service` sent on or before `day` (YYYY-MM-DD). */
-function findPost(rows, service, slug, day) {
+/**
+ * Latest post linking `slug` on `service` sent on or before `day` (YYYY-MM-DD).
+ * campaign (the visit's utm_campaign) keeps lanes apart: 'brief' visits go only
+ * to compare posts, 'autopost' visits never do; a bio click (no campaign) can be either.
+ */
+function findPost(rows, service, slug, day, campaign) {
   let best = null;
   for (const r of rows) {
-    if (r.service !== service || r.slug !== slug || ymd(Date.parse(r.sentAt)) > day) continue;
+    if (r.service !== service || !(r.slugs || [r.slug]).includes(slug) || ymd(Date.parse(r.sentAt)) > day) continue;
+    if (campaign === 'brief' ? r.lane !== 'brief' : campaign && r.lane === 'brief') continue;
     if (!best || r.sentAt > best.sentAt) best = r;
   }
   return best;
@@ -125,7 +137,7 @@ function findPost(rows, service, slug, day) {
 /**
  * Add visits to the post rows (mutates rows[].visits). Returns the visits
  * that matched no post (a show posted before the window, a hand-made post).
- * utmRows: [{source, path, day, views}] for utm_campaign=autopost or brief.
+ * utmRows: [{source, path, day, views, campaign}] for utm_campaign=autopost or brief.
  * bioRows: [{source, path, day, views}] show pageviews whose previous page was
  *   /links; source is the utm_source the visitor reached /links with (each
  *   profile's bio link carries its own), 'none' when it had none.
@@ -133,12 +145,12 @@ function findPost(rows, service, slug, day) {
  */
 function attributeVisits(rows, { utmRows = [], bioRows = [] } = {}) {
   let unmatched = 0;
-  const add = (service, path, day, views) => {
+  const add = (service, path, day, views, campaign) => {
     const slug = (/^\/show\/([^/?#]+)/.exec(path || '') || [])[1];
-    const post = slug && findPost(rows, service, slug, day);
+    const post = slug && findPost(rows, service, slug, day, campaign);
     if (post) post.visits += views; else unmatched += views;
   };
-  for (const r of utmRows) add(r.source, r.path, r.day, r.views);
+  for (const r of utmRows) add(r.source, r.path, r.day, r.views, r.campaign);
   // A bio click with no network tag can't be credited to a post.
   for (const r of bioRows) {
     if (r.source && r.source !== 'none') add(r.source, r.path, r.day, r.views);
@@ -177,7 +189,7 @@ function showLines(rows) {
   const groups = new Map();
   for (const r of rows) {
     const k = r.slug || r.id;
-    const g = groups.get(k) || { title: r.title, link: r.slug ? `https://broadwayscorecard.com/show/${r.slug}` : r.link, views: 0, interactions: 0, comments: 0, visits: 0, visitsBy: {}, networks: [] };
+    const g = groups.get(k) || { title: r.title, link: r.slug ? `https://${/westendscorecard\.com/.test(r.link || '') ? 'westendscorecard.com' : 'broadwayscorecard.com'}/show/${r.slug}` : r.link, views: 0, interactions: 0, comments: 0, visits: 0, visitsBy: {}, networks: [] };
     g.views += r.views || 0; g.interactions += r.interactions; g.comments += r.comments; g.visits += r.visits;
     if (r.visits) g.visitsBy[networkName(r.service)] = (g.visitsBy[networkName(r.service)] || 0) + r.visits;
     g.networks.push(networkName(r.service));
@@ -378,12 +390,13 @@ function upcomingPosts({ scheduled = [], ctx, ledger, now }) {
     const title = show ? showName(show) : (hit && hit.entry.title) || (firstLine.length > 60 ? `${firstLine.slice(0, 57)}...` : firstLine) || 'Untitled post';
     const tz = show && C.MARKETS[show.category] ? C.MARKETS[show.category].tz : 'America/New_York';
     const key = `${slug || title}|${Math.floor(due / 3600000)}`;
-    const g = groups.get(key) || { title, due, when: localTime(due, tz), networks: [], slug };
+    const g = groups.get(key) || { title, due, when: localTime(due, tz), networks: [], slug, brief: !!(hit && hit.entry.type === 'brief') };
     g.networks.push(networkName(p.service));
     groups.set(key, g);
   }
   const out = [...groups.values()].map((g) => ({ ...g, line: `${g.when} on ${g.networks.join(', ')}` }));
-  const inBuffer = new Set(out.map((g) => g.slug).filter(Boolean));
+  // A queued compare post is not that show's score post, so it doesn't hide the projected one.
+  const inBuffer = new Set(out.filter((g) => !g.brief).map((g) => g.slug).filter(Boolean));
   if (ctx) {
     const done = doneKeys(ledger);
     const gaveUp = gaveUpIds(ledger);
@@ -412,11 +425,11 @@ function timeBlock(ms) {
  * time-of-day blocks (Eastern) by visits and likes per post, and suggest a move
  * only when another block clearly beats the one most posts go out in.
  */
-// Score posts always go out at the autopost's fixed local hour, so only the
+// Score and compare posts go out at the autopost's fixed window slots, so only the
 // other lanes (videos, hand posts) say anything about posting time.
 const MIN_POSTS_PER_TIME_BLOCK = 5;
 function postingTimeAdvice(allRows, now) {
-  const rows = allRows.filter((r) => r.lane !== 'score');
+  const rows = allRows.filter((r) => r.lane !== 'score' && r.lane !== 'brief');
   if (!rows.length) return ['Posting-time advice starts once there are 4 weeks of posts.'];
   const first = Math.min(...rows.map((r) => Date.parse(r.sentAt)));
   const days = Math.floor((now - first) / DAY_MS);
@@ -487,4 +500,4 @@ function buildSocialReport({ bufferPosts, ledger, utmRows, bioRows, bioPageViews
   return report;
 }
 
-module.exports = { buildSocialReport, buildPostRows, showInCaption, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, localTime, showLines, attributeVisits, normalizeMetrics, weeklyTakeaway, monthlySuggestion, suggestedReply, networkName, slugFromText };
+module.exports = { buildSocialReport, buildPostRows, showInCaption, skippedShows, upcomingPosts, postingTimeAdvice, gateWords, plainReason, localTime, showLines, attributeVisits, normalizeMetrics, weeklyTakeaway, monthlySuggestion, suggestedReply, networkName, slugFromText, slugsFromText };
