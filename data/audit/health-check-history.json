@@ -1,41 +1,41 @@
 {
-  "lastRun": "2026-10-26T07:50:34.805Z",
-  "consecutiveErrorDays": 80,
+  "lastRun": "2026-10-27T07:52:42.097Z",
+  "consecutiveErrorDays": 81,
   "results": [
     {
       "name": "Freshness: reviews.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: shows.json",
       "status": "pass",
-      "message": "0h old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: grosses.json",
       "status": "pass",
-      "message": "6d old"
+      "message": "7d old"
     },
     {
       "name": "Freshness: audience-buzz.json",
       "status": "pass",
-      "message": "7h old"
+      "message": "2h old"
     },
     {
       "name": "Freshness: commercial.json",
       "status": "pass",
-      "message": "1h old"
+      "message": "12h old"
     },
     {
       "name": "Freshness: critic-consensus.json",
       "status": "pass",
-      "message": "3h old"
+      "message": "0h old"
     },
     {
       "name": "Freshness: lottery-rush.json",
       "status": "warn",
-      "message": "7d old (warn threshold: 5d)"
+      "message": "8d old (warn threshold: 5d)"
     },
     {
       "name": "Freshness: cast-changes.json",
@@ -45,12 +45,12 @@
     {
       "name": "Freshness: nyt-critics-picks.json",
       "status": "pass",
-      "message": "22h old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: video-reviews.json",
       "status": "pass",
-      "message": "1d old"
+      "message": "21h old"
     },
     {
       "name": "Freshness: tony-win-probabilities.json",
@@ -70,57 +70,57 @@
     {
       "name": "Freshness: audit/t1-silent-gaps.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: audit/uncollected-live-reviews.json",
       "status": "pass",
-      "message": "2h old"
+      "message": "1h old"
     },
     {
       "name": "Freshness: audit/imageless-scored-shows.json",
       "status": "pass",
-      "message": "6h old"
+      "message": "5h old"
     },
     {
       "name": "Freshness: audit/venue-date-mismatches.json",
       "status": "pass",
-      "message": "9h old"
+      "message": "7h old"
     },
     {
       "name": "Freshness: audit/alert-sender-inventory.json",
       "status": "pass",
-      "message": "14h old"
+      "message": "12h old"
     },
     {
       "name": "Freshness: audit/ob-closing-candidates.json",
       "status": "pass",
-      "message": "7d old"
+      "message": "14h old"
     },
     {
       "name": "Freshness: audit/same-title-confusion.json",
       "status": "pass",
-      "message": "14h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audit/slug-misroute-audit.json",
       "status": "pass",
-      "message": "14h old"
+      "message": "2d old"
     },
     {
       "name": "Freshness: audit/open-backlog-acceptance-sweep.json",
       "status": "pass",
-      "message": "8h old"
+      "message": "24h old"
     },
     {
       "name": "Freshness: audit/progress-watch-state.json",
       "status": "pass",
-      "message": "22h old"
+      "message": "21h old"
     },
     {
       "name": "Push verify: shows.json",
       "status": "pass",
-      "message": "Data synced (0h old, workflow 19h ago)"
+      "message": "Data synced (5h old, workflow 17h ago)"
     },
     {
       "name": "Push verify: opening-night-history.json",
@@ -130,7 +130,7 @@
     {
       "name": "Sync: review-texts vs reviews.json",
       "status": "pass",
-      "message": "61899 files, 33184 reviews (surplus: 28715)"
+      "message": "63044 files, 33871 reviews (surplus: 29173)"
     },
     {
       "name": "Sync: open show coverage",
@@ -155,12 +155,12 @@
     {
       "name": "Sync: baseline drift",
       "status": "pass",
-      "message": "4023 shows, 237 open, 33184 reviews (all at or above baseline)"
+      "message": "4146 shows, 225 open, 34037 reviews (all at or above baseline)"
     },
     {
       "name": "Sync: grosses weekEnding",
       "status": "pass",
-      "message": "weekEnding 10/18/2026 (8d ago)"
+      "message": "weekEnding 10/18/2026 (9d ago)"
     },
     {
       "name": "Pipeline: rebuild-reviews",
@@ -170,27 +170,27 @@
     {
       "name": "Pipeline: update-show-status",
       "status": "pass",
-      "message": "Last success 19h ago"
+      "message": "Last success 17h ago"
     },
     {
       "name": "Pipeline: collect-review-texts",
       "status": "pass",
-      "message": "Last success 4h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Pipeline: weekly-grosses",
       "status": "pass",
-      "message": "Last success 5d ago"
+      "message": "Last success 6d ago"
     },
     {
       "name": "Pipeline: weekly-integrity",
       "status": "pass",
-      "message": "Last success 23h ago"
+      "message": "Last success 2d ago"
     },
     {
       "name": "Pipeline: test",
       "status": "pass",
-      "message": "Last success 12h ago"
+      "message": "Last success 0h ago"
     },
     {
       "name": "Scoring: batch state",
@@ -205,22 +205,22 @@
     {
       "name": "Quality: star-vs-score mismatch",
       "status": "warn",
-      "message": "4 NEW review(s) whose explicit rating contradicts the score (worst: the-picture-of-dorian-gray-west-end-2024 Express (UK) 1/5 stars→20 vs LLM 96, gap 76)"
+      "message": "1 NEW review(s) whose explicit rating contradicts the score (worst: natasha-pierre-and-the-great-comet-of-1812-2016 The Stage 2/5→40 vs LLM 72, gap 32)"
     },
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.4% scored (33184/33736)"
+      "message": "98.3% scored (33871/34465)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "24 audit(s) drifting, each reported on its own card or the digest FYI line (6h ago)"
+      "message": "24 audit(s) drifting, each reported on its own card or the digest FYI line (2h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "15832 messages, 0 auth failures (p=reject)"
+      "message": "16418 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -230,7 +230,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "warn",
-      "message": "7 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
+      "message": "8 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: Show Score gap",
@@ -240,12 +240,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1703 outlet(s), 61729 review(s)"
+      "message": "No broken-extractor signature in 1713 outlet(s), 62865 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1703 outlet(s), 61729 review(s)"
+      "message": "No broken-extractor signature in 1713 outlet(s), 62865 review(s)"
     },
     {
       "name": "Revenue: affiliate health",
@@ -255,57 +255,57 @@
     {
       "name": "Data quality: provider spend ledger",
       "status": "pass",
-      "message": "Newest entry (day=2026-10-24) 1d past its end-of-day"
+      "message": "Newest entry (day=2026-10-25) 1d past its end-of-day"
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
       "status": "pass",
-      "message": "No unreviewed suspects (8h ago)"
+      "message": "No unreviewed suspects (24h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "status": "warn",
-      "message": "1 NEW unhandled CV.wrongProduction review(s) since last run (147 total across 117 show(s), 8h ago)"
+      "status": "pass",
+      "message": "No new unhandled violations since last run (147 known baseline across 2823 show(s), 24h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
       "status": "warn",
-      "message": "11 NEW unmatched review(s) since last run (595 total across 383 show(s), 8h ago)"
+      "message": "2 NEW unmatched review(s) since last run (596 total across 382 show(s), 24h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
       "status": "warn",
-      "message": "2 NEW cross-show URL mismatch(es) since last run (184 total across 145 show(s), 7h ago)"
+      "message": "3 NEW cross-show URL mismatch(es) since last run (186 total across 146 show(s), 24h ago)"
     },
     {
       "name": "Data quality: roundup-url-mismatch lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (39 known baseline across 2819 show(s), 7h ago)"
+      "message": "No new violations since last run (39 known baseline across 2823 show(s), 24h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
       "status": "pass",
-      "message": "No new violations since last run (31 known baseline across 2819 show(s), 7h ago)"
+      "message": "No new violations since last run (31 known baseline across 2823 show(s), 24h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
       "status": "warn",
-      "message": "11 show(s) opened and qualified but never emailed subscribers (1 still alertable, 10 aged out past the paging window, 7h ago)"
+      "message": "11 show(s) opened and qualified but never emailed subscribers (1 still alertable, 10 aged out past the paging window, 24h ago)"
     },
     {
       "name": "Data quality: stale announced shows",
       "status": "pass",
-      "message": "No stale 'announced' shows (14 silenced by contamination, 7h ago)"
+      "message": "No stale 'announced' shows (14 silenced by contamination, 24h ago)"
     },
     {
       "name": "Coverage: SERP census recall",
       "status": "pass",
-      "message": "a plain Google search found 34%, reviews already collected found 95%, our targeted searches found 23% — across 5 recent opening(s); 82 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (7d ago)"
+      "message": "a plain Google search found 38%, reviews already collected found 74%, our targeted searches found 30% — across 5 recent opening(s); 53 review pages any of our searches could find; 3 search method(s) steady vs recent weeks (14h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
       "status": "warn",
-      "message": "The naive search found 2 review URL(s) this pipeline hasn't discovered yet: the-hope-theory-off-broadway-2026, the-first-year-off-west-end-2026"
+      "message": "The naive search found 4 review URL(s) this pipeline hasn't discovered yet: our-sinatra-a-musical-celebration-off-broadway-2026, the-humanities-regional-2026"
     },
     {
       "name": "Data: OB shows no closing signal can detect",
@@ -374,13 +374,18 @@
     },
     {
       "name": "Quality: coverageExpectation drift",
-      "status": "pass",
-      "message": "No coverageExpectation re-probes needed"
+      "status": "warn",
+      "message": "3 outlet(s) need coverageExpectation re-decision: ap, broadwaynews, latimes"
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
       "status": "pass",
-      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 7d ago)"
+      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 8d ago)"
+    },
+    {
+      "name": "Commercial pending-review queue",
+      "status": "pass",
+      "message": "Pending-review backlog: 0 entries."
     },
     {
       "name": "Commercial model drift",
@@ -390,12 +395,12 @@
     {
       "name": "Commercial model: stored vs fresh run",
       "status": "pass",
-      "message": "433 records match a fresh run"
+      "message": "475 records match a fresh run"
     },
     {
       "name": "Commercial model: Boring Waltz fit",
       "status": "pass",
-      "message": "overall 53% inside (n=83); <0.9x cost too few rows; 0.9-1.3x 62% inside (n=71); >=1.3x 0% inside (n=9); his posts to 2026-10-13, trailing 84 days"
+      "message": "overall 49% inside (n=85); <0.9x cost too few rows; 0.9-1.3x 59% inside (n=69); >=1.3x 8% inside (n=13); his posts to 2026-10-20, trailing 84 days"
     },
     {
       "name": "Commercial model: running-show bar revisit",
@@ -415,32 +420,32 @@
     {
       "name": "CWV: performance",
       "status": "pass",
-      "message": "All metrics within thresholds (18h ago)"
+      "message": "All metrics within thresholds (2d ago)"
     },
     {
       "name": "SEO: health",
       "status": "warn",
-      "message": "1 SEO warning(s): /off-broadway: simulated-test score dropped to 73 (was 90)"
+      "message": "47% indexed (14/30)"
     },
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "19h ago, success"
+      "message": "17h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
-      "status": "pass",
-      "message": "1h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "pass",
-      "message": "8h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "0h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -455,57 +460,57 @@
     {
       "name": "Cron failed: Update Lottery/Rush",
       "status": "warn",
-      "message": "Last run inconclusive: failure (19h ago), no success in 110h"
+      "message": "Last run inconclusive: failure (9h ago), no success in 110h"
     },
     {
       "name": "Cron: Weekly Grosses",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "6d ago, success"
     },
     {
       "name": "Cron: Update Show Score",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Mezzanine",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "2h ago, success"
     },
     {
       "name": "Cron: Update Cast Changes",
       "status": "pass",
-      "message": "2d ago, success"
+      "message": "3d ago, success"
     },
     {
       "name": "Cron: NYT Critics Picks",
       "status": "pass",
-      "message": "22h ago, success"
+      "message": "21h ago, success"
     },
     {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "1d ago, success"
+      "message": "22h ago, success"
     },
     {
       "name": "Cron: Weekly Show Origins",
       "status": "pass",
-      "message": "4d ago, success"
+      "message": "18h ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "6h ago, success"
     },
     {
       "name": "Cron: Cron Health Watchdog",
       "status": "pass",
-      "message": "16h ago, ran (failure; liveness-only check)"
+      "message": "14h ago, ran (failure; liveness-only check)"
     },
     {
       "name": "Cron: Affiliate Link Integrity",
       "status": "pass",
-      "message": "7d ago, success"
+      "message": "13h ago, success"
     },
     {
       "name": "Cron: Cloud Memory Reconcile",
@@ -515,72 +520,72 @@
     {
       "name": "Cron: exempt-cron liveness",
       "status": "warn",
-      "message": "2 of 131 exempt scheduled workflow(s) stopped starting: backfill-review-dates.yml (no scheduled start in last 5 runs, limit 192h); discover-regional-serp-reviews.yml (last start 321h ago, limit 192h)."
+      "message": "2 of 132 exempt scheduled workflow(s) stopped starting: discover-regional-serp-reviews.yml (last start 345h ago, limit 192h); scrape-bww-reviews.yml (last start 207h ago, limit 192h)."
     },
     {
       "name": "Cron: failing every scheduled run",
       "status": "warn",
-      "message": "8 of 138 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (4+ in a row, last 2026-10-25); clear-wrong-show-blockers.yml (5+ in a row, last 2026-10-22); collection-coverage-report.yml (5+ in a row, last 2026-10-19); detect-revivals-ibdb.yml (5+ in a row, last 2026-10-21); scoring-audit.yml (5+ in a row, last 2026-10-01); scrape-thestage-roundups.yml (5+ in a row, last 2026-10-20); scrape-wp-blogs.yml (3+ in a row, last 2026-10-25); update-precursor-awards.yml (5+ in a row, last 2026-10-19)."
+      "message": "7 of 136 scheduled workflow(s) failed their last 3 scheduled runs: check-corpus-drift.yml (5+ in a row, last 2026-10-26); clear-wrong-show-blockers.yml (5+ in a row, last 2026-10-22); detect-revivals-ibdb.yml (5+ in a row, last 2026-10-21); scoring-audit.yml (5+ in a row, last 2026-10-01); scrape-thestage-roundups.yml (5+ in a row, last 2026-10-20); scrape-wp-blogs.yml (3+ in a row, last 2026-10-25); update-precursor-awards.yml (5+ in a row, last 2026-10-26)."
     },
     {
       "name": "Main: red streak",
-      "status": "error",
-      "message": "main's Test Suite has had no confirmed-green run in AT LEAST 8.3h (no green run found in the runs checked — actual gap may be longer) (28 failing runs) — first red commit 27ddab56b, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
+      "status": "pass",
+      "message": "Last run green"
     },
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 34.4% (green 228 / red 434, 662 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 77.4%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 34.1% (green 227 / red 439, 666 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 77.4%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",
       "status": "pass",
-      "message": "0% of the last 17 test.yml main runs cancelled mid-setup (threshold 30%)"
+      "message": "0% of the last 19 test.yml main runs cancelled mid-setup (threshold 30%)"
     },
     {
       "name": "Secrets: health",
       "status": "pass",
-      "message": "Last check passed (7d ago)"
+      "message": "Last check passed (13h ago)"
     },
     {
       "name": "Credits: ScrapingBee",
       "status": "pass",
-      "message": "582k credits left (58%) · 21k/day burn · lasts until renewal Nov 5"
+      "message": "563k credits left (56%) · 21k/day burn · lasts until renewal Nov 5"
     },
     {
       "name": "Credits: ScrapingDog",
       "status": "pass",
-      "message": "2909k credits left (64%) · 76k/day burn · renews in 8d"
+      "message": "2780k credits left (61%) · 78k/day burn · renews in 7d"
     },
     {
       "name": "Credits: Bright Data",
       "status": "pass",
-      "message": "balance $45.48 · pending invoice $113.80 · month-to-date $112.76 (serp+unlocker)"
+      "message": "balance $40.62 · pending invoice $118.66 · month-to-date $116.74 (serp+unlocker)"
     },
     {
       "name": "Credits: Browserbase",
       "status": "pass",
-      "message": "4630 browser minutes used (cumulative)"
+      "message": "4787 browser minutes used (cumulative)"
     },
     {
       "name": "Deploy: production freshness",
       "status": "pass",
-      "message": "Latest READY production deploy: a417b69b42, age 1.1h"
+      "message": "Latest READY production deploy: 14076b7f13, age 0.0h"
     },
     {
       "name": "Alert Router: dispatch deadman",
       "status": "pass",
-      "message": "79/79 auto-dispatch attempts LAUNCHED ok in the last 7d (launch only — see \"Autofix: jobs actually succeeding\" for whether they fixed anything)"
+      "message": "94/94 auto-dispatch attempts LAUNCHED ok in the last 7d (launch only — see \"Autofix: jobs actually succeeding\" for whether they fixed anything)"
     },
     {
       "name": "Codex runner: landing cards",
-      "status": "pass",
-      "message": "34 run(s), 11 card(s) landed, 0 crashed mid-card, Claude check $8.78 ($0.80 per landed card) in the last 24h."
+      "status": "warn",
+      "message": "Codex runner crashed on 6 cards: 33 run(s), 19 card(s) landed, 6 crashed mid-card, Claude check $9.01 ($0.47 per landed card) in the last 24h."
     },
     {
       "name": "Push-retry deadman",
-      "status": "error",
-      "message": "4 push-retry failure(s) in the last 7d across Broadwayscore:main [LLM Ensemble Score Reviews x2, unknown x1, Opening Night Express x1]. Most recent reason: commit-dropped-post-push(rebase-clean(-X theirs)). 15 committed file(s) discarded across 4 run(s). 468 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "status": "warn",
+      "message": "2 push-retry failure(s) in the last 7d across Broadwayscore:main [unknown x1, Opening Night Express x1]. Most recent reason: commit-dropped-post-push(rebase-clean(-X theirs)). 11 committed file(s) discarded across 2 run(s). 525 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     },
     {
       "name": "Infra-review: gate telemetry",
@@ -609,28 +614,28 @@
     },
     {
       "name": "Autofix: jobs actually succeeding",
-      "status": "warn",
-      "message": "Auto-fix loop fails more than it fixes: 1/6 succeeded (17%) in the last 7d — issues will re-report tomorrow"
+      "status": "error",
+      "message": "Auto-fix loop is DEAD: 6 job(s) launched in the last 7d, 3 reported back, 0 succeeded. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
     },
     {
       "name": "Autofix: persistent visitor rows with no open card",
       "status": "warn",
-      "message": "4 visitor-facing row(s) red for 4+ days with no open card: Data quality: cv-wrongproduction lifetime sweep (13d, BRO-5437 closed); Data quality: revival-unverified lifetime sweep (13d, BRO-5439 closed); Data quality: cross-outlet attribution drift (12d, BRO-4695 closed); Data quality: stale announced shows (4d, BRO-5522 closed)"
+      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Data quality: cv-wrongproduction lifetime sweep (14d, BRO-5437 closed)"
     },
     {
       "name": "Stuck pipeline items",
-      "status": "pass",
-      "message": "No pipeline signals flagged possibly-stuck by the overnight digest."
+      "status": "warn",
+      "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. Shows losing scored reviews: the-king-and-i-west-end-2018: 17→14 reviews (scored files exist but being dropped)"
     },
     {
       "name": "Data freshness: shows missing poster/synopsis/tickets",
       "status": "warn",
-      "message": "63 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines."
+      "message": "58 open show(s) missing critical data — auto-fill from the standard image/synopsis/ticket pipelines."
     },
     {
       "name": "Feedback: needs-manual-review backlog",
       "status": "warn",
-      "message": "15 open user-feedback issue(s) awaiting manual review (oldest 33d). Newest: #1159 [Review Submission] londontheatrereviews.co.uk review of Unknown Show"
+      "message": "15 open user-feedback issue(s) awaiting manual review (oldest 34d). Newest: #1159 [Review Submission] londontheatrereviews.co.uk review of Unknown Show"
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -639,38 +644,43 @@
     },
     {
       "name": "Data: uncollected live review strands",
-      "status": "warn",
-      "message": "2 discovered review URL(s) across 1 live show(s) were never fetched. First: the-notebook-tour-2025 (2 stranded)"
+      "status": "pass",
+      "message": "Every discovered review URL for live shows was fetched"
     },
     {
       "name": "Data: armed-but-vacuous backlog cards",
       "status": "warn",
-      "message": "4 Linear card(s) carry an acceptance check that cannot tell done from not done (4 can never fail, 0 can never pass). First: BRO-6165 Rerun Bucknell recoupment backtest after BRO-6137 capitalization fills"
+      "message": "3 Linear card(s) carry an acceptance check that cannot tell done from not done (3 can never fail, 0 can never pass). First: BRO-6035 land.js: regenerate .github/workflows/DEPENDENCIES.md on a rebase conflict instead of refusing the landing"
     },
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "3 of 519 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6153 OB historical backfill: season 2024-25 at scope S (hand ramp first, then tooling)"
+      "message": "14 of 486 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6309 Money Scorecard welcome email for new sign-ups (ready, ship on owner go)"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-25"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-26"
+    },
+    {
+      "name": "Dispatch: owner-judgment cards without owner notification",
+      "status": "warn",
+      "message": "Owner-judgment limbo sweep incomplete, missing or stale; no clean count is available."
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "72 review(s) with no usable text, 58 rejected although verified as a review, 26 never scored, 28 with a blocked URL (0 published on the site), across 460 current shows"
+      "message": "73 review(s) with no usable text, 56 rejected although verified as a review, 54 never scored, 28 with a blocked URL (0 published on the site), across 460 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31502 checked"
+      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31547 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "66 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
+      "message": "67 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
@@ -680,60 +690,45 @@
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 579 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
-    },
-    {
-      "name": "Workflow repeat-failure: Deploy to Vercel",
-      "status": "error",
-      "message": "Deploy to Vercel failed 11 times in the last 24h — likely broken, not transient."
+      "message": "audit ran: 565 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Workflow repeat-failure: Test Suite",
-      "status": "error",
-      "message": "Test Suite failed 9 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Test UGC Features",
-      "status": "error",
-      "message": "Test UGC Features failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Deploy Demo Site",
-      "status": "error",
-      "message": "Deploy Demo Site failed 3 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: WE Historical TR OCR Probe",
       "status": "warn",
-      "message": "WE Historical TR OCR Probe failed 2 times in the last 24h — likely broken, not transient."
+      "message": "Test Suite failed 6 times in the last 24h — 2+ consecutive green runs since; likely self-healed, failures will age out of the window."
+    },
+    {
+      "name": "Workflow repeat-failure: Check Corpus Drift",
+      "status": "warn",
+      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Workflow coverage: never-run",
       "status": "pass",
-      "message": "No never-run workflows among 312 checked"
+      "message": "No never-run workflows among 313 checked"
     },
     {
       "name": "Infra: disk space",
       "status": "ok",
-      "message": "81GB free (44% used)"
+      "message": "83GB free (43% used)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "1 discovered review(s) not reaching the composite score (1 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored); 1 newer still in flight"
+      "message": "2 discovered review(s) not reaching the composite score (2 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored)"
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
       "status": "pass",
-      "message": "No live schedules coupled to the frozen Notion mirror (8h ago) — GitHub workflow schedules only; Mac launchd agents not scanned on this host"
+      "message": "No live schedules coupled to the frozen Notion mirror (24h ago) — GitHub workflow schedules only; Mac launchd agents not scanned on this host"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 5d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 6d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ],
   "lastCleanStreak": 0,
-  "lastErrorFingerprint": "Data: reviewed shows missing from shows.json|Main: red streak|Push-retry deadman|Workflow repeat-failure: Deploy Demo Site|Workflow repeat-failure: Deploy to Vercel|Workflow repeat-failure: Test Suite|Workflow repeat-failure: Test UGC Features",
-  "lastVisitorErrorFingerprint": "Data: reviewed shows missing from shows.json|Workflow repeat-failure: Deploy Demo Site|Workflow repeat-failure: Deploy to Vercel|Workflow repeat-failure: Test UGC Features"
+  "lastErrorFingerprint": "Autofix: jobs actually succeeding|Data: reviewed shows missing from shows.json",
+  "lastVisitorErrorFingerprint": "Data: reviewed shows missing from shows.json"
 }
