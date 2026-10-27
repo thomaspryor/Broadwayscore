@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T19:19:36.740Z",
+  "generatedAt": "2026-10-27T23:09:27.453Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,7 +118,7 @@
     },
     {
       "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
     },
     {
       "outletId": "cote-notices",
@@ -135,10 +135,14 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 790,
-  "matchedGaps": 4,
+  "itemsScanned": 758,
+  "matchedGaps": 3,
   "possibleGaps": 3,
   "gaps": [
     {
@@ -166,15 +170,6 @@
       "outletId": "viewfromthegods",
       "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=memoriam-southwark-playhouse-borough",
       "headline": "&#8220;Memoriam&#8221; Southwark Playhouse Borough",
-      "publishDate": "2026-10-27"
-    },
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "level": "matched",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
-      "headline": "Memoriam – Southwark Playhouse Borough, London",
       "publishDate": "2026-10-27"
     },
     {

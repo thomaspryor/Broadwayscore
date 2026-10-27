@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T19:16:48.682Z",
+  "generatedAt": "2026-10-27T23:09:01.635Z",
   "windowDays": 45,
   "showsScanned": 190,
   "gaps": [
@@ -19,9 +19,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=lincoln-in-the-bardo-off-broadway-2026",
       "firstSeen": "2026-10-25T17:52:33.957Z",
-      "fileAgeHours": 49.40281944444445,
+      "fileAgeHours": 53.273027222222225,
       "gapSeenAt": "2026-10-26T08:25:16.367Z",
-      "nonTerminalAgeHours": 34.85897638888889,
+      "nonTerminalAgeHours": 38.72924111111111,
       "needsManualRecovery": false
     },
     {
@@ -40,9 +40,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=high-school-musical-off-west-end-2026",
       "firstSeen": "2026-10-24T13:21:23.310Z",
-      "fileAgeHours": 77.92252361111112,
+      "fileAgeHours": 81.79273388888889,
       "gapSeenAt": "2026-10-25T03:18:33.558Z",
-      "nonTerminalAgeHours": 63.97086777777778,
+      "nonTerminalAgeHours": 67.8411325,
       "needsManualRecovery": false
     },
     {
@@ -60,9 +60,9 @@
       "forumLinkRecoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=golden-boy-off-west-end-2026 --url=https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing --outlet=daily-mail --critic=\"Patrick Marmion\"   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 842.6040294444444,
+      "fileAgeHours": 846.4742466666667,
       "gapSeenAt": "2026-10-23T02:17:11.385Z",
-      "nonTerminalAgeHours": 112.99369361111111,
+      "nonTerminalAgeHours": 116.86395833333333,
       "needsManualRecovery": true
     }
   ],
