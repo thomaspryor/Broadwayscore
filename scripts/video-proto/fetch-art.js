@@ -5,7 +5,7 @@
 // Either way the image must be at least MIN_POSTER_WIDTH wide and pass the Gemini vision check.
 // Passing shows are recorded in art/verified.json; showdata.js refuses to render a show missing from it.
 const fs = require('fs'), path = require('path');
-const { resolvePoster, artVerdict, originalUrl, MIN_POSTER_WIDTH } = require('../social-autopost/art.js');
+const { resolvePoster, artVerdict, originalUrl, minPosterWidth, MIN_POSTER_WIDTH } = require('../social-autopost/art.js');
 const { loadImageSources } = require('../lib/image-sources-store');
 const ROOT = path.resolve(__dirname, '../..'), DIR = path.join(__dirname, 'art'), MANIFEST = path.join(DIR, 'verified.json');
 const shows = (j => j.shows || j)(JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8')));
@@ -34,15 +34,16 @@ async function squareArt(show, sources) {
 
 (async () => {
   const manifest = fs.existsSync(MANIFEST) ? JSON.parse(fs.readFileSync(MANIFEST, 'utf8')) : {};
-  const sources = loadImageSources(), ids = process.argv.slice(2);
+  // --poster: portrait posters for a compare video, picked as the compare card picks them (Mezzanine art from the show's own city allowed)
+  const POSTER = process.argv.includes('--poster'), sources = loadImageSources(), ids = process.argv.slice(2).filter(a => !a.startsWith('--'));
   if (!ids.length) throw new Error('usage: node fetch-art.js <show-id>...');
   fs.mkdirSync(DIR, { recursive: true });
   for (const id of ids) {
     const show = shows.find(s => s.id === id);
     if (!show) { console.log(id, 'UNKNOWN SHOW'); continue; }
-    let got = await squareArt(show, sources), why = got.reason;
+    let got = POSTER ? {} : await squareArt(show, sources), why = got.reason || '';
     if (!got.png) {
-      const r = await resolvePoster(show, { sources });
+      const r = await resolvePoster(show, POSTER ? { sources, shows, mezzanine: true, minWidth: minPosterWidth(380) } : { sources });
       got = r.poster ? { png: Buffer.from(r.dataUri.split(',')[1], 'base64'), width: r.width, height: r.height, source: r.source } : {};
       why += r.poster ? '' : ` | poster: ${r.reason}`;
     }

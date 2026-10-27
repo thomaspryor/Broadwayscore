@@ -37,7 +37,7 @@ function data(n, key) {
     return { title: L.title, sub: L.sub, endLine: L.endLine, shows: shows.map(s => ({ title: s.title, type: s.type, score: s.score, rc: s.rc, art: s.art })) };
   }
   if (n === 'versus') return voiced(n);
-  if (n === 'verdict' || n === 'duo' || n === 'how' || n.endsWith('-voiced')) return voicedFromPlan(n);
+  if (n === 'verdict' || n === 'duo' || n === 'how' || n === 'compare' || n.endsWith('-voiced')) return voicedFromPlan(n);
   throw new Error('unknown composition ' + n);
 }
 
@@ -149,6 +149,16 @@ function voicedFromPlan(n) {
     d.shows.slice().reverse().forEach((s, i) => { cues.n.push(at(`number ${5 - i}`)); at(`${Math.round(s.score)}`); });
     cues.end = at(d.endLine.split(' ').slice(0, 2).join(' '));
     return { ...d, ...base, cues };
+  }
+  if (fmt === 'compare') {
+    // one show reviewed in two productions (BRO-6412): London first, then Off-Broadway, then the caveat. Tiers are per side
+    // because gold differs by market; no tier label or delta is shown (the compare card avoids both).
+    const sides = V.plan.shows.map(s => { const x = showInfo(s.id), rv = x.p.rv.filter(r => Number.isFinite(r.s)), score = Math.round(x.score);
+      const say = at(s.say.replace('Off-Broadway', 'off Broadway')), land = at(`${score}`), count = at(`${rv.length} reviews`);
+      return { title: x.title, art: x.art, category: x.category, score, count: rv.length, label: s.label, soFar: !!s.soFar, say, land, countAt: count }; });
+    const tiersBy = {}; sides.forEach(s => { tiersBy[s.category] = { gold: getGoldThreshold(s.category), id: Array.from({ length: 101 }, (_, i) => getScoreTierId(i, s.category)) }; });
+    const caveat = at('Two years apart'), end = at(cue.end || 'Broadway Scorecard');
+    return { kind: 'compare', category: sides[0].category, tiersBy, shows: sides, caveat: V.plan.caveat, caveatAt: caveat, end, ...base };
   }
   if (fmt === 'duo') {
     // two shows side by side (the explainer): each badge counts up from when the voice names the show to when it says the score.
@@ -265,7 +275,7 @@ function mixMusic(wav, dur, track) {
   await page.setContent(html);
   await page.evaluate(() => document.fonts.ready);
   const TIERS = { gold: getGoldThreshold(d.category), label: SCORE_TIER_LABELS, id: Array.from({ length: 101 }, (_, i) => getScoreTierId(i, d.category)) };
-  await page.addScriptTag({ content: `window.TIERS=${JSON.stringify(TIERS)};` + fs.readFileSync(path.join(__dirname, 'stage.js'), 'utf8') + `;window.__C=COMPS;` });
+  await page.addScriptTag({ content: `window.TIERS=${JSON.stringify(TIERS)};window.TIERS_BY=${JSON.stringify(d.tiersBy || {})};` + fs.readFileSync(path.join(__dirname, 'stage.js'), 'utf8') + `;window.__C=COMPS;` });
   const info = await page.evaluate(([n, dd]) => { const c = window.__C[n]; window.C = c; c.build(document.getElementById('stage'), dd); return { dur: c.dur, events: c.events }; }, [name, d]);
   if (process.argv.includes('--audio-only')) { // re-sound an already rendered video: node render.js <comp> <dir> --audio-only
     const src = path.join(outDir, `${name}.mp4`), wav = path.join(outDir, `${name}-${AUDIO_STYLE}.wav`), dst = path.join(outDir, `${name}-${AUDIO_STYLE}.mp4`);
