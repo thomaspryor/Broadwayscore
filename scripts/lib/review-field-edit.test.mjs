@@ -876,3 +876,25 @@ test('outletId relabel tests the url path, not a query string (BRO-5289)', () =>
   const rec = { outletId: 'nytimes', url: 'https://www.nytimes.com/2013/x.html?ref=/article/AP216f8806ddad4b8b9837a6702e4b81cb' };
   assert.equal(applyReviewFieldEdit(rec, { field: 'outletId', oldValue: 'nytimes', newValue: 'ap' }, stamp).ok, false);
 });
+
+test('outletId relabel (BRO-5995): to the registry outlet the record label names, never higher tier, ap path unchanged', () => {
+  const rec = { outletId: 'cleveland-plain-dealer', outlet: "Cleveland's Star 102", url: 'https://www.audacy.com/star102cleveland/latest/x' };
+  const act = (v, r = rec) => applyReviewFieldEdit(r, { field: 'outletId', oldValue: r.outletId, newValue: v }, stamp);
+  const ok = act('clevelands-star-102');
+  assert.equal(ok.ok, true, ok.reason);
+  assert.equal(ok.record.outletId, 'clevelands-star-102');
+  assert.equal(ok.record.outletIdCorrectedFrom, 'cleveland-plain-dealer');
+  assert.match(ok.record.outletIdCorrectedReason, /own outlet label/);
+  assert.doesNotMatch(ok.record.outletIdCorrectedReason, /Associated Press/);
+  // not in registry / label does not name the target / tier promotion
+  assert.match(act('no-such-outlet-xyz').reason, /not in the outlet registry/);
+  assert.match(act('nytimes').reason, /does not name nytimes/);
+  const promo = act('nytimes', { ...rec, outlet: 'The New York Times' });
+  assert.equal(promo.ok, false);
+  assert.match(promo.reason || '', /raise the review's tier/);
+  // AP side effects never fire on a label relabel
+  const synd = act('clevelands-star-102', { ...rec, _apContentDetected: true, isSyndicatedDuplicate: true });
+  assert.equal(synd.record.isSyndicatedDuplicate, true);
+  // ap path unchanged
+  assert.match(act('ap').reason, /needs an AP wire url/);
+});

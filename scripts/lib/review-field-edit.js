@@ -124,9 +124,10 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // outlet's own page, so the rebuild treats it as aggregator-relayed and drops it. The plan's
   // description must name the pre-relabel scoreSource recovered from review-texts history.
   'scoreProvenance',
-  // outletId (BRO-5289): ONE relabel, to 'ap', on a file whose url is an AP wire page on a partner
+  // outletId (BRO-5289): relabel to 'ap' on a file whose url is an AP wire page on a partner
   // newspaper's host (online.wsj.com/article/AP<32 hex>.html). The text is the Associated Press's own
   // review; a rename alone is undone by the rebuild's filename-vs-outletId heal. See FIELD_VALUE_CHECKS.outletId.
+  // BRO-5995: or to the registry outlet the record's own `outlet` label names, never to a higher tier.
   'outletId',
 ];
 
@@ -139,6 +140,24 @@ function isSelfSyndicationPointer(record, ctx = {}) {
   return ptr === `${ctx.folder}/${ctx.file}` || ptr === ctx.file;
 }
 
+const compactLabel = (x) => String(x || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+
+// BRO-5995: relabel a file to the registry outlet its own stored `outlet` label already names
+// (Star 102 Cleveland filed under cleveland-plain-dealer while outlet reads "Cleveland's Star 102").
+// `outlet` is not an editable field, so a plan cannot set the label and then relabel to match it.
+// A relabel never promotes a review to a higher tier than the outlet it leaves.
+function storedLabelRelabelError(target, record) {
+  const entry = require('./review-normalization').loadOutletRegistry();
+  const out = entry && entry.outlets && entry.outlets[target];
+  if (!out) return `outletId: ${target} is not in the outlet registry (only 'ap', or the outlet the record's own label names, may be set)`;
+  const label = compactLabel(record.outlet);
+  const names = [out.displayName, ...(Array.isArray(out.aliases) ? out.aliases : [])].map(compactLabel).filter(Boolean);
+  if (!label || !names.includes(label)) return `outletId: record label "${record.outlet || ''}" does not name ${target}`;
+  const { getTier } = require('./outlet-tiers');
+  if (getTier(target) < getTier(record.outletId)) return `outletId: relabel to ${target} would raise the review's tier`;
+  return null;
+}
+
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
   crossOutletVerifiedNote: (v) => (typeof v === 'string' && v.trim().length >= 20
@@ -147,12 +166,14 @@ const FIELD_VALUE_CHECKS = {
     && typeof record.crossOutletVerifiedNote === 'string' && record.crossOutletVerifiedNote.trim().length >= 20
     ? null : 'crossOutletVerified may only be set true after an evidence note, with no wrongAttribution flag'),
   outletId: (v, record) => {
-    const { AP_WIRE_URL } = require('./ap-wire-detect');
-    if (v !== 'ap') return "outletId may only be relabelled to 'ap'";
-    let pathname = null;
-    try { pathname = new URL(record.url).pathname; } catch { /* not a url */ }
-    if (!pathname || !AP_WIRE_URL.test(pathname)) return 'outletId: relabel to ap needs an AP wire url (/article/AP<32 hex>) on the record';
-    return null;
+    if (v === 'ap') {
+      const { AP_WIRE_URL } = require('./ap-wire-detect');
+      let pathname = null;
+      try { pathname = new URL(record.url).pathname; } catch { /* not a url */ }
+      if (!pathname || !AP_WIRE_URL.test(pathname)) return 'outletId: relabel to ap needs an AP wire url (/article/AP<32 hex>) on the record';
+      return null;
+    }
+    return storedLabelRelabelError(v, record);
   },
   allowCrossMarket: (v) => (v === true ? null : 'allowCrossMarket may only be set to true'),
   fabricatedEntry: (v) => (v === false ? null : 'fabricatedEntry may only be cleared (false)'),
@@ -432,12 +453,14 @@ function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
     next.outletIdCorrectedFrom = record.outletId || null;
     // The AP detector flags AP copy under another outlet as a syndicated duplicate (detect-syndicated-duplicates.js);
     // on the AP row itself that stamp would exclude the review the relabel exists to recover.
-    if (record._apContentDetected === true && record.isSyndicatedDuplicate === true) {
+    if (newValue === 'ap' && record._apContentDetected === true && record.isSyndicatedDuplicate === true) {
       next.isSyndicatedDuplicate = false;
       next.syndicatedPrimaryFile = null;
       next._apContentDetected = false;
     }
-    next.outletIdCorrectedReason = `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`;
+    next.outletIdCorrectedReason = newValue === 'ap'
+      ? `approved fix ${stamp.fixId}: AP wire page ${record.url} is the Associated Press's review, not ${record.outletId || 'another outlet'}'s`
+      : `approved fix ${stamp.fixId}: the record's own outlet label "${record.outlet}" names ${newValue}, not ${record.outletId || 'another outlet'}`;
   }
   if (field === 'originalScore') {
     // The helper owns the whole rating write, so it starts from the stored value.
