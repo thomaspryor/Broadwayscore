@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-27T00:02:31.155Z",
+  "timestamp": "2026-10-27T00:35:15.812Z",
   "stats": {
-    "totalReviews": 62677,
-    "alreadyFlagged": 21571,
-    "dateGuardCatches": 223,
+    "totalReviews": 62684,
+    "alreadyFlagged": 21572,
+    "dateGuardCatches": 224,
     "directorMismatch": 2316,
     "tvFilmSignals": 1773,
-    "londonSignals": 3020,
+    "londonSignals": 3019,
     "offBroadwaySignals": 553,
-    "yearMismatch": 210,
-    "noPublishDate": 5558
+    "yearMismatch": 211,
+    "noPublishDate": 5563
   },
   "findings": [
     {
@@ -21078,6 +21078,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"moisés kaufman\" from here-there-are-blueberries-2026"
+        }
+      ]
+    },
+    {
+      "showId": "here-we-are-west-end-2025",
+      "file": "londontheatre1--john-groves.json",
+      "score": 74,
+      "publishDate": "2025-05-09",
+      "url": null,
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2023 (2x) more than 2025 (0x). 2023 matches production: here-we-are-off-broadway-2023"
         }
       ]
     },
@@ -78471,6 +78485,20 @@
     },
     {
       "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
+      "file": "deadline--greg-evans.json",
+      "score": null,
+      "publishDate": "2026-07-30",
+      "url": "https://deadline.com/2026/07/boy-george-jesus-christ-superstar-1237013756/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 78d before show (2026-07-30 vs 2026-10-16)"
+        }
+      ]
+    },
+    {
+      "showId": "jesus-christ-superstar-theatre-royal-drury-lane-west-end-2026",
       "file": "financialtimes--sarah-hemming.json",
       "score": 61,
       "publishDate": "2026-07-08",
@@ -85146,19 +85174,6 @@
       "score": 89,
       "publishDate": "2025-12-19",
       "url": "https://theatreandtonic.co.uk/blog/oh-mary-trafalgar-theatre-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-west-end-2025",
-      "file": "variety--unknown.json",
-      "publishDate": "2026-10-22",
-      "url": "https://variety.com/2026/theater/global/jane-krakowski-reprise-oh-mary-london-west-end-1236919607/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
