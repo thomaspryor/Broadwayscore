@@ -16,6 +16,8 @@ const VERIFIED_SINGLE_WORD_DISPLAY_NAMES = Object.freeze({
   berkeleyside: 'Berkeleyside',
   dramatically: 'Dramatically',
   operationlivetheatre: 'Operationlivetheatre',
+  // tabinthecity.co.uk og:site_name and <title> are both "Tabinthecity" (BRO-6421, 2026-10-27).
+  tabinthecity: 'Tabinthecity',
 });
 
 for (const [id, displayName] of Object.entries(VERIFIED_SINGLE_WORD_DISPLAY_NAMES)) {
