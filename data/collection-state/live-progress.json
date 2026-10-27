@@ -1,19 +1,130 @@
 {
-  "updatedAt": "2026-10-27T21:24:43.270Z",
-  "processed": 9,
-  "failed": 4,
-  "successRate": "69.2%",
+  "updatedAt": "2026-10-27T21:32:07.962Z",
+  "processed": 140,
+  "failed": 30,
+  "successRate": "82.4%",
   "tierBreakdown": {
-    "playwright": 7,
+    "playwright": 108,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 7,
+    "scrapingbee": 12,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 1
+    "archiveToday": 10,
+    "archive": 19
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 10,
+  "recentActivity": [
+    {
+      "t": "2026-10-27T20:42:38.010Z",
+      "event": "bb-session",
+      "session": "485a5d48",
+      "url": "https://www.wsj.com/articles/philadelphia-here-i-come-review-an-emigrants-ambiva"
+    },
+    {
+      "t": "2026-10-27T20:42:38.505Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T20:46:11.925Z",
+      "event": "bb-session",
+      "session": "0869174d",
+      "url": "https://www.nytimes.com/2024/02/26/theater/seven-year-disappear-review.html"
+    },
+    {
+      "t": "2026-10-27T20:46:12.405Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:50:12.474Z",
+      "event": "bb-session",
+      "session": "15e126cd",
+      "url": "https://www.nytimes.com/2024/02/22/theater/a-sign-of-the-times-review.html"
+    },
+    {
+      "t": "2026-10-27T20:50:12.902Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T20:56:45.142Z",
+      "event": "bb-session",
+      "session": "7b75f6b2",
+      "url": "https://www.nytimes.com/2024/02/06/theater/the-connector-review.html"
+    },
+    {
+      "t": "2026-10-27T20:56:45.635Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:02:00.908Z",
+      "event": "bb-session",
+      "session": "c9909b29",
+      "url": "https://www.nytimes.com/2024/02/08/theater/russian-troll-farm-review.html"
+    },
+    {
+      "t": "2026-10-27T21:02:01.417Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:09:52.563Z",
+      "event": "bb-session",
+      "session": "585cd7f6",
+      "url": "https://www.nytimes.com/2024/02/01/theater/jonah-review.html"
+    },
+    {
+      "t": "2026-10-27T21:09:53.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:12:32.210Z",
+      "event": "bb-session",
+      "session": "07666e2b",
+      "url": "https://www.wsj.com/articles/jonah-review-a-young-womans-wariness-rachel-bonds-r"
+    },
+    {
+      "t": "2026-10-27T21:12:32.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T21:24:08.655Z",
+      "event": "bb-session",
+      "session": "a8fbf1fc",
+      "url": "https://www.nytimes.com/2024/01/24/theater/aristocrats-review.html"
+    },
+    {
+      "t": "2026-10-27T21:24:10.629Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-27T21:28:55.249Z",
+      "event": "bb-session",
+      "session": "70e035bb",
+      "url": "https://www.wsj.com/articles/public-obscenities-review-a-perceptive-bengali-dram"
+    },
+    {
+      "t": "2026-10-27T21:28:55.761Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-27T21:31:51.394Z",
+      "event": "bb-session",
+      "session": "c2a95eb1",
+      "url": "https://www.wsj.com/articles/the-gardens-of-anuncia-review-the-blooming-of-a-bro"
+    },
+    {
+      "t": "2026-10-27T21:31:51.857Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
