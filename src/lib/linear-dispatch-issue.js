@@ -33,7 +33,7 @@ function rowMatchKey(name) {
   while (key && Buffer.from(key, 'utf8').toString('base64url').length > SAFE_TOKEN_MAX_CHARS) {
     key = key.slice(0, -1);
   }
-  return key;
+  return key.trimEnd();
 }
 
 function b64(s) {

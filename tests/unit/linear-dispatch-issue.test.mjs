@@ -23,6 +23,8 @@ const KEYS = [
   'health-check:Ünïcödé rōw ' + 'é'.repeat(150),
   'digest-needs-you:Fix the broken thing',
   'gap:hamilton:nytimes',
+  // BRO-6387: 120-char cut lands on a space
+  'time-bomb-tests:unit:tests/unit/opening-night-orchestrator-cron.test.mjs::cutoff boundary: just under counts, just over does not',
 ];
 
 test('acceptance command matches the scripts/lib/health-row-check-cmd.js encoders exactly', () => {
@@ -31,7 +33,7 @@ test('acceptance command matches the scripts/lib/health-row-check-cmd.js encoder
     const want = row ? rowCmd.rowAbsentCheckCmd(row) : rowCmd.alertAbsentCheckCmd(key);
     assert.equal(lib.acceptanceCommand(key), want, key);
   }
-  for (const s of ['', 'abc', 'x'.repeat(500), 'é'.repeat(200)]) assert.equal(lib.rowMatchKey(s), rowCmd.rowMatchKey(s));
+  for (const s of ['', 'abc', 'x'.repeat(500), 'é'.repeat(200), ...KEYS]) assert.equal(lib.rowMatchKey(s), rowCmd.rowMatchKey(s));
 });
 
 test('shared constants match their scripts/lib owners', () => {
