@@ -1749,3 +1749,124 @@ jobs:
             -f alert_title="Daily Data Health Check Crashed" \
             -f alert_context='{"note":"Health check script crashed — BSC Daily email may not have sent."}' \
             -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
+  # BRO-6038 (BRO-2688 triage, rank 1-8): audits that wrote reports nothing ran or read (the
+  # BRO-2620 class). Each step writes a counts-only data/audit/<name>.json via
+  # scripts/lib/audit-counts.js; health-check.js's orphanAuditCountsResults turns each into
+  # one digest row on the next daily run. Advisory first (CLAUDE.md rule 19): every step is
+  # continue-on-error and none passes --strict/--gate. Its own job, not health-check: that
+  # job's blocking job-timeout margin (audit-push-retry-budgets.js, 15% floor) had ~8 min
+  # of room, and two of these need git history fetched first.
+  orphan-audits:
+    runs-on: ubuntu-latest
+    # Capped steps sum to 42 min + ~5 min setup + one 900s-governed push step (~30 min
+    # worst case with its API fallback) = ~77 min; 95 keeps the 15% margin.
+    timeout-minutes: 95
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout review-texts (private repo)
+        uses: ./.github/actions/checkout-review-texts
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit --no-fund
+
+      # Rank 1: CLAUDE.md §3 star bands over every N/5-rated review (core data only). Overlaps the
+      # health-check job's published-score star-band-drift audit but counts per cohort, all sources.
+      - name: Star band audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-star-bands.js --counts=data/audit/star-bands.json
+
+      # Rank 2: announced shows holding an older production's cast (BRO-5809). Core data only.
+      - name: Announced cast audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 1
+        run: node scripts/audit-announced-cast.js --counts=data/audit/announced-cast.json
+
+      # Rank 3: llmScore object without a numeric score, never scored or published (BRO-5395).
+      - name: Scoreless llmScore audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        run: node scripts/audit-scoreless-llmscore.js --list=0 --counts=data/audit/scoreless-llmscore.json
+
+      # Rank 4: review texts on this year's shows missing from reviews.json (BRO-5794).
+      - name: Uncounted review texts audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 2
+        run: node scripts/audit-uncounted-real-reviews.js --counts=data/audit/uncounted-real-reviews.json > /dev/null
+
+      # Rank 5: listing or search pages scored as reviews (BRO-5375).
+      - name: Listing page text audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        run: node scripts/audit-listing-page-text.js --counts=data/audit/listing-page-text.json
+
+      # Rank 6: booking/deal copy and aggregator show-hub URLs stored as reviews (BRO-5902, BRO-5906).
+      - name: Promo booking copy audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 4
+        run: node scripts/audit-promo-booking-copy.js --counts=data/audit/promo-booking-copy.json
+
+      # Rank 7: reviews the push ownership gate dropped that exist nowhere today (BRO-5373). The
+      # script deepens the depth-1 review-texts clone itself (fetch --shallow-since); 14 days of
+      # a daily run is ample overlap and keeps that fetch small.
+      - name: Ownership gate losses audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 15
+        run: node scripts/audit-ownership-gate-losses.js --days=14 --counts=data/audit/ownership-gate-losses.json
+
+      # Rank 8: published review count moving down or flapping (task #653), read from the git
+      # history of data/audit/deploy-watermark.json. The checkout is depth 1, so deepen it first
+      # (bounded); with too little history the counts file records insufficient: true and the
+      # digest row warns instead of passing.
+      - name: Corpus determinism audit
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          timeout 300 git fetch --quiet --shallow-since="3 days ago" origin main || echo "::warning::history deepen failed; determinism audit will report insufficient data"
+          node scripts/audit-corpus-determinism.js --since-hours=48 --no-report --counts=data/audit/corpus-determinism.json
+
+      - name: Commit orphan audit counts (apiFallbackSafe)
+        if: always()
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+          PUSH_API_REST_REF_UPDATE: '1'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/star-bands.json 2>/dev/null || true
+          git add data/audit/announced-cast.json 2>/dev/null || true
+          git add data/audit/scoreless-llmscore.json 2>/dev/null || true
+          git add data/audit/uncounted-real-reviews.json 2>/dev/null || true
+          git add data/audit/listing-page-text.json 2>/dev/null || true
+          git add data/audit/promo-booking-copy.json 2>/dev/null || true
+          git add data/audit/ownership-gate-losses.json 2>/dev/null || true
+          git add data/audit/corpus-determinism.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No orphan audit count changes"
+          else
+            git commit -m "data: Update orphan audit counts [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi

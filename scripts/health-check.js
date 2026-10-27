@@ -4959,6 +4959,35 @@ function earlyPublishDatesResults(report, now = Date.now()) {
   return out;
 }
 
+// BRO-6038: digest rows for the BRO-2688 rank 1-8 audits that nothing ran. Each writes
+// data/audit/<file> via scripts/lib/audit-counts.js ({ generatedAt, findings, ...counts }) from the
+// "orphan-audits" job in data-health-check.yml. Warn when findings > max; max is 0 unless the audit
+// carries a known backlog, where it is the level seen when it was wired (alerts on growth only).
+const ORPHAN_AUDIT_STALE_MS = 3 * 24 * 60 * 60 * 1000;
+const ORPHAN_AUDIT_DIGESTS = [
+  { file: 'star-bands.json', script: 'audit-star-bands.js', max: 0, name: 'Data: starred reviews scored outside their star band', what: 'review(s) with an N/5 rating score outside the CLAUDE.md §3 band' },
+  { file: 'announced-cast.json', script: 'audit-announced-cast.js', max: 0, name: 'Data: announced shows carrying an unverified cast', what: 'announced show(s) hold a cast with no matching data/cast file (BRO-5809)' },
+  { file: 'scoreless-llmscore.json', script: 'audit-scoreless-llmscore.js', max: 0, name: 'Data: review files with an llmScore but no score', what: 'review file(s) carry an llmScore object with no numeric score, so they are never scored (BRO-5395)' },
+  // 209 on 2026-10-27 (131 complete, 78 truncated): the backlog BRO-5794 left; alert when it grows.
+  { file: 'uncounted-real-reviews.json', script: 'audit-uncounted-real-reviews.js', max: 209, name: 'Data: unflagged review texts missing from reviews.json', what: 'review text(s) on this year\'s shows carry text and no exclusion flag but are not counted (BRO-5794)' },
+  { file: 'listing-page-text.json', script: 'audit-listing-page-text.js', max: 0, name: 'Data: listing or search pages stored as review text', what: 'included review text(s) open with a listing or search page header (BRO-5375)' },
+  { file: 'promo-booking-copy.json', script: 'audit-promo-booking-copy.js', max: 0, name: 'Data: booking copy or show-hub pages stored as reviews', what: 'live review file(s) hold booking/deal copy or an aggregator show-hub URL (BRO-5902, BRO-5906)' },
+  { file: 'ownership-gate-losses.json', script: 'audit-ownership-gate-losses.js', max: 0, name: 'Data: reviews lost to the ownership gate', what: 'review(s) the push ownership gate dropped exist nowhere in the corpus (BRO-5373); the script prints the restore inputs' },
+  { file: 'corpus-determinism.json', script: 'audit-corpus-determinism.js', max: 0, name: 'Data: published review count flapping', what: 'corpus determinism gate failure(s) over the last 48h of deploy watermarks (task #653)' },
+];
+
+function orphanAuditCountsResults(spec, report, now = Date.now()) {
+  if (!report || typeof report !== 'object') return [];
+  const at = Date.parse(report.generatedAt);
+  const fresh = Number.isFinite(at) && now - at <= ORPHAN_AUDIT_STALE_MS;
+  const hint = `node scripts/${spec.script} lists the rows; data-health-check.yml's orphan-audits job refreshes data/audit/${spec.file} daily (BRO-6038).`;
+  if (!fresh) return [{ name: spec.name, status: 'warn', message: `data/audit/${spec.file} is missing a readable generatedAt or is more than 3 days old`, hint }];
+  if (!isCountValue(report.findings)) return [{ name: spec.name, status: 'warn', message: `data/audit/${spec.file} has no usable result${report.insufficient ? ' (not enough history in the checkout)' : ''}`, hint }];
+  const n = Number(report.findings);
+  if (n > spec.max) return [{ name: spec.name, status: 'warn', message: `${n} ${spec.what}${spec.max ? ` (limit ${spec.max})` : ''}`, hint }];
+  return [{ name: spec.name, status: 'pass', message: `${n} found${spec.max ? ` (limit ${spec.max})` : ''}` }];
+}
+
 function cardVerifiabilityBacklogResults(drainMetric, linearReport, now = Date.now()) {
   const results = [];
   // BRO-5164: pass rows only from a fresh Linear report whose bucket was
@@ -5101,6 +5130,10 @@ function checkStarBandDrift() {
 function checkEarlyPublishDates() {
   const report = readAuditJsonOrNull('early-publish-dates.json');
   return report ? earlyPublishDatesResults(report) : [];
+}
+
+function checkOrphanAuditCounts() {
+  return ORPHAN_AUDIT_DIGESTS.flatMap((spec) => orphanAuditCountsResults(spec, readAuditJsonOrNull(spec.file)));
 }
 
 // Daily-digest surfacing for stalled pipeline surfaces (data/audit/
@@ -6200,6 +6233,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkCoverageHoles(),
     ...checkStarBandDrift(),
     ...checkEarlyPublishDates(),
+    ...checkOrphanAuditCounts(),
     ...checkCorpusAudits(),
   ];
 }
@@ -6407,4 +6441,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, orphanAuditCountsResults, ORPHAN_AUDIT_DIGESTS, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };

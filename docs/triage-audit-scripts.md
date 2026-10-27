@@ -15,12 +15,15 @@ path triggers do not count as wiring.
 
 | Population | Count |
 | --- | --- |
-| `scripts/audit-*.js` files | 283 |
-| Referenced by workflow/action/package or other non-test code (bucket c) | 192 |
-| Unreferenced and retained in the baseline | 91 |
-| Bucket a: alertable, awaiting wiring | 33 |
-| Bucket b: manual, one-shot, local-only or already covered by tests | 58 |
+| `scripts/audit-*.js` files | 289 |
+| Referenced by workflow/action/package or other non-test code (bucket c) | 204 |
+| Unreferenced and retained in the baseline | 85 |
+| Bucket a: alertable, awaiting wiring | 25 |
+| Bucket b: manual, one-shot, local-only or already covered by tests | 60 |
 | Bucket u: untriaged | 0 |
+
+Recounted 2026-10-27 after the top 8 were wired (see "Wired" below); bucket b grew by
+two entries added since the sweep.
 
 The baseline actually contained **58** bucket-u entries, not the card's 59 or the
 older document's 57. All 58 now have a script-specific a/b decision below: 21 are
@@ -28,7 +31,7 @@ alertable and 37 stay manual. The original 12 bucket-a and 20 bucket-b records a
 unchanged. Classification changes do not run, disable or wire an audit and do not
 change any show, review, score or private-data record.
 
-## Bucket (a): orphaned and worth alerting on (33)
+## Bucket (a): orphaned and worth alerting on (33 at the sweep; ranks 1-8 now wired)
 
 The original 12 retain BRO-2688's priority order and historical sweep evidence below;
 findings labelled "today" are from that sweep, not a new claim about the current corpus.
@@ -59,9 +62,30 @@ Pattern for every item: add a step to `data-health-check.yml` modelled on the ex
 `audit-star-band-drift.js` and `audit-coverage-holes.js` steps (`--counts=data/audit/<name>.json`),
 shadow mode first (`continue-on-error: true`, rule 19), then one digest row fed from the counts
 file, then arm it after two clean weeks. Workflow edits need a recorded `/second-opinion`
-(CLAUDE.md §18). The unattended BRO-6038 worker is prohibited from editing workflows
-or running session skills, so this wiring remains outstanding; the triage below is
-completed independently.
+(CLAUDE.md §18).
+
+**Wired (BRO-6038, 2026-10-27).** All eight now run daily in the `orphan-audits` job of
+`data-health-check.yml` (its own job: the health-check job's push-budget margin had no room),
+each `continue-on-error: true` with `--counts=data/audit/<name>.json` written by
+`scripts/lib/audit-counts.js` and committed by that job. `health-check.js`
+(`ORPHAN_AUDIT_DIGESTS`, `orphanAuditCountsResults`) gives each one digest row: warn when
+`findings` exceeds the row's limit, warn when the file is over 3 days old.
+`tests/unit/health-check-orphan-audit-counts.test.mjs` pins the step, staging and registry
+wiring for every row. Alertable metric and level when wired:
+
+| Script | `findings` | Limit | 2026-10-27 |
+| --- | --- | --- | --- |
+| `audit-star-bands.js` | starred reviews out of band | 0 | 2 (both `originalScore-priority0`) |
+| `audit-announced-cast.js` | announced rows with an unverified cast | 0 | 1 |
+| `audit-scoreless-llmscore.js` | llmScore without a numeric score | 0 | 0 |
+| `audit-uncounted-real-reviews.js` | uncounted files with text and no exclusion flag (3796 uncounted in all) | 209 (backlog; alerts on growth) | 209 |
+| `audit-listing-page-text.js` | listing-header hits (96 read-more-only hits are ordinary reviews) | 0 | 0 |
+| `audit-promo-booking-copy.js` | live promo + live show-hub files (191 live blocked-domain, 1640 twins recorded only) | 0 | 0 |
+| `audit-ownership-gate-losses.js` | losses in the last 14 days | 0 | see first CI run |
+| `audit-corpus-determinism.js` | gate failures over 48h (null when history is short) | 0 | 1 (3 transient excursions) |
+
+Next: arm after two clean weeks (rule 19), and decide the star-band overlap with
+`audit-star-band-drift.js` once both have history.
 
 1. `audit-star-bands.js`: wire first. Core data only, and it already reports 1 review out of band
    (`originalScore-priority0`). Check overlap with the wired `audit-star-band-drift.js` before
