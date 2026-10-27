@@ -1,27 +1,7 @@
 {
-  "generatedAt": "2026-10-26T07:57:54.445Z",
-  "bannerText": "93/231 Done(14d) verified on main · 6 FAILED · 2 vacuous · 14 stuck-but-done — PARTIAL RUN: 134 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-27T07:58:30.139Z",
+  "bannerText": "148/317 Done(14d) verified on main · 19 FAILED · 2 vacuous · 13 stuck-but-done — PARTIAL RUN: 147 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
-    {
-      "title": "FAILED BRO-4776 — P3: 8 tour runtimes copied from the Broadway parent disagree with the tour's own page by 5 to 10 minutes",
-      "detail": "not ok: every national tour has a synopsis, or is a documented gap | first failure: tours with no synopsis (>= 40 chars): the-unauthorized-hallmark-ish-parody-music",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4776/p3-8-tour-runtimes-copied-from-the-broadway-parent-disagree-with-the"
-    },
-    {
-      "title": "FAILED BRO-6226 — Critics' Take 'Based on N reviews' overcounts vs the on-site review count (Benjamin Button OB shows 27, score uses 23)",
-      "detail": "[audit-critic-consensus-contamination] 1289 fail, 0 warn [fail] 1536-west-end-2026 REVIEWCOUNT_DRIFT:consensus=19,actual=0,diff=19 text: Ava Pickett's debut play earns rave review…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6226/critics-take-based-on-n-reviews-overcounts-vs-the-on-site-review-count"
-    },
-    {
-      "title": "FAILED BRO-6188 — Recoupment model: pre-2020 musicals with a known small capitalization read far too negative (Next to Normal -218% vs recouped); eraIndex for musicals trade-off",
-      "detail": "not ok: reported-truth backtest: musicals hold MAE <= 4.2 and >= 73… | first failure: musical reported-truth MAE 4.6 (7.3 before BRO-6188)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6188/recoupment-model-pre-2020-musicals-with-a-known-small-capitalization"
-    },
-    {
-      "title": "FAILED BRO-6184 — Land gate: merged-tree-tests killed run blocks without consulting baseline; musicals reported-truth backtest red on main (MAE 7.4 vs 4.2)",
-      "detail": "not ok: reported-truth backtest: musicals hold MAE <= 4.2 and >= 73… | first failure: musical reported-truth MAE 4.6 (7.3 before BRO-6188)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6184/land-gate-merged-tree-tests-killed-run-blocks-without-consulting"
-    },
     {
       "title": "FAILED BRO-6170 — Web My Shows: add Stats and Feed (Timeline + Photo wall) tabs to match the iOS app",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/my-shows-stats-feed.test.mjs",
@@ -33,15 +13,35 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6166/morning-digest-review-queue-lists-cards-that-are-not-for-the-owner-the"
     },
     {
-      "title": "STUCK BRO-4847 — UX audit: The affordance for adding a show to the watchlist is inconsistent between views: it's a large tappable card in",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4847/ux-audit-the-affordance-for-adding-a-show-to-the-watchlist-is"
+      "title": "FAILED BRO-6117 — BSC Daily: Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/un\" still listed in the 2026…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6117/bsc-daily-live-data-test-failing-no-review-missing-a-pullquote-has-a"
     },
     {
-      "title": "STUCK BRO-3485 — P2: done-evidence sweep still accuses a card whose test was MOVED, not deleted",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-3485/p2-done-evidence-sweep-still-accuses-a-card-whose-test-was-moved-not"
+      "title": "FAILED BRO-6116 — BSC Daily: Time-to-publish SLA missed — 0% within 15 min (target 90%)",
+      "detail": "[check-health-row-absent] FAIL: \"Time-to-publish SLA missed — 0% within 15 min (target 90%)\" still listed in the 2026-10-27T07:52:51.127Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6116/bsc-daily-time-to-publish-sla-missed-0percent-within-15-min-target"
+    },
+    {
+      "title": "FAILED BRO-6113 — Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
+      "detail": "[check-alert-condition-absent] FAIL: \"corpus-drift:sibling-title-misroute\" still firing — open, last fired 2026-10-27T05:37:08.769Z (2.4h ago, within 168h)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6113/corpus-drift-same-title-sibling-review-misrouted-to-the-wrong"
+    },
+    {
+      "title": "FAILED BRO-6112 — DECISION NEEDED: Add the 8 missing cloud Tier-1 secrets? (BRIGHTDATA, SCRAPINGBEE, BROWSERBASE, RESEND, ANTHROPIC)",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/cloud-secrets-decision.md",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6112/decision-needed-add-the-8-missing-cloud-tier-1-secrets-brightdata"
+    },
+    {
+      "title": "FAILED BRO-6108 — BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/we-historical-tr-coverage.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through"
+    },
+    {
+      "title": "FAILED BRO-6100 — Opening-night watch 2026-10-23",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/opening-night-watch-2026-10-23.md",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6100/opening-night-watch-2026-10-23"
     }
   ],
-  "moreCount": 14
+  "moreCount": 26
 }
