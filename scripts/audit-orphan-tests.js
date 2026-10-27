@@ -95,6 +95,8 @@ const EXEMPT_NEVER_CI = {
   'scripts/verify-directors.test.mjs': 'BRO-4993',
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
   'scripts/ccusage-baseline.test.mjs': 'BRO-4491',
+  // Acceptance shim; its tests/unit suite is collected by the unit batch.
+  'scripts/morning-digest.test.mjs': 'BRO-6222',
   // BRO-2136 acceptance-command shim; re-imports the CI-registered tests/unit copy.
   'scripts/scrape-playbill-verdict.test.mjs': 'BRO-2136',
   // BRO-3137 live-data acceptance check (data-state, would flap in CI).

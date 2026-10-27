@@ -84,6 +84,7 @@ const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, 
 const { readBoardGateFailopen } = require('./lib/summarize-board-gate-failopen.js');
 const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-digest.js');
 const { codexLineFromStatus } = require('./lib/codex-status-line.js');
+const { collectMoneySignups, renderMoneySignups } = require('./lib/money-signups-digest.js');
 
 // Task #1220/BRO-230: health-check.js in GitHub Actions (data-health-check.yml)
 // reads data/audit/digest-autofix-ledger.jsonl from its git-tracked snapshot.
@@ -695,6 +696,8 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     }
   }
 
+  head.push(renderMoneySignups(sections.moneySignups));
+
   // Technical report starts here. The raw error names stay (debugging), but
   // are no longer called "site errors": most are the automation's own
   // machinery, and the visitor-facing ones are already named in plain
@@ -948,6 +951,7 @@ async function main() {
   }
 
   const { sections, problems } = readAllSnapshots();
+  sections.moneySignups = await collectMoneySignups();
 
   // Task #1641: strip forbidden-telemetry queue rows (e.g. "T1 Coverage
   // Scoreboard", "Deployed coverage" — deleted by the 2026-08-02 owner

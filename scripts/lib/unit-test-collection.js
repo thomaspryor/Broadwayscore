@@ -197,6 +197,7 @@ const EXCLUDED = new Map([
   ['scripts/enrich-fallback-ticket-links-live.test.mjs', 'Makes live network calls; runs at test.yml\'s advisory "Run slow network-dependent unit tests" step (continue-on-error: true) so a transient flake cannot block an unrelated PR.'],
   ['scripts/merge-worktree-to-main.test.mjs', 'BRO-2904 — runs at its own test.yml step ("Run merge-worktree-to-main stash-restore test (BRO-2904)") under `timeout 180`, so a hang is a named red step.'],
   // Acceptance-command shims: one-line imports of a suite CI already runs (collecting them would run it twice).
+  ['scripts/morning-digest.test.mjs', 'BRO-6222 acceptance shim: imports tests/unit/money-signups-digest.test.mjs, collected by the unit batch. EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ['scripts/cast-backfill-year-validation.test.mjs', 'BRO-4051 acceptance shim: imports tests/unit/cast-backfill-year-validation.test.mjs, which the batch already runs. EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ['scripts/ccusage-baseline.test.mjs', 'BRO-4491 acceptance shim: re-imports the collected tests/unit copy. EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
   ['scripts/discovery-broadwayworld-westend.test.mjs', 'BRO-4850 acceptance shim: imports scripts/lib/discovery-broadwayworld-westend.test.mjs (scripts/lib/*.test.mjs glob step). EXEMPT_NEVER_CI in audit-orphan-tests.js.'],
