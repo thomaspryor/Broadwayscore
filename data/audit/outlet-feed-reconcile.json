@@ -1,13 +1,8 @@
 {
-  "generatedAt": "2026-10-26T21:05:15.737Z",
+  "generatedAt": "2026-10-27T00:54:46.284Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
-    {
-      "id": "ilford-boy-west-end-2026",
-      "title": "Ilford Boy",
-      "openingDate": "2026-10-20"
-    },
     {
       "id": "derren-brown-only-human-west-end-2026",
       "title": "Derren Brown: Only Human",
@@ -24,11 +19,6 @@
       "openingDate": "2026-10-21"
     },
     {
-      "id": "king-of-the-yees-off-broadway-2026",
-      "title": "King of the Yees",
-      "openingDate": "2026-10-20"
-    },
-    {
       "id": "phyl-off-broadway-2026",
       "title": "Phyl",
       "openingDate": "2026-10-22"
@@ -42,11 +32,6 @@
       "id": "jest-to-impress-off-broadway-2026",
       "title": "Jest to Impress",
       "openingDate": "2026-10-21"
-    },
-    {
-      "id": "martin-guerre-west-end-2026",
-      "title": "Martin Guerre",
-      "openingDate": "2026-10-20"
     },
     {
       "id": "the-pianist-off-west-end-2026",
@@ -69,6 +54,11 @@
       "openingDate": "2026-10-24"
     },
     {
+      "id": "the-revlon-girl-off-west-end-2026",
+      "title": "The Revlon Girl",
+      "openingDate": "2026-10-28"
+    },
+    {
       "id": "garry-starr-classic-penguins-off-west-end-2026",
       "title": "Garry Starr Classic Penguins",
       "openingDate": "2026-10-23"
@@ -77,11 +67,6 @@
       "id": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
       "title": "Harry Potter and the Cursed Child",
       "openingDate": "2026-10-21"
-    },
-    {
-      "id": "machine-learning-off-broadway-2026",
-      "title": "Machine Learning",
-      "openingDate": "2026-10-20"
     },
     {
       "id": "hospital-hour-off-broadway-2026",
@@ -138,6 +123,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "viewfromthegods",
+      "error": "AggregateError"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -148,21 +137,16 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
+    },
+    {
+      "outletId": "londontheatre1",
+      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 689,
+  "itemsScanned": 644,
   "matchedGaps": 3,
-  "possibleGaps": 1,
+  "possibleGaps": 2,
   "gaps": [
-    {
-      "showId": "machine-learning-off-broadway-2026",
-      "title": "Machine Learning",
-      "level": "matched",
-      "outletId": "the-interested-bystander",
-      "url": "https://www.interestedbystander.com/2026/10/theater-reviews-lauren-yees-king-of.html",
-      "headline": "Theater Reviews:  Lauren Yee&#39;s “King of the Yees” Is an Amusing Slice of San Francisco Chinatown Life; Duncan Sheik’s Last Musical, “Memoirs of Amorous Gentlemen,” Is About Sex Workers and Sex Writers; and “Machine Learning” Is “Who’s Afraid of AI Woolf?”",
-      "publishDate": "2026-10-23"
-    },
     {
       "showId": "phyl-off-broadway-2026",
       "title": "Phyl",
@@ -173,12 +157,30 @@
       "publishDate": "2026-10-26"
     },
     {
+      "showId": "the-kick-inside-off-broadway-2026",
+      "title": "The Kick Inside",
+      "level": "matched",
+      "outletId": "this-week-in-new-york",
+      "url": "https://twi-ny.com/2026/10/26/the-kick-inside-nicolas-norena-here-arts-center/",
+      "headline": "LOVE LANGUAGE: THE KICK INSIDE AT HERE ARTS CENTER",
+      "publishDate": "2026-10-26"
+    },
+    {
       "showId": "the-pianist-off-west-end-2026",
       "title": "The Pianist",
       "level": "matched",
       "outletId": "adventuresintheatreland",
       "url": "https://www.adventuresintheatreland.com/post/the-pianist-park-theatre",
       "headline": "The Pianist | Park Theatre",
+      "publishDate": "2026-10-26"
+    },
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "level": "possible",
+      "outletId": "north-west-end",
+      "url": "https://northwestend.com/bu21-lower-marsh-arts-club/",
+      "headline": "BU21 &#8211; Lower Marsh Arts Club",
       "publishDate": "2026-10-26"
     },
     {
