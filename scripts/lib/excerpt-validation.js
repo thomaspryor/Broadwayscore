@@ -191,7 +191,11 @@ const LEADING_STOPWORD_RE = /^(the|a|an|and|or|but|of|in|on|at|to|for|with|from|
 // BRO-6477: "Hayao Miyazaki's tale of Satsuki and Mei" (the film a stage show
 // adapts) sits right beside the role names, so the source-work nouns cover
 // film/anime/tale/classic too, not only prose nouns.
-const LITERARY_SOURCE_SUFFIX_RE = /^\s*['’]?s?\s*(?:\d{4}\s+)?(?:[a-z]+\s+){0,3}(?:novel|book|memoir|play|story|tale|fable|fairy[- ]?tale|film|movie|anime|animation|manga|libretto|script|saga|estate|autobiography|screenplay|source material)\b/i;
+const LITERARY_SOURCE_SUFFIX_RE = /^\s*['’]?s?\s*(?:\d{4}\s+)?(?:[a-z]+\s+){0,3}(?:novel|book|memoir|play|story|estate|autobiography|screenplay|libretto|source material)\b/i;
+// Screen/fable nouns only count in the possessive and not when the phrase is
+// about the person's own screen work ("Jo Doe's film debut", "stole the film",
+// "brings the script to life" must keep the name a cast candidate).
+const SCREEN_SOURCE_SUFFIX_RE = /^\s*['’]s\s+(?:\d{4}\s+)?(?:[a-z]+\s+){0,2}(?:tale|fable|fairy[- ]?tale|film|movie|anime|animation|manga|saga|screenplay)\b(?!\s+(?:debut|career|role|performance|work|star|stardom|version))/i;
 const LITERARY_SOURCE_SUFFIX_WINDOW = 40;
 
 // Fields that can carry review prose worth scanning for name candidates —
@@ -269,7 +273,7 @@ function extractPersonNameCandidates(text) {
     if (INSTITUTIONAL_SUFFIX_RE.test(words[words.length - 1])) continue;
     if (MARKET_PHRASE_RE.test(candidate)) continue;
     const afterMatch = text.slice(index + candidate.length, index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
-    if (LITERARY_SOURCE_SUFFIX_RE.test(afterMatch)) continue;
+    if (LITERARY_SOURCE_SUFFIX_RE.test(afterMatch) || SCREEN_SOURCE_SUFFIX_RE.test(afterMatch)) continue;
     out.push({ name: candidate, index });
   }
   return out;

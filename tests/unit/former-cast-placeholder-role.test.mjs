@@ -84,6 +84,17 @@ describe('source-film author beside role names is not a former cast member', () 
   });
 });
 
+describe('screen-work nouns do not hide actors (ship-check recall)', () => {
+  for (const excerpt of [
+    'Jo Former stole the film as Satsuki, and the puppetry is joyous.',
+    'Jo Former brings the script to life as Satsuki.',
+    'Jo Former’s film debut as Satsuki is a delight.',
+    'Jo Former turns the tale on its head as Satsuki.',
+  ]) {
+    it(`still flags: ${excerpt}`, () => assert.strictEqual(check(TOTORO, excerpt).mentionsFormerCast, true));
+  }
+});
+
 describe('cast-role helper', () => {
   it('recognises "no answer" sentences as placeholders', () => {
     for (const r of ['role not specified', 'Role Not Specified', 'role unknown', 'not specified', 'unspecified', 'N/A', 'n/a', 'none', 'null', 'TBD', '?', '--', ' role not specified. ']) {

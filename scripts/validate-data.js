@@ -575,6 +575,7 @@ function validateCastRolePlaceholders(shows) {
   info('Checking cast roles for placeholder text...');
   const bad = findPlaceholderCastRoles(shows);
   if (bad.length === 0) return ok('No placeholder cast roles');
+  warn(`${bad.length} cast row(s) across ${new Set(bad.map((b) => b.id)).size} show(s) carry a placeholder role`);
   for (const b of bad.slice(0, 20)) warn(`${b.id}: cast "${b.name}" has placeholder role "${b.role}" (clear it; see scripts/lib/cast-role.js)`);
 }
 
