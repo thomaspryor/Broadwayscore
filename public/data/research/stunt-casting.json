@@ -1,5 +1,5 @@
 {
-  "generated": "2026-10-26",
+  "generated": "2026-10-28",
   "method": {
     "scope": "Broadway plays and musicals that opened from the 2004-2005 season on (seasons run July 1 to June 30). Opening casts only; replacement casting is not counted.",
     "classification": "Claude (Opus) picked the 1 to 4 headliners of each production from its opening cast and classified their fame as of the opening date. \"Film/TV star\" is a broad bar: anyone best known to the public from screen work at the time, including regulars of a TV series, not only A-list movie stars. A production counts if any of its headliners qualifies. Every headliner is listed on the page for checking.",
@@ -8,7 +8,7 @@
     "classifierReview": "Gemini and Codex audited the classifications. Opus re-examined the 44 productions they disputed, under the same rules, and changed 27 of them."
   },
   "counts": {
-    "productions": 754,
+    "productions": 753,
     "studyShows": 754
   },
   "eras": [
@@ -140,14 +140,14 @@
           "pct": 70.7
         },
         "musicals": {
-          "n": 56,
+          "n": 55,
           "hits": 14,
-          "pct": 25
+          "pct": 25.5
         },
         "all": {
-          "n": 131,
+          "n": 130,
           "hits": 67,
-          "pct": 51.1
+          "pct": 51.5
         }
       },
       "celebrity": {
@@ -157,14 +157,14 @@
           "pct": 76
         },
         "musicals": {
-          "n": 56,
+          "n": 55,
           "hits": 17,
-          "pct": 30.4
+          "pct": 30.9
         },
         "all": {
-          "n": 131,
+          "n": 130,
           "hits": 74,
-          "pct": 56.5
+          "pct": 56.9
         }
       }
     },
@@ -810,14 +810,14 @@
           "pct": 65.2
         },
         "musicals": {
-          "n": 15,
+          "n": 14,
           "hits": 4,
-          "pct": 26.7
+          "pct": 28.6
         },
         "all": {
-          "n": 38,
+          "n": 37,
           "hits": 19,
-          "pct": 50
+          "pct": 51.4
         }
       },
       "celebrity": {
@@ -827,14 +827,14 @@
           "pct": 69.6
         },
         "musicals": {
-          "n": 15,
+          "n": 14,
           "hits": 5,
-          "pct": 33.3
+          "pct": 35.7
         },
         "all": {
-          "n": 38,
+          "n": 37,
           "hits": 21,
-          "pct": 55.3
+          "pct": 56.8
         }
       }
     },
@@ -1029,46 +1029,46 @@
     "openingWindowWeeks": 16,
     "play": {
       "star": {
-        "n": 116,
-        "grossN": 114,
-        "medianGrossIndex": 0.65,
-        "medianCapacity": 82.5,
-        "medianAtp": 97.5,
+        "n": 113,
+        "grossN": 113,
+        "medianGrossIndex": 0.66,
+        "medianCapacity": 82.6,
+        "medianAtp": 98,
         "medianWeeks": 16,
-        "decidedN": 81,
-        "recoupPct": 35.8
+        "decidedN": 93,
+        "recoupPct": 33.3
       },
       "noStar": {
-        "n": 38,
-        "grossN": 37,
+        "n": 37,
+        "grossN": 36,
         "medianGrossIndex": 0.44,
-        "medianCapacity": 79.8,
-        "medianAtp": 74,
+        "medianCapacity": 80.3,
+        "medianAtp": 75,
         "medianWeeks": 16,
-        "decidedN": 30,
-        "recoupPct": 30
+        "decidedN": 32,
+        "recoupPct": 28.1
       }
     },
     "musical": {
       "star": {
-        "n": 40,
-        "grossN": 40,
+        "n": 38,
+        "grossN": 38,
         "medianGrossIndex": 0.89,
-        "medianCapacity": 90.65,
+        "medianCapacity": 89.4,
         "medianAtp": 106,
-        "medianWeeks": 22.5,
+        "medianWeeks": 21.5,
         "decidedN": 34,
         "recoupPct": 20.6
       },
       "noStar": {
-        "n": 110,
-        "grossN": 109,
+        "n": 109,
+        "grossN": 108,
         "medianGrossIndex": 0.95,
-        "medianCapacity": 87.5,
+        "medianCapacity": 87.45,
         "medianAtp": 101,
-        "medianWeeks": 39,
-        "decidedN": 93,
-        "recoupPct": 18.3
+        "medianWeeks": 38.5,
+        "decidedN": 95,
+        "recoupPct": 18.9
       }
     }
   },
@@ -15864,39 +15864,6 @@
       ],
       "screenStar": false,
       "celebrity": true
-    },
-    {
-      "id": "six-2021",
-      "slug": "six",
-      "title": "SIX",
-      "type": "musical",
-      "season": "2021-2022",
-      "openingDate": "2021-10-03",
-      "isRevival": false,
-      "headliners": [
-        {
-          "name": "Adrianna Hicks",
-          "fame": "none",
-          "knownFor": "SIX (Catherine of Aragon)"
-        },
-        {
-          "name": "Andrea Macasaet",
-          "fame": "none",
-          "knownFor": "SIX (Anne Boleyn)"
-        },
-        {
-          "name": "Abby Mueller",
-          "fame": "none",
-          "knownFor": "Beautiful national tour"
-        },
-        {
-          "name": "Brittney Mack",
-          "fame": "none",
-          "knownFor": "SIX (Anna of Cleves)"
-        }
-      ],
-      "screenStar": false,
-      "celebrity": false
     },
     {
       "id": "lackawanna-blues-2021",

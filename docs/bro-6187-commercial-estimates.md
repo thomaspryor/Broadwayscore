@@ -1,123 +1,140 @@
 # BRO-6187 commercial estimate follow-up
 
-Verified against the supplied core-data snapshot on 2026-10-26.
+Rechecked against the supplied real data on 2026-10-28. The runtime fixes and
+John Proctor lock have already landed. This follow-up refreshes the derived
+stunt-casting dataset and supplies a field-fix plan for the remaining strict
+validation error. No runtime code or private source files were changed.
 
-## Drift sizing and its writer
+## Already implemented on main
 
-`scripts/merge-model-recoupment.js` writes the model fields and calls
-`planModelLossResizes()` after its model run. That planner previously handled
-loss labels only and deliberately stopped at 100%. It now also sizes unlocked
-`model-estimate` tiers across 100% and 150%, using the existing canonical
-`estimatedDesignationForClosed()`. Reported recoupments, human locks, special
-classes, the guessed-input exclusion and the three-move circuit breaker remain
-authoritative. Contradiction flags are calculated after resizing, against the
-final designation. No recouped flag or source is changed by sizing.
+`merge-model-recoupment.js:192` calls `planModelLossResizes()` after writing
+model figures. The planner handles unlocked model estimates across 30%, 100%
+and 150%, preserving reported outcomes, human locks, special classes, guessed
+input exclusions and the three-move circuit breaker. Existing cron workflows
+`commercial-weekly.yml`, `commercial-friday.yml` and
+`commercial-stale-closures.yml` invoke that writer.
 
-The new regression file initially printed **5 pass, 7 fail**. The final affected
-test run printed **245 pass, 0 fail** across 16 files, including the existing
-TypeScript-dependent tests run with `--import tsx`.
+The real model dry-run covered **476 records**: 342 weekly models, 8 lifetime
+models and 126 estimate passthroughs. Before and after this follow-up its output
+was identical: **0 designation resizes**, 4 contradiction flags. The stored
+planner check also found 0 moves across 373 writer-eligible records. No drift
+backfill is needed. The existing drift regression tests pass 13/13.
 
-Real-data comparison using the main version and changed version of the planner:
-332 writer-eligible commercial records, **0 moves before, 0 moves after**. The
-full real model dry-run covered 433 records and likewise printed **0 designations
-re-sized**, with 4 contradiction flags. This snapshot needs no automatic drift
-backfill. The Crucible's stored Flop at 43.6% remains excluded because its
-capitalization input is a comparable, which the existing writer guard forbids
-using to resize a public label.
+`getRecentClosings()` at `src/lib/data-commercial.ts:817` has no 183-day gate.
+Its existing caller in `src/lib/biz-developments.ts` uses 3 months for the short
+list and 24 months for the full list, with the designation basis passed to
+`lossOutcomePhrase()`. Running the real function with `node --import tsx`
+returned four closures aged **38, 73, 80 and 81 days**. Titanique (Flop) and
+Ragtime (Fizzle) both render "closed with no recoupment announced"; Death of a
+Salesman (Windfall) renders "closed". All are model estimates.
 
-Controlled drift replays changed only the model range on real record copies:
+Main check: `git log -S 'BRO-6187' --oneline -5 --
+scripts/lib/commercial-designations.js` finds the available history boundary
+`b6ad9230`; `git log -S '183' --oneline -5 -- src/lib/data-commercial.ts` is
+empty. No runtime fix was repeated. The validator and relevant review guards
+have no diff between HEAD and origin/main; the validator blob is
+`c773afd6e32caf55169db38213e488650f1b5c51` on both.
 
-| Record | Replayed middle | Main planner | Changed planner |
-| --- | ---: | --- | --- |
-| macbeth-2022 | 90% | Keeps Trickle | Fizzle |
-| death-of-a-salesman | 140% | Keeps Windfall | Trickle |
-| a-dolls-house-2023 | 20% | Keeps Trickle | Keeps Trickle, human lock |
+## Closed-show stunt casting
 
-The third lock was explicitly added in applied plan `bro-6245-b.json` and must
-survive this change.
+Initial `node scripts/build-stunt-casting-dataset.js --check` failed:
+**754 study shows, 1 unclassified, dataset STALE**. The existing selector already
+includes closed shows; no selector change or paid classification is needed.
+Rebuilding with `--no-classify` refreshed the aggregates from current commercial
+and grosses data. The next `--check` passes: **754 study shows, 1 unclassified,
+dataset current**. All **729 closed study shows** retain classifications.
 
-## Recent closings and stunt casting
+Examples: John Proctor retains Sadie Sink as screen and Gabriel Ebert as stage;
+Macbeth retains Daniel Craig and Ruth Negga as screen; Evita retains Ricky
+Martin as music, Elena Roger and Michael Cerveris as stage. No headliner cache
+entry was changed. The only changed public production row is the running
+`six-2021`, omitted by the existing builder because its input hash is stale.
+The builder tolerates this 1/754 coverage gap; refreshing that running show's
+classifier cache would require a prohibited nested model run and is outside
+the closed-show requirement.
 
-`getRecentClosings()` on origin/main already contains no 183-day gate.
-`git log -S '183' --oneline -5 -- src/lib/data-commercial.ts` returns no commits.
-Its existing `/biz` caller requests the past three months and passes each
-designation's basis to `lossOutcomePhrase()`. The real function returns four
-closures, aged 36, 71, 78 and 79 days. For example, Titanique is Flop with
-`model-estimate` basis and renders "closed with no recoupment announced";
-Ragtime is Fizzle with the same basis and phrase. No TypeScript change is needed.
+The four comparison groups' decided counts change **81 to 93**, **30 to 32**,
+**34 to 34**, and **93 to 95**. Public rows contain neither designation nor
+outcome. `src/app/biz/stunt-casting/page.tsx:58` reads this generated dataset.
 
-The stunt-casting selector already includes closed productions. The cache
-classifies all **754** study shows, including **729 closed shows**. Examples
-include John Proctor, Macbeth and Evita. An existing selector test now explicitly
-covers a closed production. The derived dataset was stale, so it was rebuilt
-with `--no-classify`; no new headliner classifications were purchased. The four
-commercial comparison groups' decided counts changed 45 to 81, 16 to 30,
-24 to 34 and 66 to 93, reflecting current commercial designations. The final
-`--check` prints **754 study shows, 0 unclassified, dataset current**.
+## DNR keepers and the 39 original locks
 
-## DNR keepers and the 39 locks
+The original 117-entry cohort is 115 conversions in applied plans
+`bro-6158-r01.json` through `bro-6158-r10.json`, plus two DNR keepers. All ten
+plans record successful execution. There are **38 locked conversions**, plus
+Evita's original lock, accounting for **39 original locks**. All 38 conversions
+still have their locks, model-estimate basis and recouped:false. Of these, 37
+retain the exact planned tier; Lightning Thief's later Flop-to-Fizzle change is
+explicitly authorized by applied plan `bro-6282-d.json`, after capitalization
+was corrected. It is preserved. Locked examples still matching their original
+Flop tier are The Lyons, Torch Song and The Great Society.
 
-The card's 117-record cohort consists of **115 conversions** in applied plans
-`bro-6158-r01.json` through `bro-6158-r10.json`, plus the two DNR keepers. There
-are **38 locked conversions**, all matching their explicitly planned tier,
-all still `model-estimate`, all still `recouped: false`. Every plan records
-successful execution. The 39th original lock is Evita, which was kept as DNR,
-rather than converted. The counts therefore account for all 117 entries and
-39 original locks. No existing lock is cleared or overridden here. Examples of
-locked conversions are The Lyons, Torch Song and The Great Society.
+John Proctor and Evita both retain **Did Not Recoup**, **reported-loss**,
+**recouped:false** and **humanReviewedDesignation:true**, with no analyst or
+outside loss percentage. Their current model middle figures are 118.5% and
+161.1%. Plan `bro-6187.json` is already applied, executed 2026-10-26T04:52:22Z;
+no further lock plan is needed.
 
-John Proctor and Evita both retain `Did Not Recoup`, `reported-loss` and
-`recouped: false`, without adding a loss percentage. Their current model middle
-figures are **118.5%** and **161.1%**, respectively, rather than the older figures
-in the card. Evita already has its human lock. Pending plan `bro-6187.json` adds
-John Proctor's missing lock. Replay through the real `applyDataEdit()` changed
-**one record**, only its lock and the executor's `lastUpdated` stamp. Its source,
-designation, basis and reported outcome were preserved; Evita was unchanged.
-Preflight prints **bro-6187: 1/1 applied cleanly**.
+## Remaining validation error and source repair
 
-The pending plan still requires execution against the private core-data repo.
-The worker does not dispatch workflows or write that repo.
+`node scripts/validate-data.js --strict` failed with **one existing error**:
+`art-west-end-2016/artshub--gina-fairley.json`, dated 326 days before the
+production. Commercial data passes for all **476 records**. The earlier
+Therese Raquin cross-market error no longer occurs.
+
+Reading the stored Art article confirms it discusses Singapore museums,
+visual-art fairs and cultural policy, rather than the Old Vic play. The bad
+clear was written by `reverify-nulled-cv-promoted.js:266-287`; the record's
+script-made clear timestamps identify that recovery. The correction targets
+the source review record, leaving the validator unchanged.
+
+New plan `data/pending-fixes/bro-6187-2.json` sets a manual non-review reason,
+then isNonReview:true, using the existing review-field executor. Preflight
+prints **2/2 applied cleanly**. Replaying through the real
+`executeReviewFieldEditIn()` on a temporary copy changes **one record** from
+includable to excluded, with reason **nonReview**. Its text and date are
+unchanged. The source review-texts clone is never written.
+
+Full strict validation with that executor-produced copy substituted for just
+the Art file passes with exit 0. The command was
+`node --require ./tmp/bro-6187-verification/review-overlay.cjs
+scripts/validate-data.js --strict`. The temporary preload only redirects that
+one file read; every other record and all validation logic remain real. The
+unmodified snapshot still needs plan execution before plain strict validation
+can pass. Temporary copies and the preload were removed after verification.
+
+The generator wrote and preflighted the plan, but its automatic staging step
+failed because the worktree git index is read-only. A narrow `.gitignore`
+exception makes the plan visible to the runner without staging it.
 
 ## Verification and cost
 
-Commands run:
+Commands run in this follow-up:
 
 ```sh
 node scripts/validate-data.js --strict
 node scripts/merge-model-recoupment.js --dry-run
 node scripts/build-stunt-casting-dataset.js --check
 node scripts/build-stunt-casting-dataset.js --no-classify
-node scripts/lib/preflight-review-fix-plan.js data/pending-fixes/bro-6187.json
+REVIEW_TEXTS_DIR="$PWD/data/review-texts" node scripts/lib/preflight-review-fix-plan.js data/pending-fixes/bro-6187-2.json
 node --test --test-timeout 300000 tests/unit/commercial-estimate-drift.test.mjs scripts/lib/stunt-casting.test.mjs
-rg -l 'commercial-designations|merge-model-recoupment' tests scripts --glob '*.test.*' > /tmp/bro6187-affected-tests.txt
-node --import tsx --test --test-timeout 300000 $(cat /tmp/bro6187-affected-tests.txt) scripts/lib/stunt-casting.test.mjs
-node --test --test-timeout 300000 tests/unit/audit-log-gitignore.test.mjs
+node --import tsx --test --test-timeout 300000 tests/unit/biz-header-hero-style.test.mjs tests/unit/biz-share-preview.test.ts tests/unit/audit-log-gitignore.test.mjs
 GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet
+GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh tmp/bro-6187-gauntlet
 git diff --check
 ```
 
-The two touched test files pass **25/25**. All 16 affected files also pass
-**245/245** with `node --import tsx --test --test-timeout 300000`, using the
-files found by `rg -l 'commercial-designations|merge-model-recoupment' tests
-scripts --glob '*.test.*'` plus `scripts/lib/stunt-casting.test.mjs`. An initial
-plain-node run of the TypeScript-dependent existing `model-input-basis` test
-failed resolving `@/config`; its documented tsx runner passes. Workflow gauntlet
-gate exit is **0**; unavailable actionlint is the permitted environment warning.
-The gitignore tests pass **11/11**, covering the plan and report inclusion edits.
-No TypeScript or review-scoring logic was edited.
+Targeted tests pass **25/25** and **17/17**. No test files, TypeScript, UI code,
+review-scoring logic or workflows were edited. Plan application remains the
+runner's responsibility after landing. The existing approved-fix executor at
+`scripts/execute-approved-fix.js:554` calls `executeReviewFieldEditIn()`.
 
-Strict validation fails identically before and after, with **two existing
-review-data errors**, while reporting **Commercial data valid for 433 shows**:
+The first workflow audit printed all gates green, but `/tmp/gauntlet`
+disappeared before the harness saved its exit and metadata files. The gate was
+repeated in a task-specific directory to preserve its result. Missing
+actionlint is the permitted environment warning. The repeat printed
+**lint-workflows: all gates green**, saved **lint-workflows=0**, and exited 0.
+The full log was read before removing the temporary directory.
 
-1. `therese-raquin-2015`: BritishTheatre.com cross-market review.
-2. `art-west-end-2016/artshub--gina-fairley.json`: review dated 2016-01-29,
-   326 days before the production's earliest date.
-
-Those private review-text records require a separate verified correction; the
-worker was explicitly instructed never to write the supplied review-texts clone.
-
-Wiring: `commercial-weekly.yml`, `commercial-friday.yml`,
-`commercial-stale-closures.yml` and other existing callers invoke the model
-writer. The pending plan uses the existing approved-fix executor. The existing
-stunt-casting builder writes the checked-in research dataset. **Zero new paid
-fetches, LLM calls or API calls per run**, including the existing cron callers.
+**Zero new paid fetches, LLM calls or API calls per run**, including existing
+cron callers. The dataset rebuild used only cached classifications.
