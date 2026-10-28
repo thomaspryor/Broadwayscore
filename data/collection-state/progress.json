@@ -30,12 +30,28 @@
     "a-christmas-carol-west-end-2015/thereviewshub--unknown.json",
     "a-christmas-carol-west-end-2015/north-west-end--unknown.json",
     "a-christmas-carol-west-end-2015/standard--unknown.json",
-    "lovesong-of-the-electric-bear-west-end-2015/londontheatre1--unknown.json"
+    "lovesong-of-the-electric-bear-west-end-2015/londontheatre1--unknown.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json"
   ],
   "failed": [
     "the-flick-west-end-2016/thestage--unknown.json",
     "a-christmas-carol-west-end-2015/thestage--unknown.json",
-    "ushers-west-end-2015/a-younger-theatre--unknown.json"
+    "ushers-west-end-2015/a-younger-theatre--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -60,16 +76,27 @@
       "lovesong-of-the-electric-bear-west-end-2015/londontheatre1--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
+    ],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [
       "a-christmas-carol-west-end-2015/variety--unknown.json"
     ],
     "archiveToday": [
       "data/review-texts/a-christmas-carol-west-end-2015/thestage--unknown.json",
-      "data/review-texts/ushers-west-end-2015/a-younger-theatre--unknown.json"
+      "data/review-texts/ushers-west-end-2015/a-younger-theatre--unknown.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
     ],
     "archive": [
       "aladdin-west-end-2016/independent--paul-taylor.json",
@@ -82,10 +109,29 @@
       "the-flick-west-end-2016/standard--unknown.json",
       "the-war-of-the-worlds-west-end-2016/nytimes--unknown.json",
       "the-war-of-the-worlds-west-end-2016/london-box-office--davor-golub.json",
-      "a-christmas-carol-west-end-2015/standard--unknown.json"
+      "a-christmas-carol-west-end-2015/standard--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-28T09:58:41.079Z",
-  "lastProcessed": "ushers-west-end-2015/a-younger-theatre--unknown.json",
-  "log": []
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
+  "log": [
+    {
+      "t": "2026-10-28T10:45:02.439Z",
+      "event": "bb-session",
+      "session": "318c3b12",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T10:45:02.770Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T10:49:17.105Z",
+      "event": "bb-session",
+      "session": "65459933",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    }
+  ]
 }
