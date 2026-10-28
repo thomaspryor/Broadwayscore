@@ -162,6 +162,8 @@ Gaps go through `ingest-urls.yml`, one run per show, which scores new files with
 
 - Pilot, 5 shows, 22 URLs: 16 targeted files landed, 13 complete and scored. Two were excluded by existing guards (a NYTG ticket page, a NYT audio-play review). Cost: 36 ScrapingDog credits plus scoring, well under $1.
 - Batch 2: the 28 shows with a T1 gap, vetted by hand first. Vetting found census false positives (below), so 25 shows and 96 URLs went in.
+  All 25 ingest runs concluded success (four had an ambiguous waiter, exit 2, and were confirmed by run id). Spot checks on CI: Kimberly Akimbo now holds TheWrap, NYTG, TheaterMania and Vulture, complete and scored; Henry IV holds Vulture and NYT, scored. Cost: 195 ScrapingDog credits (a few cents) and about $0.22 of Gemini scoring.
+- Titanique 2026: the TheWrap file held the 2022 off-Broadway review. Plan bro-6481-4 deleted it and a reingest added the 2026 review, which the anticipatory-post guard flagged because its publishDate came back null. Plan bro-6481-5 sets the page's datePublished (2026-04-13, the day after opening), clears the flag, and deletes a 0-char leftover of the 2022 URL.
 - Remaining gaps (about 570, mostly T3) are left for a re-run of the census with the fixed matcher, then a vetted batch. Total BRO-6481 spend stays under the $20 cap.
 
 ### Matcher false positives found while vetting (fixed)
