@@ -354,6 +354,22 @@ jobs:
         with:
           workflow-name: enrich-reviews
 
+      # BRO-6342: replay-pending-bylines.js (--all-open / --all-pending drains) calls
+      # routeAlert/resolveCondition, which write these CI-tracked alert files. Only
+      # the private review-texts and core-data repos were pushed, so a
+      # pending-unrecoverable raise/resolve died with the runner. push-with-retry.sh
+      # reconciles these files against concurrent writers.
+      - name: Commit alert ledger
+        if: always()
+        continue-on-error: true
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/breaker-transitions.jsonl
+          git diff --cached --quiet && { echo "No alert ledger changes"; exit 0; }
+          git commit -m "audit: enrich-reviews alert ledger update [skip ci]"
+          bash scripts/lib/push-with-retry.sh 5 main
+
       # We do NOT trigger a deploy here. Flag changes don't surface on the public
       # site until the next rebuild reads them and regenerates reviews.json. The
       # 4 AM UTC scheduled rebuild + the auto-trigger from collect-review-texts
