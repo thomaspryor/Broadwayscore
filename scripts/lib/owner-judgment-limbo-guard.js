@@ -72,7 +72,7 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
 // A card is in limbo when it waits on a person but nothing tells the person: a bare marker line, or a park
 // reason saying "owner review", with no DECISION NEEDED question (the only text the owner emailer reads).
 const MARKER_LINE_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?VERIFY:\s*owner-judgment/im;
-const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bfor\s+(?:the\s+)?owner\b/i;
+const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bfor\s+(?:the\s+)?owner(?![-\w])/i;
 
 function createLimboReason({ body, parkReason } = {}) {
   const text = String(body || '');
