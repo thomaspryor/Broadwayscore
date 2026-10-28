@@ -401,6 +401,19 @@ function evaluateVerifyRun(runResult, cmd) {
 }
 
 /**
+ * Should the runner spend history lookups asking whether this card is
+ * mis-armed? Exactly when classifyCard can use the answer: a Done card whose
+ * check reads BROKEN. Defined through evaluateVerifyRun on purpose (BRO-6475):
+ * the runner used to gate on `runResult.status === 'fail'`, but since BRO-3446
+ * a missing path arrives as `unverifiable` + `missingPath` (never 'fail'), so
+ * the mis-armed verdict was unreachable and cards whose check names a file that
+ * never existed (BRO-6291, BRO-6253) were reported FAILED.
+ */
+function shouldAdjudicateMisArmed(cardState, runResult, cmd) {
+  return cardState === DONE_STATE && !!runResult && evaluateVerifyRun(runResult, cmd).state === EVIDENCE.BROKEN;
+}
+
+/**
  * Combine the two evidence channels into one verdict for one card.
  *
  * A card can carry a PR-EVIDENCE line, an acceptance command, both, or
@@ -855,6 +868,7 @@ module.exports = {
   nextSlowSince,
   SLOW_DEMOTION_MAX_DAYS,
   evaluateVerifyRun,
+  shouldAdjudicateMisArmed,
   combineEvidence,
   classifyCard,
   summarize,

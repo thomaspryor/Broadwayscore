@@ -61,7 +61,7 @@ const {
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { fetchDoneEvidenceCandidates, selectCandidates, DONE_WINDOW_DAYS } = require('./lib/done-evidence-source.js');
 const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted, resolvePathRename } = require('./lib/done-evidence-remote.js');
-const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, VERDICTS,
+const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, shouldAdjudicateMisArmed, VERDICTS,
   isTimeoutResult, rotationOffset, priorSlowIds, demoteSlowChecks, nextSlowIds,
   nextSlowSince } = require('./lib/done-evidence-audit.js');
 // extractCheckPaths, NOT card-premises-auditor's extractCheckFilePaths. The
@@ -391,12 +391,16 @@ async function main(argv = process.argv.slice(2)) {
         notRun++;
       }
 
-      // Only for a Done card whose check actually FAILED: is the path it names
-      // one that has never existed at all (a wrong acceptance criterion), as
-      // opposed to one that was deleted or renamed? One history call per
-      // missing path, plus up to ten calls to confirm a rename and destination continuity.
+      // Only for a Done card whose check reads BROKEN (a failure, or a path
+      // missing from main): is the path it names one that has never existed at
+      // all (a wrong acceptance criterion), as opposed to one that was deleted
+      // or renamed? One history call per missing path, plus up to ten calls to
+      // confirm a rename and destination continuity.
       let misArmed = null;
-      if (card.state === 'Done' && runResult && runResult.status === 'fail') {
+      // Re-checks the clock: a missing path used to cost nothing, and these
+      // lookups (up to 11 GitHub calls per absent path) must not run past the
+      // budget. Skipping leaves misArmed null, i.e. the old FAILED verdict.
+      if (shouldAdjudicateMisArmed(card.state, runResult, cmd) && Date.now() <= deadline - MIN_REMAINING_MS_TO_START) {
         // Resolve the facts; adjudicateMisArmed (pure, tested) applies the rule.
         // Only CONFIRMED-absent paths cost a history lookup — one per absent
         // path, so a four-file `node --test` naming four missing files costs

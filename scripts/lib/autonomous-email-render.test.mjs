@@ -1084,6 +1084,22 @@ test('renderAutofixBlock: "Cron failed:" and "Workflow repeat-failure:" for the 
   assert.match(out, /×2/, 'must show the ×2 dup count so the owner knows two checks fired on this one issue');
 });
 
+test('renderAutofixBlock: folded land branches are counted as branches (BRO-6475)', () => {
+  const rows = [{
+    name: 'Landing blocked: unit-tests-node red on land/bro-1-a',
+    title: 'BSC Daily: Landing blocked: unit-tests-node red',
+    state: 'queued',
+    affectedNoun: 'branches',
+    affected: [
+      { name: 'Landing blocked: unit-tests-node red on land/bro-1-a', message: 'a', conditionKey: 'land:land/bro-1-a' },
+      { name: 'Landing blocked: unit-tests-node red on land/bro-2-b', message: 'b', conditionKey: 'land:land/bro-2-b' },
+    ],
+  }];
+  const out = renderAutofixBlock(rows);
+  assert.match(out, /\(2 branches\)/);
+  assert.doesNotMatch(out, /shows\)/);
+});
+
 test('renderAutofixBlock: a BRO-3427 folded row shows the condition + fold count, not one arbitrary show', () => {
   const rows = [{
     name: "Stale 'upcoming' tag on Show A",

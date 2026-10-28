@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved, readJsonlLedger, splitOnShowSuffix, MAX_FOLD_PER_CONDITION } = require('./digest-autofix.js');
+const { planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP, familyDisplayName, rowFamilyKey, reconcileDigestOutcomes, isDispatchResolved, readJsonlLedger, splitOnShowSuffix, MAX_FOLD_PER_CONDITION, affectedNoun } = require('./digest-autofix.js');
 const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
 const { extractVerifyCmd } = require('./autonomous-verify-cmd.js');
 const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
@@ -207,6 +207,47 @@ test('planAutofix: two "<condition> on <show>" rows for the SAME condition colla
     { name: "Stale 'upcoming' tag on Show A", message: 'a is stale' },
     { name: "Stale 'upcoming' tag on Show B", message: 'b is stale' },
   ]);
+});
+
+test('BRO-6475: folded land.yml alerts are branches, not shows, in the plan row and the card body', () => {
+  const { buildLandAlert } = require('./land-alert.js');
+  const queued = ['land/bro-1-a', 'land/bro-2-b'].map((b) => {
+    const a = buildLandAlert({ gate: 'unit-tests-node', branch: b, runUrl: 'https://example.invalid/run' });
+    return { conditionKey: a.conditionKey, title: a.title, description: a.description || a.title };
+  });
+  const plan = planAutofix({ health: {}, tasks: [], queued });
+  assert.equal(plan.length, 1);
+  assert.equal(plan[0].affected.length, 2);
+  assert.equal(plan[0].affectedNoun, 'branches');
+  const notes = buildCardNotes(plan[0]);
+  assert.match(notes, /on 2 land branches:/);
+  assert.doesNotMatch(notes, /on 2 shows/);
+  assert.doesNotMatch(notes, /grep scripts\/health-check\.js/);
+  assert.match(notes, /any branch below is still flagged/);
+});
+
+test('BRO-6475: a single red land branch gets the land.yml card body, not the health-check one', () => {
+  const { buildLandAlert } = require('./land-alert.js');
+  const a = buildLandAlert({ gate: 'rebase', branch: 'land/bro-9-z' });
+  const plan = planAutofix({ health: {}, tasks: [], queued: [{ conditionKey: a.conditionKey, title: a.title, description: a.description }] });
+  assert.equal(plan[0].affectedNoun, 'branches');
+  const notes = buildCardNotes(plan[0]);
+  assert.match(notes, /land\.yml's landing alert/);
+  assert.doesNotMatch(notes, /grep scripts\/health-check\.js/);
+  assert.match(notes, /check-alert-condition-absent/);
+});
+
+test('BRO-6475: show folds keep "shows", including titles with a slash', () => {
+  const health = { warns: [
+    { name: 'Placeholder synopsis on Frost/Nixon', message: 'x' },
+    { name: 'Placeholder synopsis on If/Then', message: 'y' },
+  ] };
+  const plan = planAutofix({ health, tasks: [] });
+  assert.equal(plan[0].affectedNoun, 'shows');
+  assert.match(buildCardNotes(plan[0]), /on 2 shows:/);
+  // A mixed fold is never called branches.
+  assert.equal(affectedNoun([{ conditionKey: 'land:land/x' }, { name: 'y' }]), 'shows');
+  assert.equal(affectedNoun([]), 'shows');
 });
 
 test('planAutofix: the raw per-show name (both rows) still reaches buildCardNotes via `affected`', () => {

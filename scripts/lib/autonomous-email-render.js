@@ -419,7 +419,7 @@ function renderAutofixBlock(autofixRows, loopDeadMessage = null) {
     // standing in for all of them.
     const foldedCount = Array.isArray(r.affected) && r.affected.length > 1 ? r.affected.length : 0;
     const displayName = foldedCount
-      ? `${plainHealthLine(r.title && r.title.startsWith(BSC_DAILY_TITLE_PREFIX) ? r.title.slice(BSC_DAILY_TITLE_PREFIX.length) : r.name)} (${foldedCount} shows)`
+      ? `${plainHealthLine(r.title && r.title.startsWith(BSC_DAILY_TITLE_PREFIX) ? r.title.slice(BSC_DAILY_TITLE_PREFIX.length) : r.name)} (${foldedCount} ${r.affectedNoun || 'shows'})`
       : plainHealthLine(r.name);
     return `<div style="margin:0 0 6px;">
       <div style="font-size:13px;color:#333;">${icon} ${esc(displayName)}${r.dupCount ? ` (\u00d7${r.dupCount})` : ''}${ref}</div>

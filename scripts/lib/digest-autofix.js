@@ -596,6 +596,7 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
     openAnchor.set(key, { row, batch, anchorModel: r.model || null });
     planRows.push(row);
   }
+  for (const row of planRows) if (Array.isArray(row.affected)) row.affectedNoun = affectedNoun(row.affected);
   return planRows;
 }
 
@@ -618,6 +619,18 @@ function planAutofix({ health, extraIssues = [], tasks = [], today, queued } = {
 // command instead of the prose that got every one of its cards refused at
 // dispatch. See that module's header for the incident.
 const { rowAbsentCheckCmd, alertAbsentCheckCmd, sanitizeRowText } = require('./health-row-check-cmd.js');
+const { CONDITION_PREFIX: LAND_CONDITION_PREFIX } = require('./land-alert.js');
+
+// BRO-6475: what a folded row's affected items are. The "<condition> on <X>"
+// fold is shape-based, so land.yml's "Landing blocked: <gate> red on <land ref>"
+// rows fold too, and the digest called the refs "shows". Decided from the
+// producer's own conditionKey prefix, not from how the names look (show titles
+// such as "Frost/Nixon" contain a slash).
+function affectedNoun(affected) {
+  const list = Array.isArray(affected) ? affected : [];
+  return list.length && list.every((a) => String((a && a.conditionKey) || '').startsWith(LAND_CONDITION_PREFIX))
+    ? 'branches' : 'shows';
+}
 
 // Card notes must pass notion-brain's card-quality gate for "Not started"
 // cards: ## Problem + ## Suggested approach + ## Acceptance criteria sections
@@ -645,15 +658,23 @@ function buildCardNotes(row) {
   const message = sanitizeRowText(row.message);
 
   if (!affected) {
+    // BRO-6475: a single red land branch folds to a one-item row too.
+    const landing = Array.isArray(row.affected) && affectedNoun(row.affected) === 'branches';
     return [
       '## Problem',
-      `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${name}": ${message || '(no detail message — reproduce locally for specifics)'}`,
+      landing
+        ? `land.yml's landing alert (\`scripts/lib/land-alert.js\`) reports "${name}": ${message || '(no detail message)'}`
+        : `The daily health check (\`node scripts/health-check.js\`) reports an issue named "${name}": ${message || '(no detail message — reproduce locally for specifics)'}`,
       '',
       '## Evidence',
-      `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
+      landing
+        ? `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask) from land.yml's alert; the message above is the alert's own text.`
+        : `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask). The row appeared in today's health-check errors/warnings; the message above is the check's own output.`,
       '',
       '## Suggested approach',
-      `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
+      landing
+        ? `Read the branch's latest land.yml run for the failing gate, fix the cause on the branch (or on main if main itself is red), and push the same ref so land.yml retries. Fix the root cause (not the gate), and include prevention per CLAUDE.md.`
+        : `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js for the check that emits "${row.name}" to find the underlying data source or workflow. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
       '',
       '## Acceptance criteria',
       // The backticked command is the machine-checkable proof bsc-next's verify
@@ -669,19 +690,25 @@ function buildCardNotes(row) {
   }
 
   const condition = sanitizeRowText(row.title.startsWith(BSC_DAILY_TITLE_PREFIX) ? row.title.slice(BSC_DAILY_TITLE_PREFIX.length) : row.title);
+  const noun = affectedNoun(affected);
+  const landing = noun === 'branches';
   return [
     '## Problem',
-    `The daily health check (\`node scripts/health-check.js\`) reports "${condition}" on ${affected.length} shows:`,
+    landing
+      ? `land.yml's landing alert (\`scripts/lib/land-alert.js\`) reports "${condition}" on ${affected.length} land branches:`
+      : `The daily health check (\`node scripts/health-check.js\`) reports "${condition}" on ${affected.length} shows:`,
     ...affected.map(a => `- ${sanitizeRowText(a.name)}: ${sanitizeRowText(a.message) || '(no detail message)'}`),
     '',
     '## Evidence',
     `Auto-filed by the morning digest (Digest v3, owner mandate 2026-08-02: fix automatically, never ask; BRO-3427 row-family fold). These ${affected.length} rows shared one condition and were folded onto this ONE card instead of ${affected.length} near-duplicate cards.`,
     '',
     '## Suggested approach',
-    `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js (or scripts/lib/opening-night-checks/) for the check that emits "${condition}" to find the underlying data source or workflow. Several of these checks self-document a BULK remediation command (one run, no --show=, fixes every affected show) in their message above — prefer that over fixing one show at a time. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
+    landing
+      ? `Each branch above is a land/ ref whose land.yml gate is red. Read that ref's latest land.yml run for the failing gate, fix the cause on the branch (or on main if main itself is red), and push the same ref so land.yml retries. Fix the root cause (not the gate), and include prevention per CLAUDE.md.`
+      : `Run \`node scripts/health-check.js\` to reproduce, then grep scripts/health-check.js (or scripts/lib/opening-night-checks/) for the check that emits "${condition}" to find the underlying data source or workflow. Several of these checks self-document a BULK remediation command (one run, no --show=, fixes every affected show) in their message above — prefer that over fixing one show at a time. Fix the root cause (not the check), and include prevention per CLAUDE.md.`,
     '',
     '## Acceptance criteria',
-    `ALL of the following must pass — this card is NOT done while any show below is still flagged (only the first line is auto-verified by the dispatch gate; confirm the rest by hand or via --live before closing):`,
+    `ALL of the following must pass — this card is NOT done while any ${landing ? 'branch' : 'show'} below is still flagged (only the first line is auto-verified by the dispatch gate; confirm the rest by hand or via --live before closing):`,
     // BRO-5486: a queued per-show row's name carries a count ("missing 3"), so a
     // drop to 2 would make a name-based check pass falsely; its conditionKey is
     // the stable identity (check-alert-condition-absent.js reads the ledger).
@@ -1566,5 +1593,5 @@ module.exports = {
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, reconcileAndAppendDigest, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
   persistenceKey, computePersistenceGate, markTrackedReportOnly, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, GATE_SLACK_HOURS, DIGEST_SEEN_PATH,
   fileCard, reattachedLiveState, startNowNotes, START_NOW_REFUSED_RE, isVisitorFacingRow, dispatchDetached, familyDisplayName, rowFamilyKey,
-  splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
+  splitOnShowSuffix, MAX_FOLD_PER_CONDITION, affectedNoun,
 };

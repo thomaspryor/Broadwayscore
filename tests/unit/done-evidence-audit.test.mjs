@@ -37,6 +37,7 @@ const {
   tidyDetail,
   scrubSandboxPaths,
   adjudicateMisArmed,
+  shouldAdjudicateMisArmed,
   MIS_ARMED,
 } = require('../../scripts/lib/done-evidence-audit.js');
 const {
@@ -214,6 +215,26 @@ test('BRO-3446: history says the path never existed -> misArmed absolves (phanto
     runResult: MISSING_PATH,
     misArmed: { path: 'tests/unit/feedback-formspree-status-check.test.mjs', kind: MIS_ARMED.NEVER_EXISTED, paths: ['tests/unit/feedback-formspree-status-check.test.mjs'] },
   });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.equal(r.misArmed, true);
+});
+
+test('BRO-6475: the runner asks the mis-armed question for a missing path, not only for a failed run', () => {
+  // The runner used to gate on status === 'fail'. A missing path arrives as
+  // unverifiable + missingPath (BRO-3446 intercepts it before running), so the
+  // history lookup never ran and never-existed paths were reported FAILED.
+  const cmd = 'node --test scripts/lib/land-mutex.test.js';
+  const missing = { status: 'unverifiable', missingPath: true, detail: 'acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-mutex.test.js' };
+  assert.equal(shouldAdjudicateMisArmed('Done', missing, cmd), true);
+  assert.equal(shouldAdjudicateMisArmed('Done', { status: 'fail', detail: 'x' }, cmd), true);
+  // Nothing to adjudicate: open cards, passes, plain environment unverifiables, no run.
+  assert.equal(shouldAdjudicateMisArmed('In Review', missing, cmd), false);
+  assert.equal(shouldAdjudicateMisArmed('Done', { status: 'pass', detail: null }, cmd), false);
+  assert.equal(shouldAdjudicateMisArmed('Done', { status: 'unverifiable', detail: 'no node_modules' }, cmd), false);
+  assert.equal(shouldAdjudicateMisArmed('Done', null, cmd), false);
+  // It answers exactly when classifyCard can use the answer.
+  const r = classifyCard({ card: doneCard(), cmd, runResult: missing,
+    misArmed: { path: 'scripts/lib/land-mutex.test.js', kind: MIS_ARMED.NEVER_EXISTED, paths: ['scripts/lib/land-mutex.test.js'] } });
   assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
   assert.equal(r.misArmed, true);
 });
