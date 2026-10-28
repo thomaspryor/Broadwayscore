@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T22:45:05.382Z",
+  "timestamp": "2026-10-28T22:58:12.107Z",
   "stats": {
-    "totalReviews": 65541,
-    "alreadyFlagged": 22031,
+    "totalReviews": 65558,
+    "alreadyFlagged": 22033,
     "dateGuardCatches": 234,
-    "directorMismatch": 2583,
-    "tvFilmSignals": 1830,
+    "directorMismatch": 2582,
+    "tvFilmSignals": 1834,
     "londonSignals": 3166,
     "offBroadwaySignals": 588,
     "yearMismatch": 236,
-    "noPublishDate": 5875
+    "noPublishDate": 5885
   },
   "findings": [
     {
@@ -15626,6 +15626,19 @@
       ]
     },
     {
+      "showId": "empire-the-musical-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-empire-musical-new-world-stages.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
       "file": "nyt-theater--jonathan-mandell.json",
       "score": 62,
@@ -30662,20 +30675,6 @@
     },
     {
       "showId": "long-days-journey-into-night-off-broadway-2022",
-      "file": "theater-scene--darryl-reilly.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "http://www.theaterscene.net/plays/long-days-journey-night/darryl-reilly/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jonathan kent\" from long-days-journey-into-night-2016"
-        }
-      ]
-    },
-    {
-      "showId": "long-days-journey-into-night-off-broadway-2022",
       "file": "vulture--helen-shaw.json",
       "score": 77,
       "publishDate": null,
@@ -41673,6 +41672,19 @@
       ]
     },
     {
+      "showId": "safe-house-off-broadway-2025",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-reviews-safe-house-the-barbarians-walsh-lieblich.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
       "showId": "safe-house-off-broadway-2026",
       "file": "stagebuddy--mack-muldofsky.json",
       "score": 78,
@@ -46936,6 +46948,19 @@
       ]
     },
     {
+      "showId": "teeth-playwrights-horizons-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-jackson-jacobs-teeth.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
+        }
+      ]
+    },
+    {
       "showId": "that-championship-season-2011",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 38,
@@ -47333,6 +47358,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hbo max\""
+        }
+      ]
+    },
+    {
+      "showId": "the-beautiful-land-i-seek-la-linda-tierra-que-busco-yo-off-broadway-2024",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-reviews-beautiful-land-i-seek-racecar-racecar-racecar.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 6\""
         }
       ]
     },
@@ -48347,6 +48385,7 @@
     {
       "showId": "the-chinese-lady-off-broadway-2022",
       "file": "vulture--helen-shaw.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://www.vulture.com/2022/03/theater-review-chinese-lady-public-theater-lloyd-suh.html",
       "findings": [
