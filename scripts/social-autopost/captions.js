@@ -3,8 +3,8 @@
  * from the site's data, and nothing can be invented.
  *
  * Limits (Buffer, developers.buffer.com/guides/character-limits): X free 280,
- * Bluesky 300, Threads 500, Instagram 2,196, Facebook 5,000. We budget the full
- * URL length, so X (which counts a URL as 23) and Bluesky are both safe.
+ * Bluesky 300, Threads 500, Instagram 2,196, Facebook 5,000. X counts each URL
+ * as 23 characters; other networks use the full URL length.
  */
 
 const { MARKETS } = require('./config');
@@ -141,7 +141,7 @@ function buildCaptions(p) {
   // Order: drop the lead-in, then shorten the title, then (only if nothing else is left) the question.
   const fitShort = (network) => {
     const url = showUrl(show, network);
-    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - url.length - 2;
+    const budget = Math.min(SHORT_BUDGET, LIMITS[network]) - (network === 'twitter' ? 23 : url.length) - 2;
     const body = (t, lead, ask) => `${sentence(t, lead)}${ask ? `\n\n${ask}` : ''}`;
     const t = firstFit(budget, [body(title, true, q.short), body(title, false, q.short),
       ...CLIPS.map(n => body(clipTitle(title, n), false, q.short)), body(clipTitle(title, 14), false, null)]);

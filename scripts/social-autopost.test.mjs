@@ -140,18 +140,29 @@ test('captions fit every network, carry the site numbers, link the right site, n
   const p = { show: show({ title: 'The Extraordinarily Long-Winded Musical Adventure of Somebody and Everybody Else', venue: 'Lunt-Fontanne Theatre' }), score: 86, tierId: 'must-see', tierLabel: 'Critical Gold', reviewCount: 38, breakdown: { rave: 25, positive: 11, mixed: 1, negative: 1 } };
   const c = buildCaptions(p);
   for (const net of Object.keys(LIMITS)) {
-    assert.ok(c[net].length <= LIMITS[net], `${net} ${c[net].length}`);
+    assert.ok(xLength(net, c[net]) <= LIMITS[net], `${net} ${xLength(net, c[net])}`);
     assert.ok(!c[net].includes('—'), `${net} em dash`);
     for (const m of postMarkers(p.show)) assert.ok(m.test(c[net]), `${net} lacks dedupe marker ${m}`);
   }
   for (const net of ['twitter', 'bluesky']) {
-    assert.ok(c[net].length <= 270);
+    assert.ok(xLength(net, c[net]) <= 270);
     assert.match(c[net], /has a Critic Score of 86 \(Critical Gold\) from 38 critics' reviews\./);
   }
   assert.match(c.facebook, /25 raves, 11 positive, 1 mixed, 1 negative/);
   assert.ok(!/https?:\/\//.test(c.instagram), 'Instagram captions cannot link');
   assert.match(showUrl(show({ category: 'west-end', slug: 'y' }), 'x'), /^https:\/\/westendscorecard\.com\/show\/y\?/);
   assert.match(showUrl(show({ category: 'off-broadway', slug: 'y' }), 'x'), /^https:\/\/broadwayscorecard\.com\/show\/y\?/);
+});
+
+test('score captions: X keeps the full title, verdict and split question with a long show link', () => {
+  const s = show({ title: 'The 25th Annual Putnam County Spelling Bee', slug: 'the-25th-annual-putnam-county-spelling-bee-off-broadway' });
+  const c = buildCaptions({ show: s, score: 77, tierId: 'recommended', tierLabel: 'Recommended', reviewCount: 32, breakdown: { rave: 10, positive: 10, mixed: 10, negative: 2 } });
+  assert.ok(c.twitter.includes(s.title), 'full title kept on X');
+  assert.match(c.twitter, /has a Critic Score of 77 \(Recommended\) from 32 critics' reviews\./);
+  assert.match(c.twitter, /20 positive, 12 mixed or negative\. What's behind the split\?/);
+  assert.ok(c.twitter.length > LIMITS.twitter, 'raw URL length would reject this valid X caption');
+  assert.ok(xLength('twitter', c.twitter) <= 270);
+  assert.ok(xLength('bluesky', c.bluesky) <= 270);
 });
 
 test('dedupe path marker does not match a longer slug', () => {
