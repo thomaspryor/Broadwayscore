@@ -1,19 +1,59 @@
 {
-  "updatedAt": "2026-10-28T08:56:20.919Z",
-  "processed": 6,
-  "failed": 0,
-  "successRate": "100.0%",
+  "updatedAt": "2026-10-28T09:20:53.141Z",
+  "processed": 10,
+  "failed": 17,
+  "successRate": "37.0%",
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 5,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 2
+    "archiveToday": 9,
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-28T09:12:50.389Z",
+      "event": "bb-session",
+      "session": "bca78ebb",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T09:12:51.058Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T09:15:14.570Z",
+      "event": "bb-session",
+      "session": "79eccb97",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-28T09:19:04.254Z",
+      "event": "bb-session",
+      "session": "a89648c4",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T09:19:04.946Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T09:19:14.384Z",
+      "event": "bb-session",
+      "session": "c5405c5a",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T09:19:14.994Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
