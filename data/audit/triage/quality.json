@@ -1,15 +1,15 @@
 {
   "system": "quality",
   "status": "warn",
-  "lastChecked": "2026-10-27T07:52:42.100Z",
+  "lastChecked": "2026-10-28T08:30:25.607Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Quality: opening date vs review dates",
-      "status": "pass",
-      "message": "No opening date contradicts its reviews (0 acked)"
+      "status": "warn",
+      "message": "1 show(s) store an opening date later than their reviews: an-american-in-paris-west-end-2017 (stored 2017-04-01, reviews 2017-03-22)"
     },
     {
       "name": "Quality: star-vs-score mismatch",
@@ -19,17 +19,17 @@
     {
       "name": "Quality: scored review ratio",
       "status": "pass",
-      "message": "98.3% scored (33871/34465)"
+      "message": "97.8% scored (34887/35660)"
     },
     {
       "name": "Quality: corpus drift",
       "status": "pass",
-      "message": "24 audit(s) drifting, each reported on its own card or the digest FYI line (2h ago)"
+      "message": "26 audit(s) drifting, each reported on its own card or the digest FYI line (7h ago)"
     },
     {
       "name": "Quality: DMARC deliverability",
       "status": "pass",
-      "message": "16418 messages, 0 auth failures (p=reject)"
+      "message": "16495 messages, 0 auth failures (p=reject)"
     },
     {
       "name": "Quality: missing contentTier",
@@ -39,7 +39,7 @@
     {
       "name": "Quality: outlet domain moves",
       "status": "warn",
-      "message": "8 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
+      "message": "9 unregistered host(s) name-match a registered outlet (e.g. berkshireonstage.blog → berkshire-on-stage) — probable domain move dropping reviews via domain-mismatch"
     },
     {
       "name": "Quality: Show Score gap",
@@ -49,12 +49,12 @@
     {
       "name": "Quality: outlet stub rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1713 outlet(s), 62865 review(s)"
+      "message": "No broken-extractor signature in 1725 outlet(s), 64455 review(s)"
     },
     {
       "name": "Quality: outlet invalid-content rate",
       "status": "pass",
-      "message": "No broken-extractor signature in 1713 outlet(s), 62865 review(s)"
+      "message": "No broken-extractor signature in 1725 outlet(s), 64455 review(s)"
     },
     {
       "name": "Quality: standingCoverage drift",
@@ -68,8 +68,8 @@
     },
     {
       "name": "Quality: outlet-heartbeat red flags",
-      "status": "pass",
-      "message": "139 outlet×market rows checked, none NEW silent 2+ consecutive weeks (34 known/baselined, 8d ago)"
+      "status": "warn",
+      "message": "Heartbeat monitor last ran 9d ago (>8d)"
     }
   ]
 }

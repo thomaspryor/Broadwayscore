@@ -1,7 +1,7 @@
 {
   "system": "data",
-  "status": "error",
-  "lastChecked": "2026-10-27T07:52:42.101Z",
+  "status": "warn",
+  "lastChecked": "2026-10-28T08:30:25.608Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -74,47 +74,47 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "14 of 486 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6309 Money Scorecard welcome email for new sign-ups (ready, ship on owner go)"
+      "message": "10 of 479 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6428 West End history: seasons 2013-14 and 2012-13 (list-first + Guardian/WOS supply)"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-26"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-27"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "73 review(s) with no usable text, 56 rejected although verified as a review, 54 never scored, 28 with a blocked URL (0 published on the site), across 460 current shows"
+      "message": "67 review(s) with no usable text, 58 rejected although verified as a review, 28 never scored, 28 with a blocked URL (0 published on the site), across 455 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 31547 checked"
+      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 32264 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
       "status": "warn",
-      "message": "67 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 62 more already attempted)"
+      "message": "61 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 77 more already attempted)"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
-      "status": "pass",
-      "message": "duplicate-flag inheritance audit is within its committed floor"
+      "status": "warn",
+      "message": "scripts/audit-duplicate-flag-inheritance.js failed: Found 9 live duplicate-of-inherited-flag leak(s) (floor: 8)."
     },
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 565 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 553 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+    },
+    {
+      "name": "Data: reviewed shows missing from shows.json",
+      "status": "pass",
+      "message": "No aggregator-reviewed show is missing from the catalogue"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
       "message": "2 discovered review(s) not reaching the composite score (2 T1). Oldest: high-school-musical-off-west-end-2026 — daily-mail (unscored)"
-    },
-    {
-      "name": "Data: reviewed shows missing from shows.json",
-      "status": "error",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"TS Eliot’s Murder in the Cathedral\" (guardian-review — missing 6d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }

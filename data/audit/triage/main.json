@@ -1,20 +1,20 @@
 {
   "system": "main",
-  "status": "warn",
-  "lastChecked": "2026-10-27T07:52:42.103Z",
+  "status": "error",
+  "lastChecked": "2026-10-28T08:30:25.610Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
   "details": [
     {
       "name": "Main: red streak",
-      "status": "pass",
-      "message": "Last run green"
+      "status": "error",
+      "message": "main's Test Suite has had no confirmed-green run in 5.8h (4 failing runs) — first red commit 1d2a4dd06, job \"E2E Tests, TypeScript Check, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
     },
     {
       "name": "Main: green rate",
       "status": "warn",
-      "message": "rate 34.1% (green 227 / red 439, 666 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 77.4%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 36.4% (green 219 / red 382, 601 runs, 2 hung (cancelled >= 10 min, counted red)), 7d trend from 71%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Main: mid-setup cancels",

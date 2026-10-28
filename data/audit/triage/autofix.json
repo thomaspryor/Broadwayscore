@@ -1,7 +1,7 @@
 {
   "system": "autofix",
   "status": "error",
-  "lastChecked": "2026-10-27T07:52:42.105Z",
+  "lastChecked": "2026-10-28T08:30:25.612Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Autofix: jobs actually succeeding",
       "status": "error",
-      "message": "Auto-fix loop is DEAD: 6 job(s) launched in the last 7d, 3 reported back, 0 succeeded. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
+      "message": "Auto-fix loop is DEAD: 3 job(s) launched in the last 7d, 0 reported back, 0 succeeded. Check ~/Library/Logs/bsc-jobs/ for a job log that is empty apart from a TIMEOUT marker, then confirm .env still carries ANTHROPIC_API_KEY or CLAUDE_CODE_OAUTH_TOKEN."
     },
     {
       "name": "Autofix: persistent visitor rows with no open card",
       "status": "warn",
-      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Data quality: cv-wrongproduction lifetime sweep (14d, BRO-5437 closed)"
+      "message": "1 visitor-facing row(s) red for 4+ days with no open card: Data: reviewed shows missing from shows.json (15d, BRO-4689 closed)"
     }
   ]
 }

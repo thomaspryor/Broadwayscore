@@ -1,7 +1,7 @@
 {
   "system": "push-retry deadman",
   "status": "warn",
-  "lastChecked": "2026-10-27T07:52:42.104Z",
+  "lastChecked": "2026-10-28T08:30:25.611Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Push-retry deadman",
       "status": "warn",
-      "message": "2 push-retry failure(s) in the last 7d across Broadwayscore:main [unknown x1, Opening Night Express x1]. Most recent reason: commit-dropped-post-push(rebase-clean(-X theirs)). 11 committed file(s) discarded across 2 run(s). 525 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
+      "message": "2 push-retry failure(s) in the last 7d across Broadwayscore:main [unknown x1, Opening Night Express x1]. Most recent reason: commit-dropped-post-push(rebase-clean(-X theirs)). 11 committed file(s) discarded across 2 run(s). 641 autostash-conflict(s) (an uncommitted edit lost to an upstream change after the push; see the run's ::error:: line)."
     }
   ]
 }
