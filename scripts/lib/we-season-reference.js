@@ -1,4 +1,5 @@
 'use strict';
+// venue-write-guard-ok: venues here are reference-list and candidate fields; promote-historical-we.js buildShowEntry writes shows.json venues through sanitizeVenueForWrite.
 
 /**
  * we-season-reference.js (BRO-6450)

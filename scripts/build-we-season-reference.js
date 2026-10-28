@@ -26,6 +26,7 @@
  */
 
 'use strict';
+// venue-write-guard-ok: venues go into the audit reference list only, never shows.json.
 
 const fs = require('fs');
 const path = require('path');
@@ -61,7 +62,7 @@ const sleep = ms => new Promise(r => setTimeout(r, ms));
 async function get(url) {
   for (let i = 0; i < 3; i++) {
     try {
-      const res = await fetch(url, { headers: { 'User-Agent': UA } });
+      const res = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
       if (res.ok) return await res.text();
       if (res.status === 404) return null;
     } catch { /* retry */ }
