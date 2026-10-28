@@ -212,8 +212,16 @@ test('isStructuralOnlyMismatch (BRO-6470): a TM preview date inside Playbill\'s 
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [
     { field: 'openingDate', shows: '2021-09-01', playbill: '2021-12-08' }, { field: 'closingDate', shows: '2021-10-01' },
   ] }), false);
-  // A closing gap alone (the opening agreed) is TM's loose closing date.
-  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'closingDate', shows: '2021-01-08' }] }), true);
+  // A closing gap alone, with a claimed opening that agreed, is TM's loose closing date.
+  const closingOnly = { result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'closingDate', shows: '2021-01-08' }] };
+  assert.equal(isStructuralOnlyMismatch(closingOnly, { claimedOpening: '2021-12-08' }), true);
+  // With no claimed opening nothing was compared, so a closing gap may be another production.
+  assert.equal(isStructuralOnlyMismatch(closingOnly), false);
+  assert.equal(isStructuralOnlyMismatch(closingOnly, { claimedOpening: null }), false);
+  // A TM date with a time suffix is still read as a day.
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [
+    { field: 'openingDate', shows: '2021-11-05T00:00:00', playbill: '2021-12-08' },
+  ] }), true);
   // Year: only the run's own preview/opening year is tolerated; venue never is.
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2021, playbill: 2022 }] }), true);
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2019, playbill: 2022 }] }), false);

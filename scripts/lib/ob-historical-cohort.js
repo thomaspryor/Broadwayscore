@@ -58,11 +58,14 @@ function isPreviewSpanDate(d, dates) {
   const from = dates.firstPreview || dates.openingDate;
   return d >= from && d <= dates.openingDate;
 }
-function isStructuralOnlyMismatch(r) {
+function isStructuralOnlyMismatch(r, { claimedOpening = null } = {}) {
   if (!r || r.result !== 'mismatch' || !Array.isArray(r.mismatches) || r.mismatches.length === 0) return false;
   const dates = r.parsed && r.parsed.dates;
   const opening = r.mismatches.find(m => m.field === 'openingDate');
-  const openingInSpan = !!opening && isPreviewSpanDate(opening.shows, dates);
+  const openingInSpan = !!opening && isPreviewSpanDate(String(opening.shows || '').slice(0, 10), dates);
+  // No openingDate mismatch means the opening AGREED only if one was claimed and compared;
+  // with no claimed opening a closing gap is the only date evidence and stays a conflict.
+  const openingAgreed = openingInSpan || (!opening && !!claimedOpening);
   return r.mismatches.every(m => {
     if (STRUCTURAL_FIELDS.has(m.field)) return true;
     if (m.field === 'openingDate') return openingInSpan;
@@ -70,7 +73,7 @@ function isStructuralOnlyMismatch(r) {
       const ys = [dates && dates.firstPreview, dates && dates.openingDate].filter(Boolean).map(d => Number(d.slice(0, 4)));
       return ys.includes(Number(m.shows));
     }
-    if (m.field === 'closingDate') return !!dates && !!dates.openingDate && (openingInSpan || !opening);
+    if (m.field === 'closingDate') return !!dates && !!dates.openingDate && openingAgreed;
     return false;
   });
 }

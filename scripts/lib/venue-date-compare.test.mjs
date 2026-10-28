@@ -988,6 +988,10 @@ test('BRO-5975: venueVariantMatch accepts room/institution labels, rejects other
   assert.ok(!venueVariantMatch('Playwrights Horizons', 'Cherry Lane Theatre'));
   assert.ok(!venueVariantMatch('Theatre Row', 'Theatre Five @ Signature Center'));
   assert.ok(!venueVariantMatch('Paper Mill Playhouse, Millburn, NJ', 'Riverside Theatre - Stark Stage'));
+  // BRO-6470: "Company/House" matches on the company half only, never on a generic room half.
+  assert.ok(venueVariantMatch('Classic Stage Company', 'Classic Stage Company/Lynn F. Angelson Theater'));
+  assert.ok(!venueVariantMatch('Main Stage', 'Vineyard Theatre/Main Stage'));
+  assert.ok(!venueVariantMatch('Black Box Theatre', 'Some Company/Black Box Theatre'));
 });
 
 test('BRO-5975: undated announced show is not year-mismatched against a page for a closed earlier run', async () => {

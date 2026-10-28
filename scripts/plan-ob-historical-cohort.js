@@ -122,7 +122,7 @@ async function main() {
     };
     let r;
     try { r = await validateOne(target, () => {}); } catch (e) { r = { result: 'error', error: e.message }; }
-    if (isStructuralOnlyMismatch(r)) r = { ...r, result: 'match', structuralOnly: r.mismatches.map(m => m.field) };
+    if (isStructuralOnlyMismatch(r, { claimedOpening: target.openingDate })) r = { ...r, result: 'match', structuralOnly: r.mismatches.map(m => m.field) };
     verdicts[r.result] = (verdicts[r.result] || 0) + 1;
     if (r.result === 'match' && r.playbillUrl && r.parsed && r.parsed.dates) {
       results.push({ ...r, title: c.title, venue: c.venue, tmUrl: c.theatermaniaUrl });
