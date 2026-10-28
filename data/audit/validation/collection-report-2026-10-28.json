@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-28T20:04:22.504Z",
+  "runDate": "2026-10-28T20:45:20.999Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "twelfth-night-west-end-2012,all-that-fall-west-end-2012,the-effect-west-end-2012,a-christmas-carol-west-end-2012,privates-on-parade-west-end-2012,viva-forever-west-end-2012,old-times-west-end-2013,quartermaines-terms-west-end-2013,macbeth-west-end-2013,the-tailor-made-man-west-end-2013",
+    "showFilter": "the-weir-1999,to-kill-a-mockingbird-2018,twelfth-night-1998",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
-    "failed": 5,
+    "processed": 13,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "92.9%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 0,
+    "scrapingbee": 2,
     "brightdata": 0,
-    "archiveToday": 2,
-    "archive": 6
+    "archiveToday": 0,
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 11,
+    "tier1Attempts": 9,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 4,
-    "tier1_9Success": 3,
-    "tier2Attempts": 4,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 2,
     "tier2Success": 2,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 2,
-    "tier3_6Success": 2,
-    "tier4Attempts": 8,
-    "tier4Success": 2,
-    "totalFailed": 5,
-    "scrapingBeePageCredits": 21,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 2,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,18 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 20,
-    "failed": 5,
+    "processed": 13,
+    "failed": 1,
     "shows": [
-      "a-christmas-carol-west-end-2012",
-      "all-that-fall-west-end-2012",
-      "macbeth-west-end-2013",
-      "old-times-west-end-2013",
-      "privates-on-parade-west-end-2012",
-      "quartermaines-terms-west-end-2013",
-      "the-tailor-made-man-west-end-2013",
-      "twelfth-night-west-end-2012",
-      "viva-forever-west-end-2012"
+      "to-kill-a-mockingbird-2018"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -74,96 +66,68 @@
     }
   },
   "processed": [
-    "macbeth-west-end-2013/a-younger-theatre--unknown.json",
-    "macbeth-west-end-2013/artsdesk--unknown.json",
-    "macbeth-west-end-2013/everything-theatre--unknown.json",
-    "macbeth-west-end-2013/london-theatre--unknown.json",
-    "the-tailor-made-man-west-end-2013/artsdesk--unknown.json",
-    "the-tailor-made-man-west-end-2013/whatsonstage--unknown.json",
-    "quartermaines-terms-west-end-2013/standard--unknown.json",
-    "quartermaines-terms-west-end-2013/telegraph--unknown.json",
-    "old-times-west-end-2013/guardian--unknown.json",
-    "old-times-west-end-2013/artsdesk--unknown.json",
-    "old-times-west-end-2013/britishtheatrecom--stephen-collins.json",
-    "viva-forever-west-end-2012/guardian--unknown.json",
-    "viva-forever-west-end-2012/musical-theatre-review--unknown.json",
-    "viva-forever-west-end-2012/standard--unknown.json",
-    "privates-on-parade-west-end-2012/guardian--michael-billington.json",
-    "privates-on-parade-west-end-2012/independent--unknown.json",
-    "a-christmas-carol-west-end-2012/nytimes--unknown.json",
-    "all-that-fall-west-end-2012/guardian--unknown.json",
-    "twelfth-night-west-end-2012/fringereview--unknown.json",
-    "twelfth-night-west-end-2012/metro-uk--brooke-ivey-johnson.json"
+    "to-kill-a-mockingbird-2018/hollywood-reporter--david-rooney.json",
+    "to-kill-a-mockingbird-2018/nyt-theater--jonathan-mandell.json",
+    "to-kill-a-mockingbird-2018/theatermania--zachary-stewart.json",
+    "to-kill-a-mockingbird-2018/cititour--brian-scott-lipton.json",
+    "to-kill-a-mockingbird-2018/boston-com--unknown.json",
+    "to-kill-a-mockingbird-2018/city-cabaret--elizabeth-ahlfors.json",
+    "to-kill-a-mockingbird-2018/frontmezzjunkies--steven-ross.json",
+    "to-kill-a-mockingbird-2018/npr--unknown.json",
+    "to-kill-a-mockingbird-2018/ny1--roma-torre.json",
+    "to-kill-a-mockingbird-2018/rollingstone--peter-travers.json",
+    "to-kill-a-mockingbird-2018/showbiz411--roger-friedman.json",
+    "to-kill-a-mockingbird-2018/stagezine--david-nounou.json",
+    "to-kill-a-mockingbird-2018/theater-scene--victor-gluck.json"
   ],
   "failed": [
-    "viva-forever-west-end-2012/telegraph--unknown.json",
-    "privates-on-parade-west-end-2012/express-uk--unknown.json",
-    "privates-on-parade-west-end-2012/financialtimes--unknown.json",
-    "a-christmas-carol-west-end-2012/thestage--unknown.json",
-    "twelfth-night-west-end-2012/thestage--unknown.json"
+    "to-kill-a-mockingbird-2018/bobs-theater-blog--robert-sholiton.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "macbeth-west-end-2013/a-younger-theatre--unknown.json",
-      "macbeth-west-end-2013/artsdesk--unknown.json",
-      "macbeth-west-end-2013/everything-theatre--unknown.json",
-      "macbeth-west-end-2013/london-theatre--unknown.json",
-      "the-tailor-made-man-west-end-2013/artsdesk--unknown.json",
-      "the-tailor-made-man-west-end-2013/whatsonstage--unknown.json",
-      "quartermaines-terms-west-end-2013/standard--unknown.json",
-      "quartermaines-terms-west-end-2013/telegraph--unknown.json",
-      "old-times-west-end-2013/guardian--unknown.json",
-      "old-times-west-end-2013/artsdesk--unknown.json",
-      "old-times-west-end-2013/britishtheatrecom--stephen-collins.json",
-      "viva-forever-west-end-2012/guardian--unknown.json",
-      "viva-forever-west-end-2012/musical-theatre-review--unknown.json",
-      "viva-forever-west-end-2012/standard--unknown.json",
-      "privates-on-parade-west-end-2012/guardian--michael-billington.json",
-      "privates-on-parade-west-end-2012/independent--unknown.json",
-      "a-christmas-carol-west-end-2012/nytimes--unknown.json",
-      "all-that-fall-west-end-2012/guardian--unknown.json",
-      "twelfth-night-west-end-2012/fringereview--unknown.json",
-      "twelfth-night-west-end-2012/metro-uk--brooke-ivey-johnson.json"
+      "to-kill-a-mockingbird-2018/hollywood-reporter--david-rooney.json",
+      "to-kill-a-mockingbird-2018/nyt-theater--jonathan-mandell.json",
+      "to-kill-a-mockingbird-2018/theatermania--zachary-stewart.json",
+      "to-kill-a-mockingbird-2018/cititour--brian-scott-lipton.json",
+      "to-kill-a-mockingbird-2018/boston-com--unknown.json",
+      "to-kill-a-mockingbird-2018/city-cabaret--elizabeth-ahlfors.json",
+      "to-kill-a-mockingbird-2018/frontmezzjunkies--steven-ross.json",
+      "to-kill-a-mockingbird-2018/npr--unknown.json",
+      "to-kill-a-mockingbird-2018/ny1--roma-torre.json",
+      "to-kill-a-mockingbird-2018/rollingstone--peter-travers.json",
+      "to-kill-a-mockingbird-2018/showbiz411--roger-friedman.json",
+      "to-kill-a-mockingbird-2018/stagezine--david-nounou.json",
+      "to-kill-a-mockingbird-2018/theater-scene--victor-gluck.json"
     ],
     "failed": [
-      "viva-forever-west-end-2012/telegraph--unknown.json",
-      "privates-on-parade-west-end-2012/express-uk--unknown.json",
-      "privates-on-parade-west-end-2012/financialtimes--unknown.json",
-      "a-christmas-carol-west-end-2012/thestage--unknown.json",
-      "twelfth-night-west-end-2012/thestage--unknown.json"
+      "to-kill-a-mockingbird-2018/bobs-theater-blog--robert-sholiton.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "macbeth-west-end-2013/artsdesk--unknown.json",
-      "macbeth-west-end-2013/everything-theatre--unknown.json",
-      "macbeth-west-end-2013/london-theatre--unknown.json",
-      "the-tailor-made-man-west-end-2013/artsdesk--unknown.json",
-      "the-tailor-made-man-west-end-2013/whatsonstage--unknown.json",
-      "quartermaines-terms-west-end-2013/standard--unknown.json",
-      "old-times-west-end-2013/artsdesk--unknown.json",
-      "twelfth-night-west-end-2012/fringereview--unknown.json",
-      "twelfth-night-west-end-2012/metro-uk--brooke-ivey-johnson.json"
+      "to-kill-a-mockingbird-2018/nyt-theater--jonathan-mandell.json",
+      "to-kill-a-mockingbird-2018/theatermania--zachary-stewart.json",
+      "to-kill-a-mockingbird-2018/boston-com--unknown.json",
+      "to-kill-a-mockingbird-2018/frontmezzjunkies--steven-ross.json",
+      "to-kill-a-mockingbird-2018/npr--unknown.json",
+      "to-kill-a-mockingbird-2018/showbiz411--roger-friedman.json",
+      "to-kill-a-mockingbird-2018/stagezine--david-nounou.json",
+      "to-kill-a-mockingbird-2018/theater-scene--victor-gluck.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "viva-forever-west-end-2012/musical-theatre-review--unknown.json"
+    "scrapingdog": [],
+    "scrapingbee": [
+      "to-kill-a-mockingbird-2018/cititour--brian-scott-lipton.json",
+      "to-kill-a-mockingbird-2018/rollingstone--peter-travers.json"
     ],
-    "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/a-christmas-carol-west-end-2012/thestage--unknown.json",
-      "data/review-texts/twelfth-night-west-end-2012/thestage--unknown.json"
-    ],
+    "archiveToday": [],
     "archive": [
-      "macbeth-west-end-2013/a-younger-theatre--unknown.json",
-      "quartermaines-terms-west-end-2013/telegraph--unknown.json",
-      "old-times-west-end-2013/britishtheatrecom--stephen-collins.json",
-      "viva-forever-west-end-2012/standard--unknown.json",
-      "privates-on-parade-west-end-2012/independent--unknown.json",
-      "a-christmas-carol-west-end-2012/nytimes--unknown.json"
+      "to-kill-a-mockingbird-2018/hollywood-reporter--david-rooney.json",
+      "to-kill-a-mockingbird-2018/city-cabaret--elizabeth-ahlfors.json",
+      "to-kill-a-mockingbird-2018/ny1--roma-torre.json"
     ]
   },
   "failuresByOutlet": {},
