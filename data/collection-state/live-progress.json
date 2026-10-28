@@ -1,27 +1,21 @@
 {
-  "updatedAt": "2026-10-28T11:17:42.137Z",
-  "processed": 104,
-  "failed": 50,
-  "successRate": "67.5%",
+  "updatedAt": "2026-10-28T11:51:21.981Z",
+  "processed": 191,
+  "failed": 83,
+  "successRate": "69.7%",
   "tierBreakdown": {
-    "playwright": 58,
+    "playwright": 95,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 1,
-    "brightdata": 3,
-    "archiveToday": 11,
-    "archive": 28
+    "scrapingdog": 11,
+    "scrapingbee": 7,
+    "brightdata": 5,
+    "archiveToday": 18,
+    "archive": 59
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-10-28T10:46:36.548Z",
-      "event": "bb-session",
-      "session": "de56b1f0",
-      "url": "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review__"
-    },
     {
       "t": "2026-10-28T10:46:41.313Z",
       "event": "bb-login-uncertain",
@@ -54,6 +48,86 @@
       "t": "2026-10-28T10:50:59.081Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:27:48.894Z",
+      "event": "bb-session",
+      "session": "5645fda5",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-28T11:27:49.750Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T11:34:02.164Z",
+      "event": "bb-session",
+      "session": "c9fa6ea5",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-28T11:34:02.993Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:35:16.685Z",
+      "event": "bb-session",
+      "session": "0d408830",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-28T11:35:47.492Z",
+      "event": "bb-session",
+      "session": "028fc730",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-28T11:35:48.303Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:47:35.582Z",
+      "event": "bb-session",
+      "session": "69cca6ce",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-28T11:47:36.456Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T11:47:55.139Z",
+      "event": "bb-session",
+      "session": "4ecd41e6",
+      "url": "https://deadline.com/2026/10/j-harrison-ghee-oh-mary-john-andrew-morrison-123716"
+    },
+    {
+      "t": "2026-10-28T11:48:56.034Z",
+      "event": "bb-session",
+      "session": "270b02e0",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-28T11:49:05.712Z",
+      "event": "bb-session",
+      "session": "2e534361",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-28T11:49:53.008Z",
+      "event": "bb-session",
+      "session": "5da8d866",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-28T11:50:02.837Z",
+      "event": "bb-session",
+      "session": "20f18c53",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     }
   ]
 }
