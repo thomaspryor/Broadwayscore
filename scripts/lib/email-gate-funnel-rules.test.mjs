@@ -11,11 +11,11 @@ const {
 const DAY = 24 * 60 * 60 * 1000;
 const NOW = 1_800_000_000_000;
 const kinds = (r) => r.alerts.map((a) => a.kind);
-const EMAIL_KINDS = ['joins-collapse', 'sustained-decline', 'funnel-stalled', 'joins-unknown', 'page-view-minimum'];
+const EMAIL_KINDS = ['joins-collapse', 'sustained-decline', 'funnel-stalled', 'joins-unknown', 'page-view-minimum', 'auth-joins-stalled', 'auth-joins-unknown'];
 const emailed = (r) => r.alerts.filter((a) => a.email).map((a) => a.kind);
 // A week shaped like the real Oct 2026 weeks: modal ~3, inline a few, most joins from sign-in.
 const week = (o = {}) => ({
-  impressions: 380, captured: 3, capturesPerWeek: 3, inlineCaptures: 5, signIns: 25, totalJoins: 32, totalJoinsPerWeek: 32, ...o,
+  impressions: 380, captured: 3, capturesPerWeek: 3, inlineCaptures: 5, signIns: 25, formspreeAuthJoins: 25, totalJoins: 32, totalJoinsPerWeek: 32, ...o,
 });
 
 test('BRO-6371 regression: a zero modal-only week with healthy total joins does NOT alert', () => {
@@ -193,4 +193,58 @@ test('page-view-minimum guardrail is unchanged', () => {
   const r = decideEmailGateFunnelAlerts(week({ pageViewGuardrail: { belowMinimumEvents: 2, checkedEvents: 10, unknownPageViewEvents: 0, violationsByTrigger: { exit_intent: 2 } } }), {}, NOW);
   assert.ok(kinds(r).includes('page-view-minimum'));
   assert.ok(MIN_IMPRESSIONS_FOR_ALERT > 0);
+});
+
+test('BRO-6372: 30 sign-ins with zero confirmed Formspree auth joins email an alert', () => {
+  const r = decideEmailGateFunnelAlerts(week({ signIns: 30, formspreeAuthJoins: 0 }), {}, NOW);
+  const alert = r.alerts.find((a) => a.kind === 'auth-joins-stalled');
+  assert.ok(alert, 'successful sign-in events cannot prove Formspree accepted subscriptions');
+  assert.equal(alert.email, true);
+  assert.equal(alert.severity, 'error');
+  assert.equal(r.state[alert.stampKey], NOW);
+});
+
+test('Formspree auth alert includes the 10-sign-in boundary and works without modal impressions', () => {
+  for (const signIns of [0, 9, 10, 30]) {
+    const r = decideEmailGateFunnelAlerts(week({ impressions: 0, signIns, formspreeAuthJoins: 0 }), {}, NOW);
+    assert.equal(kinds(r).includes('auth-joins-stalled'), signIns >= 10, `${signIns} sign-ins`);
+  }
+  assert.deepEqual(emailed(decideEmailGateFunnelAlerts(week({ formspreeAuthJoins: 1 }), {}, NOW)), []);
+});
+
+test('missing or failed Formspree verification alerts as unknown, never as zero submissions', () => {
+  for (const formspreeAuthJoins of [undefined, null, NaN, -1, '0']) {
+    const r = decideEmailGateFunnelAlerts(week({ formspreeAuthJoins, formspreeAuthJoinsStatus: 'unavailable' }), {}, NOW);
+    assert.deepEqual(emailed(r), ['auth-joins-unknown']);
+    assert.match(r.alerts.find((a) => a.kind === 'auth-joins-unknown').description, /unavailable/);
+  }
+});
+
+test('Formspree alerts have independent cooldowns and delivery-retry stamps', () => {
+  const summary = week({ formspreeAuthJoins: 0 });
+  const first = decideEmailGateFunnelAlerts(summary, { lastCollapseAlertAt: NOW }, NOW);
+  const alert = first.alerts.find((a) => a.kind === 'auth-joins-stalled');
+  assert.ok(alert, 'a total-joins alert cannot silence the delivery check');
+  assert.deepEqual(emailed(decideEmailGateFunnelAlerts(summary, first.state, NOW + DAY)), []);
+  assert.ok(kinds(decideEmailGateFunnelAlerts(summary, first.state, NOW + 7 * DAY)).includes(alert.kind));
+  const retryState = { ...first.state };
+  delete retryState[alert.stampKey];
+  assert.ok(kinds(decideEmailGateFunnelAlerts(summary, retryState, NOW + DAY)).includes(alert.kind));
+
+  const unknownSummary = week({ formspreeAuthJoins: null });
+  const unknown = decideEmailGateFunnelAlerts(unknownSummary, first.state, NOW + DAY);
+  const unknownAlert = unknown.alerts.find((a) => a.kind === 'auth-joins-unknown');
+  assert.ok(unknownAlert, 'API unavailability has its own cooldown');
+  assert.equal(unknown.state[unknownAlert.stampKey], NOW + DAY);
+  assert.deepEqual(emailed(decideEmailGateFunnelAlerts(unknownSummary, unknown.state, NOW + 2 * DAY)), []);
+  assert.ok(kinds(decideEmailGateFunnelAlerts(unknownSummary, unknown.state, NOW + 8 * DAY)).includes(unknownAlert.kind));
+});
+
+test('weekly summary logs confirmed Formspree submissions or unknown', () => {
+  for (const formspreeAuthJoins of [0, 20, null]) {
+    const r = decideEmailGateFunnelAlerts(week({ formspreeAuthJoins }), {}, NOW);
+    const log = r.alerts.find((a) => a.kind === 'weekly-summary');
+    assert.ok(log.logOnly);
+    assert.ok(log.description.includes(`Formspree auth-auto submissions ${formspreeAuthJoins ?? 'unknown'}`));
+  }
 });

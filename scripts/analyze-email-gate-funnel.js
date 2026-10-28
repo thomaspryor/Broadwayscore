@@ -10,6 +10,8 @@
  * Account sign-in joins the list via src/lib/auto-subscribe.ts (Formspree, source
  * auth-auto) and never fires email_captured, so sign-ins are counted from
  * sign_in_completed. totalJoins is DISTINCT people across all three channels.
+ * These sign-ins are a proxy: formspreeAuthJoins separately confirms accepted
+ * auth-auto submissions, since sign-in events fire even when subscription fails.
  *
  * Modal-only filter (MANDATORY): email_captured fires from BOTH the gate modal (carries
  * a `trigger` property) AND inline header/footer forms (no `trigger` property).
@@ -29,7 +31,8 @@
  * Real-users lens: owner + SG/CN/VN excluded (memory: feedback_analytics_real_users_lens).
  *
  * Usage: node scripts/analyze-email-gate-funnel.js [--days=7] [--json]
- * Env: POSTHOG_PERSONAL_API_KEY
+ * Env: POSTHOG_PERSONAL_API_KEY, FORMSPREE_SUBSCRIBER_FORM_ID,
+ * FORMSPREE_TOKEN (or FORMSPREE_SUBSCRIBER_API_KEY)
  */
 
 const DAYS = parseInt((process.argv.find(a => a.startsWith('--days=')) || '--days=7').split('=')[1], 10);
@@ -42,6 +45,7 @@ if (!API_KEY) { console.error('POSTHOG_PERSONAL_API_KEY not set'); process.exit(
 // definition lives in scripts/lib/posthog-query.js so a new bot geo is added once.
 const { REAL_USERS_WHERE: REAL_USERS, phQuery } = require('./lib/posthog-query');
 const { getGatePageViewSummary } = require('./lib/gate-modal-guardrail');
+const { getFormspreeAuthJoins } = require('./lib/formspree-auth-joins');
 
 // Modal-attributed only — see file header.
 const MODAL_ONLY = `JSONExtractString(properties,'trigger') != ''`;
@@ -162,6 +166,7 @@ async function main() {
       LIMIT 1000000)`);
   const bouncers = Number(bouncersRows[0]?.[0] || 0);
   const pageViewGuardrail = await getGatePageViewSummary(DAYS);
+  const formspreeAuth = await getFormspreeAuthJoins({ days: DAYS });
 
   const summary = {
     days: DAYS,
@@ -176,6 +181,7 @@ async function main() {
     inlineCaptures: inlinePeople,
     signIns: signInPeople,
     signInsNew: signInNewPeople,
+    ...formspreeAuth,
     totalJoins: totalJoinPeople,
     totalJoinsPerWeek: +((totalJoinPeople / DAYS) * 7).toFixed(2),
     mobileBouncePct: mobileVisitors > 0 ? +((bouncers / mobileVisitors) * 100).toFixed(2) : null,
@@ -189,6 +195,7 @@ async function main() {
   say(`Modal captures: ${summary.captured} people / ${summary.capturedEvents} events (${summary.convRatePct}% conv/impression)`);
   say(`Captures/week (extrapolated from ${DAYS}d): ${summary.capturesPerWeek} — baseline ~0.93/day (~6.5/wk pre-cold-start-gate)`);
   say(`Inline captures: ${summary.inlineCaptures} people · account sign-ins: ${summary.signIns} people (${summary.signInsNew} new accounts)`);
+  say(`Formspree auth-auto submissions: ${summary.formspreeAuthJoins ?? 'unknown'} (${summary.formspreeAuthJoinsStatus})`);
   say(`Total list joins: ${summary.totalJoins} people (${summary.totalJoinsPerWeek}/wk) — baseline ~35/wk since accounts launched 2026-10-02`);
   say(`Mobile bounce: ${bouncers}/${mobileVisitors} (${summary.mobileBouncePct}%)`);
   say(`By trigger: ${JSON.stringify(summary.byTrigger)}`);
