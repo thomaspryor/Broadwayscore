@@ -122,7 +122,15 @@ function parseWosReviewTitle(rawTitle, rawTeaser) {
     || t.match(/^(?:review:\s*)?(.+) at (?:the )?(.+?)\s+review\b/i);
   if (m) return { title: cleanReviewedTitle(m[1]), venue: m[2].trim() };
   m = t.match(/^(?:review:\s*)?(.+?)\s+review\b/i);
-  if (!m) return null;
+  if (!m) {
+    // 2013-14 house style: plain "Great Britain (Theatre Royal Haymarket)".
+    // Tour/regional parentheticals ("Tour - Salford") are not London venues.
+    const plain = t.match(/^(.+?)\s*\(([^()]+)\)\s*$/);
+    if (plain && !/\b(?:tour|touring|uk tour|preview|interview)\b|[–—]/i.test(plain[2])) {
+      return { title: cleanReviewedTitle(plain[1]), venue: plain[2].replace(/^the\s+/i, '').trim() };
+    }
+    return null;
+  }
   const v = teaser.match(/\bat (?:the )?([A-Z@][\w'’ .&-]*?(?:Theatre|Palladium|Vic|Warehouse|Coliseum|sohoplace|Court|Playhouse))\b/);
   return { title: cleanReviewedTitle(m[1]), venue: v ? v[1].trim() : null };
 }
