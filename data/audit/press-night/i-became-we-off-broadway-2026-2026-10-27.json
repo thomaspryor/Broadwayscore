@@ -6,12 +6,12 @@
   "embargoAt": "2026-10-28T02:00:00.000Z",
   "probe": {
     "startedAt": "2026-10-28T01:30:03.508Z",
-    "endedAt": null,
+    "endedAt": "2026-10-28T08:00:22.700Z",
     "intervalMin": 5,
-    "samples": 30,
+    "samples": 78,
     "failedSamples": 0,
-    "lastSampleAt": "2026-10-28T03:55:11.401Z",
-    "lastOkSampleAt": "2026-10-28T03:55:11.401Z"
+    "lastSampleAt": "2026-10-28T07:58:49.905Z",
+    "lastOkSampleAt": "2026-10-28T07:58:49.905Z"
   },
   "firstLiveAt": "2026-10-28T02:20:06.296Z",
   "firstLiveBaseline": false,
@@ -19,12 +19,12 @@
   "liveCount": 3,
   "liveCountAt": {
     "1h": 2,
-    "2h": null,
+    "2h": 3,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-10-28T03:00:08.526Z",
-    "2h": null,
+    "2h": "2026-10-28T04:03:37.051Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -83,10 +83,21 @@
       "liveCount": 3,
       "fetchedAt": "2026-10-28T04:00:20.230Z",
       "censusNote": "no BWW roundup found"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 3,
+      "fetchedAt": "2026-10-28T08:00:18.964Z",
+      "censusNote": "no BWW roundup found"
     }
   },
   "fileState": {
-    "capturedAt": "2026-10-28T04:00:24.017Z",
+    "capturedAt": "2026-10-28T08:00:22.464Z",
     "files": [
       {
         "file": "nysr--michael-sommers.json",
