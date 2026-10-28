@@ -21,7 +21,7 @@ const declared = new Set([
 // Imported but deliberately not declared. Each needs a reason; the test fails
 // if an entry stops being imported anywhere so the list cannot rot.
 const ALLOWLIST = {
-  dotenv: 'only loaded inside try/catch in scripts/lib/load-env.js (falls back to a hand parser)',
+  dotenv: 'only loaded inside try/catch (score-video-reviews.js) or by .ts test scripts run by hand; scripts/lib/load-env.js is the supported loader',
   googleapis: 'workflows `npm install` it at run time before the scripts that need it run',
   puppeteer: 'legacy scripts/scrape-show-score.js; fetchPage() is the supported path and the script is run by hand only',
 };

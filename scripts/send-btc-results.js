@@ -17,7 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
+require('./lib/load-env').loadEnv(); // dotenv is not installed (BRO-6408)
 const { applyUtm } = require('./lib/email-utm');
 const { markTestSend } = require('./lib/test-send-marker');
 
