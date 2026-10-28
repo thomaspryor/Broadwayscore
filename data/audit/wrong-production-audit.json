@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T00:07:11.381Z",
+  "timestamp": "2026-10-28T00:17:39.141Z",
   "stats": {
-    "totalReviews": 63971,
-    "alreadyFlagged": 21774,
+    "totalReviews": 63983,
+    "alreadyFlagged": 21775,
     "dateGuardCatches": 237,
-    "directorMismatch": 2385,
-    "tvFilmSignals": 1809,
+    "directorMismatch": 2386,
+    "tvFilmSignals": 1810,
     "londonSignals": 3060,
     "offBroadwaySignals": 577,
     "yearMismatch": 217,
-    "noPublishDate": 5664
+    "noPublishDate": 5663
   },
   "findings": [
     {
@@ -4212,6 +4212,19 @@
       "score": 63,
       "publishDate": "2011-03-17",
       "url": "https://www.talkinbroadway.com/page/world/Arcadia2011.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trevor nunn\" from arcadia-1995"
+        }
+      ]
+    },
+    {
+      "showId": "arcadia-off-broadway-2023",
+      "file": "nysr--david-finkle.json",
+      "publishDate": "2023-11-12",
+      "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39464,6 +39477,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "scene-partners-off-broadway-2023",
+      "file": "vulture--sara-holdren.json",
+      "publishDate": "2023-11-16",
+      "url": "https://www.vulture.com/2023/11/theater-review-scene-partners-chavkin-wiest-caswell.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
