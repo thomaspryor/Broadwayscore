@@ -23907,7 +23907,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
@@ -23918,7 +23918,9 @@
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 6,
+      "resolvedAt": "2026-10-28T01:28:37.653Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24669,13 +24671,13 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-28T00:28:21.379Z",
+      "lastSeen": "2026-10-28T01:28:37.638Z",
       "lastNotifiedAt": "2026-10-27T05:05:22.819Z",
       "lastSurfacedAt": "2026-10-27T05:05:22.819Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 15
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -27211,7 +27213,7 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/tour-runtime-coverage.test.mjs::every national tour has a synopsis, or is a documented gap": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Live-data test failing: every national tour has a synopsis, or is a documented gap (tests/unit/tour-runtime-coverage.test.mjs)",
       "firstSeen": "2026-10-26T02:13:50.863Z",
@@ -27222,7 +27224,9 @@
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 14
+      "silentRefires": 14,
+      "resolvedAt": "2026-10-28T01:28:37.666Z",
+      "resolveReason": "live-data test green"
     },
     "land:land/bro-6268-ocr-probe-2": {
       "status": "open",
