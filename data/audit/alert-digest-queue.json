@@ -499,5 +499,75 @@
       }
     ],
     "queuedAt": "2026-10-28T13:30:46.222Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:medea-off-broadway-2026",
+    "title": "Auto-remediation gave up on medea-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"medea-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T13:35:33.514Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:memoriam-off-west-end-2026",
+    "title": "Auto-remediation gave up on memoriam-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"memoriam-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T13:35:33.568Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:i-became-we-off-broadway-2026",
+    "title": "Auto-remediation gave up on i-became-we-off-broadway-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"i-became-we-off-broadway-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T13:35:33.595Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:specimen-off-broadway-2026",
+    "title": "Auto-remediation gave up on specimen-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"specimen-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T13:35:33.627Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:specimen-off-broadway-2026",
+    "title": "Shipped review missing publishDate on Specimen",
+    "description": "this-week-in-new-york/Mark Rifkin SHIPPED with no publishDate — cannot confirm post-opening: https://twi-ny.com/2026/05/20/axis-theatre-specimen-randall-sharp/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T13:35:33.641Z"
   }
 ]
