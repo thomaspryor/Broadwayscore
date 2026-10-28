@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5530-b",
   "planId": "19c717f2-4262-44f8-aa02-9ede4798fcf0",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T19:04:54.050Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "No figure: Billy Crystal and Janice Crystal Form D searches, 2025 through October 28, 2026, returned no match. https://www.ibdb.com/broadway-production/860-547321"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T20:27:18.575Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for beaches"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: capitalizationSource updated for billy-crystal-860"
+    }
+  ],
+  "executedIn": "ci"
 }
