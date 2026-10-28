@@ -39,6 +39,23 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 - **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
 - **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each.
 
+## Cohort 3 results (2026-10-28, BRO-6259): June 2022 to May 2023
+
+Process: same planner in two half-window runs (173 candidates after skips, 38 Playbill matches), 34 promotable, all kept. The Playbill match rate was much lower than in cohorts 1 and 2 (about 22 percent of candidates against about 41 percent in cohort 2). Scrapingdog returned HTTP 400 on 22 Playbill SERP calls and the BD/SB fallbacks mostly answered, so the gap looks like thinner Playbill coverage of 2022-23 Off-Broadway listings rather than a broken search. Days of Wine and Roses (Atlantic, June 2023) and A Simulacrum (June 2023), which cohort 2's window should have caught, came through here and were kept. Two add-show plans, landed and applied. Gathered in 2 runs of 17 shows with `parallel_jobs=9`, then one cohort-wide catch-up, then `audit-aggregator-gap.yml` (`ingest_missing`, `include_closed`, cohort `show_ids`) followed by another collect, score and rebuild.
+
+Review-count distribution (prod `analyst-shows.json`, 2026-10-28T16:12Z; a show missing from the feed counts as 0):
+
+| Reviews | 0 | 1-2 | 3-4 | 5-9 | 10+ | 3+ | Total reviews |
+|---|---|---|---|---|---|---|---|
+| Final | 7 | 4 | 2 | 11 | 10 | 23 (68 percent) | 233 |
+
+- Cost: about $4.83 against a $7 estimate (2x stop line $14): scraping $2.70 on rows tagged with cohort 3 show ids plus $0.87 of gather rows with no show id, and LLM $1.26 for 59 newly scored reviews. About $0.14 a show.
+- Cost attribution correction for cohorts 1 and 2: their totals above summed every `historical-backfill` ledger row in the window, and other sessions' West End and Broadway backfills use the same purpose. Re-attributed by `showId`, cohort-tagged scraping was $3.20 (cohort 1, plus $0.65 untagged) and $5.12 (cohort 2, plus $1.28 untagged); the rest belonged to other sessions. The LLM figures were already by run id and stand. Real spend for the three cohorts is therefore well under the $29.7 plus $4.8 the raw sums suggest.
+- Shard timeouts, again: with 2 shows per shard, 9 of 18 shards hit the 75-minute timeout. A shard spends about 4 minutes on setup, and each show takes about 25 to 30 minutes of per-outlet SERP searches (about 130 outlets), so 2 shows plus the post-gather rebuild does not fit. Re-gathering the 18 affected shows (one per shard) ran clean. The cohort 2 note that 2 shows per shard ran clean did not hold here. Use 1 show per shard for historical backfill.
+- Slot gate: the first runs waited 3 hours, and the re-gathers waited another 3 hours behind automatic deferral retries of three cohort 3 shows (Black Odyssey, Des Moines, The Fears). Black Odyssey was gathered twice as a result.
+- Wrong-production check: every cohort 3 show page was scanned for reviews dated more than 150 days before opening or more than 150 days after. None were found, including Merrily We Roll Along (NYTW 2022, Broadway 2023), Days of Wine and Roses, God of Carnage, and the short titles (Candida, Love, Elyria, Sandra).
+- Still at 0: Candida, David Blaine Presents Asi Wind's Inner Circle, Hyprov, Millennials Are Killing Musicals, The Goodbye Girl, God of Carnage, The Smuggler. Mostly magic, improv and concert-style runs with little critical coverage. God of Carnage is the one title here that would normally draw critics, so it is worth a manual look.
+
 ## Cohort 2 results (2026-10-28, BRO-6259): June 2023 to May 2024
 
 Process: same planner in two half-window runs (213 candidates after skips, 87 Playbill matches, 21 mismatches, 105 with no Playbill page), 83 promotable, 82 after dropping a duplicate (Death, Let Me Do My Show had a Lucille Lortel run and an Orpheum transfer under one id; the first run was kept). Two June 2024 shows that cohort 1's planner missed (What Became of Us, The Welkin) came through here and were kept. Four add-show plans, landed and applied. Gathered in 4 groups of 6, then 3 groups of about 20 with `parallel_jobs` set so each shard had 2 or 3 shows, then one cohort-wide catch-up pass, then `audit-aggregator-gap.yml` (`ingest_missing`, cohort `show_ids`) followed by another collect, score and rebuild.
