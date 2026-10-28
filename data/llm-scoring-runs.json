@@ -1121585,21 +1121585,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-28T22:31:00.103Z",
-    "completedAt": "2026-10-28T22:31:04.822Z",
+    "startedAt": "2026-10-28T22:31:30.570Z",
+    "completedAt": "2026-10-28T22:31:40.629Z",
     "totalReviews": 2,
-    "processed": 1,
-    "skipped": 1,
+    "processed": 2,
+    "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 5733,
-      "output": 317,
-      "cacheRead": 3807,
+      "input": 12917,
+      "output": 635,
+      "cacheRead": 7614,
       "cacheWrite": 0,
-      "total": 14685
+      "total": 31520
     },
-    "costUsd": 0.021924499999999996,
-    "runId": "40780063484",
+    "costUsd": 0.0483819,
+    "runId": "40780154810",
     "errorDetails": [],
     "validation": [
       {
@@ -1141452,16 +1141452,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "not-nobody-off-broadway-2026",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 0,
-          "total": 1
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "not-ready-for-prime-time-off-broadway-2025",
         "ourDistribution": {
           "up": 2,
@@ -1151925,6 +1151915,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "the-paparazzi-off-broadway-2026",
+        "ourDistribution": {
+          "up": 0,
+          "flat": 1,
+          "down": 1,
+          "total": 2
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-parisian-woman-2017",
         "ourDistribution": {
           "up": 10,
@@ -1156764,8 +1156764,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-28T22:32:14.759Z",
-    "completedAt": "2026-10-28T22:32:14.760Z",
+    "startedAt": "2026-10-28T22:33:21.657Z",
+    "completedAt": "2026-10-28T22:33:21.658Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1156778,7 +1156778,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40780063484",
+    "runId": "40780154810",
     "errorDetails": []
   }
 ]
