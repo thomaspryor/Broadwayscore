@@ -2728,6 +2728,9 @@ on:
       - 'package-lock.json'
       - 'next.config.*'
       - 'tsconfig.*'
+      # The TypeScript Check job's llm-scoring tsc reads these (BRO-6114).
+      - 'scripts/tsconfig.json'
+      - 'scripts/llm-scoring/tsconfig.json'
       - 'tailwind.config.*'
       - '.github/workflows/**'
       # CLAUDE.md edits get zero CI without this — the anchor-integrity gate in
