@@ -1121585,21 +1121585,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-28T22:28:53.142Z",
-    "completedAt": "2026-10-28T22:28:57.289Z",
-    "totalReviews": 65718,
-    "processed": 0,
-    "skipped": 65639,
+    "startedAt": "2026-10-28T22:31:00.103Z",
+    "completedAt": "2026-10-28T22:31:04.822Z",
+    "totalReviews": 2,
+    "processed": 1,
+    "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 5870,
-      "output": 160,
-      "cacheRead": 0,
-      "cacheWrite": 3807,
-      "total": 14694
+      "input": 5733,
+      "output": 317,
+      "cacheRead": 3807,
+      "cacheWrite": 0,
+      "total": 14685
     },
-    "costUsd": 0.03339065,
-    "runId": "40779616818",
+    "costUsd": 0.021924499999999996,
+    "runId": "40780063484",
     "errorDetails": [],
     "validation": [
       {
@@ -1141452,6 +1141452,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "not-nobody-off-broadway-2026",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "not-ready-for-prime-time-off-broadway-2025",
         "ourDistribution": {
           "up": 2,
@@ -1156754,21 +1156764,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-28T22:31:23.954Z",
-    "completedAt": "2026-10-28T22:31:35.420Z",
-    "totalReviews": 2,
-    "processed": 2,
+    "startedAt": "2026-10-28T22:32:14.759Z",
+    "completedAt": "2026-10-28T22:32:14.760Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 7363,
-      "output": 470,
+      "input": 0,
+      "output": 0,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 7833
+      "total": 0
     },
-    "costUsd": 0.019254000000000004,
-    "runId": "40779616818",
+    "costUsd": 0,
+    "runId": "40780063484",
     "errorDetails": []
   }
 ]
