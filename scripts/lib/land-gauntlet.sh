@@ -6,7 +6,8 @@
 #
 # Writes <out-dir>/<gate>.exit, <out-dir>/<gate>.log per gate and
 # <out-dir>/meta.json ({sha, root, wallMs, gates, exits}). ALWAYS exits 0
-# (except on a failed --checkout): the verdict is not "did any gate exit
+# (except on a failed --checkout, or a failed --deps-changed reinstall of the
+# checked-out tree): the verdict is not "did any gate exit
 # non-zero" but scripts/lib/land-gate-delta.js's new-failures-vs-base rule,
 # which needs THIS script run twice — once on origin/main (the base), once on
 # the rebased branch — and both results kept. Gate names must stay in step
@@ -24,7 +25,13 @@
 #   installed node_modules are the branch's — run `npm ci` on the checked-out
 #   tree before its gauntlet and again on --return-to, so a dependency bump
 #   that breaks a test on the branch is not forgiven by breaking the base
-#   with the same node_modules (Codex adversarial review).
+#   with the same node_modules (Codex adversarial review). Each install is
+#   retried once. A checkout-side install that still fails exits 1: judging
+#   the base on the branch's node_modules fails open. BRO-6114: npm_ci logged
+#   into <out-dir> before it existed (land.yml rm -rf's it first), so npm ci
+#   never ran, a warning printed, and the Next 16 bump landed a new
+#   tsc-llm-scoring failure as "red on base too". The return-side install
+#   stays a warning: the measurement is already complete by then.
 #
 # Gates (parity with test.yml's blocking jobs, minus data-validation):
 #   tsc, tsc-llm-scoring, next-lint                       (test.yml typescript-check)
@@ -98,7 +105,13 @@ while [ $# -gt 0 ]; do
 done
 if [ -n "$CHECKOUT" ] && [ -z "$RETURN_TO" ]; then echo "land-gauntlet.sh: --checkout needs --return-to" >&2; exit 2; fi
 
-npm_ci() { npm ci --prefer-offline --no-audit --no-fund > "$OUT/prep-npm-ci-$1.log" 2>&1 || echo "::warning::npm ci ($1) failed — see $OUT/prep-npm-ci-$1.log"; }
+mkdir -p "$OUT"  # before --checkout: npm_ci logs into it (BRO-6114)
+npm_ci() {
+  local log="$OUT/prep-npm-ci-$1.log"
+  npm ci --prefer-offline --no-audit --no-fund > "$log" 2>&1 && return 0
+  echo "npm ci ($1) failed once, retrying in 15s" | tee -a "$log"; sleep "${GAUNTLET_NPM_RETRY_SEC:-15}"
+  npm ci --prefer-offline --no-audit --no-fund >> "$log" 2>&1
+}
 BG_PID=""
 # The background lane runs in this same tree: stop it (and the test processes
 # under it) before any checkout. Only reached with BG_PID set on an early exit
@@ -117,15 +130,16 @@ trap on_exit EXIT
 if [ -n "$CHECKOUT" ]; then
   return_to() {
     git checkout -q -f --detach "$RETURN_TO" || { echo "::error::could not return to ${RETURN_TO:0:10}"; exit 1; }
-    [ "$DEPS_CHANGED" = 1 ] && npm_ci return
+    if [ "$DEPS_CHANGED" = 1 ] && ! npm_ci return; then echo "::warning::npm ci (return) failed twice — see $OUT/prep-npm-ci-return.log"; fi
     echo "back on ${RETURN_TO:0:10}"
   }
   git checkout -q -f --detach "$CHECKOUT" || { echo "::error::could not check out ${CHECKOUT:0:10}"; exit 1; }
-  [ "$DEPS_CHANGED" = 1 ] && npm_ci checkout
+  if [ "$DEPS_CHANGED" = 1 ] && ! npm_ci checkout; then
+    echo "::error::npm ci on ${CHECKOUT:0:10} failed twice — refusing to judge it with the other tree's node_modules (see $OUT/prep-npm-ci-checkout.log)"; exit 1
+  fi
   echo "judging ${CHECKOUT:0:10} (will return to ${RETURN_TO:0:10})"
 fi
 
-mkdir -p "$OUT"
 [ -z "${GAUNTLET_CHILD:-}" ] && rm -f "$OUT/SCOPED"  # a reused out-dir must not claim a scope
 ROOT=$(git rev-parse --show-toplevel)
 SHA=$(git rev-parse HEAD)
