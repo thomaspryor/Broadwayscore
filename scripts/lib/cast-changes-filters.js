@@ -1,5 +1,6 @@
 'use strict';
 
+const { isNoInfoRole } = require('./cast-role');
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 /**
@@ -147,8 +148,8 @@ function dedupeByPersonShow(events) {
       winner = { ...winner, addedDate: pinnedAdded };
     }
 
-    const newRole = winner.role && winner.role !== 'Unknown' ? winner.role : '';
-    const otherRole = loser.role && loser.role !== 'Unknown' ? loser.role : '';
+    const newRole = winner.role && !isNoInfoRole(winner.role) ? winner.role : '';
+    const otherRole = loser.role && !isNoInfoRole(loser.role) ? loser.role : '';
     if (newRole.length === 0 && otherRole.length > 0) {
       winner = { ...winner, role: otherRole };
     }
@@ -583,8 +584,8 @@ function dedupeCurrentCastByName(currentCast) {
     const existing = byName.get(key);
     const earlierSince = earliestAddedDate(existing.since, member.since);
     if (earlierSince != null) existing.since = earlierSince;
-    const existingRole = existing.role && existing.role !== 'Unknown' ? existing.role : '';
-    const newRole = member.role && member.role !== 'Unknown' ? member.role : '';
+    const existingRole = existing.role && !isNoInfoRole(existing.role) ? existing.role : '';
+    const newRole = member.role && !isNoInfoRole(member.role) ? member.role : '';
     if (newRole.length > existingRole.length) existing.role = member.role;
   }
   return order.map(key => byName.get(key));

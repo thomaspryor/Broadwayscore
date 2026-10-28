@@ -71,4 +71,18 @@ function findPlaceholderCastRoles(shows) {
   return out;
 }
 
-module.exports = { isPlaceholderRole, cleanRole, findPlaceholderCastRoles, PLACEHOLDER_ROLE_RE };
+// BRO-6479: scrapers default a missing role to 'Unknown' (scrape-cast-changes)
+// or 'Cast' (and 'cast'/'unknown' variants), 107 rows on 25 shows. They are
+// stored as-is (scrape-cast-changes uses 'Unknown' as an internal sentinel and
+// validate-data does not treat them as bad rows), but they carry no role: the
+// word "cast" is among the most common words in a review, so as a role CUE it
+// makes any capitalized name near it look like a departed actor.
+const NO_INFO_ROLE_RE = /^\s*(?:unknown|cast)\s*$/i;
+
+/** True for a placeholder OR an 'Unknown'/'Cast' default: no usable role information. */
+function isNoInfoRole(role) {
+  if (typeof role !== 'string') return false;
+  return isPlaceholderRole(role) || NO_INFO_ROLE_RE.test(role);
+}
+
+module.exports = { isPlaceholderRole, isNoInfoRole, cleanRole, findPlaceholderCastRoles, PLACEHOLDER_ROLE_RE, NO_INFO_ROLE_RE };

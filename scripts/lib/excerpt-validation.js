@@ -14,7 +14,7 @@
 const path = require('path');
 const fs = require('fs');
 const { isWithinPriorRun } = require('./wrong-production-autoclear');
-const { cleanRole } = require('./cast-role');
+const { cleanRole, isNoInfoRole } = require('./cast-role');
 
 // --- Layer 3: Cross-Show Validation ---
 
@@ -313,9 +313,14 @@ function buildRoleTerms(show) {
   (show.cast || []).forEach(c => {
     // BRO-6477: a placeholder ("role not specified") is not a character name;
     // its words would otherwise count as role cues near any name.
-    const role = c && cleanRole(c.role);
+    // BRO-6479: same for the 'Unknown'/'Cast' defaults. They stay in
+    // buildSafeNameTokens ("the Broadway Cast" must stay safe), only the cue goes.
+    const role = c && !isNoInfoRole(c.role) && cleanRole(c.role);
     if (!role) return;
-    role.split(/[/,]/).forEach(part => nameTokens(part).forEach(t => terms.add(t)));
+    role.split(/[/,]/).forEach(part => nameTokens(part).forEach(t => {
+      // Generic theatre words ("Ensemble", "Company") are as common in reviews as "cast".
+      if (!GENERIC_THEATRE_TOKENS.has(t)) terms.add(t);
+    }));
   });
   return terms;
 }
