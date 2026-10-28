@@ -135,3 +135,8 @@ test('the real createLinearIssue chokepoint refuses limbo cards before anything 
   t.after(() => { delete process.env.OWNER_JUDGMENT_LIMBO_REFUSE; });
   try { await createLinearIssue({ ...cases[2], client, reuseTwin: false, source: 'workflow:test' }); } catch (e) { assert.notEqual(e.code, 'OWNER_JUDGMENT_LIMBO'); }
 });
+
+test('park reason naming an owner-* script is not an owner-review park', async () => {
+  const { createLimboReason } = await import('../../scripts/lib/owner-judgment-limbo-guard.js');
+  assert.equal(createLimboReason({ body: 'x', parkReason: 'blocked on a fix for owner-alert-router dedupe first' }), null);
+});

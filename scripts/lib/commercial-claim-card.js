@@ -51,7 +51,7 @@ function buildNotes(item) {
     `- \`commercial.json\` entry for \`${item.slug}\` reflects the verified state (recouped applied OR archived with reason), OR the entry has \`humanReviewedDesignation: true\` set.`,
     '- Next Friday/Saturday run does NOT re-surface the same entry (verified by checking the archive for the rejected URL, or by the apply removing the pending entry).',
     '',
-    `VERIFY: node scripts/check-review-item-resolved.js --claim=${/^[a-z0-9][a-z0-9:_-]{0,120}$/.test(key) ? key : item.slug}`,
+    ...(/^[a-z0-9][a-z0-9:_-]{0,120}$/.test(key) ? [`VERIFY: node scripts/check-review-item-resolved.js --claim=${key}`] : []),
   ];
   return lines.join('\n');
 }
