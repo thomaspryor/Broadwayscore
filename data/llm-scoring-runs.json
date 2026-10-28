@@ -1156736,21 +1156736,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-28T23:00:37.972Z",
-    "completedAt": "2026-10-28T23:01:04.521Z",
-    "totalReviews": 6,
-    "processed": 5,
-    "skipped": 1,
+    "startedAt": "2026-10-28T23:00:22.347Z",
+    "completedAt": "2026-10-28T23:01:00.204Z",
+    "totalReviews": 8,
+    "processed": 6,
+    "skipped": 2,
     "errors": 0,
     "tokensUsed": {
-      "input": 32071,
-      "output": 1634,
-      "cacheRead": 19035,
-      "cacheWrite": 0,
-      "total": 78530
+      "input": 37614,
+      "output": 1971,
+      "cacheRead": 18990,
+      "cacheWrite": 3762,
+      "total": 92875
     },
-    "costUsd": 0.12093879999999999,
-    "runId": "40783628885",
+    "costUsd": 0.1556643,
+    "runId": "40783589165",
     "errorDetails": [],
     "validation": [
       {
@@ -1160501,10 +1160501,10 @@
       {
         "showId": "arcadia-off-broadway-2023",
         "ourDistribution": {
-          "up": 2,
+          "up": 1,
           "flat": 0,
-          "down": 2,
-          "total": 4
+          "down": 1,
+          "total": 2
         },
         "hasDisagreement": false
       },
@@ -1177092,6 +1177092,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "on-sugarland-off-broadway-2022",
+        "ourDistribution": {
+          "up": 5,
+          "flat": 1,
+          "down": 0,
+          "total": 6
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "on-the-evolutionary-function-of-shame-off-broadway-2025",
         "ourDistribution": {
           "up": 3,
@@ -1180642,16 +1180652,6 @@
           "flat": 2,
           "down": 6,
           "total": 27
-        },
-        "hasDisagreement": false
-      },
-      {
-        "showId": "shhhh-off-broadway-2022",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 3,
-          "down": 1,
-          "total": 5
         },
         "hasDisagreement": false
       },
@@ -1191965,8 +1191965,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-28T23:03:17.166Z",
-    "completedAt": "2026-10-28T23:03:17.168Z",
+    "startedAt": "2026-10-28T23:03:16.781Z",
+    "completedAt": "2026-10-28T23:03:16.791Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1191979,7 +1191979,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40783628885",
+    "runId": "40783589165",
     "errorDetails": []
   }
 ]
