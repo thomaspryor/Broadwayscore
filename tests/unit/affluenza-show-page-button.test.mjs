@@ -22,9 +22,20 @@ Module._resolveFilename = function (id, ...args) {
     ? fileURLToPath(new URL(`../../src/${id.slice(2)}`, import.meta.url))
     : id, ...args);
 };
+// Supabase's GoTrueClient opens a BroadcastChannel that keeps Node alive after
+// the tests pass, so the acceptance command never exits. Track and close them.
+const channels = [];
+const NativeBroadcastChannel = globalThis.BroadcastChannel;
+if (NativeBroadcastChannel) {
+  globalThis.BroadcastChannel = class extends NativeBroadcastChannel {
+    constructor(...args) { super(...args); channels.push(this); }
+  };
+}
 after(() => {
   Module._resolveFilename = resolveFilename;
   loader.enabled(false);
+  channels.forEach(c => c.close());
+  if (NativeBroadcastChannel) globalThis.BroadcastChannel = NativeBroadcastChannel;
 });
 
 const React = require('react');
