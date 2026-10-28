@@ -1,38 +1,21 @@
 {
-  "updatedAt": "2026-10-28T02:57:54.250Z",
-  "processed": 610,
-  "failed": 288,
-  "successRate": "67.9%",
+  "updatedAt": "2026-10-28T03:01:25.691Z",
+  "processed": 541,
+  "failed": 238,
+  "successRate": "69.4%",
   "tierBreakdown": {
     "playwright": 341,
     "amp": 5,
-    "browserbase": 16,
+    "browserbase": 15,
     "directCookies": 0,
     "scrapingdog": 41,
     "scrapingbee": 33,
     "brightdata": 0,
-    "archiveToday": 59,
-    "archive": 166
+    "archiveToday": 63,
+    "archive": 135
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-10-27T21:55:01.675Z",
-      "event": "bb-session",
-      "session": "a73a5b83",
-      "url": "https://www.wsj.com/articles/here-we-are-review-stephen-sondheims-satirical-fina"
-    },
-    {
-      "t": "2026-10-27T21:55:02.203Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T22:00:16.574Z",
-      "event": "bb-session",
-      "session": "7e1379ed",
-      "url": "https://www.wsj.com/articles/partnership-review-mint-theater-company-elizabeth-b"
-    },
     {
       "t": "2026-10-27T22:00:17.075Z",
       "event": "bb-cookie-inject",
@@ -127,6 +110,23 @@
       "event": "bb-session",
       "session": "90232246",
       "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-28T02:53:19.533Z",
+      "event": "bb-session",
+      "session": "485807c5",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T02:53:20.354Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T02:57:47.037Z",
+      "event": "bb-session",
+      "session": "39296c93",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ]
 }
