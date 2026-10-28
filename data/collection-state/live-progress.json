@@ -1,42 +1,19 @@
 {
-  "updatedAt": "2026-10-28T23:16:18.316Z",
-  "processed": 91,
-  "failed": 67,
-  "successRate": "57.6%",
+  "updatedAt": "2026-10-28T23:27:13.065Z",
+  "processed": 43,
+  "failed": 2,
+  "successRate": "95.6%",
   "tierBreakdown": {
-    "playwright": 63,
-    "amp": 1,
-    "browserbase": 2,
+    "playwright": 27,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 9,
+    "scrapingdog": 1,
     "scrapingbee": 5,
     "brightdata": 0,
-    "archiveToday": 8,
-    "archive": 21
+    "archiveToday": 1,
+    "archive": 10
   },
-  "browserbaseSessions": 2,
-  "recentActivity": [
-    {
-      "t": "2026-10-28T22:38:02.237Z",
-      "event": "bb-session",
-      "session": "09c973dd",
-      "url": "https://www.nytimes.com/2022/01/03/theater/streets-of-new-york-review.html?eafs_"
-    },
-    {
-      "t": "2026-10-28T22:38:02.672Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-28T22:46:24.560Z",
-      "event": "bb-session",
-      "session": "d8495c21",
-      "url": "https://www.wsj.com/articles/romeo-juliet-review-romance-on-broadway-rachel-zegl"
-    },
-    {
-      "t": "2026-10-28T22:46:25.272Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    }
-  ]
+  "browserbaseSessions": 0,
+  "recentActivity": []
 }
