@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-28T13:00:31.933Z",
-  "processed": 220,
-  "failed": 126,
-  "successRate": "63.6%",
+  "updatedAt": "2026-10-28T13:01:18.337Z",
+  "processed": 113,
+  "failed": 19,
+  "successRate": "85.6%",
   "tierBreakdown": {
-    "playwright": 110,
+    "playwright": 54,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 0,
-    "brightdata": 7,
-    "archiveToday": 25,
-    "archive": 29
+    "scrapingdog": 3,
+    "scrapingbee": 5,
+    "brightdata": 13,
+    "archiveToday": 2,
+    "archive": 48
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-28T12:27:23.487Z",
@@ -36,80 +36,62 @@
     {
       "t": "2026-10-28T12:27:40.722Z",
       "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T12:42:59.351Z",
+      "event": "bb-session",
+      "session": "52384d63",
+      "url": "https://www.wsj.com/articles/a-bright-new-boise-review-fervent-faith-of-a-once-a"
+    },
+    {
+      "t": "2026-10-28T12:42:59.660Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T12:43:16.360Z",
+      "event": "bb-session",
+      "session": "8f10c139",
+      "url": "https://www.wsj.com/articles/a-bright-new-boise-review-fervent-faith-of-a-once-a"
+    },
+    {
+      "t": "2026-10-28T12:43:16.636Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T12:47:42.166Z",
+      "event": "bb-session",
+      "session": "7b0b0bc7",
+      "url": "https://www.nytimes.com/2023/02/16/theater/the-wanderers-review.html?searchResul"
+    },
+    {
+      "t": "2026-10-28T12:47:42.492Z",
+      "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-28T11:53:10.140Z",
+      "t": "2026-10-28T12:49:06.286Z",
       "event": "bb-session",
-      "session": "35a7f660",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "4a8bf65f",
+      "url": "https://www.wsj.com/articles/the-wanderers-review-a-movie-star-distraction-e236b"
     },
     {
-      "t": "2026-10-28T11:53:10.810Z",
+      "t": "2026-10-28T12:49:06.633Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-28T11:55:17.825Z",
+      "t": "2026-10-28T12:49:23.306Z",
       "event": "bb-session",
-      "session": "7a1d4dfb",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+      "session": "5108012b",
+      "url": "https://www.wsj.com/articles/the-wanderers-review-a-movie-star-distraction-e236b"
     },
     {
-      "t": "2026-10-28T11:58:00.253Z",
-      "event": "bb-session",
-      "session": "02f1b00a",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-28T11:58:00.880Z",
+      "t": "2026-10-28T12:49:23.555Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-28T11:54:48.620Z",
-      "event": "bb-session",
-      "session": "20f18c53",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-10-28T11:58:04.686Z",
-      "event": "bb-session",
-      "session": "0f9279ff",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-28T11:58:05.509Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-28T11:58:16.586Z",
-      "event": "bb-session",
-      "session": "82f26bbc",
-      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
-    },
-    {
-      "t": "2026-10-28T11:58:17.402Z",
-      "event": "bb-cookie-inject",
-      "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-28T12:54:37.310Z",
-      "event": "bb-session",
-      "session": "2971b8a7",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-10-28T12:56:13.939Z",
-      "event": "bb-session",
-      "session": "c71608b6",
-      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
-    },
-    {
-      "t": "2026-10-28T12:56:14.352Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "wsj.com"
     }
   ]
 }
