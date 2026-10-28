@@ -1,70 +1,63 @@
 {
-  "runDate": "2026-10-28T15:32:54.635Z",
+  "runDate": "2026-10-28T16:04:51.374Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 1000,
+    "maxReviews": 100,
     "priority": "all",
-    "showFilter": "candida-off-broadway-2022,everythings-fine-off-broadway-2022,merrily-we-roll-along-off-broadway-2022,david-blaine-presents-asi-winds-inner-circle-off-broadway-2022,remember-this-the-lesson-of-jan-karski-off-broadway-2022,chester-bailey-off-broadway-2022,hyprov-improv-under-hypnosis-off-broadway-2022,circle-jerk-off-broadway-2022,evanston-salt-costs-climbing-off-broadway-2022,sandra-off-broadway-2022,jack-was-kind-off-broadway-2022,your-own-personal-exegesis-off-broadway-2022,bernardas-daughters-off-broadway-2023,the-fears-off-broadway-2023,a-simulacrum-off-broadway-2023,sorry-for-your-loss-off-broadway-2023,millennials-are-killing-musicals-off-broadway-2023,the-goodbye-girl-off-broadway-2023,days-of-wine-and-roses-off-broadway-2023,god-of-carnage-off-broadway-2023,elyria-off-broadway-2023,the-knight-of-the-burning-pestle-off-broadway-2023,a-bright-new-boise-off-broadway-2023,love-off-broadway-2023,the-good-john-proctor-off-broadway-2023,how-to-defend-yourself-off-broadway-2023,black-odyssey-off-broadway-2023,dog-man-the-musical-off-broadway-2023,cornelia-street-off-broadway-2023,the-smuggler-off-broadway-2023,des-moines-off-broadway-2022,a-childs-christmas-in-wales-off-broadway-2022,the-very-hungry-caterpillar-show-off-broadway-2023,the-wanderers-off-broadway-2023",
+    "showFilter": "slanted-floors-off-broadway-2026,tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 8,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 2,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 1,
-    "tier2Attempts": 1,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 2,
-    "totalFailed": 0,
+    "tier4Attempts": 1,
+    "tier4Success": 1,
+    "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.3,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 8,
-    "failed": 0,
+    "processed": 0,
+    "failed": 1,
     "shows": [
-      "a-bright-new-boise-off-broadway-2023",
-      "cornelia-street-off-broadway-2023",
-      "elyria-off-broadway-2023",
-      "how-to-defend-yourself-off-broadway-2023",
-      "remember-this-the-lesson-of-jan-karski-off-broadway-2022",
-      "the-fears-off-broadway-2023",
-      "the-goodbye-girl-off-broadway-2023",
-      "the-wanderers-off-broadway-2023"
+      "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -72,52 +65,35 @@
       "failed": 0
     }
   },
-  "processed": [
-    "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json",
-    "the-goodbye-girl-off-broadway-2023/forbes--jane-levere.json",
-    "how-to-defend-yourself-off-broadway-2023/timeout--raven-snook.json",
-    "elyria-off-broadway-2023/timeout--raven-snook.json",
-    "a-bright-new-boise-off-broadway-2023/timeout--raven-snook.json",
-    "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
-    "cornelia-street-off-broadway-2023/dailybeast--tim-teeman.json",
-    "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json"
+  "processed": [],
+  "failed": [
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
   ],
-  "failed": [],
   "cumulativeResumedState": {
-    "processed": [
-      "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json",
-      "the-goodbye-girl-off-broadway-2023/forbes--jane-levere.json",
-      "how-to-defend-yourself-off-broadway-2023/timeout--raven-snook.json",
-      "elyria-off-broadway-2023/timeout--raven-snook.json",
-      "a-bright-new-boise-off-broadway-2023/timeout--raven-snook.json",
-      "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
-      "cornelia-street-off-broadway-2023/dailybeast--tim-teeman.json",
-      "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json"
-    ],
-    "failed": []
+    "processed": [],
+    "failed": [
+      "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json"
+    ]
   },
   "tierDetails": {
-    "playwright": [
-      "the-fears-off-broadway-2023/theater-life--paulanne-simmons.json",
-      "how-to-defend-yourself-off-broadway-2023/timeout--raven-snook.json",
-      "elyria-off-broadway-2023/timeout--raven-snook.json",
-      "a-bright-new-boise-off-broadway-2023/timeout--raven-snook.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json"
-    ],
+    "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-goodbye-girl-off-broadway-2023/forbes--jane-levere.json",
-      "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
-      "cornelia-street-off-broadway-2023/dailybeast--tim-teeman.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "phusionpassenger": {
+      "count": 1,
+      "domain": "phusionpassenger.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
