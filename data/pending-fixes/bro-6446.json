@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6446",
   "planId": "f804fa7d-1182-415b-ba21-e5f024b23a07",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T02:42:47.592Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "commercial.json: appropriate.humanReviewedDesignation"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T18:13:01.311Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for the-humans-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for what-the-constitution-means-to-me-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for what-the-constitution-means-to-me-2019"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: designation updated for appropriate"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: humanReviewedDesignation updated for appropriate"
+    }
+  ],
+  "executedIn": "ci"
 }
