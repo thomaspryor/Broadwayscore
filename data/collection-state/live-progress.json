@@ -1,34 +1,23 @@
 {
-  "updatedAt": "2026-10-28T12:02:09.754Z",
-  "processed": 108,
-  "failed": 62,
-  "successRate": "63.5%",
+  "updatedAt": "2026-10-28T12:09:48.643Z",
+  "processed": 216,
+  "failed": 118,
+  "successRate": "64.7%",
   "tierBreakdown": {
-    "playwright": 60,
+    "playwright": 106,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 1,
-    "brightdata": 4,
-    "archiveToday": 19,
-    "archive": 29
+    "scrapingdog": 12,
+    "scrapingbee": 8,
+    "brightdata": 6,
+    "archiveToday": 21,
+    "archive": 68
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 16,
   "recentActivity": [
     {
-      "t": "2026-10-28T11:37:44.829Z",
-      "event": "bb-session",
-      "session": "86dc73c5",
-      "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-man"
-    },
-    {
-      "t": "2026-10-28T11:37:45.194Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-28T11:53:11.271Z",
+      "t": "2026-10-28T10:50:58.264Z",
       "event": "bb-session",
       "session": "e757cd66",
       "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
@@ -91,8 +80,30 @@
     {
       "t": "2026-10-28T11:54:48.620Z",
       "event": "bb-session",
-      "session": "af1cb097",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "20f18c53",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-28T11:58:04.686Z",
+      "event": "bb-session",
+      "session": "0f9279ff",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-28T11:58:05.509Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-28T11:58:16.586Z",
+      "event": "bb-session",
+      "session": "82f26bbc",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-28T11:58:17.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
