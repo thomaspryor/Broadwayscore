@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-28T01:00:16.614Z",
+  "timestamp": "2026-10-28T01:36:16.507Z",
   "stats": {
     "totalReviews": 63977,
     "alreadyFlagged": 21774,
@@ -8,7 +8,7 @@
     "tvFilmSignals": 1811,
     "londonSignals": 3061,
     "offBroadwaySignals": 577,
-    "yearMismatch": 217,
+    "yearMismatch": 220,
     "noPublishDate": 5661
   },
   "findings": [
@@ -9035,6 +9035,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "file": "musical-theatre-review--ron-cohen.json",
+      "score": 79,
+      "publishDate": "April 30th, 2017",
+      "url": "http://musicaltheatrereview.com/charlie-and-the-chocolate-factory-lunt-fontanne-theatre-new-york/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2013 (2x) more than 2017 (0x). 2013 matches production: charlie-and-the-chocolate-factory-west-end-2013"
         }
       ]
     },
@@ -46693,6 +46712,39 @@
       ]
     },
     {
+      "showId": "the-effect-west-end-2023",
+      "file": "broadwayworld--alexander-cohen.json",
+      "score": 76,
+      "publishDate": "2023-08-09",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-EFFECT-National-Theatre-20230810",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2023 (0x). 2012 matches production: the-effect-west-end-2012"
+        }
+      ]
+    },
+    {
+      "showId": "the-effect-west-end-2023",
+      "file": "independent--alice-saville.json",
+      "score": 79,
+      "publishDate": "2023-08-11",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-effect-review-national-theatre-b2390767.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2012 (2x) more than 2023 (0x). 2012 matches production: the-effect-west-end-2012"
+        }
+      ]
+    },
+    {
       "showId": "the-elephant-man-2014",
       "file": "newsday--linda-winer.json",
       "score": 78,
@@ -68635,20 +68687,6 @@
       "score": 72,
       "publishDate": null,
       "url": "https://www.curtainup.com/charlieandthechocolatefactorybway17.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "charlie-and-the-chocolate-factory-2017",
-      "file": "musical-theatre-review--ron-cohen.json",
-      "score": 79,
-      "publishDate": "April 30th, 2017",
-      "url": "http://musicaltheatrereview.com/charlie-and-the-chocolate-factory-lunt-fontanne-theatre-new-york/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -97556,20 +97594,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
-        }
-      ]
-    },
-    {
-      "showId": "the-effect-west-end-2023",
-      "file": "independent--alice-saville.json",
-      "score": 79,
-      "publishDate": "2023-08-11",
-      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-effect-review-national-theatre-b2390767.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
