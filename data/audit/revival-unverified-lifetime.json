@@ -1,11 +1,13 @@
 {
-  "updatedAt": "2026-10-27T08:11:15.227Z",
-  "scanned": 2940,
-  "showsWithViolations": 31,
-  "totalViolations": 31,
-  "newSinceLastRun": 1,
+  "updatedAt": "2026-10-28T08:47:58.767Z",
+  "scanned": 3126,
+  "showsWithViolations": 34,
+  "totalViolations": 34,
+  "newSinceLastRun": 3,
   "newViolationKeys": [
-    "phyl-off-broadway-2026"
+    "the-play-that-goes-wrong-west-end-2021",
+    "aftermath-art-new-york-off-broadway-2026",
+    "dirty-dancing-west-end-2027"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -20,6 +22,7 @@
     "harry-potter-2021",
     "hadestown-west-end-2024",
     "hamilton-west-end-2021",
+    "the-play-that-goes-wrong-west-end-2021",
     "my-neighbour-totoro-west-end-2025",
     "the-mousetrap-west-end-2021",
     "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -34,10 +37,12 @@
     "affluenza-off-west-end-2026",
     "martin-guerre-west-end-2026",
     "tru-off-west-end-2026",
+    "aftermath-art-new-york-off-broadway-2026",
     "memoirs-of-amorous-gentlemen-off-broadway-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "school-pictures-off-broadway-2026",
     "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+    "dirty-dancing-west-end-2027",
     "the-prime-of-miss-jean-brodie-royal-lyceum-regional-2026"
   ],
   "hits": [
@@ -145,6 +150,15 @@
       "title": "Hamilton",
       "openingDate": "2017-12-21",
       "message": "hamilton-west-end-2021 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-play-that-goes-wrong-west-end-2021",
+      "title": "The Play That Goes Wrong",
+      "openingDate": "2014-09-18",
+      "message": "the-play-that-goes-wrong-west-end-2021 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -276,6 +290,15 @@
       ]
     },
     {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "openingDate": "2026-10-24",
+      "message": "aftermath-art-new-york-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "memoirs-of-amorous-gentlemen-off-broadway-2026",
       "title": "Memoirs of Amorous Gentlemen",
       "openingDate": "2026-10-15",
@@ -307,6 +330,15 @@
       "title": "Going Bacharach: The Songs of an Icon",
       "openingDate": "2026-09-16",
       "message": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "dirty-dancing-west-end-2027",
+      "title": "Dirty Dancing",
+      "openingDate": "2027-01-25",
+      "message": "dirty-dancing-west-end-2027 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

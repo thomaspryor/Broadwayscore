@@ -1,20 +1,22 @@
 {
-  "updatedAt": "2026-10-27T08:08:55.521Z",
-  "scanned": 2940,
-  "showsWithViolations": 118,
-  "totalViolations": 149,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-10-28T08:45:45.003Z",
+  "scanned": 3126,
+  "showsWithViolations": 122,
+  "totalViolations": 153,
+  "newSinceLastRun": 4,
   "handled": {
-    "temporal-override-low-confidence": 815,
-    "not-shipped": 55,
-    "duplicate-not-shipped": 57,
-    "rebuild-skip-audit": 31,
+    "temporal-override-low-confidence": 826,
+    "not-shipped": 56,
+    "duplicate-not-shipped": 58,
+    "rebuild-skip-audit": 32,
     "manual-clear-reason": 13,
-    "prior-run-or-tour-leg": 46
+    "prior-run-or-tour-leg": 45
   },
   "newViolationKeys": [
-    "oh-mary-2024::deadline--unknown.json",
-    "blood-of-my-blood-west-end-2026::islingtontribune--unknown.json"
+    "funny-girl-2022::theatermania--hayley-levitt.json",
+    "la-traviata-off-broadway-2026::times-uk--richard-morrison.json",
+    "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json",
+    "merrily-we-roll-along-off-broadway-2022::musical-theatre-review--ron-cohen.json"
   ],
   "violationKeys": [
     "cats-the-jellicle-ball-2026::nytg--kyle-turner.json",
@@ -26,6 +28,7 @@
     "a-dolls-house-2023::talkinbroadway--matthew-murray.json",
     "between-riverside-and-crazy-2022::vulture--jackson-mchenry.json",
     "into-the-woods-2022::thestage--neil-norman.json",
+    "funny-girl-2022::theatermania--hayley-levitt.json",
     "the-rose-tattoo-2019::broadwayworld--michael-dale.json",
     "all-my-sons-2019::cititour--brian-scott-lipton.json",
     "all-my-sons-2019::latimes--charles-mcnulty.json",
@@ -74,6 +77,7 @@
     "archduke-west-end-2026::artsdesk--unknown.json",
     "the-enormous-crocodile-west-end-2026::musical-theatre-review--unknown.json",
     "titanique-west-end-2024::telegraph--dominic-cavendish.json",
+    "la-traviata-off-broadway-2026::times-uk--richard-morrison.json",
     "burlesque-west-end-2026::telegraph--claire-allfree.json",
     "mass-west-end-2026::artsdesk--demetrios-matheou.json",
     "cats-west-end-2026::jonathan-baz--jonathan-baz.json",
@@ -165,7 +169,9 @@
     "the-importance-of-being-earnest-west-end-2024::broadwayworld--unknown.json",
     "the-importance-of-being-earnest-west-end-2024::londontheatre1--unknown.json",
     "aint-done-bad-off-broadway-2024::theatre-reviews-limited--david-roberts.json",
-    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json"
+    "angry-alan-off-broadway-2025::pages-on-stages--mason-pilevsky.json",
+    "school-of-rock-west-end-2016::timeout-london--andrzej-lukowski.json",
+    "merrily-we-roll-along-off-broadway-2022::musical-theatre-review--ron-cohen.json"
   ],
   "hits": [
     {
@@ -214,7 +220,7 @@
       "showId": "oh-mary-2024",
       "title": "Oh, Mary!",
       "openingDate": "2024-07-11",
-      "message": "deadline/Greg Evans (deadline--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 827d of opening, likely correct production] This is a news piece reporting on casting changes a — https://deadline.com/2026/10/j-harrison-ghee-oh-mary-john-andrew-morrison-1237165698/",
+      "message": "deadline/Greg Evans (deadline--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 827d of opening, likely correct production] This is a news/casting announcement article about p — https://deadline.com/2026/10/j-harrison-ghee-oh-mary-john-andrew-morrison-1237165698/",
       "violations": [
         {
           "filename": "deadline--unknown.json",
@@ -223,10 +229,10 @@
           "criticName": "Greg Evans",
           "matchedBy": "outlet+critic",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 827d of opening, likely correct production] This is a news piece reporting on casting changes a",
+          "cvReasoning": "[OVERRIDE: review within 827d of opening, likely correct production] This is a news/casting announcement article about p",
           "cvIssues": [
-            "This is a news article about casting changes and J. Harrison Ghee's medical leave from the touring production, not a theater review.",
-            "The article explicitly refers to 'the touring production of Oh, Mary!' and 'the tour' — it is reviewing/reporting on the national tour, not the Broadway production at Lyceum Theatre."
+            "This is a news article about casting/personnel changes, not a review. It contains no critic's assessment of the show's quality, performance, staging, or direction.",
+            "The article focuses on the touring production of 'Oh, Mary!', not the Broadway production. Multiple explicit references: 'the touring production of Oh, Mary!', 'the tour', 'the tour's first', 'the remainder of the tour's first.' The only Broadway mention is contextual background (opening date, venue, that it 'continues to play at the Lyceum Theatre'), but the article's opinion-bearing content (casting news, personnel announcements) evaluates the touring company."
           ]
         }
       ]
@@ -340,6 +346,27 @@
           "cvIssues": [
             "Review evaluates a production at Theatre Royal Bath, not the Broadway production at St. James Theatre",
             "The scraped text explicitly states the show 'was originally slated to open at the Old Vic in April this year' but 'was abruptly cancelled' and 'The show now makes its premiere at Theatre Royal Bath'"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "funny-girl-2022",
+      "title": "Funny Girl",
+      "openingDate": "2022-04-24",
+      "message": "theatermania/Hayley Levitt (theatermania--hayley-levitt.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 0d of opening, likely correct production] While this is a legitimate review of a Funny Girl Bro — https://www.theatermania.com/broadway/reviews/review-lea-michele-funny-girl-broadway_94440.html",
+      "violations": [
+        {
+          "filename": "theatermania--hayley-levitt.json",
+          "url": "https://www.theatermania.com/broadway/reviews/review-lea-michele-funny-girl-broadway_94440.html",
+          "outletId": "theatermania",
+          "criticName": "Hayley Levitt",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 0d of opening, likely correct production] While this is a legitimate review of a Funny Girl Bro",
+          "cvIssues": [
+            "Review is of Lea Michele's performance in Funny Girl, not Beanie Feldstein's performance as expected",
+            "The scraped review describes Michele as the 'new star' and 'new Fanny Brice' replacing Feldstein, indicating this is a later revival, not the April 24, 2022 opening"
           ]
         }
       ]
@@ -1168,7 +1195,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "openingDate": "2026-10-07",
-      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 19d of opening, likely correct production] This is a legitimate theater review (contains critic — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
+      "message": "guardian/Unknown (guardian--unknown.json) SHIPPED with CV.wrongProduction=true (undefined confidence) and no clear flag; reasoning: (none) — https://www.theguardian.com/stage/2026/oct/10/blood-of-my-blood-review-royal-court-theatre-london\nislingtontribune/Unknown (islingtontribune--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 20d of opening, likely correct production] This is a well-written review of 'Blood of my Blood' — https://www.islingtontribune.co.uk/article/review-blood-of-my-blood-at-royal-court-theatre",
       "violations": [
         {
           "filename": "guardian--unknown.json",
@@ -1186,10 +1213,10 @@
           "criticName": "Unknown",
           "matchedBy": "url",
           "cvConfidence": "low",
-          "cvReasoning": "[OVERRIDE: review within 19d of opening, likely correct production] This is a legitimate theater review (contains critic",
+          "cvReasoning": "[OVERRIDE: review within 20d of opening, likely correct production] This is a well-written review of 'Blood of my Blood'",
           "cvIssues": [
-            "Review publish date (15th October) does NOT match expected review publish date (2026-10-26)",
-            "Review publish date (15th October) is BEFORE the West End opening date (2026-10-07) — this is temporally impossible"
+            "Review publish date (15 October) is 22 days BEFORE the expected West End opening date (7 October 2026) — temporally impossible",
+            "The review text does not name Royal Court as the venue"
           ]
         }
       ]
@@ -1253,6 +1280,27 @@
           "cvIssues": [
             "Review describes an 'off-Broadway hit' — this is a Broadway/New York production, not the West End production",
             "No mention of Criterion Theatre (the expected West End venue)"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "la-traviata-off-broadway-2026",
+      "title": "La Traviata",
+      "openingDate": "2026-03-20",
+      "message": "times-uk/Richard Morrison (times-uk--richard-morrison.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 69d of opening, likely correct production] This is a legitimate review of a La traviata product — https://www.thetimes.com/culture/classical-opera/article/la-traviata-review-i-have-never-seen-a-better-violetta-7zjftkrw9",
+      "violations": [
+        {
+          "filename": "times-uk--richard-morrison.json",
+          "url": "https://www.thetimes.com/culture/classical-opera/article/la-traviata-review-i-have-never-seen-a-better-violetta-7zjftkrw9",
+          "outletId": "times-uk",
+          "criticName": "Richard Morrison",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 69d of opening, likely correct production] This is a legitimate review of a La traviata product",
+          "cvIssues": [
+            "Review is of Garsington Opera's production of La traviata, not the Met Opera production",
+            "Venue explicitly named as 'Garsington' with website garsingtonopera.org and run dates 'to Jul 24'"
           ]
         }
       ]
@@ -1861,7 +1909,7 @@
     {
       "showId": "crybabies-the-scaring-off-west-end-2026",
       "title": "Crybabies: The Scaring",
-      "openingDate": null,
+      "openingDate": "2026-09-03",
       "message": "london-box-office/Stuart King (london-box-office--stuart-king.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: The article is a valid review of Crybabies: The Scaring at Soho Theatre, but it is truncated (incomplete footer text) an — https://www.londonboxoffice.co.uk/news/post/crybabies-the-scaring-soho-theatre-review",
       "violations": [
         {
@@ -1966,7 +2014,7 @@
     {
       "showId": "the-curious-case-of-benjamin-button-west-end-2024",
       "title": "The Curious Case of Benjamin Button",
-      "openingDate": null,
+      "openingDate": "2024-11-06",
       "message": "broadwayworld/Aliya Al-Hassan (broadwayworld--unknown.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a valid theater review, but it reviews the WRONG production. The critic explicitly references 'the previous 2023 — https://www.broadwayworld.com/westend/article/Review-THE-CURIOUS-CASE-OF-BENJAMIN-BUTTON-Ambassadors-Theatre-20241107",
       "violations": [
         {
@@ -1987,7 +2035,7 @@
     {
       "showId": "robin-hood-west-end-2024",
       "title": "Robin Hood",
-      "openingDate": null,
+      "openingDate": "2024-12-12",
       "message": "whatsonstage/Tom Millward (whatsonstage--tom-millward.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review of Robin Hood at London Palladium (published December 2024, by Tom Millward for WhatsOnStage, con — https://www.whatsonstage.com/news/robin-hood-pantomime-at-the-london-palladium-review_1657477/",
       "violations": [
         {
@@ -2532,7 +2580,7 @@
     {
       "showId": "why-am-i-so-single-west-end-2024",
       "title": "Why Am I So Single?",
-      "openingDate": null,
+      "openingDate": "2024-09-11",
       "message": "artsdesk/Gary Naylor (artsdesk--gary-naylor.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid review by Gary Naylor of 'Why Am I So Single?' published by The Arts Desk, but it reviews the Chichester — https://theartsdesk.com/theatre/why-am-i-so-single-garrick-theatre-review-superb-songs-zeitgeist-surfing-show\ntimes-uk/Clive Davis (times-uk--clive-davis.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: This is a valid theater review of 'Why Am I So Single?' with critical assessment, but the scraped content does not inclu — https://www.thetimes.com/culture/theatre-dance/article/why-am-i-so-single-review-the-makers-of-six-serve-up-a-laugh-a-minute-feast-x6cnwfjrd",
       "violations": [
         {
@@ -2997,6 +3045,48 @@
           "cvIssues": [
             "Review describes John Krasinski in the lead role; Krasinski is a major film/TV star and any Off-Broadway production with him would be extensively documented and cross-verifiable. No credible Off-Broadway production of 'Angry Alan' with Krasinski exists in records for June 2025.",
             "The review contains detailed performance analysis of a specific actor in a specific staging, but the production details do not match any known Off-Broadway 'Angry Alan' production."
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "school-of-rock-west-end-2016",
+      "title": "School of Rock",
+      "openingDate": "2016-10-22",
+      "message": "timeout-london/Andrzej Lukowski (timeout-london--andrzej-lukowski.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 79d of opening, likely correct production] While this is clearly a review of School of Rock the — https://www.timeout.com/london/theatre/school-of-rock-the-musical",
+      "violations": [
+        {
+          "filename": "timeout-london--andrzej-lukowski.json",
+          "url": "https://www.timeout.com/london/theatre/school-of-rock-the-musical",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "matchedBy": "url",
+          "cvConfidence": "low",
+          "cvReasoning": "[OVERRIDE: review within 79d of opening, likely correct production] While this is clearly a review of School of Rock the",
+          "cvIssues": [
+            "Scraped content does not match the expected excerpt from the known Time Out London review by Andrzej Lukowski",
+            "The scraped text contains different critical analysis and structure than the expected review"
+          ]
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-off-broadway-2022",
+      "title": "Merrily We Roll Along",
+      "openingDate": "2022-12-12",
+      "message": "musical-theatre-review/Ron Cohen (musical-theatre-review--ron-cohen.json) SHIPPED with CV.wrongProduction=true (high confidence) and no clear flag; reasoning: This is a legitimate theater review (high confidence on article type), but it reviews a different production of 'Merrily — https://musicaltheatrereview.com/merrily-we-roll-along-laura-pels-theatre-new-york/",
+      "violations": [
+        {
+          "filename": "musical-theatre-review--ron-cohen.json",
+          "url": "https://musicaltheatrereview.com/merrily-we-roll-along-laura-pels-theatre-new-york/",
+          "outletId": "musical-theatre-review",
+          "criticName": "Ron Cohen",
+          "matchedBy": "url",
+          "cvConfidence": "high",
+          "cvReasoning": "This is a legitimate theater review (high confidence on article type), but it reviews a different production of 'Merrily",
+          "cvIssues": [
+            "Review is of the 2019 Fiasco/Roundabout production at Laura Pels Theatre, not the 2022 Off-Broadway production at New York Theatre Workshop",
+            "Expected opening date is 2022-12-12, but scraped review describes a 2019 production running 'until 7 April 2019'"
           ]
         }
       ]
