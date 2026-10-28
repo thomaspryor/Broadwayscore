@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T06:40:08.591Z",
+  "timestamp": "2026-10-28T07:25:29.536Z",
   "stats": {
-    "totalReviews": 64304,
-    "alreadyFlagged": 21859,
-    "dateGuardCatches": 236,
-    "directorMismatch": 2451,
+    "totalReviews": 64335,
+    "alreadyFlagged": 21862,
+    "dateGuardCatches": 234,
+    "directorMismatch": 2452,
     "tvFilmSignals": 1815,
-    "londonSignals": 3097,
+    "londonSignals": 3098,
     "offBroadwaySignals": 578,
     "yearMismatch": 227,
-    "noPublishDate": 5679
+    "noPublishDate": 5704
   },
   "findings": [
     {
@@ -2024,17 +2024,6 @@
       "score": 90,
       "publishDate": "2024-09-14",
       "url": "https://everything-theatre.co.uk/2024/09/review-abigails-party-stratford-east/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 697d before show (2024-09-14 vs 2026-08-12)"
-        }
-      ]
-    },
-    {
-      "showId": "abigails-party-west-end-2026",
-      "file": "london-box-office--shehrazade-zafar-arif.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -9699,6 +9688,17 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 368d before show (2025-12-15 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "times-uk--unknown.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 369d before show (2025-12-14 vs 2026-12-18)"
         }
       ]
     },
@@ -23897,6 +23897,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "inter-alia-west-end-2026",
+      "file": "sunday-times--dominic-maxwell.json",
+      "publishDate": "2026-04-08",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin martin\" from inter-alia-2026"
         }
       ]
     },
@@ -62441,17 +62454,6 @@
       ]
     },
     {
-      "showId": "a-christmas-carol-west-end-2026",
-      "file": "standard--nick-curtis.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 351d before show (2025-11-26 vs 2026-11-12)"
-        }
-      ]
-    },
-    {
       "showId": "a-day-in-the-death-of-joe-egg-west-end-2019",
       "file": "artsdesk--aleks-sierz.json",
       "score": 97,
@@ -69582,17 +69584,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "cats-west-end-2026",
-      "file": "nysr--unknown.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 109d before show (2026-04-07 vs 2026-07-25)"
         }
       ]
     },
@@ -80797,19 +80788,6 @@
       ]
     },
     {
-      "showId": "inter-alia-west-end-2026",
-      "file": "sunday-times--dominic-maxwell.json",
-      "publishDate": "2026-04-07",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/inter-alia-review-rosamund-pike-kpnr8cmg6",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "seatplan--laura-foulger.json",
       "score": 85,
@@ -88888,6 +88866,19 @@
       "showId": "oliver-west-end-2024",
       "file": "broadwayworld--aliya-al-hassan.json",
       "score": 97,
+      "publishDate": "2025-01-15",
+      "url": "https://www.broadwayworld.com/westend/article/Review-OLIVER-Gielgud-Theatre-20250115",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
+      "file": "broadwayworld--unknown.json",
       "publishDate": "2025-01-15",
       "url": "https://www.broadwayworld.com/westend/article/Review-OLIVER-Gielgud-Theatre-20250115",
       "findings": [
@@ -98635,6 +98626,19 @@
       "score": 57,
       "publishDate": "2024-12-06",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-devil-wears-prada-dominion-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-devil-wears-prada-west-end-2024",
+      "file": "daily-mail--sonia-horon.json",
+      "publishDate": "2026-10-22",
+      "url": "https://www.dailymail.co.uk/tvshowbiz/article-16227989/Teri-Hatcher-Devil-Wears-Prada-transformation-trolled.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
