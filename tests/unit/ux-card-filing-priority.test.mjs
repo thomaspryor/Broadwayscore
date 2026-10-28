@@ -48,12 +48,14 @@ test('the creation chokepoint caps parked UI cards from any filer at normal (fri
   assert.equal(effectiveCreatePriority({ priority: 2, mode: 'park', title: 'UX audit: dead control' }).priority, NORMAL);
 });
 
-test('the walkthrough park note no longer promises an auto-dispatch that cannot happen', () => {
+test('the walkthrough no longer parks its cards as an owner taste call (BRO-6478)', () => {
   const src = readFileSync(new URL('../../scripts/ux-walkthrough.mjs', import.meta.url), 'utf8');
+  const lib = readFileSync(new URL('../../scripts/lib/ux-walkthrough-filing.js', import.meta.url), 'utf8');
   assert.doesNotMatch(src, /auto-dispatch loop picks it up/);
-  assert.match(src, /owner taste call/);
+  assert.doesNotMatch(src, /owner taste call/);
+  assert.match(src, /'--dispatch'/);
   // Priority no longer carries severity, so the card text must.
-  assert.match(src, /Severity: \$\{f\.severity/);
+  assert.match(lib, /Severity: \$\{f\.severity/);
 });
 
 test('element-less rage-click rows never reach the model or back a card', () => {
