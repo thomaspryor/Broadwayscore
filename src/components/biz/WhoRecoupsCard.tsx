@@ -5,6 +5,8 @@
  */
 
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import ShowLinkListItem from '@/components/biz/ShowLinkListItem';
 import { HIGH_SCORE, LOW_SCORE, MIN_AVERAGE_SAMPLE, type RecoupFindings } from '@/lib/season-profile';
 
 function shortSeason(season: string): string {
@@ -89,16 +91,16 @@ export default function WhoRecoupsCard({ findings }: { findings: RecoupFindings 
       {buckets.some((b) => b.recoupedShows.length > 0) && (
         <div className="px-4 pb-4 space-y-1 text-sm" data-testid="recouped-shows">
           {buckets.filter((b) => b.recoupedShows.length > 0).map((b) => (
-            <details key={b.label} className="group">
+            <details key={b.label}>
               <summary className="cursor-pointer text-brand hover:text-brand-hover">
                 {b.label} that recouped ({b.recoupedShows.length})
               </summary>
               <ul className="mt-1 mb-2 ml-4 flex flex-wrap gap-x-4 gap-y-1">
                 {b.recoupedShows.map((s) => (
-                  <li key={s.slug}>
-                    <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{s.title}</Link>
+                  <ShowLinkListItem key={s.slug} href={`/show/${s.slug}`}>
+                    <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white"><RowLinkArrow label={s.title} /></Link>
                     <span className="text-gray-500"> ({s.year})</span>
-                  </li>
+                  </ShowLinkListItem>
                 ))}
               </ul>
             </details>

@@ -6,6 +6,8 @@
  */
 
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import ShowLinkListItem from '@/components/biz/ShowLinkListItem';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -72,9 +74,9 @@ export default function MusicalsSinceReopeningPage() {
         <MoneyGate page="biz-musicals-since-reopening">
         <ul className="space-y-2" data-testid="musical-list">
           {data.rows.map((r) => (
-            <li key={r.slug} className="card rounded-xl px-4 py-3">
+            <ShowLinkListItem key={r.slug} href={`/show/${r.slug}`} className="card rounded-xl px-4 py-3">
               <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1">
-                <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand">{r.title}</Link>
+                <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand"><RowLinkArrow label={r.title} /></Link>
                 <span className={`text-sm font-semibold ${OUTCOME[r.outcome].className}`}>{OUTCOME[r.outcome].label}</span>
               </div>
               <div className="text-xs text-gray-500 mt-1">
@@ -82,7 +84,7 @@ export default function MusicalsSinceReopeningPage() {
                 {r.monthsToRecoup != null && ` · recouped in about ${r.monthsToRecoup} months`}
                 {r.analystRange && ` · ${r.rangeIsOurs ? 'our' : 'analyst'} estimate: ${r.analystRange[0]}% to ${r.analystRange[1]}% of capital returned`}
               </div>
-            </li>
+            </ShowLinkListItem>
           ))}
         </ul>
         </MoneyGate>

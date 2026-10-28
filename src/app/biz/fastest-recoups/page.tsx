@@ -3,6 +3,8 @@
  */
 
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import ShowLinkListItem from '@/components/biz/ShowLinkListItem';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -32,16 +34,16 @@ export default function Page() {
       <MoneyGate page="biz-fastest-recoups">
       <ul className="space-y-2" data-testid="recoup-list">
         {data.recoups.map((r) => (
-          <li key={r.slug} className="card rounded-xl px-4 py-3 flex items-center gap-3">
+          <ShowLinkListItem key={r.slug} href={`/show/${r.slug}`} className="card rounded-xl px-4 py-3 flex items-center gap-3">
             <span className="w-6 shrink-0 text-center text-sm font-semibold text-gray-500">{r.rank}</span>
             <div className="min-w-0 flex-1">
-              <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand break-words">{r.title}</Link>
+              <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand break-words"><RowLinkArrow label={r.title} /></Link>
               <div className="text-xs text-gray-500">
                 {r.type === 'musical' ? 'Musical' : 'Play'} · opened {r.year}{r.capitalization != null && ` · ${formatMillions(r.capitalization)} capitalization`}
               </div>
             </div>
             <span className="text-lg font-bold text-status-open whitespace-nowrap">{r.weeksToRecoup} wks</span>
-          </li>
+          </ShowLinkListItem>
         ))}
       </ul>
       </MoneyGate>

@@ -5,6 +5,8 @@
  */
 
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import ShowLinkListItem from '@/components/biz/ShowLinkListItem';
 import { recoupRate, type RateCell, type RecoupRow } from '@/lib/show-origins';
 
 /** Under this many shows a rate is shown, but dimmed, as a rough figure. */
@@ -76,10 +78,10 @@ export default function OriginRecoupTable<Id extends string>({
               </summary>
               <ul className="mt-1 mb-2 ml-4 flex flex-wrap gap-x-4 gap-y-1">
                 {r.all.recoupedShows.map((s) => (
-                  <li key={s.slug}>
-                    <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white">{s.title}</Link>
+                  <ShowLinkListItem key={s.slug} href={`/show/${s.slug}`}>
+                    <Link href={`/show/${s.slug}`} className="text-gray-300 hover:text-white underline decoration-white/25 underline-offset-2 hover:decoration-white"><RowLinkArrow label={s.title} /></Link>
                     <span className="text-gray-500"> ({s.year})</span>
-                  </li>
+                  </ShowLinkListItem>
                 ))}
               </ul>
             </details>

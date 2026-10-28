@@ -11,6 +11,8 @@
 import fs from 'fs';
 import path from 'path';
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import ShowLinkListItem from '@/components/biz/ShowLinkListItem';
 import type { Metadata } from 'next';
 
 import { featureFlags } from '@/config/feature-flags';
@@ -397,11 +399,11 @@ export default function StuntCastingPage() {
               </p>
               <ul className="card rounded-xl divide-y divide-white/5">
                 {recentStarShows.map((r) => (
-                  <li key={r.id} className="px-4 py-3 text-sm">
-                    <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand">{r.title}</Link>
+                  <ShowLinkListItem key={r.id} href={`/show/${r.slug}`} className="px-4 py-3 text-sm">
+                    <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand"><RowLinkArrow label={r.title} /></Link>
                     <span className="text-xs text-gray-500"> · {r.type === 'play' ? 'Play' : 'Musical'} · {shortSeason(r.season)}</span>
                     <div className="text-gray-400 mt-0.5"><HeadlinerList headliners={r.headliners} onlyCelebrities /></div>
-                  </li>
+                  </ShowLinkListItem>
                 ))}
               </ul>
             </section>
@@ -412,20 +414,20 @@ export default function StuntCastingPage() {
             <p className="text-sm text-gray-400 mb-3">Open a season to check how each show was classified.</p>
             <div className="space-y-2">
               {ordered.map((s) => (
-                <details key={s.season} className="card rounded-xl group">
+                <details key={s.season} className="card rounded-xl">
                   <summary className="px-4 py-3 cursor-pointer text-sm text-white flex justify-between gap-3">
                     <span>{shortSeason(s.season)}</span>
                     <span className="text-gray-500">{s.screen.all.hits} of {s.screen.all.n} with a film/TV star</span>
                   </summary>
                   <ul className="divide-y divide-white/5 border-t border-white/5">
                     {(bySeason.get(s.season) ?? []).map((r) => (
-                      <li key={r.id} className="px-4 py-2.5 text-sm">
+                      <ShowLinkListItem key={r.id} href={`/show/${r.slug}`} className="px-4 py-2.5 text-sm">
                         <Link href={`/show/${r.slug}`} className={r.screenStar ? 'text-brand hover:text-brand-hover' : 'text-gray-200 hover:text-white'}>
-                          {r.title}
+                          <RowLinkArrow label={r.title} />
                         </Link>
                         <span className="text-xs text-gray-500"> · {r.type === 'play' ? 'Play' : 'Musical'}</span>
                         <div className="text-xs text-gray-400 mt-0.5"><HeadlinerList headliners={r.headliners} /></div>
-                      </li>
+                      </ShowLinkListItem>
                     ))}
                   </ul>
                 </details>

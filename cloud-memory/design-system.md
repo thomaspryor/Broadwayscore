@@ -257,4 +257,6 @@ The `update_snapshots` run only *writes* baselines (it doesn't compare), so alwa
 
 The `/biz` dashboard, topic pages and season pages share `src/components/biz/BizHeader.tsx`: brand eyebrow pill, responsive title and tagline, share control, and children for statistics and fine print. Keep back links in the page or topic shell above the hero.
 
+Profitability Scorecard show lists use `src/components/biz/ShowLinkListItem.tsx` to widen the mouse target through `openRowLink`. Keep a real show link inside it with `RowLinkArrow label={title}` for keyboard access and a chevron that stays with the final word. Aggregate rows with no single show destination stay plain.
+
 When adding new shared components or tokens, update this file. When a session reads this doc and finds it incomplete, add the missing information before proceeding.

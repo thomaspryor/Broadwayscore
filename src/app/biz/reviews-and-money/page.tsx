@@ -5,6 +5,8 @@
  */
 
 import Link from 'next/link';
+import RowLinkArrow from '@/components/biz/RowLinkArrow';
+import ShowLinkListItem from '@/components/biz/ShowLinkListItem';
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -46,15 +48,15 @@ function Callouts({ items, testId }: { items: MoneyCallout[]; testId: string }) 
   return (
     <ul className="space-y-2" data-testid={testId}>
       {items.map((c) => (
-        <li key={c.slug} className="card rounded-xl px-4 py-3 flex items-center gap-3">
+        <ShowLinkListItem key={c.slug} href={`/show/${c.slug}`} className="card rounded-xl px-4 py-3 flex items-center gap-3">
           <div className="shrink-0"><ScoreBadge score={c.score} size="sm" /></div>
           <div className="min-w-0">
-            <Link href={`/show/${c.slug}`} className="font-semibold text-white hover:text-brand break-words">{c.title}</Link>
+            <Link href={`/show/${c.slug}`} className="font-semibold text-white hover:text-brand break-words"><RowLinkArrow label={c.title} /></Link>
             <div className="text-xs text-gray-500">
               {c.year}{c.weeksToRecoup != null && ` · recouped in about ${c.weeksToRecoup} weeks`}
             </div>
           </div>
-        </li>
+        </ShowLinkListItem>
       ))}
     </ul>
   );
