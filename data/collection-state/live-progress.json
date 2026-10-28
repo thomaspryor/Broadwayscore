@@ -1,26 +1,37 @@
 {
-  "updatedAt": "2026-10-28T18:13:22.052Z",
-  "processed": 96,
-  "failed": 69,
-  "successRate": "58.2%",
+  "updatedAt": "2026-10-28T18:15:20.397Z",
+  "processed": 94,
+  "failed": 74,
+  "successRate": "56.0%",
   "tierBreakdown": {
     "playwright": 55,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 9,
+    "scrapingdog": 10,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 14,
-    "archive": 22
+    "archiveToday": 12,
+    "archive": 23
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-28T18:04:52.521Z",
+      "t": "2026-10-28T18:06:58.768Z",
       "event": "bb-session",
-      "session": "55fa0f47",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "89623341",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T18:06:59.268Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T18:11:03.770Z",
+      "event": "bb-session",
+      "session": "cf2d4758",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ]
 }
