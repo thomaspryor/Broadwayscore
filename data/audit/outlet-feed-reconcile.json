@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T00:00:21.902Z",
+  "generatedAt": "2026-10-28T02:56:54.574Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -103,12 +103,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
     },
     {
-      "outletId": "british-theatre",
-      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
@@ -127,10 +127,28 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 777,
-  "matchedGaps": 4,
+  "itemsScanned": 794,
+  "matchedGaps": 5,
   "possibleGaps": 2,
   "gaps": [
+    {
+      "showId": "aftermath-art-new-york-off-broadway-2026",
+      "title": "Aftermath",
+      "level": "matched",
+      "outletId": "stageandcinema",
+      "url": "https://stageandcinema.com/2026/10/26/aftermath-art-new-york-theatres-review/",
+      "headline": "Off-Broadway Review: AFTERMATH (A.R.T./New York Theatres)",
+      "publishDate": "2026-10-27"
+    },
+    {
+      "showId": "i-became-we-off-broadway-2026",
+      "title": "I Became We",
+      "level": "matched",
+      "outletId": "culturesauce",
+      "url": "https://culturesauce.com/i-became-we-off-broadway-review/",
+      "headline": "&#8216;I Became We&#8217; turns one woman&#8217;s inner voice into an astonishing 16-person choir (Off Broadway review)",
+      "publishDate": "2026-10-27"
+    },
     {
       "showId": "memoriam-off-west-end-2026",
       "title": "Memoriam",
@@ -147,15 +165,6 @@
       "outletId": "revstanstheatreblog",
       "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
       "headline": "Review: Memoriam, Southwark Playhouse",
-      "publishDate": "2026-10-27"
-    },
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "level": "matched",
-      "outletId": "viewfromthegods",
-      "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=memoriam-southwark-playhouse-borough",
-      "headline": "&#8220;Memoriam&#8221; Southwark Playhouse Borough",
       "publishDate": "2026-10-27"
     },
     {

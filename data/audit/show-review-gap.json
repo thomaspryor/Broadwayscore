@@ -1,22 +1,22 @@
 {
-  "generatedAt": "2026-10-27T23:59:53.509Z",
-  "windowDays": 21,
-  "targets": 82,
-  "auditedThisRun": 38,
-  "carriedForward": 933,
+  "generatedAt": "2026-10-28T02:53:45.143Z",
+  "windowDays": 1095,
+  "targets": 640,
+  "auditedThisRun": 20,
+  "carriedForward": 952,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 477,
-    "missingCurrentRun": 863,
+    "missingCurrentRun": 872,
     "totalCitedNoUrl": 2,
-    "totalFlaggedMisses": 728,
+    "totalFlaggedMisses": 731,
     "totalRecoverable": 19,
-    "totalRecovered": 23,
+    "totalRecovered": 25,
     "humanExcluded": 4,
-    "automatedExcluded": 469,
-    "automatedExcludedListed": 394,
-    "priorProductionCitations": 5677
+    "automatedExcluded": 473,
+    "automatedExcludedListed": 397,
+    "priorProductionCitations": 5619
   },
   "results": [
     {
@@ -2570,11 +2570,11 @@
         "missing": [],
         "suppressedMissing": [],
         "candidates": [],
-        "censusSchema": 2,
+        "censusSchema": 3,
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-11T20:52:53.418Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "a-fine-idea-off-west-end-2026",
@@ -6501,7 +6501,7 @@
         "https://theaterpizzazz.com/aftermath-a-difficult-family-drama/"
       ],
       "dirFiles": 10,
-      "dirClean": 6,
+      "dirClean": 7,
       "inReviewsJson": 7,
       "missing": [],
       "dirOnly": [
@@ -6512,19 +6512,87 @@
         {
           "host": "talkinbroadway.com",
           "count": 1
+        },
+        {
+          "host": "theaterscene.org",
+          "count": 1
         }
       ],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Aftermath\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Aftermath\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Aftermath\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Aftermath A.R.T./New York Theatres – Mezzanine Theatre review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 2,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 34,
         "byReason": {
-          "non-review-host": 1
+          "non-review-host": 17,
+          "census-junk-host": 7,
+          "non-review-path": 2,
+          "aggregator-internal-nav": 2,
+          "production-database-listing": 1,
+          "merch-store": 1,
+          "venue-production-page": 1,
+          "bare-host": 3
         }
       },
       "dedupedVariants": [],
@@ -6570,7 +6638,7 @@
         "liveCount": 4,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "age-is-a-feeling-off-broadway-2024",
@@ -97286,11 +97354,11 @@
       "aggregatorListedUrls": [
         "https://www.newyorktheatreguide.com/reviews/hospital-hour-off-broadway-review-rachel-kaly",
         "https://www.theatermania.com/news/review-rachel-kaly-is-mentally-ill-and-shes-here-to-make-you-laugh-about-it-in-hospital-hour_1858178/",
-        "https://1minutecritic.com/rachel-kaly-hospital-hour-review/",
         "https://broadwaybaby.com/shows/rachel-kaly-hospital-hour/826988",
+        "https://1minutecritic.com/rachel-kaly-hospital-hour-review/",
         "https://variety.com/2026/legit/news/rachel-kaly-hospital-hour-nyc-chris-fleming-1236863484/"
       ],
-      "dirFiles": 6,
+      "dirFiles": 7,
       "dirClean": 3,
       "inReviewsJson": 3,
       "missing": [],
@@ -97346,12 +97414,87 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Hospital Hour\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Hospital Hour\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Hospital Hour\" review night",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Hospital Hour\" Kaly review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Hospital Hour The Night Egg at the Culture Club review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Hospital Hour The Night Egg at the Culture Club review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Hospital Hour The Night Egg at the Culture Club review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 41,
+        "byReason": {
+          "non-review-host": 22,
+          "census-junk-host": 9,
+          "write-path-blocked": 2,
+          "ticketing-reseller": 2,
+          "aggregator-internal-nav": 3,
+          "ticketing-listing": 1,
+          "review-hub-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
@@ -97413,7 +97556,7 @@
         "liveCount": 3,
         "candidateCount": 5
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "hot-mess-a-new-musical-off-west-end-2026",
@@ -99155,13 +99298,19 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://nystagereview.com/2026/10/27/i-became-we-modern-married-life/",
         "https://www.timeout.com/newyork/theater/i-became-we"
       ],
-      "dirFiles": 1,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 3,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [],
-      "dirOnly": [],
+      "dirOnly": [
+        {
+          "host": "newyorktheatreguide.com",
+          "count": 1
+        }
+      ],
       "flaggedMisses": [
         {
           "url": "https://www.timeout.com/newyork/theater/i-became-we",
@@ -99191,12 +99340,79 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"I Became We\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"I Became We\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"I Became We\" review atlantic",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "I Became We Atlantic Theater Company/Linda Gross Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "I Became We Atlantic Theater Company/Linda Gross Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "I Became We Atlantic Theater Company/Linda Gross Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 39,
+        "byReason": {
+          "non-review-host": 23,
+          "no-review-evidence": 2,
+          "write-path-blocked": 1,
+          "non-review-path": 1,
+          "ticketing-reseller": 1,
+          "aggregator-internal-nav": 6,
+          "production-database-listing": 3,
+          "ticketing-listing": 1,
+          "news-article": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -99215,18 +99431,24 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://nystagereview.com/2026/10/27/i-became-we-modern-married-life/",
+            "outletId": "nystagereview.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/i-became-we",
             "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T06:11:00.993Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 1
+        "liveCount": 1,
+        "candidateCount": 2
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "i-made-you-a-mixtape-off-west-end-2026",
@@ -112220,7 +112442,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-26T01:58:58.789Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "kenrex-off-broadway-2026",
@@ -115207,8 +115429,8 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-did-critics-think-of-king-of-the-yees",
-        "https://www.broadwayworld.com/article/Review-Roundup-KING-OF-THE-YEES-Opens-at-Signature-Theatre-20261019"
+        "https://www.broadwayworld.com/article/Review-Roundup-KING-OF-THE-YEES-Opens-at-Signature-Theatre-20261019",
+        "https://playbill.com/article/reviews-what-did-critics-think-of-king-of-the-yees"
       ],
       "aggregatorListedUrls": [
         "https://culturesauce.com/king-of-the-yees-off-broadway-review/",
@@ -115220,13 +115442,15 @@
         "https://www.newyorktheatreguide.com/reviews/king-of-the-yees-off-broadway-review",
         "https://www.nytimes.com/2026/10/20/theater/king-of-the-yees-review.html",
         "https://www.theatermania.com/news/review-lauren-yees-king-of-the-yees-an-exploration-of-what-it-means-to-be-a-yee_1857614/",
+        "https://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
+        "https://pagesonstages.com/2026/10/23/king-of-the-yees/",
+        "https://news.frombroadway.com/post/review-roundup-king-of-the-yees-pershing-square-signature-center",
         "https://marissavivian.substack.com/p/king-of-the-yees-review",
         "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
         "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
+        "http://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
         "https://colinthomas.ca/king-yees-muddled-fairytale/",
         "https://www.sfchronicle.com/entertainment/theater/article/review-sf-playhouse-s-king-of-the-yees-rules-21182907.php",
-        "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-        "http://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
         "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
         "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/"
       ],
@@ -115261,14 +115485,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-          "host": "washingtoncitypaper.com",
-          "knownOutletId": "washingtoncitypaper",
-          "priorRun": true,
-          "priorRunSource": "pending-file-date:2023-10-05",
-          "serpCensus": true
-        },
-        {
           "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre",
           "host": "morristheatredc.com",
           "knownOutletId": "morris-theatre-dc",
@@ -115285,10 +115501,6 @@
           "count": 1
         },
         {
-          "host": "pagesonstages.com",
-          "count": 1
-        },
-        {
           "host": "talkinbroadway.com",
           "count": 1
         },
@@ -115302,6 +115514,30 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://news.frombroadway.com/post/review-roundup-king-of-the-yees-pershing-square-signature-center",
+          "host": "frombroadway.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "frombroadway--elisabeth-vincentelli.json",
+              "flag": "clean",
+              "urlInDir": "https://news.frombroadway.com/post/review-roundup-king-of-the-yees-pershing-square-signature-center"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "rejectionReason"
+          ],
+          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/",
           "host": "aroundthetownchicago.com",
@@ -115340,7 +115576,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 2,
             "error": null
           },
           {
@@ -115350,7 +115586,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -115380,26 +115616,26 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 13,
+        "resultCount": 10,
         "error": null
       },
       "candidatesRejected": {
-        "count": 126,
+        "count": 128,
         "byReason": {
-          "no-review-evidence": 2,
           "non-review-host": 40,
           "census-junk-host": 1,
+          "no-review-evidence": 3,
+          "roundup-page": 1,
           "aggregator-internal-nav": 47,
+          "production-database-listing": 11,
           "not-http-url": 20,
-          "production-database-listing": 10,
-          "aggregator-section-root": 5,
-          "venue-production-page": 1
+          "aggregator-section-root": 5
         }
       },
       "dedupedVariants": [],
@@ -115409,13 +115645,6 @@
         {
           "url": "https://morristheatredc.com/reviews/review-king-of-the-yees-signature-theatre",
           "host": "morristheatredc.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://washingtoncitypaper.com/article/631821/king-of-the-yees-a-comic-heros-journey-through-san-franciscos-chinatown/",
-          "host": "washingtoncitypaper.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -115443,14 +115672,14 @@
           "outletId": "colinthomas",
           "provisional": true,
           "ok": false,
-          "noop": false,
+          "noop": true,
           "conflict": false,
           "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
           "unclassified": false,
-          "zeroChar": true,
-          "reason": "⚠️  provisional outlet \"colinthomas\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "zeroChar": false,
+          "reason": "king-of-the-yees-off-broadway-2026: https://colinthomas.ca/king-yees-muddled-fairytale/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         },
         {
           "url": "https://www.sfchronicle.com/entertainment/theater/article/review-sf-playhouse-s-king-of-the-yees-rules-21182907.php",
@@ -115514,6 +115743,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://morristheatredc.com/theatre/review-king-of-the-yees-signature-theatre"
+          },
+          {
+            "outletId": "frombroadway.com",
+            "outlet": "frombroadway.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://news.frombroadway.com/post/review-roundup-king-of-the-yees-pershing-square-signature-center"
           },
           {
             "outletId": "around-the-town-chicago",
@@ -115580,6 +115816,18 @@
             "firstSeenAt": "2026-10-20T17:50:39.724Z"
           },
           {
+            "url": "https://www.theaterscene.net/plays/offbway-plays/king-of-the-yees/tony-marinelli/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://pagesonstages.com/2026/10/23/king-of-the-yees/",
+            "outletId": "pagesonstages.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://nottobedramatic.substack.com/p/fish-and-king-of-the-yees-reviews",
             "outletId": "nottobedramatic.substack.com",
             "state": "live",
@@ -115620,6 +115868,13 @@
             "firstSeenAt": "2026-10-23T17:42:57.462Z"
           },
           {
+            "url": "https://news.frombroadway.com/post/review-roundup-king-of-the-yees-pershing-square-signature-center",
+            "outletId": "frombroadway.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://aroundthetownchicago.com/theatre-reviews/the-king-of-the-yees/",
             "outletId": "around-the-town-chicago",
             "state": "GAP",
@@ -115628,10 +115883,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 10,
-        "candidateCount": 15
+        "liveCount": 11,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-27T13:01:02.139Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "kinky-boots-the-musical-west-end-2026",
@@ -133796,25 +134051,27 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
-        "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
-        "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
-        "https://www.timeout.com/london/theatre/martin-guerre-review",
-        "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
-        "https://www.oldvictheatre.com/stage/martin-guerre/",
-        "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
-        "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
-        "https://www.thestage.co.uk/reviews/martin-guerre-review-old-vic-theatre-london-matthew-warchus",
-        "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
-        "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
-        "https://theatreboard.co.uk/thread/7596/martin-guerre",
+        "https://soundsandstage.com/tag/martin-guerre",
+        "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
+        "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
         "https://musicaltheatremusings.co.uk/martin-guerre/",
+        "https://www.londontheatre.co.uk/reviews/martin-guerre",
+        "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
         "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
         "https://thespyinthestalls.com/2026/10/martin-guerre/",
+        "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
+        "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
+        "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
+        "https://theatreandtonic.co.uk/blog/martin-guerre-the-old-vic-review",
+        "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
+        "https://www.thestage.co.uk/reviews/martin-guerre-review-old-vic-theatre-london-matthew-warchus",
+        "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
+        "https://www.timeout.com/london/theatre/martin-guerre-review",
+        "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
+        "https://therecs.co.uk/martin-guerre-old-vic-theatre/",
+        "https://musicaltheatrereview.com/martin-guerre-the-old-vic/",
         "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
         "https://1883magazine.com/martin-guerre-old-vic-review/",
-        "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
-        "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
         "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
         "https://www.timeout.com/london/theatre/martin-guerre",
         "https://www.broadwayworld.com/westend/article/Review-MARTIN-GUERRE-The-Old-Vic-20261021",
@@ -133823,12 +134080,13 @@
         "https://playsinternational.org.uk/martin-guerre-the-old-vic/",
         "https://www.westendbestfriend.co.uk/news/review-martin-guerre-old-vic-theatre",
         "https://firstnightmagazine.com/2026/10/22/review-of-martin-guerre-old-vic-2026-new-revival-features-more-historical-accuracy-but-loses-its-identity/",
+        "https://theatreboard.co.uk/thread/7596/martin-guerre",
         "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/",
         "https://www.londontheatredirect.com/news/10-reasons-to-see-martin-guerre-at-the-old-vic"
       ],
-      "dirFiles": 43,
-      "dirClean": 26,
-      "inReviewsJson": 28,
+      "dirFiles": 45,
+      "dirClean": 27,
+      "inReviewsJson": 29,
       "missing": [
         {
           "url": "https://theatreboard.co.uk/thread/7596/martin-guerre",
@@ -133848,19 +134106,38 @@
       ],
       "dirOnly": [
         {
+          "host": "fairypoweredproductions.com",
+          "count": 1
+        },
+        {
           "host": "londontheatrereviews.co.uk",
-          "count": 1
-        },
-        {
-          "host": "stagedtheatre.co.uk",
-          "count": 1
-        },
-        {
-          "host": "theatrecat.com",
           "count": 1
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://soundsandstage.com/tag/martin-guerre",
+          "host": "soundsandstage.com",
+          "knownOutletId": "soundsandstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "soundsandstage--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://soundsandstage.com/tag/martin-guerre"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
+        },
         {
           "url": "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
           "host": "monstagigz.com",
@@ -133882,31 +134159,6 @@
             "wrongProduction"
           ],
           "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://www.oldvictheatre.com/stage/martin-guerre/",
-          "host": "oldvictheatre.com",
-          "knownOutletId": "oldvictheatrecom",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "oldvictheatrecom--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.oldvictheatre.com/stage/martin-guerre/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-08",
           "serpCensus": true,
           "reverify": false
         },
@@ -134009,7 +134261,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 2,
             "error": null
           },
           {
@@ -134019,7 +134271,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 4,
             "error": null
           },
           {
@@ -134039,29 +134291,29 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 12,
+        "resultCount": 14,
         "error": null
       },
       "candidatesRejected": {
-        "count": 20,
+        "count": 27,
         "byReason": {
-          "non-review-host": 13,
-          "write-path-blocked": 1,
-          "non-review-path": 1,
-          "bare-host": 2,
-          "aggregator-internal-nav": 1,
-          "roundup-page": 1,
-          "access-listings-page": 1
+          "non-review-host": 14,
+          "no-review-evidence": 5,
+          "non-review-path": 2,
+          "roundup-page": 2,
+          "ticketing-listing": 1,
+          "show-listing-page": 1,
+          "bare-host": 2
         }
       },
       "dedupedVariants": [],
-      "automatedExcludedListed": 0,
+      "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
         {
@@ -134114,6 +134366,13 @@
             "url": "https://www.london-now.co.uk/news/26665516.martin-guerre-old-vic-theatre-london-review/"
           },
           {
+            "outletId": "soundsandstage",
+            "outlet": "soundsandstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://soundsandstage.com/tag/martin-guerre"
+          },
+          {
             "outletId": "monstagigz",
             "outlet": "monstagigz",
             "critic": "Unknown",
@@ -134131,28 +134390,52 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
-            "outletId": "londontheatre.co.uk",
+            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/martin-guerre-the-old-vic",
+            "outletId": "stagedtheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
+            "outletId": "whatsonstage.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
-            "outletId": "theguardian.com",
+            "url": "https://musicaltheatremusings.co.uk/martin-guerre/",
+            "outletId": "musicaltheatremusings.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T01:58:58.789Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
+            "outletId": "musicomh.com",
             "state": "live",
             "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/martin-guerre-review",
-            "outletId": "timeout.com",
+            "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
+            "outletId": "londonboxoffice.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+            "firstSeenAt": "2026-10-21T05:36:11.502Z"
           },
           {
-            "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
+            "outletId": "thespyinthestalls.com",
             "state": "live",
-            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+            "firstSeenAt": "2026-10-26T01:58:58.789Z"
+          },
+          {
+            "url": "https://theatrecat.com/2026/10/23/martin-guerre-old-vic-se1/",
+            "outletId": "theatrecat.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-martin-guerre-the-old-vic",
@@ -134167,8 +134450,32 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/oct/22/martin-guerre-review-les-mis-duo-melodrama-old-vic-theatre-london",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-22T18:40:22.780Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/martin-guerre-review-old-vic-theatre-london-matthew-warchus",
             "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/martin-guerre-review-old-vic",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/martin-guerre-review",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T19:57:41.264Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/martin-guerre-the-old-vic-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
@@ -134185,24 +134492,6 @@
             "firstSeenAt": "2026-10-21T19:57:41.264Z"
           },
           {
-            "url": "https://musicaltheatremusings.co.uk/martin-guerre/",
-            "outletId": "musicaltheatremusings.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T01:58:58.789Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/martin-guerre-the-old-vic-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T05:36:11.502Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/10/martin-guerre/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T01:58:58.789Z"
-          },
-          {
             "url": "https://www.standard.co.uk/culture/theatre/martin-guerre-at-the-old-vic-b1301716.html",
             "outletId": "standard.co.uk",
             "state": "live",
@@ -134213,18 +134502,6 @@
             "outletId": "1883magazine.com",
             "state": "live",
             "firstSeenAt": "2026-10-25T14:15:42.198Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/martin-guerre-review-a-compelling-case-for-a-musical-with-a-complicated-past_1735581/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T19:57:41.264Z"
-          },
-          {
-            "url": "https://www.musicomh.com/classical/martin-guerre-review-schonberg-boublils-cameron-mackintosh-the-old-vic",
-            "outletId": "musicomh.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-22T18:40:22.780Z"
           },
           {
             "url": "https://southlondon.co.uk/area/southwark/review-martin-guerre-old-vic/",
@@ -134289,6 +134566,13 @@
             "firstSeenAt": "2026-10-25T14:15:42.198Z"
           },
           {
+            "url": "https://soundsandstage.com/tag/martin-guerre",
+            "outletId": "soundsandstage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://monstagigz.com/2026/10/10/theatre-review-martin-guerre-starring-liv-andrusier-and-shane-oriordan-at-the-old-vic/",
             "outletId": "monstagigz",
             "state": "GAP",
@@ -134304,10 +134588,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 23,
-        "candidateCount": 27
+        "liveCount": 25,
+        "candidateCount": 30
       },
-      "computedAt": "2026-10-27T13:53:28.570Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "mary-gets-hers-off-broadway-2023",
@@ -138994,63 +139278,63 @@
       "aggregatorListedUrls": [
         "https://www.londonboxoffice.co.uk/news/post/memoriam-southwark-playhouse-borough-review",
         "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
-        "https://thespyinthestalls.com/2026/10/memoriam/",
-        "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
         "https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/",
         "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
-        "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
+        "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
+        "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
+        "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-watford-review-by-paul-vates-frost-magazines-drama-critic/",
+        "https://www.westendbestfriend.co.uk/news/review-memoriam-southwark-playhouse",
+        "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
+        "https://thespyinthestalls.com/2026/10/memoriam/",
+        "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+        "https://www.jonathanbaz.com/2026/10/memoriam-review.html",
         "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
-        "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/"
+        "https://www.jewishnews.co.uk/review-memoriam-southwark-playhouse/",
+        "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
+        "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
+        "https://playstosee.com/reviews/uk-reviews/london/memoriam/"
       ],
-      "dirFiles": 12,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 15,
+      "dirClean": 10,
+      "inReviewsJson": 10,
       "missing": [
         {
           "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
           "host": "readaboutstuff.com",
           "knownOutletId": "readaboutstuff",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "bestoftheatre"
+        },
+        {
+          "url": "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-watford-review-by-paul-vates-frost-magazines-drama-critic/",
+          "host": "frostmagazine.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "weRef": true,
+          "weRefSources": [
+            "bestoftheatre"
+          ],
+          "weRefStars": 5,
+          "weRefStarsSource": "bestoftheatre"
+        },
+        {
+          "url": "https://www.jonathanbaz.com/2026/10/memoriam-review.html",
+          "host": "jonathanbaz.com",
+          "knownOutletId": "jonathan-baz",
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "playstosee.com",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
-          "host": "bestoftheatre.co.uk",
-          "knownOutletId": "bestoftheatre",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "bestoftheatre--maria-boot.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
         {
           "url": "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
           "host": "readaboutstuff.com",
@@ -139074,6 +139358,29 @@
           "confirmedNonReview": true,
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
+          "host": "bestoftheatre.co.uk",
+          "knownOutletId": "bestoftheatre",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "bestoftheatre--maria-boot.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
@@ -139102,7 +139409,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 1,
+        "rowCount": 13,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -139126,8 +139433,8 @@
             "fetchErrors": 0
           },
           "bestoftheatre": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 12,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -139141,22 +139448,90 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 1,
-        "corroborated": 1,
+        "currentRunRows": 13,
+        "corroborated": 10,
         "perSource": {
           "lbo-roundup": {
             "cited": 1,
             "corroborated": 1
+          },
+          "bestoftheatre": {
+            "cited": 10,
+            "corroborated": 10
           }
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Memoriam\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Memoriam\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Memoriam\" review southwark",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Memoriam Southwark Playhouse review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Memoriam Southwark Playhouse review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Memoriam Southwark Playhouse review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 13,
+        "byReason": {
+          "non-review-host": 6,
+          "event-listings-page": 1,
+          "no-review-evidence": 1,
+          "non-review-path": 2,
+          "roundup-page": 2,
+          "aggregator-internal-nav": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -139176,6 +139551,51 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "❌ Stale merge: url still hold a pre-existing value at /home/runner/work/Broadwayscore/Broadwayscore/data/review-texts/memoriam-off-west-end-2026/readaboutstuff--dan-english.json that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed."
+        },
+        {
+          "url": "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-watford-review-by-paul-vates-frost-magazines-drama-critic/",
+          "host": "frostmagazine.com",
+          "outletId": "frostmagazine",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+          "host": "viewfromthegods.co.uk",
+          "outletId": "viewfromthegods",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.jonathanbaz.com/2026/10/memoriam-review.html",
+          "host": "jonathanbaz.com",
+          "outletId": "jonathan-baz",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -139190,11 +139610,25 @@
             "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/"
           },
           {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
+            "outletId": "frostmagazine.com",
+            "outlet": "frostmagazine.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
+            "url": "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-watford-review-by-paul-vates-frost-magazines-drama-critic/"
+          },
+          {
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/"
+          },
+          {
+            "outletId": "jonathan-baz",
+            "outlet": "jonathan-baz",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.jonathanbaz.com/2026/10/memoriam-review.html"
           },
           {
             "outletId": "readaboutstuff",
@@ -139202,6 +139636,13 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast"
           },
           {
             "outletId": "theqr",
@@ -139226,6 +139667,36 @@
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
+            "url": "https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-memoriam-southwark-playhouse-borough",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
+            "outletId": "theatreandtonic.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-memoriam-southwark-playhouse",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/memoriam-southwark-playhouse-borough-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://thespyinthestalls.com/2026/10/memoriam/",
             "outletId": "thespyinthestalls.com",
             "state": "live",
@@ -139238,45 +139709,66 @@
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/memoriam-southwark-playhouse-borough/",
-            "outletId": "londontheatre1.com",
+            "url": "https://playstosee.com/reviews/uk-reviews/london/memoriam/",
+            "outletId": "playstosee.com",
             "state": "live",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
             "outletId": "readaboutstuff",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+            "url": "https://www.frostmagazine.com/2026/10/memoriam-at-southwark-playhouse-watford-review-by-paul-vates-frost-magazines-drama-critic/",
+            "outletId": "frostmagazine.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+            "outletId": "viewfromthegods",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://www.jonathanbaz.com/2026/10/memoriam-review.html",
+            "outletId": "jonathan-baz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/10/15/interview-noga-flaishon-discusses-memoriam/",
             "outletId": "readaboutstuff",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-23T05:28:50.804Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/memoriam-southwark-playhouse-full-cast",
+            "outletId": "bestoftheatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           },
           {
             "url": "https://theqr.co.uk/2026/10/20/noga-flaishon-on-memoriam-and-the-ethics-of-vr-history/",
             "outletId": "theqr",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           }
         ],
         "censusSchema": 3,
-        "liveCount": 5,
-        "candidateCount": 8
+        "liveCount": 10,
+        "candidateCount": 16
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "menopause-the-musical-tour-2026",
@@ -149281,34 +149773,47 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://thespyinthestalls.com/tag/murder-in-the-cathedral/",
+        "https://www.ahatalent.co.uk/creatives/news/murder-in-the-cathedral-2/",
         "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
         "https://thespyinthestalls.com/2026/10/murder-in-the-cathedral/",
         "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
+        "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+        "https://markaspen.com/2026/10/20/murder-cathedral/",
+        "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
+        "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
+        "https://thespyinthestalls.com/tag/murder-in-the-cathedral/",
+        "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
+        "https://viewfromthegods.co.uk/2026/10/20/murder-in-the-cathedral-orange-tree-richmond-co-uk/",
+        "https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
+        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
         "https://www.whatsonstage.com/news/murder-in-the-cathedral-with-david-suchet-review_1735285/",
         "https://www.thetimes.com/culture/theatre-dance/article/murder-in-the-cathedral-review-david-suchet-7mvrc5g08",
         "https://playsinternational.org.uk/murder-in-the-cathedral-orange-tree-theatre-church-of-saint-john-the-divine-richmond/",
-        "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
-        "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
         "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
-        "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
-        "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
-        "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/",
-        "https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
-        "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-        "https://viewfromthegods.co.uk/2026/10/20/murder-in-the-cathedral-orange-tree-richmond-co-uk/",
         "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
         "https://theatrecat.com/2026/10/20/murder-in-the-cathedral-orange-tree-richmond/",
         "https://theatreweekly.com/first-look-rehearsal-images-released-for-orange-tree-theatres-murder-in-the-cathedral/",
         "https://everything-theatre.co.uk/2026/10/review-murder-in-the-cathedral-orange-tree-theatre-st-john-the-divine/",
-        "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
         "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
+        "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
         "https://www.aol.co.uk/articles/ts-eliot-murder-cathedral-review-115030000.html"
       ],
       "dirFiles": 37,
       "dirClean": 23,
       "inReviewsJson": 23,
       "missing": [
+        {
+          "url": "https://www.ahatalent.co.uk/creatives/news/murder-in-the-cathedral-2/",
+          "host": "ahatalent.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://markaspen.com/2026/10/20/murder-cathedral/",
+          "host": "markaspen.com",
+          "knownOutletId": "markaspen",
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
           "host": "timeout.com",
@@ -149345,31 +149850,6 @@
         }
       ],
       "flaggedMisses": [
-        {
-          "url": "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/",
-          "host": "ayoungishperspective.co.uk",
-          "knownOutletId": "a-youngish-perspective",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "a-youngish-perspective--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://ayoungishperspective.co.uk/2026/04/27/review-murder-in-the-cathedral/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-04-27",
-          "serpCensus": true,
-          "reverify": false
-        },
         {
           "url": "https://viewfromthegods.co.uk/2026/10/20/murder-in-the-cathedral-orange-tree-richmond-co-uk/",
           "host": "viewfromthegods.co.uk",
@@ -149457,7 +149937,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -149467,7 +149947,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -149487,7 +149967,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 6,
+            "accepted": 5,
             "error": null
           },
           {
@@ -149497,31 +149977,60 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 3,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 16,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
         "count": 31,
         "byReason": {
-          "no-review-evidence": 6,
-          "non-review-path": 1,
-          "non-review-host": 17,
+          "non-review-host": 20,
           "event-listings-page": 2,
           "census-junk-host": 1,
+          "no-review-evidence": 3,
           "write-path-blocked": 3,
-          "aggregator-internal-nav": 1
+          "non-review-path": 2
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "ingestResults": [
+        {
+          "url": "https://www.ahatalent.co.uk/creatives/news/murder-in-the-cathedral-2/",
+          "host": "ahatalent.co.uk",
+          "outletId": "ahatalent",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://markaspen.com/2026/10/20/murder-cathedral/",
+          "host": "markaspen.com",
+          "outletId": "markaspen",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
         {
           "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
           "host": "timeout.com",
@@ -149558,6 +150067,20 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "ahatalent.co.uk",
+            "outlet": "ahatalent.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ahatalent.co.uk/creatives/news/murder-in-the-cathedral-2/"
+          },
+          {
+            "outletId": "markaspen",
+            "outlet": "markaspen",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://markaspen.com/2026/10/20/murder-cathedral/"
+          },
+          {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
@@ -149582,12 +150105,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://thespyinthestalls.com/tag/murder-in-the-cathedral/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T21:04:47.417Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2026/oct/20/ts-eliot-murder-in-the-cathedral-review-david-suchet",
             "outletId": "theguardian.com",
             "state": "live",
@@ -149602,6 +150119,48 @@
           {
             "url": "https://www.thereviewshub.com/murder-in-the-cathedral-st-john-the-divine-london/",
             "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-21T14:08:29.336Z"
+          },
+          {
+            "url": "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T08:15:37.359Z"
+          },
+          {
+            "url": "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
+            "outletId": "playstosee.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T08:15:37.359Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/tag/murder-in-the-cathedral/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T21:04:47.417Z"
+          },
+          {
+            "url": "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
+            "outletId": "theatre-news.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:01:02.139Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
           },
@@ -149624,40 +150183,10 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://playstosee.com/reviews/uk-reviews/murder-in-the-cathedral/",
-            "outletId": "playstosee.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://www.standard.co.uk/culture/theatre/murder-in-the-cathedral-review-b1301555.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T08:15:37.359Z"
-          },
-          {
             "url": "https://fringereview.co.uk/review/fringereview-uk/2026/murder-in-the-cathedral/",
             "outletId": "fringereview.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
-            "url": "https://www.broadwayworld.com/westend/article/Review-MURDER-IN-THE-CATHEDRAL-Starring-David-Suchet-20261020",
-            "outletId": "broadwayworld.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T08:15:37.359Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/murder-in-the-cathedral-review-st-johns-the-divine-london",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T13:01:02.139Z"
-          },
-          {
-            "url": "https://www.theatre-news.com/review/UK/6683/Theatre/Murder-At-The-Cathedral-Orange-Tree-Theatre",
-            "outletId": "theatre-news.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
             "url": "https://www.westendbestfriend.co.uk/news/review-murder-in-the-cathedral-st-john-the-divine-richmond",
@@ -149684,16 +150213,24 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/murder-in-the-cathedral-st-john-the-divine-richmond/",
-            "outletId": "londontheatre1.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-21T14:08:29.336Z"
-          },
-          {
             "url": "https://www.lbc.co.uk/article/murder-in-the-cathedral-review-5HjdkMJ_2/",
             "outletId": "lbc.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-24T14:39:26.381Z"
+          },
+          {
+            "url": "https://www.ahatalent.co.uk/creatives/news/murder-in-the-cathedral-2/",
+            "outletId": "ahatalent.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
+            "url": "https://markaspen.com/2026/10/20/murder-cathedral/",
+            "outletId": "markaspen",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/murder-in-the-cathedral-3",
@@ -149719,9 +150256,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 18,
-        "candidateCount": 21
+        "candidateCount": 23
       },
-      "computedAt": "2026-10-27T13:01:02.139Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "murder-she-didnt-write-west-end-2025",
@@ -168689,17 +169226,25 @@
         "https://nystagereview.com/2026/10/22/phyl-a-free-spirited-woman-of-1913/",
         "https://www.theaterscene.net/plays/offbway-plays/phyl/samuel-l-leiter/",
         "https://www.offoffonline.com/offoffonline/2026/10/19/phyl",
+        "https://www.thekomisarscoop.com/2026/10/a-century-old-gem-shines-again-mint-theaters-phyl-is-a-triumph-of-wit-and-substance/",
         "https://theaterlife.com/phyl/",
+        "https://twi-ny.com/2026/10/26/phyl-cicely-hamilton-mint-theater/",
+        "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row",
         "https://www.theatermania.com/news/review-a-feminist-cinderella-story-returns-to-the-stage-in-a-witty-revival-of-phyl_1858001/",
         "https://t2conline.com/mint-theater-companys-phyl-a-woman-ahead-of-her-time/",
-        "http://www.theaterscene.net/plays/offbway-plays/phyl/samuel-l-leiter/",
-        "https://twi-ny.com/2026/10/26/phyl-cicely-hamilton-mint-theater/",
-        "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row"
+        "http://www.theaterscene.net/plays/offbway-plays/phyl/samuel-l-leiter/"
       ],
       "dirFiles": 14,
       "dirClean": 11,
       "inReviewsJson": 11,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.thekomisarscoop.com/2026/10/a-century-old-gem-shines-again-mint-theaters-phyl-is-a-triumph-of-wit-and-substance/",
+          "host": "thekomisarscoop.com",
+          "knownOutletId": "the-komisar-scoop",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
         {
           "host": "pagesonstages.com",
@@ -168746,25 +169291,112 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Phyl\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Phyl\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Phyl\" Hamilton review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 8,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Phyl Theatre Row review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Phyl Theatre Row review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Phyl Theatre Row review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 5,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 284,
+        "count": 320,
         "byReason": {
-          "non-review-host": 15,
-          "aggregator-internal-nav": 208,
-          "roundup-page": 3,
+          "non-review-host": 39,
+          "census-junk-host": 3,
+          "no-review-evidence": 1,
+          "non-review-path": 1,
+          "roundup-page": 4,
+          "aggregator-internal-nav": 211,
           "not-http-url": 52,
-          "aggregator-section-root": 6
+          "aggregator-section-root": 6,
+          "bare-host": 2,
+          "review-index-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://www.thekomisarscoop.com/2026/10/a-century-old-gem-shines-again-mint-theaters-phyl-is-a-triumph-of-wit-and-substance/",
+          "host": "thekomisarscoop.com",
+          "outletId": "the-komisar-scoop",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "the-komisar-scoop",
+            "outlet": "the-komisar-scoop",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thekomisarscoop.com/2026/10/a-century-old-gem-shines-again-mint-theaters-phyl-is-a-triumph-of-wit-and-substance/"
+          },
           {
             "outletId": "frombroadway.com",
             "outlet": "frombroadway.com",
@@ -168800,6 +169432,12 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
+            "url": "https://twi-ny.com/2026/10/26/phyl-cicely-hamilton-mint-theater/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
             "url": "https://www.theatermania.com/news/review-a-feminist-cinderella-story-returns-to-the-stage-in-a-witty-revival-of-phyl_1858001/",
             "outletId": "theatermania.com",
             "state": "live",
@@ -168818,10 +169456,11 @@
             "firstSeenAt": "2026-10-25T14:15:42.198Z"
           },
           {
-            "url": "https://twi-ny.com/2026/10/26/phyl-cicely-hamilton-mint-theater/",
-            "outletId": "twi-ny.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+            "url": "https://www.thekomisarscoop.com/2026/10/a-century-old-gem-shines-again-mint-theaters-phyl-is-a-triumph-of-wit-and-substance/",
+            "outletId": "the-komisar-scoop",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://news.frombroadway.com/post/review-roundup-phyl-theatre-row",
@@ -168833,9 +169472,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 7,
-        "candidateCount": 8
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "picnic-at-hanging-rock-off-broadway-2025",
@@ -174539,6 +175178,7 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.thewrap.com/creative-content/reviews/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-review/",
+        "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
         "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
         "https://www.picturethispost.com/heartbeat-opera-presents-queeney-todd-the-demon-bottom-of-fleet-street-preview/",
         "https://www.gayout.com/usa-canada/united-states/new-york/events/queeney-todd-the-demon-bottom-of-fleet-street-2026-10-22",
@@ -174547,7 +175187,14 @@
       "dirFiles": 5,
       "dirClean": 1,
       "inReviewsJson": 1,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
+          "host": "yahoo.com",
+          "knownOutletId": "yahoo",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [
         {
@@ -174648,19 +175295,107 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Queeney Todd: The Demon Bottom of Fleet Street\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Queeney Todd: The Demon Bottom of Fleet Street\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Queeney Todd: The Demon Bottom of Fleet Street\" review judson",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Queeney Todd: The Demon Bottom of Fleet Street Judson Memorial Church review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Queeney Todd: The Demon Bottom of Fleet Street Judson Memorial Church review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Queeney Todd: The Demon Bottom of Fleet Street Judson Memorial Church review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "non-review-host": 17,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 1,
+          "show-listing-page": 1,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
       "unextractable": [],
+      "ingestResults": [
+        {
+          "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
+          "host": "yahoo.com",
+          "outletId": "yahoo",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "yahoo",
+            "outlet": "yahoo",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html"
+          },
           {
             "outletId": "donyc",
             "outlet": "donyc",
@@ -174699,6 +175434,13 @@
             "firstSeenAt": "2026-10-24T18:45:20.421Z"
           },
           {
+            "url": "https://sg.news.yahoo.com/queeney-todd-demon-bottom-fleet-170401560.html",
+            "outletId": "yahoo",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
+          },
+          {
             "url": "https://donyc.com/events/2026/10/22/queeney-todd-the-demon-bottom-of-fleet-street-tickets",
             "outletId": "donyc",
             "state": "GAP",
@@ -174729,9 +175471,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "queens-off-broadway-2025",
@@ -175222,12 +175964,73 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Rabih Mroué and Lina Majdalanie: Four Walls and a Roof\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Rabih Mroué and Lina Majdalanie: Four Walls and a Roof\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Rabih Mroué and Lina Majdalanie: Four Walls and a Roof\" review skirball",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 7,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Rabih Mroué and Lina Majdalanie: Four Walls and a Roof NYU Skirball review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Rabih Mroué and Lina Majdalanie: Four Walls and a Roof NYU Skirball review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Rabih Mroué and Lina Majdalanie: Four Walls and a Roof NYU Skirball review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 23,
+        "byReason": {
+          "non-review-host": 20,
+          "ticketing-listing": 2,
+          "institutional-press-release": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -175240,7 +176043,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "race-the-movie-the-play-off-broadway-2026",
@@ -218783,7 +219586,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-26T01:58:58.789Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "the-gruffalo-west-end-2026",
@@ -219852,488 +220655,14 @@
       "openingDate": "2026-10-29",
       "status": "previews",
       "category": "off-broadway",
-      "aggregatorArticles": [
-        "https://playbill.com/article/reviews-what-critics-are-saying-about-broadways-the-heart-of-rock-and-roll",
-        "https://playbill.com/article/read-reviews-for-alice-by-heart-off-broadway",
-        "https://playbill.com/article/read-reviews-of-the-heart-of-rock-roll-at-the-old-globe-theatre",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-On-Broadway-20240422",
-        "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROBIN-HOOD-in-Toronto-20150115",
-        "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-John-Lithgow-in-STORIES-BY-HEART-20180111"
-      ],
-      "aggregatorListedUrls": [
-        "https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis",
-        "https://cititour.com/NYC_Broadway/Heart-of-Rock-and-Roll/1227",
-        "https://www.chicagotribune.com/2024/04/22/review-the-heart-of-rock-and-roll-on-broadway-is-a-funny-warm-hearted-huey-lewis-jukebox-show/",
-        "https://www.digitaljournal.com/entertainment/review-corey-cott-and-mckenzie-kurtz-star-in-the-heart-of-rock-and-roll-on-broadway/article",
-        "https://nystagereview.com/2024/04/22/the-heart-of-rock-and-roll-huey-lewis-has-broadway-hearts-beating/",
-        "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
-        "https://nypost.com/2024/04/22/entertainment/the-heart-of-rock-and-roll-review-huey-lewis-broadway-show-is-hilarious-fun/",
-        "https://newyorktheater.me/2024/04/22/the-heart-of-rock-and-roll/",
-        "https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
-        "https://www.theatrely.com/post/the-heart-of-rock-and-roll-is-bubbleheaded-fun-on-broadway-review",
-        "https://www.theatermania.com/news/review-the-heart-of-rock-and-roll-beats-us-into-submission-with-high-spirits_1737943/",
-        "https://www.vulture.com/article/heart-of-rock-and-roll-broadway-theater-review.html",
-        "https://www.thewrap.com/the-heart-of-rock-and-roll-broadway-review/",
-        "http://www.amny.com/entertainment/alice-by-heart-review-1.27794013",
-        "http://www.theguardian.com/stage/2019/feb/26/alice-by-heart-review-wonderland-musical-gets-lost-down-rabbit-hole",
-        "http://www.hollywoodreporter.com/review/alice-by-heart-theater-review-1190842",
-        "http://www.vulture.com/2019/02/theater-review-creepers-in-wonderland-in-alice-at-heart.html",
-        "http://nystagereview.com/2019/02/26/alice-by-heart-lost-down-a-hole/",
-        "http://nystagereview.com/2019/02/26/alice-by-heart-lost-youth-in-a-bittersweet-wonderland/",
-        "http://www.nytimes.com/2019/02/26/theater/alice-by-heart-review.html",
-        "http://www.newsday.com/entertainment/theater/alice-by-heart-review-1.27750473",
-        "http://observer.com/2019/02/alice-by-heart-musical-adapts-lewis-carroll-indie-rock-young-adult-romance-ww2/",
-        "http://variety.com/2019/legit/reviews/alice-by-heart-review-duncan-sheik-musical-1203150207/",
-        "http://www.thewrap.com/alice-by-heart-theater-review-lewis-carroll-duncan-sheik-musical/",
-        "http://entertainmenttoday.net/theater/19063/2018/09/the-heart-of-rock-and-roll-the-musical-based-on-songs-by-huey-lewis-and-the-news/",
-        "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-heart-of-rock-and-roll-review-20180918-story.html",
-        "http://www.sandiegostory.com/the-heart-of-rock-roll-beats-with-a-familiar-romanticism-at-old-globe/",
-        "https://www.stageandcinema.com/2018/09/19/the-heart-of-rock-and-roll/",
-        "https://www.nydailynews.com/2024/04/22/heart-of-rock-and-roll-broadway-review/",
-        "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
-        "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
-        "http://www.thestar.com/entertainment/stage/2015/01/14/the-heart-of-robin-hood-review.html",
-        "http://www.cbc.ca/news/canada/manitoba/review-crowd-pleasing-heart-of-robin-hood-swings-into-rmtc-with-plenty-of-flair-1.2836931",
-        "http://www.theglobeandmail.com/arts/theatre-and-performance/theatre-reviews/the-heart-of-robin-hood-a-rollicking-production-with-few-alterations-from-the-original-tale/article22458723/",
-        "https://nowtoronto.com/stage/theatre/review%3A-the-heart-of-robin-hood/",
-        "https://www.nytimes.com/2018/01/11/theater/review-john-lithgow-stories-by-heart-broadway.html",
-        "https://www.timeout.com/newyork/theater/john-lithgow-stories-by-heart",
-        "http://deadline.com/2018/01/broadway-review-john-lithgow-stories-by-heart-1202241097/",
-        "https://www.thewrap.com/john-lithgow-stories-by-heart-broadway-review/",
-        "http://ew.com/theater/2018/01/11/john-lithgow-stories-by-heart-review/",
-        "http://www.nydailynews.com/entertainment/theater-arts/john-lithgow-stories-heart-review-slim-broadway-diversion-article-1.3749877",
-        "https://www.thedailybeast.com/john-lithgow-is-strangely-missing-from-his-own-broadway-story-review-of-stories-by-heart",
-        "https://www.hollywoodreporter.com/review/john-lithgow-stories-by-heart-1073055",
-        "https://www.washingtonpost.com/entertainment/theater_dance/a-critic-taken-with-lithgows-stories-by-heart-lists-10-other-favorite-solo-shows/2018/01/11/c2a404ce-f58c-11e7-91af-31ac729add94_story.html",
-        "https://www.theguardian.com/stage/2018/jan/11/john-lithgow-stories-by-heart-review-star-presence-cant-save-humdrum-one-man-show",
-        "https://www.thestage.co.uk/reviews/2018/john-lithgow-stories-by-heart-review-american-arlines-new-york-theatre-broadway/",
-        "http://variety.com/2018/legit/reviews/john-lithgow-stories-by-heart-review-broadway-1202661984/",
-        "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/01/12/theater-review---john-lithgow--stories-by-heart-",
-        "https://www.newsday.com/entertainment/theater/john-lithgow-stories-by-heart-review-1.16048735"
-      ],
-      "dirFiles": 16,
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [
-        {
-          "url": "https://www.chicagotribune.com/2024/04/22/review-the-heart-of-rock-and-roll-on-broadway-is-a-funny-warm-hearted-huey-lewis-jukebox-show/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.digitaljournal.com/entertainment/review-corey-cott-and-mckenzie-kurtz-star-in-the-heart-of-rock-and-roll-on-broadway/article",
-          "host": "digitaljournal.com",
-          "knownOutletId": "digital-journal",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2024/04/22/the-heart-of-rock-and-roll-huey-lewis-has-broadway-hearts-beating/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nypost.com/2024/04/22/entertainment/the-heart-of-rock-and-roll-review-huey-lewis-broadway-show-is-hilarious-fun/",
-          "host": "nypost.com",
-          "knownOutletId": "nypost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2024/04/22/the-heart-of-rock-and-roll/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-heart-of-rock-and-roll-beats-us-into-submission-with-high-spirits_1737943/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/alice-by-heart-review-1.27794013",
-          "host": "amny.com",
-          "knownOutletId": "amny",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.theguardian.com/stage/2019/feb/26/alice-by-heart-review-wonderland-musical-gets-lost-down-rabbit-hole",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/alice-by-heart-theater-review-1190842",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.vulture.com/2019/02/theater-review-creepers-in-wonderland-in-alice-at-heart.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/02/26/alice-by-heart-lost-down-a-hole/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://nystagereview.com/2019/02/26/alice-by-heart-lost-youth-in-a-bittersweet-wonderland/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nytimes.com/2019/02/26/theater/alice-by-heart-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/alice-by-heart-review-1.27750473",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://observer.com/2019/02/alice-by-heart-musical-adapts-lewis-carroll-indie-rock-young-adult-romance-ww2/",
-          "host": "observer.com",
-          "knownOutletId": "observer",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2019/legit/reviews/alice-by-heart-review-duncan-sheik-musical-1203150207/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thewrap.com/alice-by-heart-theater-review-lewis-carroll-duncan-sheik-musical/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://entertainmenttoday.net/theater/19063/2018/09/the-heart-of-rock-and-roll-the-musical-based-on-songs-by-huey-lewis-and-the-news/",
-          "host": "entertainmenttoday.net",
-          "knownOutletId": "entertainment-today",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-heart-of-rock-and-roll-review-20180918-story.html",
-          "host": "latimes.com",
-          "knownOutletId": "latimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.sandiegostory.com/the-heart-of-rock-roll-beats-with-a-familiar-romanticism-at-old-globe/",
-          "host": "sandiegostory.com",
-          "knownOutletId": "san-diego-story",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.stageandcinema.com/2018/09/19/the-heart-of-rock-and-roll/",
-          "host": "stageandcinema.com",
-          "knownOutletId": "stageandcinema",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nydailynews.com/2024/04/22/heart-of-rock-and-roll-broadway-review/",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.thestar.com/entertainment/stage/2015/01/14/the-heart-of-robin-hood-review.html",
-          "host": "thestar.com",
-          "knownOutletId": "toronto-star",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.cbc.ca/news/canada/manitoba/review-crowd-pleasing-heart-of-robin-hood-swings-into-rmtc-with-plenty-of-flair-1.2836931",
-          "host": "cbc.ca",
-          "knownOutletId": "cbc",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.theglobeandmail.com/arts/theatre-and-performance/theatre-reviews/the-heart-of-robin-hood-a-rollicking-production-with-few-alterations-from-the-original-tale/article22458723/",
-          "host": "theglobeandmail.com",
-          "knownOutletId": "the-globe-and-mail",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nowtoronto.com/stage/theatre/review%3A-the-heart-of-robin-hood/",
-          "host": "nowtoronto.com",
-          "knownOutletId": "nowtoronto",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/01/11/theater/review-john-lithgow-stories-by-heart-broadway.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/john-lithgow-stories-by-heart",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://deadline.com/2018/01/broadway-review-john-lithgow-stories-by-heart-1202241097/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/john-lithgow-stories-by-heart-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://ew.com/theater/2018/01/11/john-lithgow-stories-by-heart-review/",
-          "host": "ew.com",
-          "knownOutletId": "ew",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/john-lithgow-stories-heart-review-slim-broadway-diversion-article-1.3749877",
-          "host": "nydailynews.com",
-          "knownOutletId": "nydailynews",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thedailybeast.com/john-lithgow-is-strangely-missing-from-his-own-broadway-story-review-of-stories-by-heart",
-          "host": "thedailybeast.com",
-          "knownOutletId": "dailybeast",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/john-lithgow-stories-by-heart-1073055",
-          "host": "hollywoodreporter.com",
-          "knownOutletId": "hollywood-reporter",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-critic-taken-with-lithgows-stories-by-heart-lists-10-other-favorite-solo-shows/2018/01/11/c2a404ce-f58c-11e7-91af-31ac729add94_story.html",
-          "host": "washingtonpost.com",
-          "knownOutletId": "washpost",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/jan/11/john-lithgow-stories-by-heart-review-star-presence-cant-save-humdrum-one-man-show",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2018/john-lithgow-stories-by-heart-review-american-arlines-new-york-theatre-broadway/",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://variety.com/2018/legit/reviews/john-lithgow-stories-by-heart-review-broadway-1202661984/",
-          "host": "variety.com",
-          "knownOutletId": "variety",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/01/12/theater-review---john-lithgow--stories-by-heart-",
-          "host": "ny1.com",
-          "knownOutletId": "ny1",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/john-lithgow-stories-by-heart-review-1.16048735",
-          "host": "newsday.com",
-          "knownOutletId": "newsday",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "missing": [],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "nytg--gillian-russo.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.newyorktheatreguide.com/reviews/the-heart-of-rock-and-roll-broadway-review-huey-lewis"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/Heart-of-Rock-and-Roll/1227",
-          "host": "cititour.com",
-          "knownOutletId": "cititour",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "cititour--brian-scott-lipton.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://cititour.com/NYC_Broadway/Heart-of-Rock-and-Roll/1227"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard",
-          "host": "nysun.com",
-          "knownOutletId": "new-york-sun",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "new-york-sun--elysa-gardner.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.nysun.com/article/a-jukebox-musical-the-heart-of-rock-and-roll-wins-by-not-trying-too-hard"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/the-heart-of-rock-and-roll-is-bubbleheaded-fun-on-broadway-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatrely--joey-sims.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatrely.com/post/the-heart-of-rock-and-roll-is-bubbleheaded-fun-on-broadway-review"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.vulture.com/article/heart-of-rock-and-roll-broadway-theater-review.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "vulture--jackson-mchenry.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.vulture.com/article/heart-of-rock-and-roll-broadway-theater-review.html"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/the-heart-of-rock-and-roll-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewrap--robert-hofler.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.thewrap.com/the-heart-of-rock-and-roll-broadway-review/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
@@ -220341,306 +220670,37 @@
         "reason": "out-of-window"
       },
       "candidatesRejected": {
-        "count": 1340,
-        "byReason": {
-          "aggregator-internal-nav": 959,
-          "not-http-url": 161,
-          "production-database-listing": 86,
-          "aggregator-section-root": 26,
-          "non-review-host": 106,
-          "roundup-page": 2
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://playbill.com/article/reviews-what-critics-are-saying-about-broadways-the-heart-of-rock-and-roll",
-          "publishDate": "2024-04-22"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-for-alice-by-heart-off-broadway",
-          "publishDate": "2019-02-27"
-        },
-        {
-          "url": "https://playbill.com/article/read-reviews-of-the-heart-of-rock-roll-at-the-old-globe-theatre",
-          "publishDate": "2018-09-18"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROCK-AND-ROLL-Opens-On-Broadway-20240422",
-          "publishDate": "2024-04-22"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-THE-HEART-OF-ROBIN-HOOD-in-Toronto-20150115",
-          "publishDate": "2015-01-15"
-        },
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Weigh-In-on-John-Lithgow-in-STORIES-BY-HEART-20180111",
-          "publishDate": "2018-01-11"
-        }
-      ],
       "unextractable": [],
-      "weIngestBlocked": [
+      "recoveryResults": [
         {
-          "url": "https://www.chicagotribune.com/2024/04/22/review-the-heart-of-rock-and-roll-on-broadway-is-a-funny-warm-hearted-huey-lewis-jukebox-show/",
-          "host": "chicagotribune.com",
-          "priorRun": true,
-          "reason": "prior-run"
+          "url": "https://www.slantmagazine.com/film/wildwood-review-laika-travis-knight/",
+          "host": "slantmagazine.com",
+          "file": "slantmagazine--kenji-fujishima.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
         },
         {
-          "url": "https://www.digitaljournal.com/entertainment/review-corey-cott-and-mckenzie-kurtz-star-in-the-heart-of-rock-and-roll-on-broadway/article",
-          "host": "digitaljournal.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nystagereview.com/2024/04/22/the-heart-of-rock-and-roll-huey-lewis-has-broadway-hearts-beating/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nypost.com/2024/04/22/entertainment/the-heart-of-rock-and-roll-review-huey-lewis-broadway-show-is-hilarious-fun/",
-          "host": "nypost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://newyorktheater.me/2024/04/22/the-heart-of-rock-and-roll/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2024/04/22/theater/heart-of-rock-and-roll-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theatermania.com/news/review-the-heart-of-rock-and-roll-beats-us-into-submission-with-high-spirits_1737943/",
-          "host": "theatermania.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.amny.com/entertainment/alice-by-heart-review-1.27794013",
-          "host": "amny.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.theguardian.com/stage/2019/feb/26/alice-by-heart-review-wonderland-musical-gets-lost-down-rabbit-hole",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.hollywoodreporter.com/review/alice-by-heart-theater-review-1190842",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.vulture.com/2019/02/theater-review-creepers-in-wonderland-in-alice-at-heart.html",
-          "host": "vulture.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://nystagereview.com/2019/02/26/alice-by-heart-lost-down-a-hole/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://nystagereview.com/2019/02/26/alice-by-heart-lost-youth-in-a-bittersweet-wonderland/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nytimes.com/2019/02/26/theater/alice-by-heart-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.newsday.com/entertainment/theater/alice-by-heart-review-1.27750473",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://observer.com/2019/02/alice-by-heart-musical-adapts-lewis-carroll-indie-rock-young-adult-romance-ww2/",
-          "host": "observer.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://variety.com/2019/legit/reviews/alice-by-heart-review-duncan-sheik-musical-1203150207/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.thewrap.com/alice-by-heart-theater-review-lewis-carroll-duncan-sheik-musical/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://entertainmenttoday.net/theater/19063/2018/09/the-heart-of-rock-and-roll-the-musical-based-on-songs-by-huey-lewis-and-the-news/",
-          "host": "entertainmenttoday.net",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.latimes.com/entertainment/arts/theater/reviews/la-et-cm-heart-of-rock-and-roll-review-20180918-story.html",
-          "host": "latimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.sandiegostory.com/the-heart-of-rock-roll-beats-with-a-familiar-romanticism-at-old-globe/",
-          "host": "sandiegostory.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.stageandcinema.com/2018/09/19/the-heart-of-rock-and-roll/",
-          "host": "stageandcinema.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nydailynews.com/2024/04/22/heart-of-rock-and-roll-broadway-review/",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/the-heart-of-rock-and-roll-broadway-musical-review-huey-lewis",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://variety.com/2024/legit/reviews/the-heart-of-rock-and-roll-review-huey-lewis-musical-broadway-1235976855/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.thestar.com/entertainment/stage/2015/01/14/the-heart-of-robin-hood-review.html",
-          "host": "thestar.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.cbc.ca/news/canada/manitoba/review-crowd-pleasing-heart-of-robin-hood-swings-into-rmtc-with-plenty-of-flair-1.2836931",
-          "host": "cbc.ca",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.theglobeandmail.com/arts/theatre-and-performance/theatre-reviews/the-heart-of-robin-hood-a-rollicking-production-with-few-alterations-from-the-original-tale/article22458723/",
-          "host": "theglobeandmail.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://nowtoronto.com/stage/theatre/review%3A-the-heart-of-robin-hood/",
-          "host": "nowtoronto.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.nytimes.com/2018/01/11/theater/review-john-lithgow-stories-by-heart-broadway.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/theater/john-lithgow-stories-by-heart",
-          "host": "timeout.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://deadline.com/2018/01/broadway-review-john-lithgow-stories-by-heart-1202241097/",
-          "host": "deadline.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thewrap.com/john-lithgow-stories-by-heart-broadway-review/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://ew.com/theater/2018/01/11/john-lithgow-stories-by-heart-review/",
-          "host": "ew.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.nydailynews.com/entertainment/theater-arts/john-lithgow-stories-heart-review-slim-broadway-diversion-article-1.3749877",
-          "host": "nydailynews.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thedailybeast.com/john-lithgow-is-strangely-missing-from-his-own-broadway-story-review-of-stories-by-heart",
-          "host": "thedailybeast.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.hollywoodreporter.com/review/john-lithgow-stories-by-heart-1073055",
-          "host": "hollywoodreporter.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.washingtonpost.com/entertainment/theater_dance/a-critic-taken-with-lithgows-stories-by-heart-lists-10-other-favorite-solo-shows/2018/01/11/c2a404ce-f58c-11e7-91af-31ac729add94_story.html",
-          "host": "washingtonpost.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2018/jan/11/john-lithgow-stories-by-heart-review-star-presence-cant-save-humdrum-one-man-show",
-          "host": "theguardian.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/2018/john-lithgow-stories-by-heart-review-american-arlines-new-york-theatre-broadway/",
-          "host": "thestage.co.uk",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://variety.com/2018/legit/reviews/john-lithgow-stories-by-heart-review-broadway-1202661984/",
-          "host": "variety.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "http://www.ny1.com/nyc/all-boroughs/theater-reviews/2018/01/12/theater-review---john-lithgow--stories-by-heart-",
-          "host": "ny1.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
-          "url": "https://www.newsday.com/entertainment/theater/john-lithgow-stories-by-heart-review-1.16048735",
-          "host": "newsday.com",
-          "priorRun": true,
-          "reason": "prior-run"
+          "url": "https://www.telegraph.co.uk/films/2026/10/14/a-long-winter-review-snowbound-british-mystery/",
+          "host": "telegraph.co.uk",
+          "file": "telegraph--tim-robey.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": null,
+          "recoveryCount": 0,
+          "uncited": true
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "no-census-yet",
         "missing": [],
@@ -220650,7 +220710,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-11T20:52:53.418Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "the-hills-of-california-2024",
@@ -224503,43 +224563,6 @@
         "censusSchema": 3,
         "liveCount": 2,
         "candidateCount": 5
-      },
-      "computedAt": "2026-10-27T23:08:53.650Z"
-    },
-    {
-      "showId": "the-last-days-of-liz-truss-off-west-end-2026",
-      "title": "The Last Days of Liz Truss?",
-      "openingDate": "2026-03-03",
-      "status": "closed",
-      "category": "off-west-end",
-      "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
-      "citedNoUrl": [],
-      "weReference": null,
-      "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
-      },
-      "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
-      },
-      "dedupedVariants": [],
-      "unextractable": [],
-      "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
-        "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 0
       },
       "computedAt": "2026-10-27T23:08:53.650Z"
     },
@@ -230182,7 +230205,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-22T22:14:01.718Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "the-lonely-few-off-broadway-2024",
@@ -231359,25 +231382,26 @@
       "aggregatorListedUrls": [
         "https://theatreandtonic.co.uk/blog/the-master-builder-at-arcola-theatre-review",
         "https://liamodell.com/2026/10/23/the-master-builder-review-arcola-theatre-london-henrik-ibsen-greg-hicks/",
-        "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
-        "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
-        "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
-        "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
-        "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
         "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
-        "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
+        "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
+        "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
+        "https://www.londontheatre1.com/reviews/the-master-builder-arcola-theatre/",
         "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
-        "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
+        "https://www.timeout.com/london/theatre/the-master-builder-3",
+        "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
+        "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
         "https://www.reviewsgate.co.uk/all-reviews/the-master-builder-by-henrik-ibsen-the-arcola-theatre-studio-1-24-ashwin-street-london-e8-until-21-november-2026-review-by-william-russell",
+        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
         "https://www.londonpubtheatres.com/the-master-builder-at-arcola-theatre-16-oct-21-nov-2026",
+        "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
+        "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
+        "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
         "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
         "https://www.theupcoming.co.uk/2026/10/23/the-master-builder-at-arcola-theatre-theatre-review/",
         "https://northwestend.com/the-master-builder-arcola-theatre/amp/",
         "https://playstosee.com/reviews/the-master-builder-3/",
         "https://northwestend.com/the-master-builder-arcola-theatre/",
-        "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
-        "https://www.timeout.com/london/theatre/the-master-builder-3",
-        "https://www.flickermagazine.art/post/greg-hicks-the-master-builder-arcola-interview",
         "https://viewfromthegods.co.uk/2026/10/23/the-master-builder-arcola-hackney/",
         "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/my-master-builder-ewan-mcgregor-b2742066.html",
@@ -231393,6 +231417,12 @@
       "dirClean": 19,
       "inReviewsJson": 19,
       "missing": [
+        {
+          "url": "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
+          "host": "everything-theatre.co.uk",
+          "knownOutletId": "everything-theatre",
+          "serpCensus": true
+        },
         {
           "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
           "host": "timeout.com",
@@ -231585,13 +231615,78 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Master Builder\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Master Builder\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Master Builder\" review arcola",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Master Builder Arcola Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 15,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 1,
+        "count": 25,
         "byReason": {
-          "write-path-blocked": 1
+          "non-review-host": 12,
+          "census-junk-host": 1,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "non-review-path": 1,
+          "ticketing-reseller": 5,
+          "event-listing": 1,
+          "ticket-seller-product-page": 2,
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -231643,6 +231738,21 @@
       ],
       "ingestResults": [
         {
+          "url": "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
+          "host": "everything-theatre.co.uk",
+          "outletId": "everything-theatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
           "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
           "host": "timeout.com",
           "outletId": "timeout-london",
@@ -231662,6 +231772,13 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "everything-theatre",
+            "outlet": "everything-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/"
+          },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
@@ -231699,10 +231816,10 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
+            "outletId": "ayoungishperspective.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+            "firstSeenAt": "2026-10-26T08:25:08.978Z"
           },
           {
             "url": "https://saltertonartsreview.com/2026/10/the-master-builder-arcola-theatre-london/",
@@ -231717,22 +231834,10 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
-            "outletId": "fringereview.co.uk",
+            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
+            "outletId": "westendbestfriend.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
-            "outletId": "playsinternational.org.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-23T22:56:12.541Z"
-          },
-          {
-            "url": "https://ayoungishperspective.co.uk/2026/10/24/review-the-master-builder/",
-            "outletId": "ayoungishperspective.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-26T08:25:08.978Z"
+            "firstSeenAt": "2026-10-24T15:06:22.735Z"
           },
           {
             "url": "https://www.whatsonstage.com/news/the-master-builder-at-arcola-theatre-review_1735723/",
@@ -231741,16 +231846,16 @@
             "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-my-master-builder-arcola-theatre",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-master-builder/",
+            "outletId": "fringereview.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-24T15:06:22.735Z"
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
-            "outletId": "thestage.co.uk",
+            "url": "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
+            "outletId": "londongrip.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-26T16:01:10.315Z"
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
             "url": "https://www.reviewsgate.co.uk/all-reviews/the-master-builder-by-henrik-ibsen-the-arcola-theatre-studio-1-24-ashwin-street-london-e8-until-21-november-2026-review-by-william-russell",
@@ -231763,6 +231868,24 @@
             "outletId": "londonpubtheatres.com",
             "state": "live",
             "firstSeenAt": "2026-10-26T08:25:08.978Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-london-2026-david-edgar-greg-hicks",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-26T16:01:10.315Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-the-master-builder-arcola-theatre",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/the-master-builder-arcola-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-23T22:56:12.541Z"
           },
           {
             "url": "https://theatreweekly.com/review-the-master-builder-at-arcola-theatre/",
@@ -231795,12 +231918,6 @@
             "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
-            "url": "https://londongrip.co.uk/2026/10/the-master-builder-review-by-barbara-lewis/",
-            "outletId": "londongrip.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
             "url": "https://www.theguardian.com/stage/2025/apr/29/my-master-builder-review-ewan-mcgregor-kate-fleetwood-wyndhams-theatre-london",
             "outletId": "theguardian.com",
             "state": "live",
@@ -231811,6 +231928,13 @@
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/10/review-the-master-builder-arcola-theatre/",
+            "outletId": "everything-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T02:53:45.143Z"
           },
           {
             "url": "https://www.timeout.com/london/theatre/the-master-builder-3",
@@ -231836,9 +231960,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 18,
-        "candidateCount": 21
+        "candidateCount": 22
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "the-meeting-the-interpreter-off-broadway-2024",
@@ -232685,8 +232809,7 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.tickettailor.com/events/eggandspoontheatre/2387163",
-        "https://www.theatermania.com/news/egg-spoon-theatre-collective-to-present-the-world-premiere-of-jen-diamonds-the-morbs_1847289/"
+        "https://www.tickettailor.com/events/eggandspoontheatre/2387163"
       ],
       "dirFiles": 2,
       "dirClean": 0,
@@ -232699,42 +232822,84 @@
         }
       ],
       "dirOnly": [],
-      "flaggedMisses": [
-        {
-          "url": "https://www.theatermania.com/news/egg-spoon-theatre-collective-to-present-the-world-premiere-of-jen-diamonds-the-morbs_1847289/",
-          "host": "theatermania.com",
-          "knownOutletId": "theatermania",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatermania--linda-buchwald.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatermania.com/news/egg-spoon-theatre-collective-to-present-the-world-premiere-of-jen-diamonds-the-morbs_1847289/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-07-28",
-          "serpCensus": true,
-          "reverify": false
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Morbs\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Morbs\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Morbs\" review jeffrey",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Morbs Jeffrey and Paula Gural Theatre at A.R.T./New York Theatres review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 31,
+        "byReason": {
+          "non-review-host": 14,
+          "census-junk-host": 2,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 4,
+          "show-listing-page": 2,
+          "merch-store": 1,
+          "venue-production-page": 2,
+          "tag-index-page": 1,
+          "bare-host": 3
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -232773,8 +232938,8 @@
           {
             "url": "https://www.tickettailor.com/events/eggandspoontheatre/2387163",
             "outletId": "tickettailor.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-10-26T16:01:10.315Z"
           }
         ],
@@ -232782,7 +232947,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "the-moth-off-west-end-2026",
@@ -244808,6 +244973,43 @@
       },
       "computedAt": "2026-10-04T19:06:54.776Z",
       "automatedExcludedListed": 0
+    },
+    {
+      "showId": "the-seance-off-west-end-2026",
+      "title": "The Séance",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "the-seat-of-our-pants-off-broadway-2025",
@@ -262231,7 +262433,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-27T23:08:53.650Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "ulster-american-irish-repertory-theatre-off-broadway-2026",
@@ -277595,12 +277797,74 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Women Who Eat\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Women Who Eat\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Women Who Eat\" review theaterlab",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Women Who Eat Theaterlab review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Women Who Eat Theaterlab review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Women Who Eat Theaterlab review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 24,
+        "byReason": {
+          "non-review-host": 19,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 2,
+          "venue-production-page": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -277630,7 +277894,7 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T02:53:45.143Z"
     },
     {
       "showId": "working-girl-la-jolla-regional-2025",
@@ -278746,27 +279010,28 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-27T23:33:33.655Z",
+    "at": "2026-10-28T02:53:45.143Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "bull-durham-paper-mill-regional-2025",
-      "a-month-in-the-country-west-end-2026",
-      "every-brilliant-thing-2026"
+      "murder-cathedral-off-west-end-2026",
+      "king-of-the-yees-off-broadway-2026",
+      "martin-guerre-west-end-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "the-last-days-of-liz-truss-off-west-end-2026"
+      "the-seance-off-west-end-2026",
+      "ukraine-unbroken-off-west-end-2026"
     ],
-    "neverAuditedDueAtStart": 289,
+    "neverAuditedDueAtStart": 273,
     "oldestDueRowAtStart": {
-      "showId": "bull-durham-paper-mill-regional-2025",
-      "computedAt": "2026-09-20T12:57:21.255Z",
-      "ageHours": 898.3
+      "showId": "joe-turners-come-and-gone-2026",
+      "computedAt": "2026-09-20T16:50:31.684Z",
+      "ageHours": 897.7
     },
     "oldestDueRowAfterRun": {
       "showId": "joe-turners-come-and-gone-2026",
       "computedAt": "2026-09-20T16:50:31.684Z",
-      "ageHours": 894.7
+      "ageHours": 898.1
     }
   }
 }

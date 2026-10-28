@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-28T00:00:21.538Z",
+  "generatedAt": "2026-10-28T02:56:54.312Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 250,
-  "clean": 249,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.59 vs local 70.05 (Δ0.46)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 9,
-      "deployedCount": 10,
-      "firstDefectAt": "2026-10-27T23:09:22.381Z"
-    }
-  ],
+  "clean": 250,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }
