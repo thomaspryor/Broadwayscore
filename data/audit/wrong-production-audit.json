@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T00:17:39.141Z",
+  "timestamp": "2026-10-28T00:47:45.808Z",
   "stats": {
-    "totalReviews": 63983,
-    "alreadyFlagged": 21775,
+    "totalReviews": 63977,
+    "alreadyFlagged": 21774,
     "dateGuardCatches": 237,
     "directorMismatch": 2386,
-    "tvFilmSignals": 1810,
+    "tvFilmSignals": 1811,
     "londonSignals": 3060,
     "offBroadwaySignals": 577,
     "yearMismatch": 217,
-    "noPublishDate": 5663
+    "noPublishDate": 5662
   },
   "findings": [
     {
@@ -33643,20 +33643,6 @@
     },
     {
       "showId": "oh-mary-off-broadway-2024",
-      "file": "nytimes--joshua-baron.json",
-      "score": 86,
-      "publishDate": "2024-02-27",
-      "url": "https://www.nytimes.com/2024/02/27/theater/oh-mary-cole-escola-review.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-off-broadway-2024",
       "file": "nytimes--joshua-barone.json",
       "score": 91,
       "publishDate": "2024-02-27",
@@ -46543,6 +46529,19 @@
     },
     {
       "showId": "the-doctor-off-broadway-2023",
+      "file": "4columns--unknown.json",
+      "publishDate": null,
+      "url": "https://4columns.org/cote-david/the-doctor",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
+        }
+      ]
+    },
+    {
+      "showId": "the-doctor-off-broadway-2023",
       "file": "cititour--brian-scott-lipton.json",
       "score": 67,
       "publishDate": null,
@@ -46566,6 +46565,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"robert icke\" from the-doctor-west-end-2022"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
