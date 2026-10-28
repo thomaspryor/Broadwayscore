@@ -1,24 +1,24 @@
 {
-  "generatedAt": "2026-10-28T20:21:43.102Z",
-  "totalScanned": 65464,
-  "totalExcluded": 29253,
+  "generatedAt": "2026-10-28T21:05:16.369Z",
+  "totalScanned": 65498,
+  "totalExcluded": 29262,
   "ruleCounts": {
-    "wrongProduction": 19104,
-    "duplicateOf": 2178,
+    "wrongProduction": 19108,
+    "duplicateOf": 2177,
     "wrongShow": 1862,
     "rejectionReason": 1267,
-    "noTextOrScoreSignal": 962,
+    "noTextOrScoreSignal": 966,
     "unverifiableWebSearchRow": 951,
     "nonReview": 655,
     "wrongAttribution": 347,
     "blockedReviewUrl": 224,
     "isRoundupArticle": 221,
-    "bodylessAggregatorScoreUncorroborated": 219,
+    "bodylessAggregatorScoreUncorroborated": 220,
     "crossOutletDuplicate": 200,
     "isSyndicatedDuplicate": 140,
     "knownSyndicationSecondary": 135,
     "previewPlaceholder": 121,
-    "cvWrongArticleHighConfidence": 114,
+    "cvWrongArticleHighConfidence": 115,
     "scoreStatusToBeCalculated": 91,
     "listingPageUrl": 81,
     "namedNonReviewUrl": 64,
@@ -42,23 +42,22 @@
     "registrationWallStub": 1
   },
   "ruleDeltas": {
-    "wrongProduction": 7,
-    "noTextOrScoreSignal": -20,
-    "nonReview": 3,
-    "cvWrongArticleHighConfidence": 1,
-    "urlYearReroute": 4,
-    "suspectedMisattribution": -1
+    "wrongProduction": 4,
+    "duplicateOf": -1,
+    "noTextOrScoreSignal": 4,
+    "bodylessAggregatorScoreUncorroborated": 1,
+    "cvWrongArticleHighConfidence": 1
   },
-  "previousGeneratedAt": "2026-10-28T19:50:24.048Z",
+  "previousGeneratedAt": "2026-10-28T20:21:43.102Z",
   "mirror": {
-    "comparedShows": 3126,
-    "comparedFiles": 64832,
-    "agreeExcluded": 29113,
-    "agreeIncluded": 35372,
+    "comparedShows": 3129,
+    "comparedFiles": 64865,
+    "agreeExcluded": 29141,
+    "agreeIncluded": 35377,
     "mirrorOnly": 112,
     "rebuildOnly": 235,
     "disagreements": 347,
-    "disagreementRate": 0.0054,
+    "disagreementRate": 0.0053,
     "mirrorOnlyByRule": {
       "cvWrongArticleHighConfidence": 67,
       "contentTierInvalid": 29,
@@ -86,7 +85,7 @@
     },
     "rebuildEntriesUnscanned": 0,
     "notComparedShows": 77,
-    "notComparedFiles": 632
+    "notComparedFiles": 633
   },
   "previousDisagreementRate": 0.0054
 }

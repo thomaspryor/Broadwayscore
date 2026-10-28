@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T20:22:01.518Z",
+  "timestamp": "2026-10-28T21:05:32.581Z",
   "stats": {
-    "totalReviews": 65299,
-    "alreadyFlagged": 22009,
+    "totalReviews": 65332,
+    "alreadyFlagged": 22012,
     "dateGuardCatches": 234,
     "directorMismatch": 2533,
-    "tvFilmSignals": 1824,
+    "tvFilmSignals": 1826,
     "londonSignals": 3154,
     "offBroadwaySignals": 584,
     "yearMismatch": 234,
-    "noPublishDate": 5834
+    "noPublishDate": 5850
   },
   "findings": [
     {
@@ -58051,6 +58051,34 @@
       ]
     },
     {
+      "showId": "to-kill-a-mockingbird-2018",
+      "file": "showbiz411--roger-friedman.json",
+      "score": null,
+      "publishDate": "2018-12-12",
+      "url": "https://www.showbiz411.com/2018/12/12/broadway-review-a-new-re-worked-to-kill-a-mockingbird-has-characters-speaking-up-drawing-conclusion-taking-swings",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "to-kill-a-mockingbird-2018",
+      "file": "stagezine--david-nounou.json",
+      "score": null,
+      "publishDate": "2018-12-13",
+      "url": "http://www.stagezine.com/to-kill-a-mockingbird-does-it-translate-to-the-stage/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "telegraph--dominic-cavendish.json",
       "score": 92,
@@ -67866,7 +67894,7 @@
     {
       "showId": "bakersfield-mist-west-end-2014",
       "file": "nytimes--matt-wolf.json",
-      "score": null,
+      "score": 69,
       "publishDate": "2014-06-12",
       "url": "https://www.nytimes.com/2014/06/13/arts/international/family-under-siege-in-hotel-and-kathleen-turner-in-bakersfield-mist.html",
       "findings": [
@@ -106994,7 +107022,7 @@
     {
       "showId": "the-war-of-the-worlds-west-end-2016",
       "file": "express-uk--michael-arditti.json",
-      "score": 56,
+      "score": 55,
       "publishDate": "2016-02-28",
       "url": "https://www.express.co.uk/entertainment/theatre/647830/Theatre-reviews-The-War-Of-The-Worlds-The-Encounter-and-The-Patriotic-Traitor",
       "findings": [
