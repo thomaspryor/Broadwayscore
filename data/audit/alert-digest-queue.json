@@ -534,20 +534,6 @@
     "queuedAt": "2026-10-27T20:33:45.424Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +13 more). Checked 2026-10-27.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-27T23:02:59.316Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:harry-potter-and-the-cursed-child-one-part-west-end-2026",
     "title": "Review gap — \"Harry Potter and the Cursed Child\" missing 2 cited review(s)",
     "description": "Harry Potter and the Cursed Child (harry-potter-and-the-cursed-child-one-part-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=harry-potter-and-the-cursed-child-one-part-west-end-2026 --checkpoint --ingest-missing",
@@ -588,6 +574,20 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-28T00:00:01.035Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-28.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T00:25:05.803Z"
   },
   {
     "conditionKey": "land:land/bro-6450-reference",
