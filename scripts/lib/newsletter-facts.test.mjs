@@ -1,10 +1,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { spawnSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const nf = require('./newsletter-facts.js');
-const { processMessages, processPosts, emailPosts, canonicalPostUrl, readWebSource } = require('../read-theater-newsletters.js');
+const { processMessages, processPosts, emailPosts, canonicalPostUrl, readWebSource, parseArgs } = require('../read-theater-newsletters.js');
 
 const CHROMO = nf.WEB_SOURCES[0];
 const SUBSTACK = nf.WEB_SOURCES[1];
@@ -12,7 +16,7 @@ const BRIEFING = nf.EMAIL_SENDERS[0];
 
 test('buildQuery names only the Gmail-read sender (the other two are read from the web)', () => {
   const q = nf.buildQuery();
-  assert.equal(q, 'newer_than:8d (from:broadwaybriefing@broadwaybriefing.com)');
+  assert.equal(q, 'newer_than:14d (from:broadwaybriefing@broadwaybriefing.com)');
   assert.equal(nf.buildQuery(3).startsWith('newer_than:3d '), true);
 });
 
@@ -343,4 +347,118 @@ test('readWebSource marks the run failed when the email fallback throws', async 
   assert.equal(r.listingEmpty, true);
   assert.equal(process.exitCode, 1);
   process.exitCode = prev;
+});
+
+
+test('Briefing query and processing windows both default to 14 days', () => {
+  const args = parseArgs(['node', 'reader']);
+  assert.equal(args.days, 14);
+  assert.equal(args.windowDays, 14);
+  assert.equal(parseArgs(['node', 'reader', '--days=3', '--window-days=2']).windowDays, 2);
+});
+
+test('processMessages skips persisted Briefing IDs live, but dry runs reread them', async () => {
+  const state = { processed: { 'broadway-briefing': ['m'], chromolume: ['other'] } };
+  const ex = extractor([]);
+  let resolutions = 0;
+  const options = base(ex, { state, resolveLink: async () => { resolutions++; return okLink(); } });
+  const live = await processMessages([msg()], options);
+  assert.deepEqual(live.issues, []);
+  assert.deepEqual(live.items, []);
+  assert.equal(live.skipped['already-processed'], 1);
+  assert.equal(resolutions, 0);
+  assert.equal(ex.calls.length, 0);
+  const dry = await processMessages([msg()], { ...options, dryRun: true });
+  assert.equal(dry.issues[0].status, 'read');
+  assert.equal(ex.calls.length, 1);
+  assert.deepEqual(state.processed['broadway-briefing'], ['m']);
+  const other = await processMessages([msg({ id: 'other' })], options);
+  assert.equal(other.issues[0].status, 'read', 'other sources do not suppress Gmail IDs');
+});
+
+test('processMessages catches up the previous week and excludes messages outside 14 days', async () => {
+  const ex = extractor([]);
+  const r = await processMessages([
+    msg({ id: 'old', date: '2026-10-11T12:00:00Z' }),
+    msg({ id: 'boundary', date: '2026-10-12T12:00:00Z' }),
+    msg({ id: 'last-week', date: '2026-10-16T12:00:00Z' }),
+  ], base(ex, { windowDays: undefined }));
+  assert.deepEqual(r.issues.map((i) => i.messageId), ['boundary', 'last-week']);
+  assert.equal(r.skipped['older-than-window'], 1);
+});
+
+test('Briefing checkpoints only fully processed messages and retries failed extraction', async () => {
+  let attempts = 0;
+  const ex = async () => { if (++attempts === 1) throw new Error('temporary'); return '{"facts":[]}'; };
+  const r = await processMessages([msg(), msg({ id: 'second' }), msg({ id: 'second' })], base(ex));
+  assert.equal(attempts, 2);
+  assert.equal(r.skipped['already-processed'], 1);
+  assert.deepEqual(nf.processedBriefingIds([], r.issues), ['second']);
+  const partial = await processMessages([msg({ text: 'Raised $20 million (https://bway.ly/abc123)\nRaised $9 million (https://bway.ly/other11)' })], base(extractor([]), {
+    resolveLink: async (url) => url.endsWith('other11') ? { ok: false, reason: 'blocked' } : okLink(),
+  }));
+  assert.equal(partial.issues[0].status, 'read');
+  assert.deepEqual(nf.processedBriefingIds([], partial.issues), []);
+  const rejected = await processMessages([msg({ authResults: [] }), msg({ id: 'no-links', text: 'No links' })], base(extractor([])));
+  assert.deepEqual(nf.processedBriefingIds([], rejected.issues), []);
+});
+
+test('Briefing checkpoint cap keeps the 200 newest IDs without duplicates', () => {
+  const previous = Array.from({ length: 199 }, (_, i) => `old-${i}`);
+  const issue = (messageId, date) => ({ source: 'broadway-briefing', messageId, date, status: 'read' });
+  const ids = nf.processedBriefingIds(previous, [issue('newer', '2026-10-26'), issue('older', '2026-10-25'), issue('old-198', '2026-10-24')]);
+  assert.equal(ids.length, 200);
+  assert.equal(ids.includes('old-0'), false);
+  assert.deepEqual(ids.slice(-2), ['older', 'newer']);
+  assert.equal(previous.length, 199);
+});
+
+test('live CLI saves and reloads Gmail IDs, preserves web state, and does not alert on reruns', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'briefing-state-'));
+  try {
+    const statePath = path.join(dir, 'data', 'audit', 'newsletter-reader-state.json');
+    const messagesPath = path.join(dir, 'messages.json');
+    fs.mkdirSync(path.dirname(statePath), { recursive: true });
+    fs.writeFileSync(statePath, JSON.stringify({ processed: { chromolume: ['existing-web-url'], 'broadway-briefing': ['seen'] }, zeroRuns: {} }));
+    const date = (days) => new Date(Date.now() - days * 86400000).toISOString();
+    fs.writeFileSync(messagesPath, JSON.stringify([
+      msg({ id: 'seen', date: date(1), text: 'Photos (https://bway.ly/abc123)' }),
+      msg({ id: 'catch-up', date: date(10), text: 'Photos (https://bway.ly/abc123)' }),
+      msg({ id: 'recent', date: date(2), text: 'Photos (https://bway.ly/abc123)' }),
+    ]));
+    const args = ['scripts/read-theater-newsletters.js', '--source=broadway-briefing', `--state=${statePath}`, `--from-file=${messagesPath}`];
+    const run = (extra = []) => {
+      const result = spawnSync(process.execPath, [...args, ...extra], { encoding: 'utf8' });
+      assert.equal(result.status, 0, result.stderr + result.stdout);
+      assert.doesNotMatch(result.stdout, /HEALTH ALERT|routeAlert /);
+      return result.stdout;
+    };
+    assert.match(run(), /Issues found: 2/);
+    const saved = fs.readFileSync(statePath, 'utf8');
+    const state = JSON.parse(saved);
+    assert.deepEqual(state.processed['broadway-briefing'], ['seen', 'catch-up', 'recent']);
+    assert.deepEqual(state.processed.chromolume, ['existing-web-url']);
+    assert.match(run(), /Issues found: 0/);
+    assert.match(run(), /Issues found: 0/);
+    assert.equal(JSON.parse(fs.readFileSync(statePath)).zeroRuns['broadway-briefing'], 0);
+    assert.match(run(['--dry-run']), /Issues found: 3/);
+    assert.equal(fs.readFileSync(statePath, 'utf8'), saved);
+
+    // A routing failure must not checkpoint even successfully read messages.
+    // Replace the alert transport in this child only; never contact the owner.
+    const preload = path.join(dir, 'failed-alert.cjs');
+    const router = require.resolve('./owner-alert-router');
+    fs.writeFileSync(preload, `require.cache[${JSON.stringify(router)}] = { exports: { routeAlert: async () => ({ dispatchOk: false }) } };`);
+    fs.writeFileSync(messagesPath, JSON.stringify([
+      msg({ id: 'retry-after-alert', date: date(1), text: 'Photos (https://bway.ly/abc123)' }),
+      msg({ id: 'bad-format-1', date: date(1), text: 'No links' }),
+      msg({ id: 'bad-format-2', date: date(1), text: 'No links' }),
+    ]));
+    const failed = spawnSync(process.execPath, ['--require', preload, ...args], { encoding: 'utf8' });
+    assert.equal(failed.status, 1, failed.stderr + failed.stdout);
+    assert.match(failed.stdout, /"dispatchOk":false/);
+    assert.equal(fs.readFileSync(statePath, 'utf8'), saved);
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
 });

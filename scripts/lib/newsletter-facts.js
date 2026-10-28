@@ -51,8 +51,18 @@ const WEB_SOURCES = [
 
 const FACT_FIELDS = ['capitalization', 'weeklyCost', 'recouped', 'profit', 'investorReturn', 'closing'];
 const NUMERIC_FIELDS = new Set(['capitalization', 'weeklyCost', 'profit']);
-const DEFAULT_DAYS = 8;
+const DEFAULT_DAYS = 14;
 const MAX_BODY_CHARS = 30000;
+
+/** Keep completed Briefing IDs oldest-first, so the cap retains recent messages. */
+function processedBriefingIds(previous = [], issues = []) {
+  const seen = new Set(previous);
+  const completed = issues.filter((i) => i.source === 'broadway-briefing' && i.messageId
+    && i.status === 'read' && !i.unresolved && !i.extractFailed);
+  completed.sort((a, b) => a.date.localeCompare(b.date));
+  for (const i of completed) seen.add(i.messageId);
+  return [...seen].slice(-200);
+}
 
 function buildQuery(days = DEFAULT_DAYS) {
   const from = EMAIL_SENDERS.map((s) => `from:${s.address}`).join(' OR ');
@@ -288,6 +298,7 @@ module.exports = {
   WEB_SOURCES,
   FACT_FIELDS,
   DEFAULT_DAYS,
+  processedBriefingIds,
   buildQuery,
   parseFromAddress,
   senderFor,

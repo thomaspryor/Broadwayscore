@@ -15,7 +15,7 @@
  * against data/commercial.json and routes new or conflicting ones to a person with one
  * routeAlert card. Nothing is written to commercial data, and no email body or quote is
  * stored anywhere: text lives in memory for the length of one LLM call. The only file
- * written is the state file (URLs already read + counters).
+ * written is the state file (URLs and message IDs already read + counters).
  *
  * Health: a run where more than half of a source's issues were skipped, or a source with
  * nothing readable 2 runs in a row, routes an advisory alert (evaluateSkipHealth).
@@ -30,8 +30,8 @@
  *                      send no alert, write no state.
  *   --source=KEY       chromolume | abroadway | broadway-briefing | all (default all).
  *   --max-new=N        Web posts read per source per run (default 2).
- *   --days=N           Gmail query window (default 8).
- *   --window-days=N    Drop Briefing emails older than this many days (default 7).
+ *   --days=N           Gmail query window (default 14).
+ *   --window-days=N    Drop Briefing emails older than this many days (default 14).
  *   --state=PATH       State file (default data/audit/newsletter-reader-state.json).
  *
  * Needs ANTHROPIC_API_KEY for extraction. Alerts need LINEAR_API_KEY (+ RESEND_API_KEY /
@@ -52,7 +52,7 @@ const SOURCE_KEYS = [...nf.WEB_SOURCES.map((w) => w.key), ...nf.EMAIL_SENDERS.ma
 const DEFAULT_STATE = path.join(__dirname, '..', 'data', 'audit', 'newsletter-reader-state.json');
 
 function parseArgs(argv) {
-  const a = { dryRun: false, days: nf.DEFAULT_DAYS, windowDays: 7, fromFile: null, source: 'all', maxNew: 2, state: DEFAULT_STATE };
+  const a = { dryRun: false, days: nf.DEFAULT_DAYS, windowDays: nf.DEFAULT_DAYS, fromFile: null, source: 'all', maxNew: 2, state: DEFAULT_STATE };
   for (const arg of argv.slice(2)) {
     if (arg === '--dry-run') a.dryRun = true;
     else if (arg.startsWith('--days=')) a.days = parseInt(arg.slice(7), 10);
@@ -168,18 +168,20 @@ async function processDocument(doc, { extract, shows, commercial, items, bump })
  * bway.ly link that sits next to a money/closing item, and are cited to that article.
  * `resolveLink(url)` and `fetchArticle(url)` are injected (see newsletter-sources.js).
  */
-async function processMessages(messages, { extract, shows, commercial, windowDays, resolveLink, fetchArticle, now = Date.now() }) {
+async function processMessages(messages, { extract, shows, commercial, windowDays = nf.DEFAULT_DAYS, resolveLink, fetchArticle, now = Date.now(), state = {}, dryRun = false }) {
   const issues = [];
   const items = [];
   const skipped = {};
   const bump = (k) => { skipped[k] = (skipped[k] || 0) + 1; };
   const cutoff = now - windowDays * 86400000;
   const seenArticles = new Set();
+  const processed = new Set(dryRun ? [] : (state.processed?.['broadway-briefing'] || []));
   for (const m of messages) {
     const sender = nf.senderFor(m.from);
     if (!sender) { bump('sender-not-allowlisted'); continue; }
+    if (m.id && processed.has(m.id)) { bump('already-processed'); continue; }
     if (Date.parse(m.date) < cutoff) { bump('older-than-window'); continue; }
-    const issue = { source: sender.key, sender: sender.label, date: m.date.slice(0, 10), subject: m.subject, dkim: nf.dkimPassesFor(sender, m.authResults), status: 'skipped', reason: null, facts: 0, accepted: 0, links: 0, candidates: 0, articlesRead: 0, citations: [] };
+    const issue = { messageId: m.id, source: sender.key, sender: sender.label, date: m.date.slice(0, 10), subject: m.subject, dkim: nf.dkimPassesFor(sender, m.authResults), status: 'skipped', reason: null, facts: 0, accepted: 0, links: 0, candidates: 0, articlesRead: 0, citations: [] };
     issues.push(issue);
     if (!issue.dkim) { issue.reason = 'dkim-not-verified'; bump(issue.reason); continue; }
     const { linksFound, candidates } = src.splitBriefingItems(m.html, m.text);
@@ -194,7 +196,6 @@ async function processMessages(messages, { extract, shows, commercial, windowDay
       if (!page.ok) { bump(`article-${page.reason}`); unresolved++; continue; }
       const text = src.articleText(page.body);
       if (text.length < src.MIN_ARTICLE_CHARS) { bump('article-body-too-short'); unresolved++; continue; }
-      seenArticles.add(r.url);
       issue.articlesRead++;
       issue.citations.push(r.url);
       const doc = { label: sender.label, subject: m.subject, date: issue.date, text, citeUrl: r.url, kind: 'article' };
@@ -202,6 +203,7 @@ async function processMessages(messages, { extract, shows, commercial, windowDay
       issue.facts += d.facts;
       issue.accepted += d.accepted;
       if (d.status !== 'read') { issue.articlesRead--; issue.extractFailed = (issue.extractFailed || 0) + 1; }
+      else seenArticles.add(r.url);
     }
     // An issue with no money/closing item is read (nothing to extract). One whose items could
     // not be resolved or fetched is a skip, which feeds the health check.
@@ -209,6 +211,7 @@ async function processMessages(messages, { extract, shows, commercial, windowDay
     if (candidates.length && !issue.articlesRead) { issue.reason = issue.extractFailed ? 'extraction-failed' : 'no-item-resolvable'; if (!issue.extractFailed) bump(issue.reason); continue; }
     issue.status = 'read';
     issue.unresolved = unresolved;
+    if (m.id && !unresolved && !issue.extractFailed && !dryRun) processed.add(m.id);
   }
   return { issues, items, skipped };
 }
@@ -373,13 +376,15 @@ async function main() {
     const r = gmailFailed ? { issues: [], items: [], skipped: {} } : await processMessages(messages, {
       ...shared,
       windowDays: args.windowDays,
+      state,
+      dryRun: args.dryRun,
       resolveLink: (u) => src.resolveBwayLink(u, { resolveOutlet: outletOf }),
       fetchArticle: (u) => src.fetchPublicText(u, { isAllowed: (x) => { try { return new URL(x).protocol === 'https:' && !!outletOf(x); } catch { return false; } } }),
     });
     issues.push(...r.issues);
     for (const [k, n] of Object.entries(r.skipped)) skipped[k] = (skipped[k] || 0) + n;
     items.push(...r.items);
-    listingEmptyBy[briefing.key] = r.issues.length === 0;
+    listingEmptyBy[briefing.key] = r.issues.length === 0 && !r.skipped['already-processed'];
   }
 
   console.log(`Issues found: ${issues.length}`);
@@ -426,6 +431,7 @@ async function main() {
       for (const u of (stateExists ? readNow : [...listing].reverse().map((l) => l.url))) seen.add(u);
       next.processed[k] = [...seen].slice(-200);
     }
+    if (want(briefing.key)) next.processed[briefing.key] = nf.processedBriefingIds(next.processed[briefing.key], issues);
     fs.mkdirSync(path.dirname(args.state), { recursive: true });
     fs.writeFileSync(args.state, `${JSON.stringify(next, null, 2)}\n`);
   } else {
