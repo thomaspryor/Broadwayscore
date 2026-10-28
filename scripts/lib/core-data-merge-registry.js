@@ -1677,6 +1677,17 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
   },
   {
+    file: 'audit/related-shows-ab-monitor-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    // false: a weekly advisory state file does not need the Git Data API fallback,
+    // and the pinned apiFallbackSafe count/list in api-fallback-writer-drift.test.mjs
+    // stays untouched.
+    apiFallbackSafe: false,
+    concurrencyGroup: 'monitor-gate-ab',
+    verifiedBy: '2026-10-28 (BRO-6271): the only writer is monitor-gate-ab.yml (group monitor-gate-ab, cancel-in-progress: false), via scripts/monitor-related-shows-ab.js.',
+  },
+  {
     file: 'audit/gate-cold-start-monitor-state.json',
     surface: 'public-repo',
     status: 'single-writer',

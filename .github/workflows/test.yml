@@ -2545,6 +2545,10 @@ on:
       # analyzer; colocated test runs in the scripts/lib/*.test.mjs glob step.
       - 'scripts/monitor-email-gate-funnel.js'
       - 'scripts/analyze-email-gate-funnel.js'
+      # Related-shows-position A/B result monitor (BRO-6271); rules test runs in
+      # the scripts/lib/*.test.mjs glob step.
+      - 'scripts/monitor-related-shows-ab.js'
+      - 'scripts/analyze-related-shows-ab.js'
       # Flag-parity guardrail (card #250) — registry + static scanner + CI
       # gate + weekly live-PostHog monitor; colocated tests run in the
       # scripts/lib/*.test.mjs glob step.

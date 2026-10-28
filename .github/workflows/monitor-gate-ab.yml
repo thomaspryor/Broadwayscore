@@ -65,6 +65,19 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
+      - name: Run related-shows-position A/B result monitor (BRO-6271)
+        # Advisory first (CLAUDE.md section 19): a data or analyzer failure must
+        # not block the funnel monitor's state commit below. It only alerts
+        # (data problem, one-time ready-to-judge nudge); it never calls a winner
+        # or touches flag config.
+        # lint-allow-swallow: advisory weekly monitor; its alert path reports its own failures and the next weekly run recomputes cumulatively
+        continue-on-error: true
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/monitor-related-shows-ab.js ${{ inputs.dry_run && '--dry-run' || '' }}
+
       - name: Commit monitor state
         # always() so a failure in ANY monitor step still commits whatever
         # state the OTHER steps already earned this run (e.g. an alerted-at
@@ -79,14 +92,14 @@ jobs:
           # that would crash the whole step and lose the OTHER monitors'
           # earned state too. Matters on a monitor's first-ever run, before
           # its state file exists in the repo tree.
-          for f in data/audit/email-gate-funnel-monitor-state.json; do
+          for f in data/audit/email-gate-funnel-monitor-state.json data/audit/related-shows-ab-monitor-state.json; do
             [ -f "$f" ] && git add "$f"
           done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
           fi
-          git commit -m "data: email-gate funnel monitor state [skip ci]"
+          git commit -m "data: A/B monitor state [skip ci]"
           bash scripts/lib/push-with-retry.sh
 
       - name: Notify on failure
