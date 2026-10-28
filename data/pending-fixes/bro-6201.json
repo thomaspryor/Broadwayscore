@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6201",
   "planId": "0158c3d3-ca19-4667-8834-04d0afe58dd2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-27T22:59:36.973Z",
   "submitter": {
     "name": null,
@@ -91,5 +91,59 @@
         "description": "Fix byline typo"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T00:31:59.869Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-bodyguard-tour-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for the-unauthorized-hallmark-ish-parody-musical-tour-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024/times-square-chronicles--suzanna-bowling.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted im-not-running-west-end-2018/sunday-times--davis-jays.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted im-not-running-west-end-2018/telegraph--dominic-cavandish.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted oh-mary-off-broadway-2024/nytimes--joshua-baron.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted rockets-and-blue-lights-west-end-2021/london-theatre--hayley-bachrach.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted the-phantom-of-the-opera-west-end-1986/express-uk--stephan-kyriazis.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted angels-in-america-west-end-2017/timeout-london--andrzej-lukowski.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "angels-in-america-west-end-2017/timeout-london--andrjez-lukowski.json criticName: \"Andrjez Lukowski\" -> \"Andrzej Lukowski\""
+    }
+  ],
+  "executedIn": "ci"
 }
