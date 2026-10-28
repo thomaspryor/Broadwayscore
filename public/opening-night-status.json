@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T15:20:29.554Z",
+  "generatedAt": "2026-10-28T15:34:45.314Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -540,27 +540,27 @@
       "status": "open",
       "slug": "girls-off-west-end",
       "thumbnail": "/images/shows/girls-off-west-end-2026/thumbnail.webp",
-      "siteScore": 73.3,
-      "liveScore": 73,
-      "scoreDrift": -0.29999999999999716,
+      "siteScore": 74.93,
+      "liveScore": 75,
+      "scoreDrift": 0.06999999999999318,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 1,
+      "total": 4,
+      "t1": 2,
       "t2": 2,
       "t3": 0,
-      "positive": 1,
+      "positive": 2,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
-          "T1:1/3",
-          "hi-conf:3/6"
+          "4/8 total",
+          "T1:2/3",
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -573,10 +573,6 @@
         "detail": "Not yet broadcast-ready"
       },
       "missingT1": [
-        {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
         {
           "name": "Observer",
           "isDualMarket": true
@@ -697,6 +693,18 @@
           "t2": 2,
           "t3": 0,
           "p": 1,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T15:34:45.314Z",
+          "rc": 4,
+          "s": 74.93,
+          "t1": 2,
+          "t2": 2,
+          "t3": 0,
+          "p": 2,
           "m": 2,
           "n": 0,
           "bc": "waiting"
