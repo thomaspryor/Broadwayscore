@@ -82,7 +82,9 @@
     "nos-knife-west-end-2016/a-younger-theatre--unknown.json",
     "nos-knife-west-end-2016/telegraph--unknown.json",
     "the-libertine-west-end-2016/radio-times--unknown.json",
-    "the-libertine-west-end-2016/standard--henry-hitchings.json"
+    "the-libertine-west-end-2016/standard--henry-hitchings.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json"
   ],
   "failed": [
     "42nd-street-west-end-2017/times-uk--ann-treneman.json",
@@ -101,7 +103,21 @@
     "school-of-rock-west-end-2016/times-uk--ann-treneman.json",
     "the-red-barn-west-end-2016/independent--unknown.json",
     "the-libertine-west-end-2016/london-box-office--andrew-bewley.json",
-    "the-libertine-west-end-2016/sunday-times--christopher-hart.json"
+    "the-libertine-west-end-2016/sunday-times--christopher-hart.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -153,13 +169,16 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/the-goat-or-who-is-sylvia-west-end-2017/nytimes--unknown.json"
+      "data/review-texts/the-goat-or-who-is-sylvia-west-end-2017/nytimes--unknown.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "the-goat-or-who-is-sylvia-west-end-2017/hampstead-highgate-express--unknown.json",
       "whos-afraid-of-virginia-woolf-west-end-2017/hampstead-highgate-express--unknown.json",
-      "this-house-west-end-2016/daily-echo--unknown.json"
+      "this-house-west-end-2016/daily-echo--unknown.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
     ],
     "scrapingbee": [
       "whos-afraid-of-virginia-woolf-west-end-2017/daily-mail--quentin-letts.json"
@@ -174,7 +193,13 @@
       "data/review-texts/the-girls-west-end-2017/micablackwell--unknown.json",
       "data/review-texts/this-house-west-end-2016/a-younger-theatre--unknown.json",
       "data/review-texts/half-a-sixpence-west-end-2016/plays-to-see--unknown.json",
-      "data/review-texts/the-libertine-west-end-2016/sunday-times--christopher-hart.json"
+      "data/review-texts/the-libertine-west-end-2016/sunday-times--christopher-hart.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
     ],
     "archive": [
       "whos-afraid-of-virginia-woolf-west-end-2017/sunday-times--unknown.json",
@@ -203,11 +228,12 @@
       "school-of-rock-west-end-2016/telegraph--dominic-cavendish.json",
       "school-of-rock-west-end-2016/thestage--mark-shenton.json",
       "nos-knife-west-end-2016/a-younger-theatre--unknown.json",
-      "nos-knife-west-end-2016/telegraph--unknown.json"
+      "nos-knife-west-end-2016/telegraph--unknown.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-28T03:27:13.488Z",
-  "lastProcessed": "the-libertine-west-end-2016/sunday-times--christopher-hart.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
   "log": [
     {
       "t": "2026-10-28T03:31:14.568Z",
@@ -219,6 +245,23 @@
       "t": "2026-10-28T03:31:15.044Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T04:10:28.832Z",
+      "event": "bb-session",
+      "session": "60680769",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T04:10:29.791Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T04:14:49.417Z",
+      "event": "bb-session",
+      "session": "58ebc69d",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ]
 }
