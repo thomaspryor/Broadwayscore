@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-28T02:53:45.143Z",
+  "generatedAt": "2026-10-28T08:10:37.431Z",
   "windowDays": 1095,
   "targets": 640,
-  "auditedThisRun": 20,
-  "carriedForward": 952,
+  "auditedThisRun": 10,
+  "carriedForward": 963,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 477,
-    "missingCurrentRun": 872,
+    "missingCurrentRun": 875,
     "totalCitedNoUrl": 2,
     "totalFlaggedMisses": 731,
     "totalRecoverable": 19,
@@ -16,7 +16,7 @@
     "humanExcluded": 4,
     "automatedExcluded": 473,
     "automatedExcludedListed": 397,
-    "priorProductionCitations": 5619
+    "priorProductionCitations": 5622
   },
   "results": [
     {
@@ -28586,6 +28586,43 @@
       "computedAt": "2026-08-24T17:30:55.767Z"
     },
     {
+      "showId": "bitch-boxer-off-west-end-2026",
+      "title": "Bitch Boxer",
+      "openingDate": "2026-02-25",
+      "status": "closed",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "unextractable": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 3,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-28T08:10:37.431Z"
+    },
+    {
       "showId": "bite-me-off-broadway-2023",
       "title": "Bite Me",
       "openingDate": "2023-10-05",
@@ -41766,13 +41803,15 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
-        "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/",
+        "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/",
+        "https://www.timeout.com/london/theatre/ceilidh-the-musical",
+        "https://musicaltheatrereview.com/tag/ceilidh/",
+        "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
+        "https://musicalzentrale.de/151521/ceilidh-the-musical/",
         "https://www.lsbo.co.uk/musical/ceilidh",
         "https://www.theatrebookings.com/musical/ceilidh",
-        "https://www.timeout.com/london/theatre/ceilidh-the-musical",
         "https://popupceilidh.designmynight.com/54b8f0537872793c0ef9c476/ceilidh-nights",
         "https://broadwaybaby.com/shows/ceilidh-the-musical/839235",
-        "https://musicalzentrale.de/151521/ceilidh-the-musical/",
         "https://theatresoutheast.com/tag/ceilidh-the-musical/",
         "https://www.londontheatredirect.com/news/event/ceilidh-tickets"
       ],
@@ -41784,6 +41823,12 @@
           "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/tag/ceilidh/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
           "serpCensus": true
         }
       ],
@@ -41813,9 +41858,9 @@
           "reverify": true
         },
         {
-          "url": "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
+          "url": "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -41823,9 +41868,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "theatre-weekly--unknown.json",
+              "file": "whatsonstage--alex-wood.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/ceilidh-to-reel-into-london-and-across-the-uk-following-scottish-premiere/"
+              "urlInDir": "https://www.whatsonstage.com/news/ceilidh-musical-to-have-london-run-and-embark-on-tour_1726800/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -41836,6 +41881,29 @@
           "priorRunSource": "flagged-file-date:2026-07-09",
           "serpCensus": true,
           "reverify": false
+        },
+        {
+          "url": "https://musicalzentrale.de/151521/ceilidh-the-musical/",
+          "host": "musicalzentrale.de",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "musicalzentrale--redaktion.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://musicalzentrale.de/151521/ceilidh-the-musical/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "serpCensus": true,
+          "reverify": true
         },
         {
           "url": "https://www.lsbo.co.uk/musical/ceilidh",
@@ -41920,29 +41988,6 @@
               "file": "broadway-baby--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://broadwaybaby.com/shows/ceilidh-the-musical/839235"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "serpCensus": true,
-          "reverify": true
-        },
-        {
-          "url": "https://musicalzentrale.de/151521/ceilidh-the-musical/",
-          "host": "musicalzentrale.de",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "musicalzentrale--redaktion.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://musicalzentrale.de/151521/ceilidh-the-musical/"
             }
           ],
           "exclusion": "automatedExcluded",
@@ -42056,8 +42101,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
-            "accepted": 0,
+            "results": 10,
+            "accepted": 1,
             "error": null
           },
           {
@@ -42067,7 +42112,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -42077,7 +42122,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 2,
             "error": null
           },
           {
@@ -42087,7 +42132,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -42097,30 +42142,40 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 40,
         "byReason": {
-          "non-review-host": 25,
-          "write-path-blocked": 2,
-          "census-junk-host": 2,
-          "ticketing-reseller": 2,
-          "ticket-seller-product-page": 1,
-          "no-review-evidence": 2,
-          "tag-index-page": 1
+          "event-listing": 1,
+          "non-review-host": 19,
+          "no-review-evidence": 5,
+          "write-path-blocked": 3,
+          "non-review-path": 4,
+          "aggregator-internal-nav": 3,
+          "bare-host": 1,
+          "ticketing-listing": 1,
+          "tag-index-page": 3
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 7,
-      "unextractable": [],
+      "unextractable": [
+        {
+          "url": "https://www.leeds-theatre.co.uk/reviews/customer-reviews/ceilidh",
+          "host": "leeds-theatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true,
+          "zeroCharAttempts": 5
+        }
+      ],
       "ingestResults": [
         {
           "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical",
@@ -42136,6 +42191,21 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "ceilidh-the-musical-off-west-end-2026: https://www.timeout.com/london/theatre/ceilidh-the-musical is a Time Out listing capsule, not a review (lib/timeout-capsule.js). Expected rejection; no action needed unless Time Out later publishes a full review at this URL, which a later audit will then ingest."
+        },
+        {
+          "url": "https://musicaltheatrereview.com/tag/ceilidh/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "ceilidh-the-musical-off-west-end-2026: https://musicaltheatrereview.com/tag/ceilidh/ has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
         }
       ],
       "ingestSkippedByCap": [],
@@ -42150,11 +42220,25 @@
             "url": "https://www.timeout.com/london/theatre/ceilidh-the-musical"
           },
           {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/tag/ceilidh/"
+          },
+          {
             "outletId": "bestoftheatre",
             "outlet": "bestoftheatre",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026"
+          },
+          {
+            "outletId": "musicalzentrale.de",
+            "outlet": "musicalzentrale.de",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicalzentrale.de/151521/ceilidh-the-musical/"
           },
           {
             "outletId": "lsbo",
@@ -42185,13 +42269,6 @@
             "url": "https://broadwaybaby.com/shows/ceilidh-the-musical/839235"
           },
           {
-            "outletId": "musicalzentrale.de",
-            "outlet": "musicalzentrale.de",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicalzentrale.de/151521/ceilidh-the-musical/"
-          },
-          {
             "outletId": "theatre-south-east",
             "outlet": "theatre-south-east",
             "critic": "Unknown",
@@ -42216,11 +42293,25 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
+            "url": "https://musicaltheatrereview.com/tag/ceilidh/",
+            "outletId": "musical-theatre-review",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
             "url": "https://www.bestoftheatre.co.uk/blog/post/circa-duck-pond-ceilidh-the-musical-brighton-dome-christmas-2026",
             "outletId": "bestoftheatre",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-22T22:14:01.718Z"
+          },
+          {
+            "url": "https://musicalzentrale.de/151521/ceilidh-the-musical/",
+            "outletId": "musicalzentrale.de",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
             "url": "https://www.lsbo.co.uk/musical/ceilidh",
@@ -42251,13 +42342,6 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://musicalzentrale.de/151521/ceilidh-the-musical/",
-            "outletId": "musicalzentrale.de",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
             "url": "https://theatresoutheast.com/tag/ceilidh-the-musical/",
             "outletId": "theatre-south-east",
             "state": "IN_FLIGHT",
@@ -42274,9 +42358,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 9
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-27T23:08:53.650Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "celebrity-autobiography-2026",
@@ -43993,16 +44077,49 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.broadwayworld.com/westend/article/Review-CIRQUE-BERSERK-at-Riverside-Studios-20230220",
-        "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
-        "https://www.capitalcitytickets.com/8277673/Cirque-Berserk-Tickets",
-        "https://soundsandstage.com/show/cirque-berserk",
+        "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
         "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
-        "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
+        "https://soundsandstage.com/show/cirque-berserk",
+        "https://www.jackstage.co.uk/post/cirque-berserk-review-dazzling-circus-artistry-in-search-of-theatrical-purpose",
+        "https://theatreweekly.com/cirque-berserk-returns-to-the-west-end-for-a-limited-autumn-season-at-the-garrick-theatre/",
+        "https://www.londontheatre.co.uk/reviews/cirque-berserk",
+        "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+        "https://www.voicemag.uk/review/11651/cirque-berserk",
+        "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+        "https://www.capitalcitytickets.com/8277673/Cirque-Berserk-Tickets"
       ],
       "dirFiles": 6,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
+        {
+          "url": "https://theatreweekly.com/cirque-berserk-returns-to-the-west-end-for-a-limited-autumn-season-at-the-garrick-theatre/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/cirque-berserk",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2016-06-08",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+          "host": "mixuptheatre.com",
+          "knownOutletId": "mixuptheatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2022-08-15",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
+          "host": "voicemag.uk",
+          "knownOutletId": "voice-magazine",
+          "serpCensus": true
+        },
         {
           "url": "https://www.capitalcitytickets.com/8277673/Cirque-Berserk-Tickets",
           "host": "capitalcitytickets.com",
@@ -44037,9 +44154,9 @@
           "reverify": false
         },
         {
-          "url": "https://soundsandstage.com/show/cirque-berserk",
-          "host": "soundsandstage.com",
-          "knownOutletId": "soundsandstage",
+          "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
+          "host": "londonboxoffice.co.uk",
+          "knownOutletId": "london-box-office",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -44047,17 +44164,18 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "soundsandstage--unknown.json",
+              "file": "london-box-office--shehrazade-zafar-arif.json",
               "flag": "clean",
-              "urlInDir": "https://soundsandstage.com/show/cirque-berserk"
+              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "contentTierInvalid"
+            "rejectionReason"
           ],
+          "confirmedNonReview": true,
           "serpCensus": true,
-          "reverify": true
+          "reverify": false
         },
         {
           "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
@@ -44083,9 +44201,9 @@
           "reverify": true
         },
         {
-          "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
+          "url": "https://soundsandstage.com/show/cirque-berserk",
+          "host": "soundsandstage.com",
+          "knownOutletId": "soundsandstage",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -44093,16 +44211,40 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "london-box-office--shehrazade-zafar-arif.json",
+              "file": "soundsandstage--unknown.json",
               "flag": "clean",
-              "urlInDir": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
+              "urlInDir": "https://soundsandstage.com/show/cirque-berserk"
             }
           ],
           "exclusion": "automatedExcluded",
           "basis": [
-            "rejectionReason"
+            "contentTierInvalid"
           ],
-          "confirmedNonReview": true,
+          "serpCensus": true,
+          "reverify": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "whatsonstage--alex-wood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.whatsonstage.com/news/cirque-berserk-to-have-west-end-stay-this-autumn_1727774/"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-07-21",
           "serpCensus": true,
           "reverify": false
         }
@@ -44153,17 +44295,128 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Cirque Berserk\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Cirque Berserk\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Cirque Berserk\" review garrick",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Cirque Berserk Garrick Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Cirque Berserk Garrick Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Cirque Berserk Garrick Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 9,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 29,
+        "byReason": {
+          "non-review-host": 19,
+          "write-path-blocked": 1,
+          "census-junk-host": 3,
+          "aggregator-internal-nav": 2,
+          "ticket-seller-product-page": 1,
+          "ticketing-listing": 2,
+          "blog-label-index": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 2,
       "unextractable": [],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.londontheatre.co.uk/reviews/cirque-berserk",
+          "host": "londontheatre.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.mixuptheatre.com/post/fringe-review-cirque-berserk",
+          "host": "mixuptheatre.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        }
+      ],
       "ingestResults": [
+        {
+          "url": "https://theatreweekly.com/cirque-berserk-returns-to-the-west-end-for-a-limited-autumn-season-at-the-garrick-theatre/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+        },
+        {
+          "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
+          "host": "voicemag.uk",
+          "outletId": "voice-magazine",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "publish-date-unresolved",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "cirque-berserk-west-end-2026: https://www.voicemag.uk/review/11651/cirque-berserk has no readable publish date and this show has an earlier-dated citation (a prior production), so the undated page was refused rather than filed where it could be scored as this run's review. Expected rejection; if it IS this production's review, ingest it with --publish-date=YYYY-MM-DD."
+        },
         {
           "url": "https://www.capitalcitytickets.com/8277673/Cirque-Berserk-Tickets",
           "host": "capitalcitytickets.com",
@@ -44185,6 +44438,20 @@
         "verdict": "incomplete",
         "missing": [
           {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/cirque-berserk-returns-to-the-west-end-for-a-limited-autumn-season-at-the-garrick-theatre/"
+          },
+          {
+            "outletId": "voice-magazine",
+            "outlet": "voice-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.voicemag.uk/review/11651/cirque-berserk"
+          },
+          {
             "outletId": "capitalcitytickets.com",
             "outlet": "capitalcitytickets.com",
             "critic": "Unknown",
@@ -44192,11 +44459,11 @@
             "url": "https://www.capitalcitytickets.com/8277673/Cirque-Berserk-Tickets"
           },
           {
-            "outletId": "soundsandstage",
-            "outlet": "soundsandstage",
+            "outletId": "london-box-office",
+            "outlet": "london-box-office",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://soundsandstage.com/show/cirque-berserk"
+            "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
           },
           {
             "outletId": "bestoftheatre",
@@ -44206,11 +44473,11 @@
             "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre"
           },
           {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
+            "outletId": "soundsandstage",
+            "outlet": "soundsandstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk"
+            "url": "https://soundsandstage.com/show/cirque-berserk"
           }
         ],
         "suppressedMissing": [],
@@ -44222,6 +44489,20 @@
             "firstSeenAt": "2026-10-23T08:15:37.359Z"
           },
           {
+            "url": "https://theatreweekly.com/cirque-berserk-returns-to-the-west-end-for-a-limited-autumn-season-at-the-garrick-theatre/",
+            "outletId": "theatre-weekly",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.voicemag.uk/review/11651/cirque-berserk",
+            "outletId": "voice-magazine",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
             "url": "https://www.capitalcitytickets.com/8277673/Cirque-Berserk-Tickets",
             "outletId": "capitalcitytickets.com",
             "state": "GAP",
@@ -44229,11 +44510,11 @@
             "firstSeenAt": "2026-10-27T13:01:02.139Z"
           },
           {
-            "url": "https://soundsandstage.com/show/cirque-berserk",
-            "outletId": "soundsandstage",
+            "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
+            "outletId": "london-box-office",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-25T14:53:08.167Z"
+            "firstSeenAt": "2026-10-23T08:15:37.359Z"
           },
           {
             "url": "https://www.bestoftheatre.co.uk/blog/post/first-look-cirque-berserk-garrick-theatre",
@@ -44243,18 +44524,18 @@
             "firstSeenAt": "2026-10-22T19:07:18.841Z"
           },
           {
-            "url": "https://www.londonboxoffice.co.uk/news/post/first-look-photos-cirque-berserk",
-            "outletId": "london-box-office",
+            "url": "https://soundsandstage.com/show/cirque-berserk",
+            "outletId": "soundsandstage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-10-23T08:15:37.359Z"
+            "firstSeenAt": "2026-10-25T14:53:08.167Z"
           }
         ],
         "censusSchema": 3,
         "liveCount": 1,
-        "candidateCount": 5
+        "candidateCount": 7
       },
-      "computedAt": "2026-10-27T23:08:53.650Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "clara-sex-love-and-classical-music-off-broadway-2026",
@@ -48100,11 +48381,12 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.theguardian.com/stage/2026/oct/18/dance-is-not-for-us-review-barbican-london-omar-rajeh",
-        "https://www.broadwayworld.com/westend/article/Review-DANCE-IS-NOT-FOR-US-Barbican-Centre-20261019",
-        "https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
-        "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
         "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats",
+        "https://www.therendition.co.uk/reviews/dance-is-not-for-us-dance-umbrella",
+        "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
+        "https://www.theguardian.com/stage/2026/oct/18/dance-is-not-for-us-review-barbican-london-omar-rajeh",
+        "https://www.thereviewshub.com/cie-omar-rajeh-maqamet-dance-is-not-for-us-barbican-london/",
+        "https://www.broadwayworld.com/westend/article/Review-DANCE-IS-NOT-FOR-US-Barbican-Centre-20261019",
         "https://www.soundbehindcurtain.com/review-dance-is-not-for-us",
         "https://www.seeingdance.com/omar-rajeh-dance-is-not-for-us-261017/",
         "https://www.aol.co.uk/articles/dance-not-us-review-desire-174556000.html"
@@ -48114,14 +48396,20 @@
       "inReviewsJson": 4,
       "missing": [
         {
-          "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
-          "host": "inkl.com",
+          "url": "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats",
+          "host": "blogflow.ca",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats",
-          "host": "blogflow.ca",
+          "url": "https://www.therendition.co.uk/reviews/dance-is-not-for-us-dance-umbrella",
+          "host": "therendition.co.uk",
+          "knownOutletId": "the-rendition",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
+          "host": "inkl.com",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -48226,8 +48514,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 3,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -48236,7 +48524,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 5,
+            "results": 10,
             "accepted": 2,
             "error": null
           },
@@ -48247,7 +48535,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 4,
             "error": null
           },
           {
@@ -48273,36 +48561,24 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 7,
         "error": null
       },
       "candidatesRejected": {
-        "count": 17,
+        "count": 19,
         "byReason": {
-          "non-review-host": 11,
-          "write-path-blocked": 5,
-          "roundup-page": 1
+          "non-review-host": 10,
+          "no-review-evidence": 3,
+          "write-path-blocked": 2,
+          "census-junk-host": 2,
+          "bare-host": 1,
+          "site-search-page": 1
         }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "ingestResults": [
-        {
-          "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
-          "host": "inkl.com",
-          "outletId": "inkl",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "Fetch failed: All scraping methods failed"
-        },
         {
           "url": "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats",
           "host": "blogflow.ca",
@@ -48317,6 +48593,36 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=blogflow.ca): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=blogflow.ca): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  ScrapingBee failed ("
+        },
+        {
+          "url": "https://www.therendition.co.uk/reviews/dance-is-not-for-us-dance-umbrella",
+          "host": "therendition.co.uk",
+          "outletId": "the-rendition",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
+          "host": "inkl.com",
+          "outletId": "inkl",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "Fetch failed: All scraping methods failed"
         },
         {
           "url": "https://www.aol.co.uk/articles/dance-not-us-review-desire-174556000.html",
@@ -48339,18 +48645,25 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "inkl.com",
-            "outlet": "inkl.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out"
-          },
-          {
             "outletId": "blogflow.ca",
             "outlet": "blogflow.ca",
             "critic": "Unknown",
             "stars": null,
             "url": "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats"
+          },
+          {
+            "outletId": "the-rendition",
+            "outlet": "the-rendition",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.therendition.co.uk/reviews/dance-is-not-for-us-dance-umbrella"
+          },
+          {
+            "outletId": "inkl.com",
+            "outlet": "inkl.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out"
           },
           {
             "outletId": "aol.co.uk",
@@ -48387,15 +48700,22 @@
             "firstSeenAt": "2026-10-26T18:53:32.675Z"
           },
           {
-            "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
-            "outletId": "inkl.com",
+            "url": "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats",
+            "outletId": "blogflow.ca",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T19:16:41.144Z"
           },
           {
-            "url": "https://blogflow.ca/en/article/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats",
-            "outletId": "blogflow.ca",
+            "url": "https://www.therendition.co.uk/reviews/dance-is-not-for-us-dance-umbrella",
+            "outletId": "the-rendition",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.inkl.com/news/dance-is-not-for-us-review-desire-and-defiance-as-one-revolutionary-mover-sweats-it-all-out",
+            "outletId": "inkl.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T19:16:41.144Z"
@@ -48410,9 +48730,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 4,
-        "candidateCount": 7
+        "candidateCount": 8
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "danny-and-the-deep-blue-sea-off-broadway-2023",
@@ -69002,12 +69322,75 @@
         "allSourcesFailed": false
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Franky\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Franky\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Franky\" review lyric",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Franky Lyric Hammersmith review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Franky Lyric Hammersmith review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Franky Lyric Hammersmith review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 22,
+        "byReason": {
+          "non-review-host": 18,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 1,
+          "static-asset": 1,
+          "bare-host": 1
+        }
       },
       "dedupedVariants": [],
       "unextractable": [],
@@ -69020,7 +69403,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "franz-and-marie-west-end-2026",
@@ -73814,11 +74197,27 @@
       "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [
-        "https://www.broadwayworld.com/article/Review-Roundup-SCHOOL-GIRLS-OR-THE-AFRICAN-MEAN-GIRLS-PLAY-Opens-on-Broadway-20260928",
-        "https://www.broadwayworld.com/article/Review-Roundup-TWO-GIRLS-at-the-Cherry-Lane-Theatre-20261023",
-        "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413"
+        "https://www.broadwayworld.com/article/Review-Roundup-TWO-GIRLS-at-the-Cherry-Lane-Theatre-20261023"
       ],
       "aggregatorListedUrls": [
+        "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
+        "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
+        "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
+        "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
+        "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
+        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+        "https://westendwilma.com/review-the-girls-phoenix-theatre/",
+        "https://theatresoutheast.com/the-girls-review/",
+        "https://www.theatrebreaks.co.uk/theatre-review-the-girls-at-the-phoenix-theatre",
+        "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
+        "https://fairypoweredproductions.com/the-girls-review/",
+        "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
+        "https://www.thestage.co.uk/reviews/the-girls-musical-review-at-the-grand-theatre-leeds--brilliant",
+        "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
+        "https://www.ayoungertheatre.com/review-the-girls-phoenix-theatre/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+        "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
         "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
         "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
         "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/",
@@ -73833,30 +74232,12 @@
         "https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/",
         "https://www.chicagotribune.com/2026/09/28/review-school-girls-african-mean-girls-broadway/",
         "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/",
-        "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926",
         "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
         "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
-        "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
-        "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
-        "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
-        "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
-        "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
-        "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
-        "https://nystagereview.com/2022/04/12/to-my-girls-boys-in-the-band-unsuccessfully-updated-in-palm-springs/",
-        "https://newyorktheater.me/2022/04/12/to-my-girls-review/",
-        "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
-        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
-        "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
         "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
         "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-photos",
-        "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-        "https://theatresoutheast.com/the-girls-review/",
-        "https://westendwilma.com/review-the-girls-phoenix-theatre/",
-        "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
-        "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
         "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
         "https://northernartsreview.co.uk/north-west/review-spitfire-girls-at-theatre-by-the-lake/",
-        "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
         "https://www.designmynight.com/london/whats-on/theatre/the-girls",
         "https://micablackwell.co.uk/calendar-girls-the-musical-woking-review/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-girls-phoenix-theatre-london-gary-barlow-take-that-tim-firth-a7591441.html",
@@ -73864,10 +74245,8 @@
         "https://www.islingtontribune.co.uk/article/review-the-girls-at-phoenix-theatre",
         "https://playstosee.com/reviews/uk-reviews/the-girls/",
         "https://www.standard.co.uk/culture/theatre/the-girls-theatre-review-gary-barlows-new-musical-offers-cosy-camaraderie-and-cream-buns-a3680081.html",
-        "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
         "https://www.telegraph.co.uk/theatre/what-to-see/top-girls-review-national-theatre-lyttelton-feminist-museum/",
         "https://www.thestage.co.uk/reviews/millennium-girls-review-brixton-house-1990s-coming-of-age-london-zoe-gibbons-productions",
-        "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
         "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
         "https://www.londontheatre.co.uk/reviews/review-caryl-churchills-top-girls-at-the-national-theatre",
         "https://www.bestoftheatre.co.uk/blog/post/girls-young-vic-maria-casting",
@@ -73881,103 +74260,18 @@
         "https://qa5-web-vercel.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
         "https://www.standard.co.uk/culture/theatre/girls-theatre-review-a-chastening-reminder-of-a-story-that-has-dropped-off-the-headlines-a3359406.html",
         "https://www.thereviewshub.com/scenes-with-girls-union-theatre-london/",
-        "https://fairypoweredproductions.com/the-girls-review/",
         "https://www.timeout.com/london/theatre/when-the-rainbow-is-enuf-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/for-colored-girls-who-have-considered-suicide-review/",
         "https://www.standard.co.uk/culture/theatre/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-b1296202.html",
         "https://www.thestage.co.uk/reviews/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-yard",
         "https://www.theguardian.com/stage/2026/sep/10/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-yard-theatre-london",
-        "https://www.whatsonstage.com/news/for-colored-girls-at-the-yard-theatre-review_1731208/"
+        "https://www.whatsonstage.com/news/for-colored-girls-at-the-yard-theatre-review_1731208/",
+        "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review"
       ],
-      "dirFiles": 12,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 13,
+      "dirClean": 1,
+      "inReviewsJson": 1,
       "missing": [
-        {
-          "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes"
-        },
-        {
-          "url": "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
-          "host": "variety.com",
-          "knownOutletId": "variety"
-        },
-        {
-          "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-sharper-and-funnier-than-ever/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr"
-        },
-        {
-          "url": "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/",
-          "host": "deadline.com",
-          "knownOutletId": "deadline"
-        },
-        {
-          "url": "https://www.newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg"
-        },
-        {
-          "url": "https://1minutecritic.com/school-girls-broadway-review/",
-          "host": "1minutecritic.com",
-          "knownOutletId": "one-minute-critic"
-        },
-        {
-          "url": "https://cititour.com/NYC_Broadway/School-Girls/1396",
-          "host": "cititour.com",
-          "knownOutletId": "cititour"
-        },
-        {
-          "url": "https://culturesauce.com/school-girls-african-mean-girls-play-broadway-review/",
-          "host": "culturesauce.com",
-          "knownOutletId": "culturesauce"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian"
-        },
-        {
-          "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadwayj",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely"
-        },
-        {
-          "url": "https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap"
-        },
-        {
-          "url": "https://www.chicagotribune.com/2026/09/28/review-school-girls-african-mean-girls-broadway/",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune"
-        },
-        {
-          "url": "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater"
-        },
-        {
-          "url": "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london"
-        },
-        {
-          "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
-          "host": "vulture.com",
-          "knownOutletId": "vulture"
-        },
-        {
-          "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
-          "host": "ew.com",
-          "knownOutletId": "ew"
-        },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
           "host": "newyorktheatreguide.com",
@@ -73994,41 +74288,6 @@
           "knownOutletId": "exeunt-magazine"
         },
         {
-          "url": "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
-          "host": "thewrap.com",
-          "knownOutletId": "thewrap",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://nystagereview.com/2022/04/12/to-my-girls-boys-in-the-band-unsuccessfully-updated-in-palm-springs/",
-          "host": "nystagereview.com",
-          "knownOutletId": "nysr",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://newyorktheater.me/2022/04/12/to-my-girls-review/",
-          "host": "newyorktheater.me",
-          "knownOutletId": "nyt-theater",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
-          "host": "theatrely.com",
-          "knownOutletId": "theatrely",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
           "host": "bestoftheatre.co.uk",
           "knownOutletId": "bestoftheatre",
@@ -74043,27 +74302,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
-          "host": "whatsgoodtodo.com",
-          "knownOutletId": "whatsgoodtodo",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-photos",
-          "host": "londonboxoffice.co.uk",
-          "knownOutletId": "london-box-office",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
           "host": "bestoftheatre.co.uk",
           "knownOutletId": "bestoftheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatresoutheast.com/the-girls-review/",
-          "host": "theatresoutheast.com",
-          "knownOutletId": "theatre-south-east",
           "serpCensus": true
         },
         {
@@ -74073,15 +74314,167 @@
           "serpCensus": true
         },
         {
+          "url": "https://theatresoutheast.com/the-girls-review/",
+          "host": "theatresoutheast.com",
+          "knownOutletId": "theatre-south-east",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrebreaks.co.uk/theatre-review-the-girls-at-the-phoenix-theatre",
+          "host": "theatrebreaks.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
           "host": "britishtheatre.com",
           "knownOutletId": "britishtheatrecom",
           "serpCensus": true
         },
         {
+          "url": "https://fairypoweredproductions.com/the-girls-review/",
+          "host": "fairypoweredproductions.com",
+          "knownOutletId": "fairypoweredproductions",
+          "serpCensus": true
+        },
+        {
           "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
           "host": "theatreweekly.com",
           "knownOutletId": "theatre-weekly",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-girls-musical-review-at-the-grand-theatre-leeds--brilliant",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
+          "host": "musicaltheatrereview.com",
+          "knownOutletId": "musical-theatre-review",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-the-girls-phoenix-theatre/",
+          "host": "ayoungertheatre.com",
+          "knownOutletId": "a-younger-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2017-02-28",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+          "host": "telegraph.co.uk",
+          "knownOutletId": "sunday-telegraph",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+          "host": "whatsonstage.com",
+          "knownOutletId": "whatsonstage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "serpCensus": true
+        },
+        {
+          "url": "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "serpCensus": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "serpCensus": true
+        },
+        {
+          "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-sharper-and-funnier-than-ever/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "serpCensus": true
+        },
+        {
+          "url": "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/",
+          "host": "deadline.com",
+          "knownOutletId": "deadline",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
+        {
+          "url": "https://1minutecritic.com/school-girls-broadway-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "serpCensus": true
+        },
+        {
+          "url": "https://cititour.com/NYC_Broadway/School-Girls/1396",
+          "host": "cititour.com",
+          "knownOutletId": "cititour",
+          "serpCensus": true
+        },
+        {
+          "url": "https://culturesauce.com/school-girls-african-mean-girls-play-broadway-review/",
+          "host": "culturesauce.com",
+          "knownOutletId": "culturesauce",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadwayj",
+          "host": "theatrely.com",
+          "knownOutletId": "theatrely",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thewrap.com/creative-content/theater/school-girls-broadway-review/",
+          "host": "thewrap.com",
+          "knownOutletId": "thewrap",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.chicagotribune.com/2026/09/28/review-school-girls-african-mean-girls-broadway/",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "serpCensus": true
+        },
+        {
+          "url": "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/",
+          "host": "newyorktheater.me",
+          "knownOutletId": "nyt-theater",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
+          "host": "vulture.com",
+          "knownOutletId": "vulture",
+          "serpCensus": true
+        },
+        {
+          "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
+          "host": "ew.com",
+          "knownOutletId": "ew",
+          "serpCensus": true
+        },
+        {
+          "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
+          "host": "whatsgoodtodo.com",
+          "knownOutletId": "whatsgoodtodo",
           "serpCensus": true
         },
         {
@@ -74094,12 +74487,6 @@
           "url": "https://northernartsreview.co.uk/north-west/review-spitfire-girls-at-theatre-by-the-lake/",
           "host": "northernartsreview.co.uk",
           "knownOutletId": "northernartsreview",
-          "serpCensus": true
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
-          "host": "musicaltheatrereview.com",
-          "knownOutletId": "musical-theatre-review",
           "serpCensus": true
         },
         {
@@ -74145,12 +74532,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
-          "host": "telegraph.co.uk",
-          "knownOutletId": "sunday-telegraph",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/top-girls-review-national-theatre-lyttelton-feminist-museum/",
           "host": "telegraph.co.uk",
           "knownOutletId": "sunday-telegraph",
@@ -74160,12 +74541,6 @@
           "url": "https://www.thestage.co.uk/reviews/millennium-girls-review-brixton-house-1990s-coming-of-age-london-zoe-gibbons-productions",
           "host": "thestage.co.uk",
           "knownOutletId": "thestage",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
-          "host": "whatsonstage.com",
-          "knownOutletId": "whatsonstage",
           "serpCensus": true
         },
         {
@@ -74247,12 +74622,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://fairypoweredproductions.com/the-girls-review/",
-          "host": "fairypoweredproductions.com",
-          "knownOutletId": "fairypoweredproductions",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.timeout.com/london/theatre/when-the-rainbow-is-enuf-review",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
@@ -74328,7 +74697,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 7,
+        "rowCount": 8,
         "sources": {
           "westendtheatre": {
             "found": true,
@@ -74345,8 +74714,8 @@
             "fetchErrors": 0
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -74367,9 +74736,14 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "currentRunRows": 1,
+        "corroborated": 1,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
       },
       "serpCensus": {
         "ran": true,
@@ -74383,7 +74757,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           },
           {
@@ -74392,7 +74766,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 0,
             "accepted": 0,
             "error": null
           },
@@ -74413,7 +74787,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 5,
             "error": null
           },
           {
@@ -74423,7 +74797,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -74433,66 +74807,35 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 879,
+        "count": 298,
         "byReason": {
-          "non-review-host": 57,
-          "write-path-blocked": 1,
-          "not-http-url": 160,
-          "aggregator-internal-nav": 639,
-          "aggregator-section-root": 16,
-          "roundup-page": 4,
+          "event-listing": 1,
+          "non-review-host": 26,
+          "write-path-blocked": 2,
+          "non-review-path": 1,
+          "aggregator-internal-nav": 205,
+          "ticket-seller-product-page": 1,
           "ticketing-listing": 1,
-          "bare-host": 1
+          "tag-index-page": 1,
+          "not-http-url": 51,
+          "aggregator-section-root": 6,
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
-      "priorRunArticles": [
-        {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-TO-MY-GIRLS-at-Second-Stage-Read-the-Reviews-20220413",
-          "publishDate": "2022-04-13"
-        }
-      ],
       "automatedExcludedListed": 1,
       "unextractable": [],
       "weIngestBlocked": [
         {
-          "url": "https://www.nytimes.com/2022/04/12/theater/to-my-girls-review.html",
-          "host": "nytimes.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.thewrap.com/to-my-girls-off-broadway-bryan-batt-lc-lee/",
-          "host": "thewrap.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://nystagereview.com/2022/04/12/to-my-girls-boys-in-the-band-unsuccessfully-updated-in-palm-springs/",
-          "host": "nystagereview.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://newyorktheater.me/2022/04/12/to-my-girls-review/",
-          "host": "newyorktheater.me",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
-          "url": "https://www.theatrely.com/post/offensive-and-fabulous-to-my-girls-offers-searing-critique-of-gay-culture-review",
-          "host": "theatrely.com",
-          "priorRun": true,
-          "reason": "prior-run",
-          "censusGateOn": true
-        },
-        {
           "url": "https://ilovemanchester.com/review-calendar-girls-the-musical-at-the-lowry",
           "host": "ilovemanchester.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.ayoungertheatre.com/review-the-girls-phoenix-theatre/",
+          "host": "ayoungertheatre.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
@@ -74542,9 +74885,39 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
+          "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "cross-market",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "girls-off-west-end-2026: https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": true,
+          "conflictReason": "cross-show-url-owned",
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "girls-off-west-end-2026: https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city is already owned by two-girls-off-broadway-2026 — one of the two is contaminated. Inspect data/review-texts/two-girls-off-broadway-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+        },
+        {
+          "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+          "host": "exeuntnyc.com",
+          "outletId": "exeunt-magazine",
           "provisional": false,
           "ok": false,
           "noop": false,
@@ -74554,70 +74927,115 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "❌ Refusing to ingest — collision with nytimes--helen-shaw.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-10-20\",\n  \"incomingUrl\": \"https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html\",\n  \"incomingPublishDate\": \"2026-09-28\"\n}\n\nManual remediation required: rename or clear the existing file."
+          "reason": "❌ Refusing to ingest — collision with exeunt-magazine--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/attachment/dsc00744/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": null,\n  \"incomingUrl\": \"https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/\",\n  \"incomingPublishDate\": \"2026-10-20\"\n}\n\nMan"
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
+          "host": "bestoftheatre.co.uk",
+          "outletId": "bestoftheatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+          "host": "bestoftheatre.co.uk",
+          "outletId": "bestoftheatre",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/",
+          "host": "westendwilma.com",
+          "outletId": "west-end-wilma"
+        },
+        {
+          "url": "https://theatresoutheast.com/the-girls-review/",
+          "host": "theatresoutheast.com",
+          "outletId": "theatre-south-east"
+        },
+        {
+          "url": "https://www.theatrebreaks.co.uk/theatre-review-the-girls-at-the-phoenix-theatre",
+          "host": "theatrebreaks.co.uk",
+          "outletId": "theatrebreaks"
+        },
+        {
+          "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
+          "host": "britishtheatre.com",
+          "outletId": "britishtheatrecom"
+        },
+        {
+          "url": "https://fairypoweredproductions.com/the-girls-review/",
+          "host": "fairypoweredproductions.com",
+          "outletId": "fairypoweredproductions"
+        },
+        {
+          "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-girls-musical-review-at-the-grand-theatre-leeds--brilliant",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
+          "host": "musicaltheatrereview.com",
+          "outletId": "musical-theatre-review"
+        },
+        {
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+          "host": "telegraph.co.uk",
+          "outletId": "sunday-telegraph"
+        },
+        {
+          "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+          "host": "whatsonstage.com",
+          "outletId": "whatsonstage"
+        },
+        {
+          "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
+          "host": "nytimes.com",
+          "outletId": "nytimes"
         },
         {
           "url": "https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/",
           "host": "variety.com",
-          "outletId": "variety",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "cross-market",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://variety.com/2026/legit/reviews/school-girls-or-the-african-mean-girls-play-broadway-review-1236877325/ was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
+          "outletId": "variety"
         },
         {
           "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/",
           "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-jasmine-amy-rogers-and-denee-benton-battle-it-out/ is already owned by school-girls-or-the-african-mean-girls-play-2026 — one of the two is contaminated. Inspect data/review-texts/school-girls-or-the-african-mean-girls-play-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "outletId": "nysr"
         },
         {
           "url": "https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-sharper-and-funnier-than-ever/",
           "host": "nystagereview.com",
-          "outletId": "nysr",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": true,
-          "conflictReason": "cross-show-url-owned",
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://nystagereview.com/2026/09/28/school-girls-or-the-african-mean-girls-play-sharper-and-funnier-than-ever/ is already owned by school-girls-or-the-african-mean-girls-play-2026 — one of the two is contaminated. Inspect data/review-texts/school-girls-or-the-african-mean-girls-play-2026/ for this URL; if that copy is the misfiled one, flag it wrongShow with a manual wrongShowReason (that releases ownership), then re-ingest here."
+          "outletId": "nysr"
         },
         {
           "url": "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/",
           "host": "deadline.com",
-          "outletId": "deadline",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "cross-market",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "girls-off-west-end-2026: https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadway-review-when-escape-is-just-a-clique-away-1237114434/ was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json)."
-        }
-      ],
-      "ingestSkippedByCap": [
+          "outletId": "deadline"
+        },
         {
           "url": "https://www.newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
           "host": "newyorktheatreguide.com",
@@ -74664,11 +75082,6 @@
           "outletId": "nyt-theater"
         },
         {
-          "url": "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926",
-          "host": "timeout.com",
-          "outletId": "timeout-london"
-        },
-        {
           "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
           "host": "vulture.com",
           "outletId": "vulture"
@@ -74679,59 +75092,9 @@
           "outletId": "ew"
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
-          "host": "newyorktheatreguide.com",
-          "outletId": "nytg"
-        },
-        {
-          "url": "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
-          "host": "theguardian.com",
-          "outletId": "guardian"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine"
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
-          "host": "bestoftheatre.co.uk",
-          "outletId": "bestoftheatre"
-        },
-        {
           "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
           "host": "whatsgoodtodo.com",
           "outletId": "whatsgoodtodo"
-        },
-        {
-          "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-photos",
-          "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office"
-        },
-        {
-          "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-          "host": "bestoftheatre.co.uk",
-          "outletId": "bestoftheatre"
-        },
-        {
-          "url": "https://theatresoutheast.com/the-girls-review/",
-          "host": "theatresoutheast.com",
-          "outletId": "theatre-south-east"
-        },
-        {
-          "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma"
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
-          "host": "britishtheatre.com",
-          "outletId": "britishtheatrecom"
-        },
-        {
-          "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly"
         },
         {
           "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
@@ -74742,11 +75105,6 @@
           "url": "https://northernartsreview.co.uk/north-west/review-spitfire-girls-at-theatre-by-the-lake/",
           "host": "northernartsreview.co.uk",
           "outletId": "northernartsreview"
-        },
-        {
-          "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
-          "host": "musicaltheatrereview.com",
-          "outletId": "musical-theatre-review"
         },
         {
           "url": "https://www.designmynight.com/london/whats-on/theatre/the-girls",
@@ -74784,11 +75142,6 @@
           "outletId": "standard"
         },
         {
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
-          "host": "telegraph.co.uk",
-          "outletId": "sunday-telegraph"
-        },
-        {
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/top-girls-review-national-theatre-lyttelton-feminist-museum/",
           "host": "telegraph.co.uk",
           "outletId": "sunday-telegraph"
@@ -74797,11 +75150,6 @@
           "url": "https://www.thestage.co.uk/reviews/millennium-girls-review-brixton-house-1990s-coming-of-age-london-zoe-gibbons-productions",
           "host": "thestage.co.uk",
           "outletId": "thestage"
-        },
-        {
-          "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
-          "host": "whatsonstage.com",
-          "outletId": "whatsonstage"
         },
         {
           "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
@@ -74867,16 +75215,116 @@
           "url": "https://www.thereviewshub.com/scenes-with-girls-union-theatre-london/",
           "host": "thereviewshub.com",
           "outletId": "thereviewshub"
-        },
-        {
-          "url": "https://fairypoweredproductions.com/the-girls-review/",
-          "host": "fairypoweredproductions.com",
-          "outletId": "fairypoweredproductions"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city"
+          },
+          {
+            "outletId": "exeunt-magazine",
+            "outlet": "exeunt-magazine",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls"
+          },
+          {
+            "outletId": "bestoftheatre",
+            "outlet": "bestoftheatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic"
+          },
+          {
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/"
+          },
+          {
+            "outletId": "theatre-south-east",
+            "outlet": "theatre-south-east",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatresoutheast.com/the-girls-review/"
+          },
+          {
+            "outletId": "theatrebreaks.co.uk",
+            "outlet": "theatrebreaks.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrebreaks.co.uk/theatre-review-the-girls-at-the-phoenix-theatre"
+          },
+          {
+            "outletId": "britishtheatrecom",
+            "outlet": "britishtheatrecom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre"
+          },
+          {
+            "outletId": "fairypoweredproductions",
+            "outlet": "fairypoweredproductions",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://fairypoweredproductions.com/the-girls-review/"
+          },
+          {
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/the-girls-musical-review-at-the-grand-theatre-leeds--brilliant"
+          },
+          {
+            "outletId": "musical-theatre-review",
+            "outlet": "musical-theatre-review",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/"
+          },
+          {
+            "outletId": "sunday-telegraph",
+            "outlet": "sunday-telegraph",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/"
+          },
+          {
+            "outletId": "whatsonstage",
+            "outlet": "whatsonstage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/"
+          },
           {
             "outletId": "nytimes",
             "outlet": "nytimes",
@@ -74976,13 +75424,6 @@
             "url": "https://newyorktheater.me/2026/09/28/school-girls-or-the-african-mean-girls-play-broadway-review/"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926"
-          },
-          {
             "outletId": "vulture",
             "outlet": "vulture",
             "critic": "Unknown",
@@ -74997,81 +75438,11 @@
             "url": "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983"
           },
           {
-            "outletId": "nytg",
-            "outlet": "nytg",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city"
-          },
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls"
-          },
-          {
             "outletId": "whatsgoodtodo",
             "outlet": "whatsgoodtodo",
             "critic": "Unknown",
             "stars": null,
             "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/"
-          },
-          {
-            "outletId": "london-box-office",
-            "outlet": "london-box-office",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-photos"
-          },
-          {
-            "outletId": "bestoftheatre",
-            "outlet": "bestoftheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic"
-          },
-          {
-            "outletId": "theatre-south-east",
-            "outlet": "theatre-south-east",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatresoutheast.com/the-girls-review/"
-          },
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/"
-          },
-          {
-            "outletId": "britishtheatrecom",
-            "outlet": "britishtheatrecom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre"
-          },
-          {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/"
           },
           {
             "outletId": "london-theatre",
@@ -75086,13 +75457,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://northernartsreview.co.uk/north-west/review-spitfire-girls-at-theatre-by-the-lake/"
-          },
-          {
-            "outletId": "musical-theatre-review",
-            "outlet": "musical-theatre-review",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/"
           },
           {
             "outletId": "designmynight.com",
@@ -75148,13 +75512,6 @@
             "outlet": "sunday-telegraph",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/"
-          },
-          {
-            "outletId": "sunday-telegraph",
-            "outlet": "sunday-telegraph",
-            "critic": "Unknown",
-            "stars": null,
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/top-girls-review-national-theatre-lyttelton-feminist-museum/"
           },
           {
@@ -75163,13 +75520,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thestage.co.uk/reviews/millennium-girls-review-brixton-house-1990s-coming-of-age-london-zoe-gibbons-productions"
-          },
-          {
-            "outletId": "whatsonstage",
-            "outlet": "whatsonstage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/"
           },
           {
             "outletId": "theatrely",
@@ -75263,13 +75613,6 @@
             "url": "https://www.thereviewshub.com/scenes-with-girls-union-theatre-london/"
           },
           {
-            "outletId": "fairypoweredproductions",
-            "outlet": "fairypoweredproductions",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://fairypoweredproductions.com/the-girls-review/"
-          },
-          {
             "outletId": "nytimes",
             "outlet": "nytimes",
             "critic": "Unknown",
@@ -75279,6 +75622,123 @@
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-photos",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T17:27:09.401Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-23T19:01:04.708Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-23T19:01:04.708Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
+            "outletId": "exeunt-magazine",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-23T19:01:04.708Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
+            "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-27T17:27:09.401Z"
+          },
+          {
+            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
+            "outletId": "bestoftheatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
+            "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/",
+            "outletId": "west-end-wilma",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/the-girls-review/",
+            "outletId": "theatre-south-east",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-22T14:24:48.125Z"
+          },
+          {
+            "url": "https://www.theatrebreaks.co.uk/theatre-review-the-girls-at-the-phoenix-theatre",
+            "outletId": "theatrebreaks.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
+            "outletId": "britishtheatrecom",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-24T21:30:13.917Z"
+          },
+          {
+            "url": "https://fairypoweredproductions.com/the-girls-review/",
+            "outletId": "fairypoweredproductions",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-24T06:45:39.049Z"
+          },
+          {
+            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
+            "outletId": "theatre-weekly",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T23:51:22.361Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-girls-musical-review-at-the-grand-theatre-leeds--brilliant",
+            "outletId": "thestage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
+            "outletId": "musical-theatre-review",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-24T21:30:13.917Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
+            "outletId": "sunday-telegraph",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-27T07:10:24.330Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
+            "outletId": "whatsonstage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-25T03:18:28.178Z"
+          },
           {
             "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girls-play-review.html",
             "outletId": "nytimes",
@@ -75378,13 +75838,6 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://www.timeout.com/newyork/news/broadway-review-school-girls-or-the-african-mean-girls-play-092926",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
-          },
-          {
             "url": "https://www.vulture.com/article/broadway-review-jocelyn-biohs-school-girls.html",
             "outletId": "vulture",
             "state": "IN_FLIGHT",
@@ -75399,81 +75852,11 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://www.newyorktheatreguide.com/reviews/two-girls-off-broadway-review",
-            "outletId": "nytg",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-23T19:01:04.708Z"
-          },
-          {
-            "url": "https://www.theguardian.com/stage/2026/oct/22/2-girls-1-cup-play-new-york-city",
-            "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-23T19:01:04.708Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-two-girls-a-homeric-retelling-in-the-oral-tradition-at-cherry-lane-theatre/",
-            "outletId": "exeunt-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-23T19:01:04.708Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-mean-girls",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
-          },
-          {
             "url": "https://whatsgoodtodo.com/mean-girls-the-musical-at-bradford-alhambra-theatre-review/",
             "outletId": "whatsgoodtodo",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-photos",
-            "outletId": "london-box-office",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
-          },
-          {
-            "url": "https://www.bestoftheatre.co.uk/blog/post/everything-you-need-to-know-girls-young-vic",
-            "outletId": "bestoftheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://theatresoutheast.com/the-girls-review/",
-            "outletId": "theatre-south-east",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://westendwilma.com/review-the-girls-phoenix-theatre/",
-            "outletId": "west-end-wilma",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-22T14:24:48.125Z"
-          },
-          {
-            "url": "https://www.britishtheatre.com/posts/review-the-girls-phoenix-theatre",
-            "outletId": "britishtheatrecom",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T21:30:13.917Z"
-          },
-          {
-            "url": "https://theatreweekly.com/first-look-rehearsal-images-released-for-girls-at-the-young-vic/",
-            "outletId": "theatre-weekly",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-25T23:51:22.361Z"
           },
           {
             "url": "https://www.londontheatre.co.uk/reviews/review-of-the-girls-gary-barlows-new-musical-at-the-phoenix-theatre",
@@ -75488,13 +75871,6 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-26T15:33:55.053Z"
-          },
-          {
-            "url": "https://musicaltheatrereview.com/the-girls-phoenix-theatre/",
-            "outletId": "musical-theatre-review",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T21:30:13.917Z"
           },
           {
             "url": "https://www.designmynight.com/london/whats-on/theatre/the-girls",
@@ -75546,13 +75922,6 @@
             "firstSeenAt": "2026-10-27T00:50:34.340Z"
           },
           {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-girls-lowry-theatre-salford-review-already-has-the-bare-esse/",
-            "outletId": "sunday-telegraph",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T07:10:24.330Z"
-          },
-          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/top-girls-review-national-theatre-lyttelton-feminist-museum/",
             "outletId": "sunday-telegraph",
             "state": "IN_FLIGHT",
@@ -75565,13 +75934,6 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-27T00:50:34.340Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/sign-up-for-priority-booking-for-the-girls_41555/",
-            "outletId": "whatsonstage",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-25T03:18:28.178Z"
           },
           {
             "url": "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadway",
@@ -75665,13 +76027,6 @@
             "firstSeenAt": "2026-10-22T14:24:48.125Z"
           },
           {
-            "url": "https://fairypoweredproductions.com/the-girls-review/",
-            "outletId": "fairypoweredproductions",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-24T06:45:39.049Z"
-          },
-          {
             "url": "https://www.nytimes.com/2026/10/20/theater/school-pictures-two-girls-review.html",
             "outletId": "nytimes",
             "state": "IN_FLIGHT",
@@ -75680,10 +76035,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 44
+        "liveCount": 1,
+        "candidateCount": 45
       },
-      "computedAt": "2026-10-27T23:33:33.656Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "giulia-the-poison-queen-of-palermo-off-broadway-2026",
@@ -198984,12 +199339,74 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Stoker Wilde\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Stoker Wilde\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Stoker Wilde\" review wilton",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Stoker Wilde Wilton's Music Hall review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Stoker Wilde Wilton's Music Hall review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Stoker Wilde Wilton's Music Hall review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 0,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 0,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 21,
+        "byReason": {
+          "non-review-host": 10,
+          "no-review-evidence": 4,
+          "census-junk-host": 5,
+          "ticketing-reseller": 2
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
@@ -199033,7 +199450,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "stories-the-tap-dance-sensation-west-end-2026",
@@ -223777,68 +224194,39 @@
       "aggregatorListedUrls": [
         "https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F",
         "https://exeuntnyc.com/reviews/review-the-kick-inside-at-here-arts-center/",
+        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
         "https://thefrontrowcenter.com/2026/10/the-kick-inside/",
-        "https://musicboard.app/figureate/review/album/the-kick-inside/kate-bush/",
-        "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
-        "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
-        "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
-        "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
-        "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+        "https://twi-ny.com/2026/10/26/the-kick-inside-nicolas-norena-here-arts-center/",
         "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
-        "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
+        "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
+        "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
+        "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
+        "https://es.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314",
         "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222",
+        "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+        "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
         "https://rateyourmusic.com/music-review/ryanreviewsrecords/kate-bush/the-kick-inside/167312940",
         "https://rateyourmusic.com/music-review/Medlet/kate-bush/the-kick-inside/268695247",
         "https://rateyourmusic.com/music-review/s_weller/kate-bush/the-kick-inside-13/66191464",
         "https://rateyourmusic.com/music-review/Mickarick/kate-bush/the-kick-inside/2339198",
         "https://rateyourmusic.com/music-review/miaazhar/kate-bush/the-kick-inside/231211145",
-        "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
         "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
+        "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+        "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+        "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+        "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+        "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+        "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
         "https://rateyourmusic.com/music-review/CK73/kate-bush/the-kick-inside/275867641",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/1/",
-        "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
         "https://musicboard.app/mlghtbaedrei/review/album/the-kick-inside/kate-bush/",
-        "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
-        "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
         "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
-        "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
-        "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
-        "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside"
+        "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/"
       ],
       "dirFiles": 5,
       "dirClean": 3,
       "inReviewsJson": 3,
       "missing": [
-        {
-          "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
           "host": "rateyourmusic.com",
@@ -223846,13 +224234,45 @@
           "serpCensus": true
         },
         {
-          "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
+          "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
+          "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://es.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314",
+          "host": "ultimate-guitar.com",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2010-01-28",
+          "serpCensus": true
+        },
+        {
           "url": "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
           "serpCensus": true
@@ -223888,13 +224308,43 @@
           "serpCensus": true
         },
         {
-          "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
+          "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
+          "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+          "host": "rateyourmusic.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
           "serpCensus": true
@@ -223912,25 +224362,7 @@
           "serpCensus": true
         },
         {
-          "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://musicboard.app/mlghtbaedrei/review/album/the-kick-inside/kate-bush/",
-          "host": "musicboard.app",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
-          "host": "rateyourmusic.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
           "host": "musicboard.app",
           "knownOutletId": null,
           "serpCensus": true
@@ -223942,24 +224374,13 @@
           "serpCensus": true
         },
         {
-          "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
-          "host": "musicboard.app",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
           "host": "rateyourmusic.com",
           "knownOutletId": null,
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "twi-ny.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.discogs.com/release/414374-Kate-Bush-The-Kick-Inside",
@@ -223988,12 +224409,75 @@
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Kick Inside\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Kick Inside\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Kick Inside\" review here",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Kick Inside HERE Arts Center review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 8,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 18,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 20,
+        "byReason": {
+          "non-review-host": 15,
+          "no-review-evidence": 1,
+          "write-path-blocked": 1,
+          "aggregator-internal-nav": 2,
+          "merch-store": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 1,
@@ -224003,18 +224487,35 @@
           "host": "getcuebox.com",
           "knownOutletId": null,
           "zeroCharAttempts": 3
-        },
+        }
+      ],
+      "weIngestBlocked": [
         {
-          "url": "https://musicboard.app/figureate/review/album/the-kick-inside/kate-bush/",
-          "host": "musicboard.app",
-          "knownOutletId": null,
-          "serpCensus": true,
-          "zeroCharAttempts": 3
+          "url": "https://es.ultimate-guitar.com/reviews/compact_discs/kate_bush/the_kick_inside/17314",
+          "host": "ultimate-guitar.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
         }
       ],
       "ingestResults": [
         {
-          "url": "https://musicboard.app/figureate/review/album/the-kick-inside/kate-bush/",
+          "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": true,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  provisio"
+        },
+        {
+          "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
           "host": "musicboard.app",
           "outletId": "musicboard",
           "provisional": true,
@@ -224029,7 +224530,7 @@
           "reason": "⚠️  provisional outlet \"musicboard\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+          "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic",
           "provisional": true,
@@ -224041,10 +224542,10 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": true,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  provisional outlet \"rateyourmusic\" (not in registry) — onboard to outlet-registry.json after review.\nArticle extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  provisio"
         },
         {
-          "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+          "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic",
           "provisional": true,
@@ -224056,10 +224557,10 @@
           "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  Bright D"
         },
         {
-          "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+          "url": "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic",
           "provisional": true,
@@ -224070,43 +224571,18 @@
           "expected": false,
           "expectedReason": null,
           "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed"
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
-          "host": "rateyourmusic.com",
-          "outletId": "rateyourmusic",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\nFetch failed"
+          "zeroChar": true,
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=rateyourmusic.com): Scrapingdog HTTP 400: Oops! Something went wrong. You won’t be charged for this request. You can try enabling Stealth Mode using stealth_mode=true. If the issue continues, feel free to email us at info@scrapingdog.com.\n⚠️  Scrapingdog failed (dynamic=false, stealth_mode, domain=rateyourmusic.com): Scrapingdog HTTP 500: {\"message\":\"Oops! Something went wrong. You won’t be charged for this request. If the issue continues, feel free to email us at info@scrapingdog.com.\",\"help\":\"info@scrapingdog.com\",\"success\":false,\"st\n⚠️  provisio"
         }
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
-          "host": "rateyourmusic.com",
-          "outletId": "rateyourmusic"
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
-          "host": "rateyourmusic.com",
-          "outletId": "rateyourmusic"
+          "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+          "host": "musicboard.app",
+          "outletId": "musicboard"
         },
         {
           "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850",
-          "host": "rateyourmusic.com",
-          "outletId": "rateyourmusic"
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic"
         },
@@ -224136,12 +224612,37 @@
           "outletId": "rateyourmusic"
         },
         {
-          "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
+          "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic"
         },
         {
-          "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
+          "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+          "host": "rateyourmusic.com",
+          "outletId": "rateyourmusic"
+        },
+        {
+          "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic"
         },
@@ -224156,22 +224657,7 @@
           "outletId": "rateyourmusic"
         },
         {
-          "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
-          "host": "rateyourmusic.com",
-          "outletId": "rateyourmusic"
-        },
-        {
           "url": "https://musicboard.app/mlghtbaedrei/review/album/the-kick-inside/kate-bush/",
-          "host": "musicboard.app",
-          "outletId": "musicboard"
-        },
-        {
-          "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
-          "host": "rateyourmusic.com",
-          "outletId": "rateyourmusic"
-        },
-        {
-          "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
           "host": "musicboard.app",
           "outletId": "musicboard"
         },
@@ -224179,11 +224665,6 @@
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/",
           "host": "rateyourmusic.com",
           "outletId": "rateyourmusic"
-        },
-        {
-          "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
-          "host": "musicboard.app",
-          "outletId": "musicboard"
         },
         {
           "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
@@ -224199,49 +224680,28 @@
             "outlet": "rateyourmusic.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030"
-          },
-          {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338"
-          },
-          {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467"
-          },
-          {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775"
-          },
-          {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030"
-          },
-          {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
             "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397"
           },
           {
+            "outletId": "musicboard.app",
+            "outlet": "musicboard.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/"
+          },
+          {
             "outletId": "rateyourmusic.com",
             "outlet": "rateyourmusic.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850"
+            "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265"
           },
           {
             "outletId": "rateyourmusic.com",
@@ -224249,6 +224709,20 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222"
+          },
+          {
+            "outletId": "musicboard.app",
+            "outlet": "musicboard.app",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/MrLackMeier/kate-bush/the-kick-inside/72687850"
           },
           {
             "outletId": "rateyourmusic.com",
@@ -224290,14 +224764,49 @@
             "outlet": "rateyourmusic.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586"
+            "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055"
           },
           {
             "outletId": "rateyourmusic.com",
             "outlet": "rateyourmusic.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055"
+            "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030"
+          },
+          {
+            "outletId": "rateyourmusic.com",
+            "outlet": "rateyourmusic.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586"
           },
           {
             "outletId": "rateyourmusic.com",
@@ -224314,13 +224823,6 @@
             "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/1/"
           },
           {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265"
-          },
-          {
             "outletId": "musicboard.app",
             "outlet": "musicboard.app",
             "critic": "Unknown",
@@ -224332,28 +224834,7 @@
             "outlet": "rateyourmusic.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767"
-          },
-          {
-            "outletId": "musicboard.app",
-            "outlet": "musicboard.app",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/"
-          },
-          {
-            "outletId": "rateyourmusic.com",
-            "outlet": "rateyourmusic.com",
-            "critic": "Unknown",
-            "stars": null,
             "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/14/"
-          },
-          {
-            "outletId": "musicboard.app",
-            "outlet": "musicboard.app",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/"
           },
           {
             "outletId": "rateyourmusic.com",
@@ -224385,43 +224866,49 @@
             "firstSeenAt": "2026-10-24T06:45:39.049Z"
           },
           {
-            "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T06:11:00.993Z"
-          },
-          {
-            "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T06:11:00.993Z"
-          },
-          {
-            "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T06:11:00.993Z"
-          },
-          {
-            "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T06:11:00.993Z"
-          },
-          {
-            "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+            "url": "https://twi-ny.com/2026/10/26/the-kick-inside-nicolas-norena-here-arts-center/",
+            "outletId": "twi-ny.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
           },
           {
             "url": "https://rateyourmusic.com/music-review/resist_retreat/kate-bush/the-kick-inside/28136397",
             "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
+            "outletId": "musicboard.app",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T13:01:02.139Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T13:01:02.139Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T13:01:02.139Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T19:16:41.144Z"
+          },
+          {
+            "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
+            "outletId": "musicboard.app",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T06:11:00.993Z"
@@ -224432,13 +224919,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T06:11:00.993Z"
-          },
-          {
-            "url": "https://rateyourmusic.com/music-review/Contortionist/kate-bush/the-kick-inside/23351222",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T19:16:41.144Z"
           },
           {
             "url": "https://rateyourmusic.com/music-review/ryanreviewsrecords/kate-bush/the-kick-inside/167312940",
@@ -224476,14 +224956,49 @@
             "firstSeenAt": "2026-10-27T19:16:41.144Z"
           },
           {
-            "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
+            "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
             "outletId": "rateyourmusic.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-27T19:16:41.144Z"
           },
           {
-            "url": "https://rateyourmusic.com/music-review/piefight/kate-bush/the-kick-inside/136990055",
+            "url": "https://rateyourmusic.com/music-review/NateMaack/kate-bush/the-kick-inside/101577030",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/DComedian/kate-bush/the-kick-inside/139481338",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/Stirling_tsc/kate-bush/the-kick-inside/221125467",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/cyrenaica/kate-bush/the-kick-inside/24775",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/Warthur/kate-bush/the-kick-inside/45276030",
+            "outletId": "rateyourmusic.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-27T06:11:00.993Z"
+          },
+          {
+            "url": "https://rateyourmusic.com/music-review/TheProspectiveWriter/kate-bush/the-kick-inside/87290586",
             "outletId": "rateyourmusic.com",
             "state": "GAP",
             "reason": "sla-breach",
@@ -224504,28 +225019,7 @@
             "firstSeenAt": "2026-10-27T13:01:02.139Z"
           },
           {
-            "url": "https://rateyourmusic.com/music-review/MartinLeedham/kate-bush/the-kick-inside/45186265",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T13:01:02.139Z"
-          },
-          {
             "url": "https://musicboard.app/mlghtbaedrei/review/album/the-kick-inside/kate-bush/",
-            "outletId": "musicboard.app",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T13:01:02.139Z"
-          },
-          {
-            "url": "https://rateyourmusic.com/music-review/Michael18/kate-bush/the-kick-inside/63063767",
-            "outletId": "rateyourmusic.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T13:01:02.139Z"
-          },
-          {
-            "url": "https://musicboard.app/heitorz%C3%A3oz%C3%A3o/review/album/the-kick-inside/kate-bush/",
             "outletId": "musicboard.app",
             "state": "GAP",
             "reason": "sla-breach",
@@ -224537,13 +225031,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-24T06:45:39.049Z"
-          },
-          {
-            "url": "https://musicboard.app/martines/review/album/the-kick-inside/kate-bush/",
-            "outletId": "musicboard.app",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-27T06:11:00.993Z"
           },
           {
             "url": "https://rateyourmusic.com/release/album/kate-bush/the-kick-inside/reviews/21/",
@@ -224561,10 +225048,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 2,
-        "candidateCount": 5
+        "liveCount": 3,
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-27T23:08:53.650Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "the-last-days-of-liz-truss-off-west-end-2026",
@@ -232958,19 +233445,49 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://readaboutstuff.com/2026/10/25/interview-paul-herzberg-discusses-the-moth/",
+        "https://andyjordanproductions.co.uk/the-moth/",
+        "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
+        "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
+        "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
         "https://broadwaybaby.com/shows/the-moth/839368",
-        "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
-        "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/",
         "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
         "https://www.thereviewshub.com/moth-the-hope-theatre-london/",
-        "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
+        "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/",
         "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
-        "https://www.timeout.com/london/theatre/moth"
+        "https://www.timeout.com/london/theatre/the-moth",
+        "https://www.timeout.com/london/theatre/moth",
+        "https://www.afridiziak.com/news/the-london-premiere-direct-from-a-sell-out-northern-tour-the-moth/"
       ],
       "dirFiles": 4,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
+        {
+          "url": "https://andyjordanproductions.co.uk/the-moth/",
+          "host": "andyjordanproductions.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
+          "host": "theblurb.com.au",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
+          "host": "blakefriedmann.co.uk",
+          "knownOutletId": null,
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2025-04-22",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
+          "serpCensus": true
+        },
         {
           "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
           "host": "northwestend.com",
@@ -232986,21 +233503,31 @@
           "serpCensus": true
         },
         {
-          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
-          "host": "blakefriedmann.co.uk",
-          "knownOutletId": null,
+          "url": "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/",
+          "host": "theatreweekly.com",
+          "knownOutletId": "theatre-weekly",
           "serpCensus": true
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
           "host": "britishtheatreguide.info",
           "knownOutletId": "british-theatre",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2012-08-08",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-moth",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
           "serpCensus": true
         },
         {
           "url": "https://www.timeout.com/london/theatre/moth",
           "host": "timeout.com",
           "knownOutletId": "timeout-london",
+          "priorRun": true,
+          "priorRunSource": "pending-file-date:2013-05-31",
           "serpCensus": true
         }
       ],
@@ -233051,31 +233578,6 @@
             "wrongProduction"
           ],
           "confirmedNonReview": true,
-          "serpCensus": true,
-          "reverify": false
-        },
-        {
-          "url": "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatre-weekly--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/"
-            }
-          ],
-          "exclusion": "automatedExcluded",
-          "basis": [
-            "wrongProduction"
-          ],
-          "priorRun": true,
-          "priorRunSource": "flagged-file-date:2026-06-23",
           "serpCensus": true,
           "reverify": false
         },
@@ -233150,26 +233652,155 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"The Moth\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"The Moth\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 2,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"The Moth\" review finborough",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "The Moth Finborough Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "The Moth Finborough Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "The Moth Finborough Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 11,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 16,
+        "byReason": {
+          "event-listing": 1,
+          "non-review-host": 10,
+          "no-review-evidence": 3,
+          "write-path-blocked": 1,
+          "census-junk-host": 1
+        }
       },
       "dedupedVariants": [],
       "automatedExcludedListed": 0,
       "unextractable": [],
       "weIngestBlocked": [
         {
+          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
+          "host": "blakefriedmann.co.uk",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
           "url": "https://northwestend.com/the-moth-shakespeare-north-playhouse/",
           "host": "northwestend.com",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
+          "host": "britishtheatreguide.info",
+          "priorRun": true,
+          "reason": "prior-run",
+          "censusGateOn": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/moth",
+          "host": "timeout.com",
           "priorRun": true,
           "reason": "prior-run",
           "censusGateOn": true
         }
       ],
       "ingestResults": [
+        {
+          "url": "https://andyjordanproductions.co.uk/the-moth/",
+          "host": "andyjordanproductions.co.uk",
+          "outletId": "andyjordanproductions",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": false,
+          "expectedReason": null,
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": null
+        },
+        {
+          "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
+          "host": "theblurb.com.au",
+          "outletId": "theblurb",
+          "provisional": true,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-moth-off-west-end-2026: https://theblurb.com.au/wp/moth-theatre-works-theatre-review/ dated 2023-06-01 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "expected": true,
+          "expectedReason": "prior-production-quarantined",
+          "unclassified": false,
+          "zeroChar": false,
+          "reason": "the-moth-off-west-end-2026: https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895 dated 2013-05-31 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+        },
         {
           "url": "https://www.thereviewshub.com/moth-the-hope-theatre-london/",
           "host": "thereviewshub.com",
@@ -233186,55 +233817,52 @@
           "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS."
         },
         {
-          "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
-          "host": "blakefriedmann.co.uk",
-          "outletId": "blakefriedmann",
-          "provisional": true,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-moth-off-west-end-2026: http://blakefriedmann.co.uk/news/the-moth-paul-herzberg dated 2025-04-22 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
+          "url": "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/",
+          "host": "theatreweekly.com",
+          "outletId": "theatre-weekly",
           "provisional": false,
           "ok": false,
-          "noop": true,
+          "noop": false,
           "conflict": false,
           "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
+          "expected": false,
+          "expectedReason": null,
           "unclassified": false,
           "zeroChar": false,
-          "reason": "the-moth-off-west-end-2026: https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763 dated 2012-08-08 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/moth",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": true,
-          "expectedReason": "prior-production-quarantined",
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": "the-moth-off-west-end-2026: https://www.timeout.com/london/theatre/moth dated 2013-05-31 predates this run; quarantined to _pending/ as the earlier production's review. Expected, no action needed."
+          "reason": "❌ Refusing to ingest — collision with theatre-weekly--unknown.json\n   reason: stale-flag-on-existing-file\n   detail: {\n  \"existingUrl\": \"https://theatreweekly.com/the-moth-transfers-to-finborough-theatre-for-london-premiere-after-acclaimed-tour/\",\n  \"existingFlags\": {\n    \"wrongProduction\": true,\n    \"wrongShow\": false,\n    \"wrongProductionAutoCleared\": false\n  },\n  \"existingPublishDate\": \"2026-06-23\",\n  \"incomingUrl\": \"https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/\",\n  \"incomingPublishDate\": \"2025-02-06\"\n}\n\nManual remediation required: rename or clear the e"
         }
       ],
-      "ingestSkippedByCap": [],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.timeout.com/london/theatre/the-moth",
+          "host": "timeout.com",
+          "outletId": "timeout-london"
+        }
+      ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "andyjordanproductions.co.uk",
+            "outlet": "andyjordanproductions.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://andyjordanproductions.co.uk/the-moth/"
+          },
+          {
+            "outletId": "theblurb.com.au",
+            "outlet": "theblurb.com.au",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/"
+          },
+          {
+            "outletId": "british-theatre",
+            "outlet": "british-theatre",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895"
+          },
           {
             "outletId": "thereviewshub",
             "outlet": "thereviewshub",
@@ -233243,25 +233871,18 @@
             "url": "https://www.thereviewshub.com/moth-the-hope-theatre-london/"
           },
           {
-            "outletId": "blakefriedmann.co.uk",
-            "outlet": "blakefriedmann.co.uk",
+            "outletId": "theatre-weekly",
+            "outlet": "theatre-weekly",
             "critic": "Unknown",
             "stars": null,
-            "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763"
+            "url": "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/"
           },
           {
             "outletId": "timeout-london",
             "outlet": "timeout-london",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/moth"
+            "url": "https://www.timeout.com/london/theatre/the-moth"
           },
           {
             "outletId": "readaboutstuff",
@@ -233288,6 +233909,27 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://andyjordanproductions.co.uk/the-moth/",
+            "outletId": "andyjordanproductions.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://theblurb.com.au/wp/moth-theatre-works-theatre-review/",
+            "outletId": "theblurb.com.au",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/moth-bush-theatre-8895",
+            "outletId": "british-theatre",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
+          },
+          {
             "url": "https://www.thereviewshub.com/moth-the-hope-theatre-london/",
             "outletId": "thereviewshub",
             "state": "IN_FLIGHT",
@@ -233295,25 +233937,18 @@
             "firstSeenAt": "2026-10-27T17:27:09.401Z"
           },
           {
-            "url": "http://blakefriedmann.co.uk/news/the-moth-paul-herzberg",
-            "outletId": "blakefriedmann.co.uk",
+            "url": "https://theatreweekly.com/the-moth-award-winning-short-film-adapted-for-the-stage/",
+            "outletId": "theatre-weekly",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/moth-to-the-fla-paradise-in-aug-7763",
-            "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/moth",
+            "url": "https://www.timeout.com/london/theatre/the-moth",
             "outletId": "timeout-london",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T17:27:09.401Z"
+            "firstSeenAt": "2026-10-28T08:10:37.431Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/10/25/interview-paul-herzberg-discusses-the-moth/",
@@ -233339,9 +233974,9 @@
         ],
         "censusSchema": 3,
         "liveCount": 0,
-        "candidateCount": 7
+        "candidateCount": 9
       },
-      "computedAt": "2026-10-27T19:16:41.144Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "the-mousetrap-west-end-2021",
@@ -248253,40 +248888,47 @@
         "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic",
         "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
         "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
-        "https://www.newjerseystage.com/events/2026/10/28/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-28-730pm",
-        "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd"
+        "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
+        "https://www.newjerseystage.com/events/2026/10/28/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-28-730pm"
       ],
-      "dirFiles": 1,
-      "dirClean": 0,
-      "inReviewsJson": 0,
+      "dirFiles": 4,
+      "dirClean": 2,
+      "inReviewsJson": 2,
       "missing": [
         {
           "url": "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic",
           "host": "njartsmaven.substack.com",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
-          "host": "nj.com",
-          "knownOutletId": "njcom",
-          "serpCensus": true
-        },
-        {
-          "url": "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
-          "host": "outinjersey.net",
-          "knownOutletId": "outinjersey",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
-          "host": "theatrebeyondbroadway.com",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
+          "host": "theatrebeyondbroadway.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatrebeyondbroadway--nickson-frederick.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd"
+            }
+          ],
+          "exclusion": "automatedExcluded",
+          "basis": [
+            "wrongProduction"
+          ],
+          "priorRun": true,
+          "priorRunSource": "flagged-file-date:2026-06-01",
+          "serpCensus": true,
+          "reverify": false
+        },
         {
           "url": "https://www.newjerseystage.com/events/2026/10/28/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-28-730pm",
           "host": "newjerseystage.com",
@@ -248326,7 +248968,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -248345,7 +248987,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 10,
+            "results": 8,
             "accepted": 0,
             "error": null
           },
@@ -248356,7 +248998,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -248366,21 +249008,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           }
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 5,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 31,
         "byReason": {
-          "non-review-host": 27,
-          "no-review-evidence": 3,
-          "non-review-path": 5
+          "event-listing": 1,
+          "non-review-host": 24,
+          "write-path-blocked": 1,
+          "non-review-path": 2,
+          "aggregator-internal-nav": 3
         }
       },
       "dedupedVariants": [],
@@ -248401,51 +249045,6 @@
           "unclassified": false,
           "zeroChar": false,
           "reason": "⚠️  provisional outlet \"njartsmaven\" (not in registry) — onboard to outlet-registry.json after review.\n  ⚠️  Outlet mismatch for the-unexpected-3rd-2026: URL=nj-arts-maven (https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic) vs name=njartsmaven. Preferring URL.\n\n❌ Write-guard refused the write — nothing changed on disk (domain-mismatch: URL domain njartsmaven.substack.com doesn't match outlet nj-arts-maven (expected njartsmaven.com))"
-        },
-        {
-          "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
-          "host": "nj.com",
-          "outletId": "njcom",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
-          "host": "outinjersey.net",
-          "outletId": "outinjersey",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
-          "host": "theatrebeyondbroadway.com",
-          "outletId": "theatrebeyondbroadway",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "expected": false,
-          "expectedReason": null,
-          "unclassified": false,
-          "zeroChar": false,
-          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -248460,27 +249059,6 @@
             "url": "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic"
           },
           {
-            "outletId": "njcom",
-            "outlet": "njcom",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html"
-          },
-          {
-            "outletId": "outinjersey",
-            "outlet": "outinjersey",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/"
-          },
-          {
-            "outletId": "theatrebeyondbroadway.com",
-            "outlet": "theatrebeyondbroadway.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd"
-          },
-          {
             "outletId": "newjerseystage",
             "outlet": "newjerseystage",
             "critic": "Unknown",
@@ -248491,32 +249069,23 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
+            "outletId": "nj.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
+            "url": "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
+            "outletId": "outinjersey.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-27T13:53:28.570Z"
+          },
+          {
             "url": "https://njartsmaven.substack.com/p/review-the-unexpected-3rd-an-energetic",
             "outletId": "njartsmaven.substack.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-26T21:04:47.417Z"
-          },
-          {
-            "url": "https://www.nj.com/entertainment/2026/10/in-unexpected-3rd-kathryn-grodys-one-woman-show-tackles-aging-and-anxiety-amid-modern-chaos-review.html",
-            "outletId": "njcom",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
-            "url": "https://outinjersey.net/everything-old-is-new-again-in-the-unexpected-3rd/",
-            "outletId": "outinjersey",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
-          },
-          {
-            "url": "https://www.theatrebeyondbroadway.com/reviews/the-unexpected-3rd",
-            "outletId": "theatrebeyondbroadway.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-27T13:53:28.570Z"
           },
           {
             "url": "https://www.newjerseystage.com/events/2026/10/28/george-street-playhouse-presents-the-unexpected-3rd-at-new-brunswick-performing-arts-center-nbpac-in-new-brunswick-nj-on-2026-10-28-730pm",
@@ -248527,10 +249096,10 @@
           }
         ],
         "censusSchema": 3,
-        "liveCount": 0,
-        "candidateCount": 5
+        "liveCount": 2,
+        "candidateCount": 4
       },
-      "computedAt": "2026-10-27T13:53:28.570Z"
+      "computedAt": "2026-10-28T08:10:37.431Z"
     },
     {
       "showId": "the-unknown-off-broadway-2026",
@@ -279010,28 +279579,26 @@
     }
   ],
   "staleness": {
-    "at": "2026-10-28T02:53:45.143Z",
+    "at": "2026-10-28T08:10:37.430Z",
     "reserveEvery": 4,
     "reservedAttempted": [
-      "murder-cathedral-off-west-end-2026",
-      "king-of-the-yees-off-broadway-2026",
-      "martin-guerre-west-end-2026"
+      "the-unexpected-3rd-2026",
+      "dance-is-not-for-us-off-west-end-2026"
     ],
     "catalogueReserveEvery": 12,
     "catalogueAttempted": [
-      "the-seance-off-west-end-2026",
-      "ukraine-unbroken-off-west-end-2026"
+      "bitch-boxer-off-west-end-2026"
     ],
-    "neverAuditedDueAtStart": 273,
+    "neverAuditedDueAtStart": 271,
     "oldestDueRowAtStart": {
       "showId": "joe-turners-come-and-gone-2026",
       "computedAt": "2026-09-20T16:50:31.684Z",
-      "ageHours": 897.7
+      "ageHours": 903
     },
     "oldestDueRowAfterRun": {
       "showId": "joe-turners-come-and-gone-2026",
       "computedAt": "2026-09-20T16:50:31.684Z",
-      "ageHours": 898.1
+      "ageHours": 903.3
     }
   }
 }
