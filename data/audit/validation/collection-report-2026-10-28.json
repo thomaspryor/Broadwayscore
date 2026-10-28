@@ -1,63 +1,64 @@
 {
-  "runDate": "2026-10-28T19:03:38.781Z",
+  "runDate": "2026-10-28T19:33:18.311Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "in-the-heights-off-broadway-2026,the-revlon-girl-off-west-end-2026",
+    "showFilter": "memoriam-off-west-end-2026,i-became-we-off-broadway-2026,hospital-hour-off-broadway-2026,the-morbs-off-broadway-2026,the-unexpected-3rd-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "0%"
+    "successRate": "25.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 0,
+    "archiveToday": 1,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 3,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
-    "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier3_6Attempts": 1,
+    "tier3_6Success": 1,
+    "tier4Attempts": 2,
     "tier4Success": 0,
-    "totalFailed": 2,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 2,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 0,
-    "failed": 2,
+    "processed": 1,
+    "failed": 3,
     "shows": [
-      "in-the-heights-off-broadway-2026"
+      "hospital-hour-off-broadway-2026",
+      "memoriam-off-west-end-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,29 +66,47 @@
       "failed": 0
     }
   },
-  "processed": [],
+  "processed": [
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+  ],
   "failed": [
-    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
-    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "cumulativeResumedState": {
-    "processed": [],
+    "processed": [
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+    ],
     "failed": [
-      "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
-      "in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
+      "memoriam-off-west-end-2026/ground--unknown.json",
+      "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+      "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
     ]
   },
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
+    ],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Ground": {
+      "count": 1,
+      "domain": "ground.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
