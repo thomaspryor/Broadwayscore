@@ -1,32 +1,30 @@
 {
-  "generatedAt": "2026-10-28T15:05:38.422Z",
+  "generatedAt": "2026-10-28T16:40:47.581Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 255,
-  "clean": 254,
+  "checked": 256,
+  "clean": 255,
   "defective": 1,
   "byType": {
-    "missing-from-prod": 1
+    "score-drift": 1
   },
   "shows": [
     {
-      "showId": "affluenza-off-west-end-2026",
-      "title": "Affluenza",
-      "openingDate": "2026-10-05",
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "openingDate": "2026-10-27",
       "ok": false,
       "defects": [
         {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: redbuslondinium"
+          "type": "score-drift",
+          "detail": "deployed cs 77.62 vs local 75.56 (Δ2.06)"
         }
       ],
-      "missingFromProd": [
-        "redbuslondinium"
-      ],
-      "localCount": 32,
-      "deployedCount": 31,
-      "firstDefectAt": "2026-10-28T15:05:33.207Z"
+      "missingFromProd": [],
+      "localCount": 5,
+      "deployedCount": 5,
+      "firstDefectAt": "2026-10-28T16:40:42.562Z"
     }
   ],
   "persistentDefective": 0,

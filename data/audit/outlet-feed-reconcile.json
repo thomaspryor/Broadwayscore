@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T15:05:38.691Z",
+  "generatedAt": "2026-10-28T16:40:47.986Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,16 +118,20 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "thereviewshub",
+      "error": "Timeout fetching https://www.thereviewshub.com/feed/"
+    },
+    {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
-    },
-    {
-      "outletId": "musical-theatre-review",
-      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -142,9 +146,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 795,
+  "itemsScanned": 695,
   "matchedGaps": 9,
-  "possibleGaps": 7,
+  "possibleGaps": 6,
   "gaps": [
     {
       "showId": "aftermath-art-new-york-off-broadway-2026",
@@ -168,18 +172,18 @@
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
       "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/girls-young-vic/",
-      "headline": "Girls | Young Vic",
+      "outletId": "all-that-dazzles-uk",
+      "url": "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
+      "headline": "Review: Girls (The Maria Theatre, Young Vic)",
       "publishDate": "2026-10-28"
     },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
       "level": "matched",
-      "outletId": "guardian",
-      "url": "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
-      "headline": "Girls review – a story of friendship amidst extreme misogynist violence",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/girls-young-vic/",
+      "headline": "Girls | Young Vic",
       "publishDate": "2026-10-28"
     },
     {
@@ -280,15 +284,6 @@
       "url": "https://playstosee.com/reviews/burlesque/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=burlesque",
       "headline": "Burlesque",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "title": "The Pianist",
-      "level": "possible",
-      "outletId": "thereviewshub",
-      "url": "https://www.thereviewshub.com/lambeth-fringe-2026-happy-heart-the-songs-of-andy-williams-toulouse-lautrec-jazz-club-london/",
-      "headline": "Lambeth Fringe 2026: Happy Heart: The Songs of Andy Williams – Toulouse Lautrec Jazz Club, London",
-      "publishDate": "2026-10-19"
     }
   ]
 }
