@@ -50,7 +50,7 @@ const MIN_AGREEMENT = 2;
 const DUPE_SIMILARITY = 0.6;
 
 // Per-run volume cap (BRO-6478). A filed card now costs a worker session, and about 17 of 18 findings were noise
-// (BRO-340), so a bad night files a few and leaves the rest in the run directory for the next night's dedup.
+// (BRO-340), so a bad night files a few. The rest are reported as skippedOverCap; a real defect shows up in the next night's run and files then.
 const MAX_FILINGS_PER_RUN = 3;
 
 // The card's own safe-form check (check-paths.js SAFE_CHECK_FORMS). The real acceptance is the live check the

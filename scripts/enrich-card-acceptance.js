@@ -1590,7 +1590,7 @@ async function runLinearLeg(args, { dryRun, limit }) {
     // path, a refusal is real work (a Linear fetch happened) and should
     // count, so leaving it un-excluded here is correct by construction, not
     // an oversight.
-    if (result.action !== 'skipped') attempts++;
+    if (result.action !== 'skipped' && result.action !== 'human-territory') attempts++;
     console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }

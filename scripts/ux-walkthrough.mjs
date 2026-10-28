@@ -1268,6 +1268,7 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
     return { filed: [], failed: [], refused: true, reason: plan.reason };
   }
   for (const t of plan.skippedDuplicate) console.error(`[ux-walkthrough] skip (existing issue match): ${t}`);
+  for (const t of plan.skippedOverCap) console.error(`[ux-walkthrough] skip (per-run cap): ${t}`);
 
   const filed = [];
   const failed = [];
