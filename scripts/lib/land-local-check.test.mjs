@@ -298,7 +298,7 @@ test('depsChangedSince: true only when package.json or package-lock.json differ 
     writeFileSync(join(root, 'package-lock.json'), '{"lockfileVersion":3}\n'); sh('commit', '-q', '-am', 'lock'); const lock = sh('rev-parse', 'HEAD');
     assert.equal(depsChangedSince(git, base, lock), true);
     assert.equal(depsChangedSince(git, code, lock), true);
-  } finally { rmSync(root, { recursive: true, force: true }); }
+  } finally { rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
 });
 
 test('main() skips the base run when deps changed, so red gates count as new', () => {

@@ -21,7 +21,7 @@ import { execFileSync, spawnSync } from 'node:child_process';
 
 const HERE = dirname(new URL(import.meta.url).pathname);
 const ROOTS = [];
-after(() => { for (const r of ROOTS) fs.rmSync(r, { recursive: true, force: true }); });
+after(() => { for (const r of ROOTS) fs.rmSync(r, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 
 function setup() {
   const root = fs.realpathSync(fs.mkdtempSync(join(tmpdir(), 'gauntlet-deps-')));
