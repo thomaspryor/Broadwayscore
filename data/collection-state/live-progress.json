@@ -1,23 +1,34 @@
 {
-  "updatedAt": "2026-10-28T12:39:02.679Z",
-  "processed": 66,
-  "failed": 14,
-  "successRate": "82.5%",
+  "updatedAt": "2026-10-28T12:48:02.842Z",
+  "processed": 220,
+  "failed": 125,
+  "successRate": "63.8%",
   "tierBreakdown": {
-    "playwright": 32,
+    "playwright": 110,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 3,
-    "brightdata": 7,
-    "archiveToday": 2,
-    "archive": 29
+    "scrapingdog": 12,
+    "scrapingbee": 0,
+    "brightdata": 6,
+    "archiveToday": 24,
+    "archive": 68
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-10-28T12:27:23.487Z",
+      "t": "2026-10-28T11:37:44.829Z",
+      "event": "bb-session",
+      "session": "86dc73c5",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-man"
+    },
+    {
+      "t": "2026-10-28T11:37:45.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T11:53:11.271Z",
       "event": "bb-session",
       "session": "318dfe98",
       "url": "https://www.wsj.com/articles/love-review-a-naturalistic-look-at-lives-in-limbo-4"
@@ -63,17 +74,6 @@
     },
     {
       "t": "2026-10-28T11:58:00.880Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-28T11:58:10.635Z",
-      "event": "bb-session",
-      "session": "7d451931",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-28T11:58:11.291Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
