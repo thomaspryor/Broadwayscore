@@ -1121585,21 +1121585,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-28T22:31:30.570Z",
-    "completedAt": "2026-10-28T22:31:40.629Z",
-    "totalReviews": 2,
-    "processed": 2,
-    "skipped": 0,
+    "startedAt": "2026-10-28T22:32:39.154Z",
+    "completedAt": "2026-10-28T22:33:35.388Z",
+    "totalReviews": 15,
+    "processed": 11,
+    "skipped": 4,
     "errors": 0,
     "tokensUsed": {
-      "input": 12917,
-      "output": 635,
-      "cacheRead": 7614,
-      "cacheWrite": 0,
-      "total": 31520
+      "input": 57823,
+      "output": 3493,
+      "cacheRead": 34218,
+      "cacheWrite": 7520,
+      "total": 153918
     },
-    "costUsd": 0.0483819,
-    "runId": "40780154810",
+    "costUsd": 0.2529588,
+    "runId": "40780272210",
     "errorDetails": [],
     "validation": [
       {
@@ -1138416,6 +1138416,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "long-days-journey-into-night-off-broadway-2022",
+        "ourDistribution": {
+          "up": 7,
+          "flat": 2,
+          "down": 2,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "long-days-journey-into-night-west-end-2018",
         "ourDistribution": {
           "up": 26,
@@ -1151915,16 +1151925,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "the-paparazzi-off-broadway-2026",
-        "ourDistribution": {
-          "up": 0,
-          "flat": 1,
-          "down": 1,
-          "total": 2
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "the-parisian-woman-2017",
         "ourDistribution": {
           "up": 10,
@@ -1156764,21 +1156764,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-28T22:33:21.657Z",
-    "completedAt": "2026-10-28T22:33:21.658Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-10-28T22:34:40.913Z",
+    "completedAt": "2026-10-28T22:34:44.761Z",
+    "totalReviews": 2,
+    "processed": 2,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 7042,
+      "output": 395,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 7437
     },
-    "costUsd": 0,
-    "runId": "40780154810",
+    "costUsd": 0.0173523,
+    "runId": "40780272210",
     "errorDetails": []
   }
 ]
