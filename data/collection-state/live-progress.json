@@ -1,70 +1,21 @@
 {
-  "updatedAt": "2026-10-28T02:29:33.364Z",
-  "processed": 540,
+  "updatedAt": "2026-10-28T02:38:51.212Z",
+  "processed": 536,
   "failed": 239,
-  "successRate": "69.3%",
+  "successRate": "69.2%",
   "tierBreakdown": {
-    "playwright": 319,
+    "playwright": 320,
     "amp": 5,
-    "browserbase": 14,
+    "browserbase": 16,
     "directCookies": 0,
     "scrapingdog": 40,
     "scrapingbee": 30,
     "brightdata": 0,
-    "archiveToday": 56,
-    "archive": 135
+    "archiveToday": 63,
+    "archive": 133
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-27T21:28:55.761Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T21:31:51.394Z",
-      "event": "bb-session",
-      "session": "c2a95eb1",
-      "url": "https://www.wsj.com/articles/the-gardens-of-anuncia-review-the-blooming-of-a-bro"
-    },
-    {
-      "t": "2026-10-27T21:31:51.857Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-27T21:41:25.232Z",
-      "event": "bb-session",
-      "session": "23833e97",
-      "url": "https://www.nytimes.com/2023/10/30/theater/i-can-get-it-for-you-wholesale-review"
-    },
-    {
-      "t": "2026-10-27T21:41:25.726Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T21:47:55.770Z",
-      "event": "bb-session",
-      "session": "01c2b6b2",
-      "url": "https://www.nytimes.com/2023/10/27/theater/covenant-review.html"
-    },
-    {
-      "t": "2026-10-27T21:47:56.327Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-27T21:52:39.708Z",
-      "event": "bb-session",
-      "session": "a1f07957",
-      "url": "https://www.nytimes.com/2023/10/22/theater/here-we-are-review-stephen-sondheim.h"
-    },
-    {
-      "t": "2026-10-27T21:52:40.128Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-27T21:55:01.675Z",
       "event": "bb-session",
@@ -125,6 +76,57 @@
       "t": "2026-10-27T23:37:52.721Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-28T01:41:22.731Z",
+      "event": "bb-session",
+      "session": "5a7978af",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-28T01:52:44.539Z",
+      "event": "bb-session",
+      "session": "4fb45937",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T01:52:45.180Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T01:57:07.548Z",
+      "event": "bb-session",
+      "session": "be43da31",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-28T02:00:20.685Z",
+      "event": "bb-session",
+      "session": "6acb3c9c",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T02:00:21.355Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T02:00:31.854Z",
+      "event": "bb-session",
+      "session": "83f33258",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T02:00:32.449Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T02:31:28.598Z",
+      "event": "bb-session",
+      "session": "90232246",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
