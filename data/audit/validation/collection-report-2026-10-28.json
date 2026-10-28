@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-28T09:50:04.423Z",
+  "runDate": "2026-10-28T10:09:22.901Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "1984-west-end-2016",
+    "showFilter": "a-christmas-carol-west-end-2015,the-flick-west-end-2016,lovesong-of-the-electric-bear-west-end-2015,the-war-of-the-worlds-west-end-2016,aladdin-west-end-2016,1984-west-end-2016,ushers-west-end-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 31,
+    "failed": 3,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "91.2%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 18,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "brightdata": 1,
+    "archiveToday": 2,
+    "archive": 11
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 1,
+    "tier1Attempts": 21,
+    "tier1Success": 18,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 1,
-    "tier4Success": 0,
-    "totalFailed": 1,
-    "scrapingBeePageCredits": 1,
+    "tier1_9Attempts": 3,
+    "tier1_9Success": 2,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 3,
+    "tier3_6Attempts": 3,
+    "tier3_6Success": 2,
+    "tier4Attempts": 10,
+    "tier4Success": 7,
+    "totalFailed": 3,
+    "scrapingBeePageCredits": 31,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,10 +54,15 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 31,
+    "failed": 3,
     "shows": [
-      "1984-west-end-2016"
+      "a-christmas-carol-west-end-2015",
+      "aladdin-west-end-2016",
+      "lovesong-of-the-electric-bear-west-end-2015",
+      "the-flick-west-end-2016",
+      "the-war-of-the-worlds-west-end-2016",
+      "ushers-west-end-2015"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -66,33 +71,129 @@
     }
   },
   "processed": [
-    "1984-west-end-2016/fjord-review--unknown.json"
+    "aladdin-west-end-2016/timeout-london--andrzej-lukowski.json",
+    "aladdin-west-end-2016/city-am--adam-bloodworth.json",
+    "aladdin-west-end-2016/daily-mail--unknown.json",
+    "aladdin-west-end-2016/financialtimes--ian-shuttleworth.json",
+    "aladdin-west-end-2016/independent--paul-taylor.json",
+    "aladdin-west-end-2016/london-box-office--nastazja-domaradzka.json",
+    "aladdin-west-end-2016/london-box-office--nicole-acquah.json",
+    "aladdin-west-end-2016/london-box-office--phil-willmott.json",
+    "aladdin-west-end-2016/london-theatre--unknown.json",
+    "aladdin-west-end-2016/londontheatre1--unknown.json",
+    "aladdin-west-end-2016/musicaltheatremusings--unknown.json",
+    "aladdin-west-end-2016/quays-life--unknown.json",
+    "aladdin-west-end-2016/standard--henry-hitchings.json",
+    "aladdin-west-end-2016/telegraph--dominic-cavendish.json",
+    "aladdin-west-end-2016/thestage--mark-shenton.json",
+    "aladdin-west-end-2016/whatsonstage--sarah-crompton.json",
+    "the-flick-west-end-2016/fringereview--unknown.json",
+    "the-flick-west-end-2016/guardian--unknown.json",
+    "the-flick-west-end-2016/artsdesk--unknown.json",
+    "the-flick-west-end-2016/independent--unknown.json",
+    "the-flick-west-end-2016/standard--unknown.json",
+    "the-flick-west-end-2016/whatsonstage--unknown.json",
+    "the-war-of-the-worlds-west-end-2016/nytimes--unknown.json",
+    "the-war-of-the-worlds-west-end-2016/loureviews--louise-penn.json",
+    "the-war-of-the-worlds-west-end-2016/express-uk--unknown.json",
+    "the-war-of-the-worlds-west-end-2016/london-box-office--davor-golub.json",
+    "a-christmas-carol-west-end-2015/variety--unknown.json",
+    "a-christmas-carol-west-end-2015/thereviewshub--unknown.json",
+    "a-christmas-carol-west-end-2015/north-west-end--unknown.json",
+    "a-christmas-carol-west-end-2015/standard--unknown.json",
+    "lovesong-of-the-electric-bear-west-end-2015/londontheatre1--unknown.json"
   ],
   "failed": [
-    "1984-west-end-2016/a-younger-theatre--unknown.json"
+    "the-flick-west-end-2016/thestage--unknown.json",
+    "a-christmas-carol-west-end-2015/thestage--unknown.json",
+    "ushers-west-end-2015/a-younger-theatre--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "1984-west-end-2016/fjord-review--unknown.json"
+      "aladdin-west-end-2016/timeout-london--andrzej-lukowski.json",
+      "aladdin-west-end-2016/city-am--adam-bloodworth.json",
+      "aladdin-west-end-2016/daily-mail--unknown.json",
+      "aladdin-west-end-2016/financialtimes--ian-shuttleworth.json",
+      "aladdin-west-end-2016/independent--paul-taylor.json",
+      "aladdin-west-end-2016/london-box-office--nastazja-domaradzka.json",
+      "aladdin-west-end-2016/london-box-office--nicole-acquah.json",
+      "aladdin-west-end-2016/london-box-office--phil-willmott.json",
+      "aladdin-west-end-2016/london-theatre--unknown.json",
+      "aladdin-west-end-2016/londontheatre1--unknown.json",
+      "aladdin-west-end-2016/musicaltheatremusings--unknown.json",
+      "aladdin-west-end-2016/quays-life--unknown.json",
+      "aladdin-west-end-2016/standard--henry-hitchings.json",
+      "aladdin-west-end-2016/telegraph--dominic-cavendish.json",
+      "aladdin-west-end-2016/thestage--mark-shenton.json",
+      "aladdin-west-end-2016/whatsonstage--sarah-crompton.json",
+      "the-flick-west-end-2016/fringereview--unknown.json",
+      "the-flick-west-end-2016/guardian--unknown.json",
+      "the-flick-west-end-2016/artsdesk--unknown.json",
+      "the-flick-west-end-2016/independent--unknown.json",
+      "the-flick-west-end-2016/standard--unknown.json",
+      "the-flick-west-end-2016/whatsonstage--unknown.json",
+      "the-war-of-the-worlds-west-end-2016/nytimes--unknown.json",
+      "the-war-of-the-worlds-west-end-2016/loureviews--louise-penn.json",
+      "the-war-of-the-worlds-west-end-2016/express-uk--unknown.json",
+      "the-war-of-the-worlds-west-end-2016/london-box-office--davor-golub.json",
+      "a-christmas-carol-west-end-2015/variety--unknown.json",
+      "a-christmas-carol-west-end-2015/thereviewshub--unknown.json",
+      "a-christmas-carol-west-end-2015/north-west-end--unknown.json",
+      "a-christmas-carol-west-end-2015/standard--unknown.json",
+      "lovesong-of-the-electric-bear-west-end-2015/londontheatre1--unknown.json"
     ],
     "failed": [
-      "1984-west-end-2016/a-younger-theatre--unknown.json"
+      "the-flick-west-end-2016/thestage--unknown.json",
+      "a-christmas-carol-west-end-2015/thestage--unknown.json",
+      "ushers-west-end-2015/a-younger-theatre--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "1984-west-end-2016/fjord-review--unknown.json"
+      "aladdin-west-end-2016/timeout-london--andrzej-lukowski.json",
+      "aladdin-west-end-2016/city-am--adam-bloodworth.json",
+      "aladdin-west-end-2016/daily-mail--unknown.json",
+      "aladdin-west-end-2016/financialtimes--ian-shuttleworth.json",
+      "aladdin-west-end-2016/london-box-office--phil-willmott.json",
+      "aladdin-west-end-2016/london-theatre--unknown.json",
+      "aladdin-west-end-2016/londontheatre1--unknown.json",
+      "aladdin-west-end-2016/musicaltheatremusings--unknown.json",
+      "aladdin-west-end-2016/quays-life--unknown.json",
+      "aladdin-west-end-2016/whatsonstage--sarah-crompton.json",
+      "the-flick-west-end-2016/fringereview--unknown.json",
+      "the-flick-west-end-2016/artsdesk--unknown.json",
+      "the-flick-west-end-2016/whatsonstage--unknown.json",
+      "the-war-of-the-worlds-west-end-2016/loureviews--louise-penn.json",
+      "the-war-of-the-worlds-west-end-2016/express-uk--unknown.json",
+      "a-christmas-carol-west-end-2015/thereviewshub--unknown.json",
+      "a-christmas-carol-west-end-2015/north-west-end--unknown.json",
+      "lovesong-of-the-electric-bear-west-end-2015/londontheatre1--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [],
-    "archiveToday": [
-      "data/review-texts/1984-west-end-2016/a-younger-theatre--unknown.json"
+    "brightdata": [
+      "a-christmas-carol-west-end-2015/variety--unknown.json"
     ],
-    "archive": []
+    "archiveToday": [
+      "data/review-texts/a-christmas-carol-west-end-2015/thestage--unknown.json",
+      "data/review-texts/ushers-west-end-2015/a-younger-theatre--unknown.json"
+    ],
+    "archive": [
+      "aladdin-west-end-2016/independent--paul-taylor.json",
+      "aladdin-west-end-2016/london-box-office--nastazja-domaradzka.json",
+      "aladdin-west-end-2016/london-box-office--nicole-acquah.json",
+      "aladdin-west-end-2016/standard--henry-hitchings.json",
+      "aladdin-west-end-2016/telegraph--dominic-cavendish.json",
+      "aladdin-west-end-2016/thestage--mark-shenton.json",
+      "the-flick-west-end-2016/independent--unknown.json",
+      "the-flick-west-end-2016/standard--unknown.json",
+      "the-war-of-the-worlds-west-end-2016/nytimes--unknown.json",
+      "the-war-of-the-worlds-west-end-2016/london-box-office--davor-golub.json",
+      "a-christmas-carol-west-end-2015/standard--unknown.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
