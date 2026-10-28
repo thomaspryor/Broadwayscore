@@ -1,5 +1,6 @@
 'use client';
 
+import MailtoLink from '@/components/MailtoLink';
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import type { PartnerShowOption } from './page';
@@ -277,7 +278,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
             <p>
               Full terms are in our <Link href="/terms" className="text-brand hover:text-brand-light">Terms of Service</Link>.
               Brand assets and colors are on the <Link href="/brand" className="text-brand hover:text-brand-light">Brand page</Link>.
-              Questions? <a href="mailto:hello@broadwayscorecard.com" className="text-brand hover:text-brand-light">Email us</a>.
+              Questions? <MailtoLink href="mailto:hello@broadwayscorecard.com" className="text-brand hover:text-brand-light">Email us</MailtoLink>.
             </p>
           </div>
         </section>

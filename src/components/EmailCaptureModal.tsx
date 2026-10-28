@@ -9,6 +9,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
@@ -94,6 +95,7 @@ export default function EmailCaptureModal({
     if (isOpen) {
       track('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
       captureEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
+      gaEvent('gate_modal_shown', { trigger, is_return_visitor: trigger === 'return_visitor', copyVersion: COPY_VERSION, ...analyticsProps });
     }
     // analyticsProps is set by ProGateContext before isOpen flips; identity may
     // change per fire but only isOpen/trigger should re-emit the event.
@@ -167,6 +169,7 @@ export default function EmailCaptureModal({
       };
       track('email_captured', captureProps);
       captureEvent('email_captured', captureProps);
+      gaEvent('email_captured', captureProps);
 
       onSubmit(userData);
 

@@ -15,6 +15,7 @@ import dynamic from 'next/dynamic';
 import { usePathname } from 'next/navigation';
 import { track } from '@vercel/analytics';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 import { usePostHogFlag } from '@/lib/hooks';
 import { type GateTrigger, type CapturedUserData } from '@/components/EmailCaptureModal';
 import { emailCaptureConfig } from '@/config/email-capture';
@@ -283,6 +284,7 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
     }
     track('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
     captureEvent('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
+    gaEvent('gate_modal_dismissed', { trigger: modalTrigger, copyVersion: COPY_VERSION, ...gateFireMeta });
   }, [modalBlocking, modalTrigger, gateFireMeta]);
 
   // Recapture: fire non-blocking modal after 4s for pre-fix users who need re-submission to Formspree

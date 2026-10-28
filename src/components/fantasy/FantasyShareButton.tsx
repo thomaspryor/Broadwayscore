@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 
 /**
  * "Share your team" on the draft confirmation screen (BRO-4338). Phones get
@@ -35,6 +36,7 @@ export default function FantasyShareButton({ picks, teamName }: { picks: string[
       if (navigator.canShare?.({ files: [file] })) {
         await navigator.share({ files: [file], text: `${shareText} ${pageUrl}` });
         captureEvent('fantasy_team_shared', { method: 'share_sheet' });
+        gaEvent('fantasy_team_shared', { method: 'share_sheet' });
       } else {
         const a = document.createElement('a');
         a.href = URL.createObjectURL(blob);
@@ -42,11 +44,13 @@ export default function FantasyShareButton({ picks, teamName }: { picks: string[
         a.click();
         setTimeout(() => URL.revokeObjectURL(a.href), 10_000);
         captureEvent('fantasy_team_shared', { method: 'download' });
+        gaEvent('fantasy_team_shared', { method: 'download' });
       }
     } catch (err) {
       // Closing the share sheet rejects with AbortError: not a failure.
       if (!(err instanceof DOMException && err.name === 'AbortError')) {
         captureEvent('fantasy_team_share_failed', { reason: err instanceof Error ? err.name : 'unknown' });
+        gaEvent('fantasy_team_share_failed', { reason: err instanceof Error ? err.name : 'unknown' });
         window.open(imageUrl, '_blank', 'noopener');
       }
     } finally {

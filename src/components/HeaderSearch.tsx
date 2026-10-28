@@ -7,6 +7,7 @@ import type Fuse from 'fuse.js';
 import { useClickOutside } from '@/hooks/useClickOutside';
 import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 import { getRegionalLabel } from '@/lib/market-utils';
 import {
   mergeSearchResults, suggestCloseMatches, createSuggestionIndex, withHeaderSearchExtra, HEADER_FUSE_OPTIONS,
@@ -120,6 +121,12 @@ export default function HeaderSearch() {
         ...(missed && hasResults ? { fuzzy_only: true } : {}),
         ...(missed ? { query: query.trim().slice(0, 120) } : {}),
       });
+      // Keep free-text queries out of GA4: visitors can type contact details.
+      gaEvent('search_performed', {
+        results_count: filteredShows.length,
+        has_results: hasResults,
+        ...(missed && hasResults ? { fuzzy_only: true } : {}),
+      });
     }, 1000);
     return () => clearTimeout(timer);
   }, [query, deferredQuery, filteredShows, dataReady]);
@@ -173,6 +180,10 @@ export default function HeaderSearch() {
 
   const handleResultClick = (slug: string) => {
     captureEvent('search_selected', {
+      show_id: slug,
+      results_count: filteredShows.length,
+    });
+    gaEvent('search_selected', {
       show_id: slug,
       results_count: filteredShows.length,
     });

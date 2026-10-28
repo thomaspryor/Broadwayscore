@@ -1,3 +1,4 @@
+import MailtoLink from '@/components/MailtoLink';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import fs from 'fs';
@@ -552,9 +553,9 @@ export default function CriticAudienceDivergencePage() {
           </a>
           . The full ranked list of all {summary.count.toLocaleString()} productions is
           available as JSON at the link above. Questions? Reach Tom Pryor at{' '}
-          <a href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
+          <MailtoLink href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
             thomas.pryor@gmail.com
-          </a>
+          </MailtoLink>
           .
         </p>
       </section>

@@ -19,6 +19,7 @@ import {
 } from '@/config/fantasy';
 import type { FantasyShow } from '@/config/fantasy';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 
 // Import show data at build time (bundled into client)
 import fantasyLeagueData from '../../../../data/fantasy-league.json';
@@ -161,6 +162,13 @@ function FantasyDraftInner() {
       }
 
       captureEvent(practice ? 'fantasy_practice_submitted' : 'fantasy_draft_submitted', {
+        picks: selectedIds.length,
+        total_cost: totalSpent,
+        in_league: !practice && !!leagueName.trim(),
+        locked_picks: Array.isArray(data.locked_picks) ? data.locked_picks.length : 0,
+        practice,
+      });
+      gaEvent(practice ? 'fantasy_practice_submitted' : 'fantasy_draft_submitted', {
         picks: selectedIds.length,
         total_cost: totalSpent,
         in_league: !practice && !!leagueName.trim(),

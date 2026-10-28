@@ -1,3 +1,4 @@
+import MailtoLink from '@/components/MailtoLink';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { BASE_URL } from '@/lib/seo';
@@ -133,9 +134,9 @@ export default function EmbedDocsPage() {
               The iframe is the version we support. A script-tag version that injects
               HTML directly would require us to set CORS headers and add a JS bundle. We
               can build it if there&apos;s demand. Email{' '}
-              <a href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
+              <MailtoLink href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
                 thomas.pryor@gmail.com
-              </a>
+              </MailtoLink>
               .
             </div>
           </div>
@@ -150,9 +151,9 @@ export default function EmbedDocsPage() {
             /methodology
           </Link>
           . Questions or partnership requests:{' '}
-          <a href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
+          <MailtoLink href="mailto:thomas.pryor@gmail.com" className="text-amber-300 underline">
             thomas.pryor@gmail.com
-          </a>
+          </MailtoLink>
           .
         </p>
       </section>

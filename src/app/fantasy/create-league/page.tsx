@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 
 export default function CreateLeaguePage() {
   const router = useRouter();
@@ -26,6 +27,7 @@ export default function CreateLeaguePage() {
       const data = await res.json();
       if (!res.ok) { setError(data.error || 'Something went wrong'); return; }
       captureEvent('fantasy_league_created', { code: data.code });
+      gaEvent('fantasy_league_created', { code: data.code });
       router.push(`/fantasy/league/${data.code}`);
     } catch {
       setError('Network error. Please try again.');

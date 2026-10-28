@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { usePostHogFlag } from '@/lib/hooks';
 import { captureEvent } from '@/lib/posthog-events';
+import { gaEvent } from '@/lib/analytics/ga-event';
 import {
   ADSENSE_CLIENT,
   ADS_FLAG,
@@ -116,6 +117,7 @@ function AdUnit({ slot, client }: { slot: AdSlotName; client: string }) {
       if (status === 'filled' && !reported) {
         reported = true;
         captureEvent('ad_slot_rendered', { slot });
+        gaEvent('ad_slot_rendered', { slot });
       }
     };
     const mo = new MutationObserver(check);
