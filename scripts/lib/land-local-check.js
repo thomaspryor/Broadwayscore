@@ -166,6 +166,11 @@ function linkIgnored(root, dir, made = []) {
   return made;
 }
 
+/** True when <head> changes package.json or package-lock.json relative to <base>. */
+function depsChangedSince(git, base, head) {
+  return Boolean(git('diff', '--name-only', base, head, '--', 'package.json', 'package-lock.json').stdout);
+}
+
 /**
  * Run fn(worktreeDir) on <sha> checked out in a throwaway detached worktree at <dir>, then remove
  * it. The caller's checkout (HEAD, branch, index) is never touched, so it can keep committing
@@ -236,7 +241,13 @@ function main(argv = process.argv.slice(2)) {
       const b = run('bash', ['scripts/lib/land-gauntlet.sh', branchDir], { env: { ...env, GAUNTLET_GATES: opts.gates.join(',') }, stdio: ['ignore', 'ignore', 'inherit'] });
       if (!fs.existsSync(path.join(branchDir, 'meta.json'))) { console.error(`land-local-check: the gauntlet wrote no result (exit ${b.code}); see ${branchDir}`); return 1; }
       const red = run('node', ['scripts/lib/land-gate-delta.js', '--red-gates', branchDir, '--gates', opts.gates.join(',')]).stdout;
-      if (red) {
+      // BRO-6114: the base worktree shares this checkout's node_modules (never reinstalled, see
+      // withBaseWorktree), so with changed deps the base would be judged on HEAD's packages and a
+      // dependency regression would read as "red on base too". Skip it: with no base result
+      // land-gate-delta counts every red gate as new; land.yml reinstalls and judges the base.
+      const depsChanged = red && depsChangedSince(git, base, head);
+      if (depsChanged) console.log(`land-local-check: package.json/package-lock.json differ from the base; not judging the base with HEAD's node_modules, so red gates (${red}) count as new here. land.yml reinstalls the base's own deps and decides.`);
+      if (red && !depsChanged) {
         // Same as land.yml: the gauntlet copy runs from outside the tree it checks out.
         const copy = stageGauntletHarness(ROOT, out);
         console.log(`land-local-check: red on HEAD: ${red}; running them on the base to tell new failures from old`);
@@ -250,7 +261,7 @@ function main(argv = process.argv.slice(2)) {
           console.error(`land-local-check: base run failed (${e.message}); the verdict below has no base to compare against`);
         }
       }
-      const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
+      const d = run('node', ['scripts/lib/land-gate-delta.js', '--base-dir', baseDir, '--branch-dir', branchDir, '--gates', opts.gates.join(','), '--base-source', depsChanged ? 'skipped: deps changed vs base (BRO-6114)' : red ? `ran locally for ${red}` : 'not needed (every gate green on HEAD)'], { stdio: ['ignore', 'pipe', 'inherit'] });
       console.log(d.stdout);
       let clean = d.code === 0;
       // A gauntlet test file failing under load can pass alone (2026-10-20: a duplicate-of-url
@@ -279,6 +290,6 @@ function main(argv = process.argv.slice(2)) {
   }
 }
 
-module.exports = { main, withBaseWorktree, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
+module.exports = { main, withBaseWorktree, depsChangedSince, linkIgnored, ignoredPaths, parseArgs, newFailureFiles, missingCoreData, stageGauntletHarness, HARNESS_FILES, CORE_DATA_FILES, DEFAULT_GATES, LOCAL_SKIPPED_GATES };
 
 if (require.main === module) process.exit(main());

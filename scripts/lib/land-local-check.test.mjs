@@ -126,6 +126,7 @@ test('base comparison runs the staged gauntlet in a throwaway worktree, never ch
       gitCalls.push(args);
       switch (args[0]) {
         case 'status': case 'fetch': case 'ls-files': case 'worktree': return result();
+        case 'diff': return result(); // no package.json/lock change vs base (BRO-6114)
         case 'rev-parse': return result(head);
         case 'merge-base': return result(base);
         case 'rev-list': return result('0');
@@ -279,4 +280,29 @@ test('gauntlet copied alone resolves tsc NODE_OPTIONS quietly to the floor', () 
       assert.match(r.stdout, /--max-old-space-size=6144/, name);
     }
   } finally { rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+});
+
+// BRO-6114: the base worktree shares this checkout's node_modules, so a deps change must not be
+// judged against a base run (a dependency regression would read as "red on base too").
+test('depsChangedSince: true only when package.json or package-lock.json differ from the base', () => {
+  const { depsChangedSince } = require('./land-local-check.js');
+  const root = mkdtempSync(join(tmpdir(), 'deps-changed-'));
+  try {
+    const sh = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+    const git = (...args) => { const r = spawnSync('git', args, { cwd: root, encoding: 'utf8' }); return { code: r.status, stdout: r.stdout.trim(), stderr: r.stderr }; };
+    sh('init', '-q', '-b', 'main'); sh('config', 'user.email', 't@example.com'); sh('config', 'user.name', 't');
+    writeFileSync(join(root, 'package.json'), '{}\n'); writeFileSync(join(root, 'package-lock.json'), '{}\n'); writeFileSync(join(root, 'a.js'), '1\n');
+    sh('add', '.'); sh('commit', '-q', '-m', 'base'); const base = sh('rev-parse', 'HEAD');
+    writeFileSync(join(root, 'a.js'), '2\n'); sh('commit', '-q', '-am', 'code only'); const code = sh('rev-parse', 'HEAD');
+    assert.equal(depsChangedSince(git, base, code), false);
+    writeFileSync(join(root, 'package-lock.json'), '{"lockfileVersion":3}\n'); sh('commit', '-q', '-am', 'lock'); const lock = sh('rev-parse', 'HEAD');
+    assert.equal(depsChangedSince(git, base, lock), true);
+    assert.equal(depsChangedSince(git, code, lock), true);
+  } finally { rmSync(root, { recursive: true, force: true }); }
+});
+
+test('main() skips the base run when deps changed, so red gates count as new', () => {
+  const src = fs.readFileSync(new URL('./land-local-check.js', import.meta.url), 'utf8');
+  assert.match(src, /const depsChanged = red && depsChangedSince\(git, base, head\);/);
+  assert.match(src, /if \(red && !depsChanged\) \{[\s\S]*?withBaseWorktree\(/, 'the base worktree run is gated on !depsChanged');
 });

@@ -12,7 +12,7 @@
  *
  * Run: node --test scripts/lib/land-gauntlet-deps-changed.test.mjs
  */
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import { tmpdir } from 'node:os';
@@ -20,9 +20,12 @@ import { join, dirname } from 'node:path';
 import { execFileSync, spawnSync } from 'node:child_process';
 
 const HERE = dirname(new URL(import.meta.url).pathname);
+const ROOTS = [];
+after(() => { for (const r of ROOTS) fs.rmSync(r, { recursive: true, force: true }); });
 
 function setup() {
   const root = fs.realpathSync(fs.mkdtempSync(join(tmpdir(), 'gauntlet-deps-')));
+  ROOTS.push(root);
   const repo = join(root, 'repo');
   const harness = join(root, 'harness');
   const bin = join(root, 'bin');
