@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6481-3",
   "planId": "0224d507-07b5-4640-8575-f23ddc4a9ee4",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-28T21:52:15.999Z",
   "submitter": {
     "name": null,
@@ -691,5 +691,134 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T22:20:24.259Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added goddess-off-broadway-2025"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added in-the-amazon-warehouse-parking-lot-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added staff-meal-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added pericles-off-broadway-2024"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wet-brain-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added shadow-land-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dark-disabled-stories-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"trevor-off-broadway-2021\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"the-bedwetter-off-broadway-2022\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added wedding-band-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"a-case-for-the-existence-of-god-off-broadway-2022\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"confederates-off-broadway-2022\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added baldwin-and-buckley-at-cambridge-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added this-beautiful-future-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added crumbs-from-the-table-of-joy-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-man-of-no-importance-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added snow-in-midsummer-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-coast-starlight-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-harder-they-come-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added where-we-belong-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added what-the-end-will-be-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"on-sugarland-off-broadway-2022\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"coal-country-off-broadway-2022\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"shhhh-off-broadway-2022\" already exists"
+    },
+    {
+      "action": "add-show",
+      "ok": false,
+      "reason": "add-show: id \"black-no-more-off-broadway-2022\" already exists"
+    }
+  ],
+  "executedIn": "ci"
 }
