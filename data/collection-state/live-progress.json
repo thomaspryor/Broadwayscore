@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-28T22:39:14.501Z",
-  "processed": 46,
-  "failed": 12,
-  "successRate": "79.3%",
+  "updatedAt": "2026-10-28T23:01:29.735Z",
+  "processed": 59,
+  "failed": 20,
+  "successRate": "74.7%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 46,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 1,
+    "scrapingdog": 7,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 2,
+    "archiveToday": 6,
     "archive": 12
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-28T22:38:02.237Z",
@@ -26,6 +26,18 @@
       "t": "2026-10-28T22:38:02.672Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T22:54:53.970Z",
+      "event": "bb-session",
+      "session": "fec5720c",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-28T22:57:14.288Z",
+      "event": "bb-session",
+      "session": "032eb87a",
+      "url": "https://ground.news/article/memoriam-review-by-thespyinthestalls-at-southwark-pl"
     }
   ]
 }
