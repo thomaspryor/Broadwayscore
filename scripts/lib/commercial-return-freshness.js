@@ -7,7 +7,7 @@ const { makeGrossesLookup } = require('./grosses-lookup');
 const { costForWeek } = require('./cost-for-week');
 const rm = require('./recoupment-model');
 const { INVESTOR_PROFIT_SHARE } = require('./investor-return-model');
-const { TRICKLE_MAX_MULTIPLE } = require('./commercial-designations');
+const { TRICKLE_MAX_MULTIPLE, MODEST_RETURN_DESIGNATIONS } = require('./commercial-designations');
 
 const DAY = 86400000;
 const WEEK = 7 * DAY;
@@ -60,7 +60,7 @@ function findStaleReturns({ shows, commercial, grossesHistory, now = new Date() 
   for (const show of shows) {
     if (!isCommercialScope(show) || !isRunningReturn(show, now)) continue;
     const entry = commercial.shows?.[show.slug] || commercial.shows?.[show.id];
-    if (entry?.recouped !== true || entry.designation !== 'Trickle') continue;
+    if (entry?.recouped !== true || !MODEST_RETURN_DESIGNATIONS.includes(entry.designation)) continue;
     const recoup = dateBounds(entry.recoupedDate);
     if (recoup && (recoup.start > Number(now) || (show.openingDate && recoup.end < Date.parse(show.openingDate)))) continue;
     const snapshotAsOf = returnSnapshotDate(entry, now);

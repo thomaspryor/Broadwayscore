@@ -211,6 +211,17 @@ function planModelLossResizes(entries, limit = MODEL_LOSS_RESIZE_LIMIT) {
 const DESIGNATIONS_OUTSIDE_RULE = Object.freeze(['Easy Winner', 'Nonprofit', 'Tour Stop']);
 
 /**
+ * Labels that say the show recouped. Use these lists, never a hand-written
+ * one: six hand lists had to be found by hand when a label was proposed
+ * (BRO-6446; tests/unit/recouped-designations.test.mjs).
+ */
+const RECOUPED_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
+/** Recouped labels that need a reported recoupment (recouped:true): never our estimate. */
+const REPORTED_WIN_DESIGNATIONS = Object.freeze(['Miracle', 'Windfall', 'Easy Winner']);
+/** Recouped labels that mean returned under TRICKLE_MAX_MULTIPLE: watched for crossing it. */
+const MODEST_RETURN_DESIGNATIONS = Object.freeze(['Trickle']);
+
+/**
  * Model central recoupment % that contradicts a designation (a review flag,
  * never a designation change): failed shows modeled far past recoupment,
  * winners modeled below zero, Trickles modeled at many times capitalization.
@@ -265,7 +276,7 @@ module.exports = {
   DESIGNATION_BASES, VALID_DESIGNATION_BASES,
   VALID_DESIGNATIONS, canonicalDesignation,
   TRICKLE_MAX_MULTIPLE, MIRACLE_MIN_YEARS, FIZZLE_MIN_RETURNED_PCT, ownReturnedEstimatePct, ownReturnedRangePct, returnedEstimatePct, DESIGNATIONS_OUTSIDE_RULE,
-  LOSS_DESIGNATIONS, isLossDesignation, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
+  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS, REPORTED_WIN_DESIGNATIONS, MODEST_RETURN_DESIGNATIONS, lossDesignationFor, modelMiddleReturnedPct, likelyOutcomeDesignation,
   estimatedDesignationForClosed, labelSizingPct,
   modelSizesLossLabel, resizedLossLabel, MODEL_LOSS_RESIZE_LIMIT, planModelLossResizes,
   MODEL_CONTRADICTION, modelContradictsDesignation,

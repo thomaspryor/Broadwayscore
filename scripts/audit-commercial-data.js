@@ -35,7 +35,7 @@ const HISTORY_MAX_ENTRIES = 52;
 // Constants
 // ============================================
 
-const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isLossDesignation } = require('./lib/commercial-designations');
+const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, RECOUPED_DESIGNATIONS } = require('./lib/commercial-designations');
 
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard', 'trade-reported', 'sec-filing',
@@ -45,7 +45,6 @@ const VALID_COST_METHODOLOGIES = [
 const VALID_SOURCE_TYPES = ['trade', 'reddit', 'sec', 'manual'];
 
 // Designations that require recouped=true
-const RECOUPED_DESIGNATIONS = ['Miracle', 'Windfall', 'Easy Winner', 'Trickle'];
 
 // Designations that should have recouped=false
 
@@ -345,7 +344,7 @@ function checkDesignationLogic() {
       );
     }
 
-    // Recouped=false but designation is Miracle/Windfall/Easy Winner/Trickle
+    // Recouped=false but designation is a recouped label (RECOUPED_DESIGNATIONS)
     if (data.recouped === false && RECOUPED_DESIGNATIONS.includes(data.designation)) {
       addIssue(
         'designation-logic',
@@ -361,7 +360,7 @@ function checkDesignationLogic() {
         'designation-logic',
         'medium',
         key,
-        `recouped=true but designation is still "TBD". Should be upgraded to Miracle/Windfall/Easy Winner/Trickle.`
+        `recouped=true but designation is still "TBD". Should be upgraded to ${RECOUPED_DESIGNATIONS.join('/')}.`
       );
     }
   }

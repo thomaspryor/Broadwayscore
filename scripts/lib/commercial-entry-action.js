@@ -24,7 +24,7 @@
  *   validate-data.js enforces, so it cannot create a record the build rejects
  */
 
-const { canonicalDesignation, isLossDesignation } = require('./commercial-designations');
+const { canonicalDesignation, isLossDesignation, RECOUPED_DESIGNATIONS } = require('./commercial-designations');
 const { VALID_SOURCE_TYPES } = require('./commercial-sources');
 const { isCommercialScope } = require('./commercial-scope');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
@@ -36,7 +36,7 @@ const ALLOWED = new Set([
   'nonprofitOrg', 'productionType', 'designationBasis', 'weeklyRunningCostBasis', 'capitalizationBasis',
   'commercialConversion',
 ]);
-const WIN = new Set(['Miracle', 'Windfall', 'Easy Winner', 'Trickle']);
+const WIN = new Set(RECOUPED_DESIGNATIONS);
 const RECOUPED_DATE_RE = /^\d{4}(-\d{2})?$/;
 const SOURCE_DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
 

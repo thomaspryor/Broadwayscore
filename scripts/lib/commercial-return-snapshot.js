@@ -1,6 +1,6 @@
 'use strict';
 
-const { TRICKLE_MAX_MULTIPLE } = require('./commercial-designations');
+const { TRICKLE_MAX_MULTIPLE, MODEST_RETURN_DESIGNATIONS } = require('./commercial-designations');
 
 // BRO-6333: dated return evidence, independent of modelLastRun/lastUpdated.
 // Month/year-only evidence ages from the end of its stated period.
@@ -28,7 +28,7 @@ function returnSnapshotDate(entry, now = new Date()) {
     // A pre-recoupment estimate cannot date a recouped label.
     if (!Array.isArray(range) || range.length !== 2 || !range.every(Number.isFinite) || range[0] < 100 || range[1] < range[0]) continue;
     if (entry.designation === 'Windfall' && range[0] < TRICKLE_MAX_MULTIPLE * 100) continue;
-    if (entry.designation === 'Trickle' && range[1] >= TRICKLE_MAX_MULTIPLE * 100) continue;
+    if (MODEST_RETURN_DESIGNATIONS.includes(entry.designation) && range[1] >= TRICKLE_MAX_MULTIPLE * 100) continue;
     dates.push(date);
   }
   return dates.filter(d => dateBounds(d)?.start <= Number(now))
@@ -40,7 +40,7 @@ function isRunningReturn(show, now = new Date()) {
 }
 
 function returnSnapshotLabel(entry, show, now = new Date()) {
-  if (!isRunningReturn(show, now) || !['Trickle', 'Windfall'].includes(entry?.designation)) return null;
+  if (!isRunningReturn(show, now) || ![...MODEST_RETURN_DESIGNATIONS, 'Windfall'].includes(entry?.designation)) return null;
   const asOf = returnSnapshotDate(entry, now);
   if (!asOf) return null;
   // A year-only source does not supply a month to print.

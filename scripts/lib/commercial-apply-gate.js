@@ -2,7 +2,7 @@
 // Tested by tests/unit/commercial-apply-gate.test.mjs.
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
-const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct } = require('./commercial-designations');
+const { VALID_DESIGNATIONS, canonicalDesignation, DESIGNATION_BASES, VALID_DESIGNATION_BASES, isLossDesignation, lossDesignationFor, returnedEstimatePct, REPORTED_WIN_DESIGNATIONS } = require('./commercial-designations');
 const { refuseClearedField } = require('./cleared-field-guard');
 const { checkRecoupmentProduction } = require('./recoupment-production-guard');
 const { addedPlaceholderSources } = require('./commercial-sources');
@@ -73,7 +73,7 @@ const BACKFILL_TAG = 'BRO-4990';
 // published a tax-credit back-solve and unsourced Flop/Fizzle labels
 // (run 38126158629). An owner approval (ownerApproved: true on the row) is the
 // only override. Null = may release.
-const RECOUPED_LABELS = ['Easy Winner', 'Windfall', 'Miracle'];
+const RECOUPED_LABELS = REPORTED_WIN_DESIGNATIONS;
 function heldReleaseRefusal(existing, row) {
   const verdict = row && row.truthReview && row.truthReview.verdict;
   if (verdict && verdict !== 'released' && row.ownerApproved !== true) return `truth review verdict is "${verdict}", not "released"`;

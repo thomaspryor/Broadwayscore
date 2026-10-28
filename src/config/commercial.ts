@@ -65,7 +65,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'Easy Winner',
     color: 'text-lime-400',
-    description: 'Limited run that recouped quickly',
+    description: 'Star-led limited run that recouped quickly',
     sortOrder: 3,
     showInLegend: true,
     icon: '🎁',
