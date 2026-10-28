@@ -32,9 +32,11 @@ const START_NOW_REFUSED_RE = /START-NOW card would never be picked/;
  * @param {string} [today] YYYY-MM-DD, for the acknowledgement expiry
  * @returns {null|'internal'|'owner-or-mac'|'acknowledged'}
  */
-function startNowHealthRowReason(row, today) {
+function startNowHealthRowReason(row, today, { allowInternal = false } = {}) {
   const name = String((row && row.name) || '');
-  if (classifyHealthCheck({ name }) !== 'visitors') return 'internal';
+  // allowInternal (BRO-6478): the caller holds a playbook entry marked workerFixable, so a queue-health row is a
+  // worker's job too. The owner-or-mac and acknowledged checks still apply.
+  if (!allowInternal && classifyHealthCheck({ name }) !== 'visitors') return 'internal';
   if (OWNER_OR_MAC_ROW_RE.test(name)) return 'owner-or-mac';
   const ack = ACKNOWLEDGED_ROW_RE.exec(String((row && row.message) || ''));
   if (ack && ack[1] > (today || new Date().toISOString().slice(0, 10))) return 'acknowledged';
@@ -42,8 +44,9 @@ function startNowHealthRowReason(row, today) {
 }
 
 /** The leading START-NOW line. `who` names what else may run it first. */
-function startNowLine(who) {
-  return `START-NOW: visitor-facing daily health row (digest-audience.js). Any worker may take it once ${who} has not claimed it.`;
+function startNowLine(who, { internal = false } = {}) {
+  const what = internal ? 'daily health row about the work queue itself (a playbook entry marks it workerFixable)' : 'visitor-facing daily health row (digest-audience.js)';
+  return `START-NOW: ${what}. Any worker may take it once ${who} has not claimed it.`;
 }
 
 /**

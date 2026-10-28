@@ -1260,7 +1260,7 @@ async function existingCardTitles() {
 async function fileBoardIssues(deduped, existing, respondingCount) {
   const { createRequire } = await import('node:module');
   const require = createRequire(import.meta.url);
-  const { planFilings } = require('./lib/ux-walkthrough-filing.js');
+  const { planFilings, cardNotes } = require('./lib/ux-walkthrough-filing.js');
 
   const plan = planFilings({ findings: deduped, existing });
   if (plan.refused) {
@@ -1273,16 +1273,13 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
   const failed = [];
   for (const item of plan.toFile) {
     const { title, priority, finding: f } = item;
-    const evidence = f.deterministic
-      ? `Flagged by the automated ${f.models[0]} detector in the nightly signed-in UX walkthrough's interactive pass (deterministic — not a model opinion).`
-      : `Flagged by ${f.agreementCount} of ${respondingCount} responding review models (${f.models.join(', ')}) in the nightly signed-in UX walkthrough.`;
-    const notes = `## Problem\n${f.summary}\n\nSeverity: ${f.severity || 'unrated'} (all UX cards file at normal priority, BRO-340; this line is how the owner's sweep ranks them).\n\n## Evidence\n${evidence} Reference screenshot: ${f.screenshot}.\n\n## Suggested approach\nReproduce on demo.broadwayscorecard.com signed in, compare grid/list + mobile/desktop, fix per design-system tokens (memory/design-system.md).\n\n## Acceptance criteria\nFix verified in the next nightly walkthrough run (no repeat finding) + /visual-qa pass.`;
+    const notes = cardNotes(f, respondingCount);
     try {
       // linear-brain.js, NOT notion-brain.js: Notion has been read-only since
       // 2026-08-30 and its create exits 6, so every finding this walkthrough
       // produced was logged as a one-line failure and dropped. Linear priority
-      // is numeric 0-4 (3 normal: priorityFor files every UX card there,
-      // BRO-340); there is no
+      // is numeric 0-4 (3 normal: priorityFor files every UX card there, so
+      // the cloud worker's P2 tier takes it; BRO-340, BRO-6478); there is no
       // --status/--category/--type/--tags.
       //
       // An earlier version of this comment claimed linear-brain's create
@@ -1300,9 +1297,10 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
         'scripts/linear-brain.js', 'create', title,
         '--priority', String(priority),
         '--notes', notes,
-        // Filing is not dispatching: there is no cmux/bsc-next on this
-        // runner, so say why it is parked rather than leaving it ambiguous.
-        '--park', 'Auto-filed by the nightly UX walkthrough. UX-audit card: whether the finding is worth fixing is an owner taste call (BRO-340), so it waits for a deliberate owner sweep. Filed at normal priority for a deliberate owner sweep (BRO-340).',
+        // Worker work (BRO-6478): a worker checks the finding on the demo site, closes noise, or builds the fix
+        // and asks the owner with a before/after picture. No cmux on this runner, so filing is not launching:
+        // the cloud worker takes the Todo card in its P2 tier.
+        '--dispatch', '--source', 'ux-walkthrough',
       ], { encoding: 'utf8' });
       filed.push(title);
       console.error(`[ux-walkthrough] filed: ${title}`);

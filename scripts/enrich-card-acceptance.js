@@ -6,10 +6,9 @@
  * For each card audit-card-verifiability.js flagged as refused:
  *   - Human-territory cards (isCardEligible() says no with
  *     kind:'human-territory' — marketing/partnerships category, human-action
- *     title, or the 'owner-action' deny-tag) get `VERIFY: owner-judgment`
- *     appended. No LLM call, no fake test — the deterministic predicate the
- *     autonomous loop already trusts for "does this need the OWNER" makes the
- *     call, not a model guess.
+ *     title, or the 'owner-action' deny-tag) are left alone (BRO-6478: no bare
+ *     `VERIFY: owner-judgment` marker any more, it waited on nobody). No LLM
+ *     call, no fake test. Unsafe pre-existing VERIFY lines are still demoted.
  *   - A technical deny-tag rejection (kind:'deny-tag' — email/commercial/
  *     scoring/ios-app) is NOT human-territory: it only means the unattended
  *     LOOP shouldn't self-pick that domain, so it falls through to the same
@@ -927,6 +926,9 @@ function normalizeLinearIssue(issue) {
 // and exercise the exact write sequence with zero network calls.
 function makeLinearWriteCard(linearClient, teamId) {
   return async function writeLinearCard(card, newNotes) {
+    // BRO-6478: the update path gets the same limbo check as create (a bare owner-judgment marker waits on nobody).
+    const limbo = require('./lib/owner-judgment-limbo-guard.js').updateLimboReason({ before: card.notes, after: newNotes });
+    if (limbo) throw new Error(`refused: ${limbo}`);
     await linearClient.updateIssue(card.id, { description: newNotes });
     // addLabelToIssue is additive (read-modify-write over the CURRENT label
     // set — see linear-client.js) — safe to call even when the issue already
@@ -1161,7 +1163,7 @@ function buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes) {
 
 /**
  * Enrich one card. Returns { id, name, action, detail }.
- * action: 'skipped' | 'refused' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * action: 'skipped' | 'refused' | 'human-territory' | 'llm-enriched' | 'failed'
  * ('refused' only reachable with opts.rearm — BRO-3395, line ~1108)
  * opts.callLLM is injected (real provider-fallback callLLM in the CLI, a stub in tests).
  */
@@ -1195,7 +1197,7 @@ async function enrichOneCard(card, opts = {}) {
 
   const eligibility = isCardEligible({ name: card.name, category: card.category, tags: card.tags });
   // Only a genuinely human-territory rejection (category/title/owner-action —
-  // see isCardEligible's `kind` docstring) gets the hard-blocking marker.
+  // see isCardEligible's `kind` docstring) is left unarmed (no marker, BRO-6478).
   // A technical deny-tag rejection (email/commercial/scoring/ios-app) means
   // the AUTONOMOUS LOOP shouldn't self-pick this domain, not that the card
   // needs an owner to judge it — since #1154 made the marker a universal
@@ -1204,31 +1206,25 @@ async function enrichOneCard(card, opts = {}) {
   // `bsc-next --id` (task #1186). Those fall through to the same
   // LLM-drafted-acceptance-criteria path as an eligible card, below.
   if (!eligibility.eligible && eligibility.kind === 'human-territory') {
-    const newNotes = `${sanitizedNotes}\n\nVERIFY: owner-judgment`.trim();
-    // Structural assertion (defense in depth): if a demotion somehow failed
-    // to clear a pre-existing VERIFY line (re-paired backticks, nesting),
-    // refuse the write rather than let it through half-sanitized.
-    const survivingPreexisting = unsanctionedVerifyLineSpans(newNotes);
-    if (survivingPreexisting.length) {
-      return { id: card.id, name: card.name, action: 'failed', detail: `pre-existing VERIFY line still names an unsanctioned command: ${survivingPreexisting[0].slice(0, 120)}` };
-    }
-    if (!opts.dryRun) {
-      logEnrichmentWrite(card, 'owner-judgment', newNotes, opts.logPath, { demotedSpans: preexistingDemoted });
-      // ship-check/Codex + QA-subagent finding (task #1830): a Linear write is
-      // 3 sequential network calls (updateIssue, findOrCreateLabel,
-      // addLabelToIssue — see makeLinearWriteCard), any of which can throw a
-      // transient GraphQL error. Uncaught, that would propagate out of
-      // enrichOneCard through the whole batch loop, discarding every
-      // remaining card's result AND (under --source both) a leg that already
-      // finished successfully. Degrade to the same per-card 'failed' outcome
-      // every other I/O failure in this function already uses.
+    // BRO-6478: no bare "VERIFY: owner-judgment" marker. The owner does not read Linear, so a card armed
+    // only by the marker waits on nobody (createLimboReason refuses it at create time; this update path
+    // used to bypass that). Nothing tells the owner from here either: a worker decides. If the owner
+    // truly must decide, the worker writes a plain-English "DECISION NEEDED:" line after checking its
+    // premise against live state (docs/owner-email-guidelines.md); otherwise it adds a safe VERIFY. Only
+    // the sanitizing of unsafe pre-existing VERIFY lines (guardrail 4) is still written back.
+    if (preexistingDemoted.length && !opts.dryRun) {
+      const survivingPreexisting = unsanctionedVerifyLineSpans(sanitizedNotes);
+      if (survivingPreexisting.length) {
+        return { id: card.id, name: card.name, action: 'failed', detail: `pre-existing VERIFY line still names an unsanctioned command: ${survivingPreexisting[0].slice(0, 120)}` };
+      }
+      logEnrichmentWrite(card, 'human-territory-sanitize', sanitizedNotes, opts.logPath, { demotedSpans: preexistingDemoted });
       try {
-        await writeBack(card, newNotes, opts);
+        await writeBack(card, sanitizedNotes, opts);
       } catch (e) {
         return { id: card.id, name: card.name, action: 'failed', detail: `write failed: ${e.message}` };
       }
     }
-    return { id: card.id, name: card.name, action: 'owner-judgment', detail: eligibility.reason };
+    return { id: card.id, name: card.name, action: 'human-territory', detail: eligibility.reason };
   }
 
   // BRO-2546 defects 1+2: draft, then validate, then — exactly once — hand
@@ -1895,7 +1891,7 @@ async function main() {
   console.log('\n=== ENRICHMENT SUMMARY ===');
   console.log(`  Total processed:     ${results.length}`);
   console.log(`  LLM-enriched:        ${tally['llm-enriched'] || 0}`);
-  console.log(`  Owner-judgment:      ${tally['owner-judgment'] || 0}`);
+  console.log(`  Human-territory:     ${tally['human-territory'] || 0} (no write; a worker decides, BRO-6478)`);
   console.log(`  Skipped:             ${tally.skipped || 0}`);
   console.log(`  Refused:             ${tally.refused || 0}`);
   console.log(`  Failed:              ${tally.failed || 0}`);
@@ -1909,7 +1905,7 @@ async function main() {
       `|--------|-------|`,
       `| Total processed | ${results.length} |`,
       `| LLM-enriched | ${tally['llm-enriched'] || 0} |`,
-      `| Owner-judgment | ${tally['owner-judgment'] || 0} |`,
+      `| Human-territory (no write) | ${tally['human-territory'] || 0} |`,
       `| Skipped | ${tally.skipped || 0} |`,
       `| Refused | ${tally.refused || 0} |`,
       `| Failed | ${tally.failed || 0} |`,

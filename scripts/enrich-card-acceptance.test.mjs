@@ -128,7 +128,7 @@ test('already auto-enriched card is skipped unless --force', async () => {
   assert.equal(calls.length, 0);
 });
 
-test('human-only card (marketing category) gets VERIFY: owner-judgment, no LLM call', async () => {
+test('human-only card (marketing category) is left alone: no marker, no write, no LLM call (BRO-6478)', async () => {
   const calls = [];
   let llmCalled = false;
   const card = {
@@ -140,22 +140,16 @@ test('human-only card (marketing category) gets VERIFY: owner-judgment, no LLM c
     notionBrain: fakeNotionBrain(calls),
     logPath: SCRATCH_LOG_PATH,
   });
-  assert.equal(r.action, 'owner-judgment');
+  assert.equal(r.action, 'human-territory');
   assert.equal(llmCalled, false);
-  assert.equal(calls.length, 1);
-  assert.equal(calls[0][0], 'update');
-  assert.equal(calls[0][1], 'b1');
-  const notesIdx = calls[0].indexOf('--notes');
-  assert.match(calls[0][notesIdx + 1], /VERIFY: owner-judgment/);
-  const tagsIdx = calls[0].indexOf('--tags');
-  assert.match(calls[0][tagsIdx + 1], /auto-enriched/);
+  assert.equal(calls.length, 0, 'the bare owner-judgment marker bypassed the create-time limbo guard (BRO-6478)');
 });
 
-test('human-action title with no category gets owner-judgment', async () => {
+test('human-action title with no category is human-territory', async () => {
   const calls = [];
   const card = { id: 'b2', name: 'Email volunteers', category: '', tags: [], notes: 'Reach out.' };
   const r = await enrichOneCard(card, { callLLM: async () => '{}', notionBrain: fakeNotionBrain(calls), logPath: SCRATCH_LOG_PATH });
-  assert.equal(r.action, 'owner-judgment');
+  assert.equal(r.action, 'human-territory');
 });
 
 // Task #1186: a technical deny-tag rejection (email/commercial/scoring/
@@ -184,7 +178,7 @@ test('deny-tagged technical card (scoring) does NOT get owner-judgment — reach
 // 'owner-action' is the one DENY_TAGS entry that IS genuinely human-territory
 // (autonomous-eligibility.js docstring: "cards that need the OWNER
 // personally") — it must keep getting the marker, unlike the other deny-tags.
-test('owner-action tagged card still gets owner-judgment, no LLM call', async () => {
+test('owner-action tagged card is human-territory: no marker written, no LLM call', async () => {
   const calls = [];
   let llmCalled = false;
   const card = {
@@ -196,10 +190,9 @@ test('owner-action tagged card still gets owner-judgment, no LLM call', async ()
     notionBrain: fakeNotionBrain(calls),
     logPath: SCRATCH_LOG_PATH,
   });
-  assert.equal(r.action, 'owner-judgment');
+  assert.equal(r.action, 'human-territory');
   assert.equal(llmCalled, false);
-  const notesIdx = calls[0].indexOf('--notes');
-  assert.match(calls[0][notesIdx + 1], /VERIFY: owner-judgment/);
+  assert.equal(calls.length, 0);
 });
 
 test('eligible card: LLM drafts a valid tsc command, notes are updated and re-verified armed', async () => {
@@ -594,9 +587,10 @@ test('BRO-2232: the owner-judgment write path also strips a pre-existing unsanct
     notionBrain: fakeNotionBrain(calls),
     logPath: SCRATCH_LOG_PATH,
   });
-  assert.equal(r.action, 'owner-judgment');
+  assert.equal(r.action, 'human-territory');
   assert.equal(calls.length, 1);
   const written = writtenNotes(calls);
+  assert.doesNotMatch(written, /VERIFY: owner-judgment/);
   const unsafeWritten = backtickedSpans(written).filter(c => !isSafeCheckCommand(c));
   assert.deepEqual(unsafeWritten, [], `unsanctioned command written as a command: ${unsafeWritten.join(', ')}`);
   assert.ok(!/`rm -rf \/`/.test(written), 'rm -rf / must not remain backticked');
@@ -898,12 +892,9 @@ test('BRO-2245: a Linear issue whose imported description marks it Marketing is 
     logPath: SCRATCH_LOG_PATH,
   });
 
-  assert.equal(r.action, 'owner-judgment');
-  assert.equal(llmCalled, false, 'the LLM must never be called for an owner-judgment card');
-  assert.equal(writeCalls.length, 1);
-  assert.match(writeCalls[0].newNotes, /VERIFY: owner-judgment/);
-  // The whole point: no runnable safe-form command anywhere in the write.
-  assert.doesNotMatch(writeCalls[0].newNotes, /## Acceptance criteria/);
+  assert.equal(r.action, 'human-territory');
+  assert.equal(llmCalled, false, 'the LLM must never be called for a human-territory card');
+  assert.equal(writeCalls.length, 0, 'no bare owner-judgment marker is written (BRO-6478)');
 });
 
 test('makeLinearWriteCard: updates the description then ensures the auto-enriched label via findOrCreateLabel + addLabelToIssue', async () => {
@@ -961,8 +952,8 @@ test('enrichOneCard: a throwing opts.writeCard degrades to a failed result, does
   assert.match(r.detail, /write failed: Linear API HTTP 502/);
 });
 
-test('enrichOneCard: a throwing opts.writeCard on the owner-judgment path also degrades to failed', async () => {
-  const card = { id: 'issue-uuid-4', name: 'Email volunteers', category: '', tags: [], notes: 'Reach out.' };
+test('enrichOneCard: a throwing opts.writeCard on the human-territory sanitize path also degrades to failed', async () => {
+  const card = { id: 'issue-uuid-4', name: 'Email volunteers', category: '', tags: [], notes: 'Reach out.\nVERIFY: `rm -rf /`' };
   const r = await enrichOneCard(card, {
     callLLM: async () => '{}',
     writeCard: async () => { throw new Error('Linear API HTTP 500'); },

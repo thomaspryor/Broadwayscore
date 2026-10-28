@@ -49,6 +49,43 @@ const MIN_AGREEMENT = 2;
 // anyone tuned.
 const DUPE_SIMILARITY = 0.6;
 
+// Per-run volume cap (BRO-6478). A filed card now costs a worker session, and about 17 of 18 findings were noise
+// (BRO-340), so a bad night files a few and leaves the rest in the run directory for the next night's dedup.
+const MAX_FILINGS_PER_RUN = 3;
+
+// The card's own safe-form check (check-paths.js SAFE_CHECK_FORMS). The real acceptance is the live check the
+// notes describe; this keeps the card pickable by the cloud worker (a card with no safe VERIFY is skipped).
+const VERIFY_LINE = 'VERIFY: node --test scripts/lib/ux-walkthrough-filing.test.mjs';
+
+/**
+ * PURE. The card body. Worker instructions avoid the phrases headless-dispatchability.js reads as "needs the
+ * owner" (the owner must decide / approval first), so the card stays pickable; the owner is asked later with a picture.
+ */
+function cardNotes(finding, respondingCount) {
+  const f = finding || {};
+  const evidence = f.deterministic
+    ? `Flagged by the automated ${(f.models && f.models[0]) || 'structural'} detector in the nightly signed-in UX walkthrough's interactive pass (deterministic, not a model opinion).`
+    : `Flagged by ${f.agreementCount} of ${respondingCount} responding review models (${(f.models || []).join(', ')}) in the nightly signed-in UX walkthrough. About 17 in 18 such model findings were noise once (BRO-340), so check before building.`;
+  return [
+    '## Problem',
+    f.summary || '',
+    '',
+    `Severity: ${f.severity || 'unrated'} (rated by the walkthrough; every UX card files at the same priority, BRO-340).`,
+    '',
+    '## Evidence',
+    `${evidence} Seen at: ${f.screenshot || 'no screenshot label'} (a viewport and state label; the screenshots are in the walkthrough run's artifacts).`,
+    '',
+    '## What to do',
+    '1. Reproduce the finding on demo.broadwayscorecard.com (signed in, grid and list, mobile and desktop). Do not trust the finding text alone.',
+    '2. If it does not reproduce or is not a real problem, close this card with the reason in a comment (what you looked at and what you saw). That is the expected outcome for most of these.',
+    '3. If it is real, build the fix with the shared components and tokens (memory/design-system.md), run /visual-qa, commit, then ask the owner to look at the picture: `node scripts/visual-approval.js request --issue=<this card> --what="<plain words>"`. That emails before/after screenshots with an Approve button. Do not write a question for the owner in Linear.',
+    '',
+    '## Acceptance criteria',
+    'The finding is closed as noise with a reason, or the fix is landed with the owner\'s Approve recorded, and the next nightly walkthrough does not repeat it.',
+    VERIFY_LINE,
+  ].join('\n');
+}
+
 // foldDiacritics BEFORE the ASCII class, never after. Stripping [^a-z0-9\s]
 // from an unfolded string destroys accented letters outright — "Café" becomes
 // "caf", "Lópezes" becomes "l pezes" — so two descriptions of the same defect
@@ -77,11 +114,11 @@ function titleFor(finding) {
   return `UX audit: ${finding && finding.summary ? finding.summary : ''}`.slice(0, 120);
 }
 
-// Every walkthrough card is a "UX audit:" UI card whose worth is an owner
-// taste call, so it stays parked. Filing high-severity ones at 2 put them in
-// the P1 lane where nothing unattended can move them: 18 piled up, 1 real (BRO-340).
-// linear-issue-create.js already clamps parked creates to 3 (BRO-4487); this
-// says so at the source instead of relying on the clamp's warning.
+// Every walkthrough card is a "UX audit:" card filed as worker work (BRO-6478): the worker first checks the
+// finding on the demo site and closes noise with the reason; a real one gets a fix and the owner's taste call
+// arrives as a before/after picture (visual-approval.js), never as a Linear card. Filing high-severity ones at
+// 2 made them P1: 18 piled up, 1 real (BRO-340). Priority 3 is the cloud worker's P2 fallback tier
+// (cloud-worker-pick.js), which takes a dispatch-mode card after it has sat idle.
 function priorityFor(_finding) {
   return PRIORITY_NORMAL;
 }
@@ -105,6 +142,7 @@ function planFilings({ findings = [], existing = null } = {}) {
       toFile: [],
       skippedDuplicate: [],
       skippedLowAgreement: [],
+      skippedOverCap: [],
     };
   }
 
@@ -112,6 +150,7 @@ function planFilings({ findings = [], existing = null } = {}) {
   const toFile = [];
   const skippedDuplicate = [];
   const skippedLowAgreement = [];
+  const skippedOverCap = [];
 
   for (const f of findings || []) {
     if (!f) continue;
@@ -129,16 +168,23 @@ function planFilings({ findings = [], existing = null } = {}) {
       skippedDuplicate.push(title);
       continue;
     }
+    if (toFile.length >= MAX_FILINGS_PER_RUN) {
+      skippedOverCap.push(title);
+      continue;
+    }
     toFile.push({ title, priority: priorityFor(f), finding: f });
   }
 
-  return { refused: false, reason: null, toFile, skippedDuplicate, skippedLowAgreement };
+  return { refused: false, reason: null, toFile, skippedDuplicate, skippedLowAgreement, skippedOverCap };
 }
 
 module.exports = {
   PRIORITY_NORMAL,
   MIN_AGREEMENT,
   DUPE_SIMILARITY,
+  MAX_FILINGS_PER_RUN,
+  VERIFY_LINE,
+  cardNotes,
   normalizeWords,
   similarity,
   titleFor,

@@ -97,6 +97,7 @@ const { createLinearIssue, isUsageLimitExceeded } = require('./linear-issue-crea
 // PARKED sentinel) — shared with the Mac-side red-first pass that selects them.
 const { DISPATCH_AT_FILING_MARKER } = require('./linear-drain-parked');
 const { startNowHealthRowReason, startNowLine } = require('./start-now-filing.js');
+const { classifyHealthCheck } = require('./digest-audience.js');
 // Cross-system dedupe (Phase 0 rail 2, plan 2026-08-12, task #1341) — see
 // findLinearDuplicate() below. Every Linear GraphQL call stays inside
 // linear-client.js (audit-linear-issuecreate-chokepoint.js convention).
@@ -558,13 +559,13 @@ let startNowFiledThisRun = 0;
 const START_NOW_PROVENANCE = 'Filed by owner-alert-router (START-NOW';
 
 /** PURE. Should this condition's card be filed START-NOW? */
-function startNowEligible({ conditionKey, description, verify }) {
+function startNowEligible({ conditionKey, description, verify, workerFixable }) {
   // Kill switch: back to parked filing for every card, no code revert needed.
   if (process.env.START_NOW_ROUTER_DISABLED === 'true') return false;
   const name = healthRowNameFromConditionKey(conditionKey);
   if (!name) return false;
   if (verify && verify.line && /owner-judgment/i.test(verify.line)) return false;
-  return startNowHealthRowReason({ name, message: description }) === null;
+  return startNowHealthRowReason({ name, message: description }, undefined, { allowInternal: workerFixable === true }) === null;
 }
 
 async function dispatchCard({ title, description, hint, fields, severity, cardAction, priority, category, tags, conditionKey, verify, dispatchAtFiling, workerFixable }) {
@@ -605,8 +606,8 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
   let startNow = false;
   // Only callers that pass workerFixable ask for it: a playbook row with a
   // humanAction is the owner's to do, whatever its name says (ship-check P1).
-  if (workerFixable && !dispatchMode && startNowFiledThisRun < MAX_START_NOW_PER_RUN && startNowEligible({ conditionKey, description, verify })) {
-    const startNowNotes = `${startNowLine('the Mac drain')}\n${START_NOW_PROVENANCE}; condition: ${conditionKey}).\n\n${notes}`;
+  if (workerFixable && !dispatchMode && startNowFiledThisRun < MAX_START_NOW_PER_RUN && startNowEligible({ conditionKey, description, verify, workerFixable })) {
+    const startNowNotes = `${startNowLine('the Mac drain', { internal: classifyHealthCheck({ name: healthRowNameFromConditionKey(conditionKey) || '' }) !== 'visitors' })}\n${START_NOW_PROVENANCE}; condition: ${conditionKey}).\n\n${notes}`;
     let unpickable = null;
     try {
       unpickable = require('./cloud-worker-pick.js').startNowUnpickableReason({ title, description: startNowNotes, priority: 2, mode: 'dispatch' });

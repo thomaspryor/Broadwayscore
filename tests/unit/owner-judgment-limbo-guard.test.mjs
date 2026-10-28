@@ -153,3 +153,66 @@ test('park reasons naming an owner decision or sign-off are refused', async () =
   const { createLimboReason } = await import('../../scripts/lib/owner-judgment-limbo-guard.js');
   for (const r of ['owner decision needed', 'needs owner sign-off', 'Owner to review']) assert.ok(createLimboReason({ body: 'x', parkReason: r }), r);
 });
+
+// BRO-6478: the two filers that got past the create-time guard.
+const { updateLimboReason } = require('../../scripts/lib/owner-judgment-limbo-guard.js');
+const { evaluateVerifiability } = require('../../scripts/lib/verify-gate.js');
+const { startNowUnpickableReason } = require('../../scripts/lib/cloud-worker-pick.js');
+const { startNowEligible, buildCardNotes } = require('../../scripts/lib/owner-alert-router.js');
+const { startNowLine } = require('../../scripts/lib/start-now-filing.js');
+const { planFilings, cardNotes, MAX_FILINGS_PER_RUN } = require('../../scripts/lib/ux-walkthrough-filing.js');
+
+test('park reasons saying owner taste call or owner sweep are refused (the old ux-walkthrough wording)', () => {
+  for (const parkReason of [
+    'Auto-filed by the nightly UX walkthrough. UX-audit card: whether the finding is worth fixing is an owner taste call (BRO-340), so it waits for a deliberate owner sweep.',
+    'an owner taste call', "waits for the owner's sweep", 'left for a deliberate sweep',
+  ]) assert.match(createLimboReason({ body: 'x', parkReason }), /DECISION NEEDED/, parkReason);
+  assert.equal(createLimboReason({ body: 'x', parkReason: 'needs a worktree and a monitor window' }), null);
+});
+
+test('updateLimboReason refuses an edit that leaves only the bare marker, passes real routes and old limbo cards', () => {
+  assert.match(updateLimboReason({ before: 'Pitch kit.', after: 'Pitch kit.\n\nVERIFY: owner-judgment' }), /DECISION NEEDED/);
+  assert.equal(updateLimboReason({ before: 'Pitch kit.', after: 'Pitch kit.\n\nDECISION NEEDED: Send the kit to X?\nVERIFY: owner-judgment' }), null);
+  assert.equal(updateLimboReason({ before: 'Pitch kit.', after: `Pitch kit.\n\nVERIFY: ${CMD}` }), null);
+  // Already limbo before the edit: not this edit's doing, so a sanitizing rewrite is not blocked.
+  assert.equal(updateLimboReason({ before: 'a\nVERIFY: owner-judgment', after: 'a (edited)\nVERIFY: owner-judgment' }), null);
+  assert.equal(updateLimboReason({}), null);
+});
+
+test('enrich-card-acceptance write path refuses to store the bare marker', async () => {
+  const { makeLinearWriteCard } = require('../../scripts/enrich-card-acceptance.js');
+  const calls = [];
+  const write = makeLinearWriteCard({ updateIssue: async (...a) => calls.push(a), findOrCreateLabel: async () => ({ id: 'l' }), addLabelToIssue: async () => {} }, 't');
+  await assert.rejects(write({ id: 'i', notes: 'Pitch kit.' }, 'Pitch kit.\n\nVERIFY: owner-judgment'), /refused/);
+  assert.equal(calls.length, 0);
+});
+
+test('the limbo health row files a START-NOW worker card the cloud worker will pick', () => {
+  const row = ownerJudgmentLimboResults({ generatedAt: new Date().toISOString(), total: 9,
+    ownerJudgmentLimbo: { complete: true, total: 9, checked: 9, cards: [{ id: 'BRO-1' }] } })[0];
+  const conditionKey = `health-check:${row.name}`;
+  const description = `${row.message}\n\n${row.hint}`;
+  // Without the playbook flag the internal "Dispatch" category keeps it out of START-NOW; with it, it files.
+  assert.equal(startNowEligible({ conditionKey, description }), false);
+  assert.equal(startNowEligible({ conditionKey, description, workerFixable: true }), true);
+  // The real card body, built by the router's own builder, must pass the picker.
+  const notes = `${startNowLine('the Mac drain', { internal: true })}\n\n${buildCardNotes({ description, hint: 'Triage.', fields: [], conditionKey })}`;
+  assert.equal(startNowUnpickableReason({ title: `BSC Daily: ${row.name}`, description: notes, priority: 2, mode: 'dispatch' }), null);
+  // Owner-or-Mac rows stay out even when flagged.
+  assert.equal(startNowEligible({ conditionKey: 'health-check:Credits: ScrapingBee', description: 'x', workerFixable: true }), false);
+});
+
+test('a UX walkthrough card has a runnable check, no limbo, passes the picker, and the nightly volume is capped', () => {
+  const finding = { summary: 'Score badge overlaps title on mobile', severity: 'high', screenshot: 'mobile-grid', agreementCount: 2, models: ['a', 'b'] };
+  const notes = cardNotes(finding, 3);
+  assert.ok(evaluateVerifiability(notes, []).cmd, 'needs a safe-form VERIFY');
+  assert.equal(createLimboReason({ body: notes, parkReason: '' }), null);
+  assert.match(notes, /visual-approval\.js request/);
+  assert.match(notes, /demo\.broadwayscorecard\.com/);
+  assert.equal(startNowUnpickableReason({ title: 'UX audit: x', description: `START-NOW: test\n${notes}`, priority: 2, mode: 'dispatch' }), null);
+  const topics = ['carousel arrows hidden', 'footer links overlap', 'tooltip clipped', 'modal scrolls twice', 'search dropdown flickers', 'avatar menu misaligned', 'poster images stretch', 'filter chips wrap'];
+  const findings = topics.map(summary => ({ summary, agreementCount: 2, screenshot: 's' }));
+  const plan = planFilings({ findings, existing: { ok: true, titles: [] } });
+  assert.equal(plan.toFile.length, MAX_FILINGS_PER_RUN);
+  assert.equal(plan.skippedOverCap.length, 8 - MAX_FILINGS_PER_RUN);
+});

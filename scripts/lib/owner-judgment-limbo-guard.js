@@ -55,10 +55,12 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
     && Number.isInteger(bucket.total) && bucket.total >= 0
     && bucket.checked === bucket.total && Number(report.total) > 0 && fresh;
   const cards = bucket && Array.isArray(bucket.cards) ? bucket.cards : [];
-  const hint = 'Triage data/audit/card-verifiability-linear.json ownerJudgmentLimbo.cards: add a plain-English DECISION NEEDED: question with options and a recommendation to the description if the owner must decide; otherwise post a safe-form VERIFY comment or cancel with evidence.';
+  // Worded for the worker card this row files (BRO-6478): headless-dispatchability.js reads "owner must decide"
+  // and the literal marker as a stop sign, so neither appears here.
+  const hint = 'Triage data/audit/card-verifiability-linear.json ownerJudgmentLimbo.cards, one card at a time. First check the card\'s premise against live state (run the commands, read the code, use the session\'s tools and keys; never write "no access" before trying them). If the work is doable, add a safe-form check line as a comment and do it, or cancel the card with evidence. Only when a real choice remains for the person who runs the site, put a plain-English question on its own line starting with DECISION NEEDED and a colon in the description, with the options and your recommendation (docs/owner-email-guidelines.md). That line is what emails them.';
   if (cards.length) {
     return [{ name, status: 'warn',
-      message: `${cards.length} P2/P3 Todo/Backlog card(s) have only VERIFY: owner-judgment and no owner-notification route.${ready ? '' : ' Sweep incomplete or stale; this count may be partial.'} First: ${cards.slice(0, 3).map(c => c.id).join(', ')}`,
+      message: `${cards.length} P2/P3 Todo/Backlog card(s) are marked for a person's judgment with no check command and no owner-notification route.${ready ? '' : ' Sweep incomplete or stale; this count may be partial.'} First: ${cards.slice(0, 3).map(c => c.id).join(', ')}`,
       hint }];
   }
   if (!ready) {
@@ -74,7 +76,7 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
 // A marker LINE: the marker after optional quote, list, numbering, heading, bold or code decoration. Prose that merely
 // mentions the marker mid-sentence stays allowed.
 const MARKER_LINE_RE = /^[ \t]*(?:>[ \t]*|[-*+][ \t]+|\d+[.)][ \t]+|#{1,6}[ \t]+)*(?:\*\*|__|`)*VERIFY:\s*owner-judgment/im;
-const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bowner\s+(?:decision|sign-?off|approval)\b|\bowner\s+to\s+(?:review|decide|look)\b|\bfor\s+(?:the\s+)?owner(?![-\w])/i;
+const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bowner\s+(?:decision|sign-?off|approval)\b|\bowner\s+to\s+(?:review|decide|look)\b|\bfor\s+(?:the\s+)?owner(?![-\w])|\bowner(?:'?s)?\s+(?:taste|sweep)\b|\b(?:taste\s+call|deliberate\s+sweep)\b/i;
 
 function createLimboReason({ body, parkReason } = {}) {
   const text = String(body || '');
@@ -87,4 +89,13 @@ function createLimboReason({ body, parkReason } = {}) {
     + 'If a worker can do it, file it with --dispatch and a safe-form VERIFY line instead.';
 }
 
-module.exports = { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults, createLimboReason };
+// Update path (BRO-6478): enrich-card-acceptance used to append the bare marker through an update, which the
+// create-time guard never saw. Refuses an edit that leaves a card armed only by the marker; an already
+// marker-only card being rewritten otherwise is not this edit's doing.
+function updateLimboReason({ before, after } = {}) {
+  const wasLimbo = createLimboReason({ body: before }) !== null;
+  if (wasLimbo) return null;
+  return createLimboReason({ body: after });
+}
+
+module.exports = { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults, createLimboReason, updateLimboReason };
