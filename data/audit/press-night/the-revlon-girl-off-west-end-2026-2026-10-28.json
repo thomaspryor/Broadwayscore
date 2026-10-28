@@ -1,0 +1,91 @@
+{
+  "schemaVersion": 1,
+  "showId": "the-revlon-girl-off-west-end-2026",
+  "night": "2026-10-28",
+  "market": "off-west-end",
+  "embargoAt": "2026-10-28T21:00:00.000Z",
+  "probe": {
+    "startedAt": "2026-10-28T22:28:20.563Z",
+    "endedAt": null,
+    "intervalMin": 5,
+    "samples": 7,
+    "failedSamples": 0,
+    "lastSampleAt": "2026-10-28T22:58:21.452Z",
+    "lastOkSampleAt": "2026-10-28T22:58:21.452Z"
+  },
+  "firstLiveAt": "2026-10-28T22:28:20.563Z",
+  "firstLiveBaseline": true,
+  "lastLiveAt": "2026-10-28T22:28:20.563Z",
+  "liveCount": 1,
+  "liveCountAt": {
+    "1h": null,
+    "2h": null,
+    "6h": null
+  },
+  "liveCountSampleAt": {
+    "1h": "2026-10-28T22:28:20.563Z",
+    "2h": null,
+    "6h": null
+  },
+  "firstOutletPublishAt": {
+    "at": null,
+    "precision": "unknown",
+    "source": "prod-rv-publishDate",
+    "tierScope": null
+  },
+  "perReview": [
+    {
+      "key": "buzzmag|hari berrow",
+      "outlet": "Buzzmag",
+      "critic": "Hari Berrow",
+      "tier": 3,
+      "publishAt": "2026-10-21",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-28T22:28:20.563Z",
+      "prevOkSampleAt": null,
+      "baseline": true,
+      "liveNow": true
+    }
+  ],
+  "dropped": [],
+  "reference": {
+    "2h": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 1,
+      "fetchedAt": "2026-10-28T23:00:20.805Z",
+      "censusNote": "archive only"
+    }
+  },
+  "fileState": {
+    "capturedAt": "2026-10-28T23:00:21.382Z",
+    "files": [
+      {
+        "file": "buzzmag--hari-berrow.json",
+        "outletId": "buzzmag",
+        "outlet": "buzzmag",
+        "critic": "Hari Berrow",
+        "firstSeenAt": "2026-10-28T19:43:48.006Z",
+        "publishDate": "2026-10-21",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "london-box-office--stacey-tyler.json",
+        "outletId": "london-box-office",
+        "outlet": "London Box Office",
+        "critic": "Stacey Tyler",
+        "firstSeenAt": "2026-08-01T14:56:25.920Z",
+        "publishDate": "2017-09-26",
+        "includable": false,
+        "reason": "wrongProduction",
+        "syndicatedUnder": null
+      }
+    ]
+  }
+}
