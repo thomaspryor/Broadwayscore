@@ -83,10 +83,8 @@ const FIXTURE_SHOWS = [
     venue: 'Fixture Off-Broadway Theatre 2',
   },
 ];
-// aggregateScore() falls back to averaging this array directly — no
-// public/data/shows/<id>.json exists for a fixture id, so the composite-score
-// cache lookup always misses (see loadCompositeScore() in generate.mjs).
-// 5 reviews clears minReviews('off-broadway') (3) for both fixture shows.
+// Reviews drive weekly coverage checks; separate published-score fixtures
+// below clear minReviews('off-broadway') (3) for both fixture shows.
 function reviewsFor(showId, publishDate) {
   return Array.from({ length: 5 }, (_, i) => ({
     showId,
@@ -148,6 +146,11 @@ test('broadway edition renders an in-week off-Broadway opening even when a stale
   fs.writeFileSync(showsPath, JSON.stringify({ shows: FIXTURE_SHOWS }));
   fs.writeFileSync(reviewsPath, JSON.stringify({ reviews: FIXTURE_REVIEWS }));
   fs.writeFileSync(statePath, JSON.stringify(STALE_STATE));
+  const compositesDir = path.join(dataDir, 'slim');
+  fs.mkdirSync(compositesDir);
+  for (const id of [FIXTURE_SHOW_ID, DECOY_SHOW_ID]) {
+    fs.writeFileSync(path.join(compositesDir, `${id}.json`), JSON.stringify({ cs: 82, rc: 5 }));
+  }
 
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'lastfeatured-inweek-out-'));
   try {
@@ -159,6 +162,7 @@ test('broadway edition renders an in-week off-Broadway opening even when a stale
         NEWSLETTER_STATE_PATH: statePath,
         NEWSLETTER_TEST_SHOWS_PATH: showsPath,
         NEWSLETTER_TEST_REVIEWS_PATH: reviewsPath,
+        NEWSLETTER_TEST_COMPOSITES_DIR: compositesDir,
       },
       stdio: 'pipe',
       timeout: 60_000,

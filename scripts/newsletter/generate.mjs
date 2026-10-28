@@ -8,6 +8,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { badgeImg, rankBadgeImg, awardBadgeImg } from './badge-render.mjs';
 import { hasFreshRunReview } from './fresh-run-reviews.mjs';
+import { createCompositeScoreLoader } from './composite-score.mjs';
 
 // Path setup: `repo` resolves to the repo root via __dirname so the generator
 // runs identically on macOS local dev, Linux CI, and from a git worktree.
@@ -24,7 +25,6 @@ const repo = path.resolve(__dirname, '..', '..');
 // Bridge to the canonical CJS email-templates lib. Imports use repo-relative
 // paths now (was hardcoded /Users/tompryor/... — broke on CI).
 const cjsRequire = createRequire(import.meta.url);
-const { scoreFromSlimShow } = cjsRequire('../lib/newsletter-score.js');
 const { grossesWeekLabel } = cjsRequire('../lib/grosses-week-label.js');
 // Shared show-format labels (mirror of src/lib/show-format.ts) so newsletter
 // pills agree with the site and the digest emails — `special` is EVENT, not
@@ -45,7 +45,8 @@ const { newsletterWeeksToRecoup } = cjsRequire(path.join(repo, 'scripts/lib/reco
 const { isEstimatedCapitalization, isMaximumCapitalization } = cjsRequire(path.join(repo, 'scripts/lib/public-source-text'));
 const { isUkRegionalVenue } = cjsRequire(path.join(repo, 'scripts/lib/market-label'));
 const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsRequire(path.join(repo, 'scripts/lib/broadway-seasons'));
-// NEWSLETTER_TEST_REVIEWS_PATH / NEWSLETTER_TEST_SHOWS_PATH: TEST-ONLY override
+// NEWSLETTER_TEST_REVIEWS_PATH / NEWSLETTER_TEST_SHOWS_PATH /
+// NEWSLETTER_TEST_COMPOSITES_DIR: TEST-ONLY overrides
 // (mirrors NEWSLETTER_STATE_PATH below) so a regression test can run the real
 // composer against a small fixture corpus instead of the live, ever-growing
 // data/ — see bw-quiet-week-fallback.test.mjs's header comment for why a
@@ -55,6 +56,10 @@ const { getSeasonForDate, getSeasonDates, isEligibleForSeasonStanding } = cjsReq
 // fixture data without a visible trace (Codex adversarial review, BRO-3042).
 const _testShowsPath = process.env.NEWSLETTER_TEST_SHOWS_PATH;
 const _testReviewsPath = process.env.NEWSLETTER_TEST_REVIEWS_PATH;
+const _testCompositesDir = process.env.NEWSLETTER_TEST_COMPOSITES_DIR;
+if (_testCompositesDir) {
+  console.error('[generate.mjs] TEST OVERRIDE ACTIVE: reading published scores from a test fixture.');
+}
 if (_testShowsPath || _testReviewsPath) {
   console.error(`[generate.mjs] TEST OVERRIDE ACTIVE — reading ${_testShowsPath ? 'shows' : ''}${_testShowsPath && _testReviewsPath ? '/' : ''}${_testReviewsPath ? 'reviews' : ''} from a test fixture, not data/. This must only ever be set by a test.`);
 }
@@ -241,13 +246,6 @@ function shortVenue(raw) {
 }
 function dayOf(dateStr) { const d = new Date(dateStr + (dateStr.length === 10 ? 'T12:00:00' : '')); return d.toLocaleDateString('en-US', { weekday: 'short', timeZone: 'America/New_York' }); }
 
-// Composite score cache, lazy-loaded from public/data/shows/{id}.json. These
-// per-show files are the SAME canonical compositeScore (tier-weighted, not
-// arithmetic) the live site renders — `cs` is compositeScore, `rc` is
-// reviewCount. Using arithmetic means here was a long-standing bug: per
-// CLAUDE.md the project uses tier-weighted averages everywhere (T1=1.0,
-// T2=0.75, T3=0.35), and the newsletter must match the site's published
-// number show-for-show.
 // --- Editorial-lede show-name italics ------------------------------------------
 // Show names in the lede should render in italics. Two inputs, one renderer:
 //   • *emphasis* / _emphasis_ markers an editor writes in LEDE_OVERRIDE (these
@@ -278,28 +276,9 @@ function italicizeLede(text, titles = []) {
   return out;
 }
 
-const _compositeCache = new Map();
-function loadCompositeScore(showId) {
-  if (_compositeCache.has(showId)) return _compositeCache.get(showId);
-  const p = path.join(repo, 'public/data/shows', `${showId}.json`);
-  let slim = null;
-  try { slim = JSON.parse(fs.readFileSync(p, 'utf8')); } catch {}
-  const result = scoreFromSlimShow(slim);
-  _compositeCache.set(showId, result);
-  return result;
-}
-
-function aggregateScore(showId) {
-  // The canonical compositeScore (tier-weighted), same number the site shows.
-  // A slim file without `cs` means the site withholds the score: no score
-  // here either (scripts/lib/newsletter-score.js). Falls back to arithmetic
-  // mean only if the per-show JSON is missing entirely.
-  const composite = loadCompositeScore(showId);
-  if (composite !== undefined) return composite;
-  const rs = reviews.filter(r => r.showId === showId && r.assignedScore != null && (r.publishDate || '').slice(0, 10) <= weekEndStr);
-  if (!rs.length) return null;
-  return { avg: Math.round(rs.reduce((a, r) => a + r.assignedScore, 0) / rs.length), count: rs.length };
-}
+const aggregateScore = createCompositeScoreLoader(
+  _testCompositesDir || path.join(repo, 'public/data/shows'),
+);
 
 function minReviews(category) {
   // Match the site: OB/OWE shows display a Critic Score at 3+ reviews, so a
@@ -936,8 +915,8 @@ function newTourScoresSection() {
     .filter(s => getImage(s))
     // The score must still be public today: the stamp never clears, so a tour
     // whose score dropped back under the minimum (a review flagged later,
-    // e.g. death-becomes-her-tour-2026) would otherwise print its raw mean.
-    .map(s => ({ s, agg: loadCompositeScore(s.id) }))
+    // e.g. death-becomes-her-tour-2026) must not print a stale score.
+    .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg)
     .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)) || a.s.title.localeCompare(b.s.title));
   if (!withScore.length) return null;
@@ -1066,7 +1045,7 @@ function findRenderableCriticMovers() {
     if (x.before.length < 4) continue;
     if (x.thisWeek.length < 1) continue;
     const beforeAvg = tierWeightedAverage(x.before);
-    const composite = loadCompositeScore(id);
+    const composite = aggregateScore(id);
     if (beforeAvg == null || !composite) continue;
     const allAvg = composite.raw;
     const delta = allAvg - beforeAvg;

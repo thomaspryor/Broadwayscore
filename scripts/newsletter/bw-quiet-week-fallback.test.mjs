@@ -104,10 +104,8 @@ const FIXTURE_SHOWS = [
   { id: 'fx-decoy-off-broadway', title: 'Decoy Off-Broadway Show (Fixture)', slug: 'fx-decoy-off-broadway', category: 'off-broadway', status: 'open', type: 'play', openingDate: '2026-08-16', venue: 'Fixture Theatre F' },
 ];
 
-// Reviews drive aggregateScore() via its reviews.json fallback (no
-// public/data/shows/<id>.json exists for these fixture IDs, so the
-// composite-score cache lookup always misses and falls through to computing
-// straight off this array — see loadCompositeScore() in generate.mjs).
+// Reviews drive weekly coverage checks. Published scores are separate slim
+// fixtures below, matching the generator's canonical score source.
 // Review counts: Electra=12 (most-reviewed West End show, so it's #1 within
 // its tier), The Story=6, Holy Fool=5, Month=7 (best-reviewed of all four,
 // but Off West End tier still ranks it behind both West End shows — the
@@ -141,6 +139,15 @@ test('broadway edition for a genuinely dead BW/OB news week names all 4 fixture 
   const reviewsPath = path.join(dataDir, 'reviews.json');
   fs.writeFileSync(showsPath, JSON.stringify({ shows: FIXTURE_SHOWS }));
   fs.writeFileSync(reviewsPath, JSON.stringify({ reviews: FIXTURE_REVIEWS }));
+  const compositesDir = path.join(dataDir, 'slim');
+  fs.mkdirSync(compositesDir);
+  for (const [id, cs, rc] of [
+    [LEAD_SHOW.id, 78, 12], ['fx-the-story', 70, 6],
+    ['fx-holy-fool', 65, 5], ['fx-month-in-the-country', 82, 7],
+    ['fx-decoy-broadway', 72, 5], ['fx-decoy-off-broadway', 68, 3],
+  ]) {
+    fs.writeFileSync(path.join(compositesDir, `${id}.json`), JSON.stringify({ cs, rc }));
+  }
 
   const outDir = fs.mkdtempSync(path.join(os.tmpdir(), 'bw-quiet-week-test-'));
   try {
@@ -153,6 +160,7 @@ test('broadway edition for a genuinely dead BW/OB news week names all 4 fixture 
         NEWSLETTER_STATE_PATH: STATE_SANDBOX,
         NEWSLETTER_TEST_SHOWS_PATH: showsPath,
         NEWSLETTER_TEST_REVIEWS_PATH: reviewsPath,
+        NEWSLETTER_TEST_COMPOSITES_DIR: compositesDir,
       },
       stdio: 'pipe',
       timeout: 60_000,
