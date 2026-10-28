@@ -226,7 +226,9 @@ function buildDigest(entries) {
   // that never existed). Only a human can pick citation/demote/hold per entry.
   lines.push('## Acceptance criteria');
   lines.push('');
-  lines.push('VERIFY: owner-judgment — each entry needs a human to supply a citation, confirm demote, or leave it held; no command can decide that.');
+  lines.push('Done when no pending row is held for a person any more (a worker supplies a citation, demotes the claim, or releases the hold per entry).');
+  lines.push('');
+  lines.push('VERIFY: node scripts/check-review-item-resolved.js --held-empty');
   lines.push('');
 
   const footer = ['---', '', `_Synced: ${new Date().toISOString()}_`];
@@ -360,9 +362,11 @@ function main() {
     }
     const create = runLinearBrain([
       'create', TITLE,
-      '--priority', '3', // Medium — visible, never auto-dispatched (--park below)
+      '--priority', '3', // Medium
       '--notes', digest,
-      '--park', 'standing owner-review-status digest, never auto-dispatched by the drain',
+      // BRO-5371: a worker takes it (runnable VERIFY in the digest); parking it "for owner review" reached nobody.
+      '--dispatch',
+      '--source', 'workflow:sync-pending-review-to-linear',
     ]);
     if (create.status !== 0) {
       console.error(`FATAL: failed to create issue: ${create.stderr.slice(0, 500)}`);

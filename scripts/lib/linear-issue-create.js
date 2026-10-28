@@ -337,6 +337,17 @@ async function createLinearIssue({ title, description, dispatch, park, self, pri
     if (rolled) return rolled;
   }
 
+  // BRO-5371: a card that waits on the owner must say so in a DECISION NEEDED line, the one thing that emails them.
+  // Kill switch: OWNER_JUDGMENT_LIMBO_REFUSE=0.
+  if (process.env.OWNER_JUDGMENT_LIMBO_REFUSE !== '0') {
+    const limbo = require('./owner-judgment-limbo-guard').createLimboReason({ body, parkReason: mode === 'park' ? disposition.reason : '' });
+    if (limbo) {
+      const err = new Error(`Card refused: ${limbo} Nothing was filed.`);
+      err.code = 'OWNER_JUDGMENT_LIMBO';
+      throw err;
+    }
+  }
+
   const team = await linear.getTeam();
   let missingVerify = null;
   try {

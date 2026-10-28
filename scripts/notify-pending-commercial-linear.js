@@ -202,11 +202,14 @@ function notifyOne(spec) {
     return { slug, action: 'updated', identifier: issue.identifier };
   }
 
+  // BRO-5371: a worker takes these (the card carries a runnable VERIFY); parking them "for the owner" reached nobody.
   const create = runLinearBrain([
     'create', title,
     '--notes', notes,
-    '--priority', '3', // Medium — visible human-review queue, never auto-dispatched (--park below)
-    '--park', `Auto-filed by notify-pending-commercial-linear for ${spec.kind === 'stale-closure-review' ? 'a stale-closure human review' : 'pending commercial data review'} (${stableKey}); awaiting owner's manual look.`,
+    '--priority', '3', // Medium
+    '--dispatch',
+    '--new-anyway', 'one card per show; the exact-title lookup above already ran',
+    '--source', 'workflow:notify-pending-commercial-linear',
   ]);
   if (create.status !== 0) {
     console.error(`  ✗ ${slug}: create failed — ${create.stderr.slice(0, 200)}`);

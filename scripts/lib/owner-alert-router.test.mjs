@@ -1970,7 +1970,7 @@ test('BRO-3907: a red-signature card with a resolvable safe-form step command is
   assert.equal(gate.cmd, 'node scripts/validate-data.js');
 });
 
-test('BRO-3907: a red-signature card that falls back to owner-judgment is still dispatchable (armed via the marker, not a command)', () => {
+test('BRO-3907/BRO-5371: a red-signature card that falls back to owner-judgment is dispatchable via the condition-absent check, never a bare marker', () => {
   const { buildCardNotes } = require('./owner-alert-router.js');
   const { evaluateVerifiability } = require('./verify-gate.js');
   const notes = buildCardNotes({
@@ -1984,9 +1984,9 @@ test('BRO-3907: a red-signature card that falls back to owner-judgment is still 
     },
   });
   const gate = evaluateVerifiability(notes, []);
-  assert.ok(gate.armed, `owner-judgment marker did not arm the card: ${gate.reason}`);
-  assert.ok(gate.ownerJudgment);
-  assert.match(notes, /VERIFY: owner-judgment/);
+  assert.ok(gate.armed, `card was not armed: ${gate.reason}`);
+  assert.ok(gate.cmd && /check-alert-condition-absent/.test(gate.cmd), gate.cmd);
+  assert.doesNotMatch(notes, /VERIFY:\s*owner-judgment/);
   // The note explaining WHY must survive into the card body (own-judgment
   // alone tells a human nothing about what was actually tried).
   assert.match(notes, /audit-cast-changes\.js --gate/);

@@ -54,8 +54,9 @@ function buildEscalationCard({ diagnosis = {}, planReason = '', issueNumber, iss
     `Read the full report on the GitHub issue, investigate the root cause directly (the planner's refusal usually means the fix needs broader repo context, a new script, or a judgment call it isn't scoped for), and land a real fix.`,
     '',
     '## Acceptance criteria',
-    `\`gh issue view ${issueNumber} --repo thomaspryor/Broadwayscore\` shows the issue closed with a comment describing what was fixed.`,
-    'VERIFY: owner-judgment (the fix itself varies per-issue and has no single re-runnable command; a fresh session judges "closed with a real fix" against the issue thread).',
+    `GitHub issue #${issueNumber} is closed with a comment describing what was fixed.`,
+    '',
+    `VERIFY: node scripts/check-review-item-resolved.js --issue-closed=${issueNumber}`,
   ].join('\n');
 
   // task #1310: escalation runs on a GitHub Actions runner with no cmux/

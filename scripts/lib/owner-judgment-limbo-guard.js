@@ -68,4 +68,21 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
   return [{ name, status: 'pass', message: `No owner-judgment-only P2/P3 card lacks an owner-notification route (${bucket.checked} checked).` }];
 }
 
-module.exports = { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults };
+// Create-time guard (BRO-5371): the audit above reports limbo cards after the fact; this refuses to mint one.
+// A card is in limbo when it waits on a person but nothing tells the person: a bare marker line, or a park
+// reason saying "owner review", with no DECISION NEEDED question (the only text the owner emailer reads).
+const MARKER_LINE_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?VERIFY:\s*owner-judgment/im;
+const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bfor\s+(?:the\s+)?owner\b/i;
+
+function createLimboReason({ body, parkReason } = {}) {
+  const text = String(body || '');
+  if (findOwnerDecisions([{ identifier: 'BRO-new', description: text }]).length) return null;
+  const markerOnly = MARKER_LINE_RE.test(text) && !evaluateVerifiability(text, []).cmd;
+  const reviewPark = OWNER_REVIEW_PARK_RE.test(String(parkReason || ''));
+  if (!markerOnly && !reviewPark) return null;
+  return `${markerOnly ? 'the notes are armed only by "VERIFY: owner-judgment"' : `the park reason "${String(parkReason).trim().slice(0, 80)}" waits on owner review`}, but no line starts with "DECISION NEEDED:", so nobody tells the owner (they do not read Linear). `
+    + 'If the owner must decide, add a plain-English "DECISION NEEDED: <question>" line with the context, the options and your recommendation (docs/owner-email-guidelines.md; run node scripts/lib/owner-decision-recall.js "<topic>" first in case they already answered). '
+    + 'If a worker can do it, file it with --dispatch and a safe-form VERIFY line instead.';
+}
+
+module.exports = { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults, createLimboReason };
