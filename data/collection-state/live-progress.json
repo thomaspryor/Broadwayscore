@@ -1,34 +1,23 @@
 {
-  "updatedAt": "2026-10-28T12:48:02.842Z",
+  "updatedAt": "2026-10-28T12:57:51.989Z",
   "processed": 220,
-  "failed": 125,
-  "successRate": "63.8%",
+  "failed": 132,
+  "successRate": "62.5%",
   "tierBreakdown": {
     "playwright": 110,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 12,
+    "scrapingdog": 2,
     "scrapingbee": 0,
-    "brightdata": 6,
-    "archiveToday": 24,
-    "archive": 68
+    "brightdata": 7,
+    "archiveToday": 29,
+    "archive": 29
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-28T11:37:44.829Z",
-      "event": "bb-session",
-      "session": "86dc73c5",
-      "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-man"
-    },
-    {
-      "t": "2026-10-28T11:37:45.194Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-28T11:53:11.271Z",
+      "t": "2026-10-28T12:27:23.487Z",
       "event": "bb-session",
       "session": "318dfe98",
       "url": "https://www.wsj.com/articles/love-review-a-naturalistic-look-at-lives-in-limbo-4"
@@ -104,6 +93,23 @@
       "t": "2026-10-28T11:58:17.402Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-28T12:54:37.310Z",
+      "event": "bb-session",
+      "session": "2971b8a7",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-28T12:56:13.939Z",
+      "event": "bb-session",
+      "session": "c71608b6",
+      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
+    },
+    {
+      "t": "2026-10-28T12:56:14.352Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
