@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T04:06:41.591Z",
+  "timestamp": "2026-10-28T05:56:14.824Z",
   "stats": {
-    "totalReviews": 64143,
-    "alreadyFlagged": 21797,
+    "totalReviews": 64306,
+    "alreadyFlagged": 21838,
     "dateGuardCatches": 237,
-    "directorMismatch": 2439,
-    "tvFilmSignals": 1815,
-    "londonSignals": 3080,
+    "directorMismatch": 2446,
+    "tvFilmSignals": 1814,
+    "londonSignals": 3092,
     "offBroadwaySignals": 578,
     "yearMismatch": 227,
-    "noPublishDate": 5661
+    "noPublishDate": 5724
   },
   "findings": [
     {
@@ -15652,20 +15652,6 @@
       ]
     },
     {
-      "showId": "farinelli-and-the-king-2017",
-      "file": "hollywood-reporter--david-rooney.json",
-      "score": 74,
-      "publishDate": "December 17, 2017",
-      "url": "https://www.hollywoodreporter.com/news/general-news/farinelli-king-theater-1068729/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"peacock\""
-        }
-      ]
-    },
-    {
       "showId": "farinelli-and-the-king-west-end-2015",
       "file": "standard--fiona-mountford.json",
       "publishDate": "2015-10-01",
@@ -27229,6 +27215,95 @@
       ]
     },
     {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "2015-09-15",
+      "url": "https://www.theguardian.com/stage/2015/sep/15/kinky-boots-review-adelphi-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "independent--paul-taylor.json",
+      "score": null,
+      "publishDate": "2015-09-15",
+      "url": "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/kinky-boots-adelphi-theatre-review-strut-of-the-dancing-is-packed-with-raunchy-sass-10501871.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2015-09-16",
+      "url": "https://www.standard.co.uk/goingout/theatre/kinky-boots-theatre-review-thigh-s-the-limit-for-this-high-kicking-musical-a2948621.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": null,
+      "publishDate": "2015-09-15",
+      "url": "http://www.telegraph.co.uk/theatre/what-to-see/kinky-boots-adelphi-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "thestage--mark-shenton.json",
+      "score": null,
+      "publishDate": "2015-09-16",
+      "url": "https://www.thestage.co.uk/reviews/2015/kinky-boots-review-musical-thats-fun-frequently-fabulous-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": null,
+      "publishDate": "2015-09-15",
+      "url": "http://www.whatsonstage.com/west-end-theatre/reviews/kinky-boots-west-end-review_38733.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from kinky-boots-2013"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
       "showId": "kiss-me-kate-2019",
       "file": "broadway-blog--matthew-wexler.json",
       "score": 45,
@@ -37079,6 +37154,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-goes-wrong-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2015-12-11",
+      "url": "https://www.standard.co.uk/culture/theatre/peter-pan-goes-wrong-theatre-review-a-merry-masterclass-in-mayhem-a3135456.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adam meggido\" from peter-pan-goes-wrong-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -69799,7 +69892,7 @@
       "showId": "cleansed-off-west-end-2026",
       "file": "daily-mail--patrick-marmion.json",
       "score": 94,
-      "publishDate": null,
+      "publishDate": "2026-08-02",
       "url": "https://www.dailymail.com/tvshowbiz/article-16018123/Patrick-Marmion-star-rating-veto-sex-depravity-cleansed.html",
       "findings": [
         {
@@ -69869,7 +69962,7 @@
       "showId": "cleansed-off-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 81,
-      "publishDate": null,
+      "publishDate": "2026-08-02",
       "url": "https://www.standard.co.uk/culture/theatre/cleansed-at-the-almeida-review-b1292219.html",
       "findings": [
         {
@@ -79323,6 +79416,20 @@
       ]
     },
     {
+      "showId": "husbands-and-sons-west-end-2015",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2015-10-28",
+      "url": "https://www.theguardian.com/stage/2015/oct/28/husbands-and-sons-review-anne-marie-duff",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
       "showId": "i-can-get-it-for-you-wholesale-off-broadway-2023",
       "file": "off-off-online--edward-karam.json",
       "score": 78,
@@ -80915,6 +81022,48 @@
       ]
     },
     {
+      "showId": "jane-eyre-west-end-2015",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2015-09-27",
+      "url": "https://www.theguardian.com/stage/2015/sep/27/jane-eyre-lyttleton-national-theatre-review-sally-cookson-passion-and-madness",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "jane-eyre-west-end-2015",
+      "file": "loureviews--louise-penn.json",
+      "score": null,
+      "publishDate": "2015-09-27",
+      "url": "https://loureviews.blog/2015/09/27/jane-eyre-national-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "jane-eyre-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "score": null,
+      "publishDate": "2015-09-18",
+      "url": "https://www.standard.co.uk/culture/theatre/jane-eyre-national-theatre-review-an-endlessly-inventive-admirably-kinetic-production-a2950841.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "jeeves-takes-charge-west-end-2026",
       "file": "theatreandtonic--stephen-gilchrist.json",
       "score": 97,
@@ -82318,6 +82467,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "kinky-boots-west-end-2015",
+      "file": "mail-on-sunday--jj-nattrass.json",
+      "score": null,
+      "publishDate": "2015-09-15",
+      "url": "https://www.dailymail.com/tvshowbiz/article-3235764/She-just-wants-fun-Cyndi-Lauper-harks-80s-hey-day-cleavage-enhancing-red-punkish-dress-attends-Kinky-Boots-opening-night.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -90001,6 +90164,19 @@
       "score": 60,
       "publishDate": "July 10th, 2019",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/peter-gynt-national-theatre_49429.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "peter-pan-goes-wrong-west-end-2015",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2015-12-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -98346,6 +98522,20 @@
       ]
     },
     {
+      "showId": "the-deep-blue-sea-west-end-2016",
+      "file": "radio-times--ben-dowell.json",
+      "score": null,
+      "publishDate": "2016-06-09",
+      "url": "https://www.radiotimes.com/travel/deep-blue-sea-review-helen-mccrory-shines-in-this-terence-rattigan-revival/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-devil-wears-prada-west-end-2024",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 57,
@@ -99295,6 +99485,33 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-flick-west-end-2016",
+      "file": "london-box-office--nastazja-domaradzka.json",
+      "publishDate": "2016-04-25",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-flick-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-flick-west-end-2016",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": "2016-04-20",
+      "url": "https://www.whatsonstage.com/news/the-flick-dorfman-national-theatre_40237/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -104817,6 +105034,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "the-winters-tale-west-end-2015",
+      "file": "nytimes--matt-wolf.json",
+      "score": null,
+      "publishDate": "2015-11-19",
+      "url": "https://www.nytimes.com/2015/11/20/arts/international/review-the-winters-tale-harlequinade-and-the-moderate-soprano.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
