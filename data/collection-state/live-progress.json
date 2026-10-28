@@ -1,19 +1,26 @@
 {
-  "updatedAt": "2026-10-28T17:17:45.840Z",
-  "processed": 92,
-  "failed": 58,
-  "successRate": "61.3%",
+  "updatedAt": "2026-10-28T18:13:22.052Z",
+  "processed": 96,
+  "failed": 69,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 52,
+    "playwright": 55,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 8,
+    "scrapingdog": 9,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 6,
+    "archiveToday": 14,
     "archive": 22
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-28T18:04:52.521Z",
+      "event": "bb-session",
+      "session": "55fa0f47",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    }
+  ]
 }
