@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5708",
   "planId": "d5df8335-b61c-4e4a-802b-55b9911bf56b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T15:00:00.000Z",
   "submitter": {
     "name": null,
@@ -82,5 +82,19 @@
         "description": "Add the 2021 St. James run, linked to the 2017 run"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T15:11:44.937Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added springsteen-on-broadway-2017"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added springsteen-on-broadway-2021 (priorRuns -> springsteen-on-broadway-2017)"
+    }
+  ],
+  "executedIn": "ci"
 }
