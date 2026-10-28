@@ -1,23 +1,34 @@
 {
-  "updatedAt": "2026-10-28T13:19:55.343Z",
-  "processed": 292,
-  "failed": 163,
-  "successRate": "64.2%",
+  "updatedAt": "2026-10-28T13:44:37.604Z",
+  "processed": 353,
+  "failed": 172,
+  "successRate": "67.2%",
   "tierBreakdown": {
-    "playwright": 147,
+    "playwright": 176,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 19,
-    "scrapingbee": 4,
+    "scrapingdog": 24,
+    "scrapingbee": 6,
     "brightdata": 6,
-    "archiveToday": 29,
-    "archive": 89
+    "archiveToday": 32,
+    "archive": 110
   },
   "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-10-28T12:27:23.487Z",
+      "t": "2026-10-28T11:37:44.829Z",
+      "event": "bb-session",
+      "session": "86dc73c5",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-man"
+    },
+    {
+      "t": "2026-10-28T11:37:45.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T11:53:11.271Z",
       "event": "bb-session",
       "session": "e757cd66",
       "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
@@ -36,62 +47,63 @@
     {
       "t": "2026-10-28T11:53:28.443Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-28T12:42:59.351Z",
+      "t": "2026-10-28T11:53:10.140Z",
       "event": "bb-session",
-      "session": "52384d63",
-      "url": "https://www.wsj.com/articles/a-bright-new-boise-review-fervent-faith-of-a-once-a"
+      "session": "35a7f660",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
     },
     {
-      "t": "2026-10-28T12:42:59.660Z",
+      "t": "2026-10-28T11:53:10.810Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-28T12:43:16.360Z",
+      "t": "2026-10-28T11:55:17.825Z",
       "event": "bb-session",
-      "session": "8f10c139",
-      "url": "https://www.wsj.com/articles/a-bright-new-boise-review-fervent-faith-of-a-once-a"
+      "session": "7a1d4dfb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     },
     {
-      "t": "2026-10-28T12:43:16.636Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-28T12:47:42.166Z",
+      "t": "2026-10-28T11:58:00.253Z",
       "event": "bb-session",
-      "session": "7b0b0bc7",
-      "url": "https://www.nytimes.com/2023/02/16/theater/the-wanderers-review.html?searchResul"
+      "session": "02f1b00a",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
     },
     {
-      "t": "2026-10-28T12:47:42.492Z",
+      "t": "2026-10-28T11:58:00.880Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-28T12:49:06.286Z",
+      "t": "2026-10-28T11:54:48.620Z",
       "event": "bb-session",
-      "session": "4a8bf65f",
-      "url": "https://www.wsj.com/articles/the-wanderers-review-a-movie-star-distraction-e236b"
+      "session": "20f18c53",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
     },
     {
-      "t": "2026-10-28T12:49:06.633Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-28T12:49:23.306Z",
+      "t": "2026-10-28T11:58:04.686Z",
       "event": "bb-session",
-      "session": "5108012b",
-      "url": "https://www.wsj.com/articles/the-wanderers-review-a-movie-star-distraction-e236b"
+      "session": "0f9279ff",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
     },
     {
-      "t": "2026-10-28T12:49:23.555Z",
+      "t": "2026-10-28T11:58:05.509Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-28T11:58:16.586Z",
+      "event": "bb-session",
+      "session": "82f26bbc",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-28T11:58:17.402Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
     }
   ]
 }
