@@ -23,6 +23,7 @@
 
 const https = require('https');
 require('./lib/cloud-proxy'); // BRO-6258: ScrapingBee needs the sandbox proxy in cloud
+const { classifyPatToken, legacyTokenWarning, FINE_GRAINED_REPOS } = require('./lib/pat-token-type');
 
 // --- HTTP helpers ---
 
@@ -371,6 +372,24 @@ async function checkPrivateRepoPAT() {
   );
   if (contentsCheck.status !== 200) {
     return { name: 'Private Repo PAT', status: 'fail', message: `Token cannot read BTC submissions file (${contentsCheck.status}) — submissions will fail` };
+  }
+
+  // BRO-6408: a classic/OAuth token still works but is all-repo; warn until swapped.
+  const legacy = legacyTokenWarning(token);
+  if (legacy) return { name: 'Private Repo PAT', status: 'warn', message: `Token works but ${legacy}` };
+
+  // A fine-grained token only reaches the repos it was granted: verify all five
+  // are readable (contents) and that actions can be read.
+  if (classifyPatToken(token) === 'fine-grained') {
+    const probes = await Promise.all(FINE_GRAINED_REPOS.flatMap((r) => [
+      httpsGet(`https://api.github.com/repos/thomaspryor/${r}`, headers).then((x) => [`${r} repo`, x.status]),
+      httpsGet(`https://api.github.com/repos/thomaspryor/${r}/actions/runs?per_page=1`, headers).then((x) => [`${r} actions`, x.status]),
+    ]));
+    const bad = probes.filter(([, status]) => status !== 200).map(([what, status]) => `${what}: ${status}`);
+    if (bad.length > 0) {
+      return { name: 'Private Repo PAT', status: 'warn', message: `Fine-grained token is missing access — ${bad.join(', ')}` };
+    }
+    return { name: 'Private Repo PAT', status: 'pass', message: `Fine-grained token valid, ${FINE_GRAINED_REPOS.length} repos reachable with actions read, contents readable` };
   }
 
   return { name: 'Private Repo PAT', status: 'pass', message: 'Token valid, both private repos accessible, contents readable' };
