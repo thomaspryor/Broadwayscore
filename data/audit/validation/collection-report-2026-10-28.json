@@ -1,63 +1,63 @@
 {
-  "runDate": "2026-10-28T18:53:37.746Z",
+  "runDate": "2026-10-28T19:03:38.781Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hundred-days-off-broadway-2017",
+    "showFilter": "in-the-heights-off-broadway-2026,the-revlon-girl-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 12,
-    "failed": 1,
+    "processed": 0,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "92.3%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 2,
+    "playwright": 0,
+    "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 12,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 1,
-    "tier1_5Success": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 1,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 2,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 12,
-    "failed": 1,
+    "processed": 0,
+    "failed": 2,
     "shows": [
-      "hundred-days-off-broadway-2017"
+      "in-the-heights-off-broadway-2026"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -65,68 +65,28 @@
       "failed": 0
     }
   },
-  "processed": [
-    "hundred-days-off-broadway-2017/nyt-theater--jonathan-mandell.json",
-    "hundred-days-off-broadway-2017/nytimes--unknown.json",
-    "hundred-days-off-broadway-2017/deadline--jeremy-gerard.json",
-    "hundred-days-off-broadway-2017/theatermania--david-gordon.json",
-    "hundred-days-off-broadway-2017/theatre-reviews-limited--david-roberts.json",
-    "hundred-days-off-broadway-2017/timeout--adam-feldman.json",
-    "hundred-days-off-broadway-2017/adriandimanlig--adrian-dimanlig.json",
-    "hundred-days-off-broadway-2017/front-row-center--donna-herman.json",
-    "hundred-days-off-broadway-2017/frontmezzjunkies--steven-ross.json",
-    "hundred-days-off-broadway-2017/pop-culturalist--taraneh.json",
-    "hundred-days-off-broadway-2017/theater-pizzazz--carol-rocamora.json",
-    "hundred-days-off-broadway-2017/theater-pizzazz--samuel-l-leiter.json"
-  ],
+  "processed": [],
   "failed": [
-    "hundred-days-off-broadway-2017/bobs-theater-blog--robert-sholiton.json"
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
   ],
   "cumulativeResumedState": {
-    "processed": [
-      "hundred-days-off-broadway-2017/nyt-theater--jonathan-mandell.json",
-      "hundred-days-off-broadway-2017/nytimes--unknown.json",
-      "hundred-days-off-broadway-2017/deadline--jeremy-gerard.json",
-      "hundred-days-off-broadway-2017/theatermania--david-gordon.json",
-      "hundred-days-off-broadway-2017/theatre-reviews-limited--david-roberts.json",
-      "hundred-days-off-broadway-2017/timeout--adam-feldman.json",
-      "hundred-days-off-broadway-2017/adriandimanlig--adrian-dimanlig.json",
-      "hundred-days-off-broadway-2017/front-row-center--donna-herman.json",
-      "hundred-days-off-broadway-2017/frontmezzjunkies--steven-ross.json",
-      "hundred-days-off-broadway-2017/pop-culturalist--taraneh.json",
-      "hundred-days-off-broadway-2017/theater-pizzazz--carol-rocamora.json",
-      "hundred-days-off-broadway-2017/theater-pizzazz--samuel-l-leiter.json"
-    ],
+    "processed": [],
     "failed": [
-      "hundred-days-off-broadway-2017/bobs-theater-blog--robert-sholiton.json"
+      "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+      "in-the-heights-off-broadway-2026/bloomberg--john-simon.json"
     ]
   },
   "tierDetails": {
-    "playwright": [
-      "hundred-days-off-broadway-2017/nyt-theater--jonathan-mandell.json",
-      "hundred-days-off-broadway-2017/theatermania--david-gordon.json",
-      "hundred-days-off-broadway-2017/theatre-reviews-limited--david-roberts.json",
-      "hundred-days-off-broadway-2017/timeout--adam-feldman.json",
-      "hundred-days-off-broadway-2017/adriandimanlig--adrian-dimanlig.json",
-      "hundred-days-off-broadway-2017/front-row-center--donna-herman.json",
-      "hundred-days-off-broadway-2017/frontmezzjunkies--steven-ross.json",
-      "hundred-days-off-broadway-2017/pop-culturalist--taraneh.json",
-      "hundred-days-off-broadway-2017/theater-pizzazz--carol-rocamora.json",
-      "hundred-days-off-broadway-2017/theater-pizzazz--samuel-l-leiter.json"
-    ],
-    "amp": [
-      "data/review-texts/hundred-days-off-broadway-2017/deadline--jeremy-gerard.json",
-      "hundred-days-off-broadway-2017/deadline--jeremy-gerard.json"
-    ],
+    "playwright": [],
+    "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "hundred-days-off-broadway-2017/nytimes--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
