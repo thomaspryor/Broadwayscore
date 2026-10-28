@@ -338,7 +338,7 @@ test('BRO-5488: a reworded near-duplicate returns the open card, noted there, no
 
 test('BRO-5488: a genuinely new title still files, stamped with its source', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'Review gap — "The Wiz" missing 6 cited review(s)', state: { name: 'Backlog', type: 'backlog' } }] });
-  const r = await createLinearIssue({ title: 'Review gap — "Tru" missing 3 cited review(s)', description: 'body', park: 'needs owner decision on spend', client: board.client, source: 'session' });
+  const r = await createLinearIssue({ title: 'Review gap — "Tru" missing 3 cited review(s)', description: 'body', park: 'needs a budget decision on spend', client: board.client, source: 'session' });
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
   assert.match(board.created[0].description, /\n\nFiled by: session \(kind: review gap missing cited\)$/);
@@ -486,7 +486,7 @@ test('BRO-5488: a count-only change reuses the exact-title twin, even for an opt
 test('BRO-5488: a failed note files the card instead of losing the finding', () => withTeam(async () => {
   const board = fakeBoard({ open: [{ id: 'o1', identifier: 'BRO-100', title: 'BSC Rebuild: 41 reviews dropped [SUSPICIOUS]', state: { name: 'Backlog', type: 'backlog' } }] });
   board.client.addComment = async () => { throw new Error('comment API down'); };
-  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'needs owner decision on spend', client: board.client, source: 'session' });
+  const r = await createLinearIssue({ title: 'BSC Rebuild: 49 reviews dropped [SUSPICIOUS]', description: 'x', park: 'needs a budget decision on spend', client: board.client, source: 'session' });
   assert.equal(r.mode, 'park');
   assert.equal(board.created.length, 1);
 }));
@@ -534,7 +534,7 @@ test('BRO-6081: a filer named only by dedupeOptOut is stamped with that name off
     await createLinearIssue({ title: 'Cron failed: Something', description: 'x', park: 'auto-filed parked for triage', client: board.client, dedupeOptOut: 'alert-router' });
     assert.match(board.created[0].description, /Filed by: alert-router/);
     const s = fakeBoard({ open: [] });
-    await createLinearIssue({ title: 'Cron failed: Other', description: 'x', park: 'needs owner decision on spend', client: s.client, dedupeOptOut: 'alert-router', source: 'session' });
+    await createLinearIssue({ title: 'Cron failed: Other', description: 'x', park: 'needs a budget decision on spend', client: s.client, dedupeOptOut: 'alert-router', source: 'session' });
     assert.match(s.created[0].description, /Filed by: session/, 'an explicit source still wins');
   } finally {
     if (saved === undefined) delete process.env.GITHUB_WORKFLOW; else process.env.GITHUB_WORKFLOW = saved;
