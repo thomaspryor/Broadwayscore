@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T19:50:40.987Z",
+  "timestamp": "2026-10-28T20:22:01.518Z",
   "stats": {
-    "totalReviews": 65272,
-    "alreadyFlagged": 22003,
+    "totalReviews": 65299,
+    "alreadyFlagged": 22009,
     "dateGuardCatches": 234,
-    "directorMismatch": 2530,
-    "tvFilmSignals": 1822,
-    "londonSignals": 3140,
+    "directorMismatch": 2533,
+    "tvFilmSignals": 1824,
+    "londonSignals": 3154,
     "offBroadwaySignals": 584,
-    "yearMismatch": 227,
-    "noPublishDate": 5849
+    "yearMismatch": 234,
+    "noPublishDate": 5834
   },
   "findings": [
     {
@@ -1902,6 +1902,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2015",
+      "file": "guardian--lyn-gardner.json",
+      "publishDate": "2015-02-17",
+      "url": "https://www.theguardian.com/stage/2015/feb/17/view-from-the-bridge-review-ivo-van-hove-arthur-miller",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -6599,7 +6612,7 @@
     {
       "showId": "blithe-spirit-west-end-2014",
       "file": "hampstead-highgate-express--emily-govan.json",
-      "score": null,
+      "score": 96,
       "publishDate": "2014-04-10",
       "url": "https://www.hamhigh.co.uk/things-to-do/21376945.theatre-review-blithe-spirit-gielgud-theatre/",
       "findings": [
@@ -15635,6 +15648,62 @@
       ]
     },
     {
+      "showId": "english-2025",
+      "file": "dailybeast--tim-teeman.json",
+      "score": 90,
+      "publishDate": "2025-01-24",
+      "url": "https://www.thedailybeast.com/english-review-the-broadway-play-everyone-needs-to-see-right-now/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2025 (0x). 2022 matches production: english-off-broadway-2022"
+        }
+      ]
+    },
+    {
+      "showId": "english-2025",
+      "file": "newyorker--helen-shaw.json",
+      "score": 75,
+      "publishDate": "2025-01-24",
+      "url": "https://www.newyorker.com/magazine/2025/02/03/english-theatre-review-broadway",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2025 (0x). 2022 matches production: english-off-broadway-2022"
+        }
+      ]
+    },
+    {
+      "showId": "english-2025",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 65,
+      "publishDate": "January 23, 2025",
+      "url": "https://newyorktheater.me/2025/01/23/english-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2025 (2x). 2022 matches production: english-off-broadway-2022"
+        }
+      ]
+    },
+    {
+      "showId": "english-2025",
+      "file": "nytg--allison-considine.json",
+      "score": 89,
+      "publishDate": "January 23, 2025",
+      "url": "https://www.newyorktheatreguide.com/reviews/english-broadway-review",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2025 (0x). 2022 matches production: english-off-broadway-2022"
+        }
+      ]
+    },
+    {
       "showId": "enron-2010",
       "file": "nyt-theater--unknown.json",
       "score": 79,
@@ -19828,6 +19897,24 @@
       "score": 82,
       "publishDate": "2026-09-16",
       "url": "https://www.londontheatre.co.uk/reviews/golden-boy-review-josh-oconnor",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "variety--unknown.json",
+      "publishDate": "2026-10-28",
+      "url": "https://variety.com/2026/theater/global/josh-oconnor-golden-boy-national-theatre-live-first-look-clip-1236933293/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -39654,6 +39741,25 @@
       ]
     },
     {
+      "showId": "privates-on-parade-west-end-2012",
+      "file": "independent--kate-bassett.json",
+      "score": null,
+      "publishDate": "2012-12-16",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ios-theatre-review-privates-on-parade-noel-coward-theatre-london-viva-forever-piccadilly-theatre-london-in-the-republic-of-happiness-royal-court-london-8420839.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "promises-promises-2010",
       "file": "backstage--erik-haagensen.json",
       "score": 36,
@@ -44471,6 +44577,39 @@
     },
     {
       "showId": "suffs-2024",
+      "file": "chelsea-community-news--michael-musto.json",
+      "score": 91,
+      "publishDate": "April 18, 2024",
+      "url": "https://chelseacommunitynews.com/2024/04/18/review-suffs-is-an-affecting-look-at-womens-battle-for-rights/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2024 (0x). 2022 matches production: suffs-off-broadway-2022"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "theatermania--rachel-graham.json",
+      "score": 74,
+      "publishDate": "2024-04-19",
+      "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-on-broadway-sacrifices-the-personal-for-the-political_1737608/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (2x) more than 2024 (0x). 2022 matches production: suffs-off-broadway-2022"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
       "file": "variety--frank-rizzo.json",
       "score": 86,
       "publishDate": "April 18th, 2024",
@@ -44480,6 +44619,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-2024",
+      "file": "winningham-writes--madie-winningham.json",
+      "score": 86,
+      "publishDate": null,
+      "url": "https://madiereneewinningh.wixsite.com/winninghamwrites/post/we-demand-to-be-heard-we-demand-to-be-seen",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2022 (3x) more than 2024 (0x). 2022 matches production: suffs-off-broadway-2022"
         }
       ]
     },
@@ -59302,8 +59455,23 @@
     {
       "showId": "twelfth-night-west-end-2012",
       "file": "british-theatre--philip-fisher.json",
+      "score": 79,
       "publishDate": "2012-11-18",
       "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-apollo-shaftes-8269",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
+        }
+      ]
+    },
+    {
+      "showId": "twelfth-night-west-end-2012",
+      "file": "metro-uk--claire-allfree-for-metro.json",
+      "score": null,
+      "publishDate": "2012-11-19",
+      "url": "https://metro.co.uk/2012/11/19/twelfth-night-tim-carroll-stephen-fry-theatre-review-501324/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -63034,6 +63202,19 @@
       ]
     },
     {
+      "showId": "women-on-the-verge-of-a-nervous-breakdown-west-end-2015",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2015-01-12",
+      "url": "https://www.theguardian.com/stage/2015/jan/12/women-on-verge-of-nervous-breakdown-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bartlett sher\" from women-on-the-verge-of-a-nervous-breakdown-2010"
+        }
+      ]
+    },
+    {
       "showId": "working-girl-la-jolla-regional-2025",
       "file": "latheatrix--anita-w-harris.json",
       "score": 88,
@@ -63538,6 +63719,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2015",
+      "file": "guardian--lyn-gardner.json",
+      "publishDate": "2015-12-10",
+      "url": "https://www.theguardian.com/stage/2015/dec/10/a-christmas-carol-review-jim-broadbent-noel-coward-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -68482,7 +68676,7 @@
     {
       "showId": "blithe-spirit-west-end-2014",
       "file": "a-younger-theatre--a-younger-theatre.json",
-      "score": null,
+      "score": 79,
       "publishDate": "2014-03-21",
       "url": "https://www.ayoungertheatre.com/review-blithe-spirit-gielgud-theatre-angela-lansbury/",
       "findings": [
@@ -71326,6 +71520,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "cleansed-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2016-02-24",
+      "url": "https://www.theguardian.com/stage/2016/feb/24/cleansed-review-katie-mitchell-sarah-kane-dorfman-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
         }
       ]
     },
@@ -77398,7 +77605,7 @@
     {
       "showId": "good-people-west-end-2014",
       "file": "a-younger-theatre--adam-foster.json",
-      "score": null,
+      "score": 90,
       "publishDate": "2014-04-16",
       "url": "https://www.ayoungertheatre.com/review-good-people-noel-coward-theatre-imelda-staunton-hampstead-theatre/",
       "findings": [
@@ -80130,6 +80337,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "high-society-west-end-2015",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2015-05-14",
+      "url": "https://www.theguardian.com/stage/2015/may/14/high-society-review-old-vic-finale-cole-porter-musical-kevin-spacey",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -84919,6 +85139,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "light-shining-in-buckinghamshire-west-end-2015",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2015-04-24",
+      "url": "https://www.theguardian.com/stage/2015/apr/24/light-shining-in-buckinghamshire-review-caryl-churchill",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"lyttelton\""
         }
       ]
     },
@@ -91237,6 +91470,19 @@
     },
     {
       "showId": "other-desert-cities-west-end-2014",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2014-03-25",
+      "url": "https://www.theguardian.com/stage/2014/mar/25/other-desert-cities-review-michael-billington-martha-plimpton",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-west-end-2014",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 90,
       "publishDate": "2014-03-25",
@@ -93035,6 +93281,34 @@
       ]
     },
     {
+      "showId": "quartermaines-terms-west-end-2013",
+      "file": "standard--the-standard.json",
+      "score": null,
+      "publishDate": "2013-04-13",
+      "url": "https://www.standard.co.uk/culture/theatre/quartermaines-terms-wyndham-s-theatre-review-8472121.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "quartermaines-terms-west-end-2013",
+      "file": "telegraph--unknown.json",
+      "score": null,
+      "publishDate": "2013-02-06",
+      "url": "https://www.telegraph.co.uk/culture/theatre/theatre-reviews/9852552/Quartermaines-Terms-April-13th-Wyndhams.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "queen-anne-west-end-2017",
       "file": "britishtheatrecom--unknown.json",
       "score": 78,
@@ -93739,6 +94013,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new world stages\""
+        }
+      ]
+    },
+    {
+      "showId": "roosevelvis-west-end-2015",
+      "file": "guardian--lyn-gardner.json",
+      "publishDate": "2015-10-27",
+      "url": "https://www.theguardian.com/stage/2015/oct/27/roosevelvis-review-royal-court-the-team",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -96869,20 +97156,6 @@
       "score": 91,
       "publishDate": "2024-04-19",
       "url": "https://www.newyorktheatreguide.com/reviews/suffs-broadway-review",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
-        }
-      ]
-    },
-    {
-      "showId": "suffs-2024",
-      "file": "theatermania--rachel-graham.json",
-      "score": 74,
-      "publishDate": "2024-04-19",
-      "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-on-broadway-sacrifices-the-personal-for-the-political_1737608/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -103345,6 +103618,19 @@
       ]
     },
     {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "revstanstheatreblog--unknown.json",
+      "publishDate": "2026-10-27",
+      "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-the-lives-of-others-adelphi-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "the-lyons-2012",
       "file": "backstage--david-sheward.json",
       "score": 88,
@@ -103495,6 +103781,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2016-02-04",
+      "url": "https://www.theguardian.com/stage/2016/feb/04/the-master-builder-review-ralph-fiennes-ibsen-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -108610,6 +108909,19 @@
       ]
     },
     {
+      "showId": "treasure-island-west-end-2014",
+      "file": "guardian--michael-billington.json",
+      "publishDate": "2014-12-11",
+      "url": "https://www.theguardian.com/stage/2014/dec/11/treasure-island-review-olivier-london-national-robert-louis-stevenson",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "triumph-off-broadway-2026",
       "file": "nysr--frank-scheck.json",
       "score": 78,
@@ -109344,6 +109656,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "viva-forever-west-end-2012",
+      "file": "standard--the-standard.json",
+      "score": null,
+      "publishDate": "2013-05-02",
+      "url": "https://www.standard.co.uk/news/uk/girl-power-failure-spice-girls-musical-viva-forever-to-close-in-west-end-with-ps5m-losses-8600216.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
