@@ -416,6 +416,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                             } ${already ? 'cursor-default' : ''}`}
                           >
                             <ShowImage
+                              sizes="(min-width: 640px) 120px, 30vw"
                               sources={show.image ? [getOptimizedImageUrl(show.image, 'thumbnail')] : []}
                               alt=""
                               ariaHidden

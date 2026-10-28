@@ -192,6 +192,7 @@ export function SortableAwardScoreTable({ data, initialRenderLimit }: SortableAw
                       <Link href={`/show/${show.slug}`} className="shrink-0" tabIndex={-1} aria-hidden>
                         <div className="w-10 h-14 rounded overflow-hidden bg-surface-overlay">
                           <ShowImage
+                            sizes="40px"
                             sources={[optimizedUrl, posterUrl]}
                             alt=""
                             ariaHidden

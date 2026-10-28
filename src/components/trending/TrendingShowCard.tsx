@@ -95,6 +95,7 @@ export default function TrendingShowCard({ rank, pulse, show }: TrendingShowCard
           {/* Poster */}
           <div className="shrink-0 w-11 h-[60px] sm:w-14 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay">
             <ShowImage
+              sizes="(min-width: 640px) 56px, 44px"
               sources={posterCandidates}
               alt={`${title} poster`}
               width={56}

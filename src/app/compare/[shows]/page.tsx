@@ -359,6 +359,7 @@ export default async function ComparisonPage(props: { params: Promise<{ shows: s
                   <Link href={`/show/${show.slug}`} className="block">
                     <div className="w-20 sm:w-24 aspect-[2/3] mx-auto rounded-lg overflow-hidden bg-surface-overlay mb-2">
                       <ShowImage
+                        sizes="(min-width: 640px) 96px, 80px"
                         sources={[
                           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'poster') : null,
                           show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,

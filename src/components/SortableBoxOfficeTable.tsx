@@ -94,6 +94,7 @@ function ShowThumbnail({ show }: { show: ShowGrossesData['show'] }) {
   return (
     <div className="relative flex-shrink-0 w-10 h-14 rounded overflow-hidden bg-surface-overlay">
       <ShowImage
+        sizes="40px"
         sources={[
           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'card') : null,
           show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'card') : null,

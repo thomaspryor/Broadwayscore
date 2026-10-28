@@ -335,6 +335,7 @@ export default async function GuidePage(props: { params: Promise<{ slug: string 
                     {/* Thumbnail — clickable, with ShowImage fallback */}
                     <Link href={`/show/${show.slug}`} className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0 block">
                       <ShowImage
+                        sizes="(min-width: 640px) 96px, 80px"
                         sources={[
                           show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
                           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,

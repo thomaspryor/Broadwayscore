@@ -35,6 +35,7 @@ function ComparisonCard({ showA, showB, slug }: {
       <div className="flex items-center gap-4">
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
           <ShowImage
+            sizes="(min-width: 640px) 80px, 64px"
             sources={[
               showA.images?.thumbnail ? getOptimizedImageUrl(showA.images.thumbnail, 'thumbnail') : null,
               showA.images?.poster ? getOptimizedImageUrl(showA.images.poster, 'thumbnail') : null,
@@ -53,6 +54,7 @@ function ComparisonCard({ showA, showB, slug }: {
         </div>
         <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0">
           <ShowImage
+            sizes="(min-width: 640px) 80px, 64px"
             sources={[
               showB.images?.thumbnail ? getOptimizedImageUrl(showB.images.thumbnail, 'thumbnail') : null,
               showB.images?.poster ? getOptimizedImageUrl(showB.images.poster, 'thumbnail') : null,

@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const sharp = require('sharp');
@@ -96,4 +97,22 @@ test('trace guard flags a function that traces public/images', () => {
   assert.ok(bad.problems.some(p => p.includes('public/images')));
   fs.writeFileSync(nft, JSON.stringify({ version: 1, files: ['../data/coverage-floor-snapshot.json'] }));
   assert.ok(!checkNft(nft, dir).problems.some(p => p.includes('public/images')));
+});
+
+test('every <ShowImage> in src passes sizes so local images use the small sm/ variant (BRO-6327)', () => {
+  const root = fileURLToPath(new URL('../../src/', import.meta.url));
+  const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) =>
+    e.isDirectory() ? walk(path.join(d, e.name)) : /\.tsx$/.test(e.name) ? [path.join(d, e.name)] : []);
+  const missing = [];
+  for (const f of walk(root)) {
+    if (f.endsWith(path.join('components', 'ShowImage.tsx'))) continue;
+    const s = fs.readFileSync(f, 'utf8');
+    // Put sizes before any fallback={<.../>}: the match stops at the first '/>'.
+    for (const m of s.matchAll(/<ShowImage\b([\s\S]*?)\/>/g)) {
+      if (!/\bsizes=/.test(m[1]) && !/sizes-ok:/.test(s.slice(Math.max(0, m.index - 200), m.index))) {
+        missing.push(`${path.relative(root, f)}:${s.slice(0, m.index).split('\n').length}`);
+      }
+    }
+  }
+  assert.deepEqual(missing, [], 'add sizes="..." (or a {/* sizes-ok: reason */} comment just above) to: ' + missing.join(', '));
 });

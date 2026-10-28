@@ -180,6 +180,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           <ShowImage
             sources={[show.posterUrl]}
             alt={show.title}
+            sizes="(min-width: 640px) 128px, 96px"
             fallback={<div className="w-full h-full flex items-center justify-center text-gray-600 text-3xl">🎭</div>}
             className="w-full h-full object-cover"
           />

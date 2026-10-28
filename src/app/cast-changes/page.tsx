@@ -148,6 +148,7 @@ function ShowCastCard({ showWithCast, index }: { showWithCast: ShowWithCast; ind
       <Link href={`/show/${show.slug}`} className="group flex items-center gap-3 mb-4">
         <div className="flex-shrink-0 w-12 h-12 rounded-lg overflow-hidden bg-surface-overlay">
           <ShowImage
+            sizes="48px"
             sources={[
               show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
               show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,

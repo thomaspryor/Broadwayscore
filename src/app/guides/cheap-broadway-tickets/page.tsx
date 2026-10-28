@@ -601,6 +601,7 @@ export default function CheapBroadwayTicketsGuide() {
                     {/* Thumbnail */}
                     <Link href={`/show/${show.slug}`} className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg overflow-hidden bg-surface-overlay flex-shrink-0 block">
                       <ShowImage
+                        sizes="(min-width: 640px) 80px, 64px"
                         sources={[
                           show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'thumbnail') : null,
                           show.images?.poster ? getOptimizedImageUrl(show.images.poster, 'thumbnail') : null,
