@@ -293,37 +293,6 @@
     "queuedAt": "2026-10-28T10:58:13.736Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 13 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: TypeScript Check, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002",
-    "decision": false,
-    "info": false,
-    "decisionPrompt": null,
-    "model": "opus",
-    "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40684815732)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "13"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "TypeScript Check, Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-28T13:30:46.222Z"
-  },
-  {
     "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
     "title": "1 review(s) for girls-off-west-end-2026 stuck in _pending with no text and no byline",
     "description": "replay-pending-bylines.js could not recover these _pending stubs (no body, no byline, re-fetch gave nothing usable). Rebuild never reads _pending, so they are missing from the site.\n- thestage--7e5a5f47.json (thestage): no byline in page and no recoverable body https://www.thestage.co.uk/reviews/girls-review-young-vic-theatre-london",
@@ -557,18 +526,35 @@
     "queuedAt": "2026-10-28T13:35:33.641Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-28.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 14 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40701628343",
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
-    "model": null,
+    "model": "opus",
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-28T14:17:57.106Z"
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40701628343)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "14"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-28T14:35:43.995Z"
   },
   {
     "conditionKey": "bd-circuit-breaker-web_unlocker2",
