@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6450-we-2013-14-b",
   "planId": "4f1cd60c-3a09-44b2-99b6-b229e2e9cfda",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-27T23:55:46.351Z",
   "submitter": {
     "name": null,
@@ -126,5 +126,29 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T01:10:46.503Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added daytona-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-confessions-of-gordon-brown-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added let-it-be-west-end-2014"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added medea-west-end-2014"
+    }
+  ],
+  "executedIn": "ci"
 }
