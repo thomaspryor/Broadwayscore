@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T19:48:39.461Z",
+  "generatedAt": "2026-10-28T20:03:15.004Z",
   "counts": {
     "router": 206,
     "digest": 1,
@@ -9,21 +9,21 @@
   "senders": [
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 748,
+      "line": 744,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 800,
+      "line": 796,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": ".github/workflows/check-cron-health.yml",
-      "line": 849,
+      "line": 845,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -100,13 +100,6 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 4444,
-      "kind": "routeAlert",
-      "classification": "router",
-      "disposition": "unknown"
-    },
-    {
-      "file": ".github/workflows/test.yml",
       "line": 4453,
       "kind": "routeAlert",
       "classification": "router",
@@ -114,7 +107,14 @@
     },
     {
       "file": ".github/workflows/test.yml",
-      "line": 6556,
+      "line": 4462,
+      "kind": "routeAlert",
+      "classification": "router",
+      "disposition": "unknown"
+    },
+    {
+      "file": ".github/workflows/test.yml",
+      "line": 6565,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
@@ -205,14 +205,14 @@
     },
     {
       "file": "scripts/audit-dependencies.js",
-      "line": 422,
+      "line": 393,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/audit-dependencies.js",
-      "line": 448,
+      "line": 419,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -863,35 +863,35 @@
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 148,
+      "line": 151,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 166,
+      "line": 169,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "digest"
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 212,
+      "line": 215,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 308,
+      "line": 322,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/express-retry-queue.js",
-      "line": 315,
+      "line": 329,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -905,28 +905,28 @@
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2709,
+      "line": 2762,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 2877,
+      "line": 2930,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "human"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5675,
+      "line": 5739,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
     },
     {
       "file": "scripts/health-check.js",
-      "line": 5707,
+      "line": 5773,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "auto"
@@ -1052,7 +1052,7 @@
     },
     {
       "file": "scripts/lib/core-data-merge-registry.js",
-      "line": 1892,
+      "line": 1900,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
@@ -1276,14 +1276,14 @@
     },
     {
       "file": "scripts/read-theater-newsletters.js",
-      "line": 368,
+      "line": 371,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
     },
     {
       "file": "scripts/read-theater-newsletters.js",
-      "line": 413,
+      "line": 418,
       "kind": "routeAlert",
       "classification": "router",
       "disposition": "unknown"
