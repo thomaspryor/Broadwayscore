@@ -44,8 +44,18 @@ test('every form the card filers emit is a safe-form check command', () => {
   }
 });
 
-test('the claude-config hook suite runner is a safe form in its bare form only', () => {
+test('the claude-config hook suite runner is a safe form in its bare form only (Mac interactive)', () => {
   assert.equal(isSafeCheckCommand('bash ~/.claude/hooks/tests/run-all.sh'), true);
   assert.equal(isSafeCheckCommand('bash ~/.claude/hooks/tests/run-all.sh; rm x'), false);
   assert.equal(isSafeCheckCommand('bash ~/.claude/hooks/tests/run-all.sh --fix'), false);
+});
+
+test('claim: an exact year-suffixed key is judged on its own entry, not the bare slug', () => {
+  const comm = { shows: { ragtime: { humanReviewedDesignation: true }, 'ragtime-2009': {} } };
+  const pend = { shows: { 'ragtime-2009': { recoupedDate: '2009' } } };
+  assert.equal(checkResolved('claim', 'ragtime-2009', { commercial: comm, pending: pend }).resolved, false);
+});
+
+test('held-empty: any remaining pending row keeps it open, held flag or not', () => {
+  assert.equal(checkResolved('held-empty', '', { commercial: {}, pending: { shows: { x: { recoupedDate: '2024' } } } }).resolved, false);
 });

@@ -8,7 +8,7 @@
  *                           or the show carries humanReviewedDesignation
  *   --closure=<slug>        a stale-closure review: the show has a designation other than TBD,
  *                           or humanReviewedDesignation
- *   --held-empty            no pending row is held for a person any more
+ *   --held-empty            the pending-review file has no rows left
  *   --issue-closed=<N>      GitHub issue N (the feedback report) is closed (one read-only gh api GET)
  * Exit 0 resolved, 1 still open, 2 bad usage. Never writes.
  */
@@ -30,7 +30,7 @@ function checkResolved(mode, value, { commercial, pending }) {
   const rows = (pending && pending.shows) || {};
   if (mode === 'claim') {
     if (!Object.prototype.hasOwnProperty.call(rows, value)) return { resolved: true, why: `pending row ${value} is gone` };
-    const show = shows[slugOfKey(value)] || shows[value];
+    const show = Object.prototype.hasOwnProperty.call(shows, value) ? shows[value] : shows[slugOfKey(value)];
     if (show && show.humanReviewedDesignation === true) return { resolved: true, why: `${value} marked humanReviewedDesignation` };
     return { resolved: false, why: `pending row ${value} still waits` };
   }
@@ -42,8 +42,9 @@ function checkResolved(mode, value, { commercial, pending }) {
     return { resolved: false, why: `${value} is still TBD` };
   }
   if (mode === 'held-empty') {
-    const held = Object.keys(rows).filter((k) => rows[k] && (rows[k].autoApplyBlocked || rows[k]._reviewHold));
-    return held.length ? { resolved: false, why: `${held.length} pending row(s) held: ${held.slice(0, 3).join(', ')}` } : { resolved: true, why: 'no pending row is held' };
+    // The digest card lists every pending row and closes only when none remain.
+    const keys = Object.keys(rows);
+    return keys.length ? { resolved: false, why: `${keys.length} pending row(s) remain: ${keys.slice(0, 3).join(', ')}` } : { resolved: true, why: 'no pending row remains' };
   }
   return { resolved: false, why: `unknown mode ${mode}` };
 }
@@ -52,7 +53,7 @@ function parse(argv) {
   const a = argv.slice(2);
   if (a.length !== 1) return null;
   let m;
-  if ((m = /^--(claim|closure)=([a-z0-9][a-z0-9:_-]*)$/.exec(a[0]))) return { mode: m[1], value: m[2] };
+  if ((m = /^--(claim|closure)=([a-z0-9][a-z0-9:_-]{0,120})$/.exec(a[0]))) return { mode: m[1], value: m[2] };
   if (a[0] === '--held-empty') return { mode: 'held-empty', value: '' };
   if ((m = /^--issue-closed=([1-9]\d{0,6})$/.exec(a[0]))) return { mode: 'issue-closed', value: m[1] };
   return null;
@@ -64,6 +65,10 @@ function issueState(n) {
 }
 
 function main(argv) {
+  if (!fs.existsSync(path.join(DATA, 'commercial.json')) && !/--issue-closed=/.test(argv[2] || '')) {
+    console.error('OPEN: private data/commercial.json is missing in this checkout');
+    return 1;
+  }
   const parsed = parse(argv);
   if (!parsed) {
     console.error('usage: check-review-item-resolved.js --claim=<pending key> | --closure=<slug> | --held-empty | --issue-closed=<N>');
