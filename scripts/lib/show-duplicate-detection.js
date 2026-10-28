@@ -30,6 +30,11 @@ function canonicalVenue(show) {
   return (show.venue || '')
     .toLowerCase()
     .replace(/\s*\(.*?\)\s*/g, ' ') // drop parentheticals e.g. "(Over 18s Only)"
+    // "Marjorie S. Deane Little Theater @ The West Side Y" names the building the room
+    // sits in; "The Marjorie S. Deane Little Theater" is the same room (Going Bacharach
+    // dup, BRO-6481). A leading "the" and an "@ <building>" tail are formatting.
+    .replace(/\s*@.*$/, '')
+    .replace(/^the\s+/, '')
     // Punctuation is formatting, not identity: "59E59 Theaters - Theater C"
     // and "59E59 Theaters, Theater C" are one room (crazy-mama dup, 2026-09-27).
     .replace(/[^a-z0-9]+/g, ' ')

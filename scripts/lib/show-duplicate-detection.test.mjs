@@ -105,3 +105,16 @@ test('flags a performer-prefix title without a colon ("Billy Crystal 860" ~ "860
   }
   assert.equal(isColonSegmentTitle({ title: "Bob Fosse's Dancin'" }, { title: "Dancin'" }), true);
 });
+
+test('an "@ building" venue tail and a leading "the" do not hide a dupe (Going Bacharach, BRO-6481)', () => {
+  const d = findTitleFragmentDupes([
+    show({ id: 'gb-full', title: 'Going Bacharach: The Songs of an Icon', venue: 'The Marjorie S. Deane Little Theater', openingDate: '2026-01-12', closingDate: '2026-02-22' }),
+    show({ id: 'gb-short', title: 'GOING BACHARACH', venue: 'Marjorie S. Deane Little Theater @ The West Side Y', openingDate: '2026-01-12', closingDate: '2026-02-22' }),
+  ]);
+  assert.equal(d.length, 1);
+  // A different room in the same building is still a different venue.
+  assert.equal(findTitleFragmentDupes([
+    show({ id: 'a', title: 'Going Bacharach: The Songs of an Icon', venue: 'Theater A @ The West Side Y' }),
+    show({ id: 'b', title: 'GOING BACHARACH', venue: 'Theater B @ The West Side Y' }),
+  ]).length, 0);
+});

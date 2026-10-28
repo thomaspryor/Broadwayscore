@@ -42,14 +42,20 @@ const { isStrictTitleSubset, findSharedTicketIdentityDupes } = require('./show-d
 // different house that merely starts the same ("Lyric" / "Lyric Hammersmith",
 // "Park" / "Park Avenue Armory").
 const HOUSE_WORDS = new Set(['centre', 'center', 'theatre', 'theater', 'main', 'house', 'studio', 'stage', 'hall']);
+// "Marjorie S. Deane Little Theater @ The West Side Y" names the building the room
+// sits in, and a leading "the" is formatting (BRO-6481), as in show-duplicate-detection.
+function houseKey(v) {
+  return normalizeVenueName(String(v || '').replace(/\s*@.*$/, '').replace(/^\s*the\s+/i, ''));
+}
 function sameHouse(a, b) {
-  const ka = normalizeVenueName(a);
-  const kb = normalizeVenueName(b);
+  const ka = houseKey(a);
+  const kb = houseKey(b);
   if (!ka || !kb) return false;
   if (ka === kb) return true;
   const [short, long] = ka.length <= kb.length ? [ka, kb] : [kb, ka];
   if (!long.startsWith(`${short} `)) return false;
-  return long.slice(short.length).trim().split(/[\s-]+/).filter(Boolean).every(w => HOUSE_WORDS.has(w));
+  // A single-letter room tail is a room of the same house ("59E59 Theaters Theater B").
+  return long.slice(short.length).trim().split(/[\s-]+/).filter(Boolean).every(w => HOUSE_WORDS.has(w) || /^[a-z]$/.test(w));
 }
 
 const NON_PRODUCTION_STATUSES = new Set(['announced', 'upcoming']);

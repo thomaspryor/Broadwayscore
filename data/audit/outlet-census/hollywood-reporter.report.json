@@ -1,0 +1,368 @@
+{
+  "outletId": "hollywood-reporter",
+  "generatedAt": "2026-10-28T20:40:42.463Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 1501,
+    "inWindow": 1501,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "not-review": 1439,
+      "held": 40,
+      "held-other-market": 5,
+      "out-of-window": 9,
+      "gap": 3,
+      "held-unmatched": 3,
+      "held-alt-url": 2
+    },
+    "viaTitleVariant": {
+      "held": 2
+    },
+    "recall": 0.933,
+    "recallWithCatalog": 0.933
+  },
+  "corpusSide": {
+    "rowsInWindow": 394,
+    "notEnumerated": 17,
+    "noUrl": 1,
+    "samples": [
+      {
+        "showId": "a-bronx-tale-the-musical-2016",
+        "url": "http://www.hollywoodreporter.com/review/a-bronx-tale-951987?utm_source=twitter",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-life-in-the-theatre-2010",
+        "url": "http://www.hollywoodreporter.com/hr/film-reviews/a-life-in-the-theatre-theater-review-1004120521.story",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-buffalo-2022",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-broadway-review-1235129032/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "caroline-or-change-2021",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/",
+        "publishDate": "2021-11-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "diana-the-musical-2021",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/diana-musical-broadway-review-1235046509/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "farinelli-and-the-king-2017",
+        "url": "https://www.hollywoodreporter.com/review/farinelli-king-theater-1068729",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "fela-2009",
+        "url": "http://www.hollywoodreporter.com/hr/film-reviews/fela-theater-review-1004046850.story",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "man-and-boy-2011",
+        "url": "https://www.hollywoodreporter.com/review/man-boy-theater-review-245989",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "marvins-room-2017",
+        "url": "https://www.hollywoodreporter.com/news/general-news/marvins-room-theater-review-1017924/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oh-mary-off-broadway-2024",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "pacific-overtures-1976",
+        "url": "https://www.hollywoodreporter.com/news/general-news/pacific-overtures-theater-1000003/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "scandalous-2012",
+        "url": "https://www.hollywoodreporter.com/tv/tv-news/kathie-lee-giffords-scandalous-review-393527/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "south-pacific-2008",
+        "url": "https://www.hollywoodreporter.com/hr/theater/reviews/article_display.jsp?&rid=10919",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-fear-of-13-2026",
+        "url": "https://www.hollywoodreporter.com/lifestyle/lifestyle-news/the-fear-of-13-theater-review-adrien-brody-tessa-thompson-1236566080/",
+        "publishDate": "2026-04-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "the-humans-2016",
+        "url": "https://www.hollywoodreporter.com/news/general-news/humans-theater-review-942015/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "topdog-underdog-2022",
+        "url": "https://www.hollywoodreporter.com/lifestyle/arts/topdog-underdog-broadway-review-1235237108/",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "true-west-2019",
+        "url": "https://www.hollywoodreporter.com/review/true-west-review-1177735",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "women-on-the-verge-of-a-nervous-breakdown-2010",
+        "url": "https://www.hollywoodreporter.com/review/women-verge-nervous-breakdown-theater-35921",
+        "publishDate": null,
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/cult-of-love-review-shailene-woodley-zachary-quinto-leslye-headland-1236085594/",
+      "headline": "‘Cult of Love’ Theater Review: Shailene Woodley and Barbie Ferreira Make Their Broadway Debuts in Leslye Headland’s Electric Family Drama",
+      "publishDate": "2024-12-13",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "cult-of-love-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mary-jane-review-rachel-mcadams-broadway-debut-1235879665/",
+      "headline": "‘Mary Jane’ Theater Review: Rachel McAdams Makes a Moving Broadway Debut in Amy Herzog’s Portrait of Motherhood Under Duress",
+      "publishDate": "2024-04-24",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "mary-jane-2024"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/take-me-out-broadway-review-1235124442/",
+      "headline": "Jesse Williams and Jesse Tyler Ferguson in ‘Take Me Out’: Theater Review",
+      "publishDate": "2022-04-04",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "take-me-out-2022"
+      ],
+      "outOfWindow": [
+        "take-me-out-2003"
+      ]
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
+      "headline": "‘Caroline, or Change’: Theater Review",
+      "publishDate": "2021-10-27",
+      "matched": [
+        "caroline-or-change-2021"
+      ],
+      "heldUrls": [
+        "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235045716/"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/jagged-little-pill-producers-investigation-external-review-1235020755/",
+      "headline": "‘Jagged Little Pill’ Producers Appoint External Firm to Investigate Allegations of Mistreatment Made By Former Cast Member",
+      "publishDate": "2021-09-25",
+      "matched": [
+        "jagged-little-pill-2019"
+      ],
+      "heldUrls": [
+        "https://www.hollywoodreporter.com/review/jagged-little-pill-theater-review-1259849"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/for-colored-girls-theater-review-ntozake-shange-camille-a-brown-1235133022/",
+      "headline": "‘For Colored Girls’: Theater Review",
+      "publishDate": "2022-04-20",
+      "via": null,
+      "held": [
+        "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/mj-broadway-review-lynn-nottage-1235085086/",
+      "headline": "‘MJ’: Theater Review",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/six-broadway-review-1235024613/",
+      "headline": "‘Six’: Theater Review",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [],
+  "catalogGaps": [],
+  "outOfWindow": [
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dracula-theater-review-cynthia-erivo-london-1236508632/",
+      "headline": "‘Dracula’ Theater Review: Cynthia Erivo Is the Spellbinding Center in Thrilling Display of Gothic ‘Cine-Theater’",
+      "publishDate": "2026-02-18",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "dracula-1977",
+        "dracula-the-musical-2004"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-seagull-london-theater-review-cate-blanchett-tom-burke-emma-corrin-chekhov-1236158003/",
+      "headline": "‘The Seagull’ Theater Review: Cate Blanchett Leads a First-Class Ensemble in Glorious Chekhov Adaptation",
+      "publishDate": "2025-03-07",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-seagull-2008",
+        "the-seagull-1992",
+        "the-first-1981"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/elektra-theater-review-brie-larson-stockard-channing-sophocles-london-1236128871/",
+      "headline": "‘Elektra’ Theater Review: Brie Larson Makes West End Debut in Messy, Misguided Take on Sophocles",
+      "publishDate": "2025-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "elektra-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/romeo-and-juliet-theater-review-tom-holland-shakespeare-1235909307/",
+      "headline": "‘Romeo & Juliet’ Theater Review: Tom Holland Disappoints in Return to the Stage, But Another Star Is Born",
+      "publishDate": "2024-05-25",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "romeo-and-juliet-2013",
+        "romeo-and-juliet-1986",
+        "romeo-and-juliet-1977",
+        "romeo-and-juliet-off-broadway-2026"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-picture-of-dorian-gray-review-sarah-snook-theater-1235827598/",
+      "headline": "‘The Picture of Dorian Gray’ Theater Review: Sarah Snook Is Phenomenal in Bravura Oscar Wilde Adaptation",
+      "publishDate": "2024-02-16",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-picture-of-dorian-gray-2025"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/2023-grammy-awards-show-review-1235318506/",
+      "headline": "Critic’s Notebook: The Emotional Roller Coaster of the 65th Grammy Awards",
+      "publishDate": "2023-02-06",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-notebook-2024"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/a-streetcar-named-desire-theater-paul-mescal-1235298812/",
+      "headline": "‘A Streetcar Named Desire’ Theater Review: Paul Mescal Makes an Explosive Stanley Kowalski in a Brutal Revival",
+      "publishDate": "2023-01-13",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "a-streetcar-named-desire-2012",
+        "a-streetcar-named-desire-1992",
+        "a-streetcar-named-desire-1988",
+        "a-streetcar-named-desire-1973",
+        "a-streetcar-named-desire-2005",
+        "kowalski-off-broadway-2025"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/glass-menagerie-amy-adams-theater-review-1235157266/",
+      "headline": "Amy Adams in ‘The Glass Menagerie’: Theater Review",
+      "publishDate": "2022-06-01",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "the-glass-menagerie-2017",
+        "the-glass-menagerie-2013",
+        "the-glass-menagerie-1975",
+        "the-glass-menagerie-2005",
+        "the-glass-menagerie-1983"
+      ]
+    },
+    {
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/saoirse-ronan-tragedy-of-macbeth-theater-1235031924/",
+      "headline": "Saoirse Ronan in ‘The Tragedy of Macbeth’: Theater Review",
+      "publishDate": "2021-10-15",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "macbeth-2022",
+        "macbeth-2013",
+        "macbeth-2008",
+        "macbeth-1988",
+        "macbeth-1981",
+        "macbeth-2000",
+        "macbeth-1982",
+        "macbeth-off-broadway-2026",
+        "macbeth-an-undoing-off-broadway-2024"
+      ]
+    }
+  ]
+}

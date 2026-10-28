@@ -1,0 +1,531 @@
+{
+  "outletId": "deadline",
+  "generatedAt": "2026-10-28T20:39:56.555Z",
+  "since": "2021-06-01",
+  "source": {
+    "kind": "wp-json",
+    "notes": [],
+    "enumerated": 1835,
+    "inWindow": 1835,
+    "undated": 0,
+    "meta": null
+  },
+  "corpus": "reviews.json",
+  "summary": {
+    "counts": {
+      "not-review": 1732,
+      "held": 81,
+      "ambiguous": 2,
+      "held-unmatched": 10,
+      "out-of-window": 2,
+      "gap": 3,
+      "catalog-gap": 4,
+      "held-alt-url": 1
+    },
+    "viaTitleVariant": {},
+    "recall": 0.965,
+    "recallWithCatalog": 0.921
+  },
+  "corpusSide": {
+    "rowsInWindow": 325,
+    "notEnumerated": 63,
+    "noUrl": 2,
+    "samples": [
+      {
+        "showId": "1776-2022",
+        "url": "https://deadline.com/2022/10/1776-broadway-review-1235136437/",
+        "publishDate": "2022-10-06",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-christmas-carol-2022",
+        "url": "https://deadline.com/2022/11/christmas-carol-jefferson-mays-broadway-review-1235177866/",
+        "publishDate": "2022-11-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-dolls-house-2023",
+        "url": "https://deadline.com/2023/03/dolls-house-broadway-review-jessica-chastain-1235282774/",
+        "publishDate": "2023-03-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "a-strange-loop-2022",
+        "url": "https://deadline.com/2022/04/a-strange-loop-broadway-review-1235009166/",
+        "publishDate": "2022-04-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "aint-no-mo-2022",
+        "url": "https://deadline.com/2022/12/aint-no-mo-beautiful-noise-neil-diamond-musical-broadway-reviews-1235188689/",
+        "publishDate": "2022-12-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "american-buffalo-2022",
+        "url": "https://deadline.com/2022/04/american-buffalo-cyrano-broadway-review-darren-criss-james-mcavoy-1235002080/",
+        "publishDate": "2022-04-15",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "and-juliet-2022",
+        "url": "https://deadline.com/2022/11/and-juliet-broadway-review-max-martin-1235173880/",
+        "publishDate": "2022-11-17",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "back-to-the-future-2023",
+        "url": "https://deadline.com/2023/08/back-to-the-future-musical-broadway-review-deadline-1235453191/",
+        "publishDate": "2023-08-04",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "bad-cinderella-2023",
+        "url": "https://deadline.com/2023/03/bad-cinderella-broadway-review-andrew-lloyd-webber-1235307221/",
+        "publishDate": "2023-03-23",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "birthday-candles-2022",
+        "url": "https://deadline.com/2022/04/debra-messing-birthday-candles-broadway-review-1234997876/",
+        "publishDate": "2022-04-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "camelot-2023",
+        "url": "https://deadline.com/2023/04/camelot-broadway-review-aaron-sorkin-phillipa-soo-lincoln-center-theater-1235323423/",
+        "publishDate": "2023-04-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "chicken-and-biscuits-2021",
+        "url": "https://deadline.com/2021/10/chicken-biscuits-broadway-review-1234851516/",
+        "publishDate": "2021-10-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "company-2021",
+        "url": "https://deadline.com/2021/12/company-broadway-review-stephen-sondheim-katrina-lenk-patti-lupone-1234886532/",
+        "publishDate": "2021-12-09",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "death-of-a-salesman-2022",
+        "url": "https://deadline.com/2022/10/death-of-a-salesman-broadway-review-wendell-pierce-sharon-d-clarke-1235138627/",
+        "publishDate": "2022-10-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "fat-ham-2023",
+        "url": "https://deadline.com/2023/04/fat-ham-broadway-review-deadline-1235322718/",
+        "publishDate": "2023-04-12",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "flying-over-sunset-2021",
+        "url": "https://deadline.com/2021/12/flying-over-sunset-broadway-review-1234889603/",
+        "publishDate": "2021-12-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022",
+        "url": "https://deadline.com/2022/04/for-colored-girls-broadway-review-ntozake-shange-1235004962/",
+        "publishDate": "2022-04-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "funny-girl-2022",
+        "url": "https://deadline.com/2022/04/funny-girl-broadway-review-beanie-feldstein-jane-lynch-1235008859/",
+        "publishDate": "2022-04-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "good-night-oscar-2023",
+        "url": "https://deadline.com/2023/04/good-night-oscar-sean-hayes-broadway-review-deadline-1235334934/",
+        "publishDate": "2023-04-24",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "grey-house-2023",
+        "url": "https://deadline.com/2023/06/grey-house-broadway-review-laurie-metcalf-tatiana-maslany-1235375962/",
+        "publishDate": "2023-06-01",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "hangmen-2022",
+        "url": "https://deadline.com/2022/04/hangmen-broadway-review-martin-mcdonagh-alfie-allen-1235006686/",
+        "publishDate": "2022-04-21",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "harry-potter-2021",
+        "url": "https://deadline.com/2018/04/harry-potter-and-the-cursed-child-broadway-review-j-k-rowling-jack-thorne-1202367117/",
+        "publishDate": "2021-12-07",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "here-lies-love-2023",
+        "url": "https://deadline.com/2023/07/here-lies-love-broadway-review-deadline-david-byrne-fatboy-slim-1235438965/",
+        "publishDate": "2023-07-20",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "how-i-learned-to-drive-2022",
+        "url": "https://deadline.com/2022/04/how-i-learned-to-drive-broadway-review-mary-louise-parker-david-morse-1235004844/",
+        "publishDate": "2022-04-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "is-this-a-room-2021",
+        "url": "https://deadline.com/2021/10/is-this-a-room-broadway-review-reality-winner-interrogation-1234853556/",
+        "publishDate": "2021-10-11",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "just-for-us-2023",
+        "url": "https://deadline.com/2023/06/alex-edelman-broadway-review-just-for-us-deadline-1235424565/",
+        "publishDate": "2023-06-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "kimberly-akimbo-2022",
+        "url": "https://deadline.com/2022/11/kimberly-akimbo-broadway-review-victoria-clark-1235167797/",
+        "publishDate": "2022-11-10",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "life-of-pi-2023",
+        "url": "https://deadline.com/2023/03/life-of-pi-broadway-review-1235311550/",
+        "publishDate": "2023-03-30",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "macbeth-2022",
+        "url": "https://deadline.com/2022/04/macbeth-broadway-review-daniel-craig-ruth-negga-1235011369/",
+        "publishDate": "2022-04-29",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mike-birbiglia-the-old-man-and-the-pool-2022",
+        "url": "https://deadline.com/2022/11/mike-birbiglia-broadway-review-the-old-man-and-the-pool-1235171207/",
+        "publishDate": "2022-11-13",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "motown-the-musical-2013",
+        "url": "https://www.deadlinedetroit.com/articles/4500/motown",
+        "publishDate": null,
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "mr-saturday-night-2022",
+        "url": "https://deadline.com/2022/04/mr-saturday-night-billy-crystal-broadway-review-1235009759/",
+        "publishDate": "2022-04-27",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "new-york-new-york-2023",
+        "url": "https://deadline.com/2023/04/new-york-new-york-broadway-review-kander-ebb-lin-manuel-miranda-1235337755/",
+        "publishDate": "2023-04-26",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "oh-mary-off-broadway-2024",
+        "url": null,
+        "publishDate": null,
+        "why": "no-url"
+      },
+      {
+        "showId": "ohio-state-murders-2022",
+        "url": "https://deadline.com/2022/12/ohio-state-murders-broadway-review-audra-mcdonald-1235193494/",
+        "publishDate": "2022-12-08",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "once-upon-a-one-more-time-2023",
+        "url": "https://deadline.com/2023/06/britney-spears-broadway-review-once-upon-a-one-more-time-deadline-1235421229/",
+        "publishDate": "2023-06-22",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "parade-2023",
+        "url": "https://deadline.com/2023/03/parade-broadway-review-ben-platt-micaela-diamond-1235300687/",
+        "publishDate": "2023-03-16",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "paradise-square-2022",
+        "url": "https://deadline.com/2022/04/paradise-square-broadway-review-garth-drabinsky-1234993076/",
+        "publishDate": "2022-04-03",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "peter-pan-goes-wrong-2023",
+        "url": "https://deadline.com/2023/04/peter-pan-goes-wrong-broadway-review-deadline-neil-patrick-harris-1235330328/",
+        "publishDate": "2023-04-19",
+        "why": "not-enumerated"
+      },
+      {
+        "showId": "pictures-from-home-2023",
+        "url": "https://deadline.com/2023/02/pictures-from-home-broadway-review-nathan-lane-1235253772/",
+        "publishDate": "2023-02-09",
+        "why": "not-enumerated"
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "url": "https://deadline.com/2025/09/punch-broadway-review-1236564771/",
+      "headline": "‘Punch’ Broadway Review: When Violence Meets Forgiveness",
+      "publishDate": "2025-09-29",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "punch-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2025/06/jean-smart-call-me-izzy-broadway-review-1236427982/",
+      "headline": "Jean Smart Welcomes In The New Broadway Season With The Remarkable ‘Call Me Izzy’ – Review",
+      "publishDate": "2025-06-12",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "call-me-izzy-2025"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2024/03/appropriate-broadway-review-1235671187/",
+      "headline": "‘Appropriate’ Broadway Review: Sarah Paulson Rattles The Rafters Of History In Powerhouse Production",
+      "publishDate": "2024-03-25",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "appropriate-2023"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "heldAltUrl": [
+    {
+      "url": "https://deadline.com/2022/10/funny-girl-lea-michele-broadway-review-1235133156/",
+      "headline": "Lea Michele: A Spectacular ‘Funny Girl’, At Last – Broadway Review",
+      "publishDate": "2022-10-02",
+      "matched": [
+        "funny-girl-2022"
+      ],
+      "heldUrls": [
+        "https://deadline.com/2022/04/funny-girl-broadway-review-beanie-feldstein-jane-lynch-1235008859/"
+      ]
+    }
+  ],
+  "misfiles": [],
+  "heldUnmatched": [
+    {
+      "url": "https://deadline.com/2026/04/beaches-musical-broadway-review-1236866946/",
+      "headline": "‘Beaches’ Broadway Review: ’80s Tearjerker Washes Out As Stage Musical",
+      "publishDate": "2026-04-22",
+      "via": null,
+      "held": [
+        "beaches-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2026/03/john-lithgow-giant-broadway-review-1236761578/",
+      "headline": "‘Giant’ Broadway Review: John Lithgow Delivers A Towering Performance As A Less-Than-Peachy Roald Dahl",
+      "publishDate": "2026-03-23",
+      "via": null,
+      "held": [
+        "giant-2026"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2025/04/just-in-time-broadway-review-jonathan-groff-1236377062/",
+      "headline": "‘Just In Time’ Broadway Review: Jonathan Groff Plays Bobby Darin – And Two Stars Ignite",
+      "publishDate": "2025-04-26",
+      "via": null,
+      "held": [
+        "just-in-time-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2025/01/english-broadway-review-1236262749/",
+      "headline": "‘English’ Broadway Review: Pulitzer Winner Lives Up To Expectations In Superb Production",
+      "publishDate": "2025-01-23",
+      "via": null,
+      "held": [
+        "english-2025"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2024/11/elf-the-musical-broadway-review-ho-ho-etc-1236178027/",
+      "headline": "‘Elf The Musical’ Broadway Review: Ho Ho Etc.",
+      "publishDate": "2024-11-17",
+      "via": null,
+      "held": [
+        "elf-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2024/11/wonderful-world-louis-armstrong-musical-broadway-review-1236171156/",
+      "headline": "‘A Wonderful World’ Broadway Review: James Monroe Iglehart Brings Louis Armstrong Back To Swingin’ Live",
+      "publishDate": "2024-11-11",
+      "via": null,
+      "held": [
+        "a-wonderful-world-the-louis-armstrong-musical-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2024/06/home-broadway-review-1235958976/",
+      "headline": "‘Home’ Review: Broadway Stages A Loving And Captivating Tribute To The Late Samm-Art Williams In A Terrific Revival Of His Signature Work",
+      "publishDate": "2024-06-05",
+      "via": null,
+      "held": [
+        "home-2024"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "tribute-1978"
+      ]
+    },
+    {
+      "url": "https://deadline.com/2024/03/doubt-broadway-review-1235847662/",
+      "headline": "‘Doubt’ Broadway Review: Amy Ryan & Liev Schreiber Resurrect A Modern Classic",
+      "publishDate": "2024-03-07",
+      "via": null,
+      "held": [
+        "doubt-2024"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2022/02/mj-broadway-review-michael-jackson-musical-1234922944/",
+      "headline": "‘MJ’ Review: Michael Jackson Lives Again In Lynn Nottage’s Thriller Of A Broadway Musical",
+      "publishDate": "2022-02-01",
+      "via": null,
+      "held": [
+        "mj-2022"
+      ],
+      "matched": [],
+      "outOfWindow": [
+        "a-broadway-musical-1978"
+      ]
+    },
+    {
+      "url": "https://deadline.com/2021/10/six-broadway-review-musical-crowns-henrys-wives-royal-treatment-1234848186/",
+      "headline": "‘Six’ Broadway Review: Lively Pop Musical Crowns King Henry’s Wives With A Royal Treatment",
+      "publishDate": "2021-10-03",
+      "via": null,
+      "held": [
+        "six-2021"
+      ],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "ambiguous": [
+    {
+      "url": "https://deadline.com/2026/04/broadway-spring-2026-reviews-1236859028/",
+      "headline": "Broadway’s Spring 2026 Season: All Of Deadline’s Reviews From ‘Every Brilliant Thing’ To ‘The Lost Boys’",
+      "publishDate": "2026-04-28",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "the-lost-boys-2026",
+        "every-brilliant-thing-2026"
+      ],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/",
+      "headline": "Broadway Spring 2024: Sufjan Stevens ‘Illinoise’ & All Of Deadline’s Reviews",
+      "publishDate": "2024-04-26",
+      "via": "poller-matcher",
+      "held": [],
+      "matched": [
+        "illinoise-2024",
+        "illinoise-off-broadway-2024"
+      ],
+      "outOfWindow": []
+    }
+  ],
+  "catalogGaps": [
+    {
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
+      "headline": "Broadway’s 2024-2025 Season: All Of Deadline’s Reviews",
+      "publishDate": "2025-04-28",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2021/11/trevor-the-musical-review-off-broadway-1234870928/",
+      "headline": "‘Trevor The Musical’ Off Broadway Review: Stage Adaptation Gives Joyous Voice To Oscar-Winning Short",
+      "publishDate": "2021-11-10",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2021/08/jacob-ming-trent-merry-wives-shakespeare-in-the-park-review-1234810526/",
+      "headline": "Jacob Ming-Trent Leads Delightful ‘Merry Wives’ In Central Park Celebration – Review",
+      "publishDate": "2021-08-09",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    },
+    {
+      "url": "https://deadline.com/2021/06/bruce-springsteen-on-broadway-review-opening-night-1234782184/",
+      "headline": "‘Springsteen On Broadway’ Review: The Boss Rouses A City Hungry For Life",
+      "publishDate": "2021-06-27",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": []
+    }
+  ],
+  "outOfWindow": [
+    {
+      "url": "https://deadline.com/2025/12/merrily-we-roll-along-review-film-version-broadway-musical-1236636276/",
+      "headline": "‘Merrily We Roll Along’ Review: Expertly Shot Film Of Sondheim’s Tony-Winning Musical Revival Gives You A Front-Row Seat To This Dazzling Show",
+      "publishDate": "2025-12-04",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "merrily-we-roll-along-2023",
+        "merrily-we-roll-along-1981",
+        "merrily-we-roll-along-off-broadway-2022"
+      ]
+    },
+    {
+      "url": "https://deadline.com/2024/05/the-great-lillian-hall-review-jessica-lange-incandescent-legendary-stage-actress-facing-dementia-1235944205/",
+      "headline": "‘The Great Lillian Hall’ Review: Jessica Lange Is Incandescent As Legendary Stage Actress Facing Dementia",
+      "publishDate": "2024-05-29",
+      "via": null,
+      "held": [],
+      "matched": [],
+      "outOfWindow": [
+        "lillian-1986"
+      ]
+    }
+  ]
+}

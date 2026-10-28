@@ -454,7 +454,8 @@ const AUDITS = [
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'duplicate SHOW entries in shows.json (baseline-diff)',
     script: 'audit-duplicate-shows.js',
-    args: ['--strict'],
+    // --include-closed (BRO-6481): a dupe whose twin has closed was invisible.
+    args: ['--strict', '--include-closed'],
     crashCodes: [],            // 0 under baseline / 1 = new un-baselined duplicate pair
   },
   {

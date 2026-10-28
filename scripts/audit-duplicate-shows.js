@@ -23,6 +23,7 @@
  *
  * Usage:
  *   node scripts/audit-duplicate-shows.js [--json=PATH]       report only
+ *   node scripts/audit-duplicate-shows.js --include-closed    also scan closed shows (report only)
  *   node scripts/audit-duplicate-shows.js --strict            exit 1 on new (non-baselined) pair
  *   node scripts/audit-duplicate-shows.js --update-baseline   regenerate baseline from current scan
  *   node scripts/audit-duplicate-shows.js --check-stale       exit 1 on baseline pairs no longer detected (BRO-5315)
@@ -61,6 +62,9 @@ const UPDATE_BASELINE = args.includes('--update-baseline');
 // BRO-5315 --check-stale / --prune-stale: gate on corpus presence like
 // --update-baseline (an empty corpus would make every baselined pair look fixed).
 const STALE_MODE = args.includes('--check-stale') || args.includes('--prune-stale');
+// The baseline holds pairs with a closed member (BRO-6481), so a stale check must scan
+// closed shows too or it reports those live pairs as stale and --prune-stale drops them.
+const INCLUDE_CLOSED = args.includes('--include-closed') || STALE_MODE;
 const jsonArg = args.find((a) => a.startsWith('--json='));
 const JSON_OUT = jsonArg ? jsonArg.split('=')[1] : path.join(ROOT, 'data', 'audit', 'duplicate-shows.json');
 
@@ -150,7 +154,10 @@ function loadBaseline() {
 
 function main() {
   const raw = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
-  const shows = (raw.shows || raw).filter((s) => s && s.id && s.status !== 'closed');
+  // Closed shows are skipped by default (the --strict gate and its baseline were built on
+  // open/upcoming only). --include-closed scans them too: a stub whose real twin has
+  // closed (Going Bacharach, BRO-6481) is invisible otherwise.
+  const shows = (raw.shows || raw).filter((s) => s && s.id && (INCLUDE_CLOSED || s.status !== 'closed'));
 
   // Group by normalized title + year.
   const groups = new Map();

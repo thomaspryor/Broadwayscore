@@ -27,7 +27,7 @@ const WP_SEARCH_SOURCES = [
   { id: 'theatermania', outletId: 'theatermania', api: 'https://www.theatermania.com/wp-json/wp/v2/news', market: 'nyc', linkFilter: /theatermania\.com\/news\/review-/ },
   { id: 'whatsonstage', outletId: 'whatsonstage', api: 'https://www.whatsonstage.com/wp-json/wp/v2/news', market: 'london', linkFilter: /whatsonstage\.com\/news\/[^/]*-review_\d+/ },
   { id: 'nysr', outletId: 'nysr', api: 'https://nystagereview.com/wp-json/wp/v2/posts', market: 'nyc', linkFilter: /nystagereview\.com\/\d{4}\/\d{2}\/\d{2}\// },
-  { id: 'newyorktheater', outletId: 'nyt-theater', api: 'https://newyorktheater.me/wp-json/wp/v2/posts', market: 'nyc', linkFilter: /newyorktheater\.me\/\d{4}\/\d{2}\/\d{2}\/[^/]*-review\/?$/ },
+  { id: 'newyorktheater', outletId: 'nyt-theater', api: 'https://newyorktheater.me/wp-json/wp/v2/posts', market: 'nyc', linkFilter: /newyorktheater\.me\/\d{4}\/\d{2}\/\d{2}\/(?![^/]*(?:week-in-reviews|roundup|reviews-of-the-week|mixed-reviews))(?:[^/]*-)?reviews?(?:-[^/]*)?\/?$/ }, // "review" mid-slug too (BRO-6481: the end-anchored form missed 86 of 317 held reviews), never a roundup
 ];
 
 function marketOf(category) {

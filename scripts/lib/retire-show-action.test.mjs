@@ -273,3 +273,17 @@ test('reMinted on a provisional row that still has reviews is refused (removing 
   assert.equal(shows.length, 1);
   assert.equal(loadRetiredIds({ listPath: paths.listPath }).length, 1);
 });
+
+test('BRO-6481: an "@ building" venue tail and a single-letter room tail are the same house', () => {
+  const row = (id, title, venue) => ({ id, title, venue, status: 'closed', previewsStartDate: '2026-01-08', openingDate: '2026-01-12', closingDate: '2026-02-22' });
+  const opts = { retire: () => ({ ok: true }), now: '2026-10-28', reviewCount: () => 0, isRetired: () => false };
+  const gb = [row('gb-full', 'Going Bacharach: The Songs of an Icon', 'The Marjorie S. Deane Little Theater'),
+    row('gb', 'GOING BACHARACH', 'Marjorie S. Deane Little Theater @ The West Side Y')];
+  assert.equal(applyRetireShow(gb, { type: 'retire-show', id: 'gb', expectTitle: 'GOING BACHARACH', duplicateOf: 'gb-full', reason: 'test dup' }, opts).ok, true);
+  const clara = [row('clara-full', 'Clara: Sex, Love and Classical Music', '59E59 Theaters Theater B'),
+    row('clara', 'Clara: Sex, Love and Classical', '59E59 Theaters')];
+  assert.equal(applyRetireShow(clara, { type: 'retire-show', id: 'clara', expectTitle: 'Clara: Sex, Love and Classical', duplicateOf: 'clara-full', reason: 'test dup' }, opts).ok, true);
+  // A different house that merely starts the same is still refused.
+  const park = [row('p1', 'Hamlet: The Play', 'Park Avenue Armory'), row('p2', 'Hamlet', 'Park')];
+  assert.equal(applyRetireShow(park, { type: 'retire-show', id: 'p2', expectTitle: 'Hamlet', duplicateOf: 'p1', reason: 'test dup' }, opts).ok, false);
+});
