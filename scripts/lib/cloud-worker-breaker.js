@@ -144,9 +144,18 @@ function tripAlert({ dailyClaims, config }) {
         ? 'The worker now takes only P0 cards until the 24h count drops under the cap.'
         : 'Advisory mode: nothing was skipped. This shows where the cap would bite before it is enforced.',
       'Options: find what is spending past the routine (an extra routine, manual triggers), raise CLOUD_WORKER_DAILY_CAP, or set CLOUD_WORKER_BREAKER_ENFORCE / CLOUD_WORKER_BREAKER_DISABLED.',
+      // BRO-5371: only an enforced trip is an owner call (money); the line below is what emails them. The advisory
+      // trip is information, so it carries no marker and falls back to the router's condition-absent check.
+      ...(enforce ? [
+        `DECISION NEEDED: The automatic card worker has used ${dailyClaims} sessions in 24 hours, over its limit of ${config.dailyCap}, so it now only takes the most urgent cards. Should it keep that limit, or be allowed more?`,
+        `Option A: Keep the limit. Spending stays capped, and non-urgent cards wait until the count drops.`,
+        `Option B: Raise the limit. Cards keep moving, and the extra sessions cost more.`,
+        `My recommendation: Option A, unless the board has urgent work waiting, because nothing else is bounding this spend.`,
+        `Default: the limit stays, and the worker keeps taking only urgent cards.`,
+      ] : []),
       'Source: scripts/lib/cloud-worker-breaker.js (BRO-6229).',
     ].join('\n'),
-    verify: { line: 'VERIFY: owner-judgment', note: 'Owner call: raise the cap, stop the extra spend, or turn the breaker off.' },
+    ...(enforce ? { verify: { line: 'VERIFY: owner-judgment', note: 'Owner call: raise the cap, stop the extra spend, or turn the breaker off.' } } : {}),
   };
 }
 

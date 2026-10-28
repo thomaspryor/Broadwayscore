@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults } = require('../../scripts/lib/owner-judgment-limbo-guard.js');
+const { ownerJudgmentLimboCards, auditOwnerJudgmentLimbo, ownerJudgmentLimboResults, createLimboReason } = require('../../scripts/lib/owner-judgment-limbo-guard.js');
 const { classifyHealthCheck } = require('../../scripts/lib/digest-audience.js');
 
 const CMD = 'node --test tests/unit/owner-judgment-limbo-guard.test.mjs';
@@ -99,4 +99,39 @@ test('empty scope costs no requests; health rows warn on flags, missing, stale o
     { ...report, ownerJudgmentLimbo: { complete: true, cards: [] } }]) {
     assert.equal(ownerJudgmentLimboResults(stale, now)[0].status, 'warn');
   }
+});
+
+// ── create-time guard (BRO-5371) ─────────────────────────────────────────────
+test('createLimboReason refuses a bare marker and an owner-review park, passes a real question or a runnable check', () => {
+  assert.match(createLimboReason({ body: 'Do the thing.\n\nVERIFY: owner-judgment' }), /DECISION NEEDED/);
+  assert.match(createLimboReason({ body: 'Do the thing.', parkReason: "Auto-filed; awaiting owner's manual look." }), /owner review/);
+  assert.match(createLimboReason({ body: '- **VERIFY: owner-judgment**' }), /DECISION NEEDED/);
+  assert.equal(createLimboReason({ body: 'Pick one.\nDECISION NEEDED: Should the site charge for X?\nVERIFY: owner-judgment' }), null);
+  assert.equal(createLimboReason({ body: `VERIFY: ${CMD}\nVERIFY: owner-judgment` }), null);
+  assert.equal(createLimboReason({ body: 'Mentions VERIFY: owner-judgment in prose only.' }), null);
+  assert.equal(createLimboReason({ body: 'x', parkReason: 'needs the owner login cookie renewed on the Mac' }), null);
+  assert.equal(createLimboReason({ body: 'DECISION NEEDED: <question>\nVERIFY: owner-judgment' }) !== null, true);
+  assert.equal(createLimboReason({}), null);
+});
+
+test('the real createLinearIssue chokepoint refuses limbo cards before anything is filed, and the kill switch lifts it', async (t) => {
+  const fs = await import('node:fs'); const os = await import('node:os'); const path = await import('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'limbo-ledger-'));
+  process.env.INTAKE_LEDGER_PATH = path.join(dir, 'ledger.jsonl');
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const { createLinearIssue } = require('../../scripts/lib/linear-issue-create.js');
+  const created = [];
+  const client = { createIssue: async (i) => { created.push(i); return { id: 'i', identifier: 'BRO-1', title: i.title }; }, listOpenIssues: async () => [], searchIssues: async () => [], listIssues: async () => [] };
+  const cases = [
+    { title: 'Marker only card one', description: 'x\n\nVERIFY: owner-judgment', park: 'a worker cannot judge this outcome yet' },
+    { title: 'Owner review park card two', description: 'x', park: "Auto-filed by a script; awaiting owner's manual look." },
+    { title: 'Marker dispatch card three', description: 'x\n\nVERIFY: owner-judgment', dispatch: true },
+  ];
+  for (const c of cases) {
+    await assert.rejects(createLinearIssue({ ...c, client, reuseTwin: false, source: 'workflow:test' }), (e) => e.code === 'OWNER_JUDGMENT_LIMBO' && /DECISION NEEDED/.test(e.message));
+  }
+  assert.equal(created.length, 0);
+  process.env.OWNER_JUDGMENT_LIMBO_REFUSE = '0';
+  t.after(() => { delete process.env.OWNER_JUDGMENT_LIMBO_REFUSE; });
+  try { await createLinearIssue({ ...cases[2], client, reuseTwin: false, source: 'workflow:test' }); } catch (e) { assert.notEqual(e.code, 'OWNER_JUDGMENT_LIMBO'); }
 });

@@ -28,7 +28,7 @@ test('buildEscalationCard files a self-contained backlog card (Problem/Suggested
   assert.match(card.notes, /## Acceptance criteria/);
   assert.match(card.notes, /Jane Doe/);
   assert.match(card.notes, /Cannot verify paywalled outlet text/);
-  assert.match(card.notes, /gh issue view 516/);
+  assert.match(card.notes, /issue-closed=516/);
 });
 
 test('buildEscalationCard falls back to generic wording when diagnosis fields are missing', () => {
@@ -57,5 +57,6 @@ test('buildEscalationCard notes are armed for bsc-next dispatch', () => {
   const card = buildEscalationCard({ diagnosis: {}, planReason: 'x', issueNumber: 1 });
   const verdict = evaluateVerifiability(card.notes);
   assert.equal(verdict.armed, true);
-  assert.equal(verdict.ownerJudgment, true);
+  assert.equal(verdict.cmd, 'node scripts/check-review-item-resolved.js --issue-closed=1');
+  assert.equal(verdict.ownerJudgment, false);
 });

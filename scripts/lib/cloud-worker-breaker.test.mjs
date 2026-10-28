@@ -87,13 +87,19 @@ test('failed daily read (null) fails open; the per-card cap still applies', () =
   assert.equal(brk.breakerDecision({ issue: P1, dailyClaims: null, cardAttempts: 9, config: ENFORCE }).reason, 'breaker-card-attempts');
 });
 
-test('trip alert: one stable conditionKey, auto card, owner-judgment VERIFY, title names the mode', () => {
+test('trip alert: one stable conditionKey, auto card, title names the mode; only an enforced trip asks the owner (BRO-5371)', async () => {
   const a = brk.tripAlert({ dailyClaims: 41, config: ADVISORY });
   const e = brk.tripAlert({ dailyClaims: 41, config: ENFORCE });
   assert.equal(a.conditionKey, e.conditionKey);
   assert.equal(a.conditionKey, brk.CONDITION_KEY);
   assert.equal(a.disposition, 'auto');
-  assert.equal(a.verify.line, 'VERIFY: owner-judgment');
+  assert.equal(a.verify, undefined);
+  assert.doesNotMatch(a.description, /DECISION NEEDED/);
+  const { buildCardNotes } = await import('node:module').then((m) => m.createRequire(import.meta.url)('./owner-alert-router.js'));
+  const { findOwnerDecisions } = await import('node:module').then((m) => m.createRequire(import.meta.url)('./owner-decision-notify.js'));
+  const notes = buildCardNotes({ description: e.description, conditionKey: e.conditionKey, verify: e.verify });
+  const [d] = findOwnerDecisions([{ identifier: 'BRO-1', description: notes }]);
+  assert.match(d.question, /keep that limit/);
   assert.match(a.title, /would have tripped/);
   assert.match(e.title, /tripped: 41/);
   assert.doesNotMatch(e.title, /would have/);

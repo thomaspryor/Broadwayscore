@@ -82,6 +82,7 @@
  */
 
 const fs = require('fs');
+const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 const { rowAbsentCheckCmd, alertAbsentCheckCmd, healthRowNameFromConditionKey, sanitizeRowText } = require('./health-row-check-cmd.js');
 const os = require('os');
 const path = require('path');
@@ -411,7 +412,9 @@ function buildCardNotes({ description, hint, fields, conditionKey, verify, diagn
       // snapshot names); only the surrounding prose is sanitized — the same
       // split digest-autofix.js makes, for the same reason.
       ? `\`${rowAbsentCheckCmd(healthRowName)}\` passes — i.e. the daily health check no longer lists "${sanitizeRowText(healthRowName)}" among errors or warnings.`
-      : (verify && verify.line
+      // BRO-5371: a bare owner-judgment line reaches nobody (only DECISION NEEDED emails the owner), so it
+      // falls through to the condition-absent check below; the note still explains the fallback.
+      : (verify && verify.line && !OWNER_JUDGMENT_RE.test(verify.line)
         ? verify.line
         // BRO-3889: every OTHER family (gap:, cron-health-chronic:, backstop:,
         // land:, ... ~63% of router-filed conditions) used to stop at the prose
