@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { getScoreColorClass, getScoreTier, getScoreTextColorClass } from '@/components/show-cards';
 import type { VideoReview } from '@/lib/data-video-reviews';
+import ShowImage from '@/components/ShowImage';
 import ScrollRow from '@/components/ScrollRow';
 
 function TikTokIcon() {
@@ -93,8 +94,10 @@ export default function VideoReviewsShelf({ reviews }: { reviews: VideoReview[] 
                 >
                   <div className="relative aspect-[2/3] rounded-lg overflow-hidden bg-surface-overlay mb-1.5">
                     {review.thumbnail ? (
-                      <img
-                        src={review.thumbnail}
+                      <ShowImage
+                        sources={[review.thumbnail]}
+                        sizes="(min-width: 640px) 128px, 112px"
+                        fallback={<div className="absolute inset-0 bg-surface-elevated" />}
                         alt=""
                         className={`absolute inset-0 w-full h-full object-cover ${review.platform === 'youtube' ? 'object-top' : ''}`}
                         loading="lazy"

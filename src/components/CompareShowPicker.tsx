@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useShowSearch } from '@/hooks/useShowSearch';
+import ShowImage from '@/components/ShowImage';
 
 interface SearchShow {
   id: string;
@@ -66,8 +67,7 @@ function ShowInput({
                 className="w-full text-left px-3 py-2 hover:bg-white/5 transition-colors flex items-center gap-2.5"
               >
                 {show.images?.thumbnail ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={show.images.thumbnail} alt="" className="w-9 h-9 rounded object-cover flex-shrink-0" />
+                  <ShowImage sources={[show.images.thumbnail]} alt="" sizes="36px" className="w-9 h-9 rounded object-cover flex-shrink-0" fallback={<div className="w-9 h-9 rounded bg-white/10 flex-shrink-0" />} />
                 ) : (
                   <div className="w-9 h-9 rounded bg-white/10 flex-shrink-0" />
                 )}

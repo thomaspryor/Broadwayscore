@@ -117,7 +117,7 @@ export default function StatsDrilldown({
               const inner = (
                 <>
                   <div className="flex-shrink-0 w-12 aspect-square rounded-lg overflow-hidden bg-surface-overlay">
-                    <Poster url={show?.posterUrl} iconClass="text-lg" />
+                    <Poster url={show?.posterUrl} iconClass="text-lg" sizes="48px" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-white truncate group-hover:text-brand transition-colors">{title}</p>

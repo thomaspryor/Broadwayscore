@@ -9,10 +9,10 @@
  * when we have existing ones"). The grid card and list row follow the iOS
  * app's Upcoming design (owner pick, 2026-10-03), so web and app match.
  */
-import { useState, type ReactNode } from 'react';
+import { type ReactNode } from 'react';
 import Link from 'next/link';
 import { formatShowDate } from '@/lib/date-utils';
-import { catchEarlyImgError } from '@/lib/img-early-error';
+import ShowImage from '@/components/ShowImage';
 
 export type ViewMode = 'grid' | 'list';
 
@@ -34,9 +34,8 @@ export function CardLinkOrDiv({ href, className, children, ariaLabel }: { href: 
 /** Poster image that degrades to the 🎭 placeholder when the URL is missing
  *  OR fails to load — a stored poster path that 404s otherwise renders as a
  *  broken-image icon in the diary grid (owner report, 2026-07-14). */
-export function Poster({ url, iconClass = 'text-3xl', title }: { url: string | null | undefined; iconClass?: string; title?: string }) {
-  const [broken, setBroken] = useState(false);
-  if (!url || broken) {
+export function Poster({ url, iconClass = 'text-3xl', title, sizes }: { url: string | null | undefined; iconClass?: string; title?: string; sizes?: string }) {
+  function placeholder() {
     // Grid cards without a printed name pass the title so the placeholder
     // names the show (UX audit, BRO-3861). List rows and the Upcoming card
     // already print the title next to / under it.
@@ -50,8 +49,7 @@ export function Poster({ url, iconClass = 'text-3xl', title }: { url: string | n
     }
     return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
   }
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} alt="" className="w-full h-full object-cover" ref={catchEarlyImgError(() => setBroken(true))} onError={() => setBroken(true)} />;
+  return <ShowImage key={url} sources={[url]} alt="" sizes={sizes} className="w-full h-full object-cover" fallback={placeholder()} />;
 }
 
 /** The fields bookabilityLabel reads (a ShowLookup satisfies it). */
@@ -125,7 +123,7 @@ export function PosterGridCard({ href, posterUrl, date, title, ariaLabel, badge,
     <div data-testid="poster-grid-card" className="group/grid flex flex-col min-w-0">
       <CardLinkOrDiv href={href} className="block" ariaLabel={ariaLabel ?? (date ? `View ${title}, ${date}` : `View ${title}`)}>
         <div data-testid="poster-grid-image" className="relative aspect-[2/3] rounded-xl overflow-hidden bg-surface-overlay">
-          <Poster url={posterUrl} iconClass="text-3xl" />
+          <Poster url={posterUrl} iconClass="text-3xl" sizes="(min-width: 768px) 174px, (min-width: 640px) calc((100vw - 72px) / 4), calc((100vw - 48px) / 3)" />
           {badge !== undefined && <PosterBadge badge={badge} />}
           {children}
           {date && (
@@ -233,7 +231,7 @@ export function UpcomingListRow({ href, posterUrl, title, venue, plannedDate, no
         </div>
       )}
       <div className="relative z-[1] flex-shrink-0 w-10 h-14 rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-        <Poster url={posterUrl} iconClass="text-lg" />
+        <Poster url={posterUrl} iconClass="text-lg" sizes="40px" />
       </div>
       <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
         <h4 className="font-bold text-white text-base truncate">{title}</h4>
