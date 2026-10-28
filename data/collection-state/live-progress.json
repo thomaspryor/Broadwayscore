@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-28T11:57:02.218Z",
-  "processed": 27,
-  "failed": 8,
-  "successRate": "77.1%",
+  "updatedAt": "2026-10-28T12:00:54.408Z",
+  "processed": 104,
+  "failed": 66,
+  "successRate": "61.2%",
   "tierBreakdown": {
     "playwright": 16,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 5,
-    "archiveToday": 1,
-    "archive": 10
+    "scrapingdog": 7,
+    "scrapingbee": 1,
+    "brightdata": 3,
+    "archiveToday": 19,
+    "archive": 28
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-28T11:37:44.829Z",
@@ -47,7 +47,52 @@
     {
       "t": "2026-10-28T11:53:28.443Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:53:10.140Z",
+      "event": "bb-session",
+      "session": "35a7f660",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T11:53:10.810Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T11:55:17.825Z",
+      "event": "bb-session",
+      "session": "7a1d4dfb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-28T11:58:00.253Z",
+      "event": "bb-session",
+      "session": "02f1b00a",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T11:58:00.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:58:10.635Z",
+      "event": "bb-session",
+      "session": "7d451931",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T11:58:11.291Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T12:00:41.206Z",
+      "event": "bb-session",
+      "session": "48b68491",
+      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
