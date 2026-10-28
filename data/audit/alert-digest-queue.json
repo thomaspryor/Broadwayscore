@@ -760,5 +760,36 @@
       }
     ],
     "queuedAt": "2026-10-28T19:35:11.323Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6479-mvshhubr",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6479-mvshhubr",
+    "description": "land.yml did not land land/job/linear-BRO-6479-mvshhubr: the rebase gate went red at 3783f32ec2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6479-mvshhubr @ 3783f32ec2 (origin/land/job/linear-BRO-6479-mvshhubr) → origin/main @ fa056babbe REFUSED: rebase: branch would not rebase cleanly onto origin/main @ fa056babbe: Rebasing (1/2) error: could not apply 0bd61b1feba... fix(guard): placeholder cast roles (Unknown/Cast) are not former-cast role cues; film-credit possessive (BRO-6479) hint: Resolve all conflicts  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40753941229",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6479-mvshhubr"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3783f32ec25bba165d31764a04d703f89bc6140a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40753941229"
+      }
+    ],
+    "queuedAt": "2026-10-28T19:47:40.181Z"
   }
 ]
