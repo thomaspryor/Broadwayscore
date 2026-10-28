@@ -793,6 +793,20 @@
     "queuedAt": "2026-10-28T19:47:40.181Z"
   },
   {
+    "conditionKey": "bd-circuit-breaker-serp_api1",
+    "title": "Bright Data daily breaker TRIPPED: serp_api1 (1961/1750 reqs) (still open — BRO-4950)",
+    "description": "Still firing after 21 notifications since it was filed. Tracked at BRO-4950.\n\nZone serp_api1 billed 1961 requests today against a ceiling of 1750.\nBulk Bright Data calls are now skipped for the rest of the UTC day; opening-night flows keep their own allowance.\n22 show(s) are in an active opening window (tonight-focused) — bulk review collection for them is capped.\nTop attributed BD callers today: gather-reviews.js (3778), opening-night-poller.js (1194), collect-review-texts.js (557).",
+    "severity": "critical",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": "BRO-4950",
+    "fields": [],
+    "queuedAt": "2026-10-28T19:57:16.376Z"
+  },
+  {
     "conditionKey": "land:land/bro-5371-owner-judgment-limbo-r3",
     "title": "Landing blocked: scripts-lib-tests red on land/bro-5371-owner-judgment-limbo-r3",
     "description": "land.yml did not land land/bro-5371-owner-judgment-limbo-r3: the scripts-lib-tests gate went red at 9396ebc62f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40755274948",
