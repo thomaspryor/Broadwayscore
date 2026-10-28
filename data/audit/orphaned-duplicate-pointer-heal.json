@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-28T18:36:22.024Z",
+  "generated": "2026-10-28T19:08:20.320Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 41,
+  "count": 42,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -78,6 +78,13 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "hundred-days-off-broadway-2017",
+      "loserFile": "nytimes--unknown.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
