@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T13:37:32.985Z",
+  "timestamp": "2026-10-28T14:07:17.577Z",
   "stats": {
-    "totalReviews": 64908,
+    "totalReviews": 64918,
     "alreadyFlagged": 21949,
     "dateGuardCatches": 234,
-    "directorMismatch": 2521,
+    "directorMismatch": 2522,
     "tvFilmSignals": 1817,
-    "londonSignals": 3124,
+    "londonSignals": 3125,
     "offBroadwaySignals": 583,
-    "yearMismatch": 225,
-    "noPublishDate": 5707
+    "yearMismatch": 226,
+    "noPublishDate": 5711
   },
   "findings": [
     {
@@ -1889,6 +1889,7 @@
     {
       "showId": "a-view-from-the-bridge-west-end-2015",
       "file": "standard--fiona-mountford.json",
+      "score": 89,
       "publishDate": "2015-04-02",
       "url": "https://www.standard.co.uk/culture/theatre/a-view-from-the-bridge-wyndhams-theatre-theatre-review-mark-strong-gives-a-notable-performance-of-brooding-intensity-10050920.html",
       "findings": [
@@ -1907,6 +1908,7 @@
     {
       "showId": "a-view-from-the-bridge-west-end-2015",
       "file": "telegraph--dominic-cavendish.json",
+      "score": 73,
       "publishDate": null,
       "url": "https://www.telegraph.co.uk/culture/theatre/11416320/A-View-from-the-Bridge-Wyndhams-Theatre-review-distracting.html",
       "findings": [
@@ -1925,6 +1927,7 @@
     {
       "showId": "a-view-from-the-bridge-west-end-2015",
       "file": "variety--matt-trueman.json",
+      "score": 95,
       "publishDate": "2015-02-17",
       "url": "https://variety.com/2015/legit/reviews/view-from-the-bridge-review-west-end-london-1201435092/",
       "findings": [
@@ -12089,6 +12092,20 @@
       "score": 77,
       "publishDate": "2023-06-13",
       "url": "https://theaterlife.com/days-of-wine-and-roses/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "theater-pizzazz--peter-marks.json",
+      "score": 81,
+      "publishDate": "2023-06-06",
+      "url": "https://www.theaterpizzazz.com/days-of-wine-and-roses/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33157,6 +33174,24 @@
       ]
     },
     {
+      "showId": "much-ado-about-nothing-west-end-2013",
+      "file": "standard--unknown.json",
+      "publishDate": "2013-12-05",
+      "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-old-vic-theatre-review-8828894.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2013 (1x). 2026 matches production: much-ado-about-nothing-globe-off-west-end-2026"
+        }
+      ]
+    },
+    {
       "showId": "much-ado-about-nothing-west-end-2022",
       "file": "guardian--unknown.json",
       "score": 77,
@@ -48451,7 +48486,7 @@
     {
       "showId": "the-elephant-man-west-end-2015",
       "file": "londonist--stu-black.json",
-      "score": null,
+      "score": 58,
       "publishDate": "2015-06-01T12:14:40+00:00",
       "url": "http://londonist.com/2015/06/bradley-cooper-excels-in-dated-elephant-man.php",
       "findings": [
@@ -55872,6 +55907,7 @@
     {
       "showId": "the-scottsboro-boys-west-end-2014",
       "file": "broadwayworld--carrie-dunn.json",
+      "score": 80,
       "publishDate": null,
       "url": null,
       "findings": [
@@ -55885,7 +55921,7 @@
     {
       "showId": "the-scottsboro-boys-west-end-2014",
       "file": "financialtimes--sarah-hemming.json",
-      "score": null,
+      "score": 85,
       "publishDate": "2014-10-21T18:58:19-04:00",
       "url": "https://www.ft.com/intl/cms/s/0/fe402b3a-5854-11e4-b331-00144feab7de.html#axzz3Gp54Ejyp",
       "findings": [
@@ -55899,7 +55935,7 @@
     {
       "showId": "the-scottsboro-boys-west-end-2014",
       "file": "guardian--lyn-gardner.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2014-10-21T18:58:19-04:00",
       "url": "https://www.theguardian.com/stage/2014/oct/20/the-scottsboro-boys-musical-review-garrick-london",
       "findings": [
@@ -55913,7 +55949,7 @@
     {
       "showId": "the-scottsboro-boys-west-end-2014",
       "file": "standard--fiona-mountford.json",
-      "score": null,
+      "score": 84,
       "publishDate": "2014-10-21T18:58:19-04:00",
       "url": "https://www.standard.co.uk/goingout/theatre/the-scottsboro-boys-garrick-theatre--theatre-review-9807649.html",
       "findings": [
@@ -55927,7 +55963,7 @@
     {
       "showId": "the-scottsboro-boys-west-end-2014",
       "file": "whatsonstage--catherine-love.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2014-10-21T18:58:19-04:00",
       "url": "http://www.whatsonstage.com/west-end-theatre/reviews/scottsboro-boys-west-end_36186.html?cid=homepage_news",
       "findings": [
@@ -80534,6 +80570,7 @@
     {
       "showId": "how-to-hold-your-breath-west-end-2015",
       "file": "britishtheatrecom--mark-ludmon.json",
+      "score": 78,
       "publishDate": "2015-02-12",
       "url": "https://www.britishtheatre.com/posts/review-how-to-hold-your-breath-royal-court-theatre-4stars",
       "findings": [
@@ -80547,6 +80584,7 @@
     {
       "showId": "how-to-hold-your-breath-west-end-2015",
       "file": "whatsonstage--unknown.json",
+      "score": 56,
       "publishDate": "2015-02-11",
       "url": "https://www.whatsonstage.com/london-theatre/news/how-to-hold-breath-maxine-peake-reviews_37136.html/",
       "findings": [
