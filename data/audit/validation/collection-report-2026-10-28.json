@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-28T19:33:18.311Z",
+  "runDate": "2026-10-28T20:04:22.504Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "memoriam-off-west-end-2026,i-became-we-off-broadway-2026,hospital-hour-off-broadway-2026,the-morbs-off-broadway-2026,the-unexpected-3rd-2026",
+    "showFilter": "twelfth-night-west-end-2012,all-that-fall-west-end-2012,the-effect-west-end-2012,a-christmas-carol-west-end-2012,privates-on-parade-west-end-2012,viva-forever-west-end-2012,old-times-west-end-2013,quartermaines-terms-west-end-2013,macbeth-west-end-2013,the-tailor-made-man-west-end-2013",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 20,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "25.0%"
+    "successRate": "80.0%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 9,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 1,
-    "archive": 0
+    "archiveToday": 2,
+    "archive": 6
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 16,
+    "tier1Success": 11,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
+    "tier1_9Attempts": 4,
+    "tier1_9Success": 3,
+    "tier2Attempts": 4,
+    "tier2Success": 2,
+    "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 1,
-    "tier3_6Success": 1,
-    "tier4Attempts": 2,
-    "tier4Success": 0,
-    "totalFailed": 3,
-    "scrapingBeePageCredits": 1,
+    "tier3_6Attempts": 2,
+    "tier3_6Success": 2,
+    "tier4Attempts": 8,
+    "tier4Success": 2,
+    "totalFailed": 5,
+    "scrapingBeePageCredits": 21,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,11 +54,18 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 1,
-    "failed": 3,
+    "processed": 20,
+    "failed": 5,
     "shows": [
-      "hospital-hour-off-broadway-2026",
-      "memoriam-off-west-end-2026"
+      "a-christmas-carol-west-end-2012",
+      "all-that-fall-west-end-2012",
+      "macbeth-west-end-2013",
+      "old-times-west-end-2013",
+      "privates-on-parade-west-end-2012",
+      "quartermaines-terms-west-end-2013",
+      "the-tailor-made-man-west-end-2013",
+      "twelfth-night-west-end-2012",
+      "viva-forever-west-end-2012"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -67,46 +74,98 @@
     }
   },
   "processed": [
-    "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+    "macbeth-west-end-2013/a-younger-theatre--unknown.json",
+    "macbeth-west-end-2013/artsdesk--unknown.json",
+    "macbeth-west-end-2013/everything-theatre--unknown.json",
+    "macbeth-west-end-2013/london-theatre--unknown.json",
+    "the-tailor-made-man-west-end-2013/artsdesk--unknown.json",
+    "the-tailor-made-man-west-end-2013/whatsonstage--unknown.json",
+    "quartermaines-terms-west-end-2013/standard--unknown.json",
+    "quartermaines-terms-west-end-2013/telegraph--unknown.json",
+    "old-times-west-end-2013/guardian--unknown.json",
+    "old-times-west-end-2013/artsdesk--unknown.json",
+    "old-times-west-end-2013/britishtheatrecom--stephen-collins.json",
+    "viva-forever-west-end-2012/guardian--unknown.json",
+    "viva-forever-west-end-2012/musical-theatre-review--unknown.json",
+    "viva-forever-west-end-2012/standard--unknown.json",
+    "privates-on-parade-west-end-2012/guardian--michael-billington.json",
+    "privates-on-parade-west-end-2012/independent--unknown.json",
+    "a-christmas-carol-west-end-2012/nytimes--unknown.json",
+    "all-that-fall-west-end-2012/guardian--unknown.json",
+    "twelfth-night-west-end-2012/fringereview--unknown.json",
+    "twelfth-night-west-end-2012/metro-uk--brooke-ivey-johnson.json"
   ],
   "failed": [
-    "memoriam-off-west-end-2026/ground--unknown.json",
-    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
-    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
+    "viva-forever-west-end-2012/telegraph--unknown.json",
+    "privates-on-parade-west-end-2012/express-uk--unknown.json",
+    "privates-on-parade-west-end-2012/financialtimes--unknown.json",
+    "a-christmas-carol-west-end-2012/thestage--unknown.json",
+    "twelfth-night-west-end-2012/thestage--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+      "macbeth-west-end-2013/a-younger-theatre--unknown.json",
+      "macbeth-west-end-2013/artsdesk--unknown.json",
+      "macbeth-west-end-2013/everything-theatre--unknown.json",
+      "macbeth-west-end-2013/london-theatre--unknown.json",
+      "the-tailor-made-man-west-end-2013/artsdesk--unknown.json",
+      "the-tailor-made-man-west-end-2013/whatsonstage--unknown.json",
+      "quartermaines-terms-west-end-2013/standard--unknown.json",
+      "quartermaines-terms-west-end-2013/telegraph--unknown.json",
+      "old-times-west-end-2013/guardian--unknown.json",
+      "old-times-west-end-2013/artsdesk--unknown.json",
+      "old-times-west-end-2013/britishtheatrecom--stephen-collins.json",
+      "viva-forever-west-end-2012/guardian--unknown.json",
+      "viva-forever-west-end-2012/musical-theatre-review--unknown.json",
+      "viva-forever-west-end-2012/standard--unknown.json",
+      "privates-on-parade-west-end-2012/guardian--michael-billington.json",
+      "privates-on-parade-west-end-2012/independent--unknown.json",
+      "a-christmas-carol-west-end-2012/nytimes--unknown.json",
+      "all-that-fall-west-end-2012/guardian--unknown.json",
+      "twelfth-night-west-end-2012/fringereview--unknown.json",
+      "twelfth-night-west-end-2012/metro-uk--brooke-ivey-johnson.json"
     ],
     "failed": [
-      "memoriam-off-west-end-2026/ground--unknown.json",
-      "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
-      "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
+      "viva-forever-west-end-2012/telegraph--unknown.json",
+      "privates-on-parade-west-end-2012/express-uk--unknown.json",
+      "privates-on-parade-west-end-2012/financialtimes--unknown.json",
+      "a-christmas-carol-west-end-2012/thestage--unknown.json",
+      "twelfth-night-west-end-2012/thestage--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "memoriam-off-west-end-2026/jonathan-baz--unknown.json"
+      "macbeth-west-end-2013/artsdesk--unknown.json",
+      "macbeth-west-end-2013/everything-theatre--unknown.json",
+      "macbeth-west-end-2013/london-theatre--unknown.json",
+      "the-tailor-made-man-west-end-2013/artsdesk--unknown.json",
+      "the-tailor-made-man-west-end-2013/whatsonstage--unknown.json",
+      "quartermaines-terms-west-end-2013/standard--unknown.json",
+      "old-times-west-end-2013/artsdesk--unknown.json",
+      "twelfth-night-west-end-2012/fringereview--unknown.json",
+      "twelfth-night-west-end-2012/metro-uk--brooke-ivey-johnson.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "viva-forever-west-end-2012/musical-theatre-review--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [
-      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
+      "data/review-texts/a-christmas-carol-west-end-2012/thestage--unknown.json",
+      "data/review-texts/twelfth-night-west-end-2012/thestage--unknown.json"
     ],
-    "archive": []
+    "archive": [
+      "macbeth-west-end-2013/a-younger-theatre--unknown.json",
+      "quartermaines-terms-west-end-2013/telegraph--unknown.json",
+      "old-times-west-end-2013/britishtheatrecom--stephen-collins.json",
+      "viva-forever-west-end-2012/standard--unknown.json",
+      "privates-on-parade-west-end-2012/independent--unknown.json",
+      "a-christmas-carol-west-end-2012/nytimes--unknown.json"
+    ]
   },
-  "failuresByOutlet": {
-    "Ground": {
-      "count": 1,
-      "domain": "ground.news",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
