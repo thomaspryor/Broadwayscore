@@ -7,9 +7,28 @@
     "a-bright-new-boise-off-broadway-2023/timeout--raven-snook.json",
     "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
     "cornelia-street-off-broadway-2023/dailybeast--tim-teeman.json",
-    "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json"
+    "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json",
+    "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json",
+    "jest-to-impress-off-broadway-2026/donyc--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+    "the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+    "phyl-off-broadway-2026/phusionpassenger--unknown.json",
+    "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+    "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+    "billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/timeout--unknown.json",
+    "billy-crystal-860-2026/phusionpassenger--unknown.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json",
+    "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json"
+  ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
@@ -20,23 +39,34 @@
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json",
+      "data/review-texts/billy-crystal-860-2026/hollywood-reporter--caitlin-huston.json"
     ],
     "directCookies": [],
     "scrapingdog": [
-      "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json"
+      "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json",
+      "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "jest-to-impress-off-broadway-2026/donyc--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
-    "archiveToday": [],
+    "archiveToday": [
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+      "data/review-texts/the-imaginary-invalid-2026/thewrap--robert-hofler.json",
+      "data/review-texts/aftermath-art-new-york-off-broadway-2026/talkinbroadway--unknown.json",
+      "data/review-texts/queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026/gayout--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/exeunt-magazine--unknown.json",
+      "data/review-texts/the-curious-case-of-benjamin-button-off-broadway-2026/publictheaterorg--unknown.json"
+    ],
     "archive": [
       "the-goodbye-girl-off-broadway-2023/forbes--jane-levere.json",
       "the-wanderers-off-broadway-2023/talkinbroadway--marc-miller.json",
-      "cornelia-street-off-broadway-2023/dailybeast--tim-teeman.json"
+      "cornelia-street-off-broadway-2023/dailybeast--tim-teeman.json",
+      "billy-crystal-860-2026/one-minute-critic--matthew-wexler.json"
     ]
   },
   "startTime": "2026-10-28T15:28:23.948Z",
-  "lastProcessed": "remember-this-the-lesson-of-jan-karski-off-broadway-2022/wsj--charles-isherwood.json",
+  "lastProcessed": "the-curious-case-of-benjamin-button-off-broadway-2026/theater-life--david-sheward.json",
   "log": [
     {
       "t": "2026-10-28T15:29:54.756Z",
@@ -59,6 +89,23 @@
       "t": "2026-10-28T15:30:15.225Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T15:40:08.146Z",
+      "event": "bb-session",
+      "session": "fcd8e5c8",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T15:40:08.813Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T15:44:18.045Z",
+      "event": "bb-session",
+      "session": "59e63126",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     }
   ],
   "recoveredAfterFailure": [
