@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-27T23:34:05.137Z",
+  "generatedAt": "2026-10-28T00:00:21.538Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 251,
-  "clean": 250,
+  "checked": 250,
+  "clean": 249,
   "defective": 1,
   "byType": {
     "score-drift": 1
@@ -18,12 +18,12 @@
       "defects": [
         {
           "type": "score-drift",
-          "detail": "deployed cs 70.1 vs local 70.43 (Δ0.33)"
+          "detail": "deployed cs 69.59 vs local 70.05 (Δ0.46)"
         }
       ],
       "missingFromProd": [],
       "localCount": 9,
-      "deployedCount": 9,
+      "deployedCount": 10,
       "firstDefectAt": "2026-10-27T23:09:22.381Z"
     }
   ],

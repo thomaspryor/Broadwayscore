@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-27T23:34:05.538Z",
+  "generatedAt": "2026-10-28T00:00:21.902Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -9,14 +9,9 @@
       "openingDate": "2026-10-22"
     },
     {
-      "id": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "title": "The Curious Case of Benjamin Button",
-      "openingDate": "2026-10-21"
-    },
-    {
-      "id": "surinderella-off-west-end-2026",
-      "title": "Surinderella",
-      "openingDate": "2026-10-21"
+      "id": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "openingDate": "2026-10-29"
     },
     {
       "id": "phyl-off-broadway-2026",
@@ -24,19 +19,14 @@
       "openingDate": "2026-10-22"
     },
     {
-      "id": "billy-crystal-860-2026",
-      "title": "Billy Crystal 860",
-      "openingDate": "2026-10-21"
+      "id": "a-few-good-men-2026",
+      "title": "A Few Good Men",
+      "openingDate": "2026-10-29"
     },
     {
       "id": "memoriam-off-west-end-2026",
       "title": "Memoriam",
       "openingDate": "2026-10-27"
-    },
-    {
-      "id": "jest-to-impress-off-broadway-2026",
-      "title": "Jest to Impress",
-      "openingDate": "2026-10-21"
     },
     {
       "id": "the-pianist-off-west-end-2026",
@@ -59,6 +49,11 @@
       "openingDate": "2026-10-27"
     },
     {
+      "id": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "openingDate": "2026-10-29"
+    },
+    {
       "id": "aftermath-art-new-york-off-broadway-2026",
       "title": "Aftermath",
       "openingDate": "2026-10-24"
@@ -72,11 +67,6 @@
       "id": "garry-starr-classic-penguins-off-west-end-2026",
       "title": "Garry Starr Classic Penguins",
       "openingDate": "2026-10-23"
-    },
-    {
-      "id": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "title": "Harry Potter and the Cursed Child",
-      "openingDate": "2026-10-21"
     },
     {
       "id": "hospital-hour-off-broadway-2026",
@@ -113,12 +103,12 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
+      "outletId": "front-row-center",
+      "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
     {
-      "outletId": "front-row-center",
-      "error": "HTTP 202 for https://thefrontrowcenter.com/feed"
+      "outletId": "british-theatre",
+      "error": "Timeout fetching https://www.britishtheatreguide.info/reviews/"
     },
     {
       "outletId": "cote-notices",
@@ -135,15 +125,11 @@
     {
       "outletId": "matineemouse",
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
-    },
-    {
-      "outletId": "londontheatre1",
-      "error": "HTTP 202 for https://www.londontheatre1.com/wp-json/wp/v2/posts?categories=14&per_page=50&orderby=date&order=desc&after="
     }
   ],
-  "itemsScanned": 758,
-  "matchedGaps": 3,
-  "possibleGaps": 3,
+  "itemsScanned": 777,
+  "matchedGaps": 4,
+  "possibleGaps": 2,
   "gaps": [
     {
       "showId": "memoriam-off-west-end-2026",
@@ -173,6 +159,15 @@
       "publishDate": "2026-10-27"
     },
     {
+      "showId": "the-lives-of-others-west-end-2026",
+      "title": "The Lives of Others",
+      "level": "matched",
+      "outletId": "revstanstheatreblog",
+      "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-the-lives-of-others-adelphi-theatre/",
+      "headline": "Review: The Lives of Others, Adelphi Theatre",
+      "publishDate": "2026-10-27"
+    },
+    {
       "showId": "aftermath-art-new-york-off-broadway-2026",
       "title": "Aftermath",
       "level": "possible",
@@ -180,15 +175,6 @@
       "url": "https://northwestend.com/bu21-lower-marsh-arts-club/",
       "headline": "BU21 &#8211; Lower Marsh Arts Club",
       "publishDate": "2026-10-26"
-    },
-    {
-      "showId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "title": "Harry Potter and the Cursed Child",
-      "level": "possible",
-      "outletId": "timeout",
-      "url": "https://timeout.com/newyork/theater/harry-potter-cursed-child-broadway-review",
-      "headline": "16.&nbsp;Harry Potter and the Cursed Child",
-      "publishDate": null
     },
     {
       "showId": "the-pianist-off-west-end-2026",
