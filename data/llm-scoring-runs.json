@@ -1,41 +1,5 @@
 [
   {
-    "startedAt": "2026-10-27T10:08:08.594Z",
-    "completedAt": "2026-10-27T10:12:30.986Z",
-    "totalReviews": 63174,
-    "processed": 45,
-    "skipped": 60436,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 278380,
-      "output": 15433,
-      "cacheRead": 122713,
-      "cacheWrite": 62848,
-      "total": 714085
-    },
-    "costUsd": 1.2876656,
-    "runId": "40484656276",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-27T10:12:33.464Z",
-    "completedAt": "2026-10-27T10:14:38.524Z",
-    "totalReviews": 53,
-    "processed": 53,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 138104,
-      "output": 12499,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 150603
-    },
-    "costUsd": 0.38659819999999995,
-    "runId": "40484656276",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-27T10:37:26.047Z",
     "completedAt": "2026-10-27T10:38:12.629Z",
     "totalReviews": 23,
@@ -1184235,6 +1184199,68 @@
     },
     "costUsd": 0,
     "runId": "40766528467",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-28T21:22:46.380Z",
+    "completedAt": "2026-10-28T21:26:46.953Z",
+    "totalReviews": 65602,
+    "processed": 188,
+    "skipped": 65399,
+    "errors": 5,
+    "tokensUsed": {
+      "input": 949776,
+      "output": 57999,
+      "cacheRead": 562232,
+      "cacheWrite": 193221,
+      "total": 2632684
+    },
+    "costUsd": 2.211627525,
+    "runId": "40769950965",
+    "errorDetails": [
+      {
+        "showId": "an-enemy-of-the-people-west-end-2024",
+        "outletId": "times-uk",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "hundred-days-off-broadway-2017",
+        "outletId": "newyorker",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "alterations-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-years-west-end-2025",
+        "outletId": "thestage",
+        "error": "Review text too short or missing"
+      },
+      {
+        "showId": "the-lion-king-tour-2021",
+        "outletId": "orlando-sentinel",
+        "error": "hallucinated_score: LLM admitted scoring non-review content"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-28T21:26:59.264Z",
+    "completedAt": "2026-10-28T21:27:17.650Z",
+    "totalReviews": 8,
+    "processed": 8,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 9082,
+      "output": 1639,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 10721
+    },
+    "costUsd": 0.0328595,
+    "runId": "40769950965",
     "errorDetails": []
   }
 ]
