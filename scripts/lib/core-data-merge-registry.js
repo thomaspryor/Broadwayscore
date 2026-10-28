@@ -1680,10 +1680,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     file: 'audit/related-shows-ab-monitor-state.json',
     surface: 'public-repo',
     status: 'single-writer',
-    // false: a weekly advisory state file does not need the Git Data API fallback,
-    // and the pinned apiFallbackSafe count/list in api-fallback-writer-drift.test.mjs
-    // stays untouched.
-    apiFallbackSafe: false,
+    apiFallbackSafe: true,
     concurrencyGroup: 'monitor-gate-ab',
     verifiedBy: '2026-10-28 (BRO-6271): the only writer is monitor-gate-ab.yml (group monitor-gate-ab, cancel-in-progress: false), via scripts/monitor-related-shows-ab.js.',
   },

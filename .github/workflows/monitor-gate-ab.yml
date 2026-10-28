@@ -18,6 +18,10 @@ name: Weekly A/B Monitors
 # was removed the same way, along with scripts/monitor-ticket-ab.js and
 # scripts/lib/ticket-ab-monitor-rules.js.
 #
+# Step 2 (BRO-6271): related-shows-position A/B result monitor
+# (scripts/monitor-related-shows-ab.js). Alerts on degenerate data and nudges once
+# when the pre-registered n per arm is reached; advisory, never judges a winner.
+#
 # Step 1 (overall funnel): tracks modal-only impressions/dismissal/captures
 # (trigger != '' — excludes inline header/footer email_captured events) and
 # alerts (actionable-only) if absolute captures/week collapses below ~1,
@@ -66,11 +70,13 @@ jobs:
         run: node scripts/monitor-email-gate-funnel.js ${{ inputs.dry_run && '--dry-run' || '' }}
 
       - name: Run related-shows-position A/B result monitor (BRO-6271)
+        id: related_ab
+        if: ${{ !cancelled() }}
         # Advisory first (CLAUDE.md section 19): a data or analyzer failure must
         # not block the funnel monitor's state commit below. It only alerts
         # (data problem, one-time ready-to-judge nudge); it never calls a winner
         # or touches flag config.
-        # lint-allow-swallow: advisory weekly monitor; its alert path reports its own failures and the next weekly run recomputes cumulatively
+        # lint-allow-swallow: advisory weekly monitor; a crash is surfaced by the 'Notify on related-shows monitor failure' step below and the next weekly run recomputes cumulatively
         continue-on-error: true
         env:
           POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
@@ -101,6 +107,15 @@ jobs:
           fi
           git commit -m "data: A/B monitor state [skip ci]"
           bash scripts/lib/push-with-retry.sh
+
+      - name: Notify on related-shows monitor failure
+        # continue-on-error hides this step's crash from failure() below, and a
+        # missing key or PostHog outage throws before any alert is sent.
+        if: ${{ !cancelled() && steps.related_ab.outcome == 'failure' }}
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Related-shows A/B monitor crashed'
+          severity: 'warning'
 
       - name: Notify on failure
         if: failure()
