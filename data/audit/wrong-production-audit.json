@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T16:05:59.711Z",
+  "timestamp": "2026-10-28T16:30:53.757Z",
   "stats": {
-    "totalReviews": 65012,
-    "alreadyFlagged": 21968,
+    "totalReviews": 65042,
+    "alreadyFlagged": 21969,
     "dateGuardCatches": 234,
-    "directorMismatch": 2524,
-    "tvFilmSignals": 1822,
-    "londonSignals": 3136,
-    "offBroadwaySignals": 584,
+    "directorMismatch": 2523,
+    "tvFilmSignals": 1819,
+    "londonSignals": 3135,
+    "offBroadwaySignals": 583,
     "yearMismatch": 226,
-    "noPublishDate": 5756
+    "noPublishDate": 5762
   },
   "findings": [
     {
@@ -9703,20 +9703,6 @@
       ]
     },
     {
-      "showId": "chester-bailey-off-broadway-2022",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 92,
-      "publishDate": null,
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
       "showId": "chewing-gum-dreams-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-admin.json",
       "score": 96,
@@ -15539,8 +15525,8 @@
       "showId": "elyria-off-broadway-2023",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 47,
-      "publishDate": null,
-      "url": null,
+      "publishDate": "March 8th, 2023",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-T0HNA0",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -30467,10 +30453,10 @@
     },
     {
       "showId": "m-butterfly-2017",
-      "file": "village-voice--michael-feingold.json",
-      "score": 71,
-      "publishDate": "2017-11-02",
-      "url": "https://www.villagevoice.com/david-henry-hwangs-m-butterfly-travels-east-to-explore-delusions-of-gender/",
+      "file": "thestage--mark-shenton.json",
+      "score": 38,
+      "publishDate": "October 26, 2017",
+      "url": "https://www.thestage.co.uk/reviews/2017/m-butterfly-review-cort-theatre-new-york/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42607,20 +42593,6 @@
       ]
     },
     {
-      "showId": "some-like-it-hot-2022",
-      "file": "village-voice--michael-musto.json",
-      "score": 89,
-      "publishDate": "2022-12-12",
-      "url": "https://www.villagevoice.com/review-updating-and-upgrading-the-movie-broadways-some-like-it-hot-hits-all-the-right-notes/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "some-like-it-hot-tour-2024",
       "file": "boston-globe--unknown.json",
       "score": 81,
@@ -49115,20 +49087,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2017",
-      "file": "amny--matt-windman.json",
-      "score": 74,
-      "publishDate": "March 9, 2017",
-      "url": "https://www.amny.com/urbanite-1.812039/theater-review-the-glass-menagerie-2-5-stars-1.6148656",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
         }
       ]
     },
@@ -57047,20 +57005,6 @@
       "score": 44,
       "publishDate": "2014-04-20",
       "url": "http://www.newsday.com/entertainment/theater/the-velocity-of-autumn-review-estelle-parsons-wasted-in-play-1.7773079",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "the-wanderers-off-broadway-2023",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": 64,
-      "publishDate": null,
-      "url": null,
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -89275,7 +89219,7 @@
       "file": "standard--nick-curtis.json",
       "score": 87,
       "publishDate": "2023-01-26",
-      "url": null,
+      "url": "https://www.standard.co.uk/culture/theatre/noises-off-phoenix-theatre-review-felicity-kendal-b1055698.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -92597,20 +92541,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
-        }
-      ]
-    },
-    {
-      "showId": "prince-of-broadway-2017",
-      "file": "thestage--mark-shenton.json",
-      "score": 35,
-      "publishDate": "August 24th, 2017",
-      "url": "https://www.thestage.co.uk/reviews/prince-of-broadway-review-at-samuel-j-friedman-theatre-new-york--generous-and-good-hearted",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -100436,7 +100366,7 @@
       "showId": "the-encounter-2016",
       "file": "nbcny--robert-kahn.json",
       "score": 49,
-      "publishDate": null,
+      "publishDate": "2016-09-29T20:46:46-04:00",
       "url": "https://www.nbcnewyork.com/entertainment/the-scene/Simon-McBurney-Encounter-Review-Amazon-395253971.html",
       "findings": [
         {
@@ -101175,20 +101105,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-glass-menagerie-2013",
-      "file": "vulture--scott-brown.json",
-      "score": 93,
-      "publishDate": "2013-09-26",
-      "url": "https://www.vulture.com/2013/09/theater-reviews-arguendo.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -105411,7 +105327,7 @@
       "file": "daily-mail--quentin-letts.json",
       "score": 78,
       "publishDate": "2016-10-18",
-      "url": null,
+      "url": "https://www.dailymail.com/tvshowbiz/article-3846012/Filled-tension-chiller-thriller-s-ice-cool-QUENTIN-LETTS-night-review-Red-Barn.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
