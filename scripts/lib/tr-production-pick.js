@@ -89,6 +89,19 @@ function venueKey(v) {
   return String(v || '').toLowerCase().replace(/,.*/, '').replace(/^the\s+/, '').replace(/\s+theatre$/, '').trim();
 }
 
+// Search cards may fall back to a navigation link. Only production HTML
+// pages or PDF routes can supply reviews; archive/listings indexes cannot.
+// Keep volume/page links: the BRO-6427 probe used these for actual PDFs.
+function isProductionLink(link) {
+  try {
+    const url = new URL(link);
+    if (!/^https?:$/.test(url.protocol) || !/^(?:www\.)?theatrerecord\.com$/.test(url.hostname)) return false;
+    return /^\/archive\/(?:(?:\d{4}\/[^/]+|latest)\/\d+-[^/]+|volume\/\d+\/(?:page\/\d+|dest\/[^/]+)|issue\/\d+(?:\/(?:page\/\d+|dest\/[^/]+))?)\/?$/.test(url.pathname);
+  } catch (_) {
+    return false;
+  }
+}
+
 /**
  * @param {Array<{title: string, venue: string, link: string}>} titleMatches
  * @param {object} show shows.json row
@@ -97,7 +110,7 @@ function venueKey(v) {
  */
 function pickTrProduction(titleMatches, show, opts) {
   const { hintVenue = null, isLondonVenue } = opts || {};
-  let pool = Array.isArray(titleMatches) ? titleMatches : [];
+  let pool = Array.isArray(titleMatches) ? titleMatches.filter(r => isProductionLink(r.link)) : [];
   const win = pressNightWindow(show || {});
   if (win && pool.length) {
     const inWindow = pool.filter(r => windowFit(r.link, win) === 'in');

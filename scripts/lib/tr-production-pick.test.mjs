@@ -98,3 +98,57 @@ test('trTitleMatches accepts a TR tagline after a colon, and nothing looser', ()
   assert.equal(trTitleMatches('Curtains for Us', 'Curtains'), false);
   assert.equal(trTitleMatches('Strike Up The Band', 'The Band'), false);
 });
+
+// BRO-6427: a search article can link to a listings/index page. It must not
+// win the venue preference, even when there is no dated production match.
+test('listings and archive indexes never become production picks', () => {
+  const indexes = [
+    '/listings/current-west-end',
+    '/listings/current-london',
+    '/search?query=Oedipus',
+    '/archive',
+    '/archive/2015',
+    '/archive/volume/35',
+    '/archive/volume/35/index',
+    '/archive/2015/index',
+  ];
+  for (const path of indexes) {
+    const index = { ...WYNDHAMS, link: `https://www.theatrerecord.com${path}` };
+    for (const show of [wyndhamsShow, { ...wyndhamsShow, status: 'open' }, { title: 'Oedipus' }]) {
+      assert.equal(pickTrProduction([index], show, { isLondonVenue }), null, path);
+      assert.equal(pickTrProduction([index, WYNDHAMS], show, {
+        isLondonVenue, hintVenue: "Wyndham's Theatre",
+      }), WYNDHAMS, path);
+    }
+  }
+});
+
+test('BRO-6427 PDF page routes are production links, not listings indexes', () => {
+  for (const [title, venue, link] of [
+    ['End of Longing (The)', 'Playhouse', '/archive/volume/36/page/117'],
+    ['Di and Viv and Rose', 'Vaudeville', '/archive/volume/35/page/95'],
+    ['1984', 'Playhouse', '/archive/volume/35/page/632'],
+  ]) {
+    const production = { title, venue, link: `https://www.theatrerecord.com${link}` };
+    assert.equal(pickTrProduction([production], { title, venue }, {}), production);
+  }
+});
+
+test('production picker preserves issue PDFs and named archive sections', () => {
+  for (const path of [
+    '/archive/issue/608',
+    '/archive/volume/39/dest/13_joseph_and_the_amazing_techn',
+    '/archive/2025/fringe/35877-julia-1984',
+    '/archive/2024/international/123-production',
+    '/archive/latest/123-production',
+  ]) {
+    const production = { ...WYNDHAMS, link: `https://www.theatrerecord.com${path}` };
+    assert.equal(pickTrProduction([production], { title: 'Oedipus' }, {}), production, path);
+  }
+});
+
+test('malformed and off-site links cannot stand in for TR productions', () => {
+  for (const link of [undefined, '', 'not a URL', 'https://example.com/archive/2024/10/16980-oedipus']) {
+    assert.equal(pickTrProduction([{ ...WYNDHAMS, link }], wyndhamsShow, { isLondonVenue }), null);
+  }
+});
