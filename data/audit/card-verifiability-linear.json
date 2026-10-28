@@ -1,59 +1,34 @@
 {
-  "generatedAt": "2026-10-27T10:47:37.181Z",
-  "total": 479,
-  "armedCount": 469,
-  "refusedCount": 10,
+  "generatedAt": "2026-10-28T11:31:07.929Z",
+  "total": 474,
+  "armedCount": 467,
+  "refusedCount": 7,
   "byKind": {
-    "shape": 9,
-    "no-section": 1
+    "shape": 7
   },
   "refused": [
+    {
+      "id": "BRO-6453",
+      "name": "WE 2012-13 to 2014-15 review supply for the 87 BRO-6450 promoted shows, plus 2015-16 finish",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6453/we-2012-13-to-2014-15-review-supply-for-the-87-bro-6450-promoted-shows",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: for s in 2012-2013 2013-2014 2014-2015 2015-2016 2016-2017; do node scripts/audit-we-historical-season.js --season=$s; d)",
+      "kind": "shape"
+    },
+    {
+      "id": "BRO-6450",
+      "name": "West End historical seasons 2012-17 are missing major productions; add a list-completeness check",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6450/west-end-historical-seasons-2012-17-are-missing-major-productions-add",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-we-historical-season.js --season=2013-2014)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-6428",
       "name": "West End history: seasons 2013-14 and 2012-13 (list-first + Guardian/WOS supply)",
       "priority": null,
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6428/west-end-history-seasons-2013-14-and-2012-13-list-first-guardianwos",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-we-historical-season.js --season=2013-2014)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6427",
-      "name": "TR probe: listings-index page picked for end-of-longing, di-and-viv-and-rose, 1984 (WE historical)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6427/tr-probe-listings-index-page-picked-for-end-of-longing-di-and-viv-and",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-we-historical-season.js --season=2014-2015)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6414",
-      "name": "Social autopost: Tony season post types (frontrunners, close races) from site predictions",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6414/social-autopost-tony-season-post-types-frontrunners-close-races-from",
-      "reason": "card has no acceptance-criteria section or VERIFY line",
-      "kind": "no-section"
-    },
-    {
-      "id": "BRO-6413",
-      "name": "Social autopost: Friday roundup + closing-soon post types (owner picked 2026-10-27)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6413/social-autopost-friday-roundup-closing-soon-post-types-owner-picked",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/social-autopost/run.js --self-test)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6412",
-      "name": "Social video: Benjamin Button London vs Off-Broadway compare video (TikTok/Shorts/Reels)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6412/social-video-benjamin-button-london-vs-off-broadway-compare-video",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/social-autopost/run.js --self-test)",
-      "kind": "shape"
-    },
-    {
-      "id": "BRO-6406",
-      "name": "Import: same-venue production picked by logged date (La Bohème Met 2024 flagged as date mismatch)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6406/import-same-venue-production-picked-by-logged-date-la-boheme-met-2024",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node --experimental-strip-types --import ./tests/register-alias.mjs --test tests/unit/show-match.test.mjs)",
       "kind": "shape"
     },
     {
@@ -90,8 +65,8 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 385,
-    "checked": 385,
+    "total": 379,
+    "checked": 379,
     "complete": true,
     "cards": [
       {
@@ -142,13 +117,6 @@
         "priority": 3,
         "url": "https://linear.app/broadway-scorecard/issue/BRO-5507/resolve-slug-derived-outlet-display-names-196-outlets-with-live",
         "source": "description"
-      },
-      {
-        "id": "BRO-5394",
-        "name": "Commercial data: pending review",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5394/commercial-data-pending-review",
-        "source": "comment:8"
       },
       {
         "id": "BRO-5371",
@@ -259,12 +227,66 @@
   },
   "missingCheckPaths": [
     {
+      "id": "BRO-6449",
+      "name": "Video templates: apply puzzle-open + closing-question rule to versus/duo/verdict/top5 compositions (BRO-6417 follow-on)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6449/video-templates-apply-puzzle-open-closing-question-rule-to",
+      "cmd": "node --test scripts/test-versus-duo-verdict-top5-script.test.mjs",
+      "missingPaths": [
+        "scripts/test-versus-duo-verdict-top5-script.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6447",
+      "name": "UX audit: The 'Add date' button on mobile__watchlist_list appears inactive or non-clickable due to its subdued color.",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6447/ux-audit-the-add-date-button-on-mobile-watchlist-list-appears-inactive",
+      "cmd": "node --test tests/unit/add-date-button-mobile-watchlist.test.mjs",
+      "missingPaths": [
+        "tests/unit/add-date-button-mobile-watchlist.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6446",
+      "name": "Commercial designations review (Boring Waltz feedback) + public-sourcing rule note",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6446/commercial-designations-review-boring-waltz-feedback-public-sourcing",
+      "cmd": "test -f memory/feedback_public_sourcing_optional.md",
+      "missingPaths": [
+        "memory/feedback_public_sourcing_optional.md"
+      ]
+    },
+    {
+      "id": "BRO-6427",
+      "name": "TR probe: listings-index page picked for end-of-longing, di-and-viv-and-rose, 1984 (WE historical)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6427/tr-probe-listings-index-page-picked-for-end-of-longing-di-and-viv-and",
+      "cmd": "node --test scripts/check-we-historical-tr-coverage.test.mjs",
+      "missingPaths": [
+        "scripts/check-we-historical-tr-coverage.test.mjs"
+      ]
+    },
+    {
       "id": "BRO-6417",
       "name": "Social voice: every post, video and reply informs AND sparks discussion (owner principle 2026-10-27)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6417/social-voice-every-post-video-and-reply-informs-and-sparks-discussion",
       "cmd": "node --test scripts/social-autopost/captions.test.mjs",
       "missingPaths": [
         "scripts/social-autopost/captions.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6414",
+      "name": "Social autopost: Tony season post types (frontrunners, close races) from site predictions",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6414/social-autopost-tony-season-post-types-frontrunners-close-races-from",
+      "cmd": "node --test scripts/social-autopost-tony.test.mjs",
+      "missingPaths": [
+        "scripts/social-autopost-tony.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-6412",
+      "name": "Social video: Benjamin Button London vs Off-Broadway compare video (TikTok/Shorts/Reels)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6412/social-video-benjamin-button-london-vs-off-broadway-compare-video",
+      "cmd": "node --test scripts/social-autopost/social-autopost.test.mjs",
+      "missingPaths": [
+        "scripts/social-autopost/social-autopost.test.mjs"
       ]
     },
     {
@@ -277,21 +299,12 @@
       ]
     },
     {
-      "id": "BRO-6404",
-      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6404/upgrade-sanity-3x-6x-and-next-sanity-sanityvision-to-clear-the-sanity",
-      "cmd": "node --test tests/unit/dependency-audit-clean.test.mjs",
+      "id": "BRO-6406",
+      "name": "Import: same-venue production picked by logged date (La Bohème Met 2024 flagged as date mismatch)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6406/import-same-venue-production-picked-by-logged-date-la-boheme-met-2024",
+      "cmd": "node --test tests/unit/show-match.test.mjs",
       "missingPaths": [
-        "tests/unit/dependency-audit-clean.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6403",
-      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6403/llm-scoring-prompts-frame-review-text-as-untrusted-data-prompt",
-      "cmd": "node --test tests/unit/llm-scoring-untrusted-framing.test.mjs",
-      "missingPaths": [
-        "tests/unit/llm-scoring-untrusted-framing.test.mjs"
+        "tests/unit/show-match.test.mjs"
       ]
     },
     {
@@ -331,15 +344,6 @@
       ]
     },
     {
-      "id": "BRO-6361",
-      "name": "GA4 parity: PostHog-only events (email capture, pro gate, fantasy) and untracked mailto links",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6361/ga4-parity-posthog-only-events-email-capture-pro-gate-fantasy-and",
-      "cmd": "node --test tests/unit/ga4-parity-events.test.mjs",
-      "missingPaths": [
-        "tests/unit/ga4-parity-events.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6346",
       "name": "Zero-results search rate suggests search index gaps",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6346/zero-results-search-rate-suggests-search-index-gaps",
@@ -358,39 +362,12 @@
       ]
     },
     {
-      "id": "BRO-6296",
-      "name": "Give /biz topic and season pages the new /biz hero style (eyebrow pill, larger tagline)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6296/give-biz-topic-and-season-pages-the-new-biz-hero-style-eyebrow-pill",
-      "cmd": "node --test tests/unit/biz-header-hero-style.test.mjs",
-      "missingPaths": [
-        "tests/unit/biz-header-hero-style.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6295",
       "name": "Tech Scorecard weekly port 2026-10-26",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6295/tech-scorecard-weekly-port-2026-10-26",
       "cmd": "node --test scripts/port-tech-scorecard.test.mjs",
       "missingPaths": [
         "scripts/port-tech-scorecard.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6292",
-      "name": "Mac: find what cancelled ~4 land runs in the mutex wait with the owner token (04:50-04:56Z 2026-10-26) and guard gh run cancel on land.yml runs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6292/mac-find-what-cancelled-4-land-runs-in-the-mutex-wait-with-the-owner",
-      "cmd": "node --test scripts/lib/block-land-run-cancel.test.mjs",
-      "missingPaths": [
-        "scripts/lib/block-land-run-cancel.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6271",
-      "name": "Ship weekly result monitor for the related-shows-position A/B (README step f)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6271/ship-weekly-result-monitor-for-the-related-shows-position-ab-readme",
-      "cmd": "node --test scripts/lib/related-shows-ab-monitor-rules.test.mjs",
-      "missingPaths": [
-        "scripts/lib/related-shows-ab-monitor-rules.test.mjs"
       ]
     },
     {
@@ -448,15 +425,6 @@
       ]
     },
     {
-      "id": "BRO-6228",
-      "name": "Diary photos: enforce the 6-per-entry limit and file size/type in Supabase, not only in the clients",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6228/diary-photos-enforce-the-6-per-entry-limit-and-file-sizetype-in",
-      "cmd": "node --test scripts/verify-photo-limits.test.mjs",
-      "missingPaths": [
-        "scripts/verify-photo-limits.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-6224",
       "name": "iOS Stats: 'Critic nemesis' can be a 70% match or the same critic shown as a closest/rising match",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-6224/ios-stats-critic-nemesis-can-be-a-70percent-match-or-the-same-critic",
@@ -499,15 +467,6 @@
       "cmd": "test -f memory/design-proposals.md",
       "missingPaths": [
         "memory/design-proposals.md"
-      ]
-    },
-    {
-      "id": "BRO-6206",
-      "name": "Newsletter: show with withheld Critic Score printed a raw-mean score (Dog Show 79)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6206/newsletter-show-with-withheld-critic-score-printed-a-raw-mean-score",
-      "cmd": "node --test scripts/newsletter/composite-score.test.mjs",
-      "missingPaths": [
-        "scripts/newsletter/composite-score.test.mjs"
       ]
     },
     {
@@ -589,15 +548,6 @@
       "cmd": "node --test tests/unit/lane-only-markets.test.mjs",
       "missingPaths": [
         "tests/unit/lane-only-markets.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5953",
-      "name": "Opening night: Express auto-run that scores under 3 reviews on an embargo night should retry, not finish",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5953/opening-night-express-auto-run-that-scores-under-3-reviews-on-an",
-      "cmd": "node --test scripts/lib/opening-night-retry-decision.test.mjs",
-      "missingPaths": [
-        "scripts/lib/opening-night-retry-decision.test.mjs"
       ]
     },
     {
@@ -799,15 +749,6 @@
       ]
     },
     {
-      "id": "BRO-5402",
-      "name": "Visual pre-push gate let a UI push to a land/ ref through without the owner's approval (BRO-5313, renamed branch)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5402/visual-pre-push-gate-let-a-ui-push-to-a-land-ref-through-without-the",
-      "cmd": "node --test scripts/pre-push-visual-gate.test.mjs",
-      "missingPaths": [
-        "scripts/pre-push-visual-gate.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5319",
       "name": "Hardcoded year cap 2027 in date extractors stops working in 2028",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5319/hardcoded-year-cap-2027-in-date-extractors-stops-working-in-2028",
@@ -859,24 +800,6 @@
       "cmd": "node --test scripts/lib/outlet-registry.test.mjs",
       "missingPaths": [
         "scripts/lib/outlet-registry.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5189",
-      "name": "Rage clicks on Affluenza show-page button — likely broken CTA",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5189/rage-clicks-on-affluenza-show-page-button-likely-broken-cta",
-      "cmd": "node --test tests/unit/affluenza-show-page-button.test.mjs",
-      "missingPaths": [
-        "tests/unit/affluenza-show-page-button.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5188",
-      "name": "Rage clicks on homepage search input suggest broken search UX",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5188/rage-clicks-on-homepage-search-input-suggest-broken-search-ux",
-      "cmd": "node --test tests/unit/homepage-search-input-focus.test.mjs",
-      "missingPaths": [
-        "tests/unit/homepage-search-input-focus.test.mjs"
       ]
     },
     {
@@ -1057,15 +980,6 @@
       "cmd": "node --test tests/unit/mobile-date-wheel-confirmation.test.mjs",
       "missingPaths": [
         "tests/unit/mobile-date-wheel-confirmation.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-4483",
-      "name": "Scheduled sender delivered MORE THAN ONCE on 2026-09-30: reddit-post-ready",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4483/scheduled-sender-delivered-more-than-once-on-2026-09-30-reddit-post",
-      "cmd": "node --test scripts/send-morning-digest.test.mjs",
-      "missingPaths": [
-        "scripts/send-morning-digest.test.mjs"
       ]
     },
     {
@@ -1390,15 +1304,6 @@
       "cmd": "node --test tests/unit/stubhub-api-credentials.test.mjs",
       "missingPaths": [
         "tests/unit/stubhub-api-credentials.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-518",
-      "name": "Broader PII sweep of data/archive/notion-card-history.jsonl + scheduled git-history scrub",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-518/broader-pii-sweep-of-dataarchivenotion-card-historyjsonl-scheduled-git",
-      "cmd": "node --test tests/unit/pii-scrub.test.mjs",
-      "missingPaths": [
-        "tests/unit/pii-scrub.test.mjs"
       ]
     },
     {
