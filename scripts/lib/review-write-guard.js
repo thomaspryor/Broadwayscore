@@ -2270,6 +2270,17 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] placeholder URL detected in ${path.basename(filePath)}: ${newData.url}`);
   }
 
+  // BRO-5162: a url that is not an absolute http(s) URL with a dotted host (relative
+  // byline paths, review text stored as a url) is never stored. Recover an embedded
+  // URL where present, else null it so rediscovery can find the real one.
+  if (newData.url != null && newData.url !== '') {
+    const urlCheck = require('./malformed-review-url').classifyUrlField(newData.url);
+    if (!urlCheck.ok) {
+      console.warn(`[review-write-guard] malformed url in ${path.basename(filePath)}: ${String(newData.url).slice(0, 80)} -> ${urlCheck.recovered || 'null'}`);
+      newData.url = urlCheck.recovered || null;
+    }
+  }
+
   // Self-heal self-referential `duplicateOf` — a file can never be a duplicate of
   // itself. This nonsensical state (145 corpus-wide, 2026-06-28) is reported as a
   // "duplicate" gap by the completeness census and can confuse dedup tiebreaks.
