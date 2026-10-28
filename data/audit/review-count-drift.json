@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-27T15:11:35.604Z",
+  "generatedAt": "2026-10-28T15:46:51.588Z",
   "summary": {
-    "reviewsJsonLastUpdated": "2026-10-27T15:05:12.288Z",
-    "reviewsJsonAgeHours": 0.1,
+    "reviewsJsonLastUpdated": "2026-10-28T15:31:09.274Z",
+    "reviewsJsonAgeHours": 0.3,
     "freshnessBreach": false,
-    "showsScanned": 30,
-    "allShowsScanned": 3010,
-    "filesScanned": 63592,
+    "showsScanned": 27,
+    "allShowsScanned": 3164,
+    "filesScanned": 64984,
     "showsOverThreshold": 0,
-    "newOffenders": 2,
+    "newOffenders": 0,
     "blindShows": 20,
     "orphanReviews": 4
   },
@@ -18,30 +18,7 @@
     "maxAgeHours": 30
   },
   "showsOverThreshold": [],
-  "newOffenders": [
-    {
-      "showDir": "miss-saigon-west-end-2014",
-      "suppressed": 1,
-      "actual": 0,
-      "files": [
-        "london-box-office--phil-willmott.json"
-      ],
-      "newFiles": [
-        "london-box-office--phil-willmott.json"
-      ]
-    },
-    {
-      "showDir": "the-crucible-west-end-2014",
-      "suppressed": 1,
-      "actual": 0,
-      "files": [
-        "london-box-office--daniel-perks.json"
-      ],
-      "newFiles": [
-        "london-box-office--daniel-perks.json"
-      ]
-    }
-  ],
+  "newOffenders": [],
   "staleBaseline": [
     {
       "showDir": "china-doll-2015",
@@ -80,16 +57,8 @@
   "perShow": [
     {
       "showDir": "aftermath-art-new-york-off-broadway-2026",
-      "actual": 6,
-      "scanned": 9,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "billy-crystal-860-2026",
-      "actual": 25,
-      "scanned": 35,
+      "actual": 7,
+      "scanned": 10,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -104,8 +73,8 @@
     },
     {
       "showDir": "derren-brown-only-human-west-end-2026",
-      "actual": 26,
-      "scanned": 36,
+      "actual": 27,
+      "scanned": 37,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -119,16 +88,32 @@
       "overThreshold": false
     },
     {
-      "showDir": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
-      "actual": 1,
-      "scanned": 55,
-      "suppressedCount": 0,
-      "suppressed": [],
+      "showDir": "girls-off-west-end-2026",
+      "actual": 4,
+      "scanned": 21,
+      "suppressedCount": 1,
+      "suppressed": [
+        {
+          "file": "thestage--sam-marlowe.json",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "publishDate": "2026-10-28",
+          "url": "https://www.thestage.co.uk/reviews/girls-review-young-vic-theatre-london"
+        }
+      ],
       "overThreshold": false
     },
     {
       "showDir": "hospital-hour-off-broadway-2026",
       "actual": 3,
+      "scanned": 7,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "i-became-we-off-broadway-2026",
+      "actual": 5,
       "scanned": 6,
       "suppressedCount": 0,
       "suppressed": [],
@@ -136,32 +121,16 @@
     },
     {
       "showDir": "memoriam-off-west-end-2026",
-      "actual": 5,
-      "scanned": 9,
+      "actual": 14,
+      "scanned": 21,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
-      "showDir": "miss-saigon-west-end-2014",
-      "actual": 0,
-      "scanned": 20,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2014-05-30",
-          "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
       "showDir": "phyl-off-broadway-2026",
-      "actual": 11,
-      "scanned": 14,
+      "actual": 12,
+      "scanned": 15,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -175,33 +144,9 @@
       "overThreshold": false
     },
     {
-      "showDir": "surinderella-off-west-end-2026",
-      "actual": 2,
+      "showDir": "specimen-off-broadway-2026",
+      "actual": 1,
       "scanned": 4,
-      "suppressedCount": 0,
-      "suppressed": [],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-crucible-west-end-2014",
-      "actual": 0,
-      "scanned": 3,
-      "suppressedCount": 1,
-      "suppressed": [
-        {
-          "file": "london-box-office--daniel-perks.json",
-          "outletId": "london-box-office",
-          "criticName": "Daniel Perks",
-          "publishDate": "2014-08-22",
-          "url": "https://www.londonboxoffice.co.uk/news/post/crucible-review"
-        }
-      ],
-      "overThreshold": false
-    },
-    {
-      "showDir": "the-curious-case-of-benjamin-button-off-broadway-2026",
-      "actual": 24,
-      "scanned": 52,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
@@ -216,24 +161,32 @@
     },
     {
       "showDir": "the-kick-inside-off-broadway-2026",
-      "actual": 2,
-      "scanned": 4,
+      "actual": 3,
+      "scanned": 5,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-master-builder-off-west-end-2026",
-      "actual": 18,
-      "scanned": 25,
+      "actual": 20,
+      "scanned": 27,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
     },
     {
       "showDir": "the-pianist-off-west-end-2026",
-      "actual": 31,
-      "scanned": 43,
+      "actual": 32,
+      "scanned": 44,
+      "suppressedCount": 0,
+      "suppressed": [],
+      "overThreshold": false
+    },
+    {
+      "showDir": "the-unexpected-3rd-2026",
+      "actual": 2,
+      "scanned": 4,
       "suppressedCount": 0,
       "suppressed": [],
       "overThreshold": false
