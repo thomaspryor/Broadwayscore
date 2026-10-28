@@ -4,7 +4,7 @@
     "audit-star-bands.js": {
       "bucket": "a",
       "rank": 1,
-      "reason": "CLAUDE.md §3 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
+      "reason": "CLAUDE.md \u00a73 star-band invariant; core data only; live run today shows 1 review out of band (scoreSource originalScore-priority0)"
     },
     "audit-announced-cast.js": {
       "bucket": "a",
@@ -465,6 +465,11 @@
       "bucket": "b",
       "rank": 99,
       "reason": "BRO-2978: manual read of per-lane dispatch retry burn from the per-machine dispatch ledger (gitignored, absent in CI), so no workflow can run it"
+    },
+    "audit-malformed-review-urls.js": {
+      "bucket": "b",
+      "rank": 99,
+      "reason": "BRO-5162: read-only sweep of review-texts url values; needs the private review-texts corpus, so run it through cloud-run-script. The write-time guard (review-write-guard) is the standing prevention."
     }
   }
 }

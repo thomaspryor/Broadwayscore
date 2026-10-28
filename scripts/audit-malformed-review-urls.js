@@ -8,13 +8,13 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyUrlField } = require('./lib/malformed-review-url');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 function findMalformed(textsDir) {
   const out = [];
   if (!fs.existsSync(textsDir)) return out;
-  for (const show of fs.readdirSync(textsDir)) {
+  for (const show of listShowDirs(textsDir, { silent: true })) {
     const dir = path.join(textsDir, show);
-    if (!fs.statSync(dir).isDirectory()) continue;
     for (const f of fs.readdirSync(dir)) {
       if (!f.endsWith('.json')) continue;
       let j;
