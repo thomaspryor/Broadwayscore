@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T08:11:03.162Z",
+  "generatedAt": "2026-10-28T09:20:13.436Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -115,6 +115,10 @@
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
     },
     {
+      "outletId": "musical-theatre-review",
+      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
+    },
+    {
       "outletId": "theartsdispatch",
       "error": "HTTP 403 for https://theartsdispatch.substack.com/feed"
     },
@@ -127,7 +131,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 794,
+  "itemsScanned": 784,
   "matchedGaps": 6,
   "possibleGaps": 2,
   "gaps": [
