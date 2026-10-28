@@ -28,7 +28,7 @@ const RECENT_SIGNAL_DAYS_DEFAULT = 30;
 // announced.
 const {
   DESIGNATION_BASES, estimatedDesignationForClosed,
-  LOSS_DESIGNATIONS, isLossDesignation,
+  LOSS_DESIGNATIONS, isLossDesignation, RECOUPED_DESIGNATIONS,
 } = require('./commercial-designations');
 
 /**
@@ -58,7 +58,7 @@ const SKIP_PRODUCTION_TYPES = new Set([
 const SKIP_DESIGNATIONS = new Set([
   'Nonprofit',        // pure nonprofits — recoupment doesn't apply
   'Tour Stop',        // tour stops never measured against original cap
-  'Miracle', 'Windfall', 'Easy Winner', 'Trickle',  // already classified as recouped
+  ...RECOUPED_DESIGNATIONS, // already classified as recouped
   ...LOSS_DESIGNATIONS, // already classified as loss
 ]);
 
