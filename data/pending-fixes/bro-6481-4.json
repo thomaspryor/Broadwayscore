@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6481-4",
   "planId": "3dcd7103-c329-4467-b83a-053475bf499f",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T22:23:14.114Z",
   "submitter": {
     "name": null,
@@ -45,5 +45,31 @@
         "description": "BRO-6481 outlet census: newyorktheatreguide.com/reviews/illinoise-off-broadway-review-sufjan-stevens is the off-Broadway (Park Avenue Armory) review, filed under the Broadway production; the off-Broadway row holds no NYTG file."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T22:50:47.877Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved clara-sex-love-and-classical-off-broadway-2026/theater-pizzazz--alix-cohen.json → clara-sex-love-and-classical-music-off-broadway-2026/theater-pizzazz--alix-cohen.json",
+      "cleared": []
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired clara-sex-love-and-classical-off-broadway-2026 (\"Clara: Sex, Love and Classical\" @ 59E59 Theaters); moved its audience-buzz.json entry to clara-sex-love-and-classical-music-off-broadway-2026"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted titanique-2026/thewrap--robert-hofler.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved illinoise-2024/nytg--amelia-merrill.json → illinoise-off-broadway-2024/nytg--amelia-merrill.json",
+      "cleared": []
+    }
+  ],
+  "executedIn": "ci"
 }
