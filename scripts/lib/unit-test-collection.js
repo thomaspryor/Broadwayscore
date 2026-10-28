@@ -67,6 +67,7 @@ const OPT_IN = new Set([
   'scripts/verify-addams-wsj-dedup-held.test.mjs',
   'scripts/verify-feedback-requests-live.test.mjs',
   'scripts/verify-frankie-2002-cleanup.test.mjs',
+  'scripts/verify-photo-limits.test.mjs',
   'scripts/verify-prior-run-former-cast-sweep.test.mjs',
   'scripts/verify-reroute-migration.test.mjs',
   'scripts/verify-review-text-folders.test.mjs',
