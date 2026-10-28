@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-10-28T03:14:40.941Z",
-  "processed": 16,
-  "failed": 2,
-  "successRate": "88.9%",
+  "updatedAt": "2026-10-28T03:51:32.204Z",
+  "processed": 83,
+  "failed": 17,
+  "successRate": "83.0%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 44,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
-    "brightdata": 2,
-    "archiveToday": 1,
-    "archive": 1
+    "scrapingdog": 3,
+    "scrapingbee": 1,
+    "brightdata": 1,
+    "archiveToday": 7,
+    "archive": 27
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-28T03:31:14.568Z",
+      "event": "bb-session",
+      "session": "9480b1d5",
+      "url": "https://www.nytimes.com/2017/04/24/theater/london-theater-consent-goat.html"
+    },
+    {
+      "t": "2026-10-28T03:31:15.044Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
