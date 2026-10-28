@@ -25,10 +25,12 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { ESLint } = require('eslint');
+const { loadESLint } = require('eslint');
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-test('no script references an undefined identifier', async () => {
+test('no script references an undefined identifier', async (t) => {
+  // ESLint 9 defaults to flat config; keep this isolated gate's legacy env/options.
+  const ESLint = await loadESLint({ useFlatConfig: false });
   const eslint = new ESLint({
     cwd: REPO_ROOT,
     useEslintrc: false, // .eslintrc.json is next/core-web-vitals — it does not cover scripts/
@@ -45,6 +47,7 @@ test('no script references an undefined identifier', async () => {
 
   const results = await eslint.lintFiles(['scripts/**/*.js']);
   assert.ok(results.length > 500, `expected to lint the whole scripts/ tree, only saw ${results.length} files`);
+  t.diagnostic(`Scanned ${results.length} script files for undefined identifiers`);
 
   const violations = [];
   for (const r of results) {
