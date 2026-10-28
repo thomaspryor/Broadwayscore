@@ -71,8 +71,10 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
 // Create-time guard (BRO-5371): the audit above reports limbo cards after the fact; this refuses to mint one.
 // A card is in limbo when it waits on a person but nothing tells the person: a bare marker line, or a park
 // reason saying "owner review", with no DECISION NEEDED question (the only text the owner emailer reads).
-const MARKER_LINE_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?VERIFY:\s*owner-judgment/im;
-const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bfor\s+(?:the\s+)?owner(?![-\w])/i;
+// A marker LINE: the marker after optional quote, list, numbering, heading, bold or code decoration. Prose that merely
+// mentions the marker mid-sentence stays allowed.
+const MARKER_LINE_RE = /^[ \t]*(?:>[ \t]*|[-*+][ \t]+|\d+[.)][ \t]+|#{1,6}[ \t]+)*(?:\*\*|__|`)*VERIFY:\s*owner-judgment/im;
+const OWNER_REVIEW_PARK_RE = /\b(?:owner'?s?|human|manual)\s+(?:manual\s+)?(?:review|look)\b|\bawaiting\s+(?:the\s+)?owner\b|\bowner\s+(?:decision|sign-?off|approval)\b|\bowner\s+to\s+(?:review|decide|look)\b|\bfor\s+(?:the\s+)?owner(?![-\w])/i;
 
 function createLimboReason({ body, parkReason } = {}) {
   const text = String(body || '');

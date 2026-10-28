@@ -140,3 +140,16 @@ test('park reason naming an owner-* script is not an owner-review park', async (
   const { createLimboReason } = await import('../../scripts/lib/owner-judgment-limbo-guard.js');
   assert.equal(createLimboReason({ body: 'x', parkReason: 'blocked on a fix for owner-alert-router dedupe first' }), null);
 });
+
+test('quoted, numbered and heading marker variants are refused like the audit counts them', async () => {
+  const { createLimboReason } = await import('../../scripts/lib/owner-judgment-limbo-guard.js');
+  for (const line of ['> VERIFY: owner-judgment', '1. VERIFY: owner-judgment', '## VERIFY: owner-judgment', '`VERIFY: owner-judgment`']) {
+    assert.ok(createLimboReason({ body: `Do the thing.\n${line}` }), line);
+  }
+  assert.equal(createLimboReason({ body: 'x\nVERIFY: node scripts/audit-orphan-tests.js' }), null);
+});
+
+test('park reasons naming an owner decision or sign-off are refused', async () => {
+  const { createLimboReason } = await import('../../scripts/lib/owner-judgment-limbo-guard.js');
+  for (const r of ['owner decision needed', 'needs owner sign-off', 'Owner to review']) assert.ok(createLimboReason({ body: 'x', parkReason: r }), r);
+});
