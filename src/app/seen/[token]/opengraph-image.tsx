@@ -15,7 +15,8 @@ export const contentType = 'image/jpeg';
 export const dynamic = 'force-dynamic';
 const CACHE = 'public, max-age=600, s-maxage=600';
 
-export default async function DiaryOGImage({ params }: { params: { token: string } }) {
+export default async function DiaryOGImage({ params: pendingParams }: { params: Promise<{ token: string }> }) {
+  const params = await pendingParams;
   const data = await loadSharedDiaryView(params.token);
   return pngToOgJpegResponse(data.status === 'ok' ? await renderDiaryCard(data.view) : await renderGenericShareCard(), CACHE);
 }

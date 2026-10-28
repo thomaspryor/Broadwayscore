@@ -45,7 +45,8 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
   'Critical Miss': { bg: '#ef4444', text: '#ffffff', glow: 'rgba(239, 68, 68, 0.35)' },
 };
 
-export default async function OGImage({ params }: { params: { slug: string } }) {
+export default async function OGImage({ params: pendingParams }: { params: Promise<{ slug: string }> }) {
+  const params = await pendingParams;
   const show = getShowBySlug(params.slug);
 
   // Fall back to homepage OG if no show / no image / flag-gated category

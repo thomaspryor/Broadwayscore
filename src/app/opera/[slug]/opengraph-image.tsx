@@ -24,7 +24,8 @@ export function generateStaticParams() {
   return getOperaShows().map(s => ({ slug: getOperaTitleSlug(s.slug) }));
 }
 
-export default async function OperaOGImage({ params }: { params: { slug: string } }) {
+export default async function OperaOGImage({ params: pendingParams }: { params: Promise<{ slug: string }> }) {
+  const params = await pendingParams;
   const show = getOperaShowByTitleSlug(params.slug);
-  return OGImage({ params: { slug: show?.slug ?? params.slug } });
+  return OGImage({ params: Promise.resolve({ slug: show?.slug ?? params.slug }) });
 }

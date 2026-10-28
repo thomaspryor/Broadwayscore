@@ -16,7 +16,8 @@ export const contentType = 'image/jpeg';
 export const dynamic = 'force-dynamic';
 const CACHE = 'public, max-age=600, s-maxage=600';
 
-export default async function PlansOGImage({ params }: { params: { token: string } }) {
+export default async function PlansOGImage({ params: pendingParams }: { params: Promise<{ token: string }> }) {
+  const params = await pendingParams;
   const data = await loadSharedPlansView(params.token);
   return pngToOgJpegResponse(data.status === 'ok' ? await renderPlansCard(data.view) : await renderGenericShareCard(), CACHE);
 }

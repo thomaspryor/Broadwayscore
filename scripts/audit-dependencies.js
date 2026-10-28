@@ -130,37 +130,8 @@ function isValidExpiry(value) {
   return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === value;
 }
 
-const ALLOWLIST = [
-  {
-    ghsa: 'GHSA-mp2f-45pm-3cg9',
-    module: 'decompress',
-    reason: 'No patched release exists (re-checked 2026-10-11: advisory range <=4.2.1; 4.2.1 is still latest on npm). '
-      + 'Removal requires the breaking sanity major upgrade (3.x to 6.x).',
-    exposure: 'Not exposed: reached only via the sanity CLI toolchain (dev-time CMS tooling). '
-      + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
-      + 'reaches it — the extraction path only runs against files a developer already has.',
-    issue: 'BRO-3202',
-    expires: '2027-01-13',
-  },
-  {
-    // Published 2026-09-29 23:49Z (symlink-chain path traversal). Same package,
-    // same unpatched range (<=4.2.1, 4.2.1 is latest; only the @xhmikosr fork
-    // has fixes) and the same single path as GHSA-mp2f-45pm-3cg9 above:
-    // decompress <- @sanity/cli <- sanity (package-lock.json, 2026-09-30).
-    // sanity is a regular dependency, but no script, workflow or src/ code runs
-    // the sanity CLI (grep 2026-09-30); src/sanity/schemas imports only types.
-    ghsa: 'GHSA-hrh2-vp3x-79xf',
-    module: 'decompress',
-    reason: 'No patched release of decompress exists (advisory range <=4.2.1; 4.2.1 is latest). '
-      + 'Removal requires the breaking sanity major upgrade.',
-    exposure: 'Not exposed: reached only via the sanity CLI, which no site runtime path, script or CI workflow invokes. '
-      + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
-      + 'reaches it — the extraction path only runs against files a developer already has.',
-    issue: 'BRO-3202',
-    expires: '2027-01-13',
-  },
-];
-
+// BRO-6404: Sanity 6 removes decompress and both unpatched advisories.
+const ALLOWLIST = [];
 /**
  * Pure decision core — exported for tests/unit/audit-dependencies.test.mjs.
  *

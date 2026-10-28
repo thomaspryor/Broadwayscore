@@ -22,7 +22,7 @@
  *                .ts/.tsx changed
  *   tier 3 only  node --check on every changed scripts/**.js (syntax floor
  *                for files with no colocated test), and for any src/ change:
- *                `npx next lint` + a production `npx next build`. src/ is
+ *                `npm run lint` + a production `npm run build`. src/ is
  *                site code — a type error is not the failure mode that
  *                matters there, a page that no longer builds is.
  *
@@ -244,7 +244,8 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
     // The build is the check that actually describes the live site. Skippable
     // by config (tier3BuildCheck:false) for an owner who wants the loop
     // cheaper, never by an implementer or a card.
-    if (buildCheck) add('next build', ['npx', 'next', 'build'], { timeoutMs: BUILD_TIMEOUT_MS, build: true });
+    // Use the project's bundler flags and prebuild manifest generators.
+    if (buildCheck) add('next build', ['npm', 'run', 'build'], { timeoutMs: BUILD_TIMEOUT_MS, build: true });
   }
 
   return checks;

@@ -17,11 +17,8 @@ const nextConfig = {
   reactStrictMode: true,
   env: { HELD_BOX_OFFICE_BUILD: heldBoxOfficeBuild ? 'true' : 'false' },
   trailingSlash: false,
-  // Skip in-build lint+type-check; they run separately in
-  // .github/workflows/test.yml (typescript-check job: tsc + next lint).
-  // Keeps these gates in CI but removes ~20-40s from every deploy build.
-  // If you re-enable these flags, remove the corresponding steps from test.yml.
-  eslint: { ignoreDuringBuilds: true },
+  // Type checking and ESLint run separately in test.yml.
+  // Next 16 no longer runs ESLint during builds.
   typescript: { ignoreBuildErrors: true },
   ...(isGitHubPages && { basePath: '/Broadwayscore' }),
   images: {

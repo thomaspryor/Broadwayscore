@@ -38,6 +38,7 @@ test('tier 3: a src/ diff yields tsc + lint + build', () => {
   const out = decideChecks(['src/components/Foo.tsx'], never, { tier: 3 });
   assert.deepEqual(names(out), ['tsc', 'next lint', 'next build']);
   const build = out.find(c => c.name === 'next build');
+  assert.deepEqual(build.argv, ['npm', 'run', 'build'], 'uses project bundler flags and prebuild');
   assert.equal(build.build, true);
   assert.equal(build.timeoutMs, BUILD_TIMEOUT_MS, 'build gets its own longer timeout');
 });
