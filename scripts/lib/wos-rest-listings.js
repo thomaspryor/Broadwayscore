@@ -126,8 +126,8 @@ function parseWosReviewTitle(rawTitle, rawTeaser) {
     // 2013-14 house style: plain "Great Britain (Theatre Royal Haymarket)".
     // Tour/regional parentheticals ("Tour - Salford") are not London venues.
     const plain = t.match(/^(.+?)\s*\(([^()]+)\)\s*$/);
-    if (plain && !/\b(?:tour|touring|uk tour|preview|interview)\b|[–—]/i.test(plain[2])) {
-      return { title: cleanReviewedTitle(plain[1]), venue: plain[2].replace(/^the\s+/i, '').trim() };
+    if (plain && !/\b(?:tour|touring|uk tour|preview|interview|revival|video|live|q&a|q&amp;a|festival|fringe)\b|[–—]/i.test(plain[2])) {
+      return { title: cleanReviewedTitle(plain[1]), venue: plain[2].replace(/^the\s+/i, '').trim(), plainForm: true };
     }
     return null;
   }
@@ -246,6 +246,10 @@ async function fetchWosReviews({ after, before }) {
   for (const r of raw) {
     const parsed = parseWosReviewTitle(r.title?.rendered, r.acf?.teaser);
     if (!parsed) continue;
+    // The bare "Title (Venue)" form also fits news posts; only a post carrying a
+    // review rating is a review.
+    if (parsed.plainForm && r.acf?.review_rating == null) continue;
+    delete parsed.plainForm;
     out.push({
       ...parsed,
       date: String(r.date || '').slice(0, 10) || null,

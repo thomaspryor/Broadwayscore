@@ -106,8 +106,10 @@ test('cleanReviewedTitle strips WOS decorations but keeps real "with" titles', (
 });
 
 test('parseWosReviewTitle: 2013-14 plain "Title (Venue)" form', () => {
-  assert.deepEqual(parseWosReviewTitle('The Edge of Our Bodies (Gate Theatre)', ''), { title: 'The Edge of Our Bodies', venue: 'Gate Theatre' });
-  assert.deepEqual(parseWosReviewTitle('Great Britain (Theatre Royal Haymarket)', ''), { title: 'Great Britain', venue: 'Theatre Royal Haymarket' });
+  assert.deepEqual(parseWosReviewTitle('The Edge of Our Bodies (Gate Theatre)', ''), { title: 'The Edge of Our Bodies', venue: 'Gate Theatre', plainForm: true });
+  assert.deepEqual(parseWosReviewTitle('Great Britain (Theatre Royal Haymarket)', ''), { title: 'Great Britain', venue: 'Theatre Royal Haymarket', plainForm: true });
+  assert.equal(parseWosReviewTitle('Hamlet (2014 revival)', ''), null);
+  assert.equal(parseWosReviewTitle('Matilda (Q&amp;A)', ''), null);
   assert.equal(parseWosReviewTitle('Helen (Tour \u2013 Salford)', ''), null);
   assert.equal(parseWosReviewTitle('Great Britain transfer falls below the fold for critics', ''), null);
 });
