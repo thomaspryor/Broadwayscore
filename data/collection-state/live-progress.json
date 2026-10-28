@@ -1,19 +1,37 @@
 {
-  "updatedAt": "2026-10-28T06:17:44.931Z",
-  "processed": 35,
-  "failed": 45,
-  "successRate": "43.8%",
+  "updatedAt": "2026-10-28T06:47:09.214Z",
+  "processed": 36,
+  "failed": 13,
+  "successRate": "73.5%",
   "tierBreakdown": {
     "playwright": 18,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 2,
+    "scrapingbee": 0,
     "brightdata": 1,
-    "archiveToday": 18,
+    "archiveToday": 23,
     "archive": 7
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-28T06:38:47.456Z",
+      "event": "bb-session",
+      "session": "203453ab",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T06:38:47.821Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-28T06:43:11.788Z",
+      "event": "bb-session",
+      "session": "8df74321",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    }
+  ]
 }
