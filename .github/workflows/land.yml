@@ -408,7 +408,9 @@ jobs:
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$BASE") || { echo "::error::could not hash the base tree"; exit 1; }
           DAY=$(date -u +%Y%m%d)
           echo "code_hash=$HASH" >> "$GITHUB_OUTPUT"
-          echo "key=land-base-gauntlet-v2-${HASH:0:32}-$DAY" >> "$GITHUB_OUTPUT"
+          # v3 (BRO-6114): a --deps-changed base run before the fix was measured on the
+          # branch's node_modules and could be published under v2; never reuse those.
+          echo "key=land-base-gauntlet-v3-${HASH:0:32}-$DAY" >> "$GITHUB_OUTPUT"
           echo "base ${BASE:0:10} → code tree hash ${HASH:0:16}, day $DAY"
 
       - name: Restore the base gauntlet result (actions/cache)
@@ -669,7 +671,7 @@ jobs:
           BASE_PUBLISHED: ${{ steps.base_run.outcome == 'success' && steps.need.outputs.gates == '' && steps.base_run.outputs.scoped != 'true' }}
         run: |
           HASH=$(node scripts/lib/land-gate-delta.js --code-hash "$REBASED")
-          KEY="land-base-gauntlet-v2-${HASH:0:32}-$(date -u +%Y%m%d)"
+          KEY="land-base-gauntlet-v3-${HASH:0:32}-$(date -u +%Y%m%d)"
           if [ "$KEY" = "$BASE_KEY" ] && [ "$BASE_PUBLISHED" = "true" ]; then
             echo "rebased tip ${REBASED:0:10} has the base's code tree, already published by this run — nothing new to publish"
             exit 0

@@ -38,8 +38,12 @@ function loadCutoffsViaTsc(tsSrc) {
   // (single ceremony-date store). That import makes tsc nest output under the
   // shared root (src/lib/... + data/...), so locate the emitted JS instead of
   // assuming it lands at the outDir top level.
+  // The declared typescript, not `npx tsc`: sanity 6 hoists @typescript/old
+  // (typescript 6), whose tsc bin wins node_modules/.bin/tsc and rejects these
+  // flags (TS5107 moduleResolution=node, TS5112 files + tsconfig) (BRO-6114).
+  const tsc = require.resolve('typescript/bin/tsc');
   execSync(
-    `npx tsc --module commonjs --target es2020 --moduleResolution node --esModuleInterop --skipLibCheck --resolveJsonModule --outDir ${tmpDir} ${tsSrc}`,
+    `"${process.execPath}" "${tsc}" --module commonjs --target es2020 --moduleResolution node --esModuleInterop --skipLibCheck --resolveJsonModule --outDir ${tmpDir} ${tsSrc}`,
     { stdio: 'inherit' }
   );
   const baseName = path.basename(tsSrc, '.ts');
