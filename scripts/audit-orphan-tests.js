@@ -211,6 +211,7 @@ const EXEMPT_NEVER_CI = {
   // real `npm audit` against the registry advisory feed and the calendar, so
   // their answer changes without a code change. Card acceptance commands only.
   'tests/live/audit-dependencies-clean.test.mjs': 'BRO-4434',
+  'tests/unit/dependency-audit-clean.test.mjs': 'BRO-6404',
   // BRO-3444 RECHECK-AFTER probe: reads the CI health snapshot on origin/main.
   'tests/live/digest-urgent-visitor-only.test.mjs': 'BRO-3444',
   'tests/live/audit-dependencies-no-expiring.test.mjs': 'BRO-4434',
