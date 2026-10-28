@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T17:43:42.165Z",
+  "generatedAt": "2026-10-28T18:44:42.399Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -540,26 +540,23 @@
       "status": "open",
       "slug": "girls-off-west-end",
       "thumbnail": "/images/shows/girls-off-west-end-2026/thumbnail.webp",
-      "siteScore": 77.87,
-      "liveScore": 78,
-      "scoreDrift": 0.12999999999999545,
+      "siteScore": 76.65,
+      "liveScore": 77,
+      "scoreDrift": 0.3499999999999943,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 8,
       "t1": 3,
-      "t2": 2,
-      "t3": 0,
-      "positive": 3,
-      "mixed": 2,
+      "t2": 3,
+      "t3": 2,
+      "positive": 5,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "5/8 total",
-          "hi-conf:4/6"
-        ],
-        "highConfidence": 4,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -569,7 +566,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -739,6 +736,18 @@
           "m": 2,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T18:44:42.399Z",
+          "rc": 8,
+          "s": 76.65,
+          "t1": 3,
+          "t2": 3,
+          "t3": 2,
+          "p": 5,
+          "m": 3,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -752,25 +761,25 @@
       "status": "open",
       "slug": "memoriam-off-west-end",
       "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 71.57,
+      "siteScore": 72.28,
       "liveScore": 72,
-      "scoreDrift": 0.4300000000000068,
+      "scoreDrift": -0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 16,
       "t1": 0,
-      "t2": 4,
-      "t3": 10,
-      "positive": 5,
-      "mixed": 9,
+      "t2": 5,
+      "t3": 11,
+      "positive": 6,
+      "mixed": 10,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 11,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1074,6 +1083,18 @@
           "m": 9,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T18:44:42.399Z",
+          "rc": 16,
+          "s": 72.28,
+          "t1": 0,
+          "t2": 5,
+          "t3": 11,
+          "p": 6,
+          "m": 10,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1087,27 +1108,27 @@
       "status": "open",
       "slug": "i-became-we-off-broadway",
       "thumbnail": "/images/shows/i-became-we-off-broadway-2026/thumbnail.jpg",
-      "siteScore": 83.29,
-      "liveScore": 83,
-      "scoreDrift": -0.29000000000000625,
+      "siteScore": 83.96,
+      "liveScore": 84,
+      "scoreDrift": 0.04000000000000625,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 5,
+      "total": 7,
       "t1": 1,
-      "t2": 3,
-      "t3": 1,
-      "positive": 3,
+      "t2": 4,
+      "t3": 2,
+      "positive": 5,
       "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "5/12 total",
+          "7/12 total",
           "T1:1/3",
-          "hi-conf:5/8"
+          "hi-conf:7/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1488,6 +1509,18 @@
           "t2": 3,
           "t3": 1,
           "p": 3,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T18:44:42.399Z",
+          "rc": 7,
+          "s": 83.96,
+          "t1": 1,
+          "t2": 4,
+          "t3": 2,
+          "p": 5,
           "m": 2,
           "n": 0,
           "bc": "waiting"

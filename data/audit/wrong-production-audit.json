@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T17:43:25.520Z",
+  "timestamp": "2026-10-28T18:44:29.308Z",
   "stats": {
-    "totalReviews": 65084,
-    "alreadyFlagged": 21977,
+    "totalReviews": 65206,
+    "alreadyFlagged": 21990,
     "dateGuardCatches": 234,
-    "directorMismatch": 2524,
+    "directorMismatch": 2530,
     "tvFilmSignals": 1822,
-    "londonSignals": 3136,
+    "londonSignals": 3140,
     "offBroadwaySignals": 584,
-    "yearMismatch": 226,
-    "noPublishDate": 5742
+    "yearMismatch": 227,
+    "noPublishDate": 5806
   },
   "findings": [
     {
@@ -202,6 +202,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2014",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2014-05-07",
+      "url": "https://www.theguardian.com/stage/2014/may/07/new-theatre-production-orwell-1984-chillingly-relevant",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
         }
       ]
     },
@@ -6574,6 +6593,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
+      "file": "hampstead-highgate-express--emily-govan.json",
+      "score": null,
+      "publishDate": "2014-04-10",
+      "url": "https://www.hamhigh.co.uk/things-to-do/21376945.theatre-review-blithe-spirit-gielgud-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
         }
       ]
     },
@@ -36617,6 +36650,20 @@
     },
     {
       "showId": "other-desert-cities-2026",
+      "file": "stageandcinema--unknown.json",
+      "score": 77,
+      "publishDate": "2026-10-26",
+      "url": "https://stageandcinema.com/2026/10/26/other-desert-cities-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2011 (2x) more than 2026 (1x). 2011 matches production: other-desert-cities-2011"
+        }
+      ]
+    },
+    {
+      "showId": "other-desert-cities-2026",
       "file": "talkinbroadway--howard-miller.json",
       "score": 45,
       "publishDate": "2026-10-18",
@@ -42132,6 +42179,34 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from skylight-1996"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "guardian--susannah-clapp.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theguardian.com/stage/2014/jun/22/skylight-bill-nighy-carey-mulligan-wyndhams-review-hare-revival-thatcherite-play-for-today",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
+        }
+      ]
+    },
+    {
+      "showId": "skylight-west-end-2014",
+      "file": "telegraph--charles-spencer.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.telegraph.co.uk/culture/theatre/theatre-reviews/10909907/Skylight-Wyndhams-review-a-knockout.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from skylight-2015"
         }
       ]
     },
@@ -59225,6 +59300,19 @@
       ]
     },
     {
+      "showId": "twelfth-night-west-end-2012",
+      "file": "british-theatre--philip-fisher.json",
+      "publishDate": "2012-11-18",
+      "url": "https://www.britishtheatreguide.info/reviews/twelfth-night-apollo-shaftes-8269",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"tim carroll\" from twelfth-night-2013"
+        }
+      ]
+    },
+    {
       "showId": "two-strangers-bway-2025",
       "file": "nypost--johnny-oleksinski.json",
       "score": 78,
@@ -67582,6 +67670,20 @@
       ]
     },
     {
+      "showId": "bakersfield-mist-west-end-2014",
+      "file": "nytimes--matt-wolf.json",
+      "score": null,
+      "publishDate": "2014-06-12",
+      "url": "https://www.nytimes.com/2014/06/13/arts/international/family-under-siege-in-hotel-and-kathleen-turner-in-bakersfield-mist.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "ballet-shoes-west-end-2024",
       "file": "guardian--arifa-akbar.json",
       "score": 82,
@@ -68374,6 +68476,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
+      "file": "a-younger-theatre--a-younger-theatre.json",
+      "score": null,
+      "publishDate": "2014-03-21",
+      "url": "https://www.ayoungertheatre.com/review-blithe-spirit-gielgud-theatre-angela-lansbury/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -77276,6 +77392,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "good-people-west-end-2014",
+      "file": "a-younger-theatre--adam-foster.json",
+      "score": null,
+      "publishDate": "2014-04-16",
+      "url": "https://www.ayoungertheatre.com/review-good-people-noel-coward-theatre-imelda-staunton-hampstead-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"noel coward theatre\""
         }
       ]
     },
@@ -87313,6 +87443,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"barbican\""
+        }
+      ]
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "revstanstheatreblog--unknown.json",
+      "score": 74,
+      "publishDate": "2026-10-27",
+      "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -97488,6 +97632,7 @@
     {
       "showId": "tell-me-on-a-sunday-west-end-2014",
       "file": "bestoftheatre--oliver-mitford.json",
+      "score": 79,
       "publishDate": "2014-02-26",
       "url": "https://www.bestoftheatre.co.uk/blog/post/tell-me-on-a-sunday-review",
       "findings": [
