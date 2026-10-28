@@ -1,14 +1,14 @@
 {
-  "timestamp": "2026-10-28T01:36:16.507Z",
+  "timestamp": "2026-10-28T01:49:29.999Z",
   "stats": {
-    "totalReviews": 63977,
-    "alreadyFlagged": 21774,
+    "totalReviews": 63996,
+    "alreadyFlagged": 21773,
     "dateGuardCatches": 237,
-    "directorMismatch": 2386,
-    "tvFilmSignals": 1811,
+    "directorMismatch": 2389,
+    "tvFilmSignals": 1812,
     "londonSignals": 3061,
     "offBroadwaySignals": 577,
-    "yearMismatch": 220,
+    "yearMismatch": 225,
     "noPublishDate": 5661
   },
   "findings": [
@@ -679,6 +679,19 @@
       "score": 76,
       "publishDate": "2025-07-14",
       "url": "https://stageraw.com/a-beautiful-noise-the-neil-diamond-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "stageandcinema--milo-shapiro.json",
+      "publishDate": "2025-05-29",
+      "url": "https://stageandcinema.com/2025/05/28/a-beautiful-noise-national-tour/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4778,6 +4791,19 @@
     },
     {
       "showId": "back-to-the-future-tour-2024",
+      "file": "media-mikes--mike-gencarelli.json",
+      "publishDate": "2025-04-30",
+      "url": "https://mediamikes.com/2025/04/theatre-review-back-to-the-future-the-musical-the-straz-center-tampa-fl/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john rando\" from back-to-the-future-2023"
+        }
+      ]
+    },
+    {
+      "showId": "back-to-the-future-tour-2024",
       "file": "rachelsreviewstheatre--unknown.json",
       "score": 74,
       "publishDate": "2026-06-11",
@@ -5507,6 +5533,19 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2025 (3x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
+        }
+      ]
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "file": "broadwayworld--josh-stent.json",
+      "publishDate": "2025-05-21",
+      "url": "https://www.broadwayworld.com/australia-melbourne/article/Review-BEETLEJUICE-THE-MUSICAL-at-Regent-Theatre-20250521",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (2x) more than 2022 (0x). 2025 matches production: beetlejuice-2025"
         }
       ]
     },
@@ -16770,6 +16809,7 @@
     {
       "showId": "forbidden-broadway-merrily-we-stole-a-song-off-broadway-2024",
       "file": "times-square-chronicles--suzanne-bowling.json",
+      "score": 77,
       "publishDate": "2024-09-20",
       "url": "https://t2conline.com/forbidden-broadway-merrily-we-stole-a-song-and-a-laugh-or-two/",
       "findings": [
@@ -40138,6 +40178,19 @@
     },
     {
       "showId": "shucked-tour-2024",
+      "file": "the-news-herald--mark-meszoros.json",
+      "publishDate": "2025-04-18",
+      "url": "https://www.news-herald.com/2025/04/18/robert-horn-worked-with-country-music-artists-to-find-shucked-sweet-spot/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "shucked-tour-2024",
       "file": "wtlgomag--unknown.json",
       "score": 84,
       "publishDate": "2025-06-12",
@@ -41026,6 +41079,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "some-like-it-hot-tour-2024",
+      "file": "broadwayworld--john-mcdaid.json",
+      "publishDate": "2025-04-23",
+      "url": "https://www.broadwayworld.com/rhode-island/article/Review-SOME-LIKE-IT-HOT-SIZZLES-ON-TOUR-at-Providence-Performing-Arts-Center-20250423",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from some-like-it-hot-2022"
         }
       ]
     },
@@ -45610,6 +45676,47 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "file": "broadwayworld--clementine-scott.json",
+      "score": 56,
+      "publishDate": "2026-09-11",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-CHILDREN-STARRING-MEERA-SYAL-Lyric-Hammersmith-20260911",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2026 (0x). 2016 matches production: the-children-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "file": "telegraph--fiona-mountford.json",
+      "score": 54,
+      "publishDate": "2026-09-10",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-children-review-lyric-hammersith/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2026 (1x). 2016 matches production: the-children-west-end-2016"
+        }
+      ]
+    },
+    {
+      "showId": "the-children-off-west-end-2026",
+      "file": "telegraph--ghenet-pinderhughes-randall.json",
+      "publishDate": "2026-09-11",
+      "url": "https://www.westendtheatre.com/366211/news/the-children-reviews/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (3x) more than 2026 (0x). 2016 matches production: the-children-west-end-2016"
         }
       ]
     },
@@ -54881,6 +54988,20 @@
       ]
     },
     {
+      "showId": "the-truth-a-comedy-by-florian-zeller-west-end-2026",
+      "file": "westendtheatre--ghenet-pinderhughes-randall.json",
+      "score": 74,
+      "publishDate": "2026-06-25",
+      "url": "https://www.westendtheatre.com/359033/news/reviews/the-truth-apollo-reviews/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2016 (2x) more than 2026 (0x). 2016 matches production: the-truth-west-end-2016"
+        }
+      ]
+    },
+    {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
       "file": "thereviewshub--scott-matthewman.json",
       "score": 69,
@@ -62114,6 +62235,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "lovelondonloveculture--unknown.json",
+      "score": 87,
       "publishDate": "2026-09-03",
       "url": "https://lovelondonloveculture.com/2026/09/03/review-a-month-in-the-country-donmar-warehouse/",
       "findings": [
