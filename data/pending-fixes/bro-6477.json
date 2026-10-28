@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6477",
   "planId": "b0520549-4da8-4b65-bdca-b83b42dec569",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T18:53:37.526Z",
   "submitter": {
     "name": null,
@@ -124,5 +124,19 @@
         "description": "BRO-6477: drop placeholder cast role text (7 rows); guards read roles as name cues"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T19:37:54.538Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for my-neighbour-totoro-west-end-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: cast updated for imitation-of-life-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
