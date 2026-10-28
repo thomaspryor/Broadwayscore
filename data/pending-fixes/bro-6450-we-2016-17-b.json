@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6450-we-2016-17-b",
   "planId": "3b8925e0-1c8e-4bb4-88fb-9fb167c26349",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-27T23:55:51.370Z",
   "submitter": {
     "name": null,
@@ -42,5 +42,14 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T01:31:42.234Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added follies-west-end-2017"
+    }
+  ],
+  "executedIn": "ci"
 }
