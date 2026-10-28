@@ -35,3 +35,19 @@ test('the review-mode source can be overwritten by an authoritative source but i
   const reviews = ['2019-10-30', '2019-10-30', '2019-10-31'].map((publishDate) => ({ showId: 'x', publishDate }));
   assert.deepEqual(inferPressNightFromReviews({ candidateShows: [row], reviews }), []);
 });
+
+test('BRO-6453: a Theatricalia first-performance row moves to the review-date mode press night', () => {
+  const t = { id: 'x-west-end-2015', discoverySource: 'we-historical:theatricalia', previewsStartDate: '2015-10-05', openingDate: '2015-10-05', openingDateSource: 'theatricalia-first-performance' };
+  const a = rowActions(t, rv('2015-10-16', '2015-10-16', '2015-10-16', '2015-10-20'), new Map());
+  assert.deepEqual(a.map((x) => [x.field, x.oldValue, x.newValue]), [
+    ['openingDate', '2015-10-05', '2015-10-15'],
+    ['openingDateSource', 'theatricalia-first-performance', 'inferred-from-reviews-mode'],
+  ]);
+});
+
+test('BRO-6453: a Theatricalia row with no review cluster, or a tie, is left alone (never guessed)', () => {
+  const t = { id: 'x', previewsStartDate: '2015-10-05', openingDate: '2015-10-05', openingDateSource: 'theatricalia-first-performance' };
+  assert.deepEqual(rowActions(t, rv('2015-10-16', '2015-10-16'), new Map()), []);
+  assert.deepEqual(rowActions(t, rv('2015-10-16', '2015-10-16', '2015-10-16', '2015-10-20', '2015-10-20', '2015-10-20'), new Map()), []);
+  assert.deepEqual(rowActions({ ...t, previewsStartDate: null }, rv('2015-10-16', '2015-10-16', '2015-10-16'), new Map()), []);
+});

@@ -19,6 +19,10 @@
  *     fingerprint includes openingDate, and a stale marker would put the row
  *     back into the image sweep that filled it with wrong art (BRO-5022).
  *
+ * BRO-6453 adds the Theatricalia class (source 'theatricalia-first-performance',
+ * previewsStartDate === openingDate): the press night moves to the review-date
+ * mode when a clear cluster exists, else the row is left for the audit to flag.
+ *
  * Usage:
  *   node scripts/plan-we-historical-opening-repair.js [--reviews=PATH] [--dry-run]   counts only
  *   node scripts/plan-we-historical-opening-repair.js --out=PATH                     write a plan of data-edit actions
@@ -33,7 +37,7 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { repairWosOpening, MODE_INFERENCE_SOURCE, WOS_FIRST_PERFORMANCE_SOURCE } = require('./lib/we-historical-dates');
+const { repairWosOpening, repairTheatricaliaOpening, MODE_INFERENCE_SOURCE, WOS_FIRST_PERFORMANCE_SOURCE } = require('./lib/we-historical-dates');
 const { hasActiveNoArtMarker, buildNoReliableArtMarker } = require('./lib/no-reliable-art');
 
 const ROOT = path.join(__dirname, '..');
@@ -63,8 +67,11 @@ function sourcedPressNights(adjudications) {
 /** Plan actions for one row (pure). */
 function rowActions(show, reviews, sourced) {
   let changes = repairWosOpening(show, reviews);
+  // BRO-6453: Theatricalia-built rows (previews already set) move on a review-date mode only.
+  const theatricalia = !changes.length;
+  if (theatricalia) changes = repairTheatricaliaOpening(show, reviews);
   if (!changes.length) return [];
-  let s = sourced && sourced.get(show.id);
+  let s = theatricalia ? null : sourced && sourced.get(show.id);
   // An adjudication of a value the row no longer holds says nothing about it now.
   if (s && s.judged !== undefined && s.judged !== show.openingDate) s = null;
   if (s && s.date === null) return [];
@@ -77,7 +84,7 @@ function rowActions(show, reviews, sourced) {
   }
   const actions = changes.map((c) => ({
     type: 'data-edit', file: 'shows.json', showId: show.id, field: c.field, oldValue: c.oldValue, newValue: c.newValue,
-    description: `${show.id}: ${c.field} ${c.oldValue ?? 'null'} -> ${c.newValue}${c.field === 'openingDate' && s && c.newValue === s.date ? ` (${s.url})` : ''} (BRO-5080: WOS date with no preview date is the first performance)`,
+    description: `${show.id}: ${c.field} ${c.oldValue ?? 'null'} -> ${c.newValue}${c.field === 'openingDate' && s && c.newValue === s.date ? ` (${s.url})` : ''} (${theatricalia ? 'BRO-6453: Theatricalia first performance, press night from the review-date mode' : 'BRO-5080: WOS date with no preview date is the first performance'})`,
   }));
   const newOpening = (changes.find((c) => c.field === 'openingDate') || {}).newValue;
   if (newOpening && hasActiveNoArtMarker(show)) {
@@ -169,7 +176,7 @@ function main() {
 
 if (require.main === module) {
   if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
-    console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 31).join('\n'));
+    console.log(fs.readFileSync(__filename, 'utf8').split('\n').slice(2, 35).join('\n'));
     process.exit(0);
   }
   main();

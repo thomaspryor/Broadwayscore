@@ -103,7 +103,26 @@ function repairWosOpening(show, reviews) {
   return changes;
 }
 
+/**
+ * Repair for a Theatricalia-built row (BRO-6450): openingDate === previewsStartDate
+ * === the first performance, source 'theatricalia-first-performance'. Only a
+ * clear review-date mode moves it; with no cluster the row is left alone (the
+ * season audit keeps flagging it until a sourced press night or a searched-none
+ * marker exists). Never guesses a date.
+ * @returns {Array<{field: string, oldValue: any, newValue: any}>} empty when the row is not in the class or no press night is supported
+ */
+function repairTheatricaliaOpening(show, reviews) {
+  if (!show || show.openingDateSource !== THEATRICALIA_FIRST_PERFORMANCE_SOURCE) return [];
+  if (!show.openingDate || show.previewsStartDate !== show.openingDate) return [];
+  const press = pressNightFromReviewMode(show.openingDate, reviews);
+  if (!press || press === show.openingDate) return [];
+  return [
+    { field: 'openingDate', oldValue: show.openingDate, newValue: press },
+    { field: 'openingDateSource', oldValue: THEATRICALIA_FIRST_PERFORMANCE_SOURCE, newValue: MODE_INFERENCE_SOURCE },
+  ];
+}
+
 module.exports = {
   WOS_FIRST_PERFORMANCE_SOURCE, MODE_INFERENCE_SOURCE, NO_PRESS_NIGHT_FOUND_SOURCE, THEATRICALIA_FIRST_PERFORMANCE_SOURCE,
-  plausibleOpeningDate, wosStartDates, pressNightFromReviewMode, repairWosOpening,
+  plausibleOpeningDate, wosStartDates, pressNightFromReviewMode, repairWosOpening, repairTheatricaliaOpening,
 };
