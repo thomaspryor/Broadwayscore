@@ -85,3 +85,12 @@ test('an executed plan is never a --force overwrite target (BRO-4490)', () => {
   assert.deepEqual(executedPlanFiles([applied, pending, broken, failed, partial]), [applied, partial]);
   fs.rmSync(dir, { recursive: true, force: true });
 });
+
+test('a review-file move without destPath is refused (BRO-6481: destinationPath was silently accepted)', () => {
+  const noop = { loadData: () => ({}), readReview: () => null };
+  const bad = completeActions([{ type: 'review-file-op', operation: 'move', sourcePath: 'a-2026/x.json', destinationPath: 'b-2026/x.json' }], noop);
+  assert.match(bad.problems.join('\n'), /move needs destPath/);
+  const good = completeActions([{ type: 'review-file-op', operation: 'move', sourcePath: 'data/review-texts/a-2026/x.json', destPath: 'data/review-texts/b-2026/x.json' }], noop);
+  assert.deepEqual(good.problems, []);
+  assert.equal(good.actions[0].destPath, 'b-2026/x.json');
+});

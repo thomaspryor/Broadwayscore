@@ -123,6 +123,8 @@ function completeActions(actions, { loadData, readReview }) {
       if (!a.description) a.description = `${a.file}: ${a.field}`;
     } else if (a.type === 'review-file-op') {
       for (const k of ['sourcePath', 'destPath']) if (typeof a[k] === 'string') a[k] = a[k].replace(REVIEW_TEXTS_PREFIX, '');
+      // The executor reads destPath only; a misnamed key fails at apply time (BRO-6481).
+      if ((a.operation === 'move' || a.operation === 'rename') && !a.destPath) problems.push(`${where}: ${a.operation} needs destPath`);
     }
     return ordered(a);
   });
