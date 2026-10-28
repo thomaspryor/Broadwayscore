@@ -174,6 +174,8 @@ function coerceEntry(raw, idx, fallbackSince) {
   const heldSince =
     raw.heldSince || raw.since || raw.researchedAt || raw.createdAt || fallbackSince || 'unknown';
   const reason = raw.reason || raw.notes || raw.designation || 'unspecified';
+  // BRO-6471: the daily apply pass stamps why it could not apply a row; this card is now the only place it shows.
+  const heldFor = typeof raw.autoApplyBlocked === 'string' ? raw.autoApplyBlocked : null;
 
   let attemptedQueries = [];
   if (Array.isArray(raw.attemptedQueries)) {
@@ -184,7 +186,7 @@ function coerceEntry(raw, idx, fallbackSince) {
     attemptedQueries = raw.queries.map(extractQueryString);
   }
 
-  return { slug, title, heldSince, reason, attemptedQueries };
+  return { slug, title, heldSince, reason, heldFor, attemptedQueries };
 }
 
 function loadEntries(filePath) {
@@ -216,6 +218,9 @@ function buildDigest(entries) {
   lines.push('2. Confirm demote — mark as unconfirmed, clears the pending hold');
   lines.push('3. Leave held — no action; stays pending and resurfaces on the next sync');
   lines.push('');
+  lines.push('An entry with a "Needs" line cannot be cleared by a citation: do what that line says ' +
+    '(edit `commercial.json` by hand, or `apply-commercial-pending.js --release-held=SLUG`), then remove the row.');
+  lines.push('');
   // Same owner-judgment marker as the Notion digest: without it the card has no
   // acceptance criterion, so dispatch workers invent one (BRO-29 cited a test file
   // that never existed). Only a human can pick citation/demote/hold per entry.
@@ -234,6 +239,7 @@ function buildDigest(entries) {
     block.push(`### ${e.slug}${e.title ? ` (${e.title})` : ''}`);
     block.push(`- Held since: ${e.heldSince}`);
     block.push(`- Reason: ${truncate(e.reason, ENTRY_REASON_CAP)}`);
+    if (e.heldFor) block.push(`- Needs: ${truncate(e.heldFor, ENTRY_REASON_CAP)}`);
     if (e.attemptedQueries.length) {
       block.push('- Attempted queries:');
       for (const q of e.attemptedQueries) {
@@ -384,4 +390,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { buildDigest, DIGEST_CHAR_CAP };
+module.exports = { buildDigest, coerceEntry, DIGEST_CHAR_CAP };

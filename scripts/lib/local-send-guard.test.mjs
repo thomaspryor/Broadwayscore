@@ -70,7 +70,7 @@ test('the wired senders exit 2 locally before touching the network', () => {
 const CLASSES = {
   LOCKED: ['send-opening-night-broadcast.js'], // scripts/lib/send-lock.js
   GUARDED: ['send-follow-notifications.js', 'send-welcome-emails.js'], // local-send-guard
-  OWNER_ONLY: ['send-opening-digest.js', 'send-morning-digest.js', 'send-reddit-post-email.js', 'send-owner-decision-emails.js', 'send-unverified-digest.js'], // mail the owner only (CI-only, per-decision Resend idempotency key + ODE marker)
+  OWNER_ONLY: ['send-opening-digest.js', 'send-morning-digest.js', 'send-reddit-post-email.js', 'send-owner-decision-emails.js'], // mail the owner only (CI-only, per-decision Resend idempotency key + ODE marker)
   NO_SEND: ['send-daily-digest.js'], // routes through the alert digest, no Resend call
   CLI_ONLY: ['send-btc-results.js', 'send-btc-confirmation-emails.js'], // no sending workflow; dedup state files
 };

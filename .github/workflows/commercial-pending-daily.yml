@@ -3,9 +3,10 @@ name: Commercial Pending Review
 # BRO-6336. 180 deep-research results sat in data/commercial-pending-review.json for four months because the weekly and
 # Friday apply steps only take high-confidence entries. This pass applies ANY entry, whatever its research confidence,
 # whose capitalization / weekly cost a fetched trusted page confirms (scripts/lib/commercial-source-verify.js), moves
-# entries no page confirms to the rejected log (commercial-pending-archive.json) with the reason, and emails the owner
-# one digest of what only a person can settle (scripts/send-unverified-digest.js). Runs after every deep-research run
-# and daily. The daily health check fails over 25 pending entries or an oldest entry past 14 days.
+# entries no page confirms to the rejected log (commercial-pending-archive.json) with the reason. Rows only a person
+# can settle stay pending and reach the "Commercial data: pending review" Linear card (commercial-pending-review-notify.yml).
+# Nothing here emails the owner: BRO-6471 retired that digest because it asked nothing of them. Runs after every
+# deep-research run and daily. The daily health check fails over 25 pending entries or an oldest entry past 14 days.
 #
 # Concurrency group commercial-data-write queues with the other commercial writers.
 
@@ -89,17 +90,6 @@ jobs:
       - name: Refresh recoupment model
         if: inputs.dry_run != true
         run: node scripts/merge-model-recoupment.js
-
-      - name: Email the owner what could not be verified
-        # Once per item: the sender stamps ownerDigestSentAt on what it reported. Transactional to OWNER_EMAIL only.
-        id: owner-digest
-        if: inputs.dry_run != true
-        # A mail outage must not drop the verified applies below; unsent items keep retrying on later runs.
-        continue-on-error: true
-        env:
-          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/send-unverified-digest.js
 
       - name: Report pending-review backlog (count + oldest age)
         if: always()

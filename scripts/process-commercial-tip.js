@@ -300,8 +300,7 @@ Rules:
       // model, so it never writes commercial.json here. The cleaned changes
       // join data/commercial-pending-review.json as a human-review row. The
       // daily apply pass skips held rows; sync-pending-review-to-linear.js
-      // puts the row on the board and send-unverified-digest.js emails the
-      // owner, and a person then applies the change to commercial.json
+      // puts the row on the board, and a person then applies the change to commercial.json
       // (apply-commercial-pending.js --release-held=SLUG for a figures-only
       // tip on an undesignated record, otherwise by hand).
       let pending = readPendingFile(fs, PENDING_PATH);

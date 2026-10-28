@@ -63,7 +63,7 @@ const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
 const NO_SOURCE_VERIFY = flags['no-source-verify'] === true;
 // BRO-6336: apply any entry (whatever its confidence) whose figures a fetched trusted page confirms. An entry the
 // pages do not confirm moves to the archive with the reason; one a person must settle is stamped autoApplyBlocked
-// so the owner digest reports it once. Needs --all and page verification.
+// and stays pending for the pending-review Linear card. Needs --all and page verification.
 const VERIFIED_ONLY = flags['verified-only'] === true;
 if (VERIFIED_ONLY && (!APPLY_ALL || NO_SOURCE_VERIFY || SINGLE_SHOW || RELEASE_HELD)) {
   console.log('❌ --verified-only needs --all and cannot be combined with --no-source-verify, --show or --release-held');
@@ -171,7 +171,8 @@ async function main() {
   // commercial entries and were being deleted unreviewed (ship-check P0,
   // Sprint 2 2026-07-13).
   const appliedIds = new Set();
-  // --verified-only: entries moved to the archive this run ({key, slug, reason}), and entries only a person can settle.
+  // --verified-only: entries moved to the archive this run ({reason, archivedReason, prefix}). Rows only a person can
+  // settle stay pending instead (noteBlocked).
   const rejectedIds = new Map();
   const noteBlocked = (showId, reason) => {
     if (!VERIFIED_ONLY || DRY_RUN || !pending.shows[showId]) return;
@@ -251,7 +252,7 @@ async function main() {
       if (row.capitalization == null && row.weeklyRunningCost == null) {
         const reason = `research confidence ${entry.confidence || 'unknown'} and no capitalization or weekly cost a page could confirm`;
         console.log(`  🚫 "${showId}" — ${reason}; moving to the rejected log`);
-        if (!DRY_RUN) rejectedIds.set(showId, { reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified', digest: true });
+        if (!DRY_RUN) rejectedIds.set(showId, { reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified' });
         skipped++;
         continue;
       }
@@ -410,7 +411,7 @@ async function main() {
       }
       if (outcome.action === 'reject') {
         console.log(`  🚫 "${showId}" — not confirmed by a cited page (${outcome.reason}); moving to the rejected log`);
-        if (!DRY_RUN) rejectedIds.set(showId, { reason: outcome.reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified', digest: true });
+        if (!DRY_RUN) rejectedIds.set(showId, { reason: outcome.reason, archivedReason: UNVERIFIED_REASON, prefix: 'unverified' });
         skipped++;
         continue;
       }
@@ -486,9 +487,6 @@ async function main() {
     let archive = { shows: {} };
     try { archive = JSON.parse(fs.readFileSync(ARCHIVE_PATH, 'utf8')); } catch { /* first record */ }
     const nowIso = new Date().toISOString();
-    const sameFindingStamp = (prior, next) => (prior && prior.ownerDigestSentAt
-      && prior.capitalization === next.capitalization && prior.weeklyRunningCost === next.weeklyRunningCost
-      ? prior.ownerDigestSentAt : null);
     for (const [showId, info] of rejectedIds) {
       writeArchiveRecord(archive, `${info.prefix}:${showId}`, {
         ...pending.shows[showId],
@@ -496,9 +494,7 @@ async function main() {
         archivedAt: nowIso,
         archivedReason: info.archivedReason,
         archivedDetail: info.reason,
-        // The owner digest emails each unverified item once, then stamps this.
-        // A re-filed identical finding (same figures) keeps its earlier stamp so it is not emailed twice.
-        ...(info.digest ? { ownerDigestSentAt: sameFindingStamp(archive.shows && archive.shows[`${info.prefix}:${showId}`], pending.shows[showId]) } : {}),
+        ownerDigestSentAt: undefined, // leftover stamp of the digest BRO-6471 retired; JSON.stringify drops it
       });
       delete pending.shows[showId];
     }

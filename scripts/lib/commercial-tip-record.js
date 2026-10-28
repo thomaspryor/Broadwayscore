@@ -123,10 +123,10 @@ function queueTipForReview(pending, { slug, title, changes, confidence, source, 
   const merged = prior
     ? { ...prior, ...entry, sources: [...(Array.isArray(prior.sources) ? prior.sources : []), ...entry.sources] }
     : entry;
-  // Stamps from the prior row's own review cycle must not carry over: a kept
-  // ownerDigestSentAt would stop unverified-digest.js from ever emailing this
-  // tip, and a stale truthReview / autoApplyBlocked verdict would block its
-  // release for reasons that predate the tip.
+  // Stamps from the prior row's own review cycle must not carry over: a stale
+  // truthReview / autoApplyBlocked verdict would block the tip's release for
+  // reasons that predate it (ownerDigestSentAt is a leftover of the digest
+  // BRO-6471 retired).
   for (const k of STALE_REVIEW_STAMPS) delete merged[k];
   return { ...(pending || {}), generatedAt: at, shows: { ...((pending && pending.shows) || {}), [slug]: merged } };
 }

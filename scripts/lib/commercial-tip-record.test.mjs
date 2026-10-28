@@ -82,7 +82,7 @@ test('a second tip for the same show keeps every issue number that touched the r
   assert.equal(twice.shows.hamilton.tipIssue, 4300);
 });
 
-test('merging drops the prior row\'s review stamps so the tip is digested and releasable afresh', () => {
+test('merging drops the prior row\'s review stamps so the tip is releasable afresh', () => {
   const prior = { title: 'Hamilton', slug: 'hamilton', ownerDigestSentAt: '2026-09-02', autoApplyBlocked: 'old reason', autoApplyBlockedAt: '2026-09-02', truthReview: { verdict: 'reject' }, sourceVerifyAttempts: 3, requiresHumanReview: true };
   const row = queueTipForReview({ shows: { hamilton: prior } }, tip).shows.hamilton;
   for (const k of STALE_REVIEW_STAMPS) assert.equal(k in row, false, k);

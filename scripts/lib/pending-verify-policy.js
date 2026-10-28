@@ -3,7 +3,7 @@
  * An entry whose figures (capitalization, weeklyRunningCost) are all confirmed on a fetched trusted page applies,
  * whatever its research confidence. Everything else is left pending (a cited page could not be fetched yet),
  * moved to the archive with the reason (the page loaded and does not state the figure, nothing citable to check,
- * or the fetch failed on every attempt), or handed to the owner digest (needs a person).
+ * or the fetch failed on every attempt), or held for a person (listed on the pending-review Linear card).
  */
 'use strict';
 

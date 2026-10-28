@@ -8,13 +8,13 @@ const { pendingBacklogStats } = require('./pending-review-backlog');
 
 const MAX_PENDING_ENTRIES = 25;
 const MAX_OLDEST_AGE_DAYS = 14;
-// Rows held for a person get a longer leash: they were emailed once, but must not sit forever.
+// Rows held for a person get a longer leash: they wait on the pending-review Linear card, but must not sit forever.
 const MAX_HELD_AGE_DAYS = 60;
 
 /** @returns {{ ok: boolean, problems: string[], stats: object }} */
 function pendingQueueHealth(pending, now = Date.now(), { maxEntries = MAX_PENDING_ENTRIES, maxAgeDays = MAX_OLDEST_AGE_DAYS, maxHeldAgeDays = MAX_HELD_AGE_DAYS } = {}) {
-  // Rows held on purpose for a person (autoApplyBlocked, already emailed once) cannot be cleared by automation, so
-  // they do not count against the queue limits; the owner digest carries them.
+  // Rows held on purpose for a person (autoApplyBlocked) cannot be cleared by automation, so they do not count
+  // against the queue limits; the pending-review Linear card carries them.
   const shows = Object.fromEntries(Object.entries((pending && pending.shows) || {}).filter(([, e]) => !(e && e.autoApplyBlocked)));
   const stats = pendingBacklogStats({ ...pending, shows }, now);
   const problems = [];
