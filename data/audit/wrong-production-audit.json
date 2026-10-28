@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T03:11:59.515Z",
+  "timestamp": "2026-10-28T03:34:48.726Z",
   "stats": {
-    "totalReviews": 64099,
-    "alreadyFlagged": 21780,
+    "totalReviews": 64137,
+    "alreadyFlagged": 21783,
     "dateGuardCatches": 237,
-    "directorMismatch": 2400,
-    "tvFilmSignals": 1813,
-    "londonSignals": 3067,
+    "directorMismatch": 2407,
+    "tvFilmSignals": 1815,
+    "londonSignals": 3068,
     "offBroadwaySignals": 578,
     "yearMismatch": 226,
-    "noPublishDate": 5720
+    "noPublishDate": 5727
   },
   "findings": [
     {
@@ -16793,6 +16793,94 @@
       ]
     },
     {
+      "showId": "follies-west-end-2017",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": null,
+      "publishDate": "2017-09-07",
+      "url": "https://www.ft.com/content/002b0d5c-93bc-11e7-a9e6-11d2f0ebb7f0?syn-25a6b1a6=1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"dominic cooke\" from follies-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "follies-west-end-2017",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2017-09-10",
+      "url": "https://www.theguardian.com/stage/2017/sep/10/follies-olivier-london-review-dominic-cooke-imelda-staunton",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"dominic cooke\" from follies-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "follies-west-end-2017",
+      "file": "london-box-office--joseph-wicks.json",
+      "publishDate": "2017-09-11",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-follies",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"dominic cooke\" from follies-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "follies-west-end-2017",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": null,
+      "publishDate": "2017-09-07",
+      "url": "https://www.londontheatre1.com/reviews/review-follies-the-olivier-theatre-national-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"dominic cooke\" from follies-west-end-2019"
+        }
+      ]
+    },
+    {
+      "showId": "follies-west-end-2017",
+      "file": "thestage--jn-benjamin.json",
+      "score": null,
+      "publishDate": "2017-09-07",
+      "url": "https://www.thestage.co.uk/reviews/follies-review-at-the-national-theatre-london--not-just-triumphant-but-transcendent",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"dominic cooke\" from follies-west-end-2019"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "follies-west-end-2017",
+      "file": "variety--matt-trueman.json",
+      "score": null,
+      "publishDate": "2017-09-07",
+      "url": "https://variety.com/2017/legit/reviews/follies-review-imelda-staunton-national-theatre-1202550230/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"dominic cooke\" from follies-west-end-2019"
+        }
+      ]
+    },
+    {
       "showId": "follies-west-end-2019",
       "file": "daily-mail--giles-smith.json",
       "score": 89,
@@ -20312,6 +20400,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-west-end-2017",
+      "file": "london-theatre--mark-shenton.json",
+      "score": null,
+      "publishDate": "2017-06-16",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-hamlet-at-the-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -60859,6 +60961,19 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
+        }
+      ]
+    },
+    {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "london-unattached--jeanne-horak.json",
       "score": 90,
@@ -81445,6 +81560,20 @@
     },
     {
       "showId": "killology-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/killology-royal-court-review-both-disturbing-and-life-affirming",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "killology-west-end-2017",
       "file": "british-theatre--philip-fisher.json",
       "publishDate": "2017-05-31",
       "url": "https://www.britishtheatreguide.info/reviews/killology-royal-court-the-14439",
@@ -85114,7 +85243,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 58,
+      "score": 59,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
       "findings": [
@@ -85128,6 +85257,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "viewfromthegods--simon-jenner.json",
+      "score": 92,
       "publishDate": "2026-10-27",
       "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
       "findings": [
