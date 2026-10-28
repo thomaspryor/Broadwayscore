@@ -27,11 +27,15 @@ const USAGE = `merge-aggregator-excerpts.js — Extract excerpts from BWW and Sh
 Usage:
   node scripts/merge-aggregator-excerpts.js [options]
   node scripts/merge-aggregator-excerpts.js --audit-bww-digit-outlets [--bww-archive-dir=PATH]
+  node scripts/merge-aggregator-excerpts.js --repair-bww-digit-outlets [--write] [--bww-archive-dir=PATH]
   node scripts/merge-aggregator-excerpts.js --help, -h    print this usage and exit
 
 --audit-bww-digit-outlets  Read-only BRO-4371 sweep; emit JSON repair targets
                           without review text. Does not merge either source.
---bww-archive-dir=PATH     Archive directory for the audit (default: data/aggregator-archive/bww-roundups).
+--repair-bww-digit-outlets Repair only source-matched corrupted fields, even when
+                          the clean quote is shorter. Dry run unless --write.
+--write                   Apply the digit-outlet repair through safeWriteReview.
+--bww-archive-dir=PATH     Archive directory for the sweep (default: data/aggregator-archive/bww-roundups).
 `;
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
 if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
@@ -291,13 +295,19 @@ function processShowScoreArchives() {
 module.exports = { findMatchingReviewFile };
 
 function main() {
-  if (process.argv.includes('--audit-bww-digit-outlets')) {
-    const { auditBwwDigitOutlets } = require('./lib/bww-digit-outlet-audit');
+  const audit = process.argv.includes('--audit-bww-digit-outlets');
+  const repair = process.argv.includes('--repair-bww-digit-outlets');
+  const write = process.argv.includes('--write');
+  if (audit && repair) throw new Error('Choose either --audit-bww-digit-outlets or --repair-bww-digit-outlets');
+  if (write && !repair) throw new Error('--write requires --repair-bww-digit-outlets');
+  if (audit || repair) {
+    const { auditBwwDigitOutlets, repairBwwDigitOutlets } = require('./lib/bww-digit-outlet-audit');
     const archiveArg = process.argv.find(arg => arg.startsWith('--bww-archive-dir='));
-    const report = auditBwwDigitOutlets({
+    const report = (repair ? repairBwwDigitOutlets : auditBwwDigitOutlets)({
       archiveDir: archiveArg ? archiveArg.slice('--bww-archive-dir='.length) : BWW_DIR,
       reviewDir: REVIEW_DIR,
       checkArchive: archiveShowChecker,
+      write,
     });
     console.log(JSON.stringify(report, null, 2));
     return;

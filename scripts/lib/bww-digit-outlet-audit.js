@@ -2,8 +2,8 @@
 
 // BRO-4371: the parser is fixed, but fill-only/longer-only excerpt merges
 // preserve old quotes that swallowed the next digit-leading outlet's entry.
-// This audit deliberately reports private file paths and lengths, never text,
-// and never writes review files. Repairs require review of the source archive.
+// Reports contain private file paths and lengths, never text. The opt-in repair
+// uses the same source evidence and writes only with an explicit write option.
 const fs = require('fs');
 const path = require('path');
 const { parseArticleBodyReviews } = require('./bww-roundup-parser');
@@ -38,7 +38,7 @@ function articleBodies(html) {
  * Outlet identity must match too, so a full roundup saved under BWW is ignored.
  * A missing/unknown stored critic is OK: the source text proves attribution.
  */
-function auditDigitOutletFields(pairs, record) {
+function digitOutletCorruptions(pairs, record) {
   const findings = [];
   const outlet = normalizeOutlet(record.outletId || record.outlet || '');
   for (let i = 1; i < pairs.length; i++) {
@@ -59,6 +59,7 @@ function auditDigitOutletFields(pairs, record) {
       const partial = tail.length >= next.criticName.length && boundary.startsWith(tail);
       if (!complete && !partial) continue;
       findings.push({
+        cleanQuote: prior.quote,
         field,
         outletId: outlet,
         reason: complete ? 'swallowed-digit-outlet' : 'truncated-digit-outlet-byline',
@@ -70,8 +71,12 @@ function auditDigitOutletFields(pairs, record) {
   return findings;
 }
 
-/** Read-only, offline sweep. Missing inputs fail instead of reporting a clean audit. */
-function auditBwwDigitOutlets({ archiveDir, reviewDir, checkArchive = () => null }) {
+function auditDigitOutletFields(pairs, record) {
+  return digitOutletCorruptions(pairs, record).map(({ cleanQuote, ...finding }) => finding);
+}
+
+/** Offline sweep. Missing inputs fail instead of reporting a clean audit. */
+function scanBwwDigitOutlets({ archiveDir, reviewDir, checkArchive = () => null, repair = false, write = false }) {
   for (const dir of [archiveDir, reviewDir]) {
     if (!fs.statSync(dir).isDirectory()) throw new Error(`Not a directory: ${dir}`);
   }
@@ -79,6 +84,7 @@ function auditBwwDigitOutlets({ archiveDir, reviewDir, checkArchive = () => null
     archivesScanned: 0, digitOutletEntries: 0, affectedShows: [], affectedFiles: 0,
     findings: [], manualReview: [],
   };
+  if (repair) Object.assign(report, { dryRun: !write, repairs: [], writtenFiles: 0 });
   const seen = new Set();
   for (const filename of fs.readdirSync(archiveDir).filter(f => f.endsWith('.html')).sort()) {
     report.archivesScanned++;
@@ -118,14 +124,52 @@ function auditBwwDigitOutlets({ archiveDir, reviewDir, checkArchive = () => null
         report.manualReview.push({ showId, file: `${showId}/${file}`, reason: 'unreadable-review' });
         continue;
       }
+      const replacements = new Map();
       for (const pairs of parsed) {
-        for (const finding of auditDigitOutletFields(pairs, record)) {
+        for (const { cleanQuote, ...finding } of digitOutletCorruptions(pairs, record)) {
+          if (!replacements.has(finding.field)) replacements.set(finding.field, new Set());
+          replacements.get(finding.field).add(cleanQuote);
           const key = `${showId}/${file}:${finding.field}`;
           if (seen.has(key)) continue;
           seen.add(key);
           report.findings.push({ showId, file: `${showId}/${file}`, archive: filename, ...finding });
         }
       }
+      if (!repair || !replacements.size) continue;
+      const target = { showId, file: `${showId}/${file}`, fields: [...replacements.keys()] };
+      const skipReason = record._locked === true ? 'locked-review'
+        : record.wrongShow || record.wrongProduction || record.isRoundupArticle ? 'excluded-review'
+          : [...replacements.values()].some(quotes => quotes.size !== 1) ? 'conflicting-source-quotes' : null;
+      if (skipReason) {
+        report.manualReview.push({ showId, file: target.file, reason: skipReason });
+        report.repairs.push({ ...target, status: 'skipped', reason: skipReason });
+        continue;
+      }
+      if (!write) {
+        report.repairs.push({ ...target, status: 'would-repair' });
+        continue;
+      }
+      const expected = Object.fromEntries([...replacements].map(([field, quotes]) => [field, [...quotes][0]]));
+      const updated = { ...record, ...expected };
+      if (replacements.has('fullText')) {
+        updated.fullTextTrimmed = {
+          reason: 'BWW digit-outlet tail removed (BRO-4371)',
+          fromLength: record.fullText.length, toLength: updated.fullText.length,
+          at: new Date().toISOString(),
+        };
+        const words = updated.fullText.split(/\s+/).filter(Boolean).length;
+        for (const field of ['wordCount', 'textWordCount']) {
+          if (typeof updated[field] === 'number') updated[field] = words;
+        }
+      }
+      const filePath = path.join(showDir, file);
+      const result = require('./review-write-guard').safeWriteReview(filePath, updated);
+      // A guard can mutate its payload to preserve fields while reporting wrote:true.
+      const saved = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+      const repaired = result?.wrote === true && target.fields.every(field => saved[field] === expected[field]);
+      if (repaired) report.writtenFiles++;
+      else report.manualReview.push({ showId, file: target.file, reason: 'write-guard-refused-repair' });
+      report.repairs.push({ ...target, status: repaired ? 'repaired' : 'refused' });
     }
   }
   report.affectedShows = [...new Set(report.findings.map(f => f.showId))].sort();
@@ -133,4 +177,13 @@ function auditBwwDigitOutlets({ archiveDir, reviewDir, checkArchive = () => null
   return report;
 }
 
-module.exports = { auditDigitOutletFields, auditBwwDigitOutlets };
+function auditBwwDigitOutlets(options) {
+  return scanBwwDigitOutlets({ ...options, repair: false, write: false });
+}
+
+function repairBwwDigitOutlets(options) {
+  if (typeof options.checkArchive !== 'function') throw new Error('Repair requires a production archive checker');
+  return scanBwwDigitOutlets({ ...options, repair: true });
+}
+
+module.exports = { auditDigitOutletFields, auditBwwDigitOutlets, repairBwwDigitOutlets };
