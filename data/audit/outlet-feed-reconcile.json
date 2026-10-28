@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T19:58:34.187Z",
+  "generatedAt": "2026-10-28T21:40:30.051Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,8 +118,16 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
+      "outletId": "theater-life",
+      "error": "Timeout fetching https://theaterlife.com/feed"
+    },
+    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
+    },
+    {
+      "outletId": "slantmagazine",
+      "error": "direct fetch returned a non-rss page"
     },
     {
       "outletId": "cote-notices",
@@ -138,7 +146,7 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 791,
+  "itemsScanned": 779,
   "matchedGaps": 4,
   "possibleGaps": 6,
   "gaps": [
@@ -150,6 +158,15 @@
       "url": "https://firstnightmagazine.com/2026/10/27/lead-actress-hannah-akhalu-talks-new-play-girls-it-was-important-for-me-not-to-be-generic-with-the-experience-of-pain-fear-and-worry/",
       "headline": "Lead actress Hannah Akhalu talks revival of &#8216;Girls&#8217;: &#8220;It was important for me not to be generic with the experience of pain, fear, and worry&#8221;",
       "publishDate": "2026-10-27"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "matched",
+      "outletId": "the-recs",
+      "url": "https://therecs.co.uk/girls-young-vic/",
+      "headline": "Girls &#8211; Young Vic ★★★★★",
+      "publishDate": "2026-10-28"
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -168,15 +185,6 @@
       "url": "https://readaboutstuff.com/2026/10/27/review-memoriam-southwark-playhouse-borough-london/",
       "headline": "Review: Memoriam &#8211; Southwark Playhouse Borough, London",
       "publishDate": "2026-10-27"
-    },
-    {
-      "showId": "the-imaginary-invalid-2026",
-      "title": "The Imaginary Invalid",
-      "level": "matched",
-      "outletId": "theater-life",
-      "url": "https://theaterlife.com/billy-crystal-860-the-imaginary-invalid/",
-      "headline": "Billy Crystal: 860 ****, The Imaginary Invalid **",
-      "publishDate": "2026-10-28"
     },
     {
       "showId": "aftermath-art-new-york-off-broadway-2026",
