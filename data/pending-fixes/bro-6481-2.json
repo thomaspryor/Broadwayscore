@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6481-2",
   "planId": "c78f5f1c-3929-418d-80d6-faa62da9758d",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-10-28T21:50:46.254Z",
   "submitter": {
     "name": null,
@@ -47,5 +47,29 @@
         "destinationPath": "illinoise-off-broadway-2024/nytg--amelia-merrill.json"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T22:15:49.554Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "No destination path for move/rename"
+    },
+    {
+      "action": "retire-show",
+      "ok": false,
+      "reason": "retire-show clara-sex-love-and-classical-off-broadway-2026: clara-sex-love-and-classical-off-broadway-2026 has 1 review(s): move them before retiring"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "url: the current url is not provably wrong (aggregator, non-review page, another critic's review, another show's review, or an unverified legacy web-search url)"
+    },
+    {
+      "action": "review-file-op",
+      "ok": false,
+      "reason": "No destination path for move/rename"
+    }
+  ],
+  "executedIn": "ci"
 }
