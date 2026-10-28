@@ -23927,20 +23927,17 @@
       "linearIdentifier": null
     },
     "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
       "firstSeen": "2026-10-22T11:49:37.833Z",
-      "incidentOpenedAt": "2026-10-22T11:49:37.833Z",
-      "lastSeen": "2026-10-28T00:28:21.394Z",
-      "lastNotifiedAt": "2026-10-27T15:54:26.700Z",
-      "lastSurfacedAt": "2026-10-27T15:54:26.700Z",
-      "notifyCount": 6,
+      "incidentOpenedAt": "2026-10-28T10:58:13.708Z",
+      "lastSeen": "2026-10-28T10:58:13.708Z",
+      "lastNotifiedAt": "2026-10-28T10:58:13.708Z",
+      "lastSurfacedAt": "2026-10-28T10:58:13.708Z",
+      "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6,
-      "resolvedAt": "2026-10-28T01:28:37.653Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "land:land/bro-5325-wsj-section": {
       "status": "resolved",
@@ -24691,13 +24688,12 @@
       "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
       "firstSeen": "2026-10-22T20:59:52.372Z",
       "incidentOpenedAt": "2026-10-22T20:59:52.372Z",
-      "lastSeen": "2026-10-28T01:28:37.638Z",
-      "lastNotifiedAt": "2026-10-27T05:05:22.819Z",
-      "lastSurfacedAt": "2026-10-27T05:05:22.819Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-10-28T10:58:13.690Z",
+      "lastNotifiedAt": "2026-10-28T10:58:13.690Z",
+      "lastSurfacedAt": "2026-10-28T10:58:13.690Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 15
+      "linearIdentifier": null
     },
     "land:land/bro-5969-index-bloat-v3": {
       "status": "open",
@@ -26527,20 +26523,17 @@
       "resolvedAt": "2026-10-24T23:11:11.283Z"
     },
     "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
       "firstSeen": "2026-10-24T23:08:26.440Z",
-      "incidentOpenedAt": "2026-10-24T23:08:26.440Z",
-      "lastSeen": "2026-10-27T23:06:30.341Z",
-      "lastNotifiedAt": "2026-10-27T05:05:22.868Z",
-      "lastSurfacedAt": "2026-10-27T05:05:22.868Z",
-      "notifyCount": 3,
+      "incidentOpenedAt": "2026-10-28T10:58:13.723Z",
+      "lastSeen": "2026-10-28T10:58:13.723Z",
+      "lastNotifiedAt": "2026-10-28T10:58:13.723Z",
+      "lastSurfacedAt": "2026-10-28T10:58:13.723Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 13,
-      "resolvedAt": "2026-10-28T00:28:21.416Z",
-      "resolveReason": "live-data test green"
+      "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:196541b4": {
       "status": "resolved",
@@ -28905,6 +28898,19 @@
       "lastSeen": "2026-10-28T10:12:02.509Z",
       "lastNotifiedAt": "2026-10-28T10:12:02.509Z",
       "lastSurfacedAt": "2026-10-28T10:12:02.509Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+      "firstSeen": "2026-10-28T10:58:13.736Z",
+      "incidentOpenedAt": "2026-10-28T10:58:13.736Z",
+      "lastSeen": "2026-10-28T10:58:13.736Z",
+      "lastNotifiedAt": "2026-10-28T10:58:13.736Z",
+      "lastSurfacedAt": "2026-10-28T10:58:13.736Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

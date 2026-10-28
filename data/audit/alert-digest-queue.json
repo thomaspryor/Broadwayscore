@@ -236,5 +236,61 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-28T10:53:43.993Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/bro3887-cache-fix-acceptance.test.mjs::BRO-3887: repo Actions cache stays below the size that evicts the SERP cache",
+    "title": "Live-data test failing: BRO-3887: repo Actions cache stays below the size that evicts the SERP cache (tests/unit/bro3887-cache-fix-acceptance.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"BRO-3887: repo Actions cache stays below the size that evicts the SERP cache\" in tests/unit/bro3887-cache-fix-acceptance.test.mjs is red against the live corpus.\n\nrepo Actions cache is 8.64 GiB; past 10.00 GiB GitHub LRU-evicts every entry, including the KB-sized bd-serp-cache-* that gather-reviews.js relies on, and SERP spend jumps (BRO-3887, BRO-4146). Find the biggest keys: `gh cache list --sort size_in_bytes --limit 20`; scripts/prune-github-actions-cache.js prunes by key prefix.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T10:58:13.691Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/critic-spelling-duplicates-live-data.test.mjs::live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog",
+    "title": "Live-data test failing: live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog (tests/unit/critic-spelling-duplicates-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"live corpus scan: no NEW same-show/same-outlet critic-name near-duplicate beyond the known backlog\" in tests/unit/critic-spelling-duplicates-live-data.test.mjs is red against the live corpus.\n\nnew same-show/same-outlet critic-name near-duplicate(s) found — this is the Markoski/Markosky double-count shape (BRO-4156). Either merge the duplicate files (keep the richer/real-URL record, dedupe criticName to the outlet's own byline spelling), or if this is a genuine two-different-critics collision, add it to KNOWN_BACKLOG/allow-list with a note why.\n+ actual - expected\n\n+ [\n+   [\n+     'an-american-in-paris-west-end-2017',\n+     'independent',\n+     'Zo Anderson',\n+     'Zoë Anderson'\n+   ]\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T10:58:13.708Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked candidate sub-venue slugs found (same class as the West End National Theatre bug): {\n\"signature-theatre\": [\n{\n\"slug\": \"the-pershing-square-signature-theatre-center\",\n\"rawStrings\": [\n\"The Pershing Square Signature Theatre Center\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'signature-theatre': [\n+     {\n+       rawStrings: [\n+         'The Pershing Square Signature Theatre Center'\n+       ],\n+       showCount: 1,\n+       slug: 'the-pershing-square-signature-theatre-center'\n+     }\n+   ]\n+ }\n- {}\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T10:58:13.723Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/venue-complex-live-data.test.mjs::no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug",
+    "title": "Live-data test failing: no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug (tests/unit/venue-complex-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no West End venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\" in tests/unit/venue-complex-live-data.test.mjs is red against the live corpus.\n\nunlinked West End candidate sub-venue slugs: {\n\"national-theatre\": [\n{\n\"slug\": \"dorfman\",\n\"rawStrings\": [\n\"Dorfman\"\n],\n\"showCount\": 2\n},\n{\n\"slug\": \"dorfman-cottesloe\",\n\"rawStrings\": [\n\"Dorfman (Cottesloe)\"\n],\n\"showCount\": 1\n},\n{\n\"slug\": \"lyttelton\",\n\"rawStrings\": [\n\"Lyttelton\"\n],\n\"showCount\": 1\n},\n{\n\"slug\": \"olivier\",\n\"rawStrings\": [\n\"Olivier\"\n],\n\"showCount\": 1\n}\n]\n}\n+ actual - expected\n\n+ {\n+   'national-theatre': [\n+     {\n+       rawStrings: [\n+         'Dorfman'\n+       ],\n+       showCount: 2,\n+       slug: 'dorfman'\n+     },\n+     {\n+       rawStrings: [\n+         'Dorfman (Cottesloe)'\n+       ],\n+       showCount: 1,\n+       slug: 'dorfman-cottesloe'\n+     },\n+     {\n+       rawStrings: [\n+         'Lyttelton'\n+       ],\n+       showCount: 1,\n+       slug: 'lyttelton'\n+     },\n+     {\n+       rawStrings: [\n+         'Olivier'\n+       ],\n+       showCount: 1,\n+       slug: 'olivier'\n+     }\n+   ]\n+ }\n- {}\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T10:58:13.736Z"
   }
 ]
