@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { pendingQueueHealth, MAX_PENDING_ENTRIES, MAX_OLDEST_AGE_DAYS } = require('../../scripts/lib/pending-health');
+const { pendingQueueHealth, heldRowsHealth, MAX_PENDING_ENTRIES, MAX_OLDEST_AGE_DAYS, MAX_HELD_AGE_DAYS } = require('../../scripts/lib/pending-health');
 
 const NOW = Date.parse('2026-10-26T12:00:00Z');
 const day = (n) => new Date(NOW - n * 86400000).toISOString();
@@ -35,7 +35,7 @@ test('the health check reports the same verdict through the real check', () => {
   const { checkCommercialPendingQueue } = require('../../scripts/health-check');
   const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pq-')), 'p.json');
   fs.writeFileSync(f, JSON.stringify(queue(30, 20)));
-  const [res] = checkCommercialPendingQueue({ pendingFile: f, now: NOW });
+  const [res] = checkCommercialPendingQueue({ pendingFile: f, now: NOW }).filter((r) => r.name === 'Commercial pending-review queue');
   assert.equal(res.status, 'error');
   assert.match(res.message, /Over the limit/);
 });
@@ -49,7 +49,31 @@ test('rows held for a person do not count against the queue limits', () => {
   assert.equal(pendingQueueHealth({ shows }).ok, false);
 });
 
-test('a held row left over 60 days still trips the check', () => {
-  const old = new Date(Date.now() - 61 * 86400000).toISOString();
-  assert.equal(pendingQueueHealth({ shows: { a: { researchedAt: old, autoApplyBlocked: 'held' } } }).ok, false);
+// BRO-6471: held rows get their own health row, aged from when they were held, which files a worker card.
+test('a held row is overdue after 7 days held, counted from autoApplyBlockedAt', () => {
+  assert.equal(MAX_HELD_AGE_DAYS, 7);
+  const row = (heldDays) => ({ researchedAt: day(400), autoApplyBlocked: 'recoupment claim: a person must confirm it', autoApplyBlockedAt: day(heldDays) });
+  assert.equal(heldRowsHealth({ shows: { a: row(7) } }, NOW).ok, true, 'researched long ago but held only 7 days');
+  const late = heldRowsHealth({ shows: { a: row(8), b: { researchedAt: day(1) } } }, NOW);
+  assert.equal(late.ok, false);
+  assert.deepEqual(late.overdue, [{ key: 'a', needs: 'recoupment claim: a person must confirm it', heldDays: 8 }]);
+  assert.equal(heldRowsHealth({ shows: { u: { autoApplyBlocked: 'held' } } }, NOW).ok, false, 'an undated held row is overdue');
+  assert.equal(pendingQueueHealth({ shows: { a: row(90) } }, NOW).ok, true, 'held rows never trip the queue row');
+});
+
+test('the held-rows health row names each overdue row and routes it to a worker card', () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { checkCommercialPendingQueue, getPlaybookEntry } = require('../../scripts/health-check');
+  const f = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'pq-')), 'p.json');
+  fs.writeFileSync(f, JSON.stringify({ shows: { 'return-snapshot:x': { autoApplyBlocked: 'held for review: needs a person to edit commercial.json', autoApplyBlockedAt: day(10) } } }));
+  const res = checkCommercialPendingQueue({ pendingFile: f, now: NOW }).find((r) => r.name === 'Commercial: rows held for a person');
+  assert.equal(res.status, 'warn');
+  assert.match(res.message, /return-snapshot:x \(10 days\): held for review/);
+  const entry = getPlaybookEntry(res.name);
+  assert.equal(entry.workerFixable, true);
+  assert.equal(entry.workflow, undefined);
+  assert.match(entry.ownerText, /Nothing is needed from you\.$/);
+  assert.doesNotMatch(entry.workerInstruction, /(^|\n)\s*DECISION NEEDED/);
 });

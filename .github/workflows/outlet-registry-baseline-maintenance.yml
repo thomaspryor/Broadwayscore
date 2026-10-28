@@ -2,7 +2,7 @@ name: Outlet Registry Baseline Maintenance
 on:
   schedule:
     # 07:15 UTC daily — after the 04:00 rebuild so the corpus is fresh, clear
-    # of the 07:00 cron cluster (commercial-pending-review-notify, poll-
+    # of the 07:00 cron cluster (poll-
     # loureviews, recover-wsj-subscriber).
     - cron: '15 7 * * *'
   workflow_dispatch: {}

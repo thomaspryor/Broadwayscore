@@ -104,8 +104,7 @@ function queueTipForReview(pending, { slug, title, changes, confidence, source, 
     title,
     slug,
     ...proposed,
-    // The Linear sync (sync-pending-review-to-linear.js coerceEntry) shows
-    // `reason` on the card, so the tip's provenance is visible to the owner.
+    // `reason` keeps the tip's provenance on the row for the worker who settles it.
     reason: `Reader tip via GitHub issue #${issueNumber}${reasoning ? `: ${reasoning}` : ''}`,
     confidence,
     sources: source ? [{ type: 'tip', url: source, date: at.slice(0, 10) }] : [],

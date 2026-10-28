@@ -4,7 +4,7 @@ name: Commercial Pending Review
 # Friday apply steps only take high-confidence entries. This pass applies ANY entry, whatever its research confidence,
 # whose capitalization / weekly cost a fetched trusted page confirms (scripts/lib/commercial-source-verify.js), moves
 # entries no page confirms to the rejected log (commercial-pending-archive.json) with the reason. Rows only a person
-# can settle stay pending and reach the "Commercial data: pending review" Linear card (commercial-pending-review-notify.yml).
+# can settle stay pending; the daily health check files a worker card for any held past 7 days (BRO-6471).
 # Nothing here emails the owner: BRO-6471 retired that digest because it asked nothing of them. Runs after every
 # deep-research run and daily. The daily health check fails over 25 pending entries or an oldest entry past 14 days.
 #

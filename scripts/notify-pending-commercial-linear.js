@@ -21,8 +21,8 @@
  *     no --notes UPDATE verb (unlike notion-brain's --notes), so unlike the
  *     Notion version this does not rewrite one card's body in place; instead
  *     it leaves an audit trail of how the entry's state changed over time.
- *     Same tradeoff scripts/sync-pending-review-to-linear.js (BRO-3431)
- *     already made — see that file's header;
+ *     Same tradeoff the retired sync-pending-review-to-linear.js (BRO-3431)
+ *     made;
  *   - else create a new issue, parked (never auto-dispatched — this is a
  *     standing human-review queue, not actionable engineering work).
  *

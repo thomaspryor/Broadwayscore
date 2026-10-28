@@ -63,7 +63,7 @@ const MIN_CONFIDENCE = flags['min-confidence'] || 'all';
 const NO_SOURCE_VERIFY = flags['no-source-verify'] === true;
 // BRO-6336: apply any entry (whatever its confidence) whose figures a fetched trusted page confirms. An entry the
 // pages do not confirm moves to the archive with the reason; one a person must settle is stamped autoApplyBlocked
-// and stays pending for the pending-review Linear card. Needs --all and page verification.
+// and stays pending for a worker (health-check "Commercial: rows held for a person"). Needs --all and page verification.
 const VERIFIED_ONLY = flags['verified-only'] === true;
 if (VERIFIED_ONLY && (!APPLY_ALL || NO_SOURCE_VERIFY || SINGLE_SHOW || RELEASE_HELD)) {
   console.log('❌ --verified-only needs --all and cannot be combined with --no-source-verify, --show or --release-held');

@@ -45,7 +45,7 @@ test('cap defers, and an entry with no figure to check falls through to the norm
 
 // BRO-6471: this pass once emailed the owner every held or rejected row. Any new hold type (stale Trickle returns,
 // BRO-6333) flowed straight into that email as "a commercial update ... needs a person to edit commercial.json".
-// None of it was an owner action: held rows go to the pending-review Linear card, rejected ones to the archive.
+// None of it was an owner action: held rows go to a worker card from the health check, rejected ones to the archive.
 test('the daily verified-apply pass sends the owner no email', () => {
   const wf = fs.readFileSync(new URL('../../.github/workflows/commercial-pending-daily.yml', import.meta.url), 'utf8')
     .split('\n').filter((l) => !/^\s*#/.test(l)).join('\n');

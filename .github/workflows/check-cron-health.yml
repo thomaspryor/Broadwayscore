@@ -111,10 +111,6 @@ jobs:
             # newsletter and carries the S1-T5 strict data gate. 192h = weekly
             # cadence + 24h cron-lag cushion (same as commercial-weekly).
             "commercial-friday.yml|192|Commercial Friday Refresh"
-            # Daily 07:00 UTC. If this cron silently dies, pending-review holds go
-            # invisible again — the exact failure mode it was built to fix (S1-T4,
-            # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
-            "commercial-pending-review-notify.yml|36|Commercial Pending Review Notify"
             # BRO-6219: feeds the iOS "Closing date announced" alert. Daily 13:20 UTC;
             # if it dies, no closing alert goes out. 36h = daily cadence + 12h cushion.
             "detect-show-events.yml|36|Detect Show Events"

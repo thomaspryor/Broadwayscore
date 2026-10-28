@@ -77,6 +77,9 @@ function queueStaleReturns(pending, archive, candidates, now = new Date()) {
   pending.shows ||= {};
   let added = 0;
   for (const candidate of candidates) {
+    // BRO-6471: a stale label only needs a look when the estimate says it may have crossed into Windfall. A row
+    // estimated at ~1.03x has nothing for anyone to do, and held rows now file a worker card.
+    if (candidate.estimate?.possibleWindfall !== true) continue;
     const key = `return-snapshot:${candidate.slug}`;
     const same = row => row?.detectedBy === 'return-snapshot-check' && row.slug === candidate.slug && row.snapshotAsOf === candidate.snapshotAsOf;
     const recentlyReviewed = row => same(row) && /^reviewed-/.test(row.archivedReason || '')

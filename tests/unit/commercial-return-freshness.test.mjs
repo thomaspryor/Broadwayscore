@@ -72,7 +72,7 @@ test('grosses only resolve this production and large profits flag a possible cro
 });
 
 test('queue holds cannot auto-apply, preserve other research and deduplicate reruns and reviewed snapshots', () => {
-  const candidates = scan();
+  const candidates = scan().map(c => ({ ...c, estimate: { ...c.estimate, possibleWindfall: true } }));
   const pending = { shows: { example: { notes: 'Existing research', capitalization: 123 } } };
   const first = queueStaleReturns(pending, { shows: {} }, candidates, now);
   assert.equal(first.added, 1);
@@ -85,6 +85,15 @@ test('queue holds cannot auto-apply, preserve other research and deduplicate rer
   assert.equal(queueStaleReturns({ shows: {} }, archive, candidates, now).added, 0);
   const later = new Date('2027-01-26T12:00:00Z');
   assert.equal(queueStaleReturns({ shows: {} }, archive, candidates, later).added, 1, 'a past review cannot suppress checks forever');
-  const crossing = [{ ...candidates[0], estimate: { ...candidates[0].estimate, possibleWindfall: true } }];
-  assert.equal(queueStaleReturns({ shows: {} }, archive, crossing, now).added, 1, 'a newly estimated crossing needs another review');
+  const reviewedBelow = { shows: { example: { ...hold, estimate: { ...hold.estimate, possibleWindfall: false }, archivedReason: 'reviewed-kept', archivedAt: now.toISOString() } } };
+  assert.equal(queueStaleReturns({ shows: {} }, reviewedBelow, candidates, now).added, 1, 'a newly estimated crossing needs another review');
+});
+
+test('a stale label whose estimate stays below 1.5x is listed but not queued for review (BRO-6471)', () => {
+  const below = scan().map(c => ({ ...c, estimate: { ...c.estimate, investorMultiple: 1.03, possibleWindfall: false } }));
+  assert.equal(below.length, 1);
+  const pending = { shows: {} };
+  assert.equal(queueStaleReturns(pending, { shows: {} }, below, now).added, 0);
+  assert.deepEqual(pending.shows, {});
+  assert.equal(queueStaleReturns({ shows: {} }, { shows: {} }, [{ ...below[0], estimate: { ...below[0].estimate, investorMultiple: null, possibleWindfall: null } }], now).added, 0, 'no estimate, nothing to review');
 });

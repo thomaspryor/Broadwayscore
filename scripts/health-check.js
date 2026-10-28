@@ -270,7 +270,13 @@ const AUTO_FIX_PLAYBOOK = [
   // BRO-6336: 180 deep-research results sat unreviewed for four months. The verified auto-apply pass
   // (commercial-pending-daily.yml) should keep the queue near empty; this fires when it does not.
   { match: /^Commercial pending-review queue$/, urgency: 'fix-now', workflow: 'commercial-pending-daily.yml',
-    humanAction: 'Profitability Scorecard research results are piling up unreviewed. The daily automatic check applies what a source page confirms and emails the rest; open the latest "Commercial Pending Review" run to see why entries are stuck.' },
+    humanFallback: 'Profitability Scorecard research results are piling up unreviewed. The daily automatic check, which applies what a source page confirms, is being re-run. Nothing is needed from you.' },
+  // BRO-6471: the owner does not read Linear, so a held row is a worker's job. workerFixable files the card
+  // START-NOW instead of parked. Keep the decision wording mid-sentence (headless-dispatchability.js refuses a
+  // card whose own line starts with it).
+  { match: /^Commercial: rows held for a person$/, urgency: 'this-week', workerFixable: true,
+    ownerText: 'Some Profitability Scorecard research results need a closer look than the automatic check can give. A worker is settling them. Nothing is needed from you.',
+    workerInstruction: 'Settle every row named in the message (data/commercial-pending-review.json). Check each claim against public sources only, never private investor figures. A confirmed figure goes in through a data/pending-fixes plan (node scripts/new-fix-plan.js) or node scripts/apply-commercial-pending.js --release-held=SLUG for a figures-only row; a reader tip (detectedBy github-tip) needs its own independent source first. Then record the outcome with node scripts/review-pending-commercial.js --decisions=FILE (applied, rejected, duplicate or unverifiable, with a reason). Only if a row is truly the owner\'s call, file a separate card that opens with a plain-English DECISION NEEDED question, options and a recommendation, which emails the owner; never leave a row waiting on the owner in Linear.' },
   { match: /^Freshness: commercial\.json$/, urgency: 'low', workflow: 'commercial-weekly.yml',
     humanFallback: 'Commercial data is out of date.' },
   // BRO-6159: advisory only; persistent gaps use the existing alert router.
@@ -2103,6 +2109,7 @@ function checkOutletHealth() {
 // not a ship-blocker) since a first-ever week or a not-yet-run cron
 // legitimately has no file yet.
 // BRO-6336: the pending-review queue must stay small and young. Pure thresholds live in lib/pending-health.js.
+const COMMERCIAL_HELD_ROWS_CHECK = 'Commercial: rows held for a person';
 function checkCommercialPendingQueue({ pendingFile = path.join(DATA_DIR, 'commercial-pending-review.json'), now = Date.now() } = {}) {
   return [
     runCheck('Commercial pending-review queue', () => {
@@ -2115,7 +2122,19 @@ function checkCommercialPendingQueue({ pendingFile = path.join(DATA_DIR, 'commer
       const { formatBacklogLine } = require('./lib/pending-review-backlog');
       return ok
         ? { name, status: 'pass', message: formatBacklogLine(stats) }
-        : { name, status: 'error', message: `${formatBacklogLine(stats)} Over the limit: ${problems.join('; ')}.`, hint: 'Run the Commercial Pending Review workflow; entries it cannot verify are emailed to the owner.' };
+        : { name, status: 'error', message: `${formatBacklogLine(stats)} Over the limit: ${problems.join('; ')}.`, hint: 'Run the Commercial Pending Review workflow; entries no cited page confirms move to the rejected log.' };
+    }),
+    // BRO-6471: rows held for a person go to a worker through this row's card, never to a parked owner card.
+    runCheck(COMMERCIAL_HELD_ROWS_CHECK, () => {
+      const name = COMMERCIAL_HELD_ROWS_CHECK;
+      const { heldRowsHealth, MAX_HELD_AGE_DAYS } = require('./lib/pending-health');
+      if (!fs.existsSync(pendingFile)) return { name, status: 'pass', message: 'No pending file: nothing is held.' };
+      let pending;
+      try { pending = readJSON(pendingFile); } catch (err) { return { name, status: 'error', message: `Failed to parse commercial-pending-review.json: ${err.message}` }; }
+      const { ok, held, overdue } = heldRowsHealth(pending, now);
+      if (ok) return { name, status: 'pass', message: `${held.length} row(s) held for a person, none past ${MAX_HELD_AGE_DAYS} days.` };
+      const list = overdue.slice(0, 20).map((h) => `${h.key} (${h.heldDays == null ? 'undated' : `${h.heldDays} days`}): ${h.needs}`).join('; ');
+      return { name, status: 'warn', message: `${overdue.length} row(s) in data/commercial-pending-review.json held for a person past ${MAX_HELD_AGE_DAYS} days: ${list}${overdue.length > 20 ? '; and more' : ''}.` };
     }),
   ];
 }
@@ -5693,6 +5712,8 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             // BRO-4487: a stable, daily-checked condition. File its card only
             // once it has persisted 3 days; most health rows clear sooner.
             deferFilingHours: 72,
+            // BRO-6471: an entry marked workerFixable is a worker's job, so its card files START-NOW, not parked.
+            ...(entry.workerFixable ? { workerFixable: true } : {}),
             fields: [{ name: 'Check', value: r.name }],
           });
           dispatchedCards[r.name] = result;
