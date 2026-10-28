@@ -1,37 +1,31 @@
 {
-  "updatedAt": "2026-10-28T18:26:33.370Z",
-  "processed": 25,
-  "failed": 16,
-  "successRate": "61.0%",
+  "updatedAt": "2026-10-28T18:52:34.322Z",
+  "processed": 12,
+  "failed": 1,
+  "successRate": "92.3%",
   "tierBreakdown": {
-    "playwright": 7,
-    "amp": 1,
+    "playwright": 10,
+    "amp": 2,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 10
+    "archiveToday": 0,
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-28T18:06:58.768Z",
+      "t": "2026-10-28T18:49:20.634Z",
       "event": "bb-session",
-      "session": "89623341",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "700ef181",
+      "url": "https://www.nytimes.com/2017/12/04/theater/hundred-days-review-shaun-abigail-ben"
     },
     {
-      "t": "2026-10-28T18:06:59.268Z",
+      "t": "2026-10-28T18:49:20.980Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-28T18:11:03.770Z",
-      "event": "bb-session",
-      "session": "cf2d4758",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+      "domain": "nytimes.com"
     }
   ]
 }
