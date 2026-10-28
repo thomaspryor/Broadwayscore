@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T08:25:38.634Z",
+  "timestamp": "2026-10-28T09:09:35.015Z",
   "stats": {
-    "totalReviews": 64480,
-    "alreadyFlagged": 21877,
+    "totalReviews": 64505,
+    "alreadyFlagged": 21890,
     "dateGuardCatches": 234,
-    "directorMismatch": 2472,
+    "directorMismatch": 2476,
     "tvFilmSignals": 1816,
     "londonSignals": 3100,
     "offBroadwaySignals": 579,
     "yearMismatch": 227,
-    "noPublishDate": 5761
+    "noPublishDate": 5770
   },
   "findings": [
     {
@@ -231,6 +231,42 @@
       "publishDate": "2015-06-24",
       "url": "https://www.londonboxoffice.co.uk/news/post/1984-review",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2016",
+      "file": "british-theatre--keith-mckenna.json",
+      "publishDate": "2016-07-01",
+      "url": "https://www.britishtheatreguide.info/reviews/1984-the-playhouse-t-13014",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        }
+      ]
+    },
+    {
+      "showId": "1984-west-end-2016",
+      "file": "londontheatre1--christina-care.json",
+      "publishDate": "2016-06-22",
+      "url": "https://www.londontheatre1.com/reviews/review-of-1984-playhouse-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert icke\" from 1984-2017"
+        },
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
