@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-28T18:48:58.043Z",
-  "total": 471,
-  "armedCount": 461,
+  "generatedAt": "2026-10-28T19:03:44.566Z",
+  "total": 470,
+  "armedCount": 460,
   "refusedCount": 10,
   "byKind": {
     "no-command": 2,
@@ -91,12 +91,21 @@
     }
   ],
   "ownerJudgmentLimbo": {
-    "total": 379,
-    "checked": 379,
+    "total": 374,
+    "checked": 374,
     "complete": true,
     "cards": []
   },
   "missingCheckPaths": [
+    {
+      "id": "BRO-6479",
+      "name": "Cast roles 'Unknown'/'Cast' (107 rows, 25 shows) still feed the former-cast guard as role cues",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6479/cast-roles-unknowncast-107-rows-25-shows-still-feed-the-former-cast",
+      "cmd": "node --test scripts/verify-prior-run-former-cast-sweep.test.mjs tests/unit/former-cast-placeholder-role.test.mjs",
+      "missingPaths": [
+        "tests/unit/former-cast-placeholder-role.test.mjs"
+      ]
+    },
     {
       "id": "BRO-6449",
       "name": "Video templates: apply puzzle-open + closing-question rule to versus/duo/verdict/top5 compositions (BRO-6417 follow-on)",
