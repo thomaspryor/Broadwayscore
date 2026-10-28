@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-27T15:09:32.948Z",
+    "generatedAt": "2026-10-28T09:20:46.889Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 369,
+  "totalGaps": 370,
   "errorSeverity": 261,
-  "warningSeverity": 108,
+  "warningSeverity": 109,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -2408,6 +2408,15 @@
       "extracted": 8,
       "gap": 7,
       "ratio": 0.53,
+      "severity": "warning"
+    },
+    {
+      "showId": "sunset-boulevard-2017",
+      "category": "broadway",
+      "expected": 74,
+      "extracted": 48,
+      "gap": 26,
+      "ratio": 0.65,
       "severity": "warning"
     },
     {
