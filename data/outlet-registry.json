@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-28T12:24:46.202Z",
+    "lastUpdated": "2026-10-28T13:04:31.532Z",
     "version": "2.1.0",
     "lastChange": "BRO-5823: alias the-washington-post/theatre-s-leiter-side, register themetroland + kidsoutandabout"
   },
@@ -8783,7 +8783,10 @@
       ],
       "domain": "matttrueman.co.uk",
       "accessModel": "free",
-      "market": "west-end"
+      "market": "west-end",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-28T13:04:31.532Z"
     },
     "stagebiz": {
       "displayName": "StageBiz",
