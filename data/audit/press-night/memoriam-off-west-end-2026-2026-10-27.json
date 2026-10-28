@@ -6,25 +6,25 @@
   "embargoAt": "2026-10-27T21:00:00.000Z",
   "probe": {
     "startedAt": "2026-10-27T22:02:58.129Z",
-    "endedAt": null,
+    "endedAt": "2026-10-28T03:00:21.572Z",
     "intervalMin": 5,
-    "samples": 12,
+    "samples": 60,
     "failedSamples": 0,
-    "lastSampleAt": "2026-10-27T22:58:01.827Z",
-    "lastOkSampleAt": "2026-10-27T22:58:01.827Z"
+    "lastSampleAt": "2026-10-28T02:58:37.629Z",
+    "lastOkSampleAt": "2026-10-28T02:58:37.629Z"
   },
   "firstLiveAt": "2026-10-27T22:02:58.129Z",
   "firstLiveBaseline": true,
-  "lastLiveAt": "2026-10-27T22:58:01.827Z",
-  "liveCount": 9,
+  "lastLiveAt": "2026-10-27T23:58:25.192Z",
+  "liveCount": 10,
   "liveCountAt": {
     "1h": 8,
-    "2h": null,
+    "2h": 9,
     "6h": null
   },
   "liveCountSampleAt": {
     "1h": "2026-10-27T22:02:58.129Z",
-    "2h": null,
+    "2h": "2026-10-27T23:03:21.862Z",
     "6h": null
   },
   "firstOutletPublishAt": {
@@ -141,6 +141,18 @@
       "prevOkSampleAt": "2026-10-27T22:53:01.424Z",
       "baseline": false,
       "liveNow": true
+    },
+    {
+      "key": "theatre and tonic|annie",
+      "outlet": "Theatre and Tonic",
+      "critic": "Annie",
+      "tier": 3,
+      "publishAt": "2026-10-27",
+      "publishPrecision": "approx",
+      "firstLiveAt": "2026-10-27T23:58:25.192Z",
+      "prevOkSampleAt": "2026-10-27T23:53:24.496Z",
+      "baseline": false,
+      "liveNow": true
     }
   ],
   "dropped": [],
@@ -155,10 +167,21 @@
       "liveCount": 9,
       "fetchedAt": "2026-10-27T23:00:20.946Z",
       "censusNote": "archive only"
+    },
+    "end": {
+      "status": "no-census-yet",
+      "source": null,
+      "count": 0,
+      "covered": null,
+      "coverage": null,
+      "missing": [],
+      "liveCount": 10,
+      "fetchedAt": "2026-10-28T03:00:20.427Z",
+      "censusNote": "archive only"
     }
   },
   "fileState": {
-    "capturedAt": "2026-10-27T23:00:21.771Z",
+    "capturedAt": "2026-10-28T03:00:21.515Z",
     "files": [
       {
         "file": "all-that-dazzles-uk--sam-woodward.json",
@@ -194,12 +217,34 @@
         "syndicatedUnder": null
       },
       {
+        "file": "frostmagazine--unknown.json",
+        "outletId": "frostmagazine",
+        "outlet": "frostmagazine",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-28T02:52:49.967Z",
+        "publishDate": null,
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
         "file": "jewishnews--jonathan-baz.json",
         "outletId": "jewishnews",
         "outlet": "Jewishnews",
         "critic": "Jonathan Baz",
         "firstSeenAt": "2026-10-27T13:51:36.817Z",
         "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "jonathan-baz--unknown.json",
+        "outletId": "jonathan-baz",
+        "outlet": "Jonathan Baz",
+        "critic": "Unknown",
+        "firstSeenAt": "2026-10-28T02:52:59.669Z",
+        "publishDate": null,
         "includable": true,
         "reason": null,
         "syndicatedUnder": null
@@ -266,8 +311,8 @@
         "critic": "Eleanor Bywater",
         "firstSeenAt": "2026-10-27T22:10:37.049Z",
         "publishDate": "2026-10-27",
-        "includable": false,
-        "reason": "noTextOrScoreSignal",
+        "includable": true,
+        "reason": null,
         "syndicatedUnder": null
       },
       {
@@ -288,8 +333,8 @@
         "critic": "Clare Doyle",
         "firstSeenAt": "2026-10-27T21:19:09.447Z",
         "publishDate": "2026-10-27",
-        "includable": true,
-        "reason": null,
+        "includable": false,
+        "reason": "duplicateOf",
         "syndicatedUnder": null
       },
       {
@@ -298,6 +343,17 @@
         "outlet": "The Reviews Hub",
         "critic": "The Reviews Hub - London",
         "firstSeenAt": "2026-10-27T21:19:09.447Z",
+        "publishDate": "2026-10-27",
+        "includable": true,
+        "reason": null,
+        "syndicatedUnder": null
+      },
+      {
+        "file": "viewfromthegods--simon-jenner.json",
+        "outletId": "viewfromthegods",
+        "outlet": "View From The Gods",
+        "critic": "Simon Jenner",
+        "firstSeenAt": "2026-10-28T02:52:54.588Z",
         "publishDate": "2026-10-27",
         "includable": true,
         "reason": null,
