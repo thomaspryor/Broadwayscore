@@ -45,10 +45,34 @@ function decideObHistoricalEntry(entry, { todayIso, minClosedDays = BACKFILL_CLO
  * claim about either, so Playbill's value is a fact to take, not a conflict.
  * Without this every Playbill-tagged revival reads as a mismatch.
  */
-const STRUCTURAL_FIELDS = new Set(['isRevival', 'type']);
+const STRUCTURAL_FIELDS = new Set(['isRevival', 'type', 'showType']);
+/**
+ * BRO-6470: TheaterMania's opening_date is often the first preview (Kimberly
+ * Akimbo, Atlantic 2021: TM 11-05, Playbill previews 11-05, opens 12-08), and
+ * the entry's dates are taken from Playbill anyway. So an opening date (or its
+ * year) inside Playbill's preview-to-opening span is the same run, and once the
+ * opening agrees a closing-date gap is TM's loose closing, not another production.
+ */
+function isPreviewSpanDate(d, dates) {
+  if (!d || !dates || !dates.openingDate) return false;
+  const from = dates.firstPreview || dates.openingDate;
+  return d >= from && d <= dates.openingDate;
+}
 function isStructuralOnlyMismatch(r) {
-  return !!r && r.result === 'mismatch' && Array.isArray(r.mismatches) && r.mismatches.length > 0
-    && r.mismatches.every(m => STRUCTURAL_FIELDS.has(m.field));
+  if (!r || r.result !== 'mismatch' || !Array.isArray(r.mismatches) || r.mismatches.length === 0) return false;
+  const dates = r.parsed && r.parsed.dates;
+  const opening = r.mismatches.find(m => m.field === 'openingDate');
+  const openingInSpan = !!opening && isPreviewSpanDate(opening.shows, dates);
+  return r.mismatches.every(m => {
+    if (STRUCTURAL_FIELDS.has(m.field)) return true;
+    if (m.field === 'openingDate') return openingInSpan;
+    if (m.field === 'opening-year') {
+      const ys = [dates && dates.firstPreview, dates && dates.openingDate].filter(Boolean).map(d => Number(d.slice(0, 4)));
+      return ys.includes(Number(m.shows));
+    }
+    if (m.field === 'closingDate') return !!dates && !!dates.openingDate && (openingInSpan || !opening);
+    return false;
+  });
 }
 
 /**

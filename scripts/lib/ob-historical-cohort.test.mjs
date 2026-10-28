@@ -201,3 +201,21 @@ test('selectPromotable: two same-year runs both new in one batch get distinct id
   assert.deepEqual(skipped, []);
   assert.deepEqual(toPromote.map(e => e.id), ['prince-faggot-off-broadway-2025', 'prince-faggot-playwrights-horizons-off-broadway-2025']);
 });
+
+test('isStructuralOnlyMismatch (BRO-6470): a TM preview date inside Playbill\'s preview-to-opening span is the same run', () => {
+  const dates = { firstPreview: '2021-11-05', openingDate: '2021-12-08', closingDate: '2022-01-15' };
+  // Kimberly Akimbo, Atlantic 2021, as validateOne reported it.
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [
+    { field: 'openingDate', shows: '2021-11-05', playbill: '2021-12-08' }, { field: 'isRevival' },
+  ] }), true);
+  // An opening outside the span is still a conflict, and so is a closing gap riding on it.
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [
+    { field: 'openingDate', shows: '2021-09-01', playbill: '2021-12-08' }, { field: 'closingDate', shows: '2021-10-01' },
+  ] }), false);
+  // A closing gap alone (the opening agreed) is TM's loose closing date.
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'closingDate', shows: '2021-01-08' }] }), true);
+  // Year: only the run's own preview/opening year is tolerated; venue never is.
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2021, playbill: 2022 }] }), true);
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2019, playbill: 2022 }] }), false);
+  assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'venue' }] }), false);
+});

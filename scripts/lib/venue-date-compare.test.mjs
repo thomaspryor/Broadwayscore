@@ -19,6 +19,7 @@ const {
   missingUrlOutcome, serpQueryCompleted, TRANSIENT_PRIOR_RESULTS, provisionalPriorityTier,
   resolveLastDefinitive, blocksOnDeferral,
   buildAuditResults, showFingerprint, classifyComparison,
+  urlYears,
 } = require('./venue-date-compare.js');
 const { parseTitleVenueYear } = require('../validate-show-venue.js');
 
@@ -1003,4 +1004,23 @@ test('BRO-5975: undated announced show is not year-mismatched against a page for
 test('BRO-5975 review: one-word and generic room labels are not venue variants', async () => {
   const { venueVariantMatch } = await import('./venue-date-compare.js');
   assert.ok(!venueVariantMatch('Studio', 'Studio Theatre @ Theatre Row'));
+});
+
+// BRO-6470: real 2021 pages that read as mismatches before the fix.
+test('compareShow: a season-range page (-2021-2022) accepts a fall-2021 opening', () => {
+  const url = 'https://playbill.com/production/assassinsclassic-stage-company-lynn-f-angelson-theater-2021-2022';
+  assert.deepEqual(urlYears(url), [2021, 2022]);
+  const show = { id: 'assassins-2021', title: 'Assassins', venue: 'Classic Stage Company', category: 'off-broadway', openingDate: '2021-11-14', closingDate: '2022-01-25' };
+  const parsed = { titleParse: { venue: 'Classic Stage Company/Lynn F. Angelson Theater', market: null }, dates: { firstPreview: '2021-11-02', openingDate: '2021-11-14', closingDate: '2022-01-25' } };
+  const { mismatches } = compareShow(show, parsed, url);
+  assert.deepEqual(mismatches.map(m => m.field), []);
+});
+
+test('compareShow: a season page still flags a year outside its season, and single-year slugs are unchanged', () => {
+  const url = 'https://playbill.com/production/assassinsclassic-stage-company-lynn-f-angelson-theater-2021-2022';
+  const show = { id: 'assassins-2019', title: 'Assassins', venue: 'Classic Stage Company', category: 'off-broadway', openingDate: '2019-11-14' };
+  const { mismatches } = compareShow(show, { titleParse: { venue: 'Classic Stage Company', market: null }, dates: {} }, url);
+  assert.deepEqual(mismatches.map(m => m.field), ['opening-year']);
+  assert.deepEqual(urlYears('https://playbill.com/production/a-sherlock-carol-off-broadway-new-world-stages-stage-3-2021'), [2021]);
+  assert.deepEqual(urlYears('https://playbill.com/production/1984-hudson-theatre-2024'), [2024]);
 });

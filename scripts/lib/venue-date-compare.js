@@ -28,7 +28,8 @@ function venueVariantMatch(showVenue, pageVenue) {
   // A one-word label ("Studio") would match any house's room of that name.
   if (showVenue.trim().split(/\s+/).length < 2) return false;
   if (INSTITUTION_PARENTS.some(p => p.show.test(showVenue.trim()) && p.page.test(pageVenue.trim()))) return true;
-  const parts = String(pageVenue).split(/\s+@\s+/).map(x => x.trim()).filter(Boolean);
+  // "Classic Stage Company/Lynn F. Angelson Theater": company and house, slash-joined (BRO-6470).
+  const parts = String(pageVenue).split(/\s+@\s+|\s*\/\s*/).map(x => x.trim()).filter(Boolean);
   const roomless = String(pageVenue).replace(/\s+(stage|studio|theat(?:er|re)|room)\s+(?:\d+|[a-z]|one|two|three|four|five|six)$/i, '').trim();
   return [...parts, roomless].some(c => c !== pageVenue && venuesMatch(showVenue, c));
 }
@@ -44,6 +45,16 @@ function daysBetween(a, b) {
 function urlYear(url) {
   const m = url.match(/-(\d{4})(?:[\/?#]|$)/);
   return m ? parseInt(m[1], 10) : null;
+}
+
+// Older Playbill pages end in the SEASON, "-2021-2022" (BRO-6470): urlYear reads
+// only the second year, so every June-December opening read as a year off. A
+// consecutive pair is a season and either year is the page's year.
+function urlYears(url) {
+  const m = url.match(/-(\d{4})-(\d{4})(?:[\/?#]|$)/);
+  if (m && parseInt(m[2], 10) === parseInt(m[1], 10) + 1) return [parseInt(m[1], 10), parseInt(m[2], 10)];
+  const y = urlYear(url);
+  return y ? [y] : [];
 }
 
 /**
@@ -187,7 +198,8 @@ function compareShow(show, parsed, playbillUrl) {
   }
 
   // Year: prefer URL year (always present); cross-check with title year.
-  const pbYear = urlYear(playbillUrl) || parsed.titleParse?.year || null;
+  const pbYears = urlYears(playbillUrl);
+  const pbYear = pbYears[pbYears.length - 1] || parsed.titleParse?.year || null;
   const showYear = (() => {
     if (show.openingDate) return parseInt(show.openingDate.slice(0, 4), 10);
     const idy = (show.id || '').match(/\d{4}/);
@@ -199,8 +211,8 @@ function compareShow(show, parsed, playbillUrl) {
   const pageRunClosed = !show.openingDate && ['announced', 'upcoming'].includes(show.status)
     && parsed.dates?.closingDate && parsed.dates.closingDate < new Date().toISOString().slice(0, 10);
   // The page cannot validate this show either way, so say so: venue-unverified, not a clean match.
-  if (pageRunClosed && pbYear && showYear && pbYear !== showYear) venueCheck = 'unverified';
-  if (pbYear && showYear && pbYear !== showYear && !pageRunClosed) {
+  if (pageRunClosed && pbYear && showYear && pbYear !== showYear && !pbYears.includes(showYear)) venueCheck = 'unverified';
+  if (pbYear && showYear && pbYear !== showYear && !pbYears.includes(showYear) && !pageRunClosed) {
     record({ field: 'opening-year', shows: showYear, playbill: pbYear });
   }
 
@@ -729,6 +741,7 @@ module.exports = {
   DATE_DELTA_DAYS,
   daysBetween,
   urlYear,
+  urlYears,
   findCorroboratingPriorRun,
   compareShow,
   classifyComparison,
