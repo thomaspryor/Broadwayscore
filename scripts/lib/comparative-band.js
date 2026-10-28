@@ -27,6 +27,8 @@
 
 'use strict';
 
+const { UNTRUSTED_REVIEW_INSTRUCTIONS, frameReviewText } = require('./llm-review-prompt');
+
 /**
  * Build the comparative within-band prompt for a group of same-band reviews.
  *
@@ -53,11 +55,13 @@ function buildComparativeBandPrompt(reviews, band, opts = {}) {
       // Cap each review so a large group stays within the model's context and
       // the verdict-bearing prose (which leads) is always included.
       const body = String(r.text || '').slice(0, 4000);
-      return `### id: ${r.id}\nOutlet: ${label}\n"""\n${body}\n"""`;
+      return `### id: ${r.id}\nOutlet: ${label}\n${frameReviewText(body)}`;
     })
     .join('\n\n');
 
   return `You are a theater critic review scorer for ${opts.marketLabel || 'West End'} shows.
+
+${UNTRUSTED_REVIEW_INSTRUCTIONS}
 
 You are given ${reviews.length} reviews of the SAME production. ${starsLine}
 

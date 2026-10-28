@@ -105,6 +105,10 @@ const INCLUSION_FILES = [
 // return: when one of these changes, main() says so instead of implying the
 // replay measured it.
 const LLM_INPUT_FILES = [
+  // Prompt framing changes need a paid A/B; stored scores cannot replay them.
+  'scripts/llm-scoring/config.ts',
+  'scripts/lib/llm-review-prompt.js',
+  'scripts/lib/comparative-band.js',
   'scripts/lib/text-quality.js',
   // BRO-2610: text-quality.js strips and judges text with content-quality.js's
   // TRUNCATION_SIGNALS; a loose pattern there cut real reviews short before

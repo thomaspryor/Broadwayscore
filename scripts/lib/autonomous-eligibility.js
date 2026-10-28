@@ -215,6 +215,9 @@ const EXCLUDED_FILES = new Set([
   'scripts/lib/excerpt-validation.js',
   // scoring-delta LLM_INPUT_FILES (BRO-2609): they shape the text the LLM
   // scorer reads, and the replay cannot measure an edit to them.
+  'scripts/llm-scoring/config.ts',
+  'scripts/lib/llm-review-prompt.js',
+  'scripts/lib/comparative-band.js',
   'scripts/lib/text-quality.js',
   'scripts/lib/text-cleaning.js',
   'scripts/llm-scoring/input-builder.ts',

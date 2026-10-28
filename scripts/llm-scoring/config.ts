@@ -9,6 +9,8 @@
 
 import { FewShotExample } from './types';
 
+const { UNTRUSTED_REVIEW_INSTRUCTIONS, buildReviewPrompt } = require('../lib/llm-review-prompt');
+
 // ========================================
 // SCORING SCALE DEFINITIONS
 // ========================================
@@ -306,6 +308,8 @@ export const PROMPT_VERSION_CANDIDATE = PROMPT_VERSION;
  */
 export const SYSTEM_PROMPT = `You are an expert theater review analyst for Broadway Scorecard, a review aggregation site. Your task is to analyze review text and assign a score from 0-100 that reflects how strongly the critic recommends seeing the show.
 
+${UNTRUSTED_REVIEW_INSTRUCTIONS}
+
 ## Scoring Scale (Recommendation Strength)
 
 Score what the critic is RECOMMENDING, not just their emotional reaction:
@@ -359,6 +363,8 @@ Reasoning: ${ex.reasoning}
 // ========================================
 
 export const SYSTEM_PROMPT_V5 = `You are a theater critic review scorer for Broadway and West End shows. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
+
+${UNTRUSTED_REVIEW_INSTRUCTIONS}
 
 ## Step 0: Is This Text Scoreable?
 
@@ -510,10 +516,12 @@ export const SYSTEM_PROMPT_V5_STRUCTURAL = SYSTEM_PROMPT_V5;
 // Fixed 2026-04-23 (Notion 34b637c5-416f-81ad-8afb-e39b9de9e926).
 export const SCORING_PROMPT_V5 = `Score this theater review.
 
+${UNTRUSTED_REVIEW_INSTRUCTIONS}
+
 {context}
 
 ## Review Text
-"{reviewText}"
+{reviewText}
 
 Respond with ONLY the JSON object.`;
 
@@ -521,9 +529,7 @@ Respond with ONLY the JSON object.`;
  * Build the V5 prompt for a review
  */
 export function buildPromptV5(reviewText: string, context: string = ''): string {
-  return SCORING_PROMPT_V5
-    .replace('{reviewText}', reviewText)
-    .replace('{context}', context);
+  return buildReviewPrompt(SCORING_PROMPT_V5, reviewText, context);
 }
 
 // ========================================
@@ -674,6 +680,8 @@ Do NOT cluster scores in the 80-87 zone. The 0-100 range is real — use it.
 
 const SYSTEM_PROMPT_V6_BASE = `You are a theater critic review scorer for Broadway and West End shows. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
 
+${UNTRUSTED_REVIEW_INSTRUCTIONS}
+
 ## Step 0: Is This Text Scoreable?
 
 Before scoring, check if this text is actually a scoreable review of the target show. If ANY of the following apply, DO NOT score — return a rejection instead:
@@ -812,9 +820,7 @@ export const {
  * Same shape as buildPromptV5 — context + reviewText.
  */
 export function buildPromptV6(reviewText: string, context: string = ''): string {
-  return SCORING_PROMPT_V5
-    .replace('{reviewText}', reviewText)
-    .replace('{context}', context);
+  return buildPromptV5(reviewText, context);
 }
 
 // ========================================
@@ -828,8 +834,10 @@ export function buildPromptV6(reviewText: string, context: string = ''): string 
  */
 export const SCORING_PROMPT_TEMPLATE = `Analyze this Broadway review and provide a comprehensive scoring.
 
+${UNTRUSTED_REVIEW_INSTRUCTIONS}
+
 ## Review Text
-"{reviewText}"
+{reviewText}
 
 ## Your Task
 
@@ -867,7 +875,7 @@ Respond ONLY with the JSON object, no other text.`;
  * Build the full prompt for a review
  */
 export function buildPrompt(reviewText: string): string {
-  return SCORING_PROMPT_TEMPLATE.replace('{reviewText}', reviewText);
+  return buildReviewPrompt(SCORING_PROMPT_TEMPLATE, reviewText);
 }
 
 /**
