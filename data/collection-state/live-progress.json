@@ -1,19 +1,42 @@
 {
-  "updatedAt": "2026-10-28T20:43:28.137Z",
-  "processed": 13,
-  "failed": 1,
-  "successRate": "92.9%",
+  "updatedAt": "2026-10-28T21:54:33.704Z",
+  "processed": 75,
+  "failed": 12,
+  "successRate": "86.2%",
   "tierBreakdown": {
-    "playwright": 8,
-    "amp": 0,
-    "browserbase": 0,
+    "playwright": 49,
+    "amp": 4,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 2,
+    "scrapingdog": 6,
+    "scrapingbee": 3,
     "brightdata": 0,
-    "archiveToday": 0,
-    "archive": 3
+    "archiveToday": 2,
+    "archive": 19
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-28T21:28:30.735Z",
+      "event": "bb-session",
+      "session": "8c18e1a8",
+      "url": "https://www.wsj.com/articles/a-case-for-the-existence-of-god-samuel-d-hunter-kyl"
+    },
+    {
+      "t": "2026-10-28T21:28:31.067Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T21:34:32.332Z",
+      "event": "bb-session",
+      "session": "6d102e06",
+      "url": "https://www.wsj.com/opinion/harmony-a-new-musical-barry-manilow-comedian-harmoni"
+    },
+    {
+      "t": "2026-10-28T21:34:32.672Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
