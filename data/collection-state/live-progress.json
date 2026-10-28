@@ -1,37 +1,42 @@
 {
-  "updatedAt": "2026-10-28T15:27:06.899Z",
-  "processed": 73,
-  "failed": 47,
-  "successRate": "60.8%",
+  "updatedAt": "2026-10-28T15:31:06.205Z",
+  "processed": 8,
+  "failed": 0,
+  "successRate": "100.0%",
   "tierBreakdown": {
-    "playwright": 44,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 1,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
-    "archiveToday": 14,
-    "archive": 15
+    "archiveToday": 0,
+    "archive": 3
   },
   "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-10-28T15:17:36.451Z",
+      "t": "2026-10-28T15:29:54.756Z",
       "event": "bb-session",
-      "session": "2968c6ac",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "54d24939",
+      "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
     },
     {
-      "t": "2026-10-28T15:23:30.757Z",
-      "event": "bb-session",
-      "session": "97d5a7f1",
-      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
-    },
-    {
-      "t": "2026-10-28T15:23:31.549Z",
+      "t": "2026-10-28T15:29:55.517Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T15:30:14.540Z",
+      "event": "bb-session",
+      "session": "d243a1e1",
+      "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
+    },
+    {
+      "t": "2026-10-28T15:30:15.225Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
