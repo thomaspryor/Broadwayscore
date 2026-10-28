@@ -6777,26 +6777,24 @@
       "resolveReason": "absent"
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "incidentOpenedAt": "2026-10-26T13:12:15.094Z",
-      "lastSeen": "2026-10-26T13:12:15.094Z",
-      "lastNotifiedAt": "2026-10-26T13:12:15.094Z",
+      "incidentOpenedAt": "2026-10-28T05:14:28.289Z",
+      "lastSeen": "2026-10-28T05:14:28.289Z",
+      "lastNotifiedAt": "2026-10-28T05:14:28.289Z",
       "lastSurfacedAt": null,
-      "notifyCount": 16,
+      "notifyCount": 17,
       "cardId": null,
-      "linearIdentifier": "BRO-6281",
+      "linearIdentifier": "BRO-6452",
       "dispatch": {
-        "requestedAt": "2026-10-26T02:30:00.905Z",
+        "requestedAt": "2026-10-28T05:14:28.289Z",
         "mode": "dispatch-at-filing",
-        "runId": "40256915379",
-        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40256915379"
+        "runId": "40634589536",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
-      "absentRunIds": [],
-      "resolvedAt": "2026-10-26T14:03:16.592Z",
-      "resolveReason": "job-green"
+      "absentRunIds": []
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "resolved",
@@ -28803,6 +28801,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:TypeScript Check:408f1861": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: TypeScript Check / tsc — scripts/llm-scoring/",
+      "firstSeen": "2026-10-28T05:14:26.134Z",
+      "incidentOpenedAt": "2026-10-28T05:14:26.134Z",
+      "lastSeen": "2026-10-28T05:14:26.134Z",
+      "lastNotifiedAt": "2026-10-28T05:14:26.134Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6451",
+      "dispatch": {
+        "requestedAt": "2026-10-28T05:14:26.134Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40634589536",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
+      }
     }
   }
 }
