@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6450-we-2015-16-b",
   "planId": "e2507c5c-1007-4b8c-aec4-a144854995bc",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-27T23:55:49.868Z",
   "submitter": {
     "name": null,
@@ -322,5 +322,64 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T01:23:36.997Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added mrs-henderson-presents-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added motown-the-musical-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added how-the-other-half-loves-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-comedy-about-a-bank-robbery-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cyprus-avenue-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-taming-of-the-shrew-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added all-that-fall-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added aladdin-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-truth-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added 1984-west-end-2016"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dead-funny-west-end-2016"
+    }
+  ],
+  "executedIn": "ci"
 }
