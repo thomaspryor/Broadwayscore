@@ -131,6 +131,8 @@ on:
       # BRO-6018: CLI + sibling scripts/*.test.mjs; a solo edit would otherwise trigger ZERO CI.
       - 'scripts/audit-verified-miss-presence.js'
       - 'scripts/audit-copied-aggregator-stars.js'
+      # tests/unit/audit-malformed-review-urls.test.mjs names this CLI (audit-toplevel-script-test-yml-coverage).
+      - 'scripts/audit-malformed-review-urls.js'
       - 'scripts/audit-multi-verdict-stars.js'
       # tests/unit/run-contamination.test.mjs requires class2/3/5 from this audit (BRO-5261).
       - 'scripts/audit-run-contamination.js'

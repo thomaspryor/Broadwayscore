@@ -5,8 +5,8 @@ import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { isWellFormedReviewUrl, recoverEmbeddedUrl, classifyUrlField } = require('./lib/malformed-review-url.js');
-const { findMalformed, findShippedMalformed } = require('./audit-malformed-review-urls.js');
+const { isWellFormedReviewUrl, recoverEmbeddedUrl, classifyUrlField } = require('../../scripts/lib/malformed-review-url.js');
+const { findMalformed, findShippedMalformed } = require('../../scripts/audit-malformed-review-urls.js');
 
 test('rejects urls lacking a dotted host or absolute http(s) form', () => {
   for (const u of ['/people/Jesse-Green/', '../reviews/x.html', '/article/BWW-Review-X', 'https://So', 'https://The%20show%20is%20a%20triple-decker', 'ftp://a.com/x', 'https://a.com/x y']) {
@@ -42,7 +42,7 @@ test('audit finds malformed files and shipped rows', () => {
 });
 
 test('review-write-guard refuses to store text or a relative path as a url', () => {
-  const { safeWriteReview } = require('./lib/review-write-guard.js');
+  const { safeWriteReview } = require('../../scripts/lib/review-write-guard.js');
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5162-guard-'));
   const base = { showId: 'some-show-2020', outletId: 'newsday', criticName: 'A B', fullText: 'x'.repeat(200) };
   const cases = [
