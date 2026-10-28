@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T10:01:35.220Z",
+  "timestamp": "2026-10-28T10:25:29.026Z",
   "stats": {
-    "totalReviews": 64761,
-    "alreadyFlagged": 21897,
+    "totalReviews": 64762,
+    "alreadyFlagged": 21903,
     "dateGuardCatches": 234,
-    "directorMismatch": 2486,
-    "tvFilmSignals": 1817,
-    "londonSignals": 3112,
+    "directorMismatch": 2494,
+    "tvFilmSignals": 1816,
+    "londonSignals": 3115,
     "offBroadwaySignals": 579,
     "yearMismatch": 227,
-    "noPublishDate": 5683
+    "noPublishDate": 5657
   },
   "findings": [
     {
@@ -2546,6 +2546,118 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"des mcanuff\" from aint-too-proud-2019"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "daily-mail--quentin-letts.json",
+      "score": null,
+      "publishDate": "2016-06-16",
+      "url": "https://www.dailymail.com/tvshowbiz/article-3643970/Turbans-belly-buttons-Disney-navel-revue-QUENTIN-LETTS-night-review-Aladdin.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "financialtimes--ian-shuttleworth.json",
+      "score": null,
+      "publishDate": "2016-06-15",
+      "url": "https://www.ft.com/content/430abbb0-32e0-11e6-bda0-04585c31b153",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": "June 15th, 2016",
+      "url": "https://www.theguardian.com/stage/2016/jun/15/aladdin-review-disney-musical-west-end-prince-edward-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "independent--paul-taylor.json",
+      "score": 66,
+      "publishDate": "2016-06-15",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/aladdin-prince-edward-theatre-review-its-the-moments-of-mischief-that-charm-jade-ewen-sugababes-a7083381.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "londontheatre1--chris-omaweng.json",
+      "score": null,
+      "publishDate": "2016-06-15",
+      "url": "https://www.londontheatre1.com/reviews/musical/aladdin-prince-edward-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2016-06-16",
+      "url": "https://www.standard.co.uk/go/london/theatre/aladdin-theatre-review-sheer-genieous-at-glittering-trevor-dion-nicholas-steals-the-show-a3273276.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 54,
+      "publishDate": "2016-06-16",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/disneys-aladdin-at-the-prince-edward-makes-you-pine-for-panto/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "aladdin-west-end-2016",
+      "file": "thestage--mark-shenton.json",
+      "score": null,
+      "publishDate": "2016-06-15",
+      "url": "https://www.thestage.co.uk/reviews/2016/aladdin-review-at-prince-edward-theatre-london/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
         }
       ]
     },
@@ -15081,20 +15193,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "elyria-off-broadway-2023",
-      "file": "lighting-and-sound-america--david-barbour.json",
-      "score": null,
-      "publishDate": "March 8th, 2023",
-      "url": null,
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -62826,6 +62924,20 @@
       ]
     },
     {
+      "showId": "a-christmas-carol-west-end-2015",
+      "file": "standard--henry-hitchings.json",
+      "score": null,
+      "publishDate": "2015-12-10",
+      "url": "https://www.standard.co.uk/culture/theatre/a-christmas-carol-theatre-review-inspired-christmas-classic-falls-just-short-of-a-cracker-a3134321.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
       "showId": "a-christmas-carol-west-end-2023",
       "file": "all-that-dazzles-uk--unknown.json",
       "score": 95,
@@ -78841,19 +78953,6 @@
       "score": 97,
       "publishDate": "2017-01-03",
       "url": "https://www.londonboxoffice.co.uk/news/post/hedda-gabler-review",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "hedda-gabler-west-end-2016",
-      "file": "the-spectator-uk--lloyd-evans.json",
-      "publishDate": "2017-01-07",
-      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -100225,6 +100324,20 @@
     },
     {
       "showId": "the-flick-west-end-2016",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2016-05-04",
+      "url": "https://www.theguardian.com/stage/theatreblog/2016/may/04/the-flick-annie-bakers-play-about-cinema-is-really-a-love-letter-to-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-flick-west-end-2016",
       "file": "london-box-office--nastazja-domaradzka.json",
       "score": 60,
       "publishDate": "2016-04-25",
@@ -100241,6 +100354,20 @@
       "showId": "the-flick-west-end-2016",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 97,
+      "publishDate": "2016-04-20",
+      "url": "https://www.whatsonstage.com/news/the-flick-dorfman-national-theatre_40237/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "the-flick-west-end-2016",
+      "file": "whatsonstage--unknown.json",
+      "score": null,
       "publishDate": "2016-04-20",
       "url": "https://www.whatsonstage.com/news/the-flick-dorfman-national-theatre_40237/",
       "findings": [
@@ -105631,6 +105758,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-war-of-the-worlds-west-end-2016",
+      "file": "express-uk--michael-arditti.json",
+      "score": null,
+      "publishDate": "2016-02-28",
+      "url": "https://www.express.co.uk/entertainment/theatre/647830/Theatre-reviews-The-War-Of-The-Worlds-The-Encounter-and-The-Patriotic-Traitor",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
