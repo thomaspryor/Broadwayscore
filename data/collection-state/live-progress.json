@@ -1,65 +1,109 @@
 {
-  "updatedAt": "2026-10-28T14:26:01.479Z",
-  "processed": 27,
-  "failed": 18,
-  "successRate": "60.0%",
+  "updatedAt": "2026-10-28T14:27:44.448Z",
+  "processed": 356,
+  "failed": 173,
+  "successRate": "67.3%",
   "tierBreakdown": {
-    "playwright": 17,
+    "playwright": 177,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archiveToday": 5,
-    "archive": 5
+    "scrapingdog": 26,
+    "scrapingbee": 6,
+    "brightdata": 6,
+    "archiveToday": 33,
+    "archive": 110
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 0,
   "recentActivity": [
     {
-      "t": "2026-10-28T13:50:46.497Z",
+      "t": "2026-10-28T11:37:44.829Z",
       "event": "bb-session",
-      "session": "aaa3f415",
-      "url": "https://www.wsj.com/articles/a-bright-new-boise-review-fervent-faith-of-a-once-a"
+      "session": "86dc73c5",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-man"
     },
     {
-      "t": "2026-10-28T13:50:47.025Z",
+      "t": "2026-10-28T11:37:45.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T11:53:11.271Z",
+      "event": "bb-session",
+      "session": "e757cd66",
+      "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
+    },
+    {
+      "t": "2026-10-28T11:53:11.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T11:53:28.168Z",
+      "event": "bb-session",
+      "session": "2cae4815",
+      "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
+    },
+    {
+      "t": "2026-10-28T11:53:28.443Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:53:10.140Z",
+      "event": "bb-session",
+      "session": "35a7f660",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-28T11:53:10.810Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-10-28T13:51:05.124Z",
+      "t": "2026-10-28T11:55:17.825Z",
       "event": "bb-session",
-      "session": "34a8178a",
-      "url": "https://www.wsj.com/articles/the-wanderers-review-a-movie-star-distraction-e236b"
+      "session": "7a1d4dfb",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
     },
     {
-      "t": "2026-10-28T13:51:05.572Z",
+      "t": "2026-10-28T11:58:00.253Z",
+      "event": "bb-session",
+      "session": "02f1b00a",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-28T11:58:00.880Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-28T11:54:48.620Z",
+      "event": "bb-session",
+      "session": "20f18c53",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
+    },
+    {
+      "t": "2026-10-28T11:58:04.686Z",
+      "event": "bb-session",
+      "session": "0f9279ff",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-28T11:58:05.509Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
     },
     {
-      "t": "2026-10-28T13:52:23.100Z",
+      "t": "2026-10-28T11:58:16.586Z",
       "event": "bb-session",
-      "session": "50da13b8",
-      "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
+      "session": "82f26bbc",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
     },
     {
-      "t": "2026-10-28T13:52:23.533Z",
+      "t": "2026-10-28T11:58:17.402Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-28T14:08:08.507Z",
-      "event": "bb-session",
-      "session": "67c7be0e",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
-    },
-    {
-      "t": "2026-10-28T14:22:39.914Z",
-      "event": "bb-session",
-      "session": "a8d74747",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
