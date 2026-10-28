@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-28T15:49:11.115Z",
+  "timestamp": "2026-10-28T16:05:59.711Z",
   "stats": {
     "totalReviews": 65012,
     "alreadyFlagged": 21968,
     "dateGuardCatches": 234,
     "directorMismatch": 2524,
     "tvFilmSignals": 1822,
-    "londonSignals": 3135,
+    "londonSignals": 3136,
     "offBroadwaySignals": 584,
     "yearMismatch": 226,
     "noPublishDate": 5756
@@ -9705,6 +9705,7 @@
     {
       "showId": "chester-bailey-off-broadway-2022",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 92,
       "publishDate": null,
       "url": null,
       "findings": [
@@ -11115,6 +11116,7 @@
     {
       "showId": "cornelia-street-off-broadway-2023",
       "file": "vulture--jackson-mchenry.json",
+      "score": 24,
       "publishDate": "2023-02-14",
       "url": "https://www.vulture.com/2023/02/theater-review-wolf-play-mcc-cornelia-street-atlantic.html",
       "findings": [
@@ -15536,6 +15538,7 @@
     {
       "showId": "elyria-off-broadway-2023",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 47,
       "publishDate": null,
       "url": null,
       "findings": [
@@ -31461,7 +31464,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "broadwayworld--clementine-scott.json",
-      "score": 55,
+      "score": 56,
       "publishDate": "2026-10-26",
       "url": "https://www.broadwayworld.com/westend/article/Review-MEMORIAM-Southwark-Playhouse-20261026",
       "findings": [
@@ -57055,6 +57058,7 @@
     {
       "showId": "the-wanderers-off-broadway-2023",
       "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 64,
       "publishDate": null,
       "url": null,
       "findings": [
@@ -87314,7 +87318,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 59,
+      "score": 57,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
       "findings": [
@@ -103173,6 +103177,19 @@
       "file": "guardian--ryan-gilbey.json",
       "publishDate": "2026-10-13",
       "url": "https://www.theguardian.com/stage/2026/oct/13/keira-knightley-luke-thompson-hacking-stasi-spy-play-the-lives-of-others",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lives-of-others-west-end-2026",
+      "file": "londontheatredirect--sally-fenton-mills.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/play/the-lives-of-others-tickets?srsltid=AU7gw4V9CflcpP8mcfaJ3fKksvt-VZhE3pj1R2UY4olhOQLpaw21Ja35",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
