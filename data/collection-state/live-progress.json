@@ -1,37 +1,59 @@
 {
-  "updatedAt": "2026-10-28T10:53:58.451Z",
-  "processed": 33,
-  "failed": 17,
-  "successRate": "66.0%",
+  "updatedAt": "2026-10-28T11:17:42.137Z",
+  "processed": 104,
+  "failed": 50,
+  "successRate": "67.5%",
   "tierBreakdown": {
-    "playwright": 18,
+    "playwright": 58,
     "amp": 0,
     "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 0,
-    "brightdata": 1,
-    "archiveToday": 8,
-    "archive": 12
+    "scrapingdog": 7,
+    "scrapingbee": 1,
+    "brightdata": 3,
+    "archiveToday": 11,
+    "archive": 28
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-28T10:45:02.439Z",
+      "t": "2026-10-28T10:46:36.548Z",
       "event": "bb-session",
-      "session": "318c3b12",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "de56b1f0",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review__"
     },
     {
-      "t": "2026-10-28T10:45:02.770Z",
+      "t": "2026-10-28T10:46:41.313Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-28T10:47:00.217Z",
+      "event": "bb-session",
+      "session": "27aa7ebf",
+      "url": "http://www.northjersey.com/arts_entertainment/theater/171672031_Theater_review__"
+    },
+    {
+      "t": "2026-10-28T10:47:04.872Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-28T10:50:02.663Z",
+      "event": "bb-session",
+      "session": "1e57814d",
+      "url": "https://theaterlife.com/forbidden-broadway-merrily-we-stole-a-song-ghost-of-john"
+    },
+    {
+      "t": "2026-10-28T10:50:58.264Z",
+      "event": "bb-session",
+      "session": "1e09562e",
+      "url": "http://www.nytimes.com/2014/01/27/theater/king-lear-on-an-epic-scale-starring-si"
+    },
+    {
+      "t": "2026-10-28T10:50:59.081Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-28T10:49:17.105Z",
-      "event": "bb-session",
-      "session": "65459933",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+      "domain": "nytimes.com"
     }
   ]
 }
