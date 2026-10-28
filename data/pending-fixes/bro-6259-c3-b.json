@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6259-c3-b",
   "planId": "d3b01303-8a65-4579-b2b7-86667f7aeecb",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T02:37:41.087Z",
   "submitter": {
     "name": null,
@@ -254,5 +254,54 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T02:51:22.653Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added how-to-defend-yourself-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added black-odyssey-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dog-man-the-musical-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added cornelia-street-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-smuggler-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added des-moines-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-childs-christmas-in-wales-off-broadway-2022"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-very-hungry-caterpillar-show-off-broadway-2023"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-wanderers-off-broadway-2023"
+    }
+  ],
+  "executedIn": "ci"
 }
