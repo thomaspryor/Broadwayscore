@@ -2503,6 +2503,8 @@ on:
       # BRO-3889: generic sibling probe for non-health-check alert cards; its test is
       # tests/unit/check-alert-condition-absent.test.mjs.
       - 'scripts/check-alert-condition-absent.js'
+      # BRO-5371: acceptance probe for commercial review cards; its test is scripts/lib/check-review-item-resolved.test.mjs.
+      - 'scripts/check-review-item-resolved.js'
       # Backlog drain engine (task #654) — pure selection/metric logic +
       # dispatcher CLI; scripts/lib/backlog-drain.test.mjs runs in the
       # scripts/lib/*.test.mjs glob step; scripts/backlog-drain.test.mjs is
