@@ -293,18 +293,35 @@
     "queuedAt": "2026-10-28T10:58:13.736Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-28.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
+    "description": "main test.yml is STILL red after 13 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: TypeScript Check, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002",
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
-    "model": null,
+    "model": "opus",
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-28T12:55:06.525Z"
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40684815732)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "13"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "TypeScript Check, Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-28T13:30:46.222Z"
   },
   {
     "conditionKey": "pending-unrecoverable:girls-off-west-end-2026",
@@ -470,35 +487,18 @@
     "queuedAt": "2026-10-28T12:47:57.734Z"
   },
   {
-    "conditionKey": "test-yml:main-streak-escalation",
-    "title": "main test.yml STILL red — auto-dispatch did not resolve it",
-    "description": "main test.yml is STILL red after 13 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: TypeScript Check, Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002",
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +12 more). Checked 2026-10-28.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
     "decision": false,
-    "info": false,
+    "info": true,
     "decisionPrompt": null,
-    "model": "opus",
+    "model": null,
     "tracked": null,
-    "fields": [
-      {
-        "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002)"
-      },
-      {
-        "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/40684815732)"
-      },
-      {
-        "name": "Consecutive failures",
-        "value": "13"
-      },
-      {
-        "name": "Currently failing job(s)",
-        "value": "TypeScript Check, Unit Tests"
-      }
-    ],
-    "queuedAt": "2026-10-28T13:30:46.222Z"
+    "fields": [],
+    "queuedAt": "2026-10-28T13:42:06.604Z"
   },
   {
     "conditionKey": "opening-night-remediation-exhausted-empty-cast:medea-off-broadway-2026",
