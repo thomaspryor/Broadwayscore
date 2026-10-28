@@ -14,6 +14,18 @@ const VERDICT = 'b'.repeat(16);
 const block = () => va.buildBlock({ what: 'the link-in-bio page', patch: PATCH, verdict: VERDICT, hold: 'visual-hold/bro-7', evidence: [], summary: 'ok' });
 const hashOf = (d) => link.questionHash(link.markerLines(d)[0].question);
 
+test('holdSettled: a gone hold is settled even without a patch id', () => {
+  assert.equal(va.holdSettled({ fetchOk: false }), true);
+  assert.equal(va.holdSettled({ fetchOk: false, patchIdValue: PATCH }), true);
+});
+
+test('holdSettled: a fetched hold is settled only for an empty diff', () => {
+  assert.equal(va.holdSettled({ fetchOk: true, patchIdValue: null }), true);
+  assert.equal(va.holdSettled({ fetchOk: true, patchIdValue: PATCH }), false);
+  assert.equal(va.holdSettled({ fetchOk: true }), false);
+  assert.equal(va.holdSettled({ fetchOk: true, patchIdValue: '' }), false);
+});
+
 function fakeBoard(description, state = 'In Progress') {
   const issue = { id: 'uuid-1', identifier: 'BRO-7', title: 'UI work', description, state: { id: 's1', name: state, type: 'started' },
     labels: { nodes: [{ id: 'l1', name: 'awaiting-owner' }] }, team: { states: { nodes: [{ id: 'todo1', name: 'Todo', type: 'unstarted' }] } }, comments: { nodes: [] } };

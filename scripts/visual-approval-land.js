@@ -134,7 +134,7 @@ async function main(argv = process.argv.slice(2)) {
     let holdSettled = false;
     try {
       const hb = va.holdBranch(issue.identifier);
-      try { va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]); holdSettled = va.patchId('origin/main', `origin/${hb}`) === null; } catch { holdSettled = true; }
+      try { va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hb}:refs/remotes/origin/${hb}`]); holdSettled = va.holdSettled({ fetchOk: true, patchIdValue: va.patchId('origin/main', `origin/${hb}`) }); } catch { holdSettled = va.holdSettled({ fetchOk: false }); }
     } catch { holdSettled = false; }
     try { if (holdSettled) shippedSha = shippedVisualCommit(va.git(['log', 'origin/main', `--since=@${Math.floor(askedSince(issue) / 1000)}`, '--format=%H%x09%s']), issue.identifier); } catch (e) { console.error(`[visual-land] ${issue.identifier}: could not read main history: ${e.message}`); }
     const first = planCard(issue, secret, Date.now(), null, shippedSha);

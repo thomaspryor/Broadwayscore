@@ -29,6 +29,11 @@ function patchId(base, head, cwd) {
   return out ? out.split(/\s+/)[0] : null;
 }
 
+/** A hold is settled when its fetch failed or its diff against main is empty. */
+function holdSettled({ fetchOk, patchIdValue }) {
+  return !fetchOk || patchIdValue === null;
+}
+
 const holdBranch = (id) => `visual-hold/${String(id).toLowerCase()}`;
 const evidenceBranch = (id) => `visual-evidence/${String(id).toLowerCase()}`;
 const rawUrl = (branch, file) => `https://raw.githubusercontent.com/${REPO}/${branch}/${file}`;
@@ -138,4 +143,4 @@ function openVisualRequests(issues) {
   return issues.filter((i) => link.parseVisualApproval(i.description) && /DECISION NEEDED/i.test(i.description || '') && !/ANSWERED by the owner/.test(i.description || ''));
 }
 
-module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdBranch, evidenceBranch, rawUrl, pickCrops, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
+module.exports = { MARK, STALE_APPROVAL_MS, evidenceSha, checkVerdict, classifyStatus, REPO, MAX_OPEN, git, patchId, holdSettled, holdBranch, evidenceBranch, rawUrl, pickCrops, flatName, labelFor, buildBlock, buildEvidenceCommit, openVisualRequests };
