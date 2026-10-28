@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T00:47:45.808Z",
+  "timestamp": "2026-10-28T01:00:16.614Z",
   "stats": {
     "totalReviews": 63977,
     "alreadyFlagged": 21774,
     "dateGuardCatches": 237,
     "directorMismatch": 2386,
     "tvFilmSignals": 1811,
-    "londonSignals": 3060,
+    "londonSignals": 3061,
     "offBroadwaySignals": 577,
     "yearMismatch": 217,
-    "noPublishDate": 5662
+    "noPublishDate": 5661
   },
   "findings": [
     {
@@ -4223,6 +4223,7 @@
     {
       "showId": "arcadia-off-broadway-2023",
       "file": "nysr--david-finkle.json",
+      "score": 39,
       "publishDate": "2023-11-12",
       "url": "https://nystagereview.com/2023/11/12/arcadia-tom-stoppards-heart-felt-play-in-weakened-heart-revival/",
       "findings": [
@@ -39469,6 +39470,7 @@
     {
       "showId": "scene-partners-off-broadway-2023",
       "file": "vulture--sara-holdren.json",
+      "score": 73,
       "publishDate": "2023-11-16",
       "url": "https://www.vulture.com/2023/11/theater-review-scene-partners-chavkin-wiest-caswell.html",
       "findings": [
@@ -74413,6 +74415,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 61,
+      "publishDate": "2026-10-27",
+      "url": "https://www.londonboxoffice.co.uk/news/post/girls-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
