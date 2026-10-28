@@ -1,54 +1,64 @@
 {
-  "updatedAt": "2026-10-28T16:59:17.621Z",
-  "processed": 100,
-  "failed": 78,
-  "successRate": "56.2%",
+  "updatedAt": "2026-10-28T17:07:59.712Z",
+  "processed": 53,
+  "failed": 24,
+  "successRate": "68.8%",
   "tierBreakdown": {
-    "playwright": 57,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 11,
-    "scrapingbee": 1,
+    "scrapingdog": 2,
+    "scrapingbee": 7,
     "brightdata": 0,
-    "archiveToday": 20,
-    "archive": 23
+    "archiveToday": 11,
+    "archive": 28
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-28T16:25:12.862Z",
+      "t": "2026-10-28T16:50:37.937Z",
       "event": "bb-session",
-      "session": "854524ea",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "78240c3e",
+      "url": "https://www.nytimes.com/2017/08/24/theater/prince-of-broadway-review.html"
     },
     {
-      "t": "2026-10-28T16:30:31.517Z",
-      "event": "bb-session",
-      "session": "c0843c90",
-      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
-    },
-    {
-      "t": "2026-10-28T16:30:32.144Z",
+      "t": "2026-10-28T16:50:38.767Z",
       "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-28T16:51:13.329Z",
+      "t": "2026-10-28T16:55:11.305Z",
       "event": "bb-session",
-      "session": "3093aa5f",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+      "session": "4cd6af48",
+      "url": "http://www.wsj.com/articles/bright-star-review-banjo-boondoggle-1458865800"
     },
     {
-      "t": "2026-10-28T16:51:13.835Z",
+      "t": "2026-10-28T16:55:12.089Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "wsj.com"
     },
     {
-      "t": "2026-10-28T16:55:22.094Z",
+      "t": "2026-10-28T16:58:07.464Z",
       "event": "bb-session",
-      "session": "9ead0e1a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+      "session": "5320ba2b",
+      "url": "http://online.wsj.com/article/AP75009134e4ea4a94ab29a10ff5936978.html"
+    },
+    {
+      "t": "2026-10-28T16:58:08.246Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T16:58:20.721Z",
+      "event": "bb-session",
+      "session": "2447c73b",
+      "url": "http://online.wsj.com/article/AP75009134e4ea4a94ab29a10ff5936978.html"
+    },
+    {
+      "t": "2026-10-28T16:58:21.498Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
