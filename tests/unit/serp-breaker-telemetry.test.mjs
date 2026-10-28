@@ -82,6 +82,9 @@ test('SD organic rows prove five failures, cooldown skips, failed probe and reco
 });
 
 test('BD subpaths share the run, count their failures and identify the admitted recovery probe', async (t) => {
+  // The async SERP API fallback is opt-in since BRO-6482; this test covers it.
+  process.env.BD_SERP_ASYNC_FALLBACK = '1';
+  t.after(() => { delete process.env.BD_SERP_ASYNC_FALLBACK; });
   let apiOk = false;
   t.mock.method(axios, 'post', async () => { throw error400(); });
   t.mock.method(globalThis, 'fetch', async (url) => apiOk

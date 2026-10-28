@@ -693,6 +693,12 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
   const syncResult = await _serpViaBrightDataWebUnlocker(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen);
   if (syncResult !== null) return syncResult;
 
+  // BRO-6482: the async SERP API fallback is off by default. Ledger
+  // 2026-10-25..28: 2 successes in 385 attempts; the other 383 hit the 20s
+  // poll limit, so every Web Unlocker failure cost another ~20s for nothing.
+  // A null here falls through to the next SERP provider, same as before.
+  if (!bdSerpAsyncFallbackEnabled()) return null;
+
   // Second consult before the async fallback (ship-check finding). These two
   // sub-paths are SEPARATE billed requests, so one consult per _serpViaBrightData
   // call would let a budget of N permit up to 2N billed requests. Consulting
@@ -706,6 +712,16 @@ async function _serpViaBrightData(query, apiKey, log, dateRange, geo, page = 0) 
 
   // Fallback: async SERP API (polling-based, slower but more reliable)
   return _serpViaBrightDataSerpApi(fullQuery, apiKey, log, geo, page, _bdBreakerVerdict.halfOpen);
+}
+
+/**
+ * Pure decision function (BRO-6482): run Bright Data's async SERP API after a
+ * Web Unlocker failure? Off unless BD_SERP_ASYNC_FALLBACK is "1" or "true";
+ * set it to re-enable if Bright Data's async endpoint starts answering again.
+ */
+function bdSerpAsyncFallbackEnabled(env = process.env) {
+  const v = String(env.BD_SERP_ASYNC_FALLBACK || '').trim().toLowerCase();
+  return v === '1' || v === 'true';
 }
 
 const _BD_CUSTOMER = process.env.BRIGHTDATA_CUSTOMER || 'hl_a2c64a47';
@@ -2050,6 +2066,7 @@ module.exports = {
   scrapingdogSerpFailureDetail,
   imagesSerpChainOrder,
   serpChainOrder,
+  bdSerpAsyncFallbackEnabled,
   shouldAcceptEmptyScrapingdogSerp,
   consecutiveFailureBreakerBlocked,
   getShowInfo,
