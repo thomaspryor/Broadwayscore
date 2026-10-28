@@ -412,5 +412,36 @@
       }
     ],
     "queuedAt": "2026-10-28T12:39:54.672Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6342-enrich-ledger",
+    "title": "Landing blocked: unit-tests-node red on land/bro-6342-enrich-ledger",
+    "description": "land.yml did not land land/bro-6342-enrich-ledger: the unit-tests-node gate went red at 36fa048fbd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40687835390",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6342-enrich-ledger"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "36fa048fbd5b8086f6321bae75abb8c6cead00df"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40687835390"
+      }
+    ],
+    "queuedAt": "2026-10-28T12:47:57.734Z"
   }
 ]
