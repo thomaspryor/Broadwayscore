@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6349",
   "planId": "3e5395de-eb6b-467e-8241-4b612507d7a9",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T15:40:00.000Z",
   "submitter": {
     "name": null,
@@ -103,5 +103,19 @@
         "description": "Add the 2022 Met revival"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T15:16:01.403Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added akhnaten-off-broadway-2019"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added akhnaten-off-broadway-2022 (priorRuns -> akhnaten-off-broadway-2019)"
+    }
+  ],
+  "executedIn": "ci"
 }
