@@ -22,6 +22,8 @@ const AUDITED = [
   { fn: 'checkDispatchOutcomes', disposition: 'ci-only' },
   { fn: 'checkAutofixCanary', disposition: 'fold', digestTokens: ['assessCanaryRow({', 'autofix-canary-ledger.jsonl\');', 'sections.health.errors.push'] },
   { fn: 'checkAutofixThroughput', disposition: 'fold', digestTokens: ['assessThroughputRow({ digestLedgerEntries: rows', 'throughputDeathMessage(t', 'BACKLOG_LEDGER_PATH = path.join'] },
+  // Tracked, not gitignored, but only the Mac appends to it, so CI's copy lags (BRO-6468).
+  { fn: 'checkAutofixEffectiveness', disposition: 'fold', digestTokens: ['rows = readLedgerRows(DIGEST_LEDGER_PATH)', 'const r = assessAutofixEffectiveness(rows);'] },
   { fn: 'checkDigestInvariantFail', disposition: 'fold', digestTokens: ['assessDigestInvariantFailRow(entries)', 'digest-invariant-fail-ledger.jsonl\');'] },
   { fn: 'checkSharedCheckoutShallow', disposition: 'fold', digestTokens: ['shallowDigestRow({ fromDir: REPO })', 'sections.health.errors.push'] },
   { fn: 'checkDispatchHealth', disposition: 'fold', digestTokens: ['computeDispatchHealthDigest({ entries: dispatchEntries', 'computeHeadlessDispatchDigest({ entries: dispatchEntries', 'sections.health.errors.push'] },
@@ -67,6 +69,7 @@ test('folded checks are CI-skipped (return [] when isCI)', () => {
   const hc = require(path.join(root, 'scripts/health-check.js'));
   assert.deepEqual(hc.checkAutofixCanary(true), []);
   assert.deepEqual(hc.checkAutofixThroughput(true), []);
+  assert.deepEqual(hc.checkAutofixEffectiveness(true), []);
 });
 
 test('infra-review digest never returns error (the premise of its CI-ONLY-OK)', () => {

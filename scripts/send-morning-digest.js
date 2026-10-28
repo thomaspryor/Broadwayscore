@@ -86,12 +86,12 @@ const { collectCmuxTriage, renderCmuxTriageLine } = require('./lib/cmux-triage-d
 const { codexLineFromStatus } = require('./lib/codex-status-line.js');
 const { collectMoneySignups, renderMoneySignups } = require('./lib/money-signups-digest.js');
 
-// Task #1220/BRO-230: health-check.js in GitHub Actions (data-health-check.yml)
-// reads data/audit/digest-autofix-ledger.jsonl from its git-tracked snapshot.
-// That snapshot can lag the dispatch host, so health.errors can carry a
-// dead-loop signal based on older outcomes. This sender runs locally
+// Task #1220/BRO-230: data/audit/digest-autofix-ledger.jsonl is git-tracked,
+// but CI's snapshot of it can lag the dispatch host by days, so health-check.js
+// skips its "Autofix: jobs actually succeeding" row in CI (BRO-6468: the stale
+// snapshot produced false "stalled" banners). This sender runs locally
 // (launchd, the same machine that writes the ledger); read it directly here
-// so the digest judges current host activity rather than only CI's snapshot.
+// so the digest judges current host activity.
 const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
 const BACKLOG_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'backlog-drain-ledger.jsonl');
 // BRO-5168: `pipelineIssues` is fetchPipelineIssues()'s result (null when

@@ -2995,7 +2995,20 @@ function checkCiMidSetupCancels(deps = {}) {
 // so it read `42/42 auto-dispatch attempts succeeded` while the true fix rate was
 // zero. This row reads the OUTCOMES the ledger already records (card-pass /
 // card-fail) and is the difference between noticing on day 2 and on day 13.
-function checkAutofixEffectiveness() {
+//
+// BRO-6468: CI-skipped, same reason as checkAutofixThroughput (BRO-467). The
+// ledger is git-tracked, but only the Mac appends to it and it reaches
+// origin only when a sync recovery happens to push it, so CI's copy can lag
+// by days. CI then judged a frozen file against a moving 7-day window: the
+// last committed launches stayed in the window while their outcomes (written
+// the next morning, never pushed) did not, and it reported "Auto-fix loop is
+// DEAD: 3 job(s) launched, 0 reported back" on 2026-10-28 while the three
+// jobs the digest launched the day before had all run and landed. The digest
+// showed that row as "Automatic fixing looks stalled".
+// LOCAL-FOLD(checkAutofixEffectiveness): CI-skipped; the live verdict is
+// computed on the Mac by send-morning-digest.js localLoopDeadMessage().
+function checkAutofixEffectiveness(isCI) {
+  if (isCI) return [];
   const name = AUTOFIX_EFFECTIVENESS_CHECK_NAME;
   const file = path.join(__dirname, '..', 'data', 'audit', 'digest-autofix-ledger.jsonl');
   let raw;
@@ -3004,16 +3017,14 @@ function checkAutofixEffectiveness() {
   } catch (err) {
     if (err.code === 'ENOENT') {
       // WARN, never ERROR: missing input cannot establish loop failure.
-      // This ledger is git-tracked and normally present in CI. ENOENT means
-      // this checkout is missing it; restore the file or read the dispatch host.
-      // A committed snapshot can lag live host activity, but that is distinct
-      // from absence and follows the normal assessment path below.
+      // ENOENT means this checkout is missing the ledger; restore the file or
+      // read the dispatch host.
       return [{
         name,
         status: 'warn',
         unmeasurable: true,
         message: 'Auto-fix health is not measurable here: data/audit/digest-autofix-ledger.jsonl is absent. '
-          + 'The ledger is git-tracked and normally available in CI; this checkout cannot judge the loop without it.',
+          + 'The ledger is git-tracked and written on the dispatch host; this checkout cannot judge the loop without it.',
         hint: 'Restore the tracked ledger in this checkout, or run this check on the dispatch host for current outcomes. Committed snapshots can lag live activity.',
       }];
     }
@@ -6225,7 +6236,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkDispatchOutcomes(dryRun),
     ...checkDispatchHealth(),
     ...(await checkCmuxReachability()),
-    ...checkAutofixEffectiveness(),
+    ...checkAutofixEffectiveness(isCI),
     ...checkAutofixCanary(isCI),
     ...checkAutofixThroughput(isCI),
     ...(await checkUntrackedPersistentRows()),
@@ -6435,4 +6446,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };

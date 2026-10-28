@@ -16,7 +16,7 @@ test('the digest autofix ledger is tracked in a normal checkout', () => {
 });
 
 test('effectiveness ENOENT warns about a missing tracked ledger, not an untracked CI input', () => {
-  const block = source('scripts/health-check.js').split('function checkAutofixEffectiveness() {')[1]
+  const block = source('scripts/health-check.js').split('function checkAutofixEffectiveness(isCI) {')[1]
     .split('const rows = [];')[0];
   assert.match(block, /git-tracked/);
   assert.match(block, /snapshot.*lag|lag.*snapshot/s);
