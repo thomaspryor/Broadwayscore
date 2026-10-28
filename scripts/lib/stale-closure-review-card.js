@@ -70,7 +70,9 @@ function buildClosureReviewNotes(item) {
     '',
     '## Acceptance criteria',
     '',
-    'VERIFY: owner-judgment (a commercial designation call; done when the show has a reviewed designation in commercial.json)',
+    `Done when the show has a reviewed designation in commercial.json (not TBD, or humanReviewedDesignation set).`,
+    '',
+    `VERIFY: node scripts/check-review-item-resolved.js --closure=${item.slug}`,
     '',
     `Auto-filed by notify-pending-commercial-linear.js (stale-closure-review-${item.slug}-${item.kind || 'review'}).`,
   ].join('\n');

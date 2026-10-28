@@ -35,12 +35,13 @@ test('title is stable per slug + reason kind and carries the dedup key', () => {
   assert.notEqual(card.buildClosureReviewTitle('hamlet'), card.buildClosureReviewTitle('hamlet-revival'));
 });
 
-test('notes declare owner-judgment so the card is closable (verify-gate agrees)', () => {
+test('notes carry a runnable VERIFY a worker can take, never a bare owner-judgment marker (BRO-5371)', () => {
   const [a] = card.buildClosureReviewItems(bucket, NOW);
   const notes = card.buildClosureReviewNotes(a);
   assert.match(notes, /humanReviewedDesignation/);
   const v = evaluateVerifiability(notes);
-  assert.equal(v.ownerJudgment, true, JSON.stringify(v));
+  assert.equal(v.cmd, `node scripts/check-review-item-resolved.js --closure=${a.slug}`, JSON.stringify(v));
+  assert.doesNotMatch(notes, /VERIFY:\s*owner-judgment/);
 });
 
 test('the classifier marks needsResearch only for a never-researched TBD entry', () => {

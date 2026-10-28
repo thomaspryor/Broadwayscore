@@ -1,12 +1,30 @@
 {
-  "generatedAt": "2026-10-28T11:31:07.929Z",
-  "total": 474,
-  "armedCount": 467,
-  "refusedCount": 7,
+  "generatedAt": "2026-10-28T18:41:38.823Z",
+  "total": 471,
+  "armedCount": 461,
+  "refusedCount": 10,
   "byKind": {
-    "shape": 7
+    "no-command": 2,
+    "shape": 7,
+    "no-section": 1
   },
   "refused": [
+    {
+      "id": "BRO-6474",
+      "name": "validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article attached as a review",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6474/validate-data-strict-red-art-west-end-2016-artshub-singapore-arts-hub",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
+    },
+    {
+      "id": "BRO-6470",
+      "name": "OB historical backfill: next older season 2021-22 (owner spend call)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6470/ob-historical-backfill-next-older-season-2021-22-owner-spend-call",
+      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const s=require('./data/shows.json');const n=(s.shows||s).filter(x=>x.discoverySource==='ob-historical:tm'&&x.o)",
+      "kind": "shape"
+    },
     {
       "id": "BRO-6453",
       "name": "WE 2012-13 to 2014-15 review supply for the 87 BRO-6450 promoted shows, plus 2015-16 finish",
@@ -40,14 +58,6 @@
       "kind": "shape"
     },
     {
-      "id": "BRO-6259",
-      "name": "OB historical backfill: seasons 2024-25 remainder, 2023-24, 2022-23 (owner approved option A)",
-      "priority": null,
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6259/ob-historical-backfill-seasons-2024-25-remainder-2023-24-2022-23-owner",
-      "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node -e \"const s=require('./data/shows.json');const n=(s.shows||s).filter(x=>x.discoverySource==='ob-historical:tm'&&x.o)",
-      "kind": "shape"
-    },
-    {
       "id": "BRO-6200",
       "name": "Split the 'historical' tag: backfill marker collides with the 'historical' theme tag",
       "priority": null,
@@ -62,168 +72,29 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5680/awards-data-audit-runs-nowhere-wire-audit-awards-datajs-into-ci",
       "reason": "no acceptance-criteria command passed safe-form validation (first candidate: node scripts/audit-awards-data.js 2>&1 | grep -c '\\[FAIL\\]' prints 0)",
       "kind": "shape"
+    },
+    {
+      "id": "BRO-5592",
+      "name": "Turn on Vercel Skew Protection (root cause of the post-deploy dead clicks)",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-5592/turn-on-vercel-skew-protection-root-cause-of-the-post-deploy-dead",
+      "reason": "card has no acceptance-criteria section or VERIFY line",
+      "kind": "no-section"
+    },
+    {
+      "id": "BRO-4531",
+      "name": "iOS privacy-details.md (App Store privacy labels) is stale vs the BRO-4525 privacy policy",
+      "priority": null,
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4531/ios-privacy-detailsmd-app-store-privacy-labels-is-stale-vs-the-bro",
+      "reason": "acceptance criteria names no runnable command (prose only)",
+      "kind": "no-command"
     }
   ],
   "ownerJudgmentLimbo": {
     "total": 379,
     "checked": 379,
     "complete": true,
-    "cards": [
-      {
-        "id": "BRO-5593",
-        "name": "Sentry triage files real issues to GitHub, where nobody looks: file them to Linear",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5593/sentry-triage-files-real-issues-to-github-where-nobody-looks-file-them",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5592",
-        "name": "Turn on Vercel Skew Protection (root cause of the post-deploy dead clicks)",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5592/turn-on-vercel-skew-protection-root-cause-of-the-post-deploy-dead",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5586",
-        "name": "Missing show: A Masked Ball",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5586/missing-show-a-masked-ball",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5585",
-        "name": "Search is used as primary navigation (about 9 searches per user): review browse/nav entry points",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5585/search-is-used-as-primary-navigation-about-9-searches-per-user-review",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5581",
-        "name": "Show detail page hand-rolls its score box instead of the shared ScoreBadge",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5581/show-detail-page-hand-rolls-its-score-box-instead-of-the-shared",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5569",
-        "name": "Apple sign-in: show a message when the popup is blocked, and stop the fast-tap race",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5569/apple-sign-in-show-a-message-when-the-popup-is-blocked-and-stop-the",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5507",
-        "name": "Resolve slug-derived outlet display names (196 outlets with live reviews)",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5507/resolve-slug-derived-outlet-display-names-196-outlets-with-live",
-        "source": "description"
-      },
-      {
-        "id": "BRO-5371",
-        "name": "72 P2/P3 cards marked VERIFY: owner-judgment never reach the owner and no worker takes them",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-5371/72-p2p3-cards-marked-verify-owner-judgment-never-reach-the-owner-and",
-        "source": "comment:7"
-      },
-      {
-        "id": "BRO-4531",
-        "name": "iOS privacy-details.md (App Store privacy labels) is stale vs the BRO-4525 privacy policy",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-4531/ios-privacy-detailsmd-app-store-privacy-labels-is-stale-vs-the-bro",
-        "source": "description"
-      },
-      {
-        "id": "BRO-4160",
-        "name": "finish-line-gate.sh Gate 5 fixture g5-executed-only-inside-wrapup-heredoc-blocks fails (expects block, gets pass)",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-4160/finish-line-gatesh-gate-5-fixture-g5-executed-only-inside-wrapup",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-4142",
-        "name": "No concurrency lock for ~/.claude/hooks/*.sh edits across parallel sessions",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-4142/no-concurrency-lock-for-claudehookssh-edits-across-parallel-sessions",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3884",
-        "name": "notion-create-verify.sh has the same command-shape false-positive class as the transcript.py bug (BRO-3649/edd876671)",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3884/notion-create-verifysh-has-the-same-command-shape-false-positive-class",
-        "source": "description"
-      },
-      {
-        "id": "BRO-3877",
-        "name": "Stage 2b: harden is_dispatch_command against grep/probe-cmux-launch false positives",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3877/stage-2b-harden-is-dispatch-command-against-grepprobe-cmux-launch",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3597",
-        "name": "Retire 108 known stale duplicate Linear issues (linear-import --reconcile --apply)",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3597/retire-108-known-stale-duplicate-linear-issues-linear-import-reconcile",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3568",
-        "name": "iOS: swipe-to-go-back gesture on show/[slug].tsx swallows scroll gestures, blocking scroll past the hero",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3568/ios-swipe-to-go-back-gesture-on-showslugtsx-swallows-scroll-gestures",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3562",
-        "name": "com.broadwayscorecard.asc-build54-watch launchd job crash-loops — target script deleted",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3562/combroadwayscorecardasc-build54-watch-launchd-job-crash-loops-target",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3467",
-        "name": "Escalate repeated job-blocked parks on the same task (BRO-3442 follow-up)",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3467/escalate-repeated-job-blocked-parks-on-the-same-task-bro-3442-follow",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3235",
-        "name": "Child claude sessions spawned from a TAB inherit CMUX_WORKSPACE_ID and can ✅-mark the parent's live tab; exit-status-gate cannot see live background children behind CLOSE ME",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3235/child-claude-sessions-spawned-from-a-tab-inherit-cmux-workspace-id-and",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3217",
-        "name": "cmux-workspaces.js callers don't consume the new parseWorkspacesWithFailures() parse-failure signal",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3217/cmux-workspacesjs-callers-dont-consume-the-new",
-        "source": "comment:0"
-      },
-      {
-        "id": "BRO-3095",
-        "name": "No ledger record of how a cmux workspace ref gets reused/retitled outside the normal launch path",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3095/no-ledger-record-of-how-a-cmux-workspace-ref-gets-reusedretitled",
-        "source": "description"
-      },
-      {
-        "id": "BRO-3094",
-        "name": "prune-closed ledger event is written speculatively and looks like proof of closure when it isn't",
-        "priority": 3,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-3094/prune-closed-ledger-event-is-written-speculatively-and-looks-like",
-        "source": "description"
-      },
-      {
-        "id": "BRO-2640",
-        "name": "P2: unify wrapper-prefix regex (timeout/env/nohup/nice/command) into one shared source across bash hooks + infra-review-scope.js",
-        "priority": 4,
-        "url": "https://linear.app/broadway-scorecard/issue/BRO-2640/p2-unify-wrapper-prefix-regex-timeoutenvnohupnicecommand-into-one",
-        "source": "description"
-      }
-    ]
+    "cards": []
   },
   "missingCheckPaths": [
     {
@@ -242,15 +113,6 @@
       "cmd": "node --test tests/unit/add-date-button-mobile-watchlist.test.mjs",
       "missingPaths": [
         "tests/unit/add-date-button-mobile-watchlist.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-6446",
-      "name": "Commercial designations review (Boring Waltz feedback) + public-sourcing rule note",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6446/commercial-designations-review-boring-waltz-feedback-public-sourcing",
-      "cmd": "test -f memory/feedback_public_sourcing_optional.md",
-      "missingPaths": [
-        "memory/feedback_public_sourcing_optional.md"
       ]
     },
     {
@@ -749,15 +611,6 @@
       ]
     },
     {
-      "id": "BRO-5319",
-      "name": "Hardcoded year cap 2027 in date extractors stops working in 2028",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5319/hardcoded-year-cap-2027-in-date-extractors-stops-working-in-2028",
-      "cmd": "node --test scripts/lib/date-extractor.test.mjs",
-      "missingPaths": [
-        "scripts/lib/date-extractor.test.mjs"
-      ]
-    },
-    {
       "id": "BRO-5287",
       "name": "P1: Codex runner lands nothing (0 cards in 19h): runs steal each other's lock, crash mid-card, and pick cards the check rejects",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-5287/p1-codex-runner-lands-nothing-0-cards-in-19h-runs-steal-each-others",
@@ -809,15 +662,6 @@
       "cmd": "node --test scripts/lib/feedback-pipeline-fields.test.mjs",
       "missingPaths": [
         "scripts/lib/feedback-pipeline-fields.test.mjs"
-      ]
-    },
-    {
-      "id": "BRO-5162",
-      "name": "219 review-text files carry a relative or non-URL 'url' (9 ship to reviews.json)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-5162/219-review-text-files-carry-a-relative-or-non-url-url-9-ship-to",
-      "cmd": "node --test scripts/audit-malformed-review-urls.test.mjs",
-      "missingPaths": [
-        "scripts/audit-malformed-review-urls.test.mjs"
       ]
     },
     {
@@ -1142,6 +986,24 @@
       "cmd": "node --test scripts/re_extract_talkin_broadway_reviews.test.mjs",
       "missingPaths": [
         "scripts/re_extract_talkin_broadway_reviews.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-3467",
+      "name": "Escalate repeated job-blocked parks on the same task (BRO-3442 follow-up)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3467/escalate-repeated-job-blocked-parks-on-the-same-task-bro-3442-follow",
+      "cmd": "node --test scripts/tests/dispatch-watchdog-consecutive-blocks.test.mjs",
+      "missingPaths": [
+        "scripts/tests/dispatch-watchdog-consecutive-blocks.test.mjs"
+      ]
+    },
+    {
+      "id": "BRO-3217",
+      "name": "cmux-workspaces.js callers don't consume the new parseWorkspacesWithFailures() parse-failure signal",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3217/cmux-workspacesjs-callers-dont-consume-the-new",
+      "cmd": "node --test scripts/lib/cmux-workspaces-parse-failures.test.mjs",
+      "missingPaths": [
+        "scripts/lib/cmux-workspaces-parse-failures.test.mjs"
       ]
     },
     {
