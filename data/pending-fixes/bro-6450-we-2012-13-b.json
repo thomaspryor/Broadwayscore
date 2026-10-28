@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6450-we-2012-13-b",
   "planId": "d56a6933-efa4-4f01-8343-b0e45f648da8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-27T23:55:44.992Z",
   "submitter": {
     "name": null,
@@ -322,5 +322,64 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T01:01:30.382Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added doktor-glas-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added merrily-we-roll-along-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-hothouse-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-play-that-goes-wrong-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added charlie-and-the-chocolate-factory-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added relatively-speaking-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-cripple-of-inishmaan-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added fences-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dirty-dancing-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added chimerica-west-end-2013"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-dolls-house-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
 }
