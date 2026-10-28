@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-27T07:58:30.139Z",
-  "bannerText": "148/317 Done(14d) verified on main · 19 FAILED · 2 vacuous · 13 stuck-but-done — PARTIAL RUN: 147 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-28T08:35:06.984Z",
+  "bannerText": "98/345 Done(14d) verified on main · 4 FAILED · 0 vacuous · 16 stuck-but-done — PARTIAL RUN: 236 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-6170 — Web My Shows: add Stats and Feed (Timeline + Photo wall) tabs to match the iOS app",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/my-shows-stats-feed.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6170/web-my-shows-add-stats-and-feed-timeline-photo-wall-tabs-to-match-the"
+      "title": "FAILED BRO-6310 — BSC Daily: Deploy to Vercel",
+      "detail": "[check-health-row-absent] FAIL: \"Workflow repeat-failure: Deploy to Vercel\" still listed in the 2026-10-28T08:30:36.553Z health snapshot",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6310/bsc-daily-deploy-to-vercel"
     },
     {
-      "title": "FAILED BRO-6166 — Morning digest Review queue lists cards that are not for the owner: the 👑 OWNER marker matches any mention of the coordinator tab",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/in-review-backlog.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6166/morning-digest-review-queue-lists-cards-that-are-not-for-the-owner-the"
+      "title": "FAILED BRO-6291 — land-retry-cancelled skips a Land run cancelled mid mutex wait (land-started-work), stranding it forever",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-mutex.test.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6291/land-retry-cancelled-skips-a-land-run-cancelled-mid-mutex-wait-land"
     },
     {
-      "title": "FAILED BRO-6117 — BSC Daily: Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
-      "detail": "[check-health-row-absent] FAIL: \"Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/un\" still listed in the 2026…",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6117/bsc-daily-live-data-test-failing-no-review-missing-a-pullquote-has-a"
+      "title": "FAILED BRO-6253 — Delete the retired Twitter-only social system (generate-social-post.js, social-image-generator.js, social-infographics/, social-post.yml) now that social-autopost replaces it",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/retired-social-system-cleanup.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6253/delete-the-retired-twitter-only-social-system-generate-social-postjs"
     },
     {
-      "title": "FAILED BRO-6116 — BSC Daily: Time-to-publish SLA missed — 0% within 15 min (target 90%)",
-      "detail": "[check-health-row-absent] FAIL: \"Time-to-publish SLA missed — 0% within 15 min (target 90%)\" still listed in the 2026-10-27T07:52:51.127Z health snapshot",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6116/bsc-daily-time-to-publish-sla-missed-0percent-within-15-min-target"
+      "title": "FAILED BRO-6226 — Critics' Take 'Based on N reviews' overcounts vs the on-site review count (Benjamin Button OB shows 27, score uses 23)",
+      "detail": "[audit-critic-consensus-contamination] 1334 fail, 0 warn [fail] 1536-west-end-2026 REVIEWCOUNT_DRIFT:consensus=19,actual=0,diff=19 text: Ava Pickett's debut play earns rave review…",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6226/critics-take-based-on-n-reviews-overcounts-vs-the-on-site-review-count"
     },
     {
-      "title": "FAILED BRO-6113 — Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
-      "detail": "[check-alert-condition-absent] FAIL: \"corpus-drift:sibling-title-misroute\" still firing — open, last fired 2026-10-27T05:37:08.769Z (2.4h ago, within 168h)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6113/corpus-drift-same-title-sibling-review-misrouted-to-the-wrong"
+      "title": "STUCK BRO-6392 — Commercial source verifier: fall back to web.archive.org when a cited page blocks every fetcher",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6392/commercial-source-verifier-fall-back-to-webarchiveorg-when-a-cited"
     },
     {
-      "title": "FAILED BRO-6112 — DECISION NEEDED: Add the 8 missing cloud Tier-1 secrets? (BRIGHTDATA, SCRAPINGBEE, BROWSERBASE, RESEND, ANTHROPIC)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/cloud-secrets-decision.md",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6112/decision-needed-add-the-8-missing-cloud-tier-1-secrets-brightdata"
+      "title": "STUCK BRO-6364 — Cron stale 3+ consecutive days: Update Lottery/Rush",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6364/cron-stale-3-consecutive-days-update-lotteryrush"
     },
     {
-      "title": "FAILED BRO-6108 — BRO-6097 follow-up: run remaining 212 West End historical shows through Theatre Record extraction",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/we-historical-tr-coverage.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6108/bro-6097-follow-up-run-remaining-212-west-end-historical-shows-through"
+      "title": "STUCK BRO-6363 — Cron stale 3+ consecutive days: GitLab Code Mirror",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6363/cron-stale-3-consecutive-days-gitlab-code-mirror"
     },
     {
-      "title": "FAILED BRO-6100 — Opening-night watch 2026-10-23",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/opening-night-watch-2026-10-23.md",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-6100/opening-night-watch-2026-10-23"
+      "title": "STUCK BRO-6358 — Weekly traffic report: PostHog 91-day queries time out (504), email mislabels as unreachable",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-6358/weekly-traffic-report-posthog-91-day-queries-time-out-504-email"
     }
   ],
-  "moreCount": 26
+  "moreCount": 12
 }
