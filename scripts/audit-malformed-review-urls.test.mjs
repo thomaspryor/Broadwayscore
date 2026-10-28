@@ -55,5 +55,10 @@ test('review-write-guard refuses to store text or a relative path as a url', () 
     safeWriteReview(fp, { ...base, url }, { force: true });
     assert.equal(JSON.parse(fs.readFileSync(fp, 'utf8')).url, want, url);
   });
+  // a damaged incoming url must not wipe or replace an existing good url
+  const fp = path.join(dir, 'existing.json');
+  safeWriteReview(fp, { ...base, url: 'https://www.newsday.com/a-1.4431993' }, { force: true });
+  safeWriteReview(fp, { ...base, url: '/people/Steve-Parks/' });
+  assert.equal(JSON.parse(fs.readFileSync(fp, 'utf8')).url, 'https://www.newsday.com/a-1.4431993');
   fs.rmSync(dir, { recursive: true });
 });

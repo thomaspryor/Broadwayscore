@@ -21,6 +21,8 @@ function isWellFormedReviewUrl(url) {
 function recoverEmbeddedUrl(url) {
   if (typeof url !== 'string') return null;
   if (isWellFormedReviewUrl(url.trim())) return url.trim();
+  const tail = url.match(/\s(https?:\/\/[^\s<>)\]]+)\s*$/i);
+  if (tail && isWellFormedReviewUrl(tail[1])) return tail[1];
   const m = url.match(/https?:\/\/(?:%20|%C2%A0|\s)*(https?:\/+[^\s<>)\]]+)/i);
   if (!m) return null;
   const fixed = m[1].replace(/^(https?:)\/+/i, '$1//');

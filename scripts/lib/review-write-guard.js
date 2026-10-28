@@ -1975,6 +1975,20 @@ function safeWriteReview(filePath, newData, options = {}) {
         }
       }
 
+  // BRO-5162: a url that is not an absolute http(s) URL with a dotted host (relative
+  // byline paths, review text stored as a url) is never stored. Runs BEFORE
+  // url-change-invariant so a damaged value never triggers its clear. Recover an
+  // embedded URL, else keep the existing good url, else null it.
+  if (newData.url != null && newData.url !== '') {
+    const urlCheck = require('./malformed-review-url').classifyUrlField(newData.url);
+    if (!urlCheck.ok) {
+      const keep = existing && require('./malformed-review-url').isWellFormedReviewUrl(existing.url) ? existing.url : null;
+      const fixed = urlCheck.recovered || keep;
+      console.warn(`[review-write-guard] malformed url in ${path.basename(filePath)}: ${String(newData.url).slice(0, 80)} -> ${fixed || 'null'}`);
+      newData.url = fixed;
+    }
+  }
+
       // Write-topology invariant (Notion 399637c5): a write that moves this
       // file's url to a DIFFERENT canonical article must not carry old-URL-
       // derived state (flags, excerpts, stars, scores, text) — that state was
@@ -2270,9 +2284,8 @@ function safeWriteReview(filePath, newData, options = {}) {
     console.warn(`[review-write-guard] placeholder URL detected in ${path.basename(filePath)}: ${newData.url}`);
   }
 
-  // BRO-5162: a url that is not an absolute http(s) URL with a dotted host (relative
-  // byline paths, review text stored as a url) is never stored. Recover an embedded
-  // URL where present, else null it so rediscovery can find the real one.
+  // BRO-5162: same check for a write with no existing file (the pre-invariant
+  // block above only runs when a file already exists).
   if (newData.url != null && newData.url !== '') {
     const urlCheck = require('./malformed-review-url').classifyUrlField(newData.url);
     if (!urlCheck.ok) {
