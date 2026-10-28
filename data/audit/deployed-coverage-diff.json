@@ -1,13 +1,34 @@
 {
-  "generatedAt": "2026-10-28T13:05:19.476Z",
+  "generatedAt": "2026-10-28T15:05:38.422Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 252,
-  "clean": 252,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 255,
+  "clean": 254,
+  "defective": 1,
+  "byType": {
+    "missing-from-prod": 1
+  },
+  "shows": [
+    {
+      "showId": "affluenza-off-west-end-2026",
+      "title": "Affluenza",
+      "openingDate": "2026-10-05",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "1 scored outlet(s) absent from the deployed payload: redbuslondinium"
+        }
+      ],
+      "missingFromProd": [
+        "redbuslondinium"
+      ],
+      "localCount": 32,
+      "deployedCount": 31,
+      "firstDefectAt": "2026-10-28T15:05:33.207Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

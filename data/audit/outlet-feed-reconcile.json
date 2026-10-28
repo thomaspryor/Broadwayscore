@@ -1,8 +1,18 @@
 {
-  "generatedAt": "2026-10-28T13:05:19.796Z",
+  "generatedAt": "2026-10-28T15:05:38.691Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
+    {
+      "id": "in-the-heights-off-broadway-2026",
+      "title": "In the Heights",
+      "openingDate": "2026-10-28"
+    },
+    {
+      "id": "girls-off-west-end-2026",
+      "title": "Girls",
+      "openingDate": "2026-10-27"
+    },
     {
       "id": "derren-brown-only-human-west-end-2026",
       "title": "Derren Brown: Only Human",
@@ -97,15 +107,16 @@
       "id": "women-who-eat-off-broadway-2026",
       "title": "Women Who Eat",
       "openingDate": "2026-10-22"
+    },
+    {
+      "id": "the-unexpected-3rd-2026",
+      "title": "The Unexpected 3rd",
+      "openingDate": "2026-10-26"
     }
   ],
   "skipped": [],
   "feedsChecked": 73,
   "feedsFailed": [
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
     {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
@@ -113,6 +124,10 @@
     {
       "outletId": "cote-notices",
       "error": "HTTP 403 for https://davidcote1.substack.com/feed"
+    },
+    {
+      "outletId": "musical-theatre-review",
+      "error": "Timeout fetching https://musicaltheatrereview.com/feed/"
     },
     {
       "outletId": "theartsdispatch",
@@ -127,9 +142,9 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 796,
-  "matchedGaps": 7,
-  "possibleGaps": 2,
+  "itemsScanned": 795,
+  "matchedGaps": 9,
+  "possibleGaps": 7,
   "gaps": [
     {
       "showId": "aftermath-art-new-york-off-broadway-2026",
@@ -141,13 +156,31 @@
       "publishDate": "2026-10-27"
     },
     {
-      "showId": "i-became-we-off-broadway-2026",
-      "title": "I Became We",
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
       "level": "matched",
-      "outletId": "culturesauce",
-      "url": "https://culturesauce.com/i-became-we-off-broadway-review/",
-      "headline": "&#8216;I Became We&#8217; turns one woman&#8217;s inner voice into an astonishing 16-person choir (Off Broadway review)",
-      "publishDate": "2026-10-27"
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
+      "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
+      "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "matched",
+      "outletId": "londontheatre1",
+      "url": "https://www.londontheatre1.com/reviews/girls-young-vic/",
+      "headline": "Girls | Young Vic",
+      "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "matched",
+      "outletId": "guardian",
+      "url": "https://www.theguardian.com/stage/2026/oct/28/girls-review-a-story-of-friendship-amidst-extreme-misogynist-violence",
+      "headline": "Girls review – a story of friendship amidst extreme misogynist violence",
+      "publishDate": "2026-10-28"
     },
     {
       "showId": "memoriam-off-west-end-2026",
@@ -202,6 +235,51 @@
       "url": "https://northwestend.com/bu21-lower-marsh-arts-club/",
       "headline": "BU21 &#8211; Lower Marsh Arts Club",
       "publishDate": "2026-10-26"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "possible",
+      "outletId": "nytg",
+      "url": "https://newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
+      "headline": "‘School Girls; Or, the African Mean Girls Play’ Broadway review — pageant queens and queen bees face off",
+      "publishDate": null
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "possible",
+      "outletId": "south-london",
+      "url": "https://southlondon.co.uk/lifestyle/review-dolly-at-omnibus-theatre/",
+      "headline": "Review: Dolly at Omnibus Theatre",
+      "publishDate": "2026-10-24"
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "possible",
+      "outletId": "standard",
+      "url": "https://standard.co.uk/culture/theatre/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-b1296202.html",
+      "headline": "For Colored Girls Who have Considered Suicide/When the Rainbow is Enuf",
+      "publishDate": null
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "level": "possible",
+      "outletId": "artsdesk",
+      "url": "https://theartsdesk.com/theatre/bloodsport-stratford-east-review-1536-author-pits-more-essex-girls-against-bellicose-englishmen",
+      "headline": "Bloodsport, Stratford East review - the &#039;1536&#039; author pits more Essex girls against bellicose Englishmen",
+      "publishDate": null
+    },
+    {
+      "showId": "the-heart-off-broadway-2026",
+      "title": "The Heart",
+      "level": "possible",
+      "outletId": "plays-to-see",
+      "url": "https://playstosee.com/reviews/burlesque/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=burlesque",
+      "headline": "Burlesque",
+      "publishDate": "2026-10-28"
     },
     {
       "showId": "the-pianist-off-west-end-2026",
