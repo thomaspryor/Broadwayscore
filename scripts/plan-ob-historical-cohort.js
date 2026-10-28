@@ -37,6 +37,7 @@ const USAGE = `plan-ob-historical-cohort.js — list Playbill-validated Off-Broa
 Usage:
   node scripts/plan-ob-historical-cohort.js --from=YYYY-MM-DD --to=YYYY-MM-DD [--limit=N] [--time-budget-min=50] [--today=YYYY-MM-DD]
   node scripts/plan-ob-historical-cohort.js --from=... --to=... --no-playbill   (TheaterMania + dedup only, no scraper keys)
+  --titles-file=PATH   keep only candidates whose title is in this JSON array (the outlet census's notable catalog gaps, BRO-6481)
 `;
 
 function arg(name) {
@@ -45,6 +46,11 @@ function arg(name) {
 }
 
 const ISO = /^\d{4}-\d{2}-\d{2}$/;
+
+// Title key for --titles-file: case, accents and punctuation do not count.
+function titleKey(t) {
+  return String(t || '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]+/g, ' ').trim();
+}
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
@@ -58,6 +64,8 @@ async function main() {
   const limit = Number(arg('limit')) || Infinity;
   const budgetMs = (Number(arg('time-budget-min')) || 50) * 60 * 1000;
   const noPlaybill = process.argv.includes('--no-playbill');
+  const titlesFile = arg('titles-file');
+  const wantTitles = titlesFile ? new Set(JSON.parse(fs.readFileSync(titlesFile, 'utf8')).map(titleKey)) : null;
   const started = Date.now();
 
   const { fetchTmOffBroadway, isTmRowInWindow, parseTmOffBroadwayRow, findTmSameTitleShow } = require('./lib/theatermania-ob');
@@ -99,6 +107,7 @@ async function main() {
     let dup = null;
     try { dup = checkForDuplicate(c, shows); } catch (e) { note('dedup-error'); console.log(`  ! checkForDuplicate failed for "${c.title}": ${e.message}`); dup = null; }
     if (dup && dup.isDuplicate) { note('in-catalog'); continue; }
+    if (wantTitles && !wantTitles.has(titleKey(c.title))) { note('not-in-titles-file'); continue; }
     candidates.push(c);
   }
   console.log(`Candidates after parse/gate/dedup: ${candidates.length} (skipped ${JSON.stringify(skips)})`);
