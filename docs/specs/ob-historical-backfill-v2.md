@@ -39,6 +39,25 @@ This replaces Phase 0's three-source spike: TM is the dated listing (the WOS rol
 - **Audits:** `isObHistoricalRow` (scripts/lib/ob-historical-cohort.js) selects these rows for `audit-review-crossmodel.js` and `fact-check-sample.js`. The 'historical' tag is not used: on the site it is a theme (BRO-6200 tracks the existing collision).
 - **Next cohorts:** 2024-06..2025-05 (16 already done), 2023-06..2024-05, 2022-01..2023-05. Expect about 50 to 70 promotable shows each at about $0.20 a show, and a day of pipeline time each.
 
+## Cohort 2 results (2026-10-28, BRO-6259): June 2023 to May 2024
+
+Process: same planner in two half-window runs (213 candidates after skips, 87 Playbill matches, 21 mismatches, 105 with no Playbill page), 83 promotable, 82 after dropping a duplicate (Death, Let Me Do My Show had a Lucille Lortel run and an Orpheum transfer under one id; the first run was kept). Two June 2024 shows that cohort 1's planner missed (What Became of Us, The Welkin) came through here and were kept. Four add-show plans, landed and applied. Gathered in 4 groups of 6, then 3 groups of about 20 with `parallel_jobs` set so each shard had 2 or 3 shows, then one cohort-wide catch-up pass, then `audit-aggregator-gap.yml` (`ingest_missing`, cohort `show_ids`) followed by another collect, score and rebuild.
+
+Review-count distribution (prod `analyst-shows.json`, 2026-10-28T01:12Z; a show missing from the feed counts as 0):
+
+| Reviews | 0 | 1-2 | 3-4 | 5-9 | 10+ | 3+ | Total reviews |
+|---|---|---|---|---|---|---|---|
+| After gather and catch-up (2026-10-27T23:09Z) | 6 | 15 | 11 | 23 | 27 | 61 (74 percent) | 598 |
+| Final, after the aggregator-gap ingest | 6 | 15 | 9 | 25 | 27 | 61 (74 percent) | 611 |
+
+- Cost: $17.76 against a $16 estimate (2x stop line $33): scraping $13.94, LLM $3.82 for 170 newly scored reviews. About $0.22 a show. The scraping figure starts at the cohort 2 planner run, so it also holds part of cohort 1's catch-up.
+- Wall-clock: about 23 hours from plans landing to the final rebuild. Most of it was the shared gather slot gate (`wait-for-gather-slot.js`, 2 slots, FIFO, 180-minute cap): West End backfill runs from another session held both slots overnight, so each 6-show run waited the full 3 hours before starting. Fewer, larger runs with more shards made far better use of a slot than many 6-show runs.
+- Shard timeouts: with 3 shows per shard, 2 of 7 shards in one run hit the 75-minute job timeout. Re-gathering only those shards' 6 shows (the matrix is round-robin, so shard N holds ids at positions i % jobs == N) avoided re-paying for the 14 shows that finished. 2 shows per shard ran clean.
+- Wrong-production check: every cohort 2 show page was scanned for reviews dated more than 60 days before opening or 270 days after. None were found, including the Broadway-transfer titles (Dead Outlaw, Job, Illinoise, Here We Are, Teeth) and the classics (Waiting for Godot, Arcadia, Hamlet, Translations, Orpheus Descending).
+- Still at 0: Ode to the Wasp Woman, Anne Frank (musical), Cat Kid Comic Club, Hamlet (Orpheum 2024), You Don't Have to Do Anything, The Assassination of Julius Caesar. Mostly short or family runs with little critical coverage.
+
+Runbook change for cohort 3: gather in runs of about 20 shows with `parallel_jobs=10` (2 shows per shard), re-gather only failed shards, then one cohort-wide catch-up and the aggregator-gap ingest.
+
 ## Cohort 1 results (2026-10-26, BRO-6259): June 2024 to May 2025
 
 Process: `plan-ob-historical-cohort` via `cloud-run-script.js` in two half-window runs (211 candidates after in-catalog/gate/parse skips, 68 Playbill matches, 41 mismatches, 102 with no Playbill page), 66 promotable shows. Three add-show plans (at most 25 actions each), landed and applied. Gathered in 6 groups of about 11 (`max_tier=3`, `spend_purpose=historical-backfill`), each followed by `collect-review-texts.yml` and a show-scoped `llm-ensemble-score.yml`, then a cohort-wide catch-up pass (below) and `rebuild-fast.yml`.
