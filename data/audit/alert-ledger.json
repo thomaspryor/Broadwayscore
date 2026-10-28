@@ -243,7 +243,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -256,7 +256,8 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422"
+      "sweptTracker": "BRO-6422",
+      "resolvedAt": "2026-10-28T21:36:45.654Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -29185,7 +29186,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:f8045c18": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"another show (or an off-night call) is unaffected by a capped show\"",
       "firstSeen": "2026-10-28T20:39:53.883Z",
@@ -29202,7 +29203,9 @@
         "runId": "40761759346",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40761759346"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-28T21:36:45.286Z",
+      "resolveReason": "job-green"
     },
     "opening-night-publish-date-pre-opening:girls-off-west-end-2026": {
       "status": "open",
