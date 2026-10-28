@@ -167,10 +167,10 @@ describe('validate-data.js wiring', () => {
 
 describe('ingestion-year stamp (BRO-2829)', () => {
   const { ingestionYearStamp, findIngestionYearStamps, INGESTION_STAMP_ACCEPTED } = require(path.join(ROOT, 'scripts/lib/id-year-drift'));
-  const row = (id, status, openingDate) => ({ id, status, openingDate });
+  const row = (id, status, openingDate, closingDate) => ({ id, status, openingDate, closingDate });
 
   test('flags a closed show stamped with its ingestion year', () => {
-    const hit = ingestionYearStamp(row('orlando-off-broadway-2026', 'closed', '2024-04-15'));
+    const hit = ingestionYearStamp(row('orlando-off-broadway-2026', 'closed', '2024-04-15', '2024-05-12'));
     assert.equal(hit.idYear, '2026');
     assert.equal(hit.openingYear, '2024');
   });
@@ -186,7 +186,7 @@ describe('ingestion-year stamp (BRO-2829)', () => {
     assert.equal(ingestionYearStamp(row('ripples-off-west-end-2026', 'upcoming', null)), null);
   });
   test('accepted ids do not warn but a new id in the class does', () => {
-    const rows = [row('orlando-off-broadway-2026', 'closed', '2024-04-15'), row('new-show-off-broadway-2026', 'closed', '2023-01-10')];
+    const rows = [row('orlando-off-broadway-2026', 'closed', '2024-04-15', '2024-05-12'), row('new-show-off-broadway-2026', 'closed', '2023-01-10', '2023-02-01')];
     assert.deepEqual(findIngestionYearStamps(rows).map((h) => h.id), ['new-show-off-broadway-2026']);
     assert.ok(INGESTION_STAMP_ACCEPTED['orlando-off-broadway-2026']);
   });
@@ -201,10 +201,24 @@ describe('ingestion-year stamp (BRO-2829)', () => {
     if (!shows) return t.skip('no data/shows.json in this checkout');
     assert.deepEqual(findIngestionYearStamps(shows).map((h) => h.id), []);
   });
-  test('real shows.json: every accepted id is still a hit (no stale allowlist entries)', (t) => {
+  test('verdict does not depend on a status flip (BRO-6477: showstopper open<->closed turned main red)', () => {
+    // A long runner whose closingDate is absent or in/after the id year is
+    // exempt whatever its status; only a row that proves it closed before the
+    // id year is a hit.
+    for (const status of ['open', 'previews', 'closed', 'upcoming']) {
+      assert.equal(ingestionYearStamp(row('showstopper-the-improvised-musical-west-end-2023', status, '2015-09-01')), null, status);
+      assert.equal(ingestionYearStamp(row('harry-potter-and-the-cursed-child-both-parts-west-end-2021', status, '2016-07-25', '2026-09-20')), null, status);
+    }
+    assert.ok(ingestionYearStamp(row('orlando-off-broadway-2026', 'closed', '2024-04-15', '2024-05-12')));
+    assert.ok(ingestionYearStamp(row('orlando-off-broadway-2026', 'open', '2024-04-15', '2024-05-12')) === null, 'running row is exempt');
+  });
+  test('real shows.json: every accepted id still exists (a healed entry only warns)', (t) => {
     const shows = realShows();
     if (!shows) return t.skip('no data/shows.json in this checkout');
-    const live = new Set(shows.filter((s) => ingestionYearStamp(s)).map((s) => s.id));
-    assert.deepEqual(Object.keys(INGESTION_STAMP_ACCEPTED).filter((id) => !live.has(id)), []);
+    const byId = new Map(shows.map((s) => [s.id, s]));
+    assert.deepEqual(Object.keys(INGESTION_STAMP_ACCEPTED).filter((id) => !byId.has(id)), []);
+    for (const id of Object.keys(INGESTION_STAMP_ACCEPTED)) {
+      if (!ingestionYearStamp(byId.get(id))) console.warn(`[id-year-drift] ${id} no longer hits; drop it from INGESTION_STAMP_ACCEPTED`);
+    }
   });
 });

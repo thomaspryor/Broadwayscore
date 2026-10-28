@@ -30,6 +30,7 @@ const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { hasStoredStaleUpcomingTag, stripUpcomingTag } = require('./lib/opening-night-completeness');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
 const { checkIdYearDrift, checkIngestionYearStamps } = require('./lib/id-year-drift');
+const { findPlaceholderCastRoles } = require('./lib/cast-role');
 
 // --dry-run (Sprint 0 / S0-T1): run every check, print every verdict, exit with
 // the same code — but never touch disk. Three write paths honour it: the
@@ -565,6 +566,16 @@ function validateIdYearDrift(shows) {
   info('Checking id year against opening/previews dates...');
   checkIdYearDrift(shows, { warn, ok });
   checkIngestionYearStamps(shows, { warn, ok });
+}
+
+// BRO-6477: a cast role like "role not specified" is an LLM "no answer", not a
+// role. The excerpt guards tokenize roles into name cues, so one such row made
+// the former-cast sweep fail main. WARN: writers drop these via cleanRole.
+function validateCastRolePlaceholders(shows) {
+  info('Checking cast roles for placeholder text...');
+  const bad = findPlaceholderCastRoles(shows);
+  if (bad.length === 0) return ok('No placeholder cast roles');
+  for (const b of bad.slice(0, 20)) warn(`${b.id}: cast "${b.name}" has placeholder role "${b.role}" (clear it; see scripts/lib/cast-role.js)`);
 }
 
 // ===========================================
@@ -5538,6 +5549,7 @@ function runValidation() {
   validateShowTypes(shows);
   validateDates(shows);
   validateIdYearDrift(shows);
+  validateCastRolePlaceholders(shows);
   validateTourLegs(shows);
   validateSlugs(shows);
   validateImageUrls(shows);

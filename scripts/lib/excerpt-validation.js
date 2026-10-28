@@ -14,6 +14,7 @@
 const path = require('path');
 const fs = require('fs');
 const { isWithinPriorRun } = require('./wrong-production-autoclear');
+const { cleanRole } = require('./cast-role');
 
 // --- Layer 3: Cross-Show Validation ---
 
@@ -187,7 +188,10 @@ const LEADING_STOPWORD_RE = /^(the|a|an|and|or|but|of|in|on|at|to|for|with|from|
 // the literary source's author (Harper Lee, Arthur Miller...) — a valid
 // reference in any era's review, so role-name proximity alone isn't enough
 // to treat it as a departed cast member.
-const LITERARY_SOURCE_SUFFIX_RE = /^\s*['’]?s?\s*(?:\d{4}\s+)?(?:[a-z]+\s+){0,3}(?:novel|book|memoir|play|story|autobiography|screenplay|source material|estate)\b/i;
+// BRO-6477: "Hayao Miyazaki's tale of Satsuki and Mei" (the film a stage show
+// adapts) sits right beside the role names, so the source-work nouns cover
+// film/anime/tale/classic too, not only prose nouns.
+const LITERARY_SOURCE_SUFFIX_RE = /^\s*['’]?s?\s*(?:\d{4}\s+)?(?:[a-z]+\s+){0,3}(?:novel|book|memoir|play|story|tale|fable|fairy[- ]?tale|film|movie|anime|animation|manga|libretto|script|saga|estate|autobiography|screenplay|source material)\b/i;
 const LITERARY_SOURCE_SUFFIX_WINDOW = 40;
 
 // Fields that can carry review prose worth scanning for name candidates —
@@ -283,7 +287,7 @@ function extractPersonNameCandidates(text) {
 function buildSafeNameTokens(show) {
   const safe = new Set();
   const add = (s) => nameTokens(s).forEach(t => safe.add(t));
-  (show.cast || []).forEach(c => { add(c && c.name); add(c && c.role); });
+  (show.cast || []).forEach(c => { add(c && c.name); add(c && cleanRole(c.role)); });
   (show.creativeTeam || []).forEach(c => add(c && c.name));
   add(show.title);
   add(show.venue);
@@ -303,8 +307,11 @@ function buildSafeNameTokens(show) {
 function buildRoleTerms(show) {
   const terms = new Set();
   (show.cast || []).forEach(c => {
-    if (!c || !c.role) return;
-    c.role.split(/[/,]/).forEach(part => nameTokens(part).forEach(t => terms.add(t)));
+    // BRO-6477: a placeholder ("role not specified") is not a character name;
+    // its words would otherwise count as role cues near any name.
+    const role = c && cleanRole(c.role);
+    if (!role) return;
+    role.split(/[/,]/).forEach(part => nameTokens(part).forEach(t => terms.add(t)));
   });
   return terms;
 }

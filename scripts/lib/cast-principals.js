@@ -6,6 +6,8 @@
  */
 'use strict';
 
+const { cleanRole } = require('./cast-role');
+
 // Roles that indicate non-principal cast (regex on full role string)
 const NON_PRINCIPAL_ROLE_RE = /^(ensemble|performer|dancer|singer|chorus|swing)$/i;
 const NON_PRINCIPAL_ROLE_CONTAINS_RE = /\b(ensemble|swing|standby|understudy|chorus)\b/i;
@@ -133,7 +135,8 @@ function extractCast(castData, showStatus, maxMembers) {
 
   return deduped.slice(0, maxMembers).map(m => {
     const entry = { name: m.name };
-    if (m.role) entry.role = m.role;
+    const role = cleanRole(m.role);
+    if (role) entry.role = role;
     return entry;
   });
 }

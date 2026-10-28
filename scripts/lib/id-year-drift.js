@@ -126,8 +126,10 @@ function checkIdYearDrift(shows, { warn, ok } = {}) {
  * The id year is the year the row was INGESTED, not the production's year:
  * the real openingDate sits two or more years away from the id year.
  *
- * Exempt (correct data, not a defect): a production still running
- * (open/previews) whose id year is LATER than its genuine historical opening.
+ * Exempt (correct data, not a defect): a production whose id year is LATER than
+ * its genuine historical opening and that was running in the id year: open or
+ * previews, or no closingDate, or a closingDate in/after the id year. Status
+ * flips (open<->closed) with no closingDate therefore never change the verdict.
  * `the-mousetrap-west-end-2021` opened 1952 and is still on, so the id year is
  * just when the entry was added. Skipped for lack of evidence: rows with no
  * openingDate (previews-only / provisional ids), and one-year offsets (the
@@ -141,8 +143,16 @@ function ingestionYearStamp(show) {
   const openingYear = dateYearOf(show.openingDate);
   if (!idYear || !openingYear) return null;
   if (Math.abs(Number(idYear) - Number(openingYear)) < 2) return null;
-  const running = show.status === 'open' || show.status === 'previews';
-  if (running && Number(idYear) > Number(openingYear)) return null;
+  // BRO-6477: the exemption must not hinge on `status` alone. update-show-status
+  // flipped showstopper-...-west-end-2023 open->closed->open within two hours
+  // and main went red then green on a data change nobody reviewed. A show that
+  // opened before its id year is exempt unless the row itself proves it closed
+  // before the id year (a closingDate earlier than the id year).
+  if (Number(idYear) > Number(openingYear)) {
+    const running = show.status === 'open' || show.status === 'previews';
+    const closingYear = dateYearOf(show.closingDate);
+    if (running || !closingYear || Number(closingYear) >= Number(idYear)) return null;
+  }
   return { id: show.id, idYear, openingYear, status: show.status == null ? null : show.status };
 }
 
@@ -160,7 +170,6 @@ const INGESTION_STAMP_ACCEPTED = {
   'three-houses-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'bad-krey-l-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'animal-wisdom-off-broadway-2022': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
-  'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'wanted-2022': 'upcoming, opens 2026-11-08; rename via rename-show-id.js (S8-T1) once dates are confirmed',
 };
 

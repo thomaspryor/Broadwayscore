@@ -42,6 +42,7 @@ const { GEMINI_FLASH, CLAUDE_HAIKU } = require('./lib/models');
 const { shouldTombstone, shouldAbortMassWipe } = require('./lib/cast-tombstone');
 const { selectShowsByFilter } = require('./lib/cast-show-filter');
 const { crossCheckCast, loadEvidenceTexts } = require('./lib/cast-review-crosscheck');
+const { cleanRole } = require('./lib/cast-role');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const CAST_DIR = path.join(__dirname, '..', 'data', 'cast');
@@ -607,10 +608,10 @@ async function main() {
         scrapedAt: new Date().toISOString(),
         openingNightCast: result.cast.map(m => ({
           name: m.name,
-          role: m.role || undefined,
+          role: cleanRole(m.role),
         })),
         currentCast: (show.status === 'open' || show.status === 'previews')
-          ? result.cast.map(m => ({ name: m.name, role: m.role || undefined }))
+          ? result.cast.map(m => ({ name: m.name, role: cleanRole(m.role) }))
           : null,
       };
 
