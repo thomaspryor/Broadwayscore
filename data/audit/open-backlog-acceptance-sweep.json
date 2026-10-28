@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-27T07:58:24.924Z",
+  "generatedAt": "2026-10-28T08:35:01.766Z",
   "shadow": true,
-  "checkoutSha": "627a835d3c3fed583ec63d56baef60d5d5665c0d",
+  "checkoutSha": "3b1995a68e1a659cc18e69131e129fb3589b0cb7",
   "totalCandidates": 480,
-  "eligibleCandidates": 112,
+  "eligibleCandidates": 117,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 18,
+    "pass": 23,
     "fail": 1,
-    "unverifiable": 11
+    "unverifiable": 6
   },
   "alreadyDone": [
     {
@@ -20,9 +20,9 @@
       "detail": null
     },
     {
-      "id": "BRO-6416",
-      "name": "Extract and unit-test the lander's hold-settled check (visual-approval-land.js main)",
-      "verifyCmd": "node --test scripts/lib/owner-answer-void.test.mjs",
+      "id": "BRO-6410",
+      "name": "Web: '1 shows' / '1 reviews' count labels; port the app's count-plurals guard",
+      "verifyCmd": "node --test tests/unit/count-plurals.test.mjs",
       "detail": null
     },
     {
@@ -32,9 +32,39 @@
       "detail": null
     },
     {
+      "id": "BRO-6404",
+      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
+      "verifyCmd": "node --test tests/unit/dependency-audit-clean.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6403",
+      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
+      "verifyCmd": "node --test tests/unit/llm-scoring-untrusted-framing.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6400",
+      "name": "Data: link London-Broadway transfers (transferOf/transferredTo) in shows.json",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
       "id": "BRO-6391",
       "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
       "verifyCmd": "node --test scripts/lib/cost-report-alerts.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6380",
+      "name": "Admin: Money Scorecard sign-ups panel so the owner can check sign-ups himself",
+      "verifyCmd": "node --test tests/unit/money-gate.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6375",
+      "name": "Money Scorecard topic pages: same row arrow + whole-row click as the season tables",
+      "verifyCmd": "node --test tests/unit/money-gate.test.mjs",
       "detail": null
     },
     {
@@ -68,15 +98,33 @@
       "detail": null
     },
     {
+      "id": "BRO-6342",
+      "name": "enrich-reviews drain never commits data/audit/alert-ledger.json: pending-unrecoverable raise/resolve is lost outside poller runs",
+      "verifyCmd": "node scripts/validate-data.js --strict",
+      "detail": null
+    },
+    {
+      "id": "BRO-6333",
+      "name": "Money Scorecard: keep running hits' Trickle/Windfall labels current",
+      "verifyCmd": "node --test tests/unit/commercial-record-stamp.test.mjs",
+      "detail": null
+    },
+    {
+      "id": "BRO-6327",
+      "name": "Use sm/ variants in the remaining small show-image slots (CompareShowPicker 36px, upcoming-cards, others)",
+      "verifyCmd": "node --test scripts/lib/show-image-variants.test.mjs",
+      "detail": null
+    },
+    {
       "id": "BRO-6304",
       "name": "Cloud Codex lane: disk runs out mid-firing (stale Claude worktrees never pruned) and each cloud slot works only one card per run",
       "verifyCmd": "node --test tests/unit/codex-lane-health.test.mjs",
       "detail": null
     },
     {
-      "id": "BRO-6276",
-      "name": "P1: Land queue throughput collapse: 2 of last 40 land runs succeeded, lock held 49+ min, 12 cancelled, 6 failed",
-      "verifyCmd": "test -f scripts/lib/land-dispatch-guard.js",
+      "id": "BRO-6296",
+      "name": "Give /biz topic and season pages the new /biz hero style (eyebrow pill, larger tagline)",
+      "verifyCmd": "node --test tests/unit/biz-header-hero-style.test.mjs",
       "detail": null
     },
     {
@@ -102,24 +150,6 @@
       "name": "Redate trade/producer cost anchors still on a guessed date (dateBasis migrated) to the period each source measured",
       "verifyCmd": "node scripts/validate-data.js --strict",
       "detail": null
-    },
-    {
-      "id": "BRO-6221",
-      "name": "shows.json lists poster/thumbnail paths for ~272 shows whose image files don't exist (404 on prod)",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6187",
-      "name": "Commercial estimates: drift re-sizing pass, getRecentClosings, stunt-casting class, 2 over-100% DNR keepers, 39 locked entries",
-      "verifyCmd": "node scripts/validate-data.js --strict",
-      "detail": null
-    },
-    {
-      "id": "BRO-6180",
-      "name": "Owner's yes/no on an awaiting-owner approval card is not picked up either (extend the BRO-6168 reply drain)",
-      "verifyCmd": "node --test tests/unit/decision-reply.test.mjs",
-      "detail": null
     }
   ],
   "failing": [
@@ -136,24 +166,6 @@
       "name": "Declare the packages the code imports but only gets by transitive hoisting (glob, yaml, https-proxy-agent, node-fetch, acorn-walk, @next/env, entities, ajv) + guard test; check-secrets-health should flag a classic REVIEW_TEXTS_TOKEN",
       "verifyCmd": "node --test tests/unit/declared-dependencies.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/declared-dependencies.test.mjs"
-    },
-    {
-      "id": "BRO-6404",
-      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
-      "verifyCmd": "node --test tests/unit/dependency-audit-clean.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/dependency-audit-clean.test.mjs"
-    },
-    {
-      "id": "BRO-6403",
-      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
-      "verifyCmd": "node --test tests/unit/llm-scoring-untrusted-framing.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/llm-scoring-untrusted-framing.test.mjs"
-    },
-    {
-      "id": "BRO-6271",
-      "name": "Ship weekly result monitor for the related-shows-position A/B (README step f)",
-      "verifyCmd": "node --test scripts/lib/related-shows-ab-monitor-rules.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/related-shows-ab-monitor-rules.test.mjs"
     },
     {
       "id": "BRO-6269",
@@ -184,27 +196,57 @@
       "name": "iOS Stats: 'Critic nemesis' can be a 70% match or the same critic shown as a closest/rising match",
       "verifyCmd": "node --test tests/unit/aisle-mates.test.mjs",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/aisle-mates.test.mjs"
-    },
-    {
-      "id": "BRO-6219",
-      "name": "iOS alerts v2: fix reviews-in + rate duplicate, prefs, closing alerts (plan-reviewed)",
-      "verifyCmd": "test -f memory/push-alerts.md",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: memory/push-alerts.md"
-    },
-    {
-      "id": "BRO-6176",
-      "name": "iOS design round: ideas from the inspiration app (stats strip, feature cards, numbered Top 10, quick-log +)",
-      "verifyCmd": "node --test tests/unit/inspiration-ideas-variants.test.mjs",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/inspiration-ideas-variants.test.mjs"
     }
   ],
   "landedButOpen": [
+    {
+      "id": "BRO-6420",
+      "name": "UK Regional market pill on show page + /browse/beyond-london view-all page",
+      "branch": "land/codex-bro-6420",
+      "sha": "ba13120499afcbd008ab7978a907e943abd5899e",
+      "landedAt": "2026-10-28T08:18:42.905Z"
+    },
+    {
+      "id": "BRO-6410",
+      "name": "Web: '1 shows' / '1 reviews' count labels; port the app's count-plurals guard",
+      "branch": "land/codex-bro-6410",
+      "sha": "408b3c7f16e89b9941d02100f1a962df242ff66a",
+      "landedAt": "2026-10-27T08:06:30.067Z"
+    },
+    {
+      "id": "BRO-6404",
+      "name": "Upgrade sanity 3.x -> 6.x (and next-sanity, @sanity/vision) to clear the sanity-bound npm audit findings",
+      "branch": "land/codex-bro-6404",
+      "sha": "1d2a4dd061912e362c588744f44642bd3111f2d2",
+      "landedAt": "2026-10-28T04:31:44.587Z"
+    },
+    {
+      "id": "BRO-6403",
+      "name": "LLM scoring prompts: frame review text as untrusted data (prompt-injection guard), with the §13 A/B",
+      "branch": "land/codex-bro-6403",
+      "sha": "49a1369f875ab63df8e23706ec6353d835ffe1f7",
+      "landedAt": "2026-10-28T02:28:24.911Z"
+    },
     {
       "id": "BRO-6391",
       "name": "Scraper cost report: file worker cards instead of asking the owner to investigate",
       "branch": "land/bro-6391-cost-report-cards",
       "sha": "fca42ddc2fb2077c54652ca3c5b0323944f371ba",
       "landedAt": "2026-10-26T22:38:01.928Z"
+    },
+    {
+      "id": "BRO-6380",
+      "name": "Admin: Money Scorecard sign-ups panel so the owner can check sign-ups himself",
+      "branch": "land/codex-bro-6380",
+      "sha": "92d983cd096bcaf56cdb9b245778c52e56d46d09",
+      "landedAt": "2026-10-27T16:25:30.395Z"
+    },
+    {
+      "id": "BRO-6375",
+      "name": "Money Scorecard topic pages: same row arrow + whole-row click as the season tables",
+      "branch": "land/bro-6375-row-click-fixes",
+      "sha": "798c743eea71d756994cfc67f0f5f949a3e62cf2",
+      "landedAt": "2026-10-26T20:53:36.500Z"
     },
     {
       "id": "BRO-6356",
@@ -214,6 +256,20 @@
       "landedAt": "2026-10-27T05:47:03.427Z"
     },
     {
+      "id": "BRO-6333",
+      "name": "Money Scorecard: keep running hits' Trickle/Windfall labels current",
+      "branch": "land/codex-bro-6333",
+      "sha": "14b741a17c94b2dd45a373b5fc12616eddd26a7c",
+      "landedAt": "2026-10-27T07:47:02.967Z"
+    },
+    {
+      "id": "BRO-6327",
+      "name": "Use sm/ variants in the remaining small show-image slots (CompareShowPicker 36px, upcoming-cards, others)",
+      "branch": "land/codex-bro-6327",
+      "sha": "1ddc8edfd5cf03cb655595911d80bc7e7fa1d5ab",
+      "landedAt": "2026-10-28T01:49:56.472Z"
+    },
+    {
       "id": "BRO-6304",
       "name": "Cloud Codex lane: disk runs out mid-firing (stale Claude worktrees never pruned) and each cloud slot works only one card per run",
       "branch": "land/bro-6304-codex-disk-prune-v2",
@@ -221,11 +277,11 @@
       "landedAt": "2026-10-26T13:01:26.399Z"
     },
     {
-      "id": "BRO-6276",
-      "name": "P1: Land queue throughput collapse: 2 of last 40 land runs succeeded, lock held 49+ min, 12 cancelled, 6 failed",
-      "branch": "land/bro-6276-dispatch-guard-r3",
-      "sha": "ee86507bcf1574c4aaf4a8454df9ec493409af61",
-      "landedAt": "2026-10-26T12:47:15.080Z"
+      "id": "BRO-6296",
+      "name": "Give /biz topic and season pages the new /biz hero style (eyebrow pill, larger tagline)",
+      "branch": "land/codex-bro-6296",
+      "sha": "211864c44f2753716dd409ba871f81ca3f420fc8",
+      "landedAt": "2026-10-27T20:27:11.927Z"
     },
     {
       "id": "BRO-6260",
@@ -240,20 +296,6 @@
       "branch": "land/bro-6236-codex-model-ab",
       "sha": "90c4ed80aa38506340dd6d7f930d1838bc1cda75",
       "landedAt": "2026-10-25T20:53:57.715Z"
-    },
-    {
-      "id": "BRO-6187",
-      "name": "Commercial estimates: drift re-sizing pass, getRecentClosings, stunt-casting class, 2 over-100% DNR keepers, 39 locked entries",
-      "branch": "land/codex-bro-6187",
-      "sha": "59a8d2d68fa7a026e99bccb8922a60291942202c",
-      "landedAt": "2026-10-26T04:40:43.729Z"
-    },
-    {
-      "id": "BRO-6180",
-      "name": "Owner's yes/no on an awaiting-owner approval card is not picked up either (extend the BRO-6168 reply drain)",
-      "branch": "land/codex-bro-6180",
-      "sha": "f827b6f2b31292f2a8fab93d544bbde41046cf3f",
-      "landedAt": "2026-10-26T14:20:08.224Z"
     }
   ]
 }
