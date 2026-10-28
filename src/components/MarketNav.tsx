@@ -18,7 +18,7 @@ interface MarketStats {
 
 export default function MarketNav({ stats }: { stats: MarketStats }) {
   const pathname = usePathname() || '';
-  const marketId = useCurrentMarket();
+  const marketId = useCurrentMarket(true);
   const isOperaDomain = useIsOperaDomain();
   // An opera show detail page (regardless of domain) should render the Opera
   // pill instead of "Off-Bway" — Met productions are categorized off-broadway
@@ -30,7 +30,8 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const isWestEnd = marketId === 'west-end';
+  const isUkRegional = marketId === 'uk-regional';
+  const isWestEnd = marketId === 'west-end' || isUkRegional;
   const isOffWestEnd = marketId === 'off-west-end';
   // Treat opera show pages as NOT off-broadway for the pill label, even though
   // the URL-derived marketId is 'off-broadway' (shared routing convention).
@@ -103,7 +104,7 @@ export default function MarketNav({ stats }: { stats: MarketStats }) {
         aria-haspopup="listbox"
         aria-label="Switch market"
       >
-        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isRegional ? 'Regional' : isTour ? 'Tours' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
+        {isOpera ? 'Opera' : isOffBroadway ? 'Off-Bway' : isOffWestEnd ? 'Off-WE' : isUkRegional ? 'UK Regional' : isRegional ? 'Regional' : isTour ? 'Tours' : currentMarket === 'nyc' ? 'Broadway' : 'West End'}
         {/* Always visible — below 400px this used to be `hidden`, so the pill
             read as a plain label with no dropdown cue on narrow phones (task
             #78: rage clicks on "Broadway" traced to missing affordance here).

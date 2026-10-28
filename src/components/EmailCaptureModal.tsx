@@ -12,7 +12,7 @@ import { captureEvent } from '@/lib/posthog-events';
 import { gaEvent } from '@/lib/analytics/ga-event';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
-import { isLondonPath } from '@/hooks/useCurrentMarket';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { getTriggerCopy, getSubmitLabel, COPY_VERSION, type GateTrigger } from '@/lib/gate-logic';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
@@ -71,7 +71,8 @@ export default function EmailCaptureModal({
   const [error, setError] = useState('');
   const pathname = usePathname();
 
-  const isWE = pathname ? isLondonPath(pathname) : false;
+  const marketId = useCurrentMarket();
+  const isWE = marketId === 'west-end' || marketId === 'off-west-end';
   const formId = isWE ? FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID : FORMSPREE_SUBSCRIBER_FORM_ID;
   const marketKey = isWE ? 'west-end' : 'broadway';
   const copy = getTriggerCopy(trigger, isWE);

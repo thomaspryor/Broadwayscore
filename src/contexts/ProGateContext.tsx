@@ -32,7 +32,7 @@ import {
   COPY_VERSION,
 } from '@/lib/gate-logic';
 import { isFormspreeSubscribed } from '@/hooks/useFormspreeSubscribed';
-import { isLondonPath } from '@/hooks/useCurrentMarket';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { useAuth } from '@/contexts/AuthContext';
 
 const EmailCaptureModal = dynamic(() => import('@/components/EmailCaptureModal'), { ssr: false });
@@ -96,10 +96,10 @@ export function ProGateProvider({ children, pageViewThreshold = emailCaptureConf
   // Email capture is per-market. A visitor subscribed to Broadway must still be
   // offered the West End list when browsing /west-end (and vice versa) — otherwise
   // the dominant market's subscribers permanently suppress the other market's
-  // pop-up. `market` drives both the hasEmail gate (below) and the modal's own
-  // form routing (EmailCaptureModal computes the same isLondonPath check).
+  // pop-up. The hasEmail gate and EmailCaptureModal share venue-aware routing.
   const pathname = usePathname();
-  const market = pathname && isLondonPath(pathname) ? 'west-end' : 'broadway';
+  const marketId = useCurrentMarket();
+  const market = marketId === 'west-end' || marketId === 'off-west-end' ? 'west-end' : 'broadway';
 
   // Signed-in users NEVER see capture pop-ups: sign-in auto-subscribes them to
   // the main list (src/lib/auto-subscribe.ts), and this gate also covers new

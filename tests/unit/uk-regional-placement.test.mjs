@@ -9,6 +9,10 @@ import assert from 'node:assert/strict';
 import { isUkRegionalShow } from '../../src/lib/market-utils';
 import { getRegionalShows, getUkRegionalShows, getAllShows } from '../../src/lib/data-core';
 import { BROWSE_PAGES } from '../../src/config/browse-pages';
+import { getBrowseList, getAllBrowseSlugs } from '../../src/lib/data-core';
+import { getEffectiveMarket, getEffectiveMarketLabel } from '../../src/lib/show-market';
+import { getMarketFromPath } from '../../src/hooks/useCurrentMarket';
+import { isCategoryEnabled } from '../../src/lib/markets';
 
 test('isUkRegionalShow: only regional shows at a listed UK house', () => {
   assert.equal(isUkRegionalShow({ category: 'regional', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' }), true);
@@ -144,4 +148,57 @@ test('UK flagship shows read "UK Regional" in search/alt text; the US shelf appl
     assert.doesNotMatch(readFileSync(f, 'utf8'), /category === 'regional' \? 'Regional'/, `${f} hardcodes Regional`);
   }
   assert.match(readFileSync('src/lib/homepage-extra.ts', 'utf8'), /pickRegionalShelf\(getRegionalShows\(\), \{ requireEnoughReviews: true \}\)/);
+});
+
+test('UK show navigation uses venue-aware server data, keeping US tryouts Regional (BRO-6420)', () => {
+  const uk = getUkRegionalShows();
+  assert.ok(uk.length > 0);
+  const markets = Object.fromEntries(uk.map(s => [s.slug, getEffectiveMarket(s)]));
+  for (const s of uk) {
+    assert.equal(getEffectiveMarket(s), 'uk-regional', s.id);
+    assert.equal(getEffectiveMarketLabel(s), 'UK Regional', s.id);
+    assert.equal(getMarketFromPath(`/show/${s.slug}`, markets), 'uk-regional', s.id);
+    assert.equal(getMarketFromPath(`/show/${s.slug}/`, markets), 'uk-regional', s.id);
+  }
+  for (const s of getRegionalShows()) {
+    assert.equal(getEffectiveMarket(s), 'regional', s.id);
+    assert.equal(getMarketFromPath(`/show/${s.slug}`, markets), getMarketFromPath(`/show/${s.slug}`), s.id);
+  }
+  assert.equal(getEffectiveMarket({ category: 'regional' }), 'regional');
+  assert.equal(getEffectiveMarket({ category: 'regional', venue: 'Swan Theatre, Worcester' }), 'regional');
+  assert.equal(getEffectiveMarket({ category: 'regional', venue: 'Sheffield Crucible' }), 'uk-regional');
+  assert.equal(getMarketFromPath('/west-end', markets), 'west-end');
+  assert.equal(getMarketFromPath('/show/hamilton-2015', markets), 'nyc');
+});
+
+test('Beyond London browse lists the entire eligible UK shelf and is registered for export (BRO-6420)', () => {
+  const config = BROWSE_PAGES['beyond-london'];
+  assert.ok(config);
+  assert.equal(config.source, 'regional');
+  assert.equal(config.regionalScope, 'uk');
+  const list = getBrowseList('beyond-london');
+  assert.ok(list);
+  const expected = pickRegionalShelf(getUkRegionalShows(), { limit: Infinity, requireEnoughReviews: true });
+  assert.ok(expected.length > 0);
+  assert.deepEqual(list.shows.map(s => s.id), expected.map(s => s.id));
+  assert.ok(list.shows.every(isUkRegionalShow));
+  // Exercise the uncapped path even while the real inventory is below ten.
+  const expanded = Array.from({ length: 15 }, (_, i) => ({ ...expected[i % expected.length], id: `uk-${i}` }));
+  assert.equal(config.customSort(expanded).length, 15);
+  assert.equal(getAllBrowseSlugs().includes('beyond-london'), isCategoryEnabled('regional'));
+  assert.equal(getMarketFromPath('/browse/beyond-london'), 'uk-regional');
+  assert.equal(getMarketFromPath('/browse/beyond-london/'), 'uk-regional');
+  assert.equal(getMarketFromPath('/browse/pre-broadway-out-of-town-shows'), 'regional');
+});
+
+test('UK market overrides and the view-all link are wired to existing UI callers (BRO-6420)', async () => {
+  const { readFileSync } = await import('node:fs');
+  const layout = readFileSync('src/app/layout.tsx', 'utf8');
+  assert.match(layout, /getUkRegionalShows\(\)\.map\(show => \[show.slug, getEffectiveMarket\(show\)\]\)/);
+  assert.match(layout, /<ShowMarketProvider showMarkets=\{showMarkets\}>/);
+  assert.match(layout, /<MarketNav stats=\{marketStats\}/);
+  const nav = readFileSync('src/components/MarketNav.tsx', 'utf8');
+  assert.match(nav, /useCurrentMarket\(true\)/);
+  assert.match(nav, /isUkRegional \? 'UK Regional'/);
+  assert.match(readFileSync('src/components/WestEndPageClient.tsx', 'utf8'), /title="Beyond London"[^>]+viewAllHref="\/browse\/beyond-london"/);
 });

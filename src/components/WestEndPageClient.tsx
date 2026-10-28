@@ -111,13 +111,14 @@ function SearchIcon() {
 }
 
 // Featured row with horizontal scroll
-function FeaturedRow({ title, subtitle, shows, minShows = 4 }: { title: string; subtitle?: string; shows: WestEndShow[]; minShows?: number }) {
+function FeaturedRow({ title, subtitle, shows, minShows = 4, viewAllHref }: { title: string; subtitle?: string; shows: WestEndShow[]; minShows?: number; viewAllHref?: string }) {
   if (shows.length < minShows) return null;
 
   return (
     <section className="mb-6">
       <div className="flex items-center justify-between mb-1">
         <h2 className="text-base font-bold text-white">{title}</h2>
+        {viewAllHref && <Link href={viewAllHref} className="text-xs text-brand hover:text-brand-hover shrink-0 ml-3">View all<span className="sr-only"> {title}</span></Link>}
       </div>
       {subtitle && (
         <p className="text-xs text-gray-500 mb-2">{subtitle}</p>
@@ -826,7 +827,7 @@ function WestEndPageInner({ shows, totalShows, totalReviews, scoredShows, lotter
       <div className="mt-8 pt-8 border-t border-white/5">
         <FeaturedRow title="Top Plays" subtitle="Ranked by critical consensus" shows={topPlays} />
         <FeaturedRow title="Best Off-West End" subtitle="Top-rated shows outside the West End proper" shows={bestOffWestEnd} />
-        <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital" shows={beyondLondonShows} minShows={1} />
+        <FeaturedRow title="Beyond London" subtitle="Major UK productions outside the capital" shows={beyondLondonShows} minShows={1} viewAllHref="/browse/beyond-london" />
         <FeaturedRow title="Olivier Award Winning Shows" subtitle="Current productions that have won Olivier Awards" shows={olivierWinners} />
         <FeaturedRow title="West End Lotteries" subtitle="Enter for a chance at discounted tickets" shows={lotteryShows} />
         <FeaturedRow title="Rush Tickets Available" subtitle="Same-day discount tickets, first come, first served" shows={rushShows} />

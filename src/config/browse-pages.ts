@@ -20,6 +20,7 @@ import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { FIZZLE_MIN_RETURNED_PCT, isLossDesignation } from '../../scripts/lib/commercial-designations';
 import { displaysCriticScore } from '@/lib/critic-score-display';
 import { getSeason } from '@/lib/commercial-metrics';
+import { pickRegionalShelf } from '@/lib/regional-shelf';
 
 // Context object passed to dataFilter/customSort — avoids importing heavy data modules here
 export interface BrowseFilterContext {
@@ -51,6 +52,8 @@ export interface BrowsePageConfig {
    *  outlets (NYT, Vulture, Variety) and is wrong for other markets. */
   howItWorks?: string;
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional' | 'tour'; // Data source (default: broadway)
+  /** Regional source defaults to US tryouts; UK houses share the regional feature flag. */
+  regionalScope?: 'uk';
   /** Feature flag the page's data belongs to. While that flag is off the page
    *  does not exist: getAllBrowseSlugs() omits it and getBrowsePageConfig()
    *  returns undefined, so static params, sitemap, RSS, related links and
@@ -283,6 +286,21 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     },
     sort: 'score',
     relatedPages: ['broadway-shows-for-tourists', 'broadway-shows-for-kids', 'broadway-lottery-shows'],
+  },
+
+  'beyond-london': {
+    slug: 'beyond-london',
+    title: 'Beyond London',
+    h1: 'Beyond London: UK Regional Theatre',
+    metaTitle: 'Beyond London: UK Regional Theatre Reviews',
+    metaDescription: 'Explore scored productions at major UK theatres outside London, including the RSC, Chichester and Royal Lyceum. Compare reviews from local and national critics.',
+    intro: 'Discover major UK productions outside the capital, from Stratford-upon-Avon to Edinburgh. Browse every scored production from our Beyond London shelf, with shows on stage first and recent productions next. Closed productions stay listed so you can explore their reviews.',
+    source: 'regional',
+    regionalScope: 'uk',
+    customSort: shows => pickRegionalShelf(shows, { limit: Infinity, requireEnoughReviews: true }),
+    hideRanks: true,
+    howItWorks: 'CriticScore combines reviews from local and national UK critics, with major publications carrying more weight. Shows appear once they have enough reviews to display a score. Running productions appear first, followed by the most recently opened productions.',
+    relatedPages: ['best-west-end-musicals', 'best-west-end-plays', 'best-off-west-end-shows'],
   },
 
   'pre-broadway-out-of-town-shows': {

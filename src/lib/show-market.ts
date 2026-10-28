@@ -10,6 +10,8 @@
  * To extend to non-Met opera (NYCO, ENO, Glimmerglass etc.): widen `isOperaShow` to
  * also check venue, and the `OPERA_DURATION_SUFFIX` constant becomes per-venue.
  */
+import { isUkRegionalShow } from '@/lib/market-utils';
+
 export type EffectiveMarket =
   | 'broadway'
   | 'off-broadway'
@@ -17,6 +19,7 @@ export type EffectiveMarket =
   | 'west-end'
   | 'off-west-end'
   | 'regional'
+  | 'uk-regional'
   | 'tour';
 
 /** Subline suffix for opera shows, interpolated by getBroadwayDuration. */
@@ -28,6 +31,7 @@ export const OPERA_MARKET_LABEL = 'Met Opera';
 interface ShowLike {
   type?: string;
   category?: string;
+  venue?: string;
 }
 
 /** Single source of truth: is this show an opera production? */
@@ -43,6 +47,7 @@ export function isOperaShow(show: ShowLike | null | undefined): boolean {
  */
 export function getEffectiveMarket(show: ShowLike | null | undefined): EffectiveMarket {
   if (isOperaShow(show)) return 'opera';
+  if (show && isUkRegionalShow(show)) return 'uk-regional';
   const category = show?.category;
   if (category === 'west-end') return 'west-end';
   if (category === 'off-west-end') return 'off-west-end';
@@ -69,6 +74,8 @@ export function getEffectiveMarketLabel(show: ShowLike | null | undefined): stri
       return 'Off-Broadway';
     case 'regional':
       return 'Regional';
+    case 'uk-regional':
+      return 'UK Regional';
     case 'tour':
       return 'Tour';
     case 'broadway':

@@ -1279,7 +1279,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
   const allShows = config.source === 'west-end' ? getWestEndShows()
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : config.source === 'off-west-end' ? getOffWestEndShows()
-    : config.source === 'regional' ? getRegionalShows()
+    : config.source === 'regional' ? (config.regionalScope === 'uk' ? getUkRegionalShows() : getRegionalShows())
     : config.source === 'tour' ? getTourBrowseShows()
     : getBroadwayShows();
 

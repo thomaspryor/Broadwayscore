@@ -11,7 +11,9 @@ import FooterExploreCards from '@/components/FooterExploreCards';
 import FooterBranding from '@/components/FooterBranding';
 import { generateOrganizationSchema, generateWebSiteSchema, BASE_URL, SITE_OG_IMAGE } from '@/lib/seo';
 import { siteRobots } from '@/lib/indexable-deploy';
-import { getSiteStats, getMarketStats } from '@/lib/data-core';
+import { getSiteStats, getMarketStats, getUkRegionalShows } from '@/lib/data-core';
+import { getEffectiveMarket } from '@/lib/show-market';
+import { ShowMarketProvider } from '@/hooks/useCurrentMarket';
 import MarketNav from '@/components/MarketNav';
 import AnalyticsWrapper from '@/components/AnalyticsWrapper';
 import { ProGateProvider } from '@/contexts/ProGateContext';
@@ -76,6 +78,8 @@ export default function RootLayout({
 }) {
   const { totalReviews } = getSiteStats();
   const marketStats = getMarketStats();
+  // Only ship the small set whose venue changes its navigation market.
+  const showMarkets = Object.fromEntries(getUkRegionalShows().map(show => [show.slug, getEffectiveMarket(show)]));
 
   return (
     // suppressHydrationWarning: the Profitability Scorecard gate's boot script sets
@@ -127,6 +131,7 @@ export default function RootLayout({
         >
           Skip to main content
         </a>
+        <ShowMarketProvider showMarkets={showMarkets}>
         <UserProviders>
           <header className="fixed top-0 left-0 right-0 z-[60] bg-surface-raised border-b border-white/10">
             <nav className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
@@ -211,6 +216,7 @@ export default function RootLayout({
           </div>
         </footer>
         </UserProviders>
+        </ShowMarketProvider>
         <ScrollToTop />
         <AnalyticsWrapper />
       </body>
