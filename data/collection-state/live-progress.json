@@ -1,23 +1,23 @@
 {
-  "updatedAt": "2026-10-28T00:33:38.480Z",
-  "processed": 29,
-  "failed": 7,
-  "successRate": "80.6%",
+  "updatedAt": "2026-10-28T00:38:58.821Z",
+  "processed": 399,
+  "failed": 178,
+  "successRate": "69.2%",
   "tierBreakdown": {
-    "playwright": 10,
-    "amp": 0,
-    "browserbase": 5,
+    "playwright": 252,
+    "amp": 4,
+    "browserbase": 15,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 1,
-    "brightdata": 2,
-    "archiveToday": 0,
-    "archive": 17
+    "scrapingdog": 26,
+    "scrapingbee": 25,
+    "brightdata": 0,
+    "archiveToday": 45,
+    "archive": 88
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-28T00:25:54.523Z",
+      "t": "2026-10-27T21:31:51.394Z",
       "event": "bb-session",
       "session": "3b90dd8d",
       "url": "https://www.wsj.com/articles/jonah-review-a-young-womans-wariness-rachel-bonds-r"
@@ -69,7 +69,13 @@
     {
       "t": "2026-10-28T00:31:29.829Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-28T00:31:39.786Z",
+      "event": "bb-session",
+      "session": "489052fd",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
     }
   ]
 }
