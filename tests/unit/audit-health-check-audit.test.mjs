@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const healthSrc = readFileSync(path.join(root, 'scripts/health-check.js'), 'utf8');
 const digestSrc = readFileSync(path.join(root, 'scripts/send-morning-digest.js'), 'utf8');
+const loopHealthSrc = readFileSync(path.join(root, 'scripts/lib/digest-loop-health.js'), 'utf8');
 
 // Anchored on the real fold code (a call plus the push into health.errors),
 // not bare names: those also appear in imports and comments.
@@ -21,9 +22,9 @@ const AUDITED = [
   { fn: 'checkInfraReviewGate', disposition: 'ci-only' },
   { fn: 'checkDispatchOutcomes', disposition: 'ci-only' },
   { fn: 'checkAutofixCanary', disposition: 'fold', digestTokens: ['assessCanaryRow({', 'autofix-canary-ledger.jsonl\');', 'sections.health.errors.push'] },
-  { fn: 'checkAutofixThroughput', disposition: 'fold', digestTokens: ['assessThroughputRow({ digestLedgerEntries: rows', 'throughputDeathMessage(t', 'BACKLOG_LEDGER_PATH = path.join'] },
+  { fn: 'checkAutofixThroughput', disposition: 'fold', digestTokens: ['localLoopDeadMessage({ pendingIssues, pipelineIssues, skipMacLocal, now })'], localTokens: ['assessThroughputRow({ digestLedgerEntries: rows', 'throughputDeathMessage(t', 'BACKLOG_LEDGER_PATH = path.resolve'] },
   // Tracked, not gitignored, but only the Mac appends to it, so CI's copy lags (BRO-6468).
-  { fn: 'checkAutofixEffectiveness', disposition: 'fold', digestTokens: ['rows = readLedgerRows(DIGEST_LEDGER_PATH)', 'const r = assessAutofixEffectiveness(rows);'] },
+  { fn: 'checkAutofixEffectiveness', disposition: 'fold', digestTokens: ['localLoopDeadMessage({ pendingIssues, pipelineIssues, skipMacLocal, now })'], localTokens: ['rows = readLedgerRows(ledgerPath)', 'rows.concat(reconcileDigestOutcomes(', 'const r = assessAutofixEffectiveness(rows,'] },
   { fn: 'checkDigestInvariantFail', disposition: 'fold', digestTokens: ['assessDigestInvariantFailRow(entries)', 'digest-invariant-fail-ledger.jsonl\');'] },
   { fn: 'checkSharedCheckoutShallow', disposition: 'fold', digestTokens: ['shallowDigestRow({ fromDir: REPO })', 'sections.health.errors.push'] },
   { fn: 'checkDispatchHealth', disposition: 'fold', digestTokens: ['computeDispatchHealthDigest({ entries: dispatchEntries', 'computeHeadlessDispatchDigest({ entries: dispatchEntries', 'sections.health.errors.push'] },
@@ -48,13 +49,19 @@ test('every check* reading a gitignored audit ledger is in the audit table', () 
   assert.deepEqual(offenders, [], 'add each to AUDITED with a LOCAL-FOLD or CI-ONLY-OK marker (BRO-2199)');
 });
 
-for (const { fn, disposition, digestTokens } of AUDITED) {
+for (const { fn, disposition, digestTokens, localTokens = [] } of AUDITED) {
   test(`${fn}: ${disposition} is implemented and documented`, () => {
     assert.ok(healthSrc.includes(`function ${fn}(`), `${fn} no longer exists in health-check.js; update the audit table`);
     if (disposition === 'fold') {
       assert.ok(healthSrc.includes(`LOCAL-FOLD(${fn})`), `${fn}: missing LOCAL-FOLD marker in health-check.js`);
       for (const t of digestTokens) {
         assert.ok(digestSrc.includes(t), `${fn}: send-morning-digest.js has no local fold (missing "${t}")`);
+      }
+      if (localTokens.length) {
+        assert.ok(digestSrc.includes("require('./lib/digest-loop-health.js')"), `${fn}: local fold helper must be imported`);
+        for (const t of localTokens) {
+          assert.ok(loopHealthSrc.includes(t), `${fn}: digest-loop-health.js has no local fold (missing "${t}")`);
+        }
       }
     } else {
       const m = healthSrc.match(new RegExp(`CI-ONLY-OK\\(${fn}\\):([^]*?)\\nfunction ${fn}\\(`));

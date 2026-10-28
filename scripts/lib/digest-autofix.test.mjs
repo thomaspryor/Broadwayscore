@@ -15,6 +15,7 @@ const { evaluateScrapingdogCredits } = require('./scrapingdog-ack.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION } = require('./scrapingbee-ack.js');
 const { computeContentHash } = require('./attempt-memory.js');
 const dispatchLedger = require('./dispatch-ledger.js');
+const { localLoopDeadMessage } = require('./digest-loop-health.js');
 const { DEFAULT_CONCURRENCY_CAP, DEFAULT_SPEND_THRESHOLD_USD } = require('./backlog-drain.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -27,6 +28,96 @@ function appendRaw(p, entry) {
   fs.mkdirSync(path.dirname(p), { recursive: true });
   fs.appendFileSync(p, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
 }
+
+for (const mode of ['empty plan', 'dry run', 'busy reconcile lock']) {
+  test(`BRO-6469: verdict reconciles completed jobs after ${mode}`, (t) => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'digest-verdict-'));
+    t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+    const ledgerPath = path.join(dir, 'digest.jsonl');
+    const now = new Date('2026-10-28T12:00:00Z');
+    const ts = '2026-10-28T08:00:00Z';
+    const shared = [];
+    for (let i = 0; i < 3; i++) {
+      const taskId = `linear:BRO-${6000 + i}`;
+      appendRaw(ledgerPath, { event: 'auto-dispatch', ts, taskId, contentHash: `hash-${i}` });
+      shared.push({ event: 'job-spawned', ts, taskId, jobId: `job-${i}` },
+        { event: 'job-done', ts: '2026-10-28T09:00:00Z', taskId, jobId: `job-${i}` });
+    }
+    if (mode === 'busy reconcile lock') fs.writeFileSync(`${ledgerPath}.lock`, `${process.pid} live\n`);
+    runAutofix({
+      plan: mode === 'empty plan' ? [] : [{ state: 'decision' }],
+      dryRun: mode === 'dry run', ledgerPath, now,
+      loadTasksFn: () => [], dispatchLedgerEntriesFn: () => shared,
+      fileCardFn: () => assert.fail('must not file cards'),
+      dispatchFn: () => assert.fail('must not dispatch'),
+    });
+    const before = fs.readFileSync(ledgerPath, 'utf8');
+    assert.equal(localLoopDeadMessage({
+      ledgerPath, backlogLedgerPath: path.join(dir, 'absent.jsonl'), now,
+      pendingIssues: 3, loadTasksFn: () => [], dispatchLedgerEntriesFn: () => shared,
+    }), null, 'finished jobs must not look silent even when runAutofix skipped reconciliation');
+    assert.equal(fs.readFileSync(ledgerPath, 'utf8'), before, 'rendering a verdict must not write ledger outcomes');
+  });
+}
+
+test('BRO-6469: --skip-mac-local bypasses the ledger verdict before any local reads', () => {
+  const original = fs.readFileSync;
+  let reads = 0;
+  fs.readFileSync = () => { reads++; throw new Error('CI cannot read Mac ledgers'); };
+  try {
+    assert.equal(localLoopDeadMessage({ skipMacLocal: true, pendingIssues: 3 }), null);
+  } finally { fs.readFileSync = original; }
+  assert.equal(reads, 0, 'CI must not read Mac ledgers');
+});
+
+test('BRO-6469: sender forwards --skip-mac-local through composition and standalone HTML', () => {
+  const healthModule = require('./digest-loop-health.js');
+  const senderPath = require.resolve('../send-morning-digest.js');
+  const previousSender = require.cache[senderPath];
+  const original = healthModule.localLoopDeadMessage;
+  const calls = [];
+  healthModule.localLoopDeadMessage = (opts) => { calls.push(opts); return null; };
+  delete require.cache[senderPath];
+  try {
+    const { composeDigestEmail, buildHtml } = require('../send-morning-digest.js');
+    const options = { sections: {}, boardReport: null, skipMacLocal: true, now: new Date('2026-10-28T12:00:00Z') };
+    composeDigestEmail(options);
+    buildHtml(options);
+    assert.equal(calls.length, 2);
+    for (const opts of calls) {
+      assert.equal(opts.skipMacLocal, true);
+      assert.equal(opts.now, options.now);
+    }
+    const source = fs.readFileSync(senderPath, 'utf8');
+    assert.match(source, /composeDigestEmail\(\{[^;]*reportOnly: noAutofix, skipMacLocal, now\s*\}\)/,
+      'main must forward the parsed flag to composition');
+  } finally {
+    healthModule.localLoopDeadMessage = original;
+    if (previousSender) require.cache[senderPath] = previousSender;
+    else delete require.cache[senderPath];
+  }
+});
+
+test('BRO-6469: reconciled verdict preserves real failures, starvation and unknown inputs', (t) => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'digest-verdict-negative-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const ledgerPath = path.join(dir, 'digest.jsonl');
+  const options = {
+    ledgerPath, backlogLedgerPath: path.join(dir, 'absent.jsonl'),
+    now: new Date('2026-10-28T12:00:00Z'), pendingIssues: 3,
+    loadTasksFn: () => [], dispatchLedgerEntriesFn: () => [],
+  };
+  assert.equal(localLoopDeadMessage(options), null, 'absent ledger is unknown');
+  fs.writeFileSync(ledgerPath, '');
+  assert.match(localLoopDeadMessage(options), /0 dispatches/, 'an empty readable ledger still detects starvation');
+  for (let i = 0; i < 3; i++) appendRaw(ledgerPath, {
+    event: 'auto-dispatch', ts: '2026-10-28T08:00:00Z', taskId: `linear:BRO-${6000 + i}`,
+  });
+  assert.match(localLoopDeadMessage(options), /DEAD/, 'orphan launches still fail');
+  assert.equal(localLoopDeadMessage({
+    ...options, dispatchLedgerEntriesFn: () => { throw new Error('unreadable dispatch ledger'); },
+  }), null, 'a failed reconciliation cannot judge a stale ledger');
+});
 
 test('planAutofix: dedups against open tasks, maps states', () => {
   const health = { errors: [{ name: 'A', message: 'a' }], warns: [{ name: 'B', message: 'b' }] };
