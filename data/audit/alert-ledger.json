@@ -243,7 +243,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -256,7 +256,8 @@
       "cardId": null,
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
-      "sweptTracker": "BRO-6422"
+      "sweptTracker": "BRO-6422",
+      "resolvedAt": "2026-10-28T14:49:20.990Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1030,7 +1031,7 @@
       "resolvedAt": "2026-10-13T16:45:36.193Z"
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 5.8h",
@@ -1041,7 +1042,8 @@
       "lastSurfacedAt": "2026-10-28T08:28:40.413Z",
       "notifyCount": 73,
       "cardId": null,
-      "linearIdentifier": "BRO-5817"
+      "linearIdentifier": "BRO-5817",
+      "resolvedAt": "2026-10-28T14:49:20.888Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "resolved",
@@ -28858,7 +28860,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40634589536"
       },
       "silentRefires": 7,
-      "resolvedAt": "2026-10-28T14:45:51.447Z",
+      "resolvedAt": "2026-10-28T14:49:20.732Z",
       "resolveReason": "job-green"
     },
     "express-retry-still-thin:the-morbs-off-broadway-2026": {
@@ -28972,7 +28974,7 @@
       "resolvedAt": "2026-10-28T14:02:48.740Z"
     },
     "test-yml:red:Unit Tests:39fee2b1": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"real shows.json: zero un-reviewed hits\"",
       "firstSeen": "2026-10-28T13:30:43.530Z",
@@ -28989,7 +28991,9 @@
         "runId": "40693122002",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40693122002"
       },
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-28T14:49:20.756Z",
+      "resolveReason": "job-green"
     },
     "opening-night-remediation-exhausted-empty-cast:medea-off-broadway-2026": {
       "status": "open",
