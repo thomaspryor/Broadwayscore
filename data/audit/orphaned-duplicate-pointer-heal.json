@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-28T16:48:10.940Z",
+  "generated": "2026-10-28T17:20:13.620Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 41,
+  "count": 42,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -289,6 +289,13 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "some-like-it-hot-2022",
+      "loserFile": "theatermania--zachary-stewart.json",
+      "targetFile": "theatermania--adam-feldman.json",
+      "reason": "orphaned-duplicate-heal: theatermania--adam-feldman.json was flagged invalid after theatermania--zachary-stewart.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }

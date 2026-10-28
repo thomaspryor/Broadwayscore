@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T16:58:00.547Z",
+  "timestamp": "2026-10-28T17:26:28.991Z",
   "stats": {
-    "totalReviews": 65049,
-    "alreadyFlagged": 21971,
+    "totalReviews": 65083,
+    "alreadyFlagged": 21977,
     "dateGuardCatches": 234,
-    "directorMismatch": 2523,
-    "tvFilmSignals": 1819,
-    "londonSignals": 3135,
-    "offBroadwaySignals": 583,
+    "directorMismatch": 2524,
+    "tvFilmSignals": 1822,
+    "londonSignals": 3136,
+    "offBroadwaySignals": 584,
     "yearMismatch": 226,
-    "noPublishDate": 5766
+    "noPublishDate": 5741
   },
   "findings": [
     {
@@ -2647,7 +2647,7 @@
     {
       "showId": "aladdin-west-end-2016",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 77,
       "publishDate": "June 15th, 2016",
       "url": "https://www.theguardian.com/stage/2016/jun/15/aladdin-review-disney-musical-west-end-prince-edward-theatre",
       "findings": [
@@ -2689,7 +2689,7 @@
     {
       "showId": "aladdin-west-end-2016",
       "file": "standard--henry-hitchings.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2016-06-16",
       "url": "https://www.standard.co.uk/go/london/theatre/aladdin-theatre-review-sheer-genieous-at-glittering-trevor-dion-nicholas-steals-the-show-a3273276.html",
       "findings": [
@@ -16183,6 +16183,7 @@
     {
       "showId": "evita-west-end-2025",
       "file": "londontheatre1--john-groves.json",
+      "score": 90,
       "publishDate": "2025-07-03",
       "url": "https://www.londontheatre1.com/reviews/evita-london-palladium-review/",
       "findings": [
@@ -30455,8 +30456,21 @@
       "showId": "m-butterfly-2017",
       "file": "thestage--mark-shenton.json",
       "score": 38,
-      "publishDate": "October 26, 2017",
+      "publishDate": "2017-10-27",
       "url": "https://www.thestage.co.uk/reviews/2017/m-butterfly-review-cort-theatre-new-york/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john dexter\" from m-butterfly-1988"
+        }
+      ]
+    },
+    {
+      "showId": "m-butterfly-2017",
+      "file": "village-voice--michael-feingold.json",
+      "publishDate": "2017-11-02",
+      "url": "https://www.villagevoice.com/2017/11/02/david-henry-hwangs-m-butterfly-travels-east-to-explore-delusions-of-gender/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -42593,6 +42607,20 @@
       ]
     },
     {
+      "showId": "some-like-it-hot-2022",
+      "file": "village-voice--michael-musto.json",
+      "score": 74,
+      "publishDate": "2022-12-11",
+      "url": "https://www.villagevoice.com/2022/12/11/review-updating-and-upgrading-the-movie-broadways-some-like-it-hot-hits-all-the-right-notes/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "some-like-it-hot-tour-2024",
       "file": "boston-globe--unknown.json",
       "score": 81,
@@ -45699,6 +45727,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "swept-away-2024",
+      "file": "frontmezzjunkies--unknown.json",
+      "score": null,
+      "publishDate": "2024-12-16",
+      "url": "https://frontmezzjunkies.com/2024/12/16/broadway-swept-away/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"apple tv\""
         }
       ]
     },
@@ -49073,6 +49115,20 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"mike nichols\" from the-gin-game-1977"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2013",
+      "file": "newsday--linda-winer.json",
+      "score": 88,
+      "publishDate": "2013-09-26T20:11:40-04:00",
+      "url": "http://www.newsday.com/entertainment/theater/the-glass-menagerie-review-dreamlike-1.6140647",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -67598,7 +67654,7 @@
     {
       "showId": "ballet-shoes-west-end-2024",
       "file": "standard--nick-curtis.json",
-      "score": 98,
+      "score": 95,
       "publishDate": "2024-12-06",
       "url": "https://www.standard.co.uk/culture/theatre/ballet-shoes-national-theatre-review-b1198466.html",
       "findings": [
@@ -76572,7 +76628,7 @@
     {
       "showId": "girls-and-boys-west-end-2018",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 64,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/feb/15/girls-and-boys-review-carey-mulligan",
       "findings": [
@@ -78628,7 +78684,7 @@
     {
       "showId": "hang-west-end-2015",
       "file": "guardian--unknown.json",
-      "score": null,
+      "score": 56,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/jun/17/hang-review-marianne-jean-baptiste-justice-capital-punishment",
       "findings": [
@@ -79870,6 +79926,7 @@
     {
       "showId": "hex-west-end-2022",
       "file": "guardian--arifa-akbar.json",
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2022/dec/07/hex-review-musical-sleeping-beauty-olivier-national-theatre-rufus-norris",
       "findings": [
@@ -80687,7 +80744,7 @@
     {
       "showId": "how-to-hold-your-breath-west-end-2015",
       "file": "whatsonstage--unknown.json",
-      "score": 56,
+      "score": 57,
       "publishDate": "2015-02-11",
       "url": "https://www.whatsonstage.com/london-theatre/news/how-to-hold-breath-maxine-peake-reviews_37136.html/",
       "findings": [
@@ -81917,7 +81974,7 @@
     {
       "showId": "instructions-for-correct-assembly-west-end-2018",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 61,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/apr/15/instructions-for-correct-assembly-review-bonnar-and-horrocks-star-in-clever-sci-fi-satire",
       "findings": [
@@ -84924,7 +84981,7 @@
     {
       "showId": "long-days-journey-into-night-west-end-2018",
       "file": "guardian--michael-billington.json",
-      "score": null,
+      "score": 82,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2018/feb/06/long-days-journey-into-night-review-wyndhams-theatre-jeremy-irons-lesley-manville",
       "findings": [
@@ -85468,7 +85525,7 @@
     {
       "showId": "man-and-superman-west-end-2015",
       "file": "guardian--unknown.json",
-      "score": null,
+      "score": 81,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/feb/26/man-and-superman-review-ralph-fiennes-national-theatre",
       "findings": [
@@ -97429,6 +97486,19 @@
       ]
     },
     {
+      "showId": "tell-me-on-a-sunday-west-end-2014",
+      "file": "bestoftheatre--oliver-mitford.json",
+      "publishDate": "2014-02-26",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/tell-me-on-a-sunday-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "tender-off-west-end-2026",
       "file": "artsdesk--unknown.json",
       "score": 82,
@@ -101109,6 +101179,20 @@
       ]
     },
     {
+      "showId": "the-glass-menagerie-2013",
+      "file": "vulture--scott-brown.json",
+      "score": 87,
+      "publishDate": "2013-09-26",
+      "url": "http://www.vulture.com/2013/09/theater-reviews-arguendo.html?mid=googlenews",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "the-glass-menagerie-2017",
       "file": "dailybeast--tim-teeman.json",
       "score": 91,
@@ -102530,6 +102614,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "guardian--arifa-akbar.json",
+      "score": 57,
       "publishDate": "2025-09-21",
       "url": "https://www.theguardian.com/stage/2025/sep/19/the-land-of-the-living-review-juliet-stevenson-dorfman-theatre",
       "findings": [
@@ -102543,7 +102628,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "independent--ella-duggan.json",
-      "score": 62,
+      "score": 57,
       "publishDate": "2025-09-19",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/land-of-the-living-juliet-stevenson-b2829840.html",
       "findings": [
@@ -102557,7 +102642,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-box-office--stuart-king.json",
-      "score": 55,
+      "score": 59,
       "publishDate": "2025-09-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/the-land-of-the-living-nt-review",
       "findings": [
@@ -102571,7 +102656,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "london-theatre--theo-bosanquet.json",
-      "score": 64,
+      "score": 61,
       "publishDate": "2025-09-19",
       "url": "https://www.londontheatre.co.uk/reviews/the-land-of-the-living-review-juliet-stevenson-gives-a-powerhouse",
       "findings": [
@@ -102585,7 +102670,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "standard--anya-ryan.json",
-      "score": 57,
+      "score": 55,
       "publishDate": "2025-09-19",
       "url": "https://www.standard.co.uk/culture/theatre/the-land-of-the-living-national-theatre-review-juliet-stevenson-b1248614.html",
       "findings": [
@@ -102599,7 +102684,7 @@
     {
       "showId": "the-land-of-the-living-west-end-2025",
       "file": "thestage--tom-wicker.json",
-      "score": 67,
+      "score": 65,
       "publishDate": "2025-09-19",
       "url": "https://www.thestage.co.uk/reviews/the-land-of-the-living-review-national-theatre-london-stephen-daldry-juliet-stevenson",
       "findings": [
@@ -109092,7 +109177,7 @@
     {
       "showId": "violence-and-son-west-end-2015",
       "file": "guardian--unknown.json",
-      "score": null,
+      "score": 57,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2015/jun/09/violence-and-son-review-royal-court",
       "findings": [
@@ -109594,7 +109679,7 @@
     {
       "showId": "we-live-in-cairo-off-broadway-2024",
       "file": "theater-life--isa-goldberg.json",
-      "score": null,
+      "score": 89,
       "publishDate": "2024-11-05",
       "url": "https://theaterlife.com/we-live-in-cairo/",
       "findings": [
@@ -110760,7 +110845,7 @@
     {
       "showId": "young-frankenstein-west-end-2017",
       "file": "london-theatre--mark-shenton.json",
-      "score": 97,
+      "score": 99,
       "publishDate": "October 10th, 2017",
       "url": "https://www.londontheatre.co.uk/reviews/review-mel-brooks-young-frankenstein-at-the-garrick-theatre",
       "findings": [
