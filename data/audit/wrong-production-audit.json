@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T01:49:29.999Z",
+  "timestamp": "2026-10-28T02:41:35.586Z",
   "stats": {
-    "totalReviews": 63996,
-    "alreadyFlagged": 21773,
+    "totalReviews": 64010,
+    "alreadyFlagged": 21778,
     "dateGuardCatches": 237,
-    "directorMismatch": 2389,
-    "tvFilmSignals": 1812,
-    "londonSignals": 3061,
-    "offBroadwaySignals": 577,
-    "yearMismatch": 225,
-    "noPublishDate": 5661
+    "directorMismatch": 2397,
+    "tvFilmSignals": 1813,
+    "londonSignals": 3067,
+    "offBroadwaySignals": 578,
+    "yearMismatch": 226,
+    "noPublishDate": 5638
   },
   "findings": [
     {
@@ -27068,6 +27068,20 @@
       ]
     },
     {
+      "showId": "la-cage-aux-folles-1983",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/world/LaCageauxFolles.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry zaks\" from la-cage-aux-folles-2004"
+        }
+      ]
+    },
+    {
       "showId": "la-cage-aux-folles-2010",
       "file": "broadwayworld--michael-dale.json",
       "score": 71,
@@ -28381,6 +28395,20 @@
     },
     {
       "showId": "liberation-off-broadway-2025",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 72,
+      "publishDate": "February 21st, 2025",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-TT93M1",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
       "file": "nysr--roma-torre.json",
       "score": 82,
       "publishDate": "2025-02-20",
@@ -28440,6 +28468,20 @@
       "score": 76,
       "publishDate": "2025-02-21",
       "url": "https://www.offoffonline.com/offoffonline/2025/2/19/liberation",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-off-broadway-2025",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 72,
+      "publishDate": "February 20th, 2025",
+      "url": "https://www.talkinbroadway.com/page/ob/02_20_25b.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33103,6 +33145,42 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"peter hall\" from no-mans-land-1976"
+        }
+      ]
+    },
+    {
+      "showId": "no-mans-land-west-end-2016",
+      "file": "london-theatre--unknown.json",
+      "publishDate": "2016-09-21",
+      "url": "https://www.londontheatre.co.uk/reviews/review-of-no-mans-land-starring-patrick-stewart-and-ian-mckellen-at-the-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sean mathias\" from no-mans-land-2013"
+        }
+      ]
+    },
+    {
+      "showId": "no-mans-land-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2016-09-20",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/ian-mckellen-and-patrick-stewart-are-unmissable-in-no-mans-land/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sean mathias\" from no-mans-land-2013"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"peter hall\" from no-mans-land-1976"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -45783,6 +45861,20 @@
     },
     {
       "showId": "the-color-purple-2015",
+      "file": "nypost--elisabeth-vincentelli.json",
+      "score": 77,
+      "publishDate": "2015-12-10T19:42:06-05:00",
+      "url": "http://nypost.com/2015/12/10/jennifer-hudsons-co-stars-steal-the-show-in-color-purple/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-color-purple-2015",
       "file": "nytimes--ben-brantley.json",
       "score": 91,
       "publishDate": "December 10, 2015",
@@ -48802,6 +48894,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-heidi-chronicles-1989",
+      "file": "exeunt-magazine--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://exeuntnyc.com/reviews/the-heidi-chronicles/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"pam mackinnon\" from the-heidi-chronicles-2015"
         }
       ]
     },
@@ -53764,6 +53870,25 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-real-thing-1984",
+      "file": "talkinbroadway--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.talkinbroadway.com/world/RealThing2014.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam gold\" from the-real-thing-2014"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2014 (2x) more than 1984 (1x). 2014 matches production: the-real-thing-2014"
         }
       ]
     },
@@ -65573,6 +65698,19 @@
       "score": 82,
       "publishDate": "2024-12-08",
       "url": "https://www.theguardian.com/stage/2024/dec/08/ballet-shoes-review-national-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "ballet-shoes-west-end-2024",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2024-12-06",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/ballet-shoes-national-theatre-christmas-b2659983.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -81264,6 +81402,32 @@
       ]
     },
     {
+      "showId": "killology-west-end-2017",
+      "file": "british-theatre--philip-fisher.json",
+      "publishDate": "2017-05-31",
+      "url": "https://www.britishtheatreguide.info/reviews/killology-royal-court-the-14439",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "killology-west-end-2017",
+      "file": "variety--matt-trueman.json",
+      "publishDate": "2017-06-01",
+      "url": "https://variety.com/2017/legit/reviews/killology-review-play-gary-owen-1202450381/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "kimberly-akimbo-2022",
       "file": "theater-scene--joel-benjamin.json",
       "score": 76,
@@ -81874,6 +82038,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "leopoldstadt-2022",
+      "file": "theater-pizzazz--carol-rocamora.json",
+      "score": 87,
+      "publishDate": "2022-10-10",
+      "url": "https://www.theaterpizzazz.com/leopoldstadt/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"cherry lane\""
         }
       ]
     },
@@ -94115,6 +94293,20 @@
       ]
     },
     {
+      "showId": "strangers-on-a-train-west-end-2013",
+      "file": "britishtheatrecom--stephen-collins.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.britishtheatre.com/posts/review-strangers-on-a-train-gielgud-theatre-3stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
       "showId": "stuffed-off-west-end-2026",
       "file": "british-theatre--keith-mckenna.json",
       "score": 74,
@@ -101659,6 +101851,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-philanthropist-west-end-2017",
+      "file": "london-box-office--phil-willmott.json",
+      "publishDate": "2017-04-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-philanthropist-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },

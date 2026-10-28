@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-28T01:42:22.478Z",
+    "generatedAt": "2026-10-28T02:30:15.749Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 96,
-    "highConfidence": 5,
-    "mediumConfidence": 91,
+    "totalFlagged": 99,
+    "highConfidence": 6,
+    "mediumConfidence": 93,
     "lowConfidence": 0,
-    "reassignable": 39
+    "reassignable": 41
   },
   "results": [
     {
@@ -1446,6 +1446,59 @@
         "year 1972 in text matches revival jesus-christ-superstar-1971"
       ],
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
+    },
+    {
+      "showId": "the-heidi-chronicles-1989",
+      "showTitle": "The Heidi Chronicles",
+      "showYear": 1989,
+      "file": "exeunt-magazine--unknown.json",
+      "outlet": "Exeunt Magazine",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "revival text signals: revival, this production",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "When The Heidi Chronicles first opened on Broadway, seven years after the publication of long-time Cosmopolitan editor-in-chief Helen Gurley Brown’s feminist self-help book Having It All, it tackled h"
+    },
+    {
+      "showId": "la-cage-aux-folles-1983",
+      "showTitle": "La Cage aux Folles",
+      "showYear": 1983,
+      "file": "talkinbroadway--unknown.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "high",
+      "suggestedShowId": "la-cage-aux-folles-2004",
+      "signals": [
+        "revival cast/director match for la-cage-aux-folles-2004: Gary Beach, Daniel Davis, Marquis Theatre, director: Jerry Zaks",
+        "year 2004 in text matches revival la-cage-aux-folles-2004",
+        "year 2005 in text matches revival la-cage-aux-folles-2004"
+      ],
+      "textSnippet": "Theatre Review by Matthew Murray\n - December 9, 2004 \n\nLa Cage aux Folles Music and Lyrics by Jerry Herman. Book by Harvey Fierstein. Based on the play 'La Cage Aux Folles' by Jean Poiret. Directed by"
+    },
+    {
+      "showId": "the-real-thing-1984",
+      "showTitle": "The Real Thing",
+      "showYear": 1984,
+      "file": "talkinbroadway--unknown.json",
+      "outlet": "Talkin' Broadway",
+      "criticName": "Unknown",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": "the-real-thing-2014",
+      "signals": [
+        "revival text signals: revival, revived, this production",
+        "year 2014 in text matches revival the-real-thing-2014",
+        "year 2015 in text matches revival the-real-thing-2014",
+        "year 2000 in text matches revival the-real-thing-2000",
+        "modern references: hamilton",
+        "no publishDate + revival signals + revivals exist"
+      ],
+      "textSnippet": "Theatre Review by Matthew Murray\n - October 30, 2014\n\nThe Real Thing by Tom Stoppard. Directed by Sam Gold. Set design by David Zinn. Costume design by Kaye Voyce. Lighting design by Mark Barton. Soun"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",

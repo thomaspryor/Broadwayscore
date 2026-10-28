@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T01:49:40.546Z",
+  "generatedAt": "2026-10-28T02:41:52.603Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -540,9 +540,9 @@
       "status": "open",
       "slug": "memoriam-off-west-end",
       "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 69.59,
-      "liveScore": 70,
-      "scoreDrift": 0.4099999999999966,
+      "siteScore": 69.28,
+      "liveScore": 69,
+      "scoreDrift": -0.28000000000000114,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -782,6 +782,18 @@
           "m": 7,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T02:41:52.603Z",
+          "rc": 10,
+          "s": 69.28,
+          "t1": 0,
+          "t2": 4,
+          "t3": 6,
+          "p": 3,
+          "m": 7,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -796,27 +808,27 @@
       "slug": "i-became-we-off-broadway",
       "thumbnail": "/images/shows/i-became-we-off-broadway-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 77,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 5,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 0,
+      "total": 2,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
-      "mixed": 0,
+      "positive": 1,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/12 total",
+          "2/12 total",
           "T1:0/3",
-          "T2:0/3",
-          "hi-conf:0/8"
+          "T2:2/3",
+          "hi-conf:2/8"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -912,10 +924,6 @@
           "isDualMarket": false
         },
         {
-          "name": "New York Stage Review",
-          "isDualMarket": false
-        },
-        {
           "name": "Chicago Tribune",
           "isDualMarket": false
         },
@@ -942,10 +950,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -1158,6 +1162,20 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-28T02:41:52.603Z",
+          "rc": 2,
+          "s": 77,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 1,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
