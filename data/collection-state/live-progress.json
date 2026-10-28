@@ -1,26 +1,48 @@
 {
-  "updatedAt": "2026-10-28T07:10:30.084Z",
-  "processed": 131,
-  "failed": 80,
-  "successRate": "62.1%",
+  "updatedAt": "2026-10-28T08:10:38.066Z",
+  "processed": 75,
+  "failed": 6,
+  "successRate": "92.6%",
   "tierBreakdown": {
-    "playwright": 73,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 7,
-    "scrapingbee": 5,
-    "brightdata": 2,
-    "archiveToday": 27,
-    "archive": 37
+    "scrapingdog": 3,
+    "scrapingbee": 3,
+    "brightdata": 4,
+    "archiveToday": 2,
+    "archive": 18
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-28T07:09:18.210Z",
+      "t": "2026-10-28T07:52:19.677Z",
       "event": "bb-session",
-      "session": "e5a2dd75",
-      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+      "session": "79106f43",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/merrily-we-roll-along-theater-r"
+    },
+    {
+      "t": "2026-10-28T07:58:02.971Z",
+      "event": "bb-session",
+      "session": "2c7c4f7a",
+      "url": "https://www.wsj.com/articles/merrily-we-roll-along-review-daniel-radcliffe-jonat"
+    },
+    {
+      "t": "2026-10-28T07:58:05.570Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T08:04:05.631Z",
+      "event": "bb-session",
+      "session": "eceee90f",
+      "url": "https://www.wsj.com/arts-culture/film/the-lost-city-adam-sandra-bullock-brad-pit"
+    },
+    {
+      "t": "2026-10-28T08:04:06.288Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
