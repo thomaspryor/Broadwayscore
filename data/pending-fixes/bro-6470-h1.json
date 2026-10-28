@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6470-h1",
   "planId": "b03f103b-820d-4816-9a3d-7e43f4a780f5",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T20:13:18.929Z",
   "submitter": {
     "name": null,
@@ -188,5 +188,39 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T20:31:14.584Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added trevor-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added assassins-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added little-christmas-miracles-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-importance-of-being-earnestly-lgbtq-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added the-alchemist-off-broadway-2021"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added kimberly-akimbo-off-broadway-2021"
+    }
+  ],
+  "executedIn": "ci"
 }
