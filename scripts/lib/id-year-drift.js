@@ -161,7 +161,6 @@ const INGESTION_STAMP_ACCEPTED = {
   'bad-krey-l-off-broadway-2026': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'animal-wisdom-off-broadway-2022': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
   'harry-potter-and-the-cursed-child-both-parts-west-end-2021': 'closed; id is a live URL, rename via rename-show-id.js (S8-T1)',
-  'showstopper-the-improvised-musical-west-end-2023': 'closed 2026-07-31 (opened 2015); id is a live URL, rename via rename-show-id.js (S8-T1)',
   'wanted-2022': 'upcoming, opens 2026-11-08; rename via rename-show-id.js (S8-T1) once dates are confirmed',
 };
 
