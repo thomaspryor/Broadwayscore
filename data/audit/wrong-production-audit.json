@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T21:56:34.044Z",
+  "timestamp": "2026-10-28T22:22:18.613Z",
   "stats": {
-    "totalReviews": 65505,
-    "alreadyFlagged": 22015,
+    "totalReviews": 65523,
+    "alreadyFlagged": 22025,
     "dateGuardCatches": 234,
-    "directorMismatch": 2559,
+    "directorMismatch": 2578,
     "tvFilmSignals": 1828,
-    "londonSignals": 3155,
+    "londonSignals": 3166,
     "offBroadwaySignals": 585,
     "yearMismatch": 236,
-    "noPublishDate": 5935
+    "noPublishDate": 5897
   },
   "findings": [
     {
@@ -226,10 +226,10 @@
     },
     {
       "showId": "1984-west-end-2014",
-      "file": "guardian--unknown.json",
-      "score": null,
-      "publishDate": "2014-05-07",
-      "url": "https://www.theguardian.com/stage/2014/may/07/new-theatre-production-orwell-1984-chillingly-relevant",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "score": 84,
+      "publishDate": "2014-05-09",
+      "url": "https://www.whatsonstage.com/news/1984-playhouse-west-end_34388/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -240,6 +240,11 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"duncan macmillan\" from 1984-2017"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -6640,6 +6645,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
+        }
+      ]
+    },
+    {
+      "showId": "blithe-spirit-west-end-2014",
+      "file": "standard--unknown.json",
+      "score": 78,
+      "publishDate": "2014-03-20",
+      "url": "https://www.standard.co.uk/culture/theatre/blithe-spirit-gielgud-theatre-angela-lansbury-is-vivacious-in-defiance-of-her-age-review-9201298.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael blakemore\" from blithe-spirit-2009"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
         }
       ]
     },
@@ -30567,6 +30591,20 @@
       ]
     },
     {
+      "showId": "long-days-journey-into-night-off-broadway-2022",
+      "file": "theater-scene--darryl-reilly.json",
+      "score": null,
+      "publishDate": null,
+      "url": "http://www.theaterscene.net/plays/long-days-journey-night/darryl-reilly/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jonathan kent\" from long-days-journey-into-night-2016"
+        }
+      ]
+    },
+    {
       "showId": "long-days-journey-into-night-west-end-2018",
       "file": "sunday-express--michael-arditti.json",
       "score": 92,
@@ -32248,6 +32286,33 @@
       "score": 91,
       "publishDate": "2022-12-15",
       "url": "https://www.wsj.com/articles/merrily-we-roll-along-review-daniel-radcliffe-jonathan-groff-stephen-sondheim-nytw-11671143069",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-west-end-2013",
+      "file": "guardian--lyn-gardner.json",
+      "score": 79,
+      "publishDate": "2013-05-02",
+      "url": "https://www.theguardian.com/stage/2013/may/02/merrily-we-roll-along-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"maria friedman\" from merrily-we-roll-along-2023"
+        }
+      ]
+    },
+    {
+      "showId": "merrily-we-roll-along-west-end-2013",
+      "file": "standard--maxine-frith.json",
+      "publishDate": "2013-05-02",
+      "url": "https://www.standard.co.uk/showbiz/bickering-sisters-sonia-and-maria-friedman-unite-to-stage-hit-musical-merrily-we-roll-along-8600472.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -44969,8 +45034,78 @@
       "showId": "suffs-off-broadway-2022",
       "file": "dtli--juan-michael-porter-ii.json",
       "score": 73,
-      "publishDate": "April 6, 2022",
+      "publishDate": "2022-04-06",
       "url": "https://didtheylikeit.com/shows/suffs/while-looking-at-history-suffs-elects-didacticism-over-adventurousness/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "exeunt-magazine--loren-noveck.json",
+      "score": 61,
+      "publishDate": "2022-04-06",
+      "url": "http://exeuntnyc.com/reviews/review-suffs-at-the-public-theater/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "front-row-center--sarah-downs.json",
+      "score": 87,
+      "publishDate": "2022-05-05",
+      "url": "https://thefrontrowcenter.com/2022/05/suffs/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "musical-theatre-review--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://musicaltheatrereview.com/suffs-the-public-theater-new-york/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "nysr--david-finkle.json",
+      "score": 81,
+      "publishDate": "2022-04-06",
+      "url": "http://nystagereview.com/2022/04/06/suffs-the-suffragist-movement-in-high-tone-song-and-dance-believe-it-or-not/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "nysr--steven-suskin.json",
+      "score": 82,
+      "publishDate": "2022-04-06",
+      "url": "http://nystagereview.com/2022/04/06/suffs-new-musical-wins-by-a-landslide/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -45013,6 +45148,76 @@
       "score": 57,
       "publishDate": "2022-04-06",
       "url": "https://www.nytimes.com/2022/04/06/theater/suffs-review-public-theater.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "theater-scene--joseph-pisano.json",
+      "score": 56,
+      "publishDate": "2022-04-30",
+      "url": "http://www.theaterscene.net/musicals/offbway/suffs/joseph-pisano/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "theatermania--hayley-levitt.json",
+      "score": 62,
+      "publishDate": "2022-04-06",
+      "url": "https://www.theatermania.com/off-broadway/reviews/review-shaina-taub-suffs-public-theater_93610.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "theatrely--juan-a-ramirez.json",
+      "score": 47,
+      "publishDate": "2022-04-06",
+      "url": "https://www.theatrely.com/post/suffs-suffers-from-stasis-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "thewrap--robert-hofler.json",
+      "score": 86,
+      "publishDate": "2022-04-06",
+      "url": "https://www.thewrap.com/suffs-off-broadway-review-shaina-taub-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "timeout--raven-snook.json",
+      "score": 78,
+      "publishDate": "2022-04-06",
+      "url": "https://www.timeout.com/newyork/theater/suffs-review-public-theater-musical-feminism-shaina-taub",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -46970,6 +47175,39 @@
       ]
     },
     {
+      "showId": "the-audience-west-end-2013",
+      "file": "guardian--michael-billington.json",
+      "score": 59,
+      "publishDate": "2013-03-05",
+      "url": "https://www.theguardian.com/stage/2013/mar/05/the-audience-review-helen-mirren",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from the-audience-2015"
+        }
+      ]
+    },
+    {
+      "showId": "the-audience-west-end-2013",
+      "file": "standard--unknown.json",
+      "score": 80,
+      "publishDate": "2013-05-20",
+      "url": "https://www.standard.co.uk/culture/theatre/the-audience-gielgud-theatre-theatre-review-8522030.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"stephen daldry\" from the-audience-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"gielgud\""
+        }
+      ]
+    },
+    {
       "showId": "the-bands-visit-2017",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 93,
@@ -48837,6 +49075,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-cripple-of-inishmaan-west-end-2013",
+      "file": "standard--unknown.json",
+      "score": 76,
+      "publishDate": "2013-08-06",
+      "url": "https://www.standard.co.uk/culture/theatre/the-cripple-of-inishmaan-noel-coward-theatre-theatre-review-8664318.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael grandage\" from the-cripple-of-inishmaan-2014"
         }
       ]
     },
@@ -57837,6 +58089,20 @@
       ]
     },
     {
+      "showId": "the-weir-west-end-2014",
+      "file": "whatsonstage--michael-coveney.json",
+      "score": 80,
+      "publishDate": "2014-01-22",
+      "url": "https://www.whatsonstage.com/london-theatre/news/the-weir-west-end_33233.html/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"conor mcpherson\" from the-weir-west-end-2025"
+        }
+      ]
+    },
+    {
       "showId": "the-weir-west-end-2025",
       "file": "british-theatre--vera-liber.json",
       "score": 94,
@@ -58028,6 +58294,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-winslow-boy-west-end-2013",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2013-03-19",
+      "url": "https://www.whatsonstage.com/news/show-pics-henry-goodman-in-old-vics-winslow-boy_816/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lindsay posner\" from the-winslow-boy-2013"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -70216,6 +70500,20 @@
       ]
     },
     {
+      "showId": "breakfast-at-tiffanys-west-end-2016",
+      "file": "telegraph--dominic-cavendish.json",
+      "score": 57,
+      "publishDate": "2016-07-28",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/pixie-lott-ticks-all-the-boxes-in-breakfast-at-tiffanys--review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "brief-encounter-2010",
       "file": "new-jersey-newsroom--michael-sommers.json",
       "score": 41,
@@ -71977,6 +72275,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "close-to-you-bacharach-reimagined-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2015-10-26",
+      "url": "https://www.standard.co.uk/culture/theatre/close-to-you-bacharach-reimagined-theatre-review-just-walk-on-by-a3092096.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -74176,6 +74487,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "doktor-glas-west-end-2013",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2013-04-15",
+      "url": "https://www.whatsonstage.com/news/opening-nt-children-beautiful-thing-aiww-doktor-glas_548/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
         }
       ]
     },
@@ -81283,6 +81607,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "how-the-other-half-loves-west-end-2016",
+      "file": "standard--henry-hitchings.json",
+      "publishDate": "2016-04-05",
+      "url": "https://www.standard.co.uk/culture/theatre/how-the-other-half-loves-theatre-review-no-love-lost-in-this-sharp-and-funny-revival-of-a-classic-a3215886.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -104080,6 +104417,34 @@
       ]
     },
     {
+      "showId": "the-low-road-west-end-2013",
+      "file": "guardian--michael-billington.json",
+      "score": 82,
+      "publishDate": "2013-03-28",
+      "url": "https://www.theguardian.com/stage/2013/mar/28/the-low-road-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-low-road-west-end-2013",
+      "file": "standard--unknown.json",
+      "score": 62,
+      "publishDate": "2013-04-14",
+      "url": "https://www.standard.co.uk/culture/theatre/the-low-road-royal-court-downstairs-theatre-review-8552675.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "the-lyons-2012",
       "file": "backstage--david-sheward.json",
       "score": 88,
@@ -104239,6 +104604,19 @@
       "score": 82,
       "publishDate": "2016-02-04",
       "url": "https://www.theguardian.com/stage/2016/feb/04/the-master-builder-review-ralph-fiennes-ibsen-old-vic",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-west-end-2016",
+      "file": "telegraph--jane-shilling.json",
+      "publishDate": "2016-02-04",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-master-builder-old-vic-review-extraordinary/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
