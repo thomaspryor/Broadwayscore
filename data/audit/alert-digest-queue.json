@@ -878,5 +878,36 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-28T20:19:29.985Z"
+  },
+  {
+    "conditionKey": "land:land/bro-6482-bd-async-fallback",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6482-bd-async-fallback",
+    "description": "land.yml did not land land/bro-6482-bd-async-fallback: the scripts-lib-tests gate went red at 241e04b9f5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40764764149",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6482-bd-async-fallback"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "241e04b9f57bcec03576726d6a89453401db83f4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40764764149"
+      }
+    ],
+    "queuedAt": "2026-10-28T20:55:04.802Z"
   }
 ]
