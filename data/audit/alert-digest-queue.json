@@ -698,5 +698,36 @@
       }
     ],
     "queuedAt": "2026-10-28T19:00:36.648Z"
+  },
+  {
+    "conditionKey": "land:land/bro-5371-owner-judgment-limbo-r2",
+    "title": "Landing blocked: unit-tests-node red on land/bro-5371-owner-judgment-limbo-r2",
+    "description": "land.yml did not land land/bro-5371-owner-judgment-limbo-r2: the unit-tests-node gate went red at 9e20dd8083. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40751060075",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5371-owner-judgment-limbo-r2"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "9e20dd80832c9492b8a861bc5f33a3f342aa0a09"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40751060075"
+      }
+    ],
+    "queuedAt": "2026-10-28T19:29:41.340Z"
   }
 ]
