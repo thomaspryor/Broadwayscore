@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T12:27:35.469Z",
+  "timestamp": "2026-10-28T13:21:29.487Z",
   "stats": {
-    "totalReviews": 64786,
-    "alreadyFlagged": 21916,
+    "totalReviews": 64875,
+    "alreadyFlagged": 21946,
     "dateGuardCatches": 234,
-    "directorMismatch": 2493,
-    "tvFilmSignals": 1816,
-    "londonSignals": 3116,
-    "offBroadwaySignals": 580,
+    "directorMismatch": 2520,
+    "tvFilmSignals": 1817,
+    "londonSignals": 3124,
+    "offBroadwaySignals": 584,
     "yearMismatch": 225,
-    "noPublishDate": 5665
+    "noPublishDate": 5683
   },
   "findings": [
     {
@@ -1883,6 +1883,55 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2015",
+      "file": "standard--fiona-mountford.json",
+      "publishDate": "2015-04-02",
+      "url": "https://www.standard.co.uk/culture/theatre/a-view-from-the-bridge-wyndhams-theatre-theatre-review-mark-strong-gives-a-notable-performance-of-brooding-intensity-10050920.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2015",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": null,
+      "url": "https://www.telegraph.co.uk/culture/theatre/11416320/A-View-from-the-Bridge-Wyndhams-Theatre-review-distracting.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "a-view-from-the-bridge-west-end-2015",
+      "file": "variety--matt-trueman.json",
+      "publishDate": "2015-02-17",
+      "url": "https://variety.com/2015/legit/reviews/view-from-the-bridge-review-west-end-london-1201435092/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"ivo van hove\" from a-view-from-the-bridge-2015"
         }
       ]
     },
@@ -11868,10 +11917,252 @@
     },
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 78,
+      "publishDate": "June 5th, 2023",
+      "url": "https://cititour.com/NYC_Broadway/Days-of-Wine-and-Roses/1151",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2023-06-05",
+      "url": "https://www.thedailybeast.com/review-days-of-wine-and-roses-is-a-feelbad-musical-pickled-in-alcoholism",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "front-row-center--tulis-mccall.json",
+      "score": 77,
+      "publishDate": "2023-06-06",
+      "url": "https://thefrontrowcenter.com/2023/06/days-of-wine-and-roses/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "nydailynews--chris-jones.json",
+      "score": 74,
+      "publishDate": "2023-06-05",
+      "url": "https://www.nydailynews.com/entertainment/broadway/ny-broadway-days-of-wine-and-roses-review-20230606-y3ccfhoh55ci5nyfbf7zuvssfq-story.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "nysr--david-finkle.json",
+      "score": 78,
+      "publishDate": "2023-06-05",
+      "url": "https://nystagereview.com/2023/06/05/days-of-wine-and-roses-darcy-james-and-ohara-share-a-stirring-drink/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 85,
+      "publishDate": "2023-06-15",
+      "url": "https://newyorktheater.me/2023/06/15/days-of-wine-and-roses-review-kelli-ohara-and-brian-darcy-james-as-alcoholics/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "nytg--joe-dziemianowicz.json",
+      "score": 58,
+      "publishDate": "2023-06-05",
+      "url": "https://www.newyorktheatreguide.com/reviews/days-of-wine-and-roses-off-broadway-review-brian-darcy-james-kelli-ohara",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "nytimes--laura-collins-hughes.json",
+      "score": 65,
+      "publishDate": "2023-06-05",
+      "url": "https://www.nytimes.com/2023/06/05/theater/days-of-wine-and-roses-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "off-off-online--james-wilson.json",
+      "score": 64,
+      "publishDate": "2023-06-20",
+      "url": "https://www.offoffonline.com/offoffonline/2023/6/19/days-of-wine-and-roses",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "stagebuddy--elyse-trevers.json",
+      "score": 46,
+      "publishDate": "2023-07-06",
+      "url": "https://stagebuddy.com/theater/theater-review/days-wine-roses",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "stagebuddy--erin-kahn.json",
+      "score": 63,
+      "publishDate": "2023-06-05",
+      "url": "https://stagebuddy.com/theater/theater-review/review-days-wine-roses",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "talkinbroadway--howard-miller.json",
+      "score": 75,
+      "publishDate": "June 5th, 2023",
+      "url": "https://www.talkinbroadway.com/page/ob/06_05_23b.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "theater-life--samuel-l-leiter.json",
       "score": 77,
-      "publishDate": "June 13th, 2023",
+      "publishDate": "2023-06-13",
       "url": "https://theaterlife.com/days-of-wine-and-roses/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 46,
+      "publishDate": "2023-06-14",
+      "url": "http://www.theaterscene.net/musicals/offbway/days-of-wine-and-roses/victor-gluck/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "theatermania--david-gordon.json",
+      "score": 82,
+      "publishDate": "2023-06-05",
+      "url": "https://www.theatermania.com/news/review-brian-darcy-james-and-kelli-ohara-are-the-best-theyve-ever-been-in-days-of-wine-and-roses_1704524/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "thewrap--robert-hofler.json",
+      "score": 46,
+      "publishDate": "2023-06-05",
+      "url": "https://www.thewrap.com/days-of-wine-and-roses-theater-review-kelli-ohara-brian-darcy-james/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 57,
+      "publishDate": "2023-06-06",
+      "url": "https://www.vulture.com/2023/06/theater-review-days-of-wine-and-roses-wet-brain.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from days-of-wine-and-roses-2024"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "days-of-wine-and-roses-off-broadway-2023",
+      "file": "washpost--peter-marks.json",
+      "score": 84,
+      "publishDate": "2023-06-05",
+      "url": "https://www.washingtonpost.com/theater-dance/2023/06/05/wine-roses-ohara-james-guettel/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -15835,6 +16126,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"michael grandage\" from evita-2012"
+        }
+      ]
+    },
+    {
+      "showId": "evita-west-end-2025",
+      "file": "londontheatre1--john-groves.json",
+      "publishDate": "2025-07-03",
+      "url": "https://www.londontheatre1.com/reviews/evita-london-palladium-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"harold prince\" from evita-1979"
         }
       ]
     },
@@ -27319,6 +27623,29 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
+        }
+      ]
+    },
+    {
+      "showId": "king-charles-iii-west-end-2014",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2014-11-19",
+      "url": "https://www.standard.co.uk/culture/theatre/writing-the-wrongs-mike-bartlett-on-his-plays-king-charles-iii-bull-and-game-9869931.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from king-charles-iii-2015"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -55528,6 +55855,75 @@
       ]
     },
     {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "broadwayworld--carrie-dunn.json",
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": null,
+      "publishDate": "2014-10-21T18:58:19-04:00",
+      "url": "https://www.ft.com/intl/cms/s/0/fe402b3a-5854-11e4-b331-00144feab7de.html#axzz3Gp54Ejyp",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "guardian--lyn-gardner.json",
+      "score": null,
+      "publishDate": "2014-10-21T18:58:19-04:00",
+      "url": "https://www.theguardian.com/stage/2014/oct/20/the-scottsboro-boys-musical-review-garrick-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "standard--fiona-mountford.json",
+      "score": null,
+      "publishDate": "2014-10-21T18:58:19-04:00",
+      "url": "https://www.standard.co.uk/goingout/theatre/the-scottsboro-boys-garrick-theatre--theatre-review-9807649.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
+      "showId": "the-scottsboro-boys-west-end-2014",
+      "file": "whatsonstage--catherine-love.json",
+      "score": null,
+      "publishDate": "2014-10-21T18:58:19-04:00",
+      "url": "http://www.whatsonstage.com/west-end-theatre/reviews/scottsboro-boys-west-end_36186.html?cid=homepage_news",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"susan stroman\" from the-scottsboro-boys-2010"
+        }
+      ]
+    },
+    {
       "showId": "the-seagull-globe-off-west-end-2026",
       "file": "thestage--sam-marlowe.json",
       "findings": [
@@ -67702,6 +68098,20 @@
       ]
     },
     {
+      "showId": "black-odyssey-off-broadway-2023",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 62,
+      "publishDate": "2023-02-28",
+      "url": "https://www.vulture.com/2023/02/ritual-healing-in-letters-from-max-and-black-odyssey.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "black-superhero-west-end-2023",
       "file": "london-box-office--stuart-king.json",
       "score": 91,
@@ -72623,6 +73033,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "des-moines-off-broadway-2022",
+      "file": "vulture--jackson-mchenry.json",
+      "score": null,
+      "publishDate": "2022-12-16",
+      "url": "https://www.vulture.com/2022/12/theater-reviews-the-far-country-and-des-moines.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },
@@ -80107,6 +80531,32 @@
       ]
     },
     {
+      "showId": "how-to-hold-your-breath-west-end-2015",
+      "file": "britishtheatrecom--mark-ludmon.json",
+      "publishDate": "2015-02-12",
+      "url": "https://www.britishtheatre.com/posts/review-how-to-hold-your-breath-royal-court-theatre-4stars",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "how-to-hold-your-breath-west-end-2015",
+      "file": "whatsonstage--unknown.json",
+      "publishDate": "2015-02-11",
+      "url": "https://www.whatsonstage.com/london-theatre/news/how-to-hold-breath-maxine-peake-reviews_37136.html/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "husbands-and-sons-west-end-2015",
       "file": "guardian--michael-billington.json",
       "score": 38,
@@ -84414,6 +84864,34 @@
       ]
     },
     {
+      "showId": "love-off-broadway-2023",
+      "file": "theater-scene--victor-gluck.json",
+      "score": 62,
+      "publishDate": "2023-03-06",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/love/victor-gluck/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "love-off-broadway-2023",
+      "file": "vulture--jackson-mchenry.json",
+      "score": 78,
+      "publishDate": "2023-03-02",
+      "url": "https://www.vulture.com/2023/03/theater-review-love-zeldin-park-avenue-armory.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "lungs-west-end-2019",
       "file": "artsdesk--sam-marlowe.json",
       "score": 55,
@@ -86603,6 +87081,19 @@
       "score": 59,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "uktheatrenetwork--elaine-pinkus.json",
+      "publishDate": "2026-10-27",
+      "url": "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -105757,6 +106248,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-wanderers-off-broadway-2023",
+      "file": "theater-life--david-sheward.json",
+      "score": 57,
+      "publishDate": "2023-02-20",
+      "url": "https://theaterlife.com/the-wanderers-1-2-cornelia-street-1-2/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
         }
       ]
     },

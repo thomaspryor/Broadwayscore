@@ -1,15 +1,15 @@
 {
-  "generatedAt": "2026-10-28T12:27:18.736Z",
-  "totalScanned": 64948,
-  "totalExcluded": 28991,
+  "generatedAt": "2026-10-28T13:21:09.529Z",
+  "totalScanned": 65037,
+  "totalExcluded": 29055,
   "ruleCounts": {
-    "wrongProduction": 19012,
+    "wrongProduction": 19041,
     "duplicateOf": 2177,
     "wrongShow": 1860,
-    "rejectionReason": 1264,
+    "rejectionReason": 1263,
     "unverifiableWebSearchRow": 951,
-    "noTextOrScoreSignal": 817,
-    "nonReview": 647,
+    "noTextOrScoreSignal": 847,
+    "nonReview": 648,
     "wrongAttribution": 347,
     "blockedReviewUrl": 223,
     "isRoundupArticle": 221,
@@ -17,8 +17,8 @@
     "crossOutletDuplicate": 200,
     "isSyndicatedDuplicate": 140,
     "knownSyndicationSecondary": 133,
-    "previewPlaceholder": 121,
-    "cvWrongArticleHighConfidence": 110,
+    "previewPlaceholder": 122,
+    "cvWrongArticleHighConfidence": 114,
     "scoreStatusToBeCalculated": 91,
     "listingPageUrl": 80,
     "namedNonReviewUrl": 64,
@@ -41,19 +41,26 @@
     "personalRepost": 1,
     "registrationWallStub": 1
   },
-  "ruleDeltas": {},
-  "previousGeneratedAt": "2026-10-28T12:12:42.245Z",
+  "ruleDeltas": {
+    "wrongProduction": 29,
+    "rejectionReason": -1,
+    "noTextOrScoreSignal": 30,
+    "nonReview": 1,
+    "previewPlaceholder": 1,
+    "cvWrongArticleHighConfidence": 4
+  },
+  "previousGeneratedAt": "2026-10-28T12:27:18.736Z",
   "mirror": {
-    "comparedShows": 3055,
-    "comparedFiles": 64309,
-    "agreeExcluded": 28784,
-    "agreeIncluded": 35143,
-    "mirrorOnly": 111,
+    "comparedShows": 3071,
+    "comparedFiles": 64408,
+    "agreeExcluded": 28882,
+    "agreeIncluded": 35140,
+    "mirrorOnly": 115,
     "rebuildOnly": 271,
-    "disagreements": 382,
-    "disagreementRate": 0.0059,
+    "disagreements": 386,
+    "disagreementRate": 0.006,
     "mirrorOnlyByRule": {
-      "cvWrongArticleHighConfidence": 64,
+      "cvWrongArticleHighConfidence": 68,
       "contentTierInvalid": 30,
       "noTextOrScoreSignal": 10,
       "previewPlaceholder": 3,
@@ -78,8 +85,8 @@
       "skippedWrongShow": 1
     },
     "rebuildEntriesUnscanned": 0,
-    "notComparedShows": 79,
-    "notComparedFiles": 639
+    "notComparedShows": 77,
+    "notComparedFiles": 629
   },
   "previousDisagreementRate": 0.0059
 }
