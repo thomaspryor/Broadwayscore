@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4289",
   "planId": "be374e7d-81cc-4796-9d6f-f0c4dc93b993",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T17:38:37.452Z",
   "submitter": {
     "name": null,
@@ -44,5 +44,24 @@
         "description": "shows.json: the-sound-of-music-2027.venue"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-28T20:33:46.725Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-fantasticks-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for gloria-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: venue updated for the-sound-of-music-2027"
+    }
+  ],
+  "executedIn": "ci"
 }
