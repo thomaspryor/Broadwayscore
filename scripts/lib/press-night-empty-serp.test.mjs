@@ -15,6 +15,12 @@ process.env.SCRAPINGDOG_API_KEY = 'sd-test';
 process.env.SCRAPER_USE_SCRAPINGDOG = '1';
 process.env.BD_SERP_CACHE_DIR = path.join(tmp, 'serp-cache');
 process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(tmp, 'ledger.jsonl');
+// BRO-6483: isolate the daily circuit-breaker state files. Left unset they read the
+// committed data/audit/*-circuit-breaker.json, which CI rewrites, so a tripped BD
+// breaker on main made "another show is unaffected" return null.
+process.env.BD_BREAKER_STATE_PATH = path.join(tmp, 'bd-breaker.json');
+process.env.SD_BREAKER_STATE_PATH = path.join(tmp, 'sd-breaker.json');
+process.env.SB_BREAKER_STATE_PATH = path.join(tmp, 'sb-breaker.json');
 
 const require = createRequire(import.meta.url);
 const axios = require('axios');
