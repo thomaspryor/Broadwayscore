@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T02:41:35.586Z",
+  "timestamp": "2026-10-28T03:11:59.515Z",
   "stats": {
-    "totalReviews": 64010,
-    "alreadyFlagged": 21778,
+    "totalReviews": 64099,
+    "alreadyFlagged": 21780,
     "dateGuardCatches": 237,
-    "directorMismatch": 2397,
+    "directorMismatch": 2400,
     "tvFilmSignals": 1813,
     "londonSignals": 3067,
     "offBroadwaySignals": 578,
     "yearMismatch": 226,
-    "noPublishDate": 5638
+    "noPublishDate": 5720
   },
   "findings": [
     {
@@ -263,6 +263,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "42nd-street-west-end-2017",
+      "file": "whatsonstage--sarah-crompton.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.whatsonstage.com/london-theatre/reviews/42nd-street-theatre-royal-drury-lane-sheena-easton_43290.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"gower champion\" from 42nd-street-1980"
         }
       ]
     },
@@ -3322,6 +3336,34 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2015 (2x) more than 2022 (0x). 2015 matches production: an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-west-end-2017",
+      "file": "guardian--michael-billington.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2017/mar/21/an-american-in-paris-five-star-review-minnelli-musical-dominion-london",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
+        }
+      ]
+    },
+    {
+      "showId": "an-american-in-paris-west-end-2017",
+      "file": "independent--zo-anderson.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/american-paris-dominion-theatre-london-review-a7645281.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher wheeldon\" from an-american-in-paris-2015"
         }
       ]
     },
@@ -85072,7 +85114,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "theatreandtonic--eleanor-bywater.json",
-      "score": 64,
+      "score": 58,
       "publishDate": "2026-10-27",
       "url": "https://theatreandtonic.co.uk/blog/memoriam-at-southwark-playhouse-borough-review",
       "findings": [
@@ -85080,6 +85122,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "memoriam-off-west-end-2026",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2026-10-27",
+      "url": "https://viewfromthegods.co.uk/2026/10/27/memoriam-southwark-playhouse-borough/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -96713,23 +96768,9 @@
     },
     {
       "showId": "the-children-2017",
-      "file": "nytimes--ben-brantley.json",
-      "score": 91,
-      "publishDate": "December 13, 2017",
-      "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "the-children-2017",
       "file": "nytimes--jesse-green.json",
       "score": 91,
-      "publishDate": "December 12, 2017",
+      "publishDate": "December 13, 2017",
       "url": "https://www.nytimes.com/2017/12/12/theater/review-in-the-children-manhattan-theater-club-lucy-kirkwood.html",
       "findings": [
         {
