@@ -662,7 +662,7 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
   ];
 }
 
-// Next 16 passes the shard id as a Promise<string> (Next 14/15 passed a number). Indexing
+// Next 16 passes the shard id as a Promise<string> (Next 15 passed a plain string). Indexing
 // SITEMAP_SHARDS with the raw promise hit notFound() and 404'd every /sitemap/N.xml (BRO-6458).
 export default async function sitemap(props: { id: Promise<string> | string | number }): Promise<MetadataRoute.Sitemap> {
   const id = Number(await props.id);
