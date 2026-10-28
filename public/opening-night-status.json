@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T13:21:45.634Z",
+  "generatedAt": "2026-10-28T13:37:49.483Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -541,27 +541,26 @@
       "slug": "girls-off-west-end",
       "thumbnail": "/images/shows/girls-off-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 61,
+      "liveScore": 68,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 0,
       "positive": 0,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
-          "T2:1/2",
-          "hi-conf:1/6"
+          "hi-conf:2/6"
         ],
-        "highConfidence": 1,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -685,6 +684,18 @@
           "m": 1,
           "n": 0,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T13:37:49.483Z",
+          "rc": 2,
+          "s": 68,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -698,17 +709,17 @@
       "status": "open",
       "slug": "memoriam-off-west-end",
       "thumbnail": "/images/shows/memoriam-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 70.75,
-      "liveScore": 71,
-      "scoreDrift": 0.25,
+      "siteScore": 71.87,
+      "liveScore": 72,
+      "scoreDrift": 0.12999999999999545,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 12,
+      "total": 13,
       "t1": 0,
       "t2": 4,
-      "t3": 8,
-      "positive": 4,
+      "t3": 9,
+      "positive": 5,
       "mixed": 8,
       "negative": 0,
       "readiness": {
@@ -716,7 +727,7 @@
         "reasons": [
           "T1:0/3"
         ],
-        "highConfidence": 10,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -985,6 +996,18 @@
           "t2": 4,
           "t3": 8,
           "p": 4,
+          "m": 8,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-28T13:37:49.483Z",
+          "rc": 13,
+          "s": 71.87,
+          "t1": 0,
+          "t2": 4,
+          "t3": 9,
+          "p": 5,
           "m": 8,
           "n": 0,
           "bc": "waiting"

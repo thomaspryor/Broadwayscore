@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T13:21:29.487Z",
+  "timestamp": "2026-10-28T13:37:32.985Z",
   "stats": {
-    "totalReviews": 64875,
-    "alreadyFlagged": 21946,
+    "totalReviews": 64908,
+    "alreadyFlagged": 21949,
     "dateGuardCatches": 234,
-    "directorMismatch": 2520,
+    "directorMismatch": 2521,
     "tvFilmSignals": 1817,
     "londonSignals": 3124,
-    "offBroadwaySignals": 584,
+    "offBroadwaySignals": 583,
     "yearMismatch": 225,
-    "noPublishDate": 5683
+    "noPublishDate": 5707
   },
   "findings": [
     {
@@ -11932,6 +11932,7 @@
     {
       "showId": "days-of-wine-and-roses-off-broadway-2023",
       "file": "dailybeast--tim-teeman.json",
+      "score": 65,
       "publishDate": "2023-06-05",
       "url": "https://www.thedailybeast.com/review-days-of-wine-and-roses-is-a-feelbad-musical-pickled-in-alcoholism",
       "findings": [
@@ -48448,6 +48449,20 @@
       ]
     },
     {
+      "showId": "the-elephant-man-west-end-2015",
+      "file": "londonist--stu-black.json",
+      "score": null,
+      "publishDate": "2015-06-01T12:14:40+00:00",
+      "url": "http://londonist.com/2015/06/bradley-cooper-excels-in-dated-elephant-man.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from the-elephant-man-2014"
+        }
+      ]
+    },
+    {
       "showId": "the-encounter-2016",
       "file": "broadwayworld--michael-dale.json",
       "score": 56,
@@ -73037,20 +73052,6 @@
       ]
     },
     {
-      "showId": "des-moines-off-broadway-2022",
-      "file": "vulture--jackson-mchenry.json",
-      "score": null,
-      "publishDate": "2022-12-16",
-      "url": "https://www.vulture.com/2022/12/theater-reviews-the-far-country-and-des-moines.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"atlantic theater\""
-        }
-      ]
-    },
-    {
       "showId": "di-and-viv-and-rose-west-end-2015",
       "file": "financialtimes--ian-shuttleworth.json",
       "score": 81,
@@ -87092,6 +87093,7 @@
     {
       "showId": "memoriam-off-west-end-2026",
       "file": "uktheatrenetwork--elaine-pinkus.json",
+      "score": 88,
       "publishDate": "2026-10-27",
       "url": "https://uktheatrenetwork.com/2026/10/27/memoriam-southwark-theatre-london/",
       "findings": [
