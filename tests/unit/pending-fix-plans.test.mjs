@@ -121,3 +121,14 @@ test('planShapeProblems: issueNumber must name the file, review-file-op paths ca
   assert.deepEqual(planShapeProblems('bro-9.json', plan([op('show-2026/nyt--a.json')])), []);
   assert.match(planShapeProblems('bro-9.json', plan([op('data/review-texts/show-2026/nyt--a.json')]))[0], /drop the data\/review-texts\/ prefix/);
 });
+
+// BRO-6481: a move whose target was named destinationPath landed and failed at apply time.
+test('planShapeProblems: review-file-op moves need destPath, operations are known', () => {
+  const mv = (extra) => ({ type: 'review-file-op', operation: 'move', sourcePath: 'a-2026/x.json', ...extra });
+  assert.deepEqual(planShapeProblems('bro-9.json', plan([mv({ destPath: 'b-2026/x.json' })])), []);
+  assert.match(planShapeProblems('bro-9.json', plan([mv({ destinationPath: 'b-2026/x.json' })]))[0], /needs destPath \(rename destinationPath to destPath\)/);
+  assert.match(planShapeProblems('bro-9.json', plan([mv({ destPath: ' ' })]))[0], /needs destPath/);
+  assert.deepEqual(planShapeProblems('bro-9.json', plan([mv({ destinationPath: 'b' })], { status: 'partial' })), []);
+  assert.deepEqual(planShapeProblems('bro-9.json', plan([{ type: 'review-file-op', operation: 'restore', sourcePath: 'a-2026/x.json' }])), []);
+  assert.match(planShapeProblems('bro-9.json', plan([{ type: 'review-file-op', operation: 'remove', sourcePath: 'a-2026/x.json' }]))[0], /not one of delete, move, rename, restore/);
+});

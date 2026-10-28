@@ -31,7 +31,7 @@
 const { findMatchingShows } = require('./outlet-listing-helpers');
 const { urlKey } = require('./outlet-feed-reconcile');
 const { toDateMs } = require('./date-utils');
-const { textMentionsTitle } = require('./show-title-variants');
+const { textMentionsTitle, normalizeForMention } = require('./show-title-variants');
 const { foldDiacritics } = require('./title-match');
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -60,7 +60,11 @@ function inRunWindow(show, publishDate) {
   const pub = toDateMs(publishDate);
   if (Number.isNaN(pub)) return true; // undated: let the title decide, flag it later
   const w = runWindowMs(show);
-  return !w || (pub >= w[0] && pub <= w[1]);
+  if (w) return pub >= w[0] && pub <= w[1];
+  // No dates yet (a just-catalogued 2026 return): the id's year is still a floor, so an
+  // earlier production's reviews are not filed against it (BRO-6481, Counting and Cracking).
+  const year = /-(\d{4})$/.exec(show.id || '');
+  return !year || pub >= Date.UTC(Number(year[1]), 0, 1) - PRE_START_DAYS * DAY_MS;
 }
 
 /**
@@ -182,6 +186,40 @@ function nycVenuePhrases(shows) {
 }
 
 /**
+ * A one-word variant cut from a longer title ("David" from "David, A New Musical") must
+ * stand alone in the headline: followed by punctuation, the end, a lowercase word, or the
+ * title's own next word. A capitalized stranger makes it part of another name ("David
+ * Geffen Hall", "Empire Records"). Title-case headlines capitalize every word, so a
+ * capitalized function word or headline verb ("Empire Is", "Phantom Returns") still
+ * counts as standing alone, as does a cut the headline writes in caps ("EMPIRE DELIVERS").
+ * Any other capitalized follower ("Grenfell Looks at") leaves the item unmatched rather
+ * than filed against the wrong show. If the raw headline never shows the variant (the
+ * normalizer folds characters this regex does not), the match is kept.
+ */
+const HEADLINE_FOLLOWERS = new Set(('a an and are as at by does for from gets has hits in is isnt its makes ' +
+  'of on opens or returns review reviews revival soars stuns takes the to was with dazzles delivers ' +
+  'arrives comes lands shines falls fails struggles wows').split(' '));
+function shortVariantStandsAlone(headline, title, variant) {
+  const words = normalizeForMention(title).split(' ');
+  if (variant.includes(' ') || words.length < 2) return true;
+  const nextTitleWord = words[words.indexOf(variant) + 1];
+  const raw = foldDiacritics(String(headline)).replace(/[‘’]/g, "'");
+  // An all-caps headline carries no casing signal, so keep the match.
+  if (!/[a-z]/.test(raw)) return true;
+  const esc = variant.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const re = new RegExp(`(?<![a-z0-9])${esc}(?![a-z0-9])(?:\\s+([a-z0-9']+))?`, 'gi');
+  let seen = false;
+  for (const m of raw.matchAll(re)) {
+    seen = true;
+    const next = m[1] && m[1].toLowerCase();
+    const cutInCaps = variant.length > 1 && !/[a-z]/.test(m[0].slice(0, variant.length));
+    if (!next || !/^[A-Z]/.test(m[1]) || next === nextTitleWord || cutInCaps
+      || HEADLINE_FOLLOWERS.has(next.replace(/'/g, ''))) return true;
+  }
+  return !seen;
+}
+
+/**
  * Second-stage match, census only: the poller's matcher deliberately skips common-word
  * titles (Giant, Soon, Just in Time) and needs the full catalog title ("Beaches, A New
  * Musical"), so a review headline that names the show plainly goes unmatched. Here the
@@ -192,7 +230,11 @@ function nycVenuePhrases(shows) {
 function variantMatches(item, shows) {
   if (Number.isNaN(toDateMs(item.publishDate)) || !item.headline) return [];
   const headline = String(item.headline).replace(/^\s*[^:]{0,40}\breview\s*:\s*/i, '');
-  const hits = shows.filter((s) => s.title && runWindowMs(s) && inRunWindow(s, item.publishDate) && textMentionsTitle(headline, s.title));
+  const hits = shows.filter((s) => {
+    if (!s.title || !runWindowMs(s) || !inRunWindow(s, item.publishDate)) return false;
+    const v = textMentionsTitle(headline, s.title);
+    return v && shortVariantStandsAlone(headline, s.title, v);
+  });
   // "Henry VI" and "Henry VI: A Trilogy" both hit: keep the longest titles only.
   const longest = Math.max(0, ...hits.map((s) => s.title.length));
   return hits.length > 1 ? hits.filter((s) => !hits.some((o) => o !== s && o.title.length > s.title.length && o.title.toLowerCase().includes(s.title.toLowerCase()))) : hits.filter((s) => s.title.length <= longest);

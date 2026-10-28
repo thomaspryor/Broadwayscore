@@ -11,6 +11,7 @@ const { MAX_PLAN_ACTIONS } = require('./pending-fix-limits.js');
 const { internalWordingIn, PUBLIC_TEXT_FIELDS } = require('./commercial-record-checks.js');
 const { planStatusAction, DONE_STATUSES } = require('./plan-status.js');
 
+const REVIEW_FILE_OPS = new Set(['delete', 'move', 'rename', 'restore']);
 const isPending = (plan) => Boolean(plan) && plan.status === 'pending';
 
 /** Shape problems the executor refuses a pending plan for. [] for a plan that is not pending. */
@@ -63,6 +64,13 @@ function planShapeProblems(name, plan) {
         if (typeof a[k] === 'string' && /^(\.\/)?data\/review-texts\//.test(a[k])) {
           problems.push(`${name}: review-file-op ${k} "${a[k]}" must be relative to the review-texts tree; drop the data/review-texts/ prefix`);
         }
+      }
+      // The executor knows these four operations and reads the move target from
+      // destPath only; anything else fails at apply time, after land (BRO-6481).
+      if (!REVIEW_FILE_OPS.has(a.operation)) {
+        problems.push(`${name}: review-file-op operation "${a.operation}" is not one of ${[...REVIEW_FILE_OPS].join(', ')}`);
+      } else if ((a.operation === 'move' || a.operation === 'rename') && (typeof a.destPath !== 'string' || !a.destPath.trim())) {
+        problems.push(`${name}: review-file-op ${a.operation} needs destPath${a.destinationPath ? ' (rename destinationPath to destPath)' : ''}`);
       }
     }
     if (!a || a.type !== 'data-edit' || a.file !== 'shows.json') continue;

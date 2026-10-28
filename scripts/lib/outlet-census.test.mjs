@@ -60,6 +60,37 @@ test('subtitle and common-word titles match through the dated title-variant stag
   assert.deepEqual(g.matchedIds, [giant.id]);
 });
 
+test('a one-word cut of a longer title must stand alone, not sit inside another name', () => {
+  const david = { id: 'david-a-new-musical-off-broadway-2024', title: 'David, A New Musical', venue: 'AMT Theater', openingDate: '2024-06-09', closingDate: '2024-07-13' };
+  const empire = { id: 'empire-the-musical-off-broadway-2024', title: 'Empire: The Musical', venue: 'New World Stages', openingDate: '2024-07-11', closingDate: '2024-09-22' };
+  const pool = [david, empire];
+  // BRO-6481 census false positives: a venue name, a critic's name, another show.
+  assert.deepEqual(census.variantMatches({ headline: 'Theater Review: A LITTLE NIGHT MUSIC IN CONCERT (David Geffen Hall at Lincoln Center)', publishDate: '2024-06-28' }, pool), []);
+  assert.deepEqual(census.variantMatches({ headline: 'Beverly Hills Cop III review, David Denby', publishDate: '2024-06-20' }, pool), []);
+  assert.deepEqual(census.variantMatches({ headline: 'Review: Empire Records Delivers Nostalgia at the McCarter', publishDate: '2024-08-01' }, pool), []);
+  // Still matched: punctuation after the cut, or the title's own next word.
+  assert.deepEqual(census.variantMatches({ headline: 'Review: Empire: The Musical Falls Way Short', publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+  assert.deepEqual(census.variantMatches({ headline: "'Empire' is a muddled musical", publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+  assert.deepEqual(census.variantMatches({ headline: 'David a New Musical review', publishDate: '2024-06-12' }, pool).map((s) => s.id), [david.id]);
+  assert.deepEqual(census.variantMatches({ headline: 'Review: Beaches, an Irresistible Tearjerker', publishDate: '2026-04-22' }, shows).map((s) => s.id), [beaches.id]);
+  // An all-caps headline has no casing signal to go on.
+  assert.deepEqual(census.variantMatches({ headline: 'EMPIRE DAZZLES AT NEW WORLD STAGES', publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+  // Title-case headlines: a capitalized function word or headline verb still stands alone,
+  // and a cut written in caps inside a mixed-case headline (BWW style) does too.
+  assert.deepEqual(census.variantMatches({ headline: 'Review: Empire Is a Big Swing', publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+  assert.deepEqual(census.variantMatches({ headline: 'Review: Empire Delivers', publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+  assert.deepEqual(census.variantMatches({ headline: 'Review Roundup: EMPIRE DAZZLES at New World Stages', publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+  // A lowercase word after the cut is prose, not a longer name ("POTUS at the Shubert").
+  assert.deepEqual(census.variantMatches({ headline: 'Review: Empire at New World Stages', publishDate: '2024-07-12' }, pool).map((s) => s.id), [empire.id]);
+});
+
+test('a show with no dates still rejects reviews from before its id year', () => {
+  const cc = { id: 'counting-and-cracking-off-broadway-2026', title: 'Counting and Cracking', venue: 'Delacorte Theater' };
+  assert.equal(census.inRunWindow(cc, '2024-09-14'), false);
+  assert.equal(census.inRunWindow(cc, '2026-06-01'), true);
+  assert.equal(census.inRunWindow({ id: 'no-year-here', title: 'X' }, '2001-01-01'), true);
+});
+
 test('an undated item never takes the title-variant path', () => {
   assert.deepEqual(census.variantMatches({ headline: 'Review: Giant on Broadway' }, shows), []);
 });

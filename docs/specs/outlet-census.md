@@ -123,11 +123,56 @@ Each fix has a test in `scripts/lib/outlet-census.test.mjs` or `scripts/lib/show
 
 The production matcher `findMatchingShows` is unchanged. The census adds its own dated title-variant stage on top, so these fixes cannot change live review routing.
 
-## Data problems found
+## Results (CI run, 2026-10-28, review-texts corpus)
 
-- **NYTG Illinoise:** the off-Broadway review (Park Avenue Armory) is filed under the Broadway production. Needs a review-file move once the CI run gives the file path.
-- **TheWrap Titanique:** the `titanique-2026` (Broadway) review row carries the URL of TheWrap's 2022 off-Broadway review. Its own 2026 URL is held as an alternate. The URL needs correcting, and the 2022 review is then a gap for `titanique-off-broadway-2022`.
-- **Catalog gaps:** several hundred enumerated NYC reviews match no show we list (mostly short off-Broadway and off-off-Broadway runs). Adding shows is a product call and is raised to the owner, not done here.
+The CI run reads the review files themselves (flagged and unscored included), so recall is higher than the local run. 23 outlets were readable. 703 true gaps across 383 shows.
+
+| Outlet | Recall | Held | Gaps |
+|---|---|---|---|
+| broadwaynews | 0.99 | 72 | 1 |
+| variety | 0.98 | 146 | 2 |
+| deadline | 0.98 | 94 | 2 |
+| hollywood-reporter | 0.97 | 54 | 0 |
+| nytg | 0.95 | 446 | 21 |
+| nyt-theater | 0.95 | 315 | 16 |
+| nysr | 0.93 | 671 | 50 |
+| vulture | 0.91 | 292 | 27 |
+| thewrap | 0.91 | 197 | 18 |
+| theatermania | 0.89 | 473 | 66 |
+| amny | 0.86 | 103 | 16 |
+| culturesauce | 0.74 | 72 | 91 |
+| exeunt-magazine | 0.71 | 200 | 83 |
+| theatre-reviews-limited | 0.64 | 125 | 71 |
+| stageandcinema | 0.53 | 66 | 64 |
+| theater-pizzazz | 0.47 | 19 | 31 |
+| stagebuddy | 0.31 | 55 | 131 |
+
+T1 and T2 outlets sit at 0.86 to 0.99. The holes are in T3 (stagebuddy, culturesauce, exeunt, theatre-reviews-limited, stageandcinema).
+
+## Fixes applied (pending-fix plans)
+
+- `bro-6481-2`: Illinoise and Clara misfile moves failed at apply time because the plan used `destinationPath`; the executor reads only `destPath`. Retried as `bro-6481-4`.
+- `bro-6481-3`: catalog adds for notable shows (2+ T1/T2 outlets, or 1 T1 plus 2 others, Playbill-validated, `discoverySource` tagged). 17 shows added; 8 refused as already present (another session had added them).
+- `bro-6481-4`: NYTG Illinoise review moved to `illinoise-off-broadway-2024`; Theater Pizzazz Clara review moved to the canonical Clara id and the duplicate id retired; the wrong-year TheWrap Titanique file deleted (a URL edit was refused as not provably wrong), its 2026 URL reingested.
+- Guards so the `destinationPath` mistake cannot recur: `new-fix-plan.js` refuses a move without `destPath`, and the shared plan-shape check (`pending-fix-plan-checks.js`) refuses it and any unknown review-file operation before land.
+
+## Ingest
+
+Gaps go through `ingest-urls.yml`, one run per show, which scores new files with the LLM ensemble.
+
+- Pilot, 5 shows, 22 URLs: 16 targeted files landed, 13 complete and scored. Two were excluded by existing guards (a NYTG ticket page, a NYT audio-play review). Cost: 36 ScrapingDog credits plus scoring, well under $1.
+- Batch 2: the 28 shows with a T1 gap, vetted by hand first. Vetting found census false positives (below), so 25 shows and 96 URLs went in.
+- Remaining gaps (about 570, mostly T3) are left for a re-run of the census with the fixed matcher, then a vetted batch. Total BRO-6481 spend stays under the $20 cap.
+
+### Matcher false positives found while vetting (fixed)
+
+- One-word cuts of longer titles: "David, A New Musical" became "David" and matched "David Geffen Hall" and a Vulture piece by David Denby; "Empire: The Musical" matched "Empire Records". The variant stage now needs the cut word to stand alone (punctuation, end, lowercase word, or the title's next word follows it).
+- Undated shows: `counting-and-cracking-off-broadway-2026` has no dates yet, so every review counted as in its run, including the 2024 NYU Skirball production. The run window now uses the id year as a floor.
+- Not fixed in the matcher: an LA production (East West Players Assassins) and news posts at review-tagged URLs. They were dropped by hand; ingest's own wrong-production guards also catch most.
+
+## Catalog candidates not added
+
+Listed for an owner call, not added: Encores! Bat Boy and High Spirits (no Encores precedent in the catalog), Rob Lake, Melissa Etheridge: My Window, Jeff Ross, the 2024 NYU Skirball run of Counting and Cracking, shows Playbill lists without dates, and 12 shows whose Playbill record did not match our title or year.
 
 ## Census-side limits
 
@@ -146,4 +191,4 @@ No WordPress API and no sitemap configured yet: timeout, washpost, dailybeast, p
 ## Follow-ups
 
 - Configure sitemaps for the "not configured" outlets above; most have one.
-- Re-run the census on CI after each ingest batch to measure the recall change.
+- Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
