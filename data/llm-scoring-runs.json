@@ -1229805,21 +1229805,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-28T23:16:22.002Z",
-    "completedAt": "2026-10-28T23:16:34.062Z",
-    "totalReviews": 20,
-    "processed": 2,
-    "skipped": 18,
+    "startedAt": "2026-10-28T23:16:47.367Z",
+    "completedAt": "2026-10-28T23:16:53.428Z",
+    "totalReviews": 18,
+    "processed": 1,
+    "skipped": 17,
     "errors": 0,
     "tokensUsed": {
-      "input": 14678,
-      "output": 637,
+      "input": 7611,
+      "output": 357,
       "cacheRead": 3807,
-      "cacheWrite": 3762,
-      "total": 34077
+      "cacheWrite": 0,
+      "total": 17532
     },
-    "costUsd": 0.0665245,
-    "runId": "40785634693",
+    "costUsd": 0.027974400000000003,
+    "runId": "40785524791",
     "errorDetails": [],
     "validation": [
       {
@@ -1256444,10 +1256444,10 @@
       {
         "showId": "the-brothers-size-off-broadway-2025",
         "ourDistribution": {
-          "up": 14,
+          "up": 15,
           "flat": 2,
           "down": 0,
-          "total": 16
+          "total": 17
         },
         "bwwDistribution": {
           "up": 5,
@@ -1256455,7 +1256455,8 @@
           "down": 0,
           "total": 8
         },
-        "hasDisagreement": false
+        "hasDisagreement": true,
+        "disagreementDetails": "BWW: Up thumbs differ by 26% (ours: 88%, theirs: 63%)"
       },
       {
         "showId": "the-burning-cauldron-of-fiery-fire-off-broadway-2025",
@@ -1265150,8 +1265151,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-28T23:18:53.160Z",
-    "completedAt": "2026-10-28T23:18:53.169Z",
+    "startedAt": "2026-10-28T23:19:31.577Z",
+    "completedAt": "2026-10-28T23:19:31.590Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1265164,7 +1265165,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40785634693",
+    "runId": "40785524791",
     "errorDetails": []
   }
 ]
