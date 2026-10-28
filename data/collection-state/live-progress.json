@@ -1,21 +1,43 @@
 {
-  "updatedAt": "2026-10-28T15:02:31.869Z",
-  "processed": 412,
-  "failed": 218,
-  "successRate": "65.4%",
+  "updatedAt": "2026-10-28T15:11:30.608Z",
+  "processed": 431,
+  "failed": 239,
+  "successRate": "64.3%",
   "tierBreakdown": {
-    "playwright": 197,
+    "playwright": 199,
     "amp": 0,
-    "browserbase": 3,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 27,
+    "scrapingdog": 28,
     "scrapingbee": 8,
     "brightdata": 6,
     "archiveToday": 37,
-    "archive": 134
+    "archive": 147
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-10-28T11:37:44.829Z",
+      "event": "bb-session",
+      "session": "86dc73c5",
+      "url": "https://www.wsj.com/articles/a-christmas-carol-and-sandra-reviews-out-of-one-man"
+    },
+    {
+      "t": "2026-10-28T11:37:45.194Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-28T11:53:11.271Z",
+      "event": "bb-session",
+      "session": "e757cd66",
+      "url": "https://www.wsj.com/articles/remember-this-the-lesson-of-jan-karski-review-david"
+    },
+    {
+      "t": "2026-10-28T11:53:11.595Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
     {
       "t": "2026-10-28T11:53:28.168Z",
       "event": "bb-session",
@@ -82,51 +104,6 @@
       "t": "2026-10-28T11:58:17.402Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
-    },
-    {
-      "t": "2026-10-28T14:42:22.407Z",
-      "event": "bb-session",
-      "session": "6bbd58a6",
-      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
-    },
-    {
-      "t": "2026-10-28T14:42:23.096Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-28T14:44:45.585Z",
-      "event": "bb-session",
-      "session": "f9c6e477",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
-    },
-    {
-      "t": "2026-10-28T14:47:42.219Z",
-      "event": "bb-session",
-      "session": "7b0d8a3e",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-28T14:47:42.847Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-28T14:47:52.274Z",
-      "event": "bb-session",
-      "session": "e8b9e46e",
-      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
-    },
-    {
-      "t": "2026-10-28T14:47:52.850Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-28T14:50:37.779Z",
-      "event": "bb-session",
-      "session": "83a74ce1",
-      "url": "https://www.metopera.org/season/2026-27-season/lincoln-in-the-bardo/"
     }
   ]
 }
