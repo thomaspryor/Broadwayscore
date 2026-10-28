@@ -126,7 +126,11 @@
     "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
     "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
     "the-car-man-west-end-2026/balletcoforum--unknown.json",
-    "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json"
+    "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
+    "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
+    "girls-off-west-end-2026/firstnightmagazine--unknown.json",
+    "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
   ],
   "failed": [
     "pride-west-end-2026/nyt-theater--unknown.json",
@@ -201,7 +205,14 @@
     "a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
     "the-enormous-crocodile-west-end-2026/guardian--chris-wiegand.json",
     "the-enormous-crocodile-west-end-2026/guardian--unknown.json",
-    "the-car-man-west-end-2026/thestage--dave-fargnoli.json"
+    "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+    "hospital-hour-off-broadway-2026/broadway-baby--unknown.json",
+    "hospital-hour-off-broadway-2026/one-minute-critic--unknown.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "tales-of-urban-hysteria-is-an-evening-of-four-short-plays-by-award-winning-playwright-mark-borkowski-off-broadway-2026/phusionpassenger--unknown.json",
+    "in-the-heights-off-broadway-2026/nypost--clive-barnes.json",
+    "in-the-heights-off-broadway-2026/bloomberg--john-simon.json",
+    "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -274,10 +285,16 @@
       "as-you-like-it-globe-west-end-2026/onin--caitlin-neal.json",
       "masticate-off-broadway-2026/nyu--unknown.json",
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/london-theatre-reviews--unknown.json",
-      "the-car-man-west-end-2026/balletcoforum--unknown.json"
+      "the-car-man-west-end-2026/balletcoforum--unknown.json",
+      "memoriam-off-west-end-2026/jonathan-baz--unknown.json",
+      "girls-off-west-end-2026/firstnightmagazine--unknown.json",
+      "girls-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "buffy-revamped-west-end-2026/ticketswitch--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "phyl-off-broadway-2026/theater-life--paulanne-simmons.json",
@@ -325,7 +342,8 @@
       "data/review-texts/oh-mary-west-end-2025/thestage--unknown.json",
       "data/review-texts/maybe-happy-ending-2024/talkinbroadway--matthew-murray.json",
       "data/review-texts/de-profundis-off-west-end-2026/uktw--unknown.json",
-      "data/review-texts/a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json"
+      "data/review-texts/a-month-in-the-country-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/hospital-hour-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "archive": [
       "brainiac-live-west-end-2026/londontheatre1--london-theatre-1.json",
@@ -368,6 +386,13 @@
     ]
   },
   "startTime": "2026-10-28T05:42:27.573Z",
-  "lastProcessed": "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
-  "log": []
+  "lastProcessed": "in-the-heights-off-broadway-2026/usatoday--elysa-gardner.json",
+  "log": [
+    {
+      "t": "2026-10-28T07:09:18.210Z",
+      "event": "bb-session",
+      "session": "e5a2dd75",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    }
+  ]
 }
