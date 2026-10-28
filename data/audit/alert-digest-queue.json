@@ -208,5 +208,33 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-28T10:12:02.509Z"
+  },
+  {
+    "conditionKey": "corpus-drift:show-score-urls",
+    "title": "Corpus drift: one Show Score URL mapped to 2+ showIds (baseline-diff)",
+    "description": "check-corpus-drift.js audit \"show-score-urls\" (node scripts/audit-show-score-urls.js --strict) has been drifting. Latest output:\n\n    ! Page venue \"Vivian Beaumont Theater, Lincoln Center Theater\" != show venue \"Vivian Beaumont Theater\"\n\n  whos-afraid-of-virginia-woolf-west-end-2026:\n    URL: https://www.show-score.com/uk/london/west-end-shows/who-s-afraid-of-virginia-woolf-west-end\n    Show: Who’s Afraid of Virginia Woolf? @ Soho Place (open, opens 2026-09-30)\n    Page venue: @sohoplace\n    Review dates: 0 dates found\n    ! Page venue \"@sohoplace\" != show venue \"Soho Place\"\n\nSUSPICIOUS — no archive to verify (36):\n  no-mans-land-2013 (closed, James Earl Jones Theatre): No archive to verify, multi-production show (2 productions)\n  of-mice-and-men-2014 (closed, Longacre Theatre): No archive to verify, multi-production show (2 productions)\n  annie-2012 (closed, Palace Theatre): No archive to verify, multi-production show (3 productions)\n  cat-on-a-hot-tin-roof-2013 (closed, Richard Rodgers Theatre): No archive to verify, multi-production show (6 productions)\n  a-streetcar-named-desire-2012 (closed, Broadhurst Theatre): No archive to verify, multi-production show (5 productions)\n  hamlet-2009 (closed, Broadhurst Theatre): No archive to verify, multi-production show (3 productions)\n  les-miserables-2014 (closed, Imperial Theatre): No archive to verify, multi-production show (3 productions)\n  cyrano-de-bergerac-2012 (closed, Todd Haimes Theatre): No archive to verify, multi-production show (3 productions)\n  jekyll-and-hyde-2013 (closed, Marquis Theatre): No archive to verify, multi-production show (2 productions)\n  godspell-2011 (closed, Circle in the Square Theatre): No archive to verify, multi-production show (2 productions)\n  ... and 26 more (use --verbose)\n\nANOTHER PRODUCTION'S PAGE (3):\n  betrayal-2013: https://www.show-score.com/broadway-shows/betrayal\n    35/35 page dates (earliest 2019-03-13) come over 365 days after this production closed 2014-01-05: another production's page [archived page dates]\n  fish-off-broadway-2026: https://www.show-score.com/off-broadway-shows/fish-signature-theatre-company\n    wrong-production page: 5/5 page dates (latest 2024-04-12) predate this production's start 2026-09-26 by over 60 days: another production's page [extractor rejection]\n  elektra-off-broadway-2026: https://www.show-score.com/off-broadway-shows/elektra-theatre-for-a-new-audience\n    wrong-production page: 5/5 page dates (latest 2022-04-13) predate this production's start 2026-11-10 by over 60 days: another production's page [extractor rejection]\n\nRemove with: node scripts/purge-wrong-production-show-score.js --apply\n\nSummary:\n  Duplicate URLs:       0\n  Confirmed wrong:      6\n  Suspicious (no arch): 36\n  Other production:     3\n  OK:                   737\n  No archive:           116\n  Total checked:        896",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T10:53:43.537Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 17 (pull-quote-quality, regex-fp, run-contamination, commercial-source-coverage, cross-show-url, body-date-mismatch, +11 more). Checked 2026-10-28.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-28T10:53:43.993Z"
   }
 ]
