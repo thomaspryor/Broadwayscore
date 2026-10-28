@@ -71,7 +71,8 @@ function rowActions(show, reviews, sourced) {
   const theatricalia = !changes.length;
   if (theatricalia) changes = repairTheatricaliaOpening(show, reviews);
   if (!changes.length) return [];
-  let s = theatricalia ? null : sourced && sourced.get(show.id);
+  let s = sourced && sourced.get(show.id);
+  if (theatricalia && !(s && s.date === null)) s = null; // only a checked-correct opening blocks the mode inference
   // An adjudication of a value the row no longer holds says nothing about it now.
   if (s && s.judged !== undefined && s.judged !== show.openingDate) s = null;
   if (s && s.date === null) return [];

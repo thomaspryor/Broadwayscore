@@ -116,6 +116,10 @@ function repairTheatricaliaOpening(show, reviews) {
   if (!show.openingDate || show.previewsStartDate !== show.openingDate) return [];
   const press = pressNightFromReviewMode(show.openingDate, reviews);
   if (!press || press === show.openingDate) return [];
+  // The mode-minus-one rule lands on a Sunday when the cluster is same-night
+  // reviews (School of Rock: 14 Nov 2016 cluster -> Sunday 13 Nov). No West End
+  // press night is on a Sunday, so leave the row for a sourced date.
+  if (new Date(`${press}T00:00:00Z`).getUTCDay() === 0) return [];
   return [
     { field: 'openingDate', oldValue: show.openingDate, newValue: press },
     { field: 'openingDateSource', oldValue: THEATRICALIA_FIRST_PERFORMANCE_SOURCE, newValue: MODE_INFERENCE_SOURCE },

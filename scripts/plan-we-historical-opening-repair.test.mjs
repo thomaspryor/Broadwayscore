@@ -51,3 +51,11 @@ test('BRO-6453: a Theatricalia row with no review cluster, or a tie, is left alo
   assert.deepEqual(rowActions(t, rv('2015-10-16', '2015-10-16', '2015-10-16', '2015-10-20', '2015-10-20', '2015-10-20'), new Map()), []);
   assert.deepEqual(rowActions({ ...t, previewsStartDate: null }, rv('2015-10-16', '2015-10-16', '2015-10-16'), new Map()), []);
 });
+
+test('BRO-6453: a mode that lands on a Sunday is refused, and a checked-correct opening blocks the inference', () => {
+  const t = { id: 'x', previewsStartDate: '2016-11-01', openingDate: '2016-11-01', openingDateSource: 'theatricalia-first-performance' };
+  // 2016-11-14 cluster -> 2016-11-13 is a Sunday: no West End press night
+  assert.deepEqual(rowActions(t, rv('2016-11-14', '2016-11-14', '2016-11-14'), new Map()), []);
+  const ok = new Map([['x', { date: null, url: 'https://x' }]]);
+  assert.deepEqual(rowActions({ ...t, openingDate: '2015-10-05', previewsStartDate: '2015-10-05' }, rv('2015-10-16', '2015-10-16', '2015-10-16'), ok), []);
+});
