@@ -445,3 +445,98 @@ describe('looksLikeSitemap', () => {
     assert.equal(looksLikeFeed('<urlset></urlset>'), false);
   });
 });
+
+// ---------------------------------------------------------------------------
+// Feed staleness (BRO-6352): thewrap/observer feeds froze for 4 months while
+// both outlets kept publishing; "0 items in window" read as "no reviews".
+// ---------------------------------------------------------------------------
+
+describe('feed staleness (BRO-6352)', async () => {
+  const { isFeedStale, newestItemDate, latestReviewDateByOutlet } = require('../../scripts/lib/outlet-listing-helpers.js');
+  const { buildFeedHealthReport } = require('../../scripts/outlet-listing-poller.js');
+  const { evaluateOutletFeedHealth } = require('../../scripts/health-check.js');
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const now = Date.parse('2026-10-25T12:00:00Z');
+
+  test('alive outlet + stale feed → flagged', () => {
+    assert.equal(isFeedStale({ newestFiltered: '2026-06-10', filteredCount: 12, latestReviewDate: '2026-10-24', now }), true);
+  });
+  test('alive outlet + feed with no matching items at all → flagged', () => {
+    assert.equal(isFeedStale({ newestFiltered: null, filteredCount: 0, latestReviewDate: '2026-10-24', now }), true);
+  });
+  test('dead outlet + stale feed → not flagged', () => {
+    assert.equal(isFeedStale({ newestFiltered: '2026-06-10', filteredCount: 12, latestReviewDate: '2026-08-01', now }), false);
+    assert.equal(isFeedStale({ newestFiltered: '2026-06-10', filteredCount: 12, latestReviewDate: null, now }), false);
+  });
+  test('fresh feed → not flagged', () => {
+    assert.equal(isFeedStale({ newestFiltered: '2026-10-20', filteredCount: 5, latestReviewDate: '2026-10-24', now }), false);
+  });
+  test('short site-wide feed with no matching item → not flagged; long one → flagged; unreadable feed → flagged', () => {
+    assert.equal(isFeedStale({ newestFiltered: null, filteredCount: 0, newestAny: '2026-10-25', oldestAny: '2026-10-18', latestReviewDate: '2026-10-21', now }), false);
+    assert.equal(isFeedStale({ newestFiltered: null, filteredCount: 0, newestAny: '2026-10-25', oldestAny: '2026-07-01', latestReviewDate: '2026-10-21', now }), true);
+    assert.equal(isFeedStale({ newestFiltered: null, filteredCount: 0, newestAny: null, oldestAny: null, latestReviewDate: '2026-10-21', now }), true);
+  });
+  test('undated-but-present items → not flagged (nothing to compare)', () => {
+    assert.equal(isFeedStale({ newestFiltered: null, filteredCount: 3, latestReviewDate: '2026-10-24', now }), false);
+  });
+
+  test('newestItemDate / latestReviewDateByOutlet ignore undated rows', () => {
+    assert.equal(newestItemDate([{ publishDate: '2026-05-01' }, { publishDate: null }, { publishDate: '2026-06-02' }]), '2026-06-02');
+    assert.equal(newestItemDate([{ publishDate: null }]), null);
+    assert.deepEqual(latestReviewDateByOutlet([
+      { outletId: 'thewrap', publishDate: '2026-10-24' }, { outletId: 'thewrap', publishDate: '2026-09-01' },
+      { outletId: 'observer', publishDate: null }, { outletId: null, publishDate: '2026-10-01' },
+    ]), { thewrap: '2026-10-24' });
+  });
+
+  test('parseRssFeed with an epoch cutoff sees the frozen feed\'s newest item', () => {
+    const xml = '<rss><channel><item><link>https://x.com/a</link><title>A</title><pubDate>Tue, 10 Jun 2026 12:00:00 GMT</pubDate></item></channel></rss>';
+    assert.equal(parseRssFeed(xml, new Date(now - 7 * 86400000)).length, 0);
+    assert.equal(newestItemDate(parseRssFeed(xml, new Date(0))), '2026-06-10');
+  });
+
+  test('buildFeedHealthReport flags only alive outlets; fetch errors never count as stale; partial run merges', () => {
+    const reviews = [{ outletId: 'thewrap', publishDate: '2026-10-24' }, { outletId: 'quiet', publishDate: '2026-03-01' }, { outletId: 'broken', publishDate: '2026-10-20' }];
+    const health = {
+      thewrap: { strategy: 'rss', url: 'u1', newestAny: '2026-06-10', newestFiltered: '2026-06-10', filteredCount: 4 },
+      quiet: { strategy: 'rss', url: 'u2', newestAny: '2026-03-01', newestFiltered: '2026-03-01', filteredCount: 4 },
+      broken: { strategy: 'sitemap', url: 'u3', newestAny: null, newestFiltered: null, error: 'HTTP 403' },
+    };
+    const day1 = buildFeedHealthReport(health, reviews, { now });
+    assert.deepEqual(day1.failing, [], 'one failed fetch is not yet failing');
+    const day2 = buildFeedHealthReport(health, reviews, { now, previous: day1 });
+    const report = buildFeedHealthReport(health, reviews, { now, previous: day2 });
+    assert.deepEqual(report.stale, ['thewrap']);
+    assert.equal(report.outlets.broken.failStreak, 3);
+    assert.deepEqual(report.failing, ['broken'], 'a live outlet whose feed errored 3 runs running is failing, never stale');
+    assert.equal(Object.keys(report.outlets).length, 3);
+    assert.equal(report.outlets.thewrap.latestReviewDate, '2026-10-24');
+
+    const fresh = { thewrap: { strategy: 'rss', url: 'u1', newestAny: '2026-10-23', newestFiltered: '2026-10-23', filteredCount: 4 } };
+    const merged = buildFeedHealthReport(fresh, reviews, { now, previous: report, partial: true });
+    assert.deepEqual(merged.stale, []);
+    assert.equal(Object.keys(merged.outlets).length, 3, 'a --outlets run keeps the other feeds');
+  });
+
+  test('health-check row: warn on stale, pass when clean or missing, warn when snapshot is old', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'feed-health-'));
+    const file = path.join(dir, 'outlet-feed-health.json');
+    assert.equal(evaluateOutletFeedHealth({ filePath: file, now }).status, 'pass');
+    const reviews = [{ outletId: 'thewrap', publishDate: '2026-10-24' }];
+    const health = { thewrap: { strategy: 'rss', url: 'u1', newestAny: '2026-06-10', newestFiltered: '2026-06-10', filteredCount: 4 } };
+    fs.writeFileSync(file, JSON.stringify(buildFeedHealthReport(health, reviews, { now })));
+    const row = evaluateOutletFeedHealth({ filePath: file, now });
+    assert.equal(row.status, 'warn');
+    assert.match(row.message, /thewrap/);
+    assert.equal(evaluateOutletFeedHealth({ filePath: file, now: now + 5 * 86400000 }).status, 'warn');
+    fs.writeFileSync(file, JSON.stringify(buildFeedHealthReport({}, reviews, { now })));
+    assert.equal(evaluateOutletFeedHealth({ filePath: file, now }).status, 'pass');
+    const failingOnly = { thewrap: { strategy: 'rss', url: 'u1', newestAny: null, newestFiltered: null, error: 'direct fetch returned a non-rss page' } };
+    let r = null;
+    for (let i = 0; i < 3; i++) r = buildFeedHealthReport(failingOnly, reviews, { now, previous: r });
+    fs.writeFileSync(file, JSON.stringify(r));
+    assert.match(evaluateOutletFeedHealth({ filePath: file, now }).message, /1 failing: thewrap/);
+  });
+});

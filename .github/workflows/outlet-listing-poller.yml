@@ -116,7 +116,9 @@ jobs:
       # data/audit/scraper-spend-ledger.jsonl on the runner's local disk (task
       # #752/#784). This daily cron never staged that file before (Sprint 3,
       # card 3b1637c5).
-      - name: Commit scraper-spend ledger
+      # BRO-6352: also stages the per-feed newest-item snapshot the poller
+      # writes (health-check.js "Quality: outlet feed staleness" reads it).
+      - name: Commit scraper-spend ledger and feed health
         if: always() && github.event.inputs.dry_run != 'true'
         continue-on-error: true  # telemetry-only commit (Sprint 3, card 3b1637c5) — push contention under concurrent scheduled runs must never fail an otherwise-successful job
         env:
@@ -125,10 +127,11 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          git add data/audit/outlet-feed-health.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else
-            git commit -m "chore: Record scraper-spend ledger (outlet-listing-poller)"
+            git commit -m "chore: Record scraper-spend ledger and feed health (outlet-listing-poller)"
             bash scripts/lib/push-with-retry.sh
           fi
 

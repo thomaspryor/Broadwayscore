@@ -324,6 +324,9 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Quality: standingCoverage drift$/, urgency: 'this-week',
     ownerText: "Some critic outlets may need to be added to or removed from the list of outlets that review every Broadway opening, based on what they actually cover. Nothing is needed from you.",
     workerInstruction: "Check the standingCoverage drift and update outlet-registry.json." },
+  { match: /^Quality: outlet feed staleness$/, urgency: 'this-week',
+    ownerText: "A critic outlet's news feed stopped updating while the outlet keeps publishing reviews, so new reviews from it may arrive late. Nothing is needed from you.",
+    workerInstruction: "Open the outlet-listing poller feed-health snapshot (OUTLET_FEED_HEALTH_REL in scripts/lib/outlet-listing-helpers.js), take each outlet in stale[] or failing[], probe a replacement with `node scripts/probe-outlet-feeds.js --outlets <id>` and update its OUTLET_STRATEGY_CONFIG entry in scripts/outlet-listing-poller.js (BRO-6352; BRO-6340 fixed thewrap/observer this way)." },
   { match: /^Quality: coverageExpectation drift$/, urgency: 'this-week',
     ownerText: "A critic outlet marked as not reviewing theater has been reviewing shows anyway, or the reverse. Nothing is needed from you.",
     workerInstruction: "Check the coverageExpectation drift and re-decide the flagged outlets in outlet-registry.json." },
@@ -2096,7 +2099,38 @@ function checkOutletHealth() {
       const { evaluateOutletHeartbeat } = require('./lib/outlet-heartbeat-monitor-core');
       return evaluateOutletHeartbeat({ auditDir: AUDIT_DIR });
     }),
+
+    // BRO-6352: outlet-listing-poller.yml writes the per-feed newest-item
+    // snapshot daily; a configured rss/sitemap feed that froze while the
+    // outlet keeps publishing is listed in its stale[].
+    runCheck('Quality: outlet feed staleness', () => evaluateOutletFeedHealth()),
   ];
+}
+
+function evaluateOutletFeedHealth({ filePath = path.join(__dirname, '..', require('./lib/outlet-listing-helpers').OUTLET_FEED_HEALTH_REL), now = Date.now() } = {}) {
+  const name = 'Quality: outlet feed staleness';
+  if (!fs.existsSync(filePath)) {
+    return { name, status: 'pass', message: 'Skipped (no feed-health snapshot yet; outlet-listing-poller.yml writes it daily)' };
+  }
+  const data = readJSON(filePath);
+  const ageH = (now - Date.parse(data.generatedAt)) / 3600000;
+  if (!(ageH <= 72)) {
+    return { name, status: 'warn', message: `Feed-health snapshot is ${isNaN(ageH) ? 'undated' : `${Math.round(ageH)}h old`} (outlet-listing-poller runs daily)`, hint: 'Check the Outlet Listing Poller workflow runs and its commit step.' };
+  }
+  const stale = Array.isArray(data.stale) ? data.stale : [];
+  const failing = Array.isArray(data.failing) ? data.failing : [];
+  const total = Object.keys(data.outlets || {}).length;
+  if (stale.length === 0 && failing.length === 0) return { name, status: 'pass', message: `${total} feed(s) checked, none stale or failing` };
+  const outlets = data.outlets || {};
+  const parts = [];
+  if (stale.length) parts.push(`${stale.length} stale: ${stale.map(id => `${id} (feed newest ${(outlets[id] || {}).newestFiltered || 'none'}, review ${(outlets[id] || {}).latestReviewDate || '?'})`).join(', ')}`);
+  if (failing.length) parts.push(`${failing.length} failing: ${failing.map(id => `${id} (${String((outlets[id] || {}).error || '').slice(0, 60)})`).join(', ')}`);
+  return {
+    name,
+    status: 'warn',
+    message: `Of ${total} feed(s), outlet still publishing but feed ${parts.join('; ')}`,
+    hint: 'Probe a replacement feed with `node scripts/probe-outlet-feeds.js --outlets <id>` and update OUTLET_STRATEGY_CONFIG in scripts/outlet-listing-poller.js.',
+  };
 }
 
 // --- Commercial model drift (S2-T3) ---
@@ -6467,4 +6501,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };
+module.exports = { evaluateOutletFeedHealth, checkScheduledFailureStreak, checkNeverRunWorkflowHealth, checkAPICredits, corpusAuditResults, generateApproveUrl, checkAuditFreshness, checkFreshness, freshnessValue, FRESHNESS_CHECKS, formatResultLine, buildExclusionSummaryHtml, providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, isGateWorkflowBroken, GATE_WORKFLOWS, summarizeRepeatFailures, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, cloudMemoryDriftResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, coverageHolesResults, starBandDriftResults, earlyPublishDatesResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, isActionableResult, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkMainRedStreak, checkCiGreenRate, checkCiMidSetupCancels, checkSharedCheckoutShallow, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkDataFreshnessGaps, dataFreshnessGapsResult, DATA_FRESHNESS_GAPS_CHECK, checkAutofixEffectiveness, checkAutofixCanary, checkAutofixThroughput, checkUntrackedPersistentRows, checkDigestInvariantFail, checkAlertRouterDeadman, checkCommercialModelDrift, checkCommercialPendingQueue, checkExemptCronLiveness, checkUncollectedStrands };

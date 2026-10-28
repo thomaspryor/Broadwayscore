@@ -571,7 +571,82 @@ function extractListingUrls(html, domain) {
   return items;
 }
 
+// --- Feed staleness (BRO-6352) ---
+// TheWrap's tag feed and observer.com's theater feed froze in June 2026; the
+// poller read "0 items in window" as "no new reviews" for 4 months while both
+// outlets kept publishing (caught only by hand in BRO-6340). The poller now
+// records each rss/sitemap feed's newest item here and flags a feed whose
+// newest matching item is old while reviews.json still shows the outlet alive.
+const OUTLET_FEED_HEALTH_REL = 'data/audit/outlet-feed-health.json';
+const FEED_STALE_DAYS = 45;
+const OUTLET_ALIVE_DAYS = 30;
+
+/** Newest `publishDate` (YYYY-MM-DD string) among items, or null when none is dated. */
+function newestItemDate(items) {
+  let newest = null;
+  for (const it of items || []) {
+    const d = it && typeof it.publishDate === 'string' ? it.publishDate.slice(0, 10) : null;
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d) && (!newest || d > newest)) newest = d;
+  }
+  return newest;
+}
+
+/** Oldest `publishDate` among items, or null when none is dated. */
+function oldestItemDate(items) {
+  let oldest = null;
+  for (const it of items || []) {
+    const d = it && typeof it.publishDate === 'string' ? it.publishDate.slice(0, 10) : null;
+    if (d && /^\d{4}-\d{2}-\d{2}$/.test(d) && (!oldest || d < oldest)) oldest = d;
+  }
+  return oldest;
+}
+
+/** outletId → newest review publishDate (YYYY-MM-DD) in reviews.json. */
+function latestReviewDateByOutlet(reviews) {
+  const out = {};
+  for (const r of reviews || []) {
+    if (!r || !r.outletId || typeof r.publishDate !== 'string') continue;
+    const d = r.publishDate.slice(0, 10);
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(d)) continue;
+    if (!out[r.outletId] || d > out[r.outletId]) out[r.outletId] = d;
+  }
+  return out;
+}
+
+/**
+ * A feed is stale when the outlet is still publishing (a review in reviews.json
+ * within aliveDays) but the feed's newest MATCHING item is older than staleDays,
+ * or the feed has no matching items at all. Undated items that are present are
+ * not judged stale (sitemaps without <lastmod>): there is nothing to compare.
+ * No matching item in a site-wide feed whose items (oldestAny) only reach back
+ * less than staleDays is not stale either: the window is too short to judge
+ * (south-london's /feed/ holds ~a week of all-topic posts). A feed with no
+ * dated item at all (empty, or a 200 challenge page) IS stale.
+ * A dead outlet (no recent review) is never flagged: a silent feed is expected.
+ */
+function isFeedStale({ newestFiltered, filteredCount, newestAny = null, oldestAny = null, latestReviewDate, now = Date.now(), staleDays = FEED_STALE_DAYS, aliveDays = OUTLET_ALIVE_DAYS }) {
+  if (!latestReviewDate) return false;
+  const reviewMs = Date.parse(latestReviewDate);
+  if (isNaN(reviewMs) || now - reviewMs > aliveDays * DAY_MS) return false;
+  if (!newestFiltered) {
+    if (filteredCount > 0) return false;
+    if (!newestAny) return true;
+    const oldestMs = Date.parse(oldestAny || newestAny);
+    return !isNaN(oldestMs) && now - oldestMs > staleDays * DAY_MS;
+  }
+  const feedMs = Date.parse(newestFiltered);
+  if (isNaN(feedMs)) return false;
+  return now - feedMs > staleDays * DAY_MS;
+}
+
 module.exports = {
+  OUTLET_FEED_HEALTH_REL,
+  FEED_STALE_DAYS,
+  OUTLET_ALIVE_DAYS,
+  newestItemDate,
+  oldestItemDate,
+  latestReviewDateByOutlet,
+  isFeedStale,
   namesShowVenue,
   looksLikeBookReview,
   findMatchingShows,

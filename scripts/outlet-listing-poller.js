@@ -68,6 +68,13 @@ const {
   parseSitemapXml,
   extractListingUrls,
   buildSerpQuery,
+  OUTLET_FEED_HEALTH_REL,
+  FEED_STALE_DAYS,
+  OUTLET_ALIVE_DAYS,
+  newestItemDate,
+  oldestItemDate,
+  latestReviewDateByOutlet,
+  isFeedStale,
 } = require('./lib/outlet-listing-helpers');
 
 // ---------------------------------------------------------------------------
@@ -76,6 +83,7 @@ const {
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const REVIEWS_PATH = path.join(__dirname, '..', 'data', 'reviews.json');
+const FEED_HEALTH_PATH = path.join(__dirname, '..', OUTLET_FEED_HEALTH_REL);
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 // Rejected-URL cache: when the shared writer's classifier rejects a URL as
@@ -491,11 +499,17 @@ function createStub(showId, outletId, outletDisplayName, url, headline, publishD
  * when `isExpected` recognises its XML root, so a block page still throws and the
  * caller falls back to SERP instead of reading "no new reviews".
  */
-async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = true, timeoutMs } = {}) {
+async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = true, timeoutMs, health } = {}) {
   try {
-    return await fetchSimple(url, timeoutMs);
+    const body = await fetchSimple(url, timeoutMs);
+    // A 200 challenge/block page (slantmagazine's Cloudflare "Just a moment...",
+    // BRO-6352) parsed to 0 items and read as "no new reviews". Treat it like a
+    // failed fetch: proxy retry, then the caller's SERP fallback.
+    if (!isExpected(body)) throw new Error(`direct fetch returned a non-${label} page`);
+    return body;
   } catch (err) {
     if (!proxyRetry) throw err;
+    if (health) health.directBlocked = true;
     console.log(`  [${label}] direct fetch failed (${err.message}); retrying via fetchPage`);
     const result = await fetchPage(url, { renderJs: false });
     if (!isExpected(result && result.content)) {
@@ -506,13 +520,31 @@ async function fetchXmlWithProxyRetry(url, label, isExpected, { proxyRetry = tru
   }
 }
 
-async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true } = {}) {
+// Keep only the items an outlet's config accepts (shared by the in-window list
+// and the cutoff-free health read, so both apply the same filters).
+function applyRssFilters(items, config) {
+  let out = items;
+  if (config.urlFilter) out = out.filter(i => config.urlFilter.test(i.url));
+  if (config.titleFilter) out = out.filter(i => config.titleFilter.test(i.headline));
+  return out;
+}
+
+// `health` (optional, BRO-6352): filled with the feed's newest item date
+// ignoring the lookback cutoff, so a frozen feed is visible, not "no reviews".
+async function fetchViaRss(outletId, config, cutoff, { proxyRetry = true, health } = {}) {
   const url = config.url;
+  if (health) health.url = url;
   console.log(`  [rss] Fetching ${url}`);
-  const xml = await fetchXmlWithProxyRetry(url, 'rss', looksLikeFeed, { proxyRetry });
-  let items = parseRssFeed(xml, cutoff);
-  if (config.urlFilter) items = items.filter(i => config.urlFilter.test(i.url));
-  if (config.titleFilter) items = items.filter(i => config.titleFilter.test(i.headline));
+  const xml = await fetchXmlWithProxyRetry(url, 'rss', looksLikeFeed, { proxyRetry, health });
+  const items = applyRssFilters(parseRssFeed(xml, cutoff), config);
+  if (health) {
+    const all = parseRssFeed(xml, new Date(0));
+    const matching = applyRssFilters(all, config);
+    health.newestAny = newestItemDate(all);
+    health.oldestAny = oldestItemDate(all);
+    health.newestFiltered = newestItemDate(matching);
+    health.filteredCount = matching.length;
+  }
   console.log(`  [rss] ${items.length} items in window`);
   return items;
 }
@@ -529,7 +561,7 @@ async function fetchViaWpApi(outletId, config, cutoff) {
   return items;
 }
 
-async function fetchViaSitemap(outletId, config, cutoff, { proxyRetry = true } = {}) {
+async function fetchViaSitemap(outletId, config, cutoff, { proxyRetry = true, health } = {}) {
   const thisYear = new Date().getFullYear();
   // Try current year first; if no matching entries, check prior year (reviews near year boundary)
   const tried = new Set();
@@ -538,16 +570,32 @@ async function fetchViaSitemap(outletId, config, cutoff, { proxyRetry = true } =
     if (tried.has(url)) continue; // year-independent sitemap (observer): fetch once
     tried.add(url);
     console.log(`  [sitemap] Fetching ${url}`);
+    if (health && !health.url) health.url = url;
     try {
-      const xml = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry, timeoutMs: 30000 });
+      const xml = await fetchXmlWithProxyRetry(url, 'sitemap', looksLikeSitemap, { proxyRetry, timeoutMs: 30000, health });
       const items = parseSitemapXml(xml, cutoff, config.urlFilter);
+      if (health) recordSitemapHealth(health, xml, config.urlFilter);
       console.log(`  [sitemap] ${items.length} items in window (${year})`);
       if (items.length > 0) return items;
     } catch (err) {
       console.log(`  [sitemap] ${year} failed: ${err.message}`);
     }
   }
+  if (health && health.filteredCount === undefined) health.error = 'every sitemap fetch failed';
   return [];
+}
+
+// Merge one sitemap file's cutoff-free newest dates into `health` (the poller
+// may read the current and the prior year's sitemap; the newest across both counts).
+function recordSitemapHealth(health, xml, urlFilter) {
+  const all = parseSitemapXml(xml, new Date(0), null);
+  const matching = urlFilter ? parseSitemapXml(xml, new Date(0), urlFilter) : all;
+  const maxDate = (a, b) => (!a ? b : !b ? a : (a > b ? a : b));
+  const minDate = (a, b) => (!a ? b : !b ? a : (a < b ? a : b));
+  health.newestAny = maxDate(health.newestAny || null, newestItemDate(all));
+  health.oldestAny = minDate(health.oldestAny || null, oldestItemDate(all));
+  health.newestFiltered = maxDate(health.newestFiltered || null, newestItemDate(matching));
+  health.filteredCount = (health.filteredCount || 0) + matching.length;
 }
 
 async function fetchViaListingHtml(outletId, listingUrl, urlFilter, usePlainFetch) {
@@ -698,6 +746,9 @@ async function main() {
   const serpOnlyEmpty = [];
   const blockedCollisions = [];
   const sameUrlFlagged = [];
+  // Per-outlet rss/sitemap feed health (BRO-6352), written to OUTLET_FEED_HEALTH_REL.
+  const feedHealth = {};
+  const feedHealthFor = (outletId, sc) => (feedHealth[outletId] = { strategy: sc.strategy, url: null, newestAny: null, oldestAny: null, newestFiltered: null, directBlocked: false });
 
   for (const outletId of qualifyingOutlets) {
     const outletEntry = outletRegistry[outletId] || {};
@@ -727,12 +778,13 @@ async function main() {
         // Try the outlet-specific strategy; fall back to SERP on any thrown error
         try {
           switch (sc.strategy) {
-            case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff); break;
-            case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff); break;
+            case 'rss':          articles = await fetchViaRss(outletId, sc, cutoff, { health: feedHealthFor(outletId, sc) }); break;
+            case 'sitemap':      articles = await fetchViaSitemap(outletId, sc, cutoff, { health: feedHealthFor(outletId, sc) }); break;
             case 'listing-html': articles = await fetchViaListingHtml(outletId, sc.url, sc.urlFilter, sc.usePlainFetch); break;
             default: console.warn(`  Unknown strategy "${sc.strategy}" for ${outletId}`);
           }
         } catch (err) {
+          if (feedHealth[outletId]) feedHealth[outletId].error = String(err.message || err).slice(0, 200);
           console.warn(`  ⚠ ${sc.strategy} failed (${err.message}); falling back to SERP`);
           if (!domain) { outletsFailed++; continue; }
           try {
@@ -840,6 +892,8 @@ async function main() {
     }
   }
 
+  reportFeedHealth(feedHealth, allReviews, opts);
+
   // Persist rejected-URL cache (cross-market classifier rejects, etc.) so the
   // next poll cycle skips them upfront. Skip in dry-run since recordRejection
   // is already gated above.
@@ -853,6 +907,57 @@ async function main() {
   if (totalNewStubs > 0 && !opts.dryRun) {
     console.log('\nTip: run node scripts/rebuild-all-reviews.js to incorporate new stubs');
   }
+}
+
+/**
+ * Decide staleness per feed and write data/audit/outlet-feed-health.json
+ * (BRO-6352). A --outlets run merges into the existing file instead of
+ * replacing it, so a targeted re-poll does not drop the other ~70 feeds.
+ */
+function buildFeedHealthReport(feedHealth, allReviews, { now = Date.now(), previous = null, partial = false } = {}) {
+  const latestByOutlet = latestReviewDateByOutlet(allReviews);
+  const checkedAt = new Date(now).toISOString();
+  const outlets = partial && previous && previous.outlets ? { ...previous.outlets } : {};
+  for (const [outletId, h] of Object.entries(feedHealth)) {
+    const latestReviewDate = latestByOutlet[outletId] || null;
+    const stale = !h.error && isFeedStale({ newestFiltered: h.newestFiltered, filteredCount: h.filteredCount, newestAny: h.newestAny, oldestAny: h.oldestAny, latestReviewDate, now });
+    const prev = previous && previous.outlets && previous.outlets[outletId];
+    const failStreak = h.error ? ((prev && prev.failStreak) || 0) + 1 : 0;
+    outlets[outletId] = { ...h, latestReviewDate, stale, failStreak, checkedAt };
+  }
+  const stale = Object.keys(outlets).filter(id => outlets[id].stale).sort();
+  // Feeds that errored (SERP fallback took over) while the outlet is alive: the
+  // same silent gap, so listed beside stale[] (alive = review within aliveDays).
+  // FEED_FAIL_STREAK consecutive runs, so one flaky fetch does not warn.
+  const aliveCutoff = new Date(now - OUTLET_ALIVE_DAYS * 86400000).toISOString().slice(0, 10);
+  const failing = Object.keys(outlets).filter(id => outlets[id].error && outlets[id].failStreak >= FEED_FAIL_STREAK && outlets[id].latestReviewDate && outlets[id].latestReviewDate >= aliveCutoff).sort();
+  return { generatedAt: checkedAt, staleDays: FEED_STALE_DAYS, aliveDays: OUTLET_ALIVE_DAYS, stale, failing, outlets };
+}
+
+const FEED_FAIL_STREAK = 3;
+
+function reportFeedHealth(feedHealth, allReviews, opts) {
+  if (Object.keys(feedHealth).length === 0) return;
+  // Previous snapshot: carries failStreak, and is the merge base for --outlets runs.
+  let previous = null;
+  try { previous = JSON.parse(fs.readFileSync(FEED_HEALTH_PATH, 'utf-8')); } catch { previous = null; }
+  const report = buildFeedHealthReport(feedHealth, allReviews, { previous, partial: !!opts.outlets });
+  if (report.stale.length > 0) {
+    console.warn(`\n⚠ Stale feeds (outlet still publishing, feed's newest matching item >${FEED_STALE_DAYS}d old or none): ${report.stale.length}`);
+    for (const id of report.stale) {
+      const o = report.outlets[id];
+      const line = `${id}: feed newest ${o.newestFiltered || 'none'} (any item ${o.newestAny || 'none'}), latest review ${o.latestReviewDate} — ${o.url}`;
+      console.warn(`  • ${line}`);
+      if (process.env.GITHUB_STEP_SUMMARY) fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `- ⚠ stale feed: ${line}\n`);
+    }
+  }
+  if (report.failing.length > 0) {
+    console.warn(`\n⚠ Failing feeds (outlet still publishing, feed fetch failed ${FEED_FAIL_STREAK}+ runs running, SERP fallback used): ${report.failing.join(', ')}`);
+  }
+  if (opts.dryRun) return;
+  fs.mkdirSync(path.dirname(FEED_HEALTH_PATH), { recursive: true });
+  fs.writeFileSync(FEED_HEALTH_PATH, JSON.stringify(report, null, 2) + '\n');
+  console.log(`Feed health: ${Object.keys(report.outlets).length} feed(s) → ${OUTLET_FEED_HEALTH_REL}`);
 }
 
 if (require.main === module) {
@@ -869,4 +974,5 @@ module.exports = {
   SKIP_OUTLETS, OUTLET_STRATEGY_CONFIG, WP_API_CONFIG, isSameUrlFlaggedTarget,
   // feed fetchers, reused by scripts/outlet-feed-reconcile.js (BRO-5358)
   fetchViaRss, fetchViaWpApi, fetchViaSitemap, fetchViaListingHtml,
+  buildFeedHealthReport,
 };
