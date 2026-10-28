@@ -85,7 +85,7 @@ jobs:
   enrich:
     name: LLM enrichment of review-texts
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 100  # BRO-6342: the alert-ledger push step joins the summed step budgets (audit-push-retry-budgets.js job-timeout-margin)
 
     steps:
       - name: Checkout repository
@@ -362,6 +362,7 @@ jobs:
       - name: Commit alert ledger
         if: always()
         continue-on-error: true
+        timeout-minutes: 10
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
