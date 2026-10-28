@@ -95,7 +95,9 @@
     "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
     "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
     "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
-    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+    "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+    "memoriam-off-west-end-2026/ground--unknown.json",
+    "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
   ],
   "failed": [
     "othello-west-end-2022/standard--unknown.json",
@@ -151,7 +153,16 @@
     "stranger-things-the-first-shadow-west-end-2023/financialtimes--sarah-hemming.json",
     "cabaret-at-the-kit-kat-club-west-end-2021/whatsonstage--sarah-crompton.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
-    "hamilton-west-end-2021/theatermania--zachary-stewart.json"
+    "hamilton-west-end-2021/theatermania--zachary-stewart.json",
+    "girls-off-west-end-2026/radio-times--molly-moss.json",
+    "girls-off-west-end-2026/thestage--sam-marlowe.json",
+    "cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+    "ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+    "the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+    "harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+    "surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json",
+    "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -211,10 +222,13 @@
       "witness-for-the-prosecution-west-end-2022/london-box-office--phil-willmott.json",
       "witness-for-the-prosecution-west-end-2022/london-box-office--stuart-king.json",
       "witness-for-the-prosecution-west-end-2022/standard--henry-hitchings.json",
-      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json"
+      "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
+      "derren-brown-only-human-west-end-2026/north-west-end--unknown.json"
     ],
     "amp": [],
-    "browserbase": [],
+    "browserbase": [
+      "data/review-texts/girls-off-west-end-2026/radio-times--molly-moss.json"
+    ],
     "directCookies": [],
     "scrapingdog": [
       "the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/jamr--unknown.json",
@@ -224,7 +238,8 @@
       "hay-fever-west-end-2026/littlelondonwhispers--little-london-whispers.json",
       "whos-afraid-of-virginia-woolf-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "kimberly-akimbo-off-west-end-2026/ground--unknown.json",
-      "oh-mary-west-end-2025/matineemouse--matinee-mouse.json"
+      "oh-mary-west-end-2025/matineemouse--matinee-mouse.json",
+      "memoriam-off-west-end-2026/ground--unknown.json"
     ],
     "scrapingbee": [
       "garry-starr-classic-penguins-off-west-end-2026/whatsonstage--unknown.json"
@@ -237,7 +252,14 @@
       "data/review-texts/the-banality-of-evil-hannah-arendt-france-1940-off-west-end-2026/plays-to-see--olivia-hurton.json",
       "data/review-texts/high-school-musical-off-west-end-2026/whatsonstage--hang-yuen.json",
       "data/review-texts/golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
-      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json"
+      "data/review-texts/white-rabbit-red-rabbit-west-end-2026/times-uk--anya-ryan.json",
+      "data/review-texts/girls-off-west-end-2026/thestage--sam-marlowe.json",
+      "data/review-texts/cirque-berserk-west-end-2026/soundsandstage--unknown.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "data/review-texts/ceilidh-the-musical-off-west-end-2026/theatre-south-east--unknown.json",
+      "data/review-texts/the-master-builder-off-west-end-2026/thestage--dave-fargnoli.json",
+      "data/review-texts/harry-potter-and-the-cursed-child-one-part-west-end-2026/curtainup--elyse-sommer.json",
+      "data/review-texts/surinderella-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
     ],
     "archive": [
       "derren-brown-only-human-west-end-2026/lbc--johnny-jenkins.json",
@@ -265,6 +287,24 @@
     ]
   },
   "startTime": "2026-10-28T15:37:28.449Z",
-  "lastProcessed": "witness-for-the-prosecution-west-end-2022/west-end-wilma--unknown.json",
-  "log": []
+  "lastProcessed": "murder-cathedral-off-west-end-2026/times-uk--clive-davis.json",
+  "log": [
+    {
+      "t": "2026-10-28T16:25:12.862Z",
+      "event": "bb-session",
+      "session": "854524ea",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-28T16:30:31.517Z",
+      "event": "bb-session",
+      "session": "c0843c90",
+      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
+    },
+    {
+      "t": "2026-10-28T16:30:32.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }

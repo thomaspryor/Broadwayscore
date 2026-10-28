@@ -1,19 +1,37 @@
 {
-  "updatedAt": "2026-10-28T16:17:04.494Z",
-  "processed": 96,
-  "failed": 54,
-  "successRate": "64.0%",
+  "updatedAt": "2026-10-28T16:33:54.140Z",
+  "processed": 98,
+  "failed": 63,
+  "successRate": "60.9%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 57,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 8,
+    "scrapingdog": 9,
     "scrapingbee": 1,
     "brightdata": 0,
-    "archiveToday": 7,
+    "archiveToday": 14,
     "archive": 22
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 2,
+  "recentActivity": [
+    {
+      "t": "2026-10-28T16:25:12.862Z",
+      "event": "bb-session",
+      "session": "854524ea",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-28T16:30:31.517Z",
+      "event": "bb-session",
+      "session": "c0843c90",
+      "url": "https://www.thestage.co.uk/reviews/the-master-builder-review-arcola-theatre-lond"
+    },
+    {
+      "t": "2026-10-28T16:30:32.144Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    }
+  ]
 }
