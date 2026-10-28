@@ -79,7 +79,10 @@ function pressNightFromReviewMode(firstPerformance, reviews) {
   }
   const top = [...count.entries()].sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]));
   if (!top.length || top[0][1] < 3 || (top[1] && top[1][1] === top[0][1])) return null;
-  return isoDay(Date.parse(top[0][0]) - DAY_MS);
+  const press = isoDay(Date.parse(top[0][0]) - DAY_MS);
+  // A cluster of same-night reviews lands the minus-one rule on a Sunday (School
+  // of Rock: 14 Nov 2016 -> Sunday 13 Nov). No West End press night is on a Sunday.
+  return new Date(`${press}T00:00:00Z`).getUTCDay() === 0 ? null : press;
 }
 
 /**
@@ -116,10 +119,6 @@ function repairTheatricaliaOpening(show, reviews) {
   if (!show.openingDate || show.previewsStartDate !== show.openingDate) return [];
   const press = pressNightFromReviewMode(show.openingDate, reviews);
   if (!press || press === show.openingDate) return [];
-  // The mode-minus-one rule lands on a Sunday when the cluster is same-night
-  // reviews (School of Rock: 14 Nov 2016 cluster -> Sunday 13 Nov). No West End
-  // press night is on a Sunday, so leave the row for a sourced date.
-  if (new Date(`${press}T00:00:00Z`).getUTCDay() === 0) return [];
   return [
     { field: 'openingDate', oldValue: show.openingDate, newValue: press },
     { field: 'openingDateSource', oldValue: THEATRICALIA_FIRST_PERFORMANCE_SOURCE, newValue: MODE_INFERENCE_SOURCE },

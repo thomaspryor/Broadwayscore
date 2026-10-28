@@ -57,3 +57,9 @@ test('repairWosOpening leaves rows outside the class alone', () => {
   assert.deepEqual(d.repairWosOpening({ ...base, discoverySource: 'we-historical:tr' }, []), []);
   assert.deepEqual(d.repairWosOpening({ ...base, openingDateSource: 'theatremonkey' }, []), []);
 });
+
+test('pressNightFromReviewMode never returns a Sunday (BRO-6453)', () => {
+  const rv = (...d) => d.map((publishDate) => ({ publishDate }));
+  assert.equal(d.pressNightFromReviewMode('2016-11-01', rv('2016-11-14', '2016-11-14', '2016-11-14')), null);
+  assert.equal(d.pressNightFromReviewMode('2016-11-01', rv('2016-11-15', '2016-11-15', '2016-11-15')), '2016-11-14');
+});
