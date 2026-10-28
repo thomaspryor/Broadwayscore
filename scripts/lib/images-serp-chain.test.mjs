@@ -10,6 +10,9 @@ import path from 'node:path';
 process.env.SCRAPINGDOG_API_KEY = 'sd-test-key';
 process.env.SD_CAPS_DISABLED = '1';
 process.env.SCRAPER_SPEND_LEDGER_PATH = path.join(os.tmpdir(), `images-serp-chain-${process.pid}.jsonl`);
+// BRO-6483: isolate from the live data/audit circuit-breaker state CI rewrites
+process.env.BD_BREAKER_STATE_PATH = path.join(os.tmpdir(), `images-serp-bd-${process.pid}.json`);
+process.env.SB_BREAKER_STATE_PATH = path.join(os.tmpdir(), `images-serp-sb-${process.pid}.json`);
 delete process.env.SERP_NO_SB;
 
 const require = createRequire(import.meta.url);
