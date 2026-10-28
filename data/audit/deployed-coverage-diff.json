@@ -1,32 +1,13 @@
 {
-  "generatedAt": "2026-10-28T16:40:47.581Z",
+  "generatedAt": "2026-10-28T19:58:33.546Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 256,
-  "clean": 255,
-  "defective": 1,
-  "byType": {
-    "score-drift": 1
-  },
-  "shows": [
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "openingDate": "2026-10-27",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 77.62 vs local 75.56 (Δ2.06)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 5,
-      "deployedCount": 5,
-      "firstDefectAt": "2026-10-28T16:40:42.562Z"
-    }
-  ],
+  "clean": 256,
+  "defective": 0,
+  "byType": {},
+  "shows": [],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

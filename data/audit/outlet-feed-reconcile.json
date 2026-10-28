@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-28T16:40:47.986Z",
+  "generatedAt": "2026-10-28T19:58:34.187Z",
   "advisory": true,
   "windowDays": 7,
   "shows": [
@@ -118,14 +118,6 @@
   "feedsChecked": 73,
   "feedsFailed": [
     {
-      "outletId": "thereviewshub",
-      "error": "Timeout fetching https://www.thereviewshub.com/feed/"
-    },
-    {
-      "outletId": "theater-life",
-      "error": "Timeout fetching https://theaterlife.com/feed"
-    },
-    {
       "outletId": "front-row-center",
       "error": "HTTP 403 for https://thefrontrowcenter.com/feed/"
     },
@@ -146,44 +138,26 @@
       "error": "HTTP 403 for https://matineemouse.substack.com/feed"
     }
   ],
-  "itemsScanned": 695,
-  "matchedGaps": 9,
+  "itemsScanned": 791,
+  "matchedGaps": 4,
   "possibleGaps": 6,
   "gaps": [
     {
-      "showId": "aftermath-art-new-york-off-broadway-2026",
-      "title": "Aftermath",
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
       "level": "matched",
-      "outletId": "stageandcinema",
-      "url": "https://stageandcinema.com/2026/10/26/aftermath-art-new-york-theatres-review/",
-      "headline": "Off-Broadway Review: AFTERMATH (A.R.T./New York Theatres)",
+      "outletId": "firstnightmagazine",
+      "url": "https://firstnightmagazine.com/2026/10/27/lead-actress-hannah-akhalu-talks-new-play-girls-it-was-important-for-me-not-to-be-generic-with-the-experience-of-pain-fear-and-worry/",
+      "headline": "Lead actress Hannah Akhalu talks revival of &#8216;Girls&#8217;: &#8220;It was important for me not to be generic with the experience of pain, fear, and worry&#8221;",
       "publishDate": "2026-10-27"
     },
     {
       "showId": "girls-off-west-end-2026",
       "title": "Girls",
       "level": "matched",
-      "outletId": "firstnightmagazine",
-      "url": "https://firstnightmagazine.com/2026/10/28/review-of-girls-kidnapping-play-doesnt-fully-steal-audiences-hearts/",
-      "headline": "Review of &#8216;Girls&#8217;: &#8220;Kidnapping play doesn&#8217;t fully steal audiences&#8217; hearts&#8221;",
-      "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "all-that-dazzles-uk",
-      "url": "https://www.allthatdazzles.co.uk/post/review-girls-the-maria-theatre-young-vic",
-      "headline": "Review: Girls (The Maria Theatre, Young Vic)",
-      "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "matched",
-      "outletId": "londontheatre1",
-      "url": "https://www.londontheatre1.com/reviews/girls-young-vic/",
-      "headline": "Girls | Young Vic",
+      "outletId": "west-end-best-friend",
+      "url": "https://www.westendbestfriend.co.uk/news/review-girls-young-vic-theatre",
+      "headline": "Review: GIRLS, Young Vic Theatre",
       "publishDate": "2026-10-28"
     },
     {
@@ -196,40 +170,13 @@
       "publishDate": "2026-10-27"
     },
     {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
+      "showId": "the-imaginary-invalid-2026",
+      "title": "The Imaginary Invalid",
       "level": "matched",
-      "outletId": "revstanstheatreblog",
-      "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-memoriam-southwark-playhouse/",
-      "headline": "Review: Memoriam, Southwark Playhouse",
-      "publishDate": "2026-10-27"
-    },
-    {
-      "showId": "memoriam-off-west-end-2026",
-      "title": "Memoriam",
-      "level": "matched",
-      "outletId": "british-theatre",
-      "url": "https://www.britishtheatreguide.info/reviews/memoriam-southwark-playh-26162",
-      "headline": "Memoriam",
+      "outletId": "theater-life",
+      "url": "https://theaterlife.com/billy-crystal-860-the-imaginary-invalid/",
+      "headline": "Billy Crystal: 860 ****, The Imaginary Invalid **",
       "publishDate": "2026-10-28"
-    },
-    {
-      "showId": "queeney-todd-the-demon-bottom-of-fleet-street-off-broadway-2026",
-      "title": "Queeney Todd: The Demon Bottom of Fleet Street",
-      "level": "matched",
-      "outletId": "theater-scene",
-      "url": "https://www.theaterscene.net/musicals/offbway/queeney-todd-the-demon-bottom-of-fleet-street/tony-marinelli/",
-      "headline": "Queeney Todd: The Demon Bottom of Fleet Street",
-      "publishDate": "2026-10-27"
-    },
-    {
-      "showId": "the-lives-of-others-west-end-2026",
-      "title": "The Lives of Others",
-      "level": "matched",
-      "outletId": "revstanstheatreblog",
-      "url": "https://revstanstheatreblog.co.uk/2026/10/27/review-the-lives-of-others-adelphi-theatre/",
-      "headline": "Review: The Lives of Others, Adelphi Theatre",
-      "publishDate": "2026-10-27"
     },
     {
       "showId": "aftermath-art-new-york-off-broadway-2026",
@@ -248,15 +195,6 @@
       "url": "https://newyorktheatreguide.com/reviews/school-girls-or-the-african-mean-girls-play-broadway-review",
       "headline": "‘School Girls; Or, the African Mean Girls Play’ Broadway review — pageant queens and queen bees face off",
       "publishDate": null
-    },
-    {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "level": "possible",
-      "outletId": "south-london",
-      "url": "https://southlondon.co.uk/lifestyle/review-dolly-at-omnibus-theatre/",
-      "headline": "Review: Dolly at Omnibus Theatre",
-      "publishDate": "2026-10-24"
     },
     {
       "showId": "girls-off-west-end-2026",
@@ -284,6 +222,15 @@
       "url": "https://playstosee.com/reviews/burlesque/?utm_source=rss&#038;utm_medium=rss&#038;utm_campaign=burlesque",
       "headline": "Burlesque",
       "publishDate": "2026-10-28"
+    },
+    {
+      "showId": "the-pianist-off-west-end-2026",
+      "title": "The Pianist",
+      "level": "possible",
+      "outletId": "thereviewshub",
+      "url": "https://www.thereviewshub.com/lambeth-fringe-2026-happy-heart-the-songs-of-andy-williams-toulouse-lautrec-jazz-club-london/",
+      "headline": "Lambeth Fringe 2026: Happy Heart: The Songs of Andy Williams – Toulouse Lautrec Jazz Club, London",
+      "publishDate": "2026-10-19"
     }
   ]
 }
