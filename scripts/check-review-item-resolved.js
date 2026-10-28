@@ -27,6 +27,9 @@ function slugOfKey(key) {
 /** @returns {{ resolved: boolean, why: string }} */
 function checkResolved(mode, value, { commercial, pending }) {
   const shows = (commercial && commercial.shows) || {};
+  if (mode !== 'closure' && !(pending && pending.shows && typeof pending.shows === 'object' && !Array.isArray(pending.shows))) {
+    return { resolved: false, why: 'pending-review file has an unrecognised shape' };
+  }
   const rows = (pending && pending.shows) || {};
   if (mode === 'claim') {
     if (!Object.prototype.hasOwnProperty.call(rows, value)) return { resolved: true, why: `pending row ${value} is gone` };
@@ -65,11 +68,11 @@ function issueState(n) {
 }
 
 function main(argv) {
-  if (!fs.existsSync(path.join(DATA, 'commercial.json')) && !/--issue-closed=/.test(argv[2] || '')) {
+  const parsed = parse(argv);
+  if (parsed && parsed.mode !== 'issue-closed' && !fs.existsSync(path.join(DATA, 'commercial.json'))) {
     console.error('OPEN: private data/commercial.json is missing in this checkout');
     return 1;
   }
-  const parsed = parse(argv);
   if (!parsed) {
     console.error('usage: check-review-item-resolved.js --claim=<pending key> | --closure=<slug> | --held-empty | --issue-closed=<N>');
     return 2;
