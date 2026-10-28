@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-28T05:56:14.824Z",
+  "timestamp": "2026-10-28T06:40:08.591Z",
   "stats": {
-    "totalReviews": 64306,
-    "alreadyFlagged": 21838,
-    "dateGuardCatches": 237,
-    "directorMismatch": 2446,
-    "tvFilmSignals": 1814,
-    "londonSignals": 3092,
+    "totalReviews": 64304,
+    "alreadyFlagged": 21859,
+    "dateGuardCatches": 236,
+    "directorMismatch": 2451,
+    "tvFilmSignals": 1815,
+    "londonSignals": 3097,
     "offBroadwaySignals": 578,
     "yearMismatch": 227,
-    "noPublishDate": 5724
+    "noPublishDate": 5679
   },
   "findings": [
     {
@@ -6651,6 +6651,19 @@
     },
     {
       "showId": "boop-tour-2026",
+      "file": "albany-times-union--unknown.json",
+      "publishDate": "2026-10-15",
+      "url": "https://www.timesunion.com/theater/article/review-boop-the-musical-tour-proctors-22466983.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jerry mitchell\" from boop-2025"
+        }
+      ]
+    },
+    {
+      "showId": "boop-tour-2026",
       "file": "behindthecurtaincincy--unknown.json",
       "score": 88,
       "publishDate": "2026-10-21",
@@ -11985,6 +11998,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        }
+      ]
+    },
+    {
+      "showId": "dear-england-west-end-2025",
+      "file": "i-paper--unknown.json",
+      "score": null,
+      "publishDate": "2025-03-19",
+      "url": "https://inews.co.uk/culture/arts/dear-england-review-rebooted-gareth-southgate-scores-again-3593105?srsltid=AU7gw4VnWWDVu8jqHPl8GYWBFUEs6QG9MI1qRpGFQ7NEArbmSNdztCGF",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rupert goold\" from dear-england-west-end-2023"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -21854,6 +21886,20 @@
       "score": 100,
       "publishDate": "2024-07-18",
       "url": "https://inews.co.uk/culture/arts/hello-dolly-review-imelda-staunton-3176917",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "hello-dolly-west-end-2024",
+      "file": "i-paper--unknown.json",
+      "score": null,
+      "publishDate": "2024-07-18",
+      "url": "https://inews.co.uk/culture/arts/hello-dolly-review-imelda-staunton-3176917?srsltid=AU7gw4VOCjchZjc1un73KZZWGSxStuvvfjzRJeQvShuh6gaT1rC6RtIR",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -34332,6 +34378,20 @@
       "showId": "oh-mary-tour-2026",
       "file": "broadwayworld--lucia-serrano.json",
       "score": 79,
+      "publishDate": "2026-10-02",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-San-Diego-Civic-Theatre-20261002",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "broadwayworld--marie-reiter.json",
+      "score": 81,
       "publishDate": "2026-10-02",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-San-Diego-Civic-Theatre-20261002",
       "findings": [
@@ -51515,6 +51575,24 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--katrina-fageol.json",
+      "publishDate": "2025-09-14",
+      "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--marie-reiter.json",
       "publishDate": "2025-09-14",
       "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
@@ -62570,6 +62648,20 @@
     },
     {
       "showId": "a-dolls-house-off-west-end-2026",
+      "file": "london-theatre--unknown.json",
+      "score": 75,
+      "publishDate": "2026-04-09",
+      "url": "https://www.londontheatre.co.uk/reviews/a-dolls-house-review-almeida-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "a-dolls-house-off-west-end-2026",
       "file": "standard--nick-curtis.json",
       "score": 81,
       "publishDate": "2026-04-09",
@@ -68224,17 +68316,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
-        }
-      ]
-    },
-    {
-      "showId": "brainiac-live-west-end-2026",
-      "file": "londontheatre1--london-theatre-1.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 143d before show (2026-03-05 vs 2026-07-26)"
         }
       ]
     },
@@ -88917,6 +88998,19 @@
     },
     {
       "showId": "oliver-west-end-2024",
+      "file": "the-sun--dominic-maxwell.json",
+      "publishDate": "2025-01-19",
+      "url": "https://www.thetimes.com/article/462f55ef-cabe-4abf-bc74-bb2463a7a80f",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "oliver-west-end-2024",
       "file": "theatre-weekly--unknown.json",
       "score": 94,
       "publishDate": null,
@@ -105296,6 +105390,20 @@
     },
     {
       "showId": "the-years-west-end-2025",
+      "file": "london-box-office--unknown.json",
+      "score": 91,
+      "publishDate": "2025-02-10",
+      "url": "https://www.londonboxoffice.co.uk/news/post/the-years-harold-pinter-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-years-west-end-2025",
       "file": "londontheatredirect--sian-mcbride.json",
       "score": null,
       "publishDate": "2025-02-20",
@@ -107558,6 +107666,19 @@
       "score": 80,
       "publishDate": "2024-09-20",
       "url": "https://inews.co.uk/culture/arts/waiting-for-godot-ben-whishaw-review-3286319",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "waiting-for-godot-west-end-2024",
+      "file": "i-paper--unknown.json",
+      "publishDate": "2024-09-20",
+      "url": "https://inews.co.uk/culture/arts/waiting-for-godot-ben-whishaw-review-3286319?srsltid=AU7gw4WuStsnP6X27E210C1o-zs6agN04edm50Kq4k95llgZsqvpbHQa",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
