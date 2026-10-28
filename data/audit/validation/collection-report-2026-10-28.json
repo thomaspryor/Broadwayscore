@@ -1,51 +1,51 @@
 {
-  "runDate": "2026-10-28T09:29:05.646Z",
+  "runDate": "2026-10-28T09:50:04.423Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "linda-west-end-2015,the-father-west-end-2015,the-deep-blue-sea-west-end-2016,mr-footes-other-leg-west-end-2015,notmoses-west-end-2016,the-winters-tale-west-end-2015,wonder-land-west-end-2015",
+    "showFilter": "1984-west-end-2016",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 20,
+    "processed": 1,
     "failed": 1,
     "skipped": 0,
-    "successRate": "95.2%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 2,
-    "scrapingbee": 1,
-    "brightdata": 1,
+    "scrapingdog": 0,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 1,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 16,
-    "tier1Success": 10,
+    "tier1Attempts": 2,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 6,
-    "tier1_9Success": 4,
-    "tier2Attempts": 6,
-    "tier2Success": 2,
-    "tier3Attempts": 4,
-    "tier3Success": 3,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 0,
+    "tier2Attempts": 1,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
     "tier3_6Attempts": 1,
     "tier3_6Success": 1,
-    "tier4Attempts": 3,
-    "tier4Success": 1,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
     "totalFailed": 1,
-    "scrapingBeePageCredits": 31,
+    "scrapingBeePageCredits": 1,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
@@ -54,15 +54,10 @@
     "urlDiscoveryCapped": 0
   },
   "thisRun": {
-    "processed": 20,
+    "processed": 1,
     "failed": 1,
     "shows": [
-      "linda-west-end-2015",
-      "mr-footes-other-leg-west-end-2015",
-      "notmoses-west-end-2016",
-      "the-deep-blue-sea-west-end-2016",
-      "the-father-west-end-2015",
-      "the-winters-tale-west-end-2015"
+      "1984-west-end-2016"
     ],
     "outOfScopeShows": [],
     "inheritedFromResume": {
@@ -71,92 +66,33 @@
     }
   },
   "processed": [
-    "the-deep-blue-sea-west-end-2016/fringereview--unknown.json",
-    "the-deep-blue-sea-west-end-2016/hampstead-highgate-express--unknown.json",
-    "the-deep-blue-sea-west-end-2016/london-box-office--unknown.json",
-    "the-deep-blue-sea-west-end-2016/radio-times--unknown.json",
-    "the-deep-blue-sea-west-end-2016/sierz-co-uk--unknown.json",
-    "notmoses-west-end-2016/jewishnews--unknown.json",
-    "notmoses-west-end-2016/londontheatre1--unknown.json",
-    "notmoses-west-end-2016/telegraph--unknown.json",
-    "linda-west-end-2015/guardian--unknown.json",
-    "linda-west-end-2015/sierz-co-uk--unknown.json",
-    "mr-footes-other-leg-west-end-2015/britishtheatrecom--unknown.json",
-    "mr-footes-other-leg-west-end-2015/express-uk--unknown.json",
-    "mr-footes-other-leg-west-end-2015/londontheatre1--unknown.json",
-    "mr-footes-other-leg-west-end-2015/sunday-times--dominic-maxwell.json",
-    "mr-footes-other-leg-west-end-2015/sunday-times--unknown.json",
-    "the-winters-tale-west-end-2015/nytimes--unknown.json",
-    "the-winters-tale-west-end-2015/a-younger-theatre--unknown.json",
-    "the-winters-tale-west-end-2015/hampstead-highgate-express--unknown.json",
-    "the-father-west-end-2015/guardian--unknown.json",
-    "the-father-west-end-2015/artsdesk--unknown.json"
+    "1984-west-end-2016/fjord-review--unknown.json"
   ],
   "failed": [
-    "linda-west-end-2015/thestage--unknown.json"
+    "1984-west-end-2016/a-younger-theatre--unknown.json"
   ],
   "cumulativeResumedState": {
     "processed": [
-      "the-deep-blue-sea-west-end-2016/fringereview--unknown.json",
-      "the-deep-blue-sea-west-end-2016/hampstead-highgate-express--unknown.json",
-      "the-deep-blue-sea-west-end-2016/london-box-office--unknown.json",
-      "the-deep-blue-sea-west-end-2016/radio-times--unknown.json",
-      "the-deep-blue-sea-west-end-2016/sierz-co-uk--unknown.json",
-      "notmoses-west-end-2016/jewishnews--unknown.json",
-      "notmoses-west-end-2016/londontheatre1--unknown.json",
-      "notmoses-west-end-2016/telegraph--unknown.json",
-      "linda-west-end-2015/guardian--unknown.json",
-      "linda-west-end-2015/sierz-co-uk--unknown.json",
-      "mr-footes-other-leg-west-end-2015/britishtheatrecom--unknown.json",
-      "mr-footes-other-leg-west-end-2015/express-uk--unknown.json",
-      "mr-footes-other-leg-west-end-2015/londontheatre1--unknown.json",
-      "mr-footes-other-leg-west-end-2015/sunday-times--dominic-maxwell.json",
-      "mr-footes-other-leg-west-end-2015/sunday-times--unknown.json",
-      "the-winters-tale-west-end-2015/nytimes--unknown.json",
-      "the-winters-tale-west-end-2015/a-younger-theatre--unknown.json",
-      "the-winters-tale-west-end-2015/hampstead-highgate-express--unknown.json",
-      "the-father-west-end-2015/guardian--unknown.json",
-      "the-father-west-end-2015/artsdesk--unknown.json"
+      "1984-west-end-2016/fjord-review--unknown.json"
     ],
     "failed": [
-      "linda-west-end-2015/thestage--unknown.json"
+      "1984-west-end-2016/a-younger-theatre--unknown.json"
     ]
   },
   "tierDetails": {
     "playwright": [
-      "the-deep-blue-sea-west-end-2016/fringereview--unknown.json",
-      "the-deep-blue-sea-west-end-2016/london-box-office--unknown.json",
-      "the-deep-blue-sea-west-end-2016/radio-times--unknown.json",
-      "the-deep-blue-sea-west-end-2016/sierz-co-uk--unknown.json",
-      "notmoses-west-end-2016/londontheatre1--unknown.json",
-      "linda-west-end-2015/sierz-co-uk--unknown.json",
-      "mr-footes-other-leg-west-end-2015/britishtheatrecom--unknown.json",
-      "mr-footes-other-leg-west-end-2015/express-uk--unknown.json",
-      "mr-footes-other-leg-west-end-2015/londontheatre1--unknown.json",
-      "the-father-west-end-2015/artsdesk--unknown.json"
+      "1984-west-end-2016/fjord-review--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [
-      "the-deep-blue-sea-west-end-2016/hampstead-highgate-express--unknown.json",
-      "the-winters-tale-west-end-2015/hampstead-highgate-express--unknown.json"
-    ],
-    "scrapingbee": [
-      "mr-footes-other-leg-west-end-2015/sunday-times--dominic-maxwell.json"
-    ],
-    "brightdata": [
-      "mr-footes-other-leg-west-end-2015/sunday-times--unknown.json"
-    ],
+    "scrapingdog": [],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [
-      "data/review-texts/linda-west-end-2015/thestage--unknown.json"
+      "data/review-texts/1984-west-end-2016/a-younger-theatre--unknown.json"
     ],
-    "archive": [
-      "notmoses-west-end-2016/jewishnews--unknown.json",
-      "notmoses-west-end-2016/telegraph--unknown.json",
-      "the-winters-tale-west-end-2015/nytimes--unknown.json",
-      "the-winters-tale-west-end-2015/a-younger-theatre--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
