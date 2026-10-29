@@ -321,6 +321,10 @@ ${evidence}`;
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
         clearTimeout(deadline);
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`Claude API error: HTTP ${res.statusCode} ${data.slice(0, 200)}`));
+          return;
+        }
         try {
           const response = JSON.parse(data);
           if (response.error) {

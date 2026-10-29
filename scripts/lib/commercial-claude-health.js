@@ -10,7 +10,8 @@ const INFRA_PATTERNS = [
   /timed out/i,
   /\b(ECONNRESET|ECONNREFUSED|ETIMEDOUT|ENOTFOUND|EAI_AGAIN|EPIPE)\b/,
   /socket hang up/i,
-  /Claude API error:.*(overloaded|rate.?limit|api_error|authentication|credit|billing|internal)/i,
+  /Claude API error:.*(overloaded|rate.?limit|api_error|authentication|credit|billing|internal|not_found|invalid.?model|model.*not found)/i,
+  /Claude API error: HTTP \d{3}/i,
 ];
 
 /** True when the error says the call itself failed, not that the answer was empty or unparseable. */

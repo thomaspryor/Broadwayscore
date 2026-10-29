@@ -5,7 +5,7 @@ const require = createRequire(import.meta.url);
 const { isInfraError, claudeHealthVerdict } = require('../../scripts/lib/commercial-claude-health.js');
 
 test('timeouts, resets and API outages are infra errors', () => {
-  for (const m of ['Claude API request timed out after 60s', 'Claude API request exceeded 120s deadline (timed out)', 'read ECONNRESET', 'socket hang up', 'Claude API error: Overloaded', 'Claude API error: rate limit exceeded']) {
+  for (const m of ['Claude API request timed out after 60s', 'Claude API request exceeded 120s deadline (timed out)', 'read ECONNRESET', 'socket hang up', 'Claude API error: Overloaded', 'Claude API error: rate limit exceeded', 'Claude API error: HTTP 529 overloaded', 'Claude API error: HTTP 404 {}', 'Claude API error: model: claude-x not_found_error']) {
     assert.equal(isInfraError(new Error(m)), true, m);
   }
 });
