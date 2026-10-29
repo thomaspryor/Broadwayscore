@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6503-we-2011-12-c",
   "planId": "5d59b552-be00-45fc-a9ba-cd65990bc9c1",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T05:23:06.926Z",
   "submitter": {
     "name": null,
@@ -98,5 +98,24 @@
         }
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T07:52:54.874Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added much-ado-about-nothing-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added volcano-west-end-2012"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added jumpy-west-end-2012"
+    }
+  ],
+  "executedIn": "ci"
 }
