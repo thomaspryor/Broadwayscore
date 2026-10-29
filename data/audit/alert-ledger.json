@@ -5499,7 +5499,7 @@
       "title": "Data audits failing (non-blocking): Run data validation",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-29T16:46:59.217Z",
+      "lastSeen": "2026-10-29T17:06:08.056Z",
       "lastNotifiedAt": "2026-10-29T08:53:30.228Z",
       "lastSurfacedAt": "2026-10-29T08:53:30.228Z",
       "notifyCount": 30,
@@ -15077,7 +15077,7 @@
       "linearIdentifier": "BRO-6505",
       "silentRefires": 1,
       "absentRunIds": [
-        "40879423585"
+        "40864524395"
       ]
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
@@ -29603,7 +29603,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4315-collisions": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "title": "Landing blocked: race red on land/bro-4315-collisions",
       "firstSeen": "2026-10-29T09:46:07.850Z",
@@ -29613,8 +29613,7 @@
       "lastSurfacedAt": "2026-10-29T09:46:07.850Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-10-29T15:10:50.193Z"
+      "linearIdentifier": null
     },
     "land:land/codex-bro-4991": {
       "status": "open",
@@ -29747,20 +29746,6 @@
       "cardId": null,
       "linearIdentifier": null
     },
-    "pending-unrecoverable:the-revlon-girl-off-west-end-2026": {
-      "status": "open",
-      "disposition": "digest",
-      "requestedDisposition": "human",
-      "title": "1 review(s) for the-revlon-girl-off-west-end-2026 stuck in _pending with no text and no byline",
-      "firstSeen": "2026-10-29T14:52:22.575Z",
-      "incidentOpenedAt": "2026-10-29T14:52:22.575Z",
-      "lastSeen": "2026-10-29T14:52:22.575Z",
-      "lastNotifiedAt": "2026-10-29T14:52:22.575Z",
-      "lastSurfacedAt": "2026-10-29T14:52:22.575Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
-    },
     "opening-night-remediation-exhausted-t1-missing:the-revlon-girl-off-west-end-2026": {
       "status": "open",
       "disposition": "digest",
@@ -29797,6 +29782,20 @@
       "lastSeen": "2026-10-29T14:29:00.973Z",
       "lastNotifiedAt": "2026-10-29T14:29:00.973Z",
       "lastSurfacedAt": "2026-10-29T14:29:00.973Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "pending-unrecoverable:the-revlon-girl-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "1 review(s) for the-revlon-girl-off-west-end-2026 stuck in _pending with no text and no byline",
+      "firstSeen": "2026-10-29T14:52:22.575Z",
+      "incidentOpenedAt": "2026-10-29T14:52:22.575Z",
+      "lastSeen": "2026-10-29T14:52:22.575Z",
+      "lastNotifiedAt": "2026-10-29T14:52:22.575Z",
+      "lastSurfacedAt": "2026-10-29T14:52:22.575Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
