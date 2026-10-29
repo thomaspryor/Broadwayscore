@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T08:08:48.302Z",
+  "timestamp": "2026-10-29T08:33:02.827Z",
   "stats": {
-    "totalReviews": 66535,
-    "alreadyFlagged": 22079,
+    "totalReviews": 66584,
+    "alreadyFlagged": 22084,
     "dateGuardCatches": 233,
-    "directorMismatch": 2703,
-    "tvFilmSignals": 1894,
+    "directorMismatch": 2706,
+    "tvFilmSignals": 1895,
     "londonSignals": 3227,
-    "offBroadwaySignals": 606,
+    "offBroadwaySignals": 610,
     "yearMismatch": 247,
-    "noPublishDate": 6457
+    "noPublishDate": 6501
   },
   "findings": [
     {
@@ -10278,6 +10278,24 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"bob fosse\" from chicago-1975"
+        }
+      ]
+    },
+    {
+      "showId": "chicago-1996",
+      "file": "theater-pizzazz--unknown.json",
+      "publishDate": null,
+      "url": "https://theaterpizzazz.com/pamela-anderson-rocks-as-chicagos-newest-roxie/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"bob fosse\" from chicago-1975"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -29144,6 +29162,19 @@
     },
     {
       "showId": "kimberly-akimbo-off-broadway-2021",
+      "file": "frontmezzjunkies--unknown.json",
+      "publishDate": null,
+      "url": "https://frontmezzjunkies.com/2021/12/21/atc-kimberly-akimbo/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from kimberly-akimbo-2022"
+        }
+      ]
+    },
+    {
+      "showId": "kimberly-akimbo-off-broadway-2021",
       "file": "nysr--david-finkle.json",
       "score": 80,
       "publishDate": "December 8th, 2021",
@@ -29232,6 +29263,19 @@
       "score": 82,
       "publishDate": "2021-12-09",
       "url": "https://www.offoffonline.com/offoffonline/2021/12/8/kimberly-akimbo",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from kimberly-akimbo-2022"
+        }
+      ]
+    },
+    {
+      "showId": "kimberly-akimbo-off-broadway-2021",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/company-kimberly-akimbo/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -33692,6 +33736,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "the-komisar-scoop--lucy-komisar.json",
+      "score": 88,
       "publishDate": null,
       "url": "https://www.thekomisarscoop.com/2022/12/merrily-we-roll-along-is-sondheims-cynical-take-on-hollywood-movie-moguls-ditching-idealism-for-cash/",
       "findings": [
@@ -33710,6 +33755,7 @@
     {
       "showId": "merrily-we-roll-along-off-broadway-2022",
       "file": "theater-life--samuel-l-leiter.json",
+      "score": 75,
       "publishDate": null,
       "url": "https://theaterlife.com/merrily-we-roll-along-1-2-2/",
       "findings": [
@@ -74854,6 +74900,19 @@
     },
     {
       "showId": "chess-2025",
+      "file": "theater-life--david-sheward.json",
+      "publishDate": null,
+      "url": "https://theaterlife.com/chess-practice/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "chess-2025",
       "file": "timeout--adam-feldman.json",
       "score": 44,
       "publishDate": "November 16, 2025",
@@ -94038,6 +94097,19 @@
       ]
     },
     {
+      "showId": "oh-happy-day-off-broadway-2025",
+      "file": "vulture--jackson-mchenry.json",
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-tullock-hand-of-god-coooper-oh-happy-day.html",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
       "showId": "oh-hello-on-broadway-2016",
       "file": "front-row-center--tulis-mccall.json",
       "score": 87,
@@ -101669,6 +101741,19 @@
       ]
     },
     {
+      "showId": "sweeney-todd-2023",
+      "file": "dc-theater-arts--geoffrey-melada.json",
+      "publishDate": null,
+      "url": "https://dctheaterarts.org/2023/05/25/signature-theatres-measured-sweeney-todd-fails-to-draw-blood/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
+        }
+      ]
+    },
+    {
       "showId": "sylvia-2015",
       "file": "ew--marc-snetiker.json",
       "score": 73,
@@ -101889,6 +101974,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"soho rep\""
+        }
+      ]
+    },
+    {
+      "showId": "tartuffe-off-broadway-2025",
+      "file": "off-off-online--deirdre-donovan.json",
+      "publishDate": null,
+      "url": "https://www.offoffonline.com/offoffonline/2025/12/11/tartuffe",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"nytw\""
         }
       ]
     },
