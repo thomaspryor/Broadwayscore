@@ -294,6 +294,32 @@ function resolveRetiredTourCandidates(rows, shows, router, options) {
 }
 
 /**
+ * Ledger sweep: an open `tour-candidate:*` condition whose candidate is no
+ * longer open (a tour entry now settles it, or its row was dropped) is
+ * resolved with its digest line. resolveRetiredTourCandidates only covers
+ * retired tours, so a settled candidate's ledger row and "Needs you" digest
+ * line stayed open forever (BRO-6208).
+ */
+function resolveStaleTourCandidateConditions(openKeys, ledger, router) {
+  const open = new Set(openKeys);
+  let n = 0;
+  for (const [key, cond] of Object.entries((ledger && ledger.conditions) || {})) {
+    if (!key.startsWith('tour-candidate:') || cond.status !== 'open') continue;
+    const id = key.slice('tour-candidate:'.length);
+    if (open.has(id)) continue;
+    // A legacy key without the segment-start suffix (tour-candidate:<parent>) is
+    // still live while any open candidate of that parent exists (Come From Away).
+    if ([...open].some(o => o.startsWith(id + ':'))) continue;
+    const keys = [key, `digest-needs-you:${cond.title}`];
+    router.resolveCondition(key, { reason: 'Tour candidate is settled: a tour entry now exists' });
+    if (cond.title) router.resolveCondition(keys[1], { reason: 'Tour candidate is settled: a tour entry now exists' });
+    router.removeDigestLines(keys);
+    n++;
+  }
+  return n;
+}
+
+/**
  * Rows still worth suggesting. A row with a tracked parent: the parent exists
  * and no tour of its title is running yet (a tour added since the roundup
  * settles the row). A standalone page row (key page:<slug>, no parent, since
@@ -341,4 +367,4 @@ function sortForCreate(candidates) {
   return [...candidates].sort((a, b) => rank(a) - rank(b));
 }
 
-module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, tourCandidateTitle };
+module.exports = { candidateKey, candidateBaseKey, sortForCreate, isNationalTourRoundupSlug, roundupMatchPool, isTourParentCategory, roundupDateFromSlug, roundupOnlyCandidate, hasOpenTour, candidateParentId, tourCandidateFor, recordTourCandidates, openTourCandidates, retiredTourCandidateId, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle };

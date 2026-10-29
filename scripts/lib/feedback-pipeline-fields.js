@@ -205,15 +205,31 @@ function castValueProblem(v) {
 
 // shows.json rejectedImageUrls check for the human-approved data-edit path
 // (BRO-4996): an array of http(s) URLs that keeps every URL already there.
-// Returns an error string or null.
-function rejectedUrlsValueProblem(newValue, oldValue) {
+// BRO-5163: the one way to drop a URL is an explicit per-URL `unreject` list on
+// the action, [{url, reason}], so a plan can't silently unblock a bad source.
+// Every dropped URL must be named with a substantive reason, and nothing may be
+// named that isn't actually dropped. Returns an error string or null.
+function rejectedUrlsValueProblem(newValue, oldValue, unreject) {
   if (!Array.isArray(newValue)) return 'rejectedImageUrls: newValue must be an array';
   for (const [i, u] of newValue.entries()) {
     if (typeof u !== 'string' || !/^(google-images:)?https?:\/\/\S+$/i.test(u)) return `rejectedImageUrls[${i}]: must be an http(s) URL (a Google Images page as recorded: google-images:https://...)`;
   }
   const kept = new Set(newValue);
   const lost = (Array.isArray(oldValue) ? oldValue : []).filter((u) => !kept.has(u));
-  if (lost.length) return `rejectedImageUrls: a plan may only add URLs (would drop ${lost[0]})`;
+  const named = unreject === undefined ? [] : unreject;
+  if (!Array.isArray(named)) return 'rejectedImageUrls: unreject must be an array of {url, reason}';
+  const approved = new Set();
+  for (const [i, e] of named.entries()) {
+    if (!e || typeof e !== 'object' || Array.isArray(e)) return `rejectedImageUrls: unreject[${i}] must be an object with url and reason`;
+    if (typeof e.url !== 'string' || !e.url) return `rejectedImageUrls: unreject[${i}].url is required`;
+    if (typeof e.reason !== 'string' || e.reason.trim().length < 10) return `rejectedImageUrls: unreject[${i}].reason is required (10+ chars) for ${e.url}`;
+    approved.add(e.url);
+  }
+  for (const u of approved) {
+    if (!lost.includes(u)) return `rejectedImageUrls: unreject names ${u}, which the plan does not drop`;
+  }
+  const unapproved = lost.find((u) => !approved.has(u));
+  if (unapproved) return `rejectedImageUrls: a plan may only add URLs unless the action lists it in unreject with a reason (would drop ${unapproved})`;
   return null;
 }
 

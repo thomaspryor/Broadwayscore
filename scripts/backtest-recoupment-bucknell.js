@@ -50,10 +50,16 @@ const fmt = (m, { baseline = false } = {}) => {
 const matched = result.rows.filter((r) => r.commercialKey);
 const neverOpened = result.rows.filter((r) => !r.showId && r.neverOpened);
 const noShow = result.rows.filter((r) => !r.showId && !r.neverOpened);
-const noComm = result.rows.filter((r) => r.showId && !r.commercialKey);
+const noSourceDoc = require(path.join(__dirname, '..', 'data', 'analysis', 'bucknell-no-readable-source.json')).shows || {};
+const noCommAll = result.rows.filter((r) => r.showId && !r.commercialKey);
+// BRO-6182: shows researched and documented as having no free readable press source stop resurfacing as open work.
+const documented = noCommAll.filter((r) => noSourceDoc[r.showId]);
+const noComm = noCommAll.filter((r) => !noSourceDoc[r.showId]);
+const staleDoc = Object.keys(noSourceDoc).filter((id) => !noCommAll.some((r) => r.showId === id));
 const loose = result.rows.filter((r) => r.matchRule && r.matchRule !== 'opening');
 console.log(`Bucknell backtest: ${result.rows.length} study musicals; ${matched.length} have a commercial.json record`);
-console.log(`  never opened (no page expected): ${neverOpened.length}; missing from shows.json: ${noShow.length}; page but no commercial record: ${noComm.length}`);
+console.log(`  never opened (no page expected): ${neverOpened.length}; missing from shows.json: ${noShow.length}; page but no commercial record: ${noComm.length} (+${documented.length} documented as no readable source)`);
+if (staleDoc.length) console.log(`  WARNING: bucknell-no-readable-source.json lists shows that now have a record or no page, remove them: ${staleDoc.join(', ')}`);
 console.log(`  matched by closing date or a longer billing title (check these): ${loose.length}`);
 if (result.unlabeled.length) console.log(`  WARNING: ${result.unlabeled.length} study rows have a label this script does not know: ${result.unlabeled.join(', ')}`);
 console.log('');

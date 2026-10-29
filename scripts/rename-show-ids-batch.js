@@ -175,16 +175,25 @@ function main() {
   const showsPath = path.join(trees.coreData, 'shows.json');
 
   // Every pair fully renamed in all three trees.
-  const leftOver = () => {
+  // A lateAppend file (an append-only run log) can regain old ids from a job
+  // that started before the rename, so it only warns; a later --apply sweeps it.
+  const { SHOW_ID_KEYED_FILES } = require('./lib/show-id-keyed-files.js');
+  const isLate = (c) => (c.entryIndexes || []).length > 0 && c.entryIndexes.every((i) => SHOW_ID_KEYED_FILES[i] && SHOW_ID_KEYED_FILES[i].lateAppend);
+  const leftOver = (warnings = []) => {
     const left = [];
     for (const p of pairs) {
       const plan = planShowIdRename(p.oldId, p.newId, trees);
-      if (plan.changes.length || plan.moves.length) left.push(`${p.oldId}: ${plan.changes.length} file(s), ${plan.moves.length} move(s) still pending`);
+      const lateChanges = plan.changes.filter(isLate);
+      const changes = plan.changes.filter((c) => !isLate(c));
+      if (lateChanges.length) warnings.push(`${p.oldId}: old id re-appended to ${lateChanges.map((c) => c.path).join(', ')}`);
+      if (changes.length || plan.moves.length) left.push(`${p.oldId}: ${changes.length} file(s), ${plan.moves.length} move(s) still pending`);
     }
     return [...left, ...verifyShows(pairs, readShows(showsPath))];
   };
   if (f.check) {
-    const left = leftOver();
+    const warnings = [];
+    const left = leftOver(warnings);
+    for (const w of warnings) console.log(`::warning::${w} (a late run-log append; the next --apply of any batch holding this pair sweeps it)`);
     if (left.length) { console.error(`::error::rename incomplete:\n  ${left.join('\n  ')}`); process.exit(1); }
     console.log(`checked: ${pairs.length} rename(s) complete in all three trees`);
     return;
@@ -201,7 +210,7 @@ function main() {
     if (st.state === 'reappeared') { console.log(`reappeared ${p.oldId} -> ${p.newId}: old row re-added by a merge; --apply drops it and resumes`); continue; }
     const plan = planShowIdRename(p.oldId, p.newId, trees);
     if (!plan.ok) refused.push(...plan.refusals.map((r) => `${p.oldId}: ${r}`));
-    console.log(`${st.state.padEnd(7)} ${p.oldId} -> ${p.newId}  slug ${plan.oldSlug}${plan.slugChanged ? ` -> ${plan.newSlug}` : ' (kept)'}  ${plan.summary ? `${plan.summary.filesRewritten} files, ${plan.summary.dirsMoved + plan.summary.filesMoved} moves` : ''}`);
+    console.log(`${st.state.padEnd(7)} ${p.oldId} -> ${p.newId}  slug ${plan.oldSlug}${plan.slugChanged ? ` -> ${plan.newSlug}` : ' (kept)'}  ${plan.summary ? `${plan.summary.filesRewritten} files, ${plan.summary.dirsMoved + plan.summary.filesMoved} moves${plan.summary.orphansDropped ? `, ${plan.summary.orphansDropped} orphan target entries dropped` : ''}` : ''}`);
   }
   if (refused.length) { console.error(`\nrefused (${refused.length}), nothing written:\n  ${refused.join('\n  ')}`); process.exit(2); }
   if (!f.apply) { console.log(`\ndry run: ${pairs.length} pair(s) plan cleanly; pass --apply to execute`); return; }

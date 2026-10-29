@@ -103,3 +103,13 @@ test('long key clamped at a space round-trips through its own encoded command', 
   const l = writeLedger('clamp.json', { [key]: { status: 'resolved', lastSeen: iso(5), resolvedAt: iso(1) } });
   assert.equal(run(l, key).status, 0);
 });
+
+// BRO-6208: the digest's "Dispatch a fix" key `digest-needs-you:<title>` is never
+// a ledger key; it must match the underlying rows by title, not always exit 3.
+test('digest-needs-you key matches ledger rows by title (resolved passes, open fails)', () => {
+  const key = 'digest-needs-you:Tour candidate: Mexodus national tour';
+  const row = (status) => ({ status, title: 'Tour candidate: Mexodus national tour', lastSeen: iso(5), ...(status === 'resolved' ? { resolvedAt: iso(1) } : {}) });
+  assert.equal(run(writeLedger('dn-res.json', { 'tour-candidate:mexodus:2026-07-08': row('resolved'), other: { status: 'open', title: 'x', lastSeen: iso(1) } }), key).status, 0);
+  assert.equal(run(writeLedger('dn-open.json', { 'tour-candidate:mexodus:2026-07-08': { ...row('open'), lastSeen: iso(1) } }), key).status, 1);
+  assert.equal(run(writeLedger('dn-none.json', { other: { status: 'open', title: 'x', lastSeen: iso(1) } }), key).status, 3);
+});

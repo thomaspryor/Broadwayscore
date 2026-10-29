@@ -189,6 +189,33 @@ describe('feedback-pipeline-fields', () => {
     assert.match(rejectedUrlsValueProblem(['google-images:x'], null), /http/);
   });
 
+  test('rejectedUrlsValueProblem: unreject drops a URL only with a per-URL reason (BRO-5163)', () => {
+    const a = 'https://x.test/a.jpg', b = 'https://x.test/b.jpg';
+    const reason = 'this page is the 2019 production, not the revival';
+    assert.equal(rejectedUrlsValueProblem([b], [a, b], [{ url: a, reason }]), null);
+    assert.match(rejectedUrlsValueProblem([b], [a, b], [{ url: a }]), /reason is required/);
+    assert.match(rejectedUrlsValueProblem([b], [a, b], [{ url: a, reason: 'bad' }]), /reason is required/);
+    assert.match(rejectedUrlsValueProblem([b], [a, b], [{ reason }]), /url is required/);
+    assert.match(rejectedUrlsValueProblem([b], [a, b], []), /only add URLs/);
+    assert.match(rejectedUrlsValueProblem([a, b], [a, b], [{ url: a, reason }]), /does not drop/);
+    assert.match(rejectedUrlsValueProblem([], [a, b], [{ url: a, reason }]), /would drop https:\/\/x.test\/b.jpg/);
+    assert.match(rejectedUrlsValueProblem([b], [a, b], 'a'), /array of/);
+  });
+
+  test('applyDataEdit removes a rejected URL only through unreject (BRO-5163)', () => {
+    const { applyDataEdit } = require('../../scripts/lib/data-edit-action.js');
+    const a = 'https://x.test/a.jpg', b = 'https://x.test/b.jpg';
+    const mk = () => ({ shows: [{ id: 's', rejectedImageUrls: [a, b] }] });
+    const edit = { file: 'shows.json', showId: 's', field: 'rejectedImageUrls', oldValue: [a, b], newValue: [b] };
+    const bare = mk();
+    assert.equal(applyDataEdit(bare, edit).ok, false);
+    assert.deepEqual(bare.shows[0].rejectedImageUrls, [a, b]);
+    const ok = mk();
+    const res = applyDataEdit(ok, { ...edit, unreject: [{ url: a, reason: 'this page is the same production' }] });
+    assert.equal(res.ok, true);
+    assert.deepEqual(ok.shows[0].rejectedImageUrls, [b]);
+  });
+
   test('buildShowSnapshot emits rejectedImageUrls as [] when the show has none', () => {
     assert.deepEqual(buildShowSnapshot({ id: 'x', title: 'X', slug: 'x' }).rejectedImageUrls, []);
   });

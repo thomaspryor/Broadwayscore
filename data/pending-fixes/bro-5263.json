@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5263",
   "planId": "732bb72a-e05f-4f43-a492-c7460d5c4e53",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-24T23:33:25.977Z",
   "submitter": {
     "name": null,
@@ -33,5 +33,19 @@
         "reason": "BRO-5263: Vineyard Theatre states that the scheduled September 11 to October 13, 2024 US premiere was postponed before rehearsals began. This run never played; its previewsStartDate is a cancelled schedule, not evidence of performance. Retire this id only so a future rescheduled run remains discoverable."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T06:57:31.214Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted age-is-a-feeling-off-broadway-2024/broadwayworld--team-bww.json"
+    },
+    {
+      "action": "retire-show",
+      "ok": true,
+      "msg": "retired age-is-a-feeling-off-broadway-2024 (\"Age Is a Feeling\" @ Vineyard Theatre); dropped its audience-buzz.json key"
+    }
+  ],
+  "executedIn": "ci"
 }

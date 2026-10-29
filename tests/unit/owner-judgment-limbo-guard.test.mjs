@@ -22,6 +22,35 @@ test('flags marker-only P2/P3 Todo/Backlog cards, including comment markers with
   assert.deepEqual(issues, before);
 });
 
+test('routes human-territory cards left unarmed by the enricher, at every priority', () => {
+  const issues = [
+    card({ identifier: 'BRO-2', title: 'Post about the site today', description: '', priority: 2 }),
+    card({ identifier: 'BRO-3', title: 'A partnership kit', description: '[notion:x] P2 Later · Todo · Partnerships' }),
+    card({ identifier: 'BRO-4', title: 'Prepare the account', description: '', labels: { nodes: [{ name: 'owner-action' }] } }),
+  ];
+  assert.deepEqual(ownerJudgmentLimboCards(issues).map(r => r.id), ['BRO-2', 'BRO-3', 'BRO-4']);
+  for (const priority of [0, 1, 2, 3, 4]) {
+    assert.equal(ownerJudgmentLimboCards([{ ...issues[0], priority }]).length, 1);
+  }
+  for (const extra of [
+    { description: `VERIFY: ${CMD}` },
+    { description: 'DECISION NEEDED: Which network should carry the announcement?' },
+    { comments: { nodes: [comment(`VERIFY: ${CMD}`, '16')] } },
+    { state: { type: 'completed' } },
+    { description: 'VERIFY: retracted' },
+  ]) assert.deepEqual(ownerJudgmentLimboCards([{ ...issues[0], ...extra }]), []);
+  assert.deepEqual(ownerJudgmentLimboCards([card({ title: 'Fix the email parser', description: '', labels: { nodes: [{ name: 'email' }] } })]), []);
+});
+
+test('the daily audit reads high-priority human-territory comments and respects their latest safe check', async () => {
+  const human = card({ title: 'Post about the site today', description: '', priority: 1 });
+  const report = await auditOwnerJudgmentLimbo([human], { listIssueComments: async ids => {
+    assert.deepEqual(ids, ['BRO-1']);
+    return new Map([['BRO-1', [comment(`VERIFY: ${CMD}`, '16')]]]);
+  } });
+  assert.deepEqual(report, { total: 1, checked: 1, complete: true, cards: [] });
+});
+
 test('uses the effective VERIFY, with newest comments winning over description and earlier comments', () => {
   assert.equal(ownerJudgmentLimboCards([card({ comments: { nodes: [
     comment(`VERIFY: ${CMD}`, '16'), comment('VERIFY: owner-judgment', '15'),
@@ -204,8 +233,9 @@ test('the limbo health row files a START-NOW worker card the cloud worker will p
 
 test('a UX walkthrough card has a runnable check, no limbo, passes the picker, and the nightly volume is capped', () => {
   const finding = { summary: 'Score badge overlaps title on mobile', severity: 'high', screenshot: 'mobile-grid', agreementCount: 2, models: ['a', 'b'] };
-  const notes = cardNotes(finding, 3);
+  const notes = cardNotes(finding, 3, 'a'.repeat(32));
   assert.ok(evaluateVerifiability(notes, []).cmd, 'needs a safe-form VERIFY');
+  assert.equal(evaluateVerifiability(notes, []).cmd, `node scripts/lib/ux-walkthrough-resolution.js --key=${'a'.repeat(32)}`);
   assert.equal(createLimboReason({ body: notes, parkReason: '' }), null);
   assert.match(notes, /visual-approval\.js request/);
   assert.match(notes, /demo\.broadwayscorecard\.com/);

@@ -90,6 +90,7 @@ data/followers.json
 # files ({issue}.json, digit-leading) are trackable again; everything else in
 # the dir stays ignored so a stray `git add -A` can't stage arbitrary files.
 data/pending-fixes/*
+!data/pending-fixes/bro-6215.json
 !data/pending-fixes/bro-5934.json
 !data/pending-fixes/bro-6223.json
 !data/pending-fixes/bro-5530.json
@@ -338,6 +339,7 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 !/docs/bro-4623-commercial-readiness.md
 !/docs/bro-5189-affluenza-button.md
 !/docs/bro-6045-review-recovery.md
+!/docs/bro-6500-uk-regional-hubs.md
 !/docs/bro-6165-bucknell-backtest.md
 !/docs/bro-6187-commercial-estimates.md
 !/docs/bro-5530-capitalization-sweep.md

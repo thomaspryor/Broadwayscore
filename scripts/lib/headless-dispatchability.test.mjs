@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { resolveDisposition } = require('./card-disposition.js');
-const { takeableParkAdvisory } = require('./headless-dispatchability.js');
+const { takeableParkAdvisory, commentClearsOwnerGate } = require('./headless-dispatchability.js');
 const { pickCloudCard } = require('./cloud-worker-pick.js');
 const { freshClaimGuard } = require('./fresh-claim-guard.js');
 const { buildClaimComment } = require('./linear-session-reporting.js');
@@ -79,4 +79,30 @@ test('linear-brain create --child files In Progress with a child claim comment; 
     }
   } finally { process.exit = realExit; }
   assert.deepEqual(codes, [1, 1]);
+});
+
+// BRO-6443: the board's own tooling writes these two lines; they must clear the gate.
+test('commentClearsOwnerGate: triage "Owner gate removed" and the answer path "Owner decision" comments clear it', () => {
+  assert.equal(commentClearsOwnerGate(['Owner gate removed by BRO-6235 (checked 2026-10-25): this is not a question for the owner.']), true);
+  assert.equal(commentClearsOwnerGate(['**Owner decision** (answered by the owner through the email link, 2026-10-25 UTC)\n\nChose: Option A', 'Listed in the owner\'s decisions email.'], ''), true);
+  assert.equal(commentClearsOwnerGate(['OWNER-CLEARED: technical call']), true);
+});
+
+test('commentClearsOwnerGate: an answered-decision comment does not clear a card that still has an open question', () => {
+  const answered = ['**Owner decision** (answered by the owner through the email link)\n\nChose: Option A'];
+  assert.equal(commentClearsOwnerGate(answered, 'ANSWERED by the owner: first? -> A\nDECISION NEEDED: second question?'), false);
+  assert.equal(commentClearsOwnerGate(answered, 'ANSWERED by the owner: first? -> A'), true);
+});
+
+test('commentClearsOwnerGate: ordinary comments, a mid-line mention and a re-ask do not clear it', () => {
+  assert.equal(commentClearsOwnerGate(['Claimed by a worker']), false);
+  assert.equal(commentClearsOwnerGate(['The owner gate removed earlier was wrong']), false);
+  assert.equal(commentClearsOwnerGate(['Owner gate removed by triage.', 'DECISION NEEDED: keep or drop this?']), false);
+});
+
+test('commentClearsOwnerGate: other owner wording, a DECISION NEEDED title and a vague "removed" note keep the gate shut', () => {
+  const answered = ['**Owner decision** (answered by the owner through the email link)\n\nChose: Option A'];
+  assert.equal(commentClearsOwnerGate(answered, 'ANSWERED by the owner: Q1? -> A\n\nOwner must approve the new vendor.'), false);
+  assert.equal(commentClearsOwnerGate(answered, 'DECISION NEEDED: keep?\nANSWERED by the owner: Q1? -> A'), false);
+  assert.equal(commentClearsOwnerGate(['Owner gate removed by mistake; still needs you.']), false);
 });

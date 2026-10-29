@@ -1,13 +1,48 @@
 {
-  "generatedAt": "2026-10-29T01:34:05.937Z",
+  "generatedAt": "2026-10-29T08:18:28.879Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 255,
-  "clean": 255,
-  "defective": 0,
-  "byType": {},
-  "shows": [],
+  "checked": 259,
+  "clean": 257,
+  "defective": 2,
+  "byType": {
+    "score-drift": 2
+  },
+  "shows": [
+    {
+      "showId": "the-great-gatsby-2024",
+      "title": "The Great Gatsby",
+      "openingDate": "2024-04-25",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 57.41 vs local 57.24 (Δ0.17)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 32,
+      "deployedCount": 32,
+      "firstDefectAt": "2026-10-29T08:18:23.775Z"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "title": "The Outsiders",
+      "openingDate": "2024-04-11",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 69.62 vs local 69.08 (Δ0.54)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 28,
+      "deployedCount": 28,
+      "firstDefectAt": "2026-10-29T08:18:23.775Z"
+    }
+  ],
   "persistentDefective": 0,
   "staleGraceHours": 6
 }

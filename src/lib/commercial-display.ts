@@ -17,6 +17,7 @@
 // silently hide the feature everywhere.
 
 import type { ShowCommercial } from './data-types';
+import { ourRecoupRangePct } from '../../scripts/lib/our-recoup-estimate';
 import { getDesignationBadgeStyle, UNDISCLOSED_DESIGNATION, RECOUPED_UNDISCLOSED_DESIGNATION, TBD_STATUS_DESCRIPTIONS } from '@/config/commercial';
 import { reportedReturnLabel } from '../../scripts/lib/reported-return';
 import { returnSnapshotDate } from '../../scripts/lib/commercial-return-snapshot';
@@ -50,6 +51,8 @@ interface RecoupmentSignals {
   analystRecoupPct?: ShowCommercial['analystRecoupPct'];
   /** Our own rounded range, used when there is no analyst figure (BRO-6245). */
   ourEstimateRangePct?: ShowCommercial['ourEstimateRangePct'];
+  ourRecoupEstimatePct?: ShowCommercial['ourRecoupEstimatePct'];
+  ourRecoupEstimateAsOf?: ShowCommercial['ourRecoupEstimateAsOf'];
   /** 'enhancement': a nonprofit production with commercial money to recoup (hasNoInvestorsToRepay). */
   productionType?: ShowCommercial['productionType'] | null;
   designation?: ShowCommercial['designation'];
@@ -181,6 +184,13 @@ function roundToFive(v: number): number {
  */
 export function getDisplayableEstimateRange(commercial: RecoupmentSignals): { range: [number, number]; withModel: boolean } | null {
   if (commercial.recouped === true || hasNoInvestorsToRepay(commercial)) return null;
+  const owner = ourRecoupRangePct(commercial);
+  if (owner) {
+    const range = roundedRange(owner as [number, number]);
+    if (isFinalClosedOutcome(commercial) && !estimateFitsDesignation(range, commercial.designation, true)) return null;
+    // The owner is correcting the model; that model must not widen this range.
+    return { range, withModel: false };
+  }
   const analyst = analystRange(commercial);
   if (!analyst) return null;
   const finalClosed = isFinalClosedOutcome(commercial);
@@ -329,7 +339,13 @@ export function getRecoupedCellSummary(row: CellSignals): RecoupedCellSummary {
   if (rr && getReportedReturnLine(row)) return { kind: 'reported', lo: rr.lo, hi: rr.hi, outlet: rr.outlet, asOf: rr.asOf };
   if (mode === 'analyst') {
     const est = getDisplayableEstimateRange(row)!;
-    return { kind: 'analyst', range: est.range, withModel: est.withModel, asOf: row.analystRecoupAsOf ?? null, url: row.analystRecoupUrl ?? null, ours: !row.analystRecoupPct };
+    const owner = ourRecoupRangePct(row);
+    return {
+      kind: 'analyst', range: est.range, withModel: est.withModel,
+      asOf: owner ? row.ourRecoupEstimateAsOf ?? null : row.analystRecoupAsOf ?? null,
+      url: owner ? null : row.analystRecoupUrl ?? null,
+      ours: !!owner || !row.analystRecoupPct,
+    };
   }
   if (mode === 'model') return { kind: 'model', pct: row.modelRecoupmentPct! };
   if (isClosedWithoutRecouping(row)) {
@@ -480,6 +496,7 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
       analystRecoupUrl: commercial.analystRecoupUrl ?? null,
     } : {}),
     ...(commercial.ourEstimateRangePct ? { ourEstimateRangePct: commercial.ourEstimateRangePct } : {}),
+    ...(commercial.ourRecoupEstimatePct != null ? { ourRecoupEstimatePct: commercial.ourRecoupEstimatePct, ourRecoupEstimateAsOf: commercial.ourRecoupEstimateAsOf ?? null } : {}),
   };
 }
 
@@ -672,11 +689,11 @@ export interface DesignationDisplay {
 
 /** Whether the Profitability Scorecard has anything to show (it renders nothing otherwise). */
 export function hasCommercialCard(
-  c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'> & Partial<Pick<ShowCommercial, 'analystRecoupPct' | 'ourEstimateRangePct' | 'commercialConversion'>>
+  c: Pick<ShowCommercial, 'capitalization' | 'recouped' | 'designation'> & Partial<Pick<ShowCommercial, 'analystRecoupPct' | 'ourEstimateRangePct' | 'ourRecoupEstimatePct' | 'commercialConversion'>>
 ): boolean {
   // A TBD show with only the analyst's estimate (Beaches: ~0% recouped) or a
   // switch to a commercial run still has a card to show (BRO-5508).
-  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD' || c.analystRecoupPct || c.ourEstimateRangePct || conversionOf(c));
+  return !!(c.capitalization || c.recouped !== null || c.designation !== 'TBD' || c.analystRecoupPct || c.ourEstimateRangePct || ourRecoupRangePct(c) || conversionOf(c));
 }
 
 /** The public caveat for a loss label that rests on silence (owner policy B, BRO-5020). */
@@ -740,7 +757,8 @@ export function likelyOutcomeLine(c: Parameters<typeof likelyOutcomeDesignation>
 export type LikelyOutcomeBasis = 'estimate' | 'model';
 export function likelyOutcomeBasis(c: Parameters<typeof likelyOutcomeDesignation>[0]): LikelyOutcomeBasis | null {
   if (!likelyOutcomeDesignation(c)) return null;
-  // Our own range (ourEstimateRangePct) is our estimate, not an outside one.
+  // The owner figure leads even when an outside estimate is also recorded.
+  if (ourRecoupRangePct(c)) return 'model';
   return ownReturnedEstimatePct({ ...c, ourEstimateRangePct: undefined }) !== null ? 'estimate' : 'model';
 }
 

@@ -528,6 +528,9 @@ export interface ShowCommercial {
   analystRecoupUrl?: string | null;
   /** Our own estimate as a rounded [low, high] (BRO-6245). Used only when there is no analystRecoupPct; credited as "Our estimate". */
   ourEstimateRangePct?: [number, number] | null;
+  /** Owner-set estimate, ahead of analyst/model figures; research never writes these (BRO-6215). */
+  ourRecoupEstimatePct?: number | [number, number] | null;
+  ourRecoupEstimateAsOf?: string | null;
   modelRecouped?: boolean | null;
   modelBreakeven?: number | null;
   modelCostBasis?: number | null;
@@ -661,6 +664,8 @@ export interface CommercialShowRow {
   analystRecoupAsOf?: string | null;
   analystRecoupUrl?: string | null;
   ourEstimateRangePct?: ShowCommercial['ourEstimateRangePct'];
+  ourRecoupEstimatePct?: ShowCommercial['ourRecoupEstimatePct'];
+  ourRecoupEstimateAsOf?: ShowCommercial['ourRecoupEstimateAsOf'];
   /** A closed show's trade-reported % returned (ShowCommercial.reportedReturn). */
   reportedReturn?: ShowCommercial['reportedReturn'];
   modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;

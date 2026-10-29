@@ -6,9 +6,17 @@ const { evaluateVerifiability } = require('./verify-gate.js');
 const { sortedCommentBodies } = require('./linear-dispatch.js');
 const { findOwnerDecisions } = require('./owner-decision-notify.js');
 const { redactEmails } = require('./pii-scan.js');
+const { isCardEligible, categoryOfLinearIssue } = require('./autonomous-eligibility.js');
+
+function isHumanTerritory(issue) {
+  return isCardEligible({
+    name: issue.title, category: categoryOfLinearIssue(issue.description),
+    tags: ((issue.labels && issue.labels.nodes) || []).map(l => l.name),
+  }).kind === 'human-territory';
+}
 
 function inScope(issue) {
-  return issue && [3, 4].includes(Number(issue.priority))
+  return issue && ([3, 4].includes(Number(issue.priority)) || isHumanTerritory(issue))
     && ['backlog', 'unstarted'].includes(issue.state && issue.state.type);
 }
 
@@ -19,7 +27,8 @@ function ownerJudgmentLimboCards(issues) {
   const routed = new Set(findOwnerDecisions(pending).map(i => i.identifier));
   return pending.flatMap(issue => {
     const gate = evaluateVerifiability(issue.description || '', sortedCommentBodies(issue));
-    if (!gate.ownerJudgment || gate.cmd || routed.has(issue.identifier)) return [];
+    const unarmedHuman = !gate.armed && gate.kind !== 'retracted' && isHumanTerritory(issue);
+    if ((!gate.ownerJudgment && !unarmedHuman) || gate.cmd || routed.has(issue.identifier)) return [];
     return [{
       id: issue.identifier, name: redactEmails(issue.title || ''),
       priority: issue.priority, url: issue.url || null, source: gate.source,
@@ -60,14 +69,14 @@ function ownerJudgmentLimboResults(report, now = Date.now()) {
   const hint = 'Triage data/audit/card-verifiability-linear.json ownerJudgmentLimbo.cards, one card at a time. First check the card\'s premise against live state (run the commands, read the code, use the session\'s tools and keys; never write "no access" before trying them). If the work is doable, add a safe-form check line as a comment and do it, or cancel the card with evidence. Only when a real choice remains for the person who runs the site, put a plain-English question on its own line starting with DECISION NEEDED and a colon in the description, with the options and your recommendation (docs/owner-email-guidelines.md). That line is what emails them.';
   if (cards.length) {
     return [{ name, status: 'warn',
-      message: `${cards.length} P2/P3 Todo/Backlog card(s) are marked for a person's judgment with no check command and no owner-notification route.${ready ? '' : ' Sweep incomplete or stale; this count may be partial.'} First: ${cards.slice(0, 3).map(c => c.id).join(', ')}`,
+      message: `${cards.length} Todo/Backlog card(s) need human-territory triage or a person's judgment with no check command and no owner-notification route.${ready ? '' : ' Sweep incomplete or stale; this count may be partial.'} First: ${cards.slice(0, 3).map(c => c.id).join(', ')}`,
       hint }];
   }
   if (!ready) {
     return [{ name, status: 'warn', message: 'Owner-judgment limbo sweep incomplete, missing or stale; no clean count is available.',
       hint: 'Check the daily card-verifiability-audit.yml run and its comment reads; regenerate the Linear verifiability report.' }];
   }
-  return [{ name, status: 'pass', message: `No owner-judgment-only P2/P3 card lacks an owner-notification route (${bucket.checked} checked).` }];
+  return [{ name, status: 'pass', message: `No unarmed human-territory or owner-judgment-only card lacks an owner-notification route (${bucket.checked} checked).` }];
 }
 
 // Create-time guard (BRO-5371): the audit above reports limbo cards after the fact; this refuses to mint one.

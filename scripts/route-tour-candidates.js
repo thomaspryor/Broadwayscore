@@ -15,8 +15,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { openTourCandidates, candidateParentId, candidateKey, resolveRetiredTourCandidates, tourCandidateTitle } = require('./lib/tour-roundup-candidate');
-const { routeAlert, resolveCondition, removeDigestLines } = require('./lib/owner-alert-router');
+const { openTourCandidates, candidateParentId, candidateKey, resolveRetiredTourCandidates, resolveStaleTourCandidateConditions, tourCandidateTitle } = require('./lib/tour-roundup-candidate');
+const { routeAlert, resolveCondition, removeDigestLines, loadLedger } = require('./lib/owner-alert-router');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `route-tour-candidates.js — route national-tour roundup candidates to the owner digest.
@@ -86,6 +86,7 @@ async function main() {
   // Roundup-only rows (no show to suggest a tour for) wait for the Tours To You
   // pairing step; they are not suggestions here but must survive the rewrite (BRO-4931).
   const keep = rows.filter(r => (!r.broadwayShowId && !r.key) || String(r.key || '').startsWith('roundup:') || open.includes(r));
+  if (!dryRun) resolveStaleTourCandidateConditions(open.map(candidateKey), loadLedger(), { resolveCondition, removeDigestLines });
   if (!dryRun && (sent > 0 || keep.length !== rows.length)) {
     fs.writeFileSync(FILE, JSON.stringify(keep, null, 2) + '\n');
     if (keep.length !== rows.length) console.log(`Dropped ${rows.length - keep.length} candidate(s) with tracked or retired tours, or no longer eligible.`);

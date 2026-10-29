@@ -41,7 +41,8 @@
 // number stays internal.
 
 const { runWindow } = require('./run-window');
-const { FIZZLE_MIN_RETURNED_PCT, hasNoInvestorsToRepay } = require('./commercial-designations');
+const { ourRecoupRangePct } = require('./our-recoup-estimate');
+const { FIZZLE_MIN_RETURNED_PCT, TRICKLE_MAX_MULTIPLE, hasNoInvestorsToRepay } = require('./commercial-designations');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
 const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
@@ -82,6 +83,8 @@ const RUNNING_MODEL_BAR_TYPES = ['play', 'musical'];
  * @returns {[number, number] | null}
  */
 function analystRange(comm) {
+  const owner = ourRecoupRangePct(comm);
+  if (owner) return owner;
   // Our own static range (ourEstimateRangePct) stands in when no analyst figure exists.
   const p = comm && (comm.analystRecoupPct || comm.ourEstimateRangePct);
   if (!Array.isArray(p) || p.length !== 2 || !p.every((v) => typeof v === 'number' && Number.isFinite(v) && v >= 0)) return null;
@@ -98,10 +101,12 @@ function analystRange(comm) {
  * hasNoInvestorsToRepay). Any other final designation takes no estimate.
  * @param {number[]} range [low, high] or [low, central, high]
  */
-function estimateFitsDesignation(range, designation) {
+function estimateFitsDesignation(range, designation, ownerEstimate = false) {
   if (!Array.isArray(range) || range.length < 2) return false;
   if (designation === 'Nonprofit') return true;
   const mid = range.length === 3 ? range[1] : (range[0] + range[1]) / 2;
+  if (ownerEstimate && designation === 'Trickle') return mid >= 100 && mid < TRICKLE_MAX_MULTIPLE * 100;
+  if (ownerEstimate && designation === 'Windfall') return mid >= TRICKLE_MAX_MULTIPLE * 100;
   if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
   if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;
   return false;
@@ -124,7 +129,7 @@ function displaysAnalyst(comm, show) {
   if (comm.recouped === true || hasNoInvestorsToRepay(comm)) return false;
   const range = analystRange(comm);
   if (!range) return false;
-  return !isFinalClosed(comm, show) || estimateFitsDesignation(range, comm.designation);
+  return !isFinalClosed(comm, show) || estimateFitsDesignation(range, comm.designation, !!ourRecoupRangePct(comm));
 }
 
 /**

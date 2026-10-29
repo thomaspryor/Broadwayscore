@@ -125,10 +125,17 @@ function decide(ledgers, key, nowMs = Date.now()) {
   }
   const target = rowMatchKey(key);
   // Per ledger key, the most recently active entry across ledgers wins.
+  // "Dispatch a fix" links from the morning digest carry a synthetic
+  // `digest-needs-you:<title>` key that no router ever writes to the ledger, so
+  // the check could never pass for them (BRO-6208). Such a key also matches
+  // every ledger row whose title is that digest line's title.
+  const DIGEST_PREFIX = 'digest-needs-you:';
+  const digestTitle = key.startsWith(DIGEST_PREFIX) ? rowMatchKey(key.slice(DIGEST_PREFIX.length)) : null;
   const byKey = new Map();
   for (const l of ledgers) {
     for (const [k, entry] of Object.entries(l.conditions)) {
-      if (rowMatchKey(k) !== target) continue;
+      const titleHit = digestTitle && entry && typeof entry.title === 'string' && rowMatchKey(entry.title) === digestTitle;
+      if (rowMatchKey(k) !== target && !titleHit) continue;
       const prev = byKey.get(k);
       if (!prev || activityOf(entry) > activityOf(prev.entry)) byKey.set(k, { entry, path: l.path });
     }

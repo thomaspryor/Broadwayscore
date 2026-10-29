@@ -72,10 +72,11 @@ test('selectCatchupCandidates: caps the batch at batchSize', () => {
   assert.strictEqual(batch.length, 2);
 });
 
-test('selectCatchupCandidates: ignores non-open shows', () => {
-  const shows = [show('closed-show', { status: 'closed' })];
-  const { batch } = selectCatchupCandidates(shows, [], {}, { now: NOW });
-  assert.deepStrictEqual(batch, []);
+test('selectCatchupCandidates: ignores previews/upcoming shows; a closed never-attempted show gets its one try', () => {
+  const shows = [show('previews-show', { status: 'previews' }), show('closed-show', { status: 'closed' })];
+  const r = selectCatchupCandidates(shows, [], {}, { now: NOW });
+  assert.deepStrictEqual(r.batch, ['closed-show']);
+  assert.deepStrictEqual(r.closedBackfill, ['closed-show']);
 });
 
 test('hasGivenUp: no entry means never given up', () => {

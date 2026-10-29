@@ -197,6 +197,18 @@ const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const { gatherPurposeForShow, pressNightPurposeForShow, emptySerpAuthoritativeForGather } = require('./lib/spend-purpose');
 // A dispatch-level tag (gather-reviews.yml spend_purpose input) wins over the per-show one.
 const _DISPATCH_SPEND_PURPOSE = process.env.SCRAPER_SPEND_PURPOSE || '';
+const _backfillYield = require('./lib/backfill-outlet-yield');
+// BRO-6490: bulk historical backfill skips outlets with almost no history in
+// the show's market. Loaded once per process; null = pruning off.
+let _outletPoolCounts;
+function _backfillOutletPoolCounts() {
+  if (_outletPoolCounts === undefined) {
+    _outletPoolCounts = _backfillYield.isBulkBackfillPurpose(_DISPATCH_SPEND_PURPOSE)
+      ? _backfillYield.loadOutletPoolCounts(REVIEWS_PATH, (id) => (_showsById().get(id) || {}).category)
+      : null;
+  }
+  return _outletPoolCounts;
+}
 let _showsByIdCache = null;
 function _showsById() {
   if (!_showsByIdCache) {
@@ -5557,6 +5569,14 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       const SERP_BUDGET = 150;
       let serpCallCount = 0;
+      // BRO-6490: pruned outlets take a budget slot without a call, so the
+      // searched set stays a subset of the unpruned run's and serpCallCount
+      // still means real calls (health telemetry reads it).
+      let prunedSlots = 0;
+      const prunedOutletIds = [];
+      const _pruneCounts = _backfillOutletPoolCounts();
+      const _prunePool = _backfillYield.marketPoolForCategory(show.category);
+      const _pruneMin = _backfillYield.resolveMinReviews();
       // Once both SERP providers are unavailable, every subsequent call will
       // fail the same way. Short-circuit the entire SERP phase instead of
       // burning 50+ outlets × 6 critics of wasted budget + DELAY_MS sleeps.
@@ -5566,7 +5586,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       for (const outlet of allOutlets) {
         if (serpUnavailable) break;
-        if (serpCallCount >= SERP_BUDGET) {
+        if (serpCallCount + prunedSlots >= SERP_BUDGET) {
           console.log(`  ⚠ SERP budget exhausted (${SERP_BUDGET} calls)`);
           break;
         }
@@ -5599,7 +5619,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           );
           let outletHits = 0;
           for (const critic of criticsToQuery) {
-            if (serpCallCount >= SERP_BUDGET) {
+            if (serpCallCount + prunedSlots >= SERP_BUDGET) {
               console.log(`    ⚠ SERP budget exhausted mid-outlet`);
               break;
             }
@@ -5647,7 +5667,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           // freelancer / guest-critic reviews not in critic-outlets.json. Skip when
           // the aggregator already provided coverage — that would just rediscover
           // the same URL or attribute a duplicate to Unknown.
-          if (outletHits === 0 && !aggregatorCovered && serpCallCount < SERP_BUDGET) {
+          if (outletHits === 0 && !aggregatorCovered && serpCallCount + prunedSlots < SERP_BUDGET) {
             process.stdout.write(`    ↳ (outlet fallback)... `);
             serpCallCount++;
             const result = await searchForReviewViaSERP(showId, outlet, scrapingBeeKey, brightDataKey, { historical: options.historical, openingNight: options.openingNight });
@@ -5681,6 +5701,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         // the same URL and burn budget.
         if (foundOutletIds.has(outlet.id.toLowerCase())) {
           console.log(`  ${outlet.name}... ⟳ already found via aggregator`);
+          continue;
+        }
+
+        if (_backfillYield.backfillOutletDecision({ outletId: outlet.id, pool: _prunePool, counts: _pruneCounts, minReviews: _pruneMin }).skip) {
+          prunedSlots++;
+          prunedOutletIds.push(outlet.id);
           continue;
         }
 
@@ -5720,6 +5746,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
 
       health.serp.calls = serpCallCount;
       console.log(`  SERP calls used: ${serpCallCount}/${SERP_BUDGET}`);
+      if (prunedOutletIds.length > 0) {
+        console.log(`  Backfill pruned ${prunedOutletIds.length} outlets with <${_pruneMin} past ${_prunePool} reviews (BRO-6490): ${prunedOutletIds.join(', ')}`);
+      }
 
       if (options.openingNight) {
         const { serpCount, aggregatorCount, total, serpRatio } = computeSerpShare(foundReviews);

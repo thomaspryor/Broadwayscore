@@ -168,6 +168,28 @@ test('CLI: an old row re-added by a merge is dropped on rerun', () => {
   assert.equal(run(f, ['--check']).status, 0);
 });
 
+test('CLI: --check only warns on a late run-log append; --apply sweeps it', () => {
+  const f = buildFixture();
+  assert.equal(run(f, ['--apply']).status, 0);
+  const runs = path.join(f.web, 'data', 'llm-scoring-runs.json');
+  writeJson(runs, [{ runId: 1, validation: [{ showId: OLD, delta: 2 }] }]);
+  const chk = run(f, ['--check']);
+  assert.equal(chk.status, 0, chk.stdout + chk.stderr);
+  assert.match(chk.stdout, /::warning::.*re-appended to .*llm-scoring-runs\.json/);
+  // A non-log file regaining the old id still fails.
+  const rel = path.join(f.web, 'data', 'related-shows.json');
+  const relDoc = JSON.parse(fs.readFileSync(rel, 'utf8'));
+  relDoc.shows[OTHER].relatedIds = [OLD];
+  writeJson(rel, relDoc);
+  assert.equal(run(f, ['--check']).status, 1);
+  const r = run(f, ['--apply']);
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.ok(!fs.readFileSync(runs, 'utf8').includes(OLD));
+  const clean = run(f, ['--check']);
+  assert.equal(clean.status, 0);
+  assert.doesNotMatch(clean.stdout, /::warning::/);
+});
+
 test('build-slug-redirects keeps the year-less URL of a renamed id', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'rename-redirects-'));
   writeJson(path.join(dir, 'shows.json'), { shows: [

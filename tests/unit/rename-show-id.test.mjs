@@ -21,7 +21,7 @@ const require = createRequire(import.meta.url);
 const { SHOW_ID_KEYED_FILES, validateRegistry } = require('../../scripts/lib/show-id-keyed-files.js');
 const {
   planShowIdRename, applyShowIdRename, buildSqlMigration, formatPlan,
-  SUPABASE_SHOW_ID_TABLES, yearlessSlug,
+  SUPABASE_SHOW_ID_TABLES, yearlessSlug, applyShape,
 } = require('../../scripts/lib/show-id-rename.js');
 
 const OLD = 'fixture-musical-2026';
@@ -164,6 +164,23 @@ test('registry is well-formed and covers the three repos', () => {
   assert.equal(SHOW_ID_KEYED_FILES.find((e) => e.path === 'data/slug-redirects.json').rewrite, false);
 });
 
+test('onCollision drop-orphan-target: the renamed row keeps its entry, the orphan under the target id goes; other maps still refuse', () => {
+  const ctx = { oldId: 'x-west-end-2026', newId: 'x-off-west-end-2026', slugChanged: false };
+  const hist = SHOW_ID_KEYED_FILES.find((e) => e.path === 'audience-history');
+  assert.equal(hist.onCollision, 'drop-orphan-target');
+  const doc = { shows: { 'x-west-end-2026': { combinedScore: 82 }, 'x-off-west-end-2026': { combinedScore: 70 }, other: { combinedScore: 1 } } };
+  const edits = applyShape(doc, hist, ctx);
+  assert.deepEqual(doc.shows, { 'x-off-west-end-2026': { combinedScore: 82 }, other: { combinedScore: 1 } });
+  assert.deepEqual(edits.map((e) => e.op), ['drop-orphan', 'rename-key']);
+  const plain = { ...hist, onCollision: undefined };
+  const doc2 = { shows: { 'x-west-end-2026': {}, 'x-off-west-end-2026': {} } };
+  assert.throws(() => applyShape(doc2, plain, ctx), (e) => e.code === 'KEY_COLLISION');
+  const doc3 = { shows: { 'x-west-end-2026': { combinedScore: 60 }, 'x-off-west-end-2026': { combinedScore: 82 } } };
+  assert.throws(() => applyShape(doc3, hist, { ...ctx, resume: true }), (e) => e.code === 'KEY_COLLISION');
+  assert.equal(doc3.shows['x-off-west-end-2026'].combinedScore, 82);
+  assert.ok(validateRegistry([{ repo: 'web', path: 'a.json', shape: 'list', keyPath: [], onCollision: 'drop-orphan-target' }]).length > 0);
+});
+
 test('dry-run plan lists every key, ref and path and writes nothing', () => {
   const fx = buildFixture();
   try {
@@ -244,9 +261,9 @@ test('dry-run plan lists every key, ref and path and writes nothing', () => {
 
     // SQL: one UPDATE per confirmed show_id table, nothing else guessed.
     for (const t of SUPABASE_SHOW_ID_TABLES) {
-      assert.ok(plan.sql.statements.includes(`UPDATE ${t.table} SET ${t.column} = '${NEW}' WHERE ${t.column} = '${OLD}';`));
+      assert.ok(plan.sql.statements.some((st) => st.startsWith(`UPDATE ${t.table} SET ${t.column} = '${NEW}'`) && st.endsWith(` WHERE ${t.column} = '${OLD}';`)));
     }
-    assert.equal(plan.sql.statements.length, 4);
+    assert.equal(plan.sql.statements.length, 8);
     assert.ok(!plan.sql.text.includes('UPDATE unmatched_imports'));
     assert.ok(plan.sql.text.includes('resolved_show_id = diary-shows.json id'));
     const text = formatPlan(plan);
@@ -434,6 +451,10 @@ test('buildSqlMigration emits one UPDATE per confirmed show_id table and documen
     "UPDATE watchlist SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
     "UPDATE list_items SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
     "UPDATE seen_unrated SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
+    "DELETE FROM show_events o WHERE o.show_id = 'it''s-2026' AND EXISTS (SELECT 1 FROM show_events x WHERE x.show_id = 'its-2027' AND x.type IS NOT DISTINCT FROM o.type AND x.value IS NOT DISTINCT FROM o.value);",
+    "UPDATE show_events SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
+    "UPDATE push_alert_log SET show_id = 'its-2027', dedupe_key = regexp_replace(dedupe_key, '(^|:)' || 'it''s-2026' || '(:|$)', '\\1' || 'its-2027' || '\\2') WHERE show_id = 'it''s-2026';",
+    "UPDATE profiles SET favorite_show_ids = array_replace(favorite_show_ids, 'it''s-2026', 'its-2027') WHERE 'it''s-2026' = ANY(favorite_show_ids);",
   ]);
   assert.ok(sql.text.startsWith('-- Supabase migration'));
   assert.ok(sql.text.includes('BEGIN;') && sql.text.includes('COMMIT;'));

@@ -51,16 +51,16 @@ const CACHE = path.join(DIR, 'theatricalia-cache.json');
 const WIKI_CACHE = path.join(DIR, 'wikipedia-cache.json');
 const UA = 'BroadwayScorecard/1.0 (season reference research; https://broadwayscorecard.com)';
 // Venue histories are newest first; stop paging once a page is wholly older than this.
-const OLDEST_NEEDED = '2012-01-01';
-const MAX_PAGES = 12;
-// One Guardian pass covers every season this card needs (2012-13 .. 2016-17).
-const GUARDIAN_FROM = '2012-08-01';
+const OLDEST_NEEDED = '2010-08-01';
+const MAX_PAGES = 20;
+// One Guardian pass covers every season backfilled so far (2010-11 .. 2016-17; BRO-6503).
+const GUARDIAN_FROM = '2010-08-01';
 const GUARDIAN_TO = '2018-01-31';
 
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
 async function get(url) {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 6; i++) {
     try {
       const res = await fetch(url, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(30000) });
       if (res.ok) return await res.text();

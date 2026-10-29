@@ -43,6 +43,7 @@
 
 'use strict';
 
+const { findDecisionQuestion } = require('./decision-card-parse.js');
 const { evaluateVerifiability } = require('./verify-gate.js');
 const { OWNER_JUDGMENT_RE } = require('./owner-judgment-marker.js');
 const { hasNoDispatchMarker } = require('./no-dispatch-marker.js');
@@ -357,16 +358,27 @@ function remainingHeadlessBlockers(blockers, { force = false, automationParked =
 // marker re-gates. Comments arrive oldest-first (sortedCommentBodies); the
 // newest decisive comment wins. Comment age vs. description edits is not
 // known here, so a comment always counts as later than the description.
-const OWNER_CLEAR_COMMENT_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?(?:not an owner decision\b|OWNER-CLEARED\s*:)/im;
+// BRO-6443: also the two lines the board's own tooling writes: the triage's "Owner gate removed"
+// comment and the answer path's "**Owner decision** (answered by the owner ...)" comment. Both left
+// the card gated before, because the description still carried the original owner wording.
+const OWNER_CLEAR_COMMENT_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?(?:not an owner decision\b|OWNER-CLEARED\s*:|owner gate removed by BRO-\d+)/im;
+// The answer path writes this once per answered question, so it clears the gate only while no
+// DECISION NEEDED line is left in the description (another question may still be open).
+const OWNER_ANSWERED_COMMENT_RE = /^[ \t]*(?:\*\*|__)?owner decision(?:\*\*|__)?[ \t]*\(answered by the owner/im;
 
 /** True when the newest decisive comment (oldest-first array) clears the owner gate. */
-function commentClearsOwnerGate(comments) {
+function commentClearsOwnerGate(comments, description = '') {
+  // Any owner wording left in the card (not just a DECISION NEEDED line) means another hold is
+  // still open; lines the answer path already rewrote to "ANSWERED by the owner" do not count.
+  const live = String(description || '').split('\n').filter((l) => !/^\s*(?:[-*]\s+)?(?:\*\*)?ANSWERED by the owner/i.test(l)).join('\n');
+  const stillAsking = !!findDecisionQuestion(description) || OWNER_DECISION_RES.some((re) => re.test(live));
   const list = Array.isArray(comments) ? comments : [];
   for (let i = list.length - 1; i >= 0; i--) {
     const body = String(list[i] || '');
     // A comment that both clears and re-asserts an owner pattern stays gated.
     if (OWNER_DECISION_RES.some((re) => re.test(body))) return false;
     if (OWNER_CLEAR_COMMENT_RE.test(body)) return true;
+    if (!stillAsking && OWNER_ANSWERED_COMMENT_RE.test(body)) return true;
   }
   return false;
 }
@@ -440,7 +452,7 @@ function classifyHeadlessDispatchability(card = {}, opts = {}) {
   let ownerHit = firstMatch(OWNER_DECISION_RES, text);
   if (ownerHit && comments.length) {
     if (visualAskOpen(notes, comments)) { /* only the owner's tap answers a visual ask */ }
-    else if (commentClearsOwnerGate(comments)) ownerHit = null;
+    else if (commentClearsOwnerGate(comments, text)) ownerHit = null;
     else if (OWNER_JUDGMENT_RE.test(ownerHit)) {
       // A newer safe VERIFY supersedes the owner-judgment marker only (the
       // marker says "no command"); it never answers a DECISION NEEDED.

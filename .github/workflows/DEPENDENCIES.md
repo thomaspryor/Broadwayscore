@@ -8,7 +8,7 @@ writer needs a known place in this graph.
 
 | Repo | Role | Workflows | Reached from this repo via |
 |---|---|---|---|
-| `thomaspryor/Broadwayscore` (main) | code + all pipelines (313 workflows here) | this directory | n/a |
+| `thomaspryor/Broadwayscore` (main) | code + all pipelines (312 workflows here) | this directory | n/a |
 | `thomaspryor/broadway-scorecard-data` (private) | core data: shows.json, reviews.json, commercial.json | `submit-indexnow.yml`, `theatr-review-discovery.yml` (own repo) | `checkout-core-data` (read), `push-core-data` (write) |
 | `thomaspryor/broadway-review-texts` (private) | review texts + aggregator archive | none checked in locally | `checkout-review-texts`/`checkout-aggregator-archive` (read), `push-review-texts`/`push-aggregator-archive` (write) |
 
@@ -351,9 +351,9 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `DISCORD_WEBHOOK_ALERTS` | 107 cross-repo writers (of 190 workflows using it) |
 | `FORMSPREE_FOLLOW_API_KEY` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
 | `FORMSPREE_FOLLOW_FORM_ID` | 3 cross-repo writers (of 4 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_SUBSCRIBER_API_KEY` | 3 cross-repo writers (of 5 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_SUBSCRIBER_FORM_ID` | 3 cross-repo writers (of 5 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
-| `FORMSPREE_TOKEN` | 1 cross-repo writers (of 2 workflows using it): `process-feedback.yml` |
+| `FORMSPREE_SUBSCRIBER_API_KEY` | 3 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
+| `FORMSPREE_SUBSCRIBER_FORM_ID` | 3 cross-repo writers (of 6 workflows using it): `opening-night-broadcast.yml`, `send-follow-notifications.yml`, `sync-followers.yml` |
+| `FORMSPREE_TOKEN` | 1 cross-repo writers (of 3 workflows using it): `process-feedback.yml` |
 | `FORMSPREE_WESTEND_SUBSCRIBER_API_KEY` | 2 cross-repo writers (of 3 workflows using it): `opening-night-broadcast.yml`, `sync-followers.yml` |
 | `FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID` | 2 cross-repo writers (of 3 workflows using it): `opening-night-broadcast.yml`, `sync-followers.yml` |
 | `FT_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
@@ -361,11 +361,11 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `GEMINI_API_KEY` | 32 cross-repo writers (of 47 workflows using it) |
 | `GHA_BILLING_PAT` | 1 cross-repo writers (of 1 workflows using it): `opening-night-orchestrator.yml` |
 | `GH_DISPATCH_TOKEN` | 3 cross-repo writers (of 4 workflows using it): `process-feedback.yml`, `process-review-submission.yml`, `rebuild-fast.yml` |
-| `GITHUB_TOKEN` | 95 cross-repo writers (of 151 workflows using it) |
+| `GITHUB_TOKEN` | 95 cross-repo writers (of 150 workflows using it) |
 | `GOOGLE_INDEXING_KEY` | 2 cross-repo writers (of 7 workflows using it): `opening-night-broadcast.yml`, `update-show-status.yml` |
 | `GUARDIAN_API_KEY` | 4 cross-repo writers (of 6 workflows using it) |
 | `HTML_HANDOFF_PRIVATE_KEY` | 1 cross-repo writers (of 2 workflows using it): `execute-approved-fix.yml` |
-| `LINEAR_API_KEY` | 27 cross-repo writers (of 76 workflows using it) |
+| `LINEAR_API_KEY` | 27 cross-repo writers (of 75 workflows using it) |
 | `MEZZANINE_APP_ID` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `MEZZANINE_SESSION_TOKEN` | 2 cross-repo writers (of 3 workflows using it): `fetch-all-image-formats.yml`, `update-mezzanine.yml` |
 | `NEW_YORKER_EMAIL` | 4 cross-repo writers (of 4 workflows using it) |
@@ -382,12 +382,12 @@ Workflows without any concurrency block, by class (read-only / alerting / test j
 | `NYT_PASSWORD` | 1 cross-repo writers (of 1 workflows using it): `process-review-submission.yml` |
 | `OPENAI_API_KEY` | 33 cross-repo writers (of 49 workflows using it) |
 | `OPENROUTER_API_KEY` | 12 cross-repo writers (of 15 workflows using it) |
-| `OWNER_EMAIL` | 67 cross-repo writers (of 128 workflows using it) |
+| `OWNER_EMAIL` | 66 cross-repo writers (of 127 workflows using it) |
 | `REDDIT_CLIENT_ID` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
 | `REDDIT_CLIENT_SECRET` | 3 cross-repo writers (of 4 workflows using it): `bulk-reddit-sentiment.yml`, `reddit-engagement-digest.yml`, `update-reddit-sentiment.yml` |
-| `RESEND_API_KEY` | 71 cross-repo writers (of 136 workflows using it) |
+| `RESEND_API_KEY` | 70 cross-repo writers (of 135 workflows using it) |
 | `RESEND_WE_AUDIENCE_ID` | 2 cross-repo writers (of 2 workflows using it): `opening-night-broadcast.yml`, `recreate-broadcast-draft.yml` |
-| `REVIEW_TEXTS_TOKEN` | 139 cross-repo writers (of 248 workflows using it) |
+| `REVIEW_TEXTS_TOKEN` | 139 cross-repo writers (of 247 workflows using it) |
 | `SCRAPINGBEE_API_KEY` | 79 cross-repo writers (of 106 workflows using it) |
 | `SCRAPINGDOG_API_KEY` | 82 cross-repo writers (of 108 workflows using it) |
 | `SUPABASE_SERVICE_ROLE_KEY` | 1 cross-repo writers (of 9 workflows using it): `update-mezzanine.yml` |

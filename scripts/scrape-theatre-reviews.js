@@ -595,8 +595,13 @@ async function main() {
       } catch { html = null; }
       if (!html) {
         stats.errors++;
-        consecutiveFailures++;
-        console.log(`    ✗ Failed to fetch (${consecutiveFailures} in a row)`);
+        // A round-up that redirects to another page is a moved/dead page, not a
+        // provider outage: it must not trip the spend-guard abort and leave the
+        // coverage report unwritten (BRO-6089).
+        let moved = false;
+        try { moved = require('./lib/scraper').wasUrlMismatch(roundup.url); } catch { /* optional */ }
+        if (!moved) consecutiveFailures++;
+        console.log(`    ✗ Failed to fetch (${moved ? 'url moved, not counted' : consecutiveFailures + ' in a row'})`);
         entries.push({ showId: show.id, roundupUrl: roundup.url, openingDate: show.openingDate || null, skipped: 'fetch-failed' });
         if (consecutiveFailures >= MAX_CONSECUTIVE_FETCH_FAILURES) {
           aborted = true;

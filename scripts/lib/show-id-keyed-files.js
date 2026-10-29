@@ -139,7 +139,8 @@ const SHOW_ID_KEYED_FILES = [
   { repo: 'web', path: 'data/llm-evaluation-results.json', shape: 'records', keyPath: ['results'], idField: 'showId' },
   { repo: 'web', path: 'data/llm-scoring-garbage-skips.json', shape: 'records', keyPath: [], idField: 'showId',
     note: '`filePath` embeds the CI checkout path data/review-texts/<id>/…; left as-is (reported by the residual scan)' },
-  { repo: 'web', path: 'data/llm-scoring-runs.json', shape: 'records', keyPath: ['*', 'validation'], idField: 'showId' },
+  { repo: 'web', path: 'data/llm-scoring-runs.json', shape: 'records', keyPath: ['*', 'validation'], idField: 'showId', lateAppend: true,
+    note: 'append-only run log: a scoring run that started before a rename appends old-id validation rows when it finishes; --check warns, a later --apply sweeps them' },
   { repo: 'web', path: 'data/todaytix-validation-results.json', shape: 'records', keyPath: ['invalid'], idField: 'showId',
     generated: 'node scripts/validate-todaytix-ids.js (audit output)' },
 
@@ -215,7 +216,8 @@ const SHOW_ID_KEYED_FILES = [
   { repo: 'core-data', path: 'followers.json', shape: 'map', keyPath: ['followers'], note: 'values are subscriber emails (PII)' },
   { repo: 'core-data', path: 'diary-shows.json', webMirror: 'data/diary-shows.json', shape: 'records', keyPath: ['shows'], idField: 'id', slugField: 'slug',
     note: 'Mezzanine-derived catalog in its own id namespace (no showId link to shows.json); only an exact id match is touched' },
-  { repo: 'core-data', path: 'audience-history', glob: '*.json', shape: 'map', keyPath: ['shows'] },
+  { repo: 'core-data', path: 'audience-history', glob: '*.json', shape: 'map', keyPath: ['shows'], onCollision: 'drop-orphan-target',
+    note: 'weekly snapshots; 18 files (2026-06-21..10-12) also hold frozen stray entries under 7 BRO-4315 target ids that no shows.json row owns (the plan refuses when one does), so on a forward rename the renamed row keeps its own history and the orphan is dropped (git history keeps it); a resume refuses instead' },
   { repo: 'core-data', path: 'data/audience-reviews/show-score', shape: 'file', pattern: '{id}.json', innerIdFields: ['showId'] },
   { repo: 'core-data', path: 'data/review-texts', shape: 'dir', innerIdFields: ['showId'],
     note: 'legacy location (5 dirs on 2026-09-28); the live corpus is the review-texts repo' },
@@ -270,6 +272,7 @@ function validateRegistry(entries = SHOW_ID_KEYED_FILES) {
     }
     if (e.keyedBy && !['id', 'slug'].includes(e.keyedBy)) problems.push(`${where}: keyedBy must be id|slug`);
     if (e.keyStyle && !['exact', 'colon-segments'].includes(e.keyStyle)) problems.push(`${where}: bad keyStyle`);
+    if (e.onCollision && (e.onCollision !== 'drop-orphan-target' || e.shape !== 'map')) problems.push(`${where}: onCollision is only 'drop-orphan-target' on a map`);
     if (e.writeGuard && !['shows', 'commercial', 'audience-buzz', 'review', 'atomic'].includes(e.writeGuard)) {
       problems.push(`${where}: bad writeGuard ${e.writeGuard}`);
     }

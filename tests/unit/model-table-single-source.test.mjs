@@ -120,4 +120,13 @@ describe('models.js is the single Claude model table', () => {
     const src = readFileSync(join(root, 'scripts/video-reviews/eval-prompts.js'), 'utf8');
     assert.match(src, /const SCORE_MODEL = process\.env\.SCORE_MODEL \|\| SCORING_(SONNET|OPUS);/);
   });
+
+  // BRO-4497: workflow inline scripts build Messages-API bodies too.
+  for (const wf of ['get-ai-feedback.yml', 'investigate-alert.yml']) {
+    test(`.github/workflows/${wf} reads its model id from models.js`, () => {
+      const src = readFileSync(join(root, '.github/workflows', wf), 'utf8');
+      assert.doesNotMatch(src, /['"`]claude-(?:sonnet|opus|haiku)-\d/, 'workflow hardcodes a claude id');
+      assert.match(src, /scripts\/lib\/models\.js/);
+    });
+  }
 });

@@ -129,6 +129,7 @@ try {
   // Scraper module not available
 }
 const { runMain } = require('./lib/run-main');
+const { isInfraError, claudeHealthVerdict } = require('./lib/commercial-claude-health');
 const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 const { holdForBackfill, carryHumanReviewHold } = require('./lib/commercial-apply-gate');
 const { filterUncoveredClosedShows } = require('./lib/commercial-queue');
@@ -234,6 +235,9 @@ function checkPlausibility(data, grossesData) {
 /**
  * Call Claude Sonnet to analyze gathered evidence for a show.
  */
+// BRO-3837: tallies for the end-of-run outage check (commercial-claude-health.js).
+const claudeCalls = { attempts: 0, infra: 0 };
+
 async function analyzeShowWithClaude(show, evidence) {
   if (!ANTHROPIC_KEY) {
     throw new Error('ANTHROPIC_API_KEY required for analysis');
@@ -298,6 +302,10 @@ ${evidence}`;
   });
 
   return new Promise((resolve, reject) => {
+    // BRO-3837: `timeout` below is idle-socket only; a slow-trickle response
+    // could outlast it. This is a hard elapsed cap on the whole request.
+    let deadline;
+    const settle = (fn) => (v) => { clearTimeout(deadline); fn(v); };
     const req = https.request({
       hostname: 'api.anthropic.com',
       path: '/v1/messages',
@@ -312,6 +320,11 @@ ${evidence}`;
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
+        clearTimeout(deadline);
+        if (res.statusCode < 200 || res.statusCode >= 300) {
+          reject(new Error(`Claude API error: HTTP ${res.statusCode} ${data.slice(0, 200)}`));
+          return;
+        }
         try {
           const response = JSON.parse(data);
           if (response.error) {
@@ -331,7 +344,8 @@ ${evidence}`;
         }
       });
     });
-    req.on('error', reject);
+    req.on('error', settle(reject));
+    deadline = setTimeout(() => req.destroy(new Error('Claude API request exceeded 150s elapsed deadline (timed out)')), 150000);
     // BRO-3838: `timeout: 60000` alone does nothing — Node just emits
     // 'timeout' and leaves the socket open unless something destroys it.
     // This exact gap (BRO-3832) hung the whole 60min job on one stuck
@@ -420,6 +434,7 @@ async function researchShow(show, grossesData) {
 
   // --- Claude Analysis ---
   try {
+    claudeCalls.attempts++;
     const analysis = await analyzeShowWithClaude(show, evidence.join('\n\n---\n\n'));
 
     if (!analysis) {
@@ -483,6 +498,7 @@ async function researchShow(show, grossesData) {
     return analysis;
   } catch (err) {
     console.log(`    ❌ Claude analysis failed: ${err.message}`);
+    if (isInfraError(err)) claudeCalls.infra++;
     return null;
   }
 }
@@ -769,6 +785,13 @@ async function main() {
   console.log(`  Succeeded:  ${succeeded}`);
   console.log(`  Failed:     ${failed}`);
   console.log(`  Success rate: ${targets.length > 0 ? Math.round(succeeded / targets.length * 100) : 0}%`);
+
+  // BRO-3837: an Anthropic outage must not pass as a quiet "no evidence" run.
+  const health = claudeHealthVerdict(claudeCalls);
+  if (health.systemic) {
+    console.log(`::error::batch-commercial-research: ${health.message}`);
+    process.exitCode = 1;
+  }
 
   // Confidence breakdown
   const highConf = Object.values(pending.shows).filter(s => s.confidence === 'high').length;

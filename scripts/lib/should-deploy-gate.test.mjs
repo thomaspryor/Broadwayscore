@@ -210,7 +210,7 @@ const allNow = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [
 const allBase = (over = {}) => Object.fromEntries(DATA_TRACKED_FILES.map((f) => [blobShaMetaKey(f), 'n-' + f]).concat(Object.entries(over)));
 
 test('tracked set covers reviews, shows and the other private files read at build', () => {
-  for (const f of ['reviews.json', 'shows.json', 'commercial.json', 'grosses.json', 'critic-consensus.json']) {
+  for (const f of ['reviews.json', 'shows.json', 'commercial.json', 'grosses.json', 'grosses-history.json', 'critic-consensus.json']) {
     assert.ok(DATA_TRACKED_FILES.includes(f), f);
   }
   // churn guard: audience-buzz is rewritten by ~16 workflows; it rides the 6h backstop.
@@ -231,6 +231,15 @@ test('compareDataShas: every tracked file alone, with no public diff, flips the 
     const r = decide({ ...base, diffResult: 'clean', dataDiffResult: compareDataShas(allNow({ [f]: 'CHANGED' }), allBase()) });
     assert.deepEqual([r.proceed, r.reason], [true, 'data-changed'], f);
   }
+});
+
+// BRO-5044: a weekly grosses-history.json update alone must trigger a deploy.
+test('grosses-history.json alone changing proceeds with data-changed (no public diff)', () => {
+  const verdict = compareDataShas(allNow({ 'grosses-history.json': 'CHANGED' }), allBase());
+  assert.equal(verdict, 'dirty');
+  const r = decide({ ...base, diffResult: 'clean', dataDiffResult: verdict });
+  assert.deepEqual([r.proceed, r.reason], [true, 'data-changed']);
+  assert.equal(blobShaMetaKey('grosses-history.json'), 'grossesHistoryBlobSha');
 });
 
 test('compareDataShas: identical -> clean; lookup failed -> error/null', () => {

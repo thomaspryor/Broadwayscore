@@ -1,15 +1,15 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-24T05:46:16.888Z",
+    "generatedAt": "2026-10-29T07:47:07.141Z",
     "scope": "full-archive",
-    "roundupsDiscovered": 290,
+    "roundupsDiscovered": 291,
     "restWalkComplete": true,
-    "showsMatched": 212,
-    "listed": 1795,
-    "held": 1690,
-    "excluded": 62,
-    "missing": 30,
-    "added": 4,
+    "showsMatched": 213,
+    "listed": 1807,
+    "held": 1703,
+    "excluded": 67,
+    "missing": 28,
+    "added": 1,
     "unmatched": 0,
     "outOfScope": 78,
     "fetchSkipped": 0
@@ -395,30 +395,10 @@
       "showId": "ballet-shoes-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/ballet-shoes-national-reviews/",
       "listed": 12,
-      "held": 6,
+      "held": 10,
       "excluded": 0,
-      "missing": 6,
+      "missing": 2,
       "missingRows": [
-        {
-          "outlet": "the i",
-          "critic": "Unknown",
-          "refusal": "cross-show-url-owned:ballet-shoes-west-end-2025"
-        },
-        {
-          "outlet": "The Telegraph",
-          "critic": "Dominic Cavendish",
-          "refusal": "cross-show-url-owned:ballet-shoes-west-end-2025"
-        },
-        {
-          "outlet": "WhatsOnStage",
-          "critic": "Unknown",
-          "refusal": "cross-show-url-owned:ballet-shoes-west-end-2025"
-        },
-        {
-          "outlet": "The Independent",
-          "critic": "Unknown",
-          "refusal": "cross-show-url-owned:ballet-shoes-west-end-2025"
-        },
         {
           "outlet": "The Observer",
           "critic": "Unknown",
@@ -441,8 +421,8 @@
       "showId": "ballet-shoes-west-end-2025",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/ballet-shoes-national-2025-reviews/",
       "listed": 11,
-      "held": 9,
-      "excluded": 1,
+      "held": 4,
+      "excluded": 6,
       "missing": 1,
       "missingRows": [
         {
@@ -453,8 +433,33 @@
       ],
       "excludedRows": [
         {
+          "outlet": "the i",
+          "critic": "Unknown",
+          "reason": "wrongProduction"
+        },
+        {
+          "outlet": "The Telegraph",
+          "critic": "Dominic Cavendish",
+          "reason": "wrongProduction"
+        },
+        {
+          "outlet": "WhatsOnStage",
+          "critic": "Sarah Crompton",
+          "reason": "wrongProduction"
+        },
+        {
+          "outlet": "The Independent",
+          "critic": "Unknown",
+          "reason": "wrongProduction"
+        },
+        {
           "outlet": "The Guardian",
           "critic": "Arifa Akbar",
+          "reason": "wrongProduction"
+        },
+        {
+          "outlet": "Financial Times",
+          "critic": "Louise Levine",
           "reason": "wrongProduction"
         }
       ],
@@ -563,7 +568,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "born-with-teeth-west-end-2025",
@@ -602,7 +608,7 @@
       "fromCache": true
     },
     {
-      "showId": "broken-glass-west-end-2026",
+      "showId": "broken-glass-off-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/broken-glass-young-vic-reviews/",
       "listed": 11,
       "held": 8,
@@ -630,22 +636,17 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": true
+      "fromCache": false
     },
     {
       "showId": "burlesque-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/burlesque-savoy-reviews/",
       "listed": 11,
-      "held": 9,
-      "excluded": 2,
+      "held": 10,
+      "excluded": 1,
       "missing": 0,
       "missingRows": [],
       "excludedRows": [
-        {
-          "outlet": "The Independent",
-          "critic": "Alice Saville",
-          "reason": "wrongProduction"
-        },
         {
           "outlet": "The Standard",
           "critic": "Nick Curtis",
@@ -1145,11 +1146,23 @@
       "showId": "giant-royal-court-off-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/giant-royal-court-reviews/",
       "listed": 9,
-      "held": 8,
-      "excluded": 0,
-      "missing": 0,
-      "missingRows": [],
-      "excludedRows": [],
+      "held": 6,
+      "excluded": 1,
+      "missing": 1,
+      "missingRows": [
+        {
+          "outlet": "Time Out",
+          "critic": "Unknown",
+          "refusal": "cross-show-url-owned:giant-west-end-2025"
+        }
+      ],
+      "excludedRows": [
+        {
+          "outlet": "Time Out",
+          "critic": "Unknown",
+          "reason": "wrongProduction"
+        }
+      ],
       "openingDate": "2024-09-25",
       "added": 0,
       "addedRows": [],
@@ -1259,7 +1272,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "hay-fever-west-end-2026",
@@ -1371,6 +1385,21 @@
       "addedRows": [],
       "matchConfidence": "high",
       "fromCache": false
+    },
+    {
+      "showId": "ilford-boy-west-end-2026",
+      "roundupUrl": "https://theatre.reviews/reviews-roundup/ilford-boy-donmar-reviews/",
+      "listed": 10,
+      "held": 10,
+      "excluded": 0,
+      "missing": 0,
+      "missingRows": [],
+      "excludedRows": [],
+      "openingDate": "2026-10-20",
+      "added": 0,
+      "addedRows": [],
+      "matchConfidence": "high",
+      "fromCache": true
     },
     {
       "showId": "im-every-woman-off-west-end-2026",
@@ -1657,7 +1686,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "long-days-journey-into-night-west-end-2024",
@@ -1715,7 +1745,7 @@
       "showId": "man-and-boy-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/man-and-boy-national-reviews/",
       "listed": 10,
-      "held": 7,
+      "held": 8,
       "excluded": 2,
       "missing": 0,
       "missingRows": [],
@@ -1807,18 +1837,12 @@
     {
       "showId": "martin-guerre-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/martin-guerre-old-vic-reviews/",
-      "listed": 6,
-      "held": 5,
-      "excluded": 1,
+      "listed": 8,
+      "held": 8,
+      "excluded": 0,
       "missing": 0,
       "missingRows": [],
-      "excludedRows": [
-        {
-          "outlet": "oldvictheatre.com",
-          "critic": "Unknown",
-          "reason": "wrongProduction"
-        }
-      ],
+      "excludedRows": [],
       "openingDate": "2026-10-20",
       "added": 0,
       "addedRows": [],
@@ -1925,7 +1949,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "mother-courage-and-her-children-globe-west-end-2026",
@@ -2099,11 +2124,17 @@
       "showId": "oliver-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/oliver-gielgud-reviews/",
       "listed": 8,
-      "held": 8,
-      "excluded": 0,
+      "held": 7,
+      "excluded": 1,
       "missing": 0,
       "missingRows": [],
-      "excludedRows": [],
+      "excludedRows": [
+        {
+          "outlet": "WhatsOnStage",
+          "critic": "Sarah Crompton",
+          "reason": "wrongProduction"
+        }
+      ],
       "openingDate": "2024-12-14",
       "added": 0,
       "addedRows": [],
@@ -2144,7 +2175,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "othello-west-end-2025",
@@ -2231,7 +2263,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "player-kings-west-end-2024",
@@ -2261,7 +2294,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "pride-west-end-2026",
@@ -2317,7 +2351,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "rent-west-end-2026",
@@ -2370,7 +2405,7 @@
       "missing": 0,
       "missingRows": [],
       "excludedRows": [],
-      "openingDate": null,
+      "openingDate": "2024-12-12",
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
@@ -2416,7 +2451,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
@@ -2458,11 +2494,21 @@
       "showId": "shifters-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/shifters-reviews/",
       "listed": 7,
-      "held": 6,
-      "excluded": 1,
+      "held": 4,
+      "excluded": 3,
       "missing": 0,
       "missingRows": [],
       "excludedRows": [
+        {
+          "outlet": "The Standard",
+          "critic": "Unknown",
+          "reason": "wrongProduction"
+        },
+        {
+          "outlet": "The Guardian",
+          "critic": "Arifa Akbar",
+          "reason": "wrongProduction"
+        },
         {
           "outlet": "BroadwayWorld",
           "critic": "Unknown",
@@ -2503,7 +2549,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "slave-play-west-end-2024",
@@ -2548,7 +2595,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "stage-kiss-off-west-end-2026",
@@ -2565,7 +2613,7 @@
           "reason": "wrongProduction"
         }
       ],
-      "openingDate": null,
+      "openingDate": "2026-05-14",
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
@@ -2584,7 +2632,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "starlight-express-west-end-2024",
@@ -2757,7 +2806,7 @@
       "missing": 0,
       "missingRows": [],
       "excludedRows": [],
-      "openingDate": null,
+      "openingDate": "2024-11-06",
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
@@ -2797,10 +2846,16 @@
       "showId": "the-duchess-of-malfi-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/duchess-of-malfi-jodie-whittaker-reviews/",
       "listed": 8,
-      "held": 7,
+      "held": 6,
       "excluded": 1,
-      "missing": 0,
-      "missingRows": [],
+      "missing": 1,
+      "missingRows": [
+        {
+          "outlet": "The Stage",
+          "critic": "Unknown",
+          "refusal": "merged-duplicate-url: already merged into thestage--dave-fargnoli.json"
+        }
+      ],
       "excludedRows": [
         {
           "outlet": "Standard",
@@ -2913,22 +2968,18 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "the-holy-rosenbergs-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/the-holy-rosenbergs-menier-reviews/",
       "listed": 9,
-      "held": 7,
-      "excluded": 2,
+      "held": 8,
+      "excluded": 1,
       "missing": 0,
       "missingRows": [],
       "excludedRows": [
-        {
-          "outlet": "LondonTheatre",
-          "critic": "Matt Wolf",
-          "reason": "wrongProduction"
-        },
         {
           "outlet": "The Arts Desk",
           "critic": "Aleks Sierz",
@@ -3125,7 +3176,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "the-playboy-of-the-western-world-west-end-2025",
@@ -3368,8 +3420,8 @@
       "showId": "the-years-west-end-2025",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/the-years-reviews/",
       "listed": 19,
-      "held": 16,
-      "excluded": 2,
+      "held": 17,
+      "excluded": 1,
       "missing": 1,
       "missingRows": [
         {
@@ -3382,11 +3434,6 @@
         {
           "outlet": "The Observer",
           "critic": "Susannah Clapp",
-          "reason": "wrongProduction"
-        },
-        {
-          "outlet": "Standard",
-          "critic": "Unknown",
           "reason": "wrongProduction"
         }
       ],
@@ -3415,11 +3462,16 @@
       "showId": "till-the-stars-come-down-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/til-the-stars-come-down-reviews/",
       "listed": 17,
-      "held": 14,
-      "excluded": 3,
+      "held": 13,
+      "excluded": 4,
       "missing": 0,
       "missingRows": [],
       "excludedRows": [
+        {
+          "outlet": "TheatreWeekly",
+          "critic": "Unknown",
+          "reason": "wrongProduction"
+        },
         {
           "outlet": "LondonTheatre",
           "critic": "Julia Rank",
@@ -3530,7 +3582,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "under-the-shadow-off-west-end-2026",
@@ -3560,7 +3613,8 @@
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
-      "fromCache": false
+      "fromCache": false,
+      "stale": "fetch-failed"
     },
     {
       "showId": "unicorn-west-end-2025",
@@ -3652,7 +3706,7 @@
           "reason": "wrongProduction"
         }
       ],
-      "openingDate": null,
+      "openingDate": "2024-09-11",
       "added": 0,
       "addedRows": [],
       "matchConfidence": "high",
@@ -3662,17 +3716,11 @@
       "showId": "witness-for-the-prosecution-west-end-2022",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/witness-for-the-prosecution-reviews/",
       "listed": 7,
-      "held": 6,
-      "excluded": 1,
+      "held": 7,
+      "excluded": 0,
       "missing": 0,
       "missingRows": [],
-      "excludedRows": [
-        {
-          "outlet": "The Stage",
-          "critic": "Unknown",
-          "reason": "wrongProduction"
-        }
-      ],
+      "excludedRows": [],
       "openingDate": "2017-10-23",
       "added": 0,
       "addedRows": [],
@@ -3695,7 +3743,7 @@
       "fromCache": true
     },
     {
-      "showId": "yentl-west-end-2026",
+      "showId": "yentl-off-west-end-2026",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/yentl-marylebone-reviews/",
       "listed": 4,
       "held": 4,
@@ -3713,7 +3761,7 @@
       "showId": "your-lie-in-april-west-end-2024",
       "roundupUrl": "https://theatre.reviews/reviews-roundup/your-lie-in-april-reviews/",
       "listed": 4,
-      "held": 0,
+      "held": 3,
       "excluded": 0,
       "missing": 1,
       "missingRows": [
@@ -3725,21 +3773,8 @@
       ],
       "excludedRows": [],
       "openingDate": "2024-07-05",
-      "added": 3,
-      "addedRows": [
-        {
-          "outlet": "Broadway World",
-          "critic": "Unknown"
-        },
-        {
-          "outlet": "The Times",
-          "critic": "Unknown"
-        },
-        {
-          "outlet": "The Standard",
-          "critic": "Unknown"
-        }
-      ],
+      "added": 0,
+      "addedRows": [],
       "matchConfidence": "high",
       "fromCache": false
     }
@@ -3762,9 +3797,11 @@
       "title": "Twelfth Night",
       "date": "2025-12-21",
       "venue": "Barbican Theatre",
-      "reason": "no production of this title opened near the round-up date (twelfth-night-off-west-end-2026:-223d)",
+      "reason": "no production of this title opened near the round-up date (twelfth-night-off-west-end-2026:-223d, twelfth-night-west-end-2012:4797d, twelfth-night-west-end-2017:3231d)",
       "candidates": [
-        "twelfth-night-off-west-end-2026"
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Barbican Theatre) before the 2026-01-01 tracking window"
@@ -3813,10 +3850,11 @@
       "title": "A Midsummer Night’s Dream",
       "date": "2025-12-04",
       "venue": "Shakespeare's Globe",
-      "reason": "no production of this title opened near the round-up date (a-midsummer-nights-dream-globe-west-end-2026:-148d, a-midsummer-nights-dream-west-end-2026:-207d)",
+      "reason": "no production of this title opened near the round-up date (a-midsummer-nights-dream-globe-west-end-2026:-148d, a-midsummer-nights-dream-west-end-2026:-207d, a-midsummer-nights-dream-west-end-2013:4471d)",
       "candidates": [
         "a-midsummer-nights-dream-globe-west-end-2026",
-        "a-midsummer-nights-dream-west-end-2026"
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Shakespeare's Globe) before the 2026-01-01 tracking window"
@@ -3920,9 +3958,9 @@
       "title": "Twelfth Night or What You Will",
       "date": "2025-08-25",
       "venue": "Shakespeare’s Globe",
-      "reason": "no production of this title opened near the round-up date (twelfth-night-off-west-end-2026:-341d)",
+      "reason": "no production of this title opened near the round-up date (what-you-will-west-end-2012:4724d)",
       "candidates": [
-        "twelfth-night-off-west-end-2026"
+        "what-you-will-west-end-2012"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Shakespeare’s Globe) before the 2026-01-01 tracking window"
@@ -3993,10 +4031,11 @@
       "title": "A Midsummer Night’s Dream",
       "date": "2025-06-07",
       "venue": "Bridge Theatre",
-      "reason": "no production of this title opened near the round-up date (a-midsummer-nights-dream-globe-west-end-2026:-328d, a-midsummer-nights-dream-west-end-2026:-387d)",
+      "reason": "no production of this title opened near the round-up date (a-midsummer-nights-dream-globe-west-end-2026:-328d, a-midsummer-nights-dream-west-end-2026:-387d, a-midsummer-nights-dream-west-end-2013:4291d)",
       "candidates": [
         "a-midsummer-nights-dream-globe-west-end-2026",
-        "a-midsummer-nights-dream-west-end-2026"
+        "a-midsummer-nights-dream-west-end-2026",
+        "a-midsummer-nights-dream-west-end-2013"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Bridge Theatre) before the 2026-01-01 tracking window"
@@ -4036,11 +4075,12 @@
       "title": "Romeo And Juliet (Globe)",
       "date": "2025-05-07",
       "venue": "Shakespeare's Globe",
-      "reason": "no production of this title opened near the round-up date (romeo-and-juliet-west-end-2026:-328d, romeo-and-juliet-west-end-2027:-617d, romeo-and-juliet-west-end-2024:349d)",
+      "reason": "no production of this title opened near the round-up date (romeo-and-juliet-west-end-2026:-328d, romeo-and-juliet-west-end-2027:-617d, romeo-and-juliet-west-end-2024:349d, romeo-and-juliet-west-end-2016:3269d)",
       "candidates": [
         "romeo-and-juliet-west-end-2026",
         "romeo-and-juliet-west-end-2027",
-        "romeo-and-juliet-west-end-2024"
+        "romeo-and-juliet-west-end-2024",
+        "romeo-and-juliet-west-end-2016"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Shakespeare's Globe) before the 2026-01-01 tracking window"
@@ -4060,8 +4100,10 @@
       "title": "Ghosts",
       "date": "2025-04-18",
       "venue": "Lyric Hammersmith",
-      "reason": "no show with this title",
-      "candidates": [],
+      "reason": "no production of this title opened near the round-up date (ghosts-west-end-2013:4140d)",
+      "candidates": [
+        "ghosts-west-end-2013"
+      ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Lyric Hammersmith) before the 2026-01-01 tracking window"
     },
@@ -4345,9 +4387,10 @@
       "url": "https://theatre.reviews/reviews-roundup/izzard-hamlet-reviews/",
       "title": "Izzard Hamlet",
       "date": "2024-05-29",
-      "reason": "no production of this title opened near the round-up date (hamlet-west-end-2025:-491d)",
+      "reason": "no production of this title opened near the round-up date (hamlet-west-end-2025:-491d, hamlet-west-end-2017:2546d)",
       "candidates": [
-        "hamlet-west-end-2025"
+        "hamlet-west-end-2025",
+        "hamlet-west-end-2017"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Riverside Studios) before the 2026-01-01 tracking window"
@@ -4365,8 +4408,10 @@
       "url": "https://theatre.reviews/reviews-roundup/reviews-roundup-richard-iii/",
       "title": "Richard III",
       "date": "2024-05-23",
-      "reason": "no show with this title",
-      "candidates": [],
+      "reason": "no production of this title opened near the round-up date (richard-iii-west-end-2014:3614d)",
+      "candidates": [
+        "richard-iii-west-end-2014"
+      ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Shakespeare's Globe) before the 2026-01-01 tracking window"
     },
@@ -4383,9 +4428,11 @@
       "url": "https://theatre.reviews/reviews-roundup/twelfth-night-reviews/",
       "title": "Twelfth Night",
       "date": "2024-05-11",
-      "reason": "no production of this title opened near the round-up date (twelfth-night-off-west-end-2026:-812d)",
+      "reason": "no production of this title opened near the round-up date (twelfth-night-off-west-end-2026:-812d, twelfth-night-west-end-2012:4208d, twelfth-night-west-end-2017:2642d)",
       "candidates": [
-        "twelfth-night-off-west-end-2026"
+        "twelfth-night-off-west-end-2026",
+        "twelfth-night-west-end-2012",
+        "twelfth-night-west-end-2017"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Regent's Park Open Air Theatre) before the 2026-01-01 tracking window"
@@ -4424,9 +4471,9 @@
       "url": "https://theatre.reviews/reviews-roundup/guys-and-dolls-bridge-reviews/",
       "title": "Guys And Dolls",
       "date": "2024-04-28",
-      "reason": "no production of this title opened near the round-up date (the-bridge-off-west-end-2026:-913d)",
+      "reason": "no production of this title opened near the round-up date (guys-and-dolls-west-end-2016:3035d)",
       "candidates": [
-        "the-bridge-off-west-end-2026"
+        "guys-and-dolls-west-end-2016"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Bridge Theatre) before the 2026-01-01 tracking window"
@@ -4509,11 +4556,12 @@
       "url": "https://theatre.reviews/reviews-roundup/king-lear-danny-sapani-reviews/",
       "title": "Danny Sapani in King Lear",
       "date": "2024-02-21",
-      "reason": "no production of this title opened near the round-up date (king-lear-2-off-west-end-2026:-1090d, king-lear-west-end-2023:113d, king-lear-west-end-2018:2036d)",
+      "reason": "no production of this title opened near the round-up date (king-lear-2-off-west-end-2026:-1090d, king-lear-west-end-2023:113d, king-lear-west-end-2018:2036d, king-lear-west-end-2014:3681d)",
       "candidates": [
         "king-lear-2-off-west-end-2026",
         "king-lear-west-end-2023",
-        "king-lear-west-end-2018"
+        "king-lear-west-end-2018",
+        "king-lear-west-end-2014"
       ],
       "outOfScope": true,
       "outOfScopeReason": "Off-West-End venue (Almeida Theatre) before the 2026-01-01 tracking window"
@@ -4544,13 +4592,8 @@
     }
   ],
   "orphanArchives": [
-    "1536-west-end-2026",
     "a-midsummer-nights-dream-west-end-2026",
-    "inter-alia-west-end-2026",
-    "into-the-woods-noel-coward-west-end-2026",
-    "the-comedy-about-spies-west-end-2026",
-    "the-hungry-ghost-off-west-end-2026",
-    "the-play-that-goes-wrong-west-end-2021",
+    "how-the-other-half-loves-west-end-2016",
     "twelfth-night-off-west-end-2026"
   ]
 }

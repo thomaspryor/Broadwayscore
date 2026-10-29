@@ -41,6 +41,7 @@ const { WALKTHROUGH_SONNET } = models;
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { execFileSync } from 'node:child_process';
+import { randomBytes } from 'node:crypto';
 import { chromium } from 'playwright';
 import { createRequire as _createRequire } from 'node:module';
 import { captureTabletHeader } from './lib/header-overflow-probe.mjs';
@@ -1274,7 +1275,7 @@ async function fileBoardIssues(deduped, existing, respondingCount) {
   const failed = [];
   for (const item of plan.toFile) {
     const { title, priority, finding: f } = item;
-    const notes = cardNotes(f, respondingCount);
+    const notes = cardNotes(f, respondingCount, randomBytes(16).toString('hex'));
     try {
       // linear-brain.js, NOT notion-brain.js: Notion has been read-only since
       // 2026-08-30 and its create exits 6, so every finding this walkthrough

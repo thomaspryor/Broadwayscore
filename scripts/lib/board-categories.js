@@ -41,6 +41,7 @@ const CATEGORIES = [
   { key: 'ready', label: 'Ready for a worker or Codex' },
   { key: 'cooling-off', label: 'Cooling off' },
   { key: 'codex-bounced', label: 'Codex rejected it, short cooldown' },
+  { key: 'owner-gated-no-question', label: 'Held for you, but no question written (needs a real question or release)' },
   { key: 'other', label: 'Other' },
 ];
 
@@ -53,6 +54,8 @@ const PARKED_REASON_RE = /^\s*PARKED\s*:(.*)$/gim;
 const REAL_BLOCK_RE = /\b(?:api[- ]?keys?|keys?(?!\s+(?:decisions?|questions?|points?|calls?|choices?)\b)|tokens?|credentials?|creds|spend(?:ing)?|credits?|budget|mac|launchd|iphone|simulator)\b/i;
 const MACHINE_FILED_RE = /notify-pending-commercial/i;
 const MACHINE_TITLE_RE = /^\s*BSC (?:Daily|Rebuild)\b/i;
+// Skip reasons meaning the dispatcher holds the card for the owner (BRO-6443).
+const OWNER_GATED_REASONS = new Set(['awaiting-owner', 'owner-judgment', 'blocker-OWNER_DECISION_GATE']);
 const COOLING_REASONS = new Set(['recent-activity', 'recently-paused', 'paused-repeatedly']);
 
 function priorityKey(p) { return PRIORITY_KEYS[Number(p)] || 'none'; }
@@ -78,7 +81,7 @@ function waitsOnOwner(issue, bodies, { secret, nowMs }) {
   if (visualAskOpen(issue.description, bodies)) return true;
   const d = findOwnerDecisions([issue])[0];
   if (!d) return false;
-  if (commentClearsOwnerGate(bodies)) return false;
+  if (commentClearsOwnerGate(bodies, issue.description)) return false;
   if (d.question) {
     const hold = holdReason(issue, d, { secret, now: nowMs });
     if (hold && hold.reason === 'answered') return false;
@@ -123,6 +126,8 @@ function cardTraits(issue, { nowMs, secret = null } = {}) {
   if (!skip && !history && !bounced) traits.add('ready');
   if (COOLING_REASONS.has(skip) || COOLING_REASONS.has(history)) traits.add('cooling-off');
   if (bounced) traits.add('codex-bounced');
+  // Last so every other row wins first; a real question already landed in waiting-owner above.
+  if (OWNER_GATED_REASONS.has(skip) || OWNER_GATED_REASONS.has(history)) traits.add('owner-gated-no-question');
 
   const reason = skip || history || (bounced ? 'codex-bounced' : null) || `state-${stateType || 'unknown'}`;
   return { traits, reason };
@@ -188,9 +193,9 @@ function categorizeBoard(issues, { now = new Date(), secret = null } = {}) {
 }
 
 // Other-row reasons that mean the dispatcher holds the card for the owner.
-const OWNER_GATED_OTHER = new Set(['awaiting-owner', 'owner-judgment', 'blocker-OWNER_DECISION_GATE']);
 function ownerGatedNoQuestion(report) {
-  return (report.cards || []).filter((c) => c.category === 'other' && OWNER_GATED_OTHER.has(c.reason)).length;
+  return (report.cards || []).filter((c) => c.category === 'owner-gated-no-question'
+    || (c.category === 'other' && OWNER_GATED_REASONS.has(c.reason))).length;
 }
 
 const NOT_STUCK = new Set(['waiting-owner', 'dated-future', 'dated-past']);
@@ -283,7 +288,7 @@ function formatMarkdown(report, { flow = null, maxStuck = 15 } = {}) {
     if (stuck.length > maxStuck) lines.push(`- and ${stuck.length - maxStuck} more`);
   }
   const gated = ownerGatedNoQuestion(report);
-  if (gated) lines.push('', `${plural(gated, 'card')} in Other ${gated === 1 ? 'is' : 'are'} held for you but ${gated === 1 ? 'has' : 'have'} no clear DECISION NEEDED question, so ${gated === 1 ? 'it is' : 'they are'} not in "Waiting on your answer".`);
+  if (gated) lines.push('', `${plural(gated, 'card')} ${gated === 1 ? 'is' : 'are'} held for you but ${gated === 1 ? 'has' : 'have'} no clear DECISION NEEDED question, so ${gated === 1 ? 'it is' : 'they are'} not in "Waiting on your answer". ${gated === 1 ? 'It needs' : 'They need'} a real question or a release to a worker.`);
   const broken = report.cards.filter((c) => /^categorize-error/.test(c.reason || '')).length;
   if (broken) lines.push('', `${plural(broken, 'card')} could not be read and ${broken === 1 ? 'is' : 'are'} counted under Other.`);
   if (report.answeredCheck !== 'full') {

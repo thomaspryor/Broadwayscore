@@ -22,7 +22,7 @@ const repoRoot = path.resolve(__dirname, '..', '..');
 const { assessClearSafety, detectTitleMismatch, detectNonReviewAdmission, findSameUrlIncludableSibling } =
   require(path.join(repoRoot, 'scripts/lib/reverify-clear-guards.js'));
 
-const HIGH = { isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false, confidence: 'high', reasoning: 'A clear review of the production at the named venue.' };
+const HIGH = { isValid: true, wrongArticle: false, wrongProduction: false, isFilmTv: false, confidence: 'high', verifiedBy: 'llm:gemini', reasoning: 'A clear review of the production at the named venue.' };
 
 function tmpShow(files) {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'reverify-guards-'));
@@ -298,4 +298,20 @@ test('refusals accumulate — a record failing all three reports all three', () 
     assert.deepEqual(refusals.map(r => r.code).sort(),
       ['low-confidence', 'same-url-collision', 'title-mismatch-in-reasoning']);
   } finally { cleanup(); }
+});
+
+test('GUARD 5 REFUSES: a heuristic verdict (BRO-6474 artshub Singapore article) may not clear an exclusion', () => {
+  const { safe, refusals } = assessClearSafety({
+    filePath: '/nonexistent/art-west-end-2016/artshub--gina-fairley.json',
+    data: { url: 'https://www.artshub.co.uk/x' }, show: null,
+    result: { ...HIGH, verifiedBy: 'heuristic' }, showTitle: 'Art',
+  });
+  assert.equal(safe, false);
+  assert.ok(refusals.some(r => r.code === 'non-llm-verdict'));
+});
+
+test('GUARD 5 PERMITS: an llm:* verdict still clears; a missing verifiedBy is refused', () => {
+  const base = { filePath: '/nonexistent/x/y.json', data: {}, show: null, showTitle: 'Some Show' };
+  assert.equal(assessClearSafety({ ...base, result: HIGH }).safe, true);
+  assert.equal(assessClearSafety({ ...base, result: { ...HIGH, verifiedBy: undefined } }).safe, false);
 });
