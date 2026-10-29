@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6487-pn-g",
   "planId": "ceb1b588-2586-4bf9-958d-1ff0f2758563",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T02:36:45.753Z",
   "submitter": {
     "name": null,
@@ -244,5 +244,124 @@
         "description": "shows.json: the-low-road-west-end-2013.openingDateSource"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T14:18:07.074Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for taken-at-midnight-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for taken-at-midnight-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for harvey-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for stop-the-play-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for close-to-you-bacharach-reimagined-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for close-to-you-bacharach-reimagined-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for a-christmas-carol-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for a-christmas-carol-west-end-2015"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for mrs-henderson-presents-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for mrs-henderson-presents-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for all-that-fall-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for all-that-fall-west-end-2016"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for cabaret-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for cabaret-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for cabaret-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for all-that-fall-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for all-that-fall-west-end-2012"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for quartermaines-terms-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for quartermaines-terms-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for quartermaines-terms-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: previewsStartDate updated for the-low-road-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for the-low-road-west-end-2013"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDateSource updated for the-low-road-west-end-2013"
+    }
+  ],
+  "executedIn": "ci"
 }
