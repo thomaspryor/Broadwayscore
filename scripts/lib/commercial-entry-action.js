@@ -24,7 +24,7 @@
  *   validate-data.js enforces, so it cannot create a record the build rejects
  */
 
-const { canonicalDesignation, isLossDesignation, RECOUPED_DESIGNATIONS } = require('./commercial-designations');
+const { canonicalDesignation, isUnrecoupedDesignation, RECOUPED_DESIGNATIONS } = require('./commercial-designations');
 const { VALID_SOURCE_TYPES } = require('./commercial-sources');
 const { isCommercialScope } = require('./commercial-scope');
 const { commercialRecordErrors, commercialRecordWarnings } = require('./commercial-record-checks');
@@ -84,7 +84,7 @@ function applyAddCommercialEntry(commercial, shows, action, now = new Date().toI
       return { ok: false, reason: `add-commercial-entry: "${designation}" needs recouped=true, recoupedDate and recoupedSource` };
     }
   }
-  if (isLossDesignation(designation) && entry.recouped !== false) {
+  if (isUnrecoupedDesignation(designation) && entry.recouped !== false) {
     return { ok: false, reason: `add-commercial-entry: "${designation}" needs recouped=false` };
   }
   if (entry.recouped === true && (!entry.recoupedDate || !entry.recoupedSource)) {

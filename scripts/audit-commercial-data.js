@@ -35,7 +35,7 @@ const HISTORY_MAX_ENTRIES = 52;
 // Constants
 // ============================================
 
-const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isLossDesignation, RECOUPED_DESIGNATIONS } = require('./lib/commercial-designations');
+const { VALID_DESIGNATIONS, FIZZLE_MIN_RETURNED_PCT, isUnrecoupedDesignation, RECOUPED_DESIGNATIONS } = require('./lib/commercial-designations');
 
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard', 'trade-reported', 'sec-filing',
@@ -335,7 +335,7 @@ function checkDesignationLogic() {
     if (!data.designation) continue;
 
     // Recouped=true but a loss designation
-    if (data.recouped === true && isLossDesignation(data.designation)) {
+    if (data.recouped === true && isUnrecoupedDesignation(data.designation)) {
       addIssue(
         'designation-logic',
         'high',

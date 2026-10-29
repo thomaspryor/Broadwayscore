@@ -41,7 +41,7 @@
 // number stays internal.
 
 const { runWindow } = require('./run-window');
-const { FIZZLE_MIN_RETURNED_PCT, hasNoInvestorsToRepay } = require('./commercial-designations');
+const { FIZZLE_MIN_RETURNED_PCT, WAIT_AND_SEE_MIN_RETURNED_PCT, hasNoInvestorsToRepay } = require('./commercial-designations');
 // Our own "Inferred:"/"Estimated:" figures are not a report.
 const { OWN_INFERENCE, STATED_PCT } = require('./recoupment-ground-truth');
 
@@ -103,6 +103,7 @@ function estimateFitsDesignation(range, designation) {
   if (designation === 'Nonprofit') return true;
   const mid = range.length === 3 ? range[1] : (range[0] + range[1]) / 2;
   if (designation === 'Flop') return mid < FIZZLE_MIN_RETURNED_PCT;
+  if (designation === 'Wait and See') return mid >= WAIT_AND_SEE_MIN_RETURNED_PCT && mid < 100;
   if (designation === 'Fizzle') return mid >= FIZZLE_MIN_RETURNED_PCT && mid < 100;
   return false;
 }

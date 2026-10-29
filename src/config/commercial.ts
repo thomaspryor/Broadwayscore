@@ -5,7 +5,7 @@
  */
 
 // Thresholds have one definition, shared with the data pipeline (BRO-4989 C).
-import { FIZZLE_MIN_RETURNED_PCT } from '../../scripts/lib/commercial-designations';
+import { FIZZLE_MIN_RETURNED_PCT, WAIT_AND_SEE_MIN_RETURNED_PCT } from '../../scripts/lib/commercial-designations';
 
 export type CommercialDesignation =
   | 'Miracle'
@@ -17,7 +17,9 @@ export type CommercialDesignation =
   | 'Did Not Recoup'
   | 'Flop'
   | 'Nonprofit'
-  | 'Tour Stop';
+  | 'Tour Stop'
+  | 'Squeaker'
+  | 'Wait and See';
 
 export interface DesignationConfig {
   name: CommercialDesignation;
@@ -83,20 +85,42 @@ export const DESIGNATIONS: DesignationConfig[] = [
     borderClass: 'border-cyan-500/25',
   },
   {
+    // Recouped, but only because the NY State theater tax credit pushed returns past 100% (owner 2026-10-29, BRO-6499).
+    name: 'Squeaker',
+    color: 'text-teal-400',
+    description: 'Recouped, but only with the NY State tax credit; the Broadway run alone fell short',
+    sortOrder: 5,
+    showInLegend: true,
+    icon: '😅',
+    bgClass: 'bg-teal-500/15',
+    borderClass: 'border-teal-500/25',
+  },
+  {
     name: 'TBD',
     color: 'text-gray-400',
     description: 'Too early to tell: still running or not open yet',
-    sortOrder: 5,
+    sortOrder: 6,
     showInLegend: true,
     icon: '⏳',
     bgClass: 'bg-gray-500/15',
     borderClass: 'border-white/10',
   },
   {
+    // Closed without recouping, never phrased as a loss (owner 2026-10-29, BRO-6499).
+    name: 'Wait and See',
+    color: 'text-amber-400',
+    description: `Closed without recouping so far; ${WAIT_AND_SEE_MIN_RETURNED_PCT}% or more has come back and later income may still get it there`,
+    sortOrder: 7,
+    showInLegend: true,
+    icon: '⏱️',
+    bgClass: 'bg-amber-500/15',
+    borderClass: 'border-amber-500/25',
+  },
+  {
     name: 'Fizzle',
     color: 'text-orange-400',
     description: `Closed without recouping; an estimated ${FIZZLE_MIN_RETURNED_PCT}% or more returned`,
-    sortOrder: 6,
+    sortOrder: 8,
     showInLegend: true,
     icon: '📉',
     bgClass: 'bg-orange-500/15',
@@ -107,7 +131,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Did Not Recoup',
     color: 'text-rose-300',
     description: 'Closed without recouping; no estimate of how much came back',
-    sortOrder: 7,
+    sortOrder: 9,
     showInLegend: true,
     icon: '🔻',
     bgClass: 'bg-rose-500/15',
@@ -117,7 +141,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Flop',
     color: 'text-red-400',
     description: `Closed without recouping; an estimated under ${FIZZLE_MIN_RETURNED_PCT}% returned`,
-    sortOrder: 8,
+    sortOrder: 10,
     showInLegend: true,
     icon: '💸',
     bgClass: 'bg-red-500/15',
@@ -127,7 +151,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Nonprofit',
     color: 'text-blue-400',
     description: 'Nonprofit production (LCT, Roundabout, etc.)',
-    sortOrder: 9,
+    sortOrder: 11,
     showInLegend: true,
     icon: '🎭',
     bgClass: 'bg-blue-500/15',
@@ -137,7 +161,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
     name: 'Tour Stop',
     color: 'text-gray-400',
     description: 'National tour engagement on Broadway',
-    sortOrder: 10,
+    sortOrder: 12,
     showInLegend: true,
     icon: '🚌',
     bgClass: 'bg-gray-500/15',

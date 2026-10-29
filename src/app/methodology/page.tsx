@@ -4,7 +4,7 @@ import { marketAlternates, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
 import { getLegendEntries } from '@/config/commercial';
-import { FIZZLE_MIN_RETURNED_PCT } from '../../../scripts/lib/commercial-designations';
+import { FIZZLE_MIN_RETURNED_PCT, WAIT_AND_SEE_MIN_RETURNED_PCT } from '../../../scripts/lib/commercial-designations';
 import { methodologyOutletList } from '@/lib/methodology-tiers';
 
 // Static OG image (API routes don't work with static export)
@@ -532,7 +532,7 @@ export default function MethodologyPage() {
             </ul>
           </div>
           <p className="text-gray-400 text-xs mt-3">
-            {`Unless a source reports what investors got back, the line between Fizzle and Flop (about ${FIZZLE_MIN_RETURNED_PCT}% returned) rests on an estimate: an analyst's, or our model's when its inputs are good enough. With no estimate, neither label is used. When our model has any reading at all, even a rough one, the show still gets a marked best guess such as "Likely: Flop", from weekly grosses and costs, or from an outside estimate when one exists. A closed show whose outcome was never disclosed gets one too, which can also read "Likely: Recouped". A closed show can still recoup later, from tours, licensing and other income after its Broadway run, so these labels can change.`}
+            {`Unless a source reports what investors got back, the line between Fizzle and Flop (about ${FIZZLE_MIN_RETURNED_PCT}% returned) rests on an estimate: an analyst's, or our model's when its inputs are good enough. With no estimate, neither label is used. When our model has any reading at all, even a rough one, the show still gets a marked best guess such as "Likely: Flop", from weekly grosses and costs, or from an outside estimate when one exists. A closed show whose outcome was never disclosed gets one too, which can also read "Likely: Recouped". A closed show can still recoup later, from tours, licensing and other income after its Broadway run, so these labels can change. A Squeaker recouped, but only because the New York State theater tax credit pushed its returns past 100%; it counts as recouped in our season totals, and we only use the label when a source reports both the recoupment and the credit's part in it. Wait and See is for a closed show that has not recouped yet but has gotten back at least ${WAIT_AND_SEE_MIN_RETURNED_PCT}% of its capitalization, with later income (a tour, licensing, a sale or buyout) still possible. It counts as not recouped, and we only use it when a source gives the share returned. Because both depend on a source rather than an estimate, our model never picks either one.`}
           </p>
 
           <h3 className="text-base font-semibold text-white mt-6 mb-3">How often it updates</h3>
