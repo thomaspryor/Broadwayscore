@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-5755-b",
   "planId": "082f4198-03ba-46ff-8cec-709cb8ed3721",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T05:11:05.082Z",
   "submitter": {
     "name": null,
@@ -34,5 +34,19 @@
         "description": "shows.json: medea-off-broadway-2026.synopsis"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T07:02:42.478Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for memoriam-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: synopsis updated for medea-off-broadway-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
