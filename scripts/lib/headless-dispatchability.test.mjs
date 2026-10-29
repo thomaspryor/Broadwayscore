@@ -99,3 +99,10 @@ test('commentClearsOwnerGate: ordinary comments, a mid-line mention and a re-ask
   assert.equal(commentClearsOwnerGate(['The owner gate removed earlier was wrong']), false);
   assert.equal(commentClearsOwnerGate(['Owner gate removed by triage.', 'DECISION NEEDED: keep or drop this?']), false);
 });
+
+test('commentClearsOwnerGate: other owner wording, a DECISION NEEDED title and a vague "removed" note keep the gate shut', () => {
+  const answered = ['**Owner decision** (answered by the owner through the email link)\n\nChose: Option A'];
+  assert.equal(commentClearsOwnerGate(answered, 'ANSWERED by the owner: Q1? -> A\n\nOwner must approve the new vendor.'), false);
+  assert.equal(commentClearsOwnerGate(answered, 'DECISION NEEDED: keep?\nANSWERED by the owner: Q1? -> A'), false);
+  assert.equal(commentClearsOwnerGate(['Owner gate removed by mistake; still needs you.']), false);
+});
