@@ -8,13 +8,14 @@
  * A remote branch is pruned only when losing it loses nothing:
  *   - its name starts with a known throwaway prefix (never main, land/**, release, etc.)
  *   - its tip is an ancestor of origin/main (the work is on main)
- *   - no open PR has it as head, and it is older than MIN_AGE_DAYS
+ *   - no open PR has it as head, and it is whose tip is older than MIN_AGE_DAYS
  * The script logs each deleted tip sha, so a delete is recoverable by pushing the sha back.
  */
 
 const PRUNABLE_PREFIXES = ['worktree-', 'job/', 'claude/', 'bro-'];
 const PROTECTED = new Set(['main', 'master', 'HEAD', 'gh-pages']);
-const MIN_AGE_DAYS = 2;
+// Tip age, not push age: a branch cut from main has a minutes-old tip, so 7 days also protects a fresh empty branch.
+const MIN_AGE_DAYS = 7;
 const MAX_DELETES_PER_RUN = 100;
 
 const matchesPrefix = (branch) => PRUNABLE_PREFIXES.some((p) => branch.startsWith(p));
