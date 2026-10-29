@@ -36,6 +36,8 @@ const NEIGHBOURHOOD_BLOBS = new Set([
   'soho / tribeca',
   'east village',
   'west village',
+  'lower e side',
+  'lower east side',
   'upper w side',
   'upper e side',
   'brooklyn',

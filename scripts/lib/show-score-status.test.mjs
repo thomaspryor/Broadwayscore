@@ -34,6 +34,12 @@ test('a placeholder venue-name is refused by the sanitizer, leaving null', () =>
   assert.equal(venueFromShowScoreDoc(docOf(html)), null);
 });
 
+test('BRO-6531: Lower E Side defers without a house and falls back to the actual venue when present', () => {
+  const html = FALLS_FOR_JODIE.replace('NYC: Midtown W ', 'NYC: Lower E Side ');
+  assert.equal(venueFromShowScoreDoc(docOf(html.replace("venue-name='The Tank'", "venue-name='The Parkside Lounge'"))), 'The Parkside Lounge');
+  assert.equal(venueFromShowScoreDoc(docOf(html.replace(/<survey-review-modal[^>]*><\/survey-review-modal>/, ''))), null);
+});
+
 test('no modal, no link, no known-venue parenthetical: null (deferred, as before)', () => {
   const html = `<html><head><title>Show Score | Safe House (World Premiere)</title></head><body>
 <div class='show-page-v2__info-top-line'> Closed </div></body></html>`;

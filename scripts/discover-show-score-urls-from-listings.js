@@ -13,7 +13,8 @@
  * limited-run solo comedy/fringe transfers) get their own Show Score category
  * distinct from "Off-Broadway" even when our own shows.json tracks the venue
  * under category:"off-broadway" — matched into our DB the same way as the
- * off-broadway listing (card: SoHo Playhouse discovery gap, 2026-08-27).
+ * off-broadway listing for existing shows (card: SoHo Playhouse discovery
+ * gap, 2026-08-27). They cannot add new catalog rows (BRO-6531).
  *
  * Usage:
  *   node scripts/discover-show-score-urls-from-listings.js [--dry-run] [--verbose]
@@ -356,14 +357,16 @@ async function main() {
 
   // Off-Off-Broadway is a separate Show Score category (small rental/fringe
   // venues — SoHo Playhouse, La MaMa, etc.) even though we track those venues
-  // under our own "off-broadway" category. Merge into obListings so it flows
-  // through the same off-broadway matching/candidate path below.
+  // under our own "off-broadway" category. Merge for matching existing rows,
+  // but keep the collection's scope evidence: these listings must not mint
+  // new Off-Broadway rows or survive as stale discovery candidates (BRO-6531).
   const oobListings = await fetchAllListings(
     'https://www.show-score.com/off-off-broadway-shows',
     /^\/off-off-broadway-shows\//,
     'Off-Off-Broadway'
   );
   console.log(`  Off-Off-Broadway: ${oobListings.length} shows found`);
+  const outOfScopeUrls = new Set(oobListings.map(l => `https://www.show-score.com${l.href}`));
   {
     const seenObHrefs = new Set(obListings.map(l => l.href));
     for (const l of oobListings) {
@@ -672,6 +675,7 @@ async function main() {
       venueRejects,
       existing,
       matchedUrls: new Set(Object.values(urlData.shows)),
+      outOfScopeUrls,
       ttlDays: CANDIDATE_TTL_DAYS,
     });
 
