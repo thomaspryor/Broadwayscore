@@ -16,6 +16,7 @@
 const { buildRegionalShowEntry } = require('../promote-ob-venue-candidates');
 const { resolveMetroInfo, norm, TABLE } = require('./venue-metro');
 const { applyAddShow } = require('./add-show-action');
+const { sanitizeVenueForWrite } = require('./venue-classification');
 
 
 const kebab = (s) => norm(s).replace(/ /g, '-');
@@ -38,11 +39,11 @@ function canonicalVenue(raw, info) {
       .map(([p]) => p).sort((a, b) => b.length - a.length)[0];
     if (town && !norm(city).startsWith(norm(town))) city = town;
     const name = hit.v.venue.split(',')[0].trim();
-    return { venue: `${name}, ${city}`, houseKey: hit.v.idKey || kebab(name.replace(/^the /i, '').replace(/\b(theatre|theatres|playhouse)\b/gi, '')) || kebab(name) };
+    return { venue: sanitizeVenueForWrite(`${name}, ${city}`), houseKey: hit.v.idKey || kebab(name.replace(/^the /i, '').replace(/\b(theatre|theatres|playhouse)\b/gi, '')) || kebab(name) };
   }
   const parts = String(raw).split(',').map((p) => p.trim()).filter(Boolean);
   const head = parts[0].replace(/\btheatre\b/g, 'Theatre');
-  return { venue: `${head}, ${parts.length > 1 ? parts[parts.length - 1] : city}`, houseKey: kebab(head.replace(/^the /i, '').replace(/\b(theatre|theatres)\b/gi, '')) };
+  return { venue: sanitizeVenueForWrite(`${head}, ${parts.length > 1 ? parts[parts.length - 1] : city}`), houseKey: kebab(head.replace(/^the /i, '').replace(/\b(theatre|theatres)\b/gi, '')) };
 }
 
 function decode(t) {
@@ -56,6 +57,7 @@ function buildAction(row, shows) {
   if (!info || info.country !== 'UK' || !info.hub) return { skip: `not a hub venue: ${row.venue}` };
   const title = decode(row.title);
   const { venue, houseKey } = canonicalVenue(row.venue, info);
+  if (!venue) return { skip: `placeholder venue: ${row.venue}` };
   const base = buildRegionalShowEntry({ title, venue, articlePublishedAt: `${row.date}T12:00:00Z`, source: 'guardian-review', sourceUrl: row.guardianUrl });
   const year = base.id.match(/-(\d{4})$/)[1];
   const id = `${kebab(title)}-${houseKey}-regional-${year}`.replace(/-+/g, '-');
