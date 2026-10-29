@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6518-city",
   "planId": "1b7a3bfa-e91f-4aff-bd8d-e126d67ad507",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T20:45:35.410Z",
   "submitter": {
     "name": null,
@@ -74,5 +74,39 @@
         "description": "what-the-constitution-means-to-me-regional-2026: set Chicago metro hub"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T21:31:04.327Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for hayward-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for come-from-away-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for detroit-67-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for dead-girls-quinceanera-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for a-midsummer-night-scream-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: city updated for what-the-constitution-means-to-me-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
