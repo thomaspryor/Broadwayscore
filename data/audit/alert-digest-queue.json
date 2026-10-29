@@ -828,5 +828,36 @@
       }
     ],
     "queuedAt": "2026-10-29T15:20:50.420Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-6515-mvtcbgux",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-6515-mvtcbgux",
+    "description": "land.yml did not land land/job/linear-BRO-6515-mvtcbgux: the rebase gate went red at 04a15073d1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-6515-mvtcbgux @ 04a15073d1 (origin/land/job/linear-BRO-6515-mvtcbgux) → origin/main @ 36493a08fe REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 36493a08fe: Rebasing (1/3) error: could not apply 0b09497e53b... BRO-6515: venue-to-metro table, resolver, city backfill, regional add-path city hint: Resolve all conflicts manually, mark them as resolved wit Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40854213561",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-6515-mvtcbgux"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "04a15073d11a95e05afc2e9307a83faab86cd735"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40854213561"
+      }
+    ],
+    "queuedAt": "2026-10-29T16:06:20.972Z"
   }
 ]
