@@ -1301,6 +1301,37 @@
     "queuedAt": "2026-10-29T07:17:00.265Z"
   },
   {
+    "conditionKey": "land:land/bro-6496-ob-precovid",
+    "title": "Landing blocked: deadline red on land/bro-6496-ob-precovid",
+    "description": "land.yml did not land land/bro-6496-ob-precovid: the deadline gate went red at da5e9a2f0f. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-6496-ob-precovid @ da5e9a2f0f (origin/land/bro-6496-ob-precovid) → origin/main @ d2d5c09272 [land] train: + land/job/linear-BRO-6505-mvt7951x @ 3bef4740ff (1 commit(s)) [land] train: land/bro-6503-we-2010-11-promote not taken — would not rebase onto the train: Rebasing (1/2) error: could not apply 2d5ee202597... data(BRO-6503): 2011-12 West End reference list, TR A-Z and 53-show pr Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40824749564",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6496-ob-precovid"
+      },
+      {
+        "name": "gate",
+        "value": "deadline"
+      },
+      {
+        "name": "tip",
+        "value": "da5e9a2f0f0163a67ce92e3a254711950c800089"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40824749564"
+      }
+    ],
+    "queuedAt": "2026-10-29T08:54:58.232Z"
+  },
+  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run data validation (still open — BRO-5882)",
     "description": "Still firing after 30 notifications since it was filed. Tracked at BRO-5882.\n\nCorpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40840993325",
