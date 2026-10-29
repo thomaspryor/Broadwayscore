@@ -33,7 +33,23 @@ test('a stale oldValue whose newValue is already in place is a no-op success, no
   const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'venue', oldValue: 'Older Theatre', newValue: 'Old Theatre' });
   assert.equal(r.ok, true, r.reason);
   assert.match(r.msg, /already/);
-  assert.equal(JSON.stringify(data), before);
+  assert.equal(JSON.stringify(data), before); // venue has no pin side effect
+});
+
+test('an already-in-place openingDate still gets the human pin, so enrichers cannot revert it (BRO-6489)', () => {
+  const data = { shows: [{ id: 'a-2026', title: 'A', openingDate: '2026-03-20', closingDate: '2026-05-01' }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'openingDate', oldValue: '2026-03-10', newValue: '2026-03-20' });
+  assert.equal(r.ok, true, r.reason);
+  assert.match(r.msg, /already/);
+  assert.equal(data.shows[0].openingDate, '2026-03-20');
+  assert.ok(data.shows[0].humanCorrectedOpeningDate, JSON.stringify(data.shows[0]));
+});
+
+test('an already-in-place closingDate still sets humanCorrectedClosingDate (BRO-6489)', () => {
+  const data = { shows: [{ id: 'a-2026', title: 'A', closingDate: '2026-05-01' }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'closingDate', oldValue: '2026-04-01', newValue: '2026-05-01' });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal(data.shows[0].humanCorrectedClosingDate, true);
 });
 
 test('audience-buzz: a stale oldValue whose newValue is already in place is a no-op success (BRO-6489)', () => {

@@ -61,10 +61,11 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     // JSON plans cannot say `undefined`: an absent field is written as
     // oldValue null, so compare it as null (BRO-4623).
     const currentVal = shows[idx][field] ?? null;
-    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
-      if (alreadyNewValue(currentVal, newValue)) {
-        return { ok: true, msg: `shows.json: ${field} already ${JSON.stringify(currentVal)} for ${showId}, nothing to change` };
-      }
+    // An already-written value still goes through the checks and the write below,
+    // so the human pin / provenance / revival tags are applied (an enricher may
+    // have written the same value without them).
+    const already = JSON.stringify(currentVal) !== JSON.stringify(oldValue) && alreadyNewValue(currentVal, newValue);
+    if (JSON.stringify(currentVal) !== JSON.stringify(oldValue) && !already) {
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
     if (field === 'images') {
@@ -153,7 +154,8 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     // `data.shows`: the caller saves `data` itself, never a rebuilt copy, so
     // shows-write-guard's object-identity snapshot lookup still matches.
     const tagNote = field === 'isRevival' ? ` (tags: ${JSON.stringify(shows[idx].tags)})` : '';
-    return { ok: true, msg: `shows.json: ${field} updated for ${showId}${tagNote}` };
+    const verb = already ? `already ${JSON.stringify(currentVal)}, pins refreshed` : 'updated';
+    return { ok: true, msg: `shows.json: ${field} ${verb} for ${showId}${tagNote}` };
 
   } else if (file === 'commercial.json') {
     const { isPlanOnlyField, planOnlyValueProblem } = require('./cleared-field-guard.js');
@@ -170,7 +172,7 @@ function applyDataEdit(data, action, { root = ROOT } = {}) {
     const currentVal = data.shows[showId][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       if (alreadyNewValue(currentVal, newValue)) {
-        return { ok: true, msg: `audience-buzz.json: ${field} already set for ${showId}, nothing to change` };
+        return { ok: true, msg: `audience-buzz.json: ${field} already ${JSON.stringify(currentVal)} for ${showId}, nothing to change` };
       }
       return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
     }

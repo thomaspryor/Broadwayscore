@@ -161,7 +161,8 @@ jobs:
       # BRO-6194: a fixed plan is only recorded "applied" when all three private pushes succeeded and the
       # core push was not skipped (validation sentinel, or no core checkout). Otherwise the plan stays
       # "pending" on main and this job fails, so the dispatching runner sees a failed apply instead of a
-      # trusted status. Actions check oldValue, so a manual rerun is not idempotent: check the data first.
+      # trusted status. A data-edit whose newValue is already in place is a no-op success (BRO-6489), so
+      # a rerun of a data-edit plan is safe; other action types still check oldValue: check the data first.
       - name: Confirm private pushes landed
         id: push_gate
         if: always() && steps.exec.outputs.result == 'fixed'
