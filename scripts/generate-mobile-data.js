@@ -22,6 +22,7 @@ const { effectiveShowStatus } = require('./lib/effective-status');
 const { loadCoverageFloorInputs, coverageFloorOptsForShow } = require('./lib/coverage-floor-inputs');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
 const { isHiddenFromAppFeed } = require('./lib/markets');
+const { isLocalOnlyShow } = require('./lib/local-market');
 const { isUpcomingTag } = require('./lib/opening-night-completeness');
 const { versionedImagePath } = require('./lib/versioned-image-path');
 
@@ -155,6 +156,7 @@ for (const review of reviews) {
 // their feature flag is on (src/config/markets.json, BRO-4211).
 const visibleShows = shows.filter(show =>
   !isHiddenFromAppFeed(show.category) &&
+  !isLocalOnlyShow(show) && // BRO-6518: local shows stay out of the iOS NYC/London feeds
   (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 

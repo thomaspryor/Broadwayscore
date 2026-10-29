@@ -3,6 +3,7 @@
 // Also imports getShowGrosses from data-grosses for browse page performance sort
 
 import path from 'path';
+import { isLocalOnlyShow } from '@/lib/local-market';
 import { versionedImagePath } from './versioned-image-path';
 import {
   computeShowData,
@@ -197,12 +198,12 @@ export function getOffBroadwayShows(): ComputedShow[] {
  * 2026-10-13).
  */
 export function getRegionalShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'regional' && !isUkRegionalShow(show));
+  return getAllShows().filter(show => show.category === 'regional' && !isUkRegionalShow(show) && !isLocalOnlyShow(show));
 }
 
 /** Regional productions at flagship UK houses outside London (RSC, Chichester, Royal Exchange, ...). */
 export function getUkRegionalShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'regional' && isUkRegionalShow(show));
+  return getAllShows().filter(show => show.category === 'regional' && isUkRegionalShow(show) && !isLocalOnlyShow(show));
 }
 
 /** North American national tours (category 'tour', BRO-4211). */
@@ -1407,7 +1408,9 @@ function topUpRelated(curated: ComputedShow[], show: ComputedShow, limit: number
   return [...curated, ...extra].slice(0, limit);
 }
 
-function getCity(show: { category?: string; venue?: string }): string {
+function getCity(show: { category?: string; venue?: string; localOnly?: boolean; discoverySource?: string }): string {
+  // Local-only shows (BRO-6518) relate only to each other, never to tryouts or NYC/London.
+  if (isLocalOnlyShow(show)) return 'local';
   const cat = show.category || 'broadway';
   if (cat === 'broadway' || cat === 'off-broadway') return 'nyc';
   if (cat === 'west-end' || cat === 'off-west-end') return 'london';

@@ -14,6 +14,7 @@ const fs = require('fs');
 const path = require('path');
 const { buildShowsWithScores, isTourIndexableSlim } = require('./lib/search-shows-scores');
 const { isCategoryEnabled } = require('./lib/markets');
+const { isLocalOnlyShow } = require('./lib/local-market');
 const { castNamesForSearch } = require('./lib/show-search-match');
 const { versionedImagePath } = require('./lib/versioned-image-path');
 
@@ -56,6 +57,7 @@ const todayISO = new Date().toISOString().slice(0, 10);
 const readSlim = (id) => { try { return JSON.parse(fs.readFileSync(path.join(outputDir, 'shows', `${id}.json`), 'utf-8')); } catch { return null; } };
 const visibleShows = shows.filter(show =>
   isCategoryEnabled(show.category) &&
+  !isLocalOnlyShow(show) && // BRO-6518: local-only shows are not in global search
   (showsWithScores.has(show.id) || show.status !== 'closed') &&
   (show.category !== 'tour' || isTourIndexableSlim(readSlim(show.id), show.status, (tourSchedules[show.id]?.stops ?? []).some(st => st.end >= todayISO)))
 );
@@ -131,7 +133,7 @@ for (const show of visibleShows) {
 }
 const archive = shows
   .filter(show => !visibleIds.has(show.id) && show.status === 'closed'
-    && show.category !== 'tour' && isCategoryEnabled(show.category))
+    && show.category !== 'tour' && isCategoryEnabled(show.category) && !isLocalOnlyShow(show))
   .map(show => {
     const entry = { id: show.id, title: show.title, slug: show.slug, status: show.status, archived: true };
     if (show.category && show.category !== 'broadway') entry.category = show.category;

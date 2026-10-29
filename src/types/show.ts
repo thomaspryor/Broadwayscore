@@ -47,6 +47,8 @@ export interface ShowMetadata {
   status: ShowStatus;
   type: 'musical' | 'play' | 'special';
   category?: ShowCategory; // 'broadway', 'off-broadway', 'west-end', etc — required at data-entry (validate-data.js); a missing value is treated as neither Broadway nor Off-Broadway, see data-core.ts isBroadwayShow()
+  /** BRO-6518: local (non-transfer) show, e.g. a Chicago production. Withheld from homepage, Pre-Broadway, Broadway/West End browse, search and the iOS feeds; shown only on its own page and the city hub. See src/lib/local-market.ts. */
+  localOnly?: boolean;
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
   priorRuns?: PriorRun[];

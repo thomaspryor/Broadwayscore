@@ -25,6 +25,8 @@ const ALLOWED = new Set([
   'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt', 'season', 'evidenceUrls',
   // BRO-4768: an earlier run of the same production (return engagement)
   'firstRunStart',
+  // BRO-6518: local (non-transfer) show, see scripts/lib/local-market.js
+  'localOnly',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];
