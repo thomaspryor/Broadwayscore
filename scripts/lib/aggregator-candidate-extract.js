@@ -1128,7 +1128,8 @@ const REGIONAL_FEEDER_VENUES = [
   // Theatre" etc above) — only the flagship hall is matched until a real
   // BWW/PV article is seen using the stage name instead of the company name.
   ...require('../../data/uk-regional-venues.json').map(({ match, city, domain }) => ({
-    re: new RegExp(`\\b${match.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'i'),
+    // Unicode-aware word edges: plain \b treats "Ò" as a non-word char, so "òran mór" never matched.
+    re: new RegExp(`(?<![\\p{L}\\p{N}_])${match.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?![\\p{L}\\p{N}_])`, 'iu'),
     city,
     domain,
   })),
