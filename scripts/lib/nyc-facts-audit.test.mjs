@@ -32,6 +32,8 @@ test('equal allocation samples every stratum evenly; default allocation is uncha
   assert.equal(s.strata['current-upcoming'].sampled, 4);
   const prop = fc.stratifiedSample(rows, nyc.nycStratum, 12, 1);
   assert.equal(prop.filter((r) => r.stratum === 'ob-recent').length, 8, 'proportional stays the default');
+  assert.equal(fc.drawSample(rows, 'nyc-facts', 500, 6489).n, rows.length, 'n >= population takes every row (capped strata pass their quota on)');
+  assert.equal(fc.drawSample(rows, 'nyc-facts', 60, 6489).strata['ob-backfilled'].sampled, 5);
 });
 
 test('prompt never shows the stored venue, category, dates, type or revival flag', () => {
