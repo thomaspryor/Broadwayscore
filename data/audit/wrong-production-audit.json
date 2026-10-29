@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T00:17:57.909Z",
+  "timestamp": "2026-10-29T00:31:57.665Z",
   "stats": {
-    "totalReviews": 65725,
+    "totalReviews": 65814,
     "alreadyFlagged": 22043,
     "dateGuardCatches": 233,
-    "directorMismatch": 2620,
+    "directorMismatch": 2627,
     "tvFilmSignals": 1853,
     "londonSignals": 3183,
-    "offBroadwaySignals": 596,
+    "offBroadwaySignals": 597,
     "yearMismatch": 239,
-    "noPublishDate": 5950
+    "noPublishDate": 6019
   },
   "findings": [
     {
@@ -15866,6 +15866,32 @@
     },
     {
       "showId": "english-off-broadway-2022",
+      "file": "front-row-center--sarah-downs.json",
+      "publishDate": "2022-02-22",
+      "url": "https://thefrontrowcenter.com/2022/02/english/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
+      "file": "newyorker--alexandra-schwartz.json",
+      "publishDate": null,
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/english-03-21-22",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
       "file": "nysr--david-finkle.json",
       "score": 78,
       "publishDate": null,
@@ -15945,6 +15971,19 @@
       "score": 89,
       "publishDate": null,
       "url": "https://theaterpizzazz.com/english/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"knud adams\" from english-2025"
+        }
+      ]
+    },
+    {
+      "showId": "english-off-broadway-2022",
+      "file": "theater-scene--victor-gluck.json",
+      "publishDate": "2022-02-28",
+      "url": "http://www.theaterscene.net/plays/offbway-plays/english/victor-gluck/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -21936,6 +21975,19 @@
     },
     {
       "showId": "harmony-off-broadway-2022",
+      "file": "amny--matt-windman.json",
+      "publishDate": "2022-04-17",
+      "url": "https://www.amny.com/entertainment/reviews-american-buffalo-if-you-can-stand-mamet-is-damn-good/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"warren carlyle\" from harmony-2023"
+        }
+      ]
+    },
+    {
+      "showId": "harmony-off-broadway-2022",
       "file": "front-row-center--sarah-downs.json",
       "score": 81,
       "publishDate": "2022-04-14",
@@ -22094,6 +22146,19 @@
       "score": 82,
       "publishDate": "2022-04-13",
       "url": "https://www.theatermania.com/off-broadway/reviews/manilow-harmony-national-yiddish-theatre_93646.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"warren carlyle\" from harmony-2023"
+        }
+      ]
+    },
+    {
+      "showId": "harmony-off-broadway-2022",
+      "file": "theatrely--juan-a-ramirez.json",
+      "publishDate": "2022-04-13",
+      "url": "https://www.theatrely.com/post/historic-harmony-in-turbulent-times-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -28654,6 +28719,7 @@
     {
       "showId": "king-charles-iii-west-end-2014",
       "file": "whatsonstage--theo-bosanquet.json",
+      "score": 99,
       "publishDate": "2014-09-12",
       "url": "https://www.whatsonstage.com/news/king-charles-iii-wyndhams-theatre_35680/",
       "findings": [
@@ -33213,6 +33279,7 @@
     {
       "showId": "miss-saigon-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 58,
       "publishDate": "2014-05-21",
       "url": "https://www.whatsonstage.com/news/miss-saigon-prince-edward-theatre_34523/",
       "findings": [
@@ -33534,7 +33601,7 @@
     {
       "showId": "motown-the-musical-west-end-2016",
       "file": "guardian--michael-billington.json",
-      "score": 38,
+      "score": 35,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2016/mar/08/motown-the-musical-review-berry-gordy-shaftesbury-theatre",
       "findings": [
@@ -33548,6 +33615,7 @@
     {
       "showId": "motown-the-musical-west-end-2016",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 38,
       "publishDate": "2016-03-08",
       "url": "https://www.whatsonstage.com/news/motown-the-musical-shaftesbury-theatre_39921/",
       "findings": [
@@ -39343,6 +39411,7 @@
     {
       "showId": "peter-pan-goes-wrong-west-end-2015",
       "file": "whatsonstage--ben-hewis.json",
+      "score": 99,
       "publishDate": "2015-12-10",
       "url": "https://www.whatsonstage.com/news/peter-pan-goes-wrong-apollo-theatre_39315/",
       "findings": [
@@ -43362,6 +43431,7 @@
     {
       "showId": "skylight-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 98,
       "publishDate": "2014-06-19",
       "url": "https://www.whatsonstage.com/news/skylight-wyndhams-theatre_34791/",
       "findings": [
@@ -45718,10 +45788,36 @@
     },
     {
       "showId": "suffs-off-broadway-2022",
+      "file": "dailybeast--tim-teeman.json",
+      "publishDate": "2022-04-06",
+      "url": "https://www.thedailybeast.com/how-suffs-makes-a-musical-out-of-womens-right-to-vote",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
       "file": "dtli--juan-michael-porter-ii.json",
       "score": 73,
       "publishDate": "2022-04-06",
       "url": "https://didtheylikeit.com/shows/suffs/while-looking-at-history-suffs-elects-didacticism-over-adventurousness/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-off-broadway-2022",
+      "file": "ew--andrea-towers.json",
+      "publishDate": "2022-04-06",
+      "url": "https://ew.com/theater/suffs-review-shaina-taub/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -80879,6 +80975,7 @@
     {
       "showId": "hang-west-end-2015",
       "file": "whatsonstage--matt-trueman.json",
+      "score": 84,
       "publishDate": "2015-06-17",
       "url": "https://www.whatsonstage.com/news/hang-royal-court_38065/",
       "findings": [
@@ -86928,6 +87025,7 @@
     {
       "showId": "let-the-right-one-in-west-end-2014",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 97,
       "publishDate": "2014-04-08",
       "url": "https://www.whatsonstage.com/news/let-the-right-one-in-apollo-theatre_34085/",
       "findings": [
@@ -87058,6 +87156,7 @@
     {
       "showId": "linda-west-end-2015",
       "file": "whatsonstage--michael-coveney.json",
+      "score": 61,
       "publishDate": "2015-12-02",
       "url": "https://www.whatsonstage.com/news/linda-royal-court_39256/",
       "findings": [
@@ -92738,6 +92837,19 @@
       ]
     },
     {
+      "showId": "on-sugarland-off-broadway-2022",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": null,
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "on-your-feet-west-end-2019",
       "file": "whatsonstage--alun-hood.json",
       "score": 82,
@@ -93797,7 +93909,7 @@
     {
       "showId": "people-places-and-things-west-end-2016",
       "file": "thestage--natasha-tripney.json",
-      "score": 96,
+      "score": 97,
       "publishDate": "2016-03-31",
       "url": "https://www.thestage.co.uk/reviews/2016/people-places-and-things-review-at-wyndhams-theatre-london/",
       "findings": [
@@ -93825,6 +93937,7 @@
     {
       "showId": "people-places-and-things-west-end-2016",
       "file": "whatsonstage--daisy-bowie-sell.json",
+      "score": 97,
       "publishDate": "2016-03-24",
       "url": "https://www.whatsonstage.com/news/people-places-and-things-wyndhams-theatre_40032/",
       "findings": [
@@ -95927,6 +96040,7 @@
     {
       "showId": "roosevelvis-west-end-2015",
       "file": "whatsonstage--matt-trueman.json",
+      "score": 82,
       "publishDate": "2015-10-27",
       "url": "https://www.whatsonstage.com/news/roosevelvis-royal-court_39025/",
       "findings": [
