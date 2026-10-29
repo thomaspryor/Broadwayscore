@@ -3,7 +3,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, isObHistoricalRow, transferLinkFields } = require('./ob-historical-cohort.js');
+const { isEntryInWindow, decideObHistoricalEntry, toAddShowAction, isStructuralOnlyMismatch, playbillFacts, isObHistoricalRow, transferLinkFields } = require('./ob-historical-cohort.js');
 const { applyAddShow } = require('./add-show-action.js');
 const { isTmRowInWindow, isCurrentTmRow, findTmSameTitleShow, isDistinctTransfer } = require('./theatermania-ob.js');
 const { selectPromotable } = require('../promote-ob-historical.js');
@@ -226,4 +226,20 @@ test('isStructuralOnlyMismatch (BRO-6470): a TM preview date inside Playbill\'s 
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2021, playbill: 2022 }] }), true);
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'opening-year', shows: 2019, playbill: 2022 }] }), false);
   assert.equal(isStructuralOnlyMismatch({ result: 'mismatch', parsed: { dates }, mismatches: [{ field: 'venue' }] }), false);
+});
+
+test('BRO-6496: isEntryInWindow uses the first preview, else the opening', () => {
+  const w = { fromIso: '2018-06-01', toIso: '2020-03-15' };
+  assert.equal(isEntryInWindow(entry({ previewsStartDate: '2019-10-01', openingDate: '2019-10-20' }), w), true);
+  assert.equal(isEntryInWindow(entry({ previewsStartDate: '2018-05-20', openingDate: '2018-06-10' }), w), false);
+  assert.equal(isEntryInWindow(entry({ previewsStartDate: null, openingDate: '2008-03-01' }), w), false);
+  assert.equal(isEntryInWindow(entry({ previewsStartDate: null, openingDate: null }), w), false);
+});
+
+test('BRO-6496: toAddShowAction keeps ob-historical:tm by default and takes a census source', () => {
+  const opts = { discoveredAt: '2026-10-29T00:00:00.000Z', dateSource: 'playbill-ob-historical' };
+  assert.equal(toAddShowAction(entry(), opts).show.discoverySource, 'ob-historical:tm');
+  const a = toAddShowAction(entry(), { ...opts, discoverySource: 'ob-historical:census' });
+  assert.equal(a.show.discoverySource, 'ob-historical:census');
+  assert.equal(isObHistoricalRow(a.show), true);
 });
