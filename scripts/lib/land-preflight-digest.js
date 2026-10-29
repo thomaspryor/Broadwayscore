@@ -12,6 +12,9 @@
 // line budget with no valid Review-Receipt trailer) and whose branch has no
 // hook allow/bypass event is a stale-container landing.
 //
+// Run it where the hook ledger lives (or pass --events=), else every missing
+// landing reads as stale. Merge-train riders carry no receipt (reported unknown).
+//
 // Pure function only (CLAUDE.md rule 15).
 'use strict';
 

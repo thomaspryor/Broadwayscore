@@ -47,7 +47,7 @@ function stamp() {
   }
   const msg = sh('git', ['log', '-1', '--format=%B']).trimEnd();
   if (/^Review-Receipt:/m.test(msg)) { console.log('review-receipt: HEAD already carries a receipt'); return 0; }
-  sh('git', ['commit', '--amend', '--no-verify', '-m', `${msg}\n\n${line}`]);
+  sh('git', ['commit', '--amend', '--no-verify', '--cleanup=verbatim', '-m', `${msg}\n\n${line}`]);
   console.log(`review-receipt: stamped HEAD\n${line}`);
   return 0;
 }

@@ -231,9 +231,10 @@ jobs:
         continue-on-error: true
         timeout-minutes: 2
         run: |
-          # The rebase above put main's scripts in the tree, so the checker is the
-          # one on main (a branch cannot weaken it); absent only for the landing
-          # that introduces it.
+          # The checker is the branch's own copy (rebased onto main). Fine while
+          # advisory; before this step blocks, read it from $BASE with git show
+          # (as the rebase step does) so a branch cannot weaken it. Absent only
+          # for the landing that introduces it.
           [ -f scripts/review-receipt.js ] || { echo "receipt=unknown" >> "$GITHUB_OUTPUT"; echo "review-receipt.js not on main yet; skipping"; exit 0; }
           node scripts/review-receipt.js check --base="${{ steps.rebase.outputs.base }}" --tip=HEAD || true
 
