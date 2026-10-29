@@ -10,7 +10,7 @@
 import Link from 'next/link';
 import RowLinkArrow from '@/components/biz/RowLinkArrow';
 import {
-  formatRowValue,
+  formatSeasonMoney,
   hasEstimatedCapital,
   hasFullCapitalCoverage,
   returnedCapitalText,
@@ -102,7 +102,7 @@ export default function SeasonHistoryTable({ profiles, averageProfiles, currentS
                   </td>
                   {showCapital && (
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                      {capital ? formatRowValue('money', p.capitalization.all.total) : '—'}
+                      {capital ? formatSeasonMoney(p.capitalization.all.total) : '—'}
                       {(tracked || current) && p.capitalization.all.of > 0 && (
                         <span className="block text-xs text-gray-500">
                           {p.capitalization.all.known} of {p.capitalization.all.of} disclosed
@@ -112,14 +112,14 @@ export default function SeasonHistoryTable({ profiles, averageProfiles, currentS
                   )}
                   {showCapital && (
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                      {hasEstimatedCapital(p) && !current ? formatRowValue('money', p.estimatedCapital.total) : '—'}
+                      {hasEstimatedCapital(p) && !current ? formatSeasonMoney(p.estimatedCapital.total) : '—'}
                       {hasEstimatedCapital(p) && !current && estimateNotes(p).map((n) => <span key={n} className="block text-xs text-gray-500">{n}</span>)}
                     </td>
                   )}
                   {showCapital && (
                     <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap" data-testid="season-money-back">
-                      {back ? `~${formatRowValue('money', p.returnedCapital.mid)} back` : '—'}
-                      {back && <span className="block text-xs text-gray-500">of {formatRowValue('money', p.returnedCapital.capital)} in</span>}
+                      {back ? `~${formatSeasonMoney(p.returnedCapital.mid)} back` : '—'}
+                      {back && <span className="block text-xs text-gray-500">of {formatSeasonMoney(p.returnedCapital.capital)} in</span>}
                       {back && <span className="block text-xs text-gray-500">{back.range}</span>}
                     </td>
                   )}
@@ -152,13 +152,13 @@ export default function SeasonHistoryTable({ profiles, averageProfiles, currentS
                 </td>
                 {showCapital && (
                   <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                    {formatRowValue('money', avg.disclosedCapital.avg)}
+                    {formatSeasonMoney(avg.disclosedCapital.avg)}
                     {cellNote(seasonsNote(avg.disclosedCapital.seasons, avg.seasons))}
                   </td>
                 )}
                 {showCapital && (
                   <td className="py-2.5 px-3 text-center text-gray-300 whitespace-nowrap">
-                    {formatRowValue('money', avg.estimatedCapital.avg)}
+                    {formatSeasonMoney(avg.estimatedCapital.avg)}
                     {cellNote(seasonsNote(avg.estimatedCapital.seasons, avg.seasons))}
                   </td>
                 )}

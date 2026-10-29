@@ -60,7 +60,7 @@ const PAGE_TITLE = "Broadway Profitability Database: Who Recouped and Who Didn't
 
 // Headline numbers for the hero and the meta description (BRO-6286).
 function formatBillions(n: number): string {
-  return n >= 1e9 ? `$${(n / 1e9).toFixed(1)}B` : `$${Math.round(n / 1e6)}M`;
+  return n >= 999.5e6 ? `$${(n / 1e9).toFixed(1)}B` : `$${Math.round(n / 1e6)}M`;
 }
 
 const HERO = getCommercialHeadlineStats();

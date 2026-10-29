@@ -62,21 +62,21 @@ export default function SeasonComparisonTable({ comparison }: { comparison: Seas
                 <tr className="border-b border-white/5">
                   <td className="py-2.5 pl-3 pr-2 sm:px-4 text-gray-300">{row.label}</td>
                   <td className="py-2.5 px-2 sm:px-4 text-center sm:whitespace-nowrap">
-                    <span className="font-semibold text-white">{formatRowValue(row.format, row.current)}</span>
+                    <span className="font-semibold text-white">{formatRowValue(row.format, row.current, row.whole)}</span>
                     {row.currentDetail && <span className="block text-xs text-gray-500">{row.currentDetail}</span>}
                   </td>
                   <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
-                    {formatRowValue(row.format, row.last)}
+                    {formatRowValue(row.format, row.last, row.whole)}
                     {row.lastDetail && <span className="block text-xs text-gray-500">{row.lastDetail}</span>}
                   </td>
                   {prevSeason && (
                     <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
-                      {formatRowValue(row.format, row.prev)}
+                      {formatRowValue(row.format, row.prev, row.whole)}
                       {row.prevDetail && <span className="block text-xs text-gray-500">{row.prevDetail}</span>}
                     </td>
                   )}
                   <td className="py-2.5 px-2 sm:px-4 text-center text-gray-300 sm:whitespace-nowrap bg-white/[0.03]">
-                    {formatRowValue(row.format, row.avg)}{partial && '*'}
+                    {formatRowValue(row.format, row.avg, row.whole)}{partial && '*'}
                     {row.avgDetail && <span className="block text-xs text-gray-500">{row.avgDetail}</span>}
                     {partial && (
                       <span className="block text-xs text-gray-500">{row.avgSeasons} {row.avgSeasons === 1 ? 'season' : 'seasons'}</span>

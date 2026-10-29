@@ -29,7 +29,7 @@ import AllShowsTable from '@/components/biz/AllShowsTable';
 import MoneyGate from '@/components/biz/MoneyGate';
 import SeasonComparisonTable from '@/components/biz/SeasonComparisonTable';
 import { formatCapitalSummary } from '@/lib/biz-format';
-import { formatRowValue, returnedCapitalText } from '@/lib/season-profile';
+import { formatSeasonMoney, returnedCapitalText } from '@/lib/season-profile';
 import { ESTIMATE_SOURCES_NOTE } from '@/lib/commercial-display';
 import EmailTomLink from '@/components/EmailTomLink';
 
@@ -174,7 +174,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
           </div>
           <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
             <div className="text-xl sm:text-2xl font-bold text-white">
-              {est ? `~${formatRowValue('money', est.total)}` : totalCapital.value}
+              {est ? `~${formatSeasonMoney(est.total)}` : totalCapital.value}
             </div>
             <div
               className="text-xs text-gray-500"
@@ -184,7 +184,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             </div>
             {est ? (
               <div className="text-xs text-gray-500">
-                {formatRowValue('money', profile!.capitalization.all.total)} disclosed{est.estimated > 0 ? `, ${est.estimated} show${est.estimated === 1 ? '' : 's'} estimated` : ''}
+                {formatSeasonMoney(profile!.capitalization.all.total)} disclosed{est.estimated > 0 ? `, ${est.estimated} show${est.estimated === 1 ? '' : 's'} estimated` : ''}
               </div>
             ) : (
               totalCapital.note && <div className="text-xs text-gray-500">{totalCapital.note}</div>
@@ -194,7 +194,7 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             {outcome && outcome.closedUnrecoupedShows > 0 ? (
               <>
                 <div className="text-xl sm:text-2xl font-bold text-score-skip">
-                  ~{formatRowValue('money', outcome.closedUnrecouped)}
+                  ~{formatSeasonMoney(outcome.closedUnrecouped)}
                 </div>
                 <div
                   className="text-xs text-gray-500"
@@ -204,13 +204,13 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
                 </div>
                 <div className="text-xs text-gray-500">
                   {outcome.closedUnrecoupedShows} show{outcome.closedUnrecoupedShows === 1 ? '' : 's'}
-                  {outcome.runningShows > 0 && `, plus ~${formatRowValue('money', outcome.running)} still at risk in ${outcome.runningShows} running show${outcome.runningShows === 1 ? '' : 's'}`}
+                  {outcome.runningShows > 0 && `, plus ~${formatSeasonMoney(outcome.running)} still at risk in ${outcome.runningShows} running show${outcome.runningShows === 1 ? '' : 's'}`}
                 </div>
               </>
             ) : (
               <>
                 <div className="text-xl sm:text-2xl font-bold text-amber-400">
-                  {outcome && outcome.runningShows > 0 ? `~${formatRowValue('money', outcome.running)}` : capitalAtRisk.value}
+                  {outcome && outcome.runningShows > 0 ? `~${formatSeasonMoney(outcome.running)}` : capitalAtRisk.value}
                 </div>
                 <div
                   className="text-xs text-gray-500"
@@ -236,9 +236,9 @@ export default async function SeasonPage(props: { params: Promise<{ season: stri
             </div>
             {backHistory.length > 1 && (
               <div className="text-xs text-gray-500 mt-1">
-                Estimate on {backHistory[0].date}: about {formatRowValue('money', backHistory[0].returnedMid)} back
+                Estimate on {backHistory[0].date}: about {formatSeasonMoney(backHistory[0].returnedMid)} back
                 {' · '}
-                on {backHistory[backHistory.length - 1].date}: about {formatRowValue('money', backHistory[backHistory.length - 1].returnedMid)} back
+                on {backHistory[backHistory.length - 1].date}: about {formatSeasonMoney(backHistory[backHistory.length - 1].returnedMid)} back
               </div>
             )}
           </div>

@@ -17,6 +17,7 @@ import {
   hasKnownOutcome,
   compareSeason,
   formatRowValue,
+  formatSeasonMoney,
   hasReturnedCoverage,
   returnedCapitalShare,
   isOwnEstimate,
@@ -129,6 +130,9 @@ test('baseline skips pandemic seasons; money rows need their own coverage', () =
 
   const sum = row('Disclosed capitalization (sum)');
   assert.deepEqual([sum.current, sum.currentDetail, sum.last, sum.avg, sum.avgSeasons], [80e6, '10 of 10 disclosed', 40e6, 50e6, 2]);
+  // A sum is a season total (whole millions); per-show averages keep their decimal.
+  assert.equal(sum.whole, true);
+  assert.notEqual(row('Average weekly running cost, play').whole, true);
 });
 
 test('capitalization sums are stated for every season with what was disclosed (owner, 2026-10-21)', () => {
@@ -203,8 +207,19 @@ test('unknown season returns null; formatting', () => {
   assert.equal(formatRowValue('pct', 0.375), '38%');
   assert.equal(formatRowValue('money', 14_250_000), '$14.3M');
   assert.equal(formatRowValue('money', 480_577), '$481K');
+  assert.equal(formatRowValue('money', 205_500_000, true), '$206M');
+  assert.equal(formatRowValue('money', 205_500_000), '$205.5M');
   assert.equal(formatRowValue('count', 31.25), '31.3');
   assert.equal(formatRowValue('count', null), '—');
+});
+
+test('season-level money totals print in whole millions', () => {
+  assert.equal(formatSeasonMoney(231_240_000), '$231M');
+  assert.equal(formatSeasonMoney(55_960_000), '$56M');
+  assert.equal(formatSeasonMoney(480_577), '$481K');
+  assert.equal(formatSeasonMoney(999_499), '$999K');
+  assert.equal(formatSeasonMoney(999_500), '$1M');
+  assert.equal(formatSeasonMoney(null), '—');
 });
 
 test('a per-show average needs MIN_AVERAGE_SAMPLE disclosed figures', () => {
