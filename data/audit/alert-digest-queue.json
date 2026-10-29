@@ -1030,6 +1030,37 @@
     "queuedAt": "2026-10-29T17:11:02.112Z"
   },
   {
+    "conditionKey": "land:land/bro-6507-batch",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-6507-batch",
+    "description": "land.yml did not land land/bro-6507-batch: the scripts-lib-tests gate went red at c6e2793334. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40904888926",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-6507-batch"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "c6e27933346de0ba2f312b49e388e2a4255e869d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40904888926"
+      }
+    ],
+    "queuedAt": "2026-10-29T17:13:47.776Z"
+  },
+  {
     "conditionKey": "land:land/bro-6517-city-hubs",
     "title": "Landing blocked: unit-tests-node red on land/bro-6517-city-hubs",
     "description": "land.yml did not land land/bro-6517-city-hubs: the unit-tests-node gate went red at c18b83e085. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40899138354",
