@@ -17,6 +17,7 @@
  */
 
 const { isLikelyTourReview } = require('./review-guards');
+const { WRONG_PRODUCTION_PROVENANCE_FIELDS } = require('./wrongproduction-provenance');
 const { isOverseasHost } = require('./domain-filters');
 
 const TOUR_REASON_RE = /\btour(?:ing)?\b|national-tour|BWW regional\/tour/i;
@@ -294,6 +295,7 @@ const BROADWAY_RELATIVE_FIELDS = [
   'verifiedBy', 'possibleTourReview', 'tourSignal',
 ];
 const WRONG_PRODUCTION_FIELDS = [
+  ...WRONG_PRODUCTION_PROVENANCE_FIELDS, // BRO-5582: includes wrongProductionLegacyAudit
   'wrongProduction', 'wrongProductionReason', 'wrongProductionNote', 'wrongProductionDetail',
   'wrongProductionDetectedAt', 'wrongProductionDetectedBy', 'wrongProductionFlaggedAt',
   'wrongProductionFlaggedBy', 'wrongProductionProvenance', 'wrongProductionSetBy',

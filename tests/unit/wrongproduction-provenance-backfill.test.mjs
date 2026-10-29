@@ -57,9 +57,9 @@ test('the audit field dies with the flag and counts as an orphan trail', () => {
 test('problemWith enforces --expect and refusals', () => {
   assert.match(problemWith({ scanned: 0, written: 0, refused: [] }, { apply: false }), /no review files/);
   assert.equal(problemWith({ scanned: 5, eligible: 2, written: 0, refused: [] }, { apply: false }), null);
-  assert.match(problemWith({ scanned: 5, written: 1, refused: [] }, { apply: true, expect: 2 }), /expected 2/);
-  assert.match(problemWith({ scanned: 5, written: 2, refused: ['a/b.json'] }, { apply: true, expect: 2 }), /refused/);
-  assert.equal(problemWith({ scanned: 5, written: 2, refused: [] }, { apply: true, expect: 2 }), null);
+  assert.match(problemWith({ scanned: 5, eligible: 2, written: 1, refused: [] }, { apply: true, expect: 2 }), /expected 2/);
+  assert.match(problemWith({ scanned: 5, eligible: 2, written: 2, refused: ["a/b.json"] }, { apply: true, expect: 2 }), /changed beyond/);
+  assert.equal(problemWith({ scanned: 5, eligible: 2, written: 2, refused: [] }, { apply: true, expect: 2 }), null);
 });
 
 test('dry run over a temp tree counts eligible files and writes nothing', () => {
@@ -73,5 +73,39 @@ test('dry run over a temp tree counts eligible files and writes nothing', () => 
     const r = backfill({ apply: false, reviewDir: dir, at: AT });
     assert.deepEqual([r.scanned, r.eligible, r.written, r.dryRun], [2, 1, 0, true]);
     assert.equal(fs.readFileSync(f, 'utf8'), body);
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+function tree(files) {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro5582-'));
+  fs.mkdirSync(path.join(dir, 'show-a'));
+  for (const [name, rec] of Object.entries(files)) fs.writeFileSync(path.join(dir, 'show-a', name), JSON.stringify(rec));
+  return dir;
+}
+
+test('apply adds only the audit key and leaves every other field alone', () => {
+  // A url-collision twin: safeWriteReview would mark one of these duplicateOf; the raw write must not.
+  const a = { showId: 'show-a', wrongProduction: true, url: 'https://x.test/a ', criticName: 'Ann', outlet: 'nyt' };
+  const b = { showId: 'show-a', wrongProduction: true, url: 'https://x.test/a ', criticName: 'Ann', outlet: 'nyt2' };
+  const dir = tree({ 'a.json': a, 'b.json': b });
+  try {
+    const r = backfill({ apply: true, reviewDir: dir, at: AT, expect: 2 });
+    assert.deepEqual([r.eligible, r.written, r.refused.length], [2, 2, 0]);
+    for (const [name, before] of [['a.json', a], ['b.json', b]]) {
+      const saved = JSON.parse(fs.readFileSync(path.join(dir, 'show-a', name), 'utf8'));
+      const { [AUDIT_FIELD]: stamp, ...rest } = saved;
+      assert.deepEqual(rest, before);
+      assert.equal(stamp.backfilledBy, 'BRO-5582');
+    }
+  } finally { fs.rmSync(dir, { recursive: true, force: true }); }
+});
+
+test('a wrong --expect refuses before writing anything', () => {
+  const dir = tree({ 'a.json': { showId: 'show-a', wrongProduction: true } });
+  try {
+    const r = backfill({ apply: true, reviewDir: dir, at: AT, expect: 5 });
+    assert.equal(r.written, 0);
+    assert.match(problemWith(r, { apply: true, expect: 5 }), /nothing written/);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(dir, 'show-a', 'a.json'), 'utf8'))[AUDIT_FIELD], undefined);
   } finally { fs.rmSync(dir, { recursive: true, force: true }); }
 });
