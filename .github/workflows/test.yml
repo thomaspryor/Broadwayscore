@@ -129,6 +129,9 @@ on:
       - 'scripts/audit-default-critic-diversity.js'
       # BRO-6054: the audit's allowlist; tests/unit/same-critic-pairs-audit.test.mjs validates it.
       - 'scripts/config/same-critic-pairs-allowlist.json'
+      # BRO-3073: one glob for every scripts/config/*.json (critic-outlets, critic-tenure-reviewed,
+      # domain-tier-order had no entry); tests/unit/test-yml-config-json-coverage.test.mjs enforces it.
+      - 'scripts/config/*.json'
       # BRO-6018: CLI + sibling scripts/*.test.mjs; a solo edit would otherwise trigger ZERO CI.
       - 'scripts/audit-verified-miss-presence.js'
       - 'scripts/audit-copied-aggregator-stars.js'
