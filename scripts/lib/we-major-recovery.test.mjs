@@ -180,3 +180,13 @@ test('former and short venue names count only as a place, not as a word (BRO-650
   assert.equal(lib.venueAgrees('Dorfman Theatre (National Theatre)', 'Cottesloe'), true);
   assert.equal(lib.venueAgrees('Haymarket, Theatre Royal', 'Haymarket'), true);
 });
+
+test('Guardian news and blog pieces tagged tone/reviews are not reviews (BRO-6503)', () => {
+  const r = (url, headline, f = {}) => ({ webUrl: `https://www.theguardian.com/stage/${url}`, webTitle: headline, webPublicationDate: '2011-04-19T20:00:00Z',
+    fields: { headline, publication: 'guardian.co.uk', bodyText: 'at the Wyndham\'s Theatre, London', ...f }, tags: [{ id: 'tone/reviews' }] });
+  const s = show({ title: 'Clybourne Park', openingDate: '2011-04-10', venue: "Wyndham's Theatre" });
+  assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/clybourne-park-wins-drama-pulitzer', 'West End hit Clybourne Park wins Pulitzer prize for drama')]).length, 0);
+  assert.equal(lib.matchGuardianResults(s, [r('theatreblog/2011/apr/19/x', 'Clybourne Park review: why it works')]).length, 0);
+  assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/clybourne-park-billington', 'Clybourne Park', { starRating: 4 })]).length, 1);
+  assert.equal(lib.matchGuardianResults(s, [r('2011/apr/19/clybourne-park-review', 'Clybourne Park – review')]).length, 1);
+});

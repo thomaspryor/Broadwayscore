@@ -87,7 +87,7 @@ async function cmdGuardian() {
     const s = shows.get(r.id);
     if (!s || !s.openingDate) continue;
     const q = new URLSearchParams({ section: 'stage', 'from-date': lib.addDays(s.openingDate, -14), 'to-date': lib.addDays(s.openingDate, 60),
-      q: `"${s.title}"`, 'show-fields': 'headline,standfirst,trailText,publication,bodyText', 'show-tags': 'tone', type: 'article', 'page-size': '50', 'api-key': key });
+      q: `"${s.title}"`, 'show-fields': 'headline,standfirst,trailText,publication,bodyText,starRating', 'show-tags': 'tone', type: 'article', 'page-size': '50', 'api-key': key });
     asked++;
     try {
       const res = await fetch(`https://content.guardianapis.com/search?${q}`, { signal: AbortSignal.timeout(20000) });

@@ -179,8 +179,14 @@ function matchGuardianResults(show, results) {
     // Web-first pieces before the July 2013 domain move carry 'guardian.co.uk' (BRO-6503).
     if (!/^(the guardian|theguardian\.com|guardian\.co\.uk)$/i.test((r.fields && r.fields.publication) || '')) return false;
     if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
-    if (!` ${norm(r.fields && r.fields.headline || r.webTitle)} `.includes(` ${t} `)) return false;
     const f = r.fields || {};
+    // Pre-2013 news and blog pieces also carry tone/reviews (a Pulitzer story, a
+    // casting item, a theatreblog essay), so a review needs a star rating or
+    // "review" in its headline, and theatreblog posts never count (BRO-6503).
+    if (/\/theatreblog\//.test(r.webUrl || '')) return false;
+    const headline = f.headline || r.webTitle || '';
+    if (!/\breview\b/i.test(headline) && !f.starRating) return false;
+    if (!` ${norm(headline)} `.includes(` ${t} `)) return false;
     const text = ` ${norm([f.standfirst, f.trailText, f.bodyText].filter(Boolean).join(' '))} `;
     return venueInText(show.venue, text);
   });
