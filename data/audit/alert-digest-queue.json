@@ -1010,5 +1010,19 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-29T00:05:41.246Z"
+  },
+  {
+    "conditionKey": "live-data-test:tests/unit/review-pullquotes-live-data.test.mjs::no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts",
+    "title": "Live-data test failing: no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts (tests/unit/review-pullquotes-live-data.test.mjs)",
+    "description": "check-corpus-drift.yml \"Live-data assertions\" step: node:test \"no review missing a pullQuote has a recoverable excerpt sitting unused in review-texts\" in tests/unit/review-pullquotes-live-data.test.mjs is red against the live corpus.\n\n6 review(s) have a usable excerpt in review-texts but no pullQuote in reviews.json — run scripts/backfill-missing-pullquotes.js\n+ actual - expected\n\n+ [\n+   {\n+     criticName: null,\n+     outletId: 'whatsonstage',\n+     showId: 'a-christmas-carol-west-end-2015'\n+   },\n+   {\n+     criticName: 'Alun Hood',\n+     outletId: 'whatsonstage',\n+     showId: 'a-view-from-islington-north-west-end-2016'\n+   },\n+   {\n+     criticName: 'Michael Coveney',\n+     outletId: 'whatsonstage',\n+     showId: 'blithe-spirit-west-end-2014'\n+   },\n+   {\n+     criticName: 'Daisy Bowie-Sell',\n+     outletId: 'whatsonstage',\n+     showId: 'funny-girl-west-end-2016'\n+   },\n+   {\n+     criticName: 'Michael Coveney',\n+     outletId: 'whatsonstage',\n+     showId: 'gypsy-west-end-2015'\n+   },\n+   {\n+     criticName: 'Michael Coveney',\n+     outletId: 'whatsonstage',\n+     showId: 'hand-to-god-west-end-2016'\n+   }\n+ ]\n- []\n",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T00:36:36.047Z"
   }
 ]
