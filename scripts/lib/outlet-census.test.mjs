@@ -198,3 +198,96 @@ test('a held review naming the main title of a subtitled show is held, not a mis
   const r = census.bucketItem({ outletId: 'thewrap', url: u, publishDate: '2026-09-28', headline: '‘School Girls’ Broadway Review: Denée Benton Isn’t Just Mean, She’s a Teenage Lady Macbeth' }, ctx);
   assert.equal(r.bucket, 'held');
 });
+
+test('a North American tour stop or a "Broadway By The Year" concert is not a Broadway gap (stageandcinema, BRO-6485)', () => {
+  const mr = { id: 'moulin-rouge-2019', title: 'Moulin Rouge! The Musical', market: 'broadway', openingDate: '2019-07-25', closingDate: null };
+  const ctx = { shows: [mr], nycIds: new Set([mr.id]), corpus: census.buildCorpusIndex([]), outletShowUrls: census.buildOutletShowIndex([]), nycVenues: [] };
+  const tour = census.bucketItem({ outletId: 'stageandcinema', requireNycSignal: true, url: 'https://stageandcinema.com/2023/05/20/moulin-rouge-scfta/', publishDate: '2023-05-20',
+    headline: 'Theater Review: MOULIN ROUGE! (North American Tour at SCFTA)', description: 'The Broadway smash arrives in Costa Mesa.' }, ctx);
+  assert.notEqual(tour.bucket, 'gap');
+  const concert = census.bucketItem({ outletId: 'stageandcinema', url: 'https://stageandcinema.com/2023/03/01/broadway-by-the-year/', publishDate: '2023-03-01',
+    headline: 'Theater Review: BROADWAY BY THE YEAR (The Town Hall)', description: 'Songs from Moulin Rouge and more.' }, ctx);
+  assert.equal(concert.bucket, 'not-review');
+});
+
+test('a "tour at" phrase does not outvote an explicit New York signal (Town Hall concert, BRO-6485)', () => {
+  const mr = { id: 'moulin-rouge-2019', title: 'Moulin Rouge! The Musical', market: 'broadway', openingDate: '2019-07-25', closingDate: null };
+  const ctx = { shows: [mr], nycIds: new Set([mr.id]), corpus: census.buildCorpusIndex([]), outletShowUrls: census.buildOutletShowIndex([]), nycVenues: [] };
+  const r = census.bucketItem({ outletId: 'stageandcinema', requireNycSignal: true, url: 'https://stageandcinema.com/2023/06/01/moulin-rouge/', publishDate: '2023-06-01',
+    headline: 'Theater Review: MOULIN ROUGE! THE MUSICAL (New York)', description: 'After its world tour at last in Manhattan.' }, ctx);
+  assert.equal(r.nycSignal, 'nyc');
+});
+
+test('quarterWindows covers since..now in calendar quarters with no gaps', () => {
+  const w = census.quarterWindows('2021-06-01', new Date('2021-12-15T00:00:00Z'));
+  const ymd = (d) => d.toISOString().slice(0, 10);
+  assert.deepEqual(w.map((x) => [ymd(x.dateMin), ymd(x.dateMax)]), [['2021-06-01', '2021-07-01'], ['2021-07-01', '2021-10-01'], ['2021-10-01', '2021-12-15']]);
+});
+
+test('serpItemDate rejects impossible dates instead of rolling them into the next month', () => {
+  const win = { dateMin: new Date('2023-01-01T00:00:00Z'), dateMax: new Date('2023-04-01T00:00:00Z') };
+  const r = census.serpItemDate({ url: 'https://x.com/foo/', snippet: 'Feb 30, 2023' }, win);
+  assert.equal(r.dateSoft, true); // fell back to the window midpoint, not 2023-03-02
+});
+
+test('serpItemDate prefers the URL date, then the snippet date, else a soft window midpoint', () => {
+  const win = { dateMin: new Date('2023-01-01T00:00:00Z'), dateMax: new Date('2023-03-31T00:00:00Z') };
+  assert.equal(census.serpItemDate({ url: 'https://x.com/2023/02/14/foo/', snippet: 'Mar 1, 2023' }, win).publishDate, '2023-02-14');
+  assert.equal(census.serpItemDate({ url: 'https://x.com/foo/', snippet: 'Mar 12, 2023 — A review' }, win).publishDate, '2023-03-12');
+  const soft = census.serpItemDate({ url: 'https://x.com/foo/', snippet: 'no date' }, win);
+  assert.equal(soft.dateSoft, true);
+  assert.ok(soft.publishDate >= '2023-01-01' && soft.publishDate <= '2023-03-31');
+});
+
+test('cleanSerpTitle strips only a suffix the outlet repeats, never a lone trailing segment', () => {
+  const titles = ['Review: Hamlet Is Bold - The New York Times', 'Review: Oh, Mary! - The New York Times', 'Review: Cats - The New York Times', 'Theater Review - Hamlet'];
+  const sfx = census.commonTitleSuffixes(titles);
+  assert.deepEqual([...sfx], ['the new york times']);
+  assert.equal(census.cleanSerpTitle(titles[0], sfx), 'Review: Hamlet Is Bold');
+  assert.equal(census.cleanSerpTitle('Theater Review - Hamlet', sfx), 'Theater Review - Hamlet');
+  assert.equal(census.cleanSerpTitle('Theater Review - Hamlet'), 'Theater Review - Hamlet');
+  assert.equal(census.cleanSerpTitle('A long headline that got cut ...'), 'A long headline that got cut');
+});
+
+test('extractPageMeta decodes named entities and strips only og:site_name from titles (Off Off Online, BRO-6485)', () => {
+  const m = census.extractPageMeta('<meta property="og:site_name" content="Off Off Online"/><title>Kinky Boots &mdash; Off Off Online</title>');
+  assert.equal(m.headline, 'Kinky Boots');
+  // No site name known: keep the whole <title>; the trailing segment may be the show.
+  assert.equal(census.extractPageMeta('<title>Off Off Online | Kinky Boots</title>').headline, 'Off Off Online | Kinky Boots');
+  const og = census.extractPageMeta('<meta property="og:title" content="Review: &lsquo;Teeth&rsquo; Bites">');
+  assert.equal(og.headline, "Review: 'Teeth' Bites");
+  const both = census.extractPageMeta('<meta property="og:site_name" content="Off Off Online"/><meta property="og:title" content="The Dog Show: Come. Sit. Stay. &mdash; Off Off Online"/>');
+  assert.equal(both.headline, 'The Dog Show: Come. Sit. Stay.');
+  const keep = census.extractPageMeta('<meta property="og:site_name" content="Vulture"/><meta property="og:title" content="Theater Review: Hamlet - A Bold Take"/>');
+  assert.equal(keep.headline, 'Theater Review: Hamlet - A Bold Take');
+});
+
+test('an enumeration cut short by the SERP budget, a missing provider or a failed sitemap child is incomplete', () => {
+  assert.equal(census.isIncompleteEnumeration(['serp budget 8 reached']), true);
+  assert.equal(census.isIncompleteEnumeration(['no SERP provider for "site:x.com"']), true);
+  assert.equal(census.isIncompleteEnumeration(['child https://x.com/s1.xml: HTTP 503']), true);
+  assert.equal(census.isIncompleteEnumeration(['page cap 3 hit in 4 quarter-queries (more results not read)']), true);
+  assert.equal(census.isIncompleteEnumeration(['46 SERP calls']), false);
+  assert.equal(census.isIncompleteEnumeration(undefined), false);
+});
+
+test('an archival film review naming an old year is not a gap; a show titled with a year still is (Vulture, BRO-6485)', () => {
+  const david = { id: 'david-a-new-musical-off-broadway-2024', title: 'David', market: 'broadway', openingDate: '2024-09-01', closingDate: '2024-12-01' };
+  const s1776 = { id: '1776-2022', title: '1776', market: 'broadway', openingDate: '2022-10-06', closingDate: '2023-01-08' };
+  const all = [david, s1776];
+  const ctx = { shows: all, nycIds: new Set(all.map((s) => s.id)), corpus: census.buildCorpusIndex([]), outletShowUrls: census.buildOutletShowIndex([]), nycVenues: [] };
+  const film = census.bucketItem({ outletId: 'vulture', sourceSaysReview: true, url: 'https://www.vulture.com/article/beverly-hills-cop-ii-review-david-denby-1987.html', publishDate: '2024-10-01',
+    headline: 'beverly hills cop ii review david denby 1987' }, ctx);
+  assert.equal(film.bucket, 'not-review');
+  const rev = census.bucketItem({ outletId: 'vulture', sourceSaysReview: true, url: 'https://www.vulture.com/article/theater-review-1776-revival.html', publishDate: '2022-10-07',
+    headline: 'Theater Review: 1776, revived' }, ctx);
+  assert.equal(rev.bucket, 'gap');
+  const dated1776 = census.bucketItem({ outletId: 'vulture', sourceSaysReview: true, url: 'https://www.vulture.com/article/theater-review-1776.html', publishDate: '2022-10-07',
+    headline: 'Theater Review: 1776' }, ctx);
+  assert.equal(dated1776.bucket, 'gap');
+  const danny = { id: 'danny-and-the-deep-blue-sea-off-broadway-2023', title: 'Danny and the Deep Blue Sea', market: 'broadway', openingDate: '2023-06-01', closingDate: '2023-08-01' };
+  const ctx2 = { ...ctx, shows: [danny], nycIds: new Set([danny.id]) };
+  const revival = census.bucketItem({ outletId: 'theater-pizzazz', sourceSaysReview: true, url: 'https://theaterpizzazz.com/danny-and-the-deep-blue-sea/', publishDate: '2023-06-10',
+    headline: 'Danny and the Deep Blue Sea: John Patrick Shanley’s 1983 drama revived swimmingly' }, ctx2);
+  assert.equal(revival.bucket, 'gap');
+});

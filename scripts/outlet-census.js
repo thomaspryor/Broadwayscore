@@ -18,10 +18,13 @@
  *   node scripts/outlet-census.js --outlet=theatermania [--since=2021-06-01] [--refresh]
  *   node scripts/outlet-census.js --all [--print-gaps]   (GAP <showId> <url> lines, for CI runs)
  *   node scripts/outlet-census.js --summary              (markdown recall table from the reports)
+ *   --kind=serp,sitemap   only outlets of these source kinds;  --no-serp   skip the paid SERP kind
+ *   --serp-budget=N       cap on SERP calls per run (default 1500)
  */
 
 const fs = require('fs');
 const path = require('path');
+const zlib = require('zlib');
 const { SOURCES } = require('./lib/outlet-census-sources');
 const census = require('./lib/outlet-census');
 const { parseSitemapXml } = require('./lib/outlet-listing-helpers');
@@ -36,14 +39,17 @@ const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts');
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124 Safari/537.36';
 
 function parseArgs(argv) {
-  const o = { since: '2021-06-01', refresh: false, outlets: [], concurrency: 6 };
+  const o = { since: '2021-06-01', refresh: false, outlets: [], concurrency: 6, serpBudget: 1500, serpCalls: 0 };
   for (const a of argv) {
     if (a.startsWith('--outlet=')) o.outlets.push(...a.slice(9).split(','));
     else if (a === '--all') o.outlets.push(...Object.keys(SOURCES));
+    else if (a.startsWith('--kind=')) o.kinds = a.slice(7).split(',');
     else if (a.startsWith('--since=')) o.since = a.slice(8);
     else if (a === '--refresh') o.refresh = true;
     else if (a.startsWith('--concurrency=')) o.concurrency = Number(a.slice(14)) || 6;
     else if (a === '--print-gaps') o.printGaps = true;
+    else if (a.startsWith('--serp-budget=')) o.serpBudget = Number(a.slice(14)) || 0;
+    else if (a === '--no-serp') o.noSerp = true;
     else if (a === '--summary') o.summary = true;
   }
   return o;
@@ -51,8 +57,9 @@ function parseArgs(argv) {
 
 async function get(url, timeoutMs = 30000) {
   const res = await fetch(url, { headers: { 'User-Agent': UA, Accept: '*/*' }, redirect: 'follow', signal: AbortSignal.timeout(timeoutMs) });
-  const body = await res.text();
-  return { status: res.status, body, headers: res.headers };
+  let buf = Buffer.from(await res.arrayBuffer());
+  if (buf[0] === 0x1f && buf[1] === 0x8b) buf = zlib.gunzipSync(buf); // .xml.gz sitemaps (Time Out)
+  return { status: res.status, body: buf.toString('utf8'), headers: res.headers };
 }
 
 async function pool(items, n, fn) {
@@ -93,21 +100,28 @@ async function enumerateWpJson(src, since) {
 
 const SOURCE_LABEL = 'outlet-census';
 
-async function fetchSitemapUrls(url, urlFilter) {
-  const { status, body } = await get(url, 60000);
+async function fetchSitemapUrls(url, urlFilter, opts = {}) {
+  const { status, body: raw } = await get(url, 60000);
   if (status !== 200) throw new Error(`HTTP ${status} for ${url}`);
+  // CDATA-wrapped and entity-escaped <loc>s (Yoast, Arc) parse like plain ones.
+  const body = raw.replace(/<!\[CDATA\[\s*([^\]]*?)\s*\]\]>/g, '$1').replace(/&amp;/g, '&');
   if (/<sitemapindex/i.test(body)) {
-    const children = [...body.matchAll(/<loc>(?:<!\[CDATA\[)?([^<\]]+)/g)].map((m) => m[1].trim());
+    // childFilter prunes an index to the children that can hold in-window reviews
+    // (Daily Beast lists one child per day back to 2008, Time Out one per city).
+    const children = [...body.matchAll(/<loc>([^<]+)/g)].map((m) => m[1].trim())
+      .filter((c) => !opts.childFilter || opts.childFilter(c, opts.since));
     const out = [];
-    for (const c of children) out.push(...await fetchSitemapUrls(c, urlFilter));
+    await pool(children, opts.childConcurrency || 1, async (c) => {
+      try { out.push(...await fetchSitemapUrls(c, urlFilter, opts)); } catch (e) { (opts.notes || []).push(`child ${c}: ${e.message}`); }
+    });
     return out;
   }
-  return parseSitemapXml(body, new Date(0), urlFilter).map((i) => i.url);
+  // A URL last modified before the window was published before it too.
+  return parseSitemapXml(body, opts.since ? new Date(opts.since) : new Date(0), urlFilter);
 }
 
 async function enumerateSitemap(src, since) {
   const notes = [];
-  const urls = [];
   if (src.kind === 'sitemap-years') {
     const y0 = Number(since.slice(0, 4));
     const items = [];
@@ -115,16 +129,71 @@ async function enumerateSitemap(src, since) {
       // The poller's own fetcher (honest UA), direct only: the census never spends paid
       // scraper credit to enumerate (plan review 2026-10-28). Blocked years are reported.
       const got = await fetchViaSitemap(SOURCE_LABEL, { urlTemplate: () => src.urlTemplate(y), urlFilter: src.urlFilter },
-        new Date(0), { proxyRetry: false });
+        new Date(0), { proxyRetry: !!src.proxyRetry });
       if (!got.length) notes.push(`${y}: no URLs (blocked or empty; see log)`);
       items.push(...got);
     }
     const seen = new Set();
     return { items: items.filter((i) => !seen.has(i.url) && seen.add(i.url)), notes };
-  } else {
-    urls.push(...await fetchSitemapUrls(src.url, src.urlFilter));
   }
-  return { items: [...new Set(urls)].map((url) => ({ url })), notes };
+  const found = [];
+  for (const u of [].concat(src.url)) {
+    found.push(...await fetchSitemapUrls(u, src.urlFilter, { childFilter: src.childFilter, since, notes, childConcurrency: src.childConcurrency }));
+  }
+  const seen = new Set();
+  const items = found.filter((i) => !seen.has(i.url) && seen.add(i.url))
+    // lastmod stands in for the date only where no page meta will replace it.
+    .map((i) => ({ url: i.url, publishDate: i.publishDate || null, dateSoft: true })); // page meta, when fetched, replaces the lastmod date
+  return { items, notes };
+}
+
+/**
+ * Site-scoped Google search per calendar quarter (BRO-6485): for outlets whose site,
+ * sitemaps and API all refuse the census client (403s, challenge pages). Each query is
+ * date-windowed so an old production's review cannot surface for a new one; a SERP
+ * date is only Google's guess, so items carry the window midpoint as a soft date when
+ * neither the URL nor the snippet dates them. Paid: serpQuery runs ScrapingDog first;
+ * --serp-budget caps the calls per run.
+ */
+async function enumerateSerp(src, since, o) {
+  const { serpQuery } = require('./lib/url-discovery');
+  const notes = [];
+  const byUrl = new Map();
+  const seen = new Set();
+  const maxPages = src.maxPages || 5;
+  let calls = 0; let capHits = 0;
+  const finish = () => {
+    const suffixes = census.commonTitleSuffixes([...byUrl.values()].map((i) => i.rawTitle));
+    const items = [...byUrl.values()].map(({ rawTitle, ...i }) => ({ ...i, headline: census.cleanSerpTitle(rawTitle, suffixes) }));
+    if (capHits) notes.push(`page cap ${maxPages} hit in ${capHits} quarter-queries (more results not read)`);
+    return { items, notes, calls };
+  };
+  for (const window of census.quarterWindows(since)) {
+    for (const query of src.queries) {
+      for (let page = 0; page < maxPages; page++) {
+        if (o.serpCalls >= o.serpBudget) { notes.push(`serp budget ${o.serpBudget} reached`); return finish(); }
+        o.serpCalls++; calls++;
+        const results = await serpQuery(query, { dateRange: window, page, nbResults: 10, log: () => {} });
+        if (results == null) { notes.push(`no SERP provider for "${query}"`); return finish(); }
+        let fresh = 0;
+        for (const r of results) {
+          if (!r.url) continue;
+          const k = urlKey(r.url);
+          if (seen.has(k)) continue;
+          seen.add(k); fresh++;
+          if (src.urlFilter && !src.urlFilter.test(r.url)) continue;
+          byUrl.set(k, { url: r.url, rawTitle: r.title, description: String(r.snippet || '').slice(0, 400), ...census.serpItemDate(r, window) });
+        }
+        // Stop on a short page (Google sometimes returns 9 of 10, so under 8) or Google repeating
+        // itself, counted before urlFilter so a page of off-topic hits does not end the quarter.
+        // A full last page means more remain: noted, and the run counts as incomplete.
+        if (results.length < 8 || fresh === 0) break;
+        if (page === maxPages - 1) capHits++;
+      }
+    }
+  }
+  notes.push(`${calls} SERP calls`);
+  return finish();
 }
 
 /** Fill headline/date/description from each page, cached per URL across runs. */
@@ -148,7 +217,11 @@ async function fillMeta(outletId, items, { refresh, concurrency }) {
         fs.writeFileSync(cachePath, JSON.stringify(cache));
       }
     }
-    Object.assign(item, cache[k]);
+    const m = cache[k];
+    for (const [key, v] of Object.entries(m)) {
+      if (key === 'dateSoft' && m.publishDate == null) continue; // a kept lastmod date stays soft
+      if (v != null || item[key] == null) item[key] = v;
+    }
   });
   fs.mkdirSync(CACHE_DIR, { recursive: true });
   fs.writeFileSync(cachePath, JSON.stringify(cache));
@@ -187,6 +260,7 @@ async function runOutlet(outletId, o, shared) {
   if (!src) { console.error(`no census source for ${outletId}`); return null; }
   console.log(`\n== ${outletId} (${src.kind})`);
   const enumerated = src.kind === 'wp-json' ? await enumerateWpJson(src, o.since)
+    : src.kind === 'serp' ? await enumerateSerp(src, o.since, o)
     : src.kind === 'unreadable' ? { items: [], notes: [`unreadable: ${src.reason}`] }
       : await enumerateSitemap(src, o.since);
   let { items } = enumerated;
@@ -217,7 +291,7 @@ async function runOutlet(outletId, o, shared) {
     outletId,
     generatedAt: new Date().toISOString(),
     since: o.since,
-    source: { kind: src.kind, notes: enumerated.notes, enumerated: enumerated.items.length, inWindow: items.length, undated, meta },
+    source: { kind: src.kind, notes: enumerated.notes, incomplete: census.isIncompleteEnumeration(enumerated.notes), enumerated: enumerated.items.length, inWindow: items.length, undated, meta },
     corpus: shared.corpus.kind,
     summary,
     corpusSide: { rowsInWindow: uniqRows.length, notEnumerated: misses.filter((m) => m.why === 'not-enumerated').length, noUrl: misses.filter((m) => m.why === 'no-url').length, samples: misses.slice(0, 40) },
@@ -241,7 +315,7 @@ async function runOutlet(outletId, o, shared) {
     items: results.map((r) => ({ url: r.url, publishDate: r.publishDate || null, headline: r.headline || null, bucket: r.bucket })) };
   fs.writeFileSync(path.join(OUT_DIR, `${outletId}.manifest.json`), JSON.stringify(manifest, null, 1) + '\n');
   fs.writeFileSync(path.join(OUT_DIR, `${outletId}.report.json`), JSON.stringify(report, null, 2) + '\n');
-  console.log(`  buckets ${JSON.stringify(summary.counts)} recall=${summary.recall}`);
+  console.log(`  buckets ${JSON.stringify(summary.counts)} recall=${summary.recall}${report.source.incomplete ? ' (INCOMPLETE: ' + enumerated.notes.join('; ') + ')' : ''}`);
   console.log(`  corpus-side: ${uniqRows.length} held rows in window, ${report.corpusSide.notEnumerated} not enumerated, ${report.corpusSide.noUrl} without URL`);
   return report;
 }
@@ -254,7 +328,8 @@ function summaryTable() {
   rows.sort((a, b) => (a.summary.recall == null) - (b.summary.recall == null) || (a.summary.recall ?? 0) - (b.summary.recall ?? 0));
   for (const r of rows) {
     const c = r.summary.counts || {};
-    const src = r.source.kind === 'unreadable' ? r.source.notes[0] : r.source.enumerated ? r.source.kind : `${r.source.kind}: ${(r.source.notes || [])[0] || 'nothing listed'}`;
+    const src = (r.source.kind === 'unreadable' ? r.source.notes[0] : r.source.enumerated ? r.source.kind : `${r.source.kind}: ${(r.source.notes || [])[0] || 'nothing listed'}`)
+      + (r.source.incomplete ? ' (incomplete)' : '');
     lines.push(`| ${r.outletId} | ${src.replace(/\|/g, '/')} | ${r.corpusSide.rowsInWindow} | ${r.source.enumerated} | ${c.held || 0} | ${c['held-alt-url'] || 0} | ${c.gap || 0} | ${c.misfile || 0} | ${c.ambiguous || 0} | ${c['catalog-gap'] || 0} | ${r.summary.recall ?? 'n/a'} |`);
   }
   return lines.join('\n');
@@ -262,11 +337,13 @@ function summaryTable() {
 
 async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
-    console.log('Usage: node scripts/outlet-census.js --outlet=a,b | --all [--since=2021-06-01] [--refresh] [--concurrency=6] [--print-gaps]\n       node scripts/outlet-census.js --summary   (markdown table of the reports on disk)');
+    console.log('Usage: node scripts/outlet-census.js --outlet=a,b | --all [--since=2021-06-01] [--refresh] [--concurrency=6] [--print-gaps] [--kind=a,b] [--no-serp] [--serp-budget=N]\n       node scripts/outlet-census.js --summary   (markdown table of the reports on disk)');
     return;
   }
   const o = parseArgs(process.argv.slice(2));
   if (o.summary) { console.log(summaryTable()); return 0; }
+  if (o.kinds) o.outlets = o.outlets.filter((id) => SOURCES[id] && o.kinds.includes(SOURCES[id].kind));
+  if (o.noSerp) o.outlets = o.outlets.filter((id) => SOURCES[id] && SOURCES[id].kind !== 'serp');
   if (o.outlets.length === 0) { console.error('usage: --outlet=<id>[,<id>] | --all  [--since=YYYY-MM-DD] [--refresh]'); return 2; }
   const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   const allShows = Array.isArray(showsRaw) ? showsRaw : showsRaw.shows;
