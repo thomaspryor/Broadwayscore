@@ -1301,18 +1301,35 @@
     "queuedAt": "2026-10-29T07:17:00.265Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
+    "conditionKey": "land:land/bro-5447-covered",
+    "title": "Landing blocked: deadline red on land/bro-5447-covered",
+    "description": "land.yml did not land land/bro-5447-covered: the deadline gate went red at 6585b72f78. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-5447-covered @ 6585b72f78 (origin/land/bro-5447-covered) → origin/main @ a41857720c [land] train: + land/bro-6496-ob-precovid @ da5e9a2f0f (1 commit(s)) [land] train: + land/job/linear-BRO-6505-mvt7951x @ 3bef4740ff (1 commit(s)) [land] train: land/bro-6503-we-2010-11-promote not taken — would not rebase onto the train: Rebasing (1/2) error: could not apply 2d5ee202597... data(BRO- Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40824524183",
+    "severity": "error",
     "url": null,
     "decision": false,
-    "info": true,
+    "info": false,
     "decisionPrompt": null,
     "model": null,
     "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T08:21:27.535Z"
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-5447-covered"
+      },
+      {
+        "name": "gate",
+        "value": "deadline"
+      },
+      {
+        "name": "tip",
+        "value": "6585b72f78b0341c4ebb917bf2fca6d88a417f08"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40824524183"
+      }
+    ],
+    "queuedAt": "2026-10-29T08:38:50.339Z"
   },
   {
     "conditionKey": "express-retry-still-thin:the-verge-off-broadway-2026",
