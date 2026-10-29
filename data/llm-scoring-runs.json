@@ -1238424,21 +1238424,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T00:18:29.180Z",
-    "completedAt": "2026-10-29T00:18:55.586Z",
-    "totalReviews": 5,
-    "processed": 5,
+    "startedAt": "2026-10-29T00:19:31.280Z",
+    "completedAt": "2026-10-29T00:19:45.247Z",
+    "totalReviews": 3,
+    "processed": 3,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 30899,
-      "output": 1636,
-      "cacheRead": 15183,
-      "cacheWrite": 3762,
-      "total": 76496
+      "input": 17505,
+      "output": 906,
+      "cacheRead": 11421,
+      "cacheWrite": 0,
+      "total": 44516
     },
-    "costUsd": 0.1303361,
-    "runId": "40792651180",
+    "costUsd": 0.06623390000000001,
+    "runId": "40792728971",
     "errorDetails": [],
     "validation": [
       {
@@ -1271205,6 +1271205,16 @@
         "disagreementDetails": "DTLI: Sentiment flip: we say positive, they say negative"
       },
       {
+        "showId": "this-beautiful-future-off-broadway-2022",
+        "ourDistribution": {
+          "up": 1,
+          "flat": 0,
+          "down": 2,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "this-house-west-end-2016",
         "ourDistribution": {
           "up": 2,
@@ -1273820,10 +1273830,10 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T00:20:54.134Z",
-    "completedAt": "2026-10-29T00:20:59.418Z",
-    "totalReviews": 2,
-    "processed": 2,
+    "startedAt": "2026-10-29T00:21:57.625Z",
+    "completedAt": "2026-10-29T00:21:57.626Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
@@ -1273833,8 +1273843,8 @@
       "cacheWrite": 0,
       "total": 6757
     },
-    "costUsd": 0.016908,
-    "runId": "40792651180",
+    "costUsd": 0,
+    "runId": "40792728971",
     "errorDetails": []
   }
 ]
