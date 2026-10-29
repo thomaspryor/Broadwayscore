@@ -118,6 +118,9 @@ export interface RawShow {
   tourParent?: string | null;
   // National tour (category 'tour', BRO-4211): id of the Broadway production it tours.
   tourOf?: string | null;
+  // Regional city hub metro slug (BRO-6515), e.g. 'manchester-uk', 'chicago-il'.
+  // From data/venue-metros.json via scripts/lib/venue-metro.js; market stays 'regional'.
+  city?: string | null;
   // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
   // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
@@ -277,6 +280,7 @@ export interface ComputedShow {
   transferredTo?: string | null;
   tourParent?: string | null;
   tourOf?: string | null;
+  city?: string | null;    // regional city hub metro slug (BRO-6515)
   // Homepage curation overrides (see RawShow above / homepage-notability.ts)
   homepageInclude?: boolean;
   homepageExclude?: boolean;
@@ -683,6 +687,7 @@ export function computeShowData(
     transferredTo: show.transferredTo,
     tourParent: show.tourParent,
     tourOf: show.tourOf,
+    city: show.city ?? null,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
     priorRuns: show.priorRuns,

@@ -121,3 +121,8 @@ test('Playbill exemption pair: allowed, shapes checked, and the result exempts t
   assert.equal(applyDataEdit(data, src).ok, true);
   assert.equal(isExemptFromPlaybillCheck(data.shows[0]), true);
 });
+// BRO-6515: backfill-show-city.js plans city edits through data-edit.
+test('city is an editable shows.json field', async () => {
+  const { dataEditAllowProblem } = (await import('node:module')).createRequire(import.meta.url)('./data-edit-action.js');
+  assert.equal(dataEditAllowProblem({ file: 'shows.json', field: 'city' }), null);
+});

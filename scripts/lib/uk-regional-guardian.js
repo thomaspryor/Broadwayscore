@@ -57,11 +57,22 @@ function ukFlagshipVenueFor({ tags = [], slug = '' } = {}) {
   const slugText = norm(String(slug).replace(/-/g, ' '));
   const slugTokens = slugText.split(' ').filter(Boolean);
   const tagTexts = tags.map(norm).filter(Boolean);
-  for (const v of UK_VENUES) {
+  // Receiving houses (guardianTrigger: false) mostly host tours, so a review
+  // there is not a new regional production (BRO-6516 ship-check).
+  const venues = UK_VENUES.filter((v) => v.guardianTrigger !== false);
+  const entry = (v) => {
     const aliases = (v.aliases && v.aliases.length ? v.aliases : [v.match]).map(norm);
     const hit = (h) => aliases.some((a) => new RegExp(`(^| )${a.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}( |$)`).test(h));
-    const result = { venue: v.venue || v.match, city: v.city, match: v.match, domain: v.domain };
+    return { hit, result: { venue: v.venue || v.match, city: v.city, match: v.match, domain: v.domain } };
+  };
+  // Slug first across every house: a slug naming the Playhouse beats an
+  // earlier house's tag ("Liverpool Everyman and Playhouse").
+  for (const v of venues) {
+    const { hit, result } = entry(v);
     if (hit(slugText)) return result;
+  }
+  for (const v of venues) {
+    const { hit, result } = entry(v);
     if (tagTexts.some(hit)) {
       const cityToken = norm(v.city).split(' ')[0];
       const namesOtherVenue = slugTokens.some((t) => SLUG_VENUE_WORDS.has(t));
@@ -150,6 +161,9 @@ function decideUkFlagshipPromotion(candidate) {
   }
   if (!isUkFlagshipVenue(candidate.venue)) {
     return { confirmed: false, reason: `venue "${candidate.venue}" is not a flagship UK regional house (data/uk-regional-venues.json)` };
+  }
+  if (ukVenueEntry(candidate.venue).guardianTrigger === false) {
+    return { confirmed: false, reason: `venue "${candidate.venue}" is a receiving house; its Guardian reviews are mostly tours` };
   }
   if (!candidate.sourceUrl) {
     return { confirmed: false, reason: 'guardian-review candidate has no review URL' };
