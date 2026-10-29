@@ -32,6 +32,7 @@ import {
   DESIGNATION_ESTIMATE_CAVEAT,
   LIKELY_OUTCOME_NOTE,
   type RecoupedCellSummary,
+  formatReturnRange,
 } from '@/lib/commercial-display';
 import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from '@/components/RecoupmentProgressBar';
@@ -58,6 +59,8 @@ function getRecoupedSortValue(show: CommercialShowRow): number {
   if (cell.kind === 'analyst') return (cell.range[0] + cell.range[1]) / 2;
   if (cell.kind === 'model') return cell.pct[1];
   if (cell.kind === 'loss') return -1;
+  // A model-labelled win prints its return range in place of the reason (BRO-6555).
+  if (show.estimatedReturnRange) return RECOUPED_SORT_VALUE;
   return -Infinity;
 }
 
@@ -85,6 +88,23 @@ function CitationIcon() {
     <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.828 10.172a4 4 0 010 5.656l-3 3a4 4 0 01-5.656-5.656l1.5-1.5M10.172 13.828a4 4 0 010-5.656l3-3a4 4 0 015.656 5.656l-1.5 1.5" />
     </svg>
+  );
+}
+
+/** Our modeled investor return under a win (BRO-6555): always a range, always "Est." */
+function EstimatedReturnLine({ show }: { show: CommercialShowRow }) {
+  const range = show.estimatedReturnRange;
+  if (!range) return null;
+  const assumed = show.modelDataQuality === 'low';
+  return (
+    <div
+      className="mt-0.5"
+      data-testid="estimated-return"
+      title={`Our model's estimate of what investors got back, as a multiple of their money, after the producers' share and counting the NY tax credit. Shown as a range because running costs are rarely reported${assumed ? '; this show\'s running cost is assumed from similar shows' : ''}. See methodology.`}
+    >
+      <div className="text-xs text-gray-300 whitespace-nowrap">Est. {formatReturnRange(range)} returned</div>
+      <div className="text-[10px] text-gray-500 whitespace-nowrap">Our model{assumed ? ' · running cost assumed' : ''}</div>
+    </div>
   );
 }
 
@@ -126,6 +146,7 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
             Not publicly announced
           </div>
         )}
+        <EstimatedReturnLine show={show} />
       </div>
     );
   }
@@ -173,6 +194,9 @@ function RecoupedCell({ show }: { show: CommercialShowRow }) {
   if (cell.kind === 'loss') {
     return <span className="text-gray-400 text-sm">{cell.text}</span>;
   }
+
+  // A win label our model gave (no recoupment record): show what it rests on.
+  if (show.estimatedReturnRange) return <EstimatedReturnLine show={show} />;
 
   return <span className="text-gray-400 text-xs" data-testid="model-hold">{cell.text}</span>;
 }

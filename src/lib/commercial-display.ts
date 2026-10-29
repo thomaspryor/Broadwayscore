@@ -25,7 +25,7 @@ import {
   modelDisplayGuard, displayBasis, playedWeeks, independentEstimate, isRunning,
   analystRange, estimateFitsDesignation, RUNNING_SHOWN_MAX,
 } from '../../scripts/lib/model-display-guard';
-import { hasNoInvestorsToRepay, isLossDesignation, likelyOutcomeDesignation, ownReturnedEstimatePct } from '../../scripts/lib/commercial-designations';
+import { hasNoInvestorsToRepay, isLossDesignation, likelyOutcomeDesignation, ownReturnedEstimatePct, RECOUPED_DESIGNATIONS } from '../../scripts/lib/commercial-designations';
 import { publicSourceText, isEstimatedCapitalization, isMaximumCapitalization, saysRecoupmentUnannounced } from '../../scripts/lib/public-source-text';
 import { conversionOf } from '../../scripts/lib/commercial-conversion';
 import { recoupReportedAfterClosing } from '../../scripts/lib/recoup-reported-after-closing';
@@ -677,6 +677,42 @@ export function getReportedInvestorMultiple(
   const m = commercial.investorMultiple;
   if (typeof m !== 'number' || !isFinite(m) || m <= 0) return null;
   return getCitedSourceUrl(commercial.sources) ? m : null;
+}
+
+/** A range whose high end is more than this multiple of its low end says too little to print (Phantom 1.0-9.1x). */
+const MAX_RETURN_RANGE_SPREAD = 2;
+
+/**
+ * Our model's estimated investor return for a CLOSED show on the winning
+ * side, as a [low, high] multiple of the money put in (owner 2026-10-29,
+ * BRO-6555: a range, never one number). After the producers' share, NY tax
+ * credit included. Running shows get none: their multiple projects to the
+ * closing date, so it is not money returned yet. null when a cited multiple
+ * exists (that one is shown instead), the label is not a win, the model's
+ * middle is under 1x (it contradicts the win), or the range is too wide.
+ * The low end is floored at 1x: a win means investors got their money back.
+ */
+export function getEstimatedReturnRange(
+  commercial: Pick<ShowCommercial, 'designation' | 'modelInvestorMultiple' | 'investorMultiple' | 'sources'>,
+  status: string | null | undefined
+): [number, number] | null {
+  if (status !== 'closed') return null;
+  if (getReportedInvestorMultiple(commercial) != null) return null;
+  if (!(RECOUPED_DESIGNATIONS as readonly string[]).includes(commercial.designation)) return null;
+  const m = commercial.modelInvestorMultiple;
+  if (!m || !m.every((v) => typeof v === 'number' && isFinite(v))) return null;
+  const [lo, mid, hi] = [...m].sort((a, b) => a - b);
+  if (mid < 1) return null;
+  const floor = Math.max(lo, 1);
+  if (hi > floor * MAX_RETURN_RANGE_SPREAD) return null;
+  return [floor, hi];
+}
+
+/** "1.0–1.3x"; a range that rounds to one figure reads "about 1.2x". */
+export function formatReturnRange([lo, hi]: [number, number]): string {
+  const a = lo.toFixed(1);
+  const b = hi.toFixed(1);
+  return a === b ? `about ${a}x` : `${a}–${b}x`;
 }
 
 export interface DesignationDisplay {

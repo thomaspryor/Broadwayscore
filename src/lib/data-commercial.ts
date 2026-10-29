@@ -42,6 +42,7 @@ import {
   getDisplayableModelRange,
   getBreakEven,
   getReportedInvestorMultiple,
+  getEstimatedReturnRange,
   publicSourceText,
   lossBasisCaveat,
   likelyOutcomeLine,
@@ -907,7 +908,8 @@ function positiveOrNull(value: number | null | undefined): number | null {
 /**
  * One /biz table row. Closed shows get no weekly gross and no trend (their
  * recent weeks are empty); only a reported, cited investor multiple is passed
- * (getReportedInvestorMultiple), never a modeled one.
+ * (getReportedInvestorMultiple); a win label also gets our modeled range
+ * (getEstimatedReturnRange), always labelled as an estimate.
  */
 function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial): CommercialShowRow {
   const grossData = getShowGrosses(slug);
@@ -947,6 +949,7 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     modelMethod: data.modelMethod || null,
     modelDataQuality: data.modelDataQuality,
     reportedMultiple: getReportedInvestorMultiple(data),
+    estimatedReturnRange: getEstimatedReturnRange(data, show.status),
     // AllShowsTable is a client component: the row lands in the page payload, so only publishable text.
     recoupedSource: publicSourceText(data.recoupedSource),
     trend: running ? getRecoupmentTrend(slug) : 'unknown',
