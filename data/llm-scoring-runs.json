@@ -2048608,21 +2048608,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T22:22:22.717Z",
-    "completedAt": "2026-10-29T22:23:14.712Z",
-    "totalReviews": 12,
-    "processed": 8,
+    "startedAt": "2026-10-29T22:26:27.565Z",
+    "completedAt": "2026-10-29T22:26:43.047Z",
+    "totalReviews": 6,
+    "processed": 3,
     "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 68560,
-      "output": 2857,
-      "cacheRead": 34263,
+      "input": 17688,
+      "output": 956,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 157456
+      "total": 44773
     },
-    "costUsd": 0.24843150000000003,
-    "runId": "40964720205",
+    "costUsd": 0.0675042,
+    "runId": "40965164738",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2051149,6 +2051149,16 @@
           "flat": 1,
           "down": 2,
           "total": 7
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "agnes-of-god-regional-2023",
+        "ourDistribution": {
+          "up": 3,
+          "flat": 0,
+          "down": 0,
+          "total": 3
         },
         "hasDisagreement": false
       },
@@ -2073600,16 +2073610,6 @@
         "hasDisagreement": false
       },
       {
-        "showId": "rosencrantz-and-guildenstern-are-dead-regional-2024",
-        "ourDistribution": {
-          "up": 7,
-          "flat": 0,
-          "down": 1,
-          "total": 8
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "rosencrantz-and-guildenstern-are-dead-west-end-2017",
         "ourDistribution": {
           "up": 15,
@@ -2086397,8 +2086397,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T22:28:11.987Z",
-    "completedAt": "2026-10-29T22:28:11.989Z",
+    "startedAt": "2026-10-29T22:31:40.283Z",
+    "completedAt": "2026-10-29T22:31:40.284Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2086411,7 +2086411,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40964720205",
+    "runId": "40965164738",
     "source": "comparative-rescore",
     "errorDetails": []
   }
