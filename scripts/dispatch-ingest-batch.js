@@ -7,8 +7,15 @@
  * 2. Dispatches ingest-urls.yml once per show with no_rebuild=true, waiting while the repo's
  *    queued+pending run count is at --max-active. Each dispatched show is appended to the
  *    checkpoint file, so a rerun resumes.
- * 3. Waits for every ingest-urls run to finish, then dispatches ONE llm-ensemble-score run with
- *    the comma-separated show list and ONE rebuild-reviews run (instead of one each per show).
+ * 3. Waits until no ingest-urls run is active (repo-wide, so another session's ingests can hold
+ *    it up to --max-wait-min), then dispatches ONE llm-ensemble-score run with the comma-separated
+ *    show list; scoring dispatches its own rebuild when it finishes. A `<checkpoint>.finished`
+ *    marker stops a rerun from scoring the same batch twice.
+ *
+ * Limits: a crash between a dispatch and its checkpoint line re-ingests that one show on rerun
+ * (ingest dedupes existing files). Shows a multi-show article fans out to are printed in the ingest
+ * run's log but not scored here. The scoring lane keeps one pending list run, so a later list
+ * dispatch from another session can replace this one; check the llm-ensemble-score run list.
  *
  * CLI: node scripts/dispatch-ingest-batch.js --plan=<file> [--checkpoint=<file>] [--max-active=15]
  *        [--spacing=12] [--max-wait-min=120] [--limit=N] [--dry-run] [--finish-only]
@@ -63,7 +70,8 @@ async function waitUntil(label, check, deadline) {
 
 function knownOutletIds() {
   const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'outlet-registry.json'), 'utf8'));
-  return new Set([...Object.keys(reg.outlets || {}), ...Object.keys(reg._aliasIndex || {})]);
+  // Canonical ids only: ingest-urls.js does not resolve aliases and would write "nyt--critic.json".
+  return new Set(Object.keys(reg.outlets || {}));
 }
 
 async function dispatchOrThrow(workflow, inputs) {
@@ -80,6 +88,9 @@ async function main() {
   const spacingMs = Number(arg('spacing', 12)) * 1000;
   const maxWaitMs = Number(arg('max-wait-min', 120)) * 60000;
   const limit = Number(arg('limit', Infinity));
+  for (const [name, v] of [['max-active', maxActive], ['spacing', spacingMs], ['max-wait-min', maxWaitMs], ['limit', limit]]) {
+    if (Number.isNaN(v) || v < 0) throw new Error(`--${name} must be a non-negative number`);
+  }
   const dryRun = process.argv.includes('--dry-run');
   const finishOnly = process.argv.includes('--finish-only');
 
@@ -100,7 +111,15 @@ async function main() {
 
   // One process per checkpoint: two copies would dispatch the same shows twice.
   const lock = `${checkpoint}.lock`;
-  const fd = fs.openSync(lock, 'wx');
+  let fd;
+  try {
+    fd = fs.openSync(lock, 'wx');
+  } catch (err) {
+    if (err.code === 'EEXIST') throw new Error(`${lock} exists: another copy is running, or a killed run left it (delete it if none is running)`);
+    throw err;
+  }
+  const dropLock = () => { try { fs.unlinkSync(lock); } catch { /* already gone */ } };
+  for (const sig of ['SIGINT', 'SIGTERM']) process.on(sig, () => { dropLock(); process.exit(130); });
   try {
     let sent = 0;
     for (const { id, urls } of inputs) {
@@ -115,18 +134,23 @@ async function main() {
     }
 
     const shows = fs.existsSync(checkpoint) ? [...new Set(fs.readFileSync(checkpoint, 'utf8').split('\n').filter(Boolean))] : [];
+    const finished = `${checkpoint}.finished`;
     if (!shows.length) return;
+    if (fs.existsSync(finished) && !sent) {
+      console.log(`scoring already dispatched for this batch (${finished}); nothing to do`);
+      return;
+    }
     await waitUntil('ingest-urls runs still active', async () => {
       const n = await countRuns(['queued', 'pending', 'in_progress'], 'ingest-urls.yml');
       return { ok: n === 0, n };
     }, Date.now() + maxWaitMs);
     // A comma-separated show_id runs in llm-ensemble-score's single "shows-multi" lane.
     await dispatchOrThrow('llm-ensemble-score.yml', { show_id: shows.join(',') });
-    await dispatchOrThrow('rebuild-reviews.yml', { reason: `dispatch-ingest-batch: ${shows.length} shows from ${path.basename(planFile)}` });
-    console.log(`scoring and rebuild dispatched for ${shows.length} shows`);
+    fs.writeFileSync(finished, `${new Date().toISOString()} ${shows.length} shows\n`);
+    console.log(`scoring dispatched for ${shows.length} shows (it starts the rebuild itself)`);
   } finally {
     fs.closeSync(fd);
-    fs.unlinkSync(lock);
+    dropLock();
   }
 }
 
