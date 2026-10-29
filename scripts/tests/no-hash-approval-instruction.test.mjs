@@ -28,5 +28,6 @@ test('CLAUDE.md section 5 states the plain-affirmative rule and the cloud reques
   assert.match(text, /plain "yes \/ ship it/);
   assert.match(text, /Never ask for a hash/);
   assert.match(text, /screenshots or an Artifact/);
+  assert.match(text, /"Approved" IS the approval/);
   assert.match(text, /visual-approval\.js request/);
 });
