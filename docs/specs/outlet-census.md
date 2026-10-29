@@ -194,3 +194,83 @@ No WordPress API and no sitemap configured yet: timeout, washpost, dailybeast, p
 
 - Configure sitemaps for the "not configured" outlets above; most have one.
 - Re-run the census on CI after each ingest batch to measure the recall change, and vet each batch's URLs against the show's dates before ingest.
+
+## London (BRO-6488)
+
+`--market=london` runs the same census against the West End market (shows.json
+`market: west-end`, categories `west-end` and `off-west-end`, 1,343 shows),
+writing to `data/audit/outlet-census/london/`. Sources live in
+`LONDON_SOURCES` in `scripts/lib/outlet-census-sources.js`; window defaults to
+`--since=2012-09-01`.
+
+```bash
+node scripts/outlet-census.js --market=london --outlet=whatsonstage
+node scripts/outlet-census.js --market=london --tier=1          # all T1 outlets
+node scripts/outlet-census.js --market=london --summary         # tables + catalog gaps
+node scripts/outlet-census.js --market=london --probe=https://example.com/sitemap.xml
+```
+
+Extra pieces:
+
+- **Other-market reviews.** A review whose text or slug names a regional or
+  touring UK venue/city (`UK_OTHER_RE`) and no West End house is bucketed
+  `other-market-review` with `itemMarket` (regional / touring / edinburgh). It
+  never counts as a gap or out-of-window. The manifest keeps every review
+  whatever the market (owner scope, 2026-10-28).
+- **Catalog-gap summary.** `--summary` groups catalog gaps by market and place
+  (Off-West End by venue, regional by city or venue, touring) and by year, with
+  the review count each would bring (`groupCatalogGaps`,
+  `catalog-gaps.json`). New shows outside the West End historical scope are not
+  added.
+- **Article-number aliasing.** `urlId` on a source extracts a stable article id
+  from the URL. WhatsOnStage moved `/london-theatre/reviews/<slug>_43290.html`
+  to `/news/<slug>_43290/`; held rows under the old URL now match by id.
+- **CI hand-back.** UK newspapers (Guardian API, Telegraph, Times, Standard,
+  FT, Mail, Independent, i, Express, Spectator) are blocked by the cloud
+  container's egress, so they enumerate on CI with
+  `--emit-items --enumerate-only`. The run prints gzip+base64
+  `CENSUS-ITEMS <outlet> i/n <chunk>` lines (20k chunks); save the
+  `cloud-run-script.js` stdout and bucket locally with
+  `--items-in=<file>` against the full review-texts. `--source='<json>'`
+  overrides a source definition for one run (regex strings become `i` RegExps)
+  so a sitemap shape can be tried without re-landing.
+- **Seasons.** Reports carry a per-season (Sep-Aug) breakdown; `--summary`
+  prints the per-outlet, per-season table.
+- **Headline guards (London only).** `titleOnlyInTagline` drops a match whose
+  title words appear only after "review" (Misty's tagline naming Stories);
+  `venueContradicts` drops a match whose headline names another house right
+  after the title (Aladdin at Hackney Empire is a panto, not the Prince Edward
+  run; recorded as `venueMismatchIds`, not out-of-window). An all-lowercase slug
+  headline must lead with a short title variant ("this beautiful future" is not
+  Beautiful). A venue counts only when a distinctive word or a self-named house
+  (Playhouse, Coliseum, Palladium, Empire, opera house) comes before the noun,
+  so "Hamlet, theatre review" names no house; renamed houses alias (Comedy
+  and Harold Pinter). Shows already holding the URL are exempt; venue words
+  compare by stem; "National" covers Olivier, Lyttelton and Dorfman. Measured on the full
+  London cache: about 230 false gaps and ambiguous rows left the gap count, and
+  3 held rows lost their match (date edge cases, not the guards).
+
+### London results (2026-10-29, cached enumeration, review-texts corpus)
+
+| Outlet | Source | Corpus rows | Enumerated | Held | Held (other URL) | Gap | Misfile | Ambiguous | Catalog gap | Other market | Recall |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| britishtheatrecom | sitemap | 174 | 2438 | 76 | 58 | 204 | 0 | 3 | 717 | 576 | 0.396 |
+| west-end-best-friend | sitemap | 188 | 2779 | 151 | 13 | 241 | 0 | 3 | 637 | 831 | 0.405 |
+| british-theatre | sitemap | 399 | 25623 | 104 | 282 | 530 | 0 | 383 | 2652 | 3419 | 0.421 |
+| everything-theatre | wp-json | 238 | 6635 | 200 | 25 | 111 | 0 | 5 | 2170 | 329 | 0.67 |
+| theatre-weekly | wp-json | 308 | 4425 | 219 | 42 | 112 | 2 | 1 | 878 | 2006 | 0.696 |
+| all-that-dazzles-uk | sitemap | 369 | 2413 | 287 | 30 | 137 | 0 | 1 | 804 | 277 | 0.698 |
+| london-theatre | sitemap | 724 | 3193 | 552 | 185 | 220 | 0 | 190 | 610 | 32 | 0.77 |
+| artsdesk | sitemap | 576 | 3872 | 279 | 33 | 51 | 3 | 2 | 736 | 201 | 0.852 |
+| whatsonstage | wp-json | 932 | 38828 | 650 | 64 | 76 | 6 | 1 | 1138 | 1220 | 0.897 |
+| thestage | composite | 866 | 5031 | 389 | 33 | 26 | 4 | 2 | 1288 | 1951 | 0.934 |
+| london-box-office | sitemap | 740 | 1585 | 475 | 17 | 11 | 5 | 0 | 176 | 14 | 0.969 |
+| timeout-london | sitemap | 782 | 12279 | 323 | 26 | 8 | 2 | 1 | 2 | 11 | 0.972 |
+| thereviewshub | wp-json | 455 | 10330 | 243 | 2 | 1 | 3 | 0 | 1 | 1 | 0.984 |
+
+Recall = (held + held other URL) / (held + held other URL + gap + misfile).
+Low recall on the blog-tier outlets (British Theatre Guide, West End Best
+Friend, britishtheatre.com) is mostly real coverage we never ingested;
+British Theatre Guide's undated slug headlines also leave 383 ambiguous rows.
+Catalog gaps are grouped in `catalog-gaps.json`; most have no venue in the
+headline, so "unknown venue" is the largest Off-West End group.
