@@ -1,44 +1,5 @@
 [
   {
-    "startedAt": "2026-10-28T10:50:49.904Z",
-    "completedAt": "2026-10-28T10:54:34.126Z",
-    "totalReviews": 64964,
-    "processed": 365,
-    "skipped": 64565,
-    "errors": 4,
-    "tokensUsed": {
-      "input": 1933851,
-      "output": 115569,
-      "cacheRead": 684434,
-      "cacheWrite": 820975,
-      "total": 5306924
-    },
-    "costUsd": 5.215518675,
-    "runId": "40674333356",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-lion-king-tour-2021",
-        "outletId": "orlando-sentinel",
-        "error": "hallucinated_score: LLM admitted scoring non-review content"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-28T10:56:35.406Z",
     "completedAt": "2026-10-28T11:01:10.869Z",
     "totalReviews": 64964,
@@ -2664633,21 +2664594,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T10:51:23.320Z",
-    "completedAt": "2026-10-29T10:51:27.825Z",
-    "totalReviews": 55,
+    "startedAt": "2026-10-29T10:52:18.401Z",
+    "completedAt": "2026-10-29T10:52:24.636Z",
+    "totalReviews": 66,
     "processed": 1,
-    "skipped": 54,
+    "skipped": 65,
     "errors": 0,
     "tokensUsed": {
-      "input": 5688,
-      "output": 295,
+      "input": 7041,
+      "output": 351,
       "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 14629
+      "total": 16672
     },
-    "costUsd": 0.0215555,
-    "runId": "40848488577",
+    "costUsd": 0.026324599999999997,
+    "runId": "40848596847",
     "errorDetails": [],
     "validation": [
       {
@@ -2677944,10 +2677905,10 @@
       {
         "showId": "hells-kitchen-2024",
         "ourDistribution": {
-          "up": 49,
+          "up": 50,
           "flat": 7,
           "down": 3,
-          "total": 59
+          "total": 60
         },
         "dtliDistribution": {
           "up": 8,
@@ -2686457,8 +2686418,8 @@
         "ourDistribution": {
           "up": 23,
           "flat": 12,
-          "down": 7,
-          "total": 42
+          "down": 6,
+          "total": 41
         },
         "dtliDistribution": {
           "up": 7,
@@ -2700537,21 +2700498,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T10:53:24.193Z",
-    "completedAt": "2026-10-29T10:53:24.210Z",
-    "totalReviews": 0,
-    "processed": 0,
+    "startedAt": "2026-10-29T10:54:35.873Z",
+    "completedAt": "2026-10-29T10:54:56.692Z",
+    "totalReviews": 9,
+    "processed": 9,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 0,
-      "output": 0,
+      "input": 29179,
+      "output": 2012,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 0
+      "total": 31191
     },
-    "costUsd": 0,
-    "runId": "40848488577",
+    "costUsd": 0.07582509999999999,
+    "runId": "40848596847",
     "errorDetails": []
   }
 ]
