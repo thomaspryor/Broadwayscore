@@ -1329034,21 +1329034,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T04:25:00.298Z",
-    "completedAt": "2026-10-29T04:25:05.475Z",
-    "totalReviews": 48,
+    "startedAt": "2026-10-29T04:27:42.008Z",
+    "completedAt": "2026-10-29T04:27:46.438Z",
+    "totalReviews": 39,
     "processed": 1,
-    "skipped": 47,
+    "skipped": 38,
     "errors": 0,
     "tokensUsed": {
-      "input": 5416,
-      "output": 355,
+      "input": 5111,
+      "output": 347,
       "cacheRead": 3807,
       "cacheWrite": 0,
-      "total": 14248
+      "total": 13816
     },
-    "costUsd": 0.0215381,
-    "runId": "40814521298",
+    "costUsd": 0.0205951,
+    "runId": "40814666179",
     "errorDetails": [],
     "validation": [
       {
@@ -1333147,10 +1333147,10 @@
       {
         "showId": "back-to-the-future-2023",
         "ourDistribution": {
-          "up": 16,
+          "up": 14,
           "flat": 10,
-          "down": 15,
-          "total": 41
+          "down": 13,
+          "total": 37
         },
         "dtliDistribution": {
           "up": 3,
@@ -1333165,7 +1333165,7 @@
           "total": 22
         },
         "hasDisagreement": true,
-        "disagreementDetails": "DTLI: Sentiment flip: we say positive, they say negative"
+        "disagreementDetails": "DTLI: Flat thumbs differ by 27% (ours: 27%, theirs: 0%)"
       },
       {
         "showId": "back-to-the-future-tour-2024",
@@ -1338144,10 +1338144,10 @@
       {
         "showId": "doubt-2005",
         "ourDistribution": {
-          "up": 41,
+          "up": 44,
           "flat": 2,
           "down": 4,
-          "total": 47
+          "total": 50
         },
         "dtliDistribution": {
           "up": 9,
@@ -1338166,10 +1338166,10 @@
       {
         "showId": "doubt-2024",
         "ourDistribution": {
-          "up": 41,
+          "up": 44,
           "flat": 2,
           "down": 4,
-          "total": 47
+          "total": 50
         },
         "dtliDistribution": {
           "up": 9,
@@ -1356382,8 +1356382,8 @@
         "ourDistribution": {
           "up": 17,
           "flat": 9,
-          "down": 11,
-          "total": 37
+          "down": 12,
+          "total": 38
         },
         "dtliDistribution": {
           "up": 4,
@@ -1436218,21 +1436218,21 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T04:30:40.950Z",
-    "completedAt": "2026-10-29T04:30:51.596Z",
-    "totalReviews": 5,
-    "processed": 5,
+    "startedAt": "2026-10-29T04:30:22.810Z",
+    "completedAt": "2026-10-29T04:30:32.104Z",
+    "totalReviews": 4,
+    "processed": 4,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 15425,
-      "output": 1187,
+      "input": 14200,
+      "output": 836,
       "cacheRead": 0,
       "cacheWrite": 0,
-      "total": 16612
+      "total": 15036
     },
-    "costUsd": 0.0407664,
-    "runId": "40814814213",
+    "costUsd": 0.0362908,
+    "runId": "40814666179",
     "errorDetails": []
   }
 ]
