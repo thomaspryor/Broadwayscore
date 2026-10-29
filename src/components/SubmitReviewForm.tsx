@@ -83,7 +83,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
         <p className="text-gray-400 mb-2">
           Thank you for helping expand our database.
         </p>
-        <p className="text-gray-500 text-sm mb-6">
+        <p className="text-fg-muted text-sm mb-6">
           Validation is running now. If approved, the review will be added and the show&apos;s score recalculated automatically within a few minutes.
         </p>
         <button
@@ -96,7 +96,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
     );
   }
 
-  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
+  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-fg-muted focus:ring-2 focus:ring-purple-500 focus:border-transparent';
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
@@ -121,7 +121,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
         <p id="review-url-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
           {urlError}
         </p>
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           The full URL of the review article
         </p>
       </div>
@@ -138,7 +138,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="Hamilton, Wicked, Stereophonic, etc."
         />
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           Optional: we&apos;ll auto-detect if not provided
         </p>
       </div>
@@ -155,7 +155,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="The New York Times, Variety, Vulture, etc."
         />
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           Optional: we&apos;ll auto-detect if not provided
         </p>
       </div>
@@ -172,7 +172,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="Jesse Green, Naveen Kumar, etc."
         />
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           Optional: we&apos;ll auto-detect if not provided
         </p>
       </div>
@@ -194,7 +194,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
       {/* Optional email for outcome notification */}
       <div>
         <label htmlFor="submitter_email" className="block text-sm font-semibold text-gray-200 mb-2">
-          Your Email <span className="text-gray-500 font-normal">(optional)</span>
+          Your Email <span className="text-fg-muted font-normal">(optional)</span>
         </label>
         <input
           type="email"
@@ -204,7 +204,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
           placeholder="you@example.com"
           autoComplete="email"
         />
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           We&apos;ll let you know if the review is approved or rejected
         </p>
       </div>
@@ -221,7 +221,7 @@ export default function SubmitReviewForm({ endpoint }: { endpoint: string }) {
 
       {/* Submit */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-muted">
           <span className="text-red-500">*</span> Required fields
         </p>
         <button

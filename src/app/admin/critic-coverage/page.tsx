@@ -89,7 +89,7 @@ function delta(current: number, prior: number | undefined): { sign: string; diff
 function deltaClass(sign: string): string {
   if (sign === '▲') return 'text-score-skip'; // gaps increased = bad
   if (sign === '▼') return 'text-status-open'; // gaps decreased = good
-  return 'text-gray-500';
+  return 'text-fg-muted';
 }
 
 function tierLabel(tier: number): string {
@@ -153,7 +153,7 @@ export default async function AdminCriticCoveragePage() {
           <p className="text-sm text-gray-400 mt-1">
             Gap audit across tracked critics: how many shows are we missing from each?
           </p>
-          <p className="text-[11px] text-gray-500 mt-1">
+          <p className="text-[11px] text-fg-muted mt-1">
             Digest generated{' '}
             <time dateTime={generatedAt}>{new Date(generatedAt).toLocaleString()}</time>
             {' · '}
@@ -194,7 +194,7 @@ export default async function AdminCriticCoveragePage() {
                     >
                       <td className="px-4 py-3 font-mono font-bold text-white">{bucket}</td>
                       <td className="px-4 py-3 text-gray-300">{BUCKET_LABELS[bucket].short}</td>
-                      <td className="px-4 py-3 text-gray-500 text-xs hidden sm:table-cell">
+                      <td className="px-4 py-3 text-fg-muted text-xs hidden sm:table-cell">
                         {BUCKET_LABELS[bucket].description}
                       </td>
                       <td className="px-4 py-3 text-right font-semibold text-white">
@@ -242,7 +242,7 @@ export default async function AdminCriticCoveragePage() {
                     key={critic.name}
                     className={`border-b border-white/5 last:border-0 ${i % 2 === 0 ? '' : 'bg-surface-overlay/30'}`}
                   >
-                    <td className="px-4 py-3 text-gray-500 font-mono text-xs">{i + 1}</td>
+                    <td className="px-4 py-3 text-fg-muted font-mono text-xs">{i + 1}</td>
                     <td className="px-4 py-3 text-white font-medium">{critic.name}</td>
                     <td className="px-4 py-3 text-gray-400 font-mono text-xs hidden sm:table-cell">
                       {critic.outlet}
@@ -253,7 +253,7 @@ export default async function AdminCriticCoveragePage() {
                     <td className="px-4 py-3 text-right font-semibold text-white">
                       {critic.missingCount.toLocaleString()}
                     </td>
-                    <td className="px-4 py-3 text-right text-gray-500 text-xs hidden md:table-cell">
+                    <td className="px-4 py-3 text-right text-fg-muted text-xs hidden md:table-cell">
                       {critic.lastDate}
                     </td>
                   </tr>
@@ -310,7 +310,7 @@ export default async function AdminCriticCoveragePage() {
                 </tbody>
               </table>
             </div>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-fg-muted mt-2">
               A = Exact URL misattribution · B = Show+outlet misattribution · C = Not Broadway/WE · D = True missing Broadway · E = True missing West End
             </p>
           </section>

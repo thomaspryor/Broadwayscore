@@ -43,7 +43,7 @@ export default async function AdminLocksPage() {
             <p className="text-sm text-gray-400 mt-1">
               Every review whose score was overridden by a human. Edit or unlock with rationale.
             </p>
-            <p className="text-[11px] text-gray-500 mt-1">
+            <p className="text-[11px] text-fg-muted mt-1">
               Index generated{' '}
               <time dateTime={payload.generatedAt}>{new Date(payload.generatedAt).toLocaleString()}</time> ·{' '}
               {payload.count} locks · {payload.withRationale} with rationale ·{' '}

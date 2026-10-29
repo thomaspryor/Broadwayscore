@@ -155,7 +155,7 @@ function ValueShowCard({ show, discountData, index }: ValueShowCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
+          <div className="w-full h-full flex items-center justify-center text-fg-muted">
             <div className="text-3xl">🎭</div>
           </div>
         )}
@@ -178,7 +178,7 @@ function ValueShowCard({ show, discountData, index }: ValueShowCardProps) {
         </div>
 
         {cheapest && (
-          <p className="text-xs text-gray-500 mt-2">
+          <p className="text-xs text-fg-muted mt-2">
             Best deal: <span className={cheapest.color}>{formatTicketPrice(cheapest.price, 'west-end')} {cheapest.label}</span>
           </p>
         )}
@@ -186,7 +186,7 @@ function ValueShowCard({ show, discountData, index }: ValueShowCardProps) {
 
       <div className="flex-shrink-0 flex items-center justify-center sm:flex-col sm:items-center gap-2 sm:w-20">
         <ScoreBadge score={score} size="md" showCrown />
-        <span className="text-xs text-gray-500 hidden sm:block">
+        <span className="text-xs text-fg-muted hidden sm:block">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
       </div>
@@ -251,7 +251,7 @@ export default function WestEndBestValuePage() {
           <p className="text-gray-400 mt-2">
             Every discount ticket option for every show, sorted by cheapest price. Compare lotteries, day seats, rush, student standby, and standing room.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithDiscounts.length} shows with discount tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -262,16 +262,16 @@ export default function WestEndBestValuePage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-emerald-400">{formatTicketPrice(cheapestShow?.cheapestPrice, 'west-end')}</div>
-            <div className="text-xs text-gray-500 mt-1">Cheapest Ticket</div>
+            <div className="text-xs text-fg-muted mt-1">Cheapest Ticket</div>
             <div className="text-xs text-gray-400 truncate">{cheapestShow?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{formatTicketPrice(avgCheapestPrice, 'west-end')}</div>
-            <div className="text-xs text-gray-500 mt-1">Avg Cheapest Price</div>
+            <div className="text-xs text-fg-muted mt-1">Avg Cheapest Price</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-purple-400">{multiOptionShows}</div>
-            <div className="text-xs text-gray-500 mt-1">Shows with 3+ Options</div>
+            <div className="text-xs text-fg-muted mt-1">Shows with 3+ Options</div>
           </div>
         </div>
 
@@ -320,7 +320,7 @@ export default function WestEndBestValuePage() {
               market="west-end"
             />
           ) : (
-            <p className="text-sm text-gray-500">No discount information in our database right now.</p>
+            <p className="text-sm text-fg-muted">No discount information in our database right now.</p>
           )}
         </div>
 
@@ -342,7 +342,7 @@ export default function WestEndBestValuePage() {
           </>
         )}
 
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Discount ticket information is sourced from TodayTix and official show websites.
             Prices and availability change frequently. Always verify with the official source.

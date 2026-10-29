@@ -349,17 +349,17 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   const stop = hideStop ? null : bylineStopLabel(review.outlet, review.stopLabel);
   const pin = <svg aria-hidden="true" className="inline w-3 h-3 -mt-0.5 mr-0.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M12 22s7-6.2 7-12a7 7 0 1 0-14 0c0 5.8 7 12 7 12z" /><circle cx="12" cy="10" r="2.5" /></svg>;
   const stopTag = stop ? (
-    <span className="hidden sm:inline text-gray-500 whitespace-nowrap" title={`Reviewed during the tour's stop in ${stop}`}>
-      <span aria-hidden="true" className="text-gray-600"> · </span>{pin}<span className="sr-only">Reviewed in </span>{stop}
+    <span className="hidden sm:inline text-fg-muted whitespace-nowrap" title={`Reviewed during the tour's stop in ${stop}`}>
+      <span aria-hidden="true" className="text-fg-muted"> · </span>{pin}<span className="sr-only">Reviewed in </span>{stop}
     </span>
   ) : null;
-  const mobileDate = dateLabel && !stop ? <span className="sm:hidden block text-xs text-gray-500 mt-0.5">{dateLabel}</span> : null;
+  const mobileDate = dateLabel && !stop ? <span className="sm:hidden block text-xs text-fg-muted mt-0.5">{dateLabel}</span> : null;
   // With a stop, phones get one full-width line under the byline row instead
   // ("Oct 5 · Rochester, NY"), so it never squeezes against Full Review. Only
   // this year's dates lose the year; an older tour's review keeps it.
   const mobileStopLine = stop ? (
-    <div className="sm:hidden text-xs text-gray-500 mt-0.5">
-      {dateLabel && <>{dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}<span aria-hidden="true" className="text-gray-600"> · </span></>}
+    <div className="sm:hidden text-xs text-fg-muted mt-0.5">
+      {dateLabel && <>{dateLabel.replace(new RegExp(`,\\s*${new Date().getFullYear()}$`), '')}<span aria-hidden="true" className="text-fg-muted"> · </span></>}
       {pin}<span className="sr-only">Reviewed in </span>{stop}
     </div>
   ) : null;
@@ -370,7 +370,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
   // is pl-24 wide, so it stacks on two lines to fit.
   const ratingNote = review.originalRating ? (
     <div
-      className="absolute left-0 top-[50px] sm:top-[54px] w-20 text-sm leading-tight text-gray-500"
+      className="absolute left-0 top-[50px] sm:top-[54px] w-20 text-sm leading-tight text-fg-muted"
       title="The published rating for this review. It anchors our score."
       data-testid="review-original-rating"
     >
@@ -422,7 +422,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
           </span>
         )}
         {formatDate(review.publishDate) && (
-          <span className="hidden sm:inline text-xs text-gray-500 flex-shrink-0">{formatDate(review.publishDate)}</span>
+          <span className="hidden sm:inline text-xs text-fg-muted flex-shrink-0">{formatDate(review.publishDate)}</span>
         )}
       </div>
 
@@ -454,7 +454,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop
 
         <div className="flex items-center justify-between gap-3 text-xs sm:text-sm leading-tight">
           {review.criticName && review.criticName !== 'Unknown' ? (
-            <span className="text-sm text-gray-500">By {featureFlags.criticPages && review.criticSlug ? (
+            <span className="text-sm text-fg-muted">By {featureFlags.criticPages && review.criticSlug ? (
               <Link href={`/critics/${review.criticSlug}`} className="hover:text-brand transition-colors">{review.criticName}</Link>
             ) : review.criticName}{stopTag}{mobileDate}</span>
           ) : (
@@ -538,24 +538,24 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
   return (
     <div className="space-y-2" role="feed" aria-label="Critic reviews" data-testid="reviews-list">
       {totalCount > 3 && (
-        <div className="flex items-center gap-3 text-xs text-gray-500 mb-1">
+        <div className="flex items-center gap-3 text-xs text-fg-muted mb-1">
           <span>Sort:</span>
           <button
             onClick={() => { ensureMore(); setSortMode('score'); }}
-            className={`font-medium transition-colors ${sortMode === 'score' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`font-medium transition-colors ${sortMode === 'score' ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
           >
             By Score
           </button>
           <button
             onClick={() => { ensureMore(); setSortMode('date'); }}
-            className={`font-medium transition-colors ${sortMode === 'date' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+            className={`font-medium transition-colors ${sortMode === 'date' ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
           >
             By Date
           </button>
           {hasStops && (
             <button
               onClick={() => { ensureMore(); setSortMode('city'); }}
-              className={`font-medium transition-colors ${sortMode === 'city' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+              className={`font-medium transition-colors ${sortMode === 'city' ? 'text-white' : 'text-fg-muted hover:text-gray-300'}`}
             >
               By City
             </button>
@@ -565,7 +565,7 @@ export default function ReviewsList({ reviews: inlineReviews, initialCount = 5, 
       {hasTierChips && (
         // The one tier key: the whole scale at once, so the bars are learned
         // from one line, and its label links to the methodology (BRO-4905).
-        <div className="flex items-start gap-1.5 sm:gap-3 text-[11px] text-gray-500 mb-1" data-testid="tier-scale">
+        <div className="flex items-start gap-1.5 sm:gap-3 text-[11px] text-fg-muted mb-1" data-testid="tier-scale">
           <Link href="/methodology#critic-score" className="leading-[18px] whitespace-nowrap hover:text-brand transition-colors max-[399px]:sr-only max-[399px]:focus-visible:not-sr-only" aria-label="Weighted by outlet tier. How we weight critics">
             <span className="hidden sm:inline">Weighted by outlet tier · </span>Counts
           </Link>

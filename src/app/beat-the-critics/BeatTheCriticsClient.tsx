@@ -172,7 +172,7 @@ function BtcBrand({ size = 'default' }: { size?: 'default' | 'small' }) {
   return (
     <div className="leading-tight text-center">
       <div className="text-base font-extrabold tracking-tight">
-        <span className="text-white">Broadway</span><span className="text-gradient">Scorecard</span><span className="text-[10px] text-gray-500 font-normal align-super ml-0.5">&trade;</span>
+        <span className="text-white">Broadway</span><span className="text-gradient">Scorecard</span><span className="text-[10px] text-fg-muted font-normal align-super ml-0.5">&trade;</span>
       </div>
     </div>
   );
@@ -213,7 +213,7 @@ function NomineeCard({ show, selected, onSelect }: { show: SerializedTonyShow; s
       <ShowPoster show={show} />
       <div className="flex-1 min-w-0">
         <div className="text-[15px] font-bold line-clamp-2 leading-snug">{shortTitle(show.title)}</div>
-        <div className="text-xs text-gray-500">{show.venue}</div>
+        <div className="text-xs text-fg-muted">{show.venue}</div>
       </div>
       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368]' : 'border-white/20'}`}>
         {selected && <div className="w-2.5 h-2.5 rounded-full bg-[#ff1368] animate-scale-in" />}
@@ -228,7 +228,7 @@ function ActorNomineeCard({ nominee, selected, onSelect }: { nominee: ActorNomin
       <ActorPoster nominee={nominee} />
       <div className="flex-1 min-w-0">
         <div className="text-[15px] font-bold line-clamp-2 leading-snug">{nominee.name}</div>
-        <div className="text-xs text-gray-500">{nominee.showTitle}</div>
+        <div className="text-xs text-fg-muted">{nominee.showTitle}</div>
       </div>
       <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 transition-all duration-200 ${selected ? 'border-[#ff1368]' : 'border-white/20'}`}>
         {selected && <div className="w-2.5 h-2.5 rounded-full bg-[#ff1368] animate-scale-in" />}
@@ -471,7 +471,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             </span>
           </div>
           <h1 className="animate-fade-up mt-4" style={{ animationDelay: '0.5s', animationFillMode: 'both' }}>
-            <span className="block text-[44px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-gray-500 align-super ml-0.5">&trade;</sup></span>
+            <span className="block text-[44px] font-black leading-[0.95] tracking-tighter">Beat{' '}<span className="bg-gradient-to-br from-brand to-[#ff1368] bg-clip-text text-transparent">the Critics</span><sup className="text-sm font-bold text-fg-muted align-super ml-0.5">&trade;</sup></span>
           </h1>
           <div className="animate-fade-up mt-5 flex flex-col items-center gap-2" style={{ animationDelay: '0.7s', animationFillMode: 'both' }}>
             <p className="text-base leading-snug text-gray-300 text-center">Pick Tony winners.</p>
@@ -479,13 +479,13 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <div className="mt-1 px-5 py-2.5 rounded-full bg-amber-500/10 border border-amber-500/25 text-amber-400 text-sm font-semibold text-center max-w-xs w-full">
               🎁 Beat a critic: win a <strong>$200 TodayTix gift card</strong>
             </div>
-            <div className="flex items-center justify-center gap-1.5 text-[14px] text-gray-600 font-semibold">Prize sponsored by <img src="/todaytix-logo.svg" alt="TodayTix" className="h-[14px] opacity-80" /></div>
-            <a href="/beat-the-critics/rules" className="text-[10px] text-gray-600 hover:text-gray-400 transition-colors">Official Rules</a>
+            <div className="flex items-center justify-center gap-1.5 text-[14px] text-fg-muted font-semibold">Prize sponsored by <img src="/todaytix-logo.svg" alt="TodayTix" className="h-[14px] opacity-80" /></div>
+            <a href="/beat-the-critics/rules" className="text-[10px] text-fg-muted hover:text-gray-400 transition-colors">Official Rules</a>
           </div>
 
           {/* Critic grid */}
           <div className="w-full mt-4">
-            <div className="animate-fade-up text-[10px] font-bold uppercase tracking-widest text-gray-600 mb-2 text-center" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>Your Competition</div>
+            <div className="animate-fade-up text-[10px] font-bold uppercase tracking-widest text-fg-muted mb-2 text-center" style={{ animationDelay: '0.85s', animationFillMode: 'both' }}>Your Competition</div>
             <div className="grid grid-cols-3 gap-2">
               {CRITICS.map((c, i) => {
                 const expanded = expandedCriticIdx === i;
@@ -494,7 +494,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                     <div className="w-8 h-8 rounded-full bg-surface-overlay flex items-center justify-center text-xs font-black text-gray-300 mb-2">{c.initials}</div>
                     <div className="text-[12px] font-bold leading-tight">{c.name}</div>
                     <div className="text-[9px] text-brand font-semibold mt-0.5 leading-tight">{c.outlets.join(' · ')}</div>
-                    <div className={`text-[10px] text-gray-500 mt-1 leading-snug ${expanded ? '' : 'line-clamp-3'}`}>{c.bio}</div>
+                    <div className={`text-[10px] text-fg-muted mt-1 leading-snug ${expanded ? '' : 'line-clamp-3'}`}>{c.bio}</div>
                   </button>
                 );
               })}
@@ -502,24 +502,24 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           </div>
 
           {!countdownExpired && (
-          <p className="animate-fade-up text-[13px] text-gray-500 mt-4 max-w-[300px] text-center leading-relaxed" style={{ animationDelay: '0.88s', animationFillMode: 'both' }}>Only 1 round required to enter. Do all 4 for your best shot at beating the critics.</p>
+          <p className="animate-fade-up text-[13px] text-fg-muted mt-4 max-w-[300px] text-center leading-relaxed" style={{ animationDelay: '0.88s', animationFillMode: 'both' }}>Only 1 round required to enter. Do all 4 for your best shot at beating the critics.</p>
           )}
           {countdownExpired ? (
             <div className="animate-fade-up mt-5 text-center" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>
               <div className="text-sm font-semibold text-gray-400">Submissions are closed.</div>
-              <div className="text-xs text-gray-600 mt-1">The 2026 Tony Awards have taken place. Results are being emailed to all entrants.</div>
+              <div className="text-xs text-fg-muted mt-1">The 2026 Tony Awards have taken place. Results are being emailed to all entrants.</div>
             </div>
           ) : (
           <button onClick={() => { ph('btc_started'); setCurrentTierIdx(0); const firstIdx = data.tiers[0]?.categories.findIndex(c => categoryHasNominees(c)) ?? 0; setCurrentCatIdx(firstIdx >= 0 ? firstIdx : 0); goToScreen('picking'); }} className="animate-fade-up mt-4 inline-flex items-center gap-2.5 px-10 py-4 rounded-[14px] bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white text-[17px] font-bold shadow-[0_4px_24px_rgba(255,19,104,0.35)] hover:shadow-[0_8px_32px_rgba(255,19,104,0.45)] hover:-translate-y-0.5 active:scale-[0.97] transition-all duration-200" style={{ animationDelay: '0.9s', animationFillMode: 'both' }}>Make Your Picks &rarr;</button>
           )}
           {!countdownExpired && (
             <div className="animate-fade-up mt-5 flex flex-col items-center gap-2" style={{ animationDelay: '0.95s', animationFillMode: 'both' }}>
-              <div className="text-[10px] font-semibold text-gray-600 uppercase tracking-widest">until the Tonys</div>
+              <div className="text-[10px] font-semibold text-fg-muted uppercase tracking-widest">until the Tonys</div>
               <div className="flex items-center justify-center gap-4">
                 {([{ v: timeLeft.days, l: 'Days' }, { v: timeLeft.hours, l: 'Hrs' }, { v: timeLeft.minutes, l: 'Min' }, { v: timeLeft.seconds, l: 'Sec' }] as const).map(({ v, l }) => (
                   <div key={l} className="text-center">
                     <div className="text-2xl font-bold text-gray-400 tabular-nums leading-none">{String(v).padStart(2, '0')}</div>
-                    <div className="text-[9px] font-semibold text-gray-600 uppercase tracking-widest mt-1">{l}</div>
+                    <div className="text-[9px] font-semibold text-fg-muted uppercase tracking-widest mt-1">{l}</div>
                   </div>
                 ))}
               </div>
@@ -548,13 +548,13 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           <div className="flex gap-1.5">{catsWithNominees.map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i < currentProgressIdx ? 'w-2 bg-[#ff1368]' : i === currentProgressIdx ? 'w-5 bg-[#ff1368] shadow-[0_0_8px_rgba(255,19,104,0.5)]' : 'w-2 bg-surface-overlay'}`} />))}</div>
           <div className="flex items-center gap-1 text-[11px] font-bold text-gray-400">
             <span>🏆</span>
-            <span className="tabular-nums">{totalPicksMade}<span className="text-gray-600">/{totalCategories}</span></span>
+            <span className="tabular-nums">{totalPicksMade}<span className="text-fg-muted">/{totalCategories}</span></span>
           </div>
         </div>
         <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="inline-flex px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider mb-3 bg-brand/15 text-brand">{currentTier.label} &middot; {currentTier.name}</div>
           <h2 className="text-[28px] font-extrabold tracking-tight mb-1.5">{currentCategory.title}</h2>
-          <p className="text-sm text-gray-500 mb-7">Tap your pick.</p>
+          <p className="text-sm text-fg-muted mb-7">Tap your pick.</p>
           <div className="flex flex-col gap-2.5">
             {isActor
               ? actorNominees.map((nom) => (<ActorNomineeCard key={nom.name + nom.showSlug} nominee={nom} selected={selectedTitle === nom.name} onSelect={() => handlePick(currentCategory.title, nom.name, nom.showSlug)} />))
@@ -565,8 +565,8 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <div className="text-center mb-4 text-[11px] text-amber-400/60 font-semibold">
               Beat a critic: chance to win a <span className="text-amber-400/80">$200 TodayTix gift card</span>
             </div>
-            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-gray-500 cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
-            <p className="text-center mt-2.5 text-xs text-gray-500">Not sure? Go with your gut!</p>
+            <button onClick={handleLockIn} disabled={!selectedTitle} className={`w-full py-4 rounded-[14px] text-base font-bold transition-all duration-200 ${selectedTitle ? 'bg-gradient-to-br from-[#ff1368] to-[#d4106a] text-white shadow-[0_4px_20px_rgba(255,19,104,0.3)] hover:-translate-y-0.5' : 'bg-surface-overlay text-fg-muted cursor-not-allowed'}`}>{selectedTitle ? 'Lock In: ' + shortTitle(selectedTitle) + ' \u2192' : 'Lock In Pick'}</button>
+            <p className="text-center mt-2.5 text-xs text-fg-muted">Not sure? Go with your gut!</p>
             <p className="text-center mt-1 text-xs"><Link href="/tony-awards/predictions" className="text-amber-400 hover:text-amber-300 transition-colors">Check our Predictions &rarr;</Link></p>
           </div>
         </div>
@@ -617,27 +617,27 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
         <div className="sticky top-0 z-10 px-5 py-4 flex items-center justify-between border-b border-white/5 bg-surface/90 backdrop-blur-xl">
           <button onClick={() => goToScreen('picking')} className="text-gray-400 text-sm hover:text-white transition-colors p-2 -m-2">&larr; Back</button>
           <div className="flex gap-1.5">{currentTier.categories.filter(categoryHasNominees).map((_, i) => (<div key={i} className={`h-2 rounded transition-all duration-300 ${i <= currentTier.categories.filter(categoryHasNominees).findIndex(c => c.title === currentCategory.title) ? 'w-2 bg-[#ff1368]' : 'w-2 bg-surface-overlay'}`} />))}</div>
-          <div className="text-[10px] font-semibold text-gray-500 uppercase tracking-wider">Reveal</div>
+          <div className="text-[10px] font-semibold text-fg-muted uppercase tracking-wider">Reveal</div>
         </div>
         <div className="px-5 py-6 max-w-[480px] mx-auto w-full">
           <div className="text-center mb-8 animate-fade-up" style={{ animationFillMode: 'both' }}><h2 className="text-2xl font-extrabold">{currentCategory.title}</h2><p className="text-sm text-gray-400 mt-1">Here&apos;s what the experts picked</p></div>
           <div className="rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 bg-[#ff1368]/[0.06] ring-1 ring-[#ff1368]/15 animate-fade-up" style={{ animationDelay: '0.15s', animationFillMode: 'both' }}>
             <div className="w-[116px] shrink-0 leading-tight min-w-0">
               <div className="text-xs font-bold text-[#ff1368]">Your Pick</div>
-              {picksAvailable && <div className="text-[9px] font-semibold text-gray-500 tracking-wider truncate">{criticMatches} of {CRITICS.length} agree</div>}
+              {picksAvailable && <div className="text-[9px] font-semibold text-fg-muted tracking-wider truncate">{criticMatches} of {CRITICS.length} agree</div>}
             </div>
             {!isActor && (() => { const pickShow = nominees.find(n => n.title === userPick); return pickShow ? <ShowPoster show={pickShow} size="xs" /> : null; })()}
             {isActor && (() => { const pickActor = actorNominees.find(n => n.name === userPick); return pickActor ? <ActorPoster nominee={pickActor} /> : null; })()}
             <div className="min-w-0 flex-1">
               <div className="text-sm font-bold truncate">{userPick}</div>
-              {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-gray-500 truncate">{picked.showTitle}</div> : null; })()}
+              {isActor && (() => { const picked = actorNominees.find(n => n.name === userPick); return picked ? <div className="text-[10px] text-fg-muted truncate">{picked.showTitle}</div> : null; })()}
             </div>
             {!isActor && currentTierIdx === 0 && matchesTonyPrediction && <span className="shrink-0 text-xs font-black uppercase tracking-wider px-3 py-1.5 rounded-lg bg-green-500/25 text-green-300">Match!</span>}
           </div>
 
           {/* Critics Panel */}
           <div className="mb-6">
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-3">
+            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-fg-muted mb-3">
               Critics Panel
               {!isActor && currentTierIdx === 0 && <span className="text-[10px] font-semibold uppercase tracking-wider">Powered by <span className="text-brand">CriticScore</span></span>}
               <div className="flex-1 h-px bg-white/5" />
@@ -648,7 +648,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div className={`rounded-xl mb-2 px-3.5 py-3 flex items-center gap-2.5 animate-slide-in ${matchesTonyPrediction ? 'bg-green-500/[0.08] ring-1 ring-green-500/20' : 'bg-surface-raised ring-1 ring-white/5'}`} style={{ animationDelay: '0.3s', animationFillMode: 'both' }}>
                 <div className="w-[116px] shrink-0 leading-tight min-w-0">
                   <div className="text-xs font-bold text-brand">Broadway Scorecard</div>
-                  <div className="text-[9px] font-semibold text-gray-500 tracking-wider">Tony Prediction</div>
+                  <div className="text-[9px] font-semibold text-fg-muted tracking-wider">Tony Prediction</div>
                 </div>
                 {tonyPredictionPickShow && <ShowPoster show={tonyPredictionPickShow} size="xs" />}
                 <div className="text-sm font-bold truncate flex-1 min-w-0">{tonyPredictionPick}</div>
@@ -668,15 +668,15 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
                     <div className="w-7 h-7 rounded-full bg-surface-overlay flex items-center justify-center text-[10px] font-bold text-gray-400 shrink-0">{critic.initials}</div>
                     <div className="leading-tight min-w-0 overflow-hidden">
                       <div className="text-xs font-bold truncate">{critic.name}</div>
-                      <div className="text-[10px] text-gray-500 truncate">{critic.outlets.join(' · ')}</div>
+                      <div className="text-[10px] text-fg-muted truncate">{critic.outlets.join(' · ')}</div>
                     </div>
                   </div>
                   {pick !== null && (pickShow ? <ShowPoster show={pickShow} size="xs" /> : actorPick ? <ActorPoster nominee={actorPick} /> : null)}
                   <div className="min-w-0 flex-1">
                     {pick === null
-                      ? <div className="text-sm text-gray-500">Revealed June 8</div>
+                      ? <div className="text-sm text-fg-muted">Revealed June 8</div>
                       : <><div className="text-sm font-bold truncate">{shortTitle(pick)}</div>
-                         {actorPick && <div className="text-[10px] text-gray-500 truncate">{actorPick.showTitle}</div>}</>
+                         {actorPick && <div className="text-[10px] text-fg-muted truncate">{actorPick.showTitle}</div>}</>
                     }
                   </div>
                   {isMatch && (
@@ -690,16 +690,16 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
           {/* How Others Voted — actor categories */}
           {isActor && actorNominees.length > 0 && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
-              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet. Be the first!'}</div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-fg-muted mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="text-[10px] text-fg-muted mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet. Be the first!'}</div>
               {totalCategoryVotes > 0 && actorNominees.map((actor, i) => (<CrowdBar key={actor.name} label={actor.name} pct={actorCrowdPcts[i] ?? 0} isUserPick={actor.name === userPick} variant={actor.name === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} />))}
             </div>
           )}
           {/* How Others Voted — show categories */}
           {!isActor && (
             <div className="mb-7 animate-fade-up" style={{ animationDelay: '0.8s', animationFillMode: 'both' }}>
-              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-gray-500 mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
-              <div className="text-[10px] text-gray-600 mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet. Be the first!'}</div>
+              <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-fg-muted mb-1">How Others Voted<div className="flex-1 h-px bg-white/5" /></div>
+              <div className="text-[10px] text-fg-muted mb-3">{totalCategoryVotes > 0 ? `${totalCategoryVotes.toLocaleString()} pick${totalCategoryVotes === 1 ? '' : 's'} so far` : 'No votes yet. Be the first!'}</div>
               {totalCategoryVotes > 0 && nominees.map((show, i) => (<CrowdBar key={show.slug} label={show.title} pct={crowdPcts[i] ?? 0} isUserPick={show.title === userPick} variant={show.title === userPick ? 'rose' : i === 0 ? 'brand' : 'muted'} />))}
             </div>
           )}
@@ -751,7 +751,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               <div key={t.key} className={`h-2.5 w-8 rounded-full transition-all ${i <= currentTierIdx ? 'bg-[#ff1368]' : 'bg-surface-overlay'}`} />
             ))}
           </div>
-          <p className="text-sm text-gray-500 mb-8">
+          <p className="text-sm text-fg-muted mb-8">
             {entriesEarned} of {data.tiers.length} rounds complete
           </p>
 
@@ -797,7 +797,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 8, we&apos;ll email you with your results. You&apos;ll also be added to our mailing list (unsubscribe anytime).</p>
             <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$200 TodayTix prize draw</strong>.</p>
             <div className="flex gap-2 mb-3">
-              <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-base sm:text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
+              <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-base sm:text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-fg-muted" />
               <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
                 {emailSubmitting ? 'Submitting...' : 'Submit'}
               </button>
@@ -839,14 +839,14 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
               if (tierPicks.length === 0) return null;
               return (
                 <div key={tier.key}>
-                  <div className="text-[9px] font-bold uppercase tracking-wider text-gray-600 mt-2 first:mt-0 mb-0.5 text-center">{tier.name}</div>
-                  {tierPicks.map(cat => (<div key={cat.title} data-testid="ballot-pick-row" className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-gray-500 shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
+                  <div className="text-[9px] font-bold uppercase tracking-wider text-fg-muted mt-2 first:mt-0 mb-0.5 text-center">{tier.name}</div>
+                  {tierPicks.map(cat => (<div key={cat.title} data-testid="ballot-pick-row" className="flex items-center justify-between py-1.5 border-b border-white/5 last:border-b-0"><div className="text-[10px] font-semibold uppercase tracking-wider text-fg-muted shrink-0 mr-2">{cat.title.replace('Best ', '').replace('Revival of a ', 'Revival \u00b7 ').replace('Featured ', 'Feat. ')}</div><div className="text-xs font-bold text-right">{picks[cat.title]}</div></div>))}
                 </div>
               );
             })}
-            {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-gray-500 text-sm">No picks made yet</div>)}
+            {allCompletedPicks.length === 0 && (<div className="py-4 text-center text-fg-muted text-sm">No picks made yet</div>)}
           </div>
-          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-gray-500 mt-1">broadwayscorecard.com/beat-the-critics</div></div>
+          <div className="px-6 py-4 bg-[#ff1368]/[0.04] border-t border-white/5 text-center"><div className="text-sm font-bold text-[#ff1368]">Can you Beat the Critics?</div><div className="text-xs text-fg-muted mt-1">broadwayscorecard.com/beat-the-critics</div></div>
         </div>
       </div>
     </div>

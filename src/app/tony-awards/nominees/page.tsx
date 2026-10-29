@@ -163,7 +163,7 @@ export default function TonyNomineesPage() {
         ))}
 
         {/* Legend */}
-        <div className="mt-8 text-xs text-gray-600 text-center space-y-1.5">
+        <div className="mt-8 text-xs text-fg-muted text-center space-y-1.5">
           <p>Win odds: GoldDerby (crowd predictions, 26 categories) · Kalshi (real-money market, 25 categories) · Polymarket (real-money market, 3 categories)</p>
           <p>Odds may sum to more or less than 100%. Prediction markets include a house spread.</p>
           <p>Award Score: composite of Drama League, Outer Critics Circle, and Drama Desk wins in this category (0–100). Press Picks: predicted winners from NYT (Helen Shaw) and Variety (Clayton Davis).</p>

@@ -167,7 +167,7 @@ export default function CheapBroadwayTicketsGuide() {
             and insider tips. Currently, <span className="text-brand font-semibold">{openShowsWithDiscounts.length} shows</span> offer
             lottery or rush programs.
           </p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>
@@ -462,7 +462,7 @@ export default function CheapBroadwayTicketsGuide() {
 
             <div className="space-y-4">
               <div className="card p-4 sm:p-5">
-                <h3 className="font-bold text-white mb-2">Telecharge <span className="text-gray-500 font-normal text-sm">(20 theatres)</span></h3>
+                <h3 className="font-bold text-white mb-2">Telecharge <span className="text-fg-muted font-normal text-sm">(20 theatres)</span></h3>
                 <p className="text-gray-300 text-sm mb-2">
                   The official vendor for all Shubert Organization theatres, the largest group on Broadway.
                 </p>
@@ -474,7 +474,7 @@ export default function CheapBroadwayTicketsGuide() {
               </div>
 
               <div className="card p-4 sm:p-5">
-                <h3 className="font-bold text-white mb-2">Broadway Direct <span className="text-gray-500 font-normal text-sm">(10 theatres)</span></h3>
+                <h3 className="font-bold text-white mb-2">Broadway Direct <span className="text-fg-muted font-normal text-sm">(10 theatres)</span></h3>
                 <p className="text-gray-300 text-sm mb-2">
                   The official vendor for Nederlander Organization theatres (powered by Ticketmaster).
                 </p>
@@ -485,7 +485,7 @@ export default function CheapBroadwayTicketsGuide() {
               </div>
 
               <div className="card p-4 sm:p-5">
-                <h3 className="font-bold text-white mb-2">ATG Tickets <span className="text-gray-500 font-normal text-sm">(7 theatres)</span></h3>
+                <h3 className="font-bold text-white mb-2">ATG Tickets <span className="text-fg-muted font-normal text-sm">(7 theatres)</span></h3>
                 <p className="text-gray-300 text-sm mb-2">
                   The official vendor for Jujamcyn theatres.
                 </p>
@@ -567,7 +567,7 @@ export default function CheapBroadwayTicketsGuide() {
           <div className="prose prose-invert max-w-none">
             <div className="space-y-4">
               <div className="card p-4 sm:p-5">
-                <h3 className="font-bold text-white mb-2">NYC Broadway Week <span className="text-gray-500 font-normal text-sm">(January & September)</span></h3>
+                <h3 className="font-bold text-white mb-2">NYC Broadway Week <span className="text-fg-muted font-normal text-sm">(January & September)</span></h3>
                 <p className="text-gray-300 text-sm">
                   Two-for-one tickets to dozens of shows, run twice a year (mid-January and early September).
                   Participating shows vary, but it typically includes both long-running hits and newer productions.
@@ -576,7 +576,7 @@ export default function CheapBroadwayTicketsGuide() {
               </div>
 
               <div className="card p-4 sm:p-5">
-                <h3 className="font-bold text-white mb-2">Kids&apos; Night on Broadway <span className="text-gray-500 font-normal text-sm">(February)</span></h3>
+                <h3 className="font-bold text-white mb-2">Kids&apos; Night on Broadway <span className="text-fg-muted font-normal text-sm">(February)</span></h3>
                 <p className="text-gray-300 text-sm">
                   One free ticket for a child (under 18) with each full-price adult ticket. Runs in late February.
                   Great for family-friendly shows like The Lion King, Aladdin, and Wicked.
@@ -611,7 +611,7 @@ export default function CheapBroadwayTicketsGuide() {
                         loading="lazy"
                         fallback={
                           <div className="w-full h-full flex items-center justify-center bg-surface-overlay">
-                            <span className="text-2xl text-gray-500">🎭</span>
+                            <span className="text-2xl text-fg-muted">🎭</span>
                           </div>
                         }
                       />
@@ -704,7 +704,7 @@ export default function CheapBroadwayTicketsGuide() {
         </div>
 
         {/* Methodology Link */}
-        <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="mt-8 text-sm text-fg-muted border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
             How are scores calculated? →
           </Link>

@@ -419,7 +419,7 @@ export default function HeaderSearch() {
                           {show.venue ? <span className="truncate">{show.venue}</span> : show.year ? <span>{show.year}</span> : null}
                         </div>
                       </div>
-                      <svg className="w-5 h-5 text-gray-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <svg className="w-5 h-5 text-fg-muted flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </button>

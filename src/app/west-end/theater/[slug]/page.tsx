@@ -167,7 +167,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
                     </svg>
                   </a>
                 )}
-                <span className="text-gray-500 text-xs">London</span>
+                <span className="text-fg-muted text-xs">London</span>
               </div>
             </div>
           </div>
@@ -175,11 +175,11 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
           {/* Stats row (no capacity — not available for London venues yet) */}
           <div className="grid grid-cols-2 gap-3 mb-4">
             <div className="card p-3 sm:p-4 text-center">
-              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
+              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Past Shows</p>
               <p className="text-xl sm:text-2xl font-bold text-white">{theater.allShows.length}</p>
             </div>
             <div className="card p-3 sm:p-4 text-center">
-              <p className="text-gray-500 text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
+              <p className="text-fg-muted text-[10px] sm:text-xs uppercase tracking-wider mb-1">Avg Score</p>
               <div className="flex justify-center">
                 <ScoreBadge score={avgScore ?? undefined} size="sm" />
               </div>
@@ -209,7 +209,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
                 </div>
                 <div className="flex-1 min-w-0">
                   <h3 className="text-lg font-bold text-white group-hover:text-brand transition-colors truncate">{theater.currentShow.title}</h3>
-                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-gray-500">
+                  <div className="flex flex-wrap items-center gap-1.5 mt-1 text-xs text-fg-muted">
                     <FormatPill type={theater.currentShow.type} />
                     {theater.currentShow.isRevival && <ProductionPill isRevival />}
                     <StatusBadge status={theater.currentShow.status} />
@@ -218,7 +218,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
                         theater.currentShow!.openingDate || theater.currentShow!.previewsStartDate || '',
                         'in the West End'
                       );
-                      return duration ? <span className="text-gray-500">{duration}</span> : null;
+                      return duration ? <span className="text-fg-muted">{duration}</span> : null;
                     })()}
                   </div>
                 </div>
@@ -254,7 +254,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
           {/* Sub-venues under this complex */}
           {subVenues.length > 0 && (
             <div className="card p-4 mb-4 border border-white/5">
-              <p className="text-xs font-medium uppercase tracking-wider text-gray-500 mb-2">Also Home To</p>
+              <p className="text-xs font-medium uppercase tracking-wider text-fg-muted mb-2">Also Home To</p>
               <div className="flex flex-wrap gap-2">
                 {subVenues.map(sv => (
                   <Link
@@ -272,7 +272,7 @@ export default async function LondonTheaterPage(props: { params: Promise<{ slug:
 
         {/* Show list with sort/toggle (reuses Broadway component) */}
         <h2 className="text-lg font-bold text-white mb-1">All Shows</h2>
-        <p className="text-xs text-gray-500 mb-3">Covers West End and Off-West End productions in our database.</p>
+        <p className="text-xs text-fg-muted mb-3">Covers West End and Off-West End productions in our database.</p>
         <TheaterDetailClient shows={theaterShows} />
       </div>
     </>

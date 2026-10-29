@@ -76,7 +76,7 @@ function CastList({ cast, initialCount = INITIAL_COUNT, actorSlugs, tonyMap }: {
                   {member.name}
                 </span>
               )}
-              <span className="text-gray-500 text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-gray-600">
+              <span className="text-fg-muted text-xs sm:text-sm sm:before:content-['·'] sm:before:mx-2 sm:before:text-fg-muted">
                 {member.role}
               </span>
               {tonyInfo && (
@@ -157,7 +157,7 @@ export default function CastSection({ openingNightCast, currentCast, currentCast
             <header className="flex items-center justify-between gap-3 mb-4">
               <h2 className={eyebrow}>Current Cast</h2>
               {currentCastUpdatedAt && (
-                <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+                <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
                   updated {formatDate(currentCastUpdatedAt)}
                 </span>
               )}

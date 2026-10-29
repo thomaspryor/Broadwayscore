@@ -24,7 +24,7 @@ export interface BestValueRow {
 function SortIcon({ direction, active }: { direction: SortDirection; active: boolean }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -39,7 +39,7 @@ function SortIcon({ direction, active }: { direction: SortDirection; active: boo
 function ChevronIcon({ open }: { open: boolean }) {
   return (
     <svg
-      className={`w-4 h-4 text-gray-500 transition-transform ${open ? 'rotate-180' : ''}`}
+      className={`w-4 h-4 text-fg-muted transition-transform ${open ? 'rotate-180' : ''}`}
       fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"
     >
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -145,7 +145,7 @@ export function BestValueTable({ rows, market = 'broadway' }: BestValueTableProp
                     onClick={() => hasMultiple && setExpandedSlug(isExpanded ? null : row.slug)}
                   >
                     <td className="py-3 px-2 sm:px-3 w-6 sm:w-8 hidden sm:table-cell">
-                      <span className="text-gray-500 text-xs font-bold">
+                      <span className="text-fg-muted text-xs font-bold">
                         {index + 1}
                       </span>
                     </td>

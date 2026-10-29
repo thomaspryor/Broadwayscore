@@ -271,7 +271,7 @@ export default function ActorDetailClient({
             <span>{[musicalCount > 0 && `${musicalCount} musical${musicalCount !== 1 ? 's' : ''}`, playCount > 0 && `${playCount} play${playCount !== 1 ? 's' : ''}`].filter(Boolean).join(' · ')}</span>
           )}
           {showStats && rank <= 200 && (
-            <><span className="text-gray-600">·</span><span>{ordinalSuffix(rank)} most prolific</span></>
+            <><span className="text-fg-muted">·</span><span>{ordinalSuffix(rank)} most prolific</span></>
           )}
         </div>
       </div>
@@ -313,7 +313,7 @@ export default function ActorDetailClient({
             Broadway Credits
             <span className="text-sm font-normal text-gray-400 ml-2">({closedShows.length})</span>
           </h2>
-          <p className="text-xs text-gray-500 mb-1">Covers productions from 1970. Critic scores available from 2005.</p>
+          <p className="text-xs text-fg-muted mb-1">Covers productions from 1970. Critic scores available from 2005.</p>
 
           {/* Column headers — clickable sort */}
           {closedShows.length > 1 && (

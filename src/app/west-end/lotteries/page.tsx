@@ -103,7 +103,7 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
+          <div className="w-full h-full flex items-center justify-center text-fg-muted">
             <div className="text-3xl">🎭</div>
           </div>
         )}
@@ -135,7 +135,7 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
         <div className="mt-2 text-sm text-gray-400">
           <p className="truncate">
             {lotteryPlatform && <span className="text-gray-300">{lotteryPlatform}</span>}
-            {lottery?.time && <span className="text-gray-500"> · {lottery.time.split('.')[0]}</span>}
+            {lottery?.time && <span className="text-fg-muted"> · {lottery.time.split('.')[0]}</span>}
           </p>
         </div>
 
@@ -162,7 +162,7 @@ function LotteryShowCard({ show, lotteryData, index }: LotteryShowCardProps) {
 
       <div className="flex-shrink-0 hidden sm:flex flex-col items-center justify-center gap-2 w-20">
         <ScoreBadge score={score} size="md" showCrown />
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-fg-muted">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
       </div>
@@ -220,7 +220,7 @@ export default function WestEndLotteriesPage() {
           <p className="text-gray-400 mt-2">
             Enter digital lotteries to win discounted West End tickets. Most lotteries are free to enter and offer seats for a fraction of full price.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithLottery.length} shows with lotteries · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -240,18 +240,18 @@ export default function WestEndLotteriesPage() {
                   )
                 : '–'}
             </div>
-            <div className="text-xs text-gray-500 mt-1">Cheapest Lottery</div>
+            <div className="text-xs text-fg-muted mt-1">Cheapest Lottery</div>
             <div className="text-xs text-gray-400 truncate">{cheapestLottery?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{showsWithLottery.length}</div>
-            <div className="text-xs text-gray-500 mt-1">Shows with Lotteries</div>
+            <div className="text-xs text-fg-muted mt-1">Shows with Lotteries</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-gray-300">
               {avgPrice !== null ? formatTicketPrice(Math.round(avgPrice), 'west-end') : '–'}
             </div>
-            <div className="text-xs text-gray-500 mt-1">Avg Lottery Price</div>
+            <div className="text-xs text-fg-muted mt-1">Avg Lottery Price</div>
           </div>
         </div>
 
@@ -276,7 +276,7 @@ export default function WestEndLotteriesPage() {
               market="west-end"
             />
           ) : (
-            <p className="text-sm text-gray-500">No lotteries running right now. Check back during the week. New lotteries open and close frequently.</p>
+            <p className="text-sm text-fg-muted">No lotteries running right now. Check back during the week. New lotteries open and close frequently.</p>
           )}
         </div>
 
@@ -297,7 +297,7 @@ export default function WestEndLotteriesPage() {
           </>
         )}
 
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Lottery information sourced from TodayTix and official show websites.
             Prices and availability subject to change. Always verify details on the official lottery platform.

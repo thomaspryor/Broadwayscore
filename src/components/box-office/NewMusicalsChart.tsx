@@ -84,7 +84,7 @@ export default function NewMusicalsChart({ cohort }: { cohort: MarketPage['cohor
           <span className="inline-flex items-center gap-1.5"><span className="w-3.5 h-0.5 bg-gray-300" />Typical new musical</span>
           {examples.map((l) => (
             <span key={l.title} className="inline-flex items-center gap-1.5">
-              <span className="w-3.5 border-t-2 border-dashed border-current text-gray-500" />{l.title}{l.tag ? ` (${l.tag})` : ''}
+              <span className="w-3.5 border-t-2 border-dashed border-current text-fg-muted" />{l.title}{l.tag ? ` (${l.tag})` : ''}
             </span>
           ))}
           {current.map((l, i) => (

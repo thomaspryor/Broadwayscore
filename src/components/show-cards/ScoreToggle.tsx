@@ -41,7 +41,7 @@ export function ScoreToggle({
           className={`${btnClass} ${
             value === key
               ? 'bg-brand text-gray-900 shadow-sm'
-              : 'text-gray-500 hover:text-gray-300'
+              : 'text-fg-muted hover:text-gray-300'
           }`}
         >
           {label}

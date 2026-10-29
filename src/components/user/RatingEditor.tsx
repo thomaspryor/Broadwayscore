@@ -215,14 +215,14 @@ export default function RatingEditor({
             {(hoverValue ?? rating).toFixed(1)}
           </span>
         ) : (
-          <span className="text-xs text-gray-500" data-testid="pick-stars-hint">Tap a star to rate</span>
+          <span className="text-xs text-fg-muted" data-testid="pick-stars-hint">Tap a star to rate</span>
         )}
       </div>
 
       {/* Date Seen */}
       <div className="mb-3">
         <label className="block text-xs font-medium text-gray-400 mb-1">
-          Date Seen <span className="text-gray-600">(optional)</span>
+          Date Seen <span className="text-fg-muted">(optional)</span>
         </label>
         <DatePickerButton
           value={dateSeen}
@@ -231,10 +231,10 @@ export default function RatingEditor({
           max={maxDate}
           ariaLabel="Date seen"
           wrapClassName="relative w-full sm:w-48"
-          className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-gray-500'}`}
+          className={`w-full flex items-center gap-2 px-3 py-2 text-sm bg-white/[0.05] border border-white/10 rounded-lg focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 transition-colors ${dateSeen ? 'text-white pr-9' : 'text-fg-muted'}`}
           onClear={() => { dateTouched.current = true; setDateSeen(''); }}
         >
-          <svg className="w-4 h-4 shrink-0 text-gray-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <svg className="w-4 h-4 shrink-0 text-fg-muted" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
           <span data-testid="date-seen-display">
@@ -248,7 +248,7 @@ export default function RatingEditor({
       {/* Private notes */}
       <div className="mb-3">
         <label className="block text-xs font-medium text-gray-400 mb-1">
-          Private Notes <span className="text-gray-600">(optional)</span>
+          Private Notes <span className="text-fg-muted">(optional)</span>
         </label>
         <textarea
           value={reviewText}
@@ -262,13 +262,13 @@ export default function RatingEditor({
           className="w-full px-3 py-2 text-base sm:text-sm bg-white/[0.05] border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-brand/50 focus:ring-1 focus:ring-brand/30 resize-none"
         />
         <div className="flex items-center justify-between mt-0.5">
-          <div className="flex items-center gap-1.5 text-xs text-gray-500">
+          <div className="flex items-center gap-1.5 text-xs text-fg-muted">
             <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
             </svg>
             <span>Only visible to you</span>
           </div>
-          <span className={`text-xs ${isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-gray-600'}`}>
+          <span className={`text-xs ${isOverLimit ? 'text-red-400' : charsRemaining < 200 ? 'text-amber-400' : 'text-fg-muted'}`}>
             {charsRemaining.toLocaleString()} left
           </span>
         </div>

@@ -147,7 +147,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                   <div className="flex items-center gap-2">
                     <div className="flex-1 min-w-0">
                       <div className="font-semibold text-sm truncate">{show.title}</div>
-                      <div className="text-[10px] text-gray-500 uppercase tracking-wide">
+                      <div className="text-[10px] text-fg-muted uppercase tracking-wide">
                         {show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway'} · {show.status}
                       </div>
                     </div>
@@ -159,7 +159,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
               );
             })}
             {filteredShows.length === 0 && (
-              <div className="col-span-full text-center text-gray-500 text-sm py-6">No shows match.</div>
+              <div className="col-span-full text-center text-fg-muted text-sm py-6">No shows match.</div>
             )}
           </div>
         </section>
@@ -190,7 +190,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                       </button>
                     ))}
                   </div>
-                  <p className="text-[11px] text-gray-500 mt-2">Auto matches your site&apos;s color scheme.</p>
+                  <p className="text-[11px] text-fg-muted mt-2">Auto matches your site&apos;s color scheme.</p>
                 </div>
                 <div>
                   <label className="block text-xs font-semibold text-gray-400 uppercase tracking-wide mb-2">
@@ -203,7 +203,7 @@ export default function PartnersPageClient({ shows, baseUrl }: Props) {
                     placeholder="e.g. understudies"
                     className="w-full px-3 py-2 bg-surface-raised border border-white/10 rounded-card text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50 text-sm"
                   />
-                  <p className="text-[11px] text-gray-500 mt-2">Tags click-throughs so we can see what traffic you drive.</p>
+                  <p className="text-[11px] text-fg-muted mt-2">Tags click-throughs so we can see what traffic you drive.</p>
                 </div>
               </div>
             </section>

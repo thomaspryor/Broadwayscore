@@ -83,7 +83,7 @@ export function YearRangeSlider({ min, max, value, onChange, onClear }: YearRang
           {to}
         </span>
       </div>
-      <div className="flex items-center justify-between text-[10px] text-gray-500 tabular-nums mt-1 px-1">
+      <div className="flex items-center justify-between text-[10px] text-fg-muted tabular-nums mt-1 px-1">
         <span>{min}</span>
         {value && onClear && (
           <button

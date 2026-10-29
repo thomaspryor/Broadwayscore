@@ -17,7 +17,7 @@ interface TrendingListProps {
 
 export default function TrendingList({ picks, showLookup, emptyMessage }: TrendingListProps) {
   if (picks.length === 0) {
-    return <p className="text-sm text-gray-500 italic">{emptyMessage}</p>;
+    return <p className="text-sm text-fg-muted italic">{emptyMessage}</p>;
   }
 
   return (

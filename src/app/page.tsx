@@ -140,7 +140,7 @@ export default function HomePage() {
           <p className="text-gray-400 text-lg sm:text-xl">
             Every show. Every review. One score.
           </p>
-          <p className="text-gray-500 text-sm sm:text-base mt-1">
+          <p className="text-fg-muted text-sm sm:text-base mt-1">
             {siteStats.scoredShows.toLocaleString('en-US')} scored shows. {siteStats.totalReviews.toLocaleString('en-US')} critic reviews. <span className="whitespace-nowrap">And counting.</span>
           </p>
         </div>

@@ -148,11 +148,11 @@ function FunnelStage({
 }) {
   return (
     <div className="bg-surface/60 border border-white/[0.06] rounded-md p-3">
-      <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
+      <div className="text-[10px] uppercase tracking-wide text-fg-muted">{label}</div>
       <div className={`text-xl sm:text-2xl font-extrabold tabular-nums mt-1 ${accent ? 'text-green-400' : 'text-white'}`}>
         {value}
       </div>
-      <div className="text-[11px] text-gray-500 mt-1 h-4">{rateLabel || ''}</div>
+      <div className="text-[11px] text-fg-muted mt-1 h-4">{rateLabel || ''}</div>
     </div>
   );
 }
@@ -160,9 +160,9 @@ function FunnelStage({
 function UnitStat({ label, value, hint }: { label: string; value: string; hint: string }) {
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
+      <div className="text-[10px] uppercase tracking-wide text-fg-muted">{label}</div>
       <div className="text-xl font-bold text-white tabular-nums mt-1">{value}</div>
-      <div className="text-[10px] text-gray-500 mt-0.5">{hint}</div>
+      <div className="text-[10px] text-fg-muted mt-0.5">{hint}</div>
     </div>
   );
 }
@@ -243,7 +243,7 @@ export default function Dashboard() {
           {loading ? 'Loading…' : 'Refresh'}
         </button>
         {stats && (
-          <span className="text-xs text-gray-500 ml-auto">
+          <span className="text-xs text-fg-muted ml-auto">
             {stats.cached ? 'cached' : 'fresh'} · updated {new Date(stats.updatedAt).toLocaleTimeString()}
           </span>
         )}
@@ -260,7 +260,7 @@ export default function Dashboard() {
           {/* Top-line: commission earned (our revenue) + WoW */}
           <Card title={`Our earnings, last ${stats.window.days} days`}>
             <div>
-              <div className="text-xs text-gray-500 uppercase tracking-wide">Commission earned</div>
+              <div className="text-xs text-fg-muted uppercase tracking-wide">Commission earned</div>
               <div className="text-4xl sm:text-5xl font-extrabold text-white tabular-nums leading-none mt-1">
                 {fmtMoney(stats.totals.commission)}
               </div>
@@ -351,7 +351,7 @@ export default function Dashboard() {
               <div className="overflow-x-auto -mx-4 sm:-mx-5">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-xs text-gray-500 uppercase tracking-wide">
+                    <tr className="text-xs text-fg-muted uppercase tracking-wide">
                       <th className="text-left font-medium px-4 sm:px-5 pb-2">Platform</th>
                       <th className="text-right font-medium px-2 pb-2">Clicks</th>
                       <th className="text-right font-medium px-2 pb-2">Conv</th>
@@ -366,28 +366,28 @@ export default function Dashboard() {
                         <td className="px-4 sm:px-5 py-2 text-white font-medium">
                           {r.platform}
                           {!r.affiliate && (
-                            <span className="ml-1 text-xs text-gray-500" title="No affiliate program">·</span>
+                            <span className="ml-1 text-xs text-fg-muted" title="No affiliate program">·</span>
                           )}
                         </td>
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">{fmtInt(r.clicks)}</td>
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">
-                          {r.conversions != null ? fmtInt(r.conversions) : <span className="text-gray-600">–</span>}
+                          {r.conversions != null ? fmtInt(r.conversions) : <span className="text-fg-muted">–</span>}
                         </td>
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">
-                          {r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%` : <span className="text-gray-600">–</span>}
+                          {r.conversionRate != null ? `${(r.conversionRate * 100).toFixed(1)}%` : <span className="text-fg-muted">–</span>}
                         </td>
                         <td className="px-2 py-2 text-right text-white font-semibold tabular-nums">
-                          {r.commission != null ? fmtMoney(r.commission) : <span className="text-gray-600">–</span>}
+                          {r.commission != null ? fmtMoney(r.commission) : <span className="text-fg-muted">–</span>}
                         </td>
                         <td className="px-4 sm:px-5 py-2 text-right text-gray-300 tabular-nums">
-                          {r.epc != null ? `$${r.epc.toFixed(3)}` : <span className="text-gray-600">–</span>}
+                          {r.epc != null ? `$${r.epc.toFixed(3)}` : <span className="text-fg-muted">–</span>}
                         </td>
                       </tr>
                     ))}
                   </tbody>
                 </table>
               </div>
-              <div className="text-xs text-gray-500 mt-3">
+              <div className="text-xs text-fg-muted mt-3">
                 · = no affiliate program; clicks shown for reference. CR = conversion rate. EPC = earnings per click.
               </div>
             </Card>
@@ -402,7 +402,7 @@ export default function Dashboard() {
                 const newPct = total > 0 ? Math.round((m.newCount / total) * 100) : 0;
                 return (
                   <>
-                    <div className="text-xs text-gray-500 mb-3">
+                    <div className="text-xs text-fg-muted mb-3">
                       Inferred from payout / sale ratio (5% = new, 1% = existing under current contract)
                     </div>
                     <StatRow label={`New (${newPct}%)`} value={`${m.newCount} · ${fmtMoney(m.newPayout)} commission`} />

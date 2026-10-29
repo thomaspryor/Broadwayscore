@@ -104,9 +104,9 @@ function BigStat({ label, value, accent, sub }: { label: string; value: string; 
   const cls = accent === 'pos' ? 'text-green-400' : accent === 'neg' ? 'text-red-400' : 'text-white';
   return (
     <div>
-      <div className="text-[10px] uppercase tracking-wide text-gray-500">{label}</div>
+      <div className="text-[10px] uppercase tracking-wide text-fg-muted">{label}</div>
       <div className={`text-2xl sm:text-3xl font-extrabold tabular-nums mt-1 ${cls}`}>{value}</div>
-      <div className="text-[11px] text-gray-500 mt-1 h-4">{sub || ''}</div>
+      <div className="text-[11px] text-fg-muted mt-1 h-4">{sub || ''}</div>
     </div>
   );
 }
@@ -116,7 +116,7 @@ type DetailSort = 'date' | 'amount-desc' | 'amount-asc';
 function MonthDetail({ rows }: { rows: ExpenseRow[] }) {
   const [sort, setSort] = useState<DetailSort>('amount-desc');
   if (rows.length === 0) {
-    return <div className="text-xs text-gray-500 py-2 pl-14">No booked expenses this month.</div>;
+    return <div className="text-xs text-fg-muted py-2 pl-14">No booked expenses this month.</div>;
   }
   const sorted = [...rows].sort((a, b) =>
     sort === 'date' ? b.date.localeCompare(a.date)
@@ -136,7 +136,7 @@ function MonthDetail({ rows }: { rows: ExpenseRow[] }) {
             key={o.key}
             onClick={() => setSort(o.key)}
             className={`px-2 py-0.5 text-[10px] uppercase tracking-wide rounded ${
-              sort === o.key ? 'bg-surface-overlay text-white' : 'text-gray-500 hover:text-gray-300'
+              sort === o.key ? 'bg-surface-overlay text-white' : 'text-fg-muted hover:text-gray-300'
             }`}
           >
             {o.label}
@@ -147,14 +147,14 @@ function MonthDetail({ rows }: { rows: ExpenseRow[] }) {
         <tbody>
           {sorted.map((r, i) => (
             <tr key={i} className={`border-t border-white/[0.04] ${r.excluded ? 'opacity-50' : ''}`}>
-              <td className="py-1 pr-2 text-gray-500 whitespace-nowrap">{r.date.slice(5)}</td>
+              <td className="py-1 pr-2 text-fg-muted whitespace-nowrap">{r.date.slice(5)}</td>
               <td className="py-1 pr-2 text-white">
                 {r.vendor}
                 {r.kind === 'refund' && <span className="ml-1.5 text-[10px] uppercase text-green-400">refund</span>}
-                {r.excluded && <span className="ml-1.5 text-[10px] uppercase text-gray-500">excluded · {r.excludedReason}</span>}
+                {r.excluded && <span className="ml-1.5 text-[10px] uppercase text-fg-muted">excluded · {r.excludedReason}</span>}
               </td>
-              <td className="py-1 pr-2 text-gray-500 hidden sm:table-cell">{r.category} · {r.kind}</td>
-              <td className={`py-1 text-right tabular-nums font-semibold ${r.amount < 0 ? 'text-green-400' : r.excluded ? 'text-gray-500' : 'text-gray-200'}`}>
+              <td className="py-1 pr-2 text-fg-muted hidden sm:table-cell">{r.category} · {r.kind}</td>
+              <td className={`py-1 text-right tabular-nums font-semibold ${r.amount < 0 ? 'text-green-400' : r.excluded ? 'text-fg-muted' : 'text-gray-200'}`}>
                 {fmtMoney(r.amount)}
               </td>
             </tr>
@@ -233,7 +233,7 @@ export default function Dashboard() {
           {loading ? 'Loading…' : 'Refresh'}
         </button>
         {stats && (
-          <span className="text-xs text-gray-500 ml-auto">
+          <span className="text-xs text-fg-muted ml-auto">
             {stats.cached ? 'cached' : 'fresh'} · updated {new Date(stats.updatedAt).toLocaleTimeString()}
           </span>
         )}
@@ -275,7 +275,7 @@ export default function Dashboard() {
 
           {/* Monthly trend — paired bars, table-legible */}
           <Card title={`Monthly trend, last ${stats.trend.length} months`}>
-            <div className="text-[11px] text-gray-500 mb-2">Tap a month for the full expense list.</div>
+            <div className="text-[11px] text-fg-muted mb-2">Tap a month for the full expense list.</div>
             <div className="space-y-1">
               {stats.trend.map(t => {
                 const monthRows = stats.rows.filter(r => r.date.startsWith(t.month));
@@ -288,7 +288,7 @@ export default function Dashboard() {
                       onClick={() => setOpenMonth(isOpen ? null : t.month)}
                       className="w-full grid grid-cols-[3.5rem_1fr_5.5rem] items-center gap-2 text-sm py-1.5 text-left"
                     >
-                      <span className="text-gray-500 text-xs">{isOpen ? '▾ ' : '▸ '}{fmtMonth(t.month)}</span>
+                      <span className="text-fg-muted text-xs">{isOpen ? '▾ ' : '▸ '}{fmtMonth(t.month)}</span>
                       <div className="space-y-1">
                         <div className="h-2 rounded-sm bg-green-400/80" style={{ width: `${Math.max((t.revenue / maxTrend) * 100, t.revenue > 0 ? 2 : 0)}%` }} />
                         <div className="flex items-center gap-1">
@@ -301,7 +301,7 @@ export default function Dashboard() {
                       <span
                         className={`text-right tabular-nums font-semibold ${
                           t.revenue === 0 && t.expense === 0
-                            ? 'text-gray-600'
+                            ? 'text-fg-muted'
                             : t.net >= 0
                             ? 'text-green-400'
                             : 'text-red-400'
@@ -315,7 +315,7 @@ export default function Dashboard() {
                 );
               })}
             </div>
-            <div className="flex gap-4 flex-wrap text-[11px] text-gray-500 mt-3">
+            <div className="flex gap-4 flex-wrap text-[11px] text-fg-muted mt-3">
               <span><span className="inline-block w-2 h-2 rounded-sm bg-green-400/80 mr-1" />revenue</span>
               <span><span className="inline-block w-2 h-2 rounded-sm bg-red-400/70 mr-1" />expenses (before refunds)</span>
               {revenueSince && <span>revenue tracked from {fmtMonth(revenueSince)}</span>}
@@ -330,7 +330,7 @@ export default function Dashboard() {
           <div className="grid sm:grid-cols-2 gap-5">
             <Card title="This month by category">
               {stats.byCategory.length === 0 ? (
-                <div className="text-sm text-gray-500">No expenses booked this month yet.</div>
+                <div className="text-sm text-fg-muted">No expenses booked this month yet.</div>
               ) : (
                 <div className="space-y-2">
                   {stats.byCategory.map(c => (
@@ -367,7 +367,7 @@ export default function Dashboard() {
               <div className="overflow-x-auto -mx-4 sm:-mx-5">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-xs text-gray-500 uppercase tracking-wide">
+                    <tr className="text-xs text-fg-muted uppercase tracking-wide">
                       <th className="text-left font-medium px-4 sm:px-5 pb-2">Vendor</th>
                       <th className="text-right font-medium px-2 pb-2">
                         <button onClick={() => setVendorAsc(a => !a)} className="uppercase tracking-wide hover:text-white">
@@ -386,7 +386,7 @@ export default function Dashboard() {
                         <td className="px-2 py-2 text-right text-gray-300 tabular-nums">{fmtMoney(v.prevAmount)}</td>
                         <td
                           className={`px-4 sm:px-5 py-2 text-right tabular-nums ${
-                            v.momPct == null ? 'text-gray-600' : v.momPct > 25 ? 'text-red-400' : v.momPct < 0 ? 'text-green-400' : 'text-gray-300'
+                            v.momPct == null ? 'text-fg-muted' : v.momPct > 25 ? 'text-red-400' : v.momPct < 0 ? 'text-green-400' : 'text-gray-300'
                           }`}
                         >
                           {fmtPct(v.momPct)}
@@ -403,7 +403,7 @@ export default function Dashboard() {
               booking rules live in finance-vendors.json. */}
           {stats.queuePreview.length > 0 && (
             <Card title={`Review queue: ${stats.reviewQueueCount} unclassified emails`}>
-              <div className="text-xs text-gray-500 mb-3">
+              <div className="text-xs text-fg-muted mb-3">
                 Not booked and not counted, only unrecognized. To book or suppress one, add a vendor/ignore rule
                 (tell Claude the sender). Newest {stats.queuePreview.length} shown.
               </div>
@@ -412,7 +412,7 @@ export default function Dashboard() {
                   <tbody>
                     {stats.queuePreview.map((q, i) => (
                       <tr key={i} className="border-t border-white/[0.04]">
-                        <td className="px-4 sm:px-5 py-1.5 text-gray-500 whitespace-nowrap align-top">{q.date}</td>
+                        <td className="px-4 sm:px-5 py-1.5 text-fg-muted whitespace-nowrap align-top">{q.date}</td>
                         <td className="px-2 py-1.5 text-gray-300 max-w-[10rem] truncate align-top">{q.from}</td>
                         <td className="px-2 sm:px-5 py-1.5 text-gray-400 align-top">{q.subject}</td>
                       </tr>
@@ -423,7 +423,7 @@ export default function Dashboard() {
             </Card>
           )}
 
-          <div className="text-xs text-gray-600">
+          <div className="text-xs text-fg-muted">
             {stats.ledgerCounts.expenses} expense rows · {stats.ledgerCounts.revenue} revenue rows · amounts USD ·
             businessPct applied · pending revenue excluded from net.
             {stats.excluded?.count > 0 && (

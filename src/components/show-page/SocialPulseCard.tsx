@@ -341,7 +341,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
         <h2 id="socials-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           Socials Scorecard
         </h2>
-        <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+        <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
           last 7 days
         </span>
       </header>
@@ -410,7 +410,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           <div className="mt-4">
             <div className="flex items-baseline justify-between mb-1.5">
               <span className="text-sm font-semibold text-gray-200" title="Percentage of opinion-bearing posts that are positive. Neutral/informational posts are excluded.">{sp.p}% positive</span>
-              <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions this week</span>
+              <span className="text-xs text-fg-muted">{formatVolume(sp.v)} mentions this week</span>
             </div>
             <div className="w-full h-2 bg-white/5 rounded-full overflow-hidden">
               <div className="h-full rounded-full transition-all" style={sentimentBarStyle} />
@@ -418,7 +418,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           </div>
         ) : (
           <div className="mt-4 flex items-baseline justify-end">
-            <span className="text-xs text-gray-500">{formatVolume(sp.v)} mentions this week</span>
+            <span className="text-xs text-fg-muted">{formatVolume(sp.v)} mentions this week</span>
           </div>
         )}
       </div>
@@ -447,10 +447,10 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
             const meta = PLATFORM_META[quote.p];
             return (
               <div key={i} className="text-sm text-gray-300 leading-relaxed">
-                <span className="text-gray-500">&ldquo;</span>
+                <span className="text-fg-muted">&ldquo;</span>
                 {quote.t}
-                <span className="text-gray-500">&rdquo;</span>{' '}
-                <span className="text-xs text-gray-500 inline-flex items-center gap-1.5 ml-1">
+                <span className="text-fg-muted">&rdquo;</span>{' '}
+                <span className="text-xs text-fg-muted inline-flex items-center gap-1.5 ml-1">
                   –{' '}
                   {meta && (
                     <span className="inline-block scale-75 -my-1">
@@ -477,7 +477,7 @@ export default function SocialPulseCard({ sp }: SocialPulseCardProps) {
           <span className="inline-block transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
         </Link>
         <span
-          className="text-[11px] text-gray-500 lowercase"
+          className="text-[11px] text-fg-muted lowercase"
           title={isV3 ? 'Mentions are real weekly counts across Reddit, Bluesky and X. Rank and tier blend those counts (relevance-weighted) with sentiment. Methodology updated July 2026.' : undefined}
         >
           updated {formatUpdatedDate(sp.u)} · refreshed weekly

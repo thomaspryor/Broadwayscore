@@ -41,13 +41,13 @@ export function Poster({ url, iconClass = 'text-3xl', title, sizes }: { url: str
     // already print the title next to / under it.
     if (title) {
       return (
-        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 px-2 text-gray-600">
+        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 px-2 text-fg-muted">
           <span className={iconClass} aria-hidden="true">🎭</span>
           <span className="text-xs font-semibold text-gray-300 text-center leading-snug line-clamp-3 break-words">{title}</span>
         </div>
       );
     }
-    return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
+    return <div className={`w-full h-full flex items-center justify-center text-fg-muted ${iconClass}`}>🎭</div>;
   }
   return <ShowImage key={url} sources={[url]} alt="" sizes={sizes} className="w-full h-full object-cover" fallback={placeholder()} />;
 }
@@ -179,7 +179,7 @@ export function SectionBand({ title, count, noun = 'entry', id, as: Heading = 'h
         {title}
         {hint}
       </Heading>
-      {count !== undefined && <span className="flex-shrink-0 text-xs text-gray-500">{count} {count === 1 ? noun : plural}</span>}
+      {count !== undefined && <span className="flex-shrink-0 text-xs text-fg-muted">{count} {count === 1 ? noun : plural}</span>}
     </div>
   );
 }
@@ -226,7 +226,7 @@ export function UpcomingListRow({ href, posterUrl, title, venue, plannedDate, no
       {block && (
         <div className="relative z-[1] flex-shrink-0 w-8 text-center pointer-events-none">
           <p aria-hidden="true" className="text-base font-bold leading-tight text-white">{block.day}</p>
-          <p aria-hidden="true" className="text-xs font-bold uppercase text-gray-500">{block.month}</p>
+          <p aria-hidden="true" className="text-xs font-bold uppercase text-fg-muted">{block.month}</p>
           <span className="sr-only">{upcomingRowDate(plannedDate!)}</span>
         </div>
       )}
@@ -235,7 +235,7 @@ export function UpcomingListRow({ href, posterUrl, title, venue, plannedDate, no
       </div>
       <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
         <h4 className="font-bold text-white text-base truncate">{title}</h4>
-        {venue && <p className="text-xs text-gray-500 truncate">{venue}</p>}
+        {venue && <p className="text-xs text-fg-muted truncate">{venue}</p>}
         {!plannedDate && note && <div className="mt-1">{note}</div>}
       </div>
       {(daysUntil !== null && daysUntil > 0) || extra ? (

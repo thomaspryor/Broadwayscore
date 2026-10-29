@@ -357,7 +357,7 @@ export default function Dashboard() {
                       <div className={`h-full ${m.partial ? 'bg-brand/40' : 'bg-brand'}`} style={{ width: `${(m.visits / monthMax) * 100}%` }} />
                     </div>
                     <span className="text-right tabular-nums text-white font-semibold">{fmtN(m.visits)}</span>
-                    <span className={`text-right tabular-nums text-xs ${p == null ? 'text-gray-600' : p >= 0 ? 'text-status-open' : 'text-score-skip'}`}>
+                    <span className={`text-right tabular-nums text-xs ${p == null ? 'text-fg-muted' : p >= 0 ? 'text-status-open' : 'text-score-skip'}`}>
                       {/* The last row is the unfinished current month; an earlier partial row is the month tracking began. */}
                       {m.partial ? (m.month === data.months[data.months.length - 1].month ? 'so far' : 'part month') : p == null ? '' : `${p > 0 ? '+' : ''}${p}%`}
                     </span>

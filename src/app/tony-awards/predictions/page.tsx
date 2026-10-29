@@ -224,7 +224,7 @@ export default function TonyPredictionsOverviewPage() {
         <section className="mb-10 max-w-3xl mx-auto rounded-xl border border-white/5 bg-surface-overlay p-5 sm:p-6">
           <h2 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-4">Track Record</h2>
           <TrackRecord summaries={summaries} seasonCount={stats.seasonCount} />
-          <p className="text-xs text-gray-500 mt-5 pt-4 border-t border-white/5 leading-relaxed">
+          <p className="text-xs text-fg-muted mt-5 pt-4 border-t border-white/5 leading-relaxed">
             <span className="text-gray-400 font-medium">A note on the number:</span> the match rate above is measured on the same {stats.seasonCount} seasons the recipe weights were tuned on. Under leave-one-season-out cross-validation (refitting the weights on the other {stats.seasonCount - 1} seasons and predicting the held-out one), the model matches <span className="text-white font-semibold">{losoStats.totalLoso.pct}%</span> of past winners ({losoStats.totalLoso.hits} of {losoStats.totalLoso.total}). The remaining gap is a handful of voter-sentiment upsets (cultural significance, star power) that no critic, audience, or precursor signal will fully capture.
           </p>
         </section>
@@ -259,12 +259,12 @@ export default function TonyPredictionsOverviewPage() {
                       {summary.isCurrent && (
                         <span className="text-[10px] font-semibold uppercase tracking-wide px-1.5 py-0.5 bg-brand/20 text-brand rounded">Live</span>
                       )}
-                      <svg className="w-4 h-4 text-gray-500 group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <svg className="w-4 h-4 text-fg-muted group-hover:text-brand transition-colors flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
                     </div>
                   </div>
-                  <p className="text-xs text-gray-500 mb-2">
+                  <p className="text-xs text-fg-muted mb-2">
                     {summary.eligibleCount} eligible &middot; {summary.scoredCount} scored
                   </p>
                   {summary.hasTonyResults && bestMusicalWinner && (
@@ -273,7 +273,7 @@ export default function TonyPredictionsOverviewPage() {
                     </p>
                   )}
                   {summary.hasTonyResults && categoriesWithResults > 0 && (
-                    <p className="text-xs text-gray-500 mt-1">
+                    <p className="text-xs text-fg-muted mt-1">
                       Our #1 pick won {rank1Wins}/{categoriesWithResults} categories
                     </p>
                   )}
@@ -284,7 +284,7 @@ export default function TonyPredictionsOverviewPage() {
         </section>
 
         {/* Footer */}
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6">
           <div className="flex flex-wrap gap-4">
             <Link href="/tony-awards" className="text-brand hover:text-brand-hover transition-colors">
               Tony Awards hub &rarr;

@@ -83,7 +83,7 @@ const DESIGNATION_CONFIG: Record<AwardsDesignation, {
     label: 'Awaiting Eligibility',
     sublabel: 'Not yet eligible for awards',
     bgClass: 'bg-surface-overlay/30',
-    textClass: 'text-gray-500',
+    textClass: 'text-fg-muted',
     borderClass: 'border-white/10',
   },
   'ineligible': {
@@ -135,7 +135,7 @@ function TonyExpandableSection({
         <span className="text-sm font-medium text-gray-300">
           See all categories ({totalCount})
         </span>
-        <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+        <ChevronIcon expanded={expanded} className="text-fg-muted group-hover:text-gray-400" />
       </button>
 
       {expanded && (
@@ -145,12 +145,12 @@ function TonyExpandableSection({
               {item.isWin ? (
                 <TrophyIcon className="text-amber-400 flex-shrink-0" />
               ) : (
-                <StarIcon className="text-gray-500 flex-shrink-0" />
+                <StarIcon className="text-fg-muted flex-shrink-0" />
               )}
               <span className={
                 item.isWin
                   ? (isMajorCategory(item.category) ? 'text-white font-medium' : 'text-amber-200')
-                  : (isMajorCategory(item.category) ? 'text-gray-300' : 'text-gray-500')
+                  : (isMajorCategory(item.category) ? 'text-gray-300' : 'text-fg-muted')
               }>
                 {item.category}
               </span>
@@ -221,7 +221,7 @@ function PrecursorExpanded({
       <div className={`text-xs ${titleColor} font-medium mb-1.5`}>
         {label}
         {totalShown && (
-          <span className="text-gray-500 font-normal ml-1.5">· {totalShown} total noms</span>
+          <span className="text-fg-muted font-normal ml-1.5">· {totalShown} total noms</span>
         )}
       </div>
       {wins.length > 0 && (
@@ -233,7 +233,7 @@ function PrecursorExpanded({
                 <TrophyIcon className={`w-3 h-3 ${iconColor} flex-shrink-0`} />
                 {win}
                 {performers.length > 0 && (
-                  <span className="text-gray-500 font-normal">({performers.join(' & ')})</span>
+                  <span className="text-fg-muted font-normal">({performers.join(' & ')})</span>
                 )}
               </li>
             );
@@ -242,14 +242,14 @@ function PrecursorExpanded({
       )}
       {nomsOnly.length > 0 && (
         <>
-          <div className="text-[11px] text-gray-500 uppercase tracking-wide mt-1.5 mb-1 pl-4">
+          <div className="text-[11px] text-fg-muted uppercase tracking-wide mt-1.5 mb-1 pl-4">
             Nominated for
           </div>
           <ul className="space-y-1 pl-4">
             {nomsOnly.map((nom, idx) => (
               <li
                 key={`n-${idx}`}
-                className="flex items-center gap-2 text-sm text-gray-500 italic"
+                className="flex items-center gap-2 text-sm text-fg-muted italic"
               >
                 <span className={`w-3 h-3 flex-shrink-0 ${iconColor} opacity-40`}>·</span>
                 {nom}
@@ -309,12 +309,12 @@ function OtherAwardsExpandableSection({ awards }: { awards: ShowAwards }) {
         className="w-full flex items-center justify-between text-left group"
       >
         <div className="flex items-center gap-2">
-          <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+          <span className="text-xs text-fg-muted uppercase tracking-wide font-medium">
             Other Major Awards
           </span>
-          <span className="text-xs text-gray-500">({headerLabel})</span>
+          <span className="text-xs text-fg-muted">({headerLabel})</span>
         </div>
-        <ChevronIcon expanded={expanded} className="text-gray-500 group-hover:text-gray-400" />
+        <ChevronIcon expanded={expanded} className="text-fg-muted group-hover:text-gray-400" />
       </button>
 
       {/* Summary badges - always visible. "X / Y" = noms / wins when noms count
@@ -461,7 +461,7 @@ export default function AwardsCard({ showId, awards, summary, openingDate, categ
       <header className="flex items-center justify-between gap-3 mb-4">
         <h2 id="awards-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">Awards Scorecard</h2>
         {awardsMeta && (
-          <span className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+          <span className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
             {awardsMeta}
           </span>
         )}
@@ -516,11 +516,11 @@ export default function AwardsCard({ showId, awards, summary, openingDate, categ
       {(tonyWins > 0 || tonyNoms > 0) && (
         <div className="bg-surface-overlay rounded-xl p-4 border border-white/5">
           <div className="flex items-center justify-between mb-3">
-            <span className="text-xs text-gray-500 uppercase tracking-wide font-medium">
+            <span className="text-xs text-fg-muted uppercase tracking-wide font-medium">
               Tony Awards {tonySeason && `(${tonySeason})`}
             </span>
             {tonyCeremony && (
-              <span className="text-xs text-gray-500">{tonyCeremony} Ceremony</span>
+              <span className="text-xs text-fg-muted">{tonyCeremony} Ceremony</span>
             )}
           </div>
 

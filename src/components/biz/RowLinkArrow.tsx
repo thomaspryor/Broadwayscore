@@ -8,7 +8,7 @@
 function Chevron() {
   return (
     <svg
-      className="inline-block w-3.5 h-3.5 ml-1 -mt-0.5 text-gray-500 group-hover:text-brand transition-colors"
+      className="inline-block w-3.5 h-3.5 ml-1 -mt-0.5 text-fg-muted group-hover:text-brand transition-colors"
       fill="none"
       stroke="currentColor"
       viewBox="0 0 24 24"

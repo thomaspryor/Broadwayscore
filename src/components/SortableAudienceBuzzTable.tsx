@@ -45,7 +45,7 @@ function getGradeFromScore(score: number): { grade: string; color: string } {
 function SortIcon({ direction, active }: { direction: SortDirection | null; active: boolean }) {
   if (!active) {
     return (
-      <span className="ml-1 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity">
+      <span className="ml-1 text-fg-muted opacity-0 group-hover:opacity-100 transition-opacity">
         ↕
       </span>
     );
@@ -145,7 +145,7 @@ export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
                 <tr key={item.show.slug} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                   <td className="py-3 px-4">
                     <span className={`inline-flex items-center justify-center w-6 h-6 rounded-full text-xs font-bold ${
-                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-gray-500'
+                      index < 3 ? 'bg-accent-gold text-gray-900' : 'text-fg-muted'
                     }`}>
                       {index + 1}
                     </span>
@@ -164,7 +164,7 @@ export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
                         {gradeInfo.grade}
                       </span>
                     ) : (
-                      <span className="text-gray-500">–</span>
+                      <span className="text-fg-muted">–</span>
                     )}
                   </td>
                   {sources?.map((src, i) => {
@@ -178,7 +178,7 @@ export function AudienceBuzzTable({ data, sources }: AudienceBuzzTableProps) {
                         {srcData ? (
                           <span className="text-gray-400 text-sm">{srcData.reviewCount.toLocaleString()} {src.volumeLabel}</span>
                         ) : (
-                          <span className="text-gray-500">–</span>
+                          <span className="text-fg-muted">–</span>
                         )}
                       </td>
                     );

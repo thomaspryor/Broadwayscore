@@ -109,7 +109,7 @@ export default function WhatToWearToBroadwayGuide() {
             jeans-and-a-nice-top and cocktail attire. This guide covers what to expect,
             what to avoid, and how to dress for every occasion.
           </p>
-          <p className="text-gray-500 text-sm mt-3">
+          <p className="text-fg-muted text-sm mt-3">
             Last updated: {new Date().toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>
@@ -498,7 +498,7 @@ export default function WhatToWearToBroadwayGuide() {
         </div>
 
         {/* Methodology Link */}
-        <div className="mt-8 text-sm text-gray-500 border-t border-white/5 pt-6">
+        <div className="mt-8 text-sm text-fg-muted border-t border-white/5 pt-6">
           <Link href="/methodology" className="text-brand hover:text-brand-hover transition-colors">
             How are scores calculated? →
           </Link>

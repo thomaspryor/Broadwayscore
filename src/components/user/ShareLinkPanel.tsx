@@ -54,7 +54,7 @@ export default function ShareLinkPanel({
           aria-invalid={!!nameError}
           aria-describedby={helpId}
         />
-        <span id={helpId} className={`block text-xs mt-1 ${nameError && name ? 'text-score-skip' : 'text-gray-500'}`}>
+        <span id={helpId} className={`block text-xs mt-1 ${nameError && name ? 'text-score-skip' : 'text-fg-muted'}`}>
           {nameError && name ? nameError : `Friends see “${titleFor(name.trim() || 'Tom')}”.`}
         </span>
       </label>
@@ -85,7 +85,7 @@ export default function ShareLinkPanel({
               <button type="button" onClick={onStop} disabled={busy} className="btn btn-secondary text-sm" data-testid={`${testIdPrefix}-stop`}>Stop sharing</button>
             </div>
           )}
-          <p className="text-xs text-gray-500">Previews already sent in chats stay visible there.</p>
+          <p className="text-xs text-fg-muted">Previews already sent in chats stay visible there.</p>
         </div>
       )}
     </>

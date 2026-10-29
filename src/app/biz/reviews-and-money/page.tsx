@@ -38,7 +38,7 @@ function RateRow({ label, count }: { label: string; count: BandCount }) {
       </div>
       <span className="text-right whitespace-nowrap">
         <span className="font-semibold text-white">{r == null || count.total < MIN_RATE_SAMPLE ? '–' : `${Math.round(r * 100)}%`}</span>{' '}
-        <span className="text-xs text-gray-500">{count.recouped} of {count.total}</span>
+        <span className="text-xs text-fg-muted">{count.recouped} of {count.total}</span>
       </span>
     </div>
   );
@@ -52,7 +52,7 @@ function Callouts({ items, testId }: { items: MoneyCallout[]; testId: string }) 
           <div className="shrink-0"><ScoreBadge score={c.score} size="sm" /></div>
           <div className="min-w-0">
             <Link href={`/show/${c.slug}`} className="font-semibold text-white hover:text-brand break-words"><RowLinkArrow label={c.title} /></Link>
-            <div className="text-xs text-gray-500">
+            <div className="text-xs text-fg-muted">
               {c.year}{c.weeksToRecoup != null && ` · recouped in about ${c.weeksToRecoup} weeks`}
             </div>
           </div>
@@ -74,14 +74,14 @@ export default function ReviewsAndMoneyPage() {
           {data.buckets.map((b) => (
             <div key={b.id} className="card rounded-xl p-4 space-y-3" data-testid={`bucket-${b.id}`}>
               <div className="text-white font-semibold">
-                {b.label} <span className="text-xs font-normal text-gray-500">{b.recouped} of {b.decided} recouped</span>
+                {b.label} <span className="text-xs font-normal text-fg-muted">{b.recouped} of {b.decided} recouped</span>
               </div>
-              <div className="text-xs uppercase tracking-wide text-gray-500">Critic score</div>
+              <div className="text-xs uppercase tracking-wide text-fg-muted">Critic score</div>
               {bandIds.map((id) => <RateRow key={id} label={SCORE_BAND_LABELS[id]} count={b.critic[id]} />)}
-              <div className="text-xs uppercase tracking-wide text-gray-500 pt-1">Audience score</div>
+              <div className="text-xs uppercase tracking-wide text-fg-muted pt-1">Audience score</div>
               <RateRow label={`Audience under ${BAND_LOW}`} count={b.audienceUnder70} />
               <RateRow label={`Audience ${BAND_LOW}+`} count={b.audienceAtLeast70} />
-              <div className="text-xs uppercase tracking-wide text-gray-500 pt-1">Tony Awards</div>
+              <div className="text-xs uppercase tracking-wide text-fg-muted pt-1">Tony Awards</div>
               <RateRow label={`${TONY_NOMS_HIGH}+ nominations`} count={b.tonyNoms.high} />
               <RateRow label={`Under ${TONY_NOMS_HIGH} nominations`} count={b.tonyNoms.low} />
               <RateRow label="Won a Tony" count={b.tonyWin.won} />
@@ -92,7 +92,7 @@ export default function ReviewsAndMoneyPage() {
             </div>
           ))}
         </div>
-        <p className="text-xs text-gray-500 mt-2">
+        <p className="text-xs text-fg-muted mt-2">
           Counts shows that recouped or closed with a loss label (Fizzle, Flop or similar). Running shows, and closed shows with no verdict, are left out.
           Shows without a score, with too few audience reviews, or without a Tony record drop out of that row. A dash instead of a percentage means fewer than {MIN_RATE_SAMPLE} shows, too few to give a rate. Small groups swing a lot, so read the counts beside each percentage.
           Top category means Best Musical, Best Play or Best Revival.

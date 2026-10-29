@@ -30,7 +30,7 @@ export function CeremonyCountdown({ ceremonyDate }: CeremonyCountdownProps) {
   if (!countdown) return null;
 
   return (
-    <p className="text-xs text-gray-500 mt-1">
+    <p className="text-xs text-fg-muted mt-1">
       {countdown.days > 0
         ? `${countdown.days} day${countdown.days !== 1 ? 's' : ''} and ${countdown.hours} hour${countdown.hours !== 1 ? 's' : ''} until the ceremony`
         : `${countdown.hours} hour${countdown.hours !== 1 ? 's' : ''} until the ceremony`}

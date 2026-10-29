@@ -64,7 +64,7 @@ function SourceTile({ shortLabel, labelColorClass, value, sub, url }: SourceTile
         {value}
       </div>
       {sub && (
-        <div className="mt-1 text-[11px] text-gray-500 tabular-nums">
+        <div className="mt-1 text-[11px] text-fg-muted tabular-nums">
           {sub}
         </div>
       )}
@@ -184,7 +184,7 @@ export default function AudienceBuzzCard({
           Audience Scorecard
         </h2>
         {totalReviews > 0 && (
-          <div className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase shrink-0">
+          <div className="text-[11px] font-medium tracking-[0.06em] text-fg-muted lowercase shrink-0">
             {formatReviewCount(totalReviews)} audience reviews
           </div>
         )}
@@ -233,7 +233,7 @@ export default function AudienceBuzzCard({
 
       {/* Limited sources note for historical shows */}
       {limitedSources && (
-        <p className="text-xs text-gray-500 mt-3">
+        <p className="text-xs text-fg-muted mt-3">
           This show predates most audience rating platforms. Score based on limited sources.
         </p>
       )}

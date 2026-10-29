@@ -156,7 +156,7 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
           <h2 id="where-it-ranks-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
             Where It Ranks
           </h2>
-          <p className="text-[12px] text-gray-500 mt-1.5 leading-snug">
+          <p className="text-[12px] text-fg-muted mt-1.5 leading-snug">
             {isClosed
               ? `Among ${marketName} ${formatNoun} of its season${hideAllTime ? '' : ' and all-time'}`
               : `Compared against scored open ${marketName} ${formatNoun}`}
@@ -199,21 +199,21 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
       <table className="w-full text-sm min-w-[280px]">
         <thead>
           <tr>
-            <th className="text-left text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+            <th className="text-left text-[10px] font-semibold uppercase tracking-[0.06em] text-fg-muted pb-2">
               Metric
             </th>
             {!isClosed && (
-              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-fg-muted pb-2">
                 Open {marketName}
               </th>
             )}
-            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
+            <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-fg-muted pb-2">
               <span className="sm:hidden">Season</span>
               <span className="hidden sm:inline">This season</span>
             </th>
             {!hideAllTime && (
-              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-gray-500 pb-2">
-                All-time<span className="text-gray-600 font-normal">*</span>
+              <th className="text-right text-[10px] font-semibold uppercase tracking-[0.06em] text-fg-muted pb-2">
+                All-time<span className="text-fg-muted font-normal">*</span>
               </th>
             )}
           </tr>
@@ -261,8 +261,8 @@ export default function WhereItRanks({ ranks, ranksByFormat, show }: Props) {
       </div>
 
       {!hideAllTime && (
-        <p className="text-[10px] text-gray-500">
-          <span className="text-gray-600">*</span> All-time pool: shows scored 2005–present. Ranks update daily.
+        <p className="text-[10px] text-fg-muted">
+          <span className="text-fg-muted">*</span> All-time pool: shows scored 2005–present. Ranks update daily.
         </p>
       )}
     </section>
@@ -287,7 +287,7 @@ function Cell({
   if (!cell) {
     return (
       <span
-        className="text-gray-600 tabular-nums cursor-help"
+        className="text-fg-muted tabular-nums cursor-help"
         title={naHint ?? 'Not enough data for this pool'}
       >
         –
@@ -303,7 +303,7 @@ function Cell({
   const rankNode = <span className={rankClass}>#{cell.rank}</span>;
   // Inline "/M" — lighter weight than the rank, same line, no wrap.
   const denomNode = showDenominator ? (
-    <span className="font-normal text-gray-500 tabular-nums">/{cell.total}</span>
+    <span className="font-normal text-fg-muted tabular-nums">/{cell.total}</span>
   ) : null;
   const content = (
     <span className="whitespace-nowrap tabular-nums">

@@ -31,7 +31,7 @@ export default async function BlogIndexPage() {
       </header>
 
       {posts.length === 0 ? (
-        <p className="text-gray-500">No posts yet. Check back soon.</p>
+        <p className="text-fg-muted">No posts yet. Check back soon.</p>
       ) : (
         <ul className="space-y-8">
           {posts.map((p) => (
@@ -50,7 +50,7 @@ export default async function BlogIndexPage() {
                 <h2 className="text-xl sm:text-2xl font-semibold text-white group-hover:text-gold transition-colors">
                   {p.title}
                 </h2>
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="text-xs text-fg-muted mt-1">
                   {p.author ? `${p.author} · ` : ''}
                   {formatDate(p.publishedAt)}
                 </p>

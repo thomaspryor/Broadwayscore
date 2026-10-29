@@ -109,7 +109,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center text-gray-500">
+          <div className="w-full h-full flex items-center justify-center text-fg-muted">
             <div className="text-3xl">🎭</div>
           </div>
         )}
@@ -154,7 +154,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
           {digitalRush && !rush && (
             <p className="truncate">
               <span className="text-gray-300">{digitalRush.platform}</span>
-              <span className="text-gray-500"> · {digitalRush.time}</span>
+              <span className="text-fg-muted"> · {digitalRush.time}</span>
             </p>
           )}
         </div>
@@ -177,7 +177,7 @@ function RushShowCard({ show, rushData, index }: RushShowCardProps) {
 
       <div className="flex-shrink-0 hidden sm:flex flex-col items-center justify-center gap-2 w-20">
         <ScoreBadge score={score} size="md" showCrown />
-        <span className="text-xs text-gray-500">
+        <span className="text-xs text-fg-muted">
           {show.criticScore?.reviewCount || 0} reviews
         </span>
       </div>
@@ -251,7 +251,7 @@ export default function WestEndRushPage() {
           <p className="text-gray-400 mt-2">
             Same-day discounted tickets available at the box office or through digital apps. First-come, first-served: arrive early enough and you&apos;re guaranteed a seat.
           </p>
-          <p className="text-sm text-gray-500 mt-1">
+          <p className="text-sm text-fg-muted mt-1">
             {showsWithRush.length} shows with rush tickets · Updated {new Date(lastUpdated).toLocaleDateString('en-GB', { month: 'long', day: 'numeric', year: 'numeric' })}
           </p>
         </div>
@@ -262,16 +262,16 @@ export default function WestEndRushPage() {
         <div className="grid grid-cols-3 gap-4 mb-8">
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-emerald-400">{formatTicketPrice(cheapestPrice, 'west-end')}</div>
-            <div className="text-xs text-gray-500 mt-1">Cheapest Rush</div>
+            <div className="text-xs text-fg-muted mt-1">Cheapest Rush</div>
             <div className="text-xs text-gray-400 truncate">{cheapestRush?.show.title ?? '–'}</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-white">{boxOfficeRushCount}</div>
-            <div className="text-xs text-gray-500 mt-1">Day Seats</div>
+            <div className="text-xs text-fg-muted mt-1">Day Seats</div>
           </div>
           <div className="card p-4 text-center">
             <div className="text-2xl font-bold text-blue-400">{digitalRushCount}</div>
-            <div className="text-xs text-gray-500 mt-1">Digital Rush</div>
+            <div className="text-xs text-fg-muted mt-1">Digital Rush</div>
           </div>
         </div>
 
@@ -307,7 +307,7 @@ export default function WestEndRushPage() {
               market="west-end"
             />
           ) : (
-            <p className="text-sm text-gray-500">No rush tickets available right now. Check back tomorrow. Day seats open daily at the box office.</p>
+            <p className="text-sm text-fg-muted">No rush tickets available right now. Check back tomorrow. Day seats open daily at the box office.</p>
           )}
         </div>
 
@@ -327,7 +327,7 @@ export default function WestEndRushPage() {
           </>
         )}
 
-        <div className="text-sm text-gray-500 border-t border-white/5 pt-6 mt-6">
+        <div className="text-sm text-fg-muted border-t border-white/5 pt-6 mt-6">
           <p>
             Rush ticket information sourced from TodayTix and official show websites.
             Prices and availability subject to change. Always verify details with the venue or platform.

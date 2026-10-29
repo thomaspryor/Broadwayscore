@@ -135,7 +135,7 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
                   <h3 className="font-bold text-white group-hover:text-brand transition-colors truncate text-sm sm:text-base">{show.title}</h3>
                   {isOpen && <span className="w-1.5 h-1.5 rounded-full bg-status-open flex-shrink-0" />}
                 </div>
-                <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-xs text-gray-500">
+                <div className="flex flex-wrap items-center gap-1.5 mt-0.5 text-xs text-fg-muted">
                   <FormatPill type={show.type} />
                   {show.isRevival && <ProductionPill isRevival={true} />}
                   {isOpen ? (() => {
@@ -173,7 +173,7 @@ export default function TheaterDetailClient({ shows }: { shows: TheaterShow[] })
         </div>
       )}
 
-      <p className="text-center text-sm text-gray-500 mt-6">
+      <p className="text-center text-sm text-fg-muted mt-6">
         {sorted.length} show{sorted.length !== 1 ? 's' : ''}
       </p>
     </div>

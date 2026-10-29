@@ -69,7 +69,7 @@ function EntryCard({ entry, show, onOpenPhoto, uploads }: {
         {block && (
           <div className="flex-shrink-0 w-8 text-center">
             <p aria-hidden="true" className="text-base font-bold leading-tight text-white">{block.day}</p>
-            <p aria-hidden="true" className="text-xs font-bold uppercase text-gray-500">{block.month}</p>
+            <p aria-hidden="true" className="text-xs font-bold uppercase text-fg-muted">{block.month}</p>
             <span className="sr-only">{longDate(review.date_seen)}</span>
           </div>
         )}
@@ -80,7 +80,7 @@ function EntryCard({ entry, show, onOpenPhoto, uploads }: {
           <h3 className="font-bold text-white text-base leading-snug truncate">
             <Link href={href} className="hover:text-brand transition-colors">{title}</Link>
           </h3>
-          {show?.venue && <p className="text-xs text-gray-500 truncate">{show.venue}</p>}
+          {show?.venue && <p className="text-xs text-fg-muted truncate">{show.venue}</p>}
           {review.rating > 0 && (
             <div className="sm:hidden mt-1 flex items-center gap-px" role="img" aria-label={`${review.rating} out of 5 stars`}>
               <MiniStars rating={review.rating} />

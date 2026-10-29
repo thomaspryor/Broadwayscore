@@ -37,7 +37,7 @@ function CanonBlock({
       >
         <span className="text-sm font-bold text-white">{title}</span>
         <span className="text-sm font-bold text-gray-300 tabular-nums">
-          {list.seen} <span className="text-gray-500 font-semibold">of {list.total}</span>
+          {list.seen} <span className="text-fg-muted font-semibold">of {list.total}</span>
         </span>
       </button>
       <GoldTrack pct={list.completion} />
@@ -64,7 +64,7 @@ function CanonBlock({
                 </span>
               )}
             </span>
-            <span className={`block text-xs tabular-nums mt-1 text-center ${e.seen ? 'text-gray-300 font-semibold' : 'text-gray-500'}`}>{e.season}</span>
+            <span className={`block text-xs tabular-nums mt-1 text-center ${e.seen ? 'text-gray-300 font-semibold' : 'text-fg-muted'}`}>{e.season}</span>
           </button>
         ))}
       </ScrollRow>

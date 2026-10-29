@@ -110,12 +110,12 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
               className="font-bold text-white hover:text-brand transition-colors truncate block"
             >
               {review.showTitle}
-              {showYear && <span className="text-gray-500 font-normal text-sm ml-1">({showYear})</span>}
+              {showYear && <span className="text-fg-muted font-normal text-sm ml-1">({showYear})</span>}
             </Link>
             <p className="text-gray-400 text-sm flex items-center flex-wrap gap-x-1.5 gap-y-1">
               {/* publishedAt can be "NA" (undated YouTube), which formats to '' */}
               {formatDate(review.publishedAt) && <span className="whitespace-nowrap">{formatDate(review.publishedAt)}</span>}
-              {formatDate(review.publishedAt) && <span className="text-gray-600">·</span>}
+              {formatDate(review.publishedAt) && <span className="text-fg-muted">·</span>}
               <a
                 href={review.videoUrl}
                 target="_blank"
@@ -138,7 +138,7 @@ function ReviewCard({ review, showYear, loading = 'lazy' }: { review: VideoCreat
         </div>
 
         {review.keyQuote && (
-          <p className="text-gray-500 text-sm mt-2 line-clamp-2 italic leading-relaxed">
+          <p className="text-fg-muted text-sm mt-2 line-clamp-2 italic leading-relaxed">
             &ldquo;{nestQuotes(review.keyQuote)}&rdquo;
           </p>
         )}
@@ -218,8 +218,8 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
               </a>
               {creator.subscribers && (
                 <>
-                  <span className="text-gray-600">·</span>
-                  <span className="text-gray-500">{creator.subscribers} followers</span>
+                  <span className="text-fg-muted">·</span>
+                  <span className="text-fg-muted">{creator.subscribers} followers</span>
                 </>
               )}
             </div>
@@ -240,7 +240,7 @@ export default function VideoCreatorDetailClient({ creator }: { creator: VideoCr
         {creator.volumeRank > 0 && creator.generosityRank > 0 && (
           <div className="flex flex-wrap gap-3 text-sm text-gray-400">
             <span>{ordinalSuffix(creator.volumeRank)} most prolific video critic</span>
-            <span className="text-gray-600">·</span>
+            <span className="text-fg-muted">·</span>
             <span>{ordinalSuffix(creator.generosityRank)} most generous scorer</span>
           </div>
         )}

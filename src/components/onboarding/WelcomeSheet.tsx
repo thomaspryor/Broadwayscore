@@ -527,7 +527,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
               </div>
               <div className="border-t border-white/10 px-5 py-3 bg-surface-elevated">
                 <div className="flex items-center justify-between gap-3">
-                  <p className="text-xs text-gray-500">You can always import later from My Shows.</p>
+                  <p className="text-xs text-fg-muted">You can always import later from My Shows.</p>
                   <button type="button" onClick={() => skip('skip')} className="btn-secondary text-sm flex-shrink-0">
                     Not now
                   </button>

@@ -16,7 +16,7 @@ export default function DesignationLegend() {
           <span className={`font-semibold ${entry.color}`}>
             {entry.name}
           </span>
-          <p className="text-xs text-gray-500 mt-1">{entry.description}</p>
+          <p className="text-xs text-fg-muted mt-1">{entry.description}</p>
         </div>
       ))}
     </div>

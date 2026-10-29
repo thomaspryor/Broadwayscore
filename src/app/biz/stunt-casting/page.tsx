@@ -115,7 +115,7 @@ function SplitCell({ r, tone }: { r: Rate; tone: 'brand' | 'muted' }) {
         <span className="font-semibold text-white tabular-nums w-9 sm:w-10 text-right">{fmtPct(r)}</span>
         <div className="flex-1 hidden sm:block"><Bar pct={r.n >= MIN_PCT_N ? r.pct : null} tone={tone} /></div>
       </div>
-      <span className="block text-xs text-gray-500 whitespace-nowrap sm:ml-12">{r.hits} of {r.n}</span>
+      <span className="block text-xs text-fg-muted whitespace-nowrap sm:ml-12">{r.hits} of {r.n}</span>
     </td>
   );
 }
@@ -126,15 +126,15 @@ function fameLabel(f: Fame): string {
 
 function HeadlinerList({ headliners, onlyCelebrities }: { headliners: Headliner[]; onlyCelebrities?: boolean }) {
   const list = onlyCelebrities ? headliners.filter((h) => h.fame === 'screen' || h.fame === 'music' || h.fame === 'other') : headliners;
-  if (list.length === 0) return <span className="text-gray-500">Ensemble show, no lead</span>;
+  if (list.length === 0) return <span className="text-fg-muted">Ensemble show, no lead</span>;
   return (
     <>
       {list.map((h, i) => (
         <span key={h.name}>
           {i > 0 && ', '}
           <span className={h.fame === 'screen' ? 'text-white' : 'text-gray-300'}>{h.name}</span>
-          {h.knownFor && onlyCelebrities && <span className="text-gray-500"> ({h.knownFor})</span>}
-          {!onlyCelebrities && fameLabel(h.fame) && <span className="text-gray-500"> · {fameLabel(h.fame)}</span>}
+          {h.knownFor && onlyCelebrities && <span className="text-fg-muted"> ({h.knownFor})</span>}
+          {!onlyCelebrities && fameLabel(h.fame) && <span className="text-fg-muted"> · {fameLabel(h.fame)}</span>}
         </span>
       ))}
     </>
@@ -204,7 +204,7 @@ function CommercialTable({ label, star, noStar }: { label: string; star: Group; 
             <tr key={r.k} className="border-b border-white/5">
               <td className="py-2.5 px-4 text-gray-300">
                 {r.k}
-                {r.hint && <span className="block text-xs text-gray-500">{r.hint}</span>}
+                {r.hint && <span className="block text-xs text-fg-muted">{r.hint}</span>}
               </td>
               <td className="py-2.5 px-3 text-right font-semibold text-white tabular-nums whitespace-nowrap">{r.f(star)}</td>
               <td className="py-2.5 px-4 text-right text-gray-300 tabular-nums whitespace-nowrap">{r.f(noStar)}</td>
@@ -268,7 +268,7 @@ export default function StuntCastingPage() {
           </Link>
 
           <BizHeader title={TITLE} tagline={DESCRIPTION} sharePath="/biz/stunt-casting">
-            <p className="text-xs text-gray-500 mt-5">Research · Updated {DATA.generated}</p>
+            <p className="text-xs text-fg-muted mt-5">Research · Updated {DATA.generated}</p>
           </BizHeader>
 
           {lastFull && (
@@ -324,7 +324,7 @@ export default function StuntCastingPage() {
                       <td className="py-2.5 px-4 text-gray-300 whitespace-nowrap">
                         {e.label}
                         {latestInProgress && latest && e === lastEra && (
-                          <span className="block text-xs text-gray-500">{shortSeason(latest.season)} so far</span>
+                          <span className="block text-xs text-fg-muted">{shortSeason(latest.season)} so far</span>
                         )}
                       </td>
                       <SplitCell r={e.screen.plays} tone="brand" />
@@ -362,7 +362,7 @@ export default function StuntCastingPage() {
                     <tr key={s.season} className="border-b border-white/5">
                       <td className="py-2.5 pl-3 pr-2 sm:px-4 text-gray-300 whitespace-nowrap">
                         {shortSeason(s.season)}
-                        {latestInProgress && s === latest && <span className="block text-xs text-gray-500">so far</span>}
+                        {latestInProgress && s === latest && <span className="block text-xs text-fg-muted">so far</span>}
                       </td>
                       <SplitCell r={s.screen.plays} tone="brand" />
                       <SplitCell r={s.screen.musicals} tone="muted" />
@@ -401,7 +401,7 @@ export default function StuntCastingPage() {
                 {recentStarShows.map((r) => (
                   <ShowLinkListItem key={r.id} href={`/show/${r.slug}`} className="px-4 py-3 text-sm">
                     <Link href={`/show/${r.slug}`} className="font-semibold text-white hover:text-brand"><RowLinkArrow label={r.title} /></Link>
-                    <span className="text-xs text-gray-500"> · {r.type === 'play' ? 'Play' : 'Musical'} · {shortSeason(r.season)}</span>
+                    <span className="text-xs text-fg-muted"> · {r.type === 'play' ? 'Play' : 'Musical'} · {shortSeason(r.season)}</span>
                     <div className="text-gray-400 mt-0.5"><HeadlinerList headliners={r.headliners} onlyCelebrities /></div>
                   </ShowLinkListItem>
                 ))}
@@ -417,7 +417,7 @@ export default function StuntCastingPage() {
                 <details key={s.season} className="card rounded-xl">
                   <summary className="px-4 py-3 cursor-pointer text-sm text-white flex justify-between gap-3">
                     <span>{shortSeason(s.season)}</span>
-                    <span className="text-gray-500">{s.screen.all.hits} of {s.screen.all.n} with a film/TV star</span>
+                    <span className="text-fg-muted">{s.screen.all.hits} of {s.screen.all.n} with a film/TV star</span>
                   </summary>
                   <ul className="divide-y divide-white/5 border-t border-white/5">
                     {(bySeason.get(s.season) ?? []).map((r) => (
@@ -425,7 +425,7 @@ export default function StuntCastingPage() {
                         <Link href={`/show/${r.slug}`} className={r.screenStar ? 'text-brand hover:text-brand-hover' : 'text-gray-200 hover:text-white'}>
                           <RowLinkArrow label={r.title} />
                         </Link>
-                        <span className="text-xs text-gray-500"> · {r.type === 'play' ? 'Play' : 'Musical'}</span>
+                        <span className="text-xs text-fg-muted"> · {r.type === 'play' ? 'Play' : 'Musical'}</span>
                         <div className="text-xs text-gray-400 mt-0.5"><HeadlinerList headliners={r.headliners} /></div>
                       </ShowLinkListItem>
                     ))}

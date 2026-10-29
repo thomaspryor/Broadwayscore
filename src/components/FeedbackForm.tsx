@@ -109,7 +109,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
     );
   }
 
-  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-gray-500 focus:ring-2 focus:ring-purple-500 focus:border-transparent';
+  const inputClasses = 'w-full px-4 py-3 bg-surface-overlay border border-white/10 rounded-lg text-white placeholder:text-fg-muted focus:ring-2 focus:ring-purple-500 focus:border-transparent';
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-6">
@@ -146,7 +146,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
         <p id="email-error" role="alert" className="mt-1.5 text-sm text-red-400 empty:hidden">
           {fieldErrors.email}
         </p>
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           Only if you&apos;d like a response
         </p>
       </div>
@@ -192,7 +192,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
           className={inputClasses}
           placeholder="e.g., Hamilton, Wicked, etc."
         />
-        <p className="mt-1 text-xs text-gray-500/70">
+        <p className="mt-1 text-xs text-fg-muted">
           For content errors or feature requests related to a specific show
         </p>
       </div>
@@ -232,7 +232,7 @@ export default function FeedbackForm({ endpoint }: { endpoint: string }) {
 
       {/* Submit */}
       <div className="flex items-center justify-between">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-fg-muted">
           <span className="text-red-500">*</span> Required fields
         </p>
         <button

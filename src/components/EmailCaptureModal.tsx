@@ -245,7 +245,7 @@ export default function EmailCaptureModal({
               <>
                 <div>
                   <label htmlFor="name" className="block text-sm font-medium text-gray-300 mb-1">
-                    Name <span className="text-gray-500">(optional)</span>
+                    Name <span className="text-fg-muted">(optional)</span>
                   </label>
                   <input
                     type="text"
@@ -259,7 +259,7 @@ export default function EmailCaptureModal({
 
                 <div>
                   <label htmlFor="company" className="block text-sm font-medium text-gray-300 mb-1">
-                    Company <span className="text-gray-500">(optional)</span>
+                    Company <span className="text-fg-muted">(optional)</span>
                   </label>
                   <input
                     type="text"
@@ -273,7 +273,7 @@ export default function EmailCaptureModal({
 
                 <div>
                   <label htmlFor="role" className="block text-sm font-medium text-gray-300 mb-1">
-                    Role <span className="text-gray-500">(optional)</span>
+                    Role <span className="text-fg-muted">(optional)</span>
                   </label>
                   <select
                     id="role"
@@ -318,7 +318,7 @@ export default function EmailCaptureModal({
           </button>
 
           {/* Privacy note */}
-          <p className="mt-4 text-xs text-gray-500 text-center">
+          <p className="mt-4 text-xs text-fg-muted text-center">
             {showExtraFields
               ? 'We respect your privacy. No spam, unsubscribe anytime.'
               : 'Join thousands of theater fans \u00B7 No spam, unsubscribe anytime.'}
@@ -330,7 +330,7 @@ export default function EmailCaptureModal({
             <button
               type="button"
               onClick={onClose}
-              className="block mx-auto mt-3 text-xs text-gray-500 hover:text-gray-300 hover:underline underline-offset-4 transition-colors"
+              className="block mx-auto mt-3 text-xs text-fg-muted hover:text-gray-300 hover:underline underline-offset-4 transition-colors"
             >
               Maybe later
             </button>
