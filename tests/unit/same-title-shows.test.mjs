@@ -3,12 +3,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { sameTitleShowIds } from '../../src/lib/same-title-shows.ts';
+import { sameTitleShowIds, normalizeTitle } from '../../src/lib/same-title-shows.ts';
 
 test('flags both productions of a same-title pair, leaves the rest alone', () => {
   const ids = sameTitleShowIds([
     { id: 'dream-globe', title: "A Midsummer Night's Dream", venue: "Shakespeare's Globe" },
-    { id: 'dream-park', title: 'A Midsummer Night’s Dream' },
+    { id: 'dream-park', title: 'A Midsummer Night’s Dream', venue: 'Regent’s Park Open Air Theatre' },
     { id: 'cinderella-pal', title: 'Cinderella', venue: 'London Palladium' },
     { id: 'cinderella-lyric', title: ' cinderella ', venue: 'Lyric Hammersmith' },
     { id: 'hamilton', title: 'Hamilton' },
@@ -35,8 +35,9 @@ test('real shows.json: every flagged row has a same-title twin at a different ve
   const flagged = sameTitleShowIds(open);
   for (const id of flagged) {
     const s = open.find((x) => x.id === id);
-    const twins = open.filter((x) => x.title.toLowerCase().trim() === s.title.toLowerCase().trim());
-    assert.ok(twins.length > 1 && new Set(twins.map((x) => x.venue)).size > 1, id);
+    const twins = open.filter((x) => normalizeTitle(x.title) === normalizeTitle(s.title));
+    const venues = new Set(twins.map((x) => (x.venue ?? '').trim().toLowerCase()).filter(Boolean));
+    assert.ok(twins.length > 1 && venues.size > 1, id);
   }
 });
 
@@ -45,4 +46,12 @@ test('ShowListCard renders venue only behind showVenue, in both variants; lists 
   assert.equal((card.match(/showVenue && show\.venue/g) || []).length, 2);
   assert.match(readFileSync('src/components/BrowseListClient.tsx', 'utf8'), /showVenue=\{sameTitleIds\.has\(show\.id\)\}/);
   assert.match(readFileSync('src/components/show-cards/WindowedShowCardList.tsx', 'utf8'), /showVenue=\{sameTitleIds\.has\(show\.id\)\}/);
+});
+
+test('a twin with no venue does not count as a distinct venue', () => {
+  const ids = sameTitleShowIds([
+    { id: 'a', title: 'Cinderella', venue: 'Adelphi Theatre' },
+    { id: 'b', title: 'Cinderella', venue: null },
+  ]);
+  assert.equal(ids.size, 0);
 });
