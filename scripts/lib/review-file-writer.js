@@ -371,6 +371,10 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 
 function _createOrMergeReviewFile(showId, input, options = {}) {
   const { dryRun = false, onMerge, reviewTextsDir = DEFAULT_REVIEW_TEXTS_DIR, _rerouteVisited } = options;
+  // BRO-6486: a WordPress photo-attachment page is never the review; its parent
+  // post is (see wordpressAttachmentParentUrl). Rewrite before every url guard.
+  const attachmentParent = input && input.url ? require('./non-review-url-patterns').wordpressAttachmentParentUrl(input.url) : null;
+  if (attachmentParent) input = { ...input, url: attachmentParent };
   const fields = input.fields || {};
   // BRO-4807: a lane review (provenance + productionVerified:"aggregator") is already production-verified by an
   // aggregator, so the corpus guards below stand down for it, and only for it. laneBypasses is the single predicate.

@@ -1118,6 +1118,24 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
+  return toArticleUrl(await _discoverCorrectUrl(review, scrapingBeeKey, options));
+}
+
+// BRO-6486: Google indexes WordPress photo-attachment pages
+// (<review>/attachment/<photo>/), which hold no review text. Every SERP caller
+// (collect-review-texts, gather-reviews wrongUrl retry, rediscover) stores what
+// this returns as review.url, so hand back the parent article instead.
+function toArticleUrl(result) {
+  const { wordpressAttachmentParentUrl } = require('./non-review-url-patterns');
+  if (typeof result === 'string') return wordpressAttachmentParentUrl(result) || result;
+  if (result && typeof result === 'object' && typeof result.url === 'string') {
+    const parent = wordpressAttachmentParentUrl(result.url);
+    return parent ? { ...result, url: parent } : result;
+  }
+  return result;
+}
+
+async function _discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
   const log = options.log || console.log;
   const brightDataKey = options.brightDataKey || '';
   let dateRange = options.dateRange || null;
@@ -2059,6 +2077,7 @@ module.exports = {
   hasDisambiguator,
   canDisambiguateGenericTitle,
   discoverCorrectUrl,
+  toArticleUrl,
   serpQuery,
   serpNewsQuery,
   serpImagesQuery,

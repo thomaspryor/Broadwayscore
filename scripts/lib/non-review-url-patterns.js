@@ -893,6 +893,31 @@ function classifyGapCandidateUrl(url) {
   return { ok: true, reason: null };
 }
 
+/**
+ * The article a WordPress image-attachment page belongs to, or null (BRO-6486).
+ *
+ * WordPress gives every inline photo its own page at
+ * <post-url>/attachment/<image-slug>/: the photo and its caption, no review
+ * text. Exeunt NYC's photo links reached gather-reviews as review urls on five
+ * 2026 shows (fish, king-of-the-yees, two-girls, benjamin-button, basquiat);
+ * each became an "Unknown" critic file that fetched as 0 chars
+ * (garbage_content / all_tiers_timeout) beside the real, scored review. The
+ * parent path IS the review, so the writers rewrite to it rather than refuse:
+ * the write then merges into the real file instead of minting a dead stub.
+ * 0 of 35,058 reviews.json urls contain "/attachment/" (checked 2026-10-29).
+ * @param {string} url
+ * @returns {string|null}
+ */
+function wordpressAttachmentParentUrl(url) {
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const m = /^(\/.+?)\/attachment\/([^/]+)\/?$/i.exec(u.pathname);
+  // A WordPress image slug is a word slug: no file extension, at least one
+  // letter (a forum's /threads/123/attachment/456 is not one), one level only.
+  if (!m || /\/attachment\//i.test(m[1] + '/') || m[2].includes('.') || !/[a-z]/i.test(m[2])) return null;
+  return `${u.protocol}//${u.host}${m[1]}/`;
+}
+
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
 // (checked 2026-09-28). Single source for ingest-review-from-url.js's refusal AND
 // the gap audit's pre-check (BRO-5500), so a refused URL is classified as an
@@ -910,6 +935,7 @@ function ingestRefusalReason(url) {
 }
 
 module.exports = {
+  wordpressAttachmentParentUrl,
   INGEST_REFUSED_URL_REASONS,
   ingestRefusalReason,
   isBwwShowHubUrl,

@@ -117,7 +117,7 @@ const { isRunningInCI } = require('./lib/regression-guard');
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
 const { mergePendingRecord } = require('./lib/pending-review-health');
-const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
+const { namedNonReviewReason, wordpressAttachmentParentUrl } = require('./lib/non-review-url-patterns');
 const {
   llmFallbackExtract,
   hasStructuralMarkers,
@@ -3120,6 +3120,13 @@ function archiveAggregatorPage(aggregator, showId, url, html, show) {
  * Uses centralized normalization to prevent duplicate files with different naming
  */
 function createReviewFile(showId, reviewData, options = {}) {
+  // BRO-6486: a WordPress photo-attachment page is never the review; its
+  // parent post is. Rewrite before any url-keyed guard or filename lookup.
+  const attachmentParent = reviewData && reviewData.url ? wordpressAttachmentParentUrl(reviewData.url) : null;
+  if (attachmentParent) {
+    console.log(`    ↪ ${reviewData.url} is a WordPress attachment page; using its article ${attachmentParent}`);
+    reviewData = { ...reviewData, url: attachmentParent };
+  }
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) {
     fs.mkdirSync(showDir, { recursive: true });

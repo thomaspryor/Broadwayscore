@@ -80,7 +80,12 @@ function hasFlag(name) {
 }
 
 const showId = getArg('show');
-const url = getArg('url');
+// A WordPress photo-attachment url is ingested as its parent article (BRO-6486),
+// here at the entry point so the fetch, blocklist, lookup and stale-merge check
+// all see the url the writer will store.
+const rawUrl = getArg('url');
+const url = (rawUrl && require('./lib/non-review-url-patterns').wordpressAttachmentParentUrl(rawUrl)) || rawUrl;
+if (url !== rawUrl) console.log(`↪ ${rawUrl} is a WordPress attachment page; ingesting its article ${url}`);
 const outletArg = getArg('outlet');
 const criticArg = nameFromAuthorUrl(getArg('critic'));
 // Extra heading spelling for a multi-show post whose section heading misspells
