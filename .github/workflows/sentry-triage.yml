@@ -9,7 +9,6 @@ on:
 permissions:
   contents: read
   actions: read
-  issues: write
 
 jobs:
   triage:
@@ -31,7 +30,9 @@ jobs:
           SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
           SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
           SENTRY_PROJECT: broadway-scorecard
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-5593: real errors are filed as Linear cards (the board), not
+          # GitHub issues. Same secret check-corpus-drift.yml uses.
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/triage-sentry.js
 
       - name: Notify on failure

@@ -3,24 +3,24 @@
  * Automated Sentry issue triage.
  *
  * Fetches unresolved issues from Sentry, classifies them as noise vs real,
- * auto-resolves noise, and creates GitHub issues for real bugs.
+ * auto-resolves noise, and files Linear cards for real bugs (BRO-5593; it used
+ * to file GitHub issues, which nobody watched).
  *
  * Required env vars:
  *   SENTRY_AUTH_TOKEN - Sentry API auth token (project:read, event:read, event:admin)
  *   SENTRY_ORG       - Sentry organization slug
  *   SENTRY_PROJECT   - Sentry project slug (default: broadway-scorecard)
- *   GITHUB_TOKEN     - GitHub token (for creating issues, provided by Actions)
+ *   LINEAR_API_KEY   - Linear API key (for filing cards on the board)
  */
 
 const SENTRY_BASE = 'https://sentry.io/api/0';
 const ORG = process.env.SENTRY_ORG;
 const PROJECT = process.env.SENTRY_PROJECT || 'broadway-scorecard';
 const SENTRY_TOKEN = process.env.SENTRY_AUTH_TOKEN;
-const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-const REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const DRY_RUN = process.argv.includes('--dry-run');
 
 const { classifyIssue } = require('./lib/sentry-triage-classify');
+const { fileSentryIssue, MAX_NEW_CARDS_PER_RUN } = require('./lib/sentry-linear-filing');
 
 // --- Sentry API helpers ---
 
@@ -51,60 +51,6 @@ async function sentryPut(path, body) {
   return res.json();
 }
 
-// --- GitHub issue creation ---
-
-async function findExistingGithubIssue(sentryIssueId) {
-  const [owner, repo] = REPO.split('/');
-  const res = await fetch(
-    `https://api.github.com/search/issues?q=repo:${owner}/${repo}+is:issue+"sentry-${sentryIssueId}"+in:body`,
-    { signal: AbortSignal.timeout(60000), headers: { Authorization: `token ${GITHUB_TOKEN}` } }
-  );
-  // A failed search must not read as "no existing issue": that files a duplicate
-  // (GitHub search is rate limited at ~30/min and eventually consistent).
-  if (!res.ok) throw new Error(`GitHub search ${res.status}`);
-  const data = await res.json();
-  return data.total_count > 0 ? data.items[0] : null;
-}
-
-async function createGithubIssue(issue, classification) {
-  const [owner, repo] = REPO.split('/');
-  const sentryLink = issue.permalink || `https://sentry.io/organizations/${ORG}/issues/${issue.id}/`;
-  const frequency = classification.lowFrequency ? ' (low frequency)' : '';
-
-  const body = `## Sentry Error${frequency}
-
-**Error:** ${issue.title}
-**Culprit:** ${issue.culprit || 'Unknown'}
-**First seen:** ${issue.firstSeen}
-**Events:** ${issue.count} | **Users affected:** ${issue.userCount}
-**Sentry link:** ${sentryLink}
-
-<!-- sentry-${issue.id} -->
-
----
-*Auto-created by Sentry triage. Classification: ${classification.reason}*`;
-
-  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues`, {
-    signal: AbortSignal.timeout(60000),
-    method: 'POST',
-    headers: {
-      Authorization: `token ${GITHUB_TOKEN}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      title: `[Sentry] ${issue.title.substring(0, 80)}`,
-      body,
-      labels: ['bug', 'sentry-auto'],
-    }),
-  });
-
-  if (!res.ok) {
-    console.error(`Failed to create GitHub issue: ${res.status} ${await res.text()}`);
-    return null;
-  }
-  return res.json();
-}
-
 // --- Main ---
 
 async function main() {
@@ -127,7 +73,12 @@ async function main() {
 
   console.log(`Found ${issues.length} unresolved issues\n`);
 
-  const stats = { noise: 0, real: 0, existingGithub: 0, newGithub: 0 };
+  const stats = { noise: 0, real: 0, existingCards: 0, newCards: 0, deferred: 0, notTracked: 0 };
+  const hasLinearKey = !!process.env.LINEAR_API_KEY;
+  const deps = hasLinearKey && !DRY_RUN ? {
+    listIssuesByProvenance: require('./lib/linear-client').listIssuesByProvenance,
+    createLinearIssue: require('./lib/linear-issue-create').createLinearIssue,
+  } : null;
 
   for (const issue of issues) {
     // Fetch latest event for stack trace analysis
@@ -161,26 +112,29 @@ async function main() {
       console.log(`  Reason: ${classification.reason}`);
       console.log(`  Events: ${issue.count}, Users: ${issue.userCount}`);
 
-      if (GITHUB_TOKEN && !DRY_RUN) {
-        let existing;
-        try {
-          existing = await findExistingGithubIssue(issue.id);
-        } catch (e) {
-          console.error(`  → Could not check for an existing GitHub issue (${e.message}); not filing a possible duplicate\n`);
-          continue;
-        }
-        if (existing) {
-          stats.existingGithub++;
-          console.log(`  → GitHub issue already exists: ${existing.html_url}\n`);
+      if (DRY_RUN) {
+        console.log('  → Would file a Linear card (dry run)\n');
+      } else if (!deps) {
+        stats.notTracked++;
+        console.error('  → LINEAR_API_KEY is not set; this real error is NOT on the board\n');
+      } else {
+        const r = await fileSentryIssue(
+          { issue, classification, org: ORG, canCreate: stats.newCards < MAX_NEW_CARDS_PER_RUN },
+          deps,
+        );
+        if (r.action === 'existing') {
+          stats.existingCards++;
+          console.log(`  → Linear card already exists: ${r.card.identifier || r.card.url}\n`);
+        } else if (r.action === 'filed') {
+          stats.newCards++;
+          console.log(`  → Filed Linear card: ${r.card.identifier} ${r.card.url || ''}\n`);
+        } else if (r.action === 'deferred') {
+          stats.deferred++;
+          console.log(`  → ${r.reason}\n`);
         } else {
-          const ghIssue = await createGithubIssue(issue, classification);
-          if (ghIssue) {
-            stats.newGithub++;
-            console.log(`  → Created GitHub issue: ${ghIssue.html_url}\n`);
-          }
+          stats.notTracked++;
+          console.error(`  → ${r.reason}\n`);
         }
-      } else if (DRY_RUN) {
-        console.log('  → Would create GitHub issue (dry run)\n');
       }
     }
   }
@@ -189,8 +143,17 @@ async function main() {
   console.log(`Total issues: ${issues.length}`);
   console.log(`Noise (auto-ignored): ${stats.noise}`);
   console.log(`Real issues: ${stats.real}`);
-  console.log(`New GitHub issues created: ${stats.newGithub}`);
-  console.log(`Existing GitHub issues: ${stats.existingGithub}`);
+  console.log(`New Linear cards filed: ${stats.newCards}`);
+  console.log(`Already on the board: ${stats.existingCards}`);
+  console.log(`Deferred to a later run (cap): ${stats.deferred}`);
+  console.log(`Real errors NOT on the board: ${stats.notTracked}`);
+
+  // A real error that could not reach the board must fail the run, so the
+  // workflow's failure alert fires instead of the error sitting unseen.
+  if (stats.notTracked > 0) {
+    console.error(`${stats.notTracked} real Sentry error(s) could not be filed to Linear`);
+    process.exit(1);
+  }
 }
 
 main().catch(e => {
