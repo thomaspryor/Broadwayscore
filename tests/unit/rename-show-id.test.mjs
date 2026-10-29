@@ -191,11 +191,12 @@ test('a target already filed by a scraper: aggregator captures park the old one,
     const plan = planShowIdRename(OLD, NEW, fx.trees);
     assert.equal(plan.ok, true, plan.refusals.join('\n'));
     const park = plan.moves.find((m) => m.path.endsWith(`show-score/${OLD}.html.mismatch`));
-    assert.ok(park.toPath.endsWith(`show-score/${NEW}.pre-rename.html.mismatch`), park.toPath);
+    assert.ok(park.toPath.endsWith(`show-score/_pre-rename/${OLD}.html.mismatch`), park.toPath);
     assert.equal(plan.moves.find((m) => m.path.endsWith(`_pending/${OLD}`)).merge, true);
     applyShowIdRename(plan);
     assert.equal(fs.readFileSync(path.join(ss, `${NEW}.html.mismatch`), 'utf8'), '<html>newer capture</html>\n');
-    assert.equal(fs.readFileSync(path.join(ss, `${NEW}.pre-rename.html.mismatch`), 'utf8'), '<html>mismatch</html>\n');
+    assert.equal(fs.readFileSync(path.join(ss, '_pre-rename', `${OLD}.html.mismatch`), 'utf8'), '<html>mismatch</html>\n');
+    assert.deepEqual(fs.readdirSync(ss).filter((f) => f.startsWith(NEW)), [`${NEW}.html.mismatch`]);
     assert.ok(!fs.existsSync(path.join(ss, `${OLD}.html.mismatch`)));
     const pend = path.join(fx.rt, '_pending');
     assert.ok(!fs.existsSync(path.join(pend, OLD)));
@@ -204,6 +205,25 @@ test('a target already filed by a scraper: aggregator captures park the old one,
     // a re-plan after the apply finds nothing left to move
     const again = planShowIdRename(OLD, NEW, { ...fx.trees });
     assert.ok(!again.moves.some((m) => m.path.includes(OLD)), again.moves.map((m) => m.path).join('\n'));
+    // a merge cut short: one file already moved (old id still inside), one left behind
+    const pend2 = path.join(pend, NEW);
+    fs.mkdirSync(path.join(pend, OLD));
+    writeJson(path.join(pend, OLD, 'left--behind.json'), { showId: OLD });
+    writeJson(path.join(pend2, 'moved--unstamped.json'), { showId: OLD });
+    const cut = planShowIdRename(OLD, NEW, fx.trees);
+    assert.equal(cut.ok, true, cut.refusals.join('\n'));
+    applyShowIdRename(cut);
+    assert.ok(!fs.existsSync(path.join(pend, OLD)));
+    assert.equal(readJson(path.join(pend2, 'left--behind.json')).showId, NEW);
+    assert.equal(readJson(path.join(pend2, 'moved--unstamped.json')).showId, NEW);
+    // a dir move that stopped before its re-stamp: old dir gone, target still stamped old
+    writeJson(path.join(fx.rt, NEW, 'stale--critic.json'), { showId: OLD });
+    const stale = planShowIdRename(OLD, NEW, fx.trees);
+    const restamp = stale.moves.find((m) => m.restampOnly);
+    assert.ok(restamp && restamp.inner.some((i) => i.rel === 'stale--critic.json'), stale.moves.map((m) => m.path).join('\n'));
+    applyShowIdRename(stale);
+    assert.equal(readJson(path.join(fx.rt, NEW, 'stale--critic.json')).showId, NEW);
+    assert.ok(!planShowIdRename(OLD, NEW, fx.trees).moves.some((m) => m.restampOnly));
     // the registry only takes each mode on its own shape
     assert.ok(validateRegistry([{ repo: 'web', path: 'a', shape: 'dir', onMoveCollision: 'park-old' }]).length > 0);
     assert.ok(validateRegistry([{ repo: 'web', path: 'a', shape: 'file', pattern: '{id}.json', onMoveCollision: 'merge-dir' }]).length > 0);

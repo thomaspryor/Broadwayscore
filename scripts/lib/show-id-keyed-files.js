@@ -235,7 +235,7 @@ const SHOW_ID_KEYED_FILES = [
     note: 'quarantined payloads, same layout. merge-dir: a dir already under the new id takes the old files when no name clashes (BRO-4315 batch 3)' },
   { repo: 'review-texts', path: '_superseded-misattributed', shape: 'file', pattern: '{id}--*.json', innerIdFields: ['showId'], writeGuard: 'review' },
   { repo: 'review-texts', path: 'aggregator-archive/*', shape: 'file', pattern: '{id}.*', onMoveCollision: 'park-old',
-    note: 'raw aggregator captures: <source>/<id>.html, .html.mismatch, .json (stagedoor, westendtheatre); api-page-*.json siblings are not id-keyed. A capture already under the new id (a scraper that guessed it, BRO-4315 batch 2) stays; the old one becomes <newId>.pre-rename.<ext>' },
+    note: 'raw aggregator captures: <source>/<id>.html, .html.mismatch, .json (stagedoor, westendtheatre); api-page-*.json siblings are not id-keyed. A capture already under the new id (a scraper that guessed it, BRO-4315 batch 2) stays; the old one moves verbatim to <source>/_pre-rename/<oldId>.<ext>' },
   { repo: 'review-texts', path: 'aggregator-archive/*/_not-found.json', shape: 'map', keyPath: [],
     note: 'id -> date the aggregator 404ed' },
   { repo: 'review-texts', path: 'failed-fetches.json', shape: 'records', keyPath: [], idField: 'showId',
@@ -274,6 +274,7 @@ function validateRegistry(entries = SHOW_ID_KEYED_FILES) {
     if (e.keyStyle && !['exact', 'colon-segments'].includes(e.keyStyle)) problems.push(`${where}: bad keyStyle`);
     if (e.onCollision && (e.onCollision !== 'drop-orphan-target' || e.shape !== 'map')) problems.push(`${where}: onCollision is only 'drop-orphan-target' on a map`);
     if (e.onMoveCollision && !((e.onMoveCollision === 'park-old' && e.shape === 'file') || (e.onMoveCollision === 'merge-dir' && e.shape === 'dir'))) problems.push(`${where}: onMoveCollision is 'park-old' on a file entry or 'merge-dir' on a dir entry`);
+    if (e.onMoveCollision === 'merge-dir' && e.keepOldCopy) problems.push(`${where}: merge-dir cannot keep an old copy`);
     if (e.writeGuard && !['shows', 'commercial', 'audience-buzz', 'review', 'atomic'].includes(e.writeGuard)) {
       problems.push(`${where}: bad writeGuard ${e.writeGuard}`);
     }
