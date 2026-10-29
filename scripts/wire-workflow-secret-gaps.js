@@ -21,6 +21,7 @@ const { addStepSecrets } = require('./lib/workflow-env-codemod.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const WF_DIR = path.join(ROOT, '.github', 'workflows');
+const DRY_RUN_STEP_RE = /dry[ -]?run|simulat/i;
 
 function arg(name, dflt) {
   const a = process.argv.find((x) => x.startsWith(`--${name}=`));
@@ -51,6 +52,12 @@ function main() {
   for (const [k, names] of byStep) {
     if (steps >= maxSteps) break;
     const [workflow, job, step] = JSON.parse(k);
+    // A dry-run/simulate step is meant to have no live credentials (e.g.
+    // account-metrics.yml's --simulate step: SEND_ALERTS off, no routeAlert).
+    if (DRY_RUN_STEP_RE.test(step)) {
+      skipped.push(`${workflow} :: ${job} :: ${step} — dry-run/simulate step, left unwired`);
+      continue;
+    }
     const file = path.join(WF_DIR, workflow);
     const res = addStepSecrets(fs.readFileSync(file, 'utf8'), job, step, [...names].sort());
     if (!res.ok) {
