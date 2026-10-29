@@ -1291,6 +1291,68 @@ if os.environ.get('LOOSEENDS_GATE_DISABLE', '0') != '1':
     except Exception:
         pass  # fail-open — never let this gate crash the rest of the script
 
+# ─── Passive-offer gate (PASSIVEOFFER, BRO-6546, 2026-10-29) ────────────────
+# Owner screenshots: sessions ending "Say the word and I'll start the landing",
+# "Shall I build all of it now?", "Check out this PR". LOOSEENDS only reads a
+# SAFE TO ARCHIVE closing and the status gates only fire after edits, so an
+# offer under KEEP OPEN / ACTION NEEDED, or in a turn with no edits yet, slid
+# through. Landing, building and fixing what was asked are pre-authorized
+# (CLAUDE.md "Cloud sessions"); only a real owner call is asked, and that goes
+# in a DECISION NEEDED: block. Fires on ANY final message, once per chain.
+# Kill switch: PASSIVEOFFER_GATE_DISABLE=1.
+_PASSIVE_VERB = (r"(?:land|merge|deploy|ship|build|start|push|go ahead|proceed|fix|run|open|file|handle|"
+                 r"implement|continue|begin|kick off|do (?:it|that|this)|make (?:it|that|the change))")
+_PASSIVE_RE = re.compile(
+    r"\b(?:say the word|give me the (?:word|go[- ]ahead)"
+    r"|(?:want|would you like|do you want) me to " + _PASSIVE_VERB + r"\b"
+    r"|(?:shall|should) I(?: " + _PASSIVE_VERB + r"\b|\s*\?)"
+    r"|if you(?:['\u2019]d)? (?:want|like),? (?:I|we)(?:['\u2019]ll| will| can| could) "
+    r"|\bI could (?:also )?" + _PASSIVE_VERB + r"\b"
+    r"|(?:check out|(?:take|have) a look at) (?:the|this|my) (?:PR|pull request)\b(?!\s+(?:branch|checks?|comments?|diff|description|number)))",
+    re.IGNORECASE)
+_PASSIVE_NEG_RE = re.compile(r"\b(?:no|not|never|without|nobody)\b|n['\u2019]t\b", re.IGNORECASE)
+# "I could land it" is an offer; "Once main settled I could land it, and I did"
+# or "I could open a card, but it is already tracked" is narration.
+_PASSIVE_NARRATION_BEFORE_RE = re.compile(r"\b(?:once|when|after|before|since|because|although|then)\b", re.IGNORECASE)
+_PASSIVE_NARRATION_AFTER_RE = re.compile(r"\b(?:and I did|but)\b", re.IGNORECASE)
+
+def _passive_offer(body):
+    """First offer in the body that is not negated earlier in its clause
+    ("you don't need to check out the PR"). Quoted and backticked spans are
+    dropped first, so citing a phrase is safe (as OWNERMERGE does)."""
+    body = re.sub(r'"[^"\n]*"|\u201c[^\u201d\n]*\u201d|\u2018[^\u2019\n]*\u2019'
+                  r"|(?<!\w)'[^'\n]{1,60}'(?!\w)", '', body)
+    for m in _PASSIVE_RE.finditer(body):
+        clause = re.split(r'[.;:!?,\n\u2014\u2013]', body[max(0, m.start() - 40):m.start()])[-1]
+        if _PASSIVE_NEG_RE.search(clause):
+            continue
+        if m.group(0).lower().startswith('i could'):
+            sent_before = re.split(r'[.!?\n]', body[max(0, m.start() - 80):m.start()])[-1]
+            sent_after = re.split(r'[.!?\n]', body[m.end():m.end() + 120])[0]
+            if _PASSIVE_NARRATION_BEFORE_RE.search(sent_before) or _PASSIVE_NARRATION_AFTER_RE.search(sent_after):
+                continue
+        return m, body
+    return None, body
+
+if os.environ.get('PASSIVEOFFER_GATE_DISABLE', '0') != '1':
+    try:
+        _po_text, _po_last = _closing()
+        # A real owner ask (DECISION NEEDED block, or a "You need to: <thing>"
+        # line such as the visual-approval tap) is not a passive offer.
+        if ('NO-VERIFY:' not in (_last_msg or '')
+                and not _owner_must_act(_po_text)
+                and not _ve_seen('PASSIVEOFFER')):
+            # The verdict token is dropped, its explanation is scanned:
+            # "ACTION NEEDED FROM YOU — say the word" is still an offer.
+            _po_body = '\n'.join(_VERDICT_TOKEN_RE.sub(' ', ln) for ln in _po_text.splitlines())
+            _po_m, _po_clean = _passive_offer(_po_body)
+            if _po_m:
+                _s = max(0, _po_m.start() - 40)
+                sys.stderr.write('   passive offer: "...%s..."\n' % re.sub(r'\s+', ' ', _po_clean[_s:_po_m.end() + 40]).strip())
+                _ve_block("PASSIVEOFFER")
+    except Exception:
+        pass  # fail-open — never let this gate crash the rest of the script
+
 # ─── Wake gate (WAKELESS, BRO-5881, 2026-10-22) ─────────────────────────────
 # Owner: sessions end "NOT SAFE TO EXIT — waiting on X" and never come back;
 # a day later X is long done and nobody checked. Real case (session 014vS4Wn,
@@ -2327,6 +2389,11 @@ fi
 
 if [[ "$result" == "LOOSEENDS" ]]; then
   echo "🛑 BLOCKED: SAFE TO ARCHIVE, but this message still has a loose end (quoted above): an offer or question to the owner, a call only the owner can make, or work that is not finished, verified or carded (BRO-5881, owner 2026-10-22). Pick one: finish it now; decide it yourself if it is technical; file a card for it (and add BACKLOG-OK: <why it can wait> if it can wait); start a session for it; or, if it truly needs the owner, write the DECISION NEEDED block and end ACTION NEEDED FROM YOU. Waiting on a run, a landing or another session's result, or promising to check something later, needs a running background wait and KEEP OPEN — <what, and what wakes you>. Then rewrite the message without the loose end. Bypass: NO-VERIFY: <reason>." >&2
+  exit 2
+fi
+
+if [[ "$result" == "PASSIVEOFFER" ]]; then
+  echo "🛑 BLOCKED: this message contains an offer to the owner (quoted above): \"say the word\", \"shall I\", \"want me to\", \"check out the PR\" (BRO-6546, owner 2026-10-29). The owner is not technical and never reviews or merges. In cloud, landing (\`land/<name>\`, CLOUD.md § Landing), building what was asked, fixing what you found, merging main into your branch and requesting the visual approval (\`node scripts/visual-approval.js request\`) are all pre-authorized: do the step now, then report what happened. Ask only a real owner call (money, an irreversible or destructive act, an email to a real person, product or taste): write it as a DECISION NEEDED: block with your recommendation and a default, and end ACTION NEEDED FROM YOU. Bypass: NO-VERIFY: <reason>." >&2
   exit 2
 fi
 

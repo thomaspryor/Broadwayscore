@@ -11,7 +11,7 @@ metadata:
 1. Run `node scripts/visual-qa.mjs --url http://localhost:3000 --paths <routes> --elements "<css-sel>" --refs <design-if-user-provided>`.
 2. **Read every element crop the runner prints at FULL resolution** — not the full-page thumbnails. Reading thumbnails is the documented silent-PASS root cause.
 3. Paste the manifest (screenshots + overflow report + LLM verdicts + verdictHash) into your reply to the user.
-4. Wait for explicit `APPROVED: <verdictHash>` (hash-bound, single-use) before any `git push` / `gh pr merge` / wrapped push script.
+4. Wait for a plain affirmative from the owner ("yes", "ship it", "looks good") before any `git push` / `gh pr merge` / wrapped push script. Never ask them to type a hash or `APPROVED:`.
 5. Cloud worker with no owner present (BRO-6241): `node scripts/visual-approval.js request --issue=BRO-N --what="..."` instead of waiting; the owner taps Approve/Reject on the decision list, and `visual-approval-land.yml` lands an approved change. To report where it stands, read the card, never memory: `node scripts/visual-approval.js status --issue=BRO-N` (waiting / approved / landed / rejected / void / unverified / expired). A tap that already happened is not "waiting" (BRO-6244).
 
 **Why (FeaturedSpot incident, 2026-05-24):** A session was given two reference designs for a Tony Predictions card, ran for 8 minutes, declared "Live on production. ...gold split-card on desktop/tablet, compact stacked layout on mobile" — but the shipped version had:

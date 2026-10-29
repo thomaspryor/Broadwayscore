@@ -8,23 +8,23 @@
 
 ### 1. Git Workflow
 Global rules apply (worktree-first, branch check, commit frequently). Project additions:
-- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `supabase/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit** (local hooks + parallel CI silently revert uncommitted edits; memory/data files can skip). See `memory/feedback_worktree_code_changes.md`.
+- **Worktree scope (MANDATORY for ANY tracked code edit):** `src/`, `scripts/`, `.github/workflows/`, `supabase/`, `next.config.js`, `tsconfig.json`, `package.json`, `CLAUDE.md` → **must be in a worktree before the first edit** (hooks + CI silently revert uncommitted edits; memory/data files can skip). `memory/feedback_worktree_code_changes.md`.
 - **Push** every ~30 min or after milestones. **15+ min without committing** → stop and commit NOW.
 - **`git pull` before every shows.json edit.** CI commits to it every ~30 min; stale local copy + rebase silently re-introduces deleted entries. Pull immediately before edits and verify fixes survived after any rebase.
 
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
-- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Do NOT `gh workflow run "Deploy to Vercel"`; manual dispatch is emergency-only. Core-data-only changes ride the next rebuild/6h backstop.
-- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; ~10 min after landing). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof.
+- **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Do NOT `gh workflow run "Deploy to Vercel"` (emergency-only). Core-data-only changes ride the next rebuild/6h backstop.
+- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; ~10 min after landing). A cancel-cascade run reports success while its Vercel deploy is CANCELED; only a READY prod deployment counts.
 - **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`). Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
 - **Never extract metadata from URLs** — URLs are inconsistent. Use publish dates and text content.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
-- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit (`--show=ID`/`--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
+- **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit (`--show=ID`/`--all-provisional`). Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
 - **Stars are score bands:** 2/5→31-50, 3/5→51-70, 4/5→71-90, 5/5→91-100; read the WHOLE article for the rating, never override outside. `memory/feedback_star_score_cap.md`
-- **Critic Score for external claims:** `getCriticScore(showId)` (`scripts/lib/canonical-critic-scores.ts`). Never raw-mean `reviews.json` (`audit-raw-mean-scores.js`). One formula, `scripts/lib/compute-critic-score.js`; `engine.ts` delegates (BRO-4312). Why: `memory/feedback_critic_score_canonical_helper.md`.
+- **Critic Score for external claims:** `getCriticScore(showId)` (`scripts/lib/canonical-critic-scores.ts`). Never raw-mean `reviews.json` (`audit-raw-mean-scores.js`). One formula: `scripts/lib/compute-critic-score.js` (BRO-4312). `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.
@@ -37,11 +37,11 @@ Use shared components from `src/components/show-cards/` — never create custom 
 - **When adding new shared components or tokens**, update `memory/design-system.md`.
 
 ### 5. Visual QA (MANDATORY for UI Changes — gate ENFORCES)
-**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. No owner (cloud): commit, then `node scripts/visual-approval.js request --issue=BRO-N --what=...`; Approve lands via CI. **Score badges sacred** (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
+**Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`; not routes): Pre-push blocks `git push`/`gh pr merge` until the owner replies a plain "yes / ship it". Never ask for a hash or `APPROVED:`. Cloud: `node scripts/visual-approval.js request --issue=BRO-N --what=...`, keep going; Approve lands it. **Score badges sacred** (`w-20 sm:w-24`). `memory/feedback_local_preview_before_push.md`
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
 **Linear is the source of truth, never Notion cards.** Notion is retired (froze 2026-08-20); its cards have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
-- **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
+- **Session start:** `linear-brain.js create "<title>" --self|--dispatch|--park "<reason>" --notes "..."`; output the URL. `--self` = you do it now (In Progress); technical `--park` refused. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Paused/refused: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
 - **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log. Cap ~8/session.
@@ -72,15 +72,15 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 4. **Scripts:** run against real data, minimum 3 diverse cases. `node --check` is syntax only — NOT a test.
 5. **Script migrations:** compare output before/after on same input. Empty results = broken.
 6. For UI: visual verification per §5
-7. **Scoring-logic edits** — watchlists in `scripts/lib/scoring-watchlists.js` (inclusion, score-source, LLM input; unit tests NOT sufficient). **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary. The Stop hook enforces scoring-delta.js by its exit code after the latest watched edit (LLM input exits 2 by design: A/B per §13, then `NO-VERIFY: <A/B result>`). See `memory/feedback_scoring_delta_required.md`.
-8. **Content-quality regex edits** (`scripts/lib/content-quality.js` arrays): **MUST run** `node scripts/audit-regex-patterns.js --full`. Stop hook requires a completed `--full` run stamped after the latest edit; threshold violations are reported for review; absent `data/review-texts` only warns. See `memory/feedback_content_quality_regex_fps.md`.
+7. **Scoring-logic edits** — watchlists in `scripts/lib/scoring-watchlists.js` (inclusion, score-source, LLM input; unit tests NOT sufficient). **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary. The Stop hook enforces scoring-delta.js by exit code (LLM input exits 2 by design: A/B per §13, then `NO-VERIFY: <A/B result>`). See `memory/feedback_scoring_delta_required.md`.
+8. **Content-quality regex edits** (`scripts/lib/content-quality.js` arrays): **MUST run** `node scripts/audit-regex-patterns.js --full`. Stop hook requires a completed `--full` run after the latest edit; absent `data/review-texts` only warns. See `memory/feedback_content_quality_regex_fps.md`.
 **If any check fails, fix before committing.**
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
 
 ### 14. Opening Night Readiness Check (MANDATORY)
-**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** — a pre-opening 404 is normal, don't pre-stage or treat as a gap. Revisit items 6/8/9 only after first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early.
+**TIMING RULE:** Aggregator/outlet review pages (BWW RR, DTLI, Playbill Verdict, Show Score, NYC Theatre, WET, theatre.reviews, Stagedoor, The Stage) **don't exist until reviews drop** — a pre-opening 404 is normal, not a gap. Revisit items 6/8/9 only after first reviews land in `reviews.json`. Exception: Talkin' Broadway can publish 24h early.
 
 Run `/verify-opening-night <show-id>` for the full 9-point checklist (covers orchestrator cron/CRITICAL_CRONS, ScrapingBee credits, BD zone) plus `node scripts/check-opening-night-readiness.js --show=ID` (category/status checks). Gotchas: `memory/opening-night-discovery-chains.md`.
 
@@ -118,7 +118,7 @@ For full details on any subsystem: `memory/CLAUDE-reference.md`
 **Never copy logic into test files — always `require()` the real function.** Extract pure decision functions to `scripts/lib/` (e.g. `review-guards.js`); `module.exports` and `require()` in the test. When fixing inline pipeline logic: extract → export → wire back → test.
 
 ### 16. Memory Entries: Encode First, Write Rarely
-**Never offer to "commit a memory file"** — the session-stop hook syncs local memory automatically. Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change; (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. **No new memory is the normal outcome**. "Remember this" from the user → write it.
+**Never offer to "commit a memory file"** (the stop hook syncs memory). Write a memory ONLY if all three hold: (1) **encode-first** — can't be a code/test/hook/CI change; (2) **counterfactual** — names the future action that changes; (3) **recall** — discoverable from its description. No new memory is the normal outcome; "Remember this" → write it.
 
 ### 17. Email Broadcast Safety (MANDATORY — NO EXCEPTIONS)
 See `memory/email-broadcast-rules.md` for full history.
@@ -127,7 +127,7 @@ See `memory/email-broadcast-rules.md` for full history.
 - **NEVER send to any Resend audience with >5 real contacts for testing**
 
 ### 18. Review BEFORE editing shared infrastructure (owner decision 2026-08-05, #1079)
-Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (or `/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail verdict stands until an `owner-override` verdict. Scope: `scripts/lib/infra-review-scope.js`.
+Dispatch layer, spend guards/circuit breakers, concurrency + push primitives, the review gates, `.github/workflows/**`, `~/.claude/hooks/**`: run `/second-opinion` (or `/plan-review` if structural) FIRST, then `node scripts/lib/review-gate.mjs --query=record-plan --reviewer=X --result=pass --session-id=$CLAUDE_CODE_SESSION_ID`. `infra-plan-review-gate.sh` blocks the first edit without it; a fail stands until an `owner-override` verdict. Scope: `scripts/lib/infra-review-scope.js`.
 
 ### 19. New blocking CI gates land advisory first (BRO-2123)
 New `--strict`/`--gate` test.yml steps: `continue-on-error: true` (or own baseline, or `# gate-arm-ok: <proof>`), blocking later. `audit-new-gate-arming.js` enforces; `memory/feedback_new_gates_land_advisory.md`.
@@ -141,5 +141,6 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
 **Multi-repo cloud session:** hooks load only via the setup-script install (CLOUD.md § Multi-repo).
+**Pre-authorized, never ask:** landing (`land/<name>`), building what was asked, fixing what you find, merging main in, requesting visual approval. Offer endings ("say the word", "shall I") are blocked. Design choices: show screenshots or an Artifact, never text alone.
 **Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
 **Start important work yourself** with `create_session` (CLOUD.md § Starting a worker session); the worker queue takes weeks. Last line: SAFE TO ARCHIVE / KEEP OPEN / ACTION NEEDED FROM YOU.

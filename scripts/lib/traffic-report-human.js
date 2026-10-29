@@ -435,7 +435,7 @@ function buildHumanSummary({ ph, ga, weeks, currentWeek, problems = [], showsPat
     // Per-day unique visitors ≈ visits is only suggestive (daily returners look
     // the same), so this needs volume and a near-perfect ratio, and says "might".
     if (s4 >= 500 && u4 / s4 >= 0.985 && c !== 'United States' && c !== 'United Kingdom') {
-      watch.push(`Traffic from **${c}** might be automated: ${fmtN(s4)} visits in 4 weeks, and on every single day each visit was a new visitor. Hong Kong looked exactly like this before it was confirmed as bots. Not filtered yet; say the word.`);
+      watch.push(`Traffic from **${c}** might be automated: ${fmtN(s4)} visits in 4 weeks, and on every single day each visit was a new visitor. Hong Kong looked exactly like this before it was confirmed as bots. Not filtered yet.`);
     }
   }
   if (gaOk) {

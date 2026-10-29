@@ -159,7 +159,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive 
       // bare Skill calls and must not depend on whether the host session sets CLAUDE_CODE_REMOTE.
       // BRO-5881/BRO-5910: LOOSEENDS, WAKELESS and CLEARCLOSE read every closing message, so the older fixtures (written for
       // other gates) run with them off; their own section below switches them back on.
-      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', SHIP_CHECK_COVERAGE_DISABLE: '1', LOOSEENDS_GATE_DISABLE: '1', PASSIVEOFFER_GATE_DISABLE: '1', WAKELESS_GATE_DISABLE: '1', CHILDWAIT_GATE_DISABLE: '1', CLEARCLOSE_GATE_DISABLE: '1', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -2296,5 +2296,62 @@ test('BRO-6020 ship-check: a quoted (>) verdict is no verdict; quoted asks and "
     assertAllowed(runHook(t, `${body}\n\nSAFE TO ARCHIVE — done.`, LE_ON), body);
   }
   fs.rmSync(chainFileFor(t), { force: true });
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─── Passive-offer gate (PASSIVEOFFER, BRO-6546, 2026-10-29) ────────────────
+// Owner screenshots: "Say the word and I'll start the landing", "Shall I build
+// all of it now?". LOOSEENDS only reads SAFE TO ARCHIVE closings and the status
+// gates need edits, so offers under KEEP OPEN / ACTION NEEDED or in a no-edit
+// turn passed. Block on any final message unless a DECISION NEEDED: block holds
+// the real owner call.
+const PO_ON = { PASSIVEOFFER_GATE_DISABLE: '0' };
+function assertPassive(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /passive offer|contains an offer/i, `expected the PASSIVEOFFER message, got: ${r.stderr.slice(0, 400)}`);
+}
+
+test('PASSIVEOFFER: offers to land/build/review block, with or without edits and under any verdict', skipNoRepoHook, () => {
+  const dir = makeTmpDir('passive-block');
+  const noEdits = writeTranscript(dir, []);
+  const closeout = writeTranscript(dir, [LINEAR_CLOSEOUT_DONE]);
+  for (const body of [
+    'It is not merged or deployed yet. Say the word and I\'ll start the landing process.',
+    'Option 1 is noted. Shall I build all of it now?\n\nKEEP OPEN — waiting on your answer.',
+    'The change is on a branch. Check out this PR when you get a chance.\n\nACTION NEEDED FROM YOU — review it.',
+    'Want me to land it now?',
+    'It\'s not live yet, want me to deploy it?',
+    'It isn\u2019t landed, want me to land it?',
+    'No errors in CI, and if you want, I can land it now.',
+    'Shall I?',
+    'All done on my side.\n\nACTION NEEDED FROM YOU \u2014 say the word and I\'ll land it',
+    'I haven\'t changed anything. If you want, I can remove the Chicago review and ask the pipeline to ingest King.',
+    'The branch is pushed. I could land it once main settles.',
+  ]) {
+    assertPassive(runHook(noEdits, body, PO_ON), `no-edit turn: ${body.slice(0, 50)}`);
+    assertPassive(runHook(closeout, body, PO_ON), `after work: ${body.slice(0, 50)}`);
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('PASSIVEOFFER false-positive guards: a real DECISION NEEDED block, finished work, bypass', skipNoRepoHook, () => {
+  const dir = makeTmpDir('passive-allow');
+  const noEdits = writeTranscript(dir, []);
+  assertAllowed(runHook(noEdits, 'Two ways to price it.\n\nDECISION NEEDED: which price to charge\nWhy this is your call: money.\nOption A — $5: cheap / low margin\nOption B — $9: margin / fewer sign-ups\nMy recommendation: B because margin.\nDefault: B.\n\nACTION NEEDED FROM YOU — pick a price', PO_ON), 'real owner call in the template');
+  assertAllowed(runHook(noEdits, 'The new gate blocks "say the word" and "shall I build", so I rewrote the closing.', PO_ON), 'double-quoted citation');
+  assertAllowed(runHook(noEdits, 'You don\'t need to check out the PR; I landed it myself.', PO_ON), 'negated clause');
+  assertAllowed(runHook(noEdits, 'I took a look at the PR comments, and the child was asked to review the PR.', PO_ON), 'narrative, not an offer');
+  assertAllowed(runHook(noEdits, 'The visual check is pending.\n\nYou need to: tap Approve on the screenshots when you\'re ready.\n\nACTION NEEDED FROM YOU — approve the visual check', PO_ON), 'visual-approval ask');
+  assertAllowed(runHook(noEdits, 'I could not verify the deploy, so I re-ran the check and it is live now.', PO_ON), 'I could not <verb> is not an offer');
+  for (const msg of [
+    'Once main settled I could land it, and I did. It is live.',
+    'I could open a card for it, but it is already tracked.',
+    'I\'ll have a look at the PR checks once CI finishes.\n\nKEEP OPEN \u2014 CI is running and its exit wakes me.',
+    'I told the child session to check out the PR branch and rebase it.',
+    'The new gate blocks \u2018say the word\u2019 endings and \'shall I build\' closings.',
+  ]) assertAllowed(runHook(noEdits, msg, PO_ON), `narration/citation: ${msg.slice(0, 50)}`);
+  assertAllowed(runHook(noEdits, 'Landed and live on the site. The shows page now loads in half the time.', PO_ON), 'finished work');
+  assertAllowed(runHook(noEdits, 'The gate matches `say the word` and `shall I build` in closings, and it reviewed the pull request diff itself.', PO_ON), 'quoted code and "reviewed" are not offers');
+  assertAllowed(runHook(noEdits, 'Want me to land it now?\nNO-VERIFY: quoting the owner\'s own phrase for a test', PO_ON), 'NO-VERIFY bypass');
   fs.rmSync(dir, { recursive: true, force: true });
 });
