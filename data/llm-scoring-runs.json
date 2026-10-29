@@ -1,5 +1,23 @@
 [
   {
+    "startedAt": "2026-10-28T08:21:32.429Z",
+    "completedAt": "2026-10-28T08:21:37.751Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "cacheRead": 0,
+      "cacheWrite": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "40655305374",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-10-28T09:38:35.588Z",
     "completedAt": "2026-10-28T09:38:53.550Z",
     "totalReviews": 326,
@@ -2085997,21 +2086015,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T08:11:57.784Z",
-    "completedAt": "2026-10-29T08:12:08.370Z",
-    "totalReviews": 6,
+    "startedAt": "2026-10-29T08:18:37.694Z",
+    "completedAt": "2026-10-29T08:18:50.090Z",
+    "totalReviews": 35,
     "processed": 2,
-    "skipped": 4,
+    "skipped": 33,
     "errors": 0,
     "tokensUsed": {
-      "input": 13331,
-      "output": 674,
-      "cacheRead": 0,
-      "cacheWrite": 7569,
-      "total": 32176
+      "input": 13738,
+      "output": 669,
+      "cacheRead": 7614,
+      "cacheWrite": 0,
+      "total": 32868
     },
-    "costUsd": 0.07617225,
-    "runId": "40824720015",
+    "costUsd": 0.0512187,
+    "runId": "40825028460",
     "errorDetails": [],
     "validation": [
       {
@@ -2092342,6 +2092360,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "candida-off-broadway-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 1,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "captain-corellis-mandolin-west-end-2019",
         "ourDistribution": {
           "up": 4,
@@ -2097329,8 +2097357,8 @@
         "ourDistribution": {
           "up": 8,
           "flat": 2,
-          "down": 5,
-          "total": 15
+          "down": 6,
+          "total": 16
         },
         "bwwDistribution": {
           "up": 6,
@@ -2097339,7 +2097367,7 @@
           "total": 8
         },
         "hasDisagreement": true,
-        "disagreementDetails": "BWW: Down thumbs differ by 33% (ours: 33%, theirs: 0%)"
+        "disagreementDetails": "BWW: Down thumbs differ by 38% (ours: 38%, theirs: 0%)"
       },
       {
         "showId": "giant-2026",
@@ -2104678,10 +2104706,10 @@
       {
         "showId": "merrily-we-roll-along-off-broadway-2022",
         "ourDistribution": {
-          "up": 17,
+          "up": 19,
           "flat": 0,
           "down": 1,
-          "total": 18
+          "total": 20
         },
         "bwwDistribution": {
           "up": 11,
@@ -2119765,10 +2119793,10 @@
       {
         "showId": "translations-off-broadway-2023",
         "ourDistribution": {
-          "up": 4,
+          "up": 6,
           "flat": 1,
           "down": 0,
-          "total": 5
+          "total": 7
         },
         "hasDisagreement": false
       },
@@ -2121790,8 +2121818,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T08:14:20.382Z",
-    "completedAt": "2026-10-29T08:14:20.391Z",
+    "startedAt": "2026-10-29T08:21:03.320Z",
+    "completedAt": "2026-10-29T08:21:03.332Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2121804,25 +2121832,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40824720015",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-29T08:26:28.156Z",
-    "completedAt": "2026-10-29T08:26:28.169Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "40825588148",
+    "runId": "40825028460",
     "errorDetails": []
   }
 ]
