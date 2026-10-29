@@ -2010820,21 +2010820,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T22:12:51.100Z",
-    "completedAt": "2026-10-29T22:13:27.705Z",
-    "totalReviews": 10,
-    "processed": 7,
+    "startedAt": "2026-10-29T22:12:19.972Z",
+    "completedAt": "2026-10-29T22:13:14.677Z",
+    "totalReviews": 14,
+    "processed": 11,
     "skipped": 3,
     "errors": 0,
     "tokensUsed": {
-      "input": 47988,
-      "output": 2266,
-      "cacheRead": 26649,
+      "input": 69943,
+      "output": 3536,
+      "cacheRead": 41877,
       "cacheWrite": 0,
-      "total": 114539
+      "total": 171974
     },
-    "costUsd": 0.17748370000000002,
-    "runId": "40963410416",
+    "costUsd": 0.2635273,
+    "runId": "40963309049",
     "source": "index",
     "errorDetails": [],
     "validation": [
@@ -2044864,6 +2044864,16 @@
         "disagreementDetails": "DTLI: Flat thumbs differ by 31% (ours: 31%, theirs: 0%)"
       },
       {
+        "showId": "the-thanksgiving-play-regional-2024",
+        "ourDistribution": {
+          "up": 9,
+          "flat": 1,
+          "down": 1,
+          "total": 11
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "the-three-musketeers-1984",
         "ourDistribution": {
           "up": 0,
@@ -2048579,8 +2048589,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T22:18:23.866Z",
-    "completedAt": "2026-10-29T22:18:23.868Z",
+    "startedAt": "2026-10-29T22:18:12.357Z",
+    "completedAt": "2026-10-29T22:18:12.359Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2048593,7 +2048603,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40963410416",
+    "runId": "40963309049",
     "source": "comparative-rescore",
     "errorDetails": []
   }
