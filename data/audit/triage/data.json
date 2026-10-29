@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "warn",
-  "lastChecked": "2026-10-28T08:30:25.608Z",
+  "lastChecked": "2026-10-29T09:01:58.618Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -74,37 +74,37 @@
     {
       "name": "Data: undispatchable Linear backlog cards",
       "status": "warn",
-      "message": "10 of 479 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6428 West End history: seasons 2013-14 and 2012-13 (list-first + Guardian/WOS supply)"
+      "message": "10 of 470 open Linear card(s) have no runnable acceptance-criteria command (workers would skip them). First: [?] BRO-6474 validate-data --strict red: art-west-end-2016 artshub Singapore arts-hub article attached as a review"
     },
     {
       "name": "Data: Linear card-verifiability report stale",
       "status": "pass",
-      "message": "data/audit/card-verifiability-linear.json generated 2026-10-27"
+      "message": "data/audit/card-verifiability-linear.json generated 2026-10-28"
     },
     {
       "name": "Data: review coverage holes",
       "status": "warn",
-      "message": "67 review(s) with no usable text, 58 rejected although verified as a review, 28 never scored, 28 with a blocked URL (0 published on the site), across 455 current shows"
+      "message": "66 review(s) with no usable text, 57 rejected although verified as a review, 28 never scored, 30 with a blocked URL (0 published on the site), across 461 current shows"
     },
     {
       "name": "Data: published scores outside the critic's rating",
       "status": "warn",
-      "message": "20 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 32264 checked"
+      "message": "24 published review score(s) contradict the critic's own rating or every model's verdict (2 more already queued for rescore), of 33176 checked"
     },
     {
       "name": "Data: early publish dates awaiting page-date recheck",
-      "status": "warn",
-      "message": "61 review(s) carry an early or carried publish date no page read has confirmed (limit 40; 77 more already attempted)"
+      "status": "pass",
+      "message": "10 early publish date(s) awaiting recheck (limit 40); 125 already attempted and not yet confirmed"
     },
     {
       "name": "Data: duplicate-flag leaks (a wrong twin dropping a good review)",
-      "status": "warn",
-      "message": "scripts/audit-duplicate-flag-inheritance.js failed: Found 9 live duplicate-of-inherited-flag leak(s) (floor: 8)."
+      "status": "pass",
+      "message": "duplicate-flag inheritance audit is within its committed floor"
     },
     {
       "name": "Data: stale-slot squatters (current-year review slots held by another production)",
       "status": "pass",
-      "message": "audit ran: 553 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
+      "message": "audit ran: 558 candidate slot(s) in current-year shows (mostly correct exclusions; node scripts/audit-stale-slot-squatters.js lists them)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",

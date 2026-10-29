@@ -1,15 +1,15 @@
 {
   "system": "dispatch",
-  "status": "warn",
-  "lastChecked": "2026-10-28T08:30:25.612Z",
+  "status": "pass",
+  "lastChecked": "2026-10-29T09:01:58.623Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
       "name": "Dispatch: owner-judgment cards without owner notification",
-      "status": "warn",
-      "message": "23 P2/P3 Todo/Backlog card(s) have only VERIFY: owner-judgment and no owner-notification route. First: BRO-5593, BRO-5592, BRO-5586"
+      "status": "pass",
+      "message": "No unarmed human-territory or owner-judgment-only card lacks an owner-notification route (374 checked)."
     }
   ]
 }

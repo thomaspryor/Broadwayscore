@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-10-28T08:46:09.189Z",
+  "generatedAt": "2026-10-29T09:31:17.363Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 4365,
-  "flaggedShows": 57,
-  "flaggedFiles": 199,
+  "scannedShows": 4478,
+  "flaggedShows": 55,
+  "flaggedFiles": 195,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 31,
-    "needs-human-review": 26
+    "likely-contamination": 30,
+    "needs-human-review": 25
   },
   "shows": [
     {
@@ -1696,7 +1696,7 @@
       "status": "upcoming",
       "venue": "La MaMa Experimental Theatre Club",
       "previewsStartDate": "2026-11-27",
-      "openingDate": null,
+      "openingDate": "2026-12-13",
       "verdict": "likely-contamination",
       "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
@@ -1901,7 +1901,7 @@
       "status": "upcoming",
       "venue": "Polonsky Shakespeare Center",
       "previewsStartDate": "2026-11-10",
-      "openingDate": null,
+      "openingDate": "2026-11-20",
       "verdict": "likely-contamination",
       "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
@@ -2485,70 +2485,6 @@
       ]
     },
     {
-      "showId": "girls-off-west-end-2026",
-      "title": "Girls",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "The Maria Theatre",
-      "previewsStartDate": "2026-10-22",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2017,
-          2018,
-          2019
-        ],
-        "spanDays": 771,
-        "flaggedCount": 3,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--christian-durham.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Christian Durham",
-          "publishDate": "2017-02-26",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-girls",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--david-scotland.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "David Scotland",
-          "publishDate": "2018-02-16",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-girls-boys",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--justin-murray.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Justin Murray",
-          "publishDate": "2019-04-08",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-top-girls-nt",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "romeo-and-juliet-west-end-2027",
       "title": "Romeo & Juliet",
       "market": "west-end",
@@ -3079,42 +3015,6 @@
       ]
     },
     {
-      "showId": "in-the-heights-off-broadway-2026",
-      "title": "In the Heights",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "New York City Center",
-      "previewsStartDate": "2026-10-28",
-      "openingDate": "2026-10-28",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"New York City Center\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2020
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "ew--melissa-rose-bernardo.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "ew",
-          "criticName": "Melissa Rose Bernardo",
-          "publishDate": "2020-07-29",
-          "url": "https://ew.com/movies/in-the-heights-jon-m-chu-release-date-change/?srsltid=AfmBOopRH7IsYqru0vI97aNxrPyX3Iy-Nhs5fTmPsbVeYA3lFLkG8Ls2",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "desire-under-the-elms-off-west-end-2026",
       "title": "Desire Under the Elms",
       "market": "west-end",
@@ -3407,11 +3307,11 @@
       "title": "The Sound of Music",
       "market": "broadway",
       "status": "upcoming",
-      "venue": "Vivian Beaumont Theater - Lincoln Center Theater",
+      "venue": "Vivian Beaumont Theater",
       "previewsStartDate": "2027-03-23",
       "openingDate": "2027-04-15",
       "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Vivian Beaumont Theater - Lincoln Center Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Vivian Beaumont Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
       "stats": {
         "count": 1,
         "distinctYears": [
@@ -3511,6 +3411,42 @@
       ]
     },
     {
+      "showId": "scrooge-cirque-extravaganza-off-west-end-2026",
+      "title": "Scrooge: Cirque Extravaganza",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Excel London",
+      "previewsStartDate": "2026-12-23",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Excel London\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2015
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "daily-mail--quentin-letts.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "daily-mail",
+          "criticName": "Quentin Letts",
+          "publishDate": "2015-12-10",
+          "url": "https://www.dailymail.com/tvshowbiz/reviews/article-3355368/Bah-humbug-Scrooge-nice-boiled-version-Christmas-Carol-writes-QUENTIN-LETTS.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "la-distance-off-west-end-2026",
       "title": "La Distance",
       "market": "west-end",
@@ -3576,42 +3512,6 @@
           "criticName": "Phil Willmott",
           "publishDate": "2015-07-16",
           "url": "https://www.londonboxoffice.co.uk/news/post/railway-children-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-revlon-girl-off-west-end-2026",
-      "title": "The Revlon Girl",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Park Theatre",
-      "previewsStartDate": "2026-10-26",
-      "openingDate": "2026-10-28",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2017
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--stacey-tyler.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stacey Tyler",
-          "publishDate": "2017-09-26",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
