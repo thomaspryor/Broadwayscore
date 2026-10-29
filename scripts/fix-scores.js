@@ -42,8 +42,11 @@ console.log('## Step 1: Fixing wrong rating conversions\n');
 
 reviews.forEach((r, idx) => {
   if (!r.originalRating) return;
+  // Anchored reviews carry their rating only for display (BRO-6545): the score
+  // already sits inside that rating's band, so a flat re-conversion would undo it.
+  if (r.scoreSource === 'anchored-v6') return;
 
-  const rating = r.originalRating.trim();
+  const rating = String(r.originalRating).trim();
   let newScore = null;
 
   // Star ratings (e.g., "2/5", "3 stars")
