@@ -40,7 +40,7 @@ dispatch_with_retry() {
     echo "Attempt $attempt/$max_attempts to dispatch $workflow failed (exit $exit_code):"
     echo "$err_output"
 
-    if echo "$err_output" | grep -qiE 'rate.?limit|HTTP 403|HTTP 429|secondary'; then
+    if grep -qiE 'rate.?limit|HTTP 403|HTTP 429|secondary' <<<"$err_output"; then
       if [ "$attempt" -lt "$max_attempts" ]; then
         echo "Rate-limit detected, sleeping ${backoff}s before retry..."
         sleep "$backoff"

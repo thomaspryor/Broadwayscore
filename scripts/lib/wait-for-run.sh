@@ -99,7 +99,7 @@ while :; do
     echo "run $RUN_ID: $STATUS (poll $POLLS, next check in ~${INTERVAL}s)"
   else
     ERRORS=$(( ERRORS + 1 ))
-    if echo "$OUT" | grep -qiE 'could not find|not found|no run'; then
+    if grep -qiE 'could not find|not found|no run' <<<"$OUT"; then
       # A 404 in the first couple of polls can be list→view eventual
       # consistency right after dispatch — keep polling briefly.
       if (( POLLS >= 3 )); then
@@ -107,7 +107,7 @@ while :; do
         exit 3
       fi
     fi
-    if echo "$OUT" | grep -qiE 'rate limit|HTTP 403'; then
+    if grep -qiE 'rate limit|HTTP 403' <<<"$OUT"; then
       # Never hammer a rate-limited API — read the reset time and back way off.
       check_quota
       INTERVAL=300

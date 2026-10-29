@@ -193,7 +193,7 @@ test10() {
   IFS='|' read -r workdir script < <(mktest "backward-compat")
   cd "$workdir/local"
   local out=$(bash "$script" 2>&1 || true)
-  if echo "$out" | grep -q "No review-texts changes to sync"; then
+  if grep -q "No review-texts changes to sync" <<<"$out"; then
     echo "  PASS: --check-only not required, existing path unchanged"
     TESTS_PASSED=$((TESTS_PASSED + 1))
   else

@@ -202,6 +202,23 @@ function teardownJobWorktree(wtPath, jobId) {
 // console.error). This is the one shared choke point both dispatchers call
 // through, so the check lives here rather than duplicated in each caller.
 const DEFAULT_DISPATCH_DISK_FLOOR_GB = 5;
+
+/**
+ * BRO-4297: BSC_DISPATCH_DISK_FLOOR_GB -> GB. A blank/whitespace value is
+ * "unset" (Number('') is 0, which silently turned the floor off); a
+ * non-numeric or negative value falls back to the default with one warning.
+ */
+function parseDispatchFloorGB(raw, warn = console.error) {
+  const trimmed = String(raw == null ? '' : raw).trim();
+  if (trimmed === '') return DEFAULT_DISPATCH_DISK_FLOOR_GB;
+  const n = Number(trimmed);
+  if (!Number.isFinite(n) || n < 0) {
+    warn(`[bsc-runner] BSC_DISPATCH_DISK_FLOOR_GB="${raw}" is not a valid non-negative number — using default ${DEFAULT_DISPATCH_DISK_FLOOR_GB}GB`);
+    return DEFAULT_DISPATCH_DISK_FLOOR_GB;
+  }
+  return n;
+}
+
 const GC_SCRIPT = path.join(REPO, 'scripts', 'gc-merged-worktrees.sh');
 
 // Same `df -Pk` parse as scripts/lib/disk-floor-check.sh's ensure_disk_floor,
@@ -329,13 +346,7 @@ async function runJob(opts) {
   // silently disable the guard, and Infinity/NaN must not refuse every
   // dispatch (adversarial review finding) — fall back to the default and say
   // so once, rather than trusting an unparseable value either direction.
-  let dispatchFloorGB = Number(process.env.BSC_DISPATCH_DISK_FLOOR_GB);
-  if (!Number.isFinite(dispatchFloorGB) || dispatchFloorGB < 0) {
-    if (process.env.BSC_DISPATCH_DISK_FLOOR_GB !== undefined) {
-      console.error(`[bsc-runner] BSC_DISPATCH_DISK_FLOOR_GB="${process.env.BSC_DISPATCH_DISK_FLOOR_GB}" is not a valid non-negative number — using default ${DEFAULT_DISPATCH_DISK_FLOOR_GB}GB`);
-    }
-    dispatchFloorGB = DEFAULT_DISPATCH_DISK_FLOOR_GB;
-  }
+  const dispatchFloorGB = parseDispatchFloorGB(process.env.BSC_DISPATCH_DISK_FLOOR_GB);
   let freeGB = freeDiskGB(REPO);
   if (freeGB !== null && shouldRefuseDispatch({ freeGB, floorGB: dispatchFloorGB })) {
     selfHealDiskPressure();
@@ -541,5 +552,5 @@ module.exports = {
   gitSafeJobId,
   runJob, acquireLease, releaseLease, readLease, updateLease, pidLooksLikeClaude, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS,
   LEASE_ROOT, LOG_ROOT, REPO, leaseDir, leaseFile,
-  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble,
+  DEFAULT_JOB_TIMEOUT_MS, buildBudgetPreamble, parseDispatchFloorGB,
 };

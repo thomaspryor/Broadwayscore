@@ -17,7 +17,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { runJob, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS } = require('./bsc-runner.js');
+const { parseDispatchFloorGB, runJob, pidStartedNear, leaseLooksLive, PID_NULL_GRACE_MS } = require('./bsc-runner.js');
 const { scanFile } = require('../audit-alert-senders.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -138,4 +138,19 @@ test('leaseLooksLive: null-pid startup grace never queries process identity', ()
   for (const [age, live] of [[1000, true], [PID_NULL_GRACE_MS, false]]) {
     assert.equal(leaseLooksLive({ pid: null, acquiredAt: new Date(IDENTITY_NOW - age).toISOString() }, never, IDENTITY_NOW, never), live);
   }
+});
+
+// BRO-4297: a blank env var is "unset", not 0 (which silently disabled the disk floor).
+test('parseDispatchFloorGB: blank and whitespace fall back to the default, not 0', () => {
+  const warnings = [];
+  const warn = m => warnings.push(m);
+  assert.equal(parseDispatchFloorGB('', warn), 5);
+  assert.equal(parseDispatchFloorGB('   ', warn), 5);
+  assert.equal(parseDispatchFloorGB(undefined, warn), 5);
+  assert.equal(warnings.length, 0, 'unset/blank is not a typo, no warning');
+  assert.equal(parseDispatchFloorGB('0', warn), 0, 'an explicit 0 still disables the floor');
+  assert.equal(parseDispatchFloorGB(' 12 ', warn), 12);
+  assert.equal(parseDispatchFloorGB('abc', warn), 5);
+  assert.equal(parseDispatchFloorGB('-3', warn), 5);
+  assert.equal(warnings.length, 2);
 });
