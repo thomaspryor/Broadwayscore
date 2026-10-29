@@ -628,7 +628,7 @@ function serpItemDate(result, window) {
  * a sitemap child that failed), so the recall it yields covers only part of the outlet's output.
  */
 function isIncompleteEnumeration(notes) {
-  return (notes || []).some((n) => /budget \d+ reached|^no SERP provider|^child |page cap/.test(String(n)));
+  return (notes || []).some((n) => /budget \d+ reached|(?:^|: )no SERP provider|(?:^|: )child |page cap/.test(String(n)));
 }
 
 /** "Review: 'Giant' ... - The New York Times" -> without the trailing site name. */

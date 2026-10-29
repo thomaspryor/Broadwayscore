@@ -285,3 +285,9 @@ test('archivalYear: a year inside the show run is no archive mark (London Theatr
   assert.equal(census.archivalYear({ url: 'https://www.londontheatre.co.uk/reviews/henry-v-noel-coward-theatre-2013' }, [henry]), null);
   assert.equal(census.archivalYear({ url: 'https://www.londontheatre.co.uk/reviews/henry-v-2012' }, [henry]), '2012');
 });
+
+test('isIncompleteEnumeration: a composite part note ("sitemap: child ...") still counts', () => {
+  assert.equal(census.isIncompleteEnumeration(['sitemap: child https://www.thestage.co.uk/x.xml: HTTP 500']), true);
+  assert.equal(census.isIncompleteEnumeration(['serp: no SERP provider for "q"']), true);
+  assert.equal(census.isIncompleteEnumeration(['cdx: wayback cdx: 10 captures, 9 URLs']), false);
+});
