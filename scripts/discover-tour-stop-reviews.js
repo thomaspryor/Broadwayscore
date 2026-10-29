@@ -157,7 +157,7 @@ async function searchStop({ show, stop }, shows, budget, refused, deadline) {
     if (!r.url || known.has(norm) || isRefused(refused[norm])) continue;
     // Social, ticketing and UGC pages (a Facebook post, a Reddit thread) are
     // refused by ingest anyway; dropping them here keeps them off the cap.
-    if (isBlockedReviewUrl(r.url) || !urlLooksLikeReview(r.url, show.title) || looksLikeAggregationOrReaction(r.url, r.title) || looksLikeScreenVersion(r)) continue;
+    if (isBlockedReviewUrl(r.url) || !urlLooksLikeReview(r.url, show.title) || looksLikeAggregationOrReaction(r.url, r.title, show.title) || looksLikeScreenVersion(r)) continue;
     const candidate = { url: r.url, title: r.title, snippet: r.description };
     if (!validateSerpCandidate({ show, candidate }).ok || !tourCandidateIsTour(show, candidate)) continue;
     const outletId = resolveRegisteredOutlet(r.url);

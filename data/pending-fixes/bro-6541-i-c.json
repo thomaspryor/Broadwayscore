@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-i-c",
+  "planId": "179e15e2-7e7e-4d8f-ab90-036860fa407d",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 3 of 9)",
+    "steps": [
+      "BRO-6541: ingest guardian review for the-red-shoes-royal-shakespeare-regional-2024",
+      "BRO-6541: ingest guardian review for the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
+      "BRO-6541: ingest guardian review for military-wives-the-musical-york-royal-regional-2025",
+      "BRO-6541: ingest all-that-dazzles-uk review for 45-years-chichester-festival-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for magic-chichester-festival-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for singin-in-the-rain-royal-exchange-regional-2025",
+      "BRO-6541: ingest all-that-dazzles-uk review for the-memory-of-water-octagon-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for of-mice-and-men-octagon-regional-2025",
+      "BRO-6541: ingest artsdesk review for magic-chichester-festival-regional-2026",
+      "BRO-6541: ingest artsdesk review for lear-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest british-theatre review for the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+      "BRO-6541: ingest british-theatre review for gallus-in-weegieland-tron-regional-2025",
+      "BRO-6541: ingest british-theatre review for beauty-and-the-beast-citizens-regional-2025",
+      "BRO-6541: ingest british-theatre review for the-memory-of-water-octagon-regional-2026",
+      "BRO-6541: ingest british-theatre review for macbeth-hull-truck-regional-2026",
+      "BRO-6541: ingest british-theatre review for road-royal-exchange-regional-2026",
+      "BRO-6541: ingest british-theatre review for waiting-for-godot-citizens-regional-2026",
+      "BRO-6541: ingest british-theatre review for private-lives-royal-exchange-regional-2026",
+      "BRO-6541: ingest british-theatre review for even-these-things-royal-exchange-regional-2026",
+      "BRO-6541: ingest british-theatre review for the-long-drop-citizens-regional-2026",
+      "BRO-6541: ingest british-theatre review for 45-years-chichester-festival-regional-2026",
+      "BRO-6541: ingest british-theatre review for fun-home-royal-exchange-regional-2026",
+      "BRO-6541: ingest british-theatre review for lear-pitlochry-festival-regional-2026",
+      "BRO-6541: ingest british-theatre review for king-lear-crucible-regional-2026",
+      "BRO-6541: ingest britishtheatrecom review for the-other-boleyn-girl-chichester-festival-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-red-shoes-royal-shakespeare-regional-2024 --url=https://www.theguardian.com/stage/2024/nov/15/the-red-shoes-review-dance-swan-theatre-stratford-upon-avon --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-red-shoes-royal-shakespeare-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-two-gentlemen-of-verona-royal-shakespeare-regional-2025 --url=https://www.theguardian.com/stage/2025/aug/14/the-two-gentlemen-of-verona-review-the-other-place-stratford-upon-avon --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for the-two-gentlemen-of-verona-royal-shakespeare-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=military-wives-the-musical-york-royal-regional-2025 --url=https://www.theguardian.com/stage/2025/sep/17/military-wives-review-york-theatre-royal-choir-musical --outlet=guardian",
+        "description": "BRO-6541: ingest guardian review for military-wives-the-musical-york-royal-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=45-years-chichester-festival-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-45-years-minerva-chichester-festival-theatre --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for 45-years-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=magic-chichester-festival-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-magic-chichester-festival-theatre --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for magic-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=singin-in-the-rain-royal-exchange-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-singin-in-the-rain-royal-exchange-theatre --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for singin-in-the-rain-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-memory-of-water-octagon-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-the-memory-of-water-octagon-bolton --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for the-memory-of-water-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=of-mice-and-men-octagon-regional-2025 --url=https://www.allthatdazzles.co.uk/post/review-of-mice-and-men-octagon-theatre-bolton --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for of-mice-and-men-octagon-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=magic-chichester-festival-regional-2026 --url=https://theartsdesk.com/theatre/magic-chichester-festival-theatre-review-now-you-see-hope-now-you-dont --outlet=artsdesk",
+        "description": "BRO-6541: ingest artsdesk review for magic-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lear-pitlochry-festival-regional-2026 --url=https://theartsdesk.com/theatre/lear-pitlochry-festival-theatre-review-mad-queen-reminds-us-no-kings-man --outlet=artsdesk",
+        "description": "BRO-6541: ingest artsdesk review for lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025 --url=https://www.britishtheatreguide.info/reviews/the-unlikely-pi-minerva-theatre-24416 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=gallus-in-weegieland-tron-regional-2025 --url=https://www.britishtheatreguide.info/reviews/gallus-in-weegi-tron-theatre-25120 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for gallus-in-weegieland-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=beauty-and-the-beast-citizens-regional-2025 --url=https://www.britishtheatreguide.info/reviews/beauty-and-the-citizens-theatr-25201 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for beauty-and-the-beast-citizens-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-memory-of-water-octagon-regional-2026 --url=https://www.britishtheatreguide.info/reviews/the-memory-of-w-octagon-theatre-25293 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-memory-of-water-octagon-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=macbeth-hull-truck-regional-2026 --url=https://www.britishtheatreguide.info/reviews/macbeth-hull-truck-thea-25319 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for macbeth-hull-truck-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=road-royal-exchange-regional-2026 --url=https://www.britishtheatreguide.info/reviews/road-royal-exchange-25354 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for road-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=waiting-for-godot-citizens-regional-2026 --url=https://www.britishtheatreguide.info/reviews/waiting-for-god-citizens-theatr-25374 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for waiting-for-godot-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=private-lives-royal-exchange-regional-2026 --url=https://www.britishtheatreguide.info/reviews/private-lives-royal-exchange-25478 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for private-lives-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=even-these-things-royal-exchange-regional-2026 --url=https://www.britishtheatreguide.info/reviews/even-these-thin-royal-exchange-25608 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for even-these-things-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-long-drop-citizens-regional-2026 --url=https://www.britishtheatreguide.info/reviews/the-long-drop-citizens-theatr-25665 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for the-long-drop-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=45-years-chichester-festival-regional-2026 --url=https://www.britishtheatreguide.info/reviews/45-years-minerva-theatre-25675 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for 45-years-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=fun-home-royal-exchange-regional-2026 --url=https://www.britishtheatreguide.info/reviews/fun-home-royal-exchange-25723 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for fun-home-royal-exchange-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=lear-pitlochry-festival-regional-2026 --url=https://www.britishtheatreguide.info/reviews/lear-pitlochry-festi-25731 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for lear-pitlochry-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=king-lear-crucible-regional-2026 --url=https://www.britishtheatreguide.info/reviews/king-lear-crucible-theatr-25986 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for king-lear-crucible-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-other-boleyn-girl-chichester-festival-regional-2024 --url=https://www.britishtheatre.com/posts/review-the-other-boleyn-girl-chichester-festival-theatre --outlet=britishtheatrecom",
+        "description": "BRO-6541: ingest britishtheatrecom review for the-other-boleyn-girl-chichester-festival-regional-2024"
+      }
+    ]
+  }
+}

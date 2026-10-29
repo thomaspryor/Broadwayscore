@@ -169,8 +169,19 @@ function normalizeUrl(url) {
 // an outlet--critic slot claimed by a page that isn't a review at all.
 const NON_REVIEW_MARKERS = /\b(review roundup|critics? sound off|read the reviews|what critics? (?:are|is) saying|reactions?|reacts? to)\b/i;
 
-function looksLikeAggregationOrReaction(url, title) {
-  return NON_REVIEW_MARKERS.test(title || '') || NON_REVIEW_MARKERS.test(decodeURIComponent(url || ''));
+// BRO-6541: pre-show features that a one-query SERP pass ingested as reviews (first-look
+// photos, interviews, cast news). Only when neither the URL nor the title says "review":
+// across 37,880 scored reviews this shape matched one held review.
+const FEATURE_MARKERS = /\b(first[- ]look|production[- ]images|photos?|interview|in[- ]rehearsals?|cast[- ](?:announced|revealed)|full[- ]cast)\b/i;
+
+function looksLikeAggregationOrReaction(url, title, showTitle) {
+  const u = decodeURIComponent(url || '');
+  if (NON_REVIEW_MARKERS.test(title || '') || NON_REVIEW_MARKERS.test(u)) return true;
+  if (/review/i.test(`${u} ${title || ''}`)) return false;
+  // The show's own title can carry a marker ("Murdoch: The Final Interview"), so it is cut out first.
+  const words = String(showTitle || '').toLowerCase().match(/[a-z0-9]+/g) || [];
+  const cut = (s) => (words.length ? s.replace(new RegExp(`(?<![a-z0-9])${words.join('[^a-z0-9]+')}(?![a-z0-9])`, 'gi'), ' ') : s);
+  return FEATURE_MARKERS.test(cut(title || '')) || FEATURE_MARKERS.test(cut(u));
 }
 
 function resolveRegisteredOutlet(url) {

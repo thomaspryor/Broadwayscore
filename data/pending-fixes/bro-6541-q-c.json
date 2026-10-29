@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-q-c",
+  "planId": "f0093889-a5b0-4b21-8358-6b1ef707c51e",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:55:20.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest reviews for the new UK hub productions (part 3 of 6)",
+    "steps": [
+      "BRO-6541: ingest thestage review for dookin-oot-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for meme-girls-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for the-inquisitor-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for the-corinthian-oran-mor-regional-2026",
+      "BRO-6541: ingest thestage review for the-house-party-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for the-brenda-line-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest thestage review for night-idiot-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for planet-omar-leeds-regional-2026",
+      "BRO-6541: ingest thestage review for my-fair-lady-leeds-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for my-fair-lady-leeds-regional-2024",
+      "BRO-6541: ingest thestage review for water-colour-pitlochry-festival-regional-2025",
+      "BRO-6541: ingest thestage review for a-single-man-aviva-studios-regional-2025",
+      "BRO-6541: ingest thestage review for oliver-twist-hull-truck-regional-2025",
+      "BRO-6541: ingest british-theatre review for oliver-twist-hull-truck-regional-2025",
+      "BRO-6541: ingest theatre-weekly review for east-is-east-citizens-regional-2026",
+      "BRO-6541: ingest thestage review for escaped-alone-tron-regional-2024",
+      "BRO-6541: ingest thestage review for pushin-thirty-oran-mor-regional-2024",
+      "BRO-6541: ingest thestage review for maggie-and-me-tron-regional-2024",
+      "BRO-6541: ingest everything-theatre review for pig-heart-boy-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for mistero-buffo-oran-mor-regional-2025",
+      "BRO-6541: ingest thestage review for malory-towers-royal-bath-regional-2026",
+      "BRO-6541: ingest artsdesk review for four-quartets-royal-bath-regional-2026",
+      "BRO-6541: ingest thestage review for robinredbreast-aviva-studios-regional-2024",
+      "BRO-6541: ingest thestage review for radiant-vermin-tron-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for the-birthday-party-royal-bath-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dookin-oot-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/dookin-oot-review-oran-mor-glasgow-brian-logan-a-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for dookin-oot-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=meme-girls-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/meme-girls-review-oran-mor-glasgow-andy-mcgregor-a-play-a-pie-and-a-pint-yana-harris-julia-murray --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for meme-girls-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-inquisitor-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/the-inquisitor-review-oran-mor-glasgow-a-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-inquisitor-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-corinthian-oran-mor-regional-2026 --url=https://www.thestage.co.uk/reviews/the-corinthian-review-oran-mor-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-corinthian-oran-mor-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-house-party-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-house-party-review-chichester-festival-theatre-laura-lomas-miss-julie --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-house-party-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-brenda-line-pitlochry-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-brenda-line-review-pitlochry-festival-theatre-harry-mould --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-brenda-line-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=night-idiot-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/night-idiot-review-oran-mor-glasgow-by-zoe-bullock --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for night-idiot-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=planet-omar-leeds-regional-2026 --url=https://www.thestage.co.uk/reviews/planet-omar-review-zanib-mian-leeds-playhouse --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for planet-omar-leeds-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-fair-lady-leeds-regional-2024 --url=https://www.thestage.co.uk/reviews/my-fair-lady-review-leeds-playhouse-frederick-loewe-alan-jay-lerner-george-bernard-shaw-pygmalion-james-brining --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for my-fair-lady-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=my-fair-lady-leeds-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-my-fair-lady-opera-north-leeds-playhouse --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for my-fair-lady-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=water-colour-pitlochry-festival-regional-2025 --url=https://www.thestage.co.uk/reviews/water-colour-review-pitlochry-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for water-colour-pitlochry-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-single-man-aviva-studios-regional-2025 --url=https://www.thestage.co.uk/reviews/a-single-man-review-aviva-studios-manchester-jonathan-watkins-christopher-isherwood --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for a-single-man-aviva-studios-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oliver-twist-hull-truck-regional-2025 --url=https://www.thestage.co.uk/reviews/oliver-twist-review-hull-truck-theatre-deborah-mcandrew-john-biddle --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for oliver-twist-hull-truck-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oliver-twist-hull-truck-regional-2025 --url=https://www.britishtheatreguide.info/reviews/oliver-twist-hull-truck-thea-25159 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for oliver-twist-hull-truck-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=east-is-east-citizens-regional-2026 --url=https://theatreweekly.com/review-east-is-east-at-citizens-theatre-glasgow/ --outlet=theatre-weekly",
+        "description": "BRO-6541: ingest theatre-weekly review for east-is-east-citizens-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=escaped-alone-tron-regional-2024 --url=https://www.thestage.co.uk/reviews/escaped-alone-review-tron-theatre-glasgow-caryl-churchill-joanna-bowman --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for escaped-alone-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=pushin-thirty-oran-mor-regional-2024 --url=https://www.thestage.co.uk/reviews/pushin-thirty-review-oran-mor-glasgow-elfie-picket-theatre-taylor-dyson-callum-kelly-beth-morton-play-a-pie-and-a-pint --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for pushin-thirty-oran-mor-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=maggie-and-me-tron-regional-2024 --url=https://www.thestage.co.uk/reviews/maggie-and-me-review-at-the-tron-theatre-glasgow-by-damian-barr-james-ley-and-suba-das --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for maggie-and-me-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=pig-heart-boy-crucible-regional-2025 --url=https://everything-theatre.co.uk/2025/03/review-pig-heart-boy-crucible-theatre-sheffield/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for pig-heart-boy-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mistero-buffo-oran-mor-regional-2025 --url=https://www.thestage.co.uk/reviews/mistero-buffo-review-oran-mor-glasgow-a-play-a-pie-and-a-pint-lawrence-boothman-dario-fo-franca-rame --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for mistero-buffo-oran-mor-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=malory-towers-royal-bath-regional-2026 --url=https://www.thestage.co.uk/reviews/malory-towers-review-theatre-royal-bath-emma-rice --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for malory-towers-royal-bath-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=four-quartets-royal-bath-regional-2026 --url=https://theartsdesk.com/theatre/four-quartets-theatre-royal-bath-review-ralph-fiennes-gives-compelling-performance --outlet=artsdesk",
+        "description": "BRO-6541: ingest artsdesk review for four-quartets-royal-bath-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=robinredbreast-aviva-studios-regional-2024 --url=https://www.thestage.co.uk/reviews/robinredbreast-review-aviva-studios-manchester-maxine-peake --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for robinredbreast-aviva-studios-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=radiant-vermin-tron-regional-2024 --url=https://www.thestage.co.uk/reviews/radiant-vermin-review-tron-theatre-glasgow-philip-ridley --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for radiant-vermin-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-birthday-party-royal-bath-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-the-birthday-party-theatre-royal-bath --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-birthday-party-royal-bath-regional-2024"
+      }
+    ]
+  }
+}

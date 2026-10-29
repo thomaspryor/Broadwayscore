@@ -1,0 +1,78 @@
+{
+  "issueNumber": "bro-6541-p-e",
+  "planId": "57ef1143-4467-4492-a396-ae96b499d53e",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:55:20.929Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: add vetted UK hub productions (outlet census + skipped venues) (part 5 of 5)",
+    "steps": [
+      "BRO-6541: add doubt-ustinov-regional-2025 (skipped-venue Guardian review)",
+      "BRO-6541: add cock-53two-regional-2024 (skipped-venue Guardian review)"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "add-show",
+        "show": {
+          "id": "doubt-ustinov-regional-2025",
+          "title": "Doubt",
+          "slug": "doubt-ustinov-regional-2025",
+          "venue": "Ustinov, Bath",
+          "city": "bath-uk",
+          "openingDate": "2025-02-14",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T20:30:54.790Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2025/feb/14/doubt-review-maxine-peake-ustinov-bath"
+          ],
+          "statusSource": "guardian-review-age"
+        },
+        "description": "BRO-6541: add doubt-ustinov-regional-2025 (skipped-venue Guardian review)"
+      },
+      {
+        "type": "add-show",
+        "show": {
+          "id": "cock-53two-regional-2024",
+          "title": "Cock",
+          "slug": "cock-53two-regional-2024",
+          "venue": "53two, Manchester",
+          "city": "manchester-uk",
+          "openingDate": "2024-11-17",
+          "openingDateSource": "guardian-review",
+          "previewsStartDate": null,
+          "closingDate": null,
+          "status": "closed",
+          "category": "regional",
+          "market": "regional",
+          "tags": [
+            "regional"
+          ],
+          "type": "play",
+          "discoverySource": "uk-regional-guardian-backfill",
+          "discoveredAt": "2026-10-29T20:30:54.963Z",
+          "provisional": true,
+          "evidenceUrls": [
+            "https://www.theguardian.com/stage/2024/nov/17/cock-review-mike-bartlett-53two-manchester-her-productions"
+          ],
+          "statusSource": "guardian-review-age"
+        },
+        "description": "BRO-6541: add cock-53two-regional-2024 (skipped-venue Guardian review)"
+      }
+    ]
+  }
+}

@@ -43,8 +43,8 @@ test('the Playbill exemption needs the Guardian evidence', () => {
 
 test('venues the site would not file under Beyond London are skipped', () => {
   assert.equal(siteSeesUkRegional('Royal Exchange Theatre, Manchester'), true);
-  assert.equal(siteSeesUkRegional('The Mount Without, Bristol'), false);
-  assert.match(buildAction(row({ venue: 'The Mount Without, Bristol' }), []).skip, /uk-regional-venues/);
+  assert.equal(siteSeesUkRegional('Opera House, Manchester'), false);
+  assert.match(buildAction(row({ venue: 'Opera House, Manchester' }), []).skip, /uk-regional-venues/);
 });
 
 test('Observer roundups are skipped and a standfirst title falls back to the URL slug', () => {

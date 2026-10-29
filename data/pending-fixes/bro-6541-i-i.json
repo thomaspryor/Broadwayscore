@@ -1,0 +1,172 @@
+{
+  "issueNumber": "bro-6541-i-i",
+  "planId": "081390b4-8b85-4c70-b55f-3f0600cb8e66",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:34:32.412Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest UK hub reviews (Guardian seeding reviews + census matches) (part 9 of 9)",
+    "steps": [
+      "BRO-6541: ingest whatsonstage review for black-hole-sign-tron-regional-2025",
+      "BRO-6541: ingest whatsonstage review for dancing-at-lughnasa-crucible-regional-2025",
+      "BRO-6541: ingest whatsonstage review for small-acts-of-love-citizens-regional-2025",
+      "BRO-6541: ingest whatsonstage review for endgame-royal-bath-regional-2025",
+      "BRO-6541: ingest whatsonstage review for as-you-like-it-royal-bath-regional-2025",
+      "BRO-6541: ingest whatsonstage review for liberation-royal-exchange-regional-2025",
+      "BRO-6541: ingest whatsonstage review for through-it-all-together-leeds-regional-2025",
+      "BRO-6541: ingest whatsonstage review for anna-karenina-chichester-festival-regional-2025",
+      "BRO-6541: ingest whatsonstage review for the-government-inspector-chichester-festival-regional-2025",
+      "BRO-6541: ingest whatsonstage review for abigails-party-royal-exchange-regional-2025",
+      "BRO-6541: ingest whatsonstage review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025",
+      "BRO-6541: ingest whatsonstage review for mary-and-the-hyenas-hull-truck-regional-2025",
+      "BRO-6541: ingest whatsonstage review for little-shop-of-horrors-crucible-regional-2025",
+      "BRO-6541: ingest whatsonstage review for the-sound-of-music-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest whatsonstage review for a-dolls-house-crucible-regional-2024",
+      "BRO-6541: ingest whatsonstage review for the-other-boleyn-girl-chichester-festival-regional-2024",
+      "BRO-6541: ingest whatsonstage review for sunset-song-dundee-rep-regional-2024",
+      "BRO-6541: ingest whatsonstage review for the-lover-the-collection-royal-bath-regional-2024",
+      "BRO-6541: ingest whatsonstage review for the-crucible-crucible-regional-2024",
+      "BRO-6541: ingest whatsonstage review for work-it-out-home-regional-2024",
+      "BRO-6541: ingest whatsonstage review for frankenstein-leeds-regional-2024",
+      "BRO-6541: ingest whatsonstage review for the-gap-hope-mill-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=black-hole-sign-tron-regional-2025 --url=https://www.whatsonstage.com/news/black-hole-sign-at-glasgows-tron-theatre-review_1695805/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for black-hole-sign-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dancing-at-lughnasa-crucible-regional-2025 --url=https://www.whatsonstage.com/news/dancing-at-lughnasa-at-sheffields-crucible-theatre-review_1695386/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for dancing-at-lughnasa-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=small-acts-of-love-citizens-regional-2025 --url=https://www.whatsonstage.com/news/small-acts-of-love-at-glasgows-citizens-theatre-review_1694531/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for small-acts-of-love-citizens-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=endgame-royal-bath-regional-2025 --url=https://www.whatsonstage.com/news/endgame-with-douglas-hodge-and-mathew-horne-at-theatre-royal-baths-ustinov-studio-review_1694031/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for endgame-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=as-you-like-it-royal-bath-regional-2025 --url=https://www.whatsonstage.com/news/as-you-like-it-directed-by-ralph-fiennes-at-theatre-royal-bath-review_1691780/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for as-you-like-it-royal-bath-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=liberation-royal-exchange-regional-2025 --url=https://www.whatsonstage.com/news/liberation-at-the-royal-exchange-theatre-review_1685546/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for liberation-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=through-it-all-together-leeds-regional-2025 --url=https://www.whatsonstage.com/news/through-it-all-together-at-leeds-playhouse-review_1684943/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for through-it-all-together-leeds-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=anna-karenina-chichester-festival-regional-2025 --url=https://www.whatsonstage.com/news/anna-karenina-with-natalie-dormer-at-chichester-festival-theatre-review_1683091/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for anna-karenina-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-government-inspector-chichester-festival-regional-2025 --url=https://www.whatsonstage.com/news/the-government-inspector-at-chichester-festival-theatre-review_1676229/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-government-inspector-chichester-festival-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=abigails-party-royal-exchange-regional-2025 --url=https://www.whatsonstage.com/news/abigails-party-at-royal-exchange-theatre-review_1673001/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for abigails-party-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=escaped-alone-and-what-if-if-only-royal-exchange-regional-2025 --url=https://www.whatsonstage.com/news/escaped-alone-and-what-if-if-only-at-royal-exchange-theatre-review_1664597/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for escaped-alone-and-what-if-if-only-royal-exchange-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=mary-and-the-hyenas-hull-truck-regional-2025 --url=https://www.whatsonstage.com/news/mary-and-the-hyenas-musical-at-hull-truck-theatre-review_1664478/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for mary-and-the-hyenas-hull-truck-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=little-shop-of-horrors-crucible-regional-2025 --url=https://www.whatsonstage.com/news/little-shop-of-horrors-at-sheffields-crucible-theatre-review_1657507/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for little-shop-of-horrors-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-sound-of-music-pitlochry-festival-regional-2024 --url=https://www.whatsonstage.com/news/the-sound-of-music-at-pitlochry-festival-theatre-review_1653763/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-sound-of-music-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=a-dolls-house-crucible-regional-2024 --url=https://www.whatsonstage.com/news/a-dolls-house-at-sheffield-crucible-review_1634675/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for a-dolls-house-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-other-boleyn-girl-chichester-festival-regional-2024 --url=https://www.whatsonstage.com/news/the-other-boleyn-girl-review-a-new-reign-begins-in-chichester-festival-theatre_1595903/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-other-boleyn-girl-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sunset-song-dundee-rep-regional-2024 --url=https://www.whatsonstage.com/news/sunset-song-at-dundee-rep-review_1594077/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for sunset-song-dundee-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-lover-the-collection-royal-bath-regional-2024 --url=https://www.whatsonstage.com/news/the-lover-the-collection-at-theatre-royal-baths-ustinov-studio-review_1588581/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-lover-the-collection-royal-bath-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-crucible-crucible-regional-2024 --url=https://www.whatsonstage.com/news/the-crucible-at-sheffields-crucible-theatre-review-a-tense-and-compelling-revival-despite-the-gimmicks_1582740/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-crucible-crucible-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=work-it-out-home-regional-2024 --url=https://www.whatsonstage.com/news/work-it-out-at-home-manchester-review_1582564/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for work-it-out-home-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=frankenstein-leeds-regional-2024 --url=https://www.whatsonstage.com/news/frankenstein-at-leeds-playhouse-review_1577704/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for frankenstein-leeds-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-gap-hope-mill-regional-2024 --url=https://www.whatsonstage.com/news/the-gap-at-hope-mill-theatre-manchester-review_1577223/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for the-gap-hope-mill-regional-2024"
+      }
+    ]
+  }
+}

@@ -1,0 +1,193 @@
+{
+  "issueNumber": "bro-6541-q-b",
+  "planId": "c022f253-a39e-4561-b410-de684129fd5a",
+  "status": "pending",
+  "createdAt": "2026-10-29T20:55:20.932Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "BRO-6541: ingest reviews for the new UK hub productions (part 2 of 6)",
+    "steps": [
+      "BRO-6541: ingest thestage review for glorious-hope-mill-regional-2025",
+      "BRO-6541: ingest everything-theatre review for sugarbye-tobacco-factory-regional-2025",
+      "BRO-6541: ingest thestage review for consumed-sheffield-regional-2025",
+      "BRO-6541: ingest west-end-best-friend review for atlantis-chichester-festival-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for atlantis-chichester-festival-regional-2026",
+      "BRO-6541: ingest artsdesk review for atlantis-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for atlantis-chichester-festival-regional-2026",
+      "BRO-6541: ingest thestage review for antigone-tron-regional-2026",
+      "BRO-6541: ingest british-theatre review for antigone-tron-regional-2026",
+      "BRO-6541: ingest thestage review for the-39-steps-hull-truck-regional-2026",
+      "BRO-6541: ingest all-that-dazzles-uk review for dark-noon-aviva-studios-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for coram-boy-chichester-festival-regional-2024",
+      "BRO-6541: ingest whatsonstage review for coram-boy-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for coram-boy-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for the-caretaker-chichester-festival-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for the-caretaker-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for footloose-pitlochry-festival-regional-2024",
+      "BRO-6541: ingest everything-theatre review for bluebelle-crucible-regional-2025",
+      "BRO-6541: ingest thestage review for arlington-tron-regional-2025",
+      "BRO-6541: ingest british-theatre review for arlington-tron-regional-2025",
+      "BRO-6541: ingest thestage review for the-hen-night-oran-mor-regional-2026",
+      "BRO-6541: ingest thestage review for peak-stuff-chichester-festival-regional-2024",
+      "BRO-6541: ingest thestage review for the-last-pearl-tron-regional-2024",
+      "BRO-6541: ingest thestage review for oor-wullie-dundee-rep-regional-2024",
+      "BRO-6541: ingest west-end-best-friend review for cinderella-chichester-festival-regional-2024"
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=glorious-hope-mill-regional-2025 --url=https://www.thestage.co.uk/reviews/glorious-review-hope-mill-theatre-manchester-florence-foster-jenkins-peter-quilter-wendi-peters-charlie-hiscock --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for glorious-hope-mill-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=sugarbye-tobacco-factory-regional-2025 --url=https://everything-theatre.co.uk/2025/09/review-sugarbye-tobacco-factory-bristol/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for sugarbye-tobacco-factory-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=consumed-sheffield-regional-2025 --url=https://www.thestage.co.uk/reviews/consumed-review-tanya-moiseiwitsch-playhouse-sheffield-karis-kelly --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for consumed-sheffield-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=atlantis-chichester-festival-regional-2026 --url=https://www.westendbestfriend.co.uk/news/review-atlantis-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for atlantis-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=atlantis-chichester-festival-regional-2026 --url=https://www.allthatdazzles.co.uk/post/review-atlantis-minerva-theatre-chichester --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for atlantis-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=atlantis-chichester-festival-regional-2026 --url=https://theartsdesk.com/theatre/atlantis-chichester-festival-theatre-review-drowning-passionate-exposition --outlet=artsdesk",
+        "description": "BRO-6541: ingest artsdesk review for atlantis-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=atlantis-chichester-festival-regional-2026 --url=https://www.thestage.co.uk/reviews/atlantis-review-minerva-theatre-chichester-festival-theatre --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for atlantis-chichester-festival-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=antigone-tron-regional-2026 --url=https://www.thestage.co.uk/reviews/antigone-review-tron-theatre-glasgow-lulu-raczka-finn-den-hertog --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for antigone-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=antigone-tron-regional-2026 --url=https://www.britishtheatreguide.info/reviews/antigone-tron-theatre-26047 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for antigone-tron-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-39-steps-hull-truck-regional-2026 --url=https://www.thestage.co.uk/reviews/the-39-steps-review-derby-theatre-hull-truck-cal-mccrystal --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-39-steps-hull-truck-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=dark-noon-aviva-studios-regional-2024 --url=https://www.allthatdazzles.co.uk/post/review-dark-noon-aviva-studios-manchester --outlet=all-that-dazzles-uk",
+        "description": "BRO-6541: ingest all-that-dazzles-uk review for dark-noon-aviva-studios-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=coram-boy-chichester-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-coram-boy-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for coram-boy-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=coram-boy-chichester-festival-regional-2024 --url=https://www.whatsonstage.com/news/coram-boy-at-chichester-festival-theatre-review_1604036/ --outlet=whatsonstage",
+        "description": "BRO-6541: ingest whatsonstage review for coram-boy-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=coram-boy-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/coram-boy-review-chichester-festival-theatre-helen-edmundson-jamila-gavin --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for coram-boy-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-caretaker-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/the-caretaker-review-at-chichester-festival-theatre-by-harold-pinter --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-caretaker-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-caretaker-chichester-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-the-caretaker-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for the-caretaker-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=footloose-pitlochry-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/footloose-review-at-pitlochry-festival-theatre-by-dean-pitchford-walter-bobbie-and-douglas-rintoul --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for footloose-pitlochry-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=bluebelle-crucible-regional-2025 --url=https://everything-theatre.co.uk/2025/06/review-bluebelle-crucible-theatre/ --outlet=everything-theatre",
+        "description": "BRO-6541: ingest everything-theatre review for bluebelle-crucible-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=arlington-tron-regional-2025 --url=https://www.thestage.co.uk/reviews/arlington-review-tron-theatre-glasgow-enda-walsh --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for arlington-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=arlington-tron-regional-2025 --url=https://www.britishtheatreguide.info/reviews/arlington-tron-theatre-25034 --outlet=british-theatre",
+        "description": "BRO-6541: ingest british-theatre review for arlington-tron-regional-2025"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-hen-night-oran-mor-regional-2026 --url=https://www.thestage.co.uk/reviews/the-hen-night-review-oran-mor-glasgow --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-hen-night-oran-mor-regional-2026"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=peak-stuff-chichester-festival-regional-2024 --url=https://www.thestage.co.uk/reviews/peak-stuff-review-minerva-theatre-chichester-festival-theatre-billie-collins-neil-bettles-meg-lewis --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for peak-stuff-chichester-festival-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=the-last-pearl-tron-regional-2024 --url=https://www.thestage.co.uk/reviews/the-last-pearl-review-at-tron-theatre-glasgow-james-lovelock-shadow-puppetry --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for the-last-pearl-tron-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=oor-wullie-dundee-rep-regional-2024 --url=https://www.thestage.co.uk/reviews/oor-wullie-review-dundee-rep-noisemaker-2024 --outlet=thestage",
+        "description": "BRO-6541: ingest thestage review for oor-wullie-dundee-rep-regional-2024"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=cinderella-chichester-festival-regional-2024 --url=https://www.westendbestfriend.co.uk/news/review-cinderella-chichester-festival-theatre --outlet=west-end-best-friend",
+        "description": "BRO-6541: ingest west-end-best-friend review for cinderella-chichester-festival-regional-2024"
+      }
+    ]
+  }
+}
