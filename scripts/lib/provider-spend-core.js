@@ -92,7 +92,7 @@ function bbCost(bb) {
  * the day's usage is the new cycle's counter itself. 'baseline' = measured
  * but not day-attributable; it neither breaks nor extends the streak.
  */
-function computeDayRecord({ day, bb, bd, sb, sd, prev }) {
+function computeDayRecord({ day, bb, bd, sb, sd, prev, readAt = null }) {
   const prevAdjacent = prev && isNextUtcDay(prev.day, day) ? prev : null;
   const rec = { day, providers: {} };
 
@@ -111,17 +111,34 @@ function computeDayRecord({ day, bb, bd, sb, sd, prev }) {
     };
   }
 
-  rec.providers.scrapingbee = cycleDelta(sb, prevAdjacent?.providers?.scrapingbee);
-  rec.providers.scrapingdog = cycleDelta(sd, prevAdjacent?.providers?.scrapingdog);
+  rec.providers.scrapingbee = cycleDelta(sb, prevAdjacent?.providers?.scrapingbee, readAt);
+  rec.providers.scrapingdog = cycleDelta(sd, prevAdjacent?.providers?.scrapingdog, readAt);
   return rec;
 }
 
-function cycleDelta(reading, prevEntry) {
+// BRO-3023: two cycle readings one calendar day apart are only "a day of usage" when they
+// were also sampled about 24h apart. A retimed run (late cron, workflow_dispatch re-run)
+// would otherwise report the interval between the samples as a day.
+const READ_INTERVAL_TOLERANCE_MS = 6 * 3600 * 1000;
+const DAY_MS = 24 * 3600 * 1000;
+
+function sampledAboutADayApart(prevReadAt, readAt) {
+  const a = Date.parse(prevReadAt);
+  const b = Date.parse(readAt);
+  if (Number.isNaN(a) || Number.isNaN(b)) return true; // no usable timestamps: legacy behaviour
+  return Math.abs(b - a - DAY_MS) <= READ_INTERVAL_TOLERANCE_MS;
+}
+
+function cycleDelta(reading, prevEntry, readAt = null) {
   if (reading == null) return { status: 'unknown' };
   const out = { status: 'ok', cycleUsed: reading.cycleUsed, cap: reading.cap ?? reading.limit ?? null };
+  if (readAt) out.readAt = readAt;
   const prevCycleUsed = prevEntry && typeof prevEntry.cycleUsed === 'number' ? prevEntry.cycleUsed : null;
   if (prevCycleUsed == null) {
     out.status = 'baseline';
+  } else if (readAt && prevEntry.readAt && !sampledAboutADayApart(prevEntry.readAt, readAt)) {
+    out.status = 'baseline'; // measured, but the interval is not a day
+    out.baselineReason = 'retimed';
   } else {
     out.dayCredits = reading.cycleUsed >= prevCycleUsed
       ? reading.cycleUsed - prevCycleUsed

@@ -164,6 +164,7 @@ async function main() {
     sb,
     sd,
     prev,
+    readAt: new Date().toISOString(),
   });
 
   // attributedPct (task #752): compare the call-level ledger against the
