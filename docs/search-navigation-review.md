@@ -162,9 +162,49 @@ Reject capped results (`hasMore: true`) and surface query failures; do not
 replace either with zero. If this is rerun later, keep these fixed dates to
 answer this review or explicitly label updated windows.
 
+## Fresh readout (2026-10-29)
+
+Run on 2026-10-29 through `scripts/posthog-adhoc-query.js` (the two statements
+above, unchanged, local `POSTHOG_PERSONAL_API_KEY`). Windows: previous =
+2026-10-15 to 2026-10-21, current = 2026-10-22 to 2026-10-28 (UTC). Both
+returned complete results (no `hasMore`); the second has 37 rows.
+
+Header search by device and week:
+
+| period | device | pageviews | pageview visitors | header search events | header searchers | no-result events | fuzzy-only events | result-button selections | selectors |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| current | Desktop | 7542 | 2878 | 386 | 110 | 21 | 21 | 301 | 108 |
+| current | Mobile | 10678 | 3186 | 697 | 119 | 9 | 33 | 676 | 127 |
+| current | Tablet | 244 | 94 | 3 | 2 | 0 | 0 | 3 | 2 |
+| previous | Desktop | 6980 | 2658 | 452 | 99 | 12 | 24 | 379 | 92 |
+| previous | Mobile | 9257 | 3220 | 499 | 107 | 19 | 17 | 396 | 123 |
+| previous | Tablet | 290 | 137 | 14 | 5 | 0 | 0 | 9 | 6 |
+
+Destination reach by surface (page views and distinct visitors, current week;
+the previous week is within about 10% on every row):
+
+| device | home or market | browse | guides | best lists | show detail | other |
+| --- | --- | --- | --- | --- | --- | --- |
+| Desktop | 1474 / 501 | 617 / 358 | 192 / 162 | 70 / 45 | 3857 / 1938 | 1332 / 738 |
+| Mobile | 2419 / 620 | 665 / 374 | 275 / 173 | 97 / 61 | 5705 / 2370 | 1516 / 670 |
+| Tablet | 48 / 13 | 31 / 14 | 4 / 2 | 3 / 2 | 109 / 70 | 49 / 19 |
+
+What it says. In the current week 231 header searchers sit against 6158
+pageview visitors (about 3.8%; desktop 3.8%, mobile 3.7%), and searchers made
+3.5 (desktop) and 5.9 (mobile) searches each, a heavy-user minority. The
+previous week was the same shape (about 3.5% of visitors; 4.6 and 4.7 searches
+per mobile and desktop searcher). Roughly 3 in 100 searches return nothing
+(30 of 1086 events), so search itself works. Browse pages were reached by 732
+desktop plus mobile visitors, about three times the searchers; these are
+distinct counts that cannot be summed to a site total and are not a conversion
+rate. The `other` bucket is large (about 1400 page views a week per device
+group) and was not broken down here, so browse reach could be understated.
+
 ## Recommendation and decision boundary
 
-No navigation redesign is justified by the evidence currently available.
+No navigation redesign is justified by the evidence. The fresh readout above (2026-10-29) shows search used by about 4% of visitors in each of two weeks, with a low no-result rate, while browse reaches about three times as many visitors. The "about 9 searches per user" figure describes a small heavy-search group, not how most visitors navigate. No Browse Shows menu experiment and no DECISION NEEDED card are filed on this evidence; re-run the same two queries if search share starts to climb.
+
+Earlier assessment, kept for the record: No navigation redesign was justified by the evidence then available.
 The source inventory suggests a narrow candidate: add a Browse Shows link
 to the existing hamburger, leading to the existing rankings/category hub.
 It could make discovery more visible, especially where search is an icon,
