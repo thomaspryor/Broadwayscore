@@ -77,7 +77,7 @@ async function fileSentryIssue({ issue, classification, org, canCreate = true },
   try {
     // Dedupe is the marker lookup above; the title near-match rule is opted
     // out because distinct Sentry errors share most title words.
-    const { issue: created } = await createLinearIssue({ ...card, dispatch: true, source: SOURCE, dedupeOptOut: SOURCE });
+    const { issue: created } = await createLinearIssue({ ...card, dispatch: true, source: SOURCE, dedupeOptOut: 'sentry-triage' });
     return { action: 'filed', card: created };
   } catch (e) {
     return { action: 'skipped', reason: `could not file the Linear card (${e && e.message})` };
