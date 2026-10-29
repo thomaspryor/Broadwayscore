@@ -241,7 +241,7 @@
       "resolveReason": "absent"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -255,7 +255,8 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
       "sweptTracker": "BRO-6422",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-29T18:14:30.878Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1029,7 +1030,7 @@
       "resolvedAt": "2026-10-29T03:02:53.764Z"
     },
     "test-yml:main-streak": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Main test.yml red — no confirmed-green run in 6.5h",
@@ -1040,7 +1041,8 @@
       "lastSurfacedAt": "2026-10-28T08:28:40.413Z",
       "notifyCount": 74,
       "cardId": null,
-      "linearIdentifier": "BRO-5817"
+      "linearIdentifier": "BRO-5817",
+      "resolvedAt": "2026-10-29T18:14:30.760Z"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "resolved",
@@ -4355,7 +4357,7 @@
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
       },
-      "resolvedAt": "2026-10-29T17:42:27.826Z",
+      "resolvedAt": "2026-10-29T18:14:30.305Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
@@ -15064,7 +15066,7 @@
       "resolveReason": "absent"
     },
     "test-yml:red:Unit Tests:501c5e0a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"classify-market-routing parity vs committed baseline (95 samples)\"",
       "firstSeen": "2026-10-11T06:16:18.103Z",
@@ -15079,7 +15081,9 @@
       "absentRunIds": [
         "40861673753",
         "40887937386"
-      ]
+      ],
+      "resolvedAt": "2026-10-29T18:14:30.404Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
       "status": "resolved",
@@ -29626,7 +29630,7 @@
       "linearIdentifier": null
     },
     "test-yml:red:Unit Tests:045ee448": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"REGRESSION: every real tracked *.jsonl (repo-wide) is either merge=union or a documented exemption\"",
       "firstSeen": "2026-10-29T13:53:54.915Z",
@@ -29637,7 +29641,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-6522",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-29T18:14:30.445Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-6485-timeout-author": {
       "status": "open",
