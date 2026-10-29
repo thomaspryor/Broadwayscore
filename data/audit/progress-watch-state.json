@@ -6,10 +6,6 @@
       "cycles": 3,
       "history": [
         {
-          "value": 45,
-          "ts": "2026-09-14T10:52:26.635Z"
-        },
-        {
           "value": 22,
           "ts": "2026-09-15T11:39:41.844Z"
         },
@@ -124,19 +120,23 @@
         {
           "value": 3003,
           "ts": "2026-10-28T11:03:38.803Z"
+        },
+        {
+          "value": 3309,
+          "ts": "2026-10-29T15:14:02.477Z"
         }
       ],
       "stalled": false,
       "reason": "moving",
       "direction": "down",
-      "value": 3003
+      "value": 3309
     }
   },
-  "lastRunAt": "2026-10-28T11:03:38.803Z",
+  "lastRunAt": "2026-10-29T15:14:02.478Z",
   "lastSummary": {
-    "needsRescoreUnblocked": 3003,
-    "needsRescoreRaw": 3050,
-    "needsRescoreNotScoreable": 15,
+    "needsRescoreUnblocked": 3309,
+    "needsRescoreRaw": 3346,
+    "needsRescoreNotScoreable": 5,
     "needsRescoreBlocked": 32
   },
   "priorLedgerAlert": null
