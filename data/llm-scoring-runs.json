@@ -1238424,21 +1238424,21 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T00:21:09.806Z",
-    "completedAt": "2026-10-29T00:21:14.880Z",
-    "totalReviews": 2,
-    "processed": 1,
+    "startedAt": "2026-10-29T00:21:24.096Z",
+    "completedAt": "2026-10-29T00:21:38.942Z",
+    "totalReviews": 4,
+    "processed": 3,
     "skipped": 1,
     "errors": 0,
     "tokensUsed": {
-      "input": 5808,
-      "output": 310,
-      "cacheRead": 3807,
+      "input": 17301,
+      "output": 1010,
+      "cacheRead": 11421,
       "cacheWrite": 0,
-      "total": 14779
+      "total": 44378
     },
-    "costUsd": 0.022045199999999997,
-    "runId": "40792619486",
+    "costUsd": 0.06719030000000001,
+    "runId": "40792960025",
     "errorDetails": [],
     "validation": [
       {
@@ -1271235,16 +1271235,6 @@
         "disagreementDetails": "DTLI: Sentiment flip: we say positive, they say negative"
       },
       {
-        "showId": "this-beautiful-future-off-broadway-2022",
-        "ourDistribution": {
-          "up": 1,
-          "flat": 0,
-          "down": 2,
-          "total": 3
-        },
-        "hasDisagreement": false
-      },
-      {
         "showId": "this-house-west-end-2016",
         "ourDistribution": {
           "up": 2,
@@ -1273192,6 +1273182,16 @@
         "hasDisagreement": false
       },
       {
+        "showId": "where-we-belong-off-broadway-2022",
+        "ourDistribution": {
+          "up": 2,
+          "flat": 1,
+          "down": 0,
+          "total": 3
+        },
+        "hasDisagreement": false
+      },
+      {
         "showId": "white-christmas-west-end-2019",
         "ourDistribution": {
           "up": 2,
@@ -1273860,8 +1273860,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-29T00:23:33.914Z",
-    "completedAt": "2026-10-29T00:23:33.915Z",
+    "startedAt": "2026-10-29T00:23:59.633Z",
+    "completedAt": "2026-10-29T00:23:59.635Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -1273874,7 +1273874,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40792619486",
+    "runId": "40792960025",
     "errorDetails": []
   }
 ]
