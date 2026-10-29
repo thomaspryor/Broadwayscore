@@ -127,6 +127,7 @@ const SITE_DATA_FILES = [
   'data/uk-regional-venues.json',
   'data/venue-complexes-west-end.json',
   'data/venue-complexes.json',
+  'data/venue-metros.json',
   'data/video-creators.json',
   'data/video-reviews.json',
   'data/west-end-venues.json',
