@@ -52,6 +52,15 @@ test('an already-in-place closingDate still sets humanCorrectedClosingDate (BRO-
   assert.equal(data.shows[0].humanCorrectedClosingDate, true);
 });
 
+test('an already-in-place isRevival still syncs the revival tags (BRO-6489)', () => {
+  const data = { shows: [{ id: 'a-2026', isRevival: true, tags: ['new'] }] };
+  const r = applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: false, newValue: true });
+  assert.equal(r.ok, true, r.reason);
+  assert.deepEqual(data.shows[0].tags, ['revival']);
+  // a stale oldValue whose newValue is also different is still refused
+  assert.equal(applyDataEdit(data, { file: 'shows.json', showId: 'a-2026', field: 'isRevival', oldValue: null, newValue: false }).ok, false);
+});
+
 test('audience-buzz: a stale oldValue whose newValue is already in place is a no-op success (BRO-6489)', () => {
   const data = { shows: { 'a-2026': { title: 'New Title' } } };
   const r = applyDataEdit(data, { file: 'audience-buzz.json', showId: 'a-2026', field: 'title', oldValue: 'Old Title', newValue: 'New Title' });
