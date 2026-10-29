@@ -250,7 +250,7 @@ Run on CI after the round-2 ingest batch had written its review files (run 40864
 
 ### After ingest (CI re-measure, 2026-10-29, SERP outlets)
 
-Run 40953189047, after the 40 SERP-found reviews (34 shows) were ingested through `scripts/dispatch-ingest-batch.js`. SERP enumeration samples a different result set each run (page cap 5 per quarter-query), so these are lower bounds, not exact before/after pairs.
+Run 40953189047, after the 40 SERP-found reviews (40 shows) were ingested through `scripts/dispatch-ingest-batch.js`. SERP enumeration samples a different result set each run (page cap 5 per quarter-query), so these are lower bounds, not exact before/after pairs.
 
 | Outlet | Recall before | Recall after | Gaps left |
 |---|---|---|---|
