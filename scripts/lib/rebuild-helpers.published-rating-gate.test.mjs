@@ -166,9 +166,12 @@ describe('getBestScore P0.5 gate', () => {
 });
 
 describe('rebuild-all-reviews.js emits the relayed star as originalRating', () => {
-  test('source text maps aggregatorStars-relay → data.aggregatorStars', () => {
+  test('aggregatorStars-relay maps to data.aggregatorStars, and the rebuild uses that mapping', () => {
+    const { displayedOriginalRating } = require('./displayed-original-rating.js');
+    assert.equal(displayedOriginalRating('aggregatorStars-relay', { aggregatorStars: '3/5 stars' }), '3/5 stars');
+    assert.equal(displayedOriginalRating('aggregatorStars-fallback', { aggregatorStars: '3/5 stars' }), '3/5 stars');
     const src = fs.readFileSync(path.join(HERE, '..', 'rebuild-all-reviews.js'), 'utf8');
-    assert.match(src, /source === 'aggregatorStars-relay' \|\| source === 'aggregatorStars-fallback'\)\s*\n?\s*\? data\.aggregatorStars \|\| null/);
+    assert.match(src, /originalRating: displayedOriginalRating\(source, data\)/);
     // S7-T11: the stats seed is derived from SCORE_SOURCE_LABELS (every label
     // getBestScore emits) instead of a hand-copied list, so the relay counter
     // is seeded at 0 through the spread — assert the label is in the list and
