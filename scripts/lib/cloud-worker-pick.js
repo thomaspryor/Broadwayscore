@@ -616,7 +616,7 @@ function modelPicker() {
   };
   return (issue) => {
     const m = pickModel(issue, { readEntries });
-    return ledgerMissing && m.model === 'opus' ? { ...m, reason: `${m.reason} (no dispatch ledger here: Mac launches of this card are not counted as retries)` } : m;
+    return ledgerMissing && m.model === 'sonnet' ? { ...m, reason: `${m.reason} (no dispatch ledger here: Mac launches of this card are not counted as retries)` } : m;
   };
 }
 
@@ -624,7 +624,8 @@ function modelPicker() {
  * Why no worker may be started on this card (BRO-6502): its description carries a
  * "NO-DISPATCH:" line (BRO-2204). Description only, as headlessUnfitReason: comments quote the
  * marker, and deleting the line from the description is how a hold is lifted.
- * Used by session-model.js so a hand-started create_session cannot dodge the hold.
+ * Used by session-model.js, which exits 3 without a model; this is advisory for a hand-started
+ * create_session (the hook only checks the model id, and --no-card skips the check).
  * @returns {'no-dispatch-marker'|null}
  */
 function noDispatchHold(issue) {

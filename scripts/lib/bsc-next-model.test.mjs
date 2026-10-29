@@ -185,7 +185,7 @@ test('pickLinearModel: flag, then hint, then escalation; a crashed earlier run e
   assert.equal(broken.model, 'opus');
   // a recorded Opus-heavy day changes nothing: there is no cap
   const busy = Array.from({ length: 50 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${100 + i}`, model: 'opus', ts: '2026-10-02T10:00:00Z' }));
-  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => busy, env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'opus');
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Opus' }, readEntries: () => busy }).model, 'opus');
   assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
 });
 
@@ -198,8 +198,8 @@ test('pickLinearModel: a Model: hint picked at filing', () => {
   assert.deepEqual(o, { model: 'opus', reason: 'Model: opus on the card' });
   // unreadable ledger or a full day of Opus launches: still Opus (BRO-6502)
   assert.equal(pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => { throw new Error('EIO'); } }).model, 'opus');
-  const p0Launches = Array.from({ length: 20 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${100 + i}`, model: 'opus', ts: '2026-10-02T10:00:00Z' }));
-  assert.deepEqual(pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => p0Launches }), { model: 'opus', reason: 'Model: opus on the card' });
+  const manyLaunches = Array.from({ length: 20 }, (_, i) => ({ event: 'launch', taskId: `linear:BRO-${100 + i}`, model: 'opus', ts: '2026-10-02T10:00:00Z' }));
+  assert.deepEqual(pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => manyLaunches }), { model: 'opus', reason: 'Model: opus on the card' });
   // a P0 sonnet line stays on Sonnet; a P0 retry escalates past it
   assert.equal(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet'), readEntries: () => { throw new Error('EIO'); } }).model, 'sonnet');
   assert.equal(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet', [{ body: 'Dispatched to worker' }]), readEntries: () => [] }).model, 'opus');
