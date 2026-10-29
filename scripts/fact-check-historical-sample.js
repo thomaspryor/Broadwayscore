@@ -13,6 +13,9 @@
  *           the per-field error table (wrong / checked, Wilson 95%).
  *   consistency  nyc-facts only: free whole-scope checks (venue registry,
  *           status vs dates, preview = opening), no model calls (BRO-6489).
+ *   adjudicate-playbill  nyc-facts only: settle pending fields from
+ *           validate-show-venue.js Playbill results (--results=a.json,b.json)
+ *           and, with --pages, from the checkers' cited pages.
  *
  * Usage:
  *   node scripts/fact-check-historical-sample.js sample --cohort=we-historical --n=100 --seed=5080
@@ -471,9 +474,44 @@ function cmdConsistency() {
   console.log(`-> ${path.relative(ROOT, out)}`);
 }
 
+/**
+ * nyc-facts only: settle pending fields from Playbill production pages, as
+ * parsed by validate-show-venue.js (--results=a.json,b.json, each written via
+ * VENUE_AUDIT_PATH). Adds an adjudication per field Playbill settles
+ * (nyc-facts-audit playbillVerdict) and, with --pages, per field the
+ * checkers' cited pages settle (pagesVerdict, by: 'pages-auto'; counted in
+ * the error table, never a basis for a row fix). Never replaces an existing one.
+ */
+function cmdAdjudicatePlaybill() {
+  const cohort = arg('cohort');
+  const { playbillVerdict, pagesVerdict, nycStoredValue } = require('./lib/nyc-facts-audit');
+  const pbById = new Map();
+  for (const f of String(arg('results', '')).split(',').filter(Boolean)) {
+    for (const r of JSON.parse(fs.readFileSync(f, 'utf8')).results || []) pbById.set(r.id, r);
+  }
+  const showById = new Map(loadShows().map((s) => [s.id, s]));
+  const f = files(cohort);
+  const adj = fs.existsSync(f.adjudications) ? JSON.parse(fs.readFileSync(f.adjudications, 'utf8')) : {};
+  const counts = {};
+  for (const r of triage(cohort).filter((x) => x.status === 'adjudicate')) {
+    const key = `${r.id}|${r.field}`;
+    if (adj[key]) continue;
+    const show = showById.get(r.id);
+    if (!show) continue;
+    let v = playbillVerdict(r.field, show, (r.detail || []).map((d) => d.value), pbById.get(r.id));
+    let by = 'playbill-auto';
+    if (!v && arg('pages')) { v = pagesVerdict(r.field, show, r.detail); by = 'pages-auto'; }
+    if (!v) continue;
+    adj[key] = { ...v, judgedStored: nycStoredValue(show, r.field), by };
+    counts[`${by}:${r.field}:${v.verdict}`] = (counts[`${by}:${r.field}:${v.verdict}`] || 0) + 1;
+  }
+  if (!arg('dry-run')) fs.writeFileSync(f.adjudications, JSON.stringify(adj, null, 2) + '\n');
+  console.log(JSON.stringify(counts));
+}
+
 if (require.main === module) {
   const cmd = process.argv[2];
-  const run = { sample: cmdSample, check: cmdCheck, report: cmdReport, resupport: cmdResupport, consistency: cmdConsistency }[cmd];
+  const run = { sample: cmdSample, check: cmdCheck, report: cmdReport, resupport: cmdResupport, consistency: cmdConsistency, 'adjudicate-playbill': cmdAdjudicatePlaybill }[cmd];
   if (!run) { console.error(`unknown command ${cmd}`); process.exit(2); }
   if (cmd !== 'consistency' && !arg('cohort')) { console.error(`${cmd} needs --cohort=<name> (e.g. we-historical, nyc-facts)`); process.exit(2); }
   Promise.resolve(run()).catch((e) => { console.error(e.stack || e.message); process.exit(1); });

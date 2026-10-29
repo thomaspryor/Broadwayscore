@@ -60,7 +60,7 @@ test('tier and revival compare against what the site shows', () => {
   const s = ob('t', { tags: ['revival'] });
   assert.equal(nyc.nycCompareField('tier', s, 'Off-Broadway'), 'agree');
   assert.equal(nyc.nycCompareField('tier', s, 'Broadway'), 'disagree');
-  assert.equal(nyc.nycCompareField('tier', s, 'Off-Off-Broadway'), 'disagree');
+  assert.equal(nyc.nycCompareField('tier', s, 'Off-Off-Broadway'), 'agree', 'OOB is filed under off-broadway by design (BRO-2485)');
   assert.equal(nyc.nycCompareField('revival', s, 'revival'), 'agree', 'tags revival counts, as in engine.ts');
   assert.equal(nyc.nycCompareField('revival', ob('n'), 'new'), 'agree');
   assert.equal(nyc.nycCompareField('openingNight', ob('d'), '2024-02-05'), 'disagree');
@@ -128,4 +128,34 @@ test('revival follows the row tier: an Off-Broadway premiere before Broadway is 
   assert.equal(nyc.nycPageSupports('Common making his Broadway debut', 'new', 'revival'), false, 'an actor debut is not support');
   assert.equal(nyc.nycCompareField('type', ob('cm', { type: 'special' }), 'comedy magic show'), 'agree');
   assert.match(nyc.buildNycFactPrompt(ob('q'), '2026-10-29'), /Broadway revival = a new staging of a work that already had an earlier Broadway production/);
+});
+
+test('playbillVerdict: wrong only when Playbill and a checker agree on the other value', () => {
+  const pb = (parsed, extra = {}) => ({ result: 'mismatch', venueCheck: 'match', playbillUrl: 'https://playbill.com/production/x', parsed, ...extra });
+  const s = ob('d', { closingDate: '2024-03-01', type: 'play' });
+  assert.equal(nyc.playbillVerdict('openingNight', s, ['2024-01-25'], pb({ dates: { openingDate: '2024-01-25' } })).verdict, 'correct');
+  const w = nyc.playbillVerdict('openingNight', s, ['2024-02-01', null], pb({ dates: { openingDate: '2024-02-01' } }));
+  assert.deepEqual([w.verdict, w.correctValue], ['wrong', '2024-02-01']);
+  assert.equal(nyc.playbillVerdict('openingNight', s, ['2024-02-03'], pb({ dates: { openingDate: '2024-02-01' } })).verdict, 'unverifiable', 'Playbill alone is a conflict');
+  assert.equal(nyc.playbillVerdict('openingNight', s, ['2024-02-01'], pb({ dates: { openingDate: '2024-02-01' } }, { venueCheck: 'mismatch' })), null, 'another production page settles nothing');
+  assert.equal(nyc.playbillVerdict('closing', ob('o', { status: 'open', closingDate: '2026-12-01' }), ['2027-01-01'], pb({ dates: { closingDate: '2027-01-01' } })), null, 'a closing still to come');
+  assert.equal(nyc.playbillVerdict('type', s, ['Musical'], pb({ tagLine: { showType: 'musical' } })).verdict, 'wrong');
+  assert.equal(nyc.playbillVerdict('type', ob('sp', { type: 'special' }), ['play'], pb({ tagLine: { showType: 'play' } })), null, 'Playbill has no special label');
+  assert.equal(nyc.playbillVerdict('revival', s, ['Off-Broadway revival'], pb({ tagLine: { revivalStatus: 'revival' } })).verdict, 'wrong');
+  assert.equal(nyc.playbillVerdict('revival', ob('r', { isRevival: true }), ['new'], pb({ tagLine: { revivalStatus: 'original' } })), null, 'OB original does not follow the any-earlier-NYC rule');
+  assert.equal(nyc.playbillVerdict('tier', s, ['Broadway'], pb({})), null);
+});
+
+test('pagesVerdict: two sites stating the same other value is wrong; an unsupported contrary answer leaves the row correct', () => {
+  const s = ob('p');
+  const D = (cmp, value, source, supported, checker = 'gemini') => ({ checker, cmp, value, source, supported });
+  const w = nyc.pagesVerdict('openingNight', s, [D('disagree', '2024-02-01', 'https://www.playbill.com/a', true), D('disagree', '2024-02-01', 'https://theatermania.com/b', true, 'openai')]);
+  assert.deepEqual([w.verdict, w.correctValue], ['wrong', '2024-02-01']);
+  assert.equal(nyc.pagesVerdict('openingNight', s, [D('disagree', '2024-02-01', 'https://playbill.com/a', true), D('disagree', '2024-02-01', 'https://www.playbill.com/b', true, 'openai')]), null, 'one site is not two');
+  assert.equal(nyc.pagesVerdict('openingNight', s, [D('disagree', '2024-02-01', 'https://a.com', true), D('disagree', '2024-02-02', 'https://b.com', true, 'openai')]), null);
+  assert.equal(nyc.pagesVerdict('openingNight', s, [D('agree', '2024-01-25', 'https://a.com', true), D('disagree', '2024-02-02', 'https://b.com', false, 'openai')]).verdict, 'correct');
+  assert.equal(nyc.pagesVerdict('openingNight', s, [D('agree', '2024-01-25', 'https://a.com', true), D('disagree', '2024-02-02', 'https://b.com', true, 'openai')]), null, 'two supported answers conflict');
+  assert.equal(nyc.pagesVerdict('openingNight', s, [D('disagree', '2024-09-01', 'https://a.com', true), D('disagree', '2024-09-01', 'https://b.com', true, 'openai')]), null, 'months off is another production, not an auto-wrong');
+  assert.equal(nyc.pagesVerdict('theatre', ob('t', { venue: 'Minskoff Theatre' }), [D('disagree', 'New Amsterdam Theatre', 'https://a.com', true), D('disagree', 'New Amsterdam Theatre', 'https://b.com', true, 'openai')]), null, 'venue never auto-wrong');
+  assert.equal(nyc.pagesVerdict('type', ob('t', { type: 'play' }), [D('disagree', 'Musical', 'https://a.com', true), D('disagree', 'musical', 'https://b.com', true, 'openai')]).verdict, 'wrong');
 });
