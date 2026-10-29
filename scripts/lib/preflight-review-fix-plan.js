@@ -33,6 +33,7 @@ const { applyAddCommercialEntry, ALLOWED_ENTRY_FIELDS } = require('./commercial-
 const { touchedRecordProblems } = require('./commercial-record-checks');
 const htmlHandoff = require('./html-handoff');
 const { handoffPlanProblems } = require('./pending-fix-plan-checks');
+const { movePlanWarnings } = require('./move-plan-checks');
 
 const ROOT = path.join(__dirname, '..', '..');
 
@@ -129,6 +130,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
   const removed = new Set();
   const created = new Set();
   let failed = 0;
+  const readReviewJson = (rel) => { try { return JSON.parse(fs.readFileSync(path.join(reviewTextsDir, rel), 'utf8')); } catch { return null; } };
+  const listReviewFolder = (folder) => { try { return fs.readdirSync(path.join(reviewTextsDir, folder)); } catch { return []; } };
   try {
     for (const planPath of planPaths) {
       const planData = JSON.parse(fs.readFileSync(planPath, 'utf8'));
@@ -159,6 +162,8 @@ function preflight(planPaths, { reviewTextsDir = pickReviewTextsTree(), coreData
       for (const a of actions) {
         const problem = fileOpSourceProblem(a, (rel) => fs.existsSync(path.join(reviewTextsDir, rel)), removed, created);
         if (problem) { failed++; log(`  FAIL ${id} ${a.operation} ${a.sourcePath}: ${problem}`); continue; }
+        // Advisory (BRO-6488): a move that applies cleanly but leaves the review excluded, or a same-url twin behind.
+        for (const w of movePlanWarnings(a, actions, { readJson: readReviewJson, listFolder: listReviewFolder })) log(`  WARN ${id}: ${w}`);
         // Advisory (BRO-5739): nulling images while the files stay on disk is undone by pre-deploy-check.
         for (const f of orphanFilesAfterNulling(a)) log(`  WARN ${id}: ${f} is still on disk; pre-deploy-check re-attaches it, so git rm it in the same land`);
         // The executor refuses an arg shape it cannot run (BRO-5866); say so before the land.

@@ -898,3 +898,29 @@ test('outletId relabel (BRO-5995): to the registry outlet the record label names
   // ap path unchanged
   assert.match(act('ap').reason, /needs an AP wire url/);
 });
+
+// BRO-6488: a plan url edit on an auto-pinned file whose url another critic's
+// file holds goes through the real executor, and the pin lift is not refused as
+// an unexpected side effect.
+test('approved url edit repairs an auto-pinned url another critic holds', (t) => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const { executeReviewFieldEditIn } = require('./review-field-edit.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6488-exec-'));
+  t.after(() => fs.rmSync(root, { recursive: true, force: true }));
+  const WRONG = 'https://www.whatsonstage.com/news/arcadia-at-the-soon-to-be-tom-stoppard-theatre-review_1726588/';
+  const RIGHT = 'https://www.whatsonstage.com/news/tom-stoppards-arcadia-at-the-old-vic-review_1711215/';
+  fs.mkdirSync(path.join(root, 'arcadia-west-end-2026'));
+  fs.writeFileSync(path.join(root, 'arcadia-west-end-2026/whatsonstage--alex-wood.json'),
+    JSON.stringify({ showId: 'arcadia-west-end-2026', outletId: 'whatsonstage', criticName: 'Alex Wood', url: WRONG, publishDate: '2026-07-01' }));
+  const file = 'arcadia-west-end-2026/whatsonstage--sarah-crompton.json';
+  fs.writeFileSync(path.join(root, file), JSON.stringify({
+    showId: 'arcadia-west-end-2026', outletId: 'whatsonstage', criticName: 'Sarah Crompton', url: WRONG, publishDate: '2026-07-01',
+    urlVerified: true, urlVerifiedAuto: true, urlVerifiedNote: 'Auto-pinned 2026-08-17',
+  }));
+  const res = executeReviewFieldEditIn(root, { file, field: 'url', oldValue: WRONG, newValue: RIGHT }, stamp);
+  assert.equal(res.ok, true, res.reason);
+  const after = JSON.parse(fs.readFileSync(path.join(root, file), 'utf8'));
+  assert.equal(after.url, RIGHT);
+  assert.equal(after.urlVerifiedAuto, undefined);
+});

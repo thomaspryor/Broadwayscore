@@ -118,3 +118,47 @@ test('a legit pinned url with %20 in the path is not treated as malformed', () =
   const other = 'https://example.com/reviews/a-b-review';
   assert.equal(_flipFlopShouldTakeIncoming(pinned, other, { url: pinned }), false);
 });
+
+// BRO-6488: an auto pin that landed on the wrong side of a flip-flop must be
+// repairable by an approved fix plan; a human pin, urlManualOverride and
+// _locked must not be.
+describe('approvedUrlRepair vs pins (BRO-6488)', () => {
+  const PINNED = 'https://www.whatsonstage.com/news/arcadia-at-the-soon-to-be-tom-stoppard-theatre-review_1726588/';
+  const FIXED = 'https://www.whatsonstage.com/news/tom-stoppards-arcadia-at-the-old-vic-review_1711215/';
+  function write(extra) {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro6488-'));
+    const file = path.join(dir, 'whatsonstage--sarah-crompton.json');
+    const rec = { showId: 'arcadia-west-end-2026', outletId: 'whatsonstage', criticName: 'Sarah Crompton', url: PINNED, ...extra };
+    fs.writeFileSync(file, JSON.stringify(rec, null, 2));
+    return { file, rec };
+  }
+  const read = (file) => JSON.parse(fs.readFileSync(file, 'utf8'));
+  const autoPin = { urlVerified: true, urlVerifiedAuto: true, urlVerifiedNote: `Auto-pinned 2026-08-17: url flip-flopped (${PINNED})` };
+
+  test('approved repair lifts an auto pin and drops the stale pin fields', () => {
+    const { file, rec } = write(autoPin);
+    safeWriteReview(file, { ...rec, url: FIXED }, { approvedUrlRepair: true });
+    const out = read(file);
+    assert.equal(out.url, FIXED);
+    assert.equal(out.urlVerified, undefined);
+    assert.equal(out.urlVerifiedAuto, undefined);
+    assert.equal(out.urlVerifiedNote, undefined);
+    assert.ok(out._urlChangedClear.cleared.includes('urlVerifiedAuto'));
+  });
+  test('without the option the auto pin still holds', () => {
+    const { file, rec } = write(autoPin);
+    safeWriteReview(file, { ...rec, url: FIXED }, {});
+    assert.equal(read(file).url, PINNED);
+  });
+  for (const [name, extra] of [
+    ['human pin', { urlVerified: true, urlVerifiedNote: 'checked by hand' }],
+    ['urlManualOverride', { ...autoPin, urlManualOverride: true }],
+    ['_locked', { ...autoPin, _locked: true }],
+  ]) {
+    test(`approved repair never lifts a ${name}`, () => {
+      const { file, rec } = write(extra);
+      safeWriteReview(file, { ...rec, url: FIXED }, { approvedUrlRepair: true });
+      assert.equal(read(file).url, PINNED);
+    });
+  }
+});
