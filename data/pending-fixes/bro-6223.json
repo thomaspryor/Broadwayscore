@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6223",
   "planId": "c8ce60c6-c2ea-4460-b25d-26cfab63a292",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-28T23:04:44.579Z",
   "submitter": {
     "name": null,
@@ -7134,5 +7134,49 @@
         "description": "Redate the prospective Broadway operating estimate to the Broadway Journal report of Feb 20, 2026, without flooring it at opening. The source distinguishes the forthcoming Broadway budget from the separate Off-Broadway 2024 financial results. No measured Broadway interval is supplied: https://www.broadwayjournal.com/p/titaniques-downtown-ups-and-downs"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T00:23:24.178Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for water-for-elephants"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for the-great-gatsby"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for two-strangers"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for maybe-happy-ending"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for pirates-the-penzance-musical-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for dead-outlaw-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for illinoise"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "commercial.json: costHistory updated for titanique"
+    }
+  ],
+  "executedIn": "ci"
 }
