@@ -47,6 +47,12 @@ function withSpendShow(showId, fn) {
   return _spendShow.run({ ...cur, showId: showId || null }, fn);
 }
 
+/** Keep outlet attribution through SERP retries and provider fallbacks (BRO-6537). */
+function withSpendOutlet(outletId, fn) {
+  const cur = _spendShow.getStore() || {};
+  return _spendShow.run({ ...cur, outletId: outletId || null }, fn);
+}
+
 /**
  * Run fn with fallback_from set on every row it records (BRO-3344): a SERP
  * call made because a cheaper provider already failed is tagged with that
@@ -192,6 +198,7 @@ function _appendLedgerLine(record) {
  * @param {string|null} [opts.fallbackFrom]
  * @param {Object} [opts.breaker] - SERP consecutive-failure state after this outcome
  * @param {string|null} [opts.purpose] - free-text reason (Browserbase userMetadata parity)
+ * @param {string|null} [opts.outletId] - outlet id, otherwise inherited from discovery context
  * @param {'review-text'|'discovery'|null} [opts.category] - Browserbase only (BRO-3097): distinguishes a
  *   Tier-1.5 paywalled review-text fetch from an aggregator-discovery session (BWW/Stagedoor/WE listing
  *   crawls). Null for every other provider — they don't have this split.
@@ -202,6 +209,7 @@ function recordProviderCall(opts) {
     opts = opts || {};
     const provider = opts.provider || 'unknown';
     const tag = TAG_BY_PROVIDER[provider] || provider.toUpperCase();
+    const outletId = opts.outletId || _spendShow.getStore()?.outletId;
     const record = {
       ts: new Date().toISOString(),
       provider,
@@ -216,6 +224,7 @@ function recordProviderCall(opts) {
       purpose: opts.purpose || process.env.SCRAPER_SPEND_PURPOSE || null, // env: per-show tag, see spend-purpose.js
       category: opts.category || null,
       showId: currentSpendShowId(opts.showId),
+      ...(outletId ? { outletId: String(outletId).toLowerCase() } : {}),
       ...(typeof opts.host === 'string' && opts.host.startsWith('serp.') ? { run_id: SERP_RUN_ID, run_seq: ++_serpRunSequence } : {}),
       ...(opts.breaker ? { breaker: opts.breaker } : {}),
       // Optional small diagnostic object (BRO-3344: why a SERP call failed).
@@ -440,6 +449,7 @@ module.exports = {
   resolveLedgerPath: _ledgerPath,
   recordProviderCall,
   withSpendShow,
+  withSpendOutlet,
   currentSpendShowId,
   withSpendFallback,
   currentSpendFallback,

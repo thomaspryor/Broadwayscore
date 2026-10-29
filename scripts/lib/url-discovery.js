@@ -29,7 +29,7 @@ const { isTransientScrapingdogError, scrapingdogErrorMessage } = require('./sd-t
 const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
-const { sdBilledCredits, withSpendFallback } = require('./provider-telemetry');
+const { sdBilledCredits, withSpendFallback, withSpendShow, withSpendOutlet } = require('./provider-telemetry');
 const { consultBrightData } = require('./brightdata-caps');
 const { consultScrapingdog, pressNightCapStatus } = require('./scrapingdog-caps');
 const { consultScrapingbee } = require('./scrapingbee-caps');
@@ -1120,7 +1120,11 @@ async function _serpWithChain(query, scrapingBeeKey, brightDataKey, log, dateRan
  * @returns {string|null|'__SERP_UNAVAILABLE__'|{url: string, serpTitle: string}} - Discovered URL (or object if returnMetadata)
  */
 async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
-  return toArticleUrl(await _discoverCorrectUrl(review, scrapingBeeKey, options));
+  // Attribute every query variant and provider attempt to the requested outlet
+  // and show. The shared async context also preserves fallback_from and keeps
+  // simultaneous discoveries apart, without storing query text in the ledger.
+  return withSpendShow(review.showId, () => withSpendOutlet(review.outletId, async () =>
+    toArticleUrl(await _discoverCorrectUrl(review, scrapingBeeKey, options))));
 }
 
 // BRO-6486: Google indexes WordPress photo-attachment pages
