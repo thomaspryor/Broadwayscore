@@ -1,23 +1,23 @@
 {
-  "updatedAt": "2026-10-29T00:56:40.244Z",
-  "processed": 68,
-  "failed": 56,
-  "successRate": "54.8%",
+  "updatedAt": "2026-10-29T01:28:51.087Z",
+  "processed": 153,
+  "failed": 81,
+  "successRate": "65.4%",
   "tierBreakdown": {
-    "playwright": 45,
+    "playwright": 87,
     "amp": 0,
-    "browserbase": 6,
+    "browserbase": 10,
     "directCookies": 0,
-    "scrapingdog": 6,
-    "scrapingbee": 3,
+    "scrapingdog": 13,
+    "scrapingbee": 4,
     "brightdata": 1,
-    "archiveToday": 5,
-    "archive": 20
+    "archiveToday": 11,
+    "archive": 46
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
-      "t": "2026-10-29T00:24:52.634Z",
+      "t": "2026-10-29T00:14:07.792Z",
       "event": "bb-session",
       "session": "7dd7e515",
       "url": "https://www.wsj.com/articles/dreaming-zenzile-miriam-makeba-somi-kakoma-pata-pat"
@@ -71,6 +71,45 @@
       "event": "bb-session",
       "session": "4ba6ac20",
       "url": "http://www.hollywoodreporter.com/review/kit-harrington-doctor-faustus-theater-88"
+    },
+    {
+      "t": "2026-10-29T01:16:08.230Z",
+      "event": "bb-session",
+      "session": "62a3c562",
+      "url": "https://www.talkinbroadway.com/regional/minn/minn1534.html"
+    },
+    {
+      "t": "2026-10-29T01:16:09.101Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T01:21:57.241Z",
+      "event": "bb-session",
+      "session": "df8e4a9a",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-29T01:21:58.188Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-29T01:23:17.486Z",
+      "event": "bb-session",
+      "session": "5079cb72",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
+    },
+    {
+      "t": "2026-10-29T01:23:59.171Z",
+      "event": "bb-session",
+      "session": "327e31b5",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-29T01:24:00.070Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
