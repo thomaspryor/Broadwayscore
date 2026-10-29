@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildAction, canonicalVenue } = require('../../scripts/lib/uk-regional-add-plan.js');
+const { buildAction, canonicalVenue, siteSeesUkRegional, headlineFallback } = require('../../scripts/lib/uk-regional-add-plan.js');
 const { resolveMetroInfo } = require('../../scripts/lib/venue-metro.js');
 const { isExemptFromPlaybillCheck } = require('../../scripts/validate-show-venue.js');
 
@@ -39,4 +39,17 @@ test('a title the corpus knows keeps its type', () => {
 
 test('the Playbill exemption needs the Guardian evidence', () => {
   assert.equal(isExemptFromPlaybillCheck({ category: 'regional', discoverySource: 'uk-regional-guardian-backfill', evidenceUrls: [] }), false);
+});
+
+test('venues the site would not file under Beyond London are skipped', () => {
+  assert.equal(siteSeesUkRegional('Royal Exchange Theatre, Manchester'), true);
+  assert.equal(siteSeesUkRegional('The Mount Without, Bristol'), false);
+  assert.match(buildAction(row({ venue: 'The Mount Without, Bristol' }), []).skip, /uk-regional-venues/);
+});
+
+test('Observer roundups are skipped and a standfirst title falls back to the URL slug', () => {
+  assert.match(buildAction(row({ title: 'The week in theatre: Hamlet; Othello –' }), []).skip, /roundup/);
+  const url = 'https://www.theguardian.com/stage/2026/oct/23/lanny-review-bristol-old-vic-max-porter';
+  assert.equal(headlineFallback('Stranger things turn an English village upside down in Max Porter’s rural noir Lanny', url), 'Lanny');
+  assert.equal(headlineFallback('The Complete Works of William Shakespeare (Abridged)', url), 'The Complete Works of William Shakespeare (Abridged)');
 });
