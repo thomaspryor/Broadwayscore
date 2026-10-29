@@ -145,3 +145,38 @@ test('matchGuardianResults: tone/reviews, Guardian only, title in headline, wind
   assert.deepEqual(only([r('2018-07-13', 'The Lehman Trilogy review – a'), r('2018-07-20', 'The Lehman Trilogy review – b')]), []); // ambiguous
   assert.deepEqual(lib.matchGuardianResults(show({ openingDate: null }), []), []);
 });
+
+test('matchGuardianResults: pre-2013 guardian.co.uk label and former venue names (BRO-6503)', () => {
+  const r = (headline, publication, standfirst, bodyText = 'Until 8 October.') => ({ webUrl: 'https://www.theguardian.com/stage/2011/oct/01/x', webTitle: headline,
+    webPublicationDate: '2011-10-01T20:00:00Z', fields: { headline, publication, standfirst, bodyText }, tags: [{ id: 'tone/reviews' }] });
+  const dorfman = show({ title: 'Collaborators', openingDate: '2011-09-20', venue: 'Dorfman Theatre' });
+  assert.equal(lib.matchGuardianResults(dorfman, [r('Collaborators – review', 'guardian.co.uk', 'Cottesloe, London')]).length, 1);
+  assert.equal(lib.matchGuardianResults(dorfman, [r('Collaborators – review', 'The Observer', 'Cottesloe, London')]).length, 0);
+  assert.equal(lib.matchGuardianResults(dorfman, [r('Collaborators – review', 'guardian.co.uk', 'Crucible, Sheffield')]).length, 0);
+  const haymarket = show({ title: 'Flare Path', openingDate: '2011-09-24', venue: 'Theatre Royal Haymarket' });
+  assert.equal(lib.matchGuardianResults(haymarket, [r('Flare Path – review', 'The Guardian', 'Haymarket, London')]).length, 1);
+});
+
+test('venueAgrees: former names and Theatre Royal short forms', () => {
+  assert.equal(lib.venueAgrees('Harold Pinter Theatre', 'Comedy Theatre'), true);
+  assert.equal(lib.venueAgrees('Theatre Royal Drury Lane', 'Drury Lane'), true);
+  assert.equal(lib.venueAgrees('Dorfman Theatre', 'Lyttelton Theatre'), false);
+  assert.equal(lib.venueAgrees('', 'Comedy Theatre'), false);
+});
+
+test('venueAgrees: Royal Court keeps its name (no bare "court")', () => {
+  assert.equal(lib.venueAgrees('Royal Court', 'Court'), false);
+  assert.equal(lib.venueAgrees('Royal Court Theatre', 'Royal Court'), true);
+});
+
+test('former and short venue names count only as a place, not as a word (BRO-6503 review)', () => {
+  const r = (headline, standfirst, bodyText) => ({ webUrl: 'u', webTitle: headline, webPublicationDate: '2011-10-01T20:00:00Z',
+    fields: { headline, publication: 'guardian.co.uk', standfirst, bodyText }, tags: [{ id: 'tone/reviews' }] });
+  const pinter = show({ title: 'Jumpy', openingDate: '2011-09-20', venue: 'Harold Pinter Theatre' });
+  assert.equal(lib.matchGuardianResults(pinter, [r('Jumpy – review', 'Bristol Old Vic', 'A black comedy.')]).length, 0);
+  assert.equal(lib.matchGuardianResults(pinter, [r('Jumpy – review', '', 'Comedy, London. Until 8 October.')]).length, 1);
+  const hay = show({ title: 'Flare Path', openingDate: '2011-09-24', venue: 'Theatre Royal Haymarket' });
+  assert.equal(lib.matchGuardianResults(hay, [r('Flare Path – review', 'Leicester Haymarket', 'Fine.')]).length, 0);
+  assert.equal(lib.venueAgrees('Dorfman Theatre (National Theatre)', 'Cottesloe'), true);
+  assert.equal(lib.venueAgrees('Haymarket, Theatre Royal', 'Haymarket'), true);
+});

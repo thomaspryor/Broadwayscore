@@ -112,7 +112,29 @@ const { foldDiacritics } = require('./title-match');
 const norm = s => foldDiacritics(String(s || '')).toLowerCase().replace(/&/g, ' and ').replace(/[^a-z0-9]+/g, ' ')
   .replace(/^(the|a|an) /, '').replace(/ the musical$| a new musical$| the play$/, '').trim();
 const venueNorm = t => norm(t).replace(/\btheatre\b/g, '').replace(/\s+/g, ' ').trim();
-const venueAgrees = (a, b) => { const x = venueNorm(a), y = venueNorm(b); return !!x && !!y && x === y; };
+// Names a house went by when older reviews were written, so a 2011 review naming the
+// Cottesloe still agrees with a row stored under the Dorfman (BRO-6503).
+const FORMER_VENUE_NAMES = { dorfman: ['cottesloe'], 'harold pinter': ['comedy'], sondheim: ['queen s'], 'trafalgar': ['trafalgar studios'] };
+// "Theatre Royal Haymarket" is "Haymarket" in a review's place line; same for Drury Lane.
+// Only a "Theatre Royal X" name loses its "royal" ("Royal Court" must not become "court").
+// `alt` names are ordinary words ("comedy", "haymarket"), so in free text they count only
+// as a place: "Comedy, London" or "Comedy Theatre", never "a black comedy".
+const venueNames = t => {
+  const v = venueNorm(t);
+  if (!v) return { main: null, alt: [] };
+  const n = norm(t);
+  const alt = [];
+  if (/(^| )theatre royal /.test(n) || /haymarket theatre royal|drury lane theatre royal/.test(n)) alt.push(v.replace(/^royal /, '').replace(/ royal$/, ''));
+  for (const [k, names] of Object.entries(FORMER_VENUE_NAMES)) if (` ${v} `.includes(` ${k} `)) alt.push(...names);
+  return { main: v, alt: [...new Set(alt)].filter(x => x && x !== v) };
+};
+const venueVariants = t => { const { main, alt } = venueNames(t); return main ? [main, ...alt] : []; };
+const venueInText = (venue, text) => {
+  const { main, alt } = venueNames(venue);
+  if (!main) return true;
+  return text.includes(` ${main} `) || alt.some(a => text.includes(` ${a} london `) || text.includes(` ${a} theatre `) || text.includes(` ${a} studios `));
+};
+const venueAgrees = (a, b) => { const x = venueVariants(a), y = venueVariants(b); return x.some(n => y.includes(n)); };
 
 /**
  * Posts for a show's missing WhatsOnStage slot: same title, dated in [opening-14d, opening+60d],
@@ -151,14 +173,16 @@ function matchGuardianResults(show, results) {
   const lo = addDays(show.openingDate, -14), hi = addDays(show.openingDate, 60);
   const t = norm(show.title);
   if (!t || t.length < 4) return [];
-  const v = venueNorm(show.venue);
   const hits = results.filter(r => {
     const date = String(r.webPublicationDate || '').slice(0, 10);
     if (date < lo || date > hi) return false;
-    if (!/^(the guardian|theguardian\.com)$/i.test((r.fields && r.fields.publication) || '')) return false;
+    // Web-first pieces before the July 2013 domain move carry 'guardian.co.uk' (BRO-6503).
+    if (!/^(the guardian|theguardian\.com|guardian\.co\.uk)$/i.test((r.fields && r.fields.publication) || '')) return false;
     if (!(r.tags || []).some(x => x.id === 'tone/reviews')) return false;
     if (!` ${norm(r.fields && r.fields.headline || r.webTitle)} `.includes(` ${t} `)) return false;
-    return !v || ` ${norm(r.fields && r.fields.bodyText)} `.includes(` ${v} `);
+    const f = r.fields || {};
+    const text = ` ${norm([f.standfirst, f.trailText, f.bodyText].filter(Boolean).join(' '))} `;
+    return venueInText(show.venue, text);
   });
   return hits.length === 1 ? [{ url: hits[0].webUrl, date: String(hits[0].webPublicationDate).slice(0, 10) }] : [];
 }
