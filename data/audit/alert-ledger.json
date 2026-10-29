@@ -255,7 +255,7 @@
       "linearIdentifier": null,
       "notifyCountAtRelease": 177,
       "sweptTracker": "BRO-6422",
-      "resolvedAt": "2026-10-29T20:35:04.587Z"
+      "resolvedAt": "2026-10-29T20:52:44.431Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -4357,7 +4357,7 @@
         "runId": "40458183423",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40458183423"
       },
-      "resolvedAt": "2026-10-29T20:35:07.934Z",
+      "resolvedAt": "2026-10-29T20:52:48.078Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9e7c89b2": {
@@ -15079,9 +15079,9 @@
       "absentRunIds": [
         "40860133605",
         "40883919555",
-        "40921725234"
+        "40922247040"
       ],
-      "resolvedAt": "2026-10-29T20:35:07.978Z",
+      "resolvedAt": "2026-10-29T20:52:48.112Z",
       "resolveReason": "stale-signature"
     },
     "test-yml:red:Design Token Drift Guard:621920d2": {
@@ -29635,7 +29635,7 @@
       "cardId": null,
       "linearIdentifier": "BRO-6522",
       "absentRunIds": [
-        "40921725234"
+        "40922247040"
       ]
     },
     "land:land/bro-6485-timeout-author": {
@@ -29945,6 +29945,25 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Unit Tests:6c171436": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"quickDateCheck rejects the real Rose Theatre Kingston (Feb 2024) reviews for the QEH run\"",
+      "firstSeen": "2026-10-29T20:52:48.123Z",
+      "incidentOpenedAt": "2026-10-29T20:52:48.123Z",
+      "lastSeen": "2026-10-29T20:52:48.123Z",
+      "lastNotifiedAt": "2026-10-29T20:52:48.123Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-6557",
+      "dispatch": {
+        "requestedAt": "2026-10-29T20:52:48.123Z",
+        "mode": "dispatch-at-filing",
+        "runId": "40922247040",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/40922247040"
+      }
     },
     "tour-page-audit:review-count-mismatch": {
       "status": "open",
