@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T22:37:46.319Z",
+  "timestamp": "2026-10-29T22:54:25.157Z",
   "stats": {
-    "totalReviews": 68491,
-    "alreadyFlagged": 22249,
+    "totalReviews": 68646,
+    "alreadyFlagged": 22251,
     "dateGuardCatches": 233,
-    "directorMismatch": 2805,
+    "directorMismatch": 2806,
     "tvFilmSignals": 1973,
-    "londonSignals": 3372,
-    "offBroadwaySignals": 623,
-    "yearMismatch": 274,
-    "noPublishDate": 7273
+    "londonSignals": 3379,
+    "offBroadwaySignals": 624,
+    "yearMismatch": 277,
+    "noPublishDate": 7438
   },
   "findings": [
     {
@@ -7424,6 +7424,7 @@
     {
       "showId": "blues-for-an-alabama-sky-regional-2023",
       "file": "chicago-theatre-review--colin-douglas.json",
+      "score": 90,
       "publishDate": null,
       "url": "https://www.chicagotheatrereview.com/2023/09/let-the-good-times-roll-2/",
       "findings": [
@@ -16639,19 +16640,6 @@
     },
     {
       "showId": "driftwood-royal-shakespeare-regional-2026",
-      "file": "stratford-herald--gill-sutherland.json",
-      "publishDate": "2026-04-28",
-      "url": "https://www.stratford-herald.com/news/driftwood-floats-into-stratford-9463635/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
-        }
-      ]
-    },
-    {
-      "showId": "driftwood-royal-shakespeare-regional-2026",
       "file": "theatreandtonic--hollie.json",
       "score": 77,
       "publishDate": "2026-04-30",
@@ -17034,19 +17022,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"apple tv\""
-        }
-      ]
-    },
-    {
-      "showId": "endgame-royal-bath-regional-2025",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2025-09-08",
-      "url": "https://theatreweekly.com/first-look-production-images-released-for-endgame-at-theatre-royal-bath/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -25387,6 +25362,45 @@
       ]
     },
     {
+      "showId": "highway-patrol-regional-2024",
+      "file": "around-the-town-chicago--jacob-davis.json",
+      "publishDate": null,
+      "url": "https://aroundthetownchicago.com/theatre-reviews/highway-patrol/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "highway-patrol-regional-2024",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-HIGHWAY-PATROL-at-Goodman-Theatre-20240131",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "highway-patrol-regional-2024",
+      "file": "buzznews--kimberly-katz.json",
+      "publishDate": null,
+      "url": "https://buzznews.net/theatre/theatre-reviews/item/5406-dana-delaney-shines-in-true-life-tale-of-computer-love-in-goodman-s-highway-patrol.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "hillary-and-clinton-2019",
       "file": "ny1--roma-torre.json",
       "score": 79,
@@ -29357,6 +29371,19 @@
       ]
     },
     {
+      "showId": "joe-turners-come-and-gone-regional-2024",
+      "file": "broadwayworld--zac-thriffiley.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-JOE-TURNERS-COME-AND-GONE-at-Goodman-Theatre-20240425",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (1x). 2026 matches production: joe-turners-come-and-gone-2026"
+        }
+      ]
+    },
+    {
       "showId": "john-lithgow-stories-by-heart-2018",
       "file": "dailybeast--tim-teeman.json",
       "score": 60,
@@ -31588,19 +31615,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "lear-pitlochry-festival-regional-2026",
-      "file": "herald--barry-didcock.json",
-      "publishDate": "2026-06-29",
-      "url": "https://www.heraldscotland.com/news/26196418.new-play-king-lear-debut-pitlochry-festival-theatre/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -34858,19 +34872,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "measure-for-measure-royal-shakespeare-regional-2025",
-      "file": "stratford-herald--gill-sutherland.json",
-      "publishDate": "2025-10-03",
-      "url": "https://www.stratford-herald.com/news/getting-the-measure-of-the-duke-9436254/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -39874,6 +39875,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 1\""
+        }
+      ]
+    },
+    {
+      "showId": "once-west-end-2013",
+      "file": "london-box-office--daniel-perks.json",
+      "publishDate": null,
+      "url": "https://www.londonboxoffice.co.uk/news/post/once-musical-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (5x) more than 2013 (0x). 2026 matches production: once-pitlochry-festival-regional-2026"
         }
       ]
     },
@@ -51676,6 +51695,32 @@
       ]
     },
     {
+      "showId": "the-bands-visit-regional-2024",
+      "file": "chicago-sun-times--steven-oxman.json",
+      "publishDate": null,
+      "url": "https://chicago.suntimes.com/theater/2024/02/18/in-moving-musical-the-bands-visit-strangers-from-distinct-cultures-find-harmony",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from the-bands-visit-2017"
+        }
+      ]
+    },
+    {
+      "showId": "the-bands-visit-regional-2024",
+      "file": "chicagotribune--chris-jones.json",
+      "publishDate": null,
+      "url": "https://www.chicagotribune.com/2024/02/20/review-lovely-the-bands-visit-gets-an-intimate-staging-at-writers-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david cromer\" from the-bands-visit-2017"
+        }
+      ]
+    },
+    {
       "showId": "the-bathroom-attendant-off-broadway-2026",
       "file": "spincyclenyc--ron.json",
       "publishDate": null,
@@ -60560,6 +60605,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-penelopiad-regional-2024",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/chicago/article/Review-THE-PENELOPIAD-at-Goodman-Theatre-20240317",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (4x) more than 2024 (3x). 2026 matches production: the-penelopiad-york-royal-regional-2026"
         }
       ]
     },
@@ -84138,6 +84196,19 @@
     },
     {
       "showId": "goats-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/goats-royal-court-review-unfocused-and-muddled",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "goats-west-end-2017",
       "file": "british-theatre--philip-fisher.json",
       "score": 74,
       "publishDate": "2017-12-01",
@@ -96870,6 +96941,19 @@
     },
     {
       "showId": "network-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/network-national-theatre-review-bryan-cranstons-searing-london-stage-debut",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "network-west-end-2017",
       "file": "british-theatre--philip-fisher.json",
       "score": 93,
       "publishDate": null,
@@ -100192,6 +100276,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "pinocchio-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/pinocchio-national-theatre-review-boy-puppet-lifts-eventually",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -111273,6 +111370,24 @@
       ]
     },
     {
+      "showId": "the-innocence-of-seduction-regional-2023",
+      "file": "buzznews--bill-esler.json",
+      "publishDate": null,
+      "url": "https://www.buzznews.net/theatre/theatre-reviews/itemlist/user/7342-billesler.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
       "showId": "the-jonathan-larson-project-off-west-end-2026",
       "file": "jewishnews--brigit-grant.json",
       "score": 92,
@@ -112725,6 +112840,19 @@
       ]
     },
     {
+      "showId": "the-moderate-soprano-west-end-2018",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/moderate-soprano-duke-yorks-theatre-review-love-and-opera-flinty-edge",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "the-mongol-khan-west-end-2023",
       "file": "theatre-weekly--greg-stewart.json",
       "score": 87,
@@ -113506,6 +113634,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "the-philanthropist-west-end-2017",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/philanthropist-trafalgar-studios-review-simon-callows-direction-underpowered",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
