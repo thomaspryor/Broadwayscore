@@ -129,7 +129,7 @@ Check for:
 
 ### Phase 4: Board Update (Linear)
 
-**Cost row (BRO-6504, cloud sessions with a `get_session` tool only):** before the Outcome, record this session's spend: call `get_session` with no `session_id`, save the result to a file, run `node scripts/record-claude-session-cost.js --from-json=<file> --cards=BRO-N`, and commit `data/audit/claude-session-cost.jsonl` with the session's work. No `get_session` tool: skip.
+**Cost row (BRO-6504, cloud sessions with a `get_session` tool only):** before the Outcome, record this session's spend: call `get_session` with no `session_id`, save the result to a file in the scratchpad (never the repo), run `node scripts/record-claude-session-cost.js --from-json=<file> --cards=<this session's real card ids, e.g. BRO-123>`, and commit `data/audit/claude-session-cost.jsonl` with the session's work. No `get_session` tool: skip.
 
 **Detect project type:** Check if this is a Linear-tracked project (same detection as session-start: `CLAUDE.md` contains "Broadway Scorecard").
 
