@@ -1,19 +1,116 @@
 {
-  "updatedAt": "2026-10-29T02:21:43.380Z",
-  "processed": 27,
-  "failed": 5,
-  "successRate": "84.4%",
+  "updatedAt": "2026-10-29T02:29:01.540Z",
+  "processed": 204,
+  "failed": 129,
+  "successRate": "61.3%",
   "tierBreakdown": {
-    "playwright": 16,
+    "playwright": 105,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 0,
-    "brightdata": 0,
-    "archiveToday": 3,
-    "archive": 12
+    "scrapingdog": 17,
+    "scrapingbee": 11,
+    "brightdata": 1,
+    "archiveToday": 17,
+    "archive": 67
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-10-29T00:14:07.792Z",
+      "event": "bb-session",
+      "session": "7dd7e515",
+      "url": "https://www.wsj.com/articles/dreaming-zenzile-miriam-makeba-somi-kakoma-pata-pat"
+    },
+    {
+      "t": "2026-10-29T00:14:08.696Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-29T00:16:46.201Z",
+      "event": "bb-session",
+      "session": "84947c17",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/english-03-21-22"
+    },
+    {
+      "t": "2026-10-29T00:16:46.986Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-29T00:16:58.778Z",
+      "event": "bb-session",
+      "session": "27b855af",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/english-03-21-22"
+    },
+    {
+      "t": "2026-10-29T00:16:59.551Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-29T00:34:57.032Z",
+      "event": "bb-session",
+      "session": "0f30a53a",
+      "url": "https://www.express.co.uk/entertainment/theatre/605574/First-night-review-Nichol"
+    },
+    {
+      "t": "2026-10-29T00:35:14.207Z",
+      "event": "bb-session",
+      "session": "ec54c826",
+      "url": "https://www.washingtonpost.com/books/2024/06/24/gentleman-thief-dean-jobb-review"
+    },
+    {
+      "t": "2026-10-29T00:35:15.054Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-29T00:40:17.950Z",
+      "event": "bb-session",
+      "session": "4ba6ac20",
+      "url": "http://www.hollywoodreporter.com/review/kit-harrington-doctor-faustus-theater-88"
+    },
+    {
+      "t": "2026-10-29T01:27:53.195Z",
+      "event": "bb-session",
+      "session": "77b9bade",
+      "url": "https://www.radiotimes.com/tv/entertainment/strictly-come-dancing-2026-spice-gir"
+    },
+    {
+      "t": "2026-10-29T01:29:47.357Z",
+      "event": "bb-session",
+      "session": "327e31b5",
+      "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
+    },
+    {
+      "t": "2026-10-29T01:24:00.070Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-29T01:35:49.646Z",
+      "event": "bb-session",
+      "session": "505d9a5e",
+      "url": "https://talkinbroadway.com/review-maybe-happy-ending/"
+    },
+    {
+      "t": "2026-10-29T01:35:51.120Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T01:36:54.799Z",
+      "event": "bb-session",
+      "session": "7cca2a22",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-29T01:37:04.504Z",
+      "event": "bb-session",
+      "session": "dd8b6b4e",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    }
+  ]
 }
