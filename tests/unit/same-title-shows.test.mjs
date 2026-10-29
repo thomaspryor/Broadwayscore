@@ -1,4 +1,5 @@
 // BRO-4309: venue line only on rows that share a title with another row.
+// TESTS-VS-DERIVED-DATA-EXEMPT: structural invariant over whatever shows.json holds (no specific fact pinned)
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
