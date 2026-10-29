@@ -115,7 +115,7 @@ const ANS_AT = Date.parse('2026-10-29T13:46:18Z');
 const askComment = { id: 'a1', createdAt: at(ASK_AT), body: 'Asked the owner to look at 6 screenshot(s). Held change: visual-hold/bro-6517 (patch a75a2508efee). It ships by itself after Approve; Reject returns the card with the owner\'s note.' };
 const ownerComment = (chose, ref = link.decisionRef(S, ID, link.questionHash(TITLE))) => ({ id: 'o1', createdAt: at(ANS_AT), body: `**Owner decision** (answered by the owner through the email link, 2026-10-29 UTC)\n\nChose: ${chose}\n\nDecision ref ODA${ref}` });
 const lost = (comments) => ({ identifier: ID, title: TITLE, createdAt: at(ASK_AT - 3600e3), description: 'Parent: BRO-6498\n\n## Acceptance criteria\n\n* The hub renders\n\nFiled by: session (kind: city hub)\n', comments: { nodes: comments } });
-const facts = { patch: P40, evidenceSha: EVSHA, files: ['hub__mobile-360.png', 'hub__desktop-1440.png', 'verdict.json'], verdictRaw: JSON.stringify({ overallPass: true, contentHash: V16 }) };
+const facts = { holdTime: ANS_AT - 3600e3, evidenceTime: ANS_AT - 3600e3, patch: P40, evidenceSha: EVSHA, files: ['hub__mobile-360.png', 'hub__desktop-1440.png', 'verdict.json'], verdictRaw: JSON.stringify({ overallPass: true, contentHash: V16 }) };
 
 test('lost block + email Approve: the lander restores the machine lines and the next pass lands it', () => {
   const issue = lost([askComment, ownerComment('Approved')]);
@@ -160,4 +160,10 @@ test('an answer written before the latest ask is not this ask\'s answer', () => 
 test('a comment that only quotes the ref, not the recorder\'s answer shape, is not an answer', () => {
   const quoted = { id: 'q', createdAt: at(ANS_AT), body: `Chose: Approved\n\nDecision ref ODA${link.decisionRef(S, ID, link.questionHash(TITLE))}` };
   assert.match(land.planRecovery(lost([askComment, quoted]), S, facts).skip, /not answered/);
+});
+
+test('a hold or evidence branch pushed after the owner answered cannot ship on that answer', () => {
+  const answered = lost([askComment, ownerComment('Approved')]);
+  assert.match(land.planRecovery(answered, S, { ...facts, holdTime: ANS_AT + 1000 }).skip, /after the owner answered/);
+  assert.match(land.planRecovery(answered, S, { ...facts, evidenceTime: ANS_AT + 1000 }).skip, /after the owner answered/);
 });

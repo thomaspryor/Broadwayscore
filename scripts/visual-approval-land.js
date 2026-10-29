@@ -111,14 +111,16 @@ function askedHold(issue) {
  * Only an answer comment whose ref the secret reproduces for this card's own title-level question counts
  * (workers can copy a ref string but not mint one), written after the ask.
  */
-function lostBlockAnswer(issue, secret, ask) {
+function lostBlockAnswer(issue, secret, ask) { return (lostBlockAnswerAt(issue, secret, ask) || {}).kind || null; }
+function lostBlockAnswerAt(issue, secret, ask) {
   const marker = link.answerMarker(link.decisionRef(secret, issue.identifier, link.questionHash(issue.title)));
   // Residual risk: the ODA ref also appears in the "Emailed the owner" comment, so a session that writes the recorder's exact comment shape could forge this. Same-identity Linear comments cannot prove authorship; the shape check only rules out accidents.
   const c = link.markerComments(issue.comments, marker).find((x) => new Date(x.createdAt).getTime() >= ask.at && /^\*\*Owner decision\*\* \(answered by the owner through /.test(link.unescapeMarkdown(x.body).trim()));
   if (!c) return null;
+  const at = new Date(c.createdAt).getTime();
   const chose = ((/^\s*Chose:\s*(.+)$/m.exec(link.unescapeMarkdown(c.body)) || [])[1] || '').trim();
-  if (/^(Approved|Option A: approve)\b/i.test(chose)) return 'approve';
-  if (/^(Rejected|Option B: reject)\b/i.test(chose)) return 'reject';
+  if (/^(Approved|Option A: approve)\b/i.test(chose)) return { kind: 'approve', at };
+  if (/^(Rejected|Option B: reject)\b/i.test(chose)) return { kind: 'reject', at };
   return null;
 }
 
@@ -136,9 +138,12 @@ function planRecovery(issue, secret, facts) {
   let verdict;
   try { verdict = JSON.parse(facts.verdictRaw); } catch { return { skip: 'evidence has no readable verdict.json' }; }
   if (!verdict || verdict.overallPass !== true || !/^[0-9a-f]{12,64}$/.test(String(verdict.contentHash || ''))) return { skip: 'the evidence verdict did not pass' };
-  const answer = lostBlockAnswer(issue, secret, ask);
+  const found = lostBlockAnswerAt(issue, secret, ask);
+  const answer = found && found.kind;
   // Unanswered: leave the card alone so the owner's later generic tap is still seen here (a restored line would hide it).
   if (!answer) return { skip: 'the owner has not answered yet' };
+  // What the owner saw is what existed when they tapped: a hold or evidence branch pushed after the tap cannot ship on that tap.
+  if (!(facts.holdTime <= found.at) || !(facts.evidenceTime <= found.at)) return { skip: 'the held branch or its screenshots changed after the owner answered' };
   const evidence = (facts.files || []).filter((f) => /\.(png|jpe?g)$/i.test(f)).slice(0, 8)
     .map((f) => `Evidence: ${va.labelFor(f)} | https://raw.githubusercontent.com/${va.REPO}/${facts.evidenceSha}/${f}`);
   const lines = [...evidence, `VISUAL-APPROVAL: patch=${facts.patch} verdict=${verdict.contentHash} hold=${ask.hold}`];
@@ -171,14 +176,17 @@ async function restoreLostBlock(issue, secret, linear, dryRun, comment) {
   if (!ask || !lostBlockAnswer(issue, secret, ask)) return false; // nothing to recover: skip the git fetches
   const hold = va.holdBranch(issue.identifier);
   const ev = va.evidenceBranch(issue.identifier);
-  const facts = { patch: null, evidenceSha: null, files: [], verdictRaw: '' };
+  const facts = { patch: null, evidenceSha: null, files: [], verdictRaw: '', holdTime: Infinity, evidenceTime: Infinity };
   try {
-    va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`, `+refs/heads/${ev}:refs/remotes/origin/${ev}`]);
+    va.git(['fetch', '--quiet', 'origin', 'main', `+refs/heads/${hold}:refs/remotes/origin/${hold}`]);
+    va.git(['fetch', '--quiet', 'origin', `+refs/heads/${ev}:refs/remotes/origin/${ev}`]);
+    facts.holdTime = Number(va.git(['log', '-1', '--format=%ct', `origin/${hold}`])) * 1000;
     facts.patch = va.patchId('origin/main', `origin/${hold}`);
     facts.evidenceSha = va.git(['rev-parse', `origin/${ev}`]);
+    facts.evidenceTime = Number(va.git(['log', '-1', '--format=%ct', facts.evidenceSha])) * 1000;
     facts.files = va.git(['ls-tree', '-r', '--name-only', facts.evidenceSha]).split('\n').filter(Boolean);
     facts.verdictRaw = va.git(['show', `${facts.evidenceSha}:verdict.json`]);
-  } catch (e) { console.log(`[visual-land] ${issue.identifier}: lost visual block, held branch unreadable (${String(e.message).split('\n')[0]})`); return false; }
+  } catch (e) { throw new Error(`the owner answered but the held branch or screenshots could not be read: ${String(e.message).split('\n')[0]}`); }
   const plan = planRecovery(issue, secret, facts);
   if (!plan.restore) { console.log(`[visual-land] ${issue.identifier}: lost visual block, not restoring (${plan.skip})`); return false; }
   const r = plan.restore;

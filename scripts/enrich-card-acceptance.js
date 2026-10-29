@@ -981,7 +981,7 @@ function allFailed(results) {
 // SECTION_RE (autonomous-verify-cmd.js) so this never drifts from what
 // evaluateVerifiability itself scans for.
 // First line of an owner-decision block (scripts/lib/visual-approval.js buildBlock, the worker's DECISION NEEDED block, a settled ANSWERED line).
-const DECISION_TAIL_RE = /^[ \t]*(?:DECISION NEEDED:|VISUAL-APPROVAL:|ANSWERED by the owner)/im;
+const DECISION_TAIL_RE = /^[ \t]*(?:[-*>][ \t]+)?\**(?:DECISION NEEDED\**[ \t]*:|VISUAL-APPROVAL\**[ \t]*:|ANSWERED by the owner)/im;
 function spliceNotes(notes, draftedSection) {
   const text = String(notes || '');
   const section = SECTION_RE.exec(text);

@@ -748,6 +748,13 @@ test('spliceNotes: keeps a visual-approval block appended after the body (BRO-65
   assert.equal(result.split('Filed by:').length, 2, 'footer is not duplicated');
 });
 
+test('spliceNotes: keeps bold and bulleted decision lines too', () => {
+  for (const tail of ['**DECISION NEEDED:** ok?\nVISUAL-APPROVAL: patch=' + 'a'.repeat(40) + ' verdict=' + 'b'.repeat(16) + ' hold=visual-hold/bro-7', '- VISUAL-APPROVAL: patch=' + 'a'.repeat(40) + ' verdict=' + 'b'.repeat(16) + ' hold=visual-hold/bro-7']) {
+    const r = spliceNotes(`Body\n\n## Acceptance criteria\n\n* a\n\n${tail}\n`, '## Acceptance criteria\n`npx tsc --noEmit`');
+    assert.ok(r.includes(tail), tail);
+  }
+});
+
 test('spliceNotes: appends when no existing section is present', () => {
   const result = spliceNotes('## Problem\nBug.', '## Acceptance criteria\n`npx tsc --noEmit`');
   assert.match(result, /## Problem/);
