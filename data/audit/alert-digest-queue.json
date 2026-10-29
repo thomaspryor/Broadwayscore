@@ -897,20 +897,6 @@
     "queuedAt": "2026-10-28T21:39:57.852Z"
   },
   {
-    "conditionKey": "t1-gaps:needs-manual-recovery",
-    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-28.",
-    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-28T21:40:04.841Z"
-  },
-  {
     "conditionKey": "land:land/bro-6478-limbo-filers",
     "title": "Landing blocked: unit-tests-node red on land/bro-6478-limbo-filers",
     "description": "land.yml did not land land/bro-6478-limbo-filers: the unit-tests-node gate went red at 8afa74e417. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40771404449",
@@ -954,5 +940,75 @@
     "tracked": null,
     "fields": [],
     "queuedAt": "2026-10-28T23:28:58.515Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:billy-crystal-860-2026",
+    "title": "Review gap — \"Billy Crystal 860\" missing 6 cited review(s)",
+    "description": "Billy Crystal 860 (billy-crystal-860-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=billy-crystal-860-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T00:05:41.045Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:garry-starr-classic-penguins-off-west-end-2026",
+    "title": "Review gap — \"Garry Starr Classic Penguins\" missing 7 cited review(s)",
+    "description": "Garry Starr Classic Penguins (garry-starr-classic-penguins-off-west-end-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=garry-starr-classic-penguins-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T00:05:41.091Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:girls-off-west-end-2026",
+    "title": "Review gap — \"Girls\" missing 42 cited review(s)",
+    "description": "Girls (girls-off-west-end-2026): 42 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=girls-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T00:05:41.109Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-imaginary-invalid-2026",
+    "title": "Review gap — \"The Imaginary Invalid\" missing 3 cited review(s)",
+    "description": "The Imaginary Invalid (the-imaginary-invalid-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-imaginary-invalid-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T00:05:41.246Z"
+  },
+  {
+    "conditionKey": "t1-gaps:needs-manual-recovery",
+    "title": "Major-outlet reviews automation cannot recover (paywall, block or unscoreable page), not in scores: 1 (Golden Boy (daily-mail)). Checked 2026-10-29.",
+    "description": "Every automated retry is spent. Each needs a subscriber copy, the Mac cookie jar or a human look; the fix command per review is in data/audit/t1-silent-gaps.json.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T00:05:48.381Z"
   }
 ]
