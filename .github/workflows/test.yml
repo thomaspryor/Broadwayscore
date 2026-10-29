@@ -1528,6 +1528,8 @@ on:
       # via loadReviewsWithBlog). Test is in tests/unit-test-manifest.txt;
       # without these entries a solo edit triggers ZERO CI (allow-list gate).
       - 'scripts/generate-related-shows.js'
+      # BRO-6518: search generator; the localOnly filter is guarded by tests/unit/local-market.test.ts.
+      - 'scripts/generate-search-shows.js'
       # Genre classifier (non-theatrical routing, mirror of src/lib/genre.ts) +
       # its colocated parity/FP test, and the discovery writer that tags new
       # shows. Without these path entries a solo edit triggers ZERO CI.
