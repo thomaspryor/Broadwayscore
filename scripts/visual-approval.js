@@ -78,6 +78,7 @@ async function request(argv) {
   await linear.addLabelToIssue(issue.id, label.id);
   await linear.createComment(issue.id, `Asked the owner to look at ${files.length - 1} screenshot(s). Held change: ${hold} (patch ${patch.slice(0, 12)}). It ships by itself after Approve; Reject returns the card with the owner's note.`);
   console.log(`Asked the owner on ${issueId}. Held on ${hold}; screenshots on ${evBranch}. The decision list and the next email will show it. Stop work on this card now: end the session, do not wait or poll for the answer (the lander ships it).`);
+  console.log(va.showInlineHint(crops, cwd));
   return 0;
 }
 

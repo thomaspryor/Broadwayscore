@@ -195,3 +195,11 @@ test('email shows the screenshots', () => {
   assert.ok(mail.html.includes(EV));
   assert.ok(!mail.html.includes('—'));
 });
+
+test('showInlineHint names every crop by absolute path and says to render them inline', async () => {
+  const va = await import('./visual-approval.js').then((m) => m.default || m);
+  const hint = va.showInlineHint(['.claude/visual-qa/b/a__1.png', '.claude/visual-qa/b/a__2.png'], '/repo');
+  assert.match(hint, /SendUserFile files=\["\/repo\/\.claude\/visual-qa\/b\/a__1\.png","\/repo\/\.claude\/visual-qa\/b\/a__2\.png"\]/);
+  assert.match(hint, /display="render"/);
+  assert.match(hint, /push land\/<name> yourself/);
+});
