@@ -67,6 +67,8 @@ const WRONG_PRODUCTION_PROVENANCE_FIELDS = [
   'wrongProductionDetail',
   'wrongProductionDetectedAt',
   'wrongProductionDetectedBy',
+  // BRO-5582: audit stamp on legacy flags with no trail; read by no decision logic.
+  'wrongProductionLegacyAudit',
   // Breadcrumb written by collect-review-texts.js's URL-recovery cleanup when
   // it declines to delete a date-only flag (BRO-2828). Same rule as the stamps
   // above: it describes a wrongProduction verdict, so it must die with the

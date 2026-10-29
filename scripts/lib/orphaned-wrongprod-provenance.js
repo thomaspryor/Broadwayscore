@@ -17,6 +17,7 @@ const PROVENANCE_FIELDS = [
   'wrongProductionProvenance',
   'wrongProductionDetail',
   '_wrongProductionDetectedBy',
+  'wrongProductionLegacyAudit',
 ];
 
 function hasProvenance(d) {
