@@ -1,67 +1,5 @@
 [
   {
-    "startedAt": "2026-10-28T21:22:46.380Z",
-    "completedAt": "2026-10-28T21:26:46.953Z",
-    "totalReviews": 65602,
-    "processed": 188,
-    "skipped": 65399,
-    "errors": 5,
-    "tokensUsed": {
-      "input": 949776,
-      "output": 57999,
-      "cacheRead": 562232,
-      "cacheWrite": 193221,
-      "total": 2632684
-    },
-    "costUsd": 2.211627525,
-    "runId": "40769950965",
-    "errorDetails": [
-      {
-        "showId": "an-enemy-of-the-people-west-end-2024",
-        "outletId": "times-uk",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "hundred-days-off-broadway-2017",
-        "outletId": "newyorker",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "alterations-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-years-west-end-2025",
-        "outletId": "thestage",
-        "error": "Review text too short or missing"
-      },
-      {
-        "showId": "the-lion-king-tour-2021",
-        "outletId": "orlando-sentinel",
-        "error": "hallucinated_score: LLM admitted scoring non-review content"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-28T21:26:59.264Z",
-    "completedAt": "2026-10-28T21:27:17.650Z",
-    "totalReviews": 8,
-    "processed": 8,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 9082,
-      "output": 1639,
-      "cacheRead": 0,
-      "cacheWrite": 0,
-      "total": 10721
-    },
-    "costUsd": 0.0328595,
-    "runId": "40769950965",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-28T22:01:01.101Z",
     "completedAt": "2026-10-28T22:01:12.283Z",
     "totalReviews": 32,
@@ -2046066,27 +2046004,27 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T21:20:53.426Z",
-    "completedAt": "2026-10-29T21:25:00.103Z",
-    "totalReviews": 68510,
-    "processed": 362,
-    "skipped": 67708,
+    "startedAt": "2026-10-29T21:23:24.236Z",
+    "completedAt": "2026-10-29T21:23:34.560Z",
+    "totalReviews": 32,
+    "processed": 2,
+    "skipped": 30,
     "errors": 0,
     "tokensUsed": {
-      "input": 2371986,
-      "output": 118554,
-      "cacheRead": 749979,
-      "cacheWrite": 772821,
-      "total": 5989458
+      "input": 10431,
+      "output": 499,
+      "cacheRead": 7614,
+      "cacheWrite": 0,
+      "total": 27756
     },
-    "costUsd": 5.8197147000000005,
-    "runId": "40956275107",
+    "costUsd": 0.039479,
+    "runId": "40956361226",
     "source": "index",
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-29T21:26:16.922Z",
-    "completedAt": "2026-10-29T21:26:20.672Z",
+    "startedAt": "2026-10-29T21:28:32.399Z",
+    "completedAt": "2026-10-29T21:28:32.421Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -2046099,7 +2046037,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "40956275107",
+    "runId": "40956361226",
     "source": "comparative-rescore",
     "errorDetails": []
   }
