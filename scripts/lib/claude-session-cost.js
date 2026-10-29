@@ -134,7 +134,7 @@ function parseGetSession(result) {
   const cost = typeof raw === 'number' ? raw : (typeof raw === 'string' && /^\d+(\.\d+)?$/.test(raw.trim()) ? Number(raw) : NaN);
   if (!Number.isFinite(cost) || cost < 0) return { session, error: `usage.${field} is not a number: ${JSON.stringify(raw)}` };
   // Named fields only (no deep search): a nested tool config's "model" must not label the session.
-  const model = ccr.model || meta.model || usage.model;
+  const model = ccr.model || meta.model || usage.model || (ccr.session_context && ccr.session_context.model) || ccr.configured_model;
   const origin = ccr.initiation || meta.origin || meta.initiation || ccr.title || '';
   return { session, costUsd: Math.round(cost * 10000) / 10000, model: model ? String(model) : 'unknown', origin: String(origin).slice(0, 120) };
 }
