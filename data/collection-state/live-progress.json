@@ -1,37 +1,21 @@
 {
-  "updatedAt": "2026-10-29T01:48:06.113Z",
-  "processed": 193,
-  "failed": 121,
-  "successRate": "61.5%",
+  "updatedAt": "2026-10-29T02:21:16.200Z",
+  "processed": 199,
+  "failed": 120,
+  "successRate": "62.4%",
   "tierBreakdown": {
-    "playwright": 99,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
     "scrapingdog": 14,
     "scrapingbee": 10,
-    "brightdata": 2,
-    "archiveToday": 15,
+    "brightdata": 0,
+    "archiveToday": 19,
     "archive": 67
   },
-  "browserbaseSessions": 10,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-29T00:14:08.696Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-29T00:16:46.201Z",
-      "event": "bb-session",
-      "session": "84947c17",
-      "url": "https://www.newyorker.com/goings-on-about-town/theatre/english-03-21-22"
-    },
-    {
-      "t": "2026-10-29T00:16:46.986Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
     {
       "t": "2026-10-29T00:16:58.778Z",
       "event": "bb-session",
@@ -75,23 +59,6 @@
     {
       "t": "2026-10-29T01:29:47.357Z",
       "event": "bb-session",
-      "session": "df8e4a9a",
-      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
-    },
-    {
-      "t": "2026-10-29T01:21:58.188Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-29T01:23:17.486Z",
-      "event": "bb-session",
-      "session": "5079cb72",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/dirty-dancing-the-musical-comin"
-    },
-    {
-      "t": "2026-10-29T01:23:59.171Z",
-      "event": "bb-session",
       "session": "327e31b5",
       "url": "https://www.nytimes.com/2026/10/06/theater/dirty-dancing-broadway.html"
     },
@@ -122,6 +89,45 @@
       "event": "bb-session",
       "session": "dd8b6b4e",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+    },
+    {
+      "t": "2026-10-29T02:14:35.393Z",
+      "event": "bb-session",
+      "session": "9bb2283a",
+      "url": "https://hermes.talkinbroadway.com/allthatchat_new/d.php?id=2655044"
+    },
+    {
+      "t": "2026-10-29T02:14:35.740Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-29T02:17:46.636Z",
+      "event": "bb-session",
+      "session": "fcc83e02",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/broadway-box-office-julia-louis"
+    },
+    {
+      "t": "2026-10-29T02:20:13.662Z",
+      "event": "bb-session",
+      "session": "c5fe0687",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-29T02:20:13.944Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-29T02:20:23.398Z",
+      "event": "bb-session",
+      "session": "06c1d8d4",
+      "url": "https://www.nytimes.com/video/t-magazine/100000011202398/live-from-the-10th-floo"
+    },
+    {
+      "t": "2026-10-29T02:20:23.685Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
