@@ -1192,20 +1192,6 @@
     "queuedAt": "2026-10-29T06:17:25.095Z"
   },
   {
-    "conditionKey": "corpus-drift:monitor-only",
-    "title": "Data-quality monitors drifting from baseline: 18 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +12 more). Checked 2026-10-29.",
-    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
-    "severity": "info",
-    "url": null,
-    "decision": false,
-    "info": true,
-    "decisionPrompt": null,
-    "model": null,
-    "tracked": null,
-    "fields": [],
-    "queuedAt": "2026-10-29T06:43:57.237Z"
-  },
-  {
     "conditionKey": "land:land/bro-batch-a-script-fixes",
     "title": "Landing blocked: rebase red on land/bro-batch-a-script-fixes",
     "description": "land.yml did not land land/bro-batch-a-script-fixes: the rebase gate went red at bbfa19be01. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/40827031975",
@@ -1313,6 +1299,20 @@
       }
     ],
     "queuedAt": "2026-10-29T07:17:00.265Z"
+  },
+  {
+    "conditionKey": "corpus-drift:monitor-only",
+    "title": "Data-quality monitors drifting from baseline: 19 (pull-quote-quality, regex-fp, run-contamination, cast-vs-reviews, commercial-source-coverage, cross-show-url, +13 more). Checked 2026-10-29.",
+    "description": "Corpus-statistics monitors outside their baseline bands. Informational: each is a trend, not one fixable fault; data/audit/corpus-drift.json holds every audit's command and output.",
+    "severity": "info",
+    "url": null,
+    "decision": false,
+    "info": true,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T08:21:27.535Z"
   },
   {
     "conditionKey": "express-retry-still-thin:the-verge-off-broadway-2026",
