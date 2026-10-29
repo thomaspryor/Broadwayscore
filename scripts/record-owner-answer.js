@@ -67,7 +67,7 @@ function resolveDecision(issue, choice) {
   // BRO-6411: void closes a visual ask whose change shipped another way. It never approves.
   if (choice === 'void' && !visual) return { error: 'void is only for a card with a visual ask (VISUAL-APPROVAL line)' };
   if (visual && choice !== 'void') {
-    return { error: 'this card asks the owner to approve a visual change; only the owner\'s own tap on the email may approve it (or --choice void when the change shipped another way)' };
+    return { error: 'this card holds a visual change on visual-hold/<card>. If the owner said yes/Approved in THIS chat, that is the approval: ship the held change yourself (git fetch origin visual-hold/<card> && git push origin FETCH_HEAD:refs/heads/land/<card>, follow the Land run), then re-run with --choice void. Never tell the owner to tap anything. No owner in the chat: wait for their tap on the email.' };
   }
   const decision = link.listOpenDecisions([issue])[0];
   if (!decision) return { error: 'the card has no open DECISION NEEDED question (already answered, or never asked)' };
