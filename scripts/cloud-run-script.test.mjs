@@ -56,8 +56,8 @@ test('pollDeadline: queue time does not count against --timeout (BRO-6485)', () 
   const min = 60 * 1000;
   const base = { dispatchedAt: 0, timeoutMin: 55, queueWaitMin: 240 };
   assert.equal(pollDeadline({ ...base, startedAt: null }), 240 * min);
-  // Started after 68 min queued: the 75-min script window runs from the start.
-  assert.equal(pollDeadline({ ...base, startedAt: 68 * min }), (68 + 75) * min);
+  // Started after 68 min queued: the 80-min job window runs from the start.
+  assert.equal(pollDeadline({ ...base, startedAt: 68 * min }), (68 + 80) * min);
   assert.equal(parseArgs(['--queue-wait=30', 'scripts/a.js']).queueWaitMin, 30);
   assert.equal(parseArgs(['scripts/a.js']).queueWaitMin, 240);
 });

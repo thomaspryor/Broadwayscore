@@ -80,11 +80,13 @@ function stripTimestamp(line) {
  * queued for an hour behind a busy Actions pool used to hit the deadline while its
  * script was still working, and the sealed output was lost with this process's key
  * (BRO-6485). The queue gets its own --queue-wait limit; the script limit starts
- * when the run is first seen in progress.
+ * when the run is first seen in progress. A run given up on is not cancelled: it
+ * still runs, but its output can no longer be read.
  */
 function pollDeadline({ dispatchedAt, startedAt, timeoutMin, queueWaitMin }) {
   if (startedAt == null) return dispatchedAt + queueWaitMin * 60 * 1000;
-  return startedAt + (timeoutMin + 20) * 60 * 1000;
+  // 25 = run-script.yml's job timeout-minutes (80) minus the 55-min script cap.
+  return startedAt + (timeoutMin + 25) * 60 * 1000;
 }
 
 function extractOutput(logText) {
@@ -146,6 +148,7 @@ function main() {
   }
 
   const requestId = crypto.randomBytes(6).toString('hex');
+  const dispatchedAt = Date.now();
   const { publicKey, privateKey } = generateKeyPair();
   try {
     gh(['workflow', 'run', WORKFLOW, '--repo', REPO, '--ref', 'main',
@@ -167,7 +170,6 @@ function main() {
   console.error(`[cloud-run-script] run ${run.html_url}`);
 
   // Script limit plus npm ci and the data checkouts, counted from the run starting.
-  const dispatchedAt = Date.now();
   let startedAt = null;
   let status = run.status;
   let conclusion = run.conclusion;
