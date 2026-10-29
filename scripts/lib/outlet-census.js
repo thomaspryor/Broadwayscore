@@ -105,6 +105,7 @@ function decodeEntities(s) {
     .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCharCode(parseInt(n, 16)))
     .replace(/&quot;/g, '"').replace(/&apos;/g, "'").replace(/&#039;/g, "'")
     .replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&nbsp;/g, ' ')
+    .replace(/&mdash;/g, '\u2014').replace(/&ndash;/g, '\u2013').replace(/&[lr]squo;/g, "'").replace(/&[lr]dquo;/g, '"').replace(/&hellip;/g, '...')
     .replace(/&amp;/g, '&');
 }
 
@@ -123,7 +124,12 @@ function metaContent(html, prop) {
  */
 function extractPageMeta(html) {
   const s = String(html || '');
-  const title = metaContent(s, 'og:title') || (/<title[^>]*>([^<]*)<\/title>/i.exec(s) || [])[1] || null;
+  const og = metaContent(s, 'og:title');
+  const tag = (/<title[^>]*>([^<]*)<\/title>/i.exec(s) || [])[1];
+  // Titles often end with og:site_name ("Kinky Boots — Off Off Online"); strip exactly that.
+  const site = metaContent(s, 'og:site_name');
+  const stripSite = (t) => (site ? t.replace(new RegExp(`\\s+[-|\u2013\u2014]\\s+${decodeEntities(site).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\s*$`, 'i'), '') : t);
+  const title = og ? stripSite(decodeEntities(og)) : tag ? stripSite(decodeEntities(tag)) : null;
   const description = metaContent(s, 'og:description') || metaContent(s, 'description');
   let date = metaContent(s, 'article:published_time') || (/"datePublished"\s*:\s*"([^"]+)"/.exec(s) || [])[1] || null;
   let dateSoft = false;
@@ -132,7 +138,7 @@ function extractPageMeta(html) {
     dateSoft = !!date;
   }
   return {
-    headline: title ? decodeEntities(title).trim() : null,
+    headline: title ? title.trim() : null,
     description: description ? decodeEntities(description).trim() : null,
     publishDate: date ? String(date).slice(0, 10) : null,
     dateSoft,
@@ -141,7 +147,7 @@ function extractPageMeta(html) {
 
 // Headline shapes that are lists, news or features, never one show's review.
 const NOT_REVIEW_RE = /\b(best (?:of|shows|plays|musicals|theater|theatre)|top \d+|\d+ (?:best|shows|plays|musicals)|round-?up|what to see|shows to see|recap|interview|obituar|dies at|tony (?:award )?(?:nominations|predictions|winners)|announce[sd]?|cast(?:ing)? (?:announced|set)|first look|photos?:|video:|podcast|newsletter|gift guide)\b/i;
-const BOOK_FILM_RE = /\b(book review|film review|movie review|tv review|album review|cast album|concert review|opera review|dance review|season \d+|episode|tony awards? (?:telecast|broadcast|ceremony|show)|the (?:\d{4}|\d+(?:st|nd|rd|th)(?: annual)?) tony awards|(?:pro-?shot|filmed|film|screen|movie) (?:capture|version|adaptation)|(?:on|streaming on) (?:disney\+|netflix|hbo|max|hulu|amazon|prime video|pbs|apple tv)|metropolitan opera|the met opera|\bat the met\b)\b/i;
+const BOOK_FILM_RE = /\b(book review|film review|movie review|tv review|album review|cast album|concert review|opera review|dance review|season \d+|episode|tony awards? (?:telecast|broadcast|ceremony|show)|the (?:\d{4}|\d+(?:st|nd|rd|th)(?: annual)?) tony awards|(?:pro-?shot|filmed|film|screen|movie) (?:capture|version|adaptation)|(?:on|streaming on) (?:disney\+|netflix|hbo|max|hulu|amazon|prime video|pbs|apple tv)|metropolitan opera|the met opera|\bat the met\b|broadway by the year)\b/i;
 
 /**
  * Is this item a theater review? `sourceSaysReview` is true when the enumeration source
@@ -163,11 +169,11 @@ function classifyItem(item, { sourceSaysReview = false } = {}) {
 }
 
 const NYC_SIGNAL_RE = /\b(broadway|off-broadway|off broadway|new york|nyc|manhattan|brooklyn|lincoln center|public theater|signature theatre|playwrights horizons|second stage|roundabout|manhattan theatre club|mtc|atlantic theater|new york theatre workshop|nytw|lct3|vineyard theatre|the shed|park avenue armory|bam\b|st\.? ann'?s warehouse|soho rep|minetta lane|new world stages|lucille lortel|cherry lane|irish repertory|mcc theater|primary stages|keen company|theatre row|59e59|la mama|the kitchen|joe's pub|york theatre|pershing square signature|daryl roth|audible'?s minetta)\b/i;
-const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|tour stop|edinburgh|chichester)\b/i;
+const OTHER_MARKET_RE = /\b(west end|london|chicago|goodman|steppenwolf|los angeles|l\.a\.|pasadena|la jolla|old globe|san diego|san francisco|berkeley|seattle|boston|philadelphia|houston|dallas|atlanta|denver|minneapolis|guthrie|miami|washington,? d\.?c\.?|arena stage|kennedy center|shakespeare theatre company|hartford|new haven|yale rep|williamstown|berkshire|barrington|chautauqua|toronto|stratford|national tour|north american tour|(?:first|second) national|touring production|tour at|segerstrom|scfta|ahmanson|pantages|cadillac palace|edinburgh|chichester)\b/i;
 
 function nycSignal(item, nycVenues) {
   const hay = `${item.headline || ''} ${item.description || ''}`;
-  if (OTHER_MARKET_RE.test(hay) && !/\bbroadway\b/i.test(hay)) return 'other-market';
+  if (OTHER_MARKET_RE.test(hay) && !/\b(broadway|new york|nyc|manhattan|brooklyn)\b/i.test(hay)) return 'other-market';
   if (NYC_SIGNAL_RE.test(hay)) return 'nyc';
   const low = hay.toLowerCase();
   if (nycVenues && nycVenues.some((v) => v && low.includes(v))) return 'nyc';
@@ -266,6 +272,12 @@ function titleWordsAppear(show, text) {
   return words.every((w) => hay.includes(` ${w} `));
 }
 
+function archivalYear(item, shows) {
+  const m = /[-_](19\d\d|200\d|201[0-4])(?:\.html?)?\/?$/.exec(String(item.url || '').split(/[?#]/)[0]);
+  if (!m) return null;
+  return shows.some((sh) => String(sh.title || '').includes(m[1])) ? null : m[1];
+}
+
 function bucketItem(item, ctx) {
   const cls = classifyItem(item, { sourceSaysReview: !!item.sourceSaysReview });
   const heldIds = ctx.corpus.get(urlKey(item.url));
@@ -301,6 +313,11 @@ function bucketItem(item, ctx) {
     return out;
   }
   if (!cls.review) { out.bucket = 'not-review'; return out; }
+  // Vulture's archive republishes old criticism under new URLs ("beverly-hills-cop-ii-
+  // review-david-denby-1987" matched David by the critic's name). A pre-2015 year ending
+  // the slug marks it, unless it is part of the matched show's title ("1776"). A year in
+  // the headline alone does not: revival reviews name the original ("Shanley's 1983 drama").
+  if (inWindow.length && archivalYear(item, inWindow)) { out.bucket = 'not-review'; out.classifyReason = 'archival'; return out; }
   // A regional or touring production of an NYC title ("HAMILTON (National Tour in
   // Houston)") matches the NYC show by title and date; it is not a review of it. Outlets
   // that mostly cover other markets (requireNycSignal) need a positive NYC signal.
@@ -339,6 +356,81 @@ function corpusSideMisses(corpusRows, enumeratedKeys, { sinceMs, untilMs = Infin
   return misses;
 }
 
+// ── SERP enumeration helpers (BRO-6485) ───────────────────────────────────────
+
+/** Calendar quarters from `since` to `now`: [{dateMin, dateMax}] as Dates, dateMax the
+ *  first day of the next quarter (Google's before: excludes it). One Google
+ *  date window each, so a site-scoped query cannot pull a 2014 production's review into
+ *  a 2024 show (the cross-production contamination discover-outlet-reviews-serp.js hit). */
+function quarterWindows(since, now = new Date()) {
+  const out = [];
+  const s = new Date(`${String(since).slice(0, 10)}T00:00:00Z`);
+  let y = s.getUTCFullYear();
+  let q = Math.floor(s.getUTCMonth() / 3);
+  for (;;) {
+    const min = new Date(Date.UTC(y, q * 3, 1));
+    if (min > now) break;
+    const max = new Date(Date.UTC(y, q * 3 + 3, 1)); // exclusive: Google's before: drops that day
+    out.push({ dateMin: min < s ? s : min, dateMax: max > now ? now : max });
+    q += 1;
+    if (q === 4) { q = 0; y += 1; }
+  }
+  return out;
+}
+
+const MONTHS = { jan: 0, feb: 1, mar: 2, apr: 3, may: 4, jun: 5, jul: 6, aug: 7, sep: 8, oct: 9, nov: 10, dec: 11 };
+const iso = (y, m, d) => {
+  if (!(y >= 2000 && m >= 0 && m < 12 && d >= 1 && d <= 31)) return null;
+  const t = new Date(Date.UTC(y, m, d));
+  return t.getUTCMonth() === m ? t.toISOString().slice(0, 10) : null; // no Feb 30 -> Mar 2
+};
+
+/**
+ * Publish date for one SERP result: a date in the URL path, else the date Google prints
+ * at the head of the snippet ("Mar 12, 2023 — ..." or "12 Mar 2023 ..."), else the
+ * middle of the query's date window, marked soft.
+ */
+function serpItemDate(result, window) {
+  const url = String((result && result.url) || '');
+  const u = /\/(20\d{2})\/(\d{1,2})\/(\d{1,2})\//.exec(url);
+  if (u) { const d = iso(+u[1], +u[2] - 1, +u[3]); if (d) return { publishDate: d, dateSoft: false }; }
+  const snip = String((result && (result.snippet || result.description)) || '').slice(0, 40);
+  const a = /^([A-Z][a-z]{2})[a-z]*\.? (\d{1,2}), (20\d{2})\b/.exec(snip);
+  if (a && MONTHS[a[1].toLowerCase()] != null) { const d = iso(+a[3], MONTHS[a[1].toLowerCase()], +a[2]); if (d) return { publishDate: d, dateSoft: false }; }
+  const b = /^(\d{1,2}) ([A-Z][a-z]{2})[a-z]* (20\d{2})\b/.exec(snip);
+  if (b && MONTHS[b[2].toLowerCase()] != null) { const d = iso(+b[3], MONTHS[b[2].toLowerCase()], +b[1]); if (d) return { publishDate: d, dateSoft: false }; }
+  if (!window) return { publishDate: null, dateSoft: true };
+  const mid = new Date((window.dateMin.getTime() + window.dateMax.getTime()) / 2);
+  return { publishDate: mid.toISOString().slice(0, 10), dateSoft: true };
+}
+
+/**
+ * True when the enumeration stopped short (SERP budget or provider gone, the SERP page cap,
+ * a sitemap child that failed), so the recall it yields covers only part of the outlet's output.
+ */
+function isIncompleteEnumeration(notes) {
+  return (notes || []).some((n) => /budget \d+ reached|^no SERP provider|^child |page cap/.test(String(n)));
+}
+
+/** "Review: 'Giant' ... - The New York Times" -> without the trailing site name. */
+function cleanSerpTitle(title, siteSuffixes) {
+  const t = String(title || '').replace(/\s*(?:\.\.\.|\u2026)$/, '').trim();
+  const m = /^(.*\S)\s+[-|\u2013\u2014]\s+([^-|\u2013\u2014]{2,40})$/.exec(t);
+  // Strip only a suffix the outlet's results share ("- The New York Times"), never a lone
+  // trailing segment, which may be the show ("Theater Review - Hamlet").
+  return m && siteSuffixes && siteSuffixes.has(m[2].trim().toLowerCase()) ? m[1] : t;
+}
+
+/** Trailing " - X" segments that recur across an outlet's SERP titles (its site name). */
+function commonTitleSuffixes(titles, min = 3) {
+  const n = new Map();
+  for (const title of titles) {
+    const m = /\s+[-|\u2013\u2014]\s+([^-|\u2013\u2014]{2,40})$/.exec(String(title || '').replace(/\s*(?:\.\.\.|\u2026)$/, '').trim());
+    if (m) { const k = m[1].trim().toLowerCase(); n.set(k, (n.get(k) || 0) + 1); }
+  }
+  return new Set([...n].filter(([, c]) => c >= min).map(([k]) => k));
+}
+
 function summarize(results) {
   const counts = {};
   const viaTitleVariant = {};
@@ -357,6 +449,11 @@ function summarize(results) {
 
 module.exports = {
   slugHeadline,
+  quarterWindows,
+  serpItemDate,
+  cleanSerpTitle,
+  commonTitleSuffixes,
+  isIncompleteEnumeration,
   urlKey,
   titleWordsAppear,
   buildCorpusIndex,

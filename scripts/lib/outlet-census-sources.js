@@ -15,11 +15,14 @@ const { WP_SEARCH_SOURCES } = require('./outlet-ground-truth');
  *   sitemap-years  one sitemap per year, fetched through the poller's fetchViaSitemap;
  *                  URLs and lastmod only (needsMeta or headlineFromSlug).
  *   sitemap        one sitemap (or index) with a URL filter; needsMeta.
+ *   serp           site-scoped Google per quarter (paid, ScrapingDog first); title, snippet
+ *                  and a URL/snippet/window date. For sites that refuse the census client.
  *   unreadable     no listing this census can read; the report records why.
  */
 
 const wp = (apiBase, extra = {}) => ({ kind: 'wp-json', apiBase, ...extra });
 const unreadable = (reason) => ({ kind: 'unreadable', reason });
+const serp = (queries, urlFilter, extra = {}) => ({ kind: 'serp', queries, urlFilter, ...extra });
 
 const SOURCES = {
   theatermania: {
@@ -31,6 +34,7 @@ const SOURCES = {
   vulture: {
     kind: 'sitemap-years',
     urlTemplate: (year) => `https://www.vulture.com/sitemaps/sitemap-${year}.xml`,
+    proxyRetry: true, // the yearly sitemaps 403 direct clients; the poller's proxy chain reads them (BRO-6485)
     // Every slug that could be a stage review; the page headline decides.
     urlFilter: /review|theater|theatre|broadway|play|musical/i,
     // Article pages 403 direct clients; Vulture slugs carry the title ("theater-review-giant-
@@ -70,16 +74,60 @@ const SOURCES = {
   // The same WP endpoints and review-URL filters the ground-truth audit reads.
   ...Object.fromEntries(WP_SEARCH_SOURCES.filter((w) => w.market === 'nyc' && w.outletId !== 'theatermania')
     .map((w) => [w.outletId, { kind: 'wp-json', apiBase: w.api, linkFilter: w.linkFilter, sourceSaysReview: true }])),
-  // Probed 2026-10-28 from a cloud container: no listing readable without a bot-block bypass,
-  // which the census does not attempt. CI runs may reach some of these (see the spec).
-  ...Object.fromEntries(['nytimes', 'talkinbroadway', 'wsj', 'nypost', 'ew', 'chicagotribune', 'guardian', 'observer',
-    'newyorker', 'nydailynews', 'usatoday', 'latimes'].map((id) => [id, unreadable('site and robots.txt return HTTP 403 to the census client')])),
-  ...Object.fromEntries(['theatrely', 'broadway-and-me', 'new-york-sun', 'times-square-chronicles', 'front-row-center']
-    .map((id) => [id, unreadable('site answers HTTP 429/503/202 challenge pages to the census client')])),
-  ...Object.fromEntries(['la-voce-di-new-york', 'queerty'].map((id) => [id, unreadable('WordPress API has no theater taxonomy and the post stream is 20k+ items')])),
-  ...Object.fromEntries(['timeout', 'washpost', 'dailybeast', 'pages-on-stages', 'off-off-online', 'lighting-and-sound-america', 'cititour',
-    'frontmezzjunkies', 'slantmagazine', 'thestage', 'the-interested-bystander', 'dtli']
-    .map((id) => [id, unreadable('no WordPress API; sitemap enumeration not yet configured')])),
+  // ── BRO-6485: sitemaps and APIs for the outlets round 1 could not read ──────────
+  timeout: {
+    kind: 'sitemap', url: 'https://www.timeout.com/sitemap.xml.gz', // gzip index, one child per city
+    childFilter: (c) => /timeout\.com\/newyork\//.test(c),
+    // A /newyork/theater/<show> page is the show's review; /news/ reviews say so in the slug.
+    urlFilter: /timeout\.com\/newyork\/(?:theater\/[^/?#]+$|news\/[^/?#]*review)/, needsMeta: true, sourceSaysReview: true,
+  },
+  // WordPress.com-hosted blogs: no /wp-json on the site, but the public WP.com REST mirror lists every post.
+  'pages-on-stages': wp('https://public-api.wordpress.com/wp/v2/sites/pagesonstages.com/posts', { sourceSaysReview: true }), // a reviews-only blog,
+  frontmezzjunkies: wp('https://public-api.wordpress.com/wp/v2/sites/frontmezzjunkies.com/posts', { categories: [42035, 42036], sourceSaysReview: true }), // broadway, off broadway,
+  'off-off-online': { kind: 'sitemap', url: 'https://www.offoffonline.com/sitemap.xml', urlFilter: /offoffonline\.com\/offoffonline\/20\d\d\/\d{1,2}\/\d{1,2}\/[^/]+$/, needsMeta: true, sourceSaysReview: true },
+  slantmagazine: { kind: 'sitemap', url: 'https://www.slantmagazine.com/sitemap_index.xml', childFilter: (c) => /post-sitemap/.test(c), urlFilter: /slantmagazine\.com\/theater\/[^/]+\/?$/, needsMeta: true },
+  // UK paper: only slugs naming a New York house or Broadway can be NYC reviews.
+  thestage: { kind: 'sitemap', url: 'https://www.thestage.co.uk/SiteMap_TheStage_index.xml', childFilter: (c) => /Reviews/i.test(c), urlFilter: /thestage\.co\.uk\/reviews\/[^/]*(?:broadway|new-york|nyc|manhattan|brooklyn)/, headlineFromSlug: true, sourceSaysReview: true, requireNycSignal: true },
+  'the-interested-bystander': { kind: 'sitemap', url: 'https://www.interestedbystander.com/sitemap.xml', urlFilter: /interestedbystander\.com\/20\d\d\/\d\d\/[^/]*(?:theater|theatre|broadway|musical|play)[^/]*\.html$/, needsMeta: true, sourceSaysReview: true },
+  // DTLI is an aggregator: /shows/<show>/<slug>/ is the one URL shape for its own critics' reviews and
+  // for its quote pages of other outlets' reviews, and no listing tells them apart (BRO-6485 probe).
+  dtli: unreadable('aggregator: its own reviews and its quote pages of other outlets share one URL shape and listing'),
+  // Daily Beast: one sitemap per day; no section in the URL, so the slug must look like stage.
+  dailybeast: {
+    kind: 'sitemap', url: 'https://www.thedailybeast.com/arc/outboundfeeds/sitemap-index?outputType=xml', childConcurrency: 8,
+    childFilter: (c, since) => { const m = /\/(\d{4}-\d{2}-\d{2})\?/.exec(c); return !!m && m[1] >= String(since).slice(0, 10); },
+    urlFilter: /thedailybeast\.com\/(?:obsessed\/)?[^/?#]*(?:broadway|musical|-play-|-play\/|theater|theatre|revival|on-stage)/, needsMeta: true,
+  },
+  // ── BRO-6485: site-scoped, quarter-windowed Google (kind 'serp') for outlets whose site,
+  // sitemaps and API refuse the census client (HTTP 403 or challenge pages, probed
+  // 2026-10-28). sourceSaysReview only where urlFilter is a reviews-only path or the site
+  // publishes nothing else; elsewhere the headline must say "review", so recall there is
+  // measured over the reviews Google titles as reviews.
+  nytimes: serp(['site:nytimes.com theater review'], /nytimes\.com\/\d{4}\/\d{2}\/\d{2}\/theater\//),
+  wsj: serp(['site:wsj.com theater review'], /wsj\.com\/(?:articles|arts-culture)\//),
+  nypost: serp(['site:nypost.com broadway review'], /nypost\.com\/\d{4}\/\d{2}\/\d{2}\//),
+  newyorker: serp(['site:newyorker.com/magazine theatre review'], /newyorker\.com\/magazine\/\d{4}\//),
+  ew: serp(['site:ew.com broadway review'], /ew\.com\//),
+  observer: serp(['site:observer.com broadway review'], /observer\.com\/\d{4}\/\d{2}\//),
+  nydailynews: serp(['site:nydailynews.com broadway review'], /nydailynews\.com\//),
+  chicagotribune: serp(['site:chicagotribune.com broadway review'], /chicagotribune\.com\//, { requireNycSignal: true }),
+  guardian: serp(['site:theguardian.com/stage broadway review'], /theguardian\.com\/stage\/\d{4}\//, { requireNycSignal: true }),
+  usatoday: serp(['site:usatoday.com broadway review'], /usatoday\.com\/story\//, { requireNycSignal: true }),
+  latimes: serp(['site:latimes.com broadway review'], /latimes\.com\//, { requireNycSignal: true }),
+  washpost: serp(['site:washingtonpost.com/theater-dance broadway'], /washingtonpost\.com\/theater-dance\/\d{4}\//, { requireNycSignal: true }),
+  theatrely: serp(['site:theatrely.com/post review'], /theatrely\.com\/post\//),
+  'new-york-sun': serp(['site:nysun.com broadway review'], /nysun\.com\/article\//),
+  'times-square-chronicles': serp(['site:t2conline.com broadway review'], /t2conline\.com\//),
+  'la-voce-di-new-york': serp(['site:lavocedinewyork.com/en broadway review'], /lavocedinewyork\.com\/en\//),
+  queerty: serp(['site:queerty.com broadway review'], /queerty\.com\//),
+  // Review-only paths: Talkin' Broadway's Broadway (world) and Off-Broadway (ob) columns,
+  // Front Row Center and Broadway & Me (review blogs), CitiTour's show pages.
+  talkinbroadway: serp(['site:talkinbroadway.com/page/world', 'site:talkinbroadway.com/page/ob'], /talkinbroadway\.com\/page\/(?:world|ob)\//, { sourceSaysReview: true }),
+  'front-row-center': serp(['site:thefrontrowcenter.com'], /thefrontrowcenter\.com\/20\d\d\/\d\d\/[^/]+\/?$/, { sourceSaysReview: true }),
+  'broadway-and-me': serp(['site:broadwayandme.blogspot.com'], /broadwayandme\.blogspot\.com\/20\d\d\/\d\d\//, { sourceSaysReview: true }),
+  cititour: serp(['site:cititour.com/NYC_Broadway', 'site:cititour.com review'], /cititour\.com\/NYC_(?:Broadway|News\/Review)/i, { sourceSaysReview: true }),
+  // Its sitemap lists 8.8k opaque story.asp?ID= pages with no section, date or title.
+  'lighting-and-sound-america': serp(['site:lightingandsoundamerica.com broadway review'], /lightingandsoundamerica\.com\/news\/story\.asp/i),
 };
 
 module.exports = { SOURCES };
