@@ -1621,7 +1621,7 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
       className={`w-full flex items-center justify-center gap-1 sm:gap-1.5 text-xs sm:text-xs transition-colors cursor-pointer min-h-[32px] sm:min-h-[36px] px-1.5 sm:px-2 rounded-lg ${
         hasDate
           ? 'text-amber-400 hover:text-amber-300'
-          : 'text-gray-400 hover:text-gray-300 bg-white/[0.03] border border-white/[0.06] hover:border-white/10'
+          : 'btn-secondary py-1.5 focus-ring'
       }`}
     >
       {!hasDate && (
