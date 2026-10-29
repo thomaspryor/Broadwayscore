@@ -88,10 +88,9 @@ jobs:
         # LINEAR_API_KEY: disposition-misroute.js's routeAlert() uses
         # disposition:'digest', which files a Linear tracker once the condition
         # has stayed open (BRO-3030), so the key is needed here (BRO-5168).
-        run: |
-          rc=0
-          node scripts/disposition-misroute.js report --email || rc=$?
-          if [ "$rc" -ne 0 ]; then echo "::warning title=Report new slug misroutes::scripts/disposition-misroute.js exited $rc (non-blocking step, see log above)"; fi
+        # lint-allow-swallow: read-only report; a transient email failure must not skip the non-always() commit step below
+        continue-on-error: true
+        run: node scripts/disposition-misroute.js report --email
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}

@@ -128,7 +128,7 @@ jobs:
       # timeout and cannot fail the job or skip the commit step if it hangs.
       - name: Audit Linear cards
         timeout-minutes: 15
-        # lint-allow-swallow: a hung Linear read must not fail the job or skip the always() commit step below; the report is a derivation rebuilt next run and a timeout kill needs continue-on-error to stay non-fatal
+        # lint-allow-swallow: a hung Linear read must not fail the job or skip the always() commit step below; the report is rebuilt next run and a timeout kill needs continue-on-error to stay non-fatal
         continue-on-error: true
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}

@@ -90,10 +90,9 @@ jobs:
 
       - name: Run commercial audit
         if: always()
-        run: |
-          rc=0
-          node scripts/audit-commercial-data.js || rc=$?
-          if [ "$rc" -ne 0 ]; then echo "::warning title=Run commercial audit::scripts/audit-commercial-data.js exited $rc (non-blocking step, see log above)"; fi
+        run: node scripts/audit-commercial-data.js
+        # lint-allow-swallow: read-only informational audit; the commit step still runs and the next run retries
+        continue-on-error: true
 
       - name: Validate data
         if: always()

@@ -293,16 +293,15 @@ jobs:
       # deliberately KEPT so status flips still run; the verdict is applied by
       # the separate discovery-source-blind job below (S4-T3).
       - name: Check Broadway source coverage
+        # lint-allow-swallow: exit 1 is both the designed blind verdict and a crash; must not block the status flips that follow
+        continue-on-error: true
         env:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: |
-          rc=0
-          node scripts/check-broadway-source-coverage.js || rc=$?
-          if [ "$rc" -ne 0 ]; then echo "::warning title=Check Broadway source coverage::scripts/check-broadway-source-coverage.js exited $rc (non-blocking step, see log above)"; fi
+        run: node scripts/check-broadway-source-coverage.js
 
       # Off-Broadway twin (BRO-4381): diffs TheaterMania's current OB listings
       # (public WP REST API, no secrets) against shows.json + pending-fix
@@ -315,10 +314,9 @@ jobs:
         env:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
-        run: |
-          rc=0
-          node scripts/check-off-broadway-source-coverage.js || rc=$?
-          if [ "$rc" -ne 0 ]; then echo "::warning title=Check Off-Broadway source coverage::scripts/check-off-broadway-source-coverage.js exited $rc (non-blocking step, see log above)"; fi
+        # lint-allow-swallow: exit 1 is both the designed blind verdict and a crash; must not block the status flips that follow
+        continue-on-error: true
+        run: node scripts/check-off-broadway-source-coverage.js
 
       # Regional→Broadway transfer auto-linking: if a just-discovered (or any
       # existing) Broadway show title-matches a tracked regional tryout and
