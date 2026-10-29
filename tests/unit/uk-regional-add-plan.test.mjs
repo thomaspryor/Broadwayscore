@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { buildAction, canonicalVenue } = require('../../scripts/uk-regional-add-plan.js');
+const { buildAction, canonicalVenue } = require('../../scripts/lib/uk-regional-add-plan.js');
 const { resolveMetroInfo } = require('../../scripts/lib/venue-metro.js');
 const { isExemptFromPlaybillCheck } = require('../../scripts/validate-show-venue.js');
 
