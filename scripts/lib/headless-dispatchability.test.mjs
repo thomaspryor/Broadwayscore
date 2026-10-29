@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { resolveDisposition } = require('./card-disposition.js');
-const { takeableParkAdvisory } = require('./headless-dispatchability.js');
+const { takeableParkAdvisory, commentClearsOwnerGate } = require('./headless-dispatchability.js');
 const { pickCloudCard } = require('./cloud-worker-pick.js');
 const { freshClaimGuard } = require('./fresh-claim-guard.js');
 const { buildClaimComment } = require('./linear-session-reporting.js');
@@ -79,4 +79,17 @@ test('linear-brain create --child files In Progress with a child claim comment; 
     }
   } finally { process.exit = realExit; }
   assert.deepEqual(codes, [1, 1]);
+});
+
+// BRO-6443: the board's own tooling writes these two lines; they must clear the gate.
+test('commentClearsOwnerGate: triage "Owner gate removed" and the answer path "Owner decision" comments clear it', () => {
+  assert.equal(commentClearsOwnerGate(['Owner gate removed by BRO-6235 (checked 2026-10-25): this is not a question for the owner.']), true);
+  assert.equal(commentClearsOwnerGate(['**Owner decision** (answered by the owner through the email link, 2026-10-25 UTC)\n\nChose: Option A', 'Listed in the owner\'s decisions email.']), true);
+  assert.equal(commentClearsOwnerGate(['OWNER-CLEARED: technical call']), true);
+});
+
+test('commentClearsOwnerGate: ordinary comments, a mid-line mention and a re-ask do not clear it', () => {
+  assert.equal(commentClearsOwnerGate(['Claimed by a worker']), false);
+  assert.equal(commentClearsOwnerGate(['The owner gate removed earlier was wrong']), false);
+  assert.equal(commentClearsOwnerGate(['Owner gate removed by triage.', 'DECISION NEEDED: keep or drop this?']), false);
 });

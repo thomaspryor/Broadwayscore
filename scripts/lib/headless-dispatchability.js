@@ -357,7 +357,10 @@ function remainingHeadlessBlockers(blockers, { force = false, automationParked =
 // marker re-gates. Comments arrive oldest-first (sortedCommentBodies); the
 // newest decisive comment wins. Comment age vs. description edits is not
 // known here, so a comment always counts as later than the description.
-const OWNER_CLEAR_COMMENT_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?(?:not an owner decision\b|OWNER-CLEARED\s*:)/im;
+// BRO-6443: also the two lines the board's own tooling writes: the triage's "Owner gate removed"
+// comment and the answer path's "**Owner decision** (answered by the owner ...)" comment. Both left
+// the card gated before, because the description still carried the original owner wording.
+const OWNER_CLEAR_COMMENT_RE = /^[ \t]*(?:[-*][ \t]+)?(?:\*\*|__)?(?:not an owner decision\b|OWNER-CLEARED\s*:|owner gate removed\b|owner decision(?:\*\*|__)?[ \t]*\(answered by the owner)/im;
 
 /** True when the newest decisive comment (oldest-first array) clears the owner gate. */
 function commentClearsOwnerGate(comments) {

@@ -43,6 +43,7 @@ const FIXTURES = {
   ready: () => card(),
   'cooling-off': () => card({ updatedAt: '2026-10-27T11:00:00Z' }),
   'codex-bounced': () => card({ comments: { nodes: [{ body: '<!-- codex-runner-bounced -->\nCodex could not finish this.', createdAt: '2026-10-26T00:00:00Z' }] } }),
+  'owner-gated-no-question': () => withDesc('Owner must decide whether to keep this.'),
   other: () => card({ priority: 0 }),
 };
 
@@ -156,7 +157,7 @@ test('formatMarkdown: plain table with every row, totals, no card ids', () => {
   board.push(card({ priority: 1, title: 'Prod is down' }));
   const md = bc.formatMarkdown(bc.categorizeBoard(board, { now: NOW }), { flow: null });
   for (const c of bc.CATEGORIES) assert.ok(md.includes(`| ${c.label} |`), c.label);
-  assert.match(md, /\| \*\*Total\*\* \| \*\*15\*\* \|/);
+  assert.match(md, /\| \*\*Total\*\* \| \*\*16\*\* \|/);
   assert.match(md, /- Urgent: Prod is down \(Ready for a worker or Codex\)/);
   assert.doesNotMatch(md, /BRO-\d/);
   assert.match(md, /recognised from the card text only/);
@@ -205,6 +206,16 @@ test('an open question becomes not-waiting once the answer path rewrites it', ()
   const q = 'Ship the new homepage or keep the old one?';
   assert.equal(categoryOf(withDesc(`DECISION NEEDED: ${q}`)), 'waiting-owner');
   assert.notEqual(categoryOf(withDesc(`ANSWERED by the owner: ${q} -> ship it`)), 'waiting-owner');
+});
+
+test('a card the dispatcher holds for the owner with no question gets its own row, not Other', () => {
+  const c = withDesc('Owner must decide whether to keep this.\n\nVERIFY: node --test tests/unit/x.test.mjs');
+  assert.equal(categoryOf(c), 'owner-gated-no-question');
+  const r = bc.categorizeBoard([c], { now: NOW });
+  assert.equal(bc.ownerGatedNoQuestion(r), 1);
+  assert.match(bc.formatMarkdown(r), /Held for you, but no question written/);
+  // Writing the real question moves it to Waiting on your answer.
+  assert.equal(categoryOf(withDesc('DECISION NEEDED: Keep this or drop it?\n\nOwner must decide.')), 'waiting-owner');
 });
 
 test('owner-gated cards without a question are named under the table', () => {
