@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T19:39:19.383Z",
+  "timestamp": "2026-10-29T19:52:41.618Z",
   "stats": {
-    "totalReviews": 68199,
-    "alreadyFlagged": 22199,
+    "totalReviews": 68226,
+    "alreadyFlagged": 22195,
     "dateGuardCatches": 233,
-    "directorMismatch": 2801,
+    "directorMismatch": 2799,
     "tvFilmSignals": 1965,
-    "londonSignals": 3355,
+    "londonSignals": 3357,
     "offBroadwaySignals": 618,
-    "yearMismatch": 258,
-    "noPublishDate": 7096
+    "yearMismatch": 257,
+    "noPublishDate": 7122
   },
   "findings": [
     {
@@ -33437,20 +33437,6 @@
       ]
     },
     {
-      "showId": "long-days-journey-into-night-2016",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": 92,
-      "publishDate": "May 2, 2016",
-      "url": "https://www.talkinbroadway.com/world/LongDays.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert falls\" from long-days-journey-into-night-2003"
-        }
-      ]
-    },
-    {
       "showId": "long-days-journey-into-night-off-broadway-2022",
       "file": "vulture--helen-shaw.json",
       "score": 77,
@@ -34060,20 +34046,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "mamma-mia-2025",
-      "file": "variety--owen-gleiberman.json",
-      "score": 86,
-      "publishDate": "August 14, 2025",
-      "url": "https://variety.com/2025/legit/reviews/mamma-mia-review-broadway-2025-1236488886/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
         }
       ]
     },
@@ -65943,20 +65915,6 @@
       ]
     },
     {
-      "showId": "waitress-tour-2026",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "score": 65,
-      "publishDate": null,
-      "url": "https://www.nydailynews.com/entertainment/theater-arts/jessie-mueller-star-turn-baked-perfection-waitress-article-1.2610433",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"diane paulus\" from waitress-2021"
-        }
-      ]
-    },
-    {
       "showId": "waitress-west-end-2019",
       "file": "artsdesk--unknown.json",
       "score": 75,
@@ -91328,6 +91286,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "lanny-bristol-old-vic-regional-2026",
+      "file": "sunday-telegraph--claire-allfree.json",
+      "publishDate": "2026-10-23",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/lanny-bristol-old-vic-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "lanny-bristol-old-vic-regional-2026",
+      "file": "theatreandtonic--charlotte.json",
+      "publishDate": "2026-10-24",
+      "url": "https://theatreandtonic.co.uk/blog/lanny-bristol-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
