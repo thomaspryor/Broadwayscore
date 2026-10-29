@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-6518-e2e",
   "planId": "8907cd91-4fbe-426f-ac26-f8a231988153",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-29T10:09:23.617Z",
   "submitter": {
     "name": null,
@@ -188,5 +188,39 @@
         "description": "add a-midsummer-night-scream-regional-2026"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-29T17:46:08.063Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added come-from-away-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added detroit-67-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added hayward-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added dead-girls-quinceanera-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added what-the-constitution-means-to-me-regional-2026"
+    },
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added a-midsummer-night-scream-regional-2026"
+    }
+  ],
+  "executedIn": "ci"
 }
