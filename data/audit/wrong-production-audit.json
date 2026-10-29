@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T18:54:28.660Z",
+  "timestamp": "2026-10-29T19:19:13.771Z",
   "stats": {
-    "totalReviews": 67755,
-    "alreadyFlagged": 22181,
+    "totalReviews": 68079,
+    "alreadyFlagged": 22191,
     "dateGuardCatches": 233,
-    "directorMismatch": 2789,
-    "tvFilmSignals": 1948,
-    "londonSignals": 3314,
+    "directorMismatch": 2795,
+    "tvFilmSignals": 1959,
+    "londonSignals": 3342,
     "offBroadwaySignals": 619,
     "yearMismatch": 258,
-    "noPublishDate": 7065
+    "noPublishDate": 7086
   },
   "findings": [
     {
@@ -3110,6 +3110,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"casey nicholaw\" from aladdin-2014"
+        }
+      ]
+    },
+    {
+      "showId": "alfred-hitchcock-presents-the-musical-royal-bath-regional-2025",
+      "file": "plays-international--unknown.json",
+      "publishDate": "2025-03-29",
+      "url": "https://playsinternational.org.uk/alfred-hitchcock-presents-the-musical-theatre-royal-bath/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -7180,6 +7193,7 @@
     {
       "showId": "billy-crystal-860-2026",
       "file": "theater-life--unknown.json",
+      "score": 88,
       "publishDate": "2026-10-28",
       "url": "https://theaterlife.com/billy-crystal-860-the-imaginary-invalid/",
       "findings": [
@@ -12740,6 +12754,19 @@
       ]
     },
     {
+      "showId": "dancing-at-lughnasa-crucible-regional-2025",
+      "file": "broadwayworld--john-mcdaid.json",
+      "publishDate": "2025-09-27",
+      "url": "https://www.broadwayworld.com/rhode-island/article/Review-POWERFUL-DANCING-AT-LUGHNASA-at-The-Players-20250927",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "dancing-at-lughnasa-west-end-2023",
       "file": "artsdesk--matt-wolf.json",
       "score": 75,
@@ -16469,6 +16496,81 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-royal-shakespeare-regional-2026",
+      "file": "guardian--david-jays.json",
+      "publishDate": "2026-04-29",
+      "url": "https://www.theguardian.com/stage/2026/apr/29/driftwood-review-other-place-stratford-upon-avon",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-royal-shakespeare-regional-2026",
+      "file": "reviewsgate--rod-dungate.json",
+      "publishDate": "2026-05-16",
+      "url": "https://www.reviewsgate.co.uk/all-reviews/driftwood-by-martina-laird-rsc-the-other-place-stratford-upon-avon",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-royal-shakespeare-regional-2026",
+      "file": "stratford-herald--gill-sutherland.json",
+      "publishDate": "2026-04-28",
+      "url": "https://www.stratford-herald.com/news/driftwood-floats-into-stratford-9463635/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-royal-shakespeare-regional-2026",
+      "file": "theatreandtonic--hollie.json",
+      "publishDate": "2026-04-30",
+      "url": "https://theatreandtonic.co.uk/blog/driftwood-at-the-other-place-stratford-upon-avon-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "driftwood-royal-shakespeare-regional-2026",
+      "file": "whatsonstage--alison-brinkworth.json",
+      "publishDate": "2026-04-29",
+      "url": "https://www.whatsonstage.com/news/driftwood-at-the-rscs-the-other-place-review_1719791/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"justin audibert\" from driftwood-west-end-2026"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -25801,6 +25903,19 @@
       ]
     },
     {
+      "showId": "ideal-lowry-regional-2025",
+      "file": "guardian--nick-ahad.json",
+      "publishDate": "2025-09-11",
+      "url": "https://www.theguardian.com/stage/2025/sep/11/ideal-review-johnny-vegas-tv-weed-dealer-lowry-salford",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "idiots-assemble-spitting-image-the-musical-west-end-2023",
       "file": "artsdesk--helen-hawkins.json",
       "score": 37,
@@ -31284,6 +31399,19 @@
       ]
     },
     {
+      "showId": "lear-pitlochry-festival-regional-2026",
+      "file": "herald--barry-didcock.json",
+      "publishDate": "2026-06-29",
+      "url": "https://www.heraldscotland.com/news/26196418.new-play-king-lear-debut-pitlochry-festival-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "lemons-lemons-lemons-lemons-lemons-west-end-2023",
       "file": "nytimes--houman-barekat.json",
       "score": 74,
@@ -32759,6 +32887,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-royal-exchange-regional-2025",
+      "file": "quays-life--dave-porter.json",
+      "publishDate": "2025-07-03",
+      "url": "https://quayslife.com/reviews/liberation-review/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -39307,6 +39448,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"graciela daniele\" from once-on-this-island-1990"
+        }
+      ]
+    },
+    {
+      "showId": "once-pitlochry-festival-regional-2026",
+      "file": "guardian--mark-fisher.json",
+      "publishDate": "2026-05-29",
+      "url": "https://www.theguardian.com/stage/2026/may/29/once-review-pitlochry-festival-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from once-2012"
         }
       ]
     },
@@ -46101,6 +46255,19 @@
       ]
     },
     {
+      "showId": "small-hotel-royal-bath-regional-2025",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2025-10-10",
+      "url": "https://www.theguardian.com/stage/2025/oct/10/small-hotel-review-theatre-royal-bath",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
       "showId": "small-island-west-end-2019",
       "file": "artsdesk--unknown.json",
       "score": 66,
@@ -51674,6 +51841,19 @@
       ]
     },
     {
+      "showId": "the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026",
+      "file": "theatreandtonic--hollie.json",
+      "publishDate": "2026-02-20",
+      "url": "https://theatreandtonic.co.uk/blog/the-boy-who-harnessed-the-wind-at-swan-theatre-stratford-upon-avon-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "the-bridges-of-madison-county-2014",
       "file": "newsday--linda-winer.json",
       "score": 77,
@@ -56781,6 +56961,19 @@
       ]
     },
     {
+      "showId": "the-last-picture-york-royal-regional-2026",
+      "file": "nytimes--glenn-kenny.json",
+      "publishDate": "2026-08-06",
+      "url": "https://www.nytimes.com/2026/08/06/movies/the-last-picture-shows-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"movie theater\""
+        }
+      ]
+    },
+    {
       "showId": "the-last-ship-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 55,
@@ -60864,6 +61057,7 @@
     {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "london-unattached--unknown.json",
+      "score": 80,
       "publishDate": "2026-10-29",
       "url": "https://www.london-unattached.com/the-revlon-girl-park-theatre/",
       "findings": [
@@ -62980,6 +63174,19 @@
       ]
     },
     {
+      "showId": "through-it-all-together-leeds-regional-2025",
+      "file": "broadwayworld--aa-cristi.json",
+      "publishDate": "2025-06-27",
+      "url": "https://www.broadwayworld.com/uk-regional/article/Photos-Shobna-Gulati-and-Reece-Dinsdale-Star-in-THROUGH-IT-ALL-TOGETHER-World-Premiere-at-Leeds-Playhouse-20250627",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "tina-the-tina-turner-musical-west-end-2018",
       "file": "telegraph--claire-allfree.json",
       "publishDate": "2018-04-23",
@@ -63786,6 +63993,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "tristan-and-yseult-royal-bath-regional-2026",
+      "file": "soz6--unknown.json",
+      "publishDate": "2026-09-19",
+      "url": "https://soz6.com/news/tristan-yseult-review-kneehigh-s-lovers-still-soar-with-giddy-glory",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -72480,6 +72700,19 @@
       ]
     },
     {
+      "showId": "anna-karenina-chichester-festival-regional-2025",
+      "file": "theatreandtonic--amelia.json",
+      "publishDate": "2025-06-15",
+      "url": "https://theatreandtonic.co.uk/blog/anna-karenina-at-chichester-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "anon-a-tempest-at-our-kitchen-table-off-broadway-2026",
       "file": "lighting-and-sound-america--david-barbour.json",
       "score": 49,
@@ -78011,6 +78244,19 @@
       ]
     },
     {
+      "showId": "crown-of-blood-crucible-regional-2026",
+      "file": "theatreandtonic--kirsty.json",
+      "publishDate": "2026-02-04",
+      "url": "https://theatreandtonic.co.uk/blog/crown-of-blood-at-sheffield-crucible-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "cruise-west-end-2021",
       "file": "whatsonstage--sarah-crompton.json",
       "score": 84,
@@ -80122,6 +80368,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "eclipse-chichester-festival-regional-2026",
+      "file": "theatreandtonic--rosie.json",
+      "publishDate": "2026-05-15",
+      "url": "https://theatreandtonic.co.uk/blog/eclipse-minerva-theatre-chichester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -83087,7 +83346,7 @@
     {
       "showId": "girls-off-west-end-2026",
       "file": "afridiziak-theatre-news--unknown.json",
-      "score": 94,
+      "score": 93,
       "publishDate": "2026-10-28",
       "url": "https://www.afridiziak.com/reviews/girls-by-theresa-ikoko-directed-by-ewa-dina/",
       "findings": [
@@ -83155,6 +83414,7 @@
     {
       "showId": "girls-off-west-end-2026",
       "file": "thereviewshub--unknown.json",
+      "score": 74,
       "publishDate": "2026-10-28",
       "url": "https://www.thereviewshub.com/girls-young-vic-london/",
       "findings": [
@@ -86104,6 +86364,19 @@
       ]
     },
     {
+      "showId": "hedda-royal-bath-regional-2025",
+      "file": "theatreandtonic--liam-arnold.json",
+      "publishDate": "2025-08-15",
+      "url": "https://theatreandtonic.co.uk/blog/hedda-at-theatre-royal-bath-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "hello-dolly-2017",
       "file": "theater-time--joseph-cervelli.json",
       "score": 87,
@@ -86307,6 +86580,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "henry-v-royal-shakespeare-regional-2026",
+      "file": "theatreandtonic--roni.json",
+      "publishDate": "2026-03-26",
+      "url": "https://theatreandtonic.co.uk/blog/henry-v-at-royal-shakespeare-theatre-stratford-upon-avon-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -87432,6 +87718,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "i-can-die-too-pitlochry-festival-regional-2026",
+      "file": "theatreandtonic--kerry.json",
+      "publishDate": "2026-07-17",
+      "url": "https://theatreandtonic.co.uk/blog/i-can-die-too-pitlochry-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -88931,6 +89230,19 @@
       "score": 87,
       "publishDate": "July 15th, 2022",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/jack-absolute-flies-again-national-theatre-review_56932.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "jack-and-the-beanstalk-dundee-rep-regional-2025",
+      "file": "broadwayworld--natalie-odonoghue.json",
+      "publishDate": "2025-12-17",
+      "url": "https://www.broadwayworld.com/scotland/article/Review-JACK-AND-THE-BEANSTALK-Festival-Theatre-20251217",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -91494,6 +91806,19 @@
       ]
     },
     {
+      "showId": "liberation-royal-exchange-regional-2025",
+      "file": "theatreandtonic--joseph.json",
+      "publishDate": "2025-07-03",
+      "url": "https://theatreandtonic.co.uk/blog/liberation-at-royal-exchange-theatre-manchester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "life-of-pi-tour-2024",
       "file": "broadwayworld--timoth-david-copney.json",
       "score": 85,
@@ -92054,6 +92379,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-royal-shakespeare-regional-2025",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/macbeth-rsc-stratford-review-glaswegian-gangs-and-ghoulies-prove-gripping",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "macbeth-royal-shakespeare-regional-2025",
+      "file": "theatreandtonic--mia.json",
+      "publishDate": "2025-10-26",
+      "url": "https://theatreandtonic.co.uk/blog/macbeth-at-the-other-place-rsc-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -95172,6 +95523,19 @@
       ]
     },
     {
+      "showId": "my-fair-lady-chichester-festival-regional-2026",
+      "file": "theatreandtonic--stephen.json",
+      "publishDate": "2026-07-16",
+      "url": "https://theatreandtonic.co.uk/blog/my-fair-lady-chichester-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "my-fair-lady-west-end-2022",
       "file": "artsdesk--unknown.json",
       "score": 78,
@@ -97584,6 +97948,19 @@
       ]
     },
     {
+      "showId": "once-pitlochry-festival-regional-2026",
+      "file": "theatreandtonic--kerry.json",
+      "publishDate": "2026-05-29",
+      "url": "https://theatreandtonic.co.uk/blog/once-at-pitlochry-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "one-day-the-musical-west-end-2026",
       "file": "london-box-office--shehrazade-zafar-arif.json",
       "findings": [
@@ -99356,6 +99733,32 @@
       ]
     },
     {
+      "showId": "present-laughter-royal-bath-regional-2026",
+      "file": "guardian--mark-lawson.json",
+      "publishDate": "2026-09-03",
+      "url": "https://www.theguardian.com/stage/2026/sep/03/present-laughter-review-gender-switched-coward-comedy-dazzles-in-70s-new-york",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "present-laughter-royal-bath-regional-2026",
+      "file": "west-end-best-friend--nick-wayne.json",
+      "publishDate": "2026-09-03",
+      "url": "https://www.westendbestfriend.co.uk/news/review-present-laughter-theatre-royal-bath",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
       "showId": "present-laughter-west-end-2019",
       "file": "financialtimes--sarah-hemming.json",
       "score": 89,
@@ -99742,6 +100145,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"barrow street\""
+        }
+      ]
+    },
+    {
+      "showId": "private-lives-royal-exchange-regional-2026",
+      "file": "theatreandtonic--siobhan.json",
+      "publishDate": "2026-04-03",
+      "url": "https://theatreandtonic.co.uk/blog/private-lives-at-royal-exchange-theatre-manchester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -101162,6 +101578,32 @@
       ]
     },
     {
+      "showId": "safe-space-chichester-festival-regional-2025",
+      "file": "theatreandtonic--amelia.json",
+      "publishDate": "2025-10-19",
+      "url": "https://theatreandtonic.co.uk/blog/safe-space-at-minerva-theatre-chichester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "safe-space-chichester-festival-regional-2025",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2025-10-18",
+      "url": "https://viewfromthegods.co.uk/2025/10/18/jamie-bogyo-safe-space-minerva-cft-org-uk/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "saint-joan-2018",
       "file": "nysr--elysa-gardner.json",
       "score": 80,
@@ -101967,6 +102409,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "singin-in-the-rain-royal-exchange-regional-2025",
+      "file": "theatreandtonic--joseph.json",
+      "publishDate": "2025-12-06",
+      "url": "https://theatreandtonic.co.uk/blog/singin-in-the-rain-at-royal-exchange-theatre-manchester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -105941,6 +106396,19 @@
       ]
     },
     {
+      "showId": "the-boy-who-harnessed-the-wind-royal-shakespeare-regional-2026",
+      "file": "all-that-dazzles-uk--raphael-kohn.json",
+      "publishDate": "2026-02-20",
+      "url": "https://www.allthatdazzles.co.uk/post/review-the-boy-who-harnessed-the-wind-swan-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "the-boy-who-harnessed-the-wind-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 94,
@@ -108671,6 +109139,19 @@
       ]
     },
     {
+      "showId": "the-glass-menagerie-dundee-rep-regional-2025",
+      "file": "theatreandtonic--tobechi.json",
+      "publishDate": "2025-10-13",
+      "url": "https://theatreandtonic.co.uk/blog/the-glass-menagerie-dundee-rep-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "the-glass-menagerie-west-end-2017",
       "file": "london-box-office--phil-willmott.json",
       "score": 96,
@@ -108750,6 +109231,32 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "the-government-inspector-chichester-festival-regional-2025",
+      "file": "theatreandtonic--rosie.json",
+      "publishDate": "2025-05-02",
+      "url": "https://theatreandtonic.co.uk/blog/the-government-inspector-at-chichester-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-government-inspector-chichester-festival-regional-2025",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2025-05-06",
+      "url": "https://viewfromthegods.co.uk/2025/05/06/nikolai-gogol-the-government-inspector-chichester-festival-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -110796,6 +111303,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"adelphi theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-long-drop-citizens-regional-2026",
+      "file": "theatreandtonic--julia.json",
+      "publishDate": "2026-06-13",
+      "url": "https://theatreandtonic.co.uk/blog/the-long-drop-at-citizens-theatre-glasgow-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -116018,6 +116538,32 @@
       ]
     },
     {
+      "showId": "top-hat-chichester-festival-regional-2025",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/top-hat-chichester-festival-theatre-review-top-spectacle-book-tails",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "top-hat-chichester-festival-regional-2025",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2025-07-25",
+      "url": "https://www.theguardian.com/stage/2025/jul/25/top-hat-review-chichester-festival-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "topdog-underdog-2022",
       "file": "hollywood-reporter--lovia-gyarkye.json",
       "score": 78,
@@ -116336,6 +116882,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "treasure-island-bristol-old-vic-regional-2025",
+      "file": "theatreandtonic--joe.json",
+      "publishDate": "2025-12-14",
+      "url": "https://theatreandtonic.co.uk/blog/treasure-island-at-bristol-old-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },
@@ -117226,6 +117785,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "waiting-for-godot-citizens-regional-2026",
+      "file": "theatreandtonic--david.json",
+      "publishDate": "2026-02-26",
+      "url": "https://theatreandtonic.co.uk/blog/waiting-for-godot-at-citizens-theatre-glasgow-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
         }
       ]
     },

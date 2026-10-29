@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-29T18:44:03.769Z",
+  "generated": "2026-10-29T19:10:25.451Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 44,
+  "count": 43,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -303,13 +303,6 @@
       "targetFile": "providence-journal--katie-landeck.json",
       "reason": "orphaned-duplicate-heal: providence-journal--katie-landeck.json was flagged invalid after providence-journal--unknown.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-pianist-off-west-end-2026",
-      "loserFile": "jonathan-baz--helena-featherstone.json",
-      "targetFile": "theatre-south-east--helena-featherstone.json",
-      "reason": "orphaned-duplicate-heal: theatre-south-east--helena-featherstone.json was flagged invalid after jonathan-baz--helena-featherstone.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
