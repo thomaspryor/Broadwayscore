@@ -1,0 +1,129 @@
+'use strict';
+/**
+ * decision-restate.js (BRO-6539): before a session restates a DECISION NEEDED,
+ * drop the items whose card already holds the owner's answer. The owner
+ * answered BRO-5646 and approved BRO-4309 / BRO-4303 through the decisions
+ * email, and the parent session kept restating all three for 3+ hours because
+ * nothing made it re-read the cards.
+ *
+ * An item is answered when the card has an owner-decision or visual-approval
+ * comment NEWER than the question. The question time is the latest comment that
+ * asks (a DECISION NEEDED block or "Asked the owner to look at"). The automatic
+ * "Waiting on your approval" notice is a reminder, not a new question, so it
+ * never moves the question time forward (that was the BRO-4303 re-ask).
+ * Every Claude session comments under the owner's identity, so author is no
+ * signal: only the answer markers below count.
+ *
+ *   node scripts/lib/decision-restate.js BRO-5646 BRO-4303        # per-card verdict
+ *   printf '%s' "$MESSAGE" | node scripts/lib/decision-restate.js --message-stdin
+ *
+ * --message-stdin reads a chat reply, finds the BRO ids inside its DECISION
+ * NEEDED blocks and prints one line per answered card (nothing when none).
+ * Exit 0 always, unless --strict and something is answered (exit 3).
+ */
+
+const { MARK } = require('./visual-approval.js');
+const link = require('../../src/lib/owner-decision-link.js');
+
+// What an owner answer looks like on the card. Approve ships through the
+// lander, which leaves the VQA / VQL markers; the email answer page and
+// record-owner-answer.js leave the "Owner decision" comment; decision-reply.js
+// leaves "Owner answered / declined / picked / chose".
+const ANSWER_RES = [
+  /^\*{0,2}Owner decision\*{0,2}\b/i,
+  /^owner (?:answered|declined|picked|chose)\b/i,
+  new RegExp(MARK.approved.replace(/\s+/g, '\\s+')),
+  new RegExp(MARK.landed.replace(/\s+/g, '\\s+')),
+];
+// A comment that really asks again. NOT the auto "Waiting on your approval".
+const QUESTION_RES = [/DECISION NEEDED/, /^Asked the owner to look at/i];
+// Approved/chosen answers close the question; a decline sends work back to the
+// worker, who may legitimately ask again afterwards.
+const DECLINE_RE = /^owner declined\b|\bRejected\b|\bChose:\s*(?:reject|no)\b/i;
+
+const plain = (body) => link.unescapeMarkdown(String(body || '')).trim();
+const ms = (c) => { const t = new Date(c && c.createdAt).getTime(); return Number.isFinite(t) ? t : null; };
+
+function isAnswer(c) {
+  const t = plain(c.body);
+  return !/DECISION NEEDED/.test(t) && ANSWER_RES.some((re) => re.test(t));
+}
+function isQuestion(c) {
+  const t = plain(c.body);
+  return QUESTION_RES.some((re) => re.test(t));
+}
+
+/**
+ * @param {Array<{body:string, createdAt?:string}>} comments one card's comments
+ * @param {{askedAt?: number|string|Date|null}} [opts] override when the caller knows the question time
+ * @returns {{answered:boolean, answer:?{text:string, at:?string}, askedAt:?string}}
+ */
+function answerState(comments, { askedAt = null } = {}) {
+  const dated = (comments || []).filter((c) => c && c.body != null && ms(c) != null).sort((a, b) => ms(a) - ms(b));
+  const given = askedAt == null ? null : new Date(askedAt).getTime();
+  const lastQuestion = dated.filter(isQuestion).at(-1);
+  const since = Number.isFinite(given) ? given : (lastQuestion ? ms(lastQuestion) : -Infinity);
+  const hit = dated.filter((c) => ms(c) > since && isAnswer(c) && !DECLINE_RE.test(plain(c.body))).at(-1);
+  return {
+    answered: !!hit,
+    answer: hit ? { text: plain(hit.body).replace(/\s+/g, ' ').slice(0, 160), at: hit.createdAt || null } : null,
+    askedAt: Number.isFinite(since) ? new Date(since).toISOString() : null,
+  };
+}
+
+/**
+ * Split the items a session is about to restate.
+ * @param {Array<{card:string}>} items
+ * @param {Map<string,Array>|Object} commentsByCard
+ * @returns {{keep:Array, dropped:Array<{card:string, answer:object}>}}
+ */
+function dropAnswered(items, commentsByCard) {
+  const get = (id) => (commentsByCard instanceof Map ? commentsByCard.get(id) : (commentsByCard || {})[id]) || [];
+  const keep = [];
+  const dropped = [];
+  for (const item of items || []) {
+    const st = answerState(get(item.card), { askedAt: item.askedAt });
+    if (st.answered) dropped.push({ ...item, answer: st.answer }); else keep.push(item);
+  }
+  return { keep, dropped };
+}
+
+/** BRO ids named inside DECISION NEEDED blocks (a block runs to its Default: line or a blank line pair). */
+function decisionCards(message) {
+  const lines = String(message || '').split('\n');
+  const ids = new Set();
+  let inBlock = false;
+  let blanks = 0;
+  for (const line of lines) {
+    if (/^[\s>*_-]*DECISION NEEDED:/.test(line)) { inBlock = true; blanks = 0; }
+    else if (inBlock && /^\s*$/.test(line) && ++blanks >= 2) inBlock = false;
+    else if (inBlock && line.trim()) blanks = 0;
+    if (!inBlock) continue;
+    for (const m of line.matchAll(/\bBRO-(\d+)\b/g)) ids.add(`BRO-${m[1]}`);
+    if (/^[\s>*_-]*Default:/.test(line)) inBlock = false;
+  }
+  return [...ids];
+}
+
+async function checkCards(cards, { listComments } = {}) {
+  const list = listComments || ((ids) => require('./linear-client.js').listIssueComments(ids));
+  const map = await list(cards);
+  return dropAnswered(cards.map((card) => ({ card })), map);
+}
+
+async function main(argv = process.argv.slice(2), { stdin = () => require('fs').readFileSync(0, 'utf8'), out = console.log, listComments } = {}) {
+  const strict = argv.includes('--strict');
+  let cards = argv.filter((a) => /^BRO-\d+$/i.test(a)).map((a) => a.toUpperCase());
+  if (argv.includes('--message-stdin')) cards = decisionCards(stdin());
+  if (!cards.length) return 0;
+  const { keep, dropped } = await checkCards(cards, { listComments });
+  if (!argv.includes('--message-stdin')) keep.forEach((i) => out(`${i.card}: open (no owner answer after the question)`));
+  dropped.forEach((d) => out(`${d.card}: ALREADY ANSWERED${d.answer.at ? ` on ${String(d.answer.at).slice(0, 10)}` : ''}: ${d.answer.text}. Do not restate it; act on the answer.`));
+  return strict && dropped.length ? 3 : 0;
+}
+
+if (require.main === module) {
+  main().then((c) => { process.exitCode = c; }, (e) => { console.error(`[decision-restate] ${e.message}`); process.exitCode = 0; });
+}
+
+module.exports = { answerState, dropAnswered, decisionCards, checkCards, isAnswer, isQuestion, main };

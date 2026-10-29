@@ -57,6 +57,7 @@ function fakeClient(events, fail = false) {
     async addLabelToIssue(issue, label) { events.push(['labeled', issue, label]); },
     async attachFileToIssue(args) { events.push(['crop', args.filePath]); if (fail) throw new Error('upload unavailable'); return { url: 'https://example.test/crop' }; },
     async createComment(issue, body) { events.push(['comment', issue, body]); },
+    async listIssueComments(ids) { return new Map(ids.map((id) => [id, []])); },
   };
 }
 
@@ -224,4 +225,34 @@ test('manual CLI implementation retains argument parsing, recursive crops and er
   assert.equal(events.filter(([type]) => type === 'crop').length, 2);
   await assert.rejects(main([], { logger }), /Usage:/);
   await assert.rejects(main(['--issue=BRO-419', `--dir=${resolve(fx.dir, 'missing')}`], { logger }), /No crop images/);
+});
+
+// BRO-6539: BRO-4303 got a second "Waiting on your approval" 2.5h after the owner approved,
+// because the only dedupe was a marker file in one worktree.
+test('a card the owner already approved, or that already carries this evidence, gets no new ask', async (t) => {
+  const approved = fixture(t);
+  const events = [];
+  const client = fakeClient(events);
+  client.listIssueComments = async () => new Map([['BRO-419', [
+    { body: 'Waiting on your approval: 2 visual-qa crops attached above.', createdAt: '2026-10-29T12:00:00Z' },
+    { body: '**Owner decision** (answered by the owner through the email link, 2026-10-29 UTC)\n\nChose: Approve', createdAt: '2026-10-29T14:33:00Z' },
+  ]]]);
+  const result = await notifyBlockedApproval(approved, { client, logger });
+  assert.equal(result.status, 'skipped');
+  assert.match(result.reason, /owner already answered/);
+  assert.equal(events.filter(([type]) => type === 'comment' || type === 'crop').length, 0);
+
+  // Fresh worktree, no local marker: the card's own fingerprint stops the repeat.
+  const fresh = fixture(t);
+  const ev2 = [];
+  const c2 = fakeClient(ev2);
+  const comments = [];
+  c2.createComment = async (issue, body) => { ev2.push(['comment', issue, body]); comments.push({ body, createdAt: new Date().toISOString() }); };
+  c2.listIssueComments = async () => new Map([['BRO-419', comments]]);
+  assert.equal((await notifyBlockedApproval(fresh, { client: c2, logger })).status, 'attached');
+  rmSync(join(fresh.dir, '.linear-approval.json'));
+  const again = await notifyBlockedApproval(fresh, { client: c2, logger });
+  assert.equal(again.status, 'skipped');
+  assert.match(again.reason, /already on the card/);
+  assert.equal(ev2.filter(([type]) => type === 'comment').length, 1);
 });

@@ -9,6 +9,7 @@ const linear = require('./linear-client.js');
 const { AWAITING_OWNER_LABEL } = require('./owner-approval-channel.js');
 const { hasHelpFlag } = require('./cli-help.js');
 const { withFileLock } = require('./file-lock.js');
+const { answerState } = require('./decision-restate.js');
 
 const USAGE = `linear-attach-approval - attach visual-qa crops to a Linear issue as an
 owner-approval ask (BRO-282).
@@ -61,7 +62,7 @@ function findCrops(dir) {
   return elementCrops.length ? elementCrops : all;
 }
 
-async function main(argv = process.argv.slice(2), { client = linear, logger = console } = {}) {
+async function main(argv = process.argv.slice(2), { client = linear, logger = console, fingerprint = null } = {}) {
   if (hasHelpFlag(argv)) {
     logger.log(USAGE);
     return;
@@ -126,7 +127,8 @@ async function main(argv = process.argv.slice(2), { client = linear, logger = co
         `Reply here or remove the '${AWAITING_OWNER_LABEL}' label once you've reviewed.`
       : `Waiting on your approval: ${uploaded.length} visual-qa crop${uploaded.length === 1 ? '' : 's'} attached above. ` +
         `This UI change is finished but cannot ship until you look and confirm - the pre-push hook blocks it either way. ` +
-        `Reply here or remove the '${AWAITING_OWNER_LABEL}' label once you've reviewed.`
+        `Reply here or remove the '${AWAITING_OWNER_LABEL}' label once you've reviewed.` +
+        (fingerprint ? `\n\n${fingerprintMarker(fingerprint)}` : '')
   );
 
   if (uploadError) {
@@ -134,6 +136,23 @@ async function main(argv = process.argv.slice(2), { client = linear, logger = co
     throw uploadError;
   }
   logger.log(`${args.issue} marked ${AWAITING_OWNER_LABEL} with ${uploaded.length} attachment(s).`);
+}
+
+
+// BRO-6539: the local .linear-approval.json marker is per worktree and per
+// checkout, so a fresh worktree or session re-posted "Waiting on your approval"
+// 2.5h after the owner approved BRO-4303. The card is the shared memory.
+const FINGERPRINT_RE = /Evidence fingerprint ([0-9a-f]{12})/;
+function fingerprintMarker(fingerprint) { return `Evidence fingerprint ${String(fingerprint).slice(0, 12)}`; }
+
+/** Why the card must not get another "Waiting on your approval", or null to go ahead. */
+function cardAlreadySettled(comments, fingerprint) {
+  const body = (c) => String(c.body || '');
+  if ((comments || []).some((c) => (FINGERPRINT_RE.exec(body(c)) || [])[1] === String(fingerprint).slice(0, 12))) return 'this evidence is already on the card';
+  const ask = (comments || []).filter((c) => /^Waiting on your approval/i.test(body(c).trim()) || /^Asked the owner to look at/i.test(body(c).trim()))
+    .map((c) => new Date(c.createdAt).getTime()).filter(Number.isFinite).sort((a, b) => b - a)[0];
+  const st = answerState(comments, { askedAt: ask || null });
+  return st.answered ? `the owner already answered (${st.answer.at ? String(st.answer.at).slice(0, 10) : 'earlier'})` : null;
 }
 
 function issueFromContext(branch, repo) {
@@ -183,7 +202,16 @@ async function notifyBlockedApproval({ branch, repo, dir }, dependencies = {}) {
     try { previous = JSON.parse(fs.readFileSync(marker, 'utf8')); }
     catch (err) { if (err.code !== 'ENOENT' && !(err instanceof SyntaxError)) throw err; }
     if (previous?.fingerprint === fingerprint) return { status: 'already-attached', issue };
-    await main([`--issue=${issue}`, `--dir=${dir}`], dependencies);
+    const client = dependencies.client || linear;
+    // A failed read falls back to the old behavior (post once, marker-deduped) rather than hiding the ask.
+    let comments = [];
+    try { comments = (await client.listIssueComments([issue])).get(issue) || []; } catch { /* keep going */ }
+    const settled = cardAlreadySettled(comments, fingerprint);
+    if (settled) {
+      fs.writeFileSync(marker, JSON.stringify({ issue, fingerprint }) + '\n');
+      return { status: 'skipped', issue, reason: settled };
+    }
+    await main([`--issue=${issue}`, `--dir=${dir}`], { ...dependencies, fingerprint });
     fs.writeFileSync(marker, JSON.stringify({ issue, fingerprint }) + '\n');
     return { status: 'attached', issue, crops: crops.length };
   } finally {
@@ -212,4 +240,4 @@ if (require.main === module) {
   }).finally(() => clearTimeout(timer));
 }
 
-module.exports = { parseArgs, findCrops, currentBranch, main, USAGE, issueFromContext, notifyBlockedApproval };
+module.exports = { parseArgs, findCrops, currentBranch, main, USAGE, issueFromContext, notifyBlockedApproval, cardAlreadySettled, fingerprintMarker };
