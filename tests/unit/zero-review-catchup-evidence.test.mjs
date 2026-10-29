@@ -59,7 +59,12 @@ test('closed backfill is capped after the open rows and ordered by run length', 
   assert.equal(DEFAULT_CLOSED_BACKFILL_PER_BATCH, 2);
   assert.deepEqual(r.batch, ['o1', 'long', 'mid']);
   assert.deepEqual(r.closedEligible, ['long', 'mid', 'short']);
-  assert.deepEqual(pick(shows, {}, { batchSize: 1 }).batch, ['o1']);
+  // Closed slots are reserved: a full open queue cannot starve them.
+  assert.deepEqual(pick(shows, {}, { batchSize: 1 }).batch, ['long']);
+  const manyOpen = [...Array.from({ length: 12 }, (_, i) => open(`o${i}`)), closed('c1')];
+  const full = pick(manyOpen);
+  assert.equal(full.batch.length, 10);
+  assert.deepEqual(full.closedBackfill, ['c1']);
   assert.equal(pick(shows, {}, { closedPerBatch: 99 }).closedBackfill.length, Math.min(3, MAX_CLOSED_BACKFILL_PER_BATCH));
 });
 
@@ -85,10 +90,40 @@ test('undated open/closed rows are reported as undated and stranded; exempt wins
   assert.ok(r.stranded.includes('u1') && r.stranded.includes('u2') && !r.stranded.includes('ex'));
 });
 
-test('a never-attempted row waiting past grace + 14 days is stranded; a batched one is not', () => {
-  const r = pick([closed('a'), closed('b'), closed('c', { openingDate: daysAgo(10) })], {}, { closedPerBatch: 1 });
-  assert.deepEqual(r.batch, ['a']);
-  assert.deepEqual(r.stranded, ['b']);
+test('an open row left out past grace + 14 days is stranded; one at the boundary or batched is not', () => {
+  const r = pick([open('o-in'), { ...open('o-old'), openingDate: daysAgo(18) }, { ...open('o-edge'), openingDate: daysAgo(17) }],
+    {}, { batchSize: 1, closedPerBatch: 0 });
+  assert.deepEqual(r.batch, ['o-in']);
+  assert.deepEqual(r.stranded, ['o-old']);
+});
+
+test('a closed row is stranded only when the capped queue reaches it after the age bound', () => {
+  // 3 closed rows, 1 per run: positions 0,1,2 need 0,1,2 more runs.
+  const shows = [
+    closed('a', { openingDate: daysAgo(30), closingDate: daysAgo(1) }),
+    closed('b', { openingDate: daysAgo(89), closingDate: daysAgo(20) }),
+    closed('c', { openingDate: daysAgo(90), closingDate: daysAgo(88) }),
+  ];
+  const r = pick(shows, {}, { closedPerBatch: 1 });
+  assert.deepEqual(r.closedEligible, ['b', 'a', 'c']); // run length 69, 29, 2
+  assert.deepEqual(r.batch, ['b']);
+  // 'a' (position 1, 60 days of room) is fine; 'c' (position 2, 0 days of room) is stranded.
+  assert.deepEqual(r.stranded, ['c']);
+  // Not stranded on day one just because the opening is weeks back.
+  assert.deepEqual(pick([closed('x'), closed('y'), closed('z')]).stranded, []);
+});
+
+test('tooOld, givenUp and exempt rows never count as stranded; old undated closed runs are dropped', () => {
+  const r = pick([
+    { ...open('old'), openingDate: daysAgo(200) },
+    open('gave-up'),
+    { ...open('ex'), noReviewsExpected: true },
+    closed('ancient-undated', { openingDate: null, closingDate: daysAgo(400) }),
+  ], { 'gave-up': { attempts: 3, firstAt: daysAgo(5) } });
+  assert.deepEqual(r.tooOld, ['old']);
+  assert.deepEqual(r.givenUp, ['gave-up']);
+  assert.deepEqual(r.undated, []);
+  assert.deepEqual(r.stranded, []);
 });
 
 test('evidence source without evidenceUrls is skipped', () => {

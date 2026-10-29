@@ -24,7 +24,9 @@
  * row now gets exactly ONE dispatch ever: it must have no attempt-memory entry,
  * be inside the age bound, and fill at most closedPerBatch slots after the
  * open rows. One try means a gather that times out burns the only attempt;
- * that is the price of keeping closed-show spend bounded (<=2 a day).
+ * that is the price of keeping closed-show spend bounded (<=2 per run; the
+ * job has a daily and a weekly cron). Closed slots are reserved, so a full
+ * open queue cannot starve them.
  * Closed rows past the age bound are skipped silently (an old closed run is
  * not a status/data problem, so they are not reported as tooOld).
  *
@@ -36,8 +38,9 @@
  * evidence URL under a hard monthly cap (scripts/lib/evidence-catchup-spend.js).
  *
  * The guard: rows the selector cannot dispatch (no openingDate and no
- * previewsStartDate) come back as `undated`, and never-attempted eligible rows
- * still waiting past grace + strandedDays come back as `stranded`, so
+ * previewsStartDate) come back as `undated`; open rows still waiting past
+ * grace + strandedDays, and closed rows the capped queue will not reach before
+ * they pass the age bound, come back as `stranded`, so
  * find-zero-review-catchup-gaps.js can warn (or fail with --fail-on-stranded)
  * instead of a row silently never being gathered.
  */
@@ -57,12 +60,12 @@ const DEFAULT_GRACE_DAYS = 3;
 const DEFAULT_MAX_ATTEMPTS = 3;
 const DEFAULT_MAX_ATTEMPT_DAYS = 30;
 const DEFAULT_BATCH_SIZE = 10;
-// Closed backfill: at most 2 closed shows per daily batch (same per-job
+// Closed backfill: at most 2 closed shows per run (same per-job
 // ceiling as the evidence seeder), never more than 5 even when asked.
 const DEFAULT_CLOSED_BACKFILL_PER_BATCH = 2;
 const MAX_CLOSED_BACKFILL_PER_BATCH = 5;
-// A never-attempted eligible row still waiting this many days past the grace
-// window is reported as stranded.
+// An open eligible row still left out of the batch this many days past the
+// grace window is reported as stranded.
 const DEFAULT_STRANDED_DAYS = 14;
 // Evidence seeder: at most 2 closed shows per job (board triage 2026-10-10),
 // and never more than 5 even when asked (the CLAUDE.md §8 five-show E2E).
@@ -154,6 +157,9 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
 
     const anchor = catchupAnchorDate(s);
     if (!anchor) {
+      // An undated closed run that ended long ago is not worth a data fix.
+      const closedAgo = isClosed ? daysSince(s.closingDate, now) : null;
+      if (closedAgo != null && closedAgo > ageBoundDays) continue;
       if (s.noReviewsExpected) exempt.push(s.id);
       else undated.push(s.id);
       continue;
@@ -181,13 +187,20 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
 
   closed.sort((a, b) => runLengthDays(b) - runLengthDays(a));
   const closedEligible = closed.map((s) => s.id);
-  const openBatch = eligible.slice(0, batchSize);
-  const closedBackfill = closedEligible.slice(0, Math.min(closedPerBatch, batchSize - openBatch.length));
+  const closedTake = Math.min(closedPerBatch, closedEligible.length, batchSize);
+  const openBatch = eligible.slice(0, batchSize - closedTake);
+  const closedBackfill = closedEligible.slice(0, closedTake);
   const batch = [...openBatch, ...closedBackfill];
   const inBatch = new Set(batch);
+  // Closed: stranded when, at closedPerBatch a run (one run a day), the queue
+  // reaches the row only after it has passed the age bound. Measured from
+  // queue position, not opening age, since a closed row's opening is usually
+  // weeks back by the time its status flips.
+  const closedStranded = closedPerBatch === 0 ? closedEligible : closedEligible.filter((id, i) =>
+    Math.floor(i / closedPerBatch) > ageBoundDays - ageOf[id]);
   const stranded = [
-    ...[...eligible, ...closedEligible].filter((id) => !inBatch.has(id)
-      && !attemptMap[id] && ageOf[id] > strandedAfterDays),
+    ...eligible.filter((id) => !inBatch.has(id) && !attemptMap[id] && ageOf[id] > strandedAfterDays),
+    ...closedStranded,
     ...undated,
   ];
 
