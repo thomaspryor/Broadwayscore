@@ -273,6 +273,15 @@ describe('owner split (BRO-5433): technical In Review cards are not owner decisi
     for (const i of technical) assert.equal(hasOwnerMarker(i), false, i.identifier);
   });
 
+  test('hasOwnerMarker: heading-form decision block counts (BRO-6443), settled stub and bare heading do not', () => {
+    const real = require('../../scripts/lib/decision-card-parse.js');
+    const heading = '## DECISION NEEDED\n\nShip the redesign this week?\n';
+    assert.ok(real.findDecisionQuestion(heading), 'shared detector reads the heading form');
+    assert.equal(hasOwnerMarker(issue({ description: heading })), true);
+    assert.equal(hasOwnerMarker(issue({ description: '## DECISION NEEDED\n\n' })), false);
+    assert.equal(hasOwnerMarker(issue({ description: '## DECISION NEEDED (resolved)\n\nNothing.' })), false);
+  });
+
   test('ownerOnly keeps just the owner-marked cards; the default keeps every idle card', () => {
     const all = [...marked, ...technical];
     const ids = (o) => buildInReviewRows(all, { now: NOW, ...o }).map((r) => r.title.split(':')[0]);

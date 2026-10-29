@@ -34,7 +34,7 @@
  */
 'use strict';
 
-const { hasInlineDecision } = require('./decision-card-parse.js');
+const { hasInlineDecision, findDecisionQuestion } = require('./decision-card-parse.js');
 
 // The digest-autofix / canary pipeline files its own recurring rows as issues
 // and dispatches them itself. They legitimately live in In Review and are not
@@ -124,7 +124,8 @@ function hasOwnerMarker(issue) {
   if (issue.ownerMarkerUnknown) return true;
   if (OWNER_TITLE_RE.test(issue.title || '')) return true;
   const text = `${issue.title || ''}\n${issue.description || ''}\n${issue.commentText || ''}`;
-  return hasInlineDecision(text) || OWNER_ONLY_LINE_RE.test(text);
+  // findDecisionQuestion also reads the heading form ("## DECISION NEEDED" + question on the next line, BRO-6443).
+  return hasInlineDecision(text) || !!findDecisionQuestion(text) || OWNER_ONLY_LINE_RE.test(text);
 }
 
 const OWNER_MARKER_QUERY = `query($id: String!) {
