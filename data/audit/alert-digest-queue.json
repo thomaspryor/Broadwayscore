@@ -631,5 +631,19 @@
       }
     ],
     "queuedAt": "2026-10-29T13:51:48.717Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-revlon-girl-off-west-end-2026",
+    "title": "Auto-remediation gave up on the-revlon-girl-off-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-revlon-girl-off-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "info": false,
+    "decisionPrompt": null,
+    "model": null,
+    "tracked": null,
+    "fields": [],
+    "queuedAt": "2026-10-29T14:21:55.789Z"
   }
 ]
