@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-29T19:19:13.771Z",
+  "timestamp": "2026-10-29T19:39:19.383Z",
   "stats": {
-    "totalReviews": 68079,
-    "alreadyFlagged": 22191,
+    "totalReviews": 68199,
+    "alreadyFlagged": 22199,
     "dateGuardCatches": 233,
-    "directorMismatch": 2795,
-    "tvFilmSignals": 1959,
-    "londonSignals": 3342,
-    "offBroadwaySignals": 619,
+    "directorMismatch": 2801,
+    "tvFilmSignals": 1965,
+    "londonSignals": 3355,
+    "offBroadwaySignals": 618,
     "yearMismatch": 258,
-    "noPublishDate": 7086
+    "noPublishDate": 7096
   },
   "findings": [
     {
@@ -10923,6 +10923,24 @@
       ]
     },
     {
+      "showId": "choir-chichester-festival-regional-2025",
+      "file": "theatreandtonic--rosie.json",
+      "publishDate": "2025-08-09",
+      "url": "https://theatreandtonic.co.uk/blog/choir-at-chichester-festival-theatre-minerva-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 82,
@@ -16924,6 +16942,19 @@
       ]
     },
     {
+      "showId": "endgame-royal-bath-regional-2025",
+      "file": "theatre-weekly--unknown.json",
+      "publishDate": "2025-09-08",
+      "url": "https://theatreweekly.com/first-look-production-images-released-for-endgame-at-theatre-royal-bath/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
       "showId": "english-2025",
       "file": "dailybeast--tim-teeman.json",
       "score": 90,
@@ -18003,6 +18034,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "fat-ham-royal-shakespeare-regional-2025",
+      "file": "guardian--david-jays.json",
+      "publishDate": "2025-08-21",
+      "url": "https://www.theguardian.com/stage/2025/aug/21/fat-ham-review-hamlet-james-ijames-shakespeare",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from fat-ham-2023"
         }
       ]
     },
@@ -32892,6 +32936,19 @@
     },
     {
       "showId": "liberation-royal-exchange-regional-2025",
+      "file": "frontmezzjunkies--ross.json",
+      "publishDate": "2025-08-01",
+      "url": "https://frontmezzjunkies.com/2025/08/01/the-phenomenal-liberation-comes-to-broadway/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"whitney white\" from liberation-2025"
+        }
+      ]
+    },
+    {
+      "showId": "liberation-royal-exchange-regional-2025",
       "file": "quays-life--dave-porter.json",
       "publishDate": "2025-07-03",
       "url": "https://quayslife.com/reviews/liberation-review/",
@@ -34651,6 +34708,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "measure-for-measure-royal-shakespeare-regional-2025",
+      "file": "stratford-herald--gill-sutherland.json",
+      "publishDate": "2025-10-03",
+      "url": "https://www.stratford-herald.com/news/getting-the-measure-of-the-duke-9436254/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -36742,6 +36812,32 @@
       ]
     },
     {
+      "showId": "much-ado-about-nothing-royal-shakespeare-regional-2025",
+      "file": "broadwayworld--stephi-wild.json",
+      "publishDate": "2025-06-17",
+      "url": "https://www.broadwayworld.com/central-pa/article/MUCH-ADO-ABOUT-NOTHING-Comes-to-ActorsNET-20250617",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-royal-shakespeare-regional-2025",
+      "file": "mycultural--unknown.json",
+      "publishDate": "2025-04-23",
+      "url": "https://mycultural.life/theatre/much-ado-about-nothing-royal-shakespeare-company-stratford-upon-avon/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jamie lloyd\" from much-ado-about-nothing-2026"
+        }
+      ]
+    },
+    {
       "showId": "much-ado-about-nothing-west-end-2013",
       "file": "standard--unknown.json",
       "score": 44,
@@ -37960,6 +38056,19 @@
       ]
     },
     {
+      "showId": "nan-shepherd-naked-and-unashamed-pitlochry-festival-regional-2025",
+      "file": "the-scotsman--joyce-mcmillan.json",
+      "publishDate": "2025-06-09",
+      "url": "https://www.scotsman.com/arts-and-culture/theatre-and-stage/theatre-reviews-nan-shepherd-naked-and-unashamed-meme-girls-5166690",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
       "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 95,
@@ -38269,6 +38378,45 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"old vic\""
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-york-royal-regional-2025",
+      "file": "fairypoweredproductions--katie-brewerton.json",
+      "publishDate": "2025-03-27",
+      "url": "https://fairypoweredproductions.com/north-by-northwest-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-york-royal-regional-2025",
+      "file": "guardian--arifa-akbar.json",
+      "publishDate": "2025-03-27",
+      "url": "https://www.theguardian.com/stage/2025/mar/27/north-by-northwest-review-york-theatre-royal",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
+        }
+      ]
+    },
+    {
+      "showId": "north-by-northwest-york-royal-regional-2025",
+      "file": "northernartsreview--shannaz.json",
+      "publishDate": "2025-03-27",
+      "url": "https://northernartsreview.co.uk/north-east/review-north-by-northwest-at-york-theatre-royal/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"emma rice\" from north-by-northwest-regional-2026"
         }
       ]
     },
@@ -62293,6 +62441,19 @@
       ]
     },
     {
+      "showId": "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
+      "file": "broadwayworld--debbie-gilpin.json",
+      "publishDate": "2025-08-13",
+      "url": "https://www.broadwayworld.com/westend/article/Review-THE-TWO-GENTLEMEN-OF-VERONA-The-Other-Place-20250813",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
       "showId": "the-unfriend-west-end-2023",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 55,
@@ -70842,6 +71003,19 @@
       ]
     },
     {
+      "showId": "abigails-party-royal-exchange-regional-2025",
+      "file": "theatreandtonic--aimee.json",
+      "publishDate": "2025-04-10",
+      "url": "https://theatreandtonic.co.uk/blog/abigails-party-royal-exchange-manchester-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "abigails-party-west-end-2026",
       "file": "all-that-dazzles-uk--daz-gale.json",
       "score": 97,
@@ -78748,6 +78922,19 @@
       ]
     },
     {
+      "showId": "dancing-at-lughnasa-crucible-regional-2025",
+      "file": "theatreandtonic--kirsty.json",
+      "publishDate": "2025-09-22",
+      "url": "https://theatreandtonic.co.uk/blog/dancing-at-lughnasa-sheffield-crucible-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "dancing-at-lughnasa-west-end-2023",
       "file": "culture-whisper--unknown.json",
       "publishDate": null,
@@ -80451,6 +80638,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
+        }
+      ]
+    },
+    {
+      "showId": "edward-ii-royal-shakespeare-regional-2025",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/edward-ii-rsc-swan-theatre-stratford-review-monarchs-murder-and-mayhem-marlowe",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
         }
       ]
     },
@@ -83413,6 +83613,20 @@
     },
     {
       "showId": "girls-off-west-end-2026",
+      "file": "theatreandtonic--emmie-newitt.json",
+      "score": null,
+      "publishDate": "2026-10-29",
+      "url": "https://theatreandtonic.co.uk/blog/girls-the-young-vic-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "girls-off-west-end-2026",
       "file": "thereviewshub--unknown.json",
       "score": 74,
       "publishDate": "2026-10-28",
@@ -85207,6 +85421,32 @@
       ]
     },
     {
+      "showId": "hamlet-chichester-festival-regional-2025",
+      "file": "theatreandtonic--jasmine.json",
+      "publishDate": "2025-09-17",
+      "url": "https://theatreandtonic.co.uk/blog/hamlet-chichester-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-chichester-festival-regional-2025",
+      "file": "viewfromthegods--simon-jenner.json",
+      "publishDate": "2025-09-17",
+      "url": "https://viewfromthegods.co.uk/2025/09/17/hamlet-minerva-cft-org-uk/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "hamlet-off-broadway-2026",
       "file": "la-voce-di-new-york--jk-clarke.json",
       "score": 89,
@@ -85283,6 +85523,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "hamlet-royal-shakespeare-regional-2025",
+      "file": "revstanstheatreblog--simon-p.json",
+      "publishDate": "2025-03-09",
+      "url": "https://revstanstheatreblog.co.uk/2025/03/09/review-hamlet-royal-shakespeare-theatre-luke-thallon-is-a-stormy-prince/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -92215,6 +92468,19 @@
       ]
     },
     {
+      "showId": "lord-of-the-flies-chichester-festival-regional-2025",
+      "file": "theatreandtonic--rosie.json",
+      "publishDate": "2025-09-26",
+      "url": "https://theatreandtonic.co.uk/blog/lord-of-the-flies-chichester-festival-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
       "showId": "lost-atoms-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
       "score": 89,
@@ -94729,20 +94995,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"nytw\""
-        }
-      ]
-    },
-    {
-      "showId": "meteor-shower-2017",
-      "file": "village-voice--david-cote.json",
-      "score": 41,
-      "publishDate": "2017-12-01",
-      "url": "https://www.villagevoice.com/steve-martins-relationship-comedy-meteor-shower-is-a-dim-snooze/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -114735,6 +114987,19 @@
       ]
     },
     {
+      "showId": "the-two-gentlemen-of-verona-royal-shakespeare-regional-2025",
+      "file": "artsdesk--unknown.json",
+      "publishDate": null,
+      "url": "https://theartsdesk.com/theatre/two-gentlemen-verona-rsc-stratford-review-not-quite-intended-gateway-drug-shakespeare",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "the-unbelievers-west-end-2025",
       "file": "times-uk--clive-davis.json",
       "score": 38,
@@ -114773,6 +115038,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"vineyard theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-unlikely-pilgrimage-of-harold-fry-chichester-festival-regional-2025",
+      "file": "theweek--the-week-uk.json",
+      "publishDate": "2025-05-23",
+      "url": "https://theweek.com/culture-life/theatre/the-unlikely-pilgrimage-of-harold-fry-a-musical-with-foot-stomping-soul",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -116219,6 +116497,19 @@
       ]
     },
     {
+      "showId": "titus-andronicus-royal-shakespeare-regional-2025",
+      "file": "all-that-dazzles-uk--raphael-kohn.json",
+      "publishDate": "2025-04-30",
+      "url": "https://www.allthatdazzles.co.uk/post/review-titus-andronicus-swan-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"donmar warehouse\""
+        }
+      ]
+    },
+    {
       "showId": "to-kill-a-mockingbird-west-end-2022",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
       "score": 98,
@@ -116555,6 +116846,19 @@
       "file": "guardian--arifa-akbar.json",
       "publishDate": "2025-07-25",
       "url": "https://www.theguardian.com/stage/2025/jul/25/top-hat-review-chichester-festival-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "top-hat-chichester-festival-regional-2025",
+      "file": "theamerican--jarlath.json",
+      "publishDate": null,
+      "url": "https://www.theamerican.co.uk/pr/rev-th-Top-Hat-Chichester-Festival-Theatre",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
