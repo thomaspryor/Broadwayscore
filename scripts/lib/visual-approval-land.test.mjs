@@ -63,6 +63,8 @@ test('classifyStatus: waiting, approved, landed, void, unverified, rejected, exp
   assert.equal(va.classifyStatus(answered, []), 'rejected');
   const approved = [c(link.visualMarker(mac))];
   assert.equal(va.classifyStatus(answered, approved), 'approved');
+  // BRO-6546: void closes an ask the owner approved in chat (no tap was ever recorded), so it must not read as rejected.
+  assert.equal(va.classifyStatus(answered, [c(land.voidMarker(mac, PATCH))]), 'void');
   assert.equal(va.classifyStatus(answered, [...approved, c(land.voidMarker(mac, PATCH))]), 'void');
   assert.equal(va.classifyStatus(answered, [...approved, c(land.unverifiedMarker(mac, SHA))]), 'unverified');
   assert.equal(va.classifyStatus(answered, [...approved, c(land.voidMarker(mac, PATCH)), c(land.landedMarker(mac))]), 'landed');
