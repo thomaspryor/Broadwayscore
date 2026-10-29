@@ -1334,7 +1334,8 @@ function noScoreExtractor() {
 // every page that also carries one (BRO-3139). Only pageContent counts: the same blob also
 // holds relatedArticles[] and a product.review block, whose ratings belong to OTHER articles.
 // The NO_CRITIC_RATING_OUTLETS entry below stays for londontheatre.co.uk's PRODUCT pages
-// ("Show-Score Rating" is an audience average there), so this source is the one exemption.
+// ("Show-Score Rating" is an audience average there). Page extraction and verified manual
+// corrections are exempt; a relayed rating is not.
 const LONDON_THEATRE_PAGE_SOURCE = 'londontheatre-page-json';
 
 function extractLondonTheatreRating(html) {
@@ -2110,8 +2111,8 @@ const NO_CRITIC_RATING_OUTLETS = new Set([
  * Lazily required to avoid a load-order cycle with review-normalization.
  *
  * @param {string} outletId
- * @param {object} [data] the review-text file; when its originalScoreSource is the dedicated
- *   londontheatre.co.uk page-data source the outlet is NOT treated as rating-less for it.
+ * @param {object} [data] the review-text file; a dedicated page-data rating or a
+ *   human-verified rating means the outlet is not treated as rating-less for it.
  */
 function publishesNoCriticRating(outletId, data) {
   if (!outletId) return false;
@@ -2119,6 +2120,9 @@ function publishesNoCriticRating(outletId, data) {
   // verdict, so a file carrying one is not a "no rating" leak. Callers that hold the file
   // pass it; the generic JSON-LD path (no data) keeps refusing the outlet.
   if (data && data.originalScoreSource === LONDON_THEATRE_PAGE_SOURCE) return false;
+  // BRO-4991: approved fixes write manual-verified provenance. Keep the same
+  // verified rating the write guard preserves, including after scorer relabeling.
+  if (require('./verified-original-score').isHumanVerifiedRating(data)) return false;
   const raw = String(outletId).toLowerCase().trim();
   if (NO_CRITIC_RATING_OUTLETS.has(raw)) return true;
   try {

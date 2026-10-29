@@ -1,5 +1,58 @@
 # BRO-4991: London Theatre anchor verification
 
+## Pending correction plan on 2026-10-29
+
+`data/pending-fixes/bro-4991.json` now contains 14 `review-field-edit` actions for the page-verified stars in the table below. Each compares against the current missing/null `originalScore`. The existing executor calls `applyVerifiedOriginalScore()`, which writes the complete verified rating field set. The plan is pending, not applied. No private data, exclusion flags, or workflows changed.
+
+The initial real-data replay reproduced an additional bug: despite passing the executor's preflight, all 14 manual-verified ratings became hard no-star violations in the integrity checker. The shared `publishesNoCriticRating()` predicate exempted only automatic page-data ratings. Its classification now also honors `isHumanVerifiedRating()`, the same verified provenance the writer protects. This fixes the shared classification used by the audit and collection discard path. Generic extraction, missing provenance, and relayed stars remain refused. Five regression assertions failed before this change; the new tests call the real verified-rating writer and discard helper. A corpus comparison of the old and new predicate changes 0 of the 64,155 existing records; only the 14 planned verified corrections gain the exemption in the replay.
+
+The generator's preflight replayed all 14 actions successfully through `executeReviewFieldEditIn()` and the real write guard. A second replay on copies of the real show directories changed exactly 14 review records. All 14 stored anchor bands agree with their verified critic stars. No LLM score, effective `getBestScore()` result, human score, sibling record, or excluded record changed. Examples: Psychosis gains 4/5 and stays at 79; Bleak Expectations gains 2/5 and stays at 37; Kimberly Akimbo gains 4/5 and keeps its human score of 80.
+
+The full integrity checker was run before and after the replay against the same 64,155-file corpus:
+
+| Measurement | Original corpus | After plan replay on copies |
+| --- | --- | --- |
+| No-star outlet with originalScore | 0 | 0 |
+| Aggregator source without scoreSource | 171, including 0 London Theatre | 171, including 0 London Theatre |
+| London Theatre rows stamped anchored-v6 | 223 | 209 |
+| Confirmed rows still stamped anchored-v6 | 182 | 182 |
+| Known band mismatches | 0 | 0 |
+| Unverified rows still stamped anchored-v6 | 41 | 27 |
+
+The audit's anchored-v6 total drops because the verified-rating writer stamps `scoreSource: manual-verified`. This is not a rescore. Comparing the unchanged bands against the newly verified stars separately confirms all 14 repaired rows. The live private corpus remains unchanged until the runner applies the plan.
+
+The original Noises Off placeholders remain repaired with page-sourced 4/5 and 5/5 stars, respectively, and remain excluded as wrongProduction. The card's acceptance command already passed before these changes. At the start, `git diff --name-only origin/main -- scripts` was empty, so the tested script code matched the main ref in this checkout. `git log -S 'originalScore' --oneline -5 -- scripts/lib/no-rating-outlet-score.js` and the history search for `ratingVerificationQueue` both return `e08ba643` in this checkout.
+
+The generator wrote the plan but could not stage it: `fatal: Unable to create '/home/user/Broadwayscore/.git/worktrees/codex-runner/index.lock': Read-only file system`. A narrow `.gitignore` exception makes this public plan visible to the runner without changing the Git index. The generator and replay were explicitly pointed at this checkout's runner-provided data, rather than their default sibling clones. All temporary copies were deleted.
+
+### Remaining URL repairs and evidence
+
+Both requested source URL edits are refused by the existing `review-field-edit` validator with `url: the current url is not provably wrong (aggregator, non-review page, another critic's review, another show's review, or an unverified legacy web-search url)`. Dr Strangelove has a null URL; High Society's cast-news URL is not recognized by that validator's non-review patterns. An attempted 15-action plan reported 14/15 applied cleanly. Its URL action was removed, and the final 14-action plan passes. Neither URL was changed and the validator was not broadened. Both rating actions retain their correct review evidence URLs in their descriptions. These URL repairs still require a correction path that supports them:
+
+- [Dr Strangelove review](https://www.londontheatre.co.uk/reviews/dr-strangelove-review-noel-coward-theatre), Marianka Swain, 29 October 2024.
+- [High Society review](https://www.londontheatre.co.uk/reviews/high-society-review-barbican), Marianka Swain, 4 June 2026. A future URL repair must account for the URL invariant clearing old URL-derived text and scores, then refetch the correct review and retain its verified 4/5 rating.
+
+The five previously unresolved active rows remain untouched. Primary candidates were found for [ABBA Voyage](https://www.londontheatre.co.uk/reviews/abba-voyage-review-abba-arena) (Sophie Thomas, 6 January 2023), [Cabaret](https://www.londontheatre.co.uk/reviews/cabaret-at-the-kit-kat-club-review-eddie-redmayne-and-jessie-buckley) (Suzy Evans, 13 December 2021), and [Magic Mike Live](https://www.londontheatre.co.uk/reviews/channing-tatum-magic-mike-live-hippodrome-casino) (Suzy Evans, 25 January 2022). The ABBA and Cabaret pages describe their own reviews as five-star and four-star, respectively; London's [Magic Mike ticket page](https://www.londontheatre.co.uk/show/16563-magic-mike-live-tickets) links a four-star critic review. These unknown-critic records have no URL or fullText to tie them to a particular article, and Magic Mike has another review by Mark Shenton. A candidate article alone does not establish record identity. No rating or byline was inferred from a relay, previous score, or URL.
+
+The Drifters Girl's stored review remains inaccessible via the browser tool; The Hunger Games' stored review still redirects to its ticket page. Neither observation proves that the critic originally printed no rating. Recover archived primary evidence before rescoring.
+
+The current queue has 19 excluded rows and 22 other rows, including the 14 in the plan. The prior worklist's excluded `the-producers-west-end-2025/london-theatre--unknown.json` is no longer in the queue. Three other unresolved rows now appear: Sylvia / Marianka Swain (band 51-70, score 60), The Lehman Trilogy / Anya Ryan (71-90, 86), and The Producers / Olivia Rook (51-70, 68). They need primary-rating verification too; this plan does not expand to undocumented ratings or change any of the earlier excluded rows.
+
+Recurring cost added: 0 paid fetches, LLM calls, or API calls per run. The plan queues no fetching or scoring and changes no cron. This investigation used browser searches and page opens only; it did not invoke the scraper or scorer. Existing wiring remains `execute-approved-fix.yml` to `scripts/execute-approved-fix.js` to `executeReviewFieldEditIn()` to `applyVerifiedOriginalScore()`.
+
+### Verification of the pending plan and classification fix
+
+- `node --test --test-timeout 300000 scripts/lib/score-extractors.test.mjs`: before the predicate fix, 32 passed and 5 failed; after, all 37 passed as part of the focused command below.
+- `node --test --test-timeout 300000 scripts/lib/score-extractors.test.mjs scripts/lib/no-rating-outlet-score.test.mjs scripts/lib/review-field-edit.test.mjs scripts/lib/verified-original-score.test.mjs scripts/lib/london-theatre-anchor-audit.test.mjs tests/unit/pending-fix-plans.test.mjs`: 129 passed, 0 failed.
+- `rg -l 'score-extractors' tests scripts --glob '*.test.*'` selected the direct dependent tests. The other 29 files ran with `node --test --test-concurrency=4 --test-timeout 300000`: 635 tests passed; the TypeScript file failed to resolve its extensionless import under plain Node. Its header specifies the tsx lane. `node_modules/.bin/tsx --test --test-timeout 300000 tests/unit/letter-grade-parity.test.ts` passed all 4 tests. No implementation assertion failed in the dependent files.
+- `node --test --test-timeout 300000 scripts/check-score-integrity.test.mjs`: 6 passed, 0 failed.
+- `node --test --test-timeout 300000 scripts/lib/no-rating-outlet-score.test.mjs`: final acceptance rerun, 5 passed, 0 failed.
+- `REVIEW_TEXTS_DIR="$PWD/data/review-texts" node scripts/lib/preflight-review-fix-plan.js data/pending-fixes/bro-4991.json`: 14/14 applied cleanly to temporary copies.
+- `node scripts/scoring-delta.js`: score-source phase, 63,942 reviews processed; SCORE CHANGED: 0 reviews across 0 shows; T1 outlet flips: 0 (inclusion: 0, score: 0). Delta within tolerance.
+- `node scripts/test-temporal-override-regression.js`: OVERALL PASS, both suites green (exit 0).
+- `GAUNTLET_GATES=lint-workflows bash scripts/lib/land-gauntlet.sh /tmp/gauntlet`: all gates green, lint-workflows exit 0; actionlint is not installed here. Read `/tmp/gauntlet/lint-workflows.log` before removing the temporary output.
+- `git diff --check`: passed. No TypeScript source files changed, so tsc was not run.
+
 ## Corpus results on 2026-10-24
 
 The acceptance test already passes on main (HEAD and origin/main: `29767beecf3f3d8119d09bf6a086c8cfe3225d24`). No scoring or audit code change is needed for the previously landed fix.

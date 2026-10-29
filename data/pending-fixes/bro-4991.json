@@ -1,0 +1,144 @@
+{
+  "issueNumber": "bro-4991",
+  "planId": "12b88671-913b-4358-944c-978d9ea6dbfb",
+  "status": "pending",
+  "createdAt": "2026-10-29T05:05:20.616Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Persist 14 page-verified London Theatre critic stars with verified provenance; preserve existing LLM scores, Kimberly Akimbo human score 80, and all production exclusions",
+    "steps": [
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/4-48-psychosis-review-royal-court; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/bleak-expectations-west-end-review; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/cuckoo-review-royal-court; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/dancing-at-lughnasa-review-national-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/dr-semmelweis-review-harold-pinter-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/dr-strangelove-review-noel-coward-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/high-society-review-barbican; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees. Preserve humanReviewScore=80; do not rescore.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/mad-house-review-ambassadors-theatre-david-harbour; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/medea-review-soho-place-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/the-great-british-bake-off-musical-review-noel-coward-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/the-other-place-review-national-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/review-the-prince-of-egypt-at-the-dominion-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees.",
+      "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/review-mel-brooks-young-frankenstein-at-the-garrick-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+    ],
+    "riskLevel": "low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "4-48-psychosis-west-end-2025/london-theatre--holly-omahony.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/4-48-psychosis-review-royal-court; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "bleak-expectations-west-end-2023/london-theatre--matt-wolf.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/bleak-expectations-west-end-review; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cuckoo-west-end-2023/london-theatre--matt-wolf.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/cuckoo-review-royal-court; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dancing-at-lughnasa-west-end-2023/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/dancing-at-lughnasa-review-national-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-semmelweis-west-end-2023/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/dr-semmelweis-review-harold-pinter-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "dr-strangelove-west-end-2024/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/dr-strangelove-review-noel-coward-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "high-society-west-end-2026/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/high-society-review-barbican; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "kimberly-akimbo-off-west-end-2026/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees. Preserve humanReviewScore=80; do not rescore."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "mad-house-west-end-2022/london-theatre--sophie-thomas.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/mad-house-review-ambassadors-theatre-david-harbour; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "medea-west-end-2023/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/medea-review-soho-place-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-great-british-bake-off-musical-west-end-2023/london-theatre--marianka-swain.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "4/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/the-great-british-bake-off-musical-review-noel-coward-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-other-place-west-end-2024/london-theatre--holly-omahony.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "3/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/the-other-place-review-national-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-prince-of-egypt-west-end-2020/london-theatre--mark-shenton.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "2/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/review-the-prince-of-egypt-at-the-dominion-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      },
+      {
+        "type": "review-field-edit",
+        "file": "young-frankenstein-west-end-2017/london-theatre--mark-shenton.json",
+        "field": "originalScore",
+        "oldValue": null,
+        "newValue": "5/5",
+        "description": "BRO-4991: critic rating verified on 2026-10-24 from the article's own pageContent.ourCriticsRating at https://www.londontheatre.co.uk/reviews/review-mel-brooks-young-frankenstein-at-the-garrick-theatre; evidence in docs/audits/bro-4991-london-theatre-anchors.md. Existing anchored band agrees."
+      }
+    ]
+  }
+}

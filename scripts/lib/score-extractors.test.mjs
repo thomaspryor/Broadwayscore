@@ -5,6 +5,45 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { extractScore, extractNYPostScore } = require('./score-extractors.js');
 
+// BRO-4991: approved rating fixes use manual-verified, not the automated
+// London Theatre page-data source. Collection must keep those corrections.
+for (const rating of ['2/5', '3/5', '4/5', '5/5']) {
+  test(`London Theatre keeps a verified ${rating} after an approved rating correction`, () => {
+    const { applyVerifiedOriginalScore } = require('./verified-original-score');
+    const { publishesNoCriticRating } = require('./score-extractors');
+    const { discardNoRatingOutletScore } = require('./no-rating-outlet-score');
+    const data = { outletId: 'london-theatre', originalScore: null, originalScoreCleared: true };
+    assert.equal(applyVerifiedOriginalScore(data, rating, 'BRO-4991: checked the critic page').ok, true);
+    const verified = structuredClone(data);
+    assert.equal(publishesNoCriticRating(data.outletId, data), false);
+    assert.equal(discardNoRatingOutletScore(data), false);
+    assert.deepEqual(data, verified, 'collection must preserve the whole verified rating field set');
+  });
+}
+
+test('verified London Theatre ratings survive outlet aliases and scorer relabeling', () => {
+  const { publishesNoCriticRating } = require('./score-extractors');
+  for (const outlet of ['London Theatre', 'londontheatre-co-uk']) {
+    assert.equal(publishesNoCriticRating(outlet, {
+      originalScore: '4/5', originalScoreSource: 'manual-verified', scoreSource: 'anchored-v6',
+    }), false);
+  }
+});
+
+test('London Theatre still rejects relayed ratings, source labels without a verified rating, and generic extraction', () => {
+  const { publishesNoCriticRating } = require('./score-extractors');
+  const { discardNoRatingOutletScore } = require('./no-rating-outlet-score');
+  for (const data of [
+    { originalScore: '4/5', originalScoreSource: 'show-score', scoreSource: 'manual-verified' },
+    { originalScore: 100, scoreSource: 'anchored-v6' },
+    { originalScore: null, originalScoreSource: 'manual-verified' },
+  ]) assert.equal(publishesNoCriticRating('london-theatre', data), true);
+  assert.equal(publishesNoCriticRating('london-theatre'), true);
+  const relay = { outletId: 'london-theatre', originalScore: '4/5', originalScoreSource: 'show-score' };
+  assert.equal(discardNoRatingOutletScore(relay), true);
+  assert.equal(relay.originalScore, null);
+});
+
 // KNOWN_STAR_OUTLETS fallthrough — combined multi-show roundup columns.
 // Card #935: sylvia-off-west-end-2026's Guardian review was a "week in
 // theatre" column rating THREE shows (Phaedra ★★★★★, Sylvia ★★★, Standing at
